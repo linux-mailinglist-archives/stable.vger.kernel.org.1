@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-233781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPc9F2H61Wn4/gcAu9opvQ
-	(envelope-from <stable+bounces-233781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:49:05 +0200
+	id mGxgO1361Wn4/gcAu9opvQ
+	(envelope-from <stable+bounces-233782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:49:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31B43B7B7B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:49:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 910BE3B7B7C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0F3E30156DD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:48:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E32E83010B68
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E232F2D0C63;
-	Wed,  8 Apr 2026 06:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C8230FC0F;
+	Wed,  8 Apr 2026 06:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tt7cVkv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIAWdTC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D3B22370A
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 06:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3984222370A
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 06:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775630936; cv=none; b=oJvKPvKvE5voVryPKMplt4hP/kHnYA8MUrnGn5sE4aUrIHc3pyuMfqeEkJNv63/b9R1wlKJUwbPVwL7evb4TYQeeNlEF6bSiz/42lQMYJbaKu/coJxelmzf4a0jzc+ARCCFWjTOupmMF/8adykwSYZRF51Zt72glnH+P/mmCqlk=
+	t=1775630939; cv=none; b=llaq+w/rlzAGa++ssgxwpeMyPfVEpo9WYEj+30i/HsZTZdxXtYMqgiVSO5ICs2l9W9ZilS4Bm3WDMat4dKDPQwItz8uW6LaWJF1J9LtqoVzeSfSauT3r7RuWcUqKq87Gx0IrefomvhYVEZzawlv7UcjaAD02mnwPqCIEo9Vt2nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775630936; c=relaxed/simple;
-	bh=jZNCjH41g5kyzOhrD+WS3N6pA9KECsVLdomfNqlwwJQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=f1MJzY0HXHjpgwihqXq6IoI4U/4jF6gisJJ1IJvHNXWAqUcQvwaiU04yuS2/tRJo7WP7G9sNtWzNEz5NrwwznS00VHCsfe6fi7XITBgwvP5y1nKDnxQ7tM3QNWnZ4jLZL2B9KohWQ6kv3x5sP0LjEet134gloVpooPuIfrQ+Z6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tt7cVkv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018B0C19424;
-	Wed,  8 Apr 2026 06:48:55 +0000 (UTC)
+	s=arc-20240116; t=1775630939; c=relaxed/simple;
+	bh=GfFdw1yaLP44n5/N+2A4vUxbyKXRxUE8O3ZvSnfkZpg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LkqFcbTYrVETlSO7epmHPCF/rQclVSaZNz1MhTwIStOu38sCO9zyOxJ734sd8zWDpi1wfUOeWjd2gdzjXJCE7k2tG6B138t9n/cBGYys83RhOcdQl3XUfmLN5YGAOU4dpVK/f6UC7vBDwIQnfEZO9uuxZkRvCWqhNdeQgFv5ylo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIAWdTC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DDAC19424;
+	Wed,  8 Apr 2026 06:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775630936;
-	bh=jZNCjH41g5kyzOhrD+WS3N6pA9KECsVLdomfNqlwwJQ=;
+	s=korg; t=1775630938;
+	bh=GfFdw1yaLP44n5/N+2A4vUxbyKXRxUE8O3ZvSnfkZpg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Tt7cVkv/ac3UbN1Q5XV9nrb92pH59WD1i/+P5OlXXoEhWQo3xMm0MBLnSW8+Uxn+8
-	 TpdFAyvEsUz8kOdOU/sWJxOc4M9rJkXdtHN+6asvl6DpLWM4WNR2VTUBNP4To33g/3
-	 vMaEY+DeFx9AzdumyXLIxzGoi5zdGxsf+FgUWl3U=
-Subject: FAILED: patch "[PATCH] s390/cpum_sf: Cap sampling rate to prevent lsctl exception" failed to apply to 5.10-stable tree
+	b=JIAWdTC/9eGFfRFumUMfy5GxVR1MD1iK0gep7Ae84mnfr3R2uyGuI7G/jxiyoW0S3
+	 4yCNHgpehOf3ovHqrC53UMagj8vcTEyhvoDFnh6KKWTPZVGufFgfFjoKtKAXypAAPp
+	 FyiiORdxksHCDm8YIo5Gwx2G97NmjR3uBYb2ca9I=
+Subject: FAILED: patch "[PATCH] s390/cpum_sf: Cap sampling rate to prevent lsctl exception" failed to apply to 5.15-stable tree
 To: tmricht@linux.ibm.com,brueckner@linux.ibm.com,gor@linux.ibm.com,sumanthk@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 08 Apr 2026 08:48:42 +0200
-Message-ID: <2026040842-raging-spruce-08f8@gregkh>
+Message-ID: <2026040841-unblock-aflame-81f6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,13 +59,13 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233781-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233782-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -78,28 +78,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
-X-Rspamd-Queue-Id: F31B43B7B7B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 910BE3B7B7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 57ad0d4a00f5d3e80f33ba2da8d560c73d83dc22
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040842-raging-spruce-08f8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040841-unblock-aflame-81f6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
