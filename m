@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234536-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDCgN6ah1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:46 +0200
+	id 6CuBGjSj1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234536-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C07C3C14ED
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3023C1A8A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF8053057A86
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC67F316F0BE
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBCA3B0AFC;
-	Wed,  8 Apr 2026 18:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6487036166F;
+	Wed,  8 Apr 2026 18:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHLHBBHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzTTnO5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701DA3624B0;
-	Wed,  8 Apr 2026 18:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A0B28C87C;
+	Wed,  8 Apr 2026 18:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673681; cv=none; b=JjSYRiSjMqq63rcSmFmCPWou4zlxu0Twm6V06GlhqVBRL0c8B787XdlDncyo2OIfuxcx4tDDiwG2Th9IDtpxqvV6HkdWFcZHoHTs5xHDS7knc53dJSlHGxQW7dOPdbWYVrraI43axBrZcbpDv1pHZHngmOv6dsMctHdi0SVVgNY=
+	t=1775673114; cv=none; b=CB93pdy+bsj/qwAqmJaxYbIICbuiRw2zG7eaPpKdTeU/7prrI+A9FCEyUmZcIUFhtkEF8M95pOdxDUZIDMBF/3tRiHog8BQ+qJJDfe7P62/QknF4jM7Sqqwi7D6X9b8WC13Yu79ZsGcxvmBCm2sedVcD8Iu7HjC2aBSpFtHZg+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673681; c=relaxed/simple;
-	bh=9q41mctMNnlftn9nUctsHujTzo3Feu5X3cZBUZlmxh0=;
+	s=arc-20240116; t=1775673114; c=relaxed/simple;
+	bh=x0IUvEOcSd/UkgxzhttJm1IywKJLHD507xT1O8RV9e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXyqujABsDd/QBzYpEoEozASKFzK9+M4tnK0YWAYMvRNBaMwvGyfEYEru0Gx5r4DNyDg1G9c6Rmjwdl2p+HXItQftX89tvZYL/YWIwK7/hdpy41mXgRCfD86Fv/VU35Gv8fRaS+wZBQvZIMCRvQH1E3ICGUO+nR4ZehP20d5upE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHLHBBHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B695DC19421;
-	Wed,  8 Apr 2026 18:41:20 +0000 (UTC)
+	 MIME-Version; b=N9+Xot4sU6h8GPJjNkTtE8eEhiSSz4cXxtXNjR8lrM7s17P1On1GykJc6SLwA50qtPAvqD3HvCkjNuci/bK1LIZdrNwMoXenZZLAdUOtOhiJfgvMYqYFeen4pA/tFAgsyLxKoiy9JB9+I8HObqlUL8QhERu0ZLcdghdw5UW5pdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzTTnO5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF07C19425;
+	Wed,  8 Apr 2026 18:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673681;
-	bh=9q41mctMNnlftn9nUctsHujTzo3Feu5X3cZBUZlmxh0=;
+	s=korg; t=1775673114;
+	bh=x0IUvEOcSd/UkgxzhttJm1IywKJLHD507xT1O8RV9e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHLHBBHYjIId1zyYSZ+N3QlSkph48wsIZc9+l8vM8Q2ODPX9t6rqUZ2AQUAZNVMdq
-	 ergxMMUsmBFrrPfTR3/CIBfZHr5Sr2XOxQhqBsqgvDVAr8nAQlOfpDg0HgsPx/2oYq
-	 zILmKiY7BLc0yB2Pg8unWEAQUHayXwYtXav0p4Qc=
+	b=WzTTnO5GEHjY37zuuih2RwdfGl+eP2D7QHyUkk7iP8a/NSLQpVCEml82n3zQOEoK2
+	 hnh3TpAXGSh4PSvzPxriwVnUxOMrUUjm3B6DGtbALWkjDpTv2sF+cmBTkkBxWrzTED
+	 EByJVjZ6MYG0MX7G4RsRlnI/ZulUIEizdXt5PDag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/242] tg3: Fix race for querying speed/duplex
-Date: Wed,  8 Apr 2026 20:01:29 +0200
-Message-ID: <20260408175928.906855653@linuxfoundation.org>
+Subject: [PATCH 6.18 105/277] gpio: rename gpio_chip_hwgpio() to gpiod_hwgpio()
+Date: Wed,  8 Apr 2026 20:01:30 +0200
+Message-ID: <20260408175937.793772676@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234756-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234536-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,52 +86,407 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,suse.de:email,broadcom.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5C07C3C14ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CC3023C1A8A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit bb417456c7814d1493d98b7dd9c040bf3ce3b4ed ]
+[ Upstream commit df900536e85819f6168783d5f6b3908d47811fdd ]
 
-When driver signals carrier up via netif_carrier_on() its internal
-link_up state isn't updated immediately. This leads to inconsistent
-speed/duplex in /proc/net/bonding/bondX where the speed and duplex
-is shown as unknown while ethtool shows correct values. Fix this by
-using netif_carrier_ok() for link checking in get_ksettings function.
+This function takes a GPIO descriptor as first argument. Make its naming
+consistent with the rest of the GPIO codebase and use the gpiod_ prefix.
 
-Fixes: 84421b99cedc ("tg3: Update link_up flag for phylib devices")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Link: https://lore.kernel.org/r/20251016-aspeed-gpiolib-include-v1-1-31201c06d124@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 6df6ea4b3d15 ("gpiolib: clear requested flag if line is invalid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-aspeed.c   |  6 ++---
+ drivers/gpio/gpiolib-cdev.c  | 12 +++++-----
+ drivers/gpio/gpiolib-sysfs.c | 14 +++++------
+ drivers/gpio/gpiolib.c       | 46 ++++++++++++++++++------------------
+ drivers/gpio/gpiolib.h       |  2 +-
+ 5 files changed, 40 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 288ab0e007557..752f33ae98383 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -12277,7 +12277,7 @@ static int tg3_get_link_ksettings(struct net_device *dev,
- 	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
- 						advertising);
+diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
+index 7953a9c4e36d7..3da37a0fda3fb 100644
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -24,7 +24,7 @@
  
--	if (netif_running(dev) && tp->link_up) {
-+	if (netif_running(dev) && netif_carrier_ok(dev)) {
- 		cmd->base.speed = tp->link_config.active_speed;
- 		cmd->base.duplex = tp->link_config.active_duplex;
- 		ethtool_convert_legacy_u32_to_link_mode(
+ /*
+  * These two headers aren't meant to be used by GPIO drivers. We need
+- * them in order to access gpio_chip_hwgpio() which we need to implement
++ * them in order to access gpiod_hwgpio() which we need to implement
+  * the aspeed specific API which allows the coprocessor to request
+  * access to some GPIOs and to arbitrate between coprocessor and ARM.
+  */
+@@ -942,7 +942,7 @@ int aspeed_gpio_copro_grab_gpio(struct gpio_desc *desc,
+ {
+ 	struct gpio_chip *chip = gpiod_to_chip(desc);
+ 	struct aspeed_gpio *gpio = gpiochip_get_data(chip);
+-	int rc = 0, bindex, offset = gpio_chip_hwgpio(desc);
++	int rc = 0, bindex, offset = gpiod_hwgpio(desc);
+ 	const struct aspeed_gpio_bank *bank = to_bank(offset);
+ 
+ 	if (!aspeed_gpio_support_copro(gpio))
+@@ -987,7 +987,7 @@ int aspeed_gpio_copro_release_gpio(struct gpio_desc *desc)
+ {
+ 	struct gpio_chip *chip = gpiod_to_chip(desc);
+ 	struct aspeed_gpio *gpio = gpiochip_get_data(chip);
+-	int rc = 0, bindex, offset = gpio_chip_hwgpio(desc);
++	int rc = 0, bindex, offset = gpiod_hwgpio(desc);
+ 
+ 	if (!aspeed_gpio_support_copro(gpio))
+ 		return -EOPNOTSUPP;
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index e76bcbd647539..986312c71678f 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -676,7 +676,7 @@ static enum hte_return process_hw_ts_thread(void *p)
+ 	}
+ 	le.line_seqno = line->line_seqno;
+ 	le.seqno = (lr->num_lines == 1) ? le.line_seqno : line->req_seqno;
+-	le.offset = gpio_chip_hwgpio(line->desc);
++	le.offset = gpiod_hwgpio(line->desc);
+ 
+ 	linereq_put_event(lr, &le);
+ 
+@@ -793,7 +793,7 @@ static irqreturn_t edge_irq_thread(int irq, void *p)
+ 	line->line_seqno++;
+ 	le.line_seqno = line->line_seqno;
+ 	le.seqno = (lr->num_lines == 1) ? le.line_seqno : line->req_seqno;
+-	le.offset = gpio_chip_hwgpio(line->desc);
++	le.offset = gpiod_hwgpio(line->desc);
+ 
+ 	linereq_put_event(lr, &le);
+ 
+@@ -891,7 +891,7 @@ static void debounce_work_func(struct work_struct *work)
+ 
+ 	lr = line->req;
+ 	le.timestamp_ns = line_event_timestamp(line);
+-	le.offset = gpio_chip_hwgpio(line->desc);
++	le.offset = gpiod_hwgpio(line->desc);
+ #ifdef CONFIG_HTE
+ 	if (edflags & GPIO_V2_LINE_FLAG_EVENT_CLOCK_HTE) {
+ 		/* discard events except the last one */
+@@ -1591,7 +1591,7 @@ static void linereq_show_fdinfo(struct seq_file *out, struct file *file)
+ 
+ 	for (i = 0; i < lr->num_lines; i++)
+ 		seq_printf(out, "gpio-line:\t%d\n",
+-			   gpio_chip_hwgpio(lr->lines[i].desc));
++			   gpiod_hwgpio(lr->lines[i].desc));
+ }
+ #endif
+ 
+@@ -2244,7 +2244,7 @@ static void gpio_desc_to_lineinfo(struct gpio_desc *desc,
+ 		return;
+ 
+ 	memset(info, 0, sizeof(*info));
+-	info->offset = gpio_chip_hwgpio(desc);
++	info->offset = gpiod_hwgpio(desc);
+ 
+ 	if (desc->name)
+ 		strscpy(info->name, desc->name, sizeof(info->name));
+@@ -2550,7 +2550,7 @@ static int lineinfo_changed_notify(struct notifier_block *nb,
+ 	struct gpio_desc *desc = data;
+ 	struct file *fp;
+ 
+-	if (!test_bit(gpio_chip_hwgpio(desc), cdev->watched_lines))
++	if (!test_bit(gpiod_hwgpio(desc), cdev->watched_lines))
+ 		return NOTIFY_DONE;
+ 
+ 	/* Keep the file descriptor alive for the duration of the notification. */
+diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
+index e044690ad412b..d4a46a0a37d8f 100644
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -244,7 +244,7 @@ static int gpio_sysfs_request_irq(struct gpiod_data *data, unsigned char flags)
+ 	 * Remove this redundant call (along with the corresponding unlock)
+ 	 * when those drivers have been fixed.
+ 	 */
+-	ret = gpiochip_lock_as_irq(guard.gc, gpio_chip_hwgpio(desc));
++	ret = gpiochip_lock_as_irq(guard.gc, gpiod_hwgpio(desc));
+ 	if (ret < 0)
+ 		goto err_clr_bits;
+ 
+@@ -258,7 +258,7 @@ static int gpio_sysfs_request_irq(struct gpiod_data *data, unsigned char flags)
+ 	return 0;
+ 
+ err_unlock:
+-	gpiochip_unlock_as_irq(guard.gc, gpio_chip_hwgpio(desc));
++	gpiochip_unlock_as_irq(guard.gc, gpiod_hwgpio(desc));
+ err_clr_bits:
+ 	clear_bit(GPIOD_FLAG_EDGE_RISING, &desc->flags);
+ 	clear_bit(GPIOD_FLAG_EDGE_FALLING, &desc->flags);
+@@ -280,7 +280,7 @@ static void gpio_sysfs_free_irq(struct gpiod_data *data)
+ 
+ 	data->irq_flags = 0;
+ 	free_irq(data->irq, data);
+-	gpiochip_unlock_as_irq(guard.gc, gpio_chip_hwgpio(desc));
++	gpiochip_unlock_as_irq(guard.gc, gpiod_hwgpio(desc));
+ 	clear_bit(GPIOD_FLAG_EDGE_RISING, &desc->flags);
+ 	clear_bit(GPIOD_FLAG_EDGE_FALLING, &desc->flags);
+ }
+@@ -478,10 +478,10 @@ static int export_gpio_desc(struct gpio_desc *desc)
+ 	if (!guard.gc)
+ 		return -ENODEV;
+ 
+-	offset = gpio_chip_hwgpio(desc);
++	offset = gpiod_hwgpio(desc);
+ 	if (!gpiochip_line_is_valid(guard.gc, offset)) {
+ 		pr_debug_ratelimited("%s: GPIO %d masked\n", __func__,
+-				     gpio_chip_hwgpio(desc));
++				     gpiod_hwgpio(desc));
+ 		return -EINVAL;
+ 	}
+ 
+@@ -823,7 +823,7 @@ int gpiod_export(struct gpio_desc *desc, bool direction_may_change)
+ 	}
+ 
+ 	desc_data->chip_attr_group.name = kasprintf(GFP_KERNEL, "gpio%u",
+-						    gpio_chip_hwgpio(desc));
++						    gpiod_hwgpio(desc));
+ 	if (!desc_data->chip_attr_group.name) {
+ 		status = -ENOMEM;
+ 		goto err_put_dirent;
+@@ -843,7 +843,7 @@ int gpiod_export(struct gpio_desc *desc, bool direction_may_change)
+ 	if (status)
+ 		goto err_free_name;
+ 
+-	path = kasprintf(GFP_KERNEL, "gpio%u/value", gpio_chip_hwgpio(desc));
++	path = kasprintf(GFP_KERNEL, "gpio%u/value", gpiod_hwgpio(desc));
+ 	if (!path) {
+ 		status = -ENOMEM;
+ 		goto err_remove_groups;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 4524c89946d7c..497fda9bf8f1e 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -443,7 +443,7 @@ int gpiod_get_direction(struct gpio_desc *desc)
+ 	if (!guard.gc)
+ 		return -ENODEV;
+ 
+-	offset = gpio_chip_hwgpio(desc);
++	offset = gpiod_hwgpio(desc);
+ 	flags = READ_ONCE(desc->flags);
+ 
+ 	/*
+@@ -2446,7 +2446,7 @@ static int gpiod_request_commit(struct gpio_desc *desc, const char *label)
+ 	if (test_and_set_bit(GPIOD_FLAG_REQUESTED, &desc->flags))
+ 		return -EBUSY;
+ 
+-	offset = gpio_chip_hwgpio(desc);
++	offset = gpiod_hwgpio(desc);
+ 	if (!gpiochip_line_is_valid(guard.gc, offset))
+ 		return -EINVAL;
+ 
+@@ -2508,7 +2508,7 @@ static void gpiod_free_commit(struct gpio_desc *desc)
+ 
+ 	if (guard.gc && test_bit(GPIOD_FLAG_REQUESTED, &flags)) {
+ 		if (guard.gc->free)
+-			guard.gc->free(guard.gc, gpio_chip_hwgpio(desc));
++			guard.gc->free(guard.gc, gpiod_hwgpio(desc));
+ 
+ 		clear_bit(GPIOD_FLAG_ACTIVE_LOW, &flags);
+ 		clear_bit(GPIOD_FLAG_REQUESTED, &flags);
+@@ -2668,7 +2668,7 @@ int gpio_do_set_config(struct gpio_desc *desc, unsigned long config)
+ 	if (!guard.gc->set_config)
+ 		return -ENOTSUPP;
+ 
+-	ret = guard.gc->set_config(guard.gc, gpio_chip_hwgpio(desc), config);
++	ret = guard.gc->set_config(guard.gc, gpiod_hwgpio(desc), config);
+ 	if (ret > 0)
+ 		ret = -EBADE;
+ 
+@@ -2699,7 +2699,7 @@ static int gpio_set_config_with_argument_optional(struct gpio_desc *desc,
+ 						  u32 argument)
+ {
+ 	struct device *dev = &desc->gdev->dev;
+-	int gpio = gpio_chip_hwgpio(desc);
++	int gpio = gpiod_hwgpio(desc);
+ 	int ret;
+ 
+ 	ret = gpio_set_config_with_argument(desc, mode, argument);
+@@ -2862,9 +2862,9 @@ int gpiod_direction_input_nonotify(struct gpio_desc *desc)
+ 	 */
+ 	if (guard.gc->direction_input) {
+ 		ret = gpiochip_direction_input(guard.gc,
+-					       gpio_chip_hwgpio(desc));
++					       gpiod_hwgpio(desc));
+ 	} else if (guard.gc->get_direction) {
+-		dir = gpiochip_get_direction(guard.gc, gpio_chip_hwgpio(desc));
++		dir = gpiochip_get_direction(guard.gc, gpiod_hwgpio(desc));
+ 		if (dir < 0)
+ 			return dir;
+ 
+@@ -2923,12 +2923,12 @@ static int gpiod_direction_output_raw_commit(struct gpio_desc *desc, int value)
+ 
+ 	if (guard.gc->direction_output) {
+ 		ret = gpiochip_direction_output(guard.gc,
+-						gpio_chip_hwgpio(desc), val);
++						gpiod_hwgpio(desc), val);
+ 	} else {
+ 		/* Check that we are in output mode if we can */
+ 		if (guard.gc->get_direction) {
+ 			dir = gpiochip_get_direction(guard.gc,
+-						     gpio_chip_hwgpio(desc));
++						     gpiod_hwgpio(desc));
+ 			if (dir < 0)
+ 				return dir;
+ 
+@@ -2943,7 +2943,7 @@ static int gpiod_direction_output_raw_commit(struct gpio_desc *desc, int value)
+ 		 * If we can't actively set the direction, we are some
+ 		 * output-only chip, so just drive the output as desired.
+ 		 */
+-		ret = gpiochip_set(guard.gc, gpio_chip_hwgpio(desc), val);
++		ret = gpiochip_set(guard.gc, gpiod_hwgpio(desc), val);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -3094,7 +3094,7 @@ int gpiod_enable_hw_timestamp_ns(struct gpio_desc *desc, unsigned long flags)
+ 	}
+ 
+ 	ret = guard.gc->en_hw_timestamp(guard.gc,
+-					gpio_chip_hwgpio(desc), flags);
++					gpiod_hwgpio(desc), flags);
+ 	if (ret)
+ 		gpiod_warn(desc, "%s: hw ts request failed\n", __func__);
+ 
+@@ -3126,7 +3126,7 @@ int gpiod_disable_hw_timestamp_ns(struct gpio_desc *desc, unsigned long flags)
+ 		return -ENOTSUPP;
+ 	}
+ 
+-	ret = guard.gc->dis_hw_timestamp(guard.gc, gpio_chip_hwgpio(desc),
++	ret = guard.gc->dis_hw_timestamp(guard.gc, gpiod_hwgpio(desc),
+ 					 flags);
+ 	if (ret)
+ 		gpiod_warn(desc, "%s: hw ts release failed\n", __func__);
+@@ -3261,7 +3261,7 @@ static int gpiochip_get(struct gpio_chip *gc, unsigned int offset)
+ 
+ static int gpio_chip_get_value(struct gpio_chip *gc, const struct gpio_desc *desc)
+ {
+-	return gc->get ? gpiochip_get(gc, gpio_chip_hwgpio(desc)) : -EIO;
++	return gc->get ? gpiochip_get(gc, gpiod_hwgpio(desc)) : -EIO;
+ }
+ 
+ /* I/O calls are only valid after configuration completed; the relevant
+@@ -3421,7 +3421,7 @@ int gpiod_get_array_value_complex(bool raw, bool can_sleep,
+ 		first = i;
+ 		do {
+ 			const struct gpio_desc *desc = desc_array[i];
+-			int hwgpio = gpio_chip_hwgpio(desc);
++			int hwgpio = gpiod_hwgpio(desc);
+ 
+ 			__set_bit(hwgpio, mask);
+ 			i++;
+@@ -3443,7 +3443,7 @@ int gpiod_get_array_value_complex(bool raw, bool can_sleep,
+ 
+ 		for (j = first; j < i; ) {
+ 			const struct gpio_desc *desc = desc_array[j];
+-			int hwgpio = gpio_chip_hwgpio(desc);
++			int hwgpio = gpiod_hwgpio(desc);
+ 			int value = test_bit(hwgpio, bits);
+ 
+ 			if (!raw && test_bit(GPIOD_FLAG_ACTIVE_LOW, &desc->flags))
+@@ -3580,7 +3580,7 @@ EXPORT_SYMBOL_GPL(gpiod_get_array_value);
+  */
+ static int gpio_set_open_drain_value_commit(struct gpio_desc *desc, bool value)
+ {
+-	int ret = 0, offset = gpio_chip_hwgpio(desc);
++	int ret = 0, offset = gpiod_hwgpio(desc);
+ 
+ 	CLASS(gpio_chip_guard, guard)(desc);
+ 	if (!guard.gc)
+@@ -3609,7 +3609,7 @@ static int gpio_set_open_drain_value_commit(struct gpio_desc *desc, bool value)
+  */
+ static int gpio_set_open_source_value_commit(struct gpio_desc *desc, bool value)
+ {
+-	int ret = 0, offset = gpio_chip_hwgpio(desc);
++	int ret = 0, offset = gpiod_hwgpio(desc);
+ 
+ 	CLASS(gpio_chip_guard, guard)(desc);
+ 	if (!guard.gc)
+@@ -3641,7 +3641,7 @@ static int gpiod_set_raw_value_commit(struct gpio_desc *desc, bool value)
+ 		return -ENODEV;
+ 
+ 	trace_gpio_value(desc_to_gpio(desc), 0, value);
+-	return gpiochip_set(guard.gc, gpio_chip_hwgpio(desc), value);
++	return gpiochip_set(guard.gc, gpiod_hwgpio(desc), value);
+ }
+ 
+ /*
+@@ -3764,7 +3764,7 @@ int gpiod_set_array_value_complex(bool raw, bool can_sleep,
+ 
+ 		do {
+ 			struct gpio_desc *desc = desc_array[i];
+-			int hwgpio = gpio_chip_hwgpio(desc);
++			int hwgpio = gpiod_hwgpio(desc);
+ 			int value = test_bit(i, value_bitmap);
+ 
+ 			if (unlikely(!test_bit(GPIOD_FLAG_IS_OUT, &desc->flags)))
+@@ -4004,7 +4004,7 @@ int gpiod_to_irq(const struct gpio_desc *desc)
+ 	if (!gc)
+ 		return -ENODEV;
+ 
+-	offset = gpio_chip_hwgpio(desc);
++	offset = gpiod_hwgpio(desc);
+ 	if (gc->to_irq) {
+ 		ret = gc->to_irq(gc, offset);
+ 		if (ret)
+@@ -4961,7 +4961,7 @@ int gpiod_hog(struct gpio_desc *desc, const char *name,
+ 	if (test_and_set_bit(GPIOD_FLAG_IS_HOGGED, &desc->flags))
+ 		return 0;
+ 
+-	hwnum = gpio_chip_hwgpio(desc);
++	hwnum = gpiod_hwgpio(desc);
+ 
+ 	local_desc = gpiochip_request_own_desc(guard.gc, hwnum, name,
+ 					       lflags, dflags);
+@@ -5042,7 +5042,7 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 		 * If pin hardware number of array member 0 is also 0, select
+ 		 * its chip as a candidate for fast bitmap processing path.
+ 		 */
+-		if (descs->ndescs == 0 && gpio_chip_hwgpio(desc) == 0) {
++		if (descs->ndescs == 0 && gpiod_hwgpio(desc) == 0) {
+ 			struct gpio_descs *array;
+ 
+ 			bitmap_size = BITS_TO_LONGS(gdev->ngpio > count ?
+@@ -5087,7 +5087,7 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 		 * Detect array members which belong to the 'fast' chip
+ 		 * but their pins are not in hardware order.
+ 		 */
+-		else if (gpio_chip_hwgpio(desc) != descs->ndescs) {
++		else if (gpiod_hwgpio(desc) != descs->ndescs) {
+ 			/*
+ 			 * Don't use fast path if all array members processed so
+ 			 * far belong to the same chip as this one but its pin
+diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
+index 6ee29d0222393..2b4f479d32123 100644
+--- a/drivers/gpio/gpiolib.h
++++ b/drivers/gpio/gpiolib.h
+@@ -276,7 +276,7 @@ const char *gpiod_get_label(struct gpio_desc *desc);
+ /*
+  * Return the GPIO number of the passed descriptor relative to its chip
+  */
+-static inline int gpio_chip_hwgpio(const struct gpio_desc *desc)
++static inline int gpiod_hwgpio(const struct gpio_desc *desc)
+ {
+ 	return desc - &desc->gdev->descs[0];
+ }
 -- 
 2.53.0
 
