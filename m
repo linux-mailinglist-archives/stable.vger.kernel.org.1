@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-234812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FAfEUal1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:14 +0200
+	id iLj/BVic1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D668D3C2138
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8451F3C071A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 186753116F02
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AEFE3081E83
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77763D669E;
-	Wed,  8 Apr 2026 18:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED9E3A6B6B;
+	Wed,  8 Apr 2026 18:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZh4srHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfUSuMKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6071A285;
-	Wed,  8 Apr 2026 18:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DE937F01B;
+	Wed,  8 Apr 2026 18:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673826; cv=none; b=jKBGF//PMb3/Ft9puJWyFCcJLcxpoxGWbMOOtHe/nx1irQCzC3T1ytXUv8qXxTxqiiV2BXFEGjZ7nQWNDQLig+4xFhO7PdWhVLYSw7/5ve/hA+rXbDRbXXwYuxT6LtxpbU401AGR7dJ92mmsS+TyiWSHn3tPlS/xg+zN9M3fnCs=
+	t=1775672214; cv=none; b=A3YsqqTgwnUDmhLLghsX/uDExwQxsJ1wHX2Db3HlWo54hrUoTwLdnH63VMrZGm6bE3UtGgqwwYTAlGL09zTpeMbnjV2YtaQIqODC4Gx9VQwBPf/ieWCBRNnF3X9rxTtaYkc7ksxGo4sR8H0x3bDn/6mQHfRqHSqQGd/6Awuw1Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673826; c=relaxed/simple;
-	bh=NPQa0ztpdVzyR6/n9494wAf4NuL1r2kzxRDx2STl3+0=;
+	s=arc-20240116; t=1775672214; c=relaxed/simple;
+	bh=qeAk/PUrlojqxR+bBXUvAMmDrxsDzl9u9WnPz59oGtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkilW7osAILbe7/dv6tVOKi/qDvWulxl/XkWzbZgadrW5pXNXG6VcAu8eRZYRzSCNGgjm39LbXXkj/lmZEQZftcq9Ys4zvLzwH+/EHCebaQnZ3TmsBvpfJ8S3s8UQpVn2RDJAfGhVzh7HsRK485hg2s7bVk4Yu8BnFGrz7lxceA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZh4srHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E30C2BCB3;
-	Wed,  8 Apr 2026 18:43:45 +0000 (UTC)
+	 MIME-Version; b=minMvQuow3WWOSJR0YAYpAlSHJ720QXaoSaxCwSR/bs6V2TbGgX62Ni0J/6EvZjQ6DoQZTzh6C216t8lLxWBEqn0VOEAtjDUOhtFklBlujoSdD6w3Vl5/GNBtJf58CsYXNrJryrnSoa0AQc9epi8/7vJ6LQyBvrju72RF7IST1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfUSuMKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63677C19421;
+	Wed,  8 Apr 2026 18:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673826;
-	bh=NPQa0ztpdVzyR6/n9494wAf4NuL1r2kzxRDx2STl3+0=;
+	s=korg; t=1775672213;
+	bh=qeAk/PUrlojqxR+bBXUvAMmDrxsDzl9u9WnPz59oGtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZh4srHKdXu3KjXF0vG8nyikZ6dBs2llWMTmhdh1efEDCvo/bd55FlvUYPC/MXjZK
-	 rkHlPVS+piIUBzTfMSj+Sh2q1k4tUsja/hVjXfpux2gQ2vay114PQKzYZw59fZ028b
-	 Ipa7yFZKK9cQ6UEKT2ADByiUgXnjPbywBnzcCoPo=
+	b=XfUSuMKtgrjJCwFHIWQncBlLkb73Jk5vOJWoEeCaGZ8hZA5Un1dKPSTYvZ1CeJBkc
+	 OzLaeTY9sb9eTxk9Qdc2QozlmKSZNLxCYsqcmxWpGHApeXq24o9Yb5CplT4g3JipsT
+	 OOg7vMgf81o9U3ypFCPFHieeJN6fVtiLYErD/5vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/242] iio: imu: bno055: fix BNO055_SCAN_CH_COUNT off by one
+	Jonathan Cameron <jic23@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 226/312] iio: gyro: mpu3050: Fix out-of-sequence free_irq()
 Date: Wed,  8 Apr 2026 20:02:23 +0200
-Message-ID: <20260408175930.941178400@linuxfoundation.org>
+Message-ID: <20260408175942.197418911@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,70 +76,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-234189-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234812-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: D668D3C2138
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8451F3C071A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 773ef9f95385bae52dcb7fd129fefba3a71a04db ]
+commit d14116f6529fa085b1a1b1f224dc9604e4d2a29c upstream.
 
-Fix an off-by-one error in the BNO055_SCAN_CH_COUNT macro. The count
-is derived by taking the difference of the last and first register
-addresses, dividing by the size of each channel (2 bytes). It needs to
-also add 1 to account for the fact that the count is inclusive of both
-the first and last channels.
+The triggered buffer is initialized before the IRQ is requested. The
+removal path currently calls iio_triggered_buffer_cleanup() before
+free_irq(). This violates the expected LIFO.
 
-Thanks to the aligned_s64 timestamp field, there was already extra
-padding in the buffer, so there were no runtime issues caused by this
-bug.
+Place free_irq() in the correct location relative to
+iio_triggered_buffer_cleanup().
 
-Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
+Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/bno055/bno055.c | 2 +-
+ drivers/iio/gyro/mpu3050-core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
-index 0b2d6ad699f30..932821254bf89 100644
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -64,7 +64,7 @@
- #define BNO055_GRAVITY_DATA_X_LSB_REG	0x2E
- #define BNO055_GRAVITY_DATA_Y_LSB_REG	0x30
- #define BNO055_GRAVITY_DATA_Z_LSB_REG	0x32
--#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2)
-+#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2 + 1)
- #define BNO055_TEMP_REG			0x34
- #define BNO055_CALIB_STAT_REG		0x35
- #define BNO055_CALIB_STAT_MAGN_SHIFT 0
--- 
-2.53.0
-
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -1288,9 +1288,9 @@ void mpu3050_common_remove(struct device
+ 	pm_runtime_get_sync(dev);
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+ 	if (mpu3050->irq)
+ 		free_irq(mpu3050->irq, mpu3050->trig);
++	iio_triggered_buffer_cleanup(indio_dev);
+ 	mpu3050_power_down(mpu3050);
+ }
+ 
 
 
 
