@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-233865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CP/8KHJE1mkFCwgAu9opvQ
-	(envelope-from <stable+bounces-233865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:05:06 +0200
+	id qFHuOmBD1mkFCwgAu9opvQ
+	(envelope-from <stable+bounces-233864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:00:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927863BBB8B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:05:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C603BBA14
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 74CAD302FB4E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:00:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C2D0F3003D13
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21BA38F22E;
-	Wed,  8 Apr 2026 12:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30B938F22E;
+	Wed,  8 Apr 2026 12:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8L/6upu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFgKFYw2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759B513B7AE
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CA313B7AE
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775649637; cv=none; b=KJ1fTdyCRh7a+WLXhq8GkLX4hmCNvyQx++82OPEDSZLyofBL8vV/uDyjoKINNc/8AH+7vzQSILK7FWlFHSD0e/Y5ab2hztflmmIf1eJV12ma/lT0NlSXYDzYJhPGHs0r6eZSG8EWx09O3LtjlW3eNbdkTFbyRnUv2cnfexv6/aY=
+	t=1775649628; cv=none; b=sPnECQ+lHT6pvkk6dpfx8dQdyhH05TYosZXwYhbxfU/Xfn23E9pP6gD+EsRzipT5d38uc+ek0ggG84IP32nTq/7GGI5VJdz0BK8YbhqX+muycOWYK8gIlYCyYpl1u9ybT3O20HuqsrPTc+g+tZaOJVffGDt3qvI68h6Pkf+t998=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775649637; c=relaxed/simple;
-	bh=hquu901zfXtrOrq03R+3v2FDdBLE6NQ6SFTNF0tlj1Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MbtYyXFtPiu9gNTb46XvwdQcq4ZpaYCuzlqYhbmkEHt9/Vm+vkJvdahwGlgVGyPPggS9LQLoahn2kTL0dD4BwN61JTmFI8B7Pblw3oRRz/skg8Utb1pYZnbkQkLVcHyCllRq7S+wMLHk8ct7FQVpLIgaCUSZAXpsR8nLU0BI2YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8L/6upu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C665EC19424;
-	Wed,  8 Apr 2026 12:00:36 +0000 (UTC)
+	s=arc-20240116; t=1775649628; c=relaxed/simple;
+	bh=9QHKBNw7xFH9lTmimn/ZzH6SCqH+ZjgqtSSQcYBGsN4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tsUjyAlnx6fUAajA1fM03RuA+UQtCqG+oPojkrkWcBdB3T9+R16Xu+4kgEO26o9ciFoK6N5MO5K8iiX01resjFyfsO3xVbRhRMhwCWJeXuDrhQ12w6PYtBKRQyx4UakppOy9ikMgdUZoQwhV7wSMHB56LVmd9sIt/mh7CEFFKeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFgKFYw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B327C19421;
+	Wed,  8 Apr 2026 12:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775649637;
-	bh=hquu901zfXtrOrq03R+3v2FDdBLE6NQ6SFTNF0tlj1Y=;
+	s=korg; t=1775649628;
+	bh=9QHKBNw7xFH9lTmimn/ZzH6SCqH+ZjgqtSSQcYBGsN4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=c8L/6upuYzxFUmUlVgkjik4G9EBVMux6Ao8+JkRE36E2f2Qh82rVg0i8vEDxWMpgp
-	 wVZODuHijzXwg9UQG5K6OTFGmmXMCu4qvcfXiIMujBYSoQfDP3QDLb/YpsUXcnE1IJ
-	 zXp5ELhNoIJCppoax13FNbJM1XQo53r5TvblQMZU=
-Subject: FAILED: patch "[PATCH] usb: gadget: f_hid: move list and spinlock inits from bind to" failed to apply to 6.1-stable tree
+	b=TFgKFYw2ll4JHd2PlJS4jZWJDybLDUifDlStcZxkJKs+8aeNcWMOCz3NW+Dqi5hny
+	 oaZWLq3NY3E75tOPMIukl7GphAFv11H0Et1FxJe1kSN1lSOrmE3VxwREr7txhtuOhn
+	 u2kvzQJ74w/SrrOCR9KZ2FZxVTEI133aHPHR69ns=
+Subject: FAILED: patch "[PATCH] usb: gadget: f_hid: move list and spinlock inits from bind to" failed to apply to 6.6-stable tree
 To: sigmaepsilon92@gmail.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 08 Apr 2026 14:00:26 +0200
-Message-ID: <2026040826-sternness-halt-9929@gregkh>
+Message-ID: <2026040826-pagan-amuser-3732@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,14 +59,14 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233865-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233864-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -79,28 +79,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 927863BBB8B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email]
+X-Rspamd-Queue-Id: 65C603BBA14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4e0a88254ad59f6c53a34bf5fa241884ec09e8b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040826-sternness-halt-9929@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040826-pagan-amuser-3732@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
