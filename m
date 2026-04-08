@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKq9M3+f1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:35 +0200
+	id uNclCf2p1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619C33C0F65
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707953C2BB0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA4DD30E23DE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D6783156362
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D203D411F;
-	Wed,  8 Apr 2026 18:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EED13D9031;
+	Wed,  8 Apr 2026 18:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I66gUFea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0ZB1BAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C27C3D6674;
-	Wed,  8 Apr 2026 18:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6003A34AB06;
+	Wed,  8 Apr 2026 18:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672512; cv=none; b=Q/ZvrU5dAgHgAiDHclce+rip/pnZ1n0+L42kT0OPTQ5QanvogSilDlHSjyXI4zcX/NW03ylh6XOsQOQeRwXxqFDE6Y6CotmDBjbiIqNI6G8UtKVI7BhPd0nDWbO6qjo1EbX6VDBjHuUmRZcUn7+h6VedDeTmXb0Qc1dUQyBHUF4=
+	t=1775674505; cv=none; b=AQ8rHKfDsLPHsip8s8nTVQjp8Vfjtn+85n/xV7S9iJEiWhEWbpv6IP5hvnxxdfn+lown/ECj0vGAFRQUjPJOBUq6MGcpoU5FkZ9KRk0JlIkwhBYyey9ru6B04wNkborrBQHgmB65UI+Z3gw+KHOAjWz3wv2+0u4ilmsei3degJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672512; c=relaxed/simple;
-	bh=0Ivo2ZXHxyS5cwxUbeQoxrovFTOmV1Gte1lNu8kWAb0=;
+	s=arc-20240116; t=1775674505; c=relaxed/simple;
+	bh=DrKfH3oW4ru6kUSapJ7eLZ7d3zcUcGIeN+/nYpiRYBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbNFi62E0sDF5QQCCUDdhpBGXbIOctNddY09DR5k8yjHCleleZpvl/0DZr7robC9bpdraqTGuwmis5eSJQu4WOy06UAfm2/OLD3bvc6DSePRj0z/9Y/bXWbxs7gWvfhTazeKguv/LwqGfc3w+1HsGuppvJamAuwewbguB4x550o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I66gUFea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8951BC19421;
-	Wed,  8 Apr 2026 18:21:51 +0000 (UTC)
+	 MIME-Version; b=SeGgi8AQWrYkG40ROlq6dzoGZYzIAV4FcrtqfRoEMbXh0STa4DspvcUJ4NnnXyzWj2y05DblhJvDPaBVxsUPaa3uPJVtwVXVygCmNeBKvP0hJowu+wGufoNJ0Y1bi1st4Uec9VwbeqklcbUfP+Dv0T/u2mlmseEWydcDCCqGTzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0ZB1BAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B135AC19421;
+	Wed,  8 Apr 2026 18:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672512;
-	bh=0Ivo2ZXHxyS5cwxUbeQoxrovFTOmV1Gte1lNu8kWAb0=;
+	s=korg; t=1775674505;
+	bh=DrKfH3oW4ru6kUSapJ7eLZ7d3zcUcGIeN+/nYpiRYBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I66gUFeaNJI5MOagDtl7BEIlPRvXTHEiGcw0P+pbckWvlzQWVDtqUcWAaMGj10i4h
-	 0xRSQhR1B6eIWLslHV3KVDVXgw9xA6egr+54gHuQiL1N7NgaRlR++JdqmSSxtKk/lK
-	 xhhOdTzjAlj52M4RteBA43RgdC15Hzm0A6BoeD2o=
+	b=x0ZB1BApSjliTn+af9NNP/OP7JUn8P6oRW+8SaPqmV5YenBCQnKpS1TiX3odmyE3p
+	 AL3pYaDpbhScB1laGzyOm0xjFwQuWnz2iKHnnuww8L+CWAU8mJ4Q8UtDrATTNOYXp3
+	 jjGd3KhfLSyqaoJA0cmRgZP+q/rdkEk1cdYaLAKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Dimitri Daskalakis <daskald@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/160] netfilter: x_tables: ensure names are nul-terminated
+Subject: [PATCH 6.19 123/311] eth: fbnic: Increase FBNIC_QUEUE_SIZE_MIN to 64
 Date: Wed,  8 Apr 2026 20:02:03 +0200
-Message-ID: <20260408175914.557591739@linuxfoundation.org>
+Message-ID: <20260408175944.009129341@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234304-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235075-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,74 +89,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 619C33C0F65
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email]
+X-Rspamd-Queue-Id: 707953C2BB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Dimitri Daskalakis <daskald@meta.com>
 
-[ Upstream commit a958a4f90ddd7de0800b33ca9d7b886b7d40f74e ]
+[ Upstream commit ec7067e661193403a7a00980bda8612db5954142 ]
 
-Reject names that lack a \0 character before feeding them
-to functions that expect c-strings.
+On systems with 64K pages, RX queues will be wedged if users set the
+descriptor count to the current minimum (16). Fbnic fragments large
+pages into 4K chunks, and scales down the ring size accordingly. With
+64K pages and 16 descriptors, the ring size mask is 0 and will never
+be filled.
 
-Fixes tag is the most recent commit that needs this change.
+32 descriptors is another special case that wedges the RX rings.
+Internally, the rings track pages for the head/tail pointers, not page
+fragments. So with 32 descriptors, there's only 1 usable page as one
+ring slot is kept empty to disambiguate between an empty/full ring.
+As a result, the head pointer never advances and the HW stalls after
+consuming 16 page fragments.
 
-Fixes: c38c4597e4bf ("netfilter: implement xt_cgroup cgroup2 path match")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 0cb4c0a13723 ("eth: fbnic: Implement Rx queue alloc/start/stop/free")
+Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
+Link: https://patch.msgid.link/20260401162848.2335350-1-dimitri.daskalakis1@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_cgroup.c  | 6 ++++++
- net/netfilter/xt_rateest.c | 5 +++++
- 2 files changed, 11 insertions(+)
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_cgroup.c b/net/netfilter/xt_cgroup.c
-index c0f5e9a4f3c65..bfc98719684e2 100644
---- a/net/netfilter/xt_cgroup.c
-+++ b/net/netfilter/xt_cgroup.c
-@@ -53,6 +53,9 @@ static int cgroup_mt_check_v1(const struct xt_mtchk_param *par)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+index 51a98f27d5d91..f2ee2cbf3486b 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+@@ -38,7 +38,7 @@ struct fbnic_net;
+ #define FBNIC_MAX_XDPQS			128u
  
- 	info->priv = NULL;
- 	if (info->has_path) {
-+		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
-+			return -ENAMETOOLONG;
-+
- 		cgrp = cgroup_get_from_path(info->path);
- 		if (IS_ERR(cgrp)) {
- 			pr_info_ratelimited("invalid path, errno=%ld\n",
-@@ -85,6 +88,9 @@ static int cgroup_mt_check_v2(const struct xt_mtchk_param *par)
+ /* These apply to TWQs, TCQ, RCQ */
+-#define FBNIC_QUEUE_SIZE_MIN		16u
++#define FBNIC_QUEUE_SIZE_MIN		64u
+ #define FBNIC_QUEUE_SIZE_MAX		SZ_64K
  
- 	info->priv = NULL;
- 	if (info->has_path) {
-+		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
-+			return -ENAMETOOLONG;
-+
- 		cgrp = cgroup_get_from_path(info->path);
- 		if (IS_ERR(cgrp)) {
- 			pr_info_ratelimited("invalid path, errno=%ld\n",
-diff --git a/net/netfilter/xt_rateest.c b/net/netfilter/xt_rateest.c
-index 72324bd976af8..b1d736c15fcbe 100644
---- a/net/netfilter/xt_rateest.c
-+++ b/net/netfilter/xt_rateest.c
-@@ -91,6 +91,11 @@ static int xt_rateest_mt_checkentry(const struct xt_mtchk_param *par)
- 		goto err1;
- 	}
- 
-+	if (strnlen(info->name1, sizeof(info->name1)) >= sizeof(info->name1))
-+		return -ENAMETOOLONG;
-+	if (strnlen(info->name2, sizeof(info->name2)) >= sizeof(info->name2))
-+		return -ENAMETOOLONG;
-+
- 	ret  = -ENOENT;
- 	est1 = xt_rateest_lookup(par->net, info->name1);
- 	if (!est1)
+ #define FBNIC_TXQ_SIZE_DEFAULT		1024
 -- 
 2.53.0
 
