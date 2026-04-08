@@ -1,188 +1,178 @@
-Return-Path: <stable+bounces-233799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KImOJPUB1mlsAAgAu9opvQ
-	(envelope-from <stable+bounces-233799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:21:25 +0200
+	id MKGxBGgC1mlsAAgAu9opvQ
+	(envelope-from <stable+bounces-233800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:23:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C9B3B80AE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 777C33B80D5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79B613011BF6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:16:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F901305377D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A4837F8A2;
-	Wed,  8 Apr 2026 07:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C248637F00E;
+	Wed,  8 Apr 2026 07:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="anHkQLDv"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="HwpJFewe"
+X-Original-To: Stable@vger.kernel.org
+Received: from mail-m15589.qiye.163.com (mail-m15589.qiye.163.com [101.71.155.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C6B31355C
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 07:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5017E376BD7;
+	Wed,  8 Apr 2026 07:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775632568; cv=none; b=sh7WOg0QsQD9G15iSX9xl9KiwxLJJQpERJihSfUJe1DNXrmkLimWG5LylFV81HzadhVVkfJuRLkohR2tGYyqyVnXgmbGUp3jqjrbBKD8RiWP6okH34CTb0Lt/Ohaso2f5rjjAf38Laoxlqc89FCLVb6yBDcfUMg/FdoYHDrblkI=
+	t=1775632780; cv=none; b=L6MAXiBKS34PVq52HCRS0h67Z+Uu9niEQMdYhRQJROF+Zax8Mk0O/+oOxRTaG7Lsh2z2Ib5V1TJVZ+vx6USXErcnzbOI3j5420/tY1B7hpLHbRm/tiLcjG5+CeLGSRl34sKJWjCbAkc0gNJQmJj1x7Hb+GKr5savv4giMnxNo6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775632568; c=relaxed/simple;
-	bh=9mLuglNH3FKPjdhxyVkeCI6+TVHmop8uBQ9paa7GcNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sGbTaByRvNOJjsroGxHlJop4OlBlTW/M18KiiPwwmtaxmWND9BfGb67m68q8/XOTyZG6JO0ViGEogqvHFYaNUUmxv6XzDP+7XSxFmZEV7OO6pfLlptQhCW24fh04KKYtigpzsRqtXROpBaYlh0dZpqhDH7aNP2W4l2oI81uwtgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=anHkQLDv; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso37038185e9.2
-        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 00:16:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1775632565; x=1776237365; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+JSJPVJheZs+jLQNjabV2nmmAY4UsDd6PMBO0XLhv9Q=;
-        b=anHkQLDvjlHd3vo6UVxRmhwMrwCO0zmvea4NFq6mCzyqkk6KbY6jUByGU4MsDXWU0J
-         1uMbWzAD2ekurp6Lk8RD+zdRhp2RueLg3FU7akoHKQB4RHNnT0AlCoc7RjkjTvjR+uus
-         Cyug1yvRzu/U7xChVSPavun9AETIsLgXKQk0CE/f42S9sqL8mvPDb3dZrVW4NkK3fctx
-         J/D1rDG6Mmot9alBeBSObJtPrKFR7Iy3gIUM+vWhf03fNHQvNba4U+Bs2DqvNg6DIf7s
-         oRgt3jNTuteGtNT9YuvcdaMUtuNyizftwBtMPoc33cU9X87vQhUsKiQbBZM8mXm0H/Pj
-         u4nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775632565; x=1776237365;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+JSJPVJheZs+jLQNjabV2nmmAY4UsDd6PMBO0XLhv9Q=;
-        b=QlrBMgKDvrTtvNG8034M/FbB6b7keGLX4cuv2/kffRSCmO91IDMdcywodEpuclTIrN
-         +neT5Am7Qxkcfym/nANFeObRBnprwWUTQBooYrXBJ5OzGRMWasp0BRAWc4rJd6VeTYZL
-         GCrA0++PVm0D+VR0H6YhJPPq/nPOtUhZ0+daLkvef0BLxPFDQZYKKGbx5hgRSpN7MiU3
-         znzA8LJPFG+X5huBQTuxRZ2KiAhIN2BM4OSGFrdOfcUNVCkIkI8WNOoinqiZfc7cr/Vs
-         jFzbBEH1NRp02OR4+Fi1WYDxABYq/JMCN1sAgp/aqsSByjA/0F6jcle7q1V8RKA31LlN
-         Ob9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVAGcb1gMs0kRvHBqvZYmXbK52oD7bkbx++ogfTMuQbPezqxGX7W3/jFOrWTI0BP3MkXHmTVVI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxmGMS75D+1DRcwcwhNr9rA2fhBUOp1nSw4OMQcU5K3o3nBeYe
-	YcvWFHlriaPyTMJ2hVUaYLX5jJXCfITqMVudVd2XuaR1dV+ykcoCNB7JSlYvlDmb114=
-X-Gm-Gg: AeBDievW5pAIMEJecc3qky2ir9WKtkTmG4E8coftJcTiJdplX+HSSwt67DZznnN0XGD
-	UgWqtKACfEb1VMERw2+yt0ts3lR/bUtLqqS5QKSVv43N8DMmRjLFqnbCJU7nYI+HJhWU3QleBu5
-	8hx1xpI5Pt3Uwqp6ahZUGNueZRUTOo8mpq8TJz4a/jdxsIckk3hF7SVPBsARqCigqJhbjf4SOYR
-	jp/qTxO02pYsiphCtl6YyG3TWDDefqQZKk+Ciy+pnZT2PhLuvTdZx6CSTQgNPl05DQkBKP0Sz+o
-	MHVADhTesSNryBoAXUrX6BGfSIw7/fEgRzkWg5QQubD6Of/FxZyEXmq2RmrxPGdaz5ZxDL+IRrt
-	e8fWGtblARvhtWS/PtbzFGZ3JG1fOv6mMF0s5kfDYIhkeR3AXUZvkDp1qsWfAaXmyAalUpSeYRW
-	681zBPwgLZb/BNLkxtBBuCmFEE/6Nv/Be52MGY
-X-Received: by 2002:a05:600c:4688:b0:488:b187:d8ed with SMTP id 5b1f17b1804b1-488b187e4admr133921165e9.2.1775632565324;
-        Wed, 08 Apr 2026 00:16:05 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a72baa8sm475257995e9.15.2026.04.08.00.16.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 00:16:04 -0700 (PDT)
-Date: Wed, 8 Apr 2026 09:16:02 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] printf: mark errptr() noinline
-Message-ID: <adYAsnyZMykg3y9f@pathway.suse.cz>
-References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
- <20260406111531.779571d7@gandalf.local.home>
- <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
- <20260406123232.3dacbe94@gandalf.local.home>
- <adTqIepV2W6M_Q2o@pathway.suse.cz>
- <CAJ-ks9nPvGaYPKj5Py0OPrU1E8JgDrLNM29d+iwc3c2U6KZ0kg@mail.gmail.com>
+	s=arc-20240116; t=1775632780; c=relaxed/simple;
+	bh=7d10MvpBn3uw3421odWrnrah1F+dm8qdAsjh3Lx3eHk=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=BW+8oxwkPD91URjw9Xr/tDe8VkgTd3gKTeoSeljNn99/5taSns8w0b1XAmE3qIcJ92fVw5oIFvIY2YJSw/O90MtALCWAQNCAcs9+yL5hQDMaGIWMlP2JQEHJpvYgLya63NtbzyBkK20r97GAt1EjSRoLrU/fM4BSs6kzq6uO9aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=HwpJFewe; arc=none smtp.client-ip=101.71.155.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 39ebf7966;
+	Wed, 8 Apr 2026 15:18:55 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Stable@vger.kernel.org
+Subject: [PATCH v3] mmc: sdhci-of-dwcmshc: Disable clock before DLL configuration
+Date: Wed,  8 Apr 2026 15:18:49 +0800
+Message-Id: <1775632729-22841-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
+X-HM-Tid: 0a9d6bf55ae309cckunme35ea9d83d4adc
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUlOHlYaSB1PGENMQh9NSElWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=HwpJFeweu3R5NIP4dXGV70nmUH6gUix0s6DYkSoeUwkjebi60Nyr/pFRGzVcUq9tJ3urwxVFtcqYYZdY2HhGy4WkcySq1k6WMFmqVJrcijROnNa0wDP1JldRZ0R5tdNssXpBI8SwAw2raMY2odgnw6UQeTkhe4dFOVHbBtb53KE=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=tmO77fZlhTlVEPb/mMV3UB77aYxemzSiw2yLGeo3C7c=;
+	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9nPvGaYPKj5Py0OPrU1E8JgDrLNM29d+iwc3c2U6KZ0kg@mail.gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233800-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233799-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[shawn.lin@rock-chips.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[rock-chips.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 02C9B3B80AE
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rock-chips.com:dkim,rock-chips.com:email,rock-chips.com:mid,intel.com:email]
+X-Rspamd-Queue-Id: 777C33B80D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue 2026-04-07 09:34:57, Tamir Duberstein wrote:
-> On Tue, Apr 7, 2026 at 7:27 AM Petr Mladek <pmladek@suse.com> wrote:
-> >
-> > On Mon 2026-04-06 12:32:32, Steven Rostedt wrote:
-> > > On Mon, 6 Apr 2026 11:21:39 -0400
-> > > Tamir Duberstein <tamird@kernel.org> wrote:
-> > >
-> > > > Thanks Steve. IMO that is a very big hammer and not warranted in this
-> > > > case. There's been talk of encouraging distros to enable CONFIG_KUNIT
-> > > > by default [0], which would probably interact poorly with the change
-> > > > you propose.
-> > > >
-> > >
-> > > Branch profiling is really just a niche that is enabled specifically for
-> > > seeing all branches taken in the kernel. It hooks to all "if" statements!
-> > > As you can imagine, it causes a rather large overhead in performance.
-> > >
-> > > This option is only used by developers doing special analysis of their code
-> > > (namely me ;-).
-> > >
-> > > The only real concern I would have is if the kunit test developers would
-> > > want to use the branch profiling on their code, in which case my suggestion
-> > > would prevent that.
-> >
-> > I wonder if it might be possible to disable the branch profiling just
-> > for the printf_kunit.c as a compromise.
-> >
-> > Would "#undef if" in printf_kunit.c help?
-> >
-> > Or I see that DISABLE_BRANCH_PROFILING is an official
-> > way to disable the feature.
-> >
-> > I wonder if the following change would solve the problem.
-> > I am sorry, I could not test it easily.
-> 
-> Yes, we can disable it for the whole file. I decided against that
-> because narrow workarounds are better than broad ones IMO, but it is
-> ultimately up to your preference.
+According to the ASIC design recommendations, the clock must be
+disabled before operating the DLL to prevent glitches that could
+affect the internal digital logic. In extreme cases, failing to
+do so may cause the controller to malfunction completely.
 
-I might be wrong but I think that nobody would want to
-profile/optimize this kunit test. So, this looks like the best
-solution because it is straightforward. The variant adding
-"noinline" looks too hacky to me.
+Adds a step to disable the clock before DLL configuration and
+re-enables it at the end.
 
-> FWIW I did test that this patch fixes the problem in GCC 8.5.0.
+Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+---
 
-Thanks for testing.
+Changes in v3:
+- Fix compile error while amending the patch file by mistake
+- Add Adrian's tag
 
-Would you like to prepare a proper patch or should I do so?
+Changes in v2:
+- Add a comment about why passing zero to sdhci_enable_clk()
 
-Best Regards,
-Petr
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 6139516..0b2158a 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -783,12 +783,15 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 	extra |= BIT(4);
+ 	sdhci_writel(host, extra, reg);
+ 
++	/* Disable clock while config DLL */
++	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
++
+ 	if (clock <= 52000000) {
+ 		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
+ 		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
+ 			dev_err(mmc_dev(host->mmc),
+ 				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
+-			return;
++			goto enable_clk;
+ 		}
+ 
+ 		/*
+@@ -808,7 +811,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 			DLL_STRBIN_DELAY_NUM_SEL |
+ 			DLL_STRBIN_DELAY_NUM_DEFAULT << DLL_STRBIN_DELAY_NUM_OFFSET;
+ 		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
+-		return;
++		goto enable_clk;
+ 	}
+ 
+ 	/* Reset DLL */
+@@ -835,7 +838,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 				 500 * USEC_PER_MSEC);
+ 	if (err) {
+ 		dev_err(mmc_dev(host->mmc), "DLL lock timeout!\n");
+-		return;
++		goto enable_clk;
+ 	}
+ 
+ 	extra = 0x1 << 16 | /* tune clock stop en */
+@@ -868,6 +871,16 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 		DLL_STRBIN_TAPNUM_DEFAULT |
+ 		DLL_STRBIN_TAPNUM_FROM_SW;
+ 	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
++
++enable_clk:
++	/*
++	 * The sdclk frequency select bits in SDHCI_CLOCK_CONTROL are not functional
++	 * on Rockchip's SDHCI implementation. Instead, the clock frequency is fully
++	 * controlled via external clk provider by calling clk_set_rate(). Consequently,
++	 * passing 0 to sdhci_enable_clk() only re-enables the already-configured clock,
++	 * which matches the hardware's actual behavior.
++	 */
++	sdhci_enable_clk(host, 0);
+ }
+ 
+ static void rk35xx_sdhci_reset(struct sdhci_host *host, u8 mask)
+-- 
+2.7.4
+
 
