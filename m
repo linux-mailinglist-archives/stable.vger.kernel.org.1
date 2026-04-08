@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IP22A86f1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:54 +0200
+	id gNm9M0Kr1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625E53C100F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9FD3C2E34
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79121311D23E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CC3730A5058
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17513ACA41;
-	Wed,  8 Apr 2026 18:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF713C5552;
+	Wed,  8 Apr 2026 18:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAMyUAjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xELsbM0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A87C2494F0;
-	Wed,  8 Apr 2026 18:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10E7337B81;
+	Wed,  8 Apr 2026 18:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672553; cv=none; b=n1XPpLkX3P93PYtSOxr65AvjBazO7zi2fg4cFJcPVTUK6gHzoVGbFv6ALjOylMHr3qBzg889+dmv3LRn20XZFkuKzWZM6HZUUozmZag4nJo1xMnjbPMnsgHB94WC2hWJNCnB1kydOXvGkFRj33HCUyxtt+xcmKB+bYnXG5r9Vho=
+	t=1775674615; cv=none; b=Z/ZNK4KRjCLHmHJ2ZW+XYXS1QAe5bzvwzZ88SyJ/oXkew1ZUzDAiIVhiRnVcC8YXeg97BQNPgxt1yTT+mDd2oRTzRpxFsiuLssSCAJnYwuHx6he6WWE71Q5Bb/qRasQY9exBRmT9q3D+46H4wZyVoEZr1RUuWFI18/7dEjnjDF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672553; c=relaxed/simple;
-	bh=GWG/G1kI6BozAGZCJT4B3VUTK/4Rrf1psbzGNnXc9nE=;
+	s=arc-20240116; t=1775674615; c=relaxed/simple;
+	bh=VgFTSPOUV6/JPMIMl8Ur/ZZc/qr9fcBscTc0MNk6yJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mctu7dP4ZmBgVX16paQa2o5+G7NZA6S2LuFbNjPq5JwyHjZvsKNvQDZ2cERumAvwQuxoTtRIfgC2VeuDdp8bk76uVag5EXtf02lVxTyWMmbRI9f7YFSEltYvUwbqaFmDdWLzy/vBxFvP4eQUWUI7L9WFaOeett9QiYiyorOC/kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAMyUAjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAE3C19421;
-	Wed,  8 Apr 2026 18:22:33 +0000 (UTC)
+	 MIME-Version; b=YAJuZYbJ894QEImk1WI15SKLWSlPul7Ybtvp5zkmyRzi8GgSAbNSBEaTx1GRM/rw79DaEHo7wlMiW/ohg+YLpwCjArfF7ZO3vrHcH/evMk36jq9l1qUSpLmNkYypQMB1mDKUABn+94iPJYzAN6qbdBLLnamhSVCgJ4DegX8vwFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xELsbM0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4604FC19421;
+	Wed,  8 Apr 2026 18:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672553;
-	bh=GWG/G1kI6BozAGZCJT4B3VUTK/4Rrf1psbzGNnXc9nE=;
+	s=korg; t=1775674615;
+	bh=VgFTSPOUV6/JPMIMl8Ur/ZZc/qr9fcBscTc0MNk6yJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cAMyUAjR39RIrHMhaVVKIHX7R4YlAIcpBFU5vx69ajcZVcgumvetiUDNyffKDEtOu
-	 rnkh4oTg8shqkwQW0LG6KPz1VO7m4elYchInk+3M/xIzqHp9o2kU8TT8a9ON0wnpip
-	 2bus89ut70lVeWCQU/wPOgd7fMx0G13iIEgODhoQ=
+	b=xELsbM0bClCP5l6M3fnvbSSMvoM+caF75/Hs/gzhR/nAdu1eThxg79rYYmpnCU5Qf
+	 tMX8R5X+zwmrs60SsJGOEknsvG+lkGlRoRzi4hYGxIFf0N/L79thj9ZoDzDlEqMLyc
+	 Yz8x8HZ5n4gDbB3CP2YpWNpAqPODe+3r3489w7/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/160] rds: ib: reject FRMR registration before IB connection is established
-Date: Wed,  8 Apr 2026 20:02:18 +0200
-Message-ID: <20260408175915.111407439@linuxfoundation.org>
+Subject: [PATCH 6.19 139/311] hwmon: (ltc4286) Add missing MODULE_IMPORT_NS("PMBUS")
+Date: Wed,  8 Apr 2026 20:02:19 +0200
+Message-ID: <20260408175944.603329184@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,101 +73,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234320-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-235118-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: 625E53C100F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,wiwynn.com:email,juniper.net:email]
+X-Rspamd-Queue-Id: 0F9FD3C2E34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
+[ Upstream commit a9d2fbd3ad0e6ac588386e699beeccfe7516755f ]
 
-rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
-and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
-fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
-i_cm_id = NULL because the connection worker has not yet called
-rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
-RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
-the control message before any connection establishment, allowing
-rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
-kernel.
+ltc4286.c uses PMBus core symbols exported in the PMBUS namespace,
+such as pmbus_do_probe(), but does not declare MODULE_IMPORT_NS("PMBUS").
 
-The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
-commit 9e630bcb7701), which does not catch this case since ic is allocated
-early and is always non-NULL once the connection object exists.
+Add the missing namespace import to avoid modpost warnings.
 
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
- Call Trace:
-  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
-  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
-  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
-  rds_ib_get_mr (net/rds/ib_rdma.c:615)
-  __rds_rdma_map (net/rds/rdma.c:295)
-  rds_cmsg_rdma_map (net/rds/rdma.c:860)
-  rds_sendmsg (net/rds/send.c:1363)
-  ____sys_sendmsg
-  do_syscall_64
-
-Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
-non-NULL before proceeding with FRMR registration, mirroring the guard
-already present in rds_ib_post_inv(). Return -ENODEV when the connection
-is not ready, which the existing error handling in rds_cmsg_send() converts
-to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
-start the connection worker.
-
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0c459759ca97 ("hwmon: (pmbus) Add ltc4286 driver")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260329170925.34581-5-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/ib_rdma.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/hwmon/pmbus/ltc4286.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
-index 8f070ee7e7426..30fca2169aa7a 100644
---- a/net/rds/ib_rdma.c
-+++ b/net/rds/ib_rdma.c
-@@ -608,8 +608,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
- 		return ibmr;
- 	}
- 
--	if (conn)
-+	if (conn) {
- 		ic = conn->c_transport_data;
-+		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
-+			ret = -ENODEV;
-+			goto out;
-+		}
-+	}
- 
- 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
- 		ret = -ENODEV;
+diff --git a/drivers/hwmon/pmbus/ltc4286.c b/drivers/hwmon/pmbus/ltc4286.c
+index aabd0bcdfeee3..8715d380784a0 100644
+--- a/drivers/hwmon/pmbus/ltc4286.c
++++ b/drivers/hwmon/pmbus/ltc4286.c
+@@ -173,3 +173,4 @@ module_i2c_driver(ltc4286_driver);
+ MODULE_AUTHOR("Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>");
+ MODULE_DESCRIPTION("PMBUS driver for LTC4286 and compatibles");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("PMBUS");
 -- 
 2.53.0
 
