@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CG0cBQ2i1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:29 +0200
+	id KIsQMpmo1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:12:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DF13C1662
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9BB3C28E2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C660830C369D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37D29310A922
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A47D3ACF11;
-	Wed,  8 Apr 2026 18:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACFF355F30;
+	Wed,  8 Apr 2026 18:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+wZ8bIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bz2hUaD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D41A3ACEFB;
-	Wed,  8 Apr 2026 18:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F832641FC;
+	Wed,  8 Apr 2026 18:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672809; cv=none; b=lZ3T9hn7wcfgU3is7Wa07WTEYzKE7O4SzZCQUsGz56xjzu9/NcAcqPtZ/Vacf9q2vn9SAxw/7nTfh2Bt4uZgbv/cRS+VKHMvisxOuzBmUAMT451AvuQAByZi1XmPRDDdhCLOFUafCipeo9EvpNoxIFWyXEwV02KNROoSUSDu8qQ=
+	t=1775674072; cv=none; b=t7YVFxRCr1pGucZM5erYWYg/VNPbvMDYFdA8jIrdQXDN/+wwfmEX8dvC8HSRo+2rLWAHmlD76CgUEk/sMR/FxQCpIHYBAF+uVBsKW+ncL8z/rUHiZlM2NKt9lwxjoGb5UlbYRCirkX6U9QxU2d5gleeapOl9wa1HxsVVK2elgsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672809; c=relaxed/simple;
-	bh=XYhH5Vq9aMY9YxO3Z9DIdDjLfNWDb0qemjIpz1rdcyk=;
+	s=arc-20240116; t=1775674072; c=relaxed/simple;
+	bh=1oF13jNas+qUKS2HS7V0lTmB+DDrRYmdSL7qIBR2Onk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbJetYu+3NecKEZsaYH8z9hnUv8n94kKuhRhDoMVbgvfatnXrxeJrH+9VPCUG8ACbYyoHJ28qVC/LCewpIfiTYFhNNI1iJv35+GM8YWpI20UXAsYOcJUgKmFEWKE0mPCgOgdzVJntnMiMiouYakU+e9OxjMIh4GeuXpzfW6M6Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+wZ8bIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6571C19421;
-	Wed,  8 Apr 2026 18:26:48 +0000 (UTC)
+	 MIME-Version; b=HSs0N0S2SL4I/QIT97CDM+aXVaLI/cSTa6f5ui1foIeYStuon6ElkgZn22UWorXq2BkDStiTdJdRqyMBS8CyqNLt95t53A+Z7QEOokuz03HsXa3yLgzijcgvXRUqDVQOKR9vFO6N+ob4uJKwCiHgtz2Q/s1Rk4KIjxx+gCD5ETo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bz2hUaD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B22C19421;
+	Wed,  8 Apr 2026 18:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672809;
-	bh=XYhH5Vq9aMY9YxO3Z9DIdDjLfNWDb0qemjIpz1rdcyk=;
+	s=korg; t=1775674071;
+	bh=1oF13jNas+qUKS2HS7V0lTmB+DDrRYmdSL7qIBR2Onk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+wZ8bIBoaiiuTRnQzqiue+R6lqRQIekQHZdwzsqfB4Jg285xsQUz+9FTV5xRnQUp
-	 +chLGatTIdhXplLX+sYq4oEpLJhzAnX55u/jrB/s6BC3VgJ4FCE16ngB2tpKbkM5T9
-	 vzck1Ep6kSjfIpT88UvNoQ2IBi2ugx7UWf0qZHLk=
+	b=bz2hUaD2Fl8rDeR6RxJxk+boc4Q6oirITS+96LGA9QIxes3DqCeLc0XPDsJqzCU4/
+	 7QhWHZhkf9x1uYw/29bxcLFVLvZ78SlqJ9x8Yqbyvgxc9oOFHNcz38MipBzPKD2aF6
+	 aFvX+WtEJyuHlGPHN/0WpUeSDHVX/JnqPNWFwOjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/160] net: mana: fix use-after-free in add_adev() error path
+	Zilin Guan <zilin@seu.edu.cn>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 198/242] ice: Fix memory leak in ice_set_ringparam()
 Date: Wed,  8 Apr 2026 20:03:58 +0200
-Message-ID: <20260408175918.834646757@linuxfoundation.org>
+Message-ID: <20260408175934.493773211@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,95 +71,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234419-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234907-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 84DF13C1662
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2D9BB3C28E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit c4ea7d8907cf72b259bf70bd8c2e791e1c4ff70f ]
+[ Upstream commit fe868b499d16f55bbeea89992edb98043c9de416 ]
 
-If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
-auxiliary_device_uninit(adev).
+In ice_set_ringparam, tx_rings and xdp_rings are allocated before
+rx_rings. If the allocation of rx_rings fails, the code jumps to
+the done label leaking both tx_rings and xdp_rings. Furthermore, if
+the setup of an individual Rx ring fails during the loop, the code jumps
+to the free_tx label which releases tx_rings but leaks xdp_rings.
 
-The auxiliary device has its release callback set to adev_release(),
-which frees the containing struct mana_adev. Since adev is embedded in
-struct mana_adev, the subsequent fall-through to init_fail and access
-to adev->id may result in a use-after-free.
+Fix this by introducing a free_xdp label and updating the error paths to
+ensure both xdp_rings and tx_rings are properly freed if rx_rings
+allocation or setup fails.
 
-Fix this by saving the allocated auxiliary device id in a local
-variable before calling auxiliary_device_add(), and use that saved id
-in the cleanup path after auxiliary_device_uninit().
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
-Cc: stable@vger.kernel.org
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Link: https://patch.msgid.link/20260323165730.945365-1-lgs201920130244@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2759,6 +2759,7 @@ static int add_adev(struct gdma_dev *gd)
- 	struct auxiliary_device *adev;
- 	struct mana_adev *madev;
- 	int ret;
-+	int id;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 606994fa99da9..c0bf93b38cbd8 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3331,7 +3331,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	rx_rings = kcalloc(vsi->num_rxq, sizeof(*rx_rings), GFP_KERNEL);
+ 	if (!rx_rings) {
+ 		err = -ENOMEM;
+-		goto done;
++		goto free_xdp;
+ 	}
  
- 	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
- 	if (!madev)
-@@ -2768,7 +2769,8 @@ static int add_adev(struct gdma_dev *gd)
- 	ret = mana_adev_idx_alloc();
- 	if (ret < 0)
- 		goto idx_fail;
--	adev->id = ret;
-+	id = ret;
-+	adev->id = id;
+ 	ice_for_each_rxq(vsi, i) {
+@@ -3361,7 +3361,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 			}
+ 			kfree(rx_rings);
+ 			err = -ENOMEM;
+-			goto free_tx;
++			goto free_xdp;
+ 		}
+ 	}
  
- 	adev->name = "rdma";
- 	adev->dev.parent = gd->gdma_context->dev;
-@@ -2792,7 +2794,7 @@ add_fail:
- 	auxiliary_device_uninit(adev);
+@@ -3412,6 +3412,13 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	}
+ 	goto done;
  
- init_fail:
--	mana_adev_idx_free(adev->id);
-+	mana_adev_idx_free(id);
- 
- idx_fail:
- 	kfree(madev);
++free_xdp:
++	if (xdp_rings) {
++		ice_for_each_xdp_txq(vsi, i)
++			ice_free_tx_ring(&xdp_rings[i]);
++		kfree(xdp_rings);
++	}
++
+ free_tx:
+ 	/* error cleanup if the Rx allocations failed after getting Tx */
+ 	if (tx_rings) {
+-- 
+2.53.0
+
 
 
 
