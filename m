@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-233880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC7HJzxJ1mkFDQgAu9opvQ
-	(envelope-from <stable+bounces-233880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:25:32 +0200
+	id KMRMHAtI1mkFCwgAu9opvQ
+	(envelope-from <stable+bounces-233881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:20:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDCE3BBFB4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:25:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E013BBE7C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ADE4430729CD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:16:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 77BD83060293
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375143C13E2;
-	Wed,  8 Apr 2026 12:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7223C13FE;
+	Wed,  8 Apr 2026 12:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D+pgaV6N"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D7bf+X4c"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66C03C3C03;
-	Wed,  8 Apr 2026 12:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9063BFE4D;
+	Wed,  8 Apr 2026 12:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775650476; cv=none; b=YslHaxD+uxAlvBR3TNoY9vGaVeVWP8yY3oBnXxZxDbDHJz9RnnQ0FRxdrggzohxAslZ9pMjYi5b/ya9azo+CdflPbfqFmX0UhU83T4g36FVW+t/1zdqzpp3tgTUa+81/b3J/7uR3wV4BRBwa+TMlLhHuK/I95ATeHDvqQytDbY0=
+	t=1775650478; cv=none; b=XWaVxhhVaeMmEoUYxzUyY4X2L3/irF8HbCLTaxSKHB9nY3V/bw+xxvUC4KePmzyMLM/2MjoPP1ROTAy8pYnw1WKHqFo9Zq+SwcnApZ06LVhpzZLcPZk/bevfLUZcArVPiULGHSE2uQc4eThyXiUS32y3ec9RESZmgRbtJZyXTaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775650476; c=relaxed/simple;
-	bh=6MC4dLVJ8e1kN/O9XuBTQMyRuBy1R9RaTUeIpyQBFNk=;
+	s=arc-20240116; t=1775650478; c=relaxed/simple;
+	bh=U5Sz2J4O67dwks/060Ky8B13jv1hb/lEfq65R7J6iac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r9/cUyVcWWezzhnrnPKKgSeCmFFthAnDKuNHWKzgMah5bCe/p413aDJBnCB7Nm5ol1t5NjlwYW3+vxFNnjucQJI6oNUCEFsi/4xPuZ/xGWEcBzIUbguOmN8M6HdhCq/j6b02gPqhTeLqiwcomJjWSskydVlAoI2rHurfi3BTess=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D+pgaV6N; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version:Content-Type; b=c1TAzh8IjR7adU6xr2UTObrg5w4JCSDxZwn8NYM1Rno4HbbjlmqUMv24VIaUuGOltXrH0NVMZLZe7SbeHvmKeF8UrvghCRJEHnloJ1kOd7b1AYeu6ipVwhpNSWd8o1uyxJVO+ZHr1C5J3KMuQDz8J+mGbPI/VSOZg1n4lqEZySU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D7bf+X4c; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775650474; x=1807186474;
+  t=1775650477; x=1807186477;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6MC4dLVJ8e1kN/O9XuBTQMyRuBy1R9RaTUeIpyQBFNk=;
-  b=D+pgaV6NUsFFxStNmQkLwraeTx7LQRj30uAWFDuR2liwNmCoemZD+CnJ
-   m3x3/sjBsmC6ims7QF6nMY5rW/pwjN518x/KhvRv+ZLVkeG589d5/C93c
-   89Ech8YQoTBKzn4rZHuwJcET89qH7p2W3QpwgPhR8xOpWufGp8g2So6pG
-   vG+xbh73eYgF2mKavEPbkbR2/VMMH2/4NKGaO2ahBvTEuqmJBD4A8SE4D
-   FRMuYAJO/WDF3Pe90RRvY3LfDjryNFdCq21mlej2XG/r/MY9tc9W9f9OU
-   fqkkBc34C56hk2X8GXV8nDfCk7iaS0pTFwrqgNTp6XpFTcGVJa+kR2/ei
-   g==;
-X-CSE-ConnectionGUID: PeX+30GpRiCrv4sKpw7kwg==
-X-CSE-MsgGUID: O1ziv/RCQJa8ms0+x8Rgig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="80225531"
+  bh=U5Sz2J4O67dwks/060Ky8B13jv1hb/lEfq65R7J6iac=;
+  b=D7bf+X4cfgL2p3md3WKCKorBYlpyTVoj+tgY4rPTQUp5lOMf3dVuxjg/
+   UGZpodZO609IGOszqpFym5kayf3SBFjoo/678tSrjeygyuT5repEv69g1
+   5ysGImD11EzavTIp0r1Yei+ygQ9JiPMfbJiqKzY4D6dq7VgF5K6JYKTdo
+   lpZNWuzpxuquG7WipbaanscxtHPrfGcn8Z+GD6CKZJpzB0sbABv1hQKgt
+   eFnTlKCidjT46TVyakd6TSWE3H9F69rePd8SdZNmPQET5M6mQyy5zqeBL
+   SkEyFAScIrCUhvP3GHucjRenqKozKJq2LAxXpuA5LYQ5V3D28ATL3b+2b
+   w==;
+X-CSE-ConnectionGUID: 7TbBQ/4jTm2dhaeCqJO95g==
+X-CSE-MsgGUID: 7v354dJpSL2BKa1mbbHwag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="80225538"
 X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="80225531"
+   d="scan'208";a="80225538"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 05:14:33 -0700
-X-CSE-ConnectionGUID: 8RZNXskCRKKigANxc9SeDg==
-X-CSE-MsgGUID: iwyV/RRjSUW6+zVIETi9ug==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 05:14:36 -0700
+X-CSE-ConnectionGUID: M/aKrpD7TgeCRxHZwkRy8A==
+X-CSE-MsgGUID: /gMqW74DSNG8ofwshG1p2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="233405326"
+   d="scan'208";a="233405341"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.244.250])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 05:14:31 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 05:14:34 -0700
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org,
@@ -72,9 +72,9 @@ Cc: linux-sound@vger.kernel.org,
 	pierre-louis.bossart@linux.dev,
 	stable@vger.kernel.org,
 	liam.r.girdwood@intel.com
-Subject: [PATCH for 7.0 v2 1/2] ALSA: hda/intel: enforce stricter period-size alignment for Intel NVL
-Date: Wed,  8 Apr 2026 15:14:47 +0300
-Message-ID: <20260408121448.31130-2-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH for 7.0 v2 2/2] ASoC: SOF: Intel: hda: modify period size constraints for ACE4
+Date: Wed,  8 Apr 2026 15:14:48 +0300
+Message-ID: <20260408121448.31130-3-peter.ujfalusi@linux.intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408121448.31130-1-peter.ujfalusi@linux.intel.com>
 References: <20260408121448.31130-1-peter.ujfalusi@linux.intel.com>
@@ -91,14 +91,14 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
 	FREEMAIL_TO(0.00)[gmail.com,kernel.org,suse.de];
-	TAGGED_FROM(0.00)[bounces-233880-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233881-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -106,56 +106,69 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.intel.com:mid]
-X-Rspamd-Queue-Id: 1BDCE3BBFB4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 50E013BBE7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
 Intel ACE4 based products set more strict constraints on HDA BDLE start
-address and length alignment. Modify capability flags to drop
-AZX_DCAPS_NO_ALIGN_BUFSIZE for Intel Nova Lake platforms.
+address and length alignment. Add a constraint to align period size to
+128 bytes.
 
-Fixes: 7f428282fde3 ("ALSA: hda: controllers: intel: add support for Nova Lake")
-Cc: stable@vger.kernel.org
+The commit removes the "minimum as per HDA spec" comment. This comment
+was misleading as spec actually does allow a 2 byte BDLE length, and
+more importantly, period size also directly impacts how the BDLE start
+addresses are aligned, so it is not sufficient just to consider allowed
+buffer length.
+
+Fixes: d3df422f66e8 ("ASoC: SOF: Intel: add initial support for NVL-S")
+Reported-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
 ---
- sound/hda/controllers/intel.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/sof/intel/hda-pcm.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/sound/hda/controllers/intel.c b/sound/hda/controllers/intel.c
-index 1b22dbf7a719..257c498c3260 100644
---- a/sound/hda/controllers/intel.c
-+++ b/sound/hda/controllers/intel.c
-@@ -295,6 +295,9 @@ enum {
- #define AZX_DCAPS_INTEL_LNL \
- 	(AZX_DCAPS_INTEL_SKYLAKE | AZX_DCAPS_PIO_COMMANDS)
+diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
+index da6c1e7263cd..16a364072821 100644
+--- a/sound/soc/sof/intel/hda-pcm.c
++++ b/sound/soc/sof/intel/hda-pcm.c
+@@ -219,6 +219,7 @@ EXPORT_SYMBOL_NS(hda_dsp_pcm_pointer, "SND_SOC_SOF_INTEL_HDA_COMMON");
+ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 		     struct snd_pcm_substream *substream)
+ {
++	const struct sof_intel_dsp_desc *chip_info = get_chip_info(sdev->pdata);
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+ 	struct snd_soc_component *scomp = sdev->component;
+@@ -268,8 +269,17 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 		return -ENODEV;
+ 	}
  
-+#define AZX_DCAPS_INTEL_NVL \
-+	(AZX_DCAPS_INTEL_LNL & ~AZX_DCAPS_NO_ALIGN_BUFSIZE)
-+
- /* quirks for ATI SB / AMD Hudson */
- #define AZX_DCAPS_PRESET_ATI_SB \
- 	(AZX_DCAPS_NO_TCSEL | AZX_DCAPS_POSFIX_LPIB |\
-@@ -2552,8 +2555,8 @@ static const struct pci_device_id azx_ids[] = {
- 	/* Wildcat Lake */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_WCL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_LNL) },
- 	/* Nova Lake */
--	{ PCI_DEVICE_DATA(INTEL, HDA_NVL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_LNL) },
--	{ PCI_DEVICE_DATA(INTEL, HDA_NVL_S, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_LNL) },
-+	{ PCI_DEVICE_DATA(INTEL, HDA_NVL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_NVL) },
-+	{ PCI_DEVICE_DATA(INTEL, HDA_NVL_S, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_NVL) },
- 	/* Apollolake (Broxton-P) */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_APL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON) },
- 	/* Gemini-Lake */
+-	/* minimum as per HDA spec */
+-	snd_pcm_hw_constraint_step(substream->runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 4);
++	/*
++	 * Set period size constraint to ensure BDLE buffer length and
++	 * start address alignment requirements are met. Align to 128
++	 * bytes for newer Intel platforms, with older ones using 4 byte alignment.
++	 */
++	if (chip_info->hw_ip_version >= SOF_INTEL_ACE_4_0)
++		snd_pcm_hw_constraint_step(substream->runtime, 0,
++					   SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 128);
++	else
++		snd_pcm_hw_constraint_step(substream->runtime, 0,
++					   SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 4);
+ 
+ 	/* avoid circular buffer wrap in middle of period */
+ 	snd_pcm_hw_constraint_integer(substream->runtime,
 -- 
 2.53.0
 
