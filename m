@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMvUFEui1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:31 +0200
+	id eDT4KMCb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE683C172D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0FC3C059A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59163301D955
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1C7530095E0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C622F3B0AFC;
-	Wed,  8 Apr 2026 18:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7577385513;
+	Wed,  8 Apr 2026 18:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5KbTQWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzKwMNdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2F81A285;
-	Wed,  8 Apr 2026 18:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A58F324B1F;
+	Wed,  8 Apr 2026 18:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673879; cv=none; b=dgfdcwuyDIqjATNJs/7x8MIDhFHTmjTFj2mTJjwPq9lEc/sab7f1zuZQfs/Vwus5suN9eAA0PFXkqRq/rboQld6SdFAZq6zrwYDjHsokCd8XXIDMg4xMZQkvMQJmh7by03uJ5J1Er0P/fFmx+dum1UyvDENd69IliypkjZ19vOw=
+	t=1775672250; cv=none; b=sSf8eWmXC4NCSf1AoJzljQtam3WjzfpCGOKpGkdPVY7Qn+FmItKdkawODDid2aLENEOttij+DUuuOgqmF4NAfWEcOYjFEeRV+44Eah3YSLgQbIL6DYQUG4EGjtPXLpnV9bUQn3DumpqepkZnhxFWU3c3MvAgykrGnQL58oHUcKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673879; c=relaxed/simple;
-	bh=R0hz2BCRQqFWGplvVt8bt0t804pZ7NTuADI6mCsk3MM=;
+	s=arc-20240116; t=1775672250; c=relaxed/simple;
+	bh=Ui2WlgnifI0zXH4SkZ4ritMSf8HXQhmIpdkyrUvCj5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhPYIZ7NqnVMfxI8vDHTr7r7k76atHxBo6QxzJ7ghyMgh1ed2F7tMBY8WQjTjK1PLkIov9SXOItd7py6OMFQ8HHU+Axtv54Qpfz52Nf7C92MBmY9PribyVUsM2RsZQW//WzNDxeIx9Td1peuQ7/O449coozVgV9ohihrFGbnH5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5KbTQWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1738EC19421;
-	Wed,  8 Apr 2026 18:44:38 +0000 (UTC)
+	 MIME-Version; b=e/dnW4hNcAv1Lc6iwwVNnyEGYn687tb1b9PgxzWq+d4kq2dnff/hSmKVul6Fd7t+08DPE2Ug64UaFdOuOH/5eJs5fdMNiyvHtTBe3kG1BMX06h1UX30WotHiBwtBefMOjUy9Fjb+EgEClB+Rxz91yzHuN45gBVy+7xw+qQXxTOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzKwMNdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2D9C19421;
+	Wed,  8 Apr 2026 18:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673879;
-	bh=R0hz2BCRQqFWGplvVt8bt0t804pZ7NTuADI6mCsk3MM=;
+	s=korg; t=1775672250;
+	bh=Ui2WlgnifI0zXH4SkZ4ritMSf8HXQhmIpdkyrUvCj5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5KbTQWfqLk1NRa64lEXwiZby7hM2pwplpuA2AOGQ0BlgP0/te/vH+b+E+weMwKFj
-	 FodXGzCZq5hqXhEHfLy4Qw0dBbDjLFnBGE0Xch+duJpX2RLTlKzYQOHuPDvzeJjz2c
-	 OLUojczvYapyZfMvmK+FPwKz+rypApN7SgsyXJX8=
+	b=CzKwMNdWwa5rHj3VVZWeBR1VjBFNGAzTNW3dayr8wa6kuf6mu11tHMd0r71djmBb4
+	 OcNy0KE7oFpDJtikyk0eTFD8eBhg3JDXE24ngVf8b/EpG+MYLQw0+D+Orn9PTfewz6
+	 frCOaBZ+wdsbz4zao4ehTA/Z8XbYXfxH6dsE0Zyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 124/242] ksmbd: fix OOB write in QUERY_INFO for compound requests
+	syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 247/312] comedi: Reinit dev->spinlock between attachments to low-level drivers
 Date: Wed,  8 Apr 2026 20:02:44 +0200
-Message-ID: <20260408175931.729022687@linuxfoundation.org>
+Message-ID: <20260408175942.973026888@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,364 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234203-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234832-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,cc9f7f4a7df09f53c4a4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pm.me:email]
-X-Rspamd-Queue-Id: EEE683C172D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9A0FC3C059A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit fda9522ed6afaec45cabc198d8492270c394c7bc upstream.
+commit 4b9a9a6d71e3e252032f959fb3895a33acb5865c upstream.
 
-When a compound request such as READ + QUERY_INFO(Security) is received,
-and the first command (READ) consumes most of the response buffer,
-ksmbd could write beyond the allocated buffer while building a security
-descriptor.
+`struct comedi_device` is the main controlling structure for a COMEDI
+device created by the COMEDI subsystem.  It contains a member `spinlock`
+containing a spin-lock that is initialized by the COMEDI subsystem, but
+is reserved for use by a low-level driver attached to the COMEDI device
+(at least since commit 25436dc9d84f ("Staging: comedi: remove RT
+code")).
 
-The root cause was that smb2_get_info_sec() checked buffer space using
-ppntsd_size from xattr, while build_sec_desc() often synthesized a
-significantly larger descriptor from POSIX ACLs.
+Some COMEDI devices (those created on initialization of the COMEDI
+subsystem when the "comedi.comedi_num_legacy_minors" parameter is
+non-zero) can be attached to different low-level drivers over their
+lifetime using the `COMEDI_DEVCONFIG` ioctl command.  This can result in
+inconsistent lock states being reported when there is a mismatch in the
+spin-lock locking levels used by each low-level driver to which the
+COMEDI device has been attached.  Fix it by reinitializing
+`dev->spinlock` before calling the low-level driver's `attach` function
+pointer if `CONFIG_LOCKDEP` is enabled.
 
-This patch introduces smb_acl_sec_desc_scratch_len() to accurately
-compute the final descriptor size beforehand, performs proper buffer
-checking with smb2_calc_max_out_buf_len(), and uses exact-sized
-allocation + iov pinning.
-
-Cc: stable@vger.kernel.org
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cc9f7f4a7df09f53c4a4
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260225132427.86578-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |  121 +++++++++++++++++++++++++++++++++++-------------
- fs/smb/server/smbacl.c  |   43 +++++++++++++++++
- fs/smb/server/smbacl.h  |    2 
- 3 files changed, 134 insertions(+), 32 deletions(-)
+ drivers/comedi/drivers.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3403,20 +3403,24 @@ int smb2_open(struct ksmbd_work *work)
- 							   KSMBD_SHARE_FLAG_ACL_XATTR)) {
- 					struct smb_fattr fattr;
- 					struct smb_ntsd *pntsd;
--					int pntsd_size, ace_num = 0;
-+					int pntsd_size;
-+					size_t scratch_len;
- 
- 					ksmbd_acls_fattr(&fattr, idmap, inode);
--					if (fattr.cf_acls)
--						ace_num = fattr.cf_acls->a_count;
--					if (fattr.cf_dacls)
--						ace_num += fattr.cf_dacls->a_count;
--
--					pntsd = kmalloc(sizeof(struct smb_ntsd) +
--							sizeof(struct smb_sid) * 3 +
--							sizeof(struct smb_acl) +
--							sizeof(struct smb_ace) * ace_num * 2,
--							KSMBD_DEFAULT_GFP);
-+					scratch_len = smb_acl_sec_desc_scratch_len(&fattr,
-+							NULL, 0,
-+							OWNER_SECINFO | GROUP_SECINFO |
-+							DACL_SECINFO);
-+					if (!scratch_len || scratch_len == SIZE_MAX) {
-+						rc = -EFBIG;
-+						posix_acl_release(fattr.cf_acls);
-+						posix_acl_release(fattr.cf_dacls);
-+						goto err_out;
-+					}
-+
-+					pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
- 					if (!pntsd) {
-+						rc = -ENOMEM;
- 						posix_acl_release(fattr.cf_acls);
- 						posix_acl_release(fattr.cf_dacls);
- 						goto err_out;
-@@ -3431,7 +3435,7 @@ int smb2_open(struct ksmbd_work *work)
- 					posix_acl_release(fattr.cf_acls);
- 					posix_acl_release(fattr.cf_dacls);
- 					if (rc) {
--						kfree(pntsd);
-+						kvfree(pntsd);
- 						goto err_out;
- 					}
- 
-@@ -3441,7 +3445,7 @@ int smb2_open(struct ksmbd_work *work)
- 								    pntsd,
- 								    pntsd_size,
- 								    false);
--					kfree(pntsd);
-+					kvfree(pntsd);
- 					if (rc)
- 						pr_err("failed to store ntacl in xattr : %d\n",
- 						       rc);
-@@ -5357,8 +5361,9 @@ static int smb2_get_info_file(struct ksm
- 	if (test_share_config_flag(work->tcon->share_conf,
- 				   KSMBD_SHARE_FLAG_PIPE)) {
- 		/* smb2 info file called for pipe */
--		return smb2_get_info_file_pipe(work->sess, req, rsp,
-+		rc = smb2_get_info_file_pipe(work->sess, req, rsp,
- 					       work->response_buf);
-+		goto iov_pin_out;
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -1000,6 +1000,14 @@ int comedi_device_attach(struct comedi_d
+ 		ret = -EIO;
+ 		goto out;
  	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5458,6 +5463,12 @@ static int smb2_get_info_file(struct ksm
- 		rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 				      rsp, work->response_buf);
- 	ksmbd_fd_put(work, fp);
-+
-+iov_pin_out:
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5677,6 +5688,11 @@ static int smb2_get_info_filesystem(stru
- 	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 			      rsp, work->response_buf);
- 	path_put(&path);
-+
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5686,13 +5702,14 @@ static int smb2_get_info_sec(struct ksmb
- {
- 	struct ksmbd_file *fp;
- 	struct mnt_idmap *idmap;
--	struct smb_ntsd *pntsd = (struct smb_ntsd *)rsp->Buffer, *ppntsd = NULL;
-+	struct smb_ntsd *pntsd = NULL, *ppntsd = NULL;
- 	struct smb_fattr fattr = {{0}};
- 	struct inode *inode;
- 	__u32 secdesclen = 0;
- 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
- 	int addition_info = le32_to_cpu(req->AdditionalInformation);
--	int rc = 0, ppntsd_size = 0;
-+	int rc = 0, ppntsd_size = 0, max_len;
-+	size_t scratch_len = 0;
- 
- 	if (addition_info & ~(OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO |
- 			      PROTECTED_DACL_SECINFO |
-@@ -5700,6 +5717,11 @@ static int smb2_get_info_sec(struct ksmb
- 		ksmbd_debug(SMB, "Unsupported addition info: 0x%x)\n",
- 		       addition_info);
- 
-+		pntsd = kzalloc(ALIGN(sizeof(struct smb_ntsd), 8),
-+				KSMBD_DEFAULT_GFP);
-+		if (!pntsd)
-+			return -ENOMEM;
-+
- 		pntsd->revision = cpu_to_le16(1);
- 		pntsd->type = cpu_to_le16(SELF_RELATIVE | DACL_PROTECTED);
- 		pntsd->osidoffset = 0;
-@@ -5708,9 +5730,7 @@ static int smb2_get_info_sec(struct ksmb
- 		pntsd->dacloffset = 0;
- 
- 		secdesclen = sizeof(struct smb_ntsd);
--		rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--
--		return 0;
-+		goto iov_pin;
- 	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5742,18 +5762,58 @@ static int smb2_get_info_sec(struct ksmb
- 						     &ppntsd);
- 
- 	/* Check if sd buffer size exceeds response buffer size */
--	if (smb2_resp_buf_len(work, 8) > ppntsd_size)
--		rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
--				    addition_info, &secdesclen, &fattr);
-+	max_len = smb2_calc_max_out_buf_len(work,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			le32_to_cpu(req->OutputBufferLength));
-+	if (max_len < 0) {
-+		rc = -EINVAL;
-+		goto release_acl;
++	if (IS_ENABLED(CONFIG_LOCKDEP)) {
++		/*
++		 * dev->spinlock is for private use by the attached low-level
++		 * driver.  Reinitialize it to stop lock-dependency tracking
++		 * between attachments to different low-level drivers.
++		 */
++		spin_lock_init(&dev->spinlock);
 +	}
-+
-+	scratch_len = smb_acl_sec_desc_scratch_len(&fattr, ppntsd,
-+			ppntsd_size, addition_info);
-+	if (!scratch_len || scratch_len == SIZE_MAX) {
-+		rc = -EFBIG;
-+		goto release_acl;
-+	}
-+
-+	pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
-+	if (!pntsd) {
-+		rc = -ENOMEM;
-+		goto release_acl;
-+	}
-+
-+	rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
-+			addition_info, &secdesclen, &fattr);
-+
-+release_acl:
- 	posix_acl_release(fattr.cf_acls);
- 	posix_acl_release(fattr.cf_dacls);
- 	kfree(ppntsd);
- 	ksmbd_fd_put(work, fp);
-+
-+	if (!rc && ALIGN(secdesclen, 8) > scratch_len)
-+		rc = -EFBIG;
- 	if (rc)
--		return rc;
-+		goto err_out;
- 
-+iov_pin:
- 	rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--	return 0;
-+	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
-+			      rsp, work->response_buf);
-+	if (rc)
-+		goto err_out;
-+
-+	rc = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			pntsd, secdesclen);
-+err_out:
-+	if (rc) {
-+		rsp->OutputBufferLength = 0;
-+		kvfree(pntsd);
-+	}
-+
-+	return rc;
- }
- 
- /**
-@@ -5777,6 +5837,9 @@ int smb2_query_info(struct ksmbd_work *w
- 		goto err_out;
- 	}
- 
-+	rsp->StructureSize = cpu_to_le16(9);
-+	rsp->OutputBufferOffset = cpu_to_le16(72);
-+
- 	switch (req->InfoType) {
- 	case SMB2_O_INFO_FILE:
- 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
-@@ -5797,14 +5860,6 @@ int smb2_query_info(struct ksmbd_work *w
- 	}
- 	ksmbd_revert_fsids(work);
- 
--	if (!rc) {
--		rsp->StructureSize = cpu_to_le16(9);
--		rsp->OutputBufferOffset = cpu_to_le16(72);
--		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
--				       offsetof(struct smb2_query_info_rsp, Buffer) +
--					le32_to_cpu(rsp->OutputBufferLength));
--	}
--
- err_out:
- 	if (rc < 0) {
- 		if (rc == -EACCES)
-@@ -5815,6 +5870,8 @@ err_out:
- 			rsp->hdr.Status = STATUS_UNEXPECTED_IO_ERROR;
- 		else if (rc == -ENOMEM)
- 			rsp->hdr.Status = STATUS_INSUFFICIENT_RESOURCES;
-+		else if (rc == -EINVAL && rsp->hdr.Status == 0)
-+			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		else if (rc == -EOPNOTSUPP || rsp->hdr.Status == 0)
- 			rsp->hdr.Status = STATUS_INVALID_INFO_CLASS;
- 		smb2_set_err_rsp(work);
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -915,6 +915,49 @@ int parse_sec_desc(struct mnt_idmap *idm
- 	return 0;
- }
- 
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info)
-+{
-+	size_t len = sizeof(struct smb_ntsd);
-+	size_t tmp;
-+
-+	if (addition_info & OWNER_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (addition_info & GROUP_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (!(addition_info & DACL_SECINFO))
-+		return len;
-+
-+	len += sizeof(struct smb_acl);
-+	if (ppntsd && ppntsd_size > 0) {
-+		unsigned int dacl_offset = le32_to_cpu(ppntsd->dacloffset);
-+
-+		if (dacl_offset < ppntsd_size &&
-+		    check_add_overflow(len, ppntsd_size - dacl_offset, &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_acls) {
-+		if (check_mul_overflow((size_t)fattr->cf_acls->a_count,
-+					2 * sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	} else {
-+		/* default/minimum DACL */
-+		if (check_add_overflow(len, 5 * sizeof(struct smb_ace), &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_dacls) {
-+		if (check_mul_overflow((size_t)fattr->cf_dacls->a_count,
-+					sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	}
-+
-+	return len;
-+}
-+
- /* Convert permission bits from mode to equivalent CIFS ACL */
- int build_sec_desc(struct mnt_idmap *idmap,
- 		   struct smb_ntsd *pntsd, struct smb_ntsd *ppntsd,
---- a/fs/smb/server/smbacl.h
-+++ b/fs/smb/server/smbacl.h
-@@ -101,6 +101,8 @@ int set_info_sec(struct ksmbd_conn *conn
- 		 bool type_check, bool get_write);
- void id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid);
- void ksmbd_init_domain(u32 *sub_auth);
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info);
- 
- static inline uid_t posix_acl_uid_translate(struct mnt_idmap *idmap,
- 					    struct posix_acl_entry *pace)
+ 	dev->driver = driv;
+ 	dev->board_name = dev->board_ptr ? *(const char **)dev->board_ptr
+ 					 : dev->driver->driver_name;
 
 
 
