@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCdhAPOd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:59 +0200
+	id 0F5lDGKk1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875D63C0BC5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76643C1E51
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25E51308EB3A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22D39316AB6A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF613D9030;
-	Wed,  8 Apr 2026 18:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D395C3B19A3;
+	Wed,  8 Apr 2026 18:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGwBAQXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2d0Rwvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CD83D522C;
-	Wed,  8 Apr 2026 18:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975EC331A44;
+	Wed,  8 Apr 2026 18:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672618; cv=none; b=UH1SjpFusBgtSYsFny74CaFhT2pp0IspyOadPJOisoC0XUbps7l/5U3iYcWzzvChqoKXO3jZIcB2xNbJAIkiHVpQm3tzABJymRIAf7noI1YC3r2fDzWQJcWhZeINpuRGoPE7bh34SBThR0MFi0sxXjIkrDAIbMcfQozg4HHg4V4=
+	t=1775673410; cv=none; b=S12Xe7jpIVze/jpA+OlPQKr2oPwltApiHyzRCxErdMMRUA5E17Slkocalxi9o3xYkuKhjPBTmGgLjbgxbju9iAC7RU2CxVJhDaVaJfHPFu+zohFX+olOHxFFLa3jrevomL0tSnyVzoGAG30yf2ba4fwtu9DdZtVCcMC0y0aXLqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672618; c=relaxed/simple;
-	bh=YITmQwIB4vSfdoxlZt0b3iTAVYCZ2ZXOqlJdsYwzfig=;
+	s=arc-20240116; t=1775673410; c=relaxed/simple;
+	bh=CAL6PHoSE3Kr2TnZHcszBhRiwuRWpoWR6BwAi5XzfiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTnw+GRdCLANMzalSBZcubQD+uxVwGpbfGXtWx9EK9EIHdl+exchDnFypSI7quVkZcu8K1msKbR3LHVSlm7NPCAtgg1QNQbl+cdK9gllNRwPzbW/GoIzHwak4cDunKrml9+nLjpuMeJ6qNi6dNcLHLGSmLK3i3Mh23DHXkKbw+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGwBAQXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07761C19421;
-	Wed,  8 Apr 2026 18:23:37 +0000 (UTC)
+	 MIME-Version; b=XNPnqGGi7D1zp9YK4NYEVRBAH9m9Sjc7b/YKFd4xR6J27py88m++ZHitXsyUUljRTQN5NZ3tw3uACIa6dqWZooxnOs08VtikHGb93eLKtlK77/PbFSeSydB5hACpxEuO8MFLzJr14jBmR/AjiWJtRxMrDLwb4CnYVCQDo6Rr2Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2d0Rwvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECD5C19421;
+	Wed,  8 Apr 2026 18:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672618;
-	bh=YITmQwIB4vSfdoxlZt0b3iTAVYCZ2ZXOqlJdsYwzfig=;
+	s=korg; t=1775673410;
+	bh=CAL6PHoSE3Kr2TnZHcszBhRiwuRWpoWR6BwAi5XzfiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGwBAQXQ2JlRc5QIoe9swKzO2uYeLd1VAD7hPJo8sh0eUevpcfcVjz5hn+TcbrZHk
-	 sR0esFn2Id5GDF2C0/myqkgjlpSbI0pixM+5lIfhb0N4Iumlz73cY1j/jgu3kZ0pA4
-	 z31i36RFcZU8GkWPmjx9CodkBUhZ7rJZIoo2hQXo=
+	b=u2d0RwvhCe9lTgjff+15MWXDcGs2IUAeTRdys1DQInewDf8xUA3GXb8qVurznj1Er
+	 mGpavicD0VJcMwcPuqIunjYm+QLZ1J79JFmllzbKwTiBoiZh/u3VLWcWZI3YPvt9cA
+	 R53Tvna3YK20i1uPh7L2/tIMacIdGdmlWg1WdyIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 077/160] ALSA: caiaq: fix stack out-of-bounds read in init_card
+	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 179/277] iio: adc: ade9000: fix wrong register in CALIBBIAS case for active power
 Date: Wed,  8 Apr 2026 20:02:44 +0200
-Message-ID: <20260408175916.071717156@linuxfoundation.org>
+Message-ID: <20260408175940.548938382@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +67,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234345-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-234651-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 875D63C0BC5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C76643C1E51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
 
-commit 45424e871abf2a152e247a9cff78359f18dd95c0 upstream.
+commit 86133fb1ec36b2f5cec29d71fbae84877c3a1358 upstream.
 
-The loop creates a whitespace-stripped copy of the card shortname
-where `len < sizeof(card->id)` is used for the bounds check. Since
-sizeof(card->id) is 16 and the local id buffer is also 16 bytes,
-writing 16 non-space characters fills the entire buffer,
-overwriting the terminating nullbyte.
+The switch statement in ade9000_write_raw() attempts to match
+chan->address against ADE9000_REG_AWATTOS (0x00F) to dispatch
+the calibration offset write for active power channels. However,
+chan->address is set via ADE9000_ADDR_ADJUST(ADE9000_REG_AWATT,
+num), so after masking the phase bits, tmp holds
+ADE9000_REG_AWATT (0x210), which never matches 0x00F.
 
-When this non-null-terminated string is later passed to
-snd_card_set_id() -> copy_valid_id_string(), the function scans
-forward with `while (*nid && ...)` and reads past the end of the
-stack buffer, reading the contents of the stack.
+As a result, writing IIO_CHAN_INFO_CALIBBIAS for IIO_POWER always
+falls through to the default case and returns -EINVAL, making
+active power offset calibration silently broken.
 
-A USB device with a product name containing many non-ASCII, non-space
-characters (e.g. multibyte UTF-8) will reliably trigger this as follows:
+Fix this by matching against ADE9000_REG_AWATT instead, which is
+the actual base address stored in chan->address for watt channels.
 
-  BUG: KASAN: stack-out-of-bounds in copy_valid_id_string
-       sound/core/init.c:696 [inline]
-  BUG: KASAN: stack-out-of-bounds in snd_card_set_id_no_lock+0x698/0x74c
-       sound/core/init.c:718
+Reference:ADE9000 datasheet (Rev. B), AWATTOS is the offset correction
+register at 0x00F (p. 44), while AWATT is the total active power
+register at 0x210 (p. 48).
 
-The off-by-one has been present since commit bafeee5b1f8d ("ALSA:
-snd_usb_caiaq: give better shortname") from June 2009 (v2.6.31-rc1),
-which first introduced this whitespace-stripping loop. The original
-code never accounted for the null terminator when bounding the copy.
-
-Fix this by changing the loop bound to `sizeof(card->id) - 1`,
-ensuring at least one byte remains as the null terminator.
-
-Fixes: bafeee5b1f8d ("ALSA: snd_usb_caiaq: give better shortname")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260329133825.581585-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 81de7b4619fc ("iio: adc: add ade9000 support")
+Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/device.c |    2 +-
+ drivers/iio/adc/ade9000.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -488,7 +488,7 @@ static int init_card(struct snd_usb_caia
- 		memset(id, 0, sizeof(id));
+--- a/drivers/iio/adc/ade9000.c
++++ b/drivers/iio/adc/ade9000.c
+@@ -1123,7 +1123,7 @@ static int ade9000_write_raw(struct iio_
+ 			tmp &= ~ADE9000_PHASE_C_POS_BIT;
  
- 		for (c = card->shortname, len = 0;
--			*c && len < sizeof(card->id); c++)
-+			*c && len < sizeof(card->id) - 1; c++)
- 			if (*c != ' ')
- 				id[len++] = *c;
- 
+ 			switch (tmp) {
+-			case ADE9000_REG_AWATTOS:
++			case ADE9000_REG_AWATT:
+ 				return regmap_write(st->regmap,
+ 						    ADE9000_ADDR_ADJUST(ADE9000_REG_AWATTOS,
+ 									chan->channel), val);
 
 
 
