@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEkFFQqi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:26 +0200
+	id wNsrHzej1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A658A3C1656
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225AE3C1A92
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5113308DF4F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 16FE5303648F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D0F3B0AFC;
-	Wed,  8 Apr 2026 18:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6416E355F30;
+	Wed,  8 Apr 2026 18:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgS09IDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eow5+JD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822CA324B1F;
-	Wed,  8 Apr 2026 18:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273402727F3;
+	Wed,  8 Apr 2026 18:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672806; cv=none; b=oeYORqZzmIxS/+dwcme+x6pQJ2vU6Tc+44PCvRbgDOArL2AKIRsKBvb/bNyxbBphybw+4ggbIqNw0daAwar51Sdrma8rzt8lnaMby1bqX+T4HxNWD583sXMaOWlSXlQKUWqTf0+fXGYUeeUfpGv/AVmMXa3ujN7ZGMgpmtXy5EU=
+	t=1775674069; cv=none; b=IIh2U5hyvISiOSS8aIznMm8B9tYlgZsUJOOSrKvNQhSvoOL5sjpu0ykraIbkxR42IZ2BH4tabrU4demNbXYZtFiBzpoG6tYbu2rrKDvhSkv/1zgf6ziVbXD0upM/6sF1gLcDn5KpCzsLPmEjfj2E078W9+LWDyE9PaIPZNuS4XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672806; c=relaxed/simple;
-	bh=0VxU4mMdNZ+5asHajJ/rz0q+N0wOQFDnlBnYSSaPOLQ=;
+	s=arc-20240116; t=1775674069; c=relaxed/simple;
+	bh=KS23aE4q+grC5khx69v3SPq6OyUXDwybRkgwoza4b/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXmgZ/8hsnp4SqNxzXZzLdjPR1yM64tJdPdjWX9OL+wVn2Neh0wW7e3KDxk3wypSB2w2KoLii4C/Oxrb0EMY4lv3wQ6eDY9FKGsYk/LqptwaCn0pMgjsPndDORxzN13jsEDBPzHYkoVlXwfcDQFKMnO6zMEIfvZp2HTssqXmKdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgS09IDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17777C19421;
-	Wed,  8 Apr 2026 18:26:45 +0000 (UTC)
+	 MIME-Version; b=EtkH8R89EROWFWjCPmPh0yb29XS1m0HnQIcVhjUfgfl2Z+idVSXlHWRYiNW2x3IeiChokijnss7t7XFSSrxqDLHwm3a9A1CrrR133gHGafbwvjPWeVKSHPNgV2p7+Ww26rW7NVl+LdPcfKBpa1AptM57uargVwwGEmZKQTWdhh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eow5+JD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC64C19421;
+	Wed,  8 Apr 2026 18:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672806;
-	bh=0VxU4mMdNZ+5asHajJ/rz0q+N0wOQFDnlBnYSSaPOLQ=;
+	s=korg; t=1775674069;
+	bh=KS23aE4q+grC5khx69v3SPq6OyUXDwybRkgwoza4b/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgS09IDqQ8fDBgkbh79JYvIpSUem3017sLQRKmfq4SJcztMM/FQaMoSdPcc/wuD/d
-	 70LdWhqinT5JtP0HT89ZVDVJNoIpR6LPkgAHDJaG1dAJlM7Xnfutrr0uk0XNxVWfnE
-	 4NAmvcYCvAfAqUq+dUi0+/subOlHb7w1J2uw7MUw=
+	b=eow5+JD1GcOMDEWmmuCsVFKoX3BiL+RHC5rscEX5mpgjqfmzXfv8qHloMhxOdtoC4
+	 hGcov4Lg4kPMbfTbosy54uYXNWQDhwiyewHRNF2efKBrf3ulZhmBFUlhtVOpaopiGB
+	 TZCUpX5UlePzQ9gvqNLm7sUXtRfxzzte7X1aS5lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tangxin Xie <xietangxin@yeah.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/160] net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH 6.12 197/242] usb: typec: ucsi: validate connector number in ucsi_notify_common()
 Date: Wed,  8 Apr 2026 20:03:57 +0200
-Message-ID: <20260408175918.795782866@linuxfoundation.org>
+Message-ID: <20260408175934.456700429@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,redhat.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234418-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,yeah.net:email]
-X-Rspamd-Queue-Id: A658A3C1656
+	TAGGED_FROM(0.00)[bounces-234906-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.intel.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 225AE3C1A92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
 
-[ Upstream commit c4336a07eb6b2526dc2b62928b5104b41a7f81f5 ]
+commit d2d8c17ac01a1b1f638ea5d340a884ccc5015186 upstream.
 
-NETIF_F_IPV6_CSUM only advertises support for checksum offload of
-packets without IPv6 extension headers. Packets with extension
-headers must fall back onto software checksumming. Since TSO
-depends on checksum offload, those must revert to GSO.
+The connector number extracted from CCI via UCSI_CCI_CONNECTOR() is a
+7-bit field (0-127) that is used to index into the connector array in
+ucsi_connector_change(). However, the array is only allocated for the
+number of connectors reported by the device (typically 2-4 entries).
 
-The below commit introduces that fallback. It always checks
-network header length. For tunneled packets, the inner header length
-must be checked instead. Extend the check accordingly.
+A malicious or malfunctioning device could report an out-of-range
+connector number in the CCI, causing an out-of-bounds array access in
+ucsi_connector_change().
 
-A special case is tunneled packets without inner IP protocol. Such as
-RFC 6951 SCTP in UDP. Those are not standard IPv6 followed by
-transport header either, so also must revert to the software GSO path.
+Add a bounds check in ucsi_notify_common(), the central point where CCI
+is parsed after arriving from hardware, so that bogus connector numbers
+are rejected before they propagate further.
 
-Cc: stable@vger.kernel.org
-Fixes: 864e3396976e ("net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM")
-Reported-by: Tangxin Xie <xietangxin@yeah.net>
-Closes: https://lore.kernel.org/netdev/0414e7e2-9a1c-4d7c-a99d-b9039cf68f40@yeah.net/
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260320190148.2409107-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bdc62f2bae8f ("usb: typec: ucsi: Simplified registration and I/O API")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+Link: https://patch.msgid.link/20260313222453.123-1-nathan.c.rebello@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |   22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3535,6 +3535,22 @@ static netdev_features_t dflt_features_c
- 	return vlan_features_check(skb, features);
- }
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -42,8 +42,13 @@ void ucsi_notify_common(struct ucsi *ucs
+ 	if (cci & UCSI_CCI_BUSY)
+ 		return;
  
-+static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
-+{
-+	if (!skb->encapsulation)
-+		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+			skb_transport_header_was_set(skb) &&
-+			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
-+	else
-+		return (!skb_inner_network_header_was_set(skb) ||
-+			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			   inner_ip_hdr(skb)->version == 6)) &&
-+			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
-+}
-+
- static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 					    struct net_device *dev,
- 					    netdev_features_t features)
-@@ -3576,11 +3592,7 @@ static netdev_features_t gso_features_ch
- 	 * so neither does TSO that depends on it.
- 	 */
- 	if (features & NETIF_F_IPV6_CSUM &&
--	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
--	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
--	    skb_transport_header_was_set(skb) &&
--	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+	    skb_gso_has_extension_hdr(skb) &&
- 	    !ipv6_has_hopopt_jumbo(skb))
- 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
+-	if (UCSI_CCI_CONNECTOR(cci))
+-		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
++	if (UCSI_CCI_CONNECTOR(cci)) {
++		if (UCSI_CCI_CONNECTOR(cci) <= ucsi->cap.num_connectors)
++			ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
++		else
++			dev_err(ucsi->dev, "bogus connector number in CCI: %lu\n",
++				UCSI_CCI_CONNECTOR(cci));
++	}
  
+ 	if (cci & UCSI_CCI_ACK_COMPLETE &&
+ 	    test_and_clear_bit(ACK_PENDING, &ucsi->flags))
 
 
 
