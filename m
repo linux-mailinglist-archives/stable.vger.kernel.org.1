@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOHyGoWf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:41 +0200
+	id YKCJB9+h1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA2A3C0F82
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B501A3C1567
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBE32305E312
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCF603052412
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18D034252D;
-	Wed,  8 Apr 2026 18:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45A03D9022;
+	Wed,  8 Apr 2026 18:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNPDZDxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeRu4Boo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65281B67E;
-	Wed,  8 Apr 2026 18:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C6F3D4134;
+	Wed,  8 Apr 2026 18:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672522; cv=none; b=mOuMmBk1CWNRbKhpGx1ccL5We7vzIr4DyDOfwAth/OJDiqpmZR5DQfeAI4rcwtzDQrngOVA3zbsTSNHmZ/FSG7jROjq8x2iDTg8fJjmMUwdym+eorjMTfdYfu4JxR7tdfDe9nqjWK3yK7oij1ZnR/hgC35U7nAv9kEa/KimGNoQ=
+	t=1775673779; cv=none; b=pQT8ZE/dQsAM7EJIyR9fAabDMQdGNNWQIK0xBNOpLiiGkrUpNZnwhDSw3JnVk7oRerCwnzYDuPpbE3QwE6h59OsoTmZOXLAZhnpIzjmrXikns4ZZe9NWNagV83OAuAL+Gv7EtauP1kuAgjqfHbqj1WTXFYkmmsIfOGJQEnqROb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672522; c=relaxed/simple;
-	bh=0plCfT82JgjugrKmM2xrSbtjVxYD90gtaZMmmynJfNA=;
+	s=arc-20240116; t=1775673779; c=relaxed/simple;
+	bh=jp7TgvDWYxIB8I+BxH1vDJFFjieO9HX2Ht7VZ9y0JaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKnf4QG1prGDBbLcf/H+qyRZxrmdCOHzGqZBbv/HJ8XmGNX4o04mYv44pnszEW1ijKtzY6barhIrNXC0L0exrD4cQ8mRKkOzqZApRR+9EUojc5VZxReR2lgOGMI5IDO0OExzeDlw2PVW1fFKV/BBNQ7z2Qojg+08qzxae8xgCUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNPDZDxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04AAC19421;
-	Wed,  8 Apr 2026 18:22:01 +0000 (UTC)
+	 MIME-Version; b=EoYkXd5rw4g7am1yARYoOzbY1Xg9dGVqN1mLzc5T+5JMGdRvwjwwUsk/c8YXg7bpUsIgwXa672+up9+xWQCTkT/YUyyGohIY98MaH0vkv8wcbmv/HIcX7fT7Zfy+fUiaVtl2gz6aHWdxnOSEn7ZSR9pt6egnQ3UzhjNxVLL3Gf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeRu4Boo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A92C19421;
+	Wed,  8 Apr 2026 18:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672522;
-	bh=0plCfT82JgjugrKmM2xrSbtjVxYD90gtaZMmmynJfNA=;
+	s=korg; t=1775673779;
+	bh=jp7TgvDWYxIB8I+BxH1vDJFFjieO9HX2Ht7VZ9y0JaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNPDZDxlfWgRa33+/9W8gcJTkUfcj2IXT/LPKAW2Tg9+wwQkGrZqDwRicPFmui9nb
-	 735PP/vvXrpba4wxyBmv9dIfFTgEbgrnZhgskK8SBZFhB92ZwGT6gKaFGUmfdIvft/
-	 TbSlem1F+VsVVBRsdlnJX4IR3oGBOBfvJW1aLCDo=
+	b=EeRu4Bootov6hvjy/pVz3Rr6Gy4VKeGorxk0PkpZ6zObD237x4WHXAOIOIJJDFEb7
+	 9W2W/CeTzH5Kk4Ubg8HyJYeoLSiI5zUqPRbX8sC+wAG+RoPYkSGLiKxxI/mAaTsT+t
+	 zLEW+9nvoYTg1fE0NLUTX8lnmNe7xRWQitvtiRpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+2184232f07e3677fbaef@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/160] netfilter: nf_conntrack_expect: honor expectation helper field
+Subject: [PATCH 6.12 087/242] bpf: sockmap: Fix use-after-free of sk->sk_socket in sk_psock_verdict_data_ready().
 Date: Wed,  8 Apr 2026 20:02:07 +0200
-Message-ID: <20260408175914.706130505@linuxfoundation.org>
+Message-ID: <20260408175930.340293431@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,245 +66,178 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234308-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234794-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0FA2A3C0F82
+	TAGGED_RCPT(0.00)[stable,2184232f07e3677fbaef];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,appspotmail.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: B501A3C1567
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 9c42bc9db90a154bc61ae337a070465f3393485a ]
+[ Upstream commit ad8391d37f334ee73ba91926f8b4e4cf6d31ea04 ]
 
-The expectation helper field is mostly unused. As a result, the
-netfilter codebase relies on accessing the helper through exp->master.
+syzbot reported use-after-free of AF_UNIX socket's sk->sk_socket
+in sk_psock_verdict_data_ready(). [0]
 
-Always set on the expectation helper field so it can be used to reach
-the helper.
+In unix_stream_sendmsg(), the peer socket's ->sk_data_ready() is
+called after dropping its unix_state_lock().
 
-nf_ct_expect_init() is called from packet path where the skb owns
-the ct object, therefore accessing exp->master for the newly created
-expectation is safe. This saves a lot of updates in all callsites
-to pass the ct object as parameter to nf_ct_expect_init().
+Although the sender socket holds the peer's refcount, it does not
+prevent the peer's sock_orphan(), and the peer's sk_socket might
+be freed after one RCU grace period.
 
-This is a preparation patches for follow up fixes.
+Let's fetch the peer's sk->sk_socket and sk->sk_socket->ops under
+RCU in sk_psock_verdict_data_ready().
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 917b61fa2042 ("netfilter: ctnetlink: ignore explicit helper on new expectations")
+[0]:
+BUG: KASAN: slab-use-after-free in sk_psock_verdict_data_ready+0xec/0x590 net/core/skmsg.c:1278
+Read of size 8 at addr ffff8880594da860 by task syz.4.1842/11013
+
+CPU: 1 UID: 0 PID: 11013 Comm: syz.4.1842 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xba/0x230 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ sk_psock_verdict_data_ready+0xec/0x590 net/core/skmsg.c:1278
+ unix_stream_sendmsg+0x8a3/0xe80 net/unix/af_unix.c:2482
+ sock_sendmsg_nosec net/socket.c:721 [inline]
+ __sock_sendmsg net/socket.c:736 [inline]
+ ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
+ __sys_sendmsg net/socket.c:2671 [inline]
+ __do_sys_sendmsg net/socket.c:2676 [inline]
+ __se_sys_sendmsg net/socket.c:2674 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7facf899c819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007facf9827028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007facf8c15fa0 RCX: 00007facf899c819
+RDX: 0000000000000000 RSI: 0000200000000500 RDI: 0000000000000004
+RBP: 00007facf8a32c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007facf8c16038 R14: 00007facf8c15fa0 R15: 00007ffd41b01c78
+ </TASK>
+
+Allocated by task 11013:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ unpoison_slab_object mm/kasan/common.c:340 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4538 [inline]
+ slab_alloc_node mm/slub.c:4866 [inline]
+ kmem_cache_alloc_lru_noprof+0x2b8/0x640 mm/slub.c:4885
+ sock_alloc_inode+0x28/0xc0 net/socket.c:316
+ alloc_inode+0x6a/0x1b0 fs/inode.c:347
+ new_inode_pseudo include/linux/fs.h:3003 [inline]
+ sock_alloc net/socket.c:631 [inline]
+ __sock_create+0x12d/0x9d0 net/socket.c:1562
+ sock_create net/socket.c:1656 [inline]
+ __sys_socketpair+0x1c4/0x560 net/socket.c:1803
+ __do_sys_socketpair net/socket.c:1856 [inline]
+ __se_sys_socketpair net/socket.c:1853 [inline]
+ __x64_sys_socketpair+0x9b/0xb0 net/socket.c:1853
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 15:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:253 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2685 [inline]
+ slab_free mm/slub.c:6165 [inline]
+ kmem_cache_free+0x187/0x630 mm/slub.c:6295
+ rcu_do_batch kernel/rcu/tree.c:2617 [inline]
+ rcu_core+0x7cd/0x1070 kernel/rcu/tree.c:2869
+ handle_softirqs+0x22a/0x870 kernel/softirq.c:622
+ run_ksoftirqd+0x36/0x60 kernel/softirq.c:1063
+ smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Fixes: c63829182c37 ("af_unix: Implement ->psock_update_sk_prot()")
+Closes: https://lore.kernel.org/bpf/69cc6b9f.a70a0220.128fd0.004b.GAE@google.com/
+Reported-by: syzbot+2184232f07e3677fbaef@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260401005418.2452999-1-kuniyu@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_expect.h |  2 +-
- net/netfilter/nf_conntrack_broadcast.c      |  2 +-
- net/netfilter/nf_conntrack_expect.c         | 14 +++++++++++++-
- net/netfilter/nf_conntrack_h323_main.c      | 12 ++++++------
- net/netfilter/nf_conntrack_helper.c         |  7 ++++++-
- net/netfilter/nf_conntrack_netlink.c        |  2 +-
- net/netfilter/nf_conntrack_sip.c            |  2 +-
- 7 files changed, 29 insertions(+), 12 deletions(-)
+ net/core/skmsg.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_expect.h b/include/net/netfilter/nf_conntrack_expect.h
-index 165e7a03b8e9d..1b01400b10bdb 100644
---- a/include/net/netfilter/nf_conntrack_expect.h
-+++ b/include/net/netfilter/nf_conntrack_expect.h
-@@ -40,7 +40,7 @@ struct nf_conntrack_expect {
- 			 struct nf_conntrack_expect *this);
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 6ece4eaecd489..2e89087b95c24 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1266,17 +1266,20 @@ static int sk_psock_verdict_recv(struct sock *sk, struct sk_buff *skb)
  
- 	/* Helper to assign to new connection */
--	struct nf_conntrack_helper *helper;
-+	struct nf_conntrack_helper __rcu *helper;
- 
- 	/* The conntrack of the master connection */
- 	struct nf_conn *master;
-diff --git a/net/netfilter/nf_conntrack_broadcast.c b/net/netfilter/nf_conntrack_broadcast.c
-index 9fb9b80312989..721b3e87416be 100644
---- a/net/netfilter/nf_conntrack_broadcast.c
-+++ b/net/netfilter/nf_conntrack_broadcast.c
-@@ -70,7 +70,7 @@ int nf_conntrack_broadcast_help(struct sk_buff *skb,
- 	exp->expectfn             = NULL;
- 	exp->flags                = NF_CT_EXPECT_PERMANENT;
- 	exp->class		  = NF_CT_EXPECT_CLASS_DEFAULT;
--	exp->helper               = NULL;
-+	rcu_assign_pointer(exp->helper, helper);
- 
- 	nf_ct_expect_related(exp, 0);
- 	nf_ct_expect_put(exp);
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index 7bc64eb89bac4..43c6fc0576177 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -309,12 +309,19 @@ struct nf_conntrack_expect *nf_ct_expect_alloc(struct nf_conn *me)
- }
- EXPORT_SYMBOL_GPL(nf_ct_expect_alloc);
- 
-+/* This function can only be used from packet path, where accessing
-+ * master's helper is safe, because the packet holds a reference on
-+ * the conntrack object. Never use it from control plane.
-+ */
- void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
- 		       u_int8_t family,
- 		       const union nf_inet_addr *saddr,
- 		       const union nf_inet_addr *daddr,
- 		       u_int8_t proto, const __be16 *src, const __be16 *dst)
+ static void sk_psock_verdict_data_ready(struct sock *sk)
  {
-+	struct nf_conntrack_helper *helper = NULL;
-+	struct nf_conn *ct = exp->master;
-+	struct nf_conn_help *help;
- 	int len;
+-	struct socket *sock = sk->sk_socket;
+-	const struct proto_ops *ops;
++	const struct proto_ops *ops = NULL;
++	struct socket *sock;
+ 	int copied;
  
- 	if (family == AF_INET)
-@@ -325,7 +332,12 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
- 	exp->flags = 0;
- 	exp->class = class;
- 	exp->expectfn = NULL;
--	exp->helper = NULL;
+ 	trace_sk_data_ready(sk);
+ 
+-	if (unlikely(!sock))
+-		return;
+-	ops = READ_ONCE(sock->ops);
++	rcu_read_lock();
++	sock = READ_ONCE(sk->sk_socket);
++	if (likely(sock))
++		ops = READ_ONCE(sock->ops);
++	rcu_read_unlock();
+ 	if (!ops || !ops->read_skb)
+ 		return;
 +
-+	help = nfct_help(ct);
-+	if (help)
-+		helper = rcu_dereference(help->helper);
-+
-+	rcu_assign_pointer(exp->helper, helper);
- 	exp->tuple.src.l3num = family;
- 	exp->tuple.dst.protonum = proto;
- 
-diff --git a/net/netfilter/nf_conntrack_h323_main.c b/net/netfilter/nf_conntrack_h323_main.c
-index ed983421e2eb2..791aafe9f3960 100644
---- a/net/netfilter/nf_conntrack_h323_main.c
-+++ b/net/netfilter/nf_conntrack_h323_main.c
-@@ -642,7 +642,7 @@ static int expect_h245(struct sk_buff *skb, struct nf_conn *ct,
- 			  &ct->tuplehash[!dir].tuple.src.u3,
- 			  &ct->tuplehash[!dir].tuple.dst.u3,
- 			  IPPROTO_TCP, NULL, &port);
--	exp->helper = &nf_conntrack_helper_h245;
-+	rcu_assign_pointer(exp->helper, &nf_conntrack_helper_h245);
- 
- 	nathook = rcu_dereference(nfct_h323_nat_hook);
- 	if (memcmp(&ct->tuplehash[dir].tuple.src.u3,
-@@ -766,7 +766,7 @@ static int expect_callforwarding(struct sk_buff *skb,
- 	nf_ct_expect_init(exp, NF_CT_EXPECT_CLASS_DEFAULT, nf_ct_l3num(ct),
- 			  &ct->tuplehash[!dir].tuple.src.u3, &addr,
- 			  IPPROTO_TCP, NULL, &port);
--	exp->helper = nf_conntrack_helper_q931;
-+	rcu_assign_pointer(exp->helper, nf_conntrack_helper_q931);
- 
- 	nathook = rcu_dereference(nfct_h323_nat_hook);
- 	if (memcmp(&ct->tuplehash[dir].tuple.src.u3,
-@@ -1233,7 +1233,7 @@ static int expect_q931(struct sk_buff *skb, struct nf_conn *ct,
- 				&ct->tuplehash[!dir].tuple.src.u3 : NULL,
- 			  &ct->tuplehash[!dir].tuple.dst.u3,
- 			  IPPROTO_TCP, NULL, &port);
--	exp->helper = nf_conntrack_helper_q931;
-+	rcu_assign_pointer(exp->helper, nf_conntrack_helper_q931);
- 	exp->flags = NF_CT_EXPECT_PERMANENT;	/* Accept multiple calls */
- 
- 	nathook = rcu_dereference(nfct_h323_nat_hook);
-@@ -1305,7 +1305,7 @@ static int process_gcf(struct sk_buff *skb, struct nf_conn *ct,
- 	nf_ct_expect_init(exp, NF_CT_EXPECT_CLASS_DEFAULT, nf_ct_l3num(ct),
- 			  &ct->tuplehash[!dir].tuple.src.u3, &addr,
- 			  IPPROTO_UDP, NULL, &port);
--	exp->helper = nf_conntrack_helper_ras;
-+	rcu_assign_pointer(exp->helper, nf_conntrack_helper_ras);
- 
- 	if (nf_ct_expect_related(exp, 0) == 0) {
- 		pr_debug("nf_ct_ras: expect RAS ");
-@@ -1522,7 +1522,7 @@ static int process_acf(struct sk_buff *skb, struct nf_conn *ct,
- 			  &ct->tuplehash[!dir].tuple.src.u3, &addr,
- 			  IPPROTO_TCP, NULL, &port);
- 	exp->flags = NF_CT_EXPECT_PERMANENT;
--	exp->helper = nf_conntrack_helper_q931;
-+	rcu_assign_pointer(exp->helper, nf_conntrack_helper_q931);
- 
- 	if (nf_ct_expect_related(exp, 0) == 0) {
- 		pr_debug("nf_ct_ras: expect Q.931 ");
-@@ -1576,7 +1576,7 @@ static int process_lcf(struct sk_buff *skb, struct nf_conn *ct,
- 			  &ct->tuplehash[!dir].tuple.src.u3, &addr,
- 			  IPPROTO_TCP, NULL, &port);
- 	exp->flags = NF_CT_EXPECT_PERMANENT;
--	exp->helper = nf_conntrack_helper_q931;
-+	rcu_assign_pointer(exp->helper, nf_conntrack_helper_q931);
- 
- 	if (nf_ct_expect_related(exp, 0) == 0) {
- 		pr_debug("nf_ct_ras: expect Q.931 ");
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index 01d125fa2f76e..d7bf2fa414a87 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -404,7 +404,7 @@ static bool expect_iter_me(struct nf_conntrack_expect *exp, void *data)
- 	const struct nf_conntrack_helper *me = data;
- 	const struct nf_conntrack_helper *this;
- 
--	if (exp->helper == me)
-+	if (rcu_access_pointer(exp->helper) == me)
- 		return true;
- 
- 	this = rcu_dereference_protected(help->helper,
-@@ -426,6 +426,11 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
- 
- 	nf_ct_expect_iterate_destroy(expect_iter_me, me);
- 	nf_ct_iterate_destroy(unhelp, me);
-+
-+	/* nf_ct_iterate_destroy() does an unconditional synchronize_rcu() as
-+	 * last step, this ensures rcu readers of exp->helper are done.
-+	 * No need for another synchronize_rcu() here.
-+	 */
- }
- EXPORT_SYMBOL_GPL(nf_conntrack_helper_unregister);
- 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index d980f462714a9..97d2f5eacbe1e 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3555,7 +3555,7 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 
- 	exp->class = class;
- 	exp->master = ct;
--	exp->helper = helper;
-+	rcu_assign_pointer(exp->helper, helper);
- 	exp->tuple = *tuple;
- 	exp->mask.src.u3 = mask->src.u3;
- 	exp->mask.src.u.all = mask->src.u.all;
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 84334537c6067..6ae30a4cf3601 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1303,7 +1303,7 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
- 	nf_ct_expect_init(exp, SIP_EXPECT_SIGNALLING, nf_ct_l3num(ct),
- 			  saddr, &daddr, proto, NULL, &port);
- 	exp->timeout.expires = sip_timeout * HZ;
--	exp->helper = helper;
-+	rcu_assign_pointer(exp->helper, helper);
- 	exp->flags = NF_CT_EXPECT_PERMANENT | NF_CT_EXPECT_INACTIVE;
- 
- 	hooks = rcu_dereference(nf_nat_sip_hooks);
+ 	copied = ops->read_skb(sk, sk_psock_verdict_recv);
+ 	if (copied >= 0) {
+ 		struct sk_psock *psock;
 -- 
 2.53.0
 
