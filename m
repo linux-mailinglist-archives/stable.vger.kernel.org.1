@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OjDN6qi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:06 +0200
+	id CG7hNOma1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CA03C184B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7283C03B2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1686830FA6AA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECB2C3025A4B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAF83D47AC;
-	Wed,  8 Apr 2026 18:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5954C3D8917;
+	Wed,  8 Apr 2026 18:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoMjHrJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYoxmqI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17F63B0ADA;
-	Wed,  8 Apr 2026 18:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C038347517;
+	Wed,  8 Apr 2026 18:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672974; cv=none; b=g3Tgq4GcX89OIvbi4naGOVWGR9ueSEE3yvVYBhwK4GNBH00rYmsnF5R3Mk0MbfmsEG3mPBHT8E/1h4RUSdJBLO/Pfj4ZXhsT/5KF3ToHGW6loPA2adugTL4802XEhFGx8DrZzxmLbTESbOQ/mdW+Imb7+RrzwyLlbVv7fRpvBwo=
+	t=1775671972; cv=none; b=IC9m7VR9X2j2LbSeuNel9XWOq9zNaYqFqGUsSwmE8EaCS/TTu5ahei4uEiWM6V0dAyBoMdCZl+IH3G9lW5mRX93hhonkS+tKqIf7TRkSdN6RcCbnGFoEhN7GCYPGrKR0Q7u0GSafCY7cUQP5fYLvvkNAhSExz1lBpP7175BAasU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672974; c=relaxed/simple;
-	bh=PMEbXJ7tVpOnnJR4vRlxTkHqh6+Jfat5wZynnwI+NI0=;
+	s=arc-20240116; t=1775671972; c=relaxed/simple;
+	bh=prQJhOYsxsRs7XcCksPt9GfR6G3F8ibrIOGNezed8Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+5N7YmPcWfNeCJPPpmnz9jnk2oJ7zHoeZdmNsV51+AxKVjS3i0GmQhq6jnvHqtbsw5b6ynFMyAZVcRA1JmMaFVsm2OShhSwHCGMra11j4SOgOqV9YRx7wGyIcIKQGal95TyBSdgPif303Ci1I5vi5VgOmsQXmEHDRBV1iVMgcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoMjHrJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382BAC19421;
-	Wed,  8 Apr 2026 18:29:34 +0000 (UTC)
+	 MIME-Version; b=DDMg+0Ma93KDwfbUN0oq1KAYGP8ioGWgMq5iAr6XWwlEX37M0q8poppISX/dNK4F9hQnYXHQoncXoxb6vB0b6uxWynqv1ZEe83YzHhbyGbUdgolgCsdDkrNY0RUAbZQxdPfVS1CQU3rKA5rvJPOEPb4OrIgRObvvsZwivVUmxz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYoxmqI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEE3C19421;
+	Wed,  8 Apr 2026 18:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672974;
-	bh=PMEbXJ7tVpOnnJR4vRlxTkHqh6+Jfat5wZynnwI+NI0=;
+	s=korg; t=1775671972;
+	bh=prQJhOYsxsRs7XcCksPt9GfR6G3F8ibrIOGNezed8Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YoMjHrJu2gtM1r6x0+jpgB4J/AY1g6+5ZKnYjA6bl8wgPrwd3ArChk2AF9e7kVZ/U
-	 UC/iLPUIM77jEMf0jCbzWy7xF/aou7/3AUUYMMGM7qgg5gf+eW9cf8vIwTEjq0lM3v
-	 DFtLs7Vz/3yFEpHxlGPyEfDTW/EibZ+FO6x9wF0I=
+	b=RYoxmqI3Rozn03eIjRi6If4JMpgjnxyExYbiFyF9dA5op697r9BKJOz5ogk5C+Dxk
+	 LSCrbn+u1WQTqww/IQVcSTRcdDaNoFU6ORypYVrP6ZC6grZrE9lqz6imdy603qkfbp
+	 N5Mw0g9JufNKFefK5PRpr1/SoG16Emf41NcK4HTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taeyang Lee <0wn@theori.io>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 053/277] crypto: algif_aead - Revert to operating out-of-place
-Date: Wed,  8 Apr 2026 20:00:38 +0200
-Message-ID: <20260408175935.839135275@linuxfoundation.org>
+Subject: [PATCH 6.1 122/312] dmaengine: idxd: Fix not releasing workqueue on .release()
+Date: Wed,  8 Apr 2026 20:00:39 +0200
+Message-ID: <20260408175938.324962243@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,352 +69,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234095-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234482-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,theori.io:email,apana.org.au:email]
-X-Rspamd-Queue-Id: 18CA03C184B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6F7283C03B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit a664bf3d603dc3bdcf9ae47cc21e0daec706d7a5 ]
+[ Upstream commit 3d33de353b1ff9023d5ec73b9becf80ea87af695 ]
 
-This mostly reverts commit 72548b093ee3 except for the copying of
-the associated data.
+The workqueue associated with an DSA/IAA device is not released when
+the object is freed.
 
-There is no benefit in operating in-place in algif_aead since the
-source and destination come from different mappings.  Get rid of
-all the complexity added for in-place operation and just copy the
-AD directly.
-
-Fixes: 72548b093ee3 ("crypto: algif_aead - copy AAD from src to dst")
-Reported-by: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 47c16ac27d4c ("dmaengine: idxd: fix idxd conf_dev 'struct device' lifetime")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-7-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c         |  49 ++++----------------
- crypto/algif_aead.c     | 100 ++++++++--------------------------------
- crypto/algif_skcipher.c |   6 +--
- include/crypto/if_alg.h |   5 +-
- 4 files changed, 34 insertions(+), 126 deletions(-)
+ drivers/dma/idxd/sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 78e995dddf879..3236601aa6dc0 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -637,15 +637,13 @@ static int af_alg_alloc_tsgl(struct sock *sk)
- /**
-  * af_alg_count_tsgl - Count number of TX SG entries
-  *
-- * The counting starts from the beginning of the SGL to @bytes. If
-- * an @offset is provided, the counting of the SG entries starts at the @offset.
-+ * The counting starts from the beginning of the SGL to @bytes.
-  *
-  * @sk: socket of connection to user space
-  * @bytes: Count the number of SG entries holding given number of bytes.
-- * @offset: Start the counting of SG entries from the given offset.
-  * Return: Number of TX SG entries found given the constraints
-  */
--unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes, size_t offset)
-+unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes)
+diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+index 0689464c4816a..ea222e1654ab9 100644
+--- a/drivers/dma/idxd/sysfs.c
++++ b/drivers/dma/idxd/sysfs.c
+@@ -1663,6 +1663,7 @@ static void idxd_conf_device_release(struct device *dev)
  {
- 	const struct alg_sock *ask = alg_sk(sk);
- 	const struct af_alg_ctx *ctx = ask->private;
-@@ -660,25 +658,11 @@ unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes, size_t offset)
- 		const struct scatterlist *sg = sgl->sg;
+ 	struct idxd_device *idxd = confdev_to_idxd(dev);
  
- 		for (i = 0; i < sgl->cur; i++) {
--			size_t bytes_count;
--
--			/* Skip offset */
--			if (offset >= sg[i].length) {
--				offset -= sg[i].length;
--				bytes -= sg[i].length;
--				continue;
--			}
--
--			bytes_count = sg[i].length - offset;
--
--			offset = 0;
- 			sgl_count++;
--
--			/* If we have seen requested number of bytes, stop */
--			if (bytes_count >= bytes)
-+			if (sg[i].length >= bytes)
- 				return sgl_count;
- 
--			bytes -= bytes_count;
-+			bytes -= sg[i].length;
- 		}
- 	}
- 
-@@ -690,19 +674,14 @@ EXPORT_SYMBOL_GPL(af_alg_count_tsgl);
-  * af_alg_pull_tsgl - Release the specified buffers from TX SGL
-  *
-  * If @dst is non-null, reassign the pages to @dst. The caller must release
-- * the pages. If @dst_offset is given only reassign the pages to @dst starting
-- * at the @dst_offset (byte). The caller must ensure that @dst is large
-- * enough (e.g. by using af_alg_count_tsgl with the same offset).
-+ * the pages.
-  *
-  * @sk: socket of connection to user space
-  * @used: Number of bytes to pull from TX SGL
-  * @dst: If non-NULL, buffer is reassigned to dst SGL instead of releasing. The
-  *	 caller must release the buffers in dst.
-- * @dst_offset: Reassign the TX SGL from given offset. All buffers before
-- *	        reaching the offset is released.
-  */
--void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
--		      size_t dst_offset)
-+void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst)
- {
- 	struct alg_sock *ask = alg_sk(sk);
- 	struct af_alg_ctx *ctx = ask->private;
-@@ -727,18 +706,10 @@ void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
- 			 * SG entries in dst.
- 			 */
- 			if (dst) {
--				if (dst_offset >= plen) {
--					/* discard page before offset */
--					dst_offset -= plen;
--				} else {
--					/* reassign page to dst after offset */
--					get_page(page);
--					sg_set_page(dst + j, page,
--						    plen - dst_offset,
--						    sg[i].offset + dst_offset);
--					dst_offset = 0;
--					j++;
--				}
-+				/* reassign page to dst after offset */
-+				get_page(page);
-+				sg_set_page(dst + j, page, plen, sg[i].offset);
-+				j++;
- 			}
- 
- 			sg[i].length -= plen;
-diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
-index 79b016a899a1e..dda15bb05e892 100644
---- a/crypto/algif_aead.c
-+++ b/crypto/algif_aead.c
-@@ -26,7 +26,6 @@
- #include <crypto/internal/aead.h>
- #include <crypto/scatterwalk.h>
- #include <crypto/if_alg.h>
--#include <crypto/skcipher.h>
- #include <linux/init.h>
- #include <linux/list.h>
- #include <linux/kernel.h>
-@@ -72,9 +71,8 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
- 	struct alg_sock *pask = alg_sk(psk);
- 	struct af_alg_ctx *ctx = ask->private;
- 	struct crypto_aead *tfm = pask->private;
--	unsigned int i, as = crypto_aead_authsize(tfm);
-+	unsigned int as = crypto_aead_authsize(tfm);
- 	struct af_alg_async_req *areq;
--	struct af_alg_tsgl *tsgl, *tmp;
- 	struct scatterlist *rsgl_src, *tsgl_src = NULL;
- 	int err = 0;
- 	size_t used = 0;		/* [in]  TX bufs to be en/decrypted */
-@@ -154,23 +152,24 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
- 		outlen -= less;
- 	}
- 
-+	/*
-+	 * Create a per request TX SGL for this request which tracks the
-+	 * SG entries from the global TX SGL.
-+	 */
- 	processed = used + ctx->aead_assoclen;
--	list_for_each_entry_safe(tsgl, tmp, &ctx->tsgl_list, list) {
--		for (i = 0; i < tsgl->cur; i++) {
--			struct scatterlist *process_sg = tsgl->sg + i;
--
--			if (!(process_sg->length) || !sg_page(process_sg))
--				continue;
--			tsgl_src = process_sg;
--			break;
--		}
--		if (tsgl_src)
--			break;
--	}
--	if (processed && !tsgl_src) {
--		err = -EFAULT;
-+	areq->tsgl_entries = af_alg_count_tsgl(sk, processed);
-+	if (!areq->tsgl_entries)
-+		areq->tsgl_entries = 1;
-+	areq->tsgl = sock_kmalloc(sk, array_size(sizeof(*areq->tsgl),
-+					         areq->tsgl_entries),
-+				  GFP_KERNEL);
-+	if (!areq->tsgl) {
-+		err = -ENOMEM;
- 		goto free;
- 	}
-+	sg_init_table(areq->tsgl, areq->tsgl_entries);
-+	af_alg_pull_tsgl(sk, processed, areq->tsgl);
-+	tsgl_src = areq->tsgl;
- 
- 	/*
- 	 * Copy of AAD from source to destination
-@@ -179,76 +178,15 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
- 	 * when user space uses an in-place cipher operation, the kernel
- 	 * will copy the data as it does not see whether such in-place operation
- 	 * is initiated.
--	 *
--	 * To ensure efficiency, the following implementation ensure that the
--	 * ciphers are invoked to perform a crypto operation in-place. This
--	 * is achieved by memory management specified as follows.
- 	 */
- 
- 	/* Use the RX SGL as source (and destination) for crypto op. */
- 	rsgl_src = areq->first_rsgl.sgl.sgt.sgl;
- 
--	if (ctx->enc) {
--		/*
--		 * Encryption operation - The in-place cipher operation is
--		 * achieved by the following operation:
--		 *
--		 * TX SGL: AAD || PT
--		 *	    |	   |
--		 *	    | copy |
--		 *	    v	   v
--		 * RX SGL: AAD || PT || Tag
--		 */
--		memcpy_sglist(areq->first_rsgl.sgl.sgt.sgl, tsgl_src,
--			      processed);
--		af_alg_pull_tsgl(sk, processed, NULL, 0);
--	} else {
--		/*
--		 * Decryption operation - To achieve an in-place cipher
--		 * operation, the following  SGL structure is used:
--		 *
--		 * TX SGL: AAD || CT || Tag
--		 *	    |	   |	 ^
--		 *	    | copy |	 | Create SGL link.
--		 *	    v	   v	 |
--		 * RX SGL: AAD || CT ----+
--		 */
--
--		/* Copy AAD || CT to RX SGL buffer for in-place operation. */
--		memcpy_sglist(areq->first_rsgl.sgl.sgt.sgl, tsgl_src, outlen);
--
--		/* Create TX SGL for tag and chain it to RX SGL. */
--		areq->tsgl_entries = af_alg_count_tsgl(sk, processed,
--						       processed - as);
--		if (!areq->tsgl_entries)
--			areq->tsgl_entries = 1;
--		areq->tsgl = sock_kmalloc(sk, array_size(sizeof(*areq->tsgl),
--							 areq->tsgl_entries),
--					  GFP_KERNEL);
--		if (!areq->tsgl) {
--			err = -ENOMEM;
--			goto free;
--		}
--		sg_init_table(areq->tsgl, areq->tsgl_entries);
--
--		/* Release TX SGL, except for tag data and reassign tag data. */
--		af_alg_pull_tsgl(sk, processed, areq->tsgl, processed - as);
--
--		/* chain the areq TX SGL holding the tag with RX SGL */
--		if (usedpages) {
--			/* RX SGL present */
--			struct af_alg_sgl *sgl_prev = &areq->last_rsgl->sgl;
--			struct scatterlist *sg = sgl_prev->sgt.sgl;
--
--			sg_unmark_end(sg + sgl_prev->sgt.nents - 1);
--			sg_chain(sg, sgl_prev->sgt.nents + 1, areq->tsgl);
--		} else
--			/* no RX SGL present (e.g. authentication only) */
--			rsgl_src = areq->tsgl;
--	}
-+	memcpy_sglist(rsgl_src, tsgl_src, ctx->aead_assoclen);
- 
- 	/* Initialize the crypto operation */
--	aead_request_set_crypt(&areq->cra_u.aead_req, rsgl_src,
-+	aead_request_set_crypt(&areq->cra_u.aead_req, tsgl_src,
- 			       areq->first_rsgl.sgl.sgt.sgl, used, ctx->iv);
- 	aead_request_set_ad(&areq->cra_u.aead_req, ctx->aead_assoclen);
- 	aead_request_set_tfm(&areq->cra_u.aead_req, tfm);
-@@ -450,7 +388,7 @@ static void aead_sock_destruct(struct sock *sk)
- 	struct crypto_aead *tfm = pask->private;
- 	unsigned int ivlen = crypto_aead_ivsize(tfm);
- 
--	af_alg_pull_tsgl(sk, ctx->used, NULL, 0);
-+	af_alg_pull_tsgl(sk, ctx->used, NULL);
- 	sock_kzfree_s(sk, ctx->iv, ivlen);
- 	sock_kfree_s(sk, ctx, ctx->len);
- 	af_alg_release_parent(sk);
-diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
-index 125d395c5e009..82735e51be108 100644
---- a/crypto/algif_skcipher.c
-+++ b/crypto/algif_skcipher.c
-@@ -138,7 +138,7 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
- 	 * Create a per request TX SGL for this request which tracks the
- 	 * SG entries from the global TX SGL.
- 	 */
--	areq->tsgl_entries = af_alg_count_tsgl(sk, len, 0);
-+	areq->tsgl_entries = af_alg_count_tsgl(sk, len);
- 	if (!areq->tsgl_entries)
- 		areq->tsgl_entries = 1;
- 	areq->tsgl = sock_kmalloc(sk, array_size(sizeof(*areq->tsgl),
-@@ -149,7 +149,7 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
- 		goto free;
- 	}
- 	sg_init_table(areq->tsgl, areq->tsgl_entries);
--	af_alg_pull_tsgl(sk, len, areq->tsgl, 0);
-+	af_alg_pull_tsgl(sk, len, areq->tsgl);
- 
- 	/* Initialize the crypto operation */
- 	skcipher_request_set_tfm(&areq->cra_u.skcipher_req, tfm);
-@@ -363,7 +363,7 @@ static void skcipher_sock_destruct(struct sock *sk)
- 	struct alg_sock *pask = alg_sk(psk);
- 	struct crypto_skcipher *tfm = pask->private;
- 
--	af_alg_pull_tsgl(sk, ctx->used, NULL, 0);
-+	af_alg_pull_tsgl(sk, ctx->used, NULL);
- 	sock_kzfree_s(sk, ctx->iv, crypto_skcipher_ivsize(tfm));
- 	if (ctx->state)
- 		sock_kzfree_s(sk, ctx->state, crypto_skcipher_statesize(tfm));
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index 107b797c33ecf..0cc8fa749f68d 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -230,9 +230,8 @@ static inline bool af_alg_readable(struct sock *sk)
- 	return PAGE_SIZE <= af_alg_rcvbuf(sk);
- }
- 
--unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes, size_t offset);
--void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
--		      size_t dst_offset);
-+unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes);
-+void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst);
- void af_alg_wmem_wakeup(struct sock *sk);
- int af_alg_wait_for_data(struct sock *sk, unsigned flags, unsigned min);
- int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
++	destroy_workqueue(idxd->wq);
+ 	kfree(idxd->groups);
+ 	bitmap_free(idxd->wq_enable_map);
+ 	kfree(idxd->wqs);
 -- 
 2.53.0
 
