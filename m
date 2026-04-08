@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eE6bGzad1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:50 +0200
+	id sL/xFlKl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A773C0957
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB5B3C2178
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E40AB302B142
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 458F130803E4
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEBE386550;
-	Wed,  8 Apr 2026 18:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF66337B81;
+	Wed,  8 Apr 2026 18:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sow8KIxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hj1WH+JO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23DA2494F0;
-	Wed,  8 Apr 2026 18:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B353D9041;
+	Wed,  8 Apr 2026 18:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672452; cv=none; b=WlOVwF7Li7GqxxwiwM7nHs9Y81wZ8xrnH1qWjhCywuZdS1gUHd63iSsOaHqwumc6EK/UruLVebd60VzFN0NAO0V/fQv5+phE23T//OtWPHQWbHT3XT4AoLqoIee5jVaCa1lE1CbUN4V+ORGxabTWL+peCme0hngNniuia859has=
+	t=1775674449; cv=none; b=FesIBX7PGn/7xctQ8W6d/yNxV+P9Uj+ySDFSbjvKfbzIfxU5c1oKbOwHhHXR61AKxdvP5V7XjpyzGff49sz4f6t3LLqCjTA0UT0dtfdjtK69Kn6OZ88EHwxVVkZXjBJ30JQVr+Imm7lpJuBBk3vEHmC7frDAftZ5eQUfC57jqaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672452; c=relaxed/simple;
-	bh=yHOC3l8Xd+tnuYkmaQCO37LCD6uAX+fdNtwlhG5plD4=;
+	s=arc-20240116; t=1775674449; c=relaxed/simple;
+	bh=pheqwr8resSZb70eLovDiAQVuogSrlJ51boF2eIdSCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUmGBJVCO5U8WLgDN6xUZuOTfk0SL7bNwSmBHqYBlRd2wtbGP609lPKIn0BIRom7HhY3b9GIf/vC2SKABmm6mPypjvl71s10Q4lS5qnNl8k8ceFh4iHFhtObPCed/iH+sMq5KLhKmv125ZxfYS6oF49KxeRCbWIbb86hncUBFX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sow8KIxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10180C19421;
-	Wed,  8 Apr 2026 18:20:51 +0000 (UTC)
+	 MIME-Version; b=eI5pFGz53aTtRJI0Zju7jrDyDA4kXtdILb/6PL9iJEYWyktgOTikngKkGQbe94Y2ndkSNftgVSPQ7dJNzYHrdjOEpFRMqj9OiOMy+7HsWn2U3XTI8ZsgQmg4Rm2pQbM2DFkCGDvxvqOeqo8JKYg5UaXIgsLphSwm/+4CXUh2NlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hj1WH+JO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E5BC19421;
+	Wed,  8 Apr 2026 18:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672452;
-	bh=yHOC3l8Xd+tnuYkmaQCO37LCD6uAX+fdNtwlhG5plD4=;
+	s=korg; t=1775674448;
+	bh=pheqwr8resSZb70eLovDiAQVuogSrlJ51boF2eIdSCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sow8KIxGlpb759+tKrzG2LBSl5FOWZ7jT0GH7DRa5f0O10UIBHouHeViJdfyhd3nS
-	 sZ9aaeM4hdUPpZgu4maedbNYFEgpmbhIuOvKoMduXu8exMh8LDnbKWfGcmEtofSdXn
-	 n8h+x+R7t3dJkRCgmUXok64D6xobsD4peqPymeOs=
+	b=Hj1WH+JO3acpOn3tw3L5mJYxAdyFIW5WD8vVpLhg/tNdxnds+oBK8wtBgZDDnasn5
+	 47rhpZ2IMbBwjtZS3B1f0ztEU6QeODaW4+8ZAVOqGfZmUot79Aadmf93vaRfHGH87T
+	 aLT1bo2WzhEuGha+QgOix1vQDVKYnvJNk0WfYanU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Tim Harvey <tharvey@gateworks.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	syzbot+87badbb9094e008e0685@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Pauli Virtanen <pav@iki.fi>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/160] wifi: ath11k: Use dma_alloc_noncoherent for rx_tid buffer allocation
+Subject: [PATCH 6.19 100/311] Bluetooth: hci_sync: Fix UAF in le_read_features_complete
 Date: Wed,  8 Apr 2026 20:01:40 +0200
-Message-ID: <20260408175913.691283178@linuxfoundation.org>
+Message-ID: <20260408175943.148302973@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,311 +65,275 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-235053-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234281-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,gateworks.com:email]
-X-Rspamd-Queue-Id: 78A773C0957
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,87badbb9094e008e0685];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzbot.org:url,appspotmail.com:email,iki.fi:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: CCB5B3C2178
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit eeadc6baf8b3dcd32787cc84f0473dc2a2850370 ]
+[ Upstream commit 035c25007c9e698bef3826070ee34bb6d778020c ]
 
-Currently, the driver allocates cacheable DMA buffers for the rx_tid
-structure using kzalloc() and dma_map_single(). These buffers are
-long-lived and can persist for the lifetime of the peer, which is not
-advisable. Instead of using kzalloc() and dma_map_single() for allocating
-cacheable DMA buffers, utilize the dma_alloc_noncoherent() helper for the
-allocation of long-lived cacheable DMA buffers, such as the peer's rx_tid.
-Since dma_alloc_noncoherent() returns unaligned physical and virtual
-addresses, align them internally before use within the driver. This
-ensures proper allocation of non-coherent memory through the kernel
-helper.
+This fixes the following backtrace caused by hci_conn being freed
+before le_read_features_complete but after
+hci_le_read_remote_features_sync so hci_conn_del -> hci_cmd_sync_dequeue
+is not able to prevent it:
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+==================================================================
+BUG: KASAN: slab-use-after-free in instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+BUG: KASAN: slab-use-after-free in atomic_dec_and_test include/linux/atomic/atomic-instrumented.h:1383 [inline]
+BUG: KASAN: slab-use-after-free in hci_conn_drop include/net/bluetooth/hci_core.h:1688 [inline]
+BUG: KASAN: slab-use-after-free in le_read_features_complete+0x5b/0x340 net/bluetooth/hci_sync.c:7344
+Write of size 4 at addr ffff8880796b0010 by task kworker/u9:0/52
 
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Tested-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://patch.msgid.link/20250119164219.647059-3-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Stable-dep-of: e225b36f83d7 ("wifi: ath11k: Pass the correct value of each TID during a stop AMPDU session")
+CPU: 0 UID: 0 PID: 52 Comm: kworker/u9:0 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xcd/0x630 mm/kasan/report.c:482
+ kasan_report+0xe0/0x110 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:194 [inline]
+ kasan_check_range+0x100/0x1b0 mm/kasan/generic.c:200
+ instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+ atomic_dec_and_test include/linux/atomic/atomic-instrumented.h:1383 [inline]
+ hci_conn_drop include/net/bluetooth/hci_core.h:1688 [inline]
+ le_read_features_complete+0x5b/0x340 net/bluetooth/hci_sync.c:7344
+ hci_cmd_sync_work+0x1ff/0x430 net/bluetooth/hci_sync.c:334
+ process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
+ kthread+0x3c5/0x780 kernel/kthread.c:463
+ ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+
+Allocated by task 5932:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:77
+ poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:417
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ __hci_conn_add+0xf8/0x1c70 net/bluetooth/hci_conn.c:963
+ hci_conn_add_unset+0x76/0x100 net/bluetooth/hci_conn.c:1084
+ le_conn_complete_evt+0x639/0x1f20 net/bluetooth/hci_event.c:5714
+ hci_le_enh_conn_complete_evt+0x23d/0x380 net/bluetooth/hci_event.c:5861
+ hci_le_meta_evt+0x357/0x5e0 net/bluetooth/hci_event.c:7408
+ hci_event_func net/bluetooth/hci_event.c:7716 [inline]
+ hci_event_packet+0x685/0x11c0 net/bluetooth/hci_event.c:7773
+ hci_rx_work+0x2c9/0xeb0 net/bluetooth/hci_core.c:4076
+ process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
+ kthread+0x3c5/0x780 kernel/kthread.c:463
+ ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+Freed by task 5932:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:77
+ __kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:587
+ kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2540 [inline]
+ slab_free mm/slub.c:6663 [inline]
+ kfree+0x2f8/0x6e0 mm/slub.c:6871
+ device_release+0xa4/0x240 drivers/base/core.c:2565
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1e7/0x590 lib/kobject.c:737
+ put_device drivers/base/core.c:3797 [inline]
+ device_unregister+0x2f/0xc0 drivers/base/core.c:3920
+ hci_conn_del_sysfs+0xb4/0x180 net/bluetooth/hci_sysfs.c:79
+ hci_conn_cleanup net/bluetooth/hci_conn.c:173 [inline]
+ hci_conn_del+0x657/0x1180 net/bluetooth/hci_conn.c:1234
+ hci_disconn_complete_evt+0x410/0xa00 net/bluetooth/hci_event.c:3451
+ hci_event_func net/bluetooth/hci_event.c:7719 [inline]
+ hci_event_packet+0xa10/0x11c0 net/bluetooth/hci_event.c:7773
+ hci_rx_work+0x2c9/0xeb0 net/bluetooth/hci_core.c:4076
+ process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
+ kthread+0x3c5/0x780 kernel/kthread.c:463
+ ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+The buggy address belongs to the object at ffff8880796b0000
+ which belongs to the cache kmalloc-8k of size 8192
+The buggy address is located 16 bytes inside of
+ freed 8192-byte region [ffff8880796b0000, ffff8880796b2000)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x796b0
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000040 ffff88813ff27280 0000000000000000 0000000000000001
+raw: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+head: 00fff00000000040 ffff88813ff27280 0000000000000000 0000000000000001
+head: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+head: 00fff00000000003 ffffea0001e5ac01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5657, tgid 5657 (dhcpcd-run-hook), ts 79819636908, free_ts 79814310558
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x1af/0x220 mm/page_alloc.c:1845
+ prep_new_page mm/page_alloc.c:1853 [inline]
+ get_page_from_freelist+0xd0b/0x31a0 mm/page_alloc.c:3879
+ __alloc_frozen_pages_noprof+0x25f/0x2440 mm/page_alloc.c:5183
+ alloc_pages_mpol+0x1fb/0x550 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3075 [inline]
+ allocate_slab mm/slub.c:3248 [inline]
+ new_slab+0x2c3/0x430 mm/slub.c:3302
+ ___slab_alloc+0xe18/0x1c90 mm/slub.c:4651
+ __slab_alloc.constprop.0+0x63/0x110 mm/slub.c:4774
+ __slab_alloc_node mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:5246 [inline]
+ __kmalloc_cache_noprof+0x477/0x800 mm/slub.c:5766
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ tomoyo_print_bprm security/tomoyo/audit.c:26 [inline]
+ tomoyo_init_log+0xc8a/0x2140 security/tomoyo/audit.c:264
+ tomoyo_supervisor+0x302/0x13b0 security/tomoyo/common.c:2198
+ tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
+ tomoyo_env_perm+0x191/0x200 security/tomoyo/environ.c:63
+ tomoyo_environ security/tomoyo/domain.c:672 [inline]
+ tomoyo_find_next_domain+0xec1/0x20b0 security/tomoyo/domain.c:888
+ tomoyo_bprm_check_security security/tomoyo/tomoyo.c:102 [inline]
+ tomoyo_bprm_check_security+0x12d/0x1d0 security/tomoyo/tomoyo.c:92
+ security_bprm_check+0x1b9/0x1e0 security/security.c:794
+ search_binary_handler fs/exec.c:1659 [inline]
+ exec_binprm fs/exec.c:1701 [inline]
+ bprm_execve fs/exec.c:1753 [inline]
+ bprm_execve+0x81e/0x1620 fs/exec.c:1729
+ do_execveat_common.isra.0+0x4a5/0x610 fs/exec.c:1859
+page last free pid 5657 tgid 5657 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1394 [inline]
+ __free_frozen_pages+0x7df/0x1160 mm/page_alloc.c:2901
+ discard_slab mm/slub.c:3346 [inline]
+ __put_partials+0x130/0x170 mm/slub.c:3886
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x4c/0xf0 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x195/0x1e0 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x69/0x90 mm/kasan/common.c:352
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4948 [inline]
+ slab_alloc_node mm/slub.c:5258 [inline]
+ __kmalloc_cache_noprof+0x274/0x800 mm/slub.c:5766
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ tomoyo_print_header security/tomoyo/audit.c:156 [inline]
+ tomoyo_init_log+0x197/0x2140 security/tomoyo/audit.c:255
+ tomoyo_supervisor+0x302/0x13b0 security/tomoyo/common.c:2198
+ tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
+ tomoyo_env_perm+0x191/0x200 security/tomoyo/environ.c:63
+ tomoyo_environ security/tomoyo/domain.c:672 [inline]
+ tomoyo_find_next_domain+0xec1/0x20b0 security/tomoyo/domain.c:888
+ tomoyo_bprm_check_security security/tomoyo/tomoyo.c:102 [inline]
+ tomoyo_bprm_check_security+0x12d/0x1d0 security/tomoyo/tomoyo.c:92
+ security_bprm_check+0x1b9/0x1e0 security/security.c:794
+ search_binary_handler fs/exec.c:1659 [inline]
+ exec_binprm fs/exec.c:1701 [inline]
+ bprm_execve fs/exec.c:1753 [inline]
+ bprm_execve+0x81e/0x1620 fs/exec.c:1729
+ do_execveat_common.isra.0+0x4a5/0x610 fs/exec.c:1859
+ do_execve fs/exec.c:1933 [inline]
+ __do_sys_execve fs/exec.c:2009 [inline]
+ __se_sys_execve fs/exec.c:2004 [inline]
+ __x64_sys_execve+0x8e/0xb0 fs/exec.c:2004
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
+
+Memory state around the buggy address:
+ ffff8880796aff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff8880796aff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff8880796b0000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                         ^
+ ffff8880796b0080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8880796b0100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+Fixes: a106e50be74b ("Bluetooth: HCI: Add support for LL Extended Feature Set")
+Reported-by: syzbot+87badbb9094e008e0685@syzkaller.appspotmail.com
+Tested-by: syzbot+87badbb9094e008e0685@syzkaller.appspotmail.com
+Closes: https://syzbot.org/bug?extid=87badbb9094e008e0685
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp.h    |   6 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c | 117 +++++++++++-------------
- 2 files changed, 58 insertions(+), 65 deletions(-)
+ net/bluetooth/hci_sync.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index 2f6dd69d3be27..0ce26f76bb815 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2023, 2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 7dfd630d38f05..312526a5a1efb 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -7359,10 +7359,8 @@ static void le_read_features_complete(struct hci_dev *hdev, void *data, int err)
  
- #ifndef ATH11K_DP_H
-@@ -20,7 +20,6 @@ struct ath11k_ext_irq_grp;
+ 	bt_dev_dbg(hdev, "err %d", err);
  
- struct dp_rx_tid {
- 	u8 tid;
--	u32 *vaddr;
- 	dma_addr_t paddr;
- 	u32 size;
- 	u32 ba_win_sz;
-@@ -37,6 +36,9 @@ struct dp_rx_tid {
- 	/* Timer info related to fragments */
- 	struct timer_list frag_timer;
- 	struct ath11k_base *ab;
-+	u32 *vaddr_unaligned;
-+	dma_addr_t paddr_unaligned;
-+	u32 unaligned_size;
- };
- 
- #define DP_REO_DESC_FREE_THRESHOLD  64
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index c37722a727309..411749e8e209e 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/ieee80211.h>
-@@ -675,11 +675,11 @@ void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_base *ab)
- 	list_for_each_entry_safe(cmd, tmp, &dp->reo_cmd_list, list) {
- 		list_del(&cmd->list);
- 		rx_tid = &cmd->data;
--		if (rx_tid->vaddr) {
--			dma_unmap_single(ab->dev, rx_tid->paddr,
--					 rx_tid->size, DMA_BIDIRECTIONAL);
--			kfree(rx_tid->vaddr);
--			rx_tid->vaddr = NULL;
-+		if (rx_tid->vaddr_unaligned) {
-+			dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+					     rx_tid->vaddr_unaligned,
-+					     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+			rx_tid->vaddr_unaligned = NULL;
- 		}
- 		kfree(cmd);
- 	}
-@@ -689,11 +689,11 @@ void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_base *ab)
- 		list_del(&cmd_cache->list);
- 		dp->reo_cmd_cache_flush_count--;
- 		rx_tid = &cmd_cache->data;
--		if (rx_tid->vaddr) {
--			dma_unmap_single(ab->dev, rx_tid->paddr,
--					 rx_tid->size, DMA_BIDIRECTIONAL);
--			kfree(rx_tid->vaddr);
--			rx_tid->vaddr = NULL;
-+		if (rx_tid->vaddr_unaligned) {
-+			dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+					     rx_tid->vaddr_unaligned,
-+					     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+			rx_tid->vaddr_unaligned = NULL;
- 		}
- 		kfree(cmd_cache);
- 	}
-@@ -708,11 +708,11 @@ static void ath11k_dp_reo_cmd_free(struct ath11k_dp *dp, void *ctx,
- 	if (status != HAL_REO_CMD_SUCCESS)
- 		ath11k_warn(dp->ab, "failed to flush rx tid hw desc, tid %d status %d\n",
- 			    rx_tid->tid, status);
--	if (rx_tid->vaddr) {
--		dma_unmap_single(dp->ab->dev, rx_tid->paddr, rx_tid->size,
--				 DMA_BIDIRECTIONAL);
--		kfree(rx_tid->vaddr);
--		rx_tid->vaddr = NULL;
-+	if (rx_tid->vaddr_unaligned) {
-+		dma_free_noncoherent(dp->ab->dev, rx_tid->unaligned_size,
-+				     rx_tid->vaddr_unaligned,
-+				     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+		rx_tid->vaddr_unaligned = NULL;
- 	}
+-	if (err == -ECANCELED)
+-		return;
+-
+ 	hci_conn_drop(conn);
++	hci_conn_put(conn);
  }
  
-@@ -749,10 +749,10 @@ static void ath11k_dp_reo_cache_flush(struct ath11k_base *ab,
- 	if (ret) {
- 		ath11k_err(ab, "failed to send HAL_REO_CMD_FLUSH_CACHE cmd, tid %d (%d)\n",
- 			   rx_tid->tid, ret);
--		dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
--				 DMA_BIDIRECTIONAL);
--		kfree(rx_tid->vaddr);
--		rx_tid->vaddr = NULL;
-+		dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+				     rx_tid->vaddr_unaligned,
-+				     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+		rx_tid->vaddr_unaligned = NULL;
+ static int hci_le_read_all_remote_features_sync(struct hci_dev *hdev,
+@@ -7432,10 +7430,12 @@ int hci_le_read_remote_features(struct hci_conn *conn)
+ 	if (conn->out || (hdev->le_features[0] & HCI_LE_PERIPHERAL_FEATURES)) {
+ 		err = hci_cmd_sync_queue_once(hdev,
+ 					      hci_le_read_remote_features_sync,
+-					      hci_conn_hold(conn),
++					      hci_conn_hold(hci_conn_get(conn)),
+ 					      le_read_features_complete);
+-		if (err)
++		if (err) {
+ 			hci_conn_drop(conn);
++			hci_conn_put(conn);
++		}
+ 	} else {
+ 		err = -EOPNOTSUPP;
  	}
- }
- 
-@@ -802,10 +802,10 @@ static void ath11k_dp_rx_tid_del_func(struct ath11k_dp *dp, void *ctx,
- 
- 	return;
- free_desc:
--	dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
--			 DMA_BIDIRECTIONAL);
--	kfree(rx_tid->vaddr);
--	rx_tid->vaddr = NULL;
-+	dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+			     rx_tid->vaddr_unaligned,
-+			     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+	rx_tid->vaddr_unaligned = NULL;
- }
- 
- void ath11k_peer_rx_tid_delete(struct ath11k *ar,
-@@ -831,14 +831,16 @@ void ath11k_peer_rx_tid_delete(struct ath11k *ar,
- 		if (ret != -ESHUTDOWN)
- 			ath11k_err(ar->ab, "failed to send HAL_REO_CMD_UPDATE_RX_QUEUE cmd, tid %d (%d)\n",
- 				   tid, ret);
--		dma_unmap_single(ar->ab->dev, rx_tid->paddr, rx_tid->size,
--				 DMA_BIDIRECTIONAL);
--		kfree(rx_tid->vaddr);
--		rx_tid->vaddr = NULL;
-+		dma_free_noncoherent(ar->ab->dev, rx_tid->unaligned_size,
-+				     rx_tid->vaddr_unaligned,
-+				     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+		rx_tid->vaddr_unaligned = NULL;
- 	}
- 
- 	rx_tid->paddr = 0;
-+	rx_tid->paddr_unaligned = 0;
- 	rx_tid->size = 0;
-+	rx_tid->unaligned_size = 0;
- }
- 
- static int ath11k_dp_rx_link_desc_return(struct ath11k_base *ab,
-@@ -982,10 +984,9 @@ static void ath11k_dp_rx_tid_mem_free(struct ath11k_base *ab,
- 	if (!rx_tid->active)
- 		goto unlock_exit;
- 
--	dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
--			 DMA_BIDIRECTIONAL);
--	kfree(rx_tid->vaddr);
--	rx_tid->vaddr = NULL;
-+	dma_free_noncoherent(ab->dev, rx_tid->unaligned_size, rx_tid->vaddr_unaligned,
-+			     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+	rx_tid->vaddr_unaligned = NULL;
- 
- 	rx_tid->active = false;
- 
-@@ -1000,9 +1001,8 @@ int ath11k_peer_rx_tid_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id,
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_peer *peer;
- 	struct dp_rx_tid *rx_tid;
--	u32 hw_desc_sz;
--	u32 *addr_aligned;
--	void *vaddr;
-+	u32 hw_desc_sz, *vaddr;
-+	void *vaddr_unaligned;
- 	dma_addr_t paddr;
- 	int ret;
- 
-@@ -1050,49 +1050,40 @@ int ath11k_peer_rx_tid_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id,
- 	else
- 		hw_desc_sz = ath11k_hal_reo_qdesc_size(DP_BA_WIN_SZ_MAX, tid);
- 
--	vaddr = kzalloc(hw_desc_sz + HAL_LINK_DESC_ALIGN - 1, GFP_ATOMIC);
--	if (!vaddr) {
-+	rx_tid->unaligned_size = hw_desc_sz + HAL_LINK_DESC_ALIGN - 1;
-+	vaddr_unaligned = dma_alloc_noncoherent(ab->dev, rx_tid->unaligned_size, &paddr,
-+						DMA_BIDIRECTIONAL, GFP_ATOMIC);
-+	if (!vaddr_unaligned) {
- 		spin_unlock_bh(&ab->base_lock);
- 		return -ENOMEM;
- 	}
- 
--	addr_aligned = PTR_ALIGN(vaddr, HAL_LINK_DESC_ALIGN);
--
--	ath11k_hal_reo_qdesc_setup(addr_aligned, tid, ba_win_sz,
--				   ssn, pn_type);
--
--	paddr = dma_map_single(ab->dev, addr_aligned, hw_desc_sz,
--			       DMA_BIDIRECTIONAL);
--
--	ret = dma_mapping_error(ab->dev, paddr);
--	if (ret) {
--		spin_unlock_bh(&ab->base_lock);
--		ath11k_warn(ab, "failed to setup dma map for peer %pM rx tid %d: %d\n",
--			    peer_mac, tid, ret);
--		goto err_mem_free;
--	}
--
--	rx_tid->vaddr = vaddr;
--	rx_tid->paddr = paddr;
-+	rx_tid->vaddr_unaligned = vaddr_unaligned;
-+	vaddr = PTR_ALIGN(vaddr_unaligned, HAL_LINK_DESC_ALIGN);
-+	rx_tid->paddr_unaligned = paddr;
-+	rx_tid->paddr = rx_tid->paddr_unaligned + ((unsigned long)vaddr -
-+			(unsigned long)rx_tid->vaddr_unaligned);
-+	ath11k_hal_reo_qdesc_setup(vaddr, tid, ba_win_sz, ssn, pn_type);
- 	rx_tid->size = hw_desc_sz;
- 	rx_tid->active = true;
- 
-+	/* After dma_alloc_noncoherent, vaddr is being modified for reo qdesc setup.
-+	 * Since these changes are not reflected in the device, driver now needs to
-+	 * explicitly call dma_sync_single_for_device.
-+	 */
-+	dma_sync_single_for_device(ab->dev, rx_tid->paddr,
-+				   rx_tid->size,
-+				   DMA_TO_DEVICE);
- 	spin_unlock_bh(&ab->base_lock);
- 
--	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_mac,
--						     paddr, tid, 1, ba_win_sz);
-+	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_mac, rx_tid->paddr,
-+						     tid, 1, ba_win_sz);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to setup rx reorder queue for peer %pM tid %d: %d\n",
- 			    peer_mac, tid, ret);
- 		ath11k_dp_rx_tid_mem_free(ab, peer_mac, vdev_id, tid);
- 	}
- 
--	return ret;
--
--err_mem_free:
--	kfree(rx_tid->vaddr);
--	rx_tid->vaddr = NULL;
--
- 	return ret;
- }
- 
 -- 
 2.53.0
 
