@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULKNJB6l1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:34 +0200
+	id qGimNPqb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012213C2106
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390013C0639
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68A3631B1BEE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42B183044A79
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B953D890F;
-	Wed,  8 Apr 2026 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB16385513;
+	Wed,  8 Apr 2026 18:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToxX/nBd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0iEjSea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029C21A285;
-	Wed,  8 Apr 2026 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED662727F3;
+	Wed,  8 Apr 2026 18:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673772; cv=none; b=KxfaJAvvRCqa9Luk8nUG5hCrVVAS3klJp0C5Fo+e4fwdYr0Ff6F8/3gHGbUqwDwi+zb35mOcwaSHbdyCveGGqRrk+LntE31kyX0rxyTXz9/GzvapYPlLytQgO9rd89kchHrcNdrlFomJC+di1EBdnEOu9HSGGruxrWWNZbm3RJY=
+	t=1775672144; cv=none; b=kdOIJFfHt1v8OhGGhxkqyZMT+GZbIaMH4vMYRpPHjolrnLa5lh8tMvK7Qoi2d/lCqivghLrwzanpGgndRPRrCps/F/TRgBg0SZe/0m0Q3wxoh3KRiSYnuTZrPaI/OaWhdd+RmL/oxN4zPwepvR5LAPy8CUGW49LZJRcwwv/Bc2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673772; c=relaxed/simple;
-	bh=dPS7+NNo3bKGkJEG1xeg0J44yxAlrucjh4tGIKGsOWs=;
+	s=arc-20240116; t=1775672144; c=relaxed/simple;
+	bh=rayOHrMTDL2k+he6+giXFSDWEDrOtZR8v8qscN2LQf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxvWGUnKXxGNOfsVXVCBhwchlyT/zBRtpsOJ7g0/rjoAz0cVwQruWDA1VLphYkg1fPJMjqY33f14dKZsfiQ7y+xXW4BtUjPPSM4JlMhXmgfAnbhxyjU9XAkMi6hqo0/WtEoe5FAFgt8xBhxNEBi5WbhqH0y854A7ezfG6X8x8yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToxX/nBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAB0C19421;
-	Wed,  8 Apr 2026 18:42:51 +0000 (UTC)
+	 MIME-Version; b=puLQBLuPlEB9p8RwmPkEJ+n5NWTIvufSswhUob5dbKKg4+x5HPwyyQx+dWVP5ZUaZByQrC7jHxbnGvn7UhVzfj22Urz3GP5yWtN9olynMx7sM6wC9HJqM6adCpwDwQxoBiT9ORb6Lq4Y4zhSa/d4JNcrsxKF7KvcoX1QI9TdJP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0iEjSea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9620C19421;
+	Wed,  8 Apr 2026 18:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673771;
-	bh=dPS7+NNo3bKGkJEG1xeg0J44yxAlrucjh4tGIKGsOWs=;
+	s=korg; t=1775672144;
+	bh=rayOHrMTDL2k+he6+giXFSDWEDrOtZR8v8qscN2LQf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToxX/nBd4Wugve19uYR9gSRSj5efHqcbInDsVhGv+QIcrJ6ynQ6DM/wN+xQntPqhi
-	 3DnHjvU+geffsn37YpYD9LUEX3d6MldYkVxCnG/nCkPirURfiu+BWq/xWUUQA+8neX
-	 EapOUR75FBy26dlwKmhGNcqfIf936mugIoZtAXHw=
+	b=P0iEjSeagW7lvQvaf6IUVpkuTwY0/OQA+0TuFoBf6HknO22hT31oQpr2ToPsrXvkL
+	 Rzh5RywPM1+cUh+en+MFJUXp1wJycEgNfW5OvEESUVAU3zHErBb2FAuqQmHrXXJjte
+	 nQtpS913Wkp2E2ipUTCtPb/ntnrXZSHP08N1ruUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/242] Bluetooth: hci_event: fix potential UAF in hci_le_remote_conn_param_req_evt
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 207/312] hwmon: (occ) Fix division by zero in occ_show_power_1()
 Date: Wed,  8 Apr 2026 20:02:04 +0200
-Message-ID: <20260408175930.225701897@linuxfoundation.org>
+Message-ID: <20260408175941.491604807@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234791-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234162-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,105 +86,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iki.fi:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 012213C2106
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 390013C0639
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit b255531b27da336571411248c2a72a350662bd09 ]
+commit 39e2a5bf970402a8530a319cf06122e216ba57b8 upstream.
 
-hci_conn lookup and field access must be covered by hdev lock in
-hci_le_remote_conn_param_req_evt, otherwise it's possible it is freed
-concurrently.
+In occ_show_power_1() case 1, the accumulator is divided by
+update_tag without checking for zero. If no samples have been
+collected yet (e.g. during early boot when the sensor block is
+included but hasn't been updated), update_tag is zero, causing
+a kernel divide-by-zero crash.
 
-Extend the hci_dev_lock critical section to cover all conn usage.
+The 2019 fix in commit 211186cae14d ("hwmon: (occ) Fix division by
+zero issue") only addressed occ_get_powr_avg() used by
+occ_show_power_2() and occ_show_power_a0(). This separate code
+path in occ_show_power_1() was missed.
 
-Fixes: 95118dd4edfec ("Bluetooth: hci_event: Use of a function table to handle LE subevents")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by reusing the existing occ_get_powr_avg() helper, which
+already handles the zero-sample case and uses mul_u64_u32_div()
+to multiply before dividing for better precision. Move the helper
+above occ_show_power_1() so it is visible at the call site.
+
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260326224510.294619-2-sanman.pradhan@hpe.com
+[groeck: Fix alignment problems reported by checkpatch]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ drivers/hwmon/occ/common.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 498b7e4c76d59..0dd021c881cc4 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6616,25 +6616,31 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
- 	latency = le16_to_cpu(ev->latency);
- 	timeout = le16_to_cpu(ev->timeout);
- 
-+	hci_dev_lock(hdev);
-+
- 	hcon = hci_conn_hash_lookup_handle(hdev, handle);
--	if (!hcon || hcon->state != BT_CONNECTED)
--		return send_conn_param_neg_reply(hdev, handle,
--						 HCI_ERROR_UNKNOWN_CONN_ID);
-+	if (!hcon || hcon->state != BT_CONNECTED) {
-+		send_conn_param_neg_reply(hdev, handle,
-+					  HCI_ERROR_UNKNOWN_CONN_ID);
-+		goto unlock;
-+	}
- 
--	if (max > hcon->le_conn_max_interval)
--		return send_conn_param_neg_reply(hdev, handle,
--						 HCI_ERROR_INVALID_LL_PARAMS);
-+	if (max > hcon->le_conn_max_interval) {
-+		send_conn_param_neg_reply(hdev, handle,
-+					  HCI_ERROR_INVALID_LL_PARAMS);
-+		goto unlock;
-+	}
- 
--	if (hci_check_conn_params(min, max, latency, timeout))
--		return send_conn_param_neg_reply(hdev, handle,
--						 HCI_ERROR_INVALID_LL_PARAMS);
-+	if (hci_check_conn_params(min, max, latency, timeout)) {
-+		send_conn_param_neg_reply(hdev, handle,
-+					  HCI_ERROR_INVALID_LL_PARAMS);
-+		goto unlock;
-+	}
- 
- 	if (hcon->role == HCI_ROLE_MASTER) {
- 		struct hci_conn_params *params;
- 		u8 store_hint;
- 
--		hci_dev_lock(hdev);
--
- 		params = hci_conn_params_lookup(hdev, &hcon->dst,
- 						hcon->dst_type);
- 		if (params) {
-@@ -6647,8 +6653,6 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
- 			store_hint = 0x00;
- 		}
- 
--		hci_dev_unlock(hdev);
--
- 		mgmt_new_conn_param(hdev, &hcon->dst, hcon->dst_type,
- 				    store_hint, min, max, latency, timeout);
- 	}
-@@ -6662,6 +6666,9 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
- 	cp.max_ce_len = 0;
- 
- 	hci_send_cmd(hdev, HCI_OP_LE_CONN_PARAM_REQ_REPLY, sizeof(cp), &cp);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -420,6 +420,12 @@ static ssize_t occ_show_freq_2(struct de
+ 	return sysfs_emit(buf, "%u\n", val);
  }
  
- static void hci_le_direct_adv_report_evt(struct hci_dev *hdev, void *data,
--- 
-2.53.0
-
++static u64 occ_get_powr_avg(u64 accum, u32 samples)
++{
++	return (samples == 0) ? 0 :
++		mul_u64_u32_div(accum, 1000000UL, samples);
++}
++
+ static ssize_t occ_show_power_1(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
+@@ -441,9 +447,8 @@ static ssize_t occ_show_power_1(struct d
+ 		val = get_unaligned_be16(&power->sensor_id);
+ 		break;
+ 	case 1:
+-		val = get_unaligned_be32(&power->accumulator) /
+-			get_unaligned_be32(&power->update_tag);
+-		val *= 1000000ULL;
++		val = occ_get_powr_avg(get_unaligned_be32(&power->accumulator),
++				       get_unaligned_be32(&power->update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->update_tag) *
+@@ -459,12 +464,6 @@ static ssize_t occ_show_power_1(struct d
+ 	return sysfs_emit(buf, "%llu\n", val);
+ }
+ 
+-static u64 occ_get_powr_avg(u64 accum, u32 samples)
+-{
+-	return (samples == 0) ? 0 :
+-		mul_u64_u32_div(accum, 1000000UL, samples);
+-}
+-
+ static ssize_t occ_show_power_2(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
 
 
 
