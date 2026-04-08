@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNCOI3Kb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:18 +0200
+	id OO2HIHKf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084AD3C04FA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3043C0F22
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C32AD304E0D1
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5BE530A4A97
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6338A3D8918;
-	Wed,  8 Apr 2026 18:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC2E324B1F;
+	Wed,  8 Apr 2026 18:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luVrg6Wx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cfd/fuH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E721A683C;
-	Wed,  8 Apr 2026 18:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CB43A16A0;
+	Wed,  8 Apr 2026 18:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672067; cv=none; b=I0wYOOXzAwmp8n0WncQt1NXsNwKDozC4qyiVdRZOY1J+lomD3cwI1LrE6uXfSg0sqitowiMr4187U20+mCiA/RFG8rUxo/OHe9ZdZXk7CSvftHtpvaLkwwaXsmznsaEm0jlnGsYh7PnstcACiY+QMoj2zHZr3K8QC6SXOQ5UEmg=
+	t=1775672496; cv=none; b=Zt+M5NuZf4HRNrQPt7uqAXJvT8TAonywZQLrpdZ3Le9pkqJuhK+aKpAH5cNWo0GbFBHUKhpn5CR3iVGuMSZ+hyJPaM6j7xgrX/HvliQrvtG3fEgCKvKjmGa+cGayy1M2wwPPUERGZh823+rD71qhyfxR859LRGF21q/we0y/11c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672067; c=relaxed/simple;
-	bh=SIRl8GaxL8scGXN9riiRK3xT9inGIICNIsj3oI6Jlvk=;
+	s=arc-20240116; t=1775672496; c=relaxed/simple;
+	bh=D1c5wGfhh/DXW5BUD+GKlOqA/ePCEQMcB1385MFBXjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GF8nZ2HY15ZjrYooXLH30kqrRv/PkM1VC0uynLmsSVmQRD411pJLuc6ODdWRC87sLX94t4s+iPw1UsrD/zG14Wm9eEhbGigMZltpWyLPhkKWVf2KB/ZjA3XtARqBqO3HryVRLbnYvf9iCz+IJ/H9R3IqmVjNMKM/oAtT5DLJUKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luVrg6Wx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0320C19421;
-	Wed,  8 Apr 2026 18:14:26 +0000 (UTC)
+	 MIME-Version; b=jMzlCS+7R3pc7qXqmdQO9d7+kkBzCim77Asr16xnYWYUc7zEayAjWnqk3F8NM5ojLY4bTLGjh2MktsR2STSClwhGSBmKONBxAmD4a5SnZxWyuK5x1wGcGa3l4HPL7juNEfM8A9Llbtqow/IlD4qefqWRuPD1Xk94SmLq3gh/0tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cfd/fuH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4BCC19421;
+	Wed,  8 Apr 2026 18:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672067;
-	bh=SIRl8GaxL8scGXN9riiRK3xT9inGIICNIsj3oI6Jlvk=;
+	s=korg; t=1775672496;
+	bh=D1c5wGfhh/DXW5BUD+GKlOqA/ePCEQMcB1385MFBXjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luVrg6WxId6e/PCglujTyuPxDAC3+z6FbdR1dvrVOjM1LyTKANV8iPSVAhG/xRuIc
-	 3Lcm1ZN6RODI3VWErdR9774lE0YCqSKDSo/KpKyVrZEZjZ9mlY33xkWqF4TXmpkCmd
-	 xcH2Ns4BDgRSIZD/HIbxWCN3AWygw6HTMDBAIXCM=
+	b=Cfd/fuH47wpyqkzDvoHIKk0ukiECdTW+S6UvitVvz8uLcHS1mVv/V07Pkf4Ovuj/v
+	 XLsbSz5Qu+ptFu/171y0+Sg/hSgVrtQTwpTIXHY7lxj0QivAF6OKKm7YzKFfPJLafp
+	 OD6DcrEKynQ0437cnvG3CUMPEGYbYQLP+1KP5Gq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cen Zhang <zzzccc427@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/312] Bluetooth: SCO: fix race conditions in sco_sock_connect()
+Subject: [PATCH 6.6 006/160] objtool: Fix Clang jump table detection
 Date: Wed,  8 Apr 2026 20:01:33 +0200
-Message-ID: <20260408175940.337444922@linuxfoundation.org>
+Message-ID: <20260408175913.422032879@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,176 +66,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234132-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234298-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 084AD3C04FA
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arndb.de:email]
+X-Rspamd-Queue-Id: 1F3043C0F22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cen Zhang <zzzccc427@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 8a5b0135d4a5d9683203a3d9a12a711ccec5936b ]
+[ Upstream commit 4e5019216402ad0b4a84cff457b662d26803f103 ]
 
-sco_sock_connect() checks sk_state and sk_type without holding
-the socket lock. Two concurrent connect() syscalls on the same
-socket can both pass the check and enter sco_connect(), leading
-to use-after-free.
+With Clang, there can be a conditional forward jump between the load of
+the jump table address and the indirect branch.
 
-The buggy scenario involves three participants and was confirmed
-with additional logging instrumentation:
+Fixes the following warning:
 
-  Thread A (connect):    HCI disconnect:      Thread B (connect):
+  vmlinux.o: warning: objtool: ___bpf_prog_run+0x1c5: sibling call from callable instruction with modified stack frame
 
-  sco_sock_connect(sk)                        sco_sock_connect(sk)
-  sk_state==BT_OPEN                           sk_state==BT_OPEN
-  (pass, no lock)                             (pass, no lock)
-  sco_connect(sk):                            sco_connect(sk):
-    hci_dev_lock                                hci_dev_lock
-    hci_connect_sco                               <- blocked
-      -> hcon1
-    sco_conn_add->conn1
-    lock_sock(sk)
-    sco_chan_add:
-      conn1->sk = sk
-      sk->conn = conn1
-    sk_state=BT_CONNECT
-    release_sock
-    hci_dev_unlock
-                           hci_dev_lock
-                           sco_conn_del:
-                             lock_sock(sk)
-                             sco_chan_del:
-                               sk->conn=NULL
-                               conn1->sk=NULL
-                               sk_state=
-                                 BT_CLOSED
-                               SOCK_ZAPPED
-                             release_sock
-                           hci_dev_unlock
-                                                  (unblocked)
-                                                  hci_connect_sco
-                                                    -> hcon2
-                                                  sco_conn_add
-                                                    -> conn2
-                                                  lock_sock(sk)
-                                                  sco_chan_add:
-                                                    sk->conn=conn2
-                                                  sk_state=
-                                                    BT_CONNECT
-                                                  // zombie sk!
-                                                  release_sock
-                                                  hci_dev_unlock
-
-Thread B revives a BT_CLOSED + SOCK_ZAPPED socket back to
-BT_CONNECT. Subsequent cleanup triggers double sock_put() and
-use-after-free. Meanwhile conn1 is leaked as it was orphaned
-when sco_conn_del() cleared the association.
-
-Fix this by:
-- Moving lock_sock() before the sk_state/sk_type checks in
-  sco_sock_connect() to serialize concurrent connect attempts
-- Fixing the sk_type != SOCK_SEQPACKET check to actually
-  return the error instead of just assigning it
-- Adding a state re-check in sco_connect() after lock_sock()
-  to catch state changes during the window between the locks
-- Adding sco_pi(sk)->conn check in sco_chan_add() to prevent
-  double-attach of a socket to multiple connections
-- Adding hci_conn_drop() on sco_chan_add failure to prevent
-  HCI connection leaks
-
-Fixes: 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
+Link: https://patch.msgid.link/7d8600caed08901b6679767488acd639f6df9688.1773071992.git.jpoimboe@kernel.org
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/sco.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ tools/objtool/check.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 94c90d472f317..eebbbe6deacdd 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -239,7 +239,7 @@ static int sco_chan_add(struct sco_conn *conn, struct sock *sk,
- 	int err = 0;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 6497c80fd6f77..2c7b09c8415f0 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2136,12 +2136,11 @@ static void mark_func_jump_tables(struct objtool_file *file,
+ 			last = insn;
  
- 	sco_conn_lock(conn);
--	if (conn->sk)
-+	if (conn->sk || sco_pi(sk)->conn)
- 		err = -EBUSY;
- 	else
- 		__sco_chan_add(conn, sk, parent);
-@@ -293,9 +293,20 @@ static int sco_connect(struct sock *sk)
+ 		/*
+-		 * Store back-pointers for unconditional forward jumps such
++		 * Store back-pointers for forward jumps such
+ 		 * that find_jump_table() can back-track using those and
+ 		 * avoid some potentially confusing code.
+ 		 */
+-		if (insn->type == INSN_JUMP_UNCONDITIONAL && insn->jump_dest &&
+-		    insn->offset > last->offset &&
++		if (insn->jump_dest &&
+ 		    insn->jump_dest->offset > insn->offset &&
+ 		    !insn->jump_dest->first_jump_src) {
  
- 	lock_sock(sk);
- 
-+	/* Recheck state after reacquiring the socket lock, as another
-+	 * thread may have changed it (e.g., closed the socket).
-+	 */
-+	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
-+		release_sock(sk);
-+		hci_conn_drop(hcon);
-+		err = -EBADFD;
-+		goto unlock;
-+	}
-+
- 	err = sco_chan_add(conn, sk, NULL);
- 	if (err) {
- 		release_sock(sk);
-+		hci_conn_drop(hcon);
- 		goto unlock;
- 	}
- 
-@@ -613,13 +624,18 @@ static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen
- 	    addr->sa_family != AF_BLUETOOTH)
- 		return -EINVAL;
- 
--	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND)
-+	lock_sock(sk);
-+
-+	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
-+		release_sock(sk);
- 		return -EBADFD;
-+	}
- 
--	if (sk->sk_type != SOCK_SEQPACKET)
--		err = -EINVAL;
-+	if (sk->sk_type != SOCK_SEQPACKET) {
-+		release_sock(sk);
-+		return -EINVAL;
-+	}
- 
--	lock_sock(sk);
- 	/* Set destination address and psm */
- 	bacpy(&sco_pi(sk)->dst, &sa->sco_bdaddr);
- 	release_sock(sk);
 -- 
 2.53.0
 
