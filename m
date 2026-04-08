@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONQXIrKi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:14 +0200
+	id ULNJF9aq1mmOHAgAu9opvQ
+	(envelope-from <stable+bounces-235129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0994E3C1866
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8460D3C2D77
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60E6B305DFA9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5CEB31CE5F7
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FEC3624B9;
-	Wed,  8 Apr 2026 18:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759B6348453;
+	Wed,  8 Apr 2026 18:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISHKM4R9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIuz48WU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BEB3AEF5F;
-	Wed,  8 Apr 2026 18:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C513176E4;
+	Wed,  8 Apr 2026 18:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673937; cv=none; b=Q/cSC1yPSlTB3aBH5o7iHEqNwT/jRGVNIgSLVpdtmq4y605y7i0kI7cpQfhEY/wMq2OhMotvPMOj9GZ20M/6ZrUI7RqdfF1iKPVNvB5VHBA/7PYyuuYoxK4zCyTwVBQSvEaPg3zVgWDDozxDi0kDfH6RbOxKiT4CllxGRWPNK54=
+	t=1775674644; cv=none; b=esrrdp1XRCJTuQa0HQgpRgZgS7in4IFbWceDMJZWnGWGjhBxqs/x6nHFb/n1FQFztctLMcIYn7oiJ4HyuRr1yvcZ5EvS0mT6TVSdyN/m+uJobSMquNoVE0gBsRIJoXKIOiWINIfYBR6/WwJgF06UUPD6U1I7riEuCtvXjCWbM0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673937; c=relaxed/simple;
-	bh=GvSCBLGkfWH3VVsT60fdoHYnVc4Ec3JsOqWn8mg6GvI=;
+	s=arc-20240116; t=1775674644; c=relaxed/simple;
+	bh=qOTkJLKvsL09Cn7cndlgV2DH4VlGfEfUjCtiWU2jQWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G9z5m7lFavz6ULlwA+xh1uKlXj7wZEpi0dLvj4wrUVP35cLVrP2kaDYeeuqdO0zSeX6r6QnxO9d2ItfNKPBG9mMTT/FYvHQlwoSGd3CFRx4U/nNd6qzedgO5dEZpISTeiggiONFJMyfq/prgnTJ3IdT6IBcuWQN73h/+d1k3jcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISHKM4R9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D192C19421;
-	Wed,  8 Apr 2026 18:45:37 +0000 (UTC)
+	 MIME-Version; b=mMYltOdAsQ4jGuRzRvujQrb55+KHFNEYM2I6zhCreHJr+Zon4/YhKSa/q1Ur/brIAaQIhzWc1qJhzaMkk0CTMbyojrJSguFoxxNQlYBOPXKxrBzEmurE/E92KOppFOeNrNaf/MI5nfEJSW+/NcEEIwctsVpVCDfC5X2ulBtQP0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIuz48WU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47B0C19421;
+	Wed,  8 Apr 2026 18:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673937;
-	bh=GvSCBLGkfWH3VVsT60fdoHYnVc4Ec3JsOqWn8mg6GvI=;
+	s=korg; t=1775674644;
+	bh=qOTkJLKvsL09Cn7cndlgV2DH4VlGfEfUjCtiWU2jQWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISHKM4R9stH2k4Jd59dySLIDWz56RjXQQtRjWi4rNEUzEA8TnFXEatya6+wjgOCGf
-	 u+5c0jemCyiZwpYQe8NRyX+v6ZWBgSHI9fj4inUE7mbyW/uZqjR4oj+NjSpojNCG7d
-	 DdN+3ZD+UxOp16u3WZr/hFfTpav/LxFvJXZmKVMM=
+	b=aIuz48WUyheBD3au49dyRXxLqSXpNT3dAXBPbcVaYB49Bt1nUZLsW/doB160Zb4Q2
+	 X/T7Pg3hioobV3mVmErhTEYCdLfD6Z41Yd7vdgRuGAWIq0tFBEYUnSPpkL18pBJKHJ
+	 PHUf9HI3DiIwX42KXuwK0jx0R14ERvDWdwbk7S5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/242] accel/qaic: Handle DBC deactivation if the owner went away
+Subject: [PATCH 6.19 144/311] drm/xe/xe_pagefault: Disallow writes to read-only VMAs
 Date: Wed,  8 Apr 2026 20:02:24 +0200
-Message-ID: <20260408175930.978453370@linuxfoundation.org>
+Message-ID: <20260408175944.789416498@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234854-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235129-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,123 +87,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 0994E3C1866
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 8460D3C2D77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 
-[ Upstream commit 2feec5ae5df785658924ab6bd91280dc3926507c ]
+[ Upstream commit 6d192b4f2d644d15d9a9f1d33dab05af936f6540 ]
 
-When a DBC is released, the device sends a QAIC_TRANS_DEACTIVATE_FROM_DEV
-transaction to the host over the QAIC_CONTROL MHI channel. QAIC handles
-this by calling decode_deactivate() to release the resources allocated for
-that DBC. Since that handling is done in the qaic_manage_ioctl() context,
-if the user goes away before receiving and handling the deactivation, the
-host will be out-of-sync with the DBCs available for use, and the DBC
-resources will not be freed unless the device is removed. If another user
-loads and requests to activate a network, then the device assigns the same
-DBC to that network, QAIC will "indefinitely" wait for dbc->in_use = false,
-leading the user process to hang.
+The page fault handler should reject write/atomic access to read only
+VMAs.  Add code to handle this in xe_pagefault_service after the VMA
+lookup.
 
-As a solution to this, handle QAIC_TRANS_DEACTIVATE_FROM_DEV transactions
-that are received after the user has gone away.
+v2:
+- Apply max line length (Matthew)
 
-Fixes: 129776ac2e38 ("accel/qaic: Add control path")
-Signed-off-by: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260205123415.3870898-1-youssef.abdulrahman@oss.qualcomm.com
+Fixes: fb544b844508 ("drm/xe: Implement xe_pagefault_queue_work")
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260324152935.72444-7-jonathan.cavitt@intel.com
+(cherry picked from commit 714ee6754ac5fa3dc078856a196a6b124cd797a0)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_control.c | 47 +++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_pagefault.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
-index b86a8e48e731b..8eae30fe14f98 100644
---- a/drivers/accel/qaic/qaic_control.c
-+++ b/drivers/accel/qaic/qaic_control.c
-@@ -910,7 +910,7 @@ static int decode_deactivate(struct qaic_device *qdev, void *trans, u32 *msg_len
- 		 */
- 		return -ENODEV;
- 
--	if (status) {
-+	if (usr && status) {
- 		/*
- 		 * Releasing resources failed on the device side, which puts
- 		 * us in a bind since they may still be in use, so enable the
-@@ -1105,6 +1105,9 @@ static void *msg_xfer(struct qaic_device *qdev, struct wrapper_list *wrappers, u
- 	mutex_lock(&qdev->cntl_mutex);
- 	if (!list_empty(&elem.list))
- 		list_del(&elem.list);
-+	/* resp_worker() processed the response but the wait was interrupted */
-+	else if (ret == -ERESTARTSYS)
-+		ret = 0;
- 	if (!ret && !elem.buf)
- 		ret = -ETIMEDOUT;
- 	else if (ret > 0 && !elem.buf)
-@@ -1415,9 +1418,49 @@ static void resp_worker(struct work_struct *work)
+diff --git a/drivers/gpu/drm/xe/xe_pagefault.c b/drivers/gpu/drm/xe/xe_pagefault.c
+index afb06598b6e1a..0b625a52a5984 100644
+--- a/drivers/gpu/drm/xe/xe_pagefault.c
++++ b/drivers/gpu/drm/xe/xe_pagefault.c
+@@ -187,6 +187,12 @@ static int xe_pagefault_service(struct xe_pagefault *pf)
+ 		goto unlock_vm;
  	}
- 	mutex_unlock(&qdev->cntl_mutex);
  
--	if (!found)
-+	if (!found) {
-+		/*
-+		 * The user might have gone away at this point without waiting
-+		 * for QAIC_TRANS_DEACTIVATE_FROM_DEV transaction coming from
-+		 * the device. If this is not handled correctly, the host will
-+		 * not know that the DBC[n] has been freed on the device.
-+		 * Due to this failure in synchronization between the device and
-+		 * the host, if another user requests to activate a network, and
-+		 * the device assigns DBC[n] again, save_dbc_buf() will hang,
-+		 * waiting for dbc[n]->in_use to be set to false, which will not
-+		 * happen unless the qaic_dev_reset_clean_local_state() gets
-+		 * called by resetting the device (or re-inserting the module).
-+		 *
-+		 * As a solution, we look for QAIC_TRANS_DEACTIVATE_FROM_DEV
-+		 * transactions in the message before disposing of it, then
-+		 * handle releasing the DBC resources.
-+		 *
-+		 * Since the user has gone away, if the device could not
-+		 * deactivate the network (status != 0), there is no way to
-+		 * enable and reassign the DBC to the user. We can put trust in
-+		 * the device that it will release all the active DBCs in
-+		 * response to the QAIC_TRANS_TERMINATE_TO_DEV transaction,
-+		 * otherwise, the user can issue an soc_reset to the device.
-+		 */
-+		u32 msg_count = le32_to_cpu(msg->hdr.count);
-+		u32 msg_len = le32_to_cpu(msg->hdr.len);
-+		u32 len = 0;
-+		int j;
-+
-+		for (j = 0; j < msg_count && len < msg_len; ++j) {
-+			struct wire_trans_hdr *trans_hdr;
-+
-+			trans_hdr = (struct wire_trans_hdr *)(msg->data + len);
-+			if (le32_to_cpu(trans_hdr->type) == QAIC_TRANS_DEACTIVATE_FROM_DEV) {
-+				if (decode_deactivate(qdev, trans_hdr, &len, NULL))
-+					len += le32_to_cpu(trans_hdr->len);
-+			} else {
-+				len += le32_to_cpu(trans_hdr->len);
-+			}
-+		}
- 		/* request must have timed out, drop packet */
- 		kfree(msg);
++	if (xe_vma_read_only(vma) &&
++	    pf->consumer.access_type != XE_PAGEFAULT_ACCESS_TYPE_READ) {
++		err = -EPERM;
++		goto unlock_vm;
 +	}
++
+ 	atomic = xe_pagefault_access_is_atomic(pf->consumer.access_type);
  
- 	kfree(resp);
- }
+ 	if (xe_vma_is_cpu_addr_mirror(vma))
 -- 
 2.53.0
 
