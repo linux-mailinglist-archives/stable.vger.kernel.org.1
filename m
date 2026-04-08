@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-235178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHw9NZOl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:31 +0200
+	id gN6QKUKe1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42813C223F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441433C0C79
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0EF0D3014FE6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EE5A30158AA
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC763D522C;
-	Wed,  8 Apr 2026 18:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4473A16A0;
+	Wed,  8 Apr 2026 18:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17gA0uZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urMKcpez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E05357A20;
-	Wed,  8 Apr 2026 18:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20AEB67E;
+	Wed,  8 Apr 2026 18:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674770; cv=none; b=WlbvRQgQtQVuNeq90jhcwRTdsdWa3AMv3KfyDdbzdT4nWhFVBuB1ffYrB0eFen/KtoVRF5eyxtVIUzbSFzCbprfFb41Fe8HCcbetScyT2NTNr0cj+r28CHiLCyOqkz41DT1n7GYiFIAvVNszaiINg4cWk9XMaSr47lgdGZMZcZg=
+	t=1775672739; cv=none; b=SaC6WosKXqsZ9q7jyVqiR6AolBGddRlv0tpENCdGfzWB2F7g4iHRI54FRGv7HuaqHxKDXgUii0F/NI0mYDsafudbSdVSZI36ZWxg8vh29rwKxvVZ+zD41SwgNS/NRuOgO+ATEZ2IidGIQQaCUCD1zEVg8sOu+iukbFiSm3oe1Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674770; c=relaxed/simple;
-	bh=kpTwsB0Zkyc5Uy/XAJ+70wXvLik8OmejEwjhYRgxNXs=;
+	s=arc-20240116; t=1775672739; c=relaxed/simple;
+	bh=Opy3yPQ9r2oFlmtt+UGlV30GW1HCqPz3l0Qt4xx7QME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8Xk1Thg5SRqJiCwPzR+9Y3psJIgxidy45cOCo/f9LE5dYggsa4naKL5Zk9L9NB1257HsYN3yIVdX0nVnygylXhVLRHi/TUt1lNO1hiUFl9vb+YUwuY8ldIPnitZgdNpRzV/1rmMnkI4pADnr/gezSSOipOySG/UmmBr6n34V+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17gA0uZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CC8C19421;
-	Wed,  8 Apr 2026 18:59:29 +0000 (UTC)
+	 MIME-Version; b=Ti+xJcTeoCHZ6/nzgbqnH52pZSAYVGHMI+YZ2RRW/y7JgMhnNeUJX3BJ5Giw2jhNz49LgmYF5GvgBewVrwsjkBz5NiG9DTorBFSfzlYfYy3BCSXpEDuX7KwISU1RzthfTN0KIaFyl5j/TYIJNohzhZnaCqgnRF9MST0S6K/troY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urMKcpez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389A3C19421;
+	Wed,  8 Apr 2026 18:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674770;
-	bh=kpTwsB0Zkyc5Uy/XAJ+70wXvLik8OmejEwjhYRgxNXs=;
+	s=korg; t=1775672739;
+	bh=Opy3yPQ9r2oFlmtt+UGlV30GW1HCqPz3l0Qt4xx7QME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17gA0uZ4YwvQ3QFjxRIxOuH18bBmMoRySD60vavCzxxi2ue8kk4laIXW3R4tMbAok
-	 THJbdQDpl1HMqLcnQFad2Nulj//5J3WdCExRjXb38YE2GjuHRo0rXY95uL7SvLYfA+
-	 Hn4zLJc3/vS4WhAmrLNHah3bsRNzTjmsq41PkYZs=
+	b=urMKcpezrr/0EKszLDDRPP18g1hJiyFpJTgegNTxDKvRJdZ+dyIWYjDkl5ZLBcYqI
+	 JtRQvZ6RJZDiyRY9hDz8CWUjUJ2Cwb1atccPkNBW5e8RWwi+5g9HCQPelQGP4IAD/6
+	 awtp3IKoHtXBSce3KY/wkU3olmE35vLCzEai6/4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	JP Hein <jp@jphein.com>
-Subject: [PATCH 6.19 209/311] USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
-Date: Wed,  8 Apr 2026 20:03:29 +0200
-Message-ID: <20260408175947.209422500@linuxfoundation.org>
+	Christian Eggers <ceggers@arri.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.6 123/160] nvmem: imx: assign nvmem_cell_info::raw_len
+Date: Wed,  8 Apr 2026 20:03:30 +0200
+Message-ID: <20260408175917.783922360@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234392-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arri.de,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235178-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,launchpad.net:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A42813C223F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arri.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 441433C0C79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Hein <jp@jphein.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 8b7a42ecdcdeb55580d9345412f7f8fc5aca3f6c upstream.
+commit 48b5163c957548f5854f14c90bfdedc33afbea3c upstream.
 
-The Razer Kiyo Pro (1532:0e05) is a USB 3.0 UVC webcam whose firmware
-does not handle USB Link Power Management transitions reliably. When LPM
-is active, the device can enter a state where it fails to respond to
-control transfers, producing EPIPE (-32) errors on UVC probe control
-SET_CUR requests. In the worst case, the stalled endpoint triggers an
-xHCI stop-endpoint command that times out, causing the host controller
-to be declared dead and every USB device on the bus to be disconnected.
+Avoid getting error messages at startup like the following on i.MX6ULL:
 
-This has been reported as Ubuntu Launchpad Bug #2061177. The failure
-mode is:
+nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
+nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
 
-  1. UVC probe control SET_CUR returns -32 (EPIPE)
-  2. xHCI host not responding to stop endpoint command
-  3. xHCI host controller not responding, assume dead
-  4. All USB devices on the affected xHCI controller disconnect
+This shouldn't cause any functional change as this alignment would
+otherwise be done in nvmem_cell_info_to_nvmem_cell_entry_nodup().
 
-Disabling LPM prevents the firmware from entering the problematic low-
-power states that precede the stall. This is the same approach used for
-other webcams with similar firmware issues (e.g., Logitech HD Webcam C270).
-
-Cc: stable <stable@kernel.org>
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2061177
-Signed-off-by: JP Hein <jp@jphein.com>
-Link: https://patch.msgid.link/20260331003806.212565-2-jp@jphein.com
+Cc: stable@vger.kernel.org
+Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260327131645.3025781-2-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvmem/imx-ocotp-ele.c |    1 +
+ drivers/nvmem/imx-ocotp.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -493,6 +493,8 @@ static const struct usb_device_id usb_qu
- 	/* Razer - Razer Blade Keyboard */
- 	{ USB_DEVICE(0x1532, 0x0116), .driver_info =
- 			USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL },
-+	/* Razer - Razer Kiyo Pro Webcam */
-+	{ USB_DEVICE(0x1532, 0x0e05), .driver_info = USB_QUIRK_NO_LPM },
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -127,6 +127,7 @@ static int imx_ocotp_cell_pp(void *conte
+ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
+ 					 struct nvmem_cell_info *cell)
+ {
++	cell->raw_len = round_up(cell->bytes, 4);
+ 	cell->read_post_process = imx_ocotp_cell_pp;
+ }
  
- 	/* Lenovo ThinkPad OneLink+ Dock twin hub controllers (VIA Labs VL812) */
- 	{ USB_DEVICE(0x17ef, 0x1018), .driver_info = USB_QUIRK_RESET_RESUME },
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -589,6 +589,7 @@ MODULE_DEVICE_TABLE(of, imx_ocotp_dt_ids
+ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
+ 					 struct nvmem_cell_info *cell)
+ {
++	cell->raw_len = round_up(cell->bytes, 4);
+ 	cell->read_post_process = imx_ocotp_cell_pp;
+ }
+ 
 
 
 
