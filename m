@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UI7gLPOn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:39 +0200
+	id cCBlI3ee1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3122D3C2804
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FC03C0D01
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07C0A30D8684
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1834E301CD97
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B806D2641FC;
-	Wed,  8 Apr 2026 18:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB7E3B0ADA;
+	Wed,  8 Apr 2026 18:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn0YKHsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSa6xkog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B7A3AEF5F;
-	Wed,  8 Apr 2026 18:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FFE324B1F;
+	Wed,  8 Apr 2026 18:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673950; cv=none; b=Pbms3lJU3JOSWkOyNMP416RLV27OdVKbs19Gk4k/96bGUF7cRbZBT5nghDAjvvJ7Zs9bjiVbQOOuRHfYqExT+QWt008RTA1RmZhpq2XzdGROUD62JfTu8GemFCiZ0v9Twadqyvg1TKD3MJSFqlMpmD0OHWIp2IQ7wJSTNSCAqyY=
+	t=1775672775; cv=none; b=LOpf1Nfqx4Ka67qP4BZ312pCoMBm0x/UqE2JX589ClveIFceLGRgtTfiGByV8Q/JXNvc8CzWCMFfwGG82V910Fhyun867zPZESUaPR3cplGIG2YJoG4J2I0QArCUkMXlynZhXh242wxzNqoC5EBEQoVw7sKNtzSB6am08jDo5ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673950; c=relaxed/simple;
-	bh=uqwFypaAHknkXzC7+O0pX9SKrsI7b17CameiCXc6VZo=;
+	s=arc-20240116; t=1775672775; c=relaxed/simple;
+	bh=5Cwdn5cA0F0ll7zawiZVzEu7kkK2cRTLiypTNasjgZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUY464u4AfgBvM/WzSv1qykqxSyg8W7mMBw3/p/p77vkZMi2oqTVx7QQ6m/JuDAI0iTSdlSMrRo462l4JQvatp1GLPhF4LCZCw+jNdqsU6eyf7awKJKH4fAdm41ue5+bamBlqs6P2g+9WV+7rhOzO1h5On5FqJkfAf0ZsP7N7F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn0YKHsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3C6C2BC87;
-	Wed,  8 Apr 2026 18:45:49 +0000 (UTC)
+	 MIME-Version; b=VWutf6rlwdHWogwfwY2PomTcqH/0DTpLTchmgVfry+O9n4j1daWP+xwLyyM5sLbxgA2z6qsMJjRjcNnKA9BRCQt4SuMKjDZ9FgZ8r//cyHMJBt0oSa4PE6ziDCc7HvcEENH/kTYzN3H6H94OYPWxmglIRqR7YJb5tbChYUwxE8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSa6xkog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40458C19421;
+	Wed,  8 Apr 2026 18:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673950;
-	bh=uqwFypaAHknkXzC7+O0pX9SKrsI7b17CameiCXc6VZo=;
+	s=korg; t=1775672775;
+	bh=5Cwdn5cA0F0ll7zawiZVzEu7kkK2cRTLiypTNasjgZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cn0YKHslPe60u/zAlv1ZhO26uUgmMtSlJUGrZ3jk4//wXG44r6IQzld5v5Vab56fS
-	 jBKYhY5GHxfJnzI7ZyUCwb1SmLtRd54RzKyS1Zn/LfT3YTyzfcku/LwfV8yjKY5J6d
-	 XsxYhwqkc9CyiDGRJyeoOKzhOYj66tnYZCvuJPok=
+	b=NSa6xkogOfivyqgOO65HGADdMBZPmoOQOJIO5iCg/+eyp3LEbLCKxLjeY8x0wkoPm
+	 ficVw0uIAhxYhS/7cBlMyzprsh2yJG0tFAf/8gSQtgY2t6Ocyzt75Vd+XlAFy1heh6
+	 AbQHF9SaKUiJu2Om27Ohp04tDm3f2WmztyQ/GmIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 152/242] iio: light: vcnl4035: fix scan buffer on big-endian
+	stable <stable@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 105/160] usb: ulpi: fix double free in ulpi_register_interface() error path
 Date: Wed,  8 Apr 2026 20:03:12 +0200
-Message-ID: <20260408175932.780575070@linuxfoundation.org>
+Message-ID: <20260408175917.102538180@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +66,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234406-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234859-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email]
-X-Rspamd-Queue-Id: 3122D3C2804
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 36FC03C0D01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit fdc7aa54a5d44c05880a4aad7cfb41aacfd16d7b upstream.
+commit 01af542392b5d41fd659d487015a71f627accce3 upstream.
 
-Rework vcnl4035_trigger_consumer_handler() so that we are not passing
-what should be a u16 value as an int * to regmap_read(). This won't
-work on bit endian systems.
+When device_register() fails, ulpi_register() calls put_device() on
+ulpi->dev.
 
-Instead, add a new unsigned int variable to pass to regmap_read(). Then
-copy that value into the buffer struct.
+The device release callback ulpi_dev_release() drops the OF node
+reference and frees ulpi, but the current error path in
+ulpi_register_interface() then calls kfree(ulpi) again, causing a
+double free.
 
-The buffer array is replaced with a struct since there is only one value
-being read. This allows us to use the correct u16 data type and has a
-side-effect of simplifying the alignment specification.
+Let put_device() handle the cleanup through ulpi_dev_release() and
+avoid freeing ulpi again in ulpi_register_interface().
 
-Also fix the endianness of the scan format from little-endian to CPU
-endianness. Since we are using regmap to read the value, it will be
-CPU-endian.
-
-Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 289fcff4bcdb1 ("usb: add bus type for USB ULPI")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260401025142.1398996-1-lgs201920130244@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/vcnl4035.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/usb/common/ulpi.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/light/vcnl4035.c
-+++ b/drivers/iio/light/vcnl4035.c
-@@ -105,17 +105,23 @@ static irqreturn_t vcnl4035_trigger_cons
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct vcnl4035_data *data = iio_priv(indio_dev);
- 	/* Ensure naturally aligned timestamp */
--	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)]  __aligned(8) = { };
-+	struct {
-+		u16 als_data;
-+		aligned_s64 timestamp;
-+	} buffer = { };
-+	unsigned int val;
- 	int ret;
+--- a/drivers/usb/common/ulpi.c
++++ b/drivers/usb/common/ulpi.c
+@@ -331,10 +331,9 @@ struct ulpi *ulpi_register_interface(str
+ 	ulpi->ops = ops;
  
--	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, (int *)buffer);
-+	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, &val);
- 	if (ret < 0) {
- 		dev_err(&data->client->dev,
- 			"Trigger consumer can't read from sensor.\n");
- 		goto fail_read;
- 	}
--	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
--					iio_get_time_ns(indio_dev));
+ 	ret = ulpi_register(dev, ulpi);
+-	if (ret) {
+-		kfree(ulpi);
++	if (ret)
+ 		return ERR_PTR(ret);
+-	}
 +
-+	buffer.als_data = val;
-+	iio_push_to_buffers_with_timestamp(indio_dev, &buffer,
-+					   iio_get_time_ns(indio_dev));
  
- fail_read:
- 	iio_trigger_notify_done(indio_dev->trig);
-@@ -378,7 +384,7 @@ static const struct iio_chan_spec vcnl40
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_LE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -392,7 +398,7 @@ static const struct iio_chan_spec vcnl40
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_LE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- };
+ 	return ulpi;
+ }
 
 
 
