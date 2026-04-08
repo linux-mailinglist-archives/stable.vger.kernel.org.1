@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-234922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCndAMCo1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:13:04 +0200
+	id mCgaEaqg1mlDGwgAu9opvQ
+	(envelope-from <stable+bounces-234690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5813C2962
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:13:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB71D3C1246
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10C043006788
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AD7C23016011
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C6E2727F3;
-	Wed,  8 Apr 2026 18:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2393B19A3;
+	Wed,  8 Apr 2026 18:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWcJSCs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW+GCG6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9563176E4;
-	Wed,  8 Apr 2026 18:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3229A27979A;
+	Wed,  8 Apr 2026 18:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674110; cv=none; b=usG5KYVEv1edq5D0I5Rw/GB6HWf11In6HG745R9WZs/+OsVYAJbXe8GjUtyfCfCCFc//ThHch8LXbOp6Ar2sEeAs+Tn7ro1B26f+QUBmakPM+bJU23TkFpbJ6hxakWymG6vPrVK0lk5v7HH+b4jkBTS/vY9e6yalos6qYlLXkrc=
+	t=1775673511; cv=none; b=goxbEdhKqaJUCGTI21Ua0jYPykoUiCn+GpS6WGb2jR9ChPWER9tOC7PWXm/lj5zAIAiNwXj7ZMKvWd/Bq0cCJpZI+NL7aCD+gNtvrEjzkfhISsw67gXfBlknsUepbF1oNxWW9ExaWEuLQSGC+WklxmrPrdE5snU4SOAeudnjug4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674110; c=relaxed/simple;
-	bh=LTrEAfAiUvjY0dHl4CT4oxRqV4WhF6VCyRGulurmx/8=;
+	s=arc-20240116; t=1775673511; c=relaxed/simple;
+	bh=j5KQhBD1cJxZIYbKXF9CUqqSAQGp2gE7yK3CzFjVzZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBmY+fr4UCJBsGMsfpL9bhKwglttoT3oiG5fHFUvvks0w/WYUsFAeB6JouYEobH17VESc2smkgRhY6EFsbdlhZ+N3M7CWqPK1tEH6V4VdjTVT57iZE5zaqRto+myboylfGm2XDSc95zzzbPREyIttbCogKf3FMHJXzybncQIgjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWcJSCs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5611C2BC87;
-	Wed,  8 Apr 2026 18:48:29 +0000 (UTC)
+	 MIME-Version; b=Rkjnp8KVbbPMG22yOJOKv7k2vuh2yDXZ9nATAOFbbnumxclaR/2kt950b29Vq9W7m3IjKgStIKoN4sXfotHpf3/2+1Tm+YN5FrSxzBjFITH3kCDhzm20O4SpZB1oq41qHLi741K0qWpq+66ZUNpss+pnh44gOoHmmFfGkA6LaIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW+GCG6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB79C19421;
+	Wed,  8 Apr 2026 18:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674110;
-	bh=LTrEAfAiUvjY0dHl4CT4oxRqV4WhF6VCyRGulurmx/8=;
+	s=korg; t=1775673511;
+	bh=j5KQhBD1cJxZIYbKXF9CUqqSAQGp2gE7yK3CzFjVzZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWcJSCs3Gdzf+hAnzLHWrfLgzX1FI1NfkpLbh1eB5Uefxvsw4EcNZo1vxEaDk8VJ5
-	 HRMXPIDDdNmeXtfqgpzrHiUbodecxVPGxKDoxQmdc1272OKJUzSo2wKhaxMkTyjzw4
-	 qXCWXEJ9M8P7rZ6bI/pn69dljXRQa1RB+0tm2V/Y=
+	b=nW+GCG6QAvetm0wodz9B8KMkDf5J20ZfnaAwgnkNGu7ogUboPPIowOSqJieaAWZWl
+	 gvYUUsXlgCOEDyuArG6i0QcTbWN8RY5OEiTcg4a2pNmE1stvF5FEzzEX73P7izvAC2
+	 hO6Rsb8ExWxre4vNyItst5N3DhlDoo6DcHGcRu9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.12 206/242] usb: gadget: f_ecm: Fix net_device lifecycle with device_move
+	Michael Zimmermann <sigmaepsilon92@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 261/277] usb: gadget: f_hid: move list and spinlock inits from bind to alloc
 Date: Wed,  8 Apr 2026 20:04:06 +0200
-Message-ID: <20260408175934.790978790@linuxfoundation.org>
+Message-ID: <20260408175943.602016646@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,194 +65,110 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234922-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234690-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4E5813C2962
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BB71D3C1246
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Michael Zimmermann <sigmaepsilon92@gmail.com>
 
-commit b2cc4fae67a51f60d81d6af2678696accb07c656 upstream.
+commit 4e0a88254ad59f6c53a34bf5fa241884ec09e8b2 upstream.
 
-The net_device is allocated during function instance creation and
-registered during the bind phase with the gadget device as its sysfs
-parent. When the function unbinds, the parent device is destroyed, but
-the net_device survives, resulting in dangling sysfs symlinks:
+There was an issue when you did the following:
+- setup and bind an hid gadget
+- open /dev/hidg0
+- use the resulting fd in EPOLL_CTL_ADD
+- unbind the UDC
+- bind the UDC
+- use the fd in EPOLL_CTL_DEL
 
-  console:/ # ls -l /sys/class/net/usb0
-  lrwxrwxrwx ... /sys/class/net/usb0 ->
-  /sys/devices/platform/.../gadget.0/net/usb0
-  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-  ls: .../gadget.0/net/usb0: No such file or directory
+When CONFIG_DEBUG_LIST was enabled, a list_del corruption was reported
+within remove_wait_queue (via ep_remove_wait_queue). After some
+debugging I found out that the queues, which f_hid registers via
+poll_wait were the problem. These were initialized using
+init_waitqueue_head inside hidg_bind. So effectively, the bind function
+re-initialized the queues while there were still items in them.
 
-Use device_move() to reparent the net_device between the gadget device
-tree and /sys/devices/virtual across bind and unbind cycles. During the
-final unbind, calling device_move(NULL) moves the net_device to the
-virtual device tree before the gadget device is destroyed. On rebinding,
-device_move() reparents the device back under the new gadget, ensuring
-proper sysfs topology and power management ordering.
+The solution is to move the initialization from hidg_bind to hidg_alloc
+to extend their lifetimes to the lifetime of the function instance.
 
-To maintain compatibility with legacy composite drivers (e.g., multi.c),
-the bound flag is used to indicate whether the network device is shared
-and pre-registered during the legacy driver's bind phase.
+Additionally, I found many other possibly problematic init calls in the
+bind function, which I moved as well.
 
-Fixes: fee562a6450b ("usb: gadget: f_ecm: convert to new function interface with backward compatibility")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-4-4886b578161b@google.com
+Signed-off-by: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260331184844.2388761-1-sigmaepsilon92@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ecm.c |   37 +++++++++++++++++++++++-------------
- drivers/usb/gadget/function/u_ecm.h |   21 ++++++++++++++------
- 2 files changed, 39 insertions(+), 19 deletions(-)
+ drivers/usb/gadget/function/f_hid.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ecm.c
-+++ b/drivers/usb/gadget/function/f_ecm.c
-@@ -681,6 +681,7 @@ ecm_bind(struct usb_configuration *c, st
- 	struct usb_ep		*ep;
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1262,17 +1262,8 @@ static int hidg_bind(struct usb_configur
+ 	if (status)
+ 		goto fail;
  
- 	struct f_ecm_opts	*ecm_opts;
-+	struct net_device	*net __free(detach_gadget) = NULL;
- 	struct usb_request	*request __free(free_usb_request) = NULL;
+-	spin_lock_init(&hidg->write_spinlock);
+ 	hidg->write_pending = 1;
+ 	hidg->req = NULL;
+-	spin_lock_init(&hidg->read_spinlock);
+-	spin_lock_init(&hidg->get_report_spinlock);
+-	init_waitqueue_head(&hidg->write_queue);
+-	init_waitqueue_head(&hidg->read_queue);
+-	init_waitqueue_head(&hidg->get_queue);
+-	init_waitqueue_head(&hidg->get_id_queue);
+-	INIT_LIST_HEAD(&hidg->completed_out_req);
+-	INIT_LIST_HEAD(&hidg->report_list);
  
- 	if (!can_support_ecm(cdev->gadget))
-@@ -688,18 +689,18 @@ ecm_bind(struct usb_configuration *c, st
+ 	INIT_WORK(&hidg->work, get_report_workqueue_handler);
+ 	hidg->workqueue = alloc_workqueue("report_work",
+@@ -1609,6 +1600,16 @@ static struct usb_function *hidg_alloc(s
  
- 	ecm_opts = container_of(f->fi, struct f_ecm_opts, func_inst);
+ 	mutex_lock(&opts->lock);
  
--	mutex_lock(&ecm_opts->lock);
--
--	gether_set_gadget(ecm_opts->net, cdev->gadget);
--
--	if (!ecm_opts->bound) {
--		status = gether_register_netdev(ecm_opts->net);
--		ecm_opts->bound = true;
--	}
--
--	mutex_unlock(&ecm_opts->lock);
--	if (status)
--		return status;
-+	scoped_guard(mutex, &ecm_opts->lock)
-+		if (ecm_opts->bind_count == 0 && !ecm_opts->bound) {
-+			if (!device_is_registered(&ecm_opts->net->dev)) {
-+				gether_set_gadget(ecm_opts->net, cdev->gadget);
-+				status = gether_register_netdev(ecm_opts->net);
-+			} else
-+				status = gether_attach_gadget(ecm_opts->net, cdev->gadget);
++	spin_lock_init(&hidg->write_spinlock);
++	spin_lock_init(&hidg->read_spinlock);
++	spin_lock_init(&hidg->get_report_spinlock);
++	init_waitqueue_head(&hidg->write_queue);
++	init_waitqueue_head(&hidg->read_queue);
++	init_waitqueue_head(&hidg->get_queue);
++	init_waitqueue_head(&hidg->get_id_queue);
++	INIT_LIST_HEAD(&hidg->completed_out_req);
++	INIT_LIST_HEAD(&hidg->report_list);
 +
-+			if (status)
-+				return status;
-+			net = ecm_opts->net;
-+		}
- 
- 	ecm_string_defs[1].s = ecm->ethaddr;
- 
-@@ -790,6 +791,9 @@ ecm_bind(struct usb_configuration *c, st
- 
- 	ecm->notify_req = no_free_ptr(request);
- 
-+	ecm_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	DBG(cdev, "CDC Ethernet: IN/%s OUT/%s NOTIFY/%s\n",
- 			ecm->port.in_ep->name, ecm->port.out_ep->name,
- 			ecm->notify->name);
-@@ -836,7 +840,7 @@ static void ecm_free_inst(struct usb_fun
- 	struct f_ecm_opts *opts;
- 
- 	opts = container_of(f, struct f_ecm_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -906,9 +910,12 @@ static void ecm_free(struct usb_function
- static void ecm_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_ecm		*ecm = func_to_ecm(f);
-+	struct f_ecm_opts	*ecm_opts;
- 
- 	DBG(c->cdev, "ecm unbind\n");
- 
-+	ecm_opts = container_of(f->fi, struct f_ecm_opts, func_inst);
-+
- 	usb_free_all_descriptors(f);
- 
- 	if (atomic_read(&ecm->notify_count)) {
-@@ -918,6 +925,10 @@ static void ecm_unbind(struct usb_config
- 
- 	kfree(ecm->notify_req->buf);
- 	usb_ep_free_request(ecm->notify, ecm->notify_req);
-+
-+	ecm_opts->bind_count--;
-+	if (ecm_opts->bind_count == 0 && !ecm_opts->bound)
-+		gether_detach_gadget(ecm_opts->net);
- }
- 
- static struct usb_function *ecm_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_ecm.h
-+++ b/drivers/usb/gadget/function/u_ecm.h
-@@ -15,17 +15,26 @@
- 
- #include <linux/usb/composite.h>
- 
-+/**
-+ * struct f_ecm_opts - ECM function options
-+ * @func_inst: USB function instance.
-+ * @net: The net_device associated with the ECM function.
-+ * @bound: True if the net_device is shared and pre-registered during the
-+ *         legacy composite driver's bind phase (e.g., multi.c). If false,
-+ *         the ECM function will register the net_device during its own
-+ *         bind phase.
-+ * @bind_count: Tracks the number of configurations the ECM function is
-+ *              bound to, preventing double-registration of the @net device.
-+ * @lock: Protects the data from concurrent access by configfs read/write
-+ *        and create symlink/remove symlink operations.
-+ * @refcnt: Reference counter for the function instance.
-+ */
- struct f_ecm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
- 	bool				bound;
-+	int				bind_count;
- 
--	/*
--	 * Read/write access to configfs attributes is handled by configfs.
--	 *
--	 * This is to protect the data from concurrent access by read/write
--	 * and create symlink/remove symlink.
--	 */
- 	struct mutex			lock;
- 	int				refcnt;
- };
+ 	device_initialize(&hidg->dev);
+ 	hidg->dev.release = hidg_release;
+ 	hidg->dev.class = &hidg_class;
 
 
 
