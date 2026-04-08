@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDDbFGKd1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:34 +0200
+	id 2K/rDpqr1mmmHAgAu9opvQ
+	(envelope-from <stable+bounces-235154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BEA3C0A25
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCEA3C2F03
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A18053021186
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E15CE305FC1F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC3A3ACA41;
-	Wed,  8 Apr 2026 18:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1E63AEF5F;
+	Wed,  8 Apr 2026 18:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQeeU9j5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWGaI1Jl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624D02494F0;
-	Wed,  8 Apr 2026 18:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F243537DF;
+	Wed,  8 Apr 2026 18:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672649; cv=none; b=H0RX9AHhNIqM0MmtLAajDEF3RCWv9L0O8ssHRK2UCRMHAvVuKiSfrQPg6KABumD2U1msuY7LkISbcGiPbzULbg8EBNgobW0ztJ9OUrk7e6FkCTMINv+Z7Fq0XvM834C2/bfDHgS0/+PV/hihFCO0WUaPPA24FYiglNJD3ezB7nE=
+	t=1775674708; cv=none; b=TvJ54wogrXwdWasPP1PJwQw18rVu8fRJfuUYfchZSBXnjLYaACF5FROyFSCCqZrp6CItggC+B4hjOk2wl3X7IxWIhlD5mXxrXvLn9Kl+t0hxwS5XkzEot9eersV6Zmf9rE97hPctm2L2pwFMKMG4mkWZXweG0UQEgJrgr8yOS34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672649; c=relaxed/simple;
-	bh=pmdPxpQqPg3gfJ/Tqgy2jrntMMkjPsS3ySF7B6ufW3g=;
+	s=arc-20240116; t=1775674708; c=relaxed/simple;
+	bh=89V3d05Bsqjni3PiwPjbRdBNF2I1tCJZuJOuXy8vREU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSe7zaSGaVEDgamO8zv0Gr3QqClkitUHUKYv/NbJRDHhqi56C7yE7zMtltMeotjrbFBUZnOU8fxB8H8ReFUkxHuu2q6YTOYly44XQglEOFJAVnuyDZJiH0fRyipjW4ny+7ZU3TbewFfzFjb6vClwUEkUmwsZoRvfu63TLNcl8ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQeeU9j5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7B1C19421;
-	Wed,  8 Apr 2026 18:24:08 +0000 (UTC)
+	 MIME-Version; b=ZZ/XUyeBPVLPXyHPfRf+3P/znfv9hO5EH0Qy+wMdpK5zAbH4qUoJJzcRTdeEY4pNy9xqjImcfHNKAzAKIDRPLEQbyywX7sQxNkb7p04ENZL3XDVACsXi7zdJ6mEFV46gTLNMRsirbXXvqpZoXlnDJRCTWKM5/BUKaM3fzrw5eoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWGaI1Jl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4F5C19421;
+	Wed,  8 Apr 2026 18:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672649;
-	bh=pmdPxpQqPg3gfJ/Tqgy2jrntMMkjPsS3ySF7B6ufW3g=;
+	s=korg; t=1775674708;
+	bh=89V3d05Bsqjni3PiwPjbRdBNF2I1tCJZuJOuXy8vREU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQeeU9j58mgM20eHoQS9vM2D/L5gZ4takiYO3LOD+EPzIyja6Dc+qhXRjNkBIRek6
-	 a7jysAcGr2NgZr+A+fH0UeuXdhYk6jtpjhqMu7/KZQxHa0OJIU90Ko7evVjlRi4JHo
-	 h6gPFw4ejqtzR7SDCnYSXO9qiKKsv5XzzmFtixqU=
+	b=nWGaI1JlHuUJJ0WmzatRspZbQY+Pen1bvUFuQw9kxVf8YAXOjnYApytoEb/skecf3
+	 KfHzP0uFmCH35BT+ArsiiBPBpQs4USk1NMRqz1vD6AAEm+iut6vKPoKZilJyAIvp94
+	 9HEvP018H/oa4gK0sRxLJ2eHNodz5OOmrbOC6nUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wanquan Zhong <wanquan.zhong@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 088/160] USB: serial: option: add support for Rolling Wireless RW135R-GL
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 175/311] ALSA: hda/realtek: Add quirk for ASUS ROG Strix SCAR 15
 Date: Wed,  8 Apr 2026 20:02:55 +0200
-Message-ID: <20260408175916.480808706@linuxfoundation.org>
+Message-ID: <20260408175945.940264805@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234357-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235154-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,60 +88,43 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,fibocom.com:email]
-X-Rspamd-Queue-Id: 05BEA3C0A25
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BBCEA3C2F03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wanquan Zhong <wanquan.zhong@fibocom.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
+commit f1af71d568e55536d9297bfa7907ad497108cf30 upstream.
 
-Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
-which is used in laptop debug cards with MBIM interface for
-Linux/Chrome OS. The device supports mbim, pipe functionalities.
+ASUS ROG Strix SCAR 15, like the Strix G15, requires the
+ALC285_FIXUP_ASUS_G533Z_PINS quirk to work properly.
 
-Here are the outputs of usb-devices:
-T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=1003 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW135R-GL Module
-S:  SerialNumber=12345678
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221247
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260330075334.50962-2-zhangheng@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
+ sound/hda/codecs/realtek/alc269.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7238,6 +7238,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301VV/VQ/VU/VJ/VA/VC/VE/VVC/VQC/VUC/VJC/VEC/VCC", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1584, "ASUS UM3406GA ", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x1602, "ASUS ROG Strix SCAR 15", ALC285_FIXUP_ASUS_G533Z_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1652, "ASUS ROG Zephyrus Do 15 SE", ALC289_FIXUP_ASUS_ZEPHYRUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZI/ZJ/ZQ/ZU/ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
 
 
 
