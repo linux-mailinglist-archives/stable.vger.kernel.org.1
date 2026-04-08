@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-235219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNv4Ekam1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:30 +0200
+	id YItNHEis1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:28:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6C63C238F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1943C3095
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5AD003020FDD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B916B3213EB3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FC83D9046;
-	Wed,  8 Apr 2026 19:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698983D7D79;
+	Wed,  8 Apr 2026 19:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjnCC7E+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vti8XD+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4103D75C9;
-	Wed,  8 Apr 2026 19:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E9E3D523F;
+	Wed,  8 Apr 2026 19:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674877; cv=none; b=VrnPG8qb+9XrD/jjVXTSE3FFoSpYokmz9caup9h7/YGTOqNdD4A0/ONICdfIvNdX1fzl65FbKwtGZxHvDX+UMNEJDRud1dxCDZ5xYxFMAEoX+b9TrMqQZnebNEJdc2uPpiEEnrRvIGYNGGZowGW1yALAwsQG+DvG5mH0n13+uw0=
+	t=1775674879; cv=none; b=E34WCFXUnvI8SonKdeuaGrURd6ObkBpTtXLpQX/t84nmliNoOZvSoP2oUT7hyofimlaIBmATRpGnv8gHK9qqdkUHwnqysiW2S3CAhwwVWkLiX/D0+hFWuiS49hYSyon4JEn7zhOc899EdbX8Ip7Io0dcPF3uyyj5ywd9QER4GIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674877; c=relaxed/simple;
-	bh=JGtTpGTKcROJZyEx8RmGOgOwOfUcS8j9EnE6tRLEOio=;
+	s=arc-20240116; t=1775674879; c=relaxed/simple;
+	bh=/oJ7yGeOn1gooRz9lTmUVNxWjDqIqdKGROiDH70Ds+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wx5Wz871ZOn6ttEoFEewe7GH50RzPcJ7aHs3VJCexDJUiFiANum/NY5J875N+cnwNfo/4Lu/Pex4PIM5FTjqjUuXVOIwHlXn9H1GsU4CkxUUx2qq5P6SZcyp30gimAyjDpWp+XPcMJTW1W12fOwp9lIbbfEWKoAj5ZTb854dSQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjnCC7E+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2061DC19421;
-	Wed,  8 Apr 2026 19:01:15 +0000 (UTC)
+	 MIME-Version; b=WktTK81zfyJ7fKVfpX9JRGKVIXhlx8BgTU/oZPkjsZkgABSaseSfniQ/TFcri5SvtSSoprntEyL5grw3ChI6TI3J4MNULRr54WfV4sXVWeYiPWQYDIV1Rq3XS+7/ssVB3tKRsWl0Nk28ggu2x0r1MvCyt/IIc96AGNKWkTPSeRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vti8XD+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11D8C19425;
+	Wed,  8 Apr 2026 19:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674876;
-	bh=JGtTpGTKcROJZyEx8RmGOgOwOfUcS8j9EnE6tRLEOio=;
+	s=korg; t=1775674879;
+	bh=/oJ7yGeOn1gooRz9lTmUVNxWjDqIqdKGROiDH70Ds+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjnCC7E+Ggfg5Ckuv2Favxh5zTpJ98ga07qH7yreWZ1X7uFeG1KQ39nDs/UEEGP8r
-	 QrtTJktf1WEpT0GaahbNKQhvUfcVyKOZ33Sa804WQMU8mTLanAof6rotL06qAX66kc
-	 NtT+LAzrQRZwFa8kuQtXV1Pbre/r3QBSSwormznw=
+	b=vti8XD+MQeF5DMSAWcHZMxTR5NRClA6xIYsGz1FduRyyTx5Du6SS5SDN8sHZJ2ZO5
+	 UaTcx0pCzGSFsn1ItK2K6QOFIoF7DrD/DDp61wyNn/HvOgUnqgRHcpehUwBIpcUozq
+	 kUV2j9n2fykBvoIS7l9OXchZ+xZj1+L2Un6YrWoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vera <ivanverasantos@gmail.com>,
-	Harish Ediga <harish.ediga@amd.com>,
-	Harsh Jain <h.jain@amd.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.19 267/311] nvmem: zynqmp_nvmem: Fix buffer size in DMA and memcpy
-Date: Wed,  8 Apr 2026 20:04:27 +0200
-Message-ID: <20260408175949.353140899@linuxfoundation.org>
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <dstsmallbird@foxmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.19 268/311] netfilter: ipset: drop logically empty buckets in mtype_del
+Date: Wed,  8 Apr 2026 20:04:28 +0200
+Message-ID: <20260408175949.390037732@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
 References: <20260408175939.393281918@linuxfoundation.org>
@@ -69,31 +71,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-235219-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foxmail.com,nwl.cc,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-235220-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: CF6C63C238F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,foxmail.com:email,netfilter.org:email]
+X-Rspamd-Queue-Id: AD1943C3095
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,65 +103,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ivan Vera <ivanverasantos@gmail.com>
+From: Yifan Wu <yifanwucs@gmail.com>
 
-commit f9b88613ff402aa6fe8fd020573cb95867ae947e upstream.
+commit 9862ef9ab0a116c6dca98842aab7de13a252ae02 upstream.
 
-Buffer size used in dma allocation and memcpy is wrong.
-It can lead to undersized DMA buffer access and possible
-memory corruption. use correct buffer size in dma_alloc_coherent
-and memcpy.
+mtype_del() counts empty slots below n->pos in k, but it only drops the
+bucket when both n->pos and k are zero. This misses buckets whose live
+entries have all been removed while n->pos still points past deleted slots.
 
-Fixes: 737c0c8d07b5 ("nvmem: zynqmp_nvmem: Add support to access efuse")
+Treat a bucket as empty when all positions below n->pos are unused and
+release it directly instead of shrinking it further.
+
+Fixes: 8af1c6fbd923 ("netfilter: ipset: Fix forceadd evaluation path")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Vera <ivanverasantos@gmail.com>
-Signed-off-by: Harish Ediga <harish.ediga@amd.com>
-Signed-off-by: Harsh Jain <h.jain@amd.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260327131645.3025781-3-srini@kernel.org
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <dstsmallbird@foxmail.com>
+Signed-off-by: Yifan Wu <yifanwucs@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/zynqmp_nvmem.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/ipset/ip_set_hash_gen.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvmem/zynqmp_nvmem.c
-+++ b/drivers/nvmem/zynqmp_nvmem.c
-@@ -66,7 +66,7 @@ static int zynqmp_efuse_access(void *con
- 	dma_addr_t dma_buf;
- 	size_t words = bytes / WORD_INBYTES;
- 	int ret;
--	int value;
-+	unsigned int value;
- 	char *data;
- 
- 	if (bytes % WORD_INBYTES != 0) {
-@@ -80,7 +80,7 @@ static int zynqmp_efuse_access(void *con
- 	}
- 
- 	if (pufflag == 1 && flag == EFUSE_WRITE) {
--		memcpy(&value, val, bytes);
-+		memcpy(&value, val, sizeof(value));
- 		if ((offset == EFUSE_PUF_START_OFFSET ||
- 		     offset == EFUSE_PUF_MID_OFFSET) &&
- 		    value & P_USER_0_64_UPPER_MASK) {
-@@ -100,7 +100,7 @@ static int zynqmp_efuse_access(void *con
- 	if (!efuse)
- 		return -ENOMEM;
- 
--	data = dma_alloc_coherent(dev, sizeof(bytes),
-+	data = dma_alloc_coherent(dev, bytes,
- 				  &dma_buf, GFP_KERNEL);
- 	if (!data) {
- 		ret = -ENOMEM;
-@@ -134,7 +134,7 @@ static int zynqmp_efuse_access(void *con
- 	if (flag == EFUSE_READ)
- 		memcpy(val, data, bytes);
- efuse_access_err:
--	dma_free_coherent(dev, sizeof(bytes),
-+	dma_free_coherent(dev, bytes,
- 			  data, dma_buf);
- efuse_data_fail:
- 	dma_free_coherent(dev, sizeof(struct xilinx_efuse),
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -1099,7 +1099,7 @@ mtype_del(struct ip_set *set, void *valu
+ 			if (!test_bit(i, n->used))
+ 				k++;
+ 		}
+-		if (n->pos == 0 && k == 0) {
++		if (k == n->pos) {
+ 			t->hregion[r].ext_size -= ext_size(n->size, dsize);
+ 			rcu_assign_pointer(hbucket(t, key), NULL);
+ 			kfree_rcu(n, rcu);
 
 
 
