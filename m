@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-235057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2B7hLGul1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:51 +0200
+	id OBiDMRmf1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0FA3C2191
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539F53C0E13
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E4DEB3076CAC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28783300D9C5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E333D9031;
-	Wed,  8 Apr 2026 18:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F9337F8CA;
+	Wed,  8 Apr 2026 18:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8IKFoJq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGOQKs7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247263D75C9;
-	Wed,  8 Apr 2026 18:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6FC37F01B;
+	Wed,  8 Apr 2026 18:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674459; cv=none; b=YYOQRolTa8MEe0LCS/eI8o2YFxsy5K7k6u+z/Im0FNbhLxS6NuzLuhzQtnsKAQoxFybA2EEU/SPoRVgx2Gb6IhRlRkRH3GQZJFrOu/J1XHRuLB1iwODYAMlw+Vu4Zo6Suh+4ACCJgrxdjt3NMH6eauci4gge7M5+cpCwAsZ6v6U=
+	t=1775673065; cv=none; b=TZerr+9bLz/s/QfheC2fewFfBlPZY8UsxZMvFMcOMk8jUk+XxyhHYaHZMAewBuKXu+TZLz6R62UAzxM8pAS8vUripo8ljE165kB+h7YSxWbpTc3efecZSOyLuROJpm/6InegyLLDMlsVywTe/tf53O+T36XjA2TmiPQO4DNAtYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674459; c=relaxed/simple;
-	bh=KV7hHzf4TaqbyrNeh30HtLlTs0+8QH72/Dp3v6O7pWA=;
+	s=arc-20240116; t=1775673065; c=relaxed/simple;
+	bh=nfx0EDrSjH8aX5QksBN2Rdl5IuS/AgagNw3VuOA2WVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEZlqMyMchwzuZx4p9Ad1WXund4I6NFQ8nc3xzPcZb5oVmzcXHTjT2KE6hPYLFuPHxff/XsQRRSWm/fSnjCzJGZAn/TfeAqtt0D/Vxr3iseo+9Q54Vhz8Q8sprKDfMUTGtMtsJE7ixcM7qQDCiRppPcmQnMyfDmJXx97CVTJtq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8IKFoJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4E0C19421;
-	Wed,  8 Apr 2026 18:54:18 +0000 (UTC)
+	 MIME-Version; b=sJAcCG1t4ZOfGGiMXBFG5x5ZJmyl3/pkXANplue9Uo5LqjrtSSdQlFQPv/kbiwcBSbz6RpbPc3FFiFh+ZqpRxabd5pWVKHUGXS2szeGMIX3GQ9NyXIG2q0VeOlYT7Nrmh7XNGGtSEPS35fUEJjrg9WgWEBN6G/Js22IQE4ZIT0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGOQKs7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B34C19421;
+	Wed,  8 Apr 2026 18:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674459;
-	bh=KV7hHzf4TaqbyrNeh30HtLlTs0+8QH72/Dp3v6O7pWA=;
+	s=korg; t=1775673065;
+	bh=nfx0EDrSjH8aX5QksBN2Rdl5IuS/AgagNw3VuOA2WVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8IKFoJqsbtVsN1YVD9trXe3dqZfpzyZJXK1T+aC57sgU0M+6pLscVsGWnfYLkI+L
-	 pVVAfN1OQEmXpHSD7OZ3cMY+i+vOo4np3q2Ky6gUGYFltQUsJ7EZ4mp7olYXkQoXG+
-	 WJbkui4QpKzVvVkgY7ulbmtAtdPvJw/TSKUMDj/c=
+	b=HGOQKs7vaYaZuWjwUV3KW63+VUtJue3nSvSAGcen8RRCS2MADBI8SQlMcZFFCizm/
+	 ELeleBET8UBOcmJT/t7R4Rk6tAPHYEBzMHFEomjHDHUC/nr/Nf8sim5Q+xG/Ih6hTn
+	 ohtnnBLd1TZo7lR0Auk++HEJ4yo534NVyBlOsiz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 073/311] net: xilinx: axienet: Correct BD length masks to match AXIDMA IP spec
+Subject: [PATCH 6.18 088/277] net: macb: fix clk handling on PCI glue driver removal
 Date: Wed,  8 Apr 2026 20:01:13 +0200
-Message-ID: <20260408175942.140046820@linuxfoundation.org>
+Message-ID: <20260408175937.160826333@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,77 +73,151 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235057-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234517-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,msgid.link:url,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2D0FA3C2191
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ispras.ru:email,qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 539F53C0E13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Gupta <suraj.gupta2@amd.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 393e0b4f178ec7fce1141dacc3304e3607a92ee9 ]
+[ Upstream commit ce8fe5287b87e24e225c342f3b0ec04f0b3680fe ]
 
-The XAXIDMA_BD_CTRL_LENGTH_MASK and XAXIDMA_BD_STS_ACTUAL_LEN_MASK
-macros were defined as 0x007FFFFF (23 bits), but the AXI DMA IP
-product guide (PG021) specifies the buffer length field as bits 25:0
-(26 bits). Update both masks to match the IP documentation.
+platform_device_unregister() may still want to use the registered clks
+during runtime resume callback.
 
-In practice this had no functional impact, since Ethernet frames are
-far smaller than 2^23 bytes and the extra bits were always zero, but
-the masks should still reflect the hardware specification.
+Note that there is a commit d82d5303c4c5 ("net: macb: fix use after free
+on rmmod") that addressed the similar problem of clk vs platform device
+unregistration but just moved the bug to another place.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20260327073238.134948-2-suraj.gupta2@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Save the pointers to clks into local variables for reuse after platform
+device is unregistered.
+
+BUG: KASAN: use-after-free in clk_prepare+0x5a/0x60
+Read of size 8 at addr ffff888104f85e00 by task modprobe/597
+
+CPU: 2 PID: 597 Comm: modprobe Not tainted 6.1.164+ #114
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8d/0xba
+ print_report+0x17f/0x496
+ kasan_report+0xd9/0x180
+ clk_prepare+0x5a/0x60
+ macb_runtime_resume+0x13d/0x410 [macb]
+ pm_generic_runtime_resume+0x97/0xd0
+ __rpm_callback+0xc8/0x4d0
+ rpm_callback+0xf6/0x230
+ rpm_resume+0xeeb/0x1a70
+ __pm_runtime_resume+0xb4/0x170
+ bus_remove_device+0x2e3/0x4b0
+ device_del+0x5b3/0xdc0
+ platform_device_del+0x4e/0x280
+ platform_device_unregister+0x11/0x50
+ pci_device_remove+0xae/0x210
+ device_remove+0xcb/0x180
+ device_release_driver_internal+0x529/0x770
+ driver_detach+0xd4/0x1a0
+ bus_remove_driver+0x135/0x260
+ driver_unregister+0x72/0xb0
+ pci_unregister_driver+0x26/0x220
+ __do_sys_delete_module+0x32e/0x550
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ </TASK>
+
+Allocated by task 519:
+ kasan_save_stack+0x2c/0x50
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x8e/0x90
+ __clk_register+0x458/0x2890
+ clk_hw_register+0x1a/0x60
+ __clk_hw_register_fixed_rate+0x255/0x410
+ clk_register_fixed_rate+0x3c/0xa0
+ macb_probe+0x1d8/0x42e [macb_pci]
+ local_pci_probe+0xd7/0x190
+ pci_device_probe+0x252/0x600
+ really_probe+0x255/0x7f0
+ __driver_probe_device+0x1ee/0x330
+ driver_probe_device+0x4c/0x1f0
+ __driver_attach+0x1df/0x4e0
+ bus_for_each_dev+0x15d/0x1f0
+ bus_add_driver+0x486/0x5e0
+ driver_register+0x23a/0x3d0
+ do_one_initcall+0xfd/0x4d0
+ do_init_module+0x18b/0x5a0
+ load_module+0x5663/0x7950
+ __do_sys_finit_module+0x101/0x180
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Freed by task 597:
+ kasan_save_stack+0x2c/0x50
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x50
+ __kasan_slab_free+0x106/0x180
+ __kmem_cache_free+0xbc/0x320
+ clk_unregister+0x6de/0x8d0
+ macb_remove+0x73/0xc0 [macb_pci]
+ pci_device_remove+0xae/0x210
+ device_remove+0xcb/0x180
+ device_release_driver_internal+0x529/0x770
+ driver_detach+0xd4/0x1a0
+ bus_remove_driver+0x135/0x260
+ driver_unregister+0x72/0xb0
+ pci_unregister_driver+0x26/0x220
+ __do_sys_delete_module+0x32e/0x550
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fixes: d82d5303c4c5 ("net: macb: fix use after free on rmmod")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260330184542.626619-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb_pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index 5ff742103beb9..fcd3aaef27fc3 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -105,7 +105,7 @@
- #define XAXIDMA_BD_HAS_DRE_MASK		0xF00 /* Whether has DRE mask */
- #define XAXIDMA_BD_WORDLEN_MASK		0xFF /* Whether has DRE mask */
+diff --git a/drivers/net/ethernet/cadence/macb_pci.c b/drivers/net/ethernet/cadence/macb_pci.c
+index fc4f5aee6ab3f..0ce5b736ea438 100644
+--- a/drivers/net/ethernet/cadence/macb_pci.c
++++ b/drivers/net/ethernet/cadence/macb_pci.c
+@@ -109,10 +109,12 @@ static void macb_remove(struct pci_dev *pdev)
+ {
+ 	struct platform_device *plat_dev = pci_get_drvdata(pdev);
+ 	struct macb_platform_data *plat_data = dev_get_platdata(&plat_dev->dev);
++	struct clk *pclk = plat_data->pclk;
++	struct clk *hclk = plat_data->hclk;
  
--#define XAXIDMA_BD_CTRL_LENGTH_MASK	0x007FFFFF /* Requested len */
-+#define XAXIDMA_BD_CTRL_LENGTH_MASK	GENMASK(25, 0) /* Requested len */
- #define XAXIDMA_BD_CTRL_TXSOF_MASK	0x08000000 /* First tx packet */
- #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
- #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
-@@ -130,7 +130,7 @@
- #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
- #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
+-	clk_unregister(plat_data->pclk);
+-	clk_unregister(plat_data->hclk);
+ 	platform_device_unregister(plat_dev);
++	clk_unregister(pclk);
++	clk_unregister(hclk);
+ }
  
--#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	0x007FFFFF /* Actual len */
-+#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	GENMASK(25, 0) /* Actual len */
- #define XAXIDMA_BD_STS_COMPLETE_MASK	0x80000000 /* Completed */
- #define XAXIDMA_BD_STS_DEC_ERR_MASK	0x40000000 /* Decode error */
- #define XAXIDMA_BD_STS_SLV_ERR_MASK	0x20000000 /* Slave error */
+ static const struct pci_device_id dev_id_table[] = {
 -- 
 2.53.0
 
