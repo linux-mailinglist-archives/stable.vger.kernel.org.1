@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +E2iJmid1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:40 +0200
+	id iH3cCSak1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661943C0A4A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0503C1DB9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E12B83027CE4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7769B31AC080
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D323ACF13;
-	Wed,  8 Apr 2026 18:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BC43624B0;
+	Wed,  8 Apr 2026 18:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqYcz6bL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MkiEfJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3342494F0;
-	Wed,  8 Apr 2026 18:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1659F351C2E;
+	Wed,  8 Apr 2026 18:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672664; cv=none; b=rEeCz1lzqtirqg4p2E+eCsENa29tF6OJAKehE/42VYg/iU5JvggRH1a4qO+QlDKyykLrhKjWlPTbKZ242X0rg+zud+FMuoGNJH939Z/58xr04t7WRVoX2C1nOrCAhbjXTX7li5oAfIKexQnDQ4tQBgr8YX7A10Td7G7jBuCFeFg=
+	t=1775673341; cv=none; b=oLOY5CKT1VT3K+PcLcmTAJjdp3jjcvwQJEtOy5zjA+5jG0dMbkbxX46TDpOUyFz3s16doRwDuDvJuj/kCfgFUiW0qOcBed6x4GICw1xXM3mQmBHbxSrHNPWHE9snsx0UEn4nVKvBGSzH80u7pgErgeXokPsOHQ/sf+WR2gPMBy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672664; c=relaxed/simple;
-	bh=x0JOOX/bTmzI309w3Dz+1YzJt9jCOJfACuwCIzD9Z+I=;
+	s=arc-20240116; t=1775673341; c=relaxed/simple;
+	bh=3KeQslo5dO3LKs9E4dqEr5yIl8C4GcJebpwDQTbOUZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gObRSU3AaHMbU+O5cs5HOCWnxCc5OJsmmpQiRTxkCH94Xb9RALHYcd0Ib6ASHn2YUUBV82GN4E2uWKrHpkHvzHcxTDWFTwecxQ6aGv+98NaWAFR6XNsXlGZ7UYaKZTLjB+s9ZNJvjAgrAJnaeJ/jlzZLFfDsMrTpBA8rnOOjCgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqYcz6bL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4FDC19421;
-	Wed,  8 Apr 2026 18:24:24 +0000 (UTC)
+	 MIME-Version; b=IUIy3BnKXlxUXqP5k5fSX9Q7gMwDOlEVsVb0GIXjmJgkaDwjdK+F2K4t9niWxQ3LeI7YUktVtL9SFR76wMhMFwnScxEFr++1Hr0jWRy8CZAFiqYcrQD+e66RWwZzmlZ33cAwqfJfcc9fN6veBVLyRpq5ru1CYhKbxVpemJzfJmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MkiEfJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1263C19421;
+	Wed,  8 Apr 2026 18:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672664;
-	bh=x0JOOX/bTmzI309w3Dz+1YzJt9jCOJfACuwCIzD9Z+I=;
+	s=korg; t=1775673341;
+	bh=3KeQslo5dO3LKs9E4dqEr5yIl8C4GcJebpwDQTbOUZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqYcz6bLURrcr0v44Zrktf4OLhRj8HjpfvQoW7BDqqE8MFao/kkIiJUDaqL04rfEl
-	 r9ELJLd8b7Blkj4gMzA5jr7UCiaBVn2RiC6O0xfrERlbzjUKmZ5gp5o7fkLlz1+1aq
-	 N4eTa+lE4t8XGH4mwjsOve1mkzEXAJSKYXxjQP5s=
+	b=2MkiEfJkieLZOWV/46G6ToC3qiS80zJyJsvCyvOJKbvsO1wxdBYTeSiJhxTZKPGOC
+	 NjABcQNDqA78qUHRPJtrs0T5RE+Jo9xWbRiMK3nvISkTZvtYhU28X4g1F5yLBeF/zV
+	 up1xyIEZbkyxGHVjApNuhdDt173iTz5qHykG4ckk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 093/160] Input: xpad - add support for BETOP BTP-KP50B/C controllers wireless mode
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Todd Brandt <todd.e.brandt@linux.intel.com>,
+	stable <stable@kernel.org>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.18 195/277] mei: me: reduce the scope on unexpected reset
 Date: Wed,  8 Apr 2026 20:03:00 +0200
-Message-ID: <20260408175916.665428780@linuxfoundation.org>
+Message-ID: <20260408175941.145534240@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +65,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234363-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234624-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 661943C0A4A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9C0503C1DB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengyu Qu <wiagn233@outlook.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 0d9363a764d9d601a05591f9695cea8b429e9be3 upstream.
+commit 8c27b1bce059a11a8d3c8682984e13866f0714af upstream.
 
-BETOP's BTP-KP50B and BTP-KP50C controller's wireless dongles are both
-working as standard Xbox 360 controllers. Add USB device IDs for them to
-xpad driver.
+After commit 2cedb296988c ("mei: me: trigger link reset if hw ready is unexpected")
+some devices started to show long resume times (5-7 seconds).
+This happens as mei falsely detects unready hardware,
+starts parallel link reset flow and triggers link reset timeouts
+in the resume callback.
 
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Link: https://patch.msgid.link/TY4PR01MB14432B4B298EA186E5F86C46B9855A@TY4PR01MB14432.jpnprd01.prod.outlook.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Address it by performing detection of unready hardware only
+when driver is in the MEI_DEV_ENABLED state instead of blacklisting
+states as done in the original patch.
+This eliminates active waitqueue check as in MEI_DEV_ENABLED state
+there will be no active waitqueue.
+
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reported-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221023
+Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Fixes: 2cedb296988c ("mei: me: trigger link reset if hw ready is unexpected")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260330083830.536056-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/mei/hw-me.c |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -354,6 +354,8 @@ static const struct xpad_device {
- 	{ 0x1bad, 0xfd00, "Razer Onza TE", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0xfd01, "Razer Onza", 0, XTYPE_XBOX360 },
- 	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
-+	{ 0x20bc, 0x5134, "BETOP BTP-KP50B Xinput Dongle", 0, XTYPE_XBOX360 },
-+	{ 0x20bc, 0x514a, "BETOP BTP-KP50C Xinput Dongle", 0, XTYPE_XBOX360 },
- 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2064, "PowerA Wired Controller for Xbox", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
-@@ -547,6 +549,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x1a86),		/* Nanjing Qinheng Microelectronics (WCH) */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
- 	XPAD_XBOX360_VENDOR(0x1ee9),		/* ZOTAC Technology Limited */
-+	XPAD_XBOX360_VENDOR(0x20bc),		/* BETOP wireless dongles */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x24c6),		/* PowerA controllers */
+--- a/drivers/misc/mei/hw-me.c
++++ b/drivers/misc/mei/hw-me.c
+@@ -1337,19 +1337,13 @@ irqreturn_t mei_me_irq_thread_handler(in
+ 	/*  check if we need to start the dev */
+ 	if (!mei_host_is_ready(dev)) {
+ 		if (mei_hw_is_ready(dev)) {
+-			/* synchronized by dev mutex */
+-			if (waitqueue_active(&dev->wait_hw_ready)) {
+-				dev_dbg(&dev->dev, "we need to start the dev.\n");
+-				dev->recvd_hw_ready = true;
+-				wake_up(&dev->wait_hw_ready);
+-			} else if (dev->dev_state != MEI_DEV_UNINITIALIZED &&
+-				   dev->dev_state != MEI_DEV_POWERING_DOWN &&
+-				   dev->dev_state != MEI_DEV_POWER_DOWN) {
++			if (dev->dev_state == MEI_DEV_ENABLED) {
+ 				dev_dbg(&dev->dev, "Force link reset.\n");
+ 				schedule_work(&dev->reset_work);
+ 			} else {
+-				dev_dbg(&dev->dev, "Ignore this interrupt in state = %d\n",
+-					dev->dev_state);
++				dev_dbg(&dev->dev, "we need to start the dev.\n");
++				dev->recvd_hw_ready = true;
++				wake_up(&dev->wait_hw_ready);
+ 			}
+ 		} else {
+ 			dev_dbg(&dev->dev, "Spurious Interrupt\n");
 
 
 
