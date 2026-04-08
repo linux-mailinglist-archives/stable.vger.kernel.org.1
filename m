@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLoNHZSe1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:40 +0200
+	id 0KmVNo+q1mmKHAgAu9opvQ
+	(envelope-from <stable+bounces-235088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D8C3C0D26
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 695793C2CD1
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B53730FEABD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C66631AE957
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062D63AA4E4;
-	Wed,  8 Apr 2026 18:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89813D890F;
+	Wed,  8 Apr 2026 18:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/JLnGXf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ka8VhwZe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83023D9DB9;
-	Wed,  8 Apr 2026 18:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B95B34AB06;
+	Wed,  8 Apr 2026 18:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672545; cv=none; b=XquAF5EZXlEG1dhITzdKsogN7iD7zPbQk1SNo+OkY/xxQJlriYY9tVCHGZUSGPr5IvyG/qAbt5B2xpwFEY9MdlIYmEokDavabwedftu3LOL2IeSfrTpEBgSVmK0ShIeOYVPr9BjrtG328o5Nc+PvBn9/5zgIUnuhUanSfVY0Hzk=
+	t=1775674538; cv=none; b=S9iRhlrhZxt56OerNNmzGIl0XgnAD+5IO36BAYqD3l6uNtO8f0myi9OgYtTqU0HuX7Yad9PBvfKzHKTebMIly9gIpLfz1L4jGDFWVdAQDuKmu+KrFdwrYky/iIPtWwsBt6bEe3U3AVMjmL0E0cCVt51D7jcMZh1LP1cwuDKhJwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672545; c=relaxed/simple;
-	bh=7HYjXKHPHrm5GBiAMC7i+QsYk6txo0JQsa5CcvgTjII=;
+	s=arc-20240116; t=1775674538; c=relaxed/simple;
+	bh=5+9+tJy/6wf0SbFfIxDN3vIBRMmxct2A43l3PbRJdiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZVf63WmExpssMMdhiK7Y9M24kJzbSyhVVmU+SsLNOGSvz9xviFNTRctr3wlStSfiYu2ylro+8v1uPx30q+7a84JZpy6zS/WhA0Qvw0GR34fHd3hns8x037uiofvSGxRevdvm8SIpcrc3GWnQaK/e58Sx/N2TVXGIqjE8Ts3E8z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/JLnGXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEA3C19421;
-	Wed,  8 Apr 2026 18:22:25 +0000 (UTC)
+	 MIME-Version; b=EHmMXQBaFq8lJhS2cKCU71MJuJbkTR3RVpGGZDCGcTFju3CBSZ+jbfAmyf+asj6oaKahkX9DF5XzRAsOotnHshk54kN6A/ayHC2b/LyYp7EkJxzjQNbvgT/0Jkgr8/xDbYTDlf9w0jPfmTkN1IQKbXyHKWhpjB+Zp8pvuZTROCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ka8VhwZe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214F2C19421;
+	Wed,  8 Apr 2026 18:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672545;
-	bh=7HYjXKHPHrm5GBiAMC7i+QsYk6txo0JQsa5CcvgTjII=;
+	s=korg; t=1775674538;
+	bh=5+9+tJy/6wf0SbFfIxDN3vIBRMmxct2A43l3PbRJdiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/JLnGXfPZQFTP19WHXn7kh9bnDIICJsomLKX7C6DHo3gS220d1FH+qGddMhy9jcp
-	 vQBb5X654gJJ25X2PIL7bZvhNTJZSiOsgaIpCb5REinh1smdntdkHHrex9qpV+dsoW
-	 h9lRLwlNn5fn+pqSiaHoGaB2xHlh/6LQWNWupN0M=
+	b=Ka8VhwZeXwfA+i30O4vTv4fx3q/ddsF2zZmP593TLUFHHOz0Yu4agRLfqLDbZXh/R
+	 +uVlVHuEA9rb/O/iXlFr7zs51nDxOa+oEPSb1yAljtrruKLglW71haVBT6voHRJ1hw
+	 6YY4+8+fpzrQlC4KrPEeSIOx4Ujdo3zYmiNQRIEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/160] Bluetooth: MGMT: validate LTK enc_size on load
+Subject: [PATCH 6.19 135/311] accel/qaic: Handle DBC deactivation if the owner went away
 Date: Wed,  8 Apr 2026 20:02:15 +0200
-Message-ID: <20260408175915.002099352@linuxfoundation.org>
+Message-ID: <20260408175944.456505307@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +67,142 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234317-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235088-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: E5D8C3C0D26
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 695793C2CD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
 
-[ Upstream commit b8dbe9648d69059cfe3a28917bfbf7e61efd7f15 ]
+[ Upstream commit 2feec5ae5df785658924ab6bd91280dc3926507c ]
 
-Load Long Term Keys stores the user-provided enc_size and later uses
-it to size fixed-size stack operations when replying to LE LTK
-requests. An enc_size larger than the 16-byte key buffer can therefore
-overflow the reply stack buffer.
+When a DBC is released, the device sends a QAIC_TRANS_DEACTIVATE_FROM_DEV
+transaction to the host over the QAIC_CONTROL MHI channel. QAIC handles
+this by calling decode_deactivate() to release the resources allocated for
+that DBC. Since that handling is done in the qaic_manage_ioctl() context,
+if the user goes away before receiving and handling the deactivation, the
+host will be out-of-sync with the DBCs available for use, and the DBC
+resources will not be freed unless the device is removed. If another user
+loads and requests to activate a network, then the device assigns the same
+DBC to that network, QAIC will "indefinitely" wait for dbc->in_use = false,
+leading the user process to hang.
 
-Reject oversized enc_size values while validating the management LTK
-record so invalid keys never reach the stored key state.
+As a solution to this, handle QAIC_TRANS_DEACTIVATE_FROM_DEV transactions
+that are received after the user has gone away.
 
-Fixes: 346af67b8d11 ("Bluetooth: Add MGMT handlers for dealing with SMP LTK's")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 129776ac2e38 ("accel/qaic: Add control path")
+Signed-off-by: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260205123415.3870898-1-youssef.abdulrahman@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/accel/qaic/qaic_control.c | 47 +++++++++++++++++++++++++++++--
+ 1 file changed, 45 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 7de0a0d752629..81651f8ed03d0 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -7145,6 +7145,9 @@ static bool ltk_is_valid(struct mgmt_ltk_info *key)
- 	if (key->initiator != 0x00 && key->initiator != 0x01)
- 		return false;
+diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
+index 428d8f65bff36..3842e59291b93 100644
+--- a/drivers/accel/qaic/qaic_control.c
++++ b/drivers/accel/qaic/qaic_control.c
+@@ -913,7 +913,7 @@ static int decode_deactivate(struct qaic_device *qdev, void *trans, u32 *msg_len
+ 		 */
+ 		return -ENODEV;
  
-+	if (key->enc_size > sizeof(key->val))
-+		return false;
+-	if (status) {
++	if (usr && status) {
+ 		/*
+ 		 * Releasing resources failed on the device side, which puts
+ 		 * us in a bind since they may still be in use, so enable the
+@@ -1108,6 +1108,9 @@ static void *msg_xfer(struct qaic_device *qdev, struct wrapper_list *wrappers, u
+ 	mutex_lock(&qdev->cntl_mutex);
+ 	if (!list_empty(&elem.list))
+ 		list_del(&elem.list);
++	/* resp_worker() processed the response but the wait was interrupted */
++	else if (ret == -ERESTARTSYS)
++		ret = 0;
+ 	if (!ret && !elem.buf)
+ 		ret = -ETIMEDOUT;
+ 	else if (ret > 0 && !elem.buf)
+@@ -1418,9 +1421,49 @@ static void resp_worker(struct work_struct *work)
+ 	}
+ 	mutex_unlock(&qdev->cntl_mutex);
+ 
+-	if (!found)
++	if (!found) {
++		/*
++		 * The user might have gone away at this point without waiting
++		 * for QAIC_TRANS_DEACTIVATE_FROM_DEV transaction coming from
++		 * the device. If this is not handled correctly, the host will
++		 * not know that the DBC[n] has been freed on the device.
++		 * Due to this failure in synchronization between the device and
++		 * the host, if another user requests to activate a network, and
++		 * the device assigns DBC[n] again, save_dbc_buf() will hang,
++		 * waiting for dbc[n]->in_use to be set to false, which will not
++		 * happen unless the qaic_dev_reset_clean_local_state() gets
++		 * called by resetting the device (or re-inserting the module).
++		 *
++		 * As a solution, we look for QAIC_TRANS_DEACTIVATE_FROM_DEV
++		 * transactions in the message before disposing of it, then
++		 * handle releasing the DBC resources.
++		 *
++		 * Since the user has gone away, if the device could not
++		 * deactivate the network (status != 0), there is no way to
++		 * enable and reassign the DBC to the user. We can put trust in
++		 * the device that it will release all the active DBCs in
++		 * response to the QAIC_TRANS_TERMINATE_TO_DEV transaction,
++		 * otherwise, the user can issue an soc_reset to the device.
++		 */
++		u32 msg_count = le32_to_cpu(msg->hdr.count);
++		u32 msg_len = le32_to_cpu(msg->hdr.len);
++		u32 len = 0;
++		int j;
 +
- 	switch (key->addr.type) {
- 	case BDADDR_LE_PUBLIC:
- 		return true;
++		for (j = 0; j < msg_count && len < msg_len; ++j) {
++			struct wire_trans_hdr *trans_hdr;
++
++			trans_hdr = (struct wire_trans_hdr *)(msg->data + len);
++			if (le32_to_cpu(trans_hdr->type) == QAIC_TRANS_DEACTIVATE_FROM_DEV) {
++				if (decode_deactivate(qdev, trans_hdr, &len, NULL))
++					len += le32_to_cpu(trans_hdr->len);
++			} else {
++				len += le32_to_cpu(trans_hdr->len);
++			}
++		}
+ 		/* request must have timed out, drop packet */
+ 		kfree(msg);
++	}
+ 
+ 	kfree(resp);
+ }
 -- 
 2.53.0
 
