@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id PfoSGWia1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:52 +0200
+	id 2DLjOQ+k1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-235025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26573C0247
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D973C1D48
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 62DC4300B594
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 52CA13008681
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D0C3D47A5;
-	Wed,  8 Apr 2026 18:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADE83D8918;
+	Wed,  8 Apr 2026 18:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuoZq/kg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unnEfqdf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC194347503;
-	Wed,  8 Apr 2026 18:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA9C25A321;
+	Wed,  8 Apr 2026 18:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671907; cv=none; b=jIrHIIgvXm6PCIYF0ENguLcFffMWE545N6mqRvPugyDT49yqSfFB2qdAX3B78eAapwD0DoYgNyLp72HjyPNb4MoThTU1WDb8c6bnMH02T49N1bbqrpwN6dR5i9gV8GCay6gui9Qn/eKnjGysF4zkg36TjyiFKJ7lt3p/mG0Pg7s=
+	t=1775674376; cv=none; b=EVExFkecgYgmngZFgENmbB0VnSQRedV8UuAW5S0GRMZKyt96GElMWChrJnpcL9wSr/z05954Zp491fvWjjpVVadIQqa7euIcEKju912ShDAfhPMPfeGOAf0+GwZB8bm3r0zdCLsA2sZG4og5bHdDMFU7QXeg8QAlo03IrPKvkGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671907; c=relaxed/simple;
-	bh=AdbUi1IASMt3MCX5DhdCMXWxxM/cgtOLoghetB6lc1U=;
+	s=arc-20240116; t=1775674376; c=relaxed/simple;
+	bh=rNW0duq4eRgM/plMAu+XahfaGxdszxqdSn9kDWmNv+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtQgmVN7cATmLMfVbnC18Z6B9yHch9KbmUNcKJRdBgx69qEFudG89Fsb7Mg7vllFWBYofPWLknu3PGZeSFJoYhHDBIq4W1wVShddNItxiEtM2ucYog72dK3q1Xvuax+2nLLt31vi3vIS/KuRi4j3C+5jC5TcmOvolJcaO3zjTHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuoZq/kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404CCC19421;
-	Wed,  8 Apr 2026 18:11:47 +0000 (UTC)
+	 MIME-Version; b=H+1muAdKONqhsML+qA32oP2FPWHY4MyaPv28bi2eBnlq+iBO3h/pZWibsLAPhe8nOcUZ+jt8UJ2r2ARX2XPI8PbdFKj3CUEU9/hhRWr8zKcpwv6Le6qh3L5GvbR/h/TepaK7+v6vEaU0ZHeaYNSwU/SXfmVAdN86oPhnsiGkPgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unnEfqdf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435B1C19421;
+	Wed,  8 Apr 2026 18:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671907;
-	bh=AdbUi1IASMt3MCX5DhdCMXWxxM/cgtOLoghetB6lc1U=;
+	s=korg; t=1775674376;
+	bh=rNW0duq4eRgM/plMAu+XahfaGxdszxqdSn9kDWmNv+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuoZq/kgcRruftL7BVtfVPOeMhHg6C2xg78ZlspHbECVf3+zotyO2OtqPaE6Lo8JY
-	 a+lGd3ODeOS+d6WpoNgvbplOxtxKBfQb0v+KfV54a8XprfSgqETQdyf8n1jMPOLTL3
-	 vbQVLzpTE5EyS0Guw15YX9u9dHMBB1m05M7fgHPw=
+	b=unnEfqdfFGO2x32eCsHSO3rN2J0+9eap1az2nz706DyDP3TO3xhif3pMPa84ZrPj0
+	 1ddV/6HaCrD9QjK9bARJJgATsKVkOAcdh21ru8nh5JOYJR4BoEzyXqmy+IlTNseGRc
+	 yitynYNK0z2qwxJQm9vS4CptH790XnjXQophWARY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 114/312] ext4: make recently_deleted() properly work with lazy itable initialization
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 031/311] wifi: iwlwifi: mld: correctly set wifi generation data
 Date: Wed,  8 Apr 2026 20:00:31 +0200
-Message-ID: <20260408175938.028746246@linuxfoundation.org>
+Message-ID: <20260408175940.577367391@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +68,241 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234070-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235025-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F26573C0247
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 37D973C1D48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit bd060afa7cc3e0ad30afa9ecc544a78638498555 upstream.
+[ Upstream commit 687a95d204e72e52f2e6bc7a994cc82f76b2678f ]
 
-recently_deleted() checks whether inode has been used in the near past.
-However this can give false positive result when inode table is not
-initialized yet and we are in fact comparing to random garbage (or stale
-itable block of a filesystem before mkfs). Ultimately this results in
-uninitialized inodes being skipped during inode allocation and possibly
-they are never initialized and thus e2fsck complains.  Verify if the
-inode has been initialized before checking for dtime.
+In each MAC context, the firmware expects the wifi generation
+data, i.e. whether or not HE/EHT (and in the future UHR) is
+enabled on that MAC.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, this is currently handled wrong in two ways:
+ - EHT is only enabled when the interface is also an MLD, but
+   we currently allow (despite the spec) connecting with EHT
+   but without MLO.
+ - when HE or EHT are used by TDLS peers, the firmware needs
+   to have them enabled regardless of the AP
+
+Fix this by iterating setting up the data depending on the
+interface type:
+ - for AP, just set it according to the BSS configuration
+ - for monitor, set it according to HW capabilities
+ - otherwise, particularly for client, iterate all stations
+   and then their links on the interface in question and set
+   according to their capabilities, this handles the AP and
+   TDLS peers. Re-calculate this whenever a TDLS station is
+   marked associated or removed so that it's kept updated,
+   for the AP it's already updated on assoc/disassoc.
+
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260319110722.404713b22177.Ic972b5e557d011a5438f8f97c1e793cc829e2ea9@changeid
+Link: https://patch.msgid.link/20260324093333.2953495-1-miriam.rachel.korenblit@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ialloc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ .../net/wireless/intel/iwlwifi/mld/iface.c    | 101 ++++++++++++------
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  19 ++++
+ 2 files changed, 88 insertions(+), 32 deletions(-)
 
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -687,6 +687,12 @@ static int recently_deleted(struct super
- 	if (unlikely(!gdp))
- 		return 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+index f15d1f5d1bf59..a770ee5e0e73a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+@@ -111,14 +111,75 @@ static bool iwl_mld_is_nic_ack_enabled(struct iwl_mld *mld,
+ 			       IEEE80211_HE_MAC_CAP2_ACK_EN);
+ }
  
-+	/* Inode was never used in this filesystem? */
-+	if (ext4_has_group_desc_csum(sb) &&
-+	    (gdp->bg_flags & cpu_to_le16(EXT4_BG_INODE_UNINIT) ||
-+	     ino >= EXT4_INODES_PER_GROUP(sb) - ext4_itable_unused_count(sb, gdp)))
-+		return 0;
+-static void iwl_mld_set_he_support(struct iwl_mld *mld,
+-				   struct ieee80211_vif *vif,
+-				   struct iwl_mac_config_cmd *cmd)
++struct iwl_mld_mac_wifi_gen_sta_iter_data {
++	struct ieee80211_vif *vif;
++	struct iwl_mac_wifi_gen_support *support;
++};
 +
- 	bh = sb_find_get_block(sb, ext4_inode_table(sb, gdp) +
- 		       (ino / inodes_per_block));
- 	if (!bh || !buffer_uptodate(bh))
++static void iwl_mld_mac_wifi_gen_sta_iter(void *_data,
++					  struct ieee80211_sta *sta)
+ {
+-	if (vif->type == NL80211_IFTYPE_AP)
+-		cmd->wifi_gen.he_ap_support = 1;
+-	else
+-		cmd->wifi_gen.he_support = 1;
++	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
++	struct iwl_mld_mac_wifi_gen_sta_iter_data *data = _data;
++	struct ieee80211_link_sta *link_sta;
++	unsigned int link_id;
++
++	if (mld_sta->vif != data->vif)
++		return;
++
++	for_each_sta_active_link(data->vif, sta, link_sta, link_id) {
++		if (link_sta->he_cap.has_he)
++			data->support->he_support = 1;
++		if (link_sta->eht_cap.has_eht)
++			data->support->eht_support = 1;
++	}
++}
++
++static void iwl_mld_set_wifi_gen(struct iwl_mld *mld,
++				 struct ieee80211_vif *vif,
++				 struct iwl_mac_wifi_gen_support *support)
++{
++	struct iwl_mld_mac_wifi_gen_sta_iter_data sta_iter_data = {
++		.vif = vif,
++		.support = support,
++	};
++	struct ieee80211_bss_conf *link_conf;
++	unsigned int link_id;
++
++	switch (vif->type) {
++	case NL80211_IFTYPE_MONITOR:
++		/* for sniffer, set to HW capabilities */
++		support->he_support = 1;
++		support->eht_support = mld->trans->cfg->eht_supported;
++		break;
++	case NL80211_IFTYPE_AP:
++		/* for AP set according to the link configs */
++		for_each_vif_active_link(vif, link_conf, link_id) {
++			support->he_ap_support |= link_conf->he_support;
++			support->eht_support |= link_conf->eht_support;
++		}
++		break;
++	default:
++		/*
++		 * If we have MLO enabled, then the firmware needs to enable
++		 * address translation for the station(s) we add. That depends
++		 * on having EHT enabled in firmware, which in turn depends on
++		 * mac80211 in the iteration below.
++		 * However, mac80211 doesn't enable capabilities on the AP STA
++		 * until it has parsed the association response successfully,
++		 * so set EHT (and HE as a pre-requisite for EHT) when the vif
++		 * is an MLD.
++		 */
++		if (ieee80211_vif_is_mld(vif)) {
++			support->he_support = 1;
++			support->eht_support = 1;
++		}
++
++		ieee80211_iterate_stations_mtx(mld->hw,
++					       iwl_mld_mac_wifi_gen_sta_iter,
++					       &sta_iter_data);
++		break;
++	}
+ }
+ 
+ /* fill the common part for all interface types */
+@@ -128,8 +189,6 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 					u32 action)
+ {
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+-	struct ieee80211_bss_conf *link_conf;
+-	unsigned int link_id;
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
+@@ -147,29 +206,7 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 	cmd->nic_not_ack_enabled =
+ 		cpu_to_le32(!iwl_mld_is_nic_ack_enabled(mld, vif));
+ 
+-	/* If we have MLO enabled, then the firmware needs to enable
+-	 * address translation for the station(s) we add. That depends
+-	 * on having EHT enabled in firmware, which in turn depends on
+-	 * mac80211 in the code below.
+-	 * However, mac80211 doesn't enable HE/EHT until it has parsed
+-	 * the association response successfully, so just skip all that
+-	 * and enable both when we have MLO.
+-	 */
+-	if (ieee80211_vif_is_mld(vif)) {
+-		iwl_mld_set_he_support(mld, vif, cmd);
+-		cmd->wifi_gen.eht_support = 1;
+-		return;
+-	}
+-
+-	for_each_vif_active_link(vif, link_conf, link_id) {
+-		if (!link_conf->he_support)
+-			continue;
+-
+-		iwl_mld_set_he_support(mld, vif, cmd);
+-
+-		/* EHT, if supported, was already set above */
+-		break;
+-	}
++	iwl_mld_set_wifi_gen(mld, vif, &cmd->wifi_gen);
+ }
+ 
+ static void iwl_mld_fill_mac_cmd_sta(struct iwl_mld *mld,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 3a1b5bfb9ed66..77793da147b73 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1690,6 +1690,16 @@ static int iwl_mld_move_sta_state_up(struct iwl_mld *mld,
+ 
+ 		if (vif->type == NL80211_IFTYPE_STATION)
+ 			iwl_mld_link_set_2mhz_block(mld, vif, sta);
++
++		if (sta->tdls) {
++			/*
++			 * update MAC since wifi generation flags may change,
++			 * we also update MAC on association to the AP via the
++			 * vif assoc change
++			 */
++			iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_MODIFY);
++		}
++
+ 		/* Now the link_sta's capabilities are set, update the FW */
+ 		iwl_mld_config_tlc(mld, vif, sta);
+ 
+@@ -1799,6 +1809,15 @@ static int iwl_mld_move_sta_state_down(struct iwl_mld *mld,
+ 			/* just removed last TDLS STA, so enable PM */
+ 			iwl_mld_update_mac_power(mld, vif, false);
+ 		}
++
++		if (sta->tdls) {
++			/*
++			 * update MAC since wifi generation flags may change,
++			 * we also update MAC on disassociation to the AP via
++			 * the vif assoc change
++			 */
++			iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_MODIFY);
++		}
+ 	} else {
+ 		return -EINVAL;
+ 	}
+-- 
+2.53.0
+
 
 
 
