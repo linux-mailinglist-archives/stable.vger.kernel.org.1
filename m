@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-234556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPgaLCKh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:34 +0200
+	id yGeBK0Gf1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1544E3C1312
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB8E3C0EAD
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F16630A9FFF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBB16309FD69
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AA23624B0;
-	Wed,  8 Apr 2026 18:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682B2B67E;
+	Wed,  8 Apr 2026 18:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvVekiKx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAsfYQ/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A974032A3FD;
-	Wed,  8 Apr 2026 18:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD2134252D;
+	Wed,  8 Apr 2026 18:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673165; cv=none; b=NXpvpdObEuEB9+X/0UwTFCHMabGC4TuLPxSd9Ti0h0Lmr5vjLaEmFzDRBPu8qcd/fStFuObCKc/HPyktpHZ87krH2A+fWB2RojwIoTdAR+ukID2zxD7BcP6MlbApgEv2FUc4dt/SrW/1GwWJ3aZnchwxboayrJtYFbWaAxhJZGk=
+	t=1775672486; cv=none; b=j40pUBJSYtA1qwhx1qpq/drVrNQTThkmGlqFro60WYEqK98kPRpbnbFOQBLvTpoYo/6+LTg7oqLD5ODZp4ZZTBAOC/ndkUMSsMK16dG6pNczMBxop38LpUjKNyZGIBG14HD+9sEzR02mEzJ/lOir+4ktq6mNdoubMmH1xiUvyfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673165; c=relaxed/simple;
-	bh=QZBQDN6pkmPHEq3Jew9SiPk1WbWYaoEy2t1Imo33GDo=;
+	s=arc-20240116; t=1775672486; c=relaxed/simple;
+	bh=twIhOr40BkxJPioTRqgYrf1ZjGbS+6GUUrHXHWHEhJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqJKphpLzre2J6dyJhgkYLrtz7IL0vXvVNI4vdPrvbIpzkqm4ZZYpKcxqWw5iNmTA3spaZmrwet3+pOkdomZLixxyPyi1hmF3GTlHUrB543a/JFjDr4egyGxlh0YLh72YJvimYY8oddp5Sgdj3Gv+qUHcRshZODrdfltx3fBg6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvVekiKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407C6C19421;
-	Wed,  8 Apr 2026 18:32:45 +0000 (UTC)
+	 MIME-Version; b=LrI35c2F17o7ZlwrU/tZPH8d/RYAnUh2/4/WvETyuLhueTcvbxNIZJbezslnMKzD10WUSQrmQGQdeBzSmX58eFZE+4c2EkAEXedFEorKM+QZpUJvNhd3+k2iVmuMPqbD8zG9kbas5JxYMFUaM0GCbm9OBoeL+PXA7mzFbkSmgUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAsfYQ/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC294C19425;
+	Wed,  8 Apr 2026 18:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673165;
-	bh=QZBQDN6pkmPHEq3Jew9SiPk1WbWYaoEy2t1Imo33GDo=;
+	s=korg; t=1775672486;
+	bh=twIhOr40BkxJPioTRqgYrf1ZjGbS+6GUUrHXHWHEhJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvVekiKxQvtjdSlGVbxmGdjowYP9kdhT+l0j62QGQ9TDlvvJeK2073vmzp7WNWRR2
-	 OR91GBY7BdGyeBiNQbV4LeRBn3gkdERintdZGkBzdnLptMpQPqRFgY42xgpp9FvZZ6
-	 GA+GlQWcic1zMntirGj7fGEtqfBTd0TJInooLMF0=
+	b=RAsfYQ/d1wL46LIWLXLBCTfJ9xmh3xTE8GgZckQaObKmk6Gi28Mp4pbnRzR/3nEac
+	 Gq8/6Nj+xyCuO/LFEOe7YaNhxOT7v3u8xCh5ahR2023NKJA0uWI2uqlVh/JG1CYQl7
+	 ko40852gpRy434TGS6adWquX5I7zikTc/zS67NWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zishun Yi <vulab@iscas.ac.cn>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 127/277] riscv: Reset pmm when PR_TAGGED_ADDR_ENABLE is not set
+Subject: [PATCH 6.6 025/160] bridge: br_nd_send: linearize skb before parsing ND options
 Date: Wed,  8 Apr 2026 20:01:52 +0200
-Message-ID: <20260408175938.618299137@linuxfoundation.org>
+Message-ID: <20260408175914.143366032@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,75 +72,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234294-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234556-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,sifive.com:email]
-X-Rspamd-Queue-Id: 1544E3C1312
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,blackwall.org:email,lzu.edu.cn:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 1CB8E3C0EAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zishun Yi <vulab@iscas.ac.cn>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit 3033b2b1e3949274f33a140e2a97571b5a307298 ]
+[ Upstream commit a01aee7cafc575bb82f5529e8734e7052f9b16ea ]
 
-In set_tagged_addr_ctrl(), when PR_TAGGED_ADDR_ENABLE is not set, pmlen
-is correctly set to 0, but it forgets to reset pmm. This results in the
-CPU pmm state not corresponding to the software pmlen state.
+br_nd_send() parses neighbour discovery options from ns->opt[] and
+assumes that these options are in the linear part of request.
 
-Fix this by resetting pmm along with pmlen.
+Its callers only guarantee that the ICMPv6 header and target address
+are available, so the option area can still be non-linear. Parsing
+ns->opt[] in that case can access data past the linear buffer.
 
-Fixes: 2e1743085887 ("riscv: Add support for the tagged address ABI")
-Signed-off-by: Zishun Yi <vulab@iscas.ac.cn>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://patch.msgid.link/20260322160022.21908-1-vulab@iscas.ac.cn
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Linearize request before option parsing and derive ns from the linear
+network header.
+
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260326034441.2037420-2-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/process.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bridge/br_arp_nd_proxy.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index 31a392993cb45..b5188dc74727d 100644
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -324,8 +324,10 @@ long set_tagged_addr_ctrl(struct task_struct *task, unsigned long arg)
- 	if (arg & PR_TAGGED_ADDR_ENABLE && (tagged_addr_disabled || !pmlen))
- 		return -EINVAL;
+diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+index c7869a286df40..b8bfc336ff7a7 100644
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -248,12 +248,12 @@ struct nd_msg *br_is_nd_neigh_msg(struct sk_buff *skb, struct nd_msg *msg)
  
--	if (!(arg & PR_TAGGED_ADDR_ENABLE))
-+	if (!(arg & PR_TAGGED_ADDR_ENABLE)) {
- 		pmlen = PMLEN_0;
-+		pmm = ENVCFG_PMM_PMLEN_0;
-+	}
+ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 		       struct sk_buff *request, struct neighbour *n,
+-		       __be16 vlan_proto, u16 vlan_tci, struct nd_msg *ns)
++		       __be16 vlan_proto, u16 vlan_tci)
+ {
+ 	struct net_device *dev = request->dev;
+ 	struct net_bridge_vlan_group *vg;
++	struct nd_msg *na, *ns;
+ 	struct sk_buff *reply;
+-	struct nd_msg *na;
+ 	struct ipv6hdr *pip6;
+ 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
+ 	int ns_olen;
+@@ -261,7 +261,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	u8 *daddr;
+ 	u16 pvid;
  
- 	if (mmap_write_lock_killable(mm))
- 		return -EINTR;
+-	if (!dev)
++	if (!dev || skb_linearize(request))
+ 		return;
+ 
+ 	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
+@@ -278,6 +278,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	skb_set_mac_header(reply, 0);
+ 
+ 	daddr = eth_hdr(request)->h_source;
++	ns = (struct nd_msg *)(skb_network_header(request) +
++			       sizeof(struct ipv6hdr));
+ 
+ 	/* Do we need option processing ? */
+ 	ns_olen = request->len - (skb_network_offset(request) +
+@@ -465,9 +467,9 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
+ 				if (vid != 0)
+ 					br_nd_send(br, p, skb, n,
+ 						   skb->vlan_proto,
+-						   skb_vlan_tag_get(skb), msg);
++						   skb_vlan_tag_get(skb));
+ 				else
+-					br_nd_send(br, p, skb, n, 0, 0, msg);
++					br_nd_send(br, p, skb, n, 0, 0);
+ 				replied = true;
+ 			}
+ 
 -- 
 2.53.0
 
