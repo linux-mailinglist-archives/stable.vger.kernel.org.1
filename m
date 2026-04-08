@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-234865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMU4J/+n1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:51 +0200
+	id GOOTKjKh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AD33C2819
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF6A3C134D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A0103139005
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C6DF5305C96F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0733624B2;
-	Wed,  8 Apr 2026 18:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D303D9034;
+	Wed,  8 Apr 2026 18:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXbjRzD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqOyRtOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D6B33121F;
-	Wed,  8 Apr 2026 18:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995F63D6CA2;
+	Wed,  8 Apr 2026 18:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673966; cv=none; b=upht96dMVTPIbo/TEll15HP68LIAaKW5oGer3JDldrcKBXxiF3BfBdfwICJkkwDPy3P5xpBpBe1RBKrtpj7suCkMK9hg/0Gn6AC5U5T3uz5W6tTYyuxFzWT7OgctAcuqDhM27O+jl69ascgedxUmt7sl7r7NvYotWnBpH9BzVRQ=
+	t=1775673392; cv=none; b=WRRW0N68CWIBUA+hBOyDVLmCYq9kzDf8K8ka1ds/yfU2I/2lFUtWW2rLtnEkgtUYeG73ODt8y3SXGsEmE6/cJBmPzjT5kvK7HYcbj+4Z5y1/LZIFonk/OX/hbe1uts/qX+zrtWa3gXsLSQc3DFwPMbCtBNpwevrJ+iNTXkkxHSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673966; c=relaxed/simple;
-	bh=MV/lNS3HJ2Xh7OpO3uahABkPBgpe5VRIFKBlvEH/mGE=;
+	s=arc-20240116; t=1775673392; c=relaxed/simple;
+	bh=KmjAtXQmN1hwuhYSGNFjxsIJ/FF5UzLEGoxmxq8sMI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXthvXo5fHT7m1nxKCsX/xkrTGDOpfgaB/RKWOwbdNSxGpP4arqy0mfj9h06KTKO6GgHufN84kaVmYxTvOc6/Wa7NsFarhecpEwv61gChrGS6+B+Nn/uKhlpH+s2AAEY1VDQ/RSMqcyrnTi5pZflwCGwlKxmSA33B7KgkO7qE2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXbjRzD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1E5C19421;
-	Wed,  8 Apr 2026 18:46:05 +0000 (UTC)
+	 MIME-Version; b=WnDXYI7wws2kbGeNRUxo11qcGMJVxc67MyUFvdRUk7shz8aHMVVYDpP49fMWDcgoejJHmTn5XsiW1qY09htsU95WrVjI2BGcg2FPGZD+puLQjqbPSzfL63uyxskG/ltDofKDRKxzntJa1oPzuoknwjJ2UehVpkzaxK/7AYe5hiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqOyRtOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D3CC2BC87;
+	Wed,  8 Apr 2026 18:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673966;
-	bh=MV/lNS3HJ2Xh7OpO3uahABkPBgpe5VRIFKBlvEH/mGE=;
+	s=korg; t=1775673392;
+	bh=KmjAtXQmN1hwuhYSGNFjxsIJ/FF5UzLEGoxmxq8sMI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXbjRzD1duwRbhoML7mf83ibqEQGUM8Pf5o1l5eL+icpVTTHLIODAaiI8pEZnszFU
-	 AfCbOBLGUlmBxPJ0FhtP+fAM95BPQum729VTaUUQmqKr3h2Ovyux0Wc4MIWGnVsz/V
-	 cYodavYZ4y7NrJZQKtcn7Zazm1EvP/vEg/RfNjLs=
+	b=vqOyRtOPOCTJq3W3InMy/GHNKYgNX/6rMiVkzOoqYqNNdkdfQ2zpZw0wMI61ECE0+
+	 ZxtY0/bXQnCgNjr4LDDJzZRoDjQ/lnujDSaS9TzR0bLsWdPR3HHXjSNqaIVB0/PnYf
+	 W3xdLNAa/SzrUiOUvXjEQJrZ4ZP89K0mXWxScwcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 158/242] iio: gyro: mpu3050: Fix out-of-sequence free_irq()
+	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: [PATCH 6.18 213/277] comedi: dt2815: add hardware detection to prevent crash
 Date: Wed,  8 Apr 2026 20:03:18 +0200
-Message-ID: <20260408175933.003374748@linuxfoundation.org>
+Message-ID: <20260408175941.815069228@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-234865-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234644-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 08AD33C2819
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mev.co.uk:email]
+X-Rspamd-Queue-Id: BCF6A3C134D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit d14116f6529fa085b1a1b1f224dc9604e4d2a29c upstream.
+commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
 
-The triggered buffer is initialized before the IRQ is requested. The
-removal path currently calls iio_triggered_buffer_cleanup() before
-free_irq(). This violates the expected LIFO.
+The dt2815 driver crashes when attached to I/O ports without actual
+hardware present. This occurs because syzkaller or users can attach
+the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
 
-Place free_irq() in the correct location relative to
-iio_triggered_buffer_cleanup().
+When no hardware exists at the specified port, inb() operations return
+0xff (floating bus), but outb() operations can trigger page faults due
+to undefined behavior, especially under race conditions:
 
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  BUG: unable to handle page fault for address: 000000007fffff90
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  RIP: 0010:dt2815_attach+0x6e0/0x1110
+
+Add hardware detection by reading the status register before attempting
+any write operations. If the read returns 0xff, assume no hardware is
+present and fail the attach with -ENODEV. This prevents crashes from
+outb() operations on non-existent hardware.
+
+Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
+Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
+Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1281,9 +1281,9 @@ void mpu3050_common_remove(struct device
- 	pm_runtime_get_sync(dev);
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
--	iio_triggered_buffer_cleanup(indio_dev);
- 	if (mpu3050->irq)
- 		free_irq(mpu3050->irq, mpu3050->trig);
-+	iio_triggered_buffer_cleanup(indio_dev);
- 	mpu3050_power_down(mpu3050);
- }
+--- a/drivers/comedi/drivers/dt2815.c
++++ b/drivers/comedi/drivers/dt2815.c
+@@ -175,6 +175,18 @@ static int dt2815_attach(struct comedi_d
+ 		    ? current_range_type : voltage_range_type;
+ 	}
  
++	/*
++	 * Check if hardware is present before attempting any I/O operations.
++	 * Reading 0xff from status register typically indicates no hardware
++	 * on the bus (floating bus reads as all 1s).
++	 */
++	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
++		dev_err(dev->class_dev,
++			"No hardware detected at I/O base 0x%lx\n",
++			dev->iobase);
++		return -ENODEV;
++	}
++
+ 	/* Init the 2815 */
+ 	outb(0x00, dev->iobase + DT2815_STATUS);
+ 	for (i = 0; i < 100; i++) {
 
 
 
