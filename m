@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-234661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPhsNWGg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:21 +0200
+	id sChaIrmc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899DD3C1162
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CC63C07D8
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B3F883012B62
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0DF3D3033469
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14113C5552;
-	Wed,  8 Apr 2026 18:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0423B0AFC;
+	Wed,  8 Apr 2026 18:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNJTRpKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upWsw3T4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84103331A44;
-	Wed,  8 Apr 2026 18:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC75324B1F;
+	Wed,  8 Apr 2026 18:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673436; cv=none; b=ebHEgmTAxjJlhkO2C6hqWuA46TCtsHkr8abCgKMJDTqeniqb0mH/etncMZ34D8JtDqZxS8iXNRTk5rBYhUKH6RGkj6fjrJFx78eN4x8BSAaz3UFrJjngmBag9nOxsSohdun2MHdfR3p5c86g86GkTodOM+Ep5tqEDux2OKvAzlg=
+	t=1775672424; cv=none; b=boJg0uYXM9KPst2FCndGDtsK799ajXGqZJaTLkNPMquuhJD/Um12LWVyUACHtXYctMXMi1Nzj+D5ZMRDxMPsc3ygPmvUEQ8hNgYgDfpfJefav833RcZvdfiRqiDl/3tRNUwRr77kmOr07H0hR2RZptIQ/KVyK0zbTvp7wuNowlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673436; c=relaxed/simple;
-	bh=TloRW3vMGEQniJyPC+qRmm2C0/OsiGsGt5BZpNfhhUA=;
+	s=arc-20240116; t=1775672424; c=relaxed/simple;
+	bh=jbAi7UAwn/klYY81P1C30whlCG1XAvp7hFdt5xLS+Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nThLNgpVqEVuWU8De7GnzUpR29yE0vuxvg7lgw7ZBUlE/3lpwvoAvq0HCpROTvJeVS41RjqjYtpjtIyxqyAj3Y7YCZL8RNssQoUrc2GtM927aaqTM2x+jOlDlLQ5yLAtPXcmPRaEWLCl2Zdl7JnPWLpyq4jjOStbnREKzNTt0DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNJTRpKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F62C19421;
-	Wed,  8 Apr 2026 18:37:15 +0000 (UTC)
+	 MIME-Version; b=FqeNVvd1kVVMDHA1fBZK97a4YnLs4YBfp4NuzOaQY6XGfJw4axB2O2N5g3Ee6GlcbaVp8T9O+oryXRi4L+ptRLquu3XEdoIN2QboAtjBChcJXUK6jeVTUn3bqY3iAiUK81sApodLRK7M9o1n9zb2DbfmQPKHrP+KEnEVon9+lps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upWsw3T4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F18C19421;
+	Wed,  8 Apr 2026 18:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673436;
-	bh=TloRW3vMGEQniJyPC+qRmm2C0/OsiGsGt5BZpNfhhUA=;
+	s=korg; t=1775672424;
+	bh=jbAi7UAwn/klYY81P1C30whlCG1XAvp7hFdt5xLS+Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNJTRpKytcxFE3hcrbHe9aAXuFuqHXEz+mmAs6tKhyDXHsMF+u9BSMpa+kINzsxdo
-	 Y0ttLOjjpYBCE+vqdQFv1HOP8G/Zv8P8+VI91CM6H7+JT9wj4UpltKzCGI1Yax/uao
-	 7qwdz+Jk8A8j6HzkPCdhKDPSNyPg5QXkMjvEl0AA=
+	b=upWsw3T4hNQQAAKLG53Lh34gIlAH6D+p3NcKIgnCabQsH4qP+7OAKB2LyHoYXk4H9
+	 8BH1yfqrCrG5vihWw2xXR8CDCZE/jphe5FGjMm06pN0zZBKJVqSoSadcTWDahhMWBr
+	 Vbfj6OV6MgwMwXvOsZB/CDUT+zZYACwjwOwlh1Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 232/277] vxlan: validate ND option lengths in vxlan_na_create
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.1 300/312] xfs: avoid dereferencing log items after push callbacks
 Date: Wed,  8 Apr 2026 20:03:37 +0200
-Message-ID: <20260408175942.519887879@linuxfoundation.org>
+Message-ID: <20260408175944.975688052@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +65,209 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234661-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234270-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,blackwall.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,outlook.com:email,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 899DD3C1162
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 52CC63C07D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-commit afa9a05e6c4971bd5586f1b304e14d61fb3d9385 upstream.
+commit 79ef34ec0554ec04bdbafafbc9836423734e1bd6 upstream.
 
-vxlan_na_create() walks ND options according to option-provided
-lengths. A malformed option can make the parser advance beyond the
-computed option span or use a too-short source LLADDR option payload.
+After xfsaild_push_item() calls iop_push(), the log item may have been
+freed if the AIL lock was dropped during the push. Background inode
+reclaim or the dquot shrinker can free the log item while the AIL lock
+is not held, and the tracepoints in the switch statement dereference
+the log item after iop_push() returns.
 
-Validate option lengths against the remaining NS option area before
-advancing, and only read source LLADDR when the option is large enough
-for an Ethernet address.
+Fix this by capturing the log item type, flags, and LSN before calling
+xfsaild_push_item(), and introducing a new xfs_ail_push_class trace
+event class that takes these pre-captured values and the ailp pointer
+instead of the log item pointer.
 
-Fixes: 4b29dba9c085 ("vxlan: fix nonfunctional neigh_reduce()")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260326034441.2037420-4-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+Cc: stable@vger.kernel.org # v5.9
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_trace.c     |    1 +
+ fs/xfs/xfs_trace.h     |   36 ++++++++++++++++++++++++++++++++----
+ fs/xfs/xfs_trans_ail.c |   26 +++++++++++++++++++-------
+ 3 files changed, 52 insertions(+), 11 deletions(-)
 
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1965,12 +1965,14 @@ static struct sk_buff *vxlan_na_create(s
- 	ns_olen = request->len - skb_network_offset(request) -
- 		sizeof(struct ipv6hdr) - sizeof(*ns);
- 	for (i = 0; i < ns_olen-1; i += (ns->opt[i+1]<<3)) {
--		if (!ns->opt[i + 1]) {
-+		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
- 			kfree_skb(reply);
- 			return NULL;
- 		}
- 		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
--			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
-+			if ((ns->opt[i + 1] << 3) >=
-+			    sizeof(struct nd_opt_hdr) + ETH_ALEN)
-+				daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
+--- a/fs/xfs/xfs_trace.c
++++ b/fs/xfs/xfs_trace.c
+@@ -22,6 +22,7 @@
+ #include "xfs_trans.h"
+ #include "xfs_log.h"
+ #include "xfs_log_priv.h"
++#include "xfs_trans_priv.h"
+ #include "xfs_buf_item.h"
+ #include "xfs_quota.h"
+ #include "xfs_dquot_item.h"
+--- a/fs/xfs/xfs_trace.h
++++ b/fs/xfs/xfs_trace.h
+@@ -47,6 +47,7 @@
+ #include <linux/tracepoint.h>
+ 
+ struct xfs_agf;
++struct xfs_ail;
+ struct xfs_alloc_arg;
+ struct xfs_attr_list_context;
+ struct xfs_buf_log_item;
+@@ -1335,14 +1336,41 @@ TRACE_EVENT(xfs_log_force,
+ DEFINE_EVENT(xfs_log_item_class, name, \
+ 	TP_PROTO(struct xfs_log_item *lip), \
+ 	TP_ARGS(lip))
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
+ 
++DECLARE_EVENT_CLASS(xfs_ail_push_class,
++	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn),
++	TP_ARGS(ailp, type, flags, lsn),
++	TP_STRUCT__entry(
++		__field(dev_t, dev)
++		__field(uint, type)
++		__field(unsigned long, flags)
++		__field(xfs_lsn_t, lsn)
++	),
++	TP_fast_assign(
++		__entry->dev = ailp->ail_log->l_mp->m_super->s_dev;
++		__entry->type = type;
++		__entry->flags = flags;
++		__entry->lsn = lsn;
++	),
++	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
++		  MAJOR(__entry->dev), MINOR(__entry->dev),
++		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
++		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
++		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
++)
++
++#define DEFINE_AIL_PUSH_EVENT(name) \
++DEFINE_EVENT(xfs_ail_push_class, name, \
++	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn), \
++	TP_ARGS(ailp, type, flags, lsn))
++DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
++
+ DECLARE_EVENT_CLASS(xfs_ail_class,
+ 	TP_PROTO(struct xfs_log_item *lip, xfs_lsn_t old_lsn, xfs_lsn_t new_lsn),
+ 	TP_ARGS(lip, old_lsn, new_lsn),
+--- a/fs/xfs/xfs_trans_ail.c
++++ b/fs/xfs/xfs_trans_ail.c
+@@ -389,6 +389,12 @@ xfsaild_resubmit_item(
+ 	return XFS_ITEM_SUCCESS;
+ }
+ 
++/*
++ * Push a single log item from the AIL.
++ *
++ * @lip may have been released and freed by the time this function returns,
++ * so callers must not dereference the log item afterwards.
++ */
+ static inline uint
+ xfsaild_push_item(
+ 	struct xfs_ail		*ailp,
+@@ -474,20 +480,26 @@ xfsaild_push(
+ 
+ 	lsn = lip->li_lsn;
+ 	while ((XFS_LSN_CMP(lip->li_lsn, target) <= 0)) {
+-		int	lock_result;
++		int		lock_result;
++		uint		type = lip->li_type;
++		unsigned long	flags = lip->li_flags;
++		xfs_lsn_t	item_lsn = lip->li_lsn;
+ 
+ 		/*
+ 		 * Note that iop_push may unlock and reacquire the AIL lock.  We
+ 		 * rely on the AIL cursor implementation to be able to deal with
+ 		 * the dropped lock.
++		 *
++		 * The log item may have been freed by the push, so it must not
++		 * be accessed or dereferenced below this line.
+ 		 */
+ 		lock_result = xfsaild_push_item(ailp, lip);
+ 		switch (lock_result) {
+ 		case XFS_ITEM_SUCCESS:
+ 			XFS_STATS_INC(mp, xs_push_ail_success);
+-			trace_xfs_ail_push(lip);
++			trace_xfs_ail_push(ailp, type, flags, item_lsn);
+ 
+-			ailp->ail_last_pushed_lsn = lsn;
++			ailp->ail_last_pushed_lsn = item_lsn;
  			break;
- 		}
- 	}
+ 
+ 		case XFS_ITEM_FLUSHING:
+@@ -503,22 +515,22 @@ xfsaild_push(
+ 			 * AIL is being flushed.
+ 			 */
+ 			XFS_STATS_INC(mp, xs_push_ail_flushing);
+-			trace_xfs_ail_flushing(lip);
++			trace_xfs_ail_flushing(ailp, type, flags, item_lsn);
+ 
+ 			flushing++;
+-			ailp->ail_last_pushed_lsn = lsn;
++			ailp->ail_last_pushed_lsn = item_lsn;
+ 			break;
+ 
+ 		case XFS_ITEM_PINNED:
+ 			XFS_STATS_INC(mp, xs_push_ail_pinned);
+-			trace_xfs_ail_pinned(lip);
++			trace_xfs_ail_pinned(ailp, type, flags, item_lsn);
+ 
+ 			stuck++;
+ 			ailp->ail_log_flush++;
+ 			break;
+ 		case XFS_ITEM_LOCKED:
+ 			XFS_STATS_INC(mp, xs_push_ail_locked);
+-			trace_xfs_ail_locked(lip);
++			trace_xfs_ail_locked(ailp, type, flags, item_lsn);
+ 
+ 			stuck++;
+ 			break;
 
 
 
