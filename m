@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-235271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMb6IW+s1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:28:47 +0200
+	id wDtHA26m1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7883C30D7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:28:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2493C245A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4673D305E309
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:03:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B9BDF3021D2F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72D735C1B5;
-	Wed,  8 Apr 2026 19:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8353AD52A;
+	Wed,  8 Apr 2026 19:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg+Pr6XJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po41f+kf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9985432692B;
-	Wed,  8 Apr 2026 19:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA1232692B;
+	Wed,  8 Apr 2026 19:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775675010; cv=none; b=jRBnXnFfw/+aZhE4xFtfyNTKolrhP65u9PXYYYCq6KD2jaU34v+KPMXgM0A+ImDWgXuVswCNQTORXel4OI+E/GeZYgQUBhyqqToR94AICTRwfAQQWW1YVpBKYy0hYKSJDksuwUBkm+vl7pUN+mECVLgkuJ2Rrr7B1axHVFvUzJw=
+	t=1775674925; cv=none; b=VbRtXIJ5rbZIWAQYAGYuqRBrisXogooSUZAcQ6QYAqq9xVMzQh6iaIoxjb0Y1QCwQ4lnXg/nzbN02TiasgVVoCQrDxg4Y9m80gy2QGdXsT8tz8wqc5NAcxHp6uaOQ794/MRDFymCtOAHQz6VpfHwEEaIx3eM2JwgsuYpxcKlnG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775675010; c=relaxed/simple;
-	bh=o1xlz7N++Crd6aWIXkib9iqSXgmAHcUM9KuLTRVs9wY=;
+	s=arc-20240116; t=1775674925; c=relaxed/simple;
+	bh=dXaP59EI5+tcNDh6U+k3NHP53kWSZOMBXRpOptHfgUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfRxYWdgGPPWsnUPJEJMMODMRDAHing6kRertnbaqCAsuCCBvWNi8vi99RU9It+z+7YkSxoRMnzeG0yFPoYimXcRjcN3obqywjxuvtmwIpXcAkfBcM0aVHGZ4Eh66wwrn/C7pF0PM4FRHThfy13qr7GX8RgUFX4eUtZr+AngpLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg+Pr6XJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E24C19421;
-	Wed,  8 Apr 2026 19:03:30 +0000 (UTC)
+	 MIME-Version; b=VCcdE6ngiFsRaxKgXZhfzmUGmHuCRk22kYVZleK+XdnSXctPNXnbbZNO3eMjXtcYuuNJ6VOWmFMRvDhFippYp7qscvcJy1IxLhmL0qvLjviBQtg7l7qNLESV/ppWpYl4YuqVLnU5pUeRzCQAh34YLVtkkEWI/Ab5d5xaOkxTfT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po41f+kf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EBBC19421;
+	Wed,  8 Apr 2026 19:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775675010;
-	bh=o1xlz7N++Crd6aWIXkib9iqSXgmAHcUM9KuLTRVs9wY=;
+	s=korg; t=1775674925;
+	bh=dXaP59EI5+tcNDh6U+k3NHP53kWSZOMBXRpOptHfgUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dg+Pr6XJOQPdEPhyLeO6XVMPdkw8FSkxhK52vB3X8pCCSAslsPv9dFqYMnrAaC5IU
-	 wRqGsgm5cMuQeOmd33bzrPb8My6fDuLNWyNQz8Som4sHxesPMxG22+wi6YrmTgCc/L
-	 idjefoON1Aq3sZ/qqBeVuo0UzXYxlcPTznvu/wUI=
+	b=Po41f+kfZzhdgBgIgd09hacJn1Mg7bhtWCBors2GF57QrvZjX47JzEg7d/DvWszbv
+	 EEPHH6LWmyKO9JyzxwJoUVjJJl7flqJL3Q2/8LLsJyeGrvO4NbZCASsXbVGZtnYOOt
+	 ZSlKfu7OAo1OhcUcWO36yXy7cuuDKWtTyojUUOFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.19 278/311] iommupt: Fix short gather if the unmap goes into a large mapping
-Date: Wed,  8 Apr 2026 20:04:38 +0200
-Message-ID: <20260408175949.760110605@linuxfoundation.org>
+	Srujana Challa <schalla@marvell.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 279/311] virtio_net: clamp rss_max_key_size to NETDEV_RSS_KEY_LEN
+Date: Wed,  8 Apr 2026 20:04:39 +0200
+Message-ID: <20260408175949.798289079@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
 References: <20260408175939.393281918@linuxfoundation.org>
@@ -70,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235271-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235238-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: AD7883C30D7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email]
+X-Rspamd-Queue-Id: 8F2493C245A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,53 +99,83 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Srujana Challa <schalla@marvell.com>
 
-commit ee6e69d032550687a3422504bfca3f834c7b5061 upstream.
+commit b4e5f04c58a29c499faa85d12952ca9a4faf1cb9 upstream.
 
-unmap has the odd behavior that it can unmap more than requested if the
-ending point lands within the middle of a large or contiguous IOPTE.
+rss_max_key_size in the virtio spec is the maximum key size supported by
+the device, not a mandatory size the driver must use. Also the value 40
+is a spec minimum, not a spec maximum.
 
-In this case the gather should flush everything unmapped which can be
-larger than what was requested to be unmapped. The gather was only
-flushing the range requested to be unmapped, not extending to the extra
-range, resulting in a short invalidation if the caller hits this special
-condition.
+The current code rejects RSS and can fail probe when the device reports a
+larger rss_max_key_size than the driver buffer limit. Instead, clamp the
+effective key length to min(device rss_max_key_size, NETDEV_RSS_KEY_LEN)
+and keep RSS enabled.
 
-This was found by the new invalidation/gather test I am adding in
-preparation for ARMv8. Claude deduced the root cause.
+This keeps probe working on devices that advertise larger maximum key sizes
+while respecting the netdev RSS key buffer size limit.
 
-As far as I remember nothing relies on unmapping a large entry, so this is
-likely not a triggerable bug.
-
+Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
 Cc: stable@vger.kernel.org
-Fixes: 7c53f4238aa8 ("iommupt: Add unmap_pages op")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20260326142344.1171317-1-schalla@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/generic_pt/iommu_pt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/virtio_net.c |   20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-index 3e33fe64feab..7e7a6e7abdee 100644
---- a/drivers/iommu/generic_pt/iommu_pt.h
-+++ b/drivers/iommu/generic_pt/iommu_pt.h
-@@ -1057,7 +1057,7 @@ size_t DOMAIN_NS(unmap_pages)(struct iommu_domain *domain, unsigned long iova,
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -381,8 +381,6 @@ struct receive_queue {
+ 	struct xdp_buff **xsk_buffs;
+ };
  
- 	pt_walk_range(&range, __unmap_range, &unmap);
+-#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
+-
+ /* Control VQ buffers: protected by the rtnl lock */
+ struct control_buf {
+ 	struct virtio_net_ctrl_hdr hdr;
+@@ -486,7 +484,7 @@ struct virtnet_info {
  
--	gather_range_pages(iotlb_gather, iommu_table, iova, len,
-+	gather_range_pages(iotlb_gather, iommu_table, iova, unmap.unmapped,
- 			   &unmap.free_list);
+ 	/* Must be last as it ends in a flexible-array member. */
+ 	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer, hash_key_data,
+-		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
++		u8 rss_hash_key_data[NETDEV_RSS_KEY_LEN];
+ 	);
+ };
+ static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
+@@ -6708,6 +6706,7 @@ static int virtnet_probe(struct virtio_d
+ 	struct virtnet_info *vi;
+ 	u16 max_queue_pairs;
+ 	int mtu = 0;
++	u16 key_sz;
  
- 	return unmap.unmapped;
--- 
-2.53.0
-
+ 	/* Find if host supports multiqueue/rss virtio_net device */
+ 	max_queue_pairs = 1;
+@@ -6842,14 +6841,13 @@ static int virtnet_probe(struct virtio_d
+ 	}
+ 
+ 	if (vi->has_rss || vi->has_rss_hash_report) {
+-		vi->rss_key_size =
+-			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+-		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
+-			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
+-				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
+-			err = -EINVAL;
+-			goto free;
+-		}
++		key_sz = virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
++
++		vi->rss_key_size = min_t(u16, key_sz, NETDEV_RSS_KEY_LEN);
++		if (key_sz > vi->rss_key_size)
++			dev_warn(&vdev->dev,
++				 "rss_max_key_size=%u exceeds driver limit %u, clamping\n",
++				 key_sz, vi->rss_key_size);
+ 
+ 		vi->rss_hash_types_supported =
+ 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
 
 
 
