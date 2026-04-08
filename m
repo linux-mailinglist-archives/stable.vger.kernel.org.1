@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-235187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IWwCymm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:01 +0200
+	id IN2hOAii1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C0923C2335
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C0E3C1648
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0BF7430193B1
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC81130C1FCC
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913713B19A3;
-	Wed,  8 Apr 2026 18:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADB93B0ADA;
+	Wed,  8 Apr 2026 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc/eWj6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ya6/7+yT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BD428980F;
-	Wed,  8 Apr 2026 18:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0E8324B1F;
+	Wed,  8 Apr 2026 18:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674793; cv=none; b=YQIT9o/6xSdJqcDUR93X9YfOYVeoHZ1vo4XNDePlLD77wQphNv60VYznRCpm2SELiAxvgAIU1QHZK8XNYZ5YYE4n+CQRB+dOrPqUIl1BpY6A+yKBCxlvh4jGoM5cHfoMEBfKLJu5+FgpGvwcPVWL+L36P6Z+nEbCcLuXL1f6Xdw=
+	t=1775672804; cv=none; b=m6gxZMwgj3RlivEYCXxK07/2ketpGUXXX+G2HP6/75+KwRgEsQ1NlOPN492E1n7WcHQ0Vgb4r5QFu2dm5afWIHG2zGNHafHcTTjXaklSQbVOLYo6odDHzen1zT36+DxCJpZw+wbZ0MBRbQXoU5NrJyieTv31GrjO5zb4T941PGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674793; c=relaxed/simple;
-	bh=VFr1f+ghxRWxylhQ0GHgrPsyuIFedEbTZ0heJH6rRoc=;
+	s=arc-20240116; t=1775672804; c=relaxed/simple;
+	bh=Wm4EgsXJRV4DgDND/CrjQWqYEae4XFxK1dw8uCvzSho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfp1eSKjAyTRWyKTErWQ9CzvxWnVuLN3/AHd4iT/4kuaznzU6EDtY6iPh4ohmCxQwsv3C8H6rxwDJuS5gqrxwjbIe5DCpTwYqw6XVv9I+kGzMNYELHtYpdzem9BhR+JMIPdtYuYS3WWihtEqtp++U/8LieCYsD91eFqTgQdNqqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc/eWj6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF09CC19421;
-	Wed,  8 Apr 2026 18:59:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MCiPKC11jurerhsMvSe+PJ+BNkpLyKybYrgMOawj5FGHm60QW2O/GpgF/PwwqnXMrcHhGfH0CgcibzTEmZmgFIxnuhHAqXrGwmA0HjW+nCrGCaP4hW7o0fmkCY7VuDXVNvFyaTaoTIEglwSXgPFGf/J0eT+70WbesDjp+Joepjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ya6/7+yT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83182C19421;
+	Wed,  8 Apr 2026 18:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674793;
-	bh=VFr1f+ghxRWxylhQ0GHgrPsyuIFedEbTZ0heJH6rRoc=;
+	s=korg; t=1775672803;
+	bh=Wm4EgsXJRV4DgDND/CrjQWqYEae4XFxK1dw8uCvzSho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mc/eWj6Dc0UoFJYClRM7SPUWI5xy3k/u763gz9jayzjlJYu3jtAh31635vZ9LToB3
-	 sODRiT4kka9A3eapqQvu0yr0HA8mMfOtwnqf3cQuwbplCGsjgUn16oMAydxFrCvXxQ
-	 xhfatoLuBw4oRdR18EFHWAR9Qzi28luIGKnVh04Y=
+	b=ya6/7+yTv/mNcRxGFjMpS6dfWsc36v1u0FU3CiA/dZC2UTvi2dCDAt1tK6p4i7eYP
+	 t12Zzlglq8bAkZ9Iu+akRz3Tm9SwuqVWVNjlWuyyglQXe5qtgfgxgYf1hwsgKe2z+y
+	 KDMnTxo2BJl49apqppEtZJm+6oqcJCWsP/uf/pRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Todd Brandt <todd.e.brandt@linux.intel.com>,
-	stable <stable@kernel.org>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 6.19 235/311] mei: me: reduce the scope on unexpected reset
-Date: Wed,  8 Apr 2026 20:03:55 +0200
-Message-ID: <20260408175948.170009340@linuxfoundation.org>
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 149/160] net: macb: Move devm_{free,request}_irq() out of spin lock area
+Date: Wed,  8 Apr 2026 20:03:56 +0200
+Message-ID: <20260408175918.757071715@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +64,182 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235187-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234417-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 9C0923C2335
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,bootlin.com:email]
+X-Rspamd-Queue-Id: 71C0E3C1648
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 8c27b1bce059a11a8d3c8682984e13866f0714af upstream.
+[ Upstream commit 317e49358ebbf6390fa439ef3c142f9239dd25fb ]
 
-After commit 2cedb296988c ("mei: me: trigger link reset if hw ready is unexpected")
-some devices started to show long resume times (5-7 seconds).
-This happens as mei falsely detects unready hardware,
-starts parallel link reset flow and triggers link reset timeouts
-in the resume callback.
+The devm_free_irq() and devm_request_irq() functions should not be
+executed in an atomic context.
 
-Address it by performing detection of unready hardware only
-when driver is in the MEI_DEV_ENABLED state instead of blacklisting
-states as done in the original patch.
-This eliminates active waitqueue check as in MEI_DEV_ENABLED state
-there will be no active waitqueue.
+During device suspend, all userspace processes and most kernel threads
+are frozen. Additionally, we flush all tx/rx status, disable all macb
+interrupts, and halt rx operations. Therefore, it is safe to split the
+region protected by bp->lock into two independent sections, allowing
+devm_free_irq() and devm_request_irq() to run in a non-atomic context.
+This modification resolves the following lockdep warning:
+  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
+  preempt_count: 1, expected: 0
+  RCU nest depth: 1, expected: 0
+  7 locks held by rtcwake/501:
+   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
+   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
+   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
+   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
+   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
+   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
+   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
+  irq event stamp: 8682
+  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
+  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
+  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
+  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
+  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
+  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+  Call trace:
+   show_stack+0x24/0x38 (C)
+   __dump_stack+0x28/0x38
+   dump_stack_lvl+0x64/0x88
+   dump_stack+0x18/0x24
+   __might_resched+0x200/0x218
+   __might_sleep+0x38/0x98
+   __mutex_lock_common+0x7c/0x1378
+   mutex_lock_nested+0x38/0x50
+   free_irq+0x68/0x2b0
+   devm_irq_release+0x24/0x38
+   devres_release+0x40/0x80
+   devm_free_irq+0x48/0x88
+   macb_suspend+0x298/0x558
+   device_suspend+0x218/0x4f0
+   dpm_suspend+0x244/0x3a0
+   dpm_suspend_start+0x50/0x78
+   suspend_devices_and_enter+0xec/0x560
+   pm_suspend+0x194/0x290
+   state_store+0x110/0x158
+   kobj_attr_store+0x1c/0x30
+   sysfs_kf_write+0xa8/0xd0
+   kernfs_fop_write_iter+0x11c/0x1c8
+   vfs_write+0x248/0x368
+   ksys_write+0x7c/0xf8
+   __arm64_sys_write+0x28/0x40
+   invoke_syscall+0x4c/0xe8
+   el0_svc_common+0x98/0xf0
+   do_el0_svc+0x28/0x40
+   el0_svc+0x54/0x1e0
+   el0t_64_sync_handler+0x84/0x130
+   el0t_64_sync+0x198/0x1a0
 
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reported-by: Todd Brandt <todd.e.brandt@linux.intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221023
-Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
-Fixes: 2cedb296988c ("mei: me: trigger link reset if hw ready is unexpected")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20260330083830.536056-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
+Cc: stable@vger.kernel.org
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced `tmp` variable with direct `MACB_BIT(MAG)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me.c |   14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/misc/mei/hw-me.c
-+++ b/drivers/misc/mei/hw-me.c
-@@ -1337,19 +1337,13 @@ irqreturn_t mei_me_irq_thread_handler(in
- 	/*  check if we need to start the dev */
- 	if (!mei_host_is_ready(dev)) {
- 		if (mei_hw_is_ready(dev)) {
--			/* synchronized by dev mutex */
--			if (waitqueue_active(&dev->wait_hw_ready)) {
--				dev_dbg(&dev->dev, "we need to start the dev.\n");
--				dev->recvd_hw_ready = true;
--				wake_up(&dev->wait_hw_ready);
--			} else if (dev->dev_state != MEI_DEV_UNINITIALIZED &&
--				   dev->dev_state != MEI_DEV_POWERING_DOWN &&
--				   dev->dev_state != MEI_DEV_POWER_DOWN) {
-+			if (dev->dev_state == MEI_DEV_ENABLED) {
- 				dev_dbg(&dev->dev, "Force link reset.\n");
- 				schedule_work(&dev->reset_work);
- 			} else {
--				dev_dbg(&dev->dev, "Ignore this interrupt in state = %d\n",
--					dev->dev_state);
-+				dev_dbg(&dev->dev, "we need to start the dev.\n");
-+				dev->recvd_hw_ready = true;
-+				wake_up(&dev->wait_hw_ready);
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5384,6 +5384,8 @@ static int __maybe_unused macb_suspend(s
+ 		macb_writel(bp, TSR, -1);
+ 		macb_writel(bp, RSR, -1);
+ 
++		spin_unlock_irqrestore(&bp->lock, flags);
++
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+ 		 */
+@@ -5395,11 +5397,12 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
  			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+ 			gem_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
  		} else {
- 			dev_dbg(&dev->dev, "Spurious Interrupt\n");
+ 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
+ 					       IRQF_SHARED, netdev->name, bp->queues);
+@@ -5407,13 +5410,13 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+ 			macb_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
+ 
+ 		enable_irq_wake(bp->queues[0].irq);
+ 	}
+@@ -5480,6 +5483,8 @@ static int __maybe_unused macb_resume(st
+ 		queue_readl(bp->queues, ISR);
+ 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 			queue_writel(bp->queues, ISR, -1);
++		spin_unlock_irqrestore(&bp->lock, flags);
++
+ 		/* Replace interrupt handler on queue 0 */
+ 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+ 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
+@@ -5488,10 +5493,8 @@ static int __maybe_unused macb_resume(st
+ 			dev_err(dev,
+ 				"Unable to request IRQ %d (error %d)\n",
+ 				bp->queues[0].irq, err);
+-			spin_unlock_irqrestore(&bp->lock, flags);
+ 			return err;
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
+ 
+ 		disable_irq_wake(bp->queues[0].irq);
+ 
 
 
 
