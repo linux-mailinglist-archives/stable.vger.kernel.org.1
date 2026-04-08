@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CpjCQ6i1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:30 +0200
+	id 8LgQBZKl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B7E3C166A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE2F3C222A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 912E5308F709
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9DAF320DA4F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9E93B0ADA;
-	Wed,  8 Apr 2026 18:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C1F3D903F;
+	Wed,  8 Apr 2026 18:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14FBFyj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3uqQU4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9BB3ACF11;
-	Wed,  8 Apr 2026 18:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A223D8905;
+	Wed,  8 Apr 2026 18:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672811; cv=none; b=T8q7ePWASJwAOQZxThfWjpso//C9clQmYPhed3AP2i2u0w5kf5CoxwOeLqqrlhTcoPu+2LcIcW9c7kgg1blPLQxG2K/LGgy95ZAAwnBug5bixN5vhCRvit3wpkKrGIfO33dl5HxgTf/KKxvuytu+hK2qrIrfh5+bshEDau/bWig=
+	t=1775674025; cv=none; b=UffvtjgyOZKGKhgjhj6xO248hIDaJM5CpqQVTWPQt1ZX88RqZa4d8aHwKPnCjw27xP0KHRT/kGfuVWCOCiWVF9vLHpjlI8JejEcTNaNOR0gSdbZwQGNpcHMoXJOf/EwFiCmKICRi31ThIrKVvqM+uBIRBAmblE3vXWl6zlnHNNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672811; c=relaxed/simple;
-	bh=AGz+Ha8Ga8jBj5O1w+XqPx5gPeBZSfIxaE82+WMuKuQ=;
+	s=arc-20240116; t=1775674025; c=relaxed/simple;
+	bh=WuXshUvCa9zx6IPXF2z/LoDXYdpv0DncGDMuCO9uSo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXUNOViTZZTzbh7qgfAJ6ITcR3ungIdULiTKdRbKToPNRkpYk90s+/am4qvjP0IhrzJjAmHR/JEaBmGkVCQowG5SR9Xd5nzCsTw9Lt/XMsTdX10Aqyq36uLiIwR7wuOa/W39ZFZljQzMU1LYR0utHmKG2b+cUFl9NQ2ubYerQ78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14FBFyj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C7DC19425;
-	Wed,  8 Apr 2026 18:26:51 +0000 (UTC)
+	 MIME-Version; b=sBbdLRIj4/QIVkc1CDqdcNVnQPeVoMnVdPd6YRoso8u+SE/OFR8AGKN8p+bsPY/hCndvZnwTMBrkfFbU6A+2DfSmLp2sUIYHQGHfh3D/VVwO8cxkGuWesQz7uCC6p5uDdupyVwr6wvWdmnq0UGPh5bdagggWh5XqCF/K1LlDINo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3uqQU4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0753C2BC87;
+	Wed,  8 Apr 2026 18:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672811;
-	bh=AGz+Ha8Ga8jBj5O1w+XqPx5gPeBZSfIxaE82+WMuKuQ=;
+	s=korg; t=1775674025;
+	bh=WuXshUvCa9zx6IPXF2z/LoDXYdpv0DncGDMuCO9uSo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14FBFyj7hZPofKyYy4uTDhBWVKU2GPJ9w6fWwYXL0enwLBZW2JtyWALEtiooveVhE
-	 EQApM7WvUUoA9s136pW4Idy2aGc+5D/95HM46V81MOsNYed5C141buEuFU5818HVx4
-	 c7i1I22REgLSB0154N26aYj9P4bPIuhQ5ieWYpeY=
+	b=p3uqQU4+vRfzpaCGTNhPZrhSYMekTojByV1dlO0JsG275sGKGz6cdXqoe/ZWZA08j
+	 o/+H6xNFpsgQklsliV8Skzn+yEwTE3pvS3jgHiBc2Yk4YiOpVTTQOfdDMQC75u0j+d
+	 UaYxUzAZ/LcLDXIdrjpnHWYw1dabRSP6Zi33huWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+19bed92c97bee999e5db@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 134/160] USB: dummy-hcd: Fix locking/synchronization error
+	Ivan Vera <ivanverasantos@gmail.com>,
+	Harish Ediga <harish.ediga@amd.com>,
+	Harsh Jain <h.jain@amd.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 181/242] nvmem: zynqmp_nvmem: Fix buffer size in DMA and memcpy
 Date: Wed,  8 Apr 2026 20:03:41 +0200
-Message-ID: <20260408175918.194693110@linuxfoundation.org>
+Message-ID: <20260408175933.858891230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234420-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234889-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,19bed92c97bee999e5db];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,harvard.edu:email,msgid.link:url]
-X-Rspamd-Queue-Id: A3B7E3C166A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 7BE2F3C222A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ivan Vera <ivanverasantos@gmail.com>
 
-commit 616a63ff495df12863692ab3f9f7b84e3fa7a66d upstream.
+commit f9b88613ff402aa6fe8fd020573cb95867ae947e upstream.
 
-Syzbot testing was able to provoke an addressing exception and crash
-in the usb_gadget_udc_reset() routine in
-drivers/usb/gadgets/udc/core.c, resulting from the fact that the
-routine was called with a second ("driver") argument of NULL.  The bad
-caller was set_link_state() in dummy_hcd.c, and the problem arose
-because of a race between a USB reset and driver unbind.
+Buffer size used in dma allocation and memcpy is wrong.
+It can lead to undersized DMA buffer access and possible
+memory corruption. use correct buffer size in dma_alloc_coherent
+and memcpy.
 
-These sorts of races were not supposed to be possible; commit
-7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous synchronization change"),
-along with a few followup commits, was written specifically to prevent
-them.  As it turns out, there are (at least) two errors remaining in
-the code.  Another patch will address the second error; this one is
-concerned with the first.
-
-The error responsible for the syzbot crash occurred because the
-stop_activity() routine will sometimes drop and then re-acquire the
-dum->lock spinlock.  A call to stop_activity() occurs in
-set_link_state() when handling an emulated USB reset, after the test
-of dum->ints_enabled and before the increment of dum->callback_usage.
-This allowed another thread (doing a driver unbind) to sneak in and
-grab the spinlock, and then clear dum->ints_enabled and dum->driver.
-Normally this other thread would have to wait for dum->callback_usage
-to go down to 0 before it would clear dum->driver, but in this case it
-didn't have to wait since dum->callback_usage had not yet been
-incremented.
-
-The fix is to increment dum->callback_usage _before_ calling
-stop_activity() instead of after.  Then the thread doing the unbind
-will not clear dum->driver until after the call to
-usb_gadget_udc_reset() safely returns and dum->callback_usage has been
-decremented again.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-by: syzbot+19bed92c97bee999e5db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/68fc7c9c.050a0220.346f24.023c.GAE@google.com/
-Tested-by: syzbot+19bed92c97bee999e5db@syzkaller.appspotmail.com
-Fixes: 7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous synchronization change")
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/46135f42-fdbe-46b5-aac0-6ca70492af15@rowland.harvard.edu
+Fixes: 737c0c8d07b5 ("nvmem: zynqmp_nvmem: Add support to access efuse")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ivan Vera <ivanverasantos@gmail.com>
+Signed-off-by: Harish Ediga <harish.ediga@amd.com>
+Signed-off-by: Harsh Jain <h.jain@amd.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260327131645.3025781-3-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/nvmem/zynqmp_nvmem.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -461,8 +461,13 @@ static void set_link_state(struct dummy_
+--- a/drivers/nvmem/zynqmp_nvmem.c
++++ b/drivers/nvmem/zynqmp_nvmem.c
+@@ -66,7 +66,7 @@ static int zynqmp_efuse_access(void *con
+ 	dma_addr_t dma_buf;
+ 	size_t words = bytes / WORD_INBYTES;
+ 	int ret;
+-	int value;
++	unsigned int value;
+ 	char *data;
  
- 		/* Report reset and disconnect events to the driver */
- 		if (dum->ints_enabled && (disconnect || reset)) {
--			stop_activity(dum);
- 			++dum->callback_usage;
-+			/*
-+			 * stop_activity() can drop dum->lock, so it must
-+			 * not come between the dum->ints_enabled test
-+			 * and the ++dum->callback_usage.
-+			 */
-+			stop_activity(dum);
- 			spin_unlock(&dum->lock);
- 			if (reset)
- 				usb_gadget_udc_reset(&dum->gadget, dum->driver);
+ 	if (bytes % WORD_INBYTES != 0) {
+@@ -80,7 +80,7 @@ static int zynqmp_efuse_access(void *con
+ 	}
+ 
+ 	if (pufflag == 1 && flag == EFUSE_WRITE) {
+-		memcpy(&value, val, bytes);
++		memcpy(&value, val, sizeof(value));
+ 		if ((offset == EFUSE_PUF_START_OFFSET ||
+ 		     offset == EFUSE_PUF_MID_OFFSET) &&
+ 		    value & P_USER_0_64_UPPER_MASK) {
+@@ -100,7 +100,7 @@ static int zynqmp_efuse_access(void *con
+ 	if (!efuse)
+ 		return -ENOMEM;
+ 
+-	data = dma_alloc_coherent(dev, sizeof(bytes),
++	data = dma_alloc_coherent(dev, bytes,
+ 				  &dma_buf, GFP_KERNEL);
+ 	if (!data) {
+ 		ret = -ENOMEM;
+@@ -134,7 +134,7 @@ static int zynqmp_efuse_access(void *con
+ 	if (flag == EFUSE_READ)
+ 		memcpy(val, data, bytes);
+ efuse_access_err:
+-	dma_free_coherent(dev, sizeof(bytes),
++	dma_free_coherent(dev, bytes,
+ 			  data, dma_buf);
+ efuse_data_fail:
+ 	dma_free_coherent(dev, sizeof(struct xilinx_efuse),
 
 
 
