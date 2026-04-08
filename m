@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-234040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Cd1BVaa1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:34 +0200
+	id CP/IB1Gi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4153C01E0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927113C1734
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF78B301442D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB7530D86A6
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885903D88E1;
-	Wed,  8 Apr 2026 18:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750923D9033;
+	Wed,  8 Apr 2026 18:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BooGcrbV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JpsuxFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA3C37F8C2;
-	Wed,  8 Apr 2026 18:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D293D47AC;
+	Wed,  8 Apr 2026 18:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671830; cv=none; b=PZG6n+6k8x0QtI26iXCgsnIFagwfmfCS+uy8yLYRbLoHf/XTuepP4X5PhUJjFFaLBuHOctQiST7OzmqWFm1RzPqxbnNuUmXrBeupeVuphQvzjcOm8iyrIYJq4NLuMueA4K0KTwLFGvg5QfsbYUkJBXRjJN95443EPBtI9WmEGP8=
+	t=1775672875; cv=none; b=eMDlg2frlpnYpyjLxrIqlfMXWoJwA//CYBb3UBuFaVJh2Hs+Tc23IZf6nCIHQX6xzxBUvFFRPzZZuNzAmZDcNyDNGakzQqvw3+Ez5+l40UXwl6YHtb2Iw77MqmjpZ03yq5Qclh8DEf4gZYcPuRPhJw0OpDF03qzElT2VNKoXY9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671830; c=relaxed/simple;
-	bh=NUZ7gcGi33HZTgmbwkLmPZ0rsqQmUOSGBs+eYNMMX9o=;
+	s=arc-20240116; t=1775672875; c=relaxed/simple;
+	bh=YfNFWGpkVAB+goc81Ij5h4rbkQhANCDrdj5qu8I9LQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZbHI1UVp+P5Ts4xGT5AcvI5VQhO4V7Em1aWLUOwxYi+4TBsSVu1PKOo82jgiDaNI3T1yzmJAU1Ls+hCZtdm4vPmXSwRCxwokFNbhTtBBltO8TvVMYHo+EGm8H7BiKqGUaSfIXzg7RXBvOxzdNBS4LFaA94lVMUhk6+FLg6LgBjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BooGcrbV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5296C19421;
-	Wed,  8 Apr 2026 18:10:29 +0000 (UTC)
+	 MIME-Version; b=d/+6HQyOl6rlNoraYSFGVM+GGSZSczwQ3gT5QJOKa6IkZjnRtVOatvsBymzbFmB6JbXVJGHBG8nv4xbo1irUz+uYDpdeTuK34c4P2k0FgG/2Y8b6gglqZiuTKFrpl9wOVv1Ai+Jh+UClWzY4ArTZl2bn4N6cQIbE6klaIxBoi8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JpsuxFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E59C19421;
+	Wed,  8 Apr 2026 18:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671830;
-	bh=NUZ7gcGi33HZTgmbwkLmPZ0rsqQmUOSGBs+eYNMMX9o=;
+	s=korg; t=1775672875;
+	bh=YfNFWGpkVAB+goc81Ij5h4rbkQhANCDrdj5qu8I9LQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BooGcrbVzj6akIvLQ8JR+nsXBuGm6Edbc/b62NkyU6jQZplgShpLiaQz4l3Qpvv8G
-	 It3ZL+4SWy/VEifQJ6Zp7ccy1uA2D7zEV0wTwvhm43JZ5jXcURoD5vIjx92NoKUYXf
-	 j1YSjXPCuo0NSS4zljgFDFBZo5zyjc/UDX3Z3twk=
+	b=1JpsuxFSn+PeizKkSDxmDtTefZfOIDiKbHJSNAEFE0nR/Qx93/mWgXCUJioyVrXZq
+	 78aolc+Bk4Y6d4ebntOwRxoor8JS25d075Bsdeb/UXWy3o3C6NSg95n+SC4PTSL+Bu
+	 P2J5MM6BV1QTfQ8m7Qz9+k1yepBh9/s+WpvpzrtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/312] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
+Subject: [PATCH 6.18 015/277] smb: client: fix generic/694 due to wrong ->i_blocks
 Date: Wed,  8 Apr 2026 20:00:00 +0200
-Message-ID: <20260408175936.845017243@linuxfoundation.org>
+Message-ID: <20260408175934.417864389@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +66,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234040-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234444-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email]
-X-Rspamd-Queue-Id: 9E4153C01E0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,manguebit.org:email]
+X-Rspamd-Queue-Id: 927113C1734
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 7150850146ebfa4ca998f653f264b8df6f7f85be ]
+[ Upstream commit 23b5df09c27aec13962b30d32a4167ebdd043f8e ]
 
-amdgpu_amdkfd_submit_ib() submits a GPU job and gets a fence
-from amdgpu_ib_schedule(). This fence is used to wait for job
-completion.
+When updating ->i_size, make sure to always update ->i_blocks as well
+until we query new allocation size from the server.
 
-Currently, the code drops the fence reference using dma_fence_put()
-before calling dma_fence_wait().
+generic/694 was failing because smb3_simple_falloc() was missing the
+update of ->i_blocks after calling cifs_setsize().  So, fix this by
+updating ->i_blocks directly in cifs_setsize(), so all places that
+call it doesn't need to worry about updating ->i_blocks later.
 
-If dma_fence_put() releases the last reference, the fence may be
-freed before dma_fence_wait() is called. This can lead to a
-use-after-free.
-
-Fix this by waiting on the fence first and releasing the reference
-only after dma_fence_wait() completes.
-
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c:697 amdgpu_amdkfd_submit_ib() warn: passing freed memory 'f' (line 696)
-
-Fixes: 9ae55f030dc5 ("drm/amdgpu: Follow up change to previous drm scheduler change.")
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8b9e5259adc385b61a6590a13b82ae0ac2bd3482)
+Reported-by: Shyam Prasad N <sprasad@microsoft.com>
+Closes: https://lore.kernel.org/r/CANT5p=rqgRwaADB=b_PhJkqXjtfq3SFv41SSTXSVEHnuh871pA@mail.gmail.com
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsglob.h |  6 ++++++
+ fs/smb/client/file.c     |  1 -
+ fs/smb/client/inode.c    | 21 ++++++---------------
+ fs/smb/client/smb2ops.c  | 20 ++++----------------
+ 4 files changed, 16 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index 330d1404988c3..d58c8e452ca3f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -694,9 +694,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
- 		goto err_ib_sched;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index b82663f609ed9..3059fcf12ed13 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -2407,4 +2407,10 @@ static inline int cifs_open_create_options(unsigned int oflags, int opts)
+ 	return opts;
+ }
+ 
++/*
++ * The number of blocks is not related to (i_size / i_blksize), but instead
++ * 512 byte (2**9) size is required for calculating num blocks.
++ */
++#define CIFS_INO_BLOCKS(size) DIV_ROUND_UP_ULL((u64)(size), 512)
++
+ #endif	/* _CIFS_GLOB_H */
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index dfeb609d90e22..f0e7a8f69e8b8 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -993,7 +993,6 @@ static int cifs_do_truncate(const unsigned int xid, struct dentry *dentry)
+ 		if (!rc) {
+ 			netfs_resize_file(&cinode->netfs, 0, true);
+ 			cifs_setsize(inode, 0);
+-			inode->i_blocks = 0;
+ 		}
+ 	}
+ 	if (cfile)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index cac355364e43c..7cd718dd7cb70 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -218,13 +218,7 @@ cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
+ 	 */
+ 	if (is_size_safe_to_change(cifs_i, fattr->cf_eof, from_readdir)) {
+ 		i_size_write(inode, fattr->cf_eof);
+-
+-		/*
+-		 * i_blocks is not related to (i_size / i_blksize),
+-		 * but instead 512 byte (2**9) size is required for
+-		 * calculating num blocks.
+-		 */
+-		inode->i_blocks = (512 - 1 + fattr->cf_bytes) >> 9;
++		inode->i_blocks = CIFS_INO_BLOCKS(fattr->cf_bytes);
  	}
  
--	/* Drop the initial kref_init count (see drm_sched_main as example) */
--	dma_fence_put(f);
- 	ret = dma_fence_wait(f, false);
-+	/* Drop the returned fence reference after the wait completes */
-+	dma_fence_put(f);
+ 	if (S_ISLNK(fattr->cf_mode) && fattr->cf_symlink_target) {
+@@ -3008,6 +3002,11 @@ void cifs_setsize(struct inode *inode, loff_t offset)
+ {
+ 	spin_lock(&inode->i_lock);
+ 	i_size_write(inode, offset);
++	/*
++	 * Until we can query the server for actual allocation size,
++	 * this is best estimate we have for blocks allocated for a file.
++	 */
++	inode->i_blocks = CIFS_INO_BLOCKS(offset);
+ 	spin_unlock(&inode->i_lock);
+ 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 	truncate_pagecache(inode, offset);
+@@ -3080,14 +3079,6 @@ int cifs_file_set_size(const unsigned int xid, struct dentry *dentry,
+ 	if (rc == 0) {
+ 		netfs_resize_file(&cifsInode->netfs, size, true);
+ 		cifs_setsize(inode, size);
+-		/*
+-		 * i_blocks is not related to (i_size / i_blksize), but instead
+-		 * 512 byte (2**9) size is required for calculating num blocks.
+-		 * Until we can query the server for actual allocation size,
+-		 * this is best estimate we have for blocks allocated for a file
+-		 * Number of blocks must be rounded up so size 1 is not 0 blocks
+-		 */
+-		inode->i_blocks = (512 - 1 + size) >> 9;
+ 	}
  
- err_ib_sched:
- 	amdgpu_job_free(job);
+ 	return rc;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 502b5cb05bc3e..478fa4bddb454 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -1492,6 +1492,7 @@ smb2_close_getattr(const unsigned int xid, struct cifs_tcon *tcon,
+ {
+ 	struct smb2_file_network_open_info file_inf;
+ 	struct inode *inode;
++	u64 asize;
+ 	int rc;
+ 
+ 	rc = __SMB2_close(xid, tcon, cfile->fid.persistent_fid,
+@@ -1515,14 +1516,9 @@ smb2_close_getattr(const unsigned int xid, struct cifs_tcon *tcon,
+ 		inode_set_atime_to_ts(inode,
+ 				      cifs_NTtimeToUnix(file_inf.LastAccessTime));
+ 
+-	/*
+-	 * i_blocks is not related to (i_size / i_blksize),
+-	 * but instead 512 byte (2**9) size is required for
+-	 * calculating num blocks.
+-	 */
+-	if (le64_to_cpu(file_inf.AllocationSize) > 4096)
+-		inode->i_blocks =
+-			(512 - 1 + le64_to_cpu(file_inf.AllocationSize)) >> 9;
++	asize = le64_to_cpu(file_inf.AllocationSize);
++	if (asize > 4096)
++		inode->i_blocks = CIFS_INO_BLOCKS(asize);
+ 
+ 	/* End of file and Attributes should not have to be updated on close */
+ 	spin_unlock(&inode->i_lock);
+@@ -2183,14 +2179,6 @@ smb2_duplicate_extents(const unsigned int xid,
+ 		rc = smb2_set_file_size(xid, tcon, trgtfile, dest_off + len, false);
+ 		if (rc)
+ 			goto duplicate_extents_out;
+-
+-		/*
+-		 * Although also could set plausible allocation size (i_blocks)
+-		 * here in addition to setting the file size, in reflink
+-		 * it is likely that the target file is sparse. Its allocation
+-		 * size will be queried on next revalidate, but it is important
+-		 * to make sure that file's cached size is updated immediately
+-		 */
+ 		netfs_resize_file(netfs_inode(inode), dest_off + len, true);
+ 		cifs_setsize(inode, dest_off + len);
+ 	}
 -- 
 2.53.0
 
