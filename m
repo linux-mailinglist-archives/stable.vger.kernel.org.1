@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-235158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MO2LJKar1mmmHAgAu9opvQ
-	(envelope-from <stable+bounces-235158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:26 +0200
+	id cKKeCKOd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000EC3C2F21
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32743C0AD3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 94B7C31692F6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53188301E707
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C16237F8AC;
-	Wed,  8 Apr 2026 18:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2367DB67E;
+	Wed,  8 Apr 2026 18:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deqV3ESO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swpMGBaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43433176E4;
-	Wed,  8 Apr 2026 18:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98633ACF11;
+	Wed,  8 Apr 2026 18:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674719; cv=none; b=KFIl/+jszHxENBj7wZKMy0g8Q5TD5sqWU8j7KwYQTXiyZ7yW2crfR0FQvkNKJjia29Di+NnrKnXSb0WjLWAEQyWThMHASOsAOFbEisKZKADDBU9FOht4epnqxUCeOiYFBeBM9q6NeimtuHKOxkGJjFMY0UDzG6utk6fPWFuf5cU=
+	t=1775672726; cv=none; b=JVkvpQFmuj8SNCbzPQvZchnjViNc3FMqajrX8ojxJY2XQioc+43ZBPI5qrPA4GsI7fMXHdilL3fcmEMLMpgv/l+CmkG6+ERo6mDRM+uhDhF2mUdW1PA8P1D8Ad9+21dI70WGqKBq2DACGY2WDzToseOQBHIfIcBMTpBf7rc6WqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674719; c=relaxed/simple;
-	bh=aQA2xBGFdnNpz++M8wcjDzPgYnVn2rBY3MEFIxt/8bc=;
+	s=arc-20240116; t=1775672726; c=relaxed/simple;
+	bh=tMzVKdGHBcf5GP6i3l+vQ6aGN78KWLIq0/vSDFEO6Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B1DnV9fuSe/RFuVAA8u4gf/Q7o0kxzvLOGdfV7d/xa6frYQ6zBxmiBmH3brYqjRa/QKuoMCBaezlb2910ErSTTN6tgNR2qcAYjSdeo7IUrUNN5jJQo3IYW/4LkXF4gg9R6F8U2ifvI3Gv7QmZhmpHxmhORPnxuEKlPHx4zmC8pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deqV3ESO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380C8C19421;
-	Wed,  8 Apr 2026 18:58:38 +0000 (UTC)
+	 MIME-Version; b=Awc1YQdinhloh0xNzpGwcEZvEVT85okQxGaPi9bgJDZYM+7K8D6tYxOemP6NlLinKPZS0/fHXDS+6gm/Oi+Roix77C79X1VYa+4vUD7d9GK4OYjY3LFnZemdj7kswvFxr1F9eshtMjJAfwsAL04yoFOKce+F3sdXYwLDJqbnpUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swpMGBaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2CEC19421;
+	Wed,  8 Apr 2026 18:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674718;
-	bh=aQA2xBGFdnNpz++M8wcjDzPgYnVn2rBY3MEFIxt/8bc=;
+	s=korg; t=1775672726;
+	bh=tMzVKdGHBcf5GP6i3l+vQ6aGN78KWLIq0/vSDFEO6Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deqV3ESO7BLrF3MqPmjWp9IoI6McRqt5GTSRLgJ4m58lPJnKqGbIfgKn2TpjBynUk
-	 TeJBfm57c3x1QpthODODlyGhe4wPXCusDqOLfYB6nsw1erRuwGTW9T5wBpX0p3JwZU
-	 mai3Fl6pHAjimdjlf/fdYHduKUGvMkneoG8tCh3I=
+	b=swpMGBaLCHQ1Zoyhq3GPJspI6ae83vs3hZ9zSd2BcOtyFhUosxRmWi9jDLVO54VGH
+	 WXLu8ytpHUYzcfd8NSUkm/mUgEax+uLbhZ7cTsClLrMOQbV/hkUdiWXWOFSCjqwOwm
+	 arfvF0rQOyUjisk9bY/OyLOHYNgNTjMxvDYUyk5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.19 205/311] drm/amdgpu: Change AMDGPU_VA_RESERVED_TRAP_SIZE to 64KB
+	syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.6 118/160] comedi: Reinit dev->spinlock between attachments to low-level drivers
 Date: Wed,  8 Apr 2026 20:03:25 +0200
-Message-ID: <20260408175947.062488905@linuxfoundation.org>
+Message-ID: <20260408175917.599495866@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,146 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235158-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234387-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,cc9f7f4a7df09f53c4a4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 000EC3C2F21
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B32743C0AD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 4487571ef17a30d274600b3bd6965f497a881299 upstream.
+commit 4b9a9a6d71e3e252032f959fb3895a33acb5865c upstream.
 
-Currently, AMDGPU_VA_RESERVED_TRAP_SIZE is hardcoded to 8KB, while
-KFD_CWSR_TBA_TMA_SIZE is defined as 2 * PAGE_SIZE. On systems with
-4K pages, both values match (8KB), so allocation and reserved space
-are consistent.
+`struct comedi_device` is the main controlling structure for a COMEDI
+device created by the COMEDI subsystem.  It contains a member `spinlock`
+containing a spin-lock that is initialized by the COMEDI subsystem, but
+is reserved for use by a low-level driver attached to the COMEDI device
+(at least since commit 25436dc9d84f ("Staging: comedi: remove RT
+code")).
 
-However, on 64K page-size systems, KFD_CWSR_TBA_TMA_SIZE becomes 128KB,
-while the reserved trap area remains 8KB. This mismatch causes the
-kernel to crash when running rocminfo or rccl unit tests.
+Some COMEDI devices (those created on initialization of the COMEDI
+subsystem when the "comedi.comedi_num_legacy_minors" parameter is
+non-zero) can be attached to different low-level drivers over their
+lifetime using the `COMEDI_DEVCONFIG` ioctl command.  This can result in
+inconsistent lock states being reported when there is a mismatch in the
+spin-lock locking levels used by each low-level driver to which the
+COMEDI device has been attached.  Fix it by reinitializing
+`dev->spinlock` before calling the low-level driver's `attach` function
+pointer if `CONFIG_LOCKDEP` is enabled.
 
-Kernel attempted to read user page (2) - exploit attempt? (uid: 1001)
-BUG: Kernel NULL pointer dereference on read at 0x00000002
-Faulting instruction address: 0xc0000000002c8a64
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-CPU: 34 UID: 1001 PID: 9379 Comm: rocminfo Tainted: G E
-6.19.0-rc4-amdgpu-00320-gf23176405700 #56 VOLUNTARY
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: IBM,9105-42A POWER10 (architected) 0x800200 0xf000006
-of:IBM,FW1060.30 (ML1060_896) hv:phyp pSeries
-NIP:  c0000000002c8a64 LR: c00000000125dbc8 CTR: c00000000125e730
-REGS: c0000001e0957580 TRAP: 0300 Tainted: G E
-MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE> CR: 24008268
-XER: 00000036
-CFAR: c00000000125dbc4 DAR: 0000000000000002 DSISR: 40000000
-IRQMASK: 1
-GPR00: c00000000125d908 c0000001e0957820 c0000000016e8100
-c00000013d814540
-GPR04: 0000000000000002 c00000013d814550 0000000000000045
-0000000000000000
-GPR08: c00000013444d000 c00000013d814538 c00000013d814538
-0000000084002268
-GPR12: c00000000125e730 c000007e2ffd5f00 ffffffffffffffff
-0000000000020000
-GPR16: 0000000000000000 0000000000000002 c00000015f653000
-0000000000000000
-GPR20: c000000138662400 c00000013d814540 0000000000000000
-c00000013d814500
-GPR24: 0000000000000000 0000000000000002 c0000001e0957888
-c0000001e0957878
-GPR28: c00000013d814548 0000000000000000 c00000013d814540
-c0000001e0957888
-NIP [c0000000002c8a64] __mutex_add_waiter+0x24/0xc0
-LR [c00000000125dbc8] __mutex_lock.constprop.0+0x318/0xd00
-Call Trace:
-0xc0000001e0957890 (unreliable)
-__mutex_lock.constprop.0+0x58/0xd00
-amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x6fc/0xb60 [amdgpu]
-kfd_process_alloc_gpuvm+0x54/0x1f0 [amdgpu]
-kfd_process_device_init_cwsr_dgpu+0xa4/0x1a0 [amdgpu]
-kfd_process_device_init_vm+0xd8/0x2e0 [amdgpu]
-kfd_ioctl_acquire_vm+0xd0/0x130 [amdgpu]
-kfd_ioctl+0x514/0x670 [amdgpu]
-sys_ioctl+0x134/0x180
-system_call_exception+0x114/0x300
-system_call_vectored_common+0x15c/0x2ec
-
-This patch changes AMDGPU_VA_RESERVED_TRAP_SIZE to 64 KB and
-KFD_CWSR_TBA_TMA_SIZE to the AMD GPU page size. This means we reserve
-64 KB for the trap in the address space, but only allocate 8 KB within
-it. With this approach, the allocation size never exceeds the reserved
-area.
-
-Fixes: 34a1de0f7935 ("drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 31b8de5e55666f26ea7ece5f412b83eab3f56dbb)
-Cc: stable@vger.kernel.org
+Reported-by: syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cc9f7f4a7df09f53c4a4
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260225132427.86578-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h |    2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h  |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/comedi/drivers.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-@@ -172,7 +172,7 @@ struct amdgpu_bo_vm;
- #define AMDGPU_VA_RESERVED_SEQ64_SIZE		(2ULL << 20)
- #define AMDGPU_VA_RESERVED_SEQ64_START(adev)	(AMDGPU_VA_RESERVED_CSA_START(adev) \
- 						 - AMDGPU_VA_RESERVED_SEQ64_SIZE)
--#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << 12)
-+#define AMDGPU_VA_RESERVED_TRAP_SIZE		(1ULL << 16)
- #define AMDGPU_VA_RESERVED_TRAP_START(adev)	(AMDGPU_VA_RESERVED_SEQ64_START(adev) \
- 						 - AMDGPU_VA_RESERVED_TRAP_SIZE)
- #define AMDGPU_VA_RESERVED_BOTTOM		(1ULL << 16)
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -102,8 +102,8 @@
-  * The first chunk is the TBA used for the CWSR ISA code. The second
-  * chunk is used as TMA for user-mode trap handler setup in daisy-chain mode.
-  */
--#define KFD_CWSR_TBA_TMA_SIZE (PAGE_SIZE * 2)
--#define KFD_CWSR_TMA_OFFSET (PAGE_SIZE + 2048)
-+#define KFD_CWSR_TBA_TMA_SIZE (AMDGPU_GPU_PAGE_SIZE * 2)
-+#define KFD_CWSR_TMA_OFFSET (AMDGPU_GPU_PAGE_SIZE + 2048)
- 
- #define KFD_MAX_NUM_OF_QUEUES_PER_DEVICE		\
- 	(KFD_MAX_NUM_OF_PROCESSES *			\
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -1000,6 +1000,14 @@ int comedi_device_attach(struct comedi_d
+ 		ret = -EIO;
+ 		goto out;
+ 	}
++	if (IS_ENABLED(CONFIG_LOCKDEP)) {
++		/*
++		 * dev->spinlock is for private use by the attached low-level
++		 * driver.  Reinitialize it to stop lock-dependency tracking
++		 * between attachments to different low-level drivers.
++		 */
++		spin_lock_init(&dev->spinlock);
++	}
+ 	dev->driver = driv;
+ 	dev->board_name = dev->board_ptr ? *(const char **)dev->board_ptr
+ 					 : dev->driver->driver_name;
 
 
 
