@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-234021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJr+OeiZ1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:44 +0200
+	id AP6aAjWa1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79183C00BE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5873C0164
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1EDC130078A1
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC53B302A7C9
 	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E363D813D;
-	Wed,  8 Apr 2026 18:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6943D891A;
+	Wed,  8 Apr 2026 18:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H//7ulbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1K68X/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DF347517;
-	Wed,  8 Apr 2026 18:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B2337F8C2;
+	Wed,  8 Apr 2026 18:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671781; cv=none; b=RmVyKFOoRhRThb5vJtTNu1X0zwVs/3nh2GbjGyLMFy5w69nVymPJpsf4q4bg0qa219rw0Ted8D1N7ToBTrNgQVbvLSe79rrTuW5HhXxxM90BM8Cy3wcMb23Gqg0/Lx9TqPhpQrglJtkGKkNxMXEQDfxn5d65XDZxixNigmf38pk=
+	t=1775671784; cv=none; b=InJ5qXl8IHt/CSJIbbdADsFUGuLIaSTEpcwe9cEkWrK+otK4qRDD+Kqrr2euHfNCI8jywk8tEOQThakmjuC2KVa8L8KBf6Bdm4TjWawh/DbZbZK3kWpprPrqhgVnAmxkWQsMc3gkpbnBjSnxLk5ruYggzBY8CymdcSU9AId9Gmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671781; c=relaxed/simple;
-	bh=81JLeFVzgryrS+/2+HzSs2OJqg72gCWq/HUnpzMczKk=;
+	s=arc-20240116; t=1775671784; c=relaxed/simple;
+	bh=PcOcU6oKEwfepJIWZh2xzT5xxn8Z+YtEtOOAU70/j+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BltjAq//6SVeL1nHgzrn07FmXIf9zk4ibF/55Utn/w3S29+B9HLcNahHcJ7LUQMSabOjZmsTr2BsDUd2VxpOlc9Snk/wrHD3EOga2RKOktuz4w1uPqNOXfTRgsnZ3R0aKFC3Z5jV7YZtt9RgjPeY9O0xV5B/G6gk1E2HkZXSsXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H//7ulbd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1595C19421;
-	Wed,  8 Apr 2026 18:09:40 +0000 (UTC)
+	 MIME-Version; b=isw28G/nqj2NYjWJx61JCQeOt0uvfBbnUZUdrHHFjh0TClhOU65JIRX6jzN7BMgRKThWFLpt2b0I8sOhfC2GFXeL8cSQg1nt5OOQBzRYidCI8Kk/PO29bS2/sgMERsBJeUJsSzBi2jOwix5edSGWpOI535uxVQxRHADPpqwiRqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1K68X/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925A3C19421;
+	Wed,  8 Apr 2026 18:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671781;
-	bh=81JLeFVzgryrS+/2+HzSs2OJqg72gCWq/HUnpzMczKk=;
+	s=korg; t=1775671783;
+	bh=PcOcU6oKEwfepJIWZh2xzT5xxn8Z+YtEtOOAU70/j+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H//7ulbdHwEepO9l1vRW2CL5o1FqAg+U6XVLY9vFa4xDytsVsyDOe/tCHePgjcUsS
-	 gRTSgw7xFJXvj1acBxTWVqnM4nHjygChThcsOhcHVRqpuJqV+O39UP/fVtxsuhRz9J
-	 z1MoytkF1oj6lwkK1dsokYRzCmZfGhsWEXY5SgMo=
+	b=R1K68X/Dz2scNKkNtUPK6ZH3Kh6E89dWoDZcjnBMryL/ZbqVHipT3RuNfPWQDpRua
+	 WTDio3KTi2XwEgyDcWEjM2/8vqZygv6UrX7/ViuEP4dgF+Z/WtTUFauz8PvBKaPCqP
+	 viBup9oQEpVfX6wBr3bdB+IRqSZaMqzhFNvd9g0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
 	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/312] RDMA/irdma: Initialize free_qp completion before using it
-Date: Wed,  8 Apr 2026 19:59:43 +0200
-Message-ID: <20260408175936.204872125@linuxfoundation.org>
+Subject: [PATCH 6.1 067/312] RDMA/irdma: Update ibqp state to error if QP is already in error state
+Date: Wed,  8 Apr 2026 19:59:44 +0200
+Message-ID: <20260408175936.241757079@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -69,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234021-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234022-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B79183C00BE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8F5873C0164
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,44 +99,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 
-[ Upstream commit 11a95521fb93c91e2d4ef9d53dc80ef0a755549b ]
+[ Upstream commit 8c1f19a2225cf37b3f8ab0b5a8a5322291cda620 ]
 
-In irdma_create_qp, if ib_copy_to_udata fails, it will call
-irdma_destroy_qp to clean up which will attempt to wait on
-the free_qp completion, which is not initialized yet. Fix this
-by initializing the completion before the ib_copy_to_udata call.
+In irdma_modify_qp() update ibqp state to error if the irdma QP is already
+in error state, otherwise the ibqp state which is visible to the consumer
+app remains stale.
 
 Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
 Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/verbs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index d0139a696d437..2f5299c9d9ed3 100644
+index 2f5299c9d9ed3..5bd4062fa82ff 100644
 --- a/drivers/infiniband/hw/irdma/verbs.c
 +++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -1005,6 +1005,7 @@ static int irdma_create_qp(struct ib_qp *ibqp,
- 	spin_lock_init(&iwqp->sc_qp.pfpdu.lock);
- 	iwqp->sig_all = (init_attr->sq_sig_type == IB_SIGNAL_ALL_WR) ? 1 : 0;
- 	rf->qp_table[qp_num] = iwqp;
-+	init_completion(&iwqp->free_qp);
- 
- 	if (rdma_protocol_roce(&iwdev->ibdev, 1)) {
- 		if (dev->ws_add(&iwdev->vsi, 0)) {
-@@ -1039,7 +1040,6 @@ static int irdma_create_qp(struct ib_qp *ibqp,
- 		}
- 	}
- 
--	init_completion(&iwqp->free_qp);
- 	return 0;
- 
- error:
+@@ -1419,6 +1419,7 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 		case IB_QPS_ERR:
+ 		case IB_QPS_RESET:
+ 			if (iwqp->iwarp_state == IRDMA_QP_STATE_ERROR) {
++				iwqp->ibqp_state = attr->qp_state;
+ 				spin_unlock_irqrestore(&iwqp->lock, flags);
+ 				if (udata && udata->inlen) {
+ 					if (ib_copy_from_udata(&ureq, udata,
+@@ -1624,6 +1625,7 @@ int irdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask,
+ 		case IB_QPS_ERR:
+ 		case IB_QPS_RESET:
+ 			if (iwqp->iwarp_state == IRDMA_QP_STATE_ERROR) {
++				iwqp->ibqp_state = attr->qp_state;
+ 				spin_unlock_irqrestore(&iwqp->lock, flags);
+ 				if (udata && udata->inlen) {
+ 					if (ib_copy_from_udata(&ureq, udata,
 -- 
 2.53.0
 
