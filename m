@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uM/qGX+n1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:43 +0200
+	id oJvDKP6b1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB853C272F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E8E3C0648
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB29A31EE3E5
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 906123045A94
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADCF3D9042;
-	Wed,  8 Apr 2026 18:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34614385513;
+	Wed,  8 Apr 2026 18:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6P2yY3z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQwGpRgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38FF3D9035;
-	Wed,  8 Apr 2026 18:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5B62727F3;
+	Wed,  8 Apr 2026 18:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673774; cv=none; b=kypE3uwxEYu228JVsM7Yt5wUgSb0dcdX0D/K4V3fJqOiqkOvE0E+QqyJy+Le/TAfQDnHoq2whjMUQK3V/+v90C2pq3Rcp/0VTSFiUCvGfDc2v/CaRi3042rJHfh33AmIfRLuxKWVlESlJvI6A1lPBUn59+L/P6agxr4sRZcnlJs=
+	t=1775672147; cv=none; b=DR5XKlmLwfK30FNVOr2o5isv4EnvYhhv/Zz4Hog1A8P3AQq7XKO7hu0elCup00sBJEKRvOtX/BIWuV6rWs/6m/+M7i9bBXxAqpFl34cjxoxjmC+yqfK5JYoHsLw3BdX3D0a2iqmy47NSUOaSvrNdk5EPQczJbJxDwlWzFMJoSd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673774; c=relaxed/simple;
-	bh=gT6Gvz87Uvk13PPK3B329TE36Ja/xxe61JSPCd4JfUE=;
+	s=arc-20240116; t=1775672147; c=relaxed/simple;
+	bh=BCqdpbugfM1pub95pA/cjWDf4PurV30tgWkPGQrZKW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mP85FAuYgxyc9SFySe2shSRRz0EmpF05WFrSEvXEEL35SWDE4vHMwqEArzNyu1BY/hzLbRJBUT4yvpaHec95Z9RnGgyNOPhboxwfDGOgAE8sOh+Pbr8n7n7Q1xOdM5uzen+l2WFYPPxhavYpm/aulpHdTaZGrbop0HGgtWEFR68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6P2yY3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2218CC19421;
-	Wed,  8 Apr 2026 18:42:53 +0000 (UTC)
+	 MIME-Version; b=e9NiAnOglthKInS5HzG9Bj8c45rg40eZC64OVcu/scJN5Qoe8S4gfwlgFgcrV65aXn+tf/qHXW02r9gzwHZSsdB5bgeKjcM5Em4xJlCdmKECKAWaq5UQWT/lrwS0sZwVPMJaIXDcfTp2WVcoiFhMtN2iOMAMzJwqeliM3u1f/xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQwGpRgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8286BC19421;
+	Wed,  8 Apr 2026 18:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673774;
-	bh=gT6Gvz87Uvk13PPK3B329TE36Ja/xxe61JSPCd4JfUE=;
+	s=korg; t=1775672146;
+	bh=BCqdpbugfM1pub95pA/cjWDf4PurV30tgWkPGQrZKW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6P2yY3zpYDubdebBjne7X7BK1A7TE8TJUS/HYiW9iKLt0dWEnNwtlps5wi1X5QUF
-	 7TQqZTjBvThzYFS8j3jA2JZxmME0OMz+1WGYNFMkmSTvkmRBQn5eBJiNFy29KtbiRr
-	 W/jaHQY/QLd7E1ihglexA6rkuQcTIfoQSUvkmvPc=
+	b=iQwGpRgr0sOKOxFn7mTyTt4gW4CPyKFcclnIQn6Sz0U5D3k+bBG04sYzIjOlTGvwc
+	 G/u2UI+Qffil3Oy1wTSAxwbkcOXpicyV3JWta+PaUZDLcNP+/CvMyKR2g+6cQ5PH1N
+	 UewJqIBnyIWx55ysXUe8eFGhShEJxB9hacI4Fagk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/242] Bluetooth: MGMT: validate mesh send advertising payload length
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 208/312] mips: mm: Allocate tlb_vpn array atomically
 Date: Wed,  8 Apr 2026 20:02:05 +0200
-Message-ID: <20260408175930.263471015@linuxfoundation.org>
+Message-ID: <20260408175941.528870207@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +65,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234792-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234163-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0FB853C272F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nokia.com:email]
+X-Rspamd-Queue-Id: 01E8E3C0648
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit bda93eec78cdbfe5cda00785cefebd443e56b88b ]
+commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
 
-mesh_send() currently bounds MGMT_OP_MESH_SEND by total command
-length, but it never verifies that the bytes supplied for the
-flexible adv_data[] array actually match the embedded adv_data_len
-field. MGMT_MESH_SEND_SIZE only covers the fixed header, so a
-truncated command can still pass the existing 20..50 byte range
-check and later drive the async mesh send path past the end of the
-queued command buffer.
+Found by DEBUG_ATOMIC_SLEEP:
 
-Keep rejecting zero-length and oversized advertising payloads, but
-validate adv_data_len explicitly and require the command length to
-exactly match the flexible array size before queueing the request.
+  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  no locks held by swapper/1/0.
+  irq event stamp: 0
+  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
+  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
+          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
+          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
+          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
+          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
+          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
+          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
+          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
+          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
+          ...
+  Call Trace:
+  [<ffffffff80129fd0>] show_stack+0x60/0x158
+  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
+  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
+  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
+  [<ffffffff80302788>] __kmalloc+0x58/0xd0
+  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
+  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
+  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
+  [<ffffffff80133258>] start_secondary+0x28/0x128
 
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/mips/mm/tlb-r4k.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index aa114fb218b2f..0b2d130e492ca 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2455,6 +2455,7 @@ static int mesh_send(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
- 	struct mgmt_mesh_tx *mesh_tx;
- 	struct mgmt_cp_mesh_send *send = data;
- 	struct mgmt_rp_mesh_read_features rp;
-+	u16 expected_len;
- 	bool sending;
- 	int err = 0;
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -528,7 +528,7 @@ static void __ref r4k_tlb_uniquify(void)
  
-@@ -2462,12 +2463,19 @@ static int mesh_send(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
- 	    !hci_dev_test_flag(hdev, HCI_MESH_EXPERIMENTAL))
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
- 				       MGMT_STATUS_NOT_SUPPORTED);
--	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED) ||
--	    len <= MGMT_MESH_SEND_SIZE ||
--	    len > (MGMT_MESH_SEND_SIZE + 31))
-+	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
-+				       MGMT_STATUS_REJECTED);
-+
-+	if (!send->adv_data_len || send->adv_data_len > 31)
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
- 				       MGMT_STATUS_REJECTED);
- 
-+	expected_len = struct_size(send, adv_data, send->adv_data_len);
-+	if (expected_len != len)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
- 	hci_dev_lock(hdev);
- 
- 	memset(&rp, 0, sizeof(rp));
--- 
-2.53.0
-
+ 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
+ 	tlb_vpns = (use_slab ?
+-		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
+ 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
+ 	if (WARN_ON(!tlb_vpns))
+ 		return; /* Pray local_flush_tlb_all() is good enough. */
 
 
 
