@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGimNPqb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:34 +0200
+	id QM3uEoKf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390013C0639
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C483C0F6C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42B183044A79
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A63630078C2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB16385513;
-	Wed,  8 Apr 2026 18:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED02E3AA4E4;
+	Wed,  8 Apr 2026 18:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0iEjSea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4PN92i9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED662727F3;
-	Wed,  8 Apr 2026 18:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05DA34252D;
+	Wed,  8 Apr 2026 18:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672144; cv=none; b=kdOIJFfHt1v8OhGGhxkqyZMT+GZbIaMH4vMYRpPHjolrnLa5lh8tMvK7Qoi2d/lCqivghLrwzanpGgndRPRrCps/F/TRgBg0SZe/0m0Q3wxoh3KRiSYnuTZrPaI/OaWhdd+RmL/oxN4zPwepvR5LAPy8CUGW49LZJRcwwv/Bc2s=
+	t=1775672514; cv=none; b=AUlMIcSRRCkeSrbRNiskd6hvqSPgwIy5q08fTpgSsaU0VQMY6zUQ3eN7Gz2UMgsWCWNAr98WkLMs36JnU2iQ5WIhAa5znRxYXR3neiS3t94fgm4o7U2ZS2NyXS2xiOKZoBn9yNsSQzqLInF9XAc8Em1XJJi+p1UqCUURHK/8XrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672144; c=relaxed/simple;
-	bh=rayOHrMTDL2k+he6+giXFSDWEDrOtZR8v8qscN2LQf4=;
+	s=arc-20240116; t=1775672514; c=relaxed/simple;
+	bh=L809Q6g1zNi6s8Fg1nfK0rJQCLcEAesU58zXvTmVZZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puLQBLuPlEB9p8RwmPkEJ+n5NWTIvufSswhUob5dbKKg4+x5HPwyyQx+dWVP5ZUaZByQrC7jHxbnGvn7UhVzfj22Urz3GP5yWtN9olynMx7sM6wC9HJqM6adCpwDwQxoBiT9ORb6Lq4Y4zhSa/d4JNcrsxKF7KvcoX1QI9TdJP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0iEjSea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9620C19421;
-	Wed,  8 Apr 2026 18:15:43 +0000 (UTC)
+	 MIME-Version; b=Ax3lLh4IAMV3M7Tv4F8kwy7fBYC6G+OJB56ku3u8AA6EgZlRDaTHURcE4AhamfxtpJ4eRHRHRr5TkbtzkH7xcoQsQyV6G8CC5+95+LBicTwpQNt1L6jzoJ54amXKUbJY1ssmckOoeM1v0oGDzUzh4OJPqG+fo93BVjGJ7MPltoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4PN92i9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D38C19421;
+	Wed,  8 Apr 2026 18:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672144;
-	bh=rayOHrMTDL2k+he6+giXFSDWEDrOtZR8v8qscN2LQf4=;
+	s=korg; t=1775672514;
+	bh=L809Q6g1zNi6s8Fg1nfK0rJQCLcEAesU58zXvTmVZZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0iEjSeagW7lvQvaf6IUVpkuTwY0/OQA+0TuFoBf6HknO22hT31oQpr2ToPsrXvkL
-	 Rzh5RywPM1+cUh+en+MFJUXp1wJycEgNfW5OvEESUVAU3zHErBb2FAuqQmHrXXJjte
-	 nQtpS913Wkp2E2ipUTCtPb/ntnrXZSHP08N1ruUY=
+	b=X4PN92i9A90K4U8yGuITT+CfLyn1tKMx4XJACScq3SbVsowiny/4LbEsA4rZBvnrh
+	 SGlp5b0pjbSDhKqWEjtJBNvnelDaOrD19TtBGzoQqHO7/ycJsLWGMr3SRGrhd8OqW3
+	 6/dGk+VblrBk8o12D+JWN2jAvv4vkYlu9wgd97Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 207/312] hwmon: (occ) Fix division by zero in occ_show_power_1()
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/160] netfilter: ipset: use nla_strcmp for IPSET_ATTR_NAME attr
 Date: Wed,  8 Apr 2026 20:02:04 +0200
-Message-ID: <20260408175941.491604807@linuxfoundation.org>
+Message-ID: <20260408175914.595301867@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234162-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234305-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,89 +87,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 390013C0639
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,e.id:url]
+X-Rspamd-Queue-Id: A1C483C0F6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Florian Westphal <fw@strlen.de>
 
-commit 39e2a5bf970402a8530a319cf06122e216ba57b8 upstream.
+[ Upstream commit b7e8590987aa94c9dc51518fad0e58cb887b1db5 ]
 
-In occ_show_power_1() case 1, the accumulator is divided by
-update_tag without checking for zero. If no samples have been
-collected yet (e.g. during early boot when the sensor block is
-included but hasn't been updated), update_tag is zero, causing
-a kernel divide-by-zero crash.
+IPSET_ATTR_NAME and IPSET_ATTR_NAMEREF are of NLA_STRING type, they
+cannot be treated like a c-string.
 
-The 2019 fix in commit 211186cae14d ("hwmon: (occ) Fix division by
-zero issue") only addressed occ_get_powr_avg() used by
-occ_show_power_2() and occ_show_power_a0(). This separate code
-path in occ_show_power_1() was missed.
+They either have to be switched to NLA_NUL_STRING, or the compare
+operations need to use the nla functions.
 
-Fix this by reusing the existing occ_get_powr_avg() helper, which
-already handles the zero-sample case and uses mul_u64_u32_div()
-to multiply before dividing for better precision. Move the helper
-above occ_show_power_1() so it is visible at the call site.
-
-Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260326224510.294619-2-sanman.pradhan@hpe.com
-[groeck: Fix alignment problems reported by checkpatch]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/occ/common.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ include/linux/netfilter/ipset/ip_set.h | 2 +-
+ net/netfilter/ipset/ip_set_core.c      | 4 ++--
+ net/netfilter/ipset/ip_set_list_set.c  | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -420,6 +420,12 @@ static ssize_t occ_show_freq_2(struct de
- 	return sysfs_emit(buf, "%u\n", val);
- }
+diff --git a/include/linux/netfilter/ipset/ip_set.h b/include/linux/netfilter/ipset/ip_set.h
+index e9f4f845d760a..b98331572ad29 100644
+--- a/include/linux/netfilter/ipset/ip_set.h
++++ b/include/linux/netfilter/ipset/ip_set.h
+@@ -309,7 +309,7 @@ enum {
  
-+static u64 occ_get_powr_avg(u64 accum, u32 samples)
-+{
-+	return (samples == 0) ? 0 :
-+		mul_u64_u32_div(accum, 1000000UL, samples);
-+}
-+
- static ssize_t occ_show_power_1(struct device *dev,
- 				struct device_attribute *attr, char *buf)
+ /* register and unregister set references */
+ extern ip_set_id_t ip_set_get_byname(struct net *net,
+-				     const char *name, struct ip_set **set);
++				     const struct nlattr *name, struct ip_set **set);
+ extern void ip_set_put_byindex(struct net *net, ip_set_id_t index);
+ extern void ip_set_name_byindex(struct net *net, ip_set_id_t index, char *name);
+ extern ip_set_id_t ip_set_nfnl_get_byindex(struct net *net, ip_set_id_t index);
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index cc20e6d56807c..a4e1d7951b2c6 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -821,7 +821,7 @@ EXPORT_SYMBOL_GPL(ip_set_del);
+  *
+  */
+ ip_set_id_t
+-ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
++ip_set_get_byname(struct net *net, const struct nlattr *name, struct ip_set **set)
  {
-@@ -441,9 +447,8 @@ static ssize_t occ_show_power_1(struct d
- 		val = get_unaligned_be16(&power->sensor_id);
- 		break;
- 	case 1:
--		val = get_unaligned_be32(&power->accumulator) /
--			get_unaligned_be32(&power->update_tag);
--		val *= 1000000ULL;
-+		val = occ_get_powr_avg(get_unaligned_be32(&power->accumulator),
-+				       get_unaligned_be32(&power->update_tag));
- 		break;
- 	case 2:
- 		val = (u64)get_unaligned_be32(&power->update_tag) *
-@@ -459,12 +464,6 @@ static ssize_t occ_show_power_1(struct d
- 	return sysfs_emit(buf, "%llu\n", val);
- }
+ 	ip_set_id_t i, index = IPSET_INVALID_ID;
+ 	struct ip_set *s;
+@@ -830,7 +830,7 @@ ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
+ 	rcu_read_lock();
+ 	for (i = 0; i < inst->ip_set_max; i++) {
+ 		s = rcu_dereference(inst->ip_set_list)[i];
+-		if (s && STRNCMP(s->name, name)) {
++		if (s && nla_strcmp(name, s->name) == 0) {
+ 			__ip_set_get(s);
+ 			index = i;
+ 			*set = s;
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index db794fe1300e6..83e1fdcc752d6 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -367,7 +367,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
+ 	ret = ip_set_get_extensions(set, tb, &ext);
+ 	if (ret)
+ 		return ret;
+-	e.id = ip_set_get_byname(map->net, nla_data(tb[IPSET_ATTR_NAME]), &s);
++	e.id = ip_set_get_byname(map->net, tb[IPSET_ATTR_NAME], &s);
+ 	if (e.id == IPSET_INVALID_ID)
+ 		return -IPSET_ERR_NAME;
+ 	/* "Loop detection" */
+@@ -389,7 +389,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
  
--static u64 occ_get_powr_avg(u64 accum, u32 samples)
--{
--	return (samples == 0) ? 0 :
--		mul_u64_u32_div(accum, 1000000UL, samples);
--}
--
- static ssize_t occ_show_power_2(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
+ 	if (tb[IPSET_ATTR_NAMEREF]) {
+ 		e.refid = ip_set_get_byname(map->net,
+-					    nla_data(tb[IPSET_ATTR_NAMEREF]),
++					    tb[IPSET_ATTR_NAMEREF],
+ 					    &s);
+ 		if (e.refid == IPSET_INVALID_ID) {
+ 			ret = -IPSET_ERR_NAMEREF;
+-- 
+2.53.0
+
 
 
 
