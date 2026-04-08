@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKuwCLem1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:23 +0200
+	id aDBKCeKi1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E923C253D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E8F3C1928
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A16383009CE4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 241203115F06
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270D13D75AF;
-	Wed,  8 Apr 2026 18:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB3A3ACF13;
+	Wed,  8 Apr 2026 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqi8ii1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmoZH0PP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC402BEFFF;
-	Wed,  8 Apr 2026 18:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1F637F8CA;
+	Wed,  8 Apr 2026 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673590; cv=none; b=ocSuG+Y8qQ9uqlyr5EKEpfCfgzICuLWVsnwopmREdqhg6yrpWooBBGL9Ztsn9GNxwsbOfiWrbbrrOXtN27UyDj/aq/vwpj8gYjVRfzgJgjJdPVKt7L9AFOuBrjbDwXkvKAV0BEfBSSgeIi7QkcrTbivoSOVU/rocfKxj0UVdHOY=
+	t=1775673021; cv=none; b=sBWeVa7U6eSApwTn3zqsvN/n4RukYBh00PUNHDLKypPI30DxTOaXBpLvQSlS7rYoI7aVJZLiXuM+mY1tbn5lPQqUk+sHIwOwdlI4UYXNNkH3p5uYLlvKrFNbPGLS4Qw8gVWAgmbzVi/Lrrlvd1L/jwnZU7fxiTEedTutFqzmW7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673590; c=relaxed/simple;
-	bh=72rqT9SAyhp4igCq8lBmpBCLIT9JdIulhGtA1xjxj1A=;
+	s=arc-20240116; t=1775673021; c=relaxed/simple;
+	bh=CjJiqqEE68ZFGHqQxhXiBuWXMRRKd4aRCJLix4TwBQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OV6jkHG7Fs8WNJvzeCMQvB0+GEjlG1hxS1JGWSRYD6VUid3WbiOOBZxDXjoxoUTm8KNXH1iEhHBh3XG3dDmbZcMoCS/FvaQA3B96oGY2cIub9jWV1auav4TBYhyFUOKDXqldC0SUTw8HJB/IIcEtjrQWj8VtuNlUjiKj6VAloPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqi8ii1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5C7C2BCB2;
-	Wed,  8 Apr 2026 18:39:50 +0000 (UTC)
+	 MIME-Version; b=URylDg6RQTt9ysAZdinwqhdOfS7gVjHN3hN3UzrczlquBSB+tBqOrkeLGYn6Y9H4gpsXnlxzoeMtQtoV74hmuJ50vcBDHcwveIT6BkxPaA+jtUNfgxHowOcPsPBGNlC+ITnkkOFj3e0Brw7bbOqlVFZkyFnnSUZMyMChHVkX5LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmoZH0PP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0545EC19421;
+	Wed,  8 Apr 2026 18:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673590;
-	bh=72rqT9SAyhp4igCq8lBmpBCLIT9JdIulhGtA1xjxj1A=;
+	s=korg; t=1775673021;
+	bh=CjJiqqEE68ZFGHqQxhXiBuWXMRRKd4aRCJLix4TwBQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqi8ii1wlTF8ZYOLac4yGz708Uct2fEMs1kZ1Pj8yP6Y/seIObgE9J6p+kZD4ggGL
-	 1frnJcictHTxTFDhJX9pRIMYFb2EZvWc/eMGGcAm8wk3kHKTTe5ynbtUKfz9R9hHlC
-	 D9xIp7wyAOf8OIqjE+xCd8njSHhYQ/0OfTVy7OpY=
+	b=fmoZH0PPm51gHEfZCsaGcm0DthTlWUzK5CMk/iv3erDUVFE5n9WffqH+h1DxMD7dc
+	 XahlmDnB+ASR9N2BiDErm1vAtq9M+InyBAGH9CcCWqyjSispyEi5hHe6Qp0Za02HsJ
+	 gOpxoTzQkO9rS1LZO550/K4agfOA9I5r90AhgpkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 014/242] io_uring/net: use struct io_br_sel->val as the recv finish value
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 069/277] netfilter: ipset: use nla_strcmp for IPSET_ATTR_NAME attr
 Date: Wed,  8 Apr 2026 20:00:54 +0200
-Message-ID: <20260408175927.604780289@linuxfoundation.org>
+Message-ID: <20260408175936.436768655@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,149 +68,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234721-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234500-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A9E923C253D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,e.id:url,strlen.de:email]
+X-Rspamd-Queue-Id: 86E8F3C1928
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Florian Westphal <fw@strlen.de>
 
-Commit 58d815091890e83aa2f83a9cce1fdfe3af02c7b4 upstream.
+[ Upstream commit b7e8590987aa94c9dc51518fad0e58cb887b1db5 ]
 
-Currently a pointer is passed in to the 'ret' in the receive handlers,
-but since we already have a value field in io_br_sel, just use that.
-This is also in preparation for needing to pass in struct io_br_sel
-to io_recv_finish() anyway.
+IPSET_ATTR_NAME and IPSET_ATTR_NAMEREF are of NLA_STRING type, they
+cannot be treated like a c-string.
 
-Link: https://lore.kernel.org/r/20250821020750.598432-10-axboe@kernel.dk
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+They either have to be switched to NLA_NUL_STRING, or the compare
+operations need to use the nla functions.
+
+Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ include/linux/netfilter/ipset/ip_set.h | 2 +-
+ net/netfilter/ipset/ip_set_core.c      | 4 ++--
+ net/netfilter/ipset/ip_set_list_set.c  | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -857,9 +857,10 @@ int io_recvmsg_prep(struct io_kiocb *req
-  * Returns true if it is actually finished, or false if it should run
-  * again (for multishot).
+diff --git a/include/linux/netfilter/ipset/ip_set.h b/include/linux/netfilter/ipset/ip_set.h
+index e9f4f845d760a..b98331572ad29 100644
+--- a/include/linux/netfilter/ipset/ip_set.h
++++ b/include/linux/netfilter/ipset/ip_set.h
+@@ -309,7 +309,7 @@ enum {
+ 
+ /* register and unregister set references */
+ extern ip_set_id_t ip_set_get_byname(struct net *net,
+-				     const char *name, struct ip_set **set);
++				     const struct nlattr *name, struct ip_set **set);
+ extern void ip_set_put_byindex(struct net *net, ip_set_id_t index);
+ extern void ip_set_name_byindex(struct net *net, ip_set_id_t index, char *name);
+ extern ip_set_id_t ip_set_nfnl_get_byindex(struct net *net, ip_set_id_t index);
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index cc20e6d56807c..a4e1d7951b2c6 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -821,7 +821,7 @@ EXPORT_SYMBOL_GPL(ip_set_del);
+  *
   */
--static inline bool io_recv_finish(struct io_kiocb *req, int *ret,
-+static inline bool io_recv_finish(struct io_kiocb *req,
- 				  struct io_async_msghdr *kmsg,
--				  bool mshot_finished, unsigned issue_flags)
-+				  struct io_br_sel *sel, bool mshot_finished,
-+				  unsigned issue_flags)
+ ip_set_id_t
+-ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
++ip_set_get_byname(struct net *net, const struct nlattr *name, struct ip_set **set)
  {
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
- 	unsigned int cflags = 0;
-@@ -868,7 +869,7 @@ static inline bool io_recv_finish(struct
- 		cflags |= IORING_CQE_F_SOCK_NONEMPTY;
+ 	ip_set_id_t i, index = IPSET_INVALID_ID;
+ 	struct ip_set *s;
+@@ -830,7 +830,7 @@ ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
+ 	rcu_read_lock();
+ 	for (i = 0; i < inst->ip_set_max; i++) {
+ 		s = rcu_dereference(inst->ip_set_list)[i];
+-		if (s && STRNCMP(s->name, name)) {
++		if (s && nla_strcmp(name, s->name) == 0) {
+ 			__ip_set_get(s);
+ 			index = i;
+ 			*set = s;
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index 13c7a08aa868c..34bb84d7b174c 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -367,7 +367,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
+ 	ret = ip_set_get_extensions(set, tb, &ext);
+ 	if (ret)
+ 		return ret;
+-	e.id = ip_set_get_byname(map->net, nla_data(tb[IPSET_ATTR_NAME]), &s);
++	e.id = ip_set_get_byname(map->net, tb[IPSET_ATTR_NAME], &s);
+ 	if (e.id == IPSET_INVALID_ID)
+ 		return -IPSET_ERR_NAME;
+ 	/* "Loop detection" */
+@@ -389,7 +389,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
  
- 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
--		size_t this_ret = *ret - sr->done_io;
-+		size_t this_ret = sel->val - sr->done_io;
- 
- 		cflags |= io_put_kbufs(req, this_ret, req->buf_list, io_bundle_nbufs(kmsg, this_ret));
- 		if (sr->retry_flags & IO_SR_MSG_RETRY)
-@@ -889,7 +890,7 @@ static inline bool io_recv_finish(struct
- 			return false;
- 		}
- 	} else {
--		cflags |= io_put_kbuf(req, *ret, req->buf_list);
-+		cflags |= io_put_kbuf(req, sel->val, req->buf_list);
- 	}
- 
- 	/*
-@@ -897,7 +898,7 @@ static inline bool io_recv_finish(struct
- 	 * receive from this socket.
- 	 */
- 	if ((req->flags & REQ_F_APOLL_MULTISHOT) && !mshot_finished &&
--	    io_req_post_cqe(req, *ret, cflags | IORING_CQE_F_MORE)) {
-+	    io_req_post_cqe(req, sel->val, cflags | IORING_CQE_F_MORE)) {
- 		int mshot_retry_ret = IOU_ISSUE_SKIP_COMPLETE;
- 
- 		io_mshot_prep_retry(req, kmsg);
-@@ -910,20 +911,20 @@ static inline bool io_recv_finish(struct
- 			mshot_retry_ret = IOU_REQUEUE;
- 		}
- 		if (issue_flags & IO_URING_F_MULTISHOT)
--			*ret = mshot_retry_ret;
-+			sel->val = mshot_retry_ret;
- 		else
--			*ret = -EAGAIN;
-+			sel->val = -EAGAIN;
- 		return true;
- 	}
- 
- 	/* Finish the request / stop multishot. */
- finish:
--	io_req_set_res(req, *ret, cflags);
-+	io_req_set_res(req, sel->val, cflags);
- 
- 	if (issue_flags & IO_URING_F_MULTISHOT)
--		*ret = IOU_STOP_MULTISHOT;
-+		sel->val = IOU_STOP_MULTISHOT;
- 	else
--		*ret = IOU_OK;
-+		sel->val = IOU_OK;
- 	io_req_msg_cleanup(req, issue_flags);
- 	return true;
- }
-@@ -1090,10 +1091,11 @@ retry_multishot:
- 	else
- 		io_kbuf_recycle(req, req->buf_list, issue_flags);
- 
--	if (!io_recv_finish(req, &ret, kmsg, mshot_finished, issue_flags))
-+	sel.val = ret;
-+	if (!io_recv_finish(req, kmsg, &sel, mshot_finished, issue_flags))
- 		goto retry_multishot;
- 
--	return ret;
-+	return sel.val;
- }
- 
- static int io_recv_buf_select(struct io_kiocb *req, struct io_async_msghdr *kmsg,
-@@ -1236,10 +1238,11 @@ out_free:
- 	else
- 		io_kbuf_recycle(req, req->buf_list, issue_flags);
- 
--	if (!io_recv_finish(req, &ret, kmsg, mshot_finished, issue_flags))
-+	sel.val = ret;
-+	if (!io_recv_finish(req, kmsg, &sel, mshot_finished, issue_flags))
- 		goto retry_multishot;
- 
--	return ret;
-+	return sel.val;
- }
- 
- void io_send_zc_cleanup(struct io_kiocb *req)
+ 	if (tb[IPSET_ATTR_NAMEREF]) {
+ 		e.refid = ip_set_get_byname(map->net,
+-					    nla_data(tb[IPSET_ATTR_NAMEREF]),
++					    tb[IPSET_ATTR_NAMEREF],
+ 					    &s);
+ 		if (e.refid == IPSET_INVALID_ID) {
+ 			ret = -IPSET_ERR_NAMEREF;
+-- 
+2.53.0
+
 
 
 
