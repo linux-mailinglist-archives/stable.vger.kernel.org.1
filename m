@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-235211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yK+OEu2l1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:01 +0200
+	id gPdxKi6h1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6743C22DF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235E03C133E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C5E13302B42E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 76EFE3041D43
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFD73D9DA1;
-	Wed,  8 Apr 2026 19:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A94E3D9DB0;
+	Wed,  8 Apr 2026 18:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2S6ymbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ea6ti2hZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F334D3D75AF;
-	Wed,  8 Apr 2026 19:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D077C3D9DA9;
+	Wed,  8 Apr 2026 18:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674856; cv=none; b=bsSKxcv3D40+Roetx9mPBAgFoDQ8L0aYNOhiUQjdcANjSLFlWERl0NJ8D1Z+hdSJr+u0nFzf5J8MhDoBgMZFByafOtjrZ8rRcpg/9pIfZ+yGO3EGPgI+0kpqZD6eLU2zDV9UT9jFGfW2XmMAXPxdT0H4WHDj+Z0X/P8uKjZDO8E=
+	t=1775673549; cv=none; b=tUhqwU9YZwfzrTAZ22zp4xTUifVMhnnFJzrOzTSxh7vclYyP+DacAa7rplIIs7SmNbcHwk6gGkJZ8OhkFeAYH5vkOEN9CKUHRiBk7zkIn6esqesRGLSuKktFUSteqkouL0mZSTjrJRA9kJ0yvuM78s4ue8our1zt8u2RYowAOXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674856; c=relaxed/simple;
-	bh=Y9wOola1C63umNaqrTlUH3VJQlqxe455L68E2GqjXP4=;
+	s=arc-20240116; t=1775673549; c=relaxed/simple;
+	bh=dK5pGVbJ0pNCNf17zrdLMcrVgxXTzTPEV68FfWS31Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKvj3X+GmqUig1H8DXqtSNyxUHGoh3xT05YqecaJGXh7pxaZVCIrtomKOyO9NdYoVS/jLviB2zQ+FJUpxF4J0r17SzZn4J9EJyD6s/m2u31YRjSC8ckG9Otk6PKQS7/D8QlXZBIhVM0W8Hp+gztW+QUvSG/bLj69g7w9txacHPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2S6ymbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8938CC19421;
-	Wed,  8 Apr 2026 19:00:55 +0000 (UTC)
+	 MIME-Version; b=MOtfxbmU1BTDvpGEuo+cQfSNr8WOC9W5r8uvkr6Qb6MiaRX7evUF4LxCOP5Ora62XBnZPoZmdRpt1a7iFGA1TpY8FYVuCm8fbIsvVmnyv1rw31Dr/v4INA6d7fRzOMeS6xLwIi/YlyDOrRJgv/jyLXsWDnC+6Z+Vf9jnsaci/3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ea6ti2hZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673D8C19425;
+	Wed,  8 Apr 2026 18:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674855;
-	bh=Y9wOola1C63umNaqrTlUH3VJQlqxe455L68E2GqjXP4=;
+	s=korg; t=1775673549;
+	bh=dK5pGVbJ0pNCNf17zrdLMcrVgxXTzTPEV68FfWS31Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2S6ymbFrNlSK3WQ5BoVI+2ME/aUJoHDRYGlA5EwMjppgmpId16LXfmPztYpyU8SA
-	 q+MymHmG6ogdX5QhsgD7yNeP2fOuB6zyeywcSgxV6bdgn2WccypDRlhP/mWxyuHK3U
-	 hynMzOa9OYJjLcWLQmfGam/1+myqQedBL4NKp7Oo=
+	b=Ea6ti2hZgeQlEv3m6KDTgHVM7W37rL511TxRK8TSyU2a8/jqjFz8MHhnApnvEg4MY
+	 ZECF7RpKkcD+Hawy0ocuzmUiMaeLQ7FBEwiRPFLod4C2ZJ4l0eDCvMpnOPVY67VrVG
+	 oozxLC/DMXY48SzKYyGuywmvakazTq6KrhoGIAHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	stable <stable@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.19 260/311] dt-bindings: connector: add pd-disable dependency
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 275/277] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
 Date: Wed,  8 Apr 2026 20:04:20 +0200
-Message-ID: <20260408175949.093950884@linuxfoundation.org>
+Message-ID: <20260408175944.136781721@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,8 +85,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235211-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234705-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -87,45 +94,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,microchip.com:email]
-X-Rspamd-Queue-Id: 0E6743C22DF
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
+X-Rspamd-Queue-Id: 235E03C133E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-commit 269c26464dcf8b54b0dd9c333721c30ee44ae297 upstream.
+[ Upstream commit ffef67b93aa352b34e6aeba3d52c19a63885409a ]
 
-When Power Delivery is not supported, the source is unable to obtain the
-current capability from the Source PDO. As a result, typec-power-opmode
-needs to be added to advertise such capability.
+follow_pfnmap_start() suffers from two problems:
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260330063518.719345-1-xu.yang_2@nxp.com
+(1) We are not re-fetching the pmd/pud after taking the PTL
+
+Therefore, we are not properly stabilizing what the lock actually
+protects.  If there is concurrent zapping, we would indicate to the
+caller that we found an entry, however, that entry might already have
+been invalidated, or contain a different PFN after taking the lock.
+
+Properly use pmdp_get() / pudp_get() after taking the lock.
+
+(2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
+
+pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
+
+There is no real guarantee that pmd_leaf()/pud_leaf() returns something
+reasonable on non-present entries.  Most architectures indeed either
+perform a present check or make it work by smart use of flags.
+
+However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
+and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd().  Whereby
+pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not do
+that.
+
+Let's check pmd_present()/pud_present() before assuming "the is a present
+PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page table
+handling code that traverses user page tables does.
+
+Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP, (1)
+is likely more relevant than (2).  It is questionable how often (1) would
+actually trigger, but let's CC stable to be sure.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org
+Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/connector/usb-connector.yaml |    1 +
- 1 file changed, 1 insertion(+)
+ mm/memory.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/Documentation/devicetree/bindings/connector/usb-connector.yaml
-+++ b/Documentation/devicetree/bindings/connector/usb-connector.yaml
-@@ -301,6 +301,7 @@ properties:
-     maxItems: 4
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6697,11 +6697,16 @@ retry:
  
- dependencies:
-+  pd-disable: [typec-power-opmode]
-   sink-vdos-v1: [ sink-vdos ]
-   sink-vdos: [ sink-vdos-v1 ]
+ 	pudp = pud_offset(p4dp, address);
+ 	pud = pudp_get(pudp);
+-	if (pud_none(pud))
++	if (!pud_present(pud))
+ 		goto out;
+ 	if (pud_leaf(pud)) {
+ 		lock = pud_lock(mm, pudp);
+-		if (!unlikely(pud_leaf(pud))) {
++		pud = pudp_get(pudp);
++
++		if (unlikely(!pud_present(pud))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pud_leaf(pud))) {
+ 			spin_unlock(lock);
+ 			goto retry;
+ 		}
+@@ -6713,9 +6718,16 @@ retry:
  
+ 	pmdp = pmd_offset(pudp, address);
+ 	pmd = pmdp_get_lockless(pmdp);
++	if (!pmd_present(pmd))
++		goto out;
+ 	if (pmd_leaf(pmd)) {
+ 		lock = pmd_lock(mm, pmdp);
+-		if (!unlikely(pmd_leaf(pmd))) {
++		pmd = pmdp_get(pmdp);
++
++		if (unlikely(!pmd_present(pmd))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pmd_leaf(pmd))) {
+ 			spin_unlock(lock);
+ 			goto retry;
+ 		}
 
 
 
