@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-234035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FGwLU+a1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:27 +0200
+	id UK4vGGia1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114733C01BA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE653C0246
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92F3C302BA4E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E80030398A1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE233D47A5;
-	Wed,  8 Apr 2026 18:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46FB347517;
+	Wed,  8 Apr 2026 18:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyCsWK5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNJUxUgT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647D1347517;
-	Wed,  8 Apr 2026 18:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BDF37F8C2;
+	Wed,  8 Apr 2026 18:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671817; cv=none; b=cWLKqLwNcLJfO6FYBxKq/AafeZ0r3eX0Ifa0D46r/KMisoVKNSLrCqSD2b6QFridH8aRFrXtQR9SKckq0l/byGnwrRgyFvHQaq4Xt4NLQzTa4XwwbxGoz1wDiw8fAOYb+7r8j89MKpZqaIOVy5heUSt5fqkVMZlfx20fSD6JqnQ=
+	t=1775671835; cv=none; b=YNcKqsytoblra0WURajaVGpnO8xkgBiq1Myiq833juWZV3IeJWTIHn5ANVhRjvwOusBLMQifCrPcjtq08E5KbqXy4IlMT9TAAQ6KheQJe5nzVzc4PDO2ZUhsJmfH4u5RBJbHzPxO+8q+u5z1v6XY0hHqGjHOPN7vpmBpM+q3+r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671817; c=relaxed/simple;
-	bh=pwSmbmuXyn6jJmypgKavvwBcJ8PrLXDwCY776q1eRrQ=;
+	s=arc-20240116; t=1775671835; c=relaxed/simple;
+	bh=dzwQAg7jizIcF+ziVeSWqf540WQbNwHHmKHOE7//Myc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ga699IwsfScxs+Mi4RnytMy7XeU3UyKlcRnbhAXQXnx4DYQJqdYNKlz4/wIwmZ/ie4g+WVn5HoG7cPWVudf61kjd0AwGhQFubfQT6dx7KPqlyFJdIQHZ44Rmik1Wzzp6UzpUldpGx6QmABh6ESPeFozWlkSC12/D7FOUi8Rwv8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyCsWK5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE32FC19421;
-	Wed,  8 Apr 2026 18:10:16 +0000 (UTC)
+	 MIME-Version; b=IHSIQrZ1adl0/IN0WpJfGsGLw3nupaBbmD3uQ4UlAwMHNDi/n6+AlsIX/A3XcLpu/9oFTW32AAHt72zMUa8lcEmD4srRz1NrGoBGkIzdhUQo5V9e3JYZ8suplc+UYVh2TniJfP8u46dM5MDcA2OidFmWi94X5h+0WzqIcUJUTJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNJUxUgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A15C19421;
+	Wed,  8 Apr 2026 18:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671817;
-	bh=pwSmbmuXyn6jJmypgKavvwBcJ8PrLXDwCY776q1eRrQ=;
+	s=korg; t=1775671835;
+	bh=dzwQAg7jizIcF+ziVeSWqf540WQbNwHHmKHOE7//Myc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TyCsWK5CNoOemrcu5tU2nUJnAQ+mh1IeBbaV9lV1graaVWsdxrdas1eoD6fwkCvC4
-	 lod1c60wEtd2M2qOP5csDr3pa5CEIW9vWxRPhzWoqg0+dbujbYsGsWNTzUf0OrGIvR
-	 q5whduBdtL3hsaEh0EW/kaa/Eplwa2DixsRbw02I=
+	b=pNJUxUgT7MjO23IfHTLnpnnE95bNZVoBZa5A1ciQwTKprwnemswLm2azuiRqGDGkB
+	 hHFms27+3oUuFN+n9AIUBo9linVRgpImyNdU6I6C0C8R6Es0b+YABu9XI5j9M9n1sn
+	 b+T3utyYGBoqnMGTcNvNpd1JW0kt4Cq2nbYrQBoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Zhang Chen <zhangchen01@kylinos.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/312] dma-mapping: add missing `inline` for `dma_free_attrs`
-Date: Wed,  8 Apr 2026 19:59:29 +0200
-Message-ID: <20260408175935.679605030@linuxfoundation.org>
+Subject: [PATCH 6.1 053/312] Bluetooth: L2CAP: Fix send LE flow credits in ACL link
+Date: Wed,  8 Apr 2026 19:59:30 +0200
+Message-ID: <20260408175935.717118970@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234035-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234042-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 114733C01BA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CCE653C0246
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,53 +99,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Zhang Chen <zhangchen01@kylinos.cn>
 
-[ Upstream commit 2cdaff22ed26f1e619aa2b43f27bb84f2c6ef8f8 ]
+[ Upstream commit f39f905e55f529b036321220af1ba4f4085564a5 ]
 
-Under an UML build for an upcoming series [1], I got `-Wstatic-in-inline`
-for `dma_free_attrs`:
+When the L2CAP channel mode is L2CAP_MODE_ERTM/L2CAP_MODE_STREAMING,
+l2cap_publish_rx_avail will be called and le flow credits will be sent in
+l2cap_chan_rx_avail, even though the link type is ACL.
 
-      BINDGEN rust/bindings/bindings_generated.rs - due to target missing
-    In file included from rust/helpers/helpers.c:59:
-    rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs' is used in an inline function with external linkage [-Wstatic-in-inline]
-       17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
-          |         ^
-    rust/helpers/dma.c:12:1: note: use 'static' to give inline function 'rust_helper_dma_free_attrs' internal linkage
-       12 | __rust_helper void rust_helper_dma_free_attrs(struct device *dev, size_t size,
-          | ^
-          | static
+The logs in question as follows:
+> ACL Data RX: Handle 129 flags 0x02 dlen 12
+      L2CAP: Unknown (0x16) ident 4 len 4
+        40 00 ed 05
+< ACL Data TX: Handle 129 flags 0x00 dlen 10
+      L2CAP: Command Reject (0x01) ident 4 len 2
+        Reason: Command not understood (0x0000)
 
-The issue is that `dma_free_attrs` was not marked `inline` when it was
-introduced alongside the rest of the stubs.
+Bluetooth: Unknown BR/EDR signaling command 0x16
+Bluetooth: Wrong link type (-22)
 
-Thus mark it.
-
-Fixes: ed6ccf10f24b ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA")
-Closes: https://lore.kernel.org/rust-for-linux/20260322194616.89847-1-ojeda@kernel.org/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260325015548.70912-1-ojeda@kernel.org
+Fixes: ce60b9231b66 ("Bluetooth: compute LE flow credits based on recvbuf space")
+Signed-off-by: Zhang Chen <zhangchen01@kylinos.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index af3f39ecc1b87..5846e43779dc9 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -219,8 +219,8 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
- {
- 	return NULL;
- }
--static void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
--		dma_addr_t dma_handle, unsigned long attrs)
-+static inline void dma_free_attrs(struct device *dev, size_t size,
-+		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
- {
- }
- static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 38e46f5175dad..35cac683d4f02 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7625,6 +7625,10 @@ static void l2cap_chan_le_send_credits(struct l2cap_chan *chan)
+ 	struct l2cap_le_credits pkt;
+ 	u16 return_credits = l2cap_le_rx_credits(chan);
+ 
++	if (chan->mode != L2CAP_MODE_LE_FLOWCTL &&
++	    chan->mode != L2CAP_MODE_EXT_FLOWCTL)
++		return;
++
+ 	if (chan->rx_credits >= return_credits)
+ 		return;
+ 
 -- 
 2.51.0
 
