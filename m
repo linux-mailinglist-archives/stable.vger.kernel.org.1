@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qM1MGq+m1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:15 +0200
+	id iKy5EdWi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00C03C250C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B704E3C18F5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E6BA31D408B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BA053108FC7
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AED3D8125;
-	Wed,  8 Apr 2026 18:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819803845B4;
+	Wed,  8 Apr 2026 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLC/g9Nn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWqMeMd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5453D4134;
-	Wed,  8 Apr 2026 18:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4471936166F;
+	Wed,  8 Apr 2026 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673583; cv=none; b=L40Abf3bXsDusXEUTpH5AkNBbeOQMp6/KCnZTa9JIYb46X2WhGSDKZhnAEUO/xyr8VeS3TpU9piHUVPyhe0vHxS9suoOC6O4wxr3MuhR2tdGARLDC1/GoU4gJ8cDdhLEueS2vSiBISKUyQ/bHc87CVQ0NYZvx0LpVY/KDlTcqG8=
+	t=1775673011; cv=none; b=fcmFwnE3ucghVUpfzmuhJj2FsVw6i37KGwV2tKn9q9TBxntXq3SYRgwmpRUeJyqB4LJtr0gihJCcqEoyYNxl27/JC4ZVNO/5PvDHRgAU/Zaz9Q07uCTi7YO0pm9ckVQj4+0sCtQvuMz4C/dJ+k8IPOFhF8qhhzKNC2RBLvsuUGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673583; c=relaxed/simple;
-	bh=btcFDRUvHHK5XvB19A7Vkafses+NwjETZoX+BBbGug4=;
+	s=arc-20240116; t=1775673011; c=relaxed/simple;
+	bh=n6O0D2bppvEk0nqJLqJSxpPFmovYaKdSIUiXL3jEv8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oATbI9Pj5F/GjJIx1XNauevI5maOIXaG9Sj481Q1hQW9GCtrfbQuue/ylOO91+cBi06EYu7PblhF2tkL8/XmjyKXyn/+ouytpizSgR9WbiOHpLe1p9zWTMv7mRWMKEa08YYBV47SWHOn4df60fIZkY9Ma3cr8t0O/8Dqrznz+60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLC/g9Nn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6440C19421;
-	Wed,  8 Apr 2026 18:39:42 +0000 (UTC)
+	 MIME-Version; b=fduy0DOpSaipqCalCf6AAYSFlcJm2l87SiCOU1dIbT368L5QOaUoGT9lvxTd+jsSyhItoPKSiv/EsBeBUbuzrAHxdMfCRAy299FG5PxDGzBYis4LgO5Cw1xBNpncBGrEPRZnDE2RUGxwmuCj/smR7GxZLKds7cSSUcrnwD00mWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWqMeMd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14E4C19421;
+	Wed,  8 Apr 2026 18:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673583;
-	bh=btcFDRUvHHK5XvB19A7Vkafses+NwjETZoX+BBbGug4=;
+	s=korg; t=1775673011;
+	bh=n6O0D2bppvEk0nqJLqJSxpPFmovYaKdSIUiXL3jEv8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLC/g9NnAtTUQHtpk1pVZvdxrlMK5hK5DiZZlSuYPHn6NLQ2p/4PwVbL2jLdlruBZ
-	 Ng/RU7tL/PF81pccPabW0IDNYjqS3Yy1qT4wyPTDpmZgBVr5Ev4tKx3q92Kchl7fYE
-	 5AkTvdXx0+qALW9Xx1uAVpUMtFjBCiGBGQgmwTts=
+	b=vWqMeMd9k2E2MM8QYxS2OW5CkrrPodg+yPhvDznfnp3yI+i24XO2mbxOhRwDoIfA0
+	 DTOtKX+3Rx8QU7mPVhdyDhF/xfRY1wTTPm4HjoMD+61GvkgXr0pPnTwIZj6cb3Udw0
+	 SdeiochOx6R8H+rkSGQdSZCmWNdVAb8olqYwcXyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 011/242] io_uring/kbuf: pass in struct io_buffer_list to commit/recycle helpers
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 066/277] netfilter: flowtable: strictly check for maximum number of actions
 Date: Wed,  8 Apr 2026 20:00:51 +0200
-Message-ID: <20260408175927.495537831@linuxfoundation.org>
+Message-ID: <20260408175936.325381390@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,403 +66,539 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234718-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234496-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email]
-X-Rspamd-Queue-Id: F00C03C250C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B704E3C18F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-Commit 1b5add75d7c894c62506c9b55f1d9eaadae50ef1 upstream.
+[ Upstream commit 76522fcdbc3a02b568f5d957f7e66fc194abb893 ]
 
-Rather than have this implied being in the io_kiocb, pass it in directly
-so it's immediately obvious where these users of ->buf_list are coming
-from.
+The maximum number of flowtable hardware offload actions in IPv6 is:
 
-Link: https://lore.kernel.org/r/20250821020750.598432-6-axboe@kernel.dk
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+* ethernet mangling (4 payload actions, 2 for each ethernet address)
+* SNAT (4 payload actions)
+* DNAT (4 payload actions)
+* Double VLAN (4 vlan actions, 2 for popping vlan, and 2 for pushing)
+  for QinQ.
+* Redirect (1 action)
+
+Which makes 17, while the maximum is 16. But act_ct supports for tunnels
+actions too. Note that payload action operates at 32-bit word level, so
+mangling an IPv6 address takes 4 payload actions.
+
+Update flow_action_entry_next() calls to check for the maximum number of
+supported actions.
+
+While at it, rise the maximum number of actions per flow from 16 to 24
+so this works fine with IPv6 setups.
+
+Fixes: c29f74e0df7a ("netfilter: nf_flow_table: hardware offload support")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    6 +++---
- io_uring/kbuf.c     |    9 +++++----
- io_uring/kbuf.h     |   24 ++++++++++++++----------
- io_uring/net.c      |   30 +++++++++++++-----------------
- io_uring/poll.c     |    6 +++---
- io_uring/rw.c       |   16 ++++++++--------
- 6 files changed, 46 insertions(+), 45 deletions(-)
+ net/netfilter/nf_flow_table_offload.c | 196 +++++++++++++++++---------
+ 1 file changed, 130 insertions(+), 66 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -921,7 +921,7 @@ void io_req_defer_failed(struct io_kiocb
- 	lockdep_assert_held(&req->ctx->uring_lock);
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index e06bc36f49fe7..4f346f51d7d74 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -13,6 +13,8 @@
+ #include <net/netfilter/nf_conntrack_core.h>
+ #include <net/netfilter/nf_conntrack_tuple.h>
  
- 	req_set_fail(req);
--	io_req_set_res(req, res, io_put_kbuf(req, res));
-+	io_req_set_res(req, res, io_put_kbuf(req, res, req->buf_list));
- 	if (def->fail)
- 		def->fail(req);
- 	io_req_complete_defer(req);
-@@ -1921,11 +1921,11 @@ static void io_queue_async(struct io_kio
++#define NF_FLOW_RULE_ACTION_MAX	24
++
+ static struct workqueue_struct *nf_flow_offload_add_wq;
+ static struct workqueue_struct *nf_flow_offload_del_wq;
+ static struct workqueue_struct *nf_flow_offload_stats_wq;
+@@ -215,7 +217,12 @@ static void flow_offload_mangle(struct flow_action_entry *entry,
+ static inline struct flow_action_entry *
+ flow_action_entry_next(struct nf_flow_rule *flow_rule)
+ {
+-	int i = flow_rule->rule->action.num_entries++;
++	int i;
++
++	if (unlikely(flow_rule->rule->action.num_entries >= NF_FLOW_RULE_ACTION_MAX))
++		return NULL;
++
++	i = flow_rule->rule->action.num_entries++;
  
- 	switch (io_arm_poll_handler(req, 0)) {
- 	case IO_APOLL_READY:
--		io_kbuf_recycle(req, 0);
-+		io_kbuf_recycle(req, req->buf_list, 0);
- 		io_req_task_queue(req);
+ 	return &flow_rule->rule->action.entries[i];
+ }
+@@ -233,6 +240,9 @@ static int flow_offload_eth_src(struct net *net,
+ 	u32 mask, val;
+ 	u16 val16;
+ 
++	if (!entry0 || !entry1)
++		return -E2BIG;
++
+ 	this_tuple = &flow->tuplehash[dir].tuple;
+ 
+ 	switch (this_tuple->xmit_type) {
+@@ -283,6 +293,9 @@ static int flow_offload_eth_dst(struct net *net,
+ 	u8 nud_state;
+ 	u16 val16;
+ 
++	if (!entry0 || !entry1)
++		return -E2BIG;
++
+ 	this_tuple = &flow->tuplehash[dir].tuple;
+ 
+ 	switch (this_tuple->xmit_type) {
+@@ -324,16 +337,19 @@ static int flow_offload_eth_dst(struct net *net,
+ 	return 0;
+ }
+ 
+-static void flow_offload_ipv4_snat(struct net *net,
+-				   const struct flow_offload *flow,
+-				   enum flow_offload_tuple_dir dir,
+-				   struct nf_flow_rule *flow_rule)
++static int flow_offload_ipv4_snat(struct net *net,
++				  const struct flow_offload *flow,
++				  enum flow_offload_tuple_dir dir,
++				  struct nf_flow_rule *flow_rule)
+ {
+ 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
+ 	u32 mask = ~htonl(0xffffffff);
+ 	__be32 addr;
+ 	u32 offset;
+ 
++	if (!entry)
++		return -E2BIG;
++
+ 	switch (dir) {
+ 	case FLOW_OFFLOAD_DIR_ORIGINAL:
+ 		addr = flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.dst_v4.s_addr;
+@@ -344,23 +360,27 @@ static void flow_offload_ipv4_snat(struct net *net,
+ 		offset = offsetof(struct iphdr, daddr);
  		break;
- 	case IO_APOLL_ABORTED:
--		io_kbuf_recycle(req, 0);
-+		io_kbuf_recycle(req, req->buf_list, 0);
- 		io_queue_iowq(req);
+ 	default:
+-		return;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	flow_offload_mangle(entry, FLOW_ACT_MANGLE_HDR_TYPE_IP4, offset,
+ 			    &addr, &mask);
++	return 0;
+ }
+ 
+-static void flow_offload_ipv4_dnat(struct net *net,
+-				   const struct flow_offload *flow,
+-				   enum flow_offload_tuple_dir dir,
+-				   struct nf_flow_rule *flow_rule)
++static int flow_offload_ipv4_dnat(struct net *net,
++				  const struct flow_offload *flow,
++				  enum flow_offload_tuple_dir dir,
++				  struct nf_flow_rule *flow_rule)
+ {
+ 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
+ 	u32 mask = ~htonl(0xffffffff);
+ 	__be32 addr;
+ 	u32 offset;
+ 
++	if (!entry)
++		return -E2BIG;
++
+ 	switch (dir) {
+ 	case FLOW_OFFLOAD_DIR_ORIGINAL:
+ 		addr = flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.src_v4.s_addr;
+@@ -371,14 +391,15 @@ static void flow_offload_ipv4_dnat(struct net *net,
+ 		offset = offsetof(struct iphdr, saddr);
  		break;
- 	case IO_APOLL_OK:
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -368,9 +368,9 @@ int io_buffers_peek(struct io_kiocb *req
- 	return io_provided_buffers_select(req, &arg->max_len, bl, arg->iovs);
- }
- 
--static inline bool __io_put_kbuf_ring(struct io_kiocb *req, int len, int nr)
-+static inline bool __io_put_kbuf_ring(struct io_kiocb *req,
-+				      struct io_buffer_list *bl, int len, int nr)
- {
--	struct io_buffer_list *bl = req->buf_list;
- 	bool ret = true;
- 
- 	if (bl) {
-@@ -381,7 +381,8 @@ static inline bool __io_put_kbuf_ring(st
- 	return ret;
- }
- 
--unsigned int __io_put_kbufs(struct io_kiocb *req, int len, int nbufs)
-+unsigned int __io_put_kbufs(struct io_kiocb *req, struct io_buffer_list *bl,
-+			    int len, int nbufs)
- {
- 	unsigned int ret;
- 
-@@ -392,7 +393,7 @@ unsigned int __io_put_kbufs(struct io_ki
- 		return ret;
+ 	default:
+-		return;
++		return -EOPNOTSUPP;
  	}
  
--	if (!__io_put_kbuf_ring(req, len, nbufs))
-+	if (!__io_put_kbuf_ring(req, bl, len, nbufs))
- 		ret |= IORING_CQE_F_BUF_MORE;
- 	return ret;
+ 	flow_offload_mangle(entry, FLOW_ACT_MANGLE_HDR_TYPE_IP4, offset,
+ 			    &addr, &mask);
++	return 0;
  }
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -84,7 +84,8 @@ int io_register_pbuf_status(struct io_ri
- bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
- void io_kbuf_drop_legacy(struct io_kiocb *req);
  
--unsigned int __io_put_kbufs(struct io_kiocb *req, int len, int nbufs);
-+unsigned int __io_put_kbufs(struct io_kiocb *req, struct io_buffer_list *bl,
-+			    int len, int nbufs);
- bool io_kbuf_commit(struct io_kiocb *req,
- 		    struct io_buffer_list *bl, int len, int nr);
- 
-@@ -93,7 +94,8 @@ struct io_buffer_list *io_pbuf_get_bl(st
- 				      unsigned long bgid);
- int io_pbuf_mmap(struct file *file, struct vm_area_struct *vma);
- 
--static inline bool io_kbuf_recycle_ring(struct io_kiocb *req)
-+static inline bool io_kbuf_recycle_ring(struct io_kiocb *req,
-+					struct io_buffer_list *bl)
+-static void flow_offload_ipv6_mangle(struct nf_flow_rule *flow_rule,
++static int flow_offload_ipv6_mangle(struct nf_flow_rule *flow_rule,
+ 				     unsigned int offset,
+ 				     const __be32 *addr, const __be32 *mask)
  {
- 	/*
- 	 * We don't need to recycle for REQ_F_BUFFER_RING, we can just clear
-@@ -102,8 +104,8 @@ static inline bool io_kbuf_recycle_ring(
- 	 * The exception is partial io, that case we should increment bl->head
- 	 * to monopolize the buffer.
- 	 */
--	if (req->buf_list) {
--		req->buf_index = req->buf_list->bgid;
-+	if (bl) {
-+		req->buf_index = bl->bgid;
- 		req->flags &= ~(REQ_F_BUFFER_RING|REQ_F_BUFFERS_COMMIT);
- 		return true;
+@@ -387,15 +408,20 @@ static void flow_offload_ipv6_mangle(struct nf_flow_rule *flow_rule,
+ 
+ 	for (i = 0; i < sizeof(struct in6_addr) / sizeof(u32); i++) {
+ 		entry = flow_action_entry_next(flow_rule);
++		if (!entry)
++			return -E2BIG;
++
+ 		flow_offload_mangle(entry, FLOW_ACT_MANGLE_HDR_TYPE_IP6,
+ 				    offset + i * sizeof(u32), &addr[i], mask);
  	}
-@@ -117,32 +119,34 @@ static inline bool io_do_buffer_select(s
- 	return !(req->flags & (REQ_F_BUFFER_SELECTED|REQ_F_BUFFER_RING));
++
++	return 0;
  }
  
--static inline bool io_kbuf_recycle(struct io_kiocb *req, unsigned issue_flags)
-+static inline bool io_kbuf_recycle(struct io_kiocb *req, struct io_buffer_list *bl,
-+				   unsigned issue_flags)
+-static void flow_offload_ipv6_snat(struct net *net,
+-				   const struct flow_offload *flow,
+-				   enum flow_offload_tuple_dir dir,
+-				   struct nf_flow_rule *flow_rule)
++static int flow_offload_ipv6_snat(struct net *net,
++				  const struct flow_offload *flow,
++				  enum flow_offload_tuple_dir dir,
++				  struct nf_flow_rule *flow_rule)
  {
- 	if (req->flags & REQ_F_BL_NO_RECYCLE)
- 		return false;
- 	if (req->flags & REQ_F_BUFFER_SELECTED)
- 		return io_kbuf_recycle_legacy(req, issue_flags);
- 	if (req->flags & REQ_F_BUFFER_RING)
--		return io_kbuf_recycle_ring(req);
-+		return io_kbuf_recycle_ring(req, bl);
- 	return false;
- }
- 
- /* Mapped buffer ring, return io_uring_buf from head */
- #define io_ring_head_to_buf(br, head, mask)	&(br)->bufs[(head) & (mask)]
- 
--static inline unsigned int io_put_kbuf(struct io_kiocb *req, int len)
-+static inline unsigned int io_put_kbuf(struct io_kiocb *req, int len,
-+				       struct io_buffer_list *bl)
- {
- 	if (!(req->flags & (REQ_F_BUFFER_RING | REQ_F_BUFFER_SELECTED)))
- 		return 0;
--	return __io_put_kbufs(req, len, 1);
-+	return __io_put_kbufs(req, bl, len, 1);
- }
- 
- static inline unsigned int io_put_kbufs(struct io_kiocb *req, int len,
--					int nbufs)
-+					struct io_buffer_list *bl, int nbufs)
- {
- 	if (!(req->flags & (REQ_F_BUFFER_RING | REQ_F_BUFFER_SELECTED)))
- 		return 0;
--	return __io_put_kbufs(req, len, nbufs);
-+	return __io_put_kbufs(req, bl, len, nbufs);
- }
- #endif
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -498,12 +498,12 @@ static int io_bundle_nbufs(struct io_asy
- 	return nbufs;
- }
- 
--static int io_net_kbuf_recyle(struct io_kiocb *req,
-+static int io_net_kbuf_recyle(struct io_kiocb *req, struct io_buffer_list *bl,
- 			      struct io_async_msghdr *kmsg, int len)
- {
- 	req->flags |= REQ_F_BL_NO_RECYCLE;
- 	if (req->flags & REQ_F_BUFFERS_COMMIT)
--		io_kbuf_commit(req, req->buf_list, len, io_bundle_nbufs(kmsg, len));
-+		io_kbuf_commit(req, bl, len, io_bundle_nbufs(kmsg, len));
- 	return -EAGAIN;
- }
- 
-@@ -515,11 +515,11 @@ static inline bool io_send_finish(struct
- 	unsigned int cflags;
- 
- 	if (!(sr->flags & IORING_RECVSEND_BUNDLE)) {
--		cflags = io_put_kbuf(req, *ret);
-+		cflags = io_put_kbuf(req, *ret, req->buf_list);
- 		goto finish;
+ 	u32 mask = ~htonl(0xffffffff);
+ 	const __be32 *addr;
+@@ -411,16 +437,16 @@ static void flow_offload_ipv6_snat(struct net *net,
+ 		offset = offsetof(struct ipv6hdr, daddr);
+ 		break;
+ 	default:
+-		return;
++		return -EOPNOTSUPP;
  	}
  
--	cflags = io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, *ret));
-+	cflags = io_put_kbufs(req, *ret, req->buf_list, io_bundle_nbufs(kmsg, *ret));
- 
- 	/*
- 	 * Don't start new bundles if the buffer list is empty, or if the
-@@ -675,7 +675,7 @@ retry_bundle:
- 			sr->len -= ret;
- 			sr->buf += ret;
- 			sr->done_io += ret;
--			return io_net_kbuf_recyle(req, kmsg, ret);
-+			return io_net_kbuf_recyle(req, req->buf_list, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -869,7 +869,7 @@ static inline bool io_recv_finish(struct
- 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
- 		size_t this_ret = *ret - sr->done_io;
- 
--		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret));
-+		cflags |= io_put_kbufs(req, this_ret, req->buf_list, io_bundle_nbufs(kmsg, this_ret));
- 		if (sr->retry_flags & IO_SR_MSG_RETRY)
- 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
- 		/* bundle with no more immediate buffers, we're done */
-@@ -888,7 +888,7 @@ static inline bool io_recv_finish(struct
- 			return false;
- 		}
- 	} else {
--		cflags |= io_put_kbuf(req, *ret);
-+		cflags |= io_put_kbuf(req, *ret, req->buf_list);
- 	}
- 
- 	/*
-@@ -1045,7 +1045,7 @@ retry_multishot:
- 		if (req->flags & REQ_F_APOLL_MULTISHOT) {
- 			ret = io_recvmsg_prep_multishot(kmsg, sr, &buf, &len);
- 			if (ret) {
--				io_kbuf_recycle(req, issue_flags);
-+				io_kbuf_recycle(req, req->buf_list, issue_flags);
- 				return ret;
- 			}
- 		}
-@@ -1070,15 +1070,11 @@ retry_multishot:
- 	if (ret < min_ret) {
- 		if (ret == -EAGAIN && force_nonblock) {
- 			if (issue_flags & IO_URING_F_MULTISHOT) {
--				io_kbuf_recycle(req, issue_flags);
-+				io_kbuf_recycle(req, req->buf_list, issue_flags);
- 				return IOU_ISSUE_SKIP_COMPLETE;
- 			}
- 			return -EAGAIN;
- 		}
--		if (ret > 0 && io_net_retry(sock, flags)) {
--			sr->done_io += ret;
--			return io_net_kbuf_recyle(req, kmsg, ret);
--		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
- 		req_set_fail(req);
-@@ -1091,7 +1087,7 @@ retry_multishot:
- 	else if (sr->done_io)
- 		ret = sr->done_io;
- 	else
--		io_kbuf_recycle(req, issue_flags);
-+		io_kbuf_recycle(req, req->buf_list, issue_flags);
- 
- 	if (!io_recv_finish(req, &ret, kmsg, mshot_finished, issue_flags))
- 		goto retry_multishot;
-@@ -1209,7 +1205,7 @@ retry_multishot:
- 	if (ret < min_ret) {
- 		if (ret == -EAGAIN && force_nonblock) {
- 			if (issue_flags & IO_URING_F_MULTISHOT) {
--				io_kbuf_recycle(req, issue_flags);
-+				io_kbuf_recycle(req, req->buf_list, issue_flags);
- 				return IOU_ISSUE_SKIP_COMPLETE;
- 			}
- 
-@@ -1219,7 +1215,7 @@ retry_multishot:
- 			sr->len -= ret;
- 			sr->buf += ret;
- 			sr->done_io += ret;
--			return io_net_kbuf_recyle(req, kmsg, ret);
-+			return io_net_kbuf_recyle(req, req->buf_list, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -1235,7 +1231,7 @@ out_free:
- 	else if (sr->done_io)
- 		ret = sr->done_io;
- 	else
--		io_kbuf_recycle(req, issue_flags);
-+		io_kbuf_recycle(req, req->buf_list, issue_flags);
- 
- 	if (!io_recv_finish(req, &ret, kmsg, mshot_finished, issue_flags))
- 		goto retry_multishot;
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -356,10 +356,10 @@ void io_poll_task_func(struct io_kiocb *
- 
- 	ret = io_poll_check_events(req, ts);
- 	if (ret == IOU_POLL_NO_ACTION) {
--		io_kbuf_recycle(req, 0);
-+		io_kbuf_recycle(req, req->buf_list, 0);
- 		return;
- 	} else if (ret == IOU_POLL_REQUEUE) {
--		io_kbuf_recycle(req, 0);
-+		io_kbuf_recycle(req, req->buf_list, 0);
- 		__io_poll_execute(req, 0);
- 		return;
- 	}
-@@ -753,7 +753,7 @@ int io_arm_poll_handler(struct io_kiocb
- 	req->flags |= REQ_F_POLLED;
- 	ipt.pt._qproc = io_async_queue_proc;
- 
--	io_kbuf_recycle(req, issue_flags);
-+	io_kbuf_recycle(req, req->buf_list, issue_flags);
- 
- 	ret = __io_arm_poll_handler(req, &apoll->poll, &ipt, mask, issue_flags);
- 	if (ret)
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -520,7 +520,7 @@ void io_req_rw_complete(struct io_kiocb
- 	io_req_io_end(req);
- 
- 	if (req->flags & (REQ_F_BUFFER_SELECTED|REQ_F_BUFFER_RING))
--		req->cqe.flags |= io_put_kbuf(req, req->cqe.res);
-+		req->cqe.flags |= io_put_kbuf(req, req->cqe.res, req->buf_list);
- 
- 	io_req_rw_cleanup(req, 0);
- 	io_req_task_complete(req, ts);
-@@ -602,7 +602,7 @@ static int kiocb_done(struct io_kiocb *r
- 			 */
- 			io_req_io_end(req);
- 			io_req_set_res(req, final_ret,
--				       io_put_kbuf(req, ret));
-+				       io_put_kbuf(req, ret, req->buf_list));
- 			io_req_rw_cleanup(req, issue_flags);
- 			return IOU_OK;
- 		}
-@@ -954,7 +954,7 @@ int io_read(struct io_kiocb *req, unsign
- 		return kiocb_done(req, ret, issue_flags);
- 
- 	if (req->flags & REQ_F_BUFFERS_COMMIT)
--		io_kbuf_recycle(req, issue_flags);
-+		io_kbuf_recycle(req, req->buf_list, issue_flags);
- 	return ret;
+-	flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
++	return flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
  }
  
-@@ -981,17 +981,17 @@ int io_read_mshot(struct io_kiocb *req,
- 		 * Reset rw->len to 0 again to avoid clamping future mshot
- 		 * reads, in case the buffer size varies.
- 		 */
--		if (io_kbuf_recycle(req, issue_flags))
-+		if (io_kbuf_recycle(req, req->buf_list, issue_flags))
- 			rw->len = 0;
- 		if (issue_flags & IO_URING_F_MULTISHOT)
- 			return IOU_ISSUE_SKIP_COMPLETE;
- 		return -EAGAIN;
- 	} else if (ret <= 0) {
--		io_kbuf_recycle(req, issue_flags);
-+		io_kbuf_recycle(req, req->buf_list, issue_flags);
- 		if (ret < 0)
- 			req_set_fail(req);
- 	} else if (!(req->flags & REQ_F_APOLL_MULTISHOT)) {
--		cflags = io_put_kbuf(req, ret);
-+		cflags = io_put_kbuf(req, ret, req->buf_list);
- 	} else {
- 		/*
- 		 * Any successful return value will keep the multishot read
-@@ -999,7 +999,7 @@ int io_read_mshot(struct io_kiocb *req,
- 		 * we fail to post a CQE, or multishot is no longer set, then
- 		 * jump to the termination path. This request is then done.
- 		 */
--		cflags = io_put_kbuf(req, ret);
-+		cflags = io_put_kbuf(req, ret, req->buf_list);
- 		rw->len = 0; /* similarly to above, reset len to 0 */
- 
- 		if (io_req_post_cqe(req, ret, cflags | IORING_CQE_F_MORE)) {
-@@ -1210,7 +1210,7 @@ int io_do_iopoll(struct io_ring_ctx *ctx
- 		if (!smp_load_acquire(&req->iopoll_completed))
- 			break;
- 		nr_events++;
--		req->cqe.flags = io_put_kbuf(req, req->cqe.res);
-+		req->cqe.flags = io_put_kbuf(req, req->cqe.res, req->buf_list);
- 		if (req->opcode != IORING_OP_URING_CMD)
- 			io_req_rw_cleanup(req, 0);
+-static void flow_offload_ipv6_dnat(struct net *net,
+-				   const struct flow_offload *flow,
+-				   enum flow_offload_tuple_dir dir,
+-				   struct nf_flow_rule *flow_rule)
++static int flow_offload_ipv6_dnat(struct net *net,
++				  const struct flow_offload *flow,
++				  enum flow_offload_tuple_dir dir,
++				  struct nf_flow_rule *flow_rule)
+ {
+ 	u32 mask = ~htonl(0xffffffff);
+ 	const __be32 *addr;
+@@ -436,10 +462,10 @@ static void flow_offload_ipv6_dnat(struct net *net,
+ 		offset = offsetof(struct ipv6hdr, saddr);
+ 		break;
+ 	default:
+-		return;
++		return -EOPNOTSUPP;
  	}
+ 
+-	flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
++	return flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
+ }
+ 
+ static int flow_offload_l4proto(const struct flow_offload *flow)
+@@ -461,15 +487,18 @@ static int flow_offload_l4proto(const struct flow_offload *flow)
+ 	return type;
+ }
+ 
+-static void flow_offload_port_snat(struct net *net,
+-				   const struct flow_offload *flow,
+-				   enum flow_offload_tuple_dir dir,
+-				   struct nf_flow_rule *flow_rule)
++static int flow_offload_port_snat(struct net *net,
++				  const struct flow_offload *flow,
++				  enum flow_offload_tuple_dir dir,
++				  struct nf_flow_rule *flow_rule)
+ {
+ 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
+ 	u32 mask, port;
+ 	u32 offset;
+ 
++	if (!entry)
++		return -E2BIG;
++
+ 	switch (dir) {
+ 	case FLOW_OFFLOAD_DIR_ORIGINAL:
+ 		port = ntohs(flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.dst_port);
+@@ -484,22 +513,26 @@ static void flow_offload_port_snat(struct net *net,
+ 		mask = ~htonl(0xffff);
+ 		break;
+ 	default:
+-		return;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	flow_offload_mangle(entry, flow_offload_l4proto(flow), offset,
+ 			    &port, &mask);
++	return 0;
+ }
+ 
+-static void flow_offload_port_dnat(struct net *net,
+-				   const struct flow_offload *flow,
+-				   enum flow_offload_tuple_dir dir,
+-				   struct nf_flow_rule *flow_rule)
++static int flow_offload_port_dnat(struct net *net,
++				  const struct flow_offload *flow,
++				  enum flow_offload_tuple_dir dir,
++				  struct nf_flow_rule *flow_rule)
+ {
+ 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
+ 	u32 mask, port;
+ 	u32 offset;
+ 
++	if (!entry)
++		return -E2BIG;
++
+ 	switch (dir) {
+ 	case FLOW_OFFLOAD_DIR_ORIGINAL:
+ 		port = ntohs(flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.src_port);
+@@ -514,20 +547,24 @@ static void flow_offload_port_dnat(struct net *net,
+ 		mask = ~htonl(0xffff0000);
+ 		break;
+ 	default:
+-		return;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	flow_offload_mangle(entry, flow_offload_l4proto(flow), offset,
+ 			    &port, &mask);
++	return 0;
+ }
+ 
+-static void flow_offload_ipv4_checksum(struct net *net,
+-				       const struct flow_offload *flow,
+-				       struct nf_flow_rule *flow_rule)
++static int flow_offload_ipv4_checksum(struct net *net,
++				      const struct flow_offload *flow,
++				      struct nf_flow_rule *flow_rule)
+ {
+ 	u8 protonum = flow->tuplehash[FLOW_OFFLOAD_DIR_ORIGINAL].tuple.l4proto;
+ 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
+ 
++	if (!entry)
++		return -E2BIG;
++
+ 	entry->id = FLOW_ACTION_CSUM;
+ 	entry->csum_flags = TCA_CSUM_UPDATE_FLAG_IPV4HDR;
+ 
+@@ -539,12 +576,14 @@ static void flow_offload_ipv4_checksum(struct net *net,
+ 		entry->csum_flags |= TCA_CSUM_UPDATE_FLAG_UDP;
+ 		break;
+ 	}
++
++	return 0;
+ }
+ 
+-static void flow_offload_redirect(struct net *net,
+-				  const struct flow_offload *flow,
+-				  enum flow_offload_tuple_dir dir,
+-				  struct nf_flow_rule *flow_rule)
++static int flow_offload_redirect(struct net *net,
++				 const struct flow_offload *flow,
++				 enum flow_offload_tuple_dir dir,
++				 struct nf_flow_rule *flow_rule)
+ {
+ 	const struct flow_offload_tuple *this_tuple, *other_tuple;
+ 	struct flow_action_entry *entry;
+@@ -562,21 +601,28 @@ static void flow_offload_redirect(struct net *net,
+ 		ifindex = other_tuple->iifidx;
+ 		break;
+ 	default:
+-		return;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	dev = dev_get_by_index(net, ifindex);
+ 	if (!dev)
+-		return;
++		return -ENODEV;
+ 
+ 	entry = flow_action_entry_next(flow_rule);
++	if (!entry) {
++		dev_put(dev);
++		return -E2BIG;
++	}
++
+ 	entry->id = FLOW_ACTION_REDIRECT;
+ 	entry->dev = dev;
++
++	return 0;
+ }
+ 
+-static void flow_offload_encap_tunnel(const struct flow_offload *flow,
+-				      enum flow_offload_tuple_dir dir,
+-				      struct nf_flow_rule *flow_rule)
++static int flow_offload_encap_tunnel(const struct flow_offload *flow,
++				     enum flow_offload_tuple_dir dir,
++				     struct nf_flow_rule *flow_rule)
+ {
+ 	const struct flow_offload_tuple *this_tuple;
+ 	struct flow_action_entry *entry;
+@@ -584,7 +630,7 @@ static void flow_offload_encap_tunnel(const struct flow_offload *flow,
+ 
+ 	this_tuple = &flow->tuplehash[dir].tuple;
+ 	if (this_tuple->xmit_type == FLOW_OFFLOAD_XMIT_DIRECT)
+-		return;
++		return 0;
+ 
+ 	dst = this_tuple->dst_cache;
+ 	if (dst && dst->lwtstate) {
+@@ -593,15 +639,19 @@ static void flow_offload_encap_tunnel(const struct flow_offload *flow,
+ 		tun_info = lwt_tun_info(dst->lwtstate);
+ 		if (tun_info && (tun_info->mode & IP_TUNNEL_INFO_TX)) {
+ 			entry = flow_action_entry_next(flow_rule);
++			if (!entry)
++				return -E2BIG;
+ 			entry->id = FLOW_ACTION_TUNNEL_ENCAP;
+ 			entry->tunnel = tun_info;
+ 		}
+ 	}
++
++	return 0;
+ }
+ 
+-static void flow_offload_decap_tunnel(const struct flow_offload *flow,
+-				      enum flow_offload_tuple_dir dir,
+-				      struct nf_flow_rule *flow_rule)
++static int flow_offload_decap_tunnel(const struct flow_offload *flow,
++				     enum flow_offload_tuple_dir dir,
++				     struct nf_flow_rule *flow_rule)
+ {
+ 	const struct flow_offload_tuple *other_tuple;
+ 	struct flow_action_entry *entry;
+@@ -609,7 +659,7 @@ static void flow_offload_decap_tunnel(const struct flow_offload *flow,
+ 
+ 	other_tuple = &flow->tuplehash[!dir].tuple;
+ 	if (other_tuple->xmit_type == FLOW_OFFLOAD_XMIT_DIRECT)
+-		return;
++		return 0;
+ 
+ 	dst = other_tuple->dst_cache;
+ 	if (dst && dst->lwtstate) {
+@@ -618,9 +668,13 @@ static void flow_offload_decap_tunnel(const struct flow_offload *flow,
+ 		tun_info = lwt_tun_info(dst->lwtstate);
+ 		if (tun_info && (tun_info->mode & IP_TUNNEL_INFO_TX)) {
+ 			entry = flow_action_entry_next(flow_rule);
++			if (!entry)
++				return -E2BIG;
+ 			entry->id = FLOW_ACTION_TUNNEL_DECAP;
+ 		}
+ 	}
++
++	return 0;
+ }
+ 
+ static int
+@@ -632,8 +686,9 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
+ 	const struct flow_offload_tuple *tuple;
+ 	int i;
+ 
+-	flow_offload_decap_tunnel(flow, dir, flow_rule);
+-	flow_offload_encap_tunnel(flow, dir, flow_rule);
++	if (flow_offload_decap_tunnel(flow, dir, flow_rule) < 0 ||
++	    flow_offload_encap_tunnel(flow, dir, flow_rule) < 0)
++		return -1;
+ 
+ 	if (flow_offload_eth_src(net, flow, dir, flow_rule) < 0 ||
+ 	    flow_offload_eth_dst(net, flow, dir, flow_rule) < 0)
+@@ -649,6 +704,8 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
+ 
+ 		if (tuple->encap[i].proto == htons(ETH_P_8021Q)) {
+ 			entry = flow_action_entry_next(flow_rule);
++			if (!entry)
++				return -1;
+ 			entry->id = FLOW_ACTION_VLAN_POP;
+ 		}
+ 	}
+@@ -662,6 +719,8 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
+ 			continue;
+ 
+ 		entry = flow_action_entry_next(flow_rule);
++		if (!entry)
++			return -1;
+ 
+ 		switch (other_tuple->encap[i].proto) {
+ 		case htons(ETH_P_PPP_SES):
+@@ -687,18 +746,22 @@ int nf_flow_rule_route_ipv4(struct net *net, struct flow_offload *flow,
+ 		return -1;
+ 
+ 	if (test_bit(NF_FLOW_SNAT, &flow->flags)) {
+-		flow_offload_ipv4_snat(net, flow, dir, flow_rule);
+-		flow_offload_port_snat(net, flow, dir, flow_rule);
++		if (flow_offload_ipv4_snat(net, flow, dir, flow_rule) < 0 ||
++		    flow_offload_port_snat(net, flow, dir, flow_rule) < 0)
++			return -1;
+ 	}
+ 	if (test_bit(NF_FLOW_DNAT, &flow->flags)) {
+-		flow_offload_ipv4_dnat(net, flow, dir, flow_rule);
+-		flow_offload_port_dnat(net, flow, dir, flow_rule);
++		if (flow_offload_ipv4_dnat(net, flow, dir, flow_rule) < 0 ||
++		    flow_offload_port_dnat(net, flow, dir, flow_rule) < 0)
++			return -1;
+ 	}
+ 	if (test_bit(NF_FLOW_SNAT, &flow->flags) ||
+ 	    test_bit(NF_FLOW_DNAT, &flow->flags))
+-		flow_offload_ipv4_checksum(net, flow, flow_rule);
++		if (flow_offload_ipv4_checksum(net, flow, flow_rule) < 0)
++			return -1;
+ 
+-	flow_offload_redirect(net, flow, dir, flow_rule);
++	if (flow_offload_redirect(net, flow, dir, flow_rule) < 0)
++		return -1;
+ 
+ 	return 0;
+ }
+@@ -712,22 +775,23 @@ int nf_flow_rule_route_ipv6(struct net *net, struct flow_offload *flow,
+ 		return -1;
+ 
+ 	if (test_bit(NF_FLOW_SNAT, &flow->flags)) {
+-		flow_offload_ipv6_snat(net, flow, dir, flow_rule);
+-		flow_offload_port_snat(net, flow, dir, flow_rule);
++		if (flow_offload_ipv6_snat(net, flow, dir, flow_rule) < 0 ||
++		    flow_offload_port_snat(net, flow, dir, flow_rule) < 0)
++			return -1;
+ 	}
+ 	if (test_bit(NF_FLOW_DNAT, &flow->flags)) {
+-		flow_offload_ipv6_dnat(net, flow, dir, flow_rule);
+-		flow_offload_port_dnat(net, flow, dir, flow_rule);
++		if (flow_offload_ipv6_dnat(net, flow, dir, flow_rule) < 0 ||
++		    flow_offload_port_dnat(net, flow, dir, flow_rule) < 0)
++			return -1;
+ 	}
+ 
+-	flow_offload_redirect(net, flow, dir, flow_rule);
++	if (flow_offload_redirect(net, flow, dir, flow_rule) < 0)
++		return -1;
+ 
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(nf_flow_rule_route_ipv6);
+ 
+-#define NF_FLOW_RULE_ACTION_MAX	16
+-
+ static struct nf_flow_rule *
+ nf_flow_offload_rule_alloc(struct net *net,
+ 			   const struct flow_offload_work *offload,
+-- 
+2.53.0
+
 
 
 
