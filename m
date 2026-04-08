@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-233961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNu8DvyW1mlSGggAu9opvQ
-	(envelope-from <stable+bounces-233961-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 19:57:16 +0200
+	id 6CTqIf+W1mmiGQgAu9opvQ
+	(envelope-from <stable+bounces-233962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 19:57:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFC43BFE3A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 19:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B74E3BFE41
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 19:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C3023013A60
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 17:57:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB0F3016EEE
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 17:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE143D8904;
-	Wed,  8 Apr 2026 17:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047AD3D88F4;
+	Wed,  8 Apr 2026 17:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WLh3WwM3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="No3FH4MW"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09623D669A
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 17:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A73B3D669A
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 17:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671028; cv=none; b=bRjUry61mjTQeBAH3mZ3y65aQbLhjdRT/iXmu4nMgYU+3IZxIC+oAZwks08wNL0Bwex3O4uVOiVBTV8HoF71LPTWXdPogzg9MQk5z0Ge/jdqPv9mkD0PJQnhiE/UYgAzVJ6/snO/8tA/pUFAZQ/qLbwPVwxswL8BaPsqLZH5Ngs=
+	t=1775671030; cv=none; b=O8J6q7RfhHcmYkK4RcQar151RLPXnNF0h++mdhvEPQ5k7cKpLSI3jd4clphpmiDi4a1ECOw2+exKAMpzWNbpwnrMWwth+2wVTfVtQyLbA3lPpBNDGqXEfXbbT+A9PSdZLPFkxtpMVyfP42nKPT4F88eFcxZe/2iCSApLZ0GFchE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671028; c=relaxed/simple;
-	bh=2zaMY3F7oFRVz7Dea0591yLbfq8b8yX7osp+i4bkhNo=;
+	s=arc-20240116; t=1775671030; c=relaxed/simple;
+	bh=+geEDsytKTlHMPwGIgT5/2tBb9MJLZ65ak7SFLQK0xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdnFED2GE8gsfFPiIjJaJkBE2eY34KaoGRlsGlzKI03S+qJY/DmgrvlBnUj/9nOOVdcADRoej+DHUZFw6cfC1ymTRN0RkYqwwJeBlw0p+D1Hm1wzWpw02Lh6N87iLqDtwwmDquOr8ue3REX7e4ZQEEq6YCZDZJT9nTXplLEUPp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WLh3WwM3; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=lUW/5cB/5jv6eNx8d9XMzLovjWBh+YUSsLtEDGisTvCQuqKZeyw7IbqCUWpOWrkTXClKVoGafEDtXpDkHVIZ+qV0ocrVJGT5VlKhdhWzJXuXWmkp+Q3n31EKbaXg660OOHvNL0yB8TYHWZVoCwxXzB7nwKBY6HknJuY8hyLKsa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=No3FH4MW; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775671027; x=1807207027;
+  t=1775671029; x=1807207029;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2zaMY3F7oFRVz7Dea0591yLbfq8b8yX7osp+i4bkhNo=;
-  b=WLh3WwM3JguZbAi5gYw3wk3Op9YWukCZSLCNjHXZwdyUkMntyysMzyQQ
-   LHVXl6L8+840DOSvDUdT1o7NRxktwCTNuo+gC4FXBgB884WHfl/t8LfqI
-   CWtjLYgDfS7DRl7xvqF4PVhXFafFUQh1Wb8G/pnbO+ykVr+nKyAK0fZOg
-   CbNs83+90WZFfHob2QmJFla349NrSDRw4qIJdqTF8cmK1ZQ2ZPK7S5gmh
-   rYv2QabwBCUuYl+XU5I2ZNA2DNJzDC216CEDZVkBzdLDYRblFw38joH6A
-   zg9Ui8hW+FnP+GGoWVm64mYTsoFurW6WJuS+/ayhHSB2w43bSnQ/a1Ngq
-   Q==;
-X-CSE-ConnectionGUID: UiLS5Q3QRW2WjJnUOnGdeQ==
-X-CSE-MsgGUID: OXgvfXejSdu5wIWolh2BEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76567687"
+  bh=+geEDsytKTlHMPwGIgT5/2tBb9MJLZ65ak7SFLQK0xM=;
+  b=No3FH4MW+ZnBIEG65j3miOqt/mtHoQEFzRWWVWP7UIX3Ql0ynY4wHD6U
+   wbfUNCIbd4qRMv9uy3gSeklvPKCOwbCN7WrXz4E+jkNbcPLujfm8wU4TW
+   9iQ3EehhKIV6+8tAO4VeqFstlsCYgxPf2bHgowgpBabeEpuJYv4ctTObv
+   sWpA+SHA0xRBdt0Yxh9XCqyF7Ii/YCH+mzSRueCMuIK6mfU02DOoGBeMl
+   zOiR7pEIGBBclBh2ktKaT2dX1LdmlOxwhu4pcvtZWZZE9I+yZHpC83qcl
+   ekXdI7beRauvMaKjR+eL8QChHdB9rhYPndF2mpiJoHnOGj7ty2g+rc3Jg
+   A==;
+X-CSE-ConnectionGUID: RwQvcTKsSVi/11yiRZi/7Q==
+X-CSE-MsgGUID: QJmqBHYYSHepvMwiSlFvMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76567692"
 X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="76567687"
+   d="scan'208";a="76567692"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 10:57:06 -0700
-X-CSE-ConnectionGUID: r9LsF5CpTN+OfinSWHZ2Eg==
-X-CSE-MsgGUID: Veh+xoPYRFufRQ/lpab7PA==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 10:57:09 -0700
+X-CSE-ConnectionGUID: R/Owxpy/Q5y5axKEQpKeqw==
+X-CSE-MsgGUID: LCOD8pX7TAu5VEesvtoVuQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="233418803"
+   d="scan'208";a="233418810"
 Received: from shosgclin.sh.intel.com ([10.112.232.103])
-  by fmviesa005.fm.intel.com with ESMTP; 08 Apr 2026 10:57:05 -0700
+  by fmviesa005.fm.intel.com with ESMTP; 08 Apr 2026 10:57:07 -0700
 From: Shuicheng Lin <shuicheng.lin@intel.com>
 To: intel-xe@lists.freedesktop.org
 Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
 	stable@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH v2 3/4] drm/xe: Fix bo leak in xe_dma_buf_init_obj() on allocation failure
-Date: Wed,  8 Apr 2026 17:52:54 +0000
-Message-ID: <20260408175255.3402838-4-shuicheng.lin@intel.com>
+	Mattheq Brost <matthew.brost@intel.com>
+Subject: [PATCH v2 4/4] drm/xe: Fix dma-buf attachment leak in xe_gem_prime_import()
+Date: Wed,  8 Apr 2026 17:52:55 +0000
+Message-ID: <20260408175255.3402838-5-shuicheng.lin@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260408175255.3402838-1-shuicheng.lin@intel.com>
 References: <20260408175255.3402838-1-shuicheng.lin@intel.com>
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233961-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233962-lists,stable=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
@@ -104,74 +104,50 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CFFC43BFE3A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid]
+X-Rspamd-Queue-Id: 1B74E3BFE41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When drm_gpuvm_resv_object_alloc() fails, the pre-allocated storage bo
-is not freed. Add xe_bo_free(storage) before returning the error.
+When xe_dma_buf_init_obj() fails, the attachment from
+dma_buf_dynamic_attach() is not detached. Add dma_buf_detach() before
+returning the error. Note: we cannot use goto out_err here because
+xe_dma_buf_init_obj() already frees bo on failure, and out_err would
+double-free it.
 
-xe_dma_buf_init_obj() calls xe_bo_init_locked(), which frees the bo on
-error. Therefore, xe_dma_buf_init_obj() must also free the bo on its own
-error paths. Otherwise, since xe_gem_prime_import() cannot distinguish
-whether the failure originated from xe_dma_buf_init_obj() or from
-xe_bo_init_locked(), it cannot safely decide whether the bo should be
-freed.
-
-Add comments documenting the ownership semantics: on success, ownership
-of storage is transferred to the returned drm_gem_object; on failure,
-storage is freed before returning.
-
-v2: Add comments to explain the free logic.
-
-Fixes: eb289a5f6cc6 ("drm/xe: Convert xe_dma_buf.c for exhaustive eviction")
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Mattheq Brost <matthew.brost@intel.com>
 Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
- drivers/gpu/drm/xe/xe_dma_buf.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_dma_buf.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
-index 7f9602b3363d..c0937c090d33 100644
+index c0937c090d33..b9828da15897 100644
 --- a/drivers/gpu/drm/xe/xe_dma_buf.c
 +++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-@@ -258,6 +258,13 @@ struct dma_buf *xe_gem_prime_export(struct drm_gem_object *obj, int flags)
- 	return ERR_PTR(ret);
- }
+@@ -378,12 +378,15 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
+ 		goto out_err;
+ 	}
  
-+/*
-+ * Takes ownership of @storage: on success it is transferred to the returned
-+ * drm_gem_object; on failure it is freed before returning the error.
-+ * This matches the contract of xe_bo_init_locked() which frees @storage on
-+ * its error paths, so callers need not (and must not) free @storage after
-+ * this call.
-+ */
- static struct drm_gem_object *
- xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
- 		    struct dma_buf *dma_buf)
-@@ -271,8 +278,10 @@ xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
- 	int ret = 0;
- 
- 	dummy_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
--	if (!dummy_obj)
-+	if (!dummy_obj) {
-+		xe_bo_free(storage);
- 		return ERR_PTR(-ENOMEM);
+-	/* Errors here will take care of freeing the bo. */
++	/*
++	 * xe_dma_buf_init_obj() takes ownership of bo on both success
++	 * and failure, so we must not touch bo after this call.
++	 */
+ 	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
+-	if (IS_ERR(obj))
++	if (IS_ERR(obj)) {
++		dma_buf_detach(dma_buf, attach);
+ 		return obj;
+-
+-
 +	}
- 
- 	dummy_obj->resv = resv;
- 	xe_validation_guard(&ctx, &xe->val, &exec, (struct xe_val_flags) {}, ret) {
-@@ -281,6 +290,7 @@ xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
- 		if (ret)
- 			break;
- 
-+		/* xe_bo_init_locked() frees storage on error */
- 		bo = xe_bo_init_locked(xe, storage, NULL, resv, NULL, dma_buf->size,
- 				       0, /* Will require 1way or 2way for vm_bind */
- 				       ttm_bo_type_sg, XE_BO_FLAG_SYSTEM, &exec);
+ 	get_dma_buf(dma_buf);
+ 	obj->import_attach = attach;
+ 	return obj;
 -- 
 2.43.0
 
