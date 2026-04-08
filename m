@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-234347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJ2tMwKf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:30 +0200
+	id IFNxL0Kr1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E26B3C0DD8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A753C2E35
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BD9B314108F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C89F31C936C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E566FB67E;
-	Wed,  8 Apr 2026 18:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C54337B81;
+	Wed,  8 Apr 2026 18:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJsbfUqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/VPtnGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D693D75AF;
-	Wed,  8 Apr 2026 18:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B755B67E;
+	Wed,  8 Apr 2026 18:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672623; cv=none; b=W7nNxVYVb8nsf1msFKf3tgx0tnrw0CjX2XeJ237EMlhnMD+ZRXr69eKj8Ij2xuG5NMiIsIBeYoLlXxv2Tt9D1MNq6dvEdV3xn3IdRCZKK4ZgJOwCYIBoZ+0qR0Yori/4i0chp9JR0WbT+MC55AF5pH5I5ZzgJUvK/t9CkcJyOWk=
+	t=1775674618; cv=none; b=fZcAq+eFm/BT2RnC+zkEeYx3m5gjQ6EtfB15lRracnvxUlJCjV5W2/hgTpK4RHccYH6FOaRtDffgtuKFDB6yPb+xMrmSlUzL2KO2Xso35wOMCeYVgzmzq4vCX9zd6VQwU+Jtwvr1N9jWKUM1n+YGEIGzCOdOiPCClZGGEIDYQ5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672623; c=relaxed/simple;
-	bh=uNHttedLXi5ZVhlwr8yzmJ5I0mPc5zLHwPURtjjlMs0=;
+	s=arc-20240116; t=1775674618; c=relaxed/simple;
+	bh=V5PC+onqENC9Bhfv76sosszcM4B8uOsulDKD9bBilmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3nDm6J7qA2VKS2P5KmdvY2bGNbJH79cfgnvmffIms4ZCdvjQvgF254+aF5c8QdAsfyzDebVe5y2oNq1vChE86Ft0BPQ5oXDxWEKQjgKt1/1yaNjUfNHHgW0/p8ddxTru3kq5Dcr53KBRbamS3JZ3BJEzplwKs0LYIkF626gHvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJsbfUqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403BAC19421;
-	Wed,  8 Apr 2026 18:23:43 +0000 (UTC)
+	 MIME-Version; b=c49n+nK8X540Pcz7/lLXVjoL7TFd6rtTgbi0MuHaXIfdGTXgbRfsR2wlwmXFwMYQHUVv+8SnzxM7gfhbcvFRsjBbwEyDLZlW2a1LkNKI7rVfs+GmoQYnLJFeqEd9nKZrp+DfLgrVUo0riUFjKnh6lc78bPz+6Xtc7xKMCuKjrXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/VPtnGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D016BC19421;
+	Wed,  8 Apr 2026 18:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672623;
-	bh=uNHttedLXi5ZVhlwr8yzmJ5I0mPc5zLHwPURtjjlMs0=;
+	s=korg; t=1775674618;
+	bh=V5PC+onqENC9Bhfv76sosszcM4B8uOsulDKD9bBilmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJsbfUqZMcv1V93C/Bzj522RtrrqY+6QTytjxqLlBLS+xJa276tcb/kvI2YVdWV9l
-	 7auzd2wZFhYiNPcEfEAHJADy3r5w9OtJOcQInty93ezIk6+Ub/6LurhWXMk1f7JuzB
-	 AWuLWP2/OdjYeoGRVooVGOm+RU0V0q0cBSpmeipA=
+	b=C/VPtnGnDnKUwKPYkGUNTv9d75H6IUNpwXCp3OpDGsYX0oBmohAiLEtuhub54PiSo
+	 5QLCfZ6jwOUwZgfllFgFlbevkNm6dEWi60c8L2tgkkKkhqXTQjFMfxFcZoILRWiQjT
+	 4Xn5HBkY0BfKKJeski0jBV5ycCXF72TtBZqugwoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleh Konko <security@1seal.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 079/160] Bluetooth: SMP: derive legacy responder STK authentication from MITM state
+	Daniel Sa <Daniel.Sa@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 166/311] drm/amd/display: Fix NULL pointer dereference in dcn401_init_hw()
 Date: Wed,  8 Apr 2026 20:02:46 +0200
-Message-ID: <20260408175916.145594162@linuxfoundation.org>
+Message-ID: <20260408175945.604823279@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,8 +84,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234347-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235119-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -86,58 +93,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,1seal.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5E26B3C0DD8
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 19A753C2E35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleh Konko <security@1seal.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 20756fec2f0108cb88e815941f1ffff88dc286fe upstream.
+commit e927b36ae18b66b49219eaa9f46edc7b4fdbb25e upstream.
 
-The legacy responder path in smp_random() currently labels the stored
-STK as authenticated whenever pending_sec_level is BT_SECURITY_HIGH.
-That reflects what the local service requested, not what the pairing
-flow actually achieved.
+dcn401_init_hw() assumes that update_bw_bounding_box() is valid when
+entering the update path. However, the existing condition:
 
-For Just Works/Confirm legacy pairing, SMP_FLAG_MITM_AUTH stays clear
-and the resulting STK should remain unauthenticated even if the local
-side requested HIGH security. Use the established MITM state when
-storing the responder STK so the key metadata matches the pairing result.
+  ((!fams2_enable && update_bw_bounding_box) || freq_changed)
 
-This also keeps the legacy path aligned with the Secure Connections code,
-which already treats JUST_WORKS/JUST_CFM as unauthenticated.
+does not guarantee this, as the freq_changed branch can evaluate to true
+independently of the callback pointer.
 
-Fixes: fff3490f4781 ("Bluetooth: Fix setting correct authentication information for SMP STK")
+This can result in calling update_bw_bounding_box() when it is NULL.
+
+Fix this by separating the update condition from the pointer checks and
+ensuring the callback, dc->clk_mgr, and bw_params are validated before
+use.
+
+Fixes the below:
+../dc/hwss/dcn401/dcn401_hwseq.c:367 dcn401_init_hw() error: we previously assumed 'dc->res_pool->funcs->update_bw_bounding_box' could be null (see line 362)
+
+Fixes: ca0fb243c3bb ("drm/amd/display: Underflow Seen on DCN401 eGPU")
+Cc: Daniel Sa <Daniel.Sa@amd.com>
+Cc: Alvin Lee <alvin.lee2@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 86117c5ab42f21562fedb0a64bffea3ee5fcd477)
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleh Konko <security@1seal.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/smp.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c |   17 +++++++++-----
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -1019,10 +1019,7 @@ static u8 smp_random(struct smp_chan *sm
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+@@ -146,6 +146,7 @@ void dcn401_init_hw(struct dc *dc)
+ 	int edp_num;
+ 	uint32_t backlight = MAX_BACKLIGHT_LEVEL;
+ 	uint32_t user_level = MAX_BACKLIGHT_LEVEL;
++	bool dchub_ref_freq_changed;
+ 	int current_dchub_ref_freq = 0;
  
- 		smp_s1(smp->tk, smp->prnd, smp->rrnd, stk);
- 
--		if (hcon->pending_sec_level == BT_SECURITY_HIGH)
--			auth = 1;
--		else
--			auth = 0;
-+		auth = test_bit(SMP_FLAG_MITM_AUTH, &smp->flags) ? 1 : 0;
- 
- 		/* Even though there's no _RESPONDER suffix this is the
- 		 * responder STK we're adding for later lookup (the initiator
+ 	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->init_clocks) {
+@@ -359,14 +360,18 @@ void dcn401_init_hw(struct dc *dc)
+ 		dc->caps.dmub_caps.psr = dc->ctx->dmub_srv->dmub->feature_caps.psr;
+ 		dc->caps.dmub_caps.mclk_sw = dc->ctx->dmub_srv->dmub->feature_caps.fw_assisted_mclk_switch_ver > 0;
+ 		dc->caps.dmub_caps.fams_ver = dc->ctx->dmub_srv->dmub->feature_caps.fw_assisted_mclk_switch_ver;
++
++		/* sw and fw FAMS versions must match for support */
+ 		dc->debug.fams2_config.bits.enable &=
+-				dc->caps.dmub_caps.fams_ver == dc->debug.fams_version.ver; // sw & fw fams versions must match for support
+-		if ((!dc->debug.fams2_config.bits.enable && dc->res_pool->funcs->update_bw_bounding_box)
+-			|| res_pool->ref_clocks.dchub_ref_clock_inKhz / 1000 != current_dchub_ref_freq) {
++			dc->caps.dmub_caps.fams_ver == dc->debug.fams_version.ver;
++		dchub_ref_freq_changed =
++			res_pool->ref_clocks.dchub_ref_clock_inKhz / 1000 != current_dchub_ref_freq;
++		if ((!dc->debug.fams2_config.bits.enable || dchub_ref_freq_changed) &&
++		    dc->res_pool->funcs->update_bw_bounding_box &&
++		    dc->clk_mgr && dc->clk_mgr->bw_params) {
+ 			/* update bounding box if FAMS2 disabled, or if dchub clk has changed */
+-			if (dc->clk_mgr)
+-				dc->res_pool->funcs->update_bw_bounding_box(dc,
+-									    dc->clk_mgr->bw_params);
++			dc->res_pool->funcs->update_bw_bounding_box(dc,
++								    dc->clk_mgr->bw_params);
+ 		}
+ 	}
+ }
 
 
 
