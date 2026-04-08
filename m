@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBiDMRmf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:53 +0200
+	id qIJyNRal1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539F53C0E13
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B993C20E3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28783300D9C5
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B8B5319E250
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F9337F8CA;
-	Wed,  8 Apr 2026 18:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8143B0AFC;
+	Wed,  8 Apr 2026 18:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGOQKs7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpKb0nQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6FC37F01B;
-	Wed,  8 Apr 2026 18:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE3132A3FD;
+	Wed,  8 Apr 2026 18:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673065; cv=none; b=TZerr+9bLz/s/QfheC2fewFfBlPZY8UsxZMvFMcOMk8jUk+XxyhHYaHZMAewBuKXu+TZLz6R62UAzxM8pAS8vUripo8ljE165kB+h7YSxWbpTc3efecZSOyLuROJpm/6InegyLLDMlsVywTe/tf53O+T36XjA2TmiPQO4DNAtYc=
+	t=1775673753; cv=none; b=pVXtSnUD4bx39L0hkC4vZAgA0Qg/rBTWYQ8T7AKMh4yp+FDAN/hh6+wOK/uCKyjLc6ejTqBEh/OGKJY8THF1EZSafJdWh225GZvpsjXyEme3iQvvLYv/knQLBNMi9kPXWizHuXRtq587MR6Erk5OThKLJa2DK+o5qf9sIz7awks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673065; c=relaxed/simple;
-	bh=nfx0EDrSjH8aX5QksBN2Rdl5IuS/AgagNw3VuOA2WVA=;
+	s=arc-20240116; t=1775673753; c=relaxed/simple;
+	bh=X8xKL0zaf8uYiWU3qid33Nra1xTSPOS5aEZuATTQlyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJAcCG1t4ZOfGGiMXBFG5x5ZJmyl3/pkXANplue9Uo5LqjrtSSdQlFQPv/kbiwcBSbz6RpbPc3FFiFh+ZqpRxabd5pWVKHUGXS2szeGMIX3GQ9NyXIG2q0VeOlYT7Nrmh7XNGGtSEPS35fUEJjrg9WgWEBN6G/Js22IQE4ZIT0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGOQKs7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B34C19421;
-	Wed,  8 Apr 2026 18:31:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oKj4tj90ppXesVcfM6f8Z8MNVDUEpwjTqh3ImTd5nBlcRX2OO7zvzwTSZRuhd5LKt1TQXZDu7GqFREOZvcN+6F/gGNE8/iDuaTufDl+wDrzv8KH68UAGBNRtMJe6ZblXikMDF7vofOu7Y0JVBCJysMHYwUmMDD0QiVCJpKUPB8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpKb0nQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C94C19421;
+	Wed,  8 Apr 2026 18:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673065;
-	bh=nfx0EDrSjH8aX5QksBN2Rdl5IuS/AgagNw3VuOA2WVA=;
+	s=korg; t=1775673753;
+	bh=X8xKL0zaf8uYiWU3qid33Nra1xTSPOS5aEZuATTQlyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGOQKs7vaYaZuWjwUV3KW63+VUtJue3nSvSAGcen8RRCS2MADBI8SQlMcZFFCizm/
-	 ELeleBET8UBOcmJT/t7R4Rk6tAPHYEBzMHFEomjHDHUC/nr/Nf8sim5Q+xG/Ih6hTn
-	 ohtnnBLd1TZo7lR0Auk++HEJ4yo534NVyBlOsiz4=
+	b=jpKb0nQMXkqELBZmIftHdF+cRlKAjzqG1KuzLcWdr11s701UAaXmAVlTI9Od9PhjG
+	 Fb84WTO85rTw2tdCt1EpICY3M57d92GdfTdQ/DR4M88BfPhW6Ps6Sl9oFTm7MRXyPp
+	 AYg1O4azs9qeBvU1bIzxxwdrsxYo6n6R8HJFAL1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/277] net: macb: fix clk handling on PCI glue driver removal
-Date: Wed,  8 Apr 2026 20:01:13 +0200
-Message-ID: <20260408175937.160826333@linuxfoundation.org>
+Subject: [PATCH 6.12 034/242] HID: logitech-hidpp: Prevent use-after-free on force feedback initialisation failure
+Date: Wed,  8 Apr 2026 20:01:14 +0200
+Message-ID: <20260408175928.348708808@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234784-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234517-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ispras.ru:email,qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 539F53C0E13
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 58B993C20E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit ce8fe5287b87e24e225c342f3b0ec04f0b3680fe ]
+[ Upstream commit f7a4c78bfeb320299c1b641500fe7761eadbd101 ]
 
-platform_device_unregister() may still want to use the registered clks
-during runtime resume callback.
+Presently, if the force feedback initialisation fails when probing the
+Logitech G920 Driving Force Racing Wheel for Xbox One, an error number
+will be returned and propagated before the userspace infrastructure
+(sysfs and /dev/input) has been torn down.  If userspace ignores the
+errors and continues to use its references to these dangling entities, a
+UAF will promptly follow.
 
-Note that there is a commit d82d5303c4c5 ("net: macb: fix use after free
-on rmmod") that addressed the similar problem of clk vs platform device
-unregistration but just moved the bug to another place.
+We have 2 options; continue to return the error, but ensure that all of
+the infrastructure is torn down accordingly or continue to treat this
+condition as a warning by emitting the message but returning success.
+It is thought that the original author's intention was to emit the
+warning but keep the device functional, less the force feedback feature,
+so let's go with that.
 
-Save the pointers to clks into local variables for reuse after platform
-device is unregistered.
-
-BUG: KASAN: use-after-free in clk_prepare+0x5a/0x60
-Read of size 8 at addr ffff888104f85e00 by task modprobe/597
-
-CPU: 2 PID: 597 Comm: modprobe Not tainted 6.1.164+ #114
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8d/0xba
- print_report+0x17f/0x496
- kasan_report+0xd9/0x180
- clk_prepare+0x5a/0x60
- macb_runtime_resume+0x13d/0x410 [macb]
- pm_generic_runtime_resume+0x97/0xd0
- __rpm_callback+0xc8/0x4d0
- rpm_callback+0xf6/0x230
- rpm_resume+0xeeb/0x1a70
- __pm_runtime_resume+0xb4/0x170
- bus_remove_device+0x2e3/0x4b0
- device_del+0x5b3/0xdc0
- platform_device_del+0x4e/0x280
- platform_device_unregister+0x11/0x50
- pci_device_remove+0xae/0x210
- device_remove+0xcb/0x180
- device_release_driver_internal+0x529/0x770
- driver_detach+0xd4/0x1a0
- bus_remove_driver+0x135/0x260
- driver_unregister+0x72/0xb0
- pci_unregister_driver+0x26/0x220
- __do_sys_delete_module+0x32e/0x550
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- </TASK>
-
-Allocated by task 519:
- kasan_save_stack+0x2c/0x50
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x8e/0x90
- __clk_register+0x458/0x2890
- clk_hw_register+0x1a/0x60
- __clk_hw_register_fixed_rate+0x255/0x410
- clk_register_fixed_rate+0x3c/0xa0
- macb_probe+0x1d8/0x42e [macb_pci]
- local_pci_probe+0xd7/0x190
- pci_device_probe+0x252/0x600
- really_probe+0x255/0x7f0
- __driver_probe_device+0x1ee/0x330
- driver_probe_device+0x4c/0x1f0
- __driver_attach+0x1df/0x4e0
- bus_for_each_dev+0x15d/0x1f0
- bus_add_driver+0x486/0x5e0
- driver_register+0x23a/0x3d0
- do_one_initcall+0xfd/0x4d0
- do_init_module+0x18b/0x5a0
- load_module+0x5663/0x7950
- __do_sys_finit_module+0x101/0x180
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Freed by task 597:
- kasan_save_stack+0x2c/0x50
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x2a/0x50
- __kasan_slab_free+0x106/0x180
- __kmem_cache_free+0xbc/0x320
- clk_unregister+0x6de/0x8d0
- macb_remove+0x73/0xc0 [macb_pci]
- pci_device_remove+0xae/0x210
- device_remove+0xcb/0x180
- device_release_driver_internal+0x529/0x770
- driver_detach+0xd4/0x1a0
- bus_remove_driver+0x135/0x260
- driver_unregister+0x72/0xb0
- pci_unregister_driver+0x26/0x220
- __do_sys_delete_module+0x32e/0x550
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: d82d5303c4c5 ("net: macb: fix use after free on rmmod")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260330184542.626619-1-pchelkin@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_pci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_pci.c b/drivers/net/ethernet/cadence/macb_pci.c
-index fc4f5aee6ab3f..0ce5b736ea438 100644
---- a/drivers/net/ethernet/cadence/macb_pci.c
-+++ b/drivers/net/ethernet/cadence/macb_pci.c
-@@ -109,10 +109,12 @@ static void macb_remove(struct pci_dev *pdev)
- {
- 	struct platform_device *plat_dev = pci_get_drvdata(pdev);
- 	struct macb_platform_data *plat_data = dev_get_platdata(&plat_dev->dev);
-+	struct clk *pclk = plat_data->pclk;
-+	struct clk *hclk = plat_data->hclk;
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index c9df222e894a1..d60cd4379e866 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4514,10 +4514,12 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		if (!ret)
+ 			ret = hidpp_ff_init(hidpp, &data);
  
--	clk_unregister(plat_data->pclk);
--	clk_unregister(plat_data->hclk);
- 	platform_device_unregister(plat_dev);
-+	clk_unregister(pclk);
-+	clk_unregister(hclk);
- }
+-		if (ret)
++		if (ret) {
+ 			hid_warn(hidpp->hid_dev,
+ 		     "Unable to initialize force feedback support, errno %d\n",
+ 				 ret);
++			ret = 0;
++		}
+ 	}
  
- static const struct pci_device_id dev_id_table[] = {
+ 	/*
 -- 
 2.53.0
 
