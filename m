@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Jb8FImk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:05 +0200
+	id iDwwJKKj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D685F3C1F14
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094843C1C29
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA182311710B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D74D3064E97
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2D73ACF16;
-	Wed,  8 Apr 2026 18:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BBD38911C;
+	Wed,  8 Apr 2026 18:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR/sYh06"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N08OKsdB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C9BB67E;
-	Wed,  8 Apr 2026 18:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2BA33121F;
+	Wed,  8 Apr 2026 18:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673457; cv=none; b=OpdltPiJzplV9G9wmO5jn6Y4TsFAC6EwUaM+WP07l7q6W61Z2NhaM7hb3Y3XrHPLjaWNpKBs73U0H2wljQD7NL4cPRyKehbCpkGMhQm75T6aJXwY5VodvozzFyX/4yQoxK5subViunf/dt9hTNOYHQ3HBtpTayBrLpZh7oAebdA=
+	t=1775674035; cv=none; b=ggsFZCtyGOg9zgxYboCeKSxJM+NGPQc6mv9yIzI3QHVuJIzwrm1hiQhmO6nccL9NxAY5p2zGv6ZP463NzYO0oUJXO8BzNuTFO5dhQDUQ6WtHKXWLMh5B3tLlyfWTcjGjgbdoCxJR56fIAoKXZdpcckrXKG1OUDe/T2J0mbonCrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673457; c=relaxed/simple;
-	bh=j0d/xoyke+T3cf3brdl+FxERuAiLs1eqBW9DFAhjgLw=;
+	s=arc-20240116; t=1775674035; c=relaxed/simple;
+	bh=n1KblLIjyxqJwZ8h+zBQcCZmA9unnHmie6wlfyQATrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcXxH9HfV5NYE1a9iCPFFyjWJg83pntX48gepxRzFxIsMUVEIhO3XFBihSDmBiGc1m5W0copBlqy0PvBAgRSI25O9lpP+KIZy4c2I69qifPOpED2s1r2GV9HA340ydFvnlD6pFkETxQVi9p2ZakFtKtyHPYXCGpy9drr7JvLfhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR/sYh06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEB7C19421;
-	Wed,  8 Apr 2026 18:37:36 +0000 (UTC)
+	 MIME-Version; b=C+zzypWU4O+sP/Zl/3uWEjgh8/mqhVzvKPomBcFUIYSnEon1mcbYow9TpJrnH3mUR49ZjfiojyvxOiGY2rtja2B1rObRMS9ZGutG9kDOjaA10M6lsSnMkcPF4PWbSV0qwbmE7PxfT95Z5lA/OG2fRTJkkIun/06kImmsRMf1rWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N08OKsdB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35857C19421;
+	Wed,  8 Apr 2026 18:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673457;
-	bh=j0d/xoyke+T3cf3brdl+FxERuAiLs1eqBW9DFAhjgLw=;
+	s=korg; t=1775674035;
+	bh=n1KblLIjyxqJwZ8h+zBQcCZmA9unnHmie6wlfyQATrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KR/sYh06GVSwaiF/vRMmIBfhlcJHuN9u2IxI5cimSob0ji6v8IKxHsaWkPO+n2v80
-	 vfq0kFzItbiT/LBLt8mOJ+qCDEMZ9nGevETPjXrzPkTMotsGusLi0ylWXGV8uOALxF
-	 333ySUYo1TlmOSVMlxJtdaQsTNgE4WWrYSy4A73E=
+	b=N08OKsdBFsgcb8KeeaYarcOseqkmudqjCYHnnfumIbW7NrL2HmGe2BcA7Ing1vPzz
+	 ivGaQJqNV0ZoEGEFs29px1FnmTmGdU4WpsiMdmvgWhtOetao//z5pmLbzJEyBF9vsA
+	 ZNsMUiRKnqkd288hOSaE2GKsdIxcb8U24G6oyiws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.18 239/277] gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
-Date: Wed,  8 Apr 2026 20:03:44 +0200
-Message-ID: <20260408175942.784055392@linuxfoundation.org>
+	Zorro Lang <zlang@redhat.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 185/242] crypto: tegra - Add missing CRYPTO_ALG_ASYNC
+Date: Wed,  8 Apr 2026 20:03:45 +0200
+Message-ID: <20260408175934.007785073@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,270 +69,246 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234893-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234669-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: D685F3C1F14
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 094843C1C29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 16fdabe143fce2cbf89139677728e17e21b46c28 upstream.
+commit 4b56770d345524fc2acc143a2b85539cf7d74bc1 upstream.
 
-Since commit aab5c6f20023 ("gpio: set device type for GPIO chips"),
-`gdev->dev.release` is unset.  As a result, the reference count to
-`gdev->dev` isn't dropped on the error handling paths.
+The tegra crypto driver failed to set the CRYPTO_ALG_ASYNC on its
+asynchronous algorithms, causing the crypto API to select them for users
+that request only synchronous algorithms.  This causes crashes (at
+least).  Fix this by adding the flag like what the other drivers do.
+Also remove the unnecessary CRYPTO_ALG_TYPE_* flags, since those just
+get ignored and overridden by the registration function anyway.
 
-Drop the reference on errors.
-
-Also reorder the instructions to make the error handling simpler.
-Now gpiochip_add_data_with_key() roughly looks like:
-
-   >>> Some memory allocation.  Go to ERR ZONE 1 on errors.
-   >>> device_initialize().
-
-   gpiodev_release() takes over the responsibility for freeing the
-   resources of `gdev->dev`.  The subsequent error handling paths
-   shouldn't go through ERR ZONE 1 again which leads to double free.
-
-   >>> Some initialization mainly on `gdev`.
-   >>> The rest of initialization.  Go to ERR ZONE 2 on errors.
-   >>> Chip registration success and exit.
-
-   >>> ERR ZONE 2.  gpio_device_put() and exit.
-   >>> ERR ZONE 1.
-
+Reported-by: Zorro Lang <zlang@redhat.com>
+Closes: https://lore.kernel.org/r/20260314080937.pghb4aa7d4je3mhh@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
 Cc: stable@vger.kernel.org
-Fixes: aab5c6f20023 ("gpio: set device type for GPIO chips")
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://patch.msgid.link/20260205092840.2574840-1-tzungbi@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c |  101 +++++++++++++++++++++++--------------------------
- 1 file changed, 48 insertions(+), 53 deletions(-)
+ drivers/crypto/tegra/tegra-se-aes.c  |   11 +++++++----
+ drivers/crypto/tegra/tegra-se-hash.c |   30 +++++++++++++++++-------------
+ 2 files changed, 24 insertions(+), 17 deletions(-)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -882,13 +882,15 @@ static const struct device_type gpio_dev
- #define gcdev_unregister(gdev)		device_del(&(gdev)->dev)
- #endif
- 
-+/*
-+ * An initial reference count has been held in gpiochip_add_data_with_key().
-+ * The caller should drop the reference via gpio_device_put() on errors.
-+ */
- static int gpiochip_setup_dev(struct gpio_device *gdev)
- {
- 	struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
- 	int ret;
- 
--	device_initialize(&gdev->dev);
--
- 	/*
- 	 * If fwnode doesn't belong to another device, it's safe to clear its
- 	 * initialized flag.
-@@ -954,9 +956,11 @@ static void gpiochip_setup_devs(void)
- 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
- 				 srcu_read_lock_held(&gpio_devices_srcu)) {
- 		ret = gpiochip_setup_dev(gdev);
--		if (ret)
-+		if (ret) {
-+			gpio_device_put(gdev);
- 			dev_err(&gdev->dev,
- 				"Failed to initialize gpio device (%d)\n", ret);
-+		}
- 	}
- }
- 
-@@ -1037,71 +1041,72 @@ int gpiochip_add_data_with_key(struct gp
- 	int base = 0;
- 	int ret;
- 
--	/*
--	 * First: allocate and populate the internal stat container, and
--	 * set up the struct device.
--	 */
- 	gdev = kzalloc(sizeof(*gdev), GFP_KERNEL);
- 	if (!gdev)
- 		return -ENOMEM;
--
--	gdev->dev.type = &gpio_dev_type;
--	gdev->dev.bus = &gpio_bus_type;
--	gdev->dev.parent = gc->parent;
--	rcu_assign_pointer(gdev->chip, gc);
--
- 	gc->gpiodev = gdev;
- 	gpiochip_set_data(gc, data);
- 
--	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
--
- 	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
- 	if (ret < 0)
- 		goto err_free_gdev;
- 	gdev->id = ret;
- 
--	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
-+	ret = init_srcu_struct(&gdev->srcu);
- 	if (ret)
- 		goto err_free_ida;
-+	rcu_assign_pointer(gdev->chip, gc);
- 
--	if (gc->parent && gc->parent->driver)
--		gdev->owner = gc->parent->driver->owner;
--	else if (gc->owner)
--		/* TODO: remove chip->owner */
--		gdev->owner = gc->owner;
--	else
--		gdev->owner = THIS_MODULE;
-+	ret = init_srcu_struct(&gdev->desc_srcu);
-+	if (ret)
-+		goto err_cleanup_gdev_srcu;
-+
-+	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
-+	if (ret)
-+		goto err_cleanup_desc_srcu;
-+
-+	device_initialize(&gdev->dev);
-+	/*
-+	 * After this point any allocated resources to `gdev` will be
-+	 * free():ed by gpiodev_release().  If you add new resources
-+	 * then make sure they get free():ed there.
-+	 */
-+	gdev->dev.type = &gpio_dev_type;
-+	gdev->dev.bus = &gpio_bus_type;
-+	gdev->dev.parent = gc->parent;
-+	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
- 
- 	ret = gpiochip_get_ngpios(gc, &gdev->dev);
- 	if (ret)
--		goto err_free_dev_name;
-+		goto err_put_device;
-+	gdev->ngpio = gc->ngpio;
- 
- 	gdev->descs = kcalloc(gc->ngpio, sizeof(*gdev->descs), GFP_KERNEL);
- 	if (!gdev->descs) {
- 		ret = -ENOMEM;
--		goto err_free_dev_name;
-+		goto err_put_device;
- 	}
- 
- 	gdev->label = kstrdup_const(gc->label ?: "unknown", GFP_KERNEL);
- 	if (!gdev->label) {
- 		ret = -ENOMEM;
--		goto err_free_descs;
-+		goto err_put_device;
- 	}
- 
--	gdev->ngpio = gc->ngpio;
- 	gdev->can_sleep = gc->can_sleep;
--
- 	rwlock_init(&gdev->line_state_lock);
- 	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
- 	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
--
--	ret = init_srcu_struct(&gdev->srcu);
--	if (ret)
--		goto err_free_label;
--
--	ret = init_srcu_struct(&gdev->desc_srcu);
--	if (ret)
--		goto err_cleanup_gdev_srcu;
-+#ifdef CONFIG_PINCTRL
-+	INIT_LIST_HEAD(&gdev->pin_ranges);
-+#endif
-+	if (gc->parent && gc->parent->driver)
-+		gdev->owner = gc->parent->driver->owner;
-+	else if (gc->owner)
-+		/* TODO: remove chip->owner */
-+		gdev->owner = gc->owner;
-+	else
-+		gdev->owner = THIS_MODULE;
- 
- 	scoped_guard(mutex, &gpio_devices_lock) {
- 		/*
-@@ -1117,7 +1122,7 @@ int gpiochip_add_data_with_key(struct gp
- 			if (base < 0) {
- 				ret = base;
- 				base = 0;
--				goto err_cleanup_desc_srcu;
-+				goto err_put_device;
- 			}
- 
- 			/*
-@@ -1137,14 +1142,10 @@ int gpiochip_add_data_with_key(struct gp
- 		ret = gpiodev_add_to_list_unlocked(gdev);
- 		if (ret) {
- 			gpiochip_err(gc, "GPIO integer space overlap, cannot add chip\n");
--			goto err_cleanup_desc_srcu;
-+			goto err_put_device;
- 		}
- 	}
- 
--#ifdef CONFIG_PINCTRL
--	INIT_LIST_HEAD(&gdev->pin_ranges);
--#endif
--
- 	if (gc->names)
- 		gpiochip_set_desc_names(gc);
- 
-@@ -1231,25 +1232,19 @@ err_remove_from_list:
- 	scoped_guard(mutex, &gpio_devices_lock)
- 		list_del_rcu(&gdev->list);
- 	synchronize_srcu(&gpio_devices_srcu);
--	if (gdev->dev.release) {
--		/* release() has been registered by gpiochip_setup_dev() */
--		gpio_device_put(gdev);
--		goto err_print_message;
--	}
-+err_put_device:
-+	gpio_device_put(gdev);
-+	goto err_print_message;
-+
- err_cleanup_desc_srcu:
- 	cleanup_srcu_struct(&gdev->desc_srcu);
- err_cleanup_gdev_srcu:
- 	cleanup_srcu_struct(&gdev->srcu);
--err_free_label:
--	kfree_const(gdev->label);
--err_free_descs:
--	kfree(gdev->descs);
--err_free_dev_name:
--	kfree(dev_name(&gdev->dev));
- err_free_ida:
- 	ida_free(&gpio_ida, gdev->id);
- err_free_gdev:
- 	kfree(gdev);
-+
- err_print_message:
- 	/* failures here can mean systems won't boot... */
- 	if (ret != -EPROBE_DEFER) {
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -480,7 +480,7 @@ static struct tegra_se_alg tegra_aes_alg
+ 				.cra_name = "cbc(aes)",
+ 				.cra_driver_name = "cbc-aes-tegra",
+ 				.cra_priority = 500,
+-				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask = 0xf,
+@@ -501,7 +501,7 @@ static struct tegra_se_alg tegra_aes_alg
+ 				.cra_name = "ecb(aes)",
+ 				.cra_driver_name = "ecb-aes-tegra",
+ 				.cra_priority = 500,
+-				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask = 0xf,
+@@ -523,7 +523,7 @@ static struct tegra_se_alg tegra_aes_alg
+ 				.cra_name = "ctr(aes)",
+ 				.cra_driver_name = "ctr-aes-tegra",
+ 				.cra_priority = 500,
+-				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = 1,
+ 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask = 0xf,
+@@ -545,6 +545,7 @@ static struct tegra_se_alg tegra_aes_alg
+ 				.cra_name = "xts(aes)",
+ 				.cra_driver_name = "xts-aes-tegra",
+ 				.cra_priority = 500,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize	   = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask	   = (__alignof__(u64) - 1),
+@@ -1804,6 +1805,7 @@ static struct tegra_se_alg tegra_aead_al
+ 				.cra_name = "gcm(aes)",
+ 				.cra_driver_name = "gcm-aes-tegra",
+ 				.cra_priority = 500,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = 1,
+ 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
+ 				.cra_alignmask = 0xf,
+@@ -1826,6 +1828,7 @@ static struct tegra_se_alg tegra_aead_al
+ 				.cra_name = "ccm(aes)",
+ 				.cra_driver_name = "ccm-aes-tegra",
+ 				.cra_priority = 500,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = 1,
+ 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
+ 				.cra_alignmask = 0xf,
+@@ -1853,7 +1856,7 @@ static struct tegra_se_alg tegra_cmac_al
+ 				.cra_name = "cmac(aes)",
+ 				.cra_driver_name = "tegra-se-cmac",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_cmac_ctx),
+ 				.cra_alignmask = 0,
+--- a/drivers/crypto/tegra/tegra-se-hash.c
++++ b/drivers/crypto/tegra/tegra-se-hash.c
+@@ -698,7 +698,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha1",
+ 				.cra_driver_name = "tegra-se-sha1",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA1_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -723,7 +723,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha224",
+ 				.cra_driver_name = "tegra-se-sha224",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA224_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -748,7 +748,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha256",
+ 				.cra_driver_name = "tegra-se-sha256",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA256_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -773,7 +773,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha384",
+ 				.cra_driver_name = "tegra-se-sha384",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA384_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -798,7 +798,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha512",
+ 				.cra_driver_name = "tegra-se-sha512",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA512_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -823,7 +823,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha3-224",
+ 				.cra_driver_name = "tegra-se-sha3-224",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_224_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -848,7 +848,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha3-256",
+ 				.cra_driver_name = "tegra-se-sha3-256",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_256_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -873,7 +873,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha3-384",
+ 				.cra_driver_name = "tegra-se-sha3-384",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_384_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -898,7 +898,7 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "sha3-512",
+ 				.cra_driver_name = "tegra-se-sha3-512",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_512_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -925,7 +925,8 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "hmac(sha224)",
+ 				.cra_driver_name = "tegra-se-hmac-sha224",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA224_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -952,7 +953,8 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "hmac(sha256)",
+ 				.cra_driver_name = "tegra-se-hmac-sha256",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA256_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -979,7 +981,8 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "hmac(sha384)",
+ 				.cra_driver_name = "tegra-se-hmac-sha384",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA384_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+@@ -1006,7 +1009,8 @@ static struct tegra_se_alg tegra_hash_al
+ 				.cra_name = "hmac(sha512)",
+ 				.cra_driver_name = "tegra-se-hmac-sha512",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA512_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
 
 
 
