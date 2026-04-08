@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-234976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCI+DhKm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:38 +0200
+	id UEUmErui1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886A63C2303
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5363C1882
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 863E4305C8C5
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D775130FF1F3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238EA3D75C9;
-	Wed,  8 Apr 2026 18:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B357B3D7D60;
+	Wed,  8 Apr 2026 18:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fr2doF+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVIkrFZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD473D9022;
-	Wed,  8 Apr 2026 18:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744AB3D564E;
+	Wed,  8 Apr 2026 18:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674249; cv=none; b=vCKR3AiGDTuE8Ydi6T0NzYv8HVEJOMJo8SU3tUikHz3qelU6QwKBPwT1Jy/orbV3uKcgPxGXtL0nLpPfR8dzgjFxO8H1R9GHEuktk+1Xq03AgRnMPu4NEqpEpsLvW+ML3LgoIVWJodaapyCXnbQWw/d9RWaUs1kuODf2xf0EyuU=
+	t=1775672987; cv=none; b=rc+aGpr1BkASPDADFrsnNCP7UBzRwUG76FThJbPM4E/LMi1KXaZIJ6niJzaNrp+/Oq/flvu58TnLqltr/+1TMMceLlXeozkI0llDSkt43bFbG3Y4t8ymjVd4RBgK+PvKY4y8a4usjiRgBu5DQuB4qDW9rIjHqu8QmrnQf5pKGL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674249; c=relaxed/simple;
-	bh=00AhJHTGVwkhIpyo2MC4sQewpTYXDd9AfO4zD1rhC1I=;
+	s=arc-20240116; t=1775672987; c=relaxed/simple;
+	bh=XznMBCFTl91GIuLqgTLN86bwLrysfwo+HTRNOKk/TG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mxz0jSukWoE47WA6KzzW8fw6Wpc+Vg2DgpOrwQ6hYglI1Rrbt1Upb/w/+iF7rHx+HHSPhJ4xcS1b/n/rAjVNS0YNTIMMSjURyyZJJh3XBlkl4j3jFgm4xIzxlTzZdK+0TrJmDBlkJscEvyrM1D9tTTcCpKvBjiWejurvEV7Ko9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fr2doF+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70238C19421;
-	Wed,  8 Apr 2026 18:50:49 +0000 (UTC)
+	 MIME-Version; b=VGuwEf1k/z2imvWqvxcAU0JrlrPPAHf0h5mzWd/F6g/BIifveRnXXpZcIfK3RaHQNP0ACcNfWwJDFv9YqiL2eRBNhnjt9iPGsfHxdDhAYNNHfoehXLWLDl/sEs58YaDl+qSO8fAmwy4h3qbCBdibUTlfxOnB9NB3zo8LK9xiXD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVIkrFZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08ADAC19421;
+	Wed,  8 Apr 2026 18:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674249;
-	bh=00AhJHTGVwkhIpyo2MC4sQewpTYXDd9AfO4zD1rhC1I=;
+	s=korg; t=1775672987;
+	bh=XznMBCFTl91GIuLqgTLN86bwLrysfwo+HTRNOKk/TG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fr2doF+88kDZOwvC23tc7hj6721/UlaQTVqT7Es6l6xAcsZm269eDbefOCoKc+q6y
-	 Sb02OCU25Um+Xq9Goxs3DENpGfldONCEf2tYP/Wf6XXcxBAjpaXrRfBhLVbwVQfSY1
-	 2J/Q2pvQWj5cXfYXCx8zJmGNsAzQzRCzGjUOlbtI=
+	b=nVIkrFZTVDUFErr3shPekLu1bVj1UFoqDuqSkqIMH2ERC4fCz+I7Syz7dfw0vGkK4
+	 Vp13IW3TG1LOTKzL3yUXhpZBooocVj+9rT2eCQsp4klLPemAyToP2jg3UP+gZQ9mBa
+	 MXDxYya45UG2k7QWuRfCCTVgDwHpn4m9oGhXhOEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xaver Hugl <xaver.hugl@kde.org>,
-	Melissa Wen <mwen@igalia.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 024/311] drm/amd/display: Fix gamma 2.2 colorop TFs
-Date: Wed,  8 Apr 2026 20:00:24 +0200
-Message-ID: <20260408175940.315212955@linuxfoundation.org>
+Subject: [PATCH 6.18 040/277] bridge: br_nd_send: linearize skb before parsing ND options
+Date: Wed,  8 Apr 2026 20:00:25 +0200
+Message-ID: <20260408175935.353235958@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +72,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234487-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234976-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,gitlab.freedesktop.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kde.org:email]
-X-Rspamd-Queue-Id: 886A63C2303
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,nvidia.com:email,msgid.link:url,blackwall.org:email]
+X-Rspamd-Queue-Id: 9F5363C1882
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit b49814033cb5224c818cfb04dccb3260da10cc4f ]
+[ Upstream commit a01aee7cafc575bb82f5529e8734e7052f9b16ea ]
 
-Use GAMMA22 for degamma/blend and GAMMA22_INV for shaper so
-curves match the color pipeline.
+br_nd_send() parses neighbour discovery options from ns->opt[] and
+assumes that these options are in the linear part of request.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5016
-Tested-by: Xaver Hugl <xaver.hugl@kde.org>
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d8f9f42effd767ffa7bbcd7e05fbd6b20737e468)
+Its callers only guarantee that the ICMPv6 header and target address
+are available, so the option area can still be non-linear. Parsing
+ns->opt[] in that case can access data past the linear buffer.
+
+Linearize request before option parsing and derive ns from the linear
+network header.
+
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260326034441.2037420-2-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bridge/br_arp_nd_proxy.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c
-index cc124ab6aa7f7..212c13b745d0c 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c
-@@ -37,19 +37,19 @@ const u64 amdgpu_dm_supported_degam_tfs =
- 	BIT(DRM_COLOROP_1D_CURVE_SRGB_EOTF) |
- 	BIT(DRM_COLOROP_1D_CURVE_PQ_125_EOTF) |
- 	BIT(DRM_COLOROP_1D_CURVE_BT2020_INV_OETF) |
--	BIT(DRM_COLOROP_1D_CURVE_GAMMA22_INV);
-+	BIT(DRM_COLOROP_1D_CURVE_GAMMA22);
+diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+index 1e2b51769eec8..af3d1e33f50b8 100644
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -251,12 +251,12 @@ struct nd_msg *br_is_nd_neigh_msg(const struct sk_buff *skb, struct nd_msg *msg)
  
- const u64 amdgpu_dm_supported_shaper_tfs =
- 	BIT(DRM_COLOROP_1D_CURVE_SRGB_INV_EOTF) |
- 	BIT(DRM_COLOROP_1D_CURVE_PQ_125_INV_EOTF) |
- 	BIT(DRM_COLOROP_1D_CURVE_BT2020_OETF) |
--	BIT(DRM_COLOROP_1D_CURVE_GAMMA22);
-+	BIT(DRM_COLOROP_1D_CURVE_GAMMA22_INV);
+ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 		       struct sk_buff *request, struct neighbour *n,
+-		       __be16 vlan_proto, u16 vlan_tci, struct nd_msg *ns)
++		       __be16 vlan_proto, u16 vlan_tci)
+ {
+ 	struct net_device *dev = request->dev;
+ 	struct net_bridge_vlan_group *vg;
++	struct nd_msg *na, *ns;
+ 	struct sk_buff *reply;
+-	struct nd_msg *na;
+ 	struct ipv6hdr *pip6;
+ 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
+ 	int ns_olen;
+@@ -264,7 +264,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	u8 *daddr;
+ 	u16 pvid;
  
- const u64 amdgpu_dm_supported_blnd_tfs =
- 	BIT(DRM_COLOROP_1D_CURVE_SRGB_EOTF) |
- 	BIT(DRM_COLOROP_1D_CURVE_PQ_125_EOTF) |
- 	BIT(DRM_COLOROP_1D_CURVE_BT2020_INV_OETF) |
--	BIT(DRM_COLOROP_1D_CURVE_GAMMA22_INV);
-+	BIT(DRM_COLOROP_1D_CURVE_GAMMA22);
+-	if (!dev)
++	if (!dev || skb_linearize(request))
+ 		return;
  
- #define MAX_COLOR_PIPELINE_OPS 10
+ 	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
+@@ -281,6 +281,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	skb_set_mac_header(reply, 0);
+ 
+ 	daddr = eth_hdr(request)->h_source;
++	ns = (struct nd_msg *)(skb_network_header(request) +
++			       sizeof(struct ipv6hdr));
+ 
+ 	/* Do we need option processing ? */
+ 	ns_olen = request->len - (skb_network_offset(request) +
+@@ -472,9 +474,9 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
+ 				if (vid != 0)
+ 					br_nd_send(br, p, skb, n,
+ 						   skb->vlan_proto,
+-						   skb_vlan_tag_get(skb), msg);
++						   skb_vlan_tag_get(skb));
+ 				else
+-					br_nd_send(br, p, skb, n, 0, 0, msg);
++					br_nd_send(br, p, skb, n, 0, 0);
+ 				replied = true;
+ 			}
  
 -- 
 2.53.0
