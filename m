@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-234793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qL9DDtuh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:39 +0200
+	id 8OO9Ij+h1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7E93C155C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D56093C136C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B7628304EA58
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 764FE3184187
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584533D905D;
-	Wed,  8 Apr 2026 18:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDBF28C87C;
+	Wed,  8 Apr 2026 18:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r26LlldJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPSEWh6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B62D3D9031;
-	Wed,  8 Apr 2026 18:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEA536166F;
+	Wed,  8 Apr 2026 18:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673777; cv=none; b=f8LZpKAK+INxwRDbd4yVsanJI09P88UwCCcfEIoZZB8wFn4CeoXbyjziMn1ZT+ZK4QnYyBoepWnv5gTcKQlwcDeTtDxn/cjPjm3ieQrvwSker3NpfB2evwuC3TWRN/dzadDfLM4iqpfLiPE9pkoAL0YAOmcLA7NWIQF5dJ0sFQg=
+	t=1775673210; cv=none; b=tb7WGLuM3CxHsA/lvKMy6aiddFrP+DMtEsdLa2w4KS8m458NgwYN2x6oFLmPMLO85t8ve1IQFeeQcC7o1U09bZQ+rfOIQUBdoSXKSkcGtn2fu1HEgCWKtOXuPT39mt7otcpwvES2aPfy4wlw96AG8lRvZtXgIkUQ4nPaEtGt76k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673777; c=relaxed/simple;
-	bh=1K13T5X3Pp9jG9SKzuhWT4aC/+PchX2Ainbb5NTaihM=;
+	s=arc-20240116; t=1775673210; c=relaxed/simple;
+	bh=BLP0VtXBMCMYlOmYKelOinKc+w2bJVAi9876VtAqUQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRlN7+Cyw3o1IZ/RNN/nJUk/yE+6qMdsOIQY5lq5p8QvueMk1QczZm9OueA496YLRpHjAHGCNtm9c8H/jEcEJnNQvjh9tfujIcHzAQHmS9AFMtiZDsM8ufKIO6BSnJ2dY9bH0qyWUueqZ18hYq00TkFn2ALaS3sA+22eNXx69MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r26LlldJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5ECAC19421;
-	Wed,  8 Apr 2026 18:42:56 +0000 (UTC)
+	 MIME-Version; b=bPN0/v92c9bB1j0cXkTAsZE/teVsowMP/Ppp5HJnunyp9GK/I01W208pUvx9lE3mSxEq27XIMZfSQ6sM6rL7gxs4IusvbQMo+7LrJQyI0vIl6FECDdV3TNjKsHczTEQYzWSRcZVTK+92LjciwdIzGICTW3uzHX4BNLjFi2zZMIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPSEWh6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A145C19421;
+	Wed,  8 Apr 2026 18:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673777;
-	bh=1K13T5X3Pp9jG9SKzuhWT4aC/+PchX2Ainbb5NTaihM=;
+	s=korg; t=1775673210;
+	bh=BLP0VtXBMCMYlOmYKelOinKc+w2bJVAi9876VtAqUQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r26LlldJKxfugLmmkwVOXmmWaia/8z6VCKwOrHcsX98+X4qwv9J7huKZKVEsUs5jw
-	 EECWlaX5SAX50qwAHfv4WxRqnREeUhH2vj6TodChZ/mZMDnBPLvlNlbd/GhBjshjj7
-	 o6S/JCE39Pn0n976xBPHCgcSdqvCVQGXr3MDv03o=
+	b=EPSEWh6VbbcVuMGCkbSK6p2Nl2caR7HzdokY+ZKYCiuSgc3VT9ey7vQb9bEWlHzg8
+	 laG77T+gzorjPomYS0/itwPDtgqVfD69rI024ATavg6c6jCIoI+dQBhUr03IPK8cGD
+	 fch1V7dMVEFencL9urOIr331rJjL2ry7R4y5VHzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/242] rds: ib: reject FRMR registration before IB connection is established
-Date: Wed,  8 Apr 2026 20:02:06 +0200
-Message-ID: <20260408175930.303304278@linuxfoundation.org>
+	Oleh Konko <security@1seal.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.18 142/277] Bluetooth: SMP: derive legacy responder STK authentication from MITM state
+Date: Wed,  8 Apr 2026 20:02:07 +0200
+Message-ID: <20260408175939.176882778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,109 +67,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234793-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-234573-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,asu.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: DF7E93C155C
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1seal.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D56093C136C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Oleh Konko <security@1seal.org>
 
-[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
+commit 20756fec2f0108cb88e815941f1ffff88dc286fe upstream.
 
-rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
-and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
-fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
-i_cm_id = NULL because the connection worker has not yet called
-rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
-RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
-the control message before any connection establishment, allowing
-rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
-kernel.
+The legacy responder path in smp_random() currently labels the stored
+STK as authenticated whenever pending_sec_level is BT_SECURITY_HIGH.
+That reflects what the local service requested, not what the pairing
+flow actually achieved.
 
-The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
-commit 9e630bcb7701), which does not catch this case since ic is allocated
-early and is always non-NULL once the connection object exists.
+For Just Works/Confirm legacy pairing, SMP_FLAG_MITM_AUTH stays clear
+and the resulting STK should remain unauthenticated even if the local
+side requested HIGH security. Use the established MITM state when
+storing the responder STK so the key metadata matches the pairing result.
 
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
- Call Trace:
-  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
-  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
-  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
-  rds_ib_get_mr (net/rds/ib_rdma.c:615)
-  __rds_rdma_map (net/rds/rdma.c:295)
-  rds_cmsg_rdma_map (net/rds/rdma.c:860)
-  rds_sendmsg (net/rds/send.c:1363)
-  ____sys_sendmsg
-  do_syscall_64
+This also keeps the legacy path aligned with the Secure Connections code,
+which already treats JUST_WORKS/JUST_CFM as unauthenticated.
 
-Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
-non-NULL before proceeding with FRMR registration, mirroring the guard
-already present in rds_ib_post_inv(). Return -ENODEV when the connection
-is not ready, which the existing error handling in rds_cmsg_send() converts
-to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
-start the connection worker.
-
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fff3490f4781 ("Bluetooth: Fix setting correct authentication information for SMP STK")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleh Konko <security@1seal.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/ib_rdma.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/smp.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
-index 8f070ee7e7426..30fca2169aa7a 100644
---- a/net/rds/ib_rdma.c
-+++ b/net/rds/ib_rdma.c
-@@ -608,8 +608,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
- 		return ibmr;
- 	}
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1018,10 +1018,7 @@ static u8 smp_random(struct smp_chan *sm
  
--	if (conn)
-+	if (conn) {
- 		ic = conn->c_transport_data;
-+		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
-+			ret = -ENODEV;
-+			goto out;
-+		}
-+	}
+ 		smp_s1(smp->tk, smp->prnd, smp->rrnd, stk);
  
- 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
- 		ret = -ENODEV;
--- 
-2.53.0
-
+-		if (hcon->pending_sec_level == BT_SECURITY_HIGH)
+-			auth = 1;
+-		else
+-			auth = 0;
++		auth = test_bit(SMP_FLAG_MITM_AUTH, &smp->flags) ? 1 : 0;
+ 
+ 		/* Even though there's no _RESPONDER suffix this is the
+ 		 * responder STK we're adding for later lookup (the initiator
 
 
 
