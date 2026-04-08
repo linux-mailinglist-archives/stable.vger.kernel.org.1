@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONXCAtmi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:53 +0200
+	id qOQgORqm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4493C18FD
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D133C2312
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CCBD310B9C8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBFFC32370E9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E1A3AF643;
-	Wed,  8 Apr 2026 18:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A04B2727F3;
+	Wed,  8 Apr 2026 18:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTCabw1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDtNZbaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E09A3ACF13;
-	Wed,  8 Apr 2026 18:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D76733121F;
+	Wed,  8 Apr 2026 18:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673016; cv=none; b=CIboKTgdqfGMyK0+JHHDpfO5laC8sArj2SnF9cQPozVUMt+bY0xvv0pbHdNwrnkc/ZK5Uw5hgdM1+rClzBSEIqQoxBcWlb+KywNV9yuZgCX3PCjNUwKHHEech25LLjhLZS1u+ENvopL/p/fb1DBJx11LQ9pwdC1JU+gFknfNQLg=
+	t=1775674255; cv=none; b=pJycXcecmVo7S5qsVEM2oB1hEKI4f5ppwEV2IhJbvg3g0MAtRU+/MJjs3zMkJ5RMsLT6wqfZ4dAwCHQLdjDi5QJkcQcmNSPyGRox//0RGIbjZeOHYMfTRK6CyZf/q14n8C8KNvaGvCCZCIMf2AqBYficQP0xEnY7ELwseV0LAzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673016; c=relaxed/simple;
-	bh=I19K1NpD8olVz963NK7uRpxlNWnBcpbRaGeVgmmCvHw=;
+	s=arc-20240116; t=1775674255; c=relaxed/simple;
+	bh=KTgiWp6p/wpqEuPuy0/II7+fsRHXeHWX9ptWNsxQWWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMm+pQLP0WIXeRJHmvN79Lc7fmzPPhpQFRgJ/cDrLwPgd6LoALJmyomDSDMKXPG8ucfv/a9LwjhEMy0gQgeVDvEs2kZeze1PDZ4IE31zzU2/NlK+jny06kz2scqBTkODXr+kg+RqRl8pKyGUKBwghx8S12q2wl4md/ioKSlqM0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTCabw1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E762BC19425;
-	Wed,  8 Apr 2026 18:30:15 +0000 (UTC)
+	 MIME-Version; b=CW64VX1xApgsi7obHfLvilSq8CjGxcDBGzmVajnlbcmXUeDTXQu2ofOOaVeNcWcJWS6VbgsubLiNGqXqfFWYdEl3czd3PhwAscxZC3hwLeAN/e0ivicdeaDj9r67dyeu8czKPV6+VRIqDV45DLdtvqMxuNfh5kTYnWe/L78WSu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDtNZbaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8917BC19425;
+	Wed,  8 Apr 2026 18:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673016;
-	bh=I19K1NpD8olVz963NK7uRpxlNWnBcpbRaGeVgmmCvHw=;
+	s=korg; t=1775674254;
+	bh=KTgiWp6p/wpqEuPuy0/II7+fsRHXeHWX9ptWNsxQWWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTCabw1g82u8cPghejmvjYPHxd8KSwCqAVsZk4Eq+ri50Pfl25hMDPD/IzdPOaqpG
-	 cS1wLy2YwoDKFm5e7v0NUn0RiWRbQq2xSYptDA+ooMt+V1vPJIEXycPffXzNaUEbnl
-	 3t9AWlu/nOqIsrprhYhiBQdktMmxHwsXANUSGYtg=
+	b=CDtNZbaPyJm7aGdV3y7B0eGrFfeNmdxjT0hLY2dS7JzhpYFo4xI2aGm+mjKCE9nJl
+	 hyWiTi30Evb+B/mwfbgYYEqYUPGNKh8fT20mhJrmHmymjIZyVIV4jTRsSY+bQ3yBLd
+	 tAYs94p91algGUpJXw55S21kl3+zFFgJBh+3cUjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 041/277] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
+Subject: [PATCH 6.19 026/311] spi: geni-qcom: Check DMA interrupts early in ISR
 Date: Wed,  8 Apr 2026 20:00:26 +0200
-Message-ID: <20260408175935.390448038@linuxfoundation.org>
+Message-ID: <20260408175940.389759486@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,92 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234498-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234978-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D4493C18FD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 68D133C2312
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit 4576100b8cd03118267513cafacde164b498b322 ]
+[ Upstream commit 8c89a077ca796a2fe248c584e9d7e66cff0388c8 ]
 
-m2sm() converts a u32 slope to a u64 scaled value.  For large inputs
-(e.g. m1=4000000000), the result can reach 2^32.  rtsc_min() stores
-the difference of two such u64 values in a u32 variable `dsm` and
-uses it as a divisor.  When the difference is exactly 2^32 the
-truncation yields zero, causing a divide-by-zero oops in the
-concave-curve intersection path:
+The current interrupt handler only checks the GENI main IRQ status
+(m_irq) before deciding to return IRQ_NONE. This can lead to spurious
+IRQ_NONE returns when DMA interrupts are pending but m_irq is zero.
 
-  Oops: divide error: 0000
-  RIP: 0010:rtsc_min (net/sched/sch_hfsc.c:601)
-  Call Trace:
-   init_ed (net/sched/sch_hfsc.c:629)
-   hfsc_enqueue (net/sched/sch_hfsc.c:1569)
-   [...]
+Move the DMA TX/RX status register reads to the beginning of the ISR,
+right after reading m_irq. Update the early return condition to check
+all three status registers (m_irq, dma_tx_status, dma_rx_status) before
+returning IRQ_NONE.
 
-Widen `dsm` to u64 and replace do_div() with div64_u64() so the full
-difference is preserved.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260326204310.1549327-1-xmei5@asu.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index d8fd35da32a7c..57221522fe56d 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -555,7 +555,7 @@ static void
- rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
- {
- 	u64 y1, y2, dx, dy;
--	u32 dsm;
-+	u64 dsm;
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index acfcf870efd84..736120107184f 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -958,10 +958,13 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 	struct spi_controller *spi = data;
+ 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+ 	struct geni_se *se = &mas->se;
+-	u32 m_irq;
++	u32 m_irq, dma_tx_status, dma_rx_status;
  
- 	if (isc->sm1 <= isc->sm2) {
- 		/* service curve is convex */
-@@ -598,7 +598,7 @@ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
- 	 */
- 	dx = (y1 - y) << SM_SHIFT;
- 	dsm = isc->sm1 - isc->sm2;
--	do_div(dx, dsm);
-+	dx = div64_u64(dx, dsm);
- 	/*
- 	 * check if (x, y1) belongs to the 1st segment of rtsc.
- 	 * if so, add the offset.
+ 	m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
+-	if (!m_irq)
++	dma_tx_status = readl_relaxed(se->base + SE_DMA_TX_IRQ_STAT);
++	dma_rx_status = readl_relaxed(se->base + SE_DMA_RX_IRQ_STAT);
++
++	if (!m_irq && !dma_tx_status && !dma_rx_status)
+ 		return IRQ_NONE;
+ 
+ 	if (m_irq & (M_CMD_OVERRUN_EN | M_ILLEGAL_CMD_EN | M_CMD_FAILURE_EN |
+@@ -1009,8 +1012,6 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 		}
+ 	} else if (mas->cur_xfer_mode == GENI_SE_DMA) {
+ 		const struct spi_transfer *xfer = mas->cur_xfer;
+-		u32 dma_tx_status = readl_relaxed(se->base + SE_DMA_TX_IRQ_STAT);
+-		u32 dma_rx_status = readl_relaxed(se->base + SE_DMA_RX_IRQ_STAT);
+ 
+ 		if (dma_tx_status)
+ 			writel(dma_tx_status, se->base + SE_DMA_TX_IRQ_CLR);
 -- 
 2.53.0
 
