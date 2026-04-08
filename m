@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-234355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UM7uGhSe1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:32 +0200
+	id wK1bOxyk1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41043C0C1B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706BD3C1D79
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA0C2300AEDD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD4EE3147084
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CC93ACF11;
-	Wed,  8 Apr 2026 18:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D73C3D8112;
+	Wed,  8 Apr 2026 18:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D4f6GbD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxZQZKOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F502494F0;
-	Wed,  8 Apr 2026 18:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF4D351C2E;
+	Wed,  8 Apr 2026 18:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672644; cv=none; b=uoQMZf54WToEXPEcseFp1f1222DhojTbSgzNGttfY75nLuugwJm7IjA4A+Q7h0+uUdEmzIO+YOdACqAtVCKCoVGGjEUlT7jhLUZxcIIILu0IP4+sfaZwGw3mJ+UfJCnwJBiYXFT6Q1F59vkoJVrP8eX4AcblQOqqKwd4LU5thXM=
+	t=1775673326; cv=none; b=USvpFHDEmUa5ZDJ0XvcMLGQoZ1A6GN6TlRxnyJ2uKv2Nmn6r2rlGPJiravu5UgMROe9HdykKfpB1Lj77BrXdA1Kee+JeiD7S4tChqsQ5ckaq3xWyZewYTbtqPZPWzDYaD93yV0ekZX4TRAZNzxC2Xw6H2Du6nM05WtNqLsOqpdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672644; c=relaxed/simple;
-	bh=yIcwhwzcPwcDxjjW0nm/SvRQUHb7Ii1CtGdYITs/e9Q=;
+	s=arc-20240116; t=1775673326; c=relaxed/simple;
+	bh=7jTFQvOBPJnpF/8QPY0iZgdWkqGSPcdKvK7QOA4CS/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fctj4qu2PXS9KjN0ceHIAAevO4kyhcKWITMkvp3j286pJZyT7GA+UcRUb2O9dzZOaaOU7WJyXVn/xesgeBtKDPRNgTv5XGsg9CpabfMaH99SgBWFsXuQNPgXwppAe8LPFBj0NnHjHyoAUiDSK30JXQVdxeMI/xRZZYfGBOkJLOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D4f6GbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0847C19421;
-	Wed,  8 Apr 2026 18:24:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NKgM5aYflXDYTwLiaks7YeioRmD7hn1LEp/7W3GYiU/BFQlBIycx80lj9gfUHBxhWm01XVoQTuivK2x+51nhbxX3dMLvyvsfyro8FOKNi7dW+gKdZj98JwXfwAlbyt3YD91rUBOxsBiz2DqDGM4XDepHuYVudjHmNYNpL6FxJUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxZQZKOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F933C19421;
+	Wed,  8 Apr 2026 18:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672644;
-	bh=yIcwhwzcPwcDxjjW0nm/SvRQUHb7Ii1CtGdYITs/e9Q=;
+	s=korg; t=1775673325;
+	bh=7jTFQvOBPJnpF/8QPY0iZgdWkqGSPcdKvK7QOA4CS/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1D4f6GbDbrI3L7bvdYSJrOQvgN4sTzWNQer77mWPAAvRgvYTs0A+M1eDfVaXpk9bk
-	 yLO/oOMyopWtvI96l7yrG9RZeCP6MvL0KlLwONJsl7uJtT9uoZty1iGMWURFnNYNAM
-	 YhIM8vkvYZPCxZpUomKvgpQVTUCm5hdvoscwGQYU=
+	b=KxZQZKOYpopbkQCbXM1lQAOOfqJI0mvNocmtZrJ4wDOr+JLLCJU0qc4aZtYHyafc9
+	 qRrW1VmIN2ZiPcjSSpnh0ut0JGYYfJ4JnjVtyZVqpTPA86GX54GYXZfMsbSGl45NC1
+	 DZvzoOuc/GPga+H/EvLRjTrpQhwi68i4B15DRCn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.6 086/160] drm/i915/dp: Use crtc_state->enhanced_framing properly on ivb/hsw CPU eDP
-Date: Wed,  8 Apr 2026 20:02:53 +0200
-Message-ID: <20260408175916.408107374@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 189/277] iio: imu: bmi160: Remove potential undefined behavior in bmi160_config_pin()
+Date: Wed,  8 Apr 2026 20:02:54 +0200
+Message-ID: <20260408175940.921187661@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +71,105 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234618-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234355-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E41043C0C1B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,intel.com:email,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arndb.de:email]
+X-Rspamd-Queue-Id: 706BD3C1D79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 9c9a57e4e337f94e23ddf69263fd0685c91155fb upstream.
+commit c05a87d9ec3bf8727a5d746ce855003c6f2f8bb4 upstream.
 
-Looks like I missed the drm_dp_enhanced_frame_cap() in the ivb/hsw CPU
-eDP code when I introduced crtc_state->enhanced_framing. Fix it up so
-that the state we program to the hardware is guaranteed to match what
-we computed earlier.
+If 'pin' is not one of its expected values, the value of
+'int_out_ctrl_shift' is undefined.  With UBSAN enabled, this causes
+Clang to generate undefined behavior, resulting in the following
+warning:
 
-Cc: stable@vger.kernel.org
-Fixes: 3072a24c778a ("drm/i915: Introduce crtc_state->enhanced_framing")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260325135849.12603-3-ville.syrjala@linux.intel.com
-Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
-(cherry picked from commit 799fe8dc2af52f35c78c4ac97f8e34994dfd8760)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+  drivers/iio/imu/bmi160/bmi160_core.o: warning: objtool: bmi160_setup_irq() falls through to next function __cfi_bmi160_core_runtime_resume()
+
+Prevent the UB and improve error handling by returning an error if 'pin'
+has an unexpected value.
+
+While at it, simplify the code a bit by moving the 'pin_name' assignment
+to the first switch statement.
+
+Fixes: 895bf81e6bbf ("iio:bmi160: add drdy interrupt support")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/g4x_dp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/bmi160/bmi160_core.c |   15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/g4x_dp.c
-+++ b/drivers/gpu/drm/i915/display/g4x_dp.c
-@@ -132,7 +132,7 @@ static void intel_dp_prepare(struct inte
- 			intel_dp->DP |= DP_SYNC_VS_HIGH;
- 		intel_dp->DP |= DP_LINK_TRAIN_OFF_CPT;
+--- a/drivers/iio/imu/bmi160/bmi160_core.c
++++ b/drivers/iio/imu/bmi160/bmi160_core.c
+@@ -573,12 +573,16 @@ static int bmi160_config_pin(struct regm
+ 		int_out_ctrl_shift = BMI160_INT1_OUT_CTRL_SHIFT;
+ 		int_latch_mask = BMI160_INT1_LATCH_MASK;
+ 		int_map_mask = BMI160_INT1_MAP_DRDY_EN;
++		pin_name = "INT1";
+ 		break;
+ 	case BMI160_PIN_INT2:
+ 		int_out_ctrl_shift = BMI160_INT2_OUT_CTRL_SHIFT;
+ 		int_latch_mask = BMI160_INT2_LATCH_MASK;
+ 		int_map_mask = BMI160_INT2_MAP_DRDY_EN;
++		pin_name = "INT2";
+ 		break;
++	default:
++		return -EINVAL;
+ 	}
+ 	int_out_ctrl_mask = BMI160_INT_OUT_CTRL_MASK << int_out_ctrl_shift;
  
--		if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
-+		if (pipe_config->enhanced_framing)
- 			intel_dp->DP |= DP_ENHANCED_FRAMING;
+@@ -612,17 +616,8 @@ static int bmi160_config_pin(struct regm
+ 	ret = bmi160_write_conf_reg(regmap, BMI160_REG_INT_MAP,
+ 				    int_map_mask, int_map_mask,
+ 				    write_usleep);
+-	if (ret) {
+-		switch (pin) {
+-		case BMI160_PIN_INT1:
+-			pin_name = "INT1";
+-			break;
+-		case BMI160_PIN_INT2:
+-			pin_name = "INT2";
+-			break;
+-		}
++	if (ret)
+ 		dev_err(dev, "Failed to configure %s IRQ pin", pin_name);
+-	}
  
- 		intel_dp->DP |= DP_PIPE_SEL_IVB(crtc->pipe);
+ 	return ret;
+ }
 
 
 
