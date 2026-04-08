@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SH10Fmej1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:15 +0200
+	id aBpfFDmi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDEC3C1B77
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C843C16F1
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8645C30A6B7F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 82E373019393
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A5E3AF643;
-	Wed,  8 Apr 2026 18:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AA13D9037;
+	Wed,  8 Apr 2026 18:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2i5+5mNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/0WJqbh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261BF26FA5A;
-	Wed,  8 Apr 2026 18:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7953D9025;
+	Wed,  8 Apr 2026 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673163; cv=none; b=ZG16X3PLvzg0I+bOqraP+ZGtxnTrYN5n/2djLy9j3fGkvvx2s51/wvOvBYBefKTSBdjJa7LKBfuwXfaSmZgDgnMlr2ej9dwmtT4ukoH6ZuYZmwgor4N9Z2KMc+v31YlytIu4BB/IUMkwVkGcCWlUxBZq882Y6hYuZ3ujAHUA+5E=
+	t=1775673784; cv=none; b=Q4ieB9peSGbDqE/Sz0uYDYuD5L3xIdCkxDYmSj9LWYj1bG16ugt46PKUaf12Xu1gDgNMBOA51/cahWSum1uoQk74aSQM92CN6Z9p3ANnrwf1mOiL9oEHO+QtCaXWR5FL4cagSSTerSb6iFADskkFV+1ffdFfN/QosEBG33/1Tc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673163; c=relaxed/simple;
-	bh=r65fmGZdjwOiXdCeqveA/9T0G//zaSFC9O4IczDuROk=;
+	s=arc-20240116; t=1775673784; c=relaxed/simple;
+	bh=8usIgmCKsRxWeYUoGbZyih4BpgNZSe5+njwWooxmmTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6aT3ygR13vHeqLaWZtw4bDNab4G0Kle0wfZUP0xVQlcVN7Uo6xdEon8vYa1Lv1NDjIQCqv4Hgt5gkwePAE+mbtUSqXw2/m+HUTm5YQiSfpEfEKBu49NkG8fW2+HNsW9ULB+T8Bz9PtEEAQCbT6rRYBwlb1FbRs5dx6VvhI1yrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2i5+5mNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B182EC19421;
-	Wed,  8 Apr 2026 18:32:42 +0000 (UTC)
+	 MIME-Version; b=DbQ6GO4/0jsZhm6r2Ru/XUjgUV0jTu4pwqGb/oROlL5KaMtEzzLZ5Z7hHplwACrSkphXMg7dG5ojuV16mghnRjOSUZbu99WSYfm75s1Rhm2ls/viq0vG8x9bcitOHrLMK0+k7rV+fA52CX6Zmc7Ep+MoeSwtRUoampG8swYHGSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/0WJqbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721F8C19421;
+	Wed,  8 Apr 2026 18:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673163;
-	bh=r65fmGZdjwOiXdCeqveA/9T0G//zaSFC9O4IczDuROk=;
+	s=korg; t=1775673784;
+	bh=8usIgmCKsRxWeYUoGbZyih4BpgNZSe5+njwWooxmmTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2i5+5mNVBlpJkBiUjdRfWSun+S/fMWXE50ZUoC54OfYy7BNH6u/SxUlaADakwb8Si
-	 uIx5s9K4Xy+Etr+17vDYWQWZ0SQ6n2ANsOVtDhy1PliYplivMDddUiKpTmOr4djld+
-	 UpRq/4QDGMYvmp4TbALA5qHKUemzykwe0j5E2q8U=
+	b=E/0WJqbhmij9JVSiqT74/gTYoe570JhNqHEkraGIHWGZLQZur6B2p+/4ntBH5vgiG
+	 g2p4I08VHaAoaMvg3zpz7t4LiArrtri0SQqwvHnAlZt7PdLpt9tVD60STi9SLcPLTj
+	 vpVCVNdL2HPySSmhJvt6p3GDsbHUW50EU5VncJX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Chen <vincent.chen@sifive.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 126/277] riscv: kgdb: fix several debug register assignment bugs
+Subject: [PATCH 6.12 071/242] netfilter: ipset: use nla_strcmp for IPSET_ATTR_NAME attr
 Date: Wed,  8 Apr 2026 20:01:51 +0200
-Message-ID: <20260408175938.580987328@linuxfoundation.org>
+Message-ID: <20260408175929.740973822@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234555-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234796-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,66 +89,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sifive.com:email]
-X-Rspamd-Queue-Id: CEDEC3C1B77
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,e.id:url,netfilter.org:email]
+X-Rspamd-Queue-Id: 60C843C16F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Walmsley <pjw@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 834911eb8eef2501485d819b4eabebadc25c3497 ]
+[ Upstream commit b7e8590987aa94c9dc51518fad0e58cb887b1db5 ]
 
-Fix several bugs in the RISC-V kgdb implementation:
+IPSET_ATTR_NAME and IPSET_ATTR_NAMEREF are of NLA_STRING type, they
+cannot be treated like a c-string.
 
-- The element of dbg_reg_def[] that is supposed to pertain to the S1
-  register embeds instead the struct pt_regs offset of the A1
-  register.  Fix this to use the S1 register offset in struct pt_regs.
+They either have to be switched to NLA_NUL_STRING, or the compare
+operations need to use the nla functions.
 
-- The sleeping_thread_to_gdb_regs() function copies the value of the
-  S10 register into the gdb_regs[] array element meant for the S9
-  register, and copies the value of the S11 register into the array
-  element meant for the S10 register.  It also neglects to copy the
-  value of the S11 register.  Fix all of these issues.
-
-Fixes: fe89bd2be8667 ("riscv: Add KGDB support")
-Cc: Vincent Chen <vincent.chen@sifive.com>
-Link: https://patch.msgid.link/fde376f8-bcfd-bfe4-e467-07d8f7608d05@kernel.org
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/kgdb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/netfilter/ipset/ip_set.h | 2 +-
+ net/netfilter/ipset/ip_set_core.c      | 4 ++--
+ net/netfilter/ipset/ip_set_list_set.c  | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index 15fec5d1e6dec..0bf629204c76a 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -175,7 +175,7 @@ struct dbg_reg_def_t dbg_reg_def[DBG_MAX_REG_NUM] = {
- 	{DBG_REG_T1, GDB_SIZEOF_REG, offsetof(struct pt_regs, t1)},
- 	{DBG_REG_T2, GDB_SIZEOF_REG, offsetof(struct pt_regs, t2)},
- 	{DBG_REG_FP, GDB_SIZEOF_REG, offsetof(struct pt_regs, s0)},
--	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
-+	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, s1)},
- 	{DBG_REG_A0, GDB_SIZEOF_REG, offsetof(struct pt_regs, a0)},
- 	{DBG_REG_A1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
- 	{DBG_REG_A2, GDB_SIZEOF_REG, offsetof(struct pt_regs, a2)},
-@@ -244,8 +244,9 @@ sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *task)
- 	gdb_regs[DBG_REG_S6_OFF] = task->thread.s[6];
- 	gdb_regs[DBG_REG_S7_OFF] = task->thread.s[7];
- 	gdb_regs[DBG_REG_S8_OFF] = task->thread.s[8];
--	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[10];
--	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[11];
-+	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[9];
-+	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[10];
-+	gdb_regs[DBG_REG_S11_OFF] = task->thread.s[11];
- 	gdb_regs[DBG_REG_EPC_OFF] = task->thread.ra;
- }
+diff --git a/include/linux/netfilter/ipset/ip_set.h b/include/linux/netfilter/ipset/ip_set.h
+index e9f4f845d760a..b98331572ad29 100644
+--- a/include/linux/netfilter/ipset/ip_set.h
++++ b/include/linux/netfilter/ipset/ip_set.h
+@@ -309,7 +309,7 @@ enum {
  
+ /* register and unregister set references */
+ extern ip_set_id_t ip_set_get_byname(struct net *net,
+-				     const char *name, struct ip_set **set);
++				     const struct nlattr *name, struct ip_set **set);
+ extern void ip_set_put_byindex(struct net *net, ip_set_id_t index);
+ extern void ip_set_name_byindex(struct net *net, ip_set_id_t index, char *name);
+ extern ip_set_id_t ip_set_nfnl_get_byindex(struct net *net, ip_set_id_t index);
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index cc20e6d56807c..a4e1d7951b2c6 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -821,7 +821,7 @@ EXPORT_SYMBOL_GPL(ip_set_del);
+  *
+  */
+ ip_set_id_t
+-ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
++ip_set_get_byname(struct net *net, const struct nlattr *name, struct ip_set **set)
+ {
+ 	ip_set_id_t i, index = IPSET_INVALID_ID;
+ 	struct ip_set *s;
+@@ -830,7 +830,7 @@ ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
+ 	rcu_read_lock();
+ 	for (i = 0; i < inst->ip_set_max; i++) {
+ 		s = rcu_dereference(inst->ip_set_list)[i];
+-		if (s && STRNCMP(s->name, name)) {
++		if (s && nla_strcmp(name, s->name) == 0) {
+ 			__ip_set_get(s);
+ 			index = i;
+ 			*set = s;
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index db794fe1300e6..83e1fdcc752d6 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -367,7 +367,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
+ 	ret = ip_set_get_extensions(set, tb, &ext);
+ 	if (ret)
+ 		return ret;
+-	e.id = ip_set_get_byname(map->net, nla_data(tb[IPSET_ATTR_NAME]), &s);
++	e.id = ip_set_get_byname(map->net, tb[IPSET_ATTR_NAME], &s);
+ 	if (e.id == IPSET_INVALID_ID)
+ 		return -IPSET_ERR_NAME;
+ 	/* "Loop detection" */
+@@ -389,7 +389,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
+ 
+ 	if (tb[IPSET_ATTR_NAMEREF]) {
+ 		e.refid = ip_set_get_byname(map->net,
+-					    nla_data(tb[IPSET_ATTR_NAMEREF]),
++					    tb[IPSET_ATTR_NAMEREF],
+ 					    &s);
+ 		if (e.refid == IPSET_INVALID_ID) {
+ 			ret = -IPSET_ERR_NAMEREF;
 -- 
 2.53.0
 
