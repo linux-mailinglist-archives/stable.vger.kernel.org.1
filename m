@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-234844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234357-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMr4K5ai1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:46 +0200
+	id CDDbFGKd1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234357-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343193C17E4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BEA3C0A25
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 121E23052E97
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A18053021186
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF73E3D9035;
-	Wed,  8 Apr 2026 18:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC3A3ACA41;
+	Wed,  8 Apr 2026 18:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHpfvIxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQeeU9j5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FD738911C;
-	Wed,  8 Apr 2026 18:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624D02494F0;
+	Wed,  8 Apr 2026 18:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673910; cv=none; b=oDOFGfZuF+yHERjY/oZNXLbDDKqx+tHzzKZMRLjUyXEXme8Yj2U1GBFwPkO5b8VwyCMWQ6xur8UlITAECWBW1z9zR1VUxZwPG6EeETfFaDt0QDcs9dFKAAYlB5Ew+zH4JnUNePWg/RVPC6lbMDPnOJHIzBwbZtLqb94UlxN1zn8=
+	t=1775672649; cv=none; b=H0RX9AHhNIqM0MmtLAajDEF3RCWv9L0O8ssHRK2UCRMHAvVuKiSfrQPg6KABumD2U1msuY7LkISbcGiPbzULbg8EBNgobW0ztJ9OUrk7e6FkCTMINv+Z7Fq0XvM834C2/bfDHgS0/+PV/hihFCO0WUaPPA24FYiglNJD3ezB7nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673910; c=relaxed/simple;
-	bh=L0nwMJlFWT6JGNIOIUolDR2HdTPIl5o80NM6Ht4lR5Q=;
+	s=arc-20240116; t=1775672649; c=relaxed/simple;
+	bh=pmdPxpQqPg3gfJ/Tqgy2jrntMMkjPsS3ySF7B6ufW3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMXGjlYEKQ0ETy8cvp4f+St6pppx806mO+ZM2JqNq5u88Ultb3rKZOyLp5puFsPIMVOHlvMWnUr5229/d2OfsOTh7XL7AZ3zlG+36wnOv9EAyDbpEg/anYxArzy6Pv97L86WKXzAy3eUqbF6hLTc+s7y5mkRFRSFM1DzK3C/Nlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHpfvIxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3772EC19421;
-	Wed,  8 Apr 2026 18:45:10 +0000 (UTC)
+	 MIME-Version; b=iSe7zaSGaVEDgamO8zv0Gr3QqClkitUHUKYv/NbJRDHhqi56C7yE7zMtltMeotjrbFBUZnOU8fxB8H8ReFUkxHuu2q6YTOYly44XQglEOFJAVnuyDZJiH0fRyipjW4ny+7ZU3TbewFfzFjb6vClwUEkUmwsZoRvfu63TLNcl8ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQeeU9j5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7B1C19421;
+	Wed,  8 Apr 2026 18:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673910;
-	bh=L0nwMJlFWT6JGNIOIUolDR2HdTPIl5o80NM6Ht4lR5Q=;
+	s=korg; t=1775672649;
+	bh=pmdPxpQqPg3gfJ/Tqgy2jrntMMkjPsS3ySF7B6ufW3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHpfvIxIJbhyyps7P7HEXG/Ywi2he6JJ6cwoVTf8M4fPysHXK+vskmLgEiPzUzUQS
-	 ps55mgaOli+MZ10xgtc5K/RyEwWXdXeVz183FcMqRsfI9Z2muyQP4k/QJ3dK/JcZbs
-	 lY0stT9GA+5O3s0ohn/sesgYEhUxLfQE/LHX/jfk=
+	b=yQeeU9j58mgM20eHoQS9vM2D/L5gZ4takiYO3LOD+EPzIyja6Dc+qhXRjNkBIRek6
+	 a7jysAcGr2NgZr+A+fH0UeuXdhYk6jtpjhqMu7/KZQxHa0OJIU90Ko7evVjlRi4JHo
+	 h6gPFw4ejqtzR7SDCnYSXO9qiKKsv5XzzmFtixqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.12 135/242] drm/ast: dp501: Fix initialization of SCU2C
+	Wanquan Zhong <wanquan.zhong@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 088/160] USB: serial: option: add support for Rolling Wireless RW135R-GL
 Date: Wed,  8 Apr 2026 20:02:55 +0200
-Message-ID: <20260408175932.141035269@linuxfoundation.org>
+Message-ID: <20260408175916.480808706@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +67,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234844-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234357-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 343193C17E4
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,fibocom.com:email]
+X-Rspamd-Queue-Id: 05BEA3C0A25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Wanquan Zhong <wanquan.zhong@fibocom.com>
 
-commit 2f42c1a6161646cbd29b443459fd635d29eda634 upstream.
+commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
 
-Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
-and tries to set it to source data from VGA. But writes the update to
-offset 0x0, with unknown results. Write the result to SCU instead.
+Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
+which is used in laptop debug cards with MBIM interface for
+Linux/Chrome OS. The device supports mbim, pipe functionalities.
 
-The bug only happens in ast_init_analog(). There's similar code in
-ast_init_dvo(), which works correctly.
+Here are the outputs of usb-devices:
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.16+
-Link: https://patch.msgid.link/20260327133532.79696-2-tzimmermann@suse.de
+Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_dp501.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/ast/ast_dp501.c
-+++ b/drivers/gpu/drm/ast/ast_dp501.c
-@@ -442,7 +442,7 @@ static void ast_init_analog(struct drm_d
- 	/* Finally, clear bits [17:16] of SCU2c */
- 	data = ast_read32(ast, 0x1202c);
- 	data &= 0xfffcffff;
--	ast_write32(ast, 0, data);
-+	ast_write32(ast, 0x1202c, data);
- 
- 	/* Disable DVO */
- 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xcf, 0x00);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
