@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CN0bCX+h1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:07 +0200
+	id yPXtHAuq1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92CB3C1434
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC683C2BBF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 495CF3029D46
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC060318BCFB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8613D522C;
-	Wed,  8 Apr 2026 18:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F46C3D8918;
+	Wed,  8 Apr 2026 18:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMVRTap5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGsiAR9i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF693D9025;
-	Wed,  8 Apr 2026 18:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026BD3D75C9;
+	Wed,  8 Apr 2026 18:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673725; cv=none; b=ETlWtdysAu0F1svC77c5+JV0dKw4aiRLFUtLYpOHutzFm6LHAxJIziKnoqeqr4cVm1RHWSzpCCZpT+hC/4E4Q3TYNdN2z6WKL6OsasSR9M/yBaQjfwhPCUDTj3Nw4k1lEhtYoeH41KK7ViMb2u61bQ1p1iLy4b4BOq2Ax2t5/i0=
+	t=1775674526; cv=none; b=Jv+A2VsG+LpwArBuBWerKi+pOtfPKBpnoprGbscF6ZjzFGz9mI2l0B58+MwS0MHKXos9Fpaeq9IjqfXINOBhIhdcdDeks/9oVvUBj8ZhxvXCIEzp1kUu63jsLyWaa9YSUbHTetvraK3CV82UTfk6lT+UoSAuo9MQgd6grGZIEEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673725; c=relaxed/simple;
-	bh=ZDRQlG8FvU+U/l/MSbQVold6YziuSPJoDbD0hMwFeWU=;
+	s=arc-20240116; t=1775674526; c=relaxed/simple;
+	bh=sr2wAI7uIz2qxYcSZT3l2zxEa9xLOO17LXk1LbVfMno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skw0BLoep6msW2dmCjAsHNw3NTJSgiSuvBBF2bgZa1EfzMUazkzR6j6Nb/a3Fg7s5M0rGUijxSOB0nUbsMBlteqC+QgI41zsD6v29AuD3RPC4N0tsRA9doAF0BACroy8kP6HtxjY6SFOlDyiV0XGVmS4V/sNid9WWvqN4H1Wyco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMVRTap5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D06C19421;
-	Wed,  8 Apr 2026 18:42:04 +0000 (UTC)
+	 MIME-Version; b=S33uOhOf8PH57nODoVBoTcyyGeg72eTKv1HZGKAg5uW+GxYwxtIZWMa0idKHGfitDPsd3dItGHq20e1ZzrQ1r6bfkyicPOl4NqedwoifouRVVycJheDm2t9ucI6H65XGivH2l7xPR5z7CFgq9AlmNfSOitrqK21WokkLjUMQVrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGsiAR9i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481C3C19421;
+	Wed,  8 Apr 2026 18:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673724;
-	bh=ZDRQlG8FvU+U/l/MSbQVold6YziuSPJoDbD0hMwFeWU=;
+	s=korg; t=1775674525;
+	bh=sr2wAI7uIz2qxYcSZT3l2zxEa9xLOO17LXk1LbVfMno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMVRTap5kNqlA78517pAid9YlBp4W/qPesymPplZ/tGfrI7+asmDYXYw3kajGB777
-	 ndOEdZ9brWn5W9S6nz6aAcl9mqasYAsDXrA8ZpwKse2r/4q3fRbNE2zPLogvZ1C0ts
-	 8L9IWVnp07c2fZiGPRtA4jLlf0upxgGkDVkZ8lrI=
+	b=WGsiAR9iotGfZlvARFGDEzEiIJTCiYcpBSELv7ew7yxJBUDlqA979UResgPmEmvEg
+	 wqJsXCYEM9veqd+rStcgLTD6qjqfGLvDFSW4T97ZHnyrt/OtLmweCEe0iMpsdJUVl8
+	 jpmUcFepD6rK70ASiSm17nCd28POjw0TiM+LQ7to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/242] net: xilinx: axienet: Correct BD length masks to match AXIDMA IP spec
+Subject: [PATCH 6.19 104/311] Bluetooth: hci_event: fix potential UAF in hci_le_remote_conn_param_req_evt
 Date: Wed,  8 Apr 2026 20:01:44 +0200
-Message-ID: <20260408175929.477079729@linuxfoundation.org>
+Message-ID: <20260408175943.296545259@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +68,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234773-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235083-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D92CB3C1434
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EAC683C2BBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Gupta <suraj.gupta2@amd.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 393e0b4f178ec7fce1141dacc3304e3607a92ee9 ]
+[ Upstream commit b255531b27da336571411248c2a72a350662bd09 ]
 
-The XAXIDMA_BD_CTRL_LENGTH_MASK and XAXIDMA_BD_STS_ACTUAL_LEN_MASK
-macros were defined as 0x007FFFFF (23 bits), but the AXI DMA IP
-product guide (PG021) specifies the buffer length field as bits 25:0
-(26 bits). Update both masks to match the IP documentation.
+hci_conn lookup and field access must be covered by hdev lock in
+hci_le_remote_conn_param_req_evt, otherwise it's possible it is freed
+concurrently.
 
-In practice this had no functional impact, since Ethernet frames are
-far smaller than 2^23 bytes and the extra bits were always zero, but
-the masks should still reflect the hardware specification.
+Extend the hci_dev_lock critical section to cover all conn usage.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20260327073238.134948-2-suraj.gupta2@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 95118dd4edfec ("Bluetooth: hci_event: Use of a function table to handle LE subevents")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_event.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index d64b8abcf0186..cbdca0fb89454 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -104,7 +104,7 @@
- #define XAXIDMA_BD_HAS_DRE_MASK		0xF00 /* Whether has DRE mask */
- #define XAXIDMA_BD_WORDLEN_MASK		0xFF /* Whether has DRE mask */
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 467710a42d453..3869ff3b8bea6 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6767,25 +6767,31 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 	latency = le16_to_cpu(ev->latency);
+ 	timeout = le16_to_cpu(ev->timeout);
  
--#define XAXIDMA_BD_CTRL_LENGTH_MASK	0x007FFFFF /* Requested len */
-+#define XAXIDMA_BD_CTRL_LENGTH_MASK	GENMASK(25, 0) /* Requested len */
- #define XAXIDMA_BD_CTRL_TXSOF_MASK	0x08000000 /* First tx packet */
- #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
- #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
-@@ -130,7 +130,7 @@
- #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
- #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
++	hci_dev_lock(hdev);
++
+ 	hcon = hci_conn_hash_lookup_handle(hdev, handle);
+-	if (!hcon || hcon->state != BT_CONNECTED)
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_UNKNOWN_CONN_ID);
++	if (!hcon || hcon->state != BT_CONNECTED) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_UNKNOWN_CONN_ID);
++		goto unlock;
++	}
  
--#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	0x007FFFFF /* Actual len */
-+#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	GENMASK(25, 0) /* Actual len */
- #define XAXIDMA_BD_STS_COMPLETE_MASK	0x80000000 /* Completed */
- #define XAXIDMA_BD_STS_DEC_ERR_MASK	0x40000000 /* Decode error */
- #define XAXIDMA_BD_STS_SLV_ERR_MASK	0x20000000 /* Slave error */
+-	if (max > hcon->le_conn_max_interval)
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_INVALID_LL_PARAMS);
++	if (max > hcon->le_conn_max_interval) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_INVALID_LL_PARAMS);
++		goto unlock;
++	}
+ 
+-	if (hci_check_conn_params(min, max, latency, timeout))
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_INVALID_LL_PARAMS);
++	if (hci_check_conn_params(min, max, latency, timeout)) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_INVALID_LL_PARAMS);
++		goto unlock;
++	}
+ 
+ 	if (hcon->role == HCI_ROLE_MASTER) {
+ 		struct hci_conn_params *params;
+ 		u8 store_hint;
+ 
+-		hci_dev_lock(hdev);
+-
+ 		params = hci_conn_params_lookup(hdev, &hcon->dst,
+ 						hcon->dst_type);
+ 		if (params) {
+@@ -6798,8 +6804,6 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 			store_hint = 0x00;
+ 		}
+ 
+-		hci_dev_unlock(hdev);
+-
+ 		mgmt_new_conn_param(hdev, &hcon->dst, hcon->dst_type,
+ 				    store_hint, min, max, latency, timeout);
+ 	}
+@@ -6813,6 +6817,9 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 	cp.max_ce_len = 0;
+ 
+ 	hci_send_cmd(hdev, HCI_OP_LE_CONN_PARAM_REQ_REPLY, sizeof(cp), &cp);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_le_direct_adv_report_evt(struct hci_dev *hdev, void *data,
 -- 
 2.53.0
 
