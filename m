@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOhGEu2c1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:37 +0200
+	id 4O+VCO+f1mkzGwgAu9opvQ
+	(envelope-from <stable+bounces-234353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B054C3C0886
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7AC3C1066
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C7563065885
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87F38307AA69
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828ED385513;
-	Wed,  8 Apr 2026 18:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A822494F0;
+	Wed,  8 Apr 2026 18:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+J6x09J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwB2lkGM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465DE324B1F;
-	Wed,  8 Apr 2026 18:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74226B67E;
+	Wed,  8 Apr 2026 18:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672268; cv=none; b=nU7JCAAzZI7Kq/B8EJjxG+AflPjabwm3k1YcUereeJRspT5iiBSf/mFKByDdvv3lvtFy0p15UiBQoFfaQd09o+xY99imcM42aPDCn3ubPZqslJlVygcZYox+kPiMAzpFz8r3Fn4SW01zRFGLBgSfdDsE1d+fK5lbXnjJ2eyFUQ4=
+	t=1775672639; cv=none; b=YXM/AOg2lgoJeO9iaRblM570C4ggZF0HlbdRmXPsyQNEWmmZzn849Q7hiDsMMD78++39Bq8S4T/5xQTPohblmAq9VGNzPEsoDcLi2UOC4bg7THRoplPa+fjSbuD+2ivZF8PyoYva8zemWFv6OyNSWDUhUrUcRmtqVDr+dajvXwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672268; c=relaxed/simple;
-	bh=f+yJ/eoio4jCfh6Tcr+6PnZ7LsRbf4eksKFRbO+bVfQ=;
+	s=arc-20240116; t=1775672639; c=relaxed/simple;
+	bh=bfDig3SWDCI3/PKe/2ykKXvTreKsE2KzAEoe6Ba6mz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9mdnzq01CFIdtWkJRr9WAjp0PBfJou3OkdhgOlU4VXjgOF1XeSb/N2ThDqQR6uCqlmiowu29GtJB1kfRhUwiyxkFSXzFNnoOnKozciEsUg5DX5vUlRQxqF3H6NtBzw4/DHr1NCSQWiM3/Mh5GWsQywqSM0titvqENs7kXDwiQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+J6x09J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32AEC19421;
-	Wed,  8 Apr 2026 18:17:47 +0000 (UTC)
+	 MIME-Version; b=T47chET3QfvvFV3RTHEqN9kap/5AV1RJqKZ5GShItucZ5ReESjHfcT/c/bNNyq9/+hSB4e5DQn/wRZvdjwXW1lSdZQFECz+ifSGOuv4B0pZoQK0eKHZOo+8pkz9AJd/nSabFhbldHSLEaDQoY8XWOQ3RmzC3AtOqI2N5PVpQPA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwB2lkGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C1AC19421;
+	Wed,  8 Apr 2026 18:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672268;
-	bh=f+yJ/eoio4jCfh6Tcr+6PnZ7LsRbf4eksKFRbO+bVfQ=;
+	s=korg; t=1775672639;
+	bh=bfDig3SWDCI3/PKe/2ykKXvTreKsE2KzAEoe6Ba6mz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+J6x09JdoirxCJvQ16uJxPrqlkD/iBKwKFhuwOUlfk8u4SgkVaytZM1qZCiCOUUk
-	 iVqpbzhlKTTEfIaw5xSYz3yEBsBvEbdehg2k5O9iyNiCytXCAOdlArt+ZahzxfDpnV
-	 SswCKPB3mI1UkXOZ2S9bLh24SfyOzmL1hnHihJXY=
+	b=BwB2lkGM7CmjagdDwm6H8GHTzP1mGU+Amoel5wBWFC9mgI1R5x04USU7iIIca1Ksd
+	 cI6EwIRigyG5PS/ytMR2lkYiWsTpLvtiRIJoZZT8CXs/RHRUZkI0spXx6J4VAy4PxI
+	 AVLx+jyHsTLoViHa30M4dbJa0GGColgi7ZD9dn8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 254/312] thunderbolt: Fix property read in nhi_wake_supported()
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 084/160] iio: adc: ti-adc161s626: fix buffer read on big-endian
 Date: Wed,  8 Apr 2026 20:02:51 +0200
-Message-ID: <20260408175943.234484228@linuxfoundation.org>
+Message-ID: <20260408175916.333110616@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234210-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234353-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,50 +87,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B054C3C0886
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,baylibre.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,scan.data:url]
+X-Rspamd-Queue-Id: 6F7AC3C1066
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 73a505dc48144ec72e25874e2b2a72487b02d3bc upstream.
+commit 24869650dff34a6fc8fd1cc91b2058a72f9abc95 upstream.
 
-device_property_read_foo() returns 0 on success and only then modifies
-'val'. Currently, val is left uninitialized if the aforementioned
-function returns non-zero, making nhi_wake_supported() return true
-almost always (random != 0) if the property is not present in device
-firmware.
+Rework ti_adc_trigger_handler() to properly handle data on big-endian
+architectures. The scan data format is 16-bit CPU-endian, so we can't
+cast it to a int * on big-endian and expect it to work. Instead, we
+introduce a local int variable to read the data into, and then copy it
+to the buffer.
 
-Invert the check to make it make sense.
+Since the buffer isn't passed to any SPI functions, we don't need it to
+be DMA-safe. So we can drop it from the driver data struct and just
+use stack memory for the scan data.
 
-Fixes: 3cdb9446a117 ("thunderbolt: Add support for Intel Ice Lake")
-Cc: stable@vger.kernel.org
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Since there is only one data value (plus timestamp), we don't need an
+array and can just declare a struct with the correct data type instead.
+
+Also fix alignment of iio_get_time_ns() to ( while we are touching this.
+
+Fixes: 4d671b71beef ("iio: adc: ti-adc161s626: add support for TI 1-channel differential ADCs")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ti-adc161s626.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1005,7 +1005,7 @@ static bool nhi_wake_supported(struct pc
- 	 * If power rails are sustainable for wakeup from S4 this
- 	 * property is set by the BIOS.
- 	 */
--	if (device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
-+	if (!device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
- 		return !!val;
+--- a/drivers/iio/adc/ti-adc161s626.c
++++ b/drivers/iio/adc/ti-adc161s626.c
+@@ -70,8 +70,6 @@ struct ti_adc_data {
  
- 	return true;
+ 	u8 read_size;
+ 	u8 shift;
+-
+-	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ static int ti_adc_read_measurement(struct ti_adc_data *data,
+@@ -114,15 +112,20 @@ static irqreturn_t ti_adc_trigger_handle
+ 	struct iio_poll_func *pf = private;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct ti_adc_data *data = iio_priv(indio_dev);
+-	int ret;
++	struct {
++		s16 data;
++		aligned_s64 timestamp;
++	} scan = { };
++	int ret, val;
++
++	ret = ti_adc_read_measurement(data, &indio_dev->channels[0], &val);
++	if (ret)
++		goto exit_notify_done;
+ 
+-	ret = ti_adc_read_measurement(data, &indio_dev->channels[0],
+-				     (int *) &data->buffer);
+-	if (!ret)
+-		iio_push_to_buffers_with_timestamp(indio_dev,
+-					data->buffer,
+-					iio_get_time_ns(indio_dev));
++	scan.data = val;
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+ 
++ exit_notify_done:
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
