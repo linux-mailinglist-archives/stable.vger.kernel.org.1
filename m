@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-234086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIqqHpGa1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234086-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:33 +0200
+	id QPp9LoCh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6FC3C02E6
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E503C1442
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 83B1A300BBB8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DB8F30372E7
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769103D4134;
-	Wed,  8 Apr 2026 18:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A393D9037;
+	Wed,  8 Apr 2026 18:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWtq0YtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5DOLX+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A892347503;
-	Wed,  8 Apr 2026 18:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71C43D8115;
+	Wed,  8 Apr 2026 18:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671949; cv=none; b=TR9K5YS9RqP4NIECS3Fg67E0k1REAC9iIUUR5z7la+O24qfStQbpkeE3wikzbaVnZSn0tSgo9gfrL69pOHTh5s8hMPQJPN0VIgfLL4aSmIxSM8BsphFYoEbufY2FOstsdp9bmm/6Zpbmzx1f6hgQNoDCCCpcGSeiCqsvM2qBtLA=
+	t=1775673660; cv=none; b=jIuVOE2xqBruu02n/s0y+UYEDKlrQjm27EqISk2kjUoY7J6EVazBd4DJZFmB4ClMwV0q8DEjk3DygiIWPkfp/xyUHhsKCqEu2STq/1Dqn+OU/NmCJK930pUKg4ljvOqr/+aauU6cbEaY2G4vjxvu5nVPSUtFh1xpVy5Izh0+Ku8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671949; c=relaxed/simple;
-	bh=8asqhQ1oO6FpVDWdwVzRSFkcwsvc9olqo19V6ORTHGY=;
+	s=arc-20240116; t=1775673660; c=relaxed/simple;
+	bh=oSixiJ4XGw975jpFgAhZ8kV931KI9jePcsCyqfkniCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g51giLcvIButjQhShjO4OxRbcJNSiWlYtyW7fGW7J8wj4hjomoRlXlOYOKlj7lf7+ShMiO4w9a0htVGUhmRYo98u0XEPMiG/Q7xYhtSQMKlXpY5nKqiMb+wBE8d/Y0/x9M0KkpsryhZFjalYL6OH0WtmmBogeslAdgfShIwBs1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWtq0YtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D8EC19421;
-	Wed,  8 Apr 2026 18:12:28 +0000 (UTC)
+	 MIME-Version; b=Gvp0n/GUnSOeq7awXBoZeToDD/RIKqx5+PUzVNHzolNAc9ZX9pZo/SYztXPeuc/qfkXTPWhd/dYovXwDJM2VVpJ8h0WMBJzoNStwOnKrDJjemgeV1YzrDtXiIaoywAQpUx63fCiEtkFAnWowffFtPIGziF9vkIEAb7hGQt59mE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5DOLX+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13468C19421;
+	Wed,  8 Apr 2026 18:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671948;
-	bh=8asqhQ1oO6FpVDWdwVzRSFkcwsvc9olqo19V6ORTHGY=;
+	s=korg; t=1775673660;
+	bh=oSixiJ4XGw975jpFgAhZ8kV931KI9jePcsCyqfkniCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWtq0YtXWqmNRi2N4RvJkrotF4Kg+Luf5eCT50+vd7FMf8hdydbmS7kGxKs+ga7O6
-	 dr3kxAkGSBHCs3hmZCX+0K+QvZm90Q62BuD1H6j5to3gv1+WIRa9PAD1YrU7I4Vh/2
-	 gtXJbAp/1H/xqfgYNs6LWNiudVhWYsJPYOf/7MdU=
+	b=g5DOLX+RnHWZeemqAobNm+LVGOtNE/m+g/4o9uwhiDF1V5MZGNU9LH88s5eyjDgiD
+	 L9BqhATbw3vSq+TAF1NjWyS+LL1G/lBcj4EI06xY/fmRY/M78Ui2l8+Go4zXEGKqbc
+	 H0L6QAhCajr3NlMUWq7RmR5Vm2VD3lMbVfa8rSCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Lijun Pan <lijun.pan@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/312] dmaengine: idxd: Remove usage of the deprecated ida_simple_xx() API
-Date: Wed,  8 Apr 2026 20:00:48 +0200
-Message-ID: <20260408175938.664816328@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 009/242] io_uring/net: dont use io_net_kbuf_recyle() for non-provided cases
+Date: Wed,  8 Apr 2026 20:00:49 +0200
+Message-ID: <20260408175927.421297448@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +66,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wanadoo.fr,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234086-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234748-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1F6FC3C02E6
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 40E503C1442
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 1075ee66a8c19bfa375b19c236fd6a22a867f138 ]
+Commit 15ba5e51e689ceb1c2e921c5180a70c88cfdc8e9 upstream.
 
-ida_alloc() and ida_free() should be preferred to the deprecated
-ida_simple_get() and ida_simple_remove().
+A previous commit used io_net_kbuf_recyle() for any network helper that
+did IO and needed partial retry. However, that's only needed if the
+opcode does buffer selection, which isnt support for sendzc, sendmsg_zc,
+or sendmsg. Just remove them - they don't do any harm, but it is a bit
+confusing when reading the code.
 
-This is less verbose.
-
-Note that the upper limit of ida_simple_get() is exclusive, but the one of
-ida_alloc_range() is inclusive. Sothis change allows one more device.
-
-MINORMASK is ((1U << MINORBITS) - 1), so allowing MINORMASK as a maximum value
-makes sense. It is also consistent with other "ida_.*MINORMASK" and
-"ida_*MINOR()" usages.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
-Acked-by: Lijun Pan <lijun.pan@intel.com>
-Link: https://lore.kernel.org/r/ac991f5f42112fa782a881d391d447529cbc4a23.1702967302.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: c311f5e92484 ("dmaengine: idxd: Fix freeing the allocated ida too late")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/cdev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/net.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index 9b07474f450b5..e42c9a9f3c238 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -49,7 +49,7 @@ static void idxd_cdev_dev_release(struct device *dev)
- 	struct idxd_wq *wq = idxd_cdev->wq;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -578,7 +578,7 @@ int io_sendmsg(struct io_kiocb *req, uns
+ 			kmsg->msg.msg_controllen = 0;
+ 			kmsg->msg.msg_control = NULL;
+ 			sr->done_io += ret;
+-			return io_net_kbuf_recyle(req, kmsg, ret);
++			return -EAGAIN;
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1448,7 +1448,7 @@ int io_send_zc(struct io_kiocb *req, uns
+ 			zc->len -= ret;
+ 			zc->buf += ret;
+ 			zc->done_io += ret;
+-			return io_net_kbuf_recyle(req, kmsg, ret);
++			return -EAGAIN;
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1508,7 +1508,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
  
- 	cdev_ctx = &ictx[wq->idxd->data->type];
--	ida_simple_remove(&cdev_ctx->minor_ida, idxd_cdev->minor);
-+	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
- 	kfree(idxd_cdev);
- }
- 
-@@ -375,7 +375,7 @@ int idxd_wq_add_cdev(struct idxd_wq *wq)
- 	cdev = &idxd_cdev->cdev;
- 	dev = cdev_dev(idxd_cdev);
- 	cdev_ctx = &ictx[wq->idxd->data->type];
--	minor = ida_simple_get(&cdev_ctx->minor_ida, 0, MINORMASK, GFP_KERNEL);
-+	minor = ida_alloc_max(&cdev_ctx->minor_ida, MINORMASK, GFP_KERNEL);
- 	if (minor < 0) {
- 		kfree(idxd_cdev);
- 		return minor;
--- 
-2.53.0
-
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			return io_net_kbuf_recyle(req, kmsg, ret);
++			return -EAGAIN;
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
 
 
 
