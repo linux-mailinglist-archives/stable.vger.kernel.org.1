@@ -1,188 +1,188 @@
-Return-Path: <stable+bounces-233847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oElDDxU/1mm6CggAu9opvQ
-	(envelope-from <stable+bounces-233847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:42:13 +0200
+	id +O92FChE1mkFCwgAu9opvQ
+	(envelope-from <stable+bounces-233848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:03:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C432D3BB65E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:42:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07733BBB46
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DA0D303CA4E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 11:41:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA96B30616FD
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 11:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39983B8D41;
-	Wed,  8 Apr 2026 11:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284CE37E30E;
+	Wed,  8 Apr 2026 11:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="NCkY18P1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wMmWrDDx";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="NCkY18P1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wMmWrDDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvnfZPJa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556363B774D
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 11:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7C82DEA75
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 11:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775648486; cv=none; b=EQAfhustmFxl6zk81hTOgvUdfEOFLNSjCe0jqffVyn8VwHClbLRYWKMvfwUIy3d+3MPTGLIT7903W8jwzkdBGY0j0F4i9WG02CtMtcQfCIz9CjqiZ7sZ5k8DrfafS8+VSyuGxWWD3jZadL3OEE1RsvSvD119Gkgr1heMIp0nyfA=
+	t=1775649418; cv=none; b=AWFs+MBXs7RHNeS8w+K+7eu3COUr3QUJNo7eFcfGHVDav9amneJfJylwh6hHqmM2J64TkGDc5T9+xSbbNI0CGYX04ImOJ/RrskgT9MLC9JDmdT559cOMr0Olmn052w52R7CnedSb17JMg9g8/U4+PQerP9vqzhrffcpc4hkEQGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775648486; c=relaxed/simple;
-	bh=TMG9/fNi9jRb+irbP1wQM+1VkWhxHPkaXZvja4WZakY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pzho/rxu1WS/4l/9YM5CHF9/8PJuW4SR/dTv8v6l9vFHThvm7RoxB0utk24dbMhP4Fceqar/VokvoyO0oJYGUnIUPditOFNG/+8tCfHN1d/bn0Wr7H1dKKXKA2eYQNKajpJ5Ee7YwYg+IixAsdWborlx8vCb6qDiRHjIHZu+oag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=NCkY18P1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wMmWrDDx; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=NCkY18P1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wMmWrDDx; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 93CE45BCE1;
-	Wed,  8 Apr 2026 11:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775648483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VXSQNr91CVe40jvG7ZYNv7XzA/U7xJmaknCtWTFRIdQ=;
-	b=NCkY18P12Vc4seAXTbhJPUXXn6Yu22Nc3aaVNBm39hRrKkI5KWBUP82SI95zFlRFos7ue8
-	eD/tRZEwtGE1Z1yPCH3amFcmVqRBNfA/3TSa94mW6n32YBPzul4ggIP4DgRyuD9Aroyo9n
-	67biJd6M0XWJtve98UD9DtBCiDCc0M8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775648483;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VXSQNr91CVe40jvG7ZYNv7XzA/U7xJmaknCtWTFRIdQ=;
-	b=wMmWrDDxbi9hmf5ShoNy8vT39wtY0iqSrUHUualnLehlsyVtukGg4ncWIDx1ITq4X7tsLX
-	bP3j+mI+E5FCHQAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NCkY18P1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wMmWrDDx
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775648483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VXSQNr91CVe40jvG7ZYNv7XzA/U7xJmaknCtWTFRIdQ=;
-	b=NCkY18P12Vc4seAXTbhJPUXXn6Yu22Nc3aaVNBm39hRrKkI5KWBUP82SI95zFlRFos7ue8
-	eD/tRZEwtGE1Z1yPCH3amFcmVqRBNfA/3TSa94mW6n32YBPzul4ggIP4DgRyuD9Aroyo9n
-	67biJd6M0XWJtve98UD9DtBCiDCc0M8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775648483;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VXSQNr91CVe40jvG7ZYNv7XzA/U7xJmaknCtWTFRIdQ=;
-	b=wMmWrDDxbi9hmf5ShoNy8vT39wtY0iqSrUHUualnLehlsyVtukGg4ncWIDx1ITq4X7tsLX
-	bP3j+mI+E5FCHQAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3579D4A0B3;
-	Wed,  8 Apr 2026 11:41:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id T5G7C+M+1mmyOAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 08 Apr 2026 11:41:23 +0000
-Date: Wed, 08 Apr 2026 13:41:22 +0200
-Message-ID: <87jyuhllwd.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: broonie@kernel.org
-Cc: lgirdwood@gmail.com,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	tiwai@suse.de,
-	linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	stable@vger.kernel.org,
-	liam.r.girdwood@intel.com
-Subject: Re: [PATCH for 7.0 0/2] ALSA/SOF Intel: Enforce stricter period size for NVL
-In-Reply-To: <20260408084514.24325-1-peter.ujfalusi@linux.intel.com>
-References: <20260408084514.24325-1-peter.ujfalusi@linux.intel.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1775649418; c=relaxed/simple;
+	bh=YCVkBQKet0fn5YpxlU1qnYgA0IuassMVVi4iu8E2RvI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mX3GUcXwnjv1hVGn8pUYDz0kXZKttCH8Q044VYDnK3NBICXJLYPEe9WVq0o1YYzdfrHQXddlRVOPApflEmZmztSc9RL6R94a5QGs2v+JSuBGX/A+ZrF+oTv3rUGAn47gHt7FxEBVOzhYJYY0KaZ/svpJKMwhZtNeC5mBmN5mAMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvnfZPJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E943C19421;
+	Wed,  8 Apr 2026 11:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775649418;
+	bh=YCVkBQKet0fn5YpxlU1qnYgA0IuassMVVi4iu8E2RvI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=hvnfZPJaz3x3P3F6m1y1nxbc7QXl89DPi++QrlA8nQYbnbAbt3CWSpyeamr5g5nKe
+	 kUbScuB64k88B5T9Sz3DdbbYIBEIc0fnfp23ollsUtCi/bZkUTaP+zYRFkciM/vxTl
+	 ZU1VvOwwm6sHj1TH1EjEJEePbLUhqRyXyHrbNSUI=
+Subject: FAILED: patch "[PATCH] usb: gadget: u_ether: Fix race between gether_disconnect and" failed to apply to 6.1-stable tree
+To: khtsai@google.com,gregkh@linuxfoundation.org,stable@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 08 Apr 2026 13:56:56 +0200
+Message-ID: <2026040856-salutary-stress-ecc2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,suse.de,vger.kernel.org,linux.dev,intel.com];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TAGGED_FROM(0.00)[bounces-233847-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233848-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:dkim,suse.de:mid]
-X-Rspamd-Queue-Id: C432D3BB65E
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: B07733BBB46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 08 Apr 2026 10:45:12 +0200,
-Peter Ujfalusi wrote:
-> 
-> Hi,
-> 
-> NVL and NVL-S (ACE4) needs to use stricter period size constraint to
-> meet the address alignment for each BDLE buffer (start of each period in
-> the continuous ALSA buffer) set in the HDA specification.
-> 
-> It would be great if these can be sent for 7.0 as last minute if it is
-> doable, I left out the Fixes tag from the first patch as that is
-> introduced in 7.0.
 
-Mark, shall I pick up both patches to my tree for the next PR (planned
-for tomorrow or on Friday)?
-Basically both patches are independent, and I can apply the first one
-in anyway.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x e1eabb072c75681f78312c484ccfffb7430f206e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040856-salutary-stress-ecc2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
 
 
 thanks,
 
-Takashi
+greg k-h
 
-> 
-> Regards
-> Peter
-> ---
-> Kai Vehmanen (2):
->   ALSA: hda/intel: enforce stricter period-size alignment for Intel NVL
->   ASoC: SOF: Intel: hda: modify period size constraints for ACE4
-> 
->  sound/hda/controllers/intel.c |  7 +++++--
->  sound/soc/sof/intel/hda-pcm.c | 14 ++++++++++++--
->  2 files changed, 17 insertions(+), 4 deletions(-)
-> 
-> -- 
-> 2.53.0
-> 
+------------------ original commit in Linus's tree ------------------
+
+From e1eabb072c75681f78312c484ccfffb7430f206e Mon Sep 17 00:00:00 2001
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Wed, 11 Mar 2026 17:12:15 +0800
+Subject: [PATCH] usb: gadget: u_ether: Fix race between gether_disconnect and
+ eth_stop
+
+A race condition between gether_disconnect() and eth_stop() leads to a
+NULL pointer dereference. Specifically, if eth_stop() is triggered
+concurrently while gether_disconnect() is tearing down the endpoints,
+eth_stop() attempts to access the cleared endpoint descriptor, causing
+the following NPE:
+
+  Unable to handle kernel NULL pointer dereference
+  Call trace:
+   __dwc3_gadget_ep_enable+0x60/0x788
+   dwc3_gadget_ep_enable+0x70/0xe4
+   usb_ep_enable+0x60/0x15c
+   eth_stop+0xb8/0x108
+
+Because eth_stop() crashes while holding the dev->lock, the thread
+running gether_disconnect() fails to acquire the same lock and spins
+forever, resulting in a hardlockup:
+
+  Core - Debugging Information for Hardlockup core(7)
+  Call trace:
+   queued_spin_lock_slowpath+0x94/0x488
+   _raw_spin_lock+0x64/0x6c
+   gether_disconnect+0x19c/0x1e8
+   ncm_set_alt+0x68/0x1a0
+   composite_setup+0x6a0/0xc50
+
+The root cause is that the clearing of dev->port_usb in
+gether_disconnect() is delayed until the end of the function.
+
+Move the clearing of dev->port_usb to the very beginning of
+gether_disconnect() while holding dev->lock. This cuts off the link
+immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+safely bail out.
+
+Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index 1a9e7c495e2e..23c7c0cdf202 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1223,6 +1223,11 @@ void gether_disconnect(struct gether *link)
+ 
+ 	DBG(dev, "%s\n", __func__);
+ 
++	spin_lock(&dev->lock);
++	dev->port_usb = NULL;
++	link->is_suspend = false;
++	spin_unlock(&dev->lock);
++
+ 	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
+ 
+@@ -1260,11 +1265,6 @@ void gether_disconnect(struct gether *link)
+ 	dev->header_len = 0;
+ 	dev->unwrap = NULL;
+ 	dev->wrap = NULL;
+-
+-	spin_lock(&dev->lock);
+-	dev->port_usb = NULL;
+-	link->is_suspend = false;
+-	spin_unlock(&dev->lock);
+ }
+ EXPORT_SYMBOL_GPL(gether_disconnect);
+ 
+
 
