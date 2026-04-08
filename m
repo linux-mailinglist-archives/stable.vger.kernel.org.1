@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMSwK1+k1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:23 +0200
+	id 0A0nI3Ki1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301823C1E48
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78E83C177D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D17C53165705
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2AC003007AE9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552C53D6694;
-	Wed,  8 Apr 2026 18:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36533D4134;
+	Wed,  8 Apr 2026 18:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSRuBiYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlO7q1MH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FBA331A44;
-	Wed,  8 Apr 2026 18:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9729A331A44;
+	Wed,  8 Apr 2026 18:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673403; cv=none; b=sJjV6aTmJMOmw/uh0ETAObPnY8RKvKz7rqacu5cnkSb8zAOWrSeKCpLg2JZMvEiQwd7IGYCppTMlhO5ruY6HGbShvm1Scl6YltD4Kk8ue30heiYpGfIcni+F0RQpT3kLUfAnqe90OacHj5vTegrbVGKBMGfj+Xs0YPeASqZ7BUw=
+	t=1775673897; cv=none; b=tvKMfbLajcebozKHr358y+5VrGKrQEblDOQ9Bq76LyCoubSHlMuLyEZtkmObz7hp2rKTvV0retEZF4eaf4EDQ2pXqkdpV5Cpm1JVMHVuWTUZAU7GT4aKHn5jYIGpBjTF/arb/HamfI4rhB/bw9E/+o+2Fa+j/x8voSHlws3vo9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673403; c=relaxed/simple;
-	bh=DzPIKzCVvx0DP2OVTtEWOT4fJdk9cYkMz/1x63z94zU=;
+	s=arc-20240116; t=1775673897; c=relaxed/simple;
+	bh=sJylsfxK+Zek9WMfEPhlVvq1syd8vjP9IRC6/Pdej8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVoGTcjhU77S2NEWJPPj6wGhEQDXp8YGSI9ZPaNhH+vwh+UaQ6Q+1ecn9+j6EYmPqo3Jpa8svSPWgbjp2eufu4ksaRvPdNO8RVLaIrqeiOjbot4dVOyFrn83I+xC7zjGYT8tmwwHsLVXdx+zXA0xfx+Tt4/cOeGXMGuvTRAO1L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSRuBiYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE45C19421;
-	Wed,  8 Apr 2026 18:36:42 +0000 (UTC)
+	 MIME-Version; b=Mmfv0XPEWFB6SG2mivFk8u/pbtx6qFIBxt9GvW3LO+lMNkYx2V38vksclppGjGu0QNe9Ehqnnvy3busGwlox5U3kOPnlBkP5G8cE4KIxh4f35mZihPDvPQ7PY4qgrKU5nSUBUA4WChfQm/aRtqt+NoLkxXmaXCXeujLCHa5YXCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlO7q1MH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C22FC19421;
+	Wed,  8 Apr 2026 18:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673402;
-	bh=DzPIKzCVvx0DP2OVTtEWOT4fJdk9cYkMz/1x63z94zU=;
+	s=korg; t=1775673897;
+	bh=sJylsfxK+Zek9WMfEPhlVvq1syd8vjP9IRC6/Pdej8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSRuBiYBjWXBu+90RUI36X9xp1DREdjtY7A6rw9Jm5M/Z4hX6L83+Ovwweyq6cISI
-	 ynz0If6YkvjW3rqfUDY0sONP4qT55ppYJojFnkplqKeVfEYy6fc64d5AHA2T87Jy+1
-	 zGMBQ8pZbb9yoRWIs3cpqqKJya5MP6x4VXsXuCuM=
+	b=jlO7q1MHEin3Fs8Wqo0YsYhrvhUnTwcYE1mFTSIcAKvwFQPycClc9vmkQB4zVSdam
+	 bnV4NBFqKReHt0Qajd84+34m1zuw8UV982L4oSbNCM6Xe5i9l9TQ7t3/cAwOIDGmVC
+	 80W0LWftnAdD7Z2k2YoObm3PTXWVn7dufCzzhGiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Robert Budai <robert.budai@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 186/277] iio: imu: adis16550: fix swapped gyro/accel filter functions
+Subject: [PATCH 6.12 131/242] iio: adc: ti-adc161s626: use DMA-safe memory for spi_read()
 Date: Wed,  8 Apr 2026 20:02:51 +0200
-Message-ID: <20260408175940.808573475@linuxfoundation.org>
+Message-ID: <20260408175931.992344095@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234648-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234839-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,67 +86,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 301823C1E48
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,baylibre.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: B78E83C177D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit ea7e2e43d768102e2601dbbda42041c78d7a99f9 upstream.
+commit 768461517a28d80fe81ea4d5d03a90cd184ea6ad upstream.
 
-The low-pass filter handlers for IIO_ANGL_VEL and IIO_ACCEL call each
-other's filter functions in both read_raw and write_raw. Swap them so
-each channel type uses its correct filter accessor.
+Add a DMA-safe buffer and use it for spi_read() instead of a stack
+memory. All SPI buffers must be DMA-safe.
 
-Fixes: bac4368fab62 ("iio: imu: adis16550: add adis16550 support")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Acked-by: Robert Budai <robert.budai@analog.com>
+Since we only need up to 3 bytes, we just use a u8[] instead of __be16
+and __be32 and change the conversion functions appropriately.
+
+Fixes: 4d671b71beef ("iio: adc: ti-adc161s626: add support for TI 1-channel differential ADCs")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/adis16550.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ti-adc161s626.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/drivers/iio/imu/adis16550.c
-+++ b/drivers/iio/imu/adis16550.c
-@@ -643,12 +643,12 @@ static int adis16550_read_raw(struct iio
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		switch (chan->type) {
- 		case IIO_ANGL_VEL:
--			ret = adis16550_get_accl_filter_freq(st, val);
-+			ret = adis16550_get_gyro_filter_freq(st, val);
- 			if (ret)
- 				return ret;
- 			return IIO_VAL_INT;
- 		case IIO_ACCEL:
--			ret = adis16550_get_gyro_filter_freq(st, val);
-+			ret = adis16550_get_accl_filter_freq(st, val);
- 			if (ret)
- 				return ret;
- 			return IIO_VAL_INT;
-@@ -681,9 +681,9 @@ static int adis16550_write_raw(struct ii
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		switch (chan->type) {
- 		case IIO_ANGL_VEL:
--			return adis16550_set_accl_filter_freq(st, val);
--		case IIO_ACCEL:
- 			return adis16550_set_gyro_filter_freq(st, val);
-+		case IIO_ACCEL:
-+			return adis16550_set_accl_filter_freq(st, val);
- 		default:
- 			return -EINVAL;
- 		}
+--- a/drivers/iio/adc/ti-adc161s626.c
++++ b/drivers/iio/adc/ti-adc161s626.c
+@@ -15,6 +15,7 @@
+ #include <linux/init.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/unaligned.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/trigger.h>
+ #include <linux/iio/buffer.h>
+@@ -70,6 +71,7 @@ struct ti_adc_data {
+ 
+ 	u8 read_size;
+ 	u8 shift;
++	u8 buf[3] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ static int ti_adc_read_measurement(struct ti_adc_data *data,
+@@ -78,26 +80,20 @@ static int ti_adc_read_measurement(struc
+ 	int ret;
+ 
+ 	switch (data->read_size) {
+-	case 2: {
+-		__be16 buf;
+-
+-		ret = spi_read(data->spi, (void *) &buf, 2);
++	case 2:
++		ret = spi_read(data->spi, data->buf, 2);
+ 		if (ret)
+ 			return ret;
+ 
+-		*val = be16_to_cpu(buf);
++		*val = get_unaligned_be16(data->buf);
+ 		break;
+-	}
+-	case 3: {
+-		__be32 buf;
+-
+-		ret = spi_read(data->spi, (void *) &buf, 3);
++	case 3:
++		ret = spi_read(data->spi, data->buf, 3);
+ 		if (ret)
+ 			return ret;
+ 
+-		*val = be32_to_cpu(buf) >> 8;
++		*val = get_unaligned_be24(data->buf);
+ 		break;
+-	}
+ 	default:
+ 		return -EINVAL;
+ 	}
 
 
 
