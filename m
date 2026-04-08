@@ -1,174 +1,199 @@
-Return-Path: <stable+bounces-235278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HR/Ja621mlxHggAu9opvQ
-	(envelope-from <stable+bounces-235278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 22:12:30 +0200
+	id 4Pg2Iia61mnLHggAu9opvQ
+	(envelope-from <stable+bounces-235279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 22:27:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC6F3C39F7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 22:12:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB33A3C3C70
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 22:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A3C6301D4FF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 20:12:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6C3A309B035
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 20:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E027A37754E;
-	Wed,  8 Apr 2026 20:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3464E3914F0;
+	Wed,  8 Apr 2026 20:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tgLumnaX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h+4CDHXV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B54336F41F;
-	Wed,  8 Apr 2026 20:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D096339183D
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 20:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775679146; cv=none; b=dAq+bFMIQu0H9kYVFovj/VyzxsU1oK8Mpc0PnrQuagxGye6fHbJ8z2q1CGKEkrB8an1bMewimd5rP5eNC6z2DpjfdbJ6HrfvTtC3aHntdqpGCyGdQ2S7VPr/etIea8NpKQP4RCLNLWRYA2UTtH5g+ExWtBn8DQrO4zqNq6JiS94=
+	t=1775679920; cv=none; b=CIgMNJHEXQKzA55tOxmtGl/9ah7d7xGP9HAxCc4fh4LX46tzfcqFHNolDaNYX3CKBfcOMXtIaIULHXwhxDWQOW9OeT5MrxBog9SQEIGHfTqzFfZxxxkp5TCwNI6BPCYkj51K3Ea5UPKxFqLE5yPPmnQZRZn8SD26IG9BkR6oGlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775679146; c=relaxed/simple;
-	bh=jWtxorWDJl53Q0KzQv0WXS2TVhuItrBnYfd9ReIJmW8=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ejfp4Fm+FSvdFDZDb9NIe39lu1TgwrtC1bs3Z553E2lZuD3eorlKzzOvn/Az/4kVDxOzVIRKhBNQ+lXxR+XvvbGLTkdQWD18JeQLXfP1ZZTams+FkZcIqOyCVjVCWXATtjSpqy+wJu0aFU4Ggevi7kmyh5GR5a40iAcGz8R5aHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tgLumnaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C85C19421;
-	Wed,  8 Apr 2026 20:12:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775679146;
-	bh=jWtxorWDJl53Q0KzQv0WXS2TVhuItrBnYfd9ReIJmW8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tgLumnaXpH345q8jT9Fjm5Jax/6HIDiasQn0qyheeqSLsR7CxefEmP+tDgUKZeeSs
-	 ALNYHppWzlS34EcYXoUiGum5AO7eKjvSl6fH5E7XXE46xZOwSw0G3ToMz7WwlGuI8H
-	 Q5TTxlsR9BmmPfQjTYiP+hsmQ8N5IRm8d5wro/YQ=
-Date: Wed, 8 Apr 2026 13:12:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: tejas bharambe <tejas.bharambe@outlook.com>
-Cc: Tejas Bharambe <thbharam@gmail.com>, "ocfs2-devel@lists.linux.dev"
- <ocfs2-devel@lists.linux.dev>, "mark@fasheh.com" <mark@fasheh.com>,
- "jlbec@evilplan.org" <jlbec@evilplan.org>, "joseph.qi@linux.alibaba.com"
- <joseph.qi@linux.alibaba.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,
- "syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com"
- <syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when
- VM_FAULT_RETRY
-Message-Id: <20260408131225.a37cd581ca47b3512a4219bc@linux-foundation.org>
-In-Reply-To: <JH0PR06MB6632F1A4381AB798FED980CE895BA@JH0PR06MB6632.apcprd06.prod.outlook.com>
-References: <20260403035333.136824-1-tejas.bharambe@outlook.com>
-	<20260403122947.2afc337b5333fb1990a78a65@linux-foundation.org>
-	<JH0PR06MB66320ABCFAD8F239FE5112B2895CA@JH0PR06MB6632.apcprd06.prod.outlook.com>
-	<20260404175040.40a746040ddb0cb5ce347fe3@linux-foundation.org>
-	<JH0PR06MB6632F1A4381AB798FED980CE895BA@JH0PR06MB6632.apcprd06.prod.outlook.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1775679920; c=relaxed/simple;
+	bh=YK2ErFGtqJmjNXRFUKyoD+PTGXRuF4JLe0eoAfWTn3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EANSSR8xAIgJ8+94Qe/zam+yRWcufw8cAVtdVgTRZTgO+C0TJjWm24Jf62t+Uyejkk1PwHLL+Njw4lW9YWm28oneQXeIOzFF0ybPOjVUYxIld8GLgy/hwQdGpMcFRpQ0u1Ck1o5PACrrVT3xN7oqV8Itnlx8tOWIG08PN7CBOCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h+4CDHXV; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82cef263bedso113471b3a.0
+        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 13:25:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775679918; x=1776284718; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qtez7uO2X5FjsGHqGis7qBChcDlylFjTSAlBvJbABwk=;
+        b=h+4CDHXVKB5TtWWN1DQ4w19egGCrJEuQ7L2O729FNN6ypKu8RYyLM31dYGeETYo73t
+         9kUT/25ZSaplj+XAKaDnwuRMSaH11T+IrISdl4sCB/Rc29bS8EMC5uq230Y6jyErv4nZ
+         5EpYLz9phFMW6iXjY49RUCn6Fr++JRhzC0LeoBiZVY5LcvN+wQ8pE6I76QpP06vzYn/A
+         /AxcW213j6RVOpULzBq9OaZNSK+NFtP3OBZoYz0XLnpYq1QfhZaHbAWHtPSfGL6Z5tvN
+         qZYtwbk3D3dDQDDuakz7IwSijDpLnTTDhA0N4oDKUJ9ylmnDaeyH5V9yu2GQ8iZPimPY
+         S7XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775679918; x=1776284718;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qtez7uO2X5FjsGHqGis7qBChcDlylFjTSAlBvJbABwk=;
+        b=KK4J7Ja3QNHILsuEw4XGI07BHDRNZxZMYWnslBaYfwEqyWatMGXEFtTq+NyLVKltFc
+         1pa8GuStgumHWBHmCOdQ0Ws3+7Vs6VYa8eayJ+Wmn6kWxuTKUx3WsVuqvYkeq4u0D+Rw
+         A7xVND8j/4mmmxykbhcVtnSJlyil9lM9KEYWNrBF8ci5nysHYijX5fCW5XmOOlgMmXth
+         dpNgGPZEsex1SmJ8+hyIMW56J+jikPioJD7PAFlz2HVLF2hhb9aCVo3frsM0sDUhQYyq
+         PGzcP3Xhao3fgelnjPhM9DCDdYh/wXXgtiUjK0cXv+OytOIITc6QkEA8hRX4zrSImDeX
+         Ofvw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7ScGiJ4CKmGkMHSm7yyqYQzWCGO6ca/OK79mXxly3Qh+MdWF4hPRWWSgkw69+6VIr7k3OfS8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkrMf9Y72os4Y0k4GCB9tyb/6ltT16/+y0KL8MOHT+0pX8017q
+	phtvWslG8V72zoz/l4ISiv11mpfLtPlcllZRy7RAQkzs3KBCfGd0A2pc/gIsLdLjNg==
+X-Gm-Gg: AeBDiesna/aRqhlCC71EkXvlGW705DJaJJaziHBCDLV24NMUKe54MV3yx9FNmzdC4st
+	KU4tu6sgwCPhu2aSts+BnKClVwqer947N/lO4isvyb6gVyzLBwOhlmD9FLCVscFa8nyolU6ii/u
+	Tb3ynZVrvgTVszhWP12gR1VkEL6e9XPxp17dAEWtHXWVW9xPcOjOuY0unZxRw9mFwLrsWpAloep
+	CPNQJFA0rHR99qAEYhzi5Rye6zj94viypLiiaf17Y/s5UqwEQZFEpowAoMAPRx7JYhmx7hpgee8
+	DA+8K9z9yTOS2AOCFLyZthKWoMpCaVKQxfrY+4NsLILLVv+2ouV8dK71k7WAotP6oW/RbDoZO73
+	Vy4c6/ecKzpCRHPx5biSlzLVSgHVczk0XYa/JyrMiCbK1koqdus8AevFs1gCCxRE/BCS+UNYNB0
+	MGidVDEuuDfR27LFc6RdtVp7DyBzbHwewgG7zY6FyErGA8lfvQ5vEaoqf3X7ppwDVn
+X-Received: by 2002:a05:7022:40b:b0:12a:8ea4:252 with SMTP id a92af1059eb24-12c28b7f511mr541759c88.4.1775679917525;
+        Wed, 08 Apr 2026 13:25:17 -0700 (PDT)
+Received: from google.com (78.93.125.34.bc.googleusercontent.com. [34.125.93.78])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12bfea5f860sm21165384c88.2.2026.04.08.13.25.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 13:25:16 -0700 (PDT)
+Date: Wed, 8 Apr 2026 20:25:12 +0000
+From: Nick Desaulniers <ndesaulniers@google.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: David Howells <dhowells@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, keyrings@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] extract-cert: Wrap key_pass with '#ifdef
+ USE_PKCS11_ENGINE'
+Message-ID: <ada5jlwkMYrtfRHv@google.com>
+References: <20260325-certs-extract-cert-key_pass-unused-but-set-global-v1-1-ecf94326d532@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [0.34 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325-certs-extract-cert-key_pass-unused-but-set-global-v1-1-ecf94326d532@kernel.org>
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235278-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[google.com:+];
+	FREEMAIL_CC(0.00)[redhat.com,infradead.org,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FREEMAIL_TO(0.00)[outlook.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,fasheh.com,evilplan.org,linux.alibaba.com,vger.kernel.org,syzkaller.appspotmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
+	TAGGED_FROM(0.00)[bounces-235279-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 0CC6F3C39F7
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ndesaulniers@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,lkml];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EB33A3C3C70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 8 Apr 2026 03:50:17 +0000 tejas bharambe <tejas.bharambe@outlook.com> wrote:
+On Wed, Mar 25, 2026 at 06:19:15PM -0700, Nathan Chancellor wrote:
+> A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+> in clang under a new subwarning, -Wunused-but-set-global, points out an
+> unused static global variable in certs/extract-cert.c:
+> 
+>   certs/extract-cert.c:46:20: error: variable 'key_pass' set but not used [-Werror,-Wunused-but-set-global]
+>      46 | static const char *key_pass;
+>         |                    ^
+> 
+> After commit 558bdc45dfb2 ("sign-file,extract-cert: use pkcs11 provider
+> for OPENSSL MAJOR >= 3"), key_pass is only used with the OpenSSL engine
+> API, not the new provider API. Wrap key_pass's declaration and
+> assignment with '#ifdef USE_PKCS11_ENGINE' so that it is only included
+> with its use to clear up the warning. While this is a little uglier than
+> just marking key_pass with the unused attribute, this will make it
+> easier to clean up all code associated with the use of the engine API if
+> it were ever removed in the future. While in the area, use a tab for
+> the key_pass assignment line to match the rest of the file.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 558bdc45dfb2 ("sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-> Hi Andrew,
-> 
-> You're right, I missed that scenario.
-> 
-> The inode can be freed if the file descriptor is closed after mmap() and munmap() races with the fault handler.
-> 
-> I can do one of the following:
-> 1. I can skip the trace firing when VM_FAULT_RETRY is set as I did in v1. It was changed to v4 after Joseph's suggestion to keep traces.
-> 2. If we want to keep traces, we can use ihold()/iput() as shown below:
-> 
-> ihold(inode);   //pin inode
-> ret = filemap_fault(vmf);
-> trace_ocfs2_fault(OCFS2_I(inode)->ip_blkno, ...);  // safe, refcount held
-> iput(inode);  //release inode
-> 
-> 
-> Which approach do you prefer?
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Nick Desaulniers <ndesaulniers@google.com>
 
-Well, that's down to the ocfs2 maintiners.  Me, omitting traces doesn't
-sound good.
-
-But we should consider performance implications - this is a fairly hot
-path and iget/iput are a little costly.  Perhaps there's a way to avoid
-the iget/iput if tracing isn't enabled.  As long as we handle the case
-where tracing get enabled immediately after we've done the
-
-	if (tracing enabled)
-		iget()
-
-
-> Thanks,
-> Tejas
-> ________________________________________
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Sent: Saturday, April 4, 2026 5:50 PM
-> To: tejas bharambe <tejas.bharambe@outlook.com>
-> Cc: Tejas Bharambe <thbharam@gmail.com>; ocfs2-devel@lists.linux.dev <ocfs2-devel@lists.linux.dev>; mark@fasheh.com <mark@fasheh.com>; jlbec@evilplan.org <jlbec@evilplan.org>; joseph.qi@linux.alibaba.com <joseph.qi@linux.alibaba.com>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>; syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com <syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com>; stable@vger.kernel.org <stable@vger.kernel.org>
-> Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+> ---
+> I am taking a fix for a similar warning in modpost through the kbuild
+> tree so I don't mind picking this up with an appropriate Ack or it can
+> just go through the keyring tree, does not matter to me.
+> ---
+>  certs/extract-cert.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> On Sun, 5 Apr 2026 00:30:14 +0000 tejas bharambe <tejas.bharambe@outlook.com> wrote:
+> diff --git a/certs/extract-cert.c b/certs/extract-cert.c
+> index 7d6d468ed612..54ecd1024274 100644
+> --- a/certs/extract-cert.c
+> +++ b/certs/extract-cert.c
+> @@ -43,7 +43,9 @@ void format(void)
+>  	exit(2);
+>  }
+>  
+> +#ifdef USE_PKCS11_ENGINE
+>  static const char *key_pass;
+> +#endif
+>  static BIO *wb;
+>  static char *cert_dst;
+>  static bool verbose;
+> @@ -135,7 +137,9 @@ int main(int argc, char **argv)
+>  	if (verbose_env && strchr(verbose_env, '1'))
+>  		verbose = true;
+>  
+> -        key_pass = getenv("KBUILD_SIGN_PIN");
+> +#ifdef USE_PKCS11_ENGINE
+> +	key_pass = getenv("KBUILD_SIGN_PIN");
+> +#endif
+>  
+>  	if (argc != 3)
+>  		format();
 > 
-> > Following is my response for question posted on https://sashiko.dev/#/patchset/20260403035333.136824-1-tejas.bharambe%40outlook.com
-> >
-> >
-> > No. For ocfs2_fault() to be executing, the file must be open and
-> > the process holds an active file descriptor. The inode's lifetime
-> > is tied to the file's reference count, which remains held by the
-> > file descriptor for the duration of the fault handler. munmap()
-> > can free the VMA (decrementing vm_file's refcount) but cannot
-> > free the inode as long as the file descriptor is open. The faulting
-> > thread cannot call close() while it is inside the fault handler,
-> > so the inode is guaranteed to outlive the trace call.
+> ---
+> base-commit: d2a43e7f89da55d6f0f96aaadaa243f35557291e
+> change-id: 20260325-certs-extract-cert-key_pass-unused-but-set-global-23007ecfadf9
 > 
-> I don't think that's the scenario which Sashiko is suggesting.
+> Best regards,
+> --  
+> Nathan Chancellor <nathan@kernel.org>
 > 
-> Suppose userspace does
-> 
->         fd = open(...);
->         p = mmap(fd, ...);
->         close(fd);
-> 
-> Now, that mmap is the only ref against fd.
-> 
-> Now, suppose that userspace does munmap() while another thread is in
-> the fault handler.
 
