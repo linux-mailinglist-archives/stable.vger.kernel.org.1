@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-234559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id t6btJ2Wj1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:13 +0200
+	id uMhkM5Gb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146813C1B68
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0803C0530
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8C5F30E051F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D36B3008627
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9B4328B75;
-	Wed,  8 Apr 2026 18:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C2B386550;
+	Wed,  8 Apr 2026 18:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEZNTeNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzWfy4Xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E563624B0;
-	Wed,  8 Apr 2026 18:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE4EB67E;
+	Wed,  8 Apr 2026 18:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673173; cv=none; b=BcjGrC5u9lukQz3wNwl2dO9bkyqnJaW7pesDwHfffpracFZk8BRLSeneqbQ72M0hsBe+URCSD7HSU2xpU/PGHfos73Zu94I3cAhGXb3lW5CY5mQ7gwP/irgyhZodYJKlbT4vGvAWQuwRaMVRCagROK3993xfc37A/H/2krug+hY=
+	t=1775672203; cv=none; b=Uc06QIdPQKDbxmSP4Vq9XVPsM7XyJnGQynzxyz7eRXxzQJaq+GBRqbvjP1AVyOEcv+aC1Hjg8A2EF2E7+5fRUH7zMUx6GaDsZtmcuYQmwiy+PTeDvjhVRLu+dgwUltCfVRFPj2etLoc3QocC78+2g5OwkFq+T84sbNIbz67UsCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673173; c=relaxed/simple;
-	bh=1rqxBKbtsGxMp62K+S44MXraGX71PDsL6I9rLy4G78I=;
+	s=arc-20240116; t=1775672203; c=relaxed/simple;
+	bh=nefzvidurXWWz7KLoH6s+VqT8SZfClacBdiOR7gzXRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDlhZC6w2izIuVbCDbpeUYQicJodySHxJgRO4esYz2/sNUXupousXIIhjPOqLJsB3XIJ54E5DGLUN+svepV5NyiyU1Re0mvqfklFUvjmrqtbxADtlAouVPy87Fr6I3KJUEbTs2x/cSBXjeQGsjE/eTjtH33YncaB4D+JWiGyo0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEZNTeNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D352C19425;
-	Wed,  8 Apr 2026 18:32:53 +0000 (UTC)
+	 MIME-Version; b=pqNgLUICo3hGhXtW0QGNyN7+hThxot2rrWpKGwh68Rb0AOHsPEFPrKUcb1fAnIat7v3rltLkORxUuYK85LNThKjRq9l//YYPgLfIN20egrklOb0t+P4hg1ADrHY/ZNfY2HKJG9g6lro9uu421djwLNsUrrVoaJH/AQCyI0ULTyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzWfy4Xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C56C19421;
+	Wed,  8 Apr 2026 18:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673173;
-	bh=1rqxBKbtsGxMp62K+S44MXraGX71PDsL6I9rLy4G78I=;
+	s=korg; t=1775672203;
+	bh=nefzvidurXWWz7KLoH6s+VqT8SZfClacBdiOR7gzXRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEZNTeNpO8r3b8BnCfEo3+C++FQpQ5cQzlBdRic243FcB3OeBWmhkyw8eh+MSmfke
-	 gVIxYdneFEmnMeysfIygO4YrYEkJtkZPtGKiU7gqRltIBXOTvb/8Z0Dm3zEkl1ASbx
-	 EfEsq7e9w0PTMwC5YK4LUzvgDB2sLS0OvxUGyeAU=
+	b=DzWfy4Xp2Kf3WzZHDMwGr/eKZwTdS8MsT8Rgps0I553mjteYmwBNyKNg1mnTnQLGm
+	 pCu9/0d5bOjZoRcNzEPMFUqKA4lO5ZsjkcvDkzMACj9abnzrHZ1bcLWSpsQfveCRXY
+	 R1o4k4Fn+I+X9xjInKhg5VZK+p6n3mr7iczxRpsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 129/277] drm/ioc32: stop speculation on the drm_compat_ioctl path
+	Vincent Chen <vincent.chen@sifive.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 197/312] riscv: kgdb: fix several debug register assignment bugs
 Date: Wed,  8 Apr 2026 20:01:54 +0200
-Message-ID: <20260408175938.692348442@linuxfoundation.org>
+Message-ID: <20260408175941.116560726@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +68,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-234559-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-234185-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ffwll.ch:email]
-X-Rspamd-Queue-Id: 146813C1B68
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,sifive.com:email]
+X-Rspamd-Queue-Id: ED0803C0530
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Paul Walmsley <pjw@kernel.org>
 
-commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
+[ Upstream commit 834911eb8eef2501485d819b4eabebadc25c3497 ]
 
-The drm compat ioctl path takes a user controlled pointer, and then
-dereferences it into a table of function pointers, the signature method
-of spectre problems.  Fix this up by calling array_index_nospec() on the
-index to the function pointer list.
+Fix several bugs in the RISC-V kgdb implementation:
 
-Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Simona Vetter <simona@ffwll.ch>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- The element of dbg_reg_def[] that is supposed to pertain to the S1
+  register embeds instead the struct pt_regs offset of the A1
+  register.  Fix this to use the S1 register offset in struct pt_regs.
+
+- The sleeping_thread_to_gdb_regs() function copies the value of the
+  S10 register into the gdb_regs[] array element meant for the S9
+  register, and copies the value of the S11 register into the array
+  element meant for the S10 register.  It also neglects to copy the
+  value of the S11 register.  Fix all of these issues.
+
+Fixes: fe89bd2be8667 ("riscv: Add KGDB support")
+Cc: Vincent Chen <vincent.chen@sifive.com>
+Link: https://patch.msgid.link/fde376f8-bcfd-bfe4-e467-07d8f7608d05@kernel.org
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_ioc32.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/kernel/kgdb.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/drm_ioc32.c
-+++ b/drivers/gpu/drm/drm_ioc32.c
-@@ -28,6 +28,7 @@
-  * IN THE SOFTWARE.
-  */
- #include <linux/compat.h>
-+#include <linux/nospec.h>
- #include <linux/ratelimit.h>
- #include <linux/export.h>
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 1d83b36967212..eb737c7a563b9 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -194,7 +194,7 @@ struct dbg_reg_def_t dbg_reg_def[DBG_MAX_REG_NUM] = {
+ 	{DBG_REG_T1, GDB_SIZEOF_REG, offsetof(struct pt_regs, t1)},
+ 	{DBG_REG_T2, GDB_SIZEOF_REG, offsetof(struct pt_regs, t2)},
+ 	{DBG_REG_FP, GDB_SIZEOF_REG, offsetof(struct pt_regs, s0)},
+-	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
++	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, s1)},
+ 	{DBG_REG_A0, GDB_SIZEOF_REG, offsetof(struct pt_regs, a0)},
+ 	{DBG_REG_A1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
+ 	{DBG_REG_A2, GDB_SIZEOF_REG, offsetof(struct pt_regs, a2)},
+@@ -263,8 +263,9 @@ sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *task)
+ 	gdb_regs[DBG_REG_S6_OFF] = task->thread.s[6];
+ 	gdb_regs[DBG_REG_S7_OFF] = task->thread.s[7];
+ 	gdb_regs[DBG_REG_S8_OFF] = task->thread.s[8];
+-	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[10];
+-	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[11];
++	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[9];
++	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[10];
++	gdb_regs[DBG_REG_S11_OFF] = task->thread.s[11];
+ 	gdb_regs[DBG_REG_EPC_OFF] = task->thread.ra;
+ }
  
-@@ -374,6 +375,7 @@ long drm_compat_ioctl(struct file *filp,
- 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
- 		return drm_ioctl(filp, cmd, arg);
- 
-+	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
- 	fn = drm_compat_ioctls[nr].fn;
- 	if (!fn)
- 		return drm_ioctl(filp, cmd, arg);
+-- 
+2.53.0
+
 
 
 
