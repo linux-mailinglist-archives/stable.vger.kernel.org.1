@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-234678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SP9qG5eh1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:31 +0200
+	id 0PGiHe2r1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B7A3C149C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54FF3C2FAC
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7DC073027E4E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45E923201051
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCFA3ACF16;
-	Wed,  8 Apr 2026 18:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF783D9030;
+	Wed,  8 Apr 2026 18:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MNBAHcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YUB6iv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8F6B67E;
-	Wed,  8 Apr 2026 18:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC90A3D75AF;
+	Wed,  8 Apr 2026 18:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673480; cv=none; b=mz7o6YvqBqpdV9hN3YM3Dt2N4N8RdWldowEy+GMbeupjahBv5rAMM+lj3OhHjzNiF9kN0dO+7Zumm0gk7FEIYWS1F7iBxaOOsIbAHF0xRlBk7OKWP+k61owdHDPzq8V33aTCcDWs6wFyXKpGZfAApQmqmAePqYijL9MZe2/6cVg=
+	t=1775674785; cv=none; b=KLhvIGkTyLp+G0fslpL21EcTPptgeSOIYJrpc/HjBbJTlqq0i4q0OjabCnm+Iyd5WtYcItuYkhT7bEnMRu/8OPXtQg4zk26YDmJOWUMajALSpTncDXf+rtGexv6opRGZVLPxm36fqQFuLlkTC8+mpy5fgCLyEMsH1OtJYbOvu2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673480; c=relaxed/simple;
-	bh=sAopDa4BxQPgKFIzFCCZ4aw7ZPEVXgYfe/oPcYcg1tQ=;
+	s=arc-20240116; t=1775674785; c=relaxed/simple;
+	bh=S7fm5s8NjZBive+/qZtwt5FH4kh5iIyFppSAFCOzCxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFOazMyzrAHpmnKT/Tl0jAMF4+yyG/WZq3Ca2RbN5lXv515lARqeYK9qytjzkuq1Kufa+ONaRpsQbIamrR5+YgRT5GmJJGrXLxNp/7WilE4QFcNQlgSU7u5cORvtq+S1k2x1D9znlUyhi6kZZWr5BndUEg+29LlJqIo83djdVo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MNBAHcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05BCC19421;
-	Wed,  8 Apr 2026 18:37:59 +0000 (UTC)
+	 MIME-Version; b=qIMHWhxbfs11sOJwfeMVWFL1N33CdEYFCRjNSRG9zIg/fBF9Yftve4N217oed868b9On08TGcKilepkrpO5xXCIS+4S7Vfin+t0tZQJvyH2xVF7OfMWDlBKIpI7Lg+dIFp3JUOFT5269lRaj8qWarWCjqEbJtS3UZ+kDkjgHhdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YUB6iv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496EBC19421;
+	Wed,  8 Apr 2026 18:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673480;
-	bh=sAopDa4BxQPgKFIzFCCZ4aw7ZPEVXgYfe/oPcYcg1tQ=;
+	s=korg; t=1775674785;
+	bh=S7fm5s8NjZBive+/qZtwt5FH4kh5iIyFppSAFCOzCxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1MNBAHcddDvdZv3OOWiY0iOs6oxzp0QSaDzcFS4+BooJ6YPi/wq3K/aFvCcvRCMDo
-	 CcBirZnxksGubUpVQXrv2btfmYxHtA6kOIGl2s+Mv3dP9cECrhyZE3yL8SJnie/AN8
-	 Vnn0KMg3qcKgb5KvwvTMkj12sChOquCaUk7lKj3Y=
+	b=0YUB6iv2aVvi3dcEidsc+8zx7jCGQWa+cF958M8cxdNzSjWt27yynrchQ75XRRhfD
+	 yGjmcWTjts7FL/ALiI2gCrqhA8XiLH6zbEIoNWIQlETK0I627A1H8yTfeJCq9YesNs
+	 gPM4QE1tiTHgFqa7YhnIfXts7EwB4UmnUsSM1ubs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 247/277] USB: dummy-hcd: Fix interrupt synchronization error
+	Linus Walleij <linusw@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 232/311] iio: gyro: mpu3050: Fix irq resource leak
 Date: Wed,  8 Apr 2026 20:03:52 +0200
-Message-ID: <20260408175943.082545915@linuxfoundation.org>
+Message-ID: <20260408175948.059744678@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,131 +70,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-235184-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234678-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,harvard.edu:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 84B7A3C149C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: D54FF3C2FAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-commit 2ca9e46f8f1f5a297eb0ac83f79d35d5b3a02541 upstream.
+commit 4216db1043a3be72ef9c2b7b9f393d7fa72496e6 upstream.
 
-This fixes an error in synchronization in the dummy-hcd driver.  The
-error has a somewhat involved history.  The synchronization mechanism
-was introduced by commit 7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous
-synchronization change"), which added an emulated "interrupts enabled"
-flag together with code emulating synchronize_irq() (it waits until
-all current handler callbacks have returned).
+The interrupt handler is setup but only a few lines down if
+iio_trigger_register() fails the function returns without properly
+releasing the handler.
 
-But the emulated interrupt-disable occurred too late, after the driver
-containing the handler callback routines had been told that it was
-unbound and no more callbacks would occur.  Commit 4a5d797a9f9c ("usb:
-gadget: dummy_hcd: fix gpf in gadget_setup") tried to fix this by
-moving the synchronize_irq() emulation code from dummy_stop() to
-dummy_pullup(), which runs before the unbind callback.
+Add cleanup goto to resolve resource leak.
 
-There still were races, though, because the emulated interrupt-disable
-still occurred too late.  It couldn't be moved to dummy_pullup(),
-because that routine can be called for reasons other than an impending
-unbind.  Therefore commits 7dc0c55e9f30 ("USB: UDC core: Add
-udc_async_callbacks gadget op") and 04145a03db9d ("USB: UDC: Implement
-udc_async_callbacks in dummy-hcd") added an API allowing the UDC core
-to tell dummy-hcd exactly when emulated interrupts and their callbacks
-should be disabled.
+Detected by Smatch:
+drivers/iio/gyro/mpu3050-core.c:1128 mpu3050_trigger_probe() warn:
+'irq' from request_threaded_irq() not released on lines: 1124.
 
-That brings us to the current state of things, which is still wrong
-because the emulated synchronize_irq() occurs before the emulated
-interrupt-disable!  That's no good, beause it means that more emulated
-interrupts can occur after the synchronize_irq() emulation has run,
-leading to the possibility that a callback handler may be running when
-the gadget driver is unbound.
-
-To fix this, we have to move the synchronize_irq() emulation code yet
-again, to the dummy_udc_async_callbacks() routine, which takes care of
-enabling and disabling emulated interrupt requests.  The
-synchronization will now run immediately after emulated interrupts are
-disabled, which is where it belongs.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: 04145a03db9d ("USB: UDC: Implement udc_async_callbacks in dummy-hcd")
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/c7bc93fe-4241-4d04-bd56-27c12ba35c97@rowland.harvard.edu
+Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |   29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ drivers/iio/gyro/mpu3050-core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -913,21 +913,6 @@ static int dummy_pullup(struct usb_gadge
- 	spin_lock_irqsave(&dum->lock, flags);
- 	dum->pullup = (value != 0);
- 	set_link_state(dum_hcd);
--	if (value == 0) {
--		/*
--		 * Emulate synchronize_irq(): wait for callbacks to finish.
--		 * This seems to be the best place to emulate the call to
--		 * synchronize_irq() that's in usb_gadget_remove_driver().
--		 * Doing it in dummy_udc_stop() would be too late since it
--		 * is called after the unbind callback and unbind shouldn't
--		 * be invoked until all the other callbacks are finished.
--		 */
--		while (dum->callback_usage > 0) {
--			spin_unlock_irqrestore(&dum->lock, flags);
--			usleep_range(1000, 2000);
--			spin_lock_irqsave(&dum->lock, flags);
--		}
--	}
- 	spin_unlock_irqrestore(&dum->lock, flags);
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -1129,11 +1129,16 @@ static int mpu3050_trigger_probe(struct
  
- 	usb_hcd_poll_rh_status(dummy_hcd_to_hcd(dum_hcd));
-@@ -950,6 +935,20 @@ static void dummy_udc_async_callbacks(st
+ 	ret = iio_trigger_register(mpu3050->trig);
+ 	if (ret)
+-		return ret;
++		goto err_iio_trigger;
  
- 	spin_lock_irq(&dum->lock);
- 	dum->ints_enabled = enable;
-+	if (!enable) {
-+		/*
-+		 * Emulate synchronize_irq(): wait for callbacks to finish.
-+		 * This has to happen after emulated interrupts are disabled
-+		 * (dum->ints_enabled is clear) and before the unbind callback,
-+		 * just like the call to synchronize_irq() in
-+		 * gadget/udc/core:gadget_unbind_driver().
-+		 */
-+		while (dum->callback_usage > 0) {
-+			spin_unlock_irq(&dum->lock);
-+			usleep_range(1000, 2000);
-+			spin_lock_irq(&dum->lock);
-+		}
-+	}
- 	spin_unlock_irq(&dum->lock);
+ 	indio_dev->trig = iio_trigger_get(mpu3050->trig);
+ 
+ 	return 0;
++
++err_iio_trigger:
++	free_irq(mpu3050->irq, mpu3050->trig);
++
++	return ret;
  }
  
+ int mpu3050_common_probe(struct device *dev,
 
 
 
