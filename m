@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-235113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJUPAzOl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:55 +0200
+	id iMsgO8ec1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1BA3C211B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EEB3C0802
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B4A47302967E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8A9E305DEFE
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915C13624B9;
-	Wed,  8 Apr 2026 18:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3698D3A16A0;
+	Wed,  8 Apr 2026 18:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrISRsuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFtSfNU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3DF3D8912;
-	Wed,  8 Apr 2026 18:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA1A3537FC;
+	Wed,  8 Apr 2026 18:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674603; cv=none; b=jiT0MIrPEVTxWOYTarj5acGroOZ6D7G/HYk90lPJikxyaMUCWI8/osKfL4xpVftA/KrPFuvpMvfvnP8jX3rlz/9SbvttMlzlRV4BuFW5zKEOQ7B6dHlfsn14VrcOj31x2DxTkU6ZhYxhfodr6MPKKGX1k5JwytwrmgNUxlLp5ss=
+	t=1775672240; cv=none; b=D0RGnKPIFvS/MNhCpUazUcAkKFq5ffX0I+9wXMDLI/O7UrL7TqAeeQwVN03HjnmUveOLFTbZx18HVC976saQLl0eV7dRojqUnlITVoUVOL1Ya+jTLKulYR1V3yDnwkP1zih46ojlRspnljk5p+UQXHgsGXHg2NBb/yJZ/jCrTDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674603; c=relaxed/simple;
-	bh=y4YwnDr4zNY/qW0b4ErusYbeNP6vQuY2e/At+lrLLTw=;
+	s=arc-20240116; t=1775672240; c=relaxed/simple;
+	bh=QqOdRA/WrZ6KCjs7eOCp9KkKVM9ief5PNAWgY0CvSmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zjnk5xGbRXDIPHW2phfBJOVSVaZFn3KcRGUKYtWvX4jGsLzjz7JXcYnOljTz8CIid6trMHm/w4BTEH79B4Zmkz37GoBA/nNYN9K/chi5K4gSIu5+InTWUgDyC1W+BoELJeQwai/wIQx9iLctQ1YCYE3Sl3kdgkzfmYokLD6Un/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrISRsuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73655C19421;
-	Wed,  8 Apr 2026 18:56:42 +0000 (UTC)
+	 MIME-Version; b=lQm8abJSFkxT7fq5FvU4K3nn+JMjvf/a4ap48iGb1vCLI6tfxAGhmPbqfWztqpPZx8o0NYLhdfNY/TckeIg1kKM8JAhSwKo1h2/B3E0AI4wp5bRVAy/cvS2Fc6Y43FvN57z0TKcajn2t/OOvbq5ighkV8Sp7j2KKsEjaOpf837s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFtSfNU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BABC19421;
+	Wed,  8 Apr 2026 18:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674602;
-	bh=y4YwnDr4zNY/qW0b4ErusYbeNP6vQuY2e/At+lrLLTw=;
+	s=korg; t=1775672239;
+	bh=QqOdRA/WrZ6KCjs7eOCp9KkKVM9ief5PNAWgY0CvSmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrISRsuQ/dnZNSEeaTo8xRoK7IM3ev0uaop5q/TiUi82wSQ4EsBQUNLReZT03rF1t
-	 lB0b58N+PJ0NQ6IMjg5HJ67NUK3zx527ivBxcMIEOpih1C2dE8RMZyK0loCJU0DExI
-	 q4hJRgkDf3W4vTxM7pvfh7sMaXvUaT+WlKpDMfcA=
+	b=QFtSfNU4V5V/z0VxWtfpx70gohrx+nliYVaXiXxrT3kCwcV0orwDj5RQRYR3f8LNF
+	 bJssbP9WRG5ejoSitylRAKJ1H9HGoQAhE6ZHhnmmX8WTxV98rQ8QGOBie+nycVIXil
+	 QzIv0I7I16VfhpVGDsfsg985f26AVKqLY78Wn7ZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 161/311] drm/ioc32: stop speculation on the drm_compat_ioctl path
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 244/312] bridge: br_nd_send: validate ND option lengths
 Date: Wed,  8 Apr 2026 20:02:41 +0200
-Message-ID: <20260408175945.415491746@linuxfoundation.org>
+Message-ID: <20260408175942.862033831@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +73,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-235113-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234199-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,ffwll.ch:email,suse.de:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0A1BA3C211B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[blackwall.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,nvidia.com:email,lzu.edu.cn:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 56EEB3C0802
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
+commit 850837965af15707fd3142c1cf3c5bfaf022299b upstream.
 
-The drm compat ioctl path takes a user controlled pointer, and then
-dereferences it into a table of function pointers, the signature method
-of spectre problems.  Fix this up by calling array_index_nospec() on the
-index to the function pointer list.
+br_nd_send() walks ND options according to option-provided lengths.
+A malformed option can make the parser advance beyond the computed
+option span or use a too-short source LLADDR option payload.
 
-Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Simona Vetter <simona@ffwll.ch>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
+Validate option lengths against the remaining NS option area before
+advancing, and only read source LLADDR when the option is large enough
+for an Ethernet address.
+
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260326034441.2037420-3-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_ioc32.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/bridge/br_arp_nd_proxy.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_ioc32.c
-+++ b/drivers/gpu/drm/drm_ioc32.c
-@@ -28,6 +28,7 @@
-  * IN THE SOFTWARE.
-  */
- #include <linux/compat.h>
-+#include <linux/nospec.h>
- #include <linux/ratelimit.h>
- #include <linux/export.h>
- 
-@@ -374,6 +375,7 @@ long drm_compat_ioctl(struct file *filp,
- 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
- 		return drm_ioctl(filp, cmd, arg);
- 
-+	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
- 	fn = drm_compat_ioctls[nr].fn;
- 	if (!fn)
- 		return drm_ioctl(filp, cmd, arg);
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -285,12 +285,14 @@ static void br_nd_send(struct net_bridge
+ 	ns_olen = request->len - (skb_network_offset(request) +
+ 				  sizeof(struct ipv6hdr)) - sizeof(*ns);
+ 	for (i = 0; i < ns_olen - 1; i += (ns->opt[i + 1] << 3)) {
+-		if (!ns->opt[i + 1]) {
++		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
+ 			kfree_skb(reply);
+ 			return;
+ 		}
+ 		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
+-			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
++			if ((ns->opt[i + 1] << 3) >=
++			    sizeof(struct nd_opt_hdr) + ETH_ALEN)
++				daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
+ 			break;
+ 		}
+ 	}
 
 
 
