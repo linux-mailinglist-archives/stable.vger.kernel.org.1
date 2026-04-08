@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iATgJAqi1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:26 +0200
+	id SPgaLCKh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196E13C1657
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1544E3C1312
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0634A304D17B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F16630A9FFF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C51F3B0AFC;
-	Wed,  8 Apr 2026 18:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AA23624B0;
+	Wed,  8 Apr 2026 18:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwbwKNAQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvVekiKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF593D669E;
-	Wed,  8 Apr 2026 18:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A974032A3FD;
+	Wed,  8 Apr 2026 18:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673813; cv=none; b=BTb6UhpJ8PpGfDb9aOAm2w+ngPhFP12Umce2m1ZFx9VjefENQDVfJAoCYn5kAzf2qACH6Sk1SeIE8JgW1SClsmYFefa9rGr7lK0H/ZXizpAgKaw8C17f4iQOdTwD8NXMSWMoPIRLhvgOtK/s/08C8f3xrt1htTZ3O3DO6h89jNI=
+	t=1775673165; cv=none; b=NXpvpdObEuEB9+X/0UwTFCHMabGC4TuLPxSd9Ti0h0Lmr5vjLaEmFzDRBPu8qcd/fStFuObCKc/HPyktpHZ87krH2A+fWB2RojwIoTdAR+ukID2zxD7BcP6MlbApgEv2FUc4dt/SrW/1GwWJ3aZnchwxboayrJtYFbWaAxhJZGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673813; c=relaxed/simple;
-	bh=qxzyRy6+nIo7xbYUuG5WLJnAWYry2Bp1/pgZcNyStQc=;
+	s=arc-20240116; t=1775673165; c=relaxed/simple;
+	bh=QZBQDN6pkmPHEq3Jew9SiPk1WbWYaoEy2t1Imo33GDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/G3M4SHOqGXa5HP++ty+H7lK1wRED1Dqh7CmllHi8kHZPZ7N+0/uyZoMH3AHHdrkAJXNpNmYUPM7Mo66oNBRpwZ1xErjrhaMHSV2gsyBZXPKsLrAZq8QjzetFX6EKjMFx74O1oKWmHUiDjqHLhHeaEX9MVrWVVsSKilNVJiwMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwbwKNAQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5CFC19421;
-	Wed,  8 Apr 2026 18:43:32 +0000 (UTC)
+	 MIME-Version; b=aqJKphpLzre2J6dyJhgkYLrtz7IL0vXvVNI4vdPrvbIpzkqm4ZZYpKcxqWw5iNmTA3spaZmrwet3+pOkdomZLixxyPyi1hmF3GTlHUrB543a/JFjDr4egyGxlh0YLh72YJvimYY8oddp5Sgdj3Gv+qUHcRshZODrdfltx3fBg6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvVekiKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407C6C19421;
+	Wed,  8 Apr 2026 18:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673812;
-	bh=qxzyRy6+nIo7xbYUuG5WLJnAWYry2Bp1/pgZcNyStQc=;
+	s=korg; t=1775673165;
+	bh=QZBQDN6pkmPHEq3Jew9SiPk1WbWYaoEy2t1Imo33GDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwbwKNAQo+BNHmFlI5xcjWoxjRmyHR7IABu9RFMb/1BdB5qEkmtUZpPuqw2GDjBQP
-	 t3PU/DzJbNE3+Pe3a1kySYFFJOHFw6atSAJ1BGos5gxbj9ANLss402xwzLSxw6lR7p
-	 1vwUKJB+CmhN5jcXL9u5Ptm00JYZYA2IXKCKdHEs=
+	b=yvVekiKxQvtjdSlGVbxmGdjowYP9kdhT+l0j62QGQ9TDlvvJeK2073vmzp7WNWRR2
+	 OR91GBY7BdGyeBiNQbV4LeRBn3gkdERintdZGkBzdnLptMpQPqRFgY42xgpp9FvZZ6
+	 GA+GlQWcic1zMntirGj7fGEtqfBTd0TJInooLMF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Zishun Yi <vulab@iscas.ac.cn>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/242] netfilter: nf_conntrack_helper: pass helper to expect cleanup
+Subject: [PATCH 6.18 127/277] riscv: Reset pmm when PR_TAGGED_ADDR_ENABLE is not set
 Date: Wed,  8 Apr 2026 20:01:52 +0200
-Message-ID: <20260408175929.778416842@linuxfoundation.org>
+Message-ID: <20260408175938.618299137@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +69,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nwl.cc,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234807-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234556-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,nwl.cc:email]
-X-Rspamd-Queue-Id: 196E13C1657
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,sifive.com:email]
+X-Rspamd-Queue-Id: 1544E3C1312
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Zishun Yi <vulab@iscas.ac.cn>
 
-[ Upstream commit a242a9ae58aa46ff7dae51ce64150a93957abe65 ]
+[ Upstream commit 3033b2b1e3949274f33a140e2a97571b5a307298 ]
 
-nf_conntrack_helper_unregister() calls nf_ct_expect_iterate_destroy()
-to remove expectations belonging to the helper being unregistered.
-However, it passes NULL instead of the helper pointer as the data
-argument, so expect_iter_me() never matches any expectation and all
-of them survive the cleanup.
+In set_tagged_addr_ctrl(), when PR_TAGGED_ADDR_ENABLE is not set, pmlen
+is correctly set to 0, but it forgets to reset pmm. This results in the
+CPU pmm state not corresponding to the software pmlen state.
 
-After unregister returns, nfnl_cthelper_del() frees the helper
-object immediately.  Subsequent expectation dumps or packet-driven
-init_conntrack() calls then dereference the freed exp->helper,
-causing a use-after-free.
+Fix this by resetting pmm along with pmlen.
 
-Pass the actual helper pointer so expectations referencing it are
-properly destroyed before the helper object is freed.
-
-  BUG: KASAN: slab-use-after-free in string+0x38f/0x430
-  Read of size 1 at addr ffff888003b14d20 by task poc/103
-  Call Trace:
-   string+0x38f/0x430
-   vsnprintf+0x3cc/0x1170
-   seq_printf+0x17a/0x240
-   exp_seq_show+0x2e5/0x560
-   seq_read_iter+0x419/0x1280
-   proc_reg_read+0x1ac/0x270
-   vfs_read+0x179/0x930
-   ksys_read+0xef/0x1c0
-  Freed by task 103:
-  The buggy address is located 32 bytes inside of
-   freed 192-byte region [ffff888003b14d00, ffff888003b14dc0)
-
-Fixes: ac7b84839003 ("netfilter: expect: add and use nf_ct_expect_iterate helpers")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 2e1743085887 ("riscv: Add support for the tagged address ABI")
+Signed-off-by: Zishun Yi <vulab@iscas.ac.cn>
+Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://patch.msgid.link/20260322160022.21908-1-vulab@iscas.ac.cn
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/process.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index ceb48c3ca0a43..9d7d36ac83083 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -419,7 +419,7 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
- 	 */
- 	synchronize_rcu();
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index 31a392993cb45..b5188dc74727d 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -324,8 +324,10 @@ long set_tagged_addr_ctrl(struct task_struct *task, unsigned long arg)
+ 	if (arg & PR_TAGGED_ADDR_ENABLE && (tagged_addr_disabled || !pmlen))
+ 		return -EINVAL;
  
--	nf_ct_expect_iterate_destroy(expect_iter_me, NULL);
-+	nf_ct_expect_iterate_destroy(expect_iter_me, me);
- 	nf_ct_iterate_destroy(unhelp, me);
- }
- EXPORT_SYMBOL_GPL(nf_conntrack_helper_unregister);
+-	if (!(arg & PR_TAGGED_ADDR_ENABLE))
++	if (!(arg & PR_TAGGED_ADDR_ENABLE)) {
+ 		pmlen = PMLEN_0;
++		pmm = ENVCFG_PMM_PMLEN_0;
++	}
+ 
+ 	if (mmap_write_lock_killable(mm))
+ 		return -EINTR;
 -- 
 2.53.0
 
