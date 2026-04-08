@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDT4KMCb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:36 +0200
+	id SCDyDuGl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0FC3C059A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB9A3C22CA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A1C7530095E0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED5B2307885F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7577385513;
-	Wed,  8 Apr 2026 18:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DA832A3FD;
+	Wed,  8 Apr 2026 18:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzKwMNdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7jO86br"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A58F324B1F;
-	Wed,  8 Apr 2026 18:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52496337B81;
+	Wed,  8 Apr 2026 18:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672250; cv=none; b=sSf8eWmXC4NCSf1AoJzljQtam3WjzfpCGOKpGkdPVY7Qn+FmItKdkawODDid2aLENEOttij+DUuuOgqmF4NAfWEcOYjFEeRV+44Eah3YSLgQbIL6DYQUG4EGjtPXLpnV9bUQn3DumpqepkZnhxFWU3c3MvAgykrGnQL58oHUcKI=
+	t=1775674613; cv=none; b=jSqOrITdrS4OeJ6qhFR4I72CW69AmbzEu/vOAuFiwsx0JCIVihIVhmEpm8HBNcnmHAmvB4wfq81BM8sI0h5yIzbdPA3gZFnBUqvDYjIlU2yoE/TX+DnCFDd6f3dDmgGJ2hNSqnYe34HrlOJX9SlyFZO472XRA7dIjDicpi7vulk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672250; c=relaxed/simple;
-	bh=Ui2WlgnifI0zXH4SkZ4ritMSf8HXQhmIpdkyrUvCj5w=;
+	s=arc-20240116; t=1775674613; c=relaxed/simple;
+	bh=QO5SBRriL+24ze8NoR2WWTzCpk+2YiGVbZ4CnE4bg/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/dnW4hNcAv1Lc6iwwVNnyEGYn687tb1b9PgxzWq+d4kq2dnff/hSmKVul6Fd7t+08DPE2Ug64UaFdOuOH/5eJs5fdMNiyvHtTBe3kG1BMX06h1UX30WotHiBwtBefMOjUy9Fjb+EgEClB+Rxz91yzHuN45gBVy+7xw+qQXxTOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzKwMNdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2D9C19421;
-	Wed,  8 Apr 2026 18:17:29 +0000 (UTC)
+	 MIME-Version; b=NIza9EVZ4WGAJt74YgJj2b5cGoUg2Ti52jBk4zNk/bTfHNOSh4Agk0LcyQ7W9d/T5Xkhf4Rq+cyioEkpjk2NHk5Lx11FjLD5W0la2C0gr3KbIZOrf4F0yIc1KUwN/h+iKKXYKwwkMX8vcMOLl3QtT+68bS+TNMWAIE75NV+5lfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7jO86br; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96EAC19421;
+	Wed,  8 Apr 2026 18:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672250;
-	bh=Ui2WlgnifI0zXH4SkZ4ritMSf8HXQhmIpdkyrUvCj5w=;
+	s=korg; t=1775674613;
+	bh=QO5SBRriL+24ze8NoR2WWTzCpk+2YiGVbZ4CnE4bg/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzKwMNdWwa5rHj3VVZWeBR1VjBFNGAzTNW3dayr8wa6kuf6mu11tHMd0r71djmBb4
-	 OcNy0KE7oFpDJtikyk0eTFD8eBhg3JDXE24ngVf8b/EpG+MYLQw0+D+Orn9PTfewz6
-	 frCOaBZ+wdsbz4zao4ehTA/Z8XbYXfxH6dsE0Zyk=
+	b=G7jO86brgaRz4dbuPT5Z3o3CeFW4UceatK95iUhgVEZ9832O1bSN98UH+jESJsCRL
+	 Mh8xfRGvIJEvxCi273rRwyk1RJysv15lqwaopqoNTgYmrnhNLUZSMTJ1xHVfvoQzBq
+	 AWhPyk3TDV6lcG1tlPYoqMrthtnqcwTDOf9E5aiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 247/312] comedi: Reinit dev->spinlock between attachments to low-level drivers
-Date: Wed,  8 Apr 2026 20:02:44 +0200
-Message-ID: <20260408175942.973026888@linuxfoundation.org>
+	Ernestas Kulik <ernestas.k@iconn-networks.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.19 165/311] USB: serial: option: add MeiG Smart SRM825WN
+Date: Wed,  8 Apr 2026 20:02:45 +0200
+Message-ID: <20260408175945.567979486@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234203-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235117-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,cc9f7f4a7df09f53c4a4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9A0FC3C059A
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iconn-networks.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ECB9A3C22CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Ernestas Kulik <ernestas.k@iconn-networks.com>
 
-commit 4b9a9a6d71e3e252032f959fb3895a33acb5865c upstream.
+commit e8d0ed37bd51da52da6225d278e330c2f18a6198 upstream.
 
-`struct comedi_device` is the main controlling structure for a COMEDI
-device created by the COMEDI subsystem.  It contains a member `spinlock`
-containing a spin-lock that is initialized by the COMEDI subsystem, but
-is reserved for use by a low-level driver attached to the COMEDI device
-(at least since commit 25436dc9d84f ("Staging: comedi: remove RT
-code")).
+Add support for the SDX62-based MeiG Smart SRM825WN module.
 
-Some COMEDI devices (those created on initialization of the COMEDI
-subsystem when the "comedi.comedi_num_legacy_minors" parameter is
-non-zero) can be attached to different low-level drivers over their
-lifetime using the `COMEDI_DEVCONFIG` ioctl command.  This can result in
-inconsistent lock states being reported when there is a mismatch in the
-spin-lock locking levels used by each low-level driver to which the
-COMEDI device has been attached.  Fix it by reinitializing
-`dev->spinlock` before calling the low-level driver's `attach` function
-pointer if `CONFIG_LOCKDEP` is enabled.
+If#= 0: RNDIS
+If#= 1: RNDIS
+If#= 2: Diag
+If#= 3: AT
+If#= 4: AT
+If#= 5: NMEA
 
-Reported-by: syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cc9f7f4a7df09f53c4a4
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260225132427.86578-1-abbotti@mev.co.uk
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#= 19 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d38 Rev= 5.04
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=da47a175
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=81(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Ernestas Kulik <ernestas.k@iconn-networks.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -1000,6 +1000,14 @@ int comedi_device_attach(struct comedi_d
- 		ret = -EIO;
- 		goto out;
- 	}
-+	if (IS_ENABLED(CONFIG_LOCKDEP)) {
-+		/*
-+		 * dev->spinlock is for private use by the attached low-level
-+		 * driver.  Reinitialize it to stop lock-dependency tracking
-+		 * between attachments to different low-level drivers.
-+		 */
-+		spin_lock_init(&dev->spinlock);
-+	}
- 	dev->driver = driv;
- 	dev->board_name = dev->board_ptr ? *(const char **)dev->board_ptr
- 					 : dev->driver->driver_name;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2441,6 +2441,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
