@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GnGFked1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:07 +0200
+	id QHBaDq+b1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701B43C09A7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A073C0577
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 20DB0302FAB9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABE5A3008217
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BA73AA4E4;
-	Wed,  8 Apr 2026 18:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DF03859FE;
+	Wed,  8 Apr 2026 18:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqXB6eEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs4LMwdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6CF2494F0;
-	Wed,  8 Apr 2026 18:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DD33822A3;
+	Wed,  8 Apr 2026 18:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672468; cv=none; b=S4gh/WhhsCSUdJx2oa0/e0lM1HANTlZkGT7axac3rEZvc7Fv272XSfpAyfCaG3++qZ6rkrT3aZmsntFwkH3nc3UN/BE+q0aYjjQ27kONBuaYaF0DbvUT0EmUPpUqtVwHaZ/c3wZm9CTh8/v/uH1nv3V1E3SKj/U+wpM+fFFlRY8=
+	t=1775672103; cv=none; b=dAjhkG8tMRXj/GY4SPkahM3kXGSRJ8u4IknCQobCzVm+jXJvlpaMBflG2kreNEdgU8bQ2PBGRTl0eYkJ3XWRs9e+cUn+htAcnL5a6dSQV5ycSUxL86+DRgZ8xaliAf8e5d5EtVgm9D2wrhOC1VTJAX7m3Er3ega2DqCbdI/dWvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672468; c=relaxed/simple;
-	bh=Op4bCCpI/xZd6yKkusjgszdGVFyYacLtRD7dcgVFdCE=;
+	s=arc-20240116; t=1775672103; c=relaxed/simple;
+	bh=elH5q12n7Xol1dUKL7c84H5xGFAj22mqD1OAOMAm6VU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J/oqx2yKtThaKHiZy0+PsN952loW+Eq0ahwaxxd4a981jXSojomCVdUcqI28LhUz74COaT/5lKS1kbz4VndJmNSFnWGsNkjgA7wYfcGkkNbLEsYhIMDPAousOx4AfG3hOhWDCCBWuR1WU8Xee27Nl0ozM8JljsMFsQCd/s7U9bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqXB6eEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E11C19421;
-	Wed,  8 Apr 2026 18:21:07 +0000 (UTC)
+	 MIME-Version; b=H5tgBGmqjWcFg3EKVjerDRmoNFSOYRVZNpC/CM+KriQGaBl0qRyYU+S1dDbtGG443xR2JaIb2mc1DAVFJ4S1XO8yPCQesXxJ/VWMlwQ28F0wDxKnv5vkuZ42P30kNjNcixng5TlXyLnbBMaYMsgf34mPn7+5RYZS7gqOedp4o9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs4LMwdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35E0C19421;
+	Wed,  8 Apr 2026 18:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672467;
-	bh=Op4bCCpI/xZd6yKkusjgszdGVFyYacLtRD7dcgVFdCE=;
+	s=korg; t=1775672103;
+	bh=elH5q12n7Xol1dUKL7c84H5xGFAj22mqD1OAOMAm6VU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqXB6eEeK247apwGXOErjjruxhBWcI7EROo+HJas1EYD3rxf4itJQzHLeZQqIywM+
-	 Gl1hU5W1tok37Wzs/iEb7nOwWI3qJ8lIRCMnugw3EXOCzLlamB/95O9XY54H1pSDEZ
-	 iPAgnsw5Oox3GAcC+JhHZIq5X66OmCSxDFWhXlIQ=
+	b=qs4LMwdR1c0znEOlBmWrI4cAavjkBMIr9ZxMvSH595TJLofl8vpsVbFfhdB7yVDAr
+	 SP7d2bOlidSWir+3dc1WS413nlPibKDHyVONIRHZB0/+AJ3DdJ1HZjItRnGn7uhI1D
+	 +5/YfEf+Lmdod09qFuM6jox/SE1H+dow6AT5h25E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+006987d1be3586e13555@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Simon Horman <horms@kernel.org>,
+	Luka Gejak <luka.gejak@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/160] net: qrtr: replace qrtr_tx_flow radix_tree with xarray to fix memory leak
+Subject: [PATCH 6.1 189/312] net: hsr: fix VLAN add unwind on slave errors
 Date: Wed,  8 Apr 2026 20:01:46 +0200
-Message-ID: <20260408175913.915190178@linuxfoundation.org>
+Message-ID: <20260408175940.819290356@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,183 +63,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234287-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234146-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,006987d1be3586e13555];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,shopee.com:email]
-X-Rspamd-Queue-Id: 701B43C09A7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 94A073C0577
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-[ Upstream commit 2428083101f6883f979cceffa76cd8440751ffe6 ]
+[ Upstream commit 2e3514e63bfb0e972b1f19668547a455d0129e88 ]
 
-__radix_tree_create() allocates and links intermediate nodes into the
-tree one by one. If a subsequent allocation fails, the already-linked
-nodes remain in the tree with no corresponding leaf entry. These orphaned
-internal nodes are never reclaimed because radix_tree_for_each_slot()
-only visits slots containing leaf values.
+When vlan_vid_add() fails for a secondary slave, the error path calls
+vlan_vid_del() on the failing port instead of the peer slave that had
+already succeeded. This results in asymmetric VLAN state across the HSR
+pair.
 
-The radix_tree API is deprecated in favor of xarray. As suggested by
-Matthew Wilcox, migrate qrtr_tx_flow from radix_tree to xarray instead
-of fixing the radix_tree itself [1]. xarray properly handles cleanup of
-internal nodes — xa_destroy() frees all internal xarray nodes when the
-qrtr_node is released, preventing the leak.
+Fix this by switching to a centralized unwind path that removes the VID
+from any slave device that was already programmed.
 
-[1] https://lore.kernel.org/all/20260225071623.41275-1-jiayuan.chen@linux.dev/T/
-Reported-by: syzbot+006987d1be3586e13555@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000bfba3a060bf4ffcf@google.com/T/
-Fixes: 5fdeb0d372ab ("net: qrtr: Implement outgoing flow control")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260324080645.290197-1-jiayuan.chen@linux.dev
+Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Link: https://patch.msgid.link/20260401092243.52121-3-luka.gejak@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/qrtr/af_qrtr.c | 31 +++++++++++++------------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+ net/hsr/hsr_device.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 00c51cf693f3d..b703e4c645853 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -118,7 +118,7 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
-  * @ep: endpoint
-  * @ref: reference count for node
-  * @nid: node id
-- * @qrtr_tx_flow: tree of qrtr_tx_flow, keyed by node << 32 | port
-+ * @qrtr_tx_flow: xarray of qrtr_tx_flow, keyed by node << 32 | port
-  * @qrtr_tx_lock: lock for qrtr_tx_flow inserts
-  * @rx_queue: receive queue
-  * @item: list item for broadcast list
-@@ -129,7 +129,7 @@ struct qrtr_node {
- 	struct kref ref;
- 	unsigned int nid;
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 81eaae4c19da1..48f34ad9219fd 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -473,8 +473,8 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 				   __be16 proto, u16 vid)
+ {
+-	bool is_slave_a_added = false;
+-	bool is_slave_b_added = false;
++	struct net_device *slave_a_dev = NULL;
++	struct net_device *slave_b_dev = NULL;
+ 	struct hsr_port *port;
+ 	struct hsr_priv *hsr;
+ 	int ret = 0;
+@@ -490,33 +490,35 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 		switch (port->type) {
+ 		case HSR_PT_SLAVE_A:
+ 			if (ret) {
+-				/* clean up Slave-B */
+ 				netdev_err(dev, "add vid failed for Slave-A\n");
+-				if (is_slave_b_added)
+-					vlan_vid_del(port->dev, proto, vid);
+-				return ret;
++				goto unwind;
+ 			}
+-
+-			is_slave_a_added = true;
++			slave_a_dev = port->dev;
+ 			break;
+-
+ 		case HSR_PT_SLAVE_B:
+ 			if (ret) {
+-				/* clean up Slave-A */
+ 				netdev_err(dev, "add vid failed for Slave-B\n");
+-				if (is_slave_a_added)
+-					vlan_vid_del(port->dev, proto, vid);
+-				return ret;
++				goto unwind;
+ 			}
+-
+-			is_slave_b_added = true;
++			slave_b_dev = port->dev;
+ 			break;
+ 		default:
++			if (ret)
++				goto unwind;
+ 			break;
+ 		}
+ 	}
  
--	struct radix_tree_root qrtr_tx_flow;
-+	struct xarray qrtr_tx_flow;
- 	struct mutex qrtr_tx_lock; /* for qrtr_tx_flow */
- 
- 	struct sk_buff_head rx_queue;
-@@ -172,6 +172,7 @@ static void __qrtr_node_release(struct kref *kref)
- 	struct qrtr_tx_flow *flow;
- 	unsigned long flags;
- 	void __rcu **slot;
-+	unsigned long index;
- 
- 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
- 	/* If the node is a bridge for other nodes, there are possibly
-@@ -189,11 +190,9 @@ static void __qrtr_node_release(struct kref *kref)
- 	skb_queue_purge(&node->rx_queue);
- 
- 	/* Free tx flow counters */
--	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
--		flow = *slot;
--		radix_tree_iter_delete(&node->qrtr_tx_flow, &iter, slot);
-+	xa_for_each(&node->qrtr_tx_flow, index, flow)
- 		kfree(flow);
--	}
-+	xa_destroy(&node->qrtr_tx_flow);
- 	kfree(node);
+ 	return 0;
++
++unwind:
++	if (slave_a_dev)
++		vlan_vid_del(slave_a_dev, proto, vid);
++
++	if (slave_b_dev)
++		vlan_vid_del(slave_b_dev, proto, vid);
++
++	return ret;
  }
  
-@@ -228,9 +227,7 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
- 
- 	key = remote_node << 32 | remote_port;
- 
--	rcu_read_lock();
--	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
--	rcu_read_unlock();
-+	flow = xa_load(&node->qrtr_tx_flow, key);
- 	if (flow) {
- 		spin_lock(&flow->resume_tx.lock);
- 		flow->pending = 0;
-@@ -269,12 +266,13 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
- 		return 0;
- 
- 	mutex_lock(&node->qrtr_tx_lock);
--	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
-+	flow = xa_load(&node->qrtr_tx_flow, key);
- 	if (!flow) {
- 		flow = kzalloc(sizeof(*flow), GFP_KERNEL);
- 		if (flow) {
- 			init_waitqueue_head(&flow->resume_tx);
--			if (radix_tree_insert(&node->qrtr_tx_flow, key, flow)) {
-+			if (xa_err(xa_store(&node->qrtr_tx_flow, key, flow,
-+					    GFP_KERNEL))) {
- 				kfree(flow);
- 				flow = NULL;
- 			}
-@@ -326,9 +324,7 @@ static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
- 	unsigned long key = (u64)dest_node << 32 | dest_port;
- 	struct qrtr_tx_flow *flow;
- 
--	rcu_read_lock();
--	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
--	rcu_read_unlock();
-+	flow = xa_load(&node->qrtr_tx_flow, key);
- 	if (flow) {
- 		spin_lock_irq(&flow->resume_tx.lock);
- 		flow->tx_failed = 1;
-@@ -599,7 +595,7 @@ int qrtr_endpoint_register(struct qrtr_endpoint *ep, unsigned int nid)
- 	node->nid = QRTR_EP_NID_AUTO;
- 	node->ep = ep;
- 
--	INIT_RADIX_TREE(&node->qrtr_tx_flow, GFP_KERNEL);
-+	xa_init(&node->qrtr_tx_flow);
- 	mutex_init(&node->qrtr_tx_lock);
- 
- 	qrtr_node_assign(node, nid);
-@@ -627,6 +623,7 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
- 	struct qrtr_tx_flow *flow;
- 	struct sk_buff *skb;
- 	unsigned long flags;
-+	unsigned long index;
- 	void __rcu **slot;
- 
- 	mutex_lock(&node->ep_lock);
-@@ -649,10 +646,8 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
- 
- 	/* Wake up any transmitters waiting for resume-tx from the node */
- 	mutex_lock(&node->qrtr_tx_lock);
--	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
--		flow = *slot;
-+	xa_for_each(&node->qrtr_tx_flow, index, flow)
- 		wake_up_interruptible_all(&flow->resume_tx);
--	}
- 	mutex_unlock(&node->qrtr_tx_lock);
- 
- 	qrtr_node_release(node);
+ static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
 -- 
 2.53.0
 
