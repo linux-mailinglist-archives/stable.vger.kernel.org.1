@@ -1,151 +1,118 @@
-Return-Path: <stable+bounces-235285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMcZDD3J1mkLIQgAu9opvQ
-	(envelope-from <stable+bounces-235285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 23:31:41 +0200
+	id mEAyNi3U1mkoJAgAu9opvQ
+	(envelope-from <stable+bounces-235286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 00:18:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3791B3C4186
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 23:31:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550CC3C46A9
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 00:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 53E8230157CC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 21:31:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40AC5301A164
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 22:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B562D0602;
-	Wed,  8 Apr 2026 21:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F229637268B;
+	Wed,  8 Apr 2026 22:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yaina.de header.i=@yaina.de header.b="2eDip3fX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jm1gn60K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.yaina.de (yaina.de [95.216.117.176])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A483BEED8;
-	Wed,  8 Apr 2026 21:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.216.117.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E7330FF37;
+	Wed,  8 Apr 2026 22:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775683893; cv=none; b=JQtOBXio2VyZRaO2T0nQCifDAZ73/H0rYqQ8ISyhS584wD1mcsAIpT542fziVsGWBo8kP7pV+bbn8j7iCMnYQoSAlATf8pXbYapfv3j+YMYEIa9zMFo9PKDmpQHIb4ojJksWpbbfVPAb0HFXOnS+T1mZ6ThDtU6Br2tu5T+tMnc=
+	t=1775686625; cv=none; b=Bs7AMPn4HZARWVJS1P8JrtBmd+AU1Y8U1Vxy2YgiFqFj/sSZedcaQvqWpFAASlb6fGpusfYic2CCCOOMvrJTq9PLjD8fm3XwkxuLVMp4DArUdNHTJk1A8gSI0BEttU6Czup16ua8/WBLmxAIdmHECNBKtlrSVyiPZmHJgBicyYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775683893; c=relaxed/simple;
-	bh=h2wqvka6vwdFL8MxOXiZdeSdFhvhq08VkB7hE6JBivM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wm6p8wbEboms38CgPyYh8h5KaVzX8Gk964cxhvg7lg93zYxBClaAz3x4iwT15eJ+KLT9sIiRjd0niDu6DczhIYW3GGv0YXpK9lABDqVVFkl4sVaaBL2EnAML+IqhOrS05R8orxZOhpdIf3jkDnLBAotQ+hi+lu4WNZEQeX19lng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yaina.de; spf=pass smtp.mailfrom=yaina.de; dkim=pass (1024-bit key) header.d=yaina.de header.i=@yaina.de header.b=2eDip3fX; arc=none smtp.client-ip=95.216.117.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yaina.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yaina.de
-Received: from lycaon.yaina.de (ip1f118239.dynamic.kabel-deutschland.de [31.17.130.57])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (prime256v1) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "lykos.yaina.de", Issuer "CAcert Class 3 Root" (not verified))
-	by mail.yaina.de (Postfix) with ESMTPSA id B90AE7CDEF55;
-	Wed, 08 Apr 2026 23:31:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yaina.de; s=mail;
-	t=1775683887;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+qpp8Wxq49Fmlaf68pjkAMbJGmNpayJqChc8UNCM/Pw=;
-	b=2eDip3fX96WWKgdParCpOMUMYH5ebEygJdEFycMtmq+wxR+4Wx6FVpfWP0WJKHApW8hzp5
-	k9RdDF6luSv0i14IRsK0LqB3YUCap3TR4PFDSj7pxgVDR51q/xFKRNJbIETv0YMgbPN8dz
-	kaQ/sbwQDVlML4Elx75lXEyV6YwVE40=
-Received: by lycaon.yaina.de (Postfix, from userid 500)
-	id 2F916300E57; Wed, 08 Apr 2026 23:31:27 +0200 (CEST)
-Date: Wed, 8 Apr 2026 23:31:27 +0200
-From: Joerg Reuter <jreuter@yaina.de>
-To: Mashiro Chen <mashiro.chen@mailbox.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: ax25: fix integer overflow in ax25_rx_fragment()
-Message-ID: <adbJL14aPmcTLC62@yaina.de>
-References: <20260408172521.281365-1-mashiro.chen@mailbox.org>
+	s=arc-20240116; t=1775686625; c=relaxed/simple;
+	bh=0zwrX7pa0jwbcT4OZHTYIOAU1feJTygK2uDc3qm/dOg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Q5VYgWG3V43/jsF775z1kYKS66vetdlebwcaqalxuTqX+kUNTMjpN57InDGTIGOQf3At8oQOaIRdJZ66/cYe9YB/UKUF+NdnSxu79K3FjHFpUE9K8hkZvYGwb5nKk7p81XK4crIPdiaAJiNvD3407Y2AoVq6D4VSuNW1iqo4YSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jm1gn60K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D542BC19421;
+	Wed,  8 Apr 2026 22:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775686625;
+	bh=0zwrX7pa0jwbcT4OZHTYIOAU1feJTygK2uDc3qm/dOg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Jm1gn60Kxc+Z2dEyqU3hZhhDwABgQ8j/cYX+8W0lt//Mpira07jNHSqIdQOom8v3Q
+	 dqP1et5Zeh6O8OWZzkFSKuE0CywJuPN86hNRKp6Ymi6WhI8eC3hNCwe5xgU0e8Rd5D
+	 UUqhjG2FMxksqTsBRR8RbomKTdPyxY8X7PqujJe9e/aqoG3b4YVQUbk6zJLdHUSF26
+	 qodwahUGfzScgxemFGQtTLqX0PGo9Gf7BotK4UF/ej4nQt0F9qdx0baY35Q54PdR4w
+	 zBxnqNt5HT6fHNCEcIljYDzUXZnOxHbLqCdkhee4odvURo37p1TM0ULhQ7CmNcUQ/M
+	 BY+yVdIx3ZoMg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260408172521.281365-1-mashiro.chen@mailbox.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 09 Apr 2026 00:17:02 +0200
+Message-Id: <DHO4DGWHA4YN.6GO7VVFS7CXU@kernel.org>
+Subject: Re: [PATCH] sysfs: attribute_group: Respect is_visible_const() when
+ changing owner
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, <driver-core@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Michael Kelley"
+ <mhklinux@outlook.com>
+To: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260403-sysfs-is_visible_const-fix-v1-1-f87f26071d2c@weissschuh.net>
+In-Reply-To: <20260403-sysfs-is_visible_const-fix-v1-1-f87f26071d2c@weissschuh.net>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[yaina.de:s=mail];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[yaina.de:+];
-	TAGGED_FROM(0.00)[bounces-235285-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[yaina.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,lists.linux.dev,vger.kernel.org,outlook.com];
+	TAGGED_FROM(0.00)[bounces-235286-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jreuter@yaina.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mailbox.org:email,yaina.de:dkim,yaina.de:mid,yaina.de:email,yaina.de:url]
-X-Rspamd-Queue-Id: 3791B3C4186
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url,outlook.com:email]
+X-Rspamd-Queue-Id: 550CC3C46A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Am Thu, Apr 09, 2026 at 01:25:21AM +0800 schrieb Mashiro Chen:
-> An attacker on an AX.25 link that supports multi-fragment I-frames
-> (AX25_SEG_FIRST / AX25_SEG_REM mechanism) can trigger this by
-> sending enough continuation fragments to wrap the 16-bit counter.
-> With AX.25 segment numbers limited to 6 bits (max 63 continuation
-> fragments), a fragment payload of ~1040 bytes per fragment is
-> sufficient to overflow.
-
-Even worse, it's 7 bits: https://www.ax25.net/AX25.2.2-Jul%2098-2.pdf
-Figure 6.2 "Segment Header Format". Sigh.
-
-Thanks,
-     Joerg
-
-Acked-by: Joerg Reuter <jreuter@yaina.de>
+On Fri Apr 3, 2026 at 6:31 PM CEST, Thomas Wei=C3=9Fschuh wrote:
+> The call to grp->is_visible in sysfs_group_attrs_change_owner() was
+> missed when support for is_visible_const() was added.
+>
+> Check for both is_visible variants there too.
+>
+> Fixes: 7dd9fdb4939b ("sysfs: attribute_group: enable const variants of is=
+_visible()")
 > Cc: stable@vger.kernel.org
-> Cc: linux-hams@vger.kernel.org
-> Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
-> ---
->  net/ax25/ax25_in.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-> index d75b3e9ed93de8..68202c19b19e3f 100644
-> --- a/net/ax25/ax25_in.c
-> +++ b/net/ax25/ax25_in.c
-> @@ -41,6 +41,11 @@ static int ax25_rx_fragment(ax25_cb *ax25, struct sk_buff *skb)
->  				/* Enqueue fragment */
->  				ax25->fragno = *skb->data & AX25_SEG_REM;
->  				skb_pull(skb, 1);	/* skip fragno */
-> +				if ((unsigned int)ax25->fraglen + skb->len > USHRT_MAX) {
-> +					skb_queue_purge(&ax25->frag_queue);
-> +					ax25->fragno = 0;
-> +					return 1;
-> +				}
->  				ax25->fraglen += skb->len;
->  				skb_queue_tail(&ax25->frag_queue, skb);
->  
-> -- 
-> 2.53.0
-> 
+> Reported-by: Michael Kelley <mhklinux@outlook.com>
+> Closes: https://lore.kernel.org/lkml/SN6PR02MB4157D5F04608E4E3C21AB56ED45=
+EA@SN6PR02MB4157.namprd02.prod.outlook.com/
+> Link: https://sashiko.dev/#/patchset/20260403-sysfs-const-hv-v2-0-8932ab8=
+d41db%40weissschuh.net
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 
--- 
-Joerg Reuter                                    http://yaina.de/jreuter
-And I make my way to where the warm scent of soil fills the evening air. 
-Everything is waiting quietly out there....                 (Anne Clark)
+Applied to driver-core-testing, thanks!
 
