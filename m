@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-234341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DCoNeWf1mkzGwgAu9opvQ
-	(envelope-from <stable+bounces-234341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:17 +0200
+	id 6MLEHLGl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CF33C105F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE413C227A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 883A33135D38
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFD45303D8B3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786A73D6689;
-	Wed,  8 Apr 2026 18:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D81BB67E;
+	Wed,  8 Apr 2026 18:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le4OWn9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxZR0PPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B703AA4E4;
-	Wed,  8 Apr 2026 18:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719FB3D9DBE;
+	Wed,  8 Apr 2026 18:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672608; cv=none; b=Qy0/Ml+0+xrbfW8XkEVEcx4zb0CJwyB40/c50aoysNhLl8VJzD0VCA5tajjsA7RW0u9RR4EnxY8p4lGjaKATP1w3mVV8YkkAeg4RAF7l1kTkFAlTO4go8F280VIA1zUdiIfG2XEpGTzdEpYeEDTNNso0h7KDFBVD/U8gZLSKwfU=
+	t=1775674600; cv=none; b=Aog9epnRGKR4/wP/r7pLrGXjNkAu99UJfY5pty5T78W+UxzsKDty56K8gzbqT018hdiUkccxWZPrOAC7nXA0iWRONW9YaL0GYYBxT4tyar8sPYESa1kfc9oUTbJ+hP3L2eOaxgpbIRWisbKLuSnujo6jbkmIfExifo/IoOL/Mp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672608; c=relaxed/simple;
-	bh=VRyR5BUibPMaNF8k28IgP7tvP/3iKhjmR3kjYaSBkbo=;
+	s=arc-20240116; t=1775674600; c=relaxed/simple;
+	bh=/VesRiGqCTwU5m4ycSUvXoKtbDGID+IBEwIqHXzUBOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FB/opdWF82EJuhTfw+XvctI6L54Onwsfw/vcJk+K5odXrllHKIjVe6QzzPeoAWLK24gnHaLOZZaKz1ZuIeDdFeUNbGzfWflqBb32Xsxh5WVb/gxKLIPLmiu1fQE/xkRav+xT1U4qkUQEqEst71XQy8x48Sv3A0SiUG8UPuQgpfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le4OWn9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C380FC19421;
-	Wed,  8 Apr 2026 18:23:27 +0000 (UTC)
+	 MIME-Version; b=rrC3hagLA7AQoI/gRfcFG5+AqlajOtkHsb4XsJ3xcMG80wygidz27aJZHWQNpWxvnVhLkBkimbTXWF5lYwB1EJUnRE7RFtBNmzxOH9Jvb4n9b2SYF5MT8umP8vRET0B3CgOF+DYYlfn76L7Spt9sFjVdWOyNBAShpzCXjZ+mOoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxZR0PPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9949C19421;
+	Wed,  8 Apr 2026 18:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672608;
-	bh=VRyR5BUibPMaNF8k28IgP7tvP/3iKhjmR3kjYaSBkbo=;
+	s=korg; t=1775674600;
+	bh=/VesRiGqCTwU5m4ycSUvXoKtbDGID+IBEwIqHXzUBOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Le4OWn9HqEib9seo10h97xkrkG6Em62ZtK2yqP5s60rUb+Wrd1SgWM0jYJyweaPrO
-	 dVCukCY5jcshitPx8oTCCiS2pHX/PtCY/yWBIEvKoYkCDSrlhrgt3pbaik4Iu42CWy
-	 tp2cCiDJb1/sRMNuZn3qfUQMFjf/GHSLdSCcqZIE=
+	b=AxZR0PPeK6JOHSBoaN4CMk9hYRepA2aDTRLB5W5MBSkd8Mt7ezmKVYj8rTBzV31jx
+	 pB+MsBNzvW4mh/0v1LDanWjp5Z9Q+2X0mT5xDY7G9YEY6+v5O+aGmHwSmjfpsvXxgB
+	 6k+x+qCf4NVcCCJwLjbMzYk1l5rYb1GffewJ9ImA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 073/160] drm/ioc32: stop speculation on the drm_compat_ioctl path
+	Sunil V L <sunilvl@oss.qualcomm.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 160/311] ACPI: RIMT: Add dependency between iommu and devices
 Date: Wed,  8 Apr 2026 20:02:40 +0200
-Message-ID: <20260408175915.926029782@linuxfoundation.org>
+Message-ID: <20260408175945.378512623@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +68,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-234341-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-235112-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ffwll.ch:email]
-X-Rspamd-Queue-Id: 95CF33C105F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
+X-Rspamd-Queue-Id: 0AE413C227A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sunil V L <sunilvl@oss.qualcomm.com>
 
-commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
+[ Upstream commit 9156585280f161fc1c3552cf1860559edb2bb7e3 ]
 
-The drm compat ioctl path takes a user controlled pointer, and then
-dereferences it into a table of function pointers, the signature method
-of spectre problems.  Fix this up by calling array_index_nospec() on the
-index to the function pointer list.
+EPROBE_DEFER ensures IOMMU devices are probed before the devices that
+depend on them. During shutdown, however, the IOMMU may be removed
+first, leading to issues. To avoid this, a device link is added
+which enforces the correct removal order.
 
-Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Simona Vetter <simona@ffwll.ch>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8f7729552582 ("ACPI: RISC-V: Add support for RIMT")
+Signed-off-by: Sunil V L <sunilvl@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260303061605.722949-1-sunilvl@oss.qualcomm.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_ioc32.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/riscv/rimt.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/drm_ioc32.c
-+++ b/drivers/gpu/drm/drm_ioc32.c
-@@ -28,6 +28,7 @@
-  * IN THE SOFTWARE.
-  */
- #include <linux/compat.h>
-+#include <linux/nospec.h>
- #include <linux/ratelimit.h>
- #include <linux/export.h>
+diff --git a/drivers/acpi/riscv/rimt.c b/drivers/acpi/riscv/rimt.c
+index 7f423405e5ef0..8eaa8731bddd6 100644
+--- a/drivers/acpi/riscv/rimt.c
++++ b/drivers/acpi/riscv/rimt.c
+@@ -263,6 +263,13 @@ static int rimt_iommu_xlate(struct device *dev, struct acpi_rimt_node *node, u32
+ 	if (!rimt_fwnode)
+ 		return -EPROBE_DEFER;
  
-@@ -983,6 +984,7 @@ long drm_compat_ioctl(struct file *filp,
- 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
- 		return drm_ioctl(filp, cmd, arg);
++	/*
++	 * EPROBE_DEFER ensures IOMMU is probed before the devices that
++	 * depend on them. During shutdown, however, the IOMMU may be removed
++	 * first, leading to issues. To avoid this, a device link is added
++	 * which enforces the correct removal order.
++	 */
++	device_link_add(dev, rimt_fwnode->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+ 	return acpi_iommu_fwspec_init(dev, deviceid, rimt_fwnode);
+ }
  
-+	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
- 	fn = drm_compat_ioctls[nr].fn;
- 	if (!fn)
- 		return drm_ioctl(filp, cmd, arg);
+-- 
+2.53.0
+
 
 
 
