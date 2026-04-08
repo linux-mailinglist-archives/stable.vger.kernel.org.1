@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHpVOL2c1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:49 +0200
+	id KLzXDPaj1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406703C07E4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA8D3C1CF5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB98F3038526
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C049F311A459
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C893A16A0;
-	Wed,  8 Apr 2026 18:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C4C3624B0;
+	Wed,  8 Apr 2026 18:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElIK0J5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsazPG+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070B23537FC;
-	Wed,  8 Apr 2026 18:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FCB3D6CA2;
+	Wed,  8 Apr 2026 18:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672232; cv=none; b=DKhSr//7+6HKqdDmvXV0Dhb7QQcUnw/lbor9VTWApvJvdHx/KlQZWjenYOnEZpOYRzUGN1K2Emx8ZZXWUa9z3Bj45HTUr3OP6TLQoYK0/CxV/y01DspowRKc9Peau05uPm/R3yv92eptwUT2CsIhh8zqdGYjeddr53e5csN8Co4=
+	t=1775673287; cv=none; b=SjUqF+qQ19fdoGJCiKEnAKa+uVxzGZRo6YJ89bqbMq0RaA8HbIs61qGf33z8BHrRLqErlpe+HuwnvND/GDchagQUKS1e6KYRSqjyAwJ44xHMLeX+Dc5eRg8RjHyJOhEijykYVEwhHxjJjh0jotzXXtjmQiy8ZtfaQsg/Yue3s5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672232; c=relaxed/simple;
-	bh=KMSpmPuGbwzDW2UuSpJb4E/VfPhSZ9LGjnEvu3qGKf0=;
+	s=arc-20240116; t=1775673287; c=relaxed/simple;
+	bh=SI164O9M4+moemikOMcCG7A3QefAKoJMFhsSKCr6ghU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkYXbk82B+/aLzA9JFwtar8iabFEyZo5l2dPOFVsOmcbVelRJCzeggmSraC3mDnwFMgGB68qoLy64K3jO0ax7bklRP6jHUXItInqr7Hblw1QIJdH5yxF1Igt7uFjxlgZjMHeuriCrYezzd8CRmG0dpSN9Vnc9zhvZpwoYD7MLMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElIK0J5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B3BC19421;
-	Wed,  8 Apr 2026 18:17:11 +0000 (UTC)
+	 MIME-Version; b=aQCkHN5mu7RMk4HdoaGFlSL/JryXY3TXc/cC9bxB0aox9m4RnsQde/pxZS6URvSMPv+RAp2GFVW66+aUJeVKXfp6KGvO+npCA11GvL80KUlavgTNy2mcbyGgeuB3pnxuhOSUgjS4iB7zVkU03K514asjTiKvf2zRFFIoPzRPOFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsazPG+a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EC0C19421;
+	Wed,  8 Apr 2026 18:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672231;
-	bh=KMSpmPuGbwzDW2UuSpJb4E/VfPhSZ9LGjnEvu3qGKf0=;
+	s=korg; t=1775673287;
+	bh=SI164O9M4+moemikOMcCG7A3QefAKoJMFhsSKCr6ghU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElIK0J5eYjVhcnYVTpe6zMbbXxyW9kWXqwBBp9Yux+/V4jua32w3854eKkyQk86dx
-	 aU3md2LbC3vSQ43oP8BK4WPcl1+dJwaNBrLb1b/WTuXo4cNf9Q86ceO2SZbmoFPteQ
-	 6ZvuomS/LZ3Ux0YnSLE8sanvb0h9f8s0KBQsuc50=
+	b=FsazPG+a5RNXRRg0JiAq9i+8CmKhjfP43LQ+6Uv72deRN1HZSyU3tgp3sMODYvW/O
+	 4TwEJYFb+YHOP+8Kru6+L7MRXOlh3gOzeMqKDSwEdmRMXQYxQwVW0qI8YrJoAgf3AF
+	 WtwukuLr/2qkTW7+qPL9f7lDdG4a0rPnh4VJn47U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/312] Revert "ext4: get rid of ppath in ext4_ext_create_new_leaf()"
+	Liam Mitchell <mitchell.liam@gmail.com>,
+	Henrik Rydberg <rydberg@bitmath.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.18 173/277] Input: bcm5974 - recover from failed mode switch
 Date: Wed,  8 Apr 2026 20:02:38 +0200
-Message-ID: <20260408175942.751705560@linuxfoundation.org>
+Message-ID: <20260408175940.326902050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +64,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234196-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234603-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bitmath.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 406703C07E4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bitmath.org:email]
+X-Rspamd-Queue-Id: 8DA8D3C1CF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 15908fc35056e9a6fd71552eda884a353496e6c7.
+From: Liam Mitchell <mitchell.liam@gmail.com>
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit fc1e8a6f129d87c64ac8e58b50d9dfa66217cfda upstream.
+
+Mode switches sent before control response are ignored. This results in
+an unresponsive trackpad and "bcm5974: bad trackpad package, length: 8"
+repeated in logs.
+
+On receiving unknown 8-byte packets, assume that mode switch was ignored
+and schedule an asynchronous mode reset. The reset will switch the
+device to normal mode, wait, then switch back to wellspring mode.
+
+Signed-off-by: Liam Mitchell <mitchell.liam@gmail.com>
+Link: https://lore.kernel.org/linux-input/CAOQ1CL4+DP1TuLAGNsz5GdFBTHvnTg=5q=Dr2Z1OQc6RXydSYA@mail.gmail.com/
+Acked-by: Henrik Rydberg <rydberg@bitmath.org>
+Link: https://patch.msgid.link/20260213-bcm5974-reset-v2-1-1837851336b0@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 43 +++++++++++++++++++++----------------------
- 1 file changed, 21 insertions(+), 22 deletions(-)
+ drivers/input/mouse/bcm5974.c |   42 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index eda6f92a42330..a58f415f882b2 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1392,12 +1392,13 @@ static int ext4_ext_grow_indepth(handle_t *handle, struct inode *inode,
-  * finds empty index and adds new leaf.
-  * if no free index is found, then it requests in-depth growing.
-  */
--static struct ext4_ext_path *
--ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
--			 unsigned int mb_flags, unsigned int gb_flags,
--			 struct ext4_ext_path *path,
--			 struct ext4_extent *newext)
-+static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
-+				    unsigned int mb_flags,
-+				    unsigned int gb_flags,
-+				    struct ext4_ext_path **ppath,
-+				    struct ext4_extent *newext)
- {
-+	struct ext4_ext_path *path = *ppath;
- 	struct ext4_ext_path *curp;
- 	int depth, i, err = 0;
+--- a/drivers/input/mouse/bcm5974.c
++++ b/drivers/input/mouse/bcm5974.c
+@@ -286,6 +286,8 @@ struct bcm5974 {
+ 	const struct tp_finger *index[MAX_FINGERS];	/* finger index data */
+ 	struct input_mt_pos pos[MAX_FINGERS];		/* position array */
+ 	int slots[MAX_FINGERS];				/* slot assignments */
++	struct work_struct mode_reset_work;
++	unsigned long last_mode_reset;
+ };
  
-@@ -1418,25 +1419,28 @@ ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
- 		 * entry: create all needed subtree and add new leaf */
- 		err = ext4_ext_split(handle, inode, mb_flags, path, newext, i);
- 		if (err)
--			goto errout;
-+			goto out;
- 
- 		/* refill path */
- 		path = ext4_find_extent(inode,
- 				    (ext4_lblk_t)le32_to_cpu(newext->ee_block),
- 				    path, gb_flags);
--		return path;
-+		if (IS_ERR(path))
-+			err = PTR_ERR(path);
- 	} else {
- 		/* tree is full, time to grow in depth */
- 		err = ext4_ext_grow_indepth(handle, inode, mb_flags);
- 		if (err)
--			goto errout;
-+			goto out;
- 
- 		/* refill path */
- 		path = ext4_find_extent(inode,
- 				   (ext4_lblk_t)le32_to_cpu(newext->ee_block),
- 				    path, gb_flags);
--		if (IS_ERR(path))
--			return path;
-+		if (IS_ERR(path)) {
-+			err = PTR_ERR(path);
-+			goto out;
-+		}
- 
- 		/*
- 		 * only first (depth 0 -> 1) produces free space;
-@@ -1448,11 +1452,9 @@ ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
- 			goto repeat;
- 		}
- 	}
--	return path;
--
--errout:
--	ext4_free_ext_path(path);
--	return ERR_PTR(err);
-+out:
-+	*ppath = IS_ERR(path) ? NULL : path;
-+	return err;
+ /* trackpad finger block data, le16-aligned */
+@@ -696,6 +698,32 @@ static int bcm5974_wellspring_mode(struc
+ 	return retval;
  }
  
- /*
-@@ -2095,14 +2097,11 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 	 */
- 	if (gb_flags & EXT4_GET_BLOCKS_METADATA_NOFAIL)
- 		mb_flags |= EXT4_MB_USE_RESERVED;
--	path = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
--					path, newext);
--	if (IS_ERR(path)) {
--		*ppath = NULL;
--		err = PTR_ERR(path);
-+	err = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
-+				       ppath, newext);
-+	if (err)
- 		goto cleanup;
--	}
--	*ppath = path;
-+	path = *ppath;
- 	depth = ext_depth(inode);
- 	eh = path[depth].p_hdr;
++/*
++ * Mode switches sent before the control response are ignored.
++ * Fixing this state requires switching to normal mode and waiting
++ * about 1ms before switching back to wellspring mode.
++ */
++static void bcm5974_mode_reset_work(struct work_struct *work)
++{
++	struct bcm5974 *dev = container_of(work, struct bcm5974, mode_reset_work);
++	int error;
++
++	guard(mutex)(&dev->pm_mutex);
++	dev->last_mode_reset = jiffies;
++
++	error = bcm5974_wellspring_mode(dev, false);
++	if (error) {
++		dev_err(&dev->intf->dev, "reset to normal mode failed\n");
++		return;
++	}
++
++	fsleep(1000);
++
++	error = bcm5974_wellspring_mode(dev, true);
++	if (error)
++		dev_err(&dev->intf->dev, "mode switch after reset failed\n");
++}
++
+ static void bcm5974_irq_button(struct urb *urb)
+ {
+ 	struct bcm5974 *dev = urb->context;
+@@ -752,10 +780,20 @@ static void bcm5974_irq_trackpad(struct
+ 	if (dev->tp_urb->actual_length == 2)
+ 		goto exit;
  
--- 
-2.53.0
-
+-	if (report_tp_state(dev, dev->tp_urb->actual_length))
++	if (report_tp_state(dev, dev->tp_urb->actual_length)) {
+ 		dprintk(1, "bcm5974: bad trackpad package, length: %d\n",
+ 			dev->tp_urb->actual_length);
+ 
++		/*
++		 * Receiving a HID packet means we aren't in wellspring mode.
++		 * If we haven't tried a reset in the last second, try now.
++		 */
++		if (dev->tp_urb->actual_length == 8 &&
++		    time_after(jiffies, dev->last_mode_reset + msecs_to_jiffies(1000))) {
++			schedule_work(&dev->mode_reset_work);
++		}
++	}
++
+ exit:
+ 	error = usb_submit_urb(dev->tp_urb, GFP_ATOMIC);
+ 	if (error)
+@@ -906,6 +944,7 @@ static int bcm5974_probe(struct usb_inte
+ 	dev->intf = iface;
+ 	dev->input = input_dev;
+ 	dev->cfg = *cfg;
++	INIT_WORK(&dev->mode_reset_work, bcm5974_mode_reset_work);
+ 	mutex_init(&dev->pm_mutex);
+ 
+ 	/* setup urbs */
+@@ -998,6 +1037,7 @@ static void bcm5974_disconnect(struct us
+ {
+ 	struct bcm5974 *dev = usb_get_intfdata(iface);
+ 
++	disable_work_sync(&dev->mode_reset_work);
+ 	usb_set_intfdata(iface, NULL);
+ 
+ 	input_unregister_device(dev->input);
 
 
 
