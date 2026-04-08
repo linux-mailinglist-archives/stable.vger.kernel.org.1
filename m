@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJf3EnKn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:30 +0200
+	id 4L+cHfSb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF4A3C270B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0308C3C061D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8564A31A089A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2453A30421C0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF213D522C;
-	Wed,  8 Apr 2026 18:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50A93859FE;
+	Wed,  8 Apr 2026 18:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYFJDAnd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPqIKCcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F007331A44;
-	Wed,  8 Apr 2026 18:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736C11A683C;
+	Wed,  8 Apr 2026 18:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673764; cv=none; b=FI+6AZ4BRQqXSmFKLR9yAOgpVFUDaFfjM7ErPUmhYkECnYxFFPx6qIEzMgrKovdtTMczWQRQfUjnHMn0b489kZHzTJ9hzDvrrSDDbfaFdLAnsK4B+P0wOpab/k1s6S+/Inn15K/HVTXA3zAT/0HeZvrPfmJQp6NKuvKa48jMVcM=
+	t=1775672139; cv=none; b=XJpkaApR+ZD0IQGGVLa5j03lqo5L23wWAOOPQSUxI+pnzkWtkyv9goJ2qz1bdeVFNwVxf119ZWN/2FftN7fCH2B//tAPhlcOopdbCKEi33iEkk93UZF1mvylPvPBxQCEvFd9OVO8deLcmROjWyd7UcbJ7ecNm/fnc5wSYFtPTwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673764; c=relaxed/simple;
-	bh=0as0yF4E3T2ZBDRepHQr1KAZFC+KYRlidvv8MbtfKQs=;
+	s=arc-20240116; t=1775672139; c=relaxed/simple;
+	bh=1OKxzee3U3LF5QAs1vFUpb5UF9oIKIREkYiHRSiqQRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAOaqMOCDH6Zj5WZVUflT7zDfj06bWMdz+d7mCkO5Xk1XIlYvAP75KvIkaB79V8Q+B0LBRmTvRXQV/px0CSNVtXtTlfAz7KKIbuniQ0HGhYwQnFxyFLS4cuc1ycmMrd4kucGBwiSsXANtayuQ+g7QxwHhoGcUvvNGEejPVZWsuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYFJDAnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42EDC19421;
-	Wed,  8 Apr 2026 18:42:43 +0000 (UTC)
+	 MIME-Version; b=tQIe79IrtK8z+0TQWRUtNM4ZYpjHTMmzQNyuNko4Vlsksw8stMICiiJLi7s42SXLuS5D9T809OrzTe0B8acHUt8tVfCHvlh3for1bdkI9fsVV003OgO8ax0izwWbkivwtLFnvUegQ5+cCCwp50dZj4mKPCQdyIDyzc4RVfWT0A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPqIKCcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62C0C19421;
+	Wed,  8 Apr 2026 18:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673764;
-	bh=0as0yF4E3T2ZBDRepHQr1KAZFC+KYRlidvv8MbtfKQs=;
+	s=korg; t=1775672139;
+	bh=1OKxzee3U3LF5QAs1vFUpb5UF9oIKIREkYiHRSiqQRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYFJDAndgnnHWI4LNgEsLQ6j8c00SAqMyLsYUSFxnHeI/QhxQKDrff2vk++uSnQL8
-	 Zai01UPeTtQO9U93bT3WmQBAoH/R5UV6ELtkbLi4WZCbPLwyam19yxo32Kfc3rbglc
-	 pGbWflahJ/4iallpzwAgjPJyAFyFblqoSPNTYHK8=
+	b=OPqIKCcKkaXbucbEhZy5rjSPEUo50UB6DuaCYn3/UyfaUUGZ1VJfmTFNP0TfZ/Jn+
+	 CLIlPzFgxXTJZrQp1VCM1rWpjW7Pk+JBFwddROeeK3/B3pX1lDgWEy6Gn6FUpTJZiX
+	 2o/5nNS4BpOT9R80tyxKTihQpeg5lUK4SJ/h7kH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cen Zhang <zzzccc427@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/242] Bluetooth: SCO: fix race conditions in sco_sock_connect()
-Date: Wed,  8 Apr 2026 20:02:01 +0200
-Message-ID: <20260408175930.114006876@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Oleh Konko <security@1seal.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 205/312] Bluetooth: SMP: force responder MITM requirements before building the pairing response
+Date: Wed,  8 Apr 2026 20:02:02 +0200
+Message-ID: <20260408175941.417323693@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,181 +64,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234788-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234160-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,1seal.org,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DDF4A3C270B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1seal.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0308C3C061D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cen Zhang <zzzccc427@gmail.com>
+From: Oleh Konko <security@1seal.org>
 
-[ Upstream commit 8a5b0135d4a5d9683203a3d9a12a711ccec5936b ]
+commit d05111bfe37bfd8bd4d2dfe6675d6bdeef43f7c7 upstream.
 
-sco_sock_connect() checks sk_state and sk_type without holding
-the socket lock. Two concurrent connect() syscalls on the same
-socket can both pass the check and enter sco_connect(), leading
-to use-after-free.
+smp_cmd_pairing_req() currently builds the pairing response from the
+initiator auth_req before enforcing the local BT_SECURITY_HIGH
+requirement. If the initiator omits SMP_AUTH_MITM, the response can
+also omit it even though the local side still requires MITM.
 
-The buggy scenario involves three participants and was confirmed
-with additional logging instrumentation:
+tk_request() then sees an auth value without SMP_AUTH_MITM and may
+select JUST_CFM, making method selection inconsistent with the pairing
+policy the responder already enforces.
 
-  Thread A (connect):    HCI disconnect:      Thread B (connect):
+When the local side requires HIGH security, first verify that MITM can
+be achieved from the IO capabilities and then force SMP_AUTH_MITM in the
+response in both rsp.auth_req and auth. This keeps the responder auth bits
+and later method selection aligned.
 
-  sco_sock_connect(sk)                        sco_sock_connect(sk)
-  sk_state==BT_OPEN                           sk_state==BT_OPEN
-  (pass, no lock)                             (pass, no lock)
-  sco_connect(sk):                            sco_connect(sk):
-    hci_dev_lock                                hci_dev_lock
-    hci_connect_sco                               <- blocked
-      -> hcon1
-    sco_conn_add->conn1
-    lock_sock(sk)
-    sco_chan_add:
-      conn1->sk = sk
-      sk->conn = conn1
-    sk_state=BT_CONNECT
-    release_sock
-    hci_dev_unlock
-                           hci_dev_lock
-                           sco_conn_del:
-                             lock_sock(sk)
-                             sco_chan_del:
-                               sk->conn=NULL
-                               conn1->sk=NULL
-                               sk_state=
-                                 BT_CLOSED
-                               SOCK_ZAPPED
-                             release_sock
-                           hci_dev_unlock
-                                                  (unblocked)
-                                                  hci_connect_sco
-                                                    -> hcon2
-                                                  sco_conn_add
-                                                    -> conn2
-                                                  lock_sock(sk)
-                                                  sco_chan_add:
-                                                    sk->conn=conn2
-                                                  sk_state=
-                                                    BT_CONNECT
-                                                  // zombie sk!
-                                                  release_sock
-                                                  hci_dev_unlock
-
-Thread B revives a BT_CLOSED + SOCK_ZAPPED socket back to
-BT_CONNECT. Subsequent cleanup triggers double sock_put() and
-use-after-free. Meanwhile conn1 is leaked as it was orphaned
-when sco_conn_del() cleared the association.
-
-Fix this by:
-- Moving lock_sock() before the sk_state/sk_type checks in
-  sco_sock_connect() to serialize concurrent connect attempts
-- Fixing the sk_type != SOCK_SEQPACKET check to actually
-  return the error instead of just assigning it
-- Adding a state re-check in sco_connect() after lock_sock()
-  to catch state changes during the window between the locks
-- Adding sco_pi(sk)->conn check in sco_chan_add() to prevent
-  double-attach of a socket to multiple connections
-- Adding hci_conn_drop() on sco_chan_add failure to prevent
-  HCI connection leaks
-
-Fixes: 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Fixes: 2b64d153a0cc ("Bluetooth: Add MITM mechanism to LE-SMP")
+Cc: stable@vger.kernel.org
+Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Signed-off-by: Oleh Konko <security@1seal.org>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/sco.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ net/bluetooth/smp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index ad3439bd4d51a..ded0c52ccf0b9 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -238,7 +238,7 @@ static int sco_chan_add(struct sco_conn *conn, struct sock *sk,
- 	int err = 0;
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1817,7 +1817,7 @@ static u8 smp_cmd_pairing_req(struct l2c
+ 	if (sec_level > conn->hcon->pending_sec_level)
+ 		conn->hcon->pending_sec_level = sec_level;
  
- 	sco_conn_lock(conn);
--	if (conn->sk)
-+	if (conn->sk || sco_pi(sk)->conn)
- 		err = -EBUSY;
- 	else
- 		__sco_chan_add(conn, sk, parent);
-@@ -293,9 +293,20 @@ static int sco_connect(struct sock *sk)
+-	/* If we need MITM check that it can be achieved */
++	/* If we need MITM check that it can be achieved. */
+ 	if (conn->hcon->pending_sec_level >= BT_SECURITY_HIGH) {
+ 		u8 method;
  
- 	lock_sock(sk);
- 
-+	/* Recheck state after reacquiring the socket lock, as another
-+	 * thread may have changed it (e.g., closed the socket).
-+	 */
-+	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
-+		release_sock(sk);
-+		hci_conn_drop(hcon);
-+		err = -EBADFD;
-+		goto unlock;
-+	}
+@@ -1825,6 +1825,10 @@ static u8 smp_cmd_pairing_req(struct l2c
+ 					 req->io_capability);
+ 		if (method == JUST_WORKS || method == JUST_CFM)
+ 			return SMP_AUTH_REQUIREMENTS;
 +
- 	err = sco_chan_add(conn, sk, NULL);
- 	if (err) {
- 		release_sock(sk);
-+		hci_conn_drop(hcon);
- 		goto unlock;
++		/* Force MITM bit if it isn't set by the initiator. */
++		auth |= SMP_AUTH_MITM;
++		rsp.auth_req |= SMP_AUTH_MITM;
  	}
  
-@@ -602,13 +613,18 @@ static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen
- 	    addr->sa_family != AF_BLUETOOTH)
- 		return -EINVAL;
- 
--	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND)
-+	lock_sock(sk);
-+
-+	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
-+		release_sock(sk);
- 		return -EBADFD;
-+	}
- 
--	if (sk->sk_type != SOCK_SEQPACKET)
--		err = -EINVAL;
-+	if (sk->sk_type != SOCK_SEQPACKET) {
-+		release_sock(sk);
-+		return -EINVAL;
-+	}
- 
--	lock_sock(sk);
- 	/* Set destination address and psm */
- 	bacpy(&sco_pi(sk)->dst, &sa->sco_bdaddr);
- 	release_sock(sk);
--- 
-2.53.0
-
+ 	key_size = min(req->max_key_size, rsp.max_key_size);
 
 
 
