@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AKZD/ab1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:30 +0200
+	id oKq9M3+f1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4483C0625
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 619C33C0F65
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69298307AAC4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA4DD30E23DE
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3311F3ACA41;
-	Wed,  8 Apr 2026 18:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D203D411F;
+	Wed,  8 Apr 2026 18:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqD1a8CW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I66gUFea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79791A683C;
-	Wed,  8 Apr 2026 18:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C27C3D6674;
+	Wed,  8 Apr 2026 18:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672141; cv=none; b=ub3XUB6pWnSqcbsvd9q9OAWquxZkM+ubVEfD9dB1O/nMybpIwklzRZcS6yygqUw+AE01alt2Lyj8lIUxTxkC9muUR52cEaYpHywAOzUdE0SJ8MSFovAn6m9rvROxCRqhDj0L2xdYWcwfiE0ioA9sagyIubRALKVuia1tYwNfnQw=
+	t=1775672512; cv=none; b=Q/ZvrU5dAgHgAiDHclce+rip/pnZ1n0+L42kT0OPTQ5QanvogSilDlHSjyXI4zcX/NW03ylh6XOsQOQeRwXxqFDE6Y6CotmDBjbiIqNI6G8UtKVI7BhPd0nDWbO6qjo1EbX6VDBjHuUmRZcUn7+h6VedDeTmXb0Qc1dUQyBHUF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672141; c=relaxed/simple;
-	bh=I8r4XUnjGFgLNuTVLLZlB3VAYa53sE3ttTIFXAJQppQ=;
+	s=arc-20240116; t=1775672512; c=relaxed/simple;
+	bh=0Ivo2ZXHxyS5cwxUbeQoxrovFTOmV1Gte1lNu8kWAb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKXy1GUPnpa6BeKhfHB22FdocRgY9xGZwrksKJnltXvHwxIh1msY30GIbhB/63ojzmE1Fq1fVupOJR3+3mHcekj149EwzoOUT48Z83eS3Y7na9BIB0zT2m7lYitq1nUFvwhrIYzktKIco6WJYatDKWu+MILkzSm42x2U47FjWq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqD1a8CW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657A6C19421;
-	Wed,  8 Apr 2026 18:15:41 +0000 (UTC)
+	 MIME-Version; b=MbNFi62E0sDF5QQCCUDdhpBGXbIOctNddY09DR5k8yjHCleleZpvl/0DZr7robC9bpdraqTGuwmis5eSJQu4WOy06UAfm2/OLD3bvc6DSePRj0z/9Y/bXWbxs7gWvfhTazeKguv/LwqGfc3w+1HsGuppvJamAuwewbguB4x550o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I66gUFea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8951BC19421;
+	Wed,  8 Apr 2026 18:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672141;
-	bh=I8r4XUnjGFgLNuTVLLZlB3VAYa53sE3ttTIFXAJQppQ=;
+	s=korg; t=1775672512;
+	bh=0Ivo2ZXHxyS5cwxUbeQoxrovFTOmV1Gte1lNu8kWAb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqD1a8CWu3lNxnEX8JaIZ+NDb48Nt6uRSdvK6ak6O/enj/I6KuehUoT6Z0IGW5Hwr
-	 AkB0e4OFWET+5jgd5XjGl3EML2wQUeBL7mjsAUVSCiOqsHctY8HpYxyUAwajiSqAEp
-	 GVWiozOK6wkTeZVLJTY5zhCEEqoIMSzL+YR8n7kk=
+	b=I66gUFeaNJI5MOagDtl7BEIlPRvXTHEiGcw0P+pbckWvlzQWVDtqUcWAaMGj10i4h
+	 0xRSQhR1B6eIWLslHV3KVDVXgw9xA6egr+54gHuQiL1N7NgaRlR++JdqmSSxtKk/lK
+	 xhhOdTzjAlj52M4RteBA43RgdC15Hzm0A6BoeD2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 206/312] MIPS: Fix the GCC version check for `__multi3 workaround
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 036/160] netfilter: x_tables: ensure names are nul-terminated
 Date: Wed,  8 Apr 2026 20:02:03 +0200
-Message-ID: <20260408175941.454447945@linuxfoundation.org>
+Message-ID: <20260408175914.557591739@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234161-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234304-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,68 +89,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,orcam.me.uk:email,gnu.org:url,franken.de:email]
-X-Rspamd-Queue-Id: 9E4483C0625
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 619C33C0F65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Florian Westphal <fw@strlen.de>
 
-commit ec8bf18814915460d9c617b556bf024efef26613 upstream.
+[ Upstream commit a958a4f90ddd7de0800b33ca9d7b886b7d40f74e ]
 
-It was only GCC 10 that fixed a MIPS64r6 code generation issue with a
-`__multi3' libcall inefficiently produced to perform 64-bit widening
-multiplication while suitable machine instructions exist to do such a
-calculation.  The fix went in with GCC commit 48b2123f6336 ("re PR
-target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)").
+Reject names that lack a \0 character before feeding them
+to functions that expect c-strings.
 
-Adjust our code accordingly, removing build failures such as:
+Fixes tag is the most recent commit that needs this change.
 
-mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
-div64.c:(.text+0x84): undefined reference to `__multi3'
-
-with the GCC versions affected.
-
-Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v4.15+
-Reviewed-by: David Laight <david.laight.linux@gmail.com.
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c38c4597e4bf ("netfilter: implement xt_cgroup cgroup2 path match")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/lib/multi3.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/xt_cgroup.c  | 6 ++++++
+ net/netfilter/xt_rateest.c | 5 +++++
+ 2 files changed, 11 insertions(+)
 
---- a/arch/mips/lib/multi3.c
-+++ b/arch/mips/lib/multi3.c
-@@ -4,12 +4,12 @@
- #include "libgcc.h"
+diff --git a/net/netfilter/xt_cgroup.c b/net/netfilter/xt_cgroup.c
+index c0f5e9a4f3c65..bfc98719684e2 100644
+--- a/net/netfilter/xt_cgroup.c
++++ b/net/netfilter/xt_cgroup.c
+@@ -53,6 +53,9 @@ static int cgroup_mt_check_v1(const struct xt_mtchk_param *par)
  
- /*
-- * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
-+ * GCC 9 & older can suboptimally generate __multi3 calls for mips64r6, so for
-  * that specific case only we implement that intrinsic here.
-  *
-  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
-  */
--#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
-+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 10)
+ 	info->priv = NULL;
+ 	if (info->has_path) {
++		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
++			return -ENAMETOOLONG;
++
+ 		cgrp = cgroup_get_from_path(info->path);
+ 		if (IS_ERR(cgrp)) {
+ 			pr_info_ratelimited("invalid path, errno=%ld\n",
+@@ -85,6 +88,9 @@ static int cgroup_mt_check_v2(const struct xt_mtchk_param *par)
  
- /* multiply 64-bit values, low 64-bits returned */
- static inline long long notrace dmulu(long long a, long long b)
-@@ -51,4 +51,4 @@ ti_type notrace __multi3(ti_type a, ti_t
- }
- EXPORT_SYMBOL(__multi3);
+ 	info->priv = NULL;
+ 	if (info->has_path) {
++		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
++			return -ENAMETOOLONG;
++
+ 		cgrp = cgroup_get_from_path(info->path);
+ 		if (IS_ERR(cgrp)) {
+ 			pr_info_ratelimited("invalid path, errno=%ld\n",
+diff --git a/net/netfilter/xt_rateest.c b/net/netfilter/xt_rateest.c
+index 72324bd976af8..b1d736c15fcbe 100644
+--- a/net/netfilter/xt_rateest.c
++++ b/net/netfilter/xt_rateest.c
+@@ -91,6 +91,11 @@ static int xt_rateest_mt_checkentry(const struct xt_mtchk_param *par)
+ 		goto err1;
+ 	}
  
--#endif /* 64BIT && CPU_MIPSR6 && GCC7 */
-+#endif /* 64BIT && CPU_MIPSR6 && GCC9 */
++	if (strnlen(info->name1, sizeof(info->name1)) >= sizeof(info->name1))
++		return -ENAMETOOLONG;
++	if (strnlen(info->name2, sizeof(info->name2)) >= sizeof(info->name2))
++		return -ENAMETOOLONG;
++
+ 	ret  = -ENOENT;
+ 	est1 = xt_rateest_lookup(par->net, info->name1);
+ 	if (!est1)
+-- 
+2.53.0
+
 
 
 
