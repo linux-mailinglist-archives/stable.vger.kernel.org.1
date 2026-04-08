@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-234952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gH5CDw2p1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-234952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:21 +0200
+	id +AFoFnym1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BCA3C29F8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CAE3C247E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B6243161874
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26F35314A80C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622953D9035;
-	Wed,  8 Apr 2026 18:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A303ACF16;
+	Wed,  8 Apr 2026 18:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9RNe4nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fn1EYsog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACD2347BA9;
-	Wed,  8 Apr 2026 18:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9558227979A;
+	Wed,  8 Apr 2026 18:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674188; cv=none; b=ZWesZDloeJHi0c2V1YFlOZbma684gE+yNZ2krIrbCZMy3qaKasHeb0LefeffPw+uclk1e10HFp3qSkPfPBjnyV5eH4Y9332tCIgERQtfv+rDF1xpw7zYpEpHtvyg0FZaMX4HZT2Erxy7RTEI+CpmAoPgjKDjmHi+JTQN/nnLI7Q=
+	t=1775673526; cv=none; b=CEj4D1H3R/IJ4aYd0xcX7zlFkhsiaKV2IaVQt3djz1GLuf9q2/t0CQeCm0ozmWmPGj8Y0oHRD5HW/aKAdL+FUPkaTSFOdj6bczh8tiB8lYmsZc/5/YvsIj0vK9UPnG/Y7P0fj8OdJ2ZFMDN8iV51zBQ/OW1czDhviw0XBtS+n20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674188; c=relaxed/simple;
-	bh=lkQxM0gQAkAY1PSq16/0+Y1duG+9DB3eI10z9uvKYMA=;
+	s=arc-20240116; t=1775673526; c=relaxed/simple;
+	bh=9999Rktd0IAjYaOiG/9FP0NLMDmaPsi8TESNvAR52DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHbWqnIjoJ8//TWhh3pCpzCeXGQxOXyf0L5dHQAfxdOagHIr3cpmp9AmMm9UVHhEtrRt2y8cG21BpfgTpr6MXot51yln+9tmvxfzau9pLDv/wwgSZYVPxd4ZlJEMGKFE+aDrAuUWdQM2l1p0aD8RkL0fR57MSlYcKki2Eid1wPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9RNe4nh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E02C19421;
-	Wed,  8 Apr 2026 18:49:47 +0000 (UTC)
+	 MIME-Version; b=WmWO2udbp5jaXES07N3ptCxCAGdOmMQ16baa+n+0hnpgjuziB1Sn+38CEY25tdPAaSJowFfRJwozJ0k2tDee3rtVlHUsLNmCdJgeCs2jOdf9mfI81toBtf6rn63jk7XfFeBXXmojfQTpOD1UI0xPvUC7OumvBQruN98oCnFePQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fn1EYsog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C88BC19421;
+	Wed,  8 Apr 2026 18:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674188;
-	bh=lkQxM0gQAkAY1PSq16/0+Y1duG+9DB3eI10z9uvKYMA=;
+	s=korg; t=1775673526;
+	bh=9999Rktd0IAjYaOiG/9FP0NLMDmaPsi8TESNvAR52DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9RNe4nh/oKMqtSaAG5pRzsgLn5lVpSYgSO9eZpGJhmyV7Nr+naqv6lFeYuL16vEl
-	 CvKK2ZLfGgmMrZinhCokFhgEwISt4ErORXj8EHPpxg6aW8T937x/6TFSK+WLXTErFJ
-	 qzp27G+t/5NSkV/liA+41qI4SsCtctrVDnd88Jy8=
+	b=fn1EYsognMY+NoC8F9P4gT8v2X9FAxDlrfLxAyh/RhH9y/omZ06/l8K7AAWb7WXYP
+	 oEco2J99+XlubLdWxSGjXFYc+4tlQqynBC0LjWr7IyEisvpPVuMGHH18PxpKmZlACF
+	 /DUWVQpAUV089tYtpp/R+5AWOcbCPJs/qfzaBfOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexander Popov <alex.popov@linux.com>,
 	Breno Leitao <leitao@debian.org>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 212/242] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
+Subject: [PATCH 6.18 267/277] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
 Date: Wed,  8 Apr 2026 20:04:12 +0200
-Message-ID: <20260408175935.014634704@linuxfoundation.org>
+Message-ID: <20260408175943.830978626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234952-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234696-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,12 +90,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 82BCA3C29F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.com:email,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D5CAE3C247E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -187,7 +187,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/net/wireless/virtual/virt_wifi.c
 +++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -555,7 +555,6 @@ static int virt_wifi_newlink(struct net
+@@ -557,7 +557,6 @@ static int virt_wifi_newlink(struct net_
  	eth_hw_addr_inherit(dev, priv->lowerdev);
  	netif_stacked_transfer_operstate(priv->lowerdev, dev);
  
