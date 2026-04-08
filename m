@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIyDEh6i1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:46 +0200
+	id +OezEcKb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF483C168C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CE33C05A2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 45374302B975
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7409F3015D1D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C713D669E;
-	Wed,  8 Apr 2026 18:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FB5385513;
+	Wed,  8 Apr 2026 18:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PE81m2Fy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njUI6qiv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1535E2BEFFF;
-	Wed,  8 Apr 2026 18:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767E9B67E;
+	Wed,  8 Apr 2026 18:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673882; cv=none; b=t4Rl/Sf2yu7qg/uoBXyzImaxRSYh1vhIJlYucHn750M4HfJL7YtJpnCeBIGQ+VNw8gipEaH5GhsR2elwuAjAL3632byfHt2FmhNxBxpf0Ylosm3uAwEISEC9WyeFd5ishGeYqCPjMqVIDPMC3kfTZmJLGHVXw/Kidoh2sUYdxis=
+	t=1775672255; cv=none; b=Dhk6CxWLTx92+D+pQzAEnaorK+M1JNBnY8h5WzFENHHZyzmx9RaD3ns1tKaVs4O9DnMqat4NlayJrnwhbJieuBoE5Fy7LLkx5RUScGjFi1ZInHrbsl5LU+Kl2C/j2rdj8yC5O0R8s8G4GHYVDetps+abH4Yogz/7354ecDzU0wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673882; c=relaxed/simple;
-	bh=5dweHuRdvT022ZfN6OLeC2hkhstfrb/vHyL/dngZqJU=;
+	s=arc-20240116; t=1775672255; c=relaxed/simple;
+	bh=dsQB7hgZkD6w/E2waNkCUq+gCZu2xDjKbcxVfBGVufo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSCDsaiGfm7fmbjn4ik4if9xR6ejVzGDfKUVH3XZPp6LWxJLbsG3VyVGoblR8M7UGO37uIGG97bHFtUX7Fp536wJ7yr8QHu0oLy39dVRSlk94HYhlEu0SiIS0wPtaxaj06f2E5f77Yw5sjr+lyaTjWBNodt9QOfap9IqGbqUU0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PE81m2Fy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05F1C19421;
-	Wed,  8 Apr 2026 18:44:41 +0000 (UTC)
+	 MIME-Version; b=idLyGdhayNxgEls8YAP6o7k1AnwOFx6482LifE2UatC2bu9shtpH4vEA/IyhsQVWW94d2vrn2U34lFFR2rVgoQbG9VzqycjgZ1nbuoSYNdybZgGPvUMvcgk18lxtI1iqJd+ChrjGvcx5TQbOYJbX+zydAMvvRsKRUI77cj1Ttb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njUI6qiv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AB5C19421;
+	Wed,  8 Apr 2026 18:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673882;
-	bh=5dweHuRdvT022ZfN6OLeC2hkhstfrb/vHyL/dngZqJU=;
+	s=korg; t=1775672255;
+	bh=dsQB7hgZkD6w/E2waNkCUq+gCZu2xDjKbcxVfBGVufo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PE81m2FyHa1PnIjRqoZKyVUabE/ERl8dPVQkcXnj7KZaGVg2KYrzyNAjVKsKpuJMb
-	 iBGO7uj2dZl1Yoxx67LFlA/f3Z3CsWAGIrvktkO2KrvHXH8Ue1hFBQ/OrKtwTkaZt5
-	 /ra4X33QYlTt7OgaNz2OIo/AkCKaWpoljaEt/Njg=
+	b=njUI6qivm8Rd3DQUADdqARY3Wd6Sb1uhcJ/6ORc7P3NqkzCYy6GVbCRLP2RCSNtjD
+	 di8Vd/SAVnIkKsxHFV2251hutbTlNzJzQqIjD+Bwu71104Zq6LRNORGs7cdL1ZVGya
+	 a+UWubWctZUey7j2oKLpRdTXYjJliHdEepKoZLd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 125/242] MIPS: SiByte: Bring back cache initialisation
-Date: Wed,  8 Apr 2026 20:02:45 +0200
-Message-ID: <20260408175931.765741961@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 249/312] comedi: me_daq: Fix potential overrun of firmware buffer
+Date: Wed,  8 Apr 2026 20:02:46 +0200
+Message-ID: <20260408175943.045331423@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234833-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234205-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,55 +89,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,franken.de:email]
-X-Rspamd-Queue-Id: DCF483C168C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 12CE33C05A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit d62cf1511743526f530a4c169424e50c757f5a5e upstream.
+commit cc797d4821c754c701d9714b58bea947e31dbbe0 upstream.
 
-Bring back cache initialisation for Broadcom SiByte SB1 cores, which has
-been removed causing the kernel to hang at bootstrap right after:
+`me2600_xilinx_download()` loads the firmware that was requested by
+`request_firmware()`.  It is possible for it to overrun the source
+buffer because it blindly trusts the file format.  It reads a data
+stream length from the first 4 bytes into variable `file_length` and
+reads the data stream contents of length `file_length` from offset 16
+onwards.  Although it checks that the supplied firmware is at least 16
+bytes long, it does not check that it is long enough to contain the data
+stream.
 
-Dentry cache hash table entries: 524288 (order: 8, 4194304 bytes, linear)
-Inode-cache hash table entries: 262144 (order: 7, 2097152 bytes, linear)
+Add a test to ensure that the supplied firmware is long enough to
+contain the header and the data stream.  On failure, log an error and
+return `-EINVAL`.
 
-The cause of the problem is R4k cache handlers are also used by Broadcom
-SiByte SB1 cores, however with a different cache error exception handler
-and therefore not using CPU_R4K_CACHE_TLB:
-
-obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
-obj-$(CONFIG_CPU_SB1)           += c-r4k.o cerr-sb1.o cex-sb1.o tlb-r4k.o
-
-(from arch/mips/mm/Makefile).
-
-Fixes: bbe4f634f48c ("mips: fix r3k_cache_init build regression")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.8+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 85acac61096f9 ("Staging: comedi: add me_daq driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260205140130.76697-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/cache.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/comedi/drivers/me_daq.c |   35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -207,7 +207,8 @@ void cpu_cache_init(void)
- {
- 	if (IS_ENABLED(CONFIG_CPU_R3000) && cpu_has_3k_cache)
- 		r3k_cache_init();
--	if (IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) && cpu_has_4k_cache)
-+	if ((IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) ||
-+	     IS_ENABLED(CONFIG_CPU_SB1)) && cpu_has_4k_cache)
- 		r4k_cache_init();
+--- a/drivers/comedi/drivers/me_daq.c
++++ b/drivers/comedi/drivers/me_daq.c
+@@ -344,6 +344,25 @@ static int me2600_xilinx_download(struct
+ 	unsigned int file_length;
+ 	unsigned int i;
  
- 	if (IS_ENABLED(CONFIG_CPU_CAVIUM_OCTEON) && cpu_has_octeon_cache)
++	/*
++	 * Format of the firmware
++	 * Build longs from the byte-wise coded header
++	 * Byte 1-3:   length of the array
++	 * Byte 4-7:   version
++	 * Byte 8-11:  date
++	 * Byte 12-15: reserved
++	 */
++	if (size >= 4) {
++		file_length = (((unsigned int)data[0] & 0xff) << 24) +
++			      (((unsigned int)data[1] & 0xff) << 16) +
++			      (((unsigned int)data[2] & 0xff) << 8) +
++			      ((unsigned int)data[3] & 0xff);
++	}
++	if (size < 16 || file_length > size - 16) {
++		dev_err(dev->class_dev, "Firmware length inconsistency\n");
++		return -EINVAL;
++	}
++
+ 	/* disable irq's on PLX */
+ 	writel(0x00, devpriv->plx_regbase + PLX9052_INTCSR);
+ 
+@@ -358,22 +377,6 @@ static int me2600_xilinx_download(struct
+ 	sleep(1);
+ 
+ 	/*
+-	 * Format of the firmware
+-	 * Build longs from the byte-wise coded header
+-	 * Byte 1-3:   length of the array
+-	 * Byte 4-7:   version
+-	 * Byte 8-11:  date
+-	 * Byte 12-15: reserved
+-	 */
+-	if (size < 16)
+-		return -EINVAL;
+-
+-	file_length = (((unsigned int)data[0] & 0xff) << 24) +
+-	    (((unsigned int)data[1] & 0xff) << 16) +
+-	    (((unsigned int)data[2] & 0xff) << 8) +
+-	    ((unsigned int)data[3] & 0xff);
+-
+-	/*
+ 	 * Loop for writing firmware byte by byte to xilinx
+ 	 * Firmware data start at offset 16
+ 	 */
 
 
 
