@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCBlI3ee1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:11 +0200
+	id mNMfAT+d1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FC03C0D01
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5589A3C096D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1834E301CD97
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 558FA307921E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB7E3B0ADA;
-	Wed,  8 Apr 2026 18:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BF437F01B;
+	Wed,  8 Apr 2026 18:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSa6xkog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMwKK8N6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FFE324B1F;
-	Wed,  8 Apr 2026 18:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB1FB67E;
+	Wed,  8 Apr 2026 18:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672775; cv=none; b=LOpf1Nfqx4Ka67qP4BZ312pCoMBm0x/UqE2JX589ClveIFceLGRgtTfiGByV8Q/JXNvc8CzWCMFfwGG82V910Fhyun867zPZESUaPR3cplGIG2YJoG4J2I0QArCUkMXlynZhXh242wxzNqoC5EBEQoVw7sKNtzSB6am08jDo5ng=
+	t=1775672320; cv=none; b=d+n4EQU1vQJ86Jg3Z1gmK138hW2KUrxGb3Cwpc5jPWusTZMH9fBctA7WBXKlIoyfrJflZxrb4BdHYE/Z2Na9rI3DE4GcWi0XPsREJlFqYkE7jgCXOfTB47Ffm1FLMw6iTcNCIgi66WtuU5wsAjch66CrahaT2lBW/fZ7xQ/6kY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672775; c=relaxed/simple;
-	bh=5Cwdn5cA0F0ll7zawiZVzEu7kkK2cRTLiypTNasjgZ0=;
+	s=arc-20240116; t=1775672320; c=relaxed/simple;
+	bh=/KNO+3+zaIsBeINw6R/C1raYOOWVnyxEzZIj3yoSBto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWutf6rlwdHWogwfwY2PomTcqH/0DTpLTchmgVfry+O9n4j1daWP+xwLyyM5sLbxgA2z6qsMJjRjcNnKA9BRCQt4SuMKjDZ9FgZ8r//cyHMJBt0oSa4PE6ziDCc7HvcEENH/kTYzN3H6H94OYPWxmglIRqR7YJb5tbChYUwxE8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSa6xkog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40458C19421;
-	Wed,  8 Apr 2026 18:26:15 +0000 (UTC)
+	 MIME-Version; b=IzfXb86gUCEaNPxLUNLdoPSMIK7J32LperZdetRYAGonoTkTMQOWm87q3Nf2g5Sf9OkMYqXUUQrCXUxTU2Z3LXXWIq9FlFQEg4LTu2n39CbfxMf4m4Vu+IcdGLMZI5OL4yV7O+3jfUHNC9stQpbohtqUJShGHcOO6+kNaHfGs3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMwKK8N6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EA5C19421;
+	Wed,  8 Apr 2026 18:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672775;
-	bh=5Cwdn5cA0F0ll7zawiZVzEu7kkK2cRTLiypTNasjgZ0=;
+	s=korg; t=1775672319;
+	bh=/KNO+3+zaIsBeINw6R/C1raYOOWVnyxEzZIj3yoSBto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSa6xkogOfivyqgOO65HGADdMBZPmoOQOJIO5iCg/+eyp3LEbLCKxLjeY8x0wkoPm
-	 ficVw0uIAhxYhS/7cBlMyzprsh2yJG0tFAf/8gSQtgY2t6Ocyzt75Vd+XlAFy1heh6
-	 AbQHF9SaKUiJu2Om27Ohp04tDm3f2WmztyQ/GmIg=
+	b=NMwKK8N6q3PzJTQjNvjyYJLYmEaxJtNnz3H1HfAZA8wNIYAFJ+MSigJGTc9E+rwEM
+	 1RmlsfwQ+tS6OGQaAXv9/Qib/DTl/MfKD89b/mU8Cz3AtNG2wT++2vJ+wGk/rUnPBd
+	 sTW/0ZGGd1f2sDS2g7Namia2Vx7ENy9ToXW+1kXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 105/160] usb: ulpi: fix double free in ulpi_register_interface() error path
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 275/312] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
 Date: Wed,  8 Apr 2026 20:03:12 +0200
-Message-ID: <20260408175917.102538180@linuxfoundation.org>
+Message-ID: <20260408175944.018603440@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +67,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234406-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234230-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 36FC03C0D01
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5589A3C096D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 01af542392b5d41fd659d487015a71f627accce3 upstream.
+[ Upstream commit aad885e774966e97b675dfe928da164214a71605 ]
 
-When device_register() fails, ulpi_register() calls put_device() on
-ulpi->dev.
+When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
+existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
+right about it being impossible to convert a shadow-present SPTE to an
+MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
+memory that are outside the scope of KVM.
 
-The device release callback ulpi_dev_release() drops the OF node
-reference and frees ulpi, but the current error path in
-ulpi_register_interface() then calls kfree(ulpi) again, causing a
-double free.
+E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
+to emulted MMIO and then the guest hits a relevant page fault, KVM will
+install the MMIO SPTE without first zapping the shadow-present SPTE.
 
-Let put_device() handle the cleanup through ulpi_dev_release() and
-avoid freeing ulpi again in ulpi_register_interface().
+  ------------[ cut here ]------------
+  is_shadow_present_pte(*sptep)
+  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
+  Call Trace:
+   <TASK>
+   mmu_set_spte+0x237/0x440 [kvm]
+   ept_page_fault+0x535/0x7f0 [kvm]
+   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
+   kvm_mmu_page_fault+0x8d/0x620 [kvm]
+   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
+   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb5/0x730
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x47fa3f
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Fixes: 289fcff4bcdb1 ("usb: add bus type for USB ULPI")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260401025142.1398996-1-lgs201920130244@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Debugged-by: Alexander Bulekov <bkov@amazon.com>
+Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ replaced kvm_flush_remote_tlbs_gfn() with kvm_flush_remote_tlbs_with_address() and preserved pgprintk call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/common/ulpi.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kvm/mmu/mmu.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/common/ulpi.c
-+++ b/drivers/usb/common/ulpi.c
-@@ -331,10 +331,9 @@ struct ulpi *ulpi_register_interface(str
- 	ulpi->ops = ops;
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -2814,12 +2814,6 @@ static int mmu_set_spte(struct kvm_vcpu
+ 	pgprintk("%s: spte %llx write_fault %d gfn %llx\n", __func__,
+ 		 *sptep, write_fault, gfn);
  
- 	ret = ulpi_register(dev, ulpi);
--	if (ret) {
--		kfree(ulpi);
-+	if (ret)
- 		return ERR_PTR(ret);
+-	if (unlikely(is_noslot_pfn(pfn))) {
+-		vcpu->stat.pf_mmio_spte_created++;
+-		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
+-		return RET_PF_EMULATE;
 -	}
-+
+-
+ 	if (is_shadow_present_pte(*sptep)) {
+ 		/*
+ 		 * If we overwrite a PTE page pointer with a 2MB PMD, unlink
+@@ -2841,6 +2835,15 @@ static int mmu_set_spte(struct kvm_vcpu
+ 			was_rmapped = 1;
+ 	}
  
- 	return ulpi;
- }
++	if (unlikely(is_noslot_pfn(pfn))) {
++		vcpu->stat.pf_mmio_spte_created++;
++		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
++		if (flush)
++			kvm_flush_remote_tlbs_with_address(vcpu->kvm, gfn,
++					KVM_PAGES_PER_HPAGE(level));
++		return RET_PF_EMULATE;
++	}
++
+ 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
+ 			   true, host_writable, &spte);
+ 
 
 
 
