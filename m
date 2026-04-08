@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-235159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFY6G6ir1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:28 +0200
+	id YJtJOK2i1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD233C2F28
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D763C185F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCB6D30AF004
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 474713037E79
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7571A3C5552;
-	Wed,  8 Apr 2026 18:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE383D903D;
+	Wed,  8 Apr 2026 18:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKaHIwnp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ypp9Qbtp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DDE3176E4;
-	Wed,  8 Apr 2026 18:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A653B19A3;
+	Wed,  8 Apr 2026 18:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674721; cv=none; b=NdWQKSjfdtcgQrzopQrH2Wmq08M0yE2Pup4DVufMm7Da1kh5o0Gc7F3qxIvhzkfXd5pHwmKXC8juzdCxfZKuhubbWth1QEhtiPTpeBd72mZ/SDda8RPBo3U/4B+Nal24hUmRNBlpVsvCFUFdd32VDu877GiaYUY/tm999wXLQeA=
+	t=1775673989; cv=none; b=t+DhEICxnYAvEqaCNBWo8WA0AoJo04oqGBzcRprtQtbCK3DIx2p/+xwKkoSS8bjwQ4t8sYCjfdh2IQqI1nmtMrpfEo5tQzfObzhsFjYeo7whDwMq7/9yoVq26XhpqFoJNpkG10725LkCSJL4j/I3mL3SYjQ8GvsAkeEMrT+ZEQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674721; c=relaxed/simple;
-	bh=1iuTqwg9wUqi8dWkoOkVr44/gyWOUZrmWMUuX5bA3ak=;
+	s=arc-20240116; t=1775673989; c=relaxed/simple;
+	bh=QQYx5Q5JIrLEjAbiSaJfsCyGdH4N+roPRayZ0nIZ4EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZqc2i7sAE/5FlXMn1lo0lSTtdQkwBtEFhsHlFHAKyAEhXgekC8JcsWbV/B9QrkXiFwVhNz/4rW2cvO3mmjqmxjeKkac+iZ0aYKglc8tNgrxcZyIIfuljqB52XeQdmzgu+fpJLcHGQp0YbPz2+c7mTIMcqvqQAvn2Jh7VKjNvuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKaHIwnp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3718C19421;
-	Wed,  8 Apr 2026 18:58:40 +0000 (UTC)
+	 MIME-Version; b=Z5BPZBE/WNEdCmq1nahqI7unBJiz40NAFw0Q2R1HQqKjOgF07s2MIDipgRf7D/hhpKyOMo2lMEloqhLZo12OOSd32X5Mwp+vKxOoHkY9HmDHPN5WIXnP/izXuZLhnStwn84qFfPWmZILYQ9G68zE9r6YS1Mr/SBAWZXKl9y63LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ypp9Qbtp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0746C19421;
+	Wed,  8 Apr 2026 18:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674721;
-	bh=1iuTqwg9wUqi8dWkoOkVr44/gyWOUZrmWMUuX5bA3ak=;
+	s=korg; t=1775673989;
+	bh=QQYx5Q5JIrLEjAbiSaJfsCyGdH4N+roPRayZ0nIZ4EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YKaHIwnpM9pi28ZcALWt6xFdscw+fQGfbN0guUZJ7FCpTwqgS0swAsP79YKGDtk1Z
-	 IZrhRoF/2OAbRtouEBGTiKeXBKfRb1fC+ot8Dlbg3PW64EzdMzRpT09wXr228erKDz
-	 7pBhzfuKdI5F7fTOBX4NqlPp6cRO0BTXk/MOJ7Ak=
+	b=Ypp9QbtpfMVftVT3/IH7Ql8JVfmBKnlaSefQkX9+10JvhqDLXqXYkno9ZaV9rlUPH
+	 R6z8cGH2uUuBiYxieZQwzj13S6rBadz1FjHBTSNDu9vgpeOkV4nUNTGOneVGlZV/58
+	 3+60XRDuudC4kiUOevroIla9NbK8QqyGFfMIvl6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.19 206/311] drm/amdgpu/pm: drop SMU driver if version not matched messages
+	stable <stable@kernel.org>,
+	Yongchao Wu <yongchao.wu@autochips.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.12 166/242] usb: cdns3: gadget: fix state inconsistency on gadget init failure
 Date: Wed,  8 Apr 2026 20:03:26 +0200
-Message-ID: <20260408175947.098770041@linuxfoundation.org>
+Message-ID: <20260408175933.301322293@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235159-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234875-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,66 +89,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: CFD233C2F28
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[autochips.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B1D763C185F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Yongchao Wu <yongchao.wu@autochips.com>
 
-commit a3ffaa5b397f4df9d6ac16b10583e9df8e6fa471 upstream.
+commit c32f8748d70c8fc77676ad92ed76cede17bf2c48 upstream.
 
-It just leads to user confusion.
+When cdns3_gadget_start() fails, the DRD hardware is left in gadget mode
+while software state remains INACTIVE, creating hardware/software state
+inconsistency.
 
-Cc: Yang Wang <kevinyang.wang@amd.com>
-Cc: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e471627d56272a791972f25e467348b611c31713)
-Cc: stable@vger.kernel.org
+When switching to host mode via sysfs:
+  echo host > /sys/class/usb_role/13180000.usb-role-switch/role
+
+The role state is not set to CDNS_ROLE_STATE_ACTIVE due to the error,
+so cdns_role_stop() skips cleanup because state is still INACTIVE.
+This violates the DRD controller design specification (Figure22),
+which requires returning to idle state before switching roles.
+
+This leads to a synchronous external abort in xhci_gen_setup() when
+setting up the host controller:
+
+[  516.440698] configfs-gadget 13180000.usb: failed to start g1: -19
+[  516.442035] cdns-usb3 13180000.usb: Failed to add gadget
+[  516.443278] cdns-usb3 13180000.usb: set role 2 has failed
+...
+[ 1301.375722] xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
+[ 1301.377716] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+[ 1301.382485] pc : xhci_gen_setup+0xa4/0x408
+[ 1301.393391] backtrace:
+    ...
+    xhci_gen_setup+0xa4/0x408    <-- CRASH
+    xhci_plat_setup+0x44/0x58
+    usb_add_hcd+0x284/0x678
+    ...
+    cdns_role_set+0x9c/0xbc        <-- Role switch
+
+Fix by calling cdns_drd_gadget_off() in the error path to properly
+clean up the DRD gadget state.
+
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260401001000.5761-1-yongchao.wu@autochips.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c |    1 -
- drivers/gpu/drm/amd/pm/swsmu/smu12/smu_v12_0.c |    1 -
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c |    1 -
- 3 files changed, 3 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-@@ -262,7 +262,6 @@ int smu_v11_0_check_fw_version(struct sm
- 			"smu fw program = %d, version = 0x%08x (%d.%d.%d)\n",
- 			smu->smc_driver_if_version, if_version,
- 			smu_program, smu_version, smu_major, smu_minor, smu_debug);
--		dev_info(smu->adev->dev, "SMU driver if version not matched\n");
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -3432,6 +3432,7 @@ static int __cdns3_gadget_init(struct cd
+ 	ret = cdns3_gadget_start(cdns);
+ 	if (ret) {
+ 		pm_runtime_put_sync(cdns->dev);
++		cdns_drd_gadget_off(cdns);
+ 		return ret;
  	}
  
- 	return ret;
---- a/drivers/gpu/drm/amd/pm/swsmu/smu12/smu_v12_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu12/smu_v12_0.c
-@@ -101,7 +101,6 @@ int smu_v12_0_check_fw_version(struct sm
- 			"smu fw program = %d, smu fw version = 0x%08x (%d.%d.%d)\n",
- 			smu->smc_driver_if_version, if_version,
- 			smu_program, smu_version, smu_major, smu_minor, smu_debug);
--		dev_info(smu->adev->dev, "SMU driver if version not matched\n");
- 	}
- 
- 	return ret;
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
-@@ -284,7 +284,6 @@ int smu_v14_0_check_fw_version(struct sm
- 			 "smu fw program = %d, smu fw version = 0x%08x (%d.%d.%d)\n",
- 			 smu->smc_driver_if_version, if_version,
- 			 smu_program, smu_version, smu_major, smu_minor, smu_debug);
--		dev_info(adev->dev, "SMU driver if version not matched\n");
- 	}
- 
- 	return ret;
 
 
 
