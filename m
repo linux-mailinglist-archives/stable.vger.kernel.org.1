@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-235040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KbeBj+k1mmUGwgAu9opvQ
-	(envelope-from <stable+bounces-235040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:51 +0200
+	id gA3nCDij1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7693C1DFE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782ED3C1A93
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C6AD300AD9D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE3D330B1C0A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB693D75C9;
-	Wed,  8 Apr 2026 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808E83D411F;
+	Wed,  8 Apr 2026 18:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN7I69KF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6LvRYtO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52361337B81;
-	Wed,  8 Apr 2026 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F8D28C87C;
+	Wed,  8 Apr 2026 18:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674415; cv=none; b=SWeZ2qmnWFOy0Ng8OJTxygB1vAmNh4H6TZvHekoNuGyNOMYESaWh96KBCU+7Nwkj4JRlMa8mW+qcMLscY7XWxUXzmqtvG8Yyj0txsn1Lm47bPVToos1MX6e51t+mQeCerUkjMimZsz+bmcfgFAKfSk/P7g7BNfFzNLWljs5Eq10=
+	t=1775673109; cv=none; b=mrkvc2od/1PnHi1mGoq+GntBiluW1TV7lLi5VLhE2F7u8o2NGSv8tGK79mlJ1x/s+FRTPfCdiBBEPHZahp7tWtlvrpqFguAiQArhgUerv6w2hr+vBlVglxKvPls700upFQhTF7djRvjtM3+HY111O0eCs3Au7t9Q8FrdaDAfCVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674415; c=relaxed/simple;
-	bh=/6wfnpR8Q8hgALI+nIXR/BxFxWJd71XvtKKKVW+x8As=;
+	s=arc-20240116; t=1775673109; c=relaxed/simple;
+	bh=0emDNX3TmipGxb6Q0sK5TgvXIDpcdS500fSjcR7k94w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/cJZgccQDhxKPaqOrvgO2q/K1nRVOtRNUpll+zG6uOiqFx7PMsvjPx920pKaaKYMqJkG93s+uG6vh3tw9Xlc191FewI8f+GKNMlH8jMCefnadoa0jpalqd9hSxuMf3awIlhnnFCIctiJkkYEzQcreK9ekcH20zexg8p3JM+Js4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN7I69KF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB626C19421;
-	Wed,  8 Apr 2026 18:53:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NS6jAXEENnyoNyo8G9Gl6l3JSm6wM1uEifuMjajvgc12MZ2grkph//u/w98AC1GCadqAkjbM1J3v7qvAu+bvvpZmY2VOKT/TkeUL0GmI5uBYN2NjyMWazQZBa+eIe+6B/w8Qoe5XXkL1UiQF+dtZ+SyWBeoOUP25ThM7CD08WjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6LvRYtO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AB6C19421;
+	Wed,  8 Apr 2026 18:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674415;
-	bh=/6wfnpR8Q8hgALI+nIXR/BxFxWJd71XvtKKKVW+x8As=;
+	s=korg; t=1775673108;
+	bh=0emDNX3TmipGxb6Q0sK5TgvXIDpcdS500fSjcR7k94w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZN7I69KFxuwDrFuMcXf90ZTIU4m8P/JlAu7FYUZjLphoGgBA/A6YWs/ZU18c1rzth
-	 Tdu3lYi7AtfojtNO7Va2hOi1Lix+TDQJxkod63Z5GpY7yRzOii9WVRdBEggyJlUcTH
-	 Q8ycluNuXI2C6j8gBa3eLi1l6HqjUuVcjIdowukM=
+	b=G6LvRYtOF8CR+bGJTfUglbtnaYVvyau8OriqoZwL6wYF0chAEACHAMmb7z/gTiFZY
+	 t96KKo2Sx7myDrB4X4St4G2EZffKnwa5G6N3d0TO66QNk4sZg0r3ofAYGDWhAYfYPJ
+	 AQrqAiAZfobezKibfNPyYVjZjQ5+yjGC3jYp5nNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 088/311] netfilter: ctnetlink: zero expect NAT fields when CTA_EXPECT_NAT absent
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Maarten Lankhorst <dev@lankhorst.se>
+Subject: [PATCH 6.18 103/277] Revert "drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug"
 Date: Wed,  8 Apr 2026 20:01:28 +0200
-Message-ID: <20260408175942.699801554@linuxfoundation.org>
+Message-ID: <20260408175937.717602385@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,210 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234534-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-235040-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 7C7693C1DFE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ffwll.ch:email,lankhorst.se:email,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 782ED3C1A93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit 35177c6877134a21315f37d57a5577846225623e ]
+commit 45ebe43ea00d6b9f5b3e0db9c35b8ca2a96b7e70 upstream.
 
-ctnetlink_alloc_expect() allocates expectations from a non-zeroing
-slab cache via nf_ct_expect_alloc().  When CTA_EXPECT_NAT is not
-present in the netlink message, saved_addr and saved_proto are
-never initialized.  Stale data from a previous slab occupant can
-then be dumped to userspace by ctnetlink_exp_dump_expect(), which
-checks these fields to decide whether to emit CTA_EXPECT_NAT.
+This reverts commit 6bee098b91417654703e17eb5c1822c6dfd0c01d.
 
-The safe sibling nf_ct_expect_init(), used by the packet path,
-explicitly zeroes these fields.
+Den 2026-03-25 kl. 22:11, skrev Simona Vetter:
+> On Wed, Mar 25, 2026 at 10:26:40AM -0700, Guenter Roeck wrote:
+>> Hi,
+>>
+>> On Fri, Mar 13, 2026 at 04:17:27PM +0100, Maarten Lankhorst wrote:
+>>> When trying to do a rather aggressive test of igt's "xe_module_load
+>>> --r reload" with a full desktop environment and game running I noticed
+>>> a few OOPSes when dereferencing freed pointers, related to
+>>> framebuffers and property blobs after the compositor exits.
+>>>
+>>> Solve this by guarding the freeing in drm_file with drm_dev_enter/exit,
+>>> and immediately put the references from struct drm_file objects during
+>>> drm_dev_unplug().
+>>>
+>>
+>> With this patch in v6.18.20, I get the warning backtraces below.
+>> The backtraces are gone with the patch reverted.
+>
+> Yeah, this needs to be reverted, reasoning below. Maarten, can you please
+> take care of that and feed the revert through the usual channels? I don't
+> think it's critical enough that we need to fast-track this into drm.git
+> directly.
+>
+> Quoting the patch here again:
+>
+>>  drivers/gpu/drm/drm_file.c        | 5 ++++-
+>>  drivers/gpu/drm/drm_mode_config.c | 9 ++++++---
+>>  2 files changed, 10 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
+>> index ec820686b3021..f52141f842a1f 100644
+>> --- a/drivers/gpu/drm/drm_file.c
+>> +++ b/drivers/gpu/drm/drm_file.c
+>> @@ -233,6 +233,7 @@ static void drm_events_release(struct drm_file *file_priv)
+>>  void drm_file_free(struct drm_file *file)
+>>  {
+>>  	struct drm_device *dev;
+>> +	int idx;
+>>
+>>  	if (!file)
+>>  		return;
+>> @@ -249,9 +250,11 @@ void drm_file_free(struct drm_file *file)
+>>
+>>  	drm_events_release(file);
+>>
+>> -	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
+>> +	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
+>> +	    drm_dev_enter(dev, &idx)) {
+>
+> This is misplaced for two reasons:
+>
+> - Even if we'd want to guarantee that we hold a drm_dev_enter/exit
+>   reference during framebuffer teardown, we'd need to do this
+>   _consistently over all callsites. Not ad-hoc in just one place that a
+>   testcase hits. This also means kerneldoc updates of the relevant hooks
+>   and at least a bunch of acks from other driver people to document the
+>   consensus.
+>
+> - More importantly, this is driver responsibilities in general unless we
+>   have extremely good reasons to the contrary. Which means this must be
+>   placed in xe.
+>
+>>  		drm_fb_release(file);
+>>  		drm_property_destroy_user_blobs(dev, file);
+>> +		drm_dev_exit(idx);
+>>  	}
+>>
+>>  	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+>> diff --git a/drivers/gpu/drm/drm_mode_config.c b/drivers/gpu/drm/drm_mode_config.c
+>> index 84ae8a23a3678..e349418978f79 100644
+>> --- a/drivers/gpu/drm/drm_mode_config.c
+>> +++ b/drivers/gpu/drm/drm_mode_config.c
+>> @@ -583,10 +583,13 @@ void drm_mode_config_cleanup(struct drm_device *dev)
+>>  	 */
+>>  	WARN_ON(!list_empty(&dev->mode_config.fb_list));
+>>  	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
+>> -		struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
+>> +		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
+>> +			struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
+>
+> This is also wrong:
+>
+> - Firstly, it's a completely independent bug, we do not smash two bugfixes
+>   into one patch.
+>
+> - Secondly, it's again a driver bug: drm_mode_cleanup must be called when
+>   the last drm_device reference disappears (hence the existence of
+>   drmm_mode_config_init), not when the driver gets unbound. The fact that
+>   this shows up in a callchain from a devres cleanup means the intel
+>   driver gets this wrong (like almost everyone else because historically
+>   we didn't know better).
+>
+>   If we don't follow this rule, then we get races with this code here
+>   running concurrently with drm_file fb cleanups, which just does not
+>   work. Review pointed that out, but then shrugged it off with a confused
+>   explanation:
+>
+>   https://lore.kernel.org/all/e61e64c796ccfb17ae673331a3df4b877bf42d82.camel@linux.intel.com/
+>
+>   Yes this also means a lot of the other drm_device teardown that drivers
+>   do happens way too early. There is a massive can of worms here of a
+>   magnitude that most likely is much, much bigger than what you can
+>   backport to stable kernels. Hotunplug is _hard_.
 
-Zero saved_addr, saved_proto and dir in the else branch, guarded
-by IS_ENABLED(CONFIG_NF_NAT) since these fields only exist when
-NAT is enabled.
+Back to the drawing board, and fixing it in the intel display driver
+instead.
 
-Confirmed by priming the expect slab with NAT-bearing expectations,
-freeing them, creating a new expectation without CTA_EXPECT_NAT,
-and observing that the ctnetlink dump emits a spurious
-CTA_EXPECT_NAT containing stale data from the prior allocation.
-
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 6bee098b9141 ("drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Link: https://patch.msgid.link/20260326082217.39941-2-dev@lankhorst.se
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/drm_file.c        |    5 +----
+ drivers/gpu/drm/drm_mode_config.c |    9 +++------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index fea750653e967..3b5da5e7e9d27 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3576,6 +3576,12 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 						 exp, nf_ct_l3num(ct));
- 		if (err < 0)
- 			goto err_out;
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	} else {
-+		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
-+		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
-+		exp->dir = 0;
-+#endif
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -233,7 +233,6 @@ static void drm_events_release(struct dr
+ void drm_file_free(struct drm_file *file)
+ {
+ 	struct drm_device *dev;
+-	int idx;
+ 
+ 	if (!file)
+ 		return;
+@@ -250,11 +249,9 @@ void drm_file_free(struct drm_file *file
+ 
+ 	drm_events_release(file);
+ 
+-	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
+-	    drm_dev_enter(dev, &idx)) {
++	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
+ 		drm_fb_release(file);
+ 		drm_property_destroy_user_blobs(dev, file);
+-		drm_dev_exit(idx);
  	}
- 	return exp;
- err_out:
--- 
-2.53.0
-
+ 
+ 	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+--- a/drivers/gpu/drm/drm_mode_config.c
++++ b/drivers/gpu/drm/drm_mode_config.c
+@@ -570,13 +570,10 @@ void drm_mode_config_cleanup(struct drm_
+ 	 */
+ 	WARN_ON(!list_empty(&dev->mode_config.fb_list));
+ 	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
+-		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
+-			struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
++		struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
+ 
+-			drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
+-			drm_framebuffer_print_info(&p, 1, fb);
+-		}
+-		list_del_init(&fb->filp_head);
++		drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
++		drm_framebuffer_print_info(&p, 1, fb);
+ 		drm_framebuffer_free(&fb->base.refcount);
+ 	}
+ 
 
 
 
