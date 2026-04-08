@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEGDF3Cb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:16 +0200
+	id KMj5Br+f1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E603E3C04F3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D83D3C1000
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4404301584C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 54F23300F786
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708BB386550;
-	Wed,  8 Apr 2026 18:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9808B3AF643;
+	Wed,  8 Apr 2026 18:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVsFBFig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgyRgLrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33172385513;
-	Wed,  8 Apr 2026 18:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C07136166F;
+	Wed,  8 Apr 2026 18:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672134; cv=none; b=j+P19t/rg0wr1NCxMYXp/Ql5RsCo1/tMwCvnL/YMXDwbQAzxwwdRiZHPnBTczCjvVZbtdT8UCVhovw7bmMLV6iFGkMd/1tzu1RGljJIkkc6AzzwxBddeSlTzqRJ3NFX4Kv4LmpDbNWA1UWJEKWOpCGmtKf/m/bhykaSsiI5OjCo=
+	t=1775673189; cv=none; b=Q0gootrJIIFTjPfqEFKDo/WeXat0eangbdOuyCMooShyAzIN+WzK1himjjkM0VS8Hb8J3GFQZMjfHJkv//dMHY9Efv48icJDp4Nu6yJjZ+vcIS/SuoiNtyt8JnOkZKKkq5i/qIbyCYcscpRzwqxygOvQbWHuwrXdDEFtKtIeaF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672134; c=relaxed/simple;
-	bh=HqQUYJYVFxIs8MdAWpCkj+nvK7t2ITfqL1wDpbiWHIQ=;
+	s=arc-20240116; t=1775673189; c=relaxed/simple;
+	bh=GZbfwmKxFLJO1ywtSJ8T+xuCa1mcOuLj/Wpv9BQNSb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZO1k0eOItqZ5gpEacoBzVcjCaZcnprC8Meuntm4mqWjYI+T7rFJD1N8dgqJKn9odl1pfzuTQAXxonEwsnQSmTjJl7M3YhNURLDlVJgYzHy4eUsJDeEUJIE6YAER1J7T/haVDzn/PbohT+hB0c/wUxWHsY2K/xA83lRP9Mr83ihc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVsFBFig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA1EC19421;
-	Wed,  8 Apr 2026 18:15:33 +0000 (UTC)
+	 MIME-Version; b=BGbSvxb9uqoh5SkgkuZIGZUOiFXxIKXRQscUykof8JBKQEdpbL2SBnFoFYi2RMzrRAP8safP1BiEAl8Seutyv9lMBdjHmfOHvvrqnGBegl8jgtyjONz+eSHw0bxOU/+FfeZLwZw5GAYD2Qa7MZTevvgtI10yPJQGGzzmWYc3AvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgyRgLrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D2DC19421;
+	Wed,  8 Apr 2026 18:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672134;
-	bh=HqQUYJYVFxIs8MdAWpCkj+nvK7t2ITfqL1wDpbiWHIQ=;
+	s=korg; t=1775673189;
+	bh=GZbfwmKxFLJO1ywtSJ8T+xuCa1mcOuLj/Wpv9BQNSb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVsFBFigLZP98w6SzCv5qT95iKxeCEqZvRtiSAKCdsW2qTUJKrdvZvZo5yS1FGeA6
-	 AdrAfFQb/4TKOsemoC4+wfM5qmz2dZWIfL4fhWsGMKhZbsTTOfR0pSBCyrHRflZG8c
-	 iak1m8dJGGAhCC6ENYrphnuye8+jZxiowaZrlrj8=
+	b=sgyRgLrrrArgqA2FTvzfio14CYs/so1XaKLxszlraeSeCvL1TYWdPcmhWI+/zmOAp
+	 6Bzy23GqqiiMvjIQORMoQS7masjDrcNUvBnul7lPwlsN5P3lAD/8WZ2Mj5sG4bSHgM
+	 WDqkNrjBegs6D4mgD4MTOrNAX9UA4Wp7WMPDrnrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Karsten Hohmeier <linux@hohmatik.de>
-Subject: [PATCH 6.1 203/312] ALSA: ctxfi: Fix missing SPDIFI1 index handling
+	Cheng-Yang Chou <yphbchou0911@gmail.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.18 135/277] sched_ext: Fix inconsistent NUMA node lookup in scx_select_cpu_dfl()
 Date: Wed,  8 Apr 2026 20:02:00 +0200
-Message-ID: <20260408175941.342344705@linuxfoundation.org>
+Message-ID: <20260408175938.915489578@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +66,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234565-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234158-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E603E3C04F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3D83D3C1000
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cheng-Yang Chou <yphbchou0911@gmail.com>
 
-commit b045ab3dff97edae6d538eeff900a34c098761f8 upstream.
+commit db08b1940f4beb25460b4a4e9da3446454f2e8fe upstream.
 
-SPDIF1 DAIO type isn't properly handled in daio_device_index() for
-hw20k2, and it returned -EINVAL, which ended up with the out-of-bounds
-array access.  Follow the hw20k1 pattern and return the proper index
-for this type, too.
+In the WAKE_SYNC path of scx_select_cpu_dfl(), waker_node was computed
+with cpu_to_node(), while node (for prev_cpu) was computed with
+scx_cpu_node_if_enabled(). When scx_builtin_idle_per_node is disabled,
+idle_cpumask(waker_node) is called with a real node ID even though
+per-node idle tracking is disabled, resulting in undefined behavior.
 
-Reported-and-tested-by: Karsten Hohmeier <linux@hohmatik.de>
-Closes: https://lore.kernel.org/20260315155004.15633-1-linux@hohmatik.de
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260329091240.420194-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix by using scx_cpu_node_if_enabled() for waker_node as well, ensuring
+both variables are computed consistently.
+
+Fixes: 48849271e6611 ("sched_ext: idle: Per-node idle cpumasks")
+Cc: stable@vger.kernel.org # v6.15+
+Signed-off-by: Cheng-Yang Chou <yphbchou0911@gmail.com>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/ctxfi/ctdaio.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/ext_idle.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/ctxfi/ctdaio.c
-+++ b/sound/pci/ctxfi/ctdaio.c
-@@ -119,6 +119,7 @@ static unsigned int daio_device_index(en
- 		switch (type) {
- 		case SPDIFOO:	return 0;
- 		case SPDIFIO:	return 0;
-+		case SPDIFI1:	return 1;
- 		case LINEO1:	return 4;
- 		case LINEO2:	return 7;
- 		case LINEO3:	return 5;
+diff --git a/kernel/sched/ext_idle.c b/kernel/sched/ext_idle.c
+index ba298ac3ce6c..0ae93cd64004 100644
+--- a/kernel/sched/ext_idle.c
++++ b/kernel/sched/ext_idle.c
+@@ -543,7 +543,7 @@ s32 scx_select_cpu_dfl(struct task_struct *p, s32 prev_cpu, u64 wake_flags,
+ 		 * piled up on it even if there is an idle core elsewhere on
+ 		 * the system.
+ 		 */
+-		waker_node = cpu_to_node(cpu);
++		waker_node = scx_cpu_node_if_enabled(cpu);
+ 		if (!(current->flags & PF_EXITING) &&
+ 		    cpu_rq(cpu)->scx.local_dsq.nr == 0 &&
+ 		    (!(flags & SCX_PICK_IDLE_IN_NODE) || (waker_node == node)) &&
+-- 
+2.53.0
+
 
 
 
