@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-235030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCB3N8ek1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-235030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:07 +0200
+	id +POCBFqn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BE43C1FE8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613B33C26CF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63137304242D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F019431AA192
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4703D905B;
-	Wed,  8 Apr 2026 18:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8CA3D75AF;
+	Wed,  8 Apr 2026 18:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9npMfGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7974+Uw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A03D9045;
-	Wed,  8 Apr 2026 18:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F86C3624B0;
+	Wed,  8 Apr 2026 18:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674389; cv=none; b=k9UKYLaVq8xzjg6pZCVF06lmpQffUV6Rb2ABRe4f87Zomg1FKi0NH5D7mm8GRFVuZydH9DJ/IAYGQ+bBEfr0UZ2p2G4sZT8bMh/V2TiF7WiPw6tALfaPIUKJmkMXq32tZ6LQVJHXFsi/HmUfiZfhdOMi+t7WXDerdAtGQYJUdnE=
+	t=1775673740; cv=none; b=USXm107caMshPQAPCJmu0ZcgWWNFO7wtmJFfjjAQJyjbLGsPmSObaNVwbwqf0VGspePi7rGjJQbh7g0YmdmZ4961pCMiDDDU9/ag3s9g0xA7+sOKQNj+y+P8gTijI5c7d+4UVLH1UI4Una2ivL6RzRLKCNbfNTiDEZeBbqy59Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674389; c=relaxed/simple;
-	bh=dv8H4e3CUbIE+t7vyxYnQw+vPpdkCxGH/i34FOOCmfw=;
+	s=arc-20240116; t=1775673740; c=relaxed/simple;
+	bh=QSFRvWX0nnPnpa9OzPYSieI5bqYTxZlSK8YKVPjh6Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdkRZ6iyBO1x+vBrAPFQys53q96HADw5xy3Bi6dC75cyTITRtv1b871jLGaSwyA1h6FzJSkDUxGBQnuEwroNWzxe79eR2GZLywRPRh0grrggqjsi6RDJNcqts5Ie8uqBP0My2plMHBqRSef45ljN8BEnzLiVtGR1zi2BTOCKuQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9npMfGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14046C2BC87;
-	Wed,  8 Apr 2026 18:53:08 +0000 (UTC)
+	 MIME-Version; b=T4z4GXmnZ2ISoWDYyBLd56HmurSKQzZ6x7c0f3Uvcn1J7J8QqKO0vCNKNTomdVxM6+pcscJkbmn8p4kt6/1jDUXbdKSTWKO0y5uw18ZXamix26DMLIUnBzKuOTRAH8ms/e6bPtFoddw5/xfWRErApGOGUXdlNwtzeOyjy6pYTAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7974+Uw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E25C19421;
+	Wed,  8 Apr 2026 18:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674389;
-	bh=dv8H4e3CUbIE+t7vyxYnQw+vPpdkCxGH/i34FOOCmfw=;
+	s=korg; t=1775673740;
+	bh=QSFRvWX0nnPnpa9OzPYSieI5bqYTxZlSK8YKVPjh6Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9npMfGcIu3L2/ybV3yXJB6CsRB4HmhySj2Bmpnk5Jqs8j1N5ONoGlnDhR9+IItOA
-	 3T3Vhe0RWFY79y9cSdIRQe5Pya5MUzBjmBDtEkCkTjsga75zfqPUhYkTf6J4t7ek9A
-	 E93yyEHoCowlRXfG0H7PuXGqcvLUNF3n9drpfCqQ=
+	b=f7974+UwEvGf+OZgksegQnesdRfCF3S+jlJdqlKXL8BzieVmdKQ/CR+uQViUQcZTu
+	 GPgXVCFx7IaQr+vpts7qoWcihq5/zkvrpvaUw5h7HSBjthVqmRupmsOs7zGEge5EDc
+	 GF6LO8J+35BJC8fV8DbApo76KGv6hRXRTAmP107A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 079/311] mptcp: add eat_recv_skb helper
+Subject: [PATCH 6.12 039/242] spi: geni-qcom: Check DMA interrupts early in ISR
 Date: Wed,  8 Apr 2026 20:01:19 +0200
-Message-ID: <20260408175942.363741192@linuxfoundation.org>
+Message-ID: <20260408175928.534570044@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235030-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234779-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,78 +86,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,kylinos.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 88BE43C1FE8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 613B33C26CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit 436510df0cafb1bc36f12e92e0e76599be28d8f4 ]
+[ Upstream commit 8c89a077ca796a2fe248c584e9d7e66cff0388c8 ]
 
-This patch extracts the free skb related code in __mptcp_recvmsg_mskq()
-into a new helper mptcp_eat_recv_skb().
+The current interrupt handler only checks the GENI main IRQ status
+(m_irq) before deciding to return IRQ_NONE. This can lead to spurious
+IRQ_NONE returns when DMA interrupts are pending but m_irq is zero.
 
-This new helper will be used in the next patch.
+Move the DMA TX/RX status register reads to the beginning of the ISR,
+right after reading m_irq. Update the early return condition to check
+all three status registers (m_irq, dma_tx_status, dma_rx_status) before
+returning IRQ_NONE.
 
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260130-net-next-mptcp-splice-v2-1-31332ba70d7f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5dd8025a49c2 ("mptcp: fix soft lockup in mptcp_recvmsg()")
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index bad9fc0f27d9c..a29f959b123a4 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1989,6 +1989,17 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 38606c9e12ee8..dea4e524553c4 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -952,10 +952,13 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 	struct spi_controller *spi = data;
+ 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+ 	struct geni_se *se = &mas->se;
+-	u32 m_irq;
++	u32 m_irq, dma_tx_status, dma_rx_status;
  
- static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied);
- 
-+static void mptcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
-+{
-+	/* avoid the indirect call, we know the destructor is sock_rfree */
-+	skb->destructor = NULL;
-+	skb->sk = NULL;
-+	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
-+	sk_mem_uncharge(sk, skb->truesize);
-+	__skb_unlink(skb, &sk->sk_receive_queue);
-+	skb_attempt_defer_free(skb);
-+}
+ 	m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
+-	if (!m_irq)
++	dma_tx_status = readl_relaxed(se->base + SE_DMA_TX_IRQ_STAT);
++	dma_rx_status = readl_relaxed(se->base + SE_DMA_RX_IRQ_STAT);
 +
- static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
-@@ -2043,13 +2054,7 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 				break;
- 			}
++	if (!m_irq && !dma_tx_status && !dma_rx_status)
+ 		return IRQ_NONE;
  
--			/* avoid the indirect call, we know the destructor is sock_rfree */
--			skb->destructor = NULL;
--			skb->sk = NULL;
--			atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
--			sk_mem_uncharge(sk, skb->truesize);
--			__skb_unlink(skb, &sk->sk_receive_queue);
--			skb_attempt_defer_free(skb);
-+			mptcp_eat_recv_skb(sk, skb);
+ 	if (m_irq & (M_CMD_OVERRUN_EN | M_ILLEGAL_CMD_EN | M_CMD_FAILURE_EN |
+@@ -1003,8 +1006,6 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
  		}
+ 	} else if (mas->cur_xfer_mode == GENI_SE_DMA) {
+ 		const struct spi_transfer *xfer = mas->cur_xfer;
+-		u32 dma_tx_status = readl_relaxed(se->base + SE_DMA_TX_IRQ_STAT);
+-		u32 dma_rx_status = readl_relaxed(se->base + SE_DMA_RX_IRQ_STAT);
  
- 		if (copied >= len)
+ 		if (dma_tx_status)
+ 			writel(dma_tx_status, se->base + SE_DMA_TX_IRQ_CLR);
 -- 
 2.53.0
 
