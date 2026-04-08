@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFOsNc2i1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:41 +0200
+	id SIqqHpGa1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EA63C18DF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6FC3C02E6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABD30303DA8D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 83B1A300BBB8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15383D75C3;
-	Wed,  8 Apr 2026 18:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769103D4134;
+	Wed,  8 Apr 2026 18:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4+JgrQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWtq0YtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6458C347503;
-	Wed,  8 Apr 2026 18:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A892347503;
+	Wed,  8 Apr 2026 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673003; cv=none; b=qTPZcgxry9i/VmdAwndV7LmC4Waqs+OI7at2rrDF9HeYX5FUnhYrgMhMSJ9UPS1aKPIZTkN0WxNicoC+ejJQVmJ5BR7IxqDhPyJOov0Xjp7t48vF54F3WuEb+BH5HOzzBe2sKnIUO+tsLorxzMzJjC40yH2WcQqZesWb3SLjeX8=
+	t=1775671949; cv=none; b=TR9K5YS9RqP4NIECS3Fg67E0k1REAC9iIUUR5z7la+O24qfStQbpkeE3wikzbaVnZSn0tSgo9gfrL69pOHTh5s8hMPQJPN0VIgfLL4aSmIxSM8BsphFYoEbufY2FOstsdp9bmm/6Zpbmzx1f6hgQNoDCCCpcGSeiCqsvM2qBtLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673003; c=relaxed/simple;
-	bh=LAgfnQsg1532HhLkjRERl1fD4emoFlTQbc9zyn3C4nQ=;
+	s=arc-20240116; t=1775671949; c=relaxed/simple;
+	bh=8asqhQ1oO6FpVDWdwVzRSFkcwsvc9olqo19V6ORTHGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5QliUIFzuR6ZPxJQmyG9ujptrO8x3BDv7u0smSeERadc+obQdQVHCmup2VPVq4p4LHis5yG8ZgLvhhziy5aiefuRBBhC5GuFQN+QvPY0et9Ik2e5hmltolFh3VJxW+mNaxP/XJxw76uM6B47h/YVkOSgfSwCEmD1tomEiwpPX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4+JgrQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDC4C19421;
-	Wed,  8 Apr 2026 18:30:02 +0000 (UTC)
+	 MIME-Version; b=g51giLcvIButjQhShjO4OxRbcJNSiWlYtyW7fGW7J8wj4hjomoRlXlOYOKlj7lf7+ShMiO4w9a0htVGUhmRYo98u0XEPMiG/Q7xYhtSQMKlXpY5nKqiMb+wBE8d/Y0/x9M0KkpsryhZFjalYL6OH0WtmmBogeslAdgfShIwBs1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWtq0YtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D8EC19421;
+	Wed,  8 Apr 2026 18:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673003;
-	bh=LAgfnQsg1532HhLkjRERl1fD4emoFlTQbc9zyn3C4nQ=;
+	s=korg; t=1775671948;
+	bh=8asqhQ1oO6FpVDWdwVzRSFkcwsvc9olqo19V6ORTHGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4+JgrQYTqZMYn2IT1zFt0Skm3rNsWh7slxgDjagTP/wjCBdPDlqFlYXmlY6wZaw9
-	 cm4eU48PUB6dDvH/Iw/5sVRw4huaFJ8Ax3keEbRn8lJeBRjNQ6M05V5GQvsXzsW9bm
-	 eQToAEYkijZ/6Q0RIjWhEYfYCe1duTaj7FZWBKhc=
+	b=MWtq0YtXWqmNRi2N4RvJkrotF4Kg+Luf5eCT50+vd7FMf8hdydbmS7kGxKs+ga7O6
+	 dr3kxAkGSBHCs3hmZCX+0K+QvZm90Q62BuD1H6j5to3gv1+WIRa9PAD1YrU7I4Vh/2
+	 gtXJbAp/1H/xqfgYNs6LWNiudVhWYsJPYOf/7MdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiasong <lixiasong1@huawei.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Lijun Pan <lijun.pan@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 063/277] mptcp: fix soft lockup in mptcp_recvmsg()
+Subject: [PATCH 6.1 131/312] dmaengine: idxd: Remove usage of the deprecated ida_simple_xx() API
 Date: Wed,  8 Apr 2026 20:00:48 +0200
-Message-ID: <20260408175936.212677066@linuxfoundation.org>
+Message-ID: <20260408175938.664816328@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,150 +70,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wanadoo.fr,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234086-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234493-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 38EA63C18DF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1F6FC3C02E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Xiasong <lixiasong1@huawei.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 5dd8025a49c268ab6b94d978532af3ad341132a7 ]
+[ Upstream commit 1075ee66a8c19bfa375b19c236fd6a22a867f138 ]
 
-syzbot reported a soft lockup in mptcp_recvmsg() [0].
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
-removed from the sk_receive_queue. This causes sk_wait_data() to always
-find available data and never perform actual waiting, leading to a soft
-lockup.
+This is less verbose.
 
-Fix this by adding a 'last' parameter to track the last peeked skb.
-This allows sk_wait_data() to make informed waiting decisions and prevent
-infinite loops when MSG_PEEK is used.
+Note that the upper limit of ida_simple_get() is exclusive, but the one of
+ida_alloc_range() is inclusive. Sothis change allows one more device.
 
-[0]:
-watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
-Modules linked in:
-CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_wait_data+0x15/0x190
-Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
-RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
-RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
-R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
-R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
-FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
- inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
- sock_recvmsg+0x94/0xc0 net/socket.c:1100
- __sys_recvfrom+0xb2/0x130 net/socket.c:2256
- __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
- do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
-RIP: 0033:0x7f6e386a4a1d
-Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
-RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
-RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
-R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+MINORMASK is ((1U << MINORBITS) - 1), so allowing MINORMASK as a maximum value
+makes sense. It is also consistent with other "ida_.*MINORMASK" and
+"ida_*MINOR()" usages.
 
-Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260330120335.659027-1-lixiasong1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
+Acked-by: Lijun Pan <lijun.pan@intel.com>
+Link: https://lore.kernel.org/r/ac991f5f42112fa782a881d391d447529cbc4a23.1702967302.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: c311f5e92484 ("dmaengine: idxd: Fix freeing the allocated ida too late")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/dma/idxd/cdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index c14e5a1f13336..7b92da6e49d6c 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1977,7 +1977,7 @@ static void mptcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
- static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
--				int *cmsg_flags)
-+				int *cmsg_flags, struct sk_buff **last)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct sk_buff *skb, *tmp;
-@@ -1994,6 +1994,7 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 			/* skip already peeked skbs */
- 			if (total_data_len + data_len <= copied_total) {
- 				total_data_len += data_len;
-+				*last = skb;
- 				continue;
- 			}
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 9b07474f450b5..e42c9a9f3c238 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -49,7 +49,7 @@ static void idxd_cdev_dev_release(struct device *dev)
+ 	struct idxd_wq *wq = idxd_cdev->wq;
  
-@@ -2029,6 +2030,8 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 			}
+ 	cdev_ctx = &ictx[wq->idxd->data->type];
+-	ida_simple_remove(&cdev_ctx->minor_ida, idxd_cdev->minor);
++	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
+ 	kfree(idxd_cdev);
+ }
  
- 			mptcp_eat_recv_skb(sk, skb);
-+		} else {
-+			*last = skb;
- 		}
- 
- 		if (copied >= len)
-@@ -2223,10 +2226,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		cmsg_flags = MPTCP_CMSG_INQ;
- 
- 	while (copied < len) {
-+		struct sk_buff *last = NULL;
- 		int err, bytes_read;
- 
- 		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
--						  copied, &tss, &cmsg_flags);
-+						  copied, &tss, &cmsg_flags,
-+						  &last);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
-@@ -2278,7 +2283,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		pr_debug("block timeout %ld\n", timeo);
- 		mptcp_cleanup_rbuf(msk, copied);
--		err = sk_wait_data(sk, &timeo, NULL);
-+		err = sk_wait_data(sk, &timeo, last);
- 		if (err < 0) {
- 			err = copied ? : err;
- 			goto out_err;
+@@ -375,7 +375,7 @@ int idxd_wq_add_cdev(struct idxd_wq *wq)
+ 	cdev = &idxd_cdev->cdev;
+ 	dev = cdev_dev(idxd_cdev);
+ 	cdev_ctx = &ictx[wq->idxd->data->type];
+-	minor = ida_simple_get(&cdev_ctx->minor_ida, 0, MINORMASK, GFP_KERNEL);
++	minor = ida_alloc_max(&cdev_ctx->minor_ida, MINORMASK, GFP_KERNEL);
+ 	if (minor < 0) {
+ 		kfree(idxd_cdev);
+ 		return minor;
 -- 
 2.53.0
 
