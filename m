@@ -1,155 +1,129 @@
-Return-Path: <stable+bounces-235496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHMzAcL912kiVwgAu9opvQ
-	(envelope-from <stable+bounces-235496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:28:02 +0200
+	id oKzsObv/12kDWAgAu9opvQ
+	(envelope-from <stable+bounces-235497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:36:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EE33CF0B9
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:28:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F7D3CF0F6
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:36:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C45AD30166DC
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 19:27:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 667663009B18
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 19:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FE6336894;
-	Thu,  9 Apr 2026 19:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE8F2F745D;
+	Thu,  9 Apr 2026 19:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yaina.de header.i=@yaina.de header.b="iZ5C/vUb"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="rWWqLrjS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.yaina.de (yaina.de [95.216.117.176])
+Received: from outbound.st.icloud.com (p-east2-cluster1-host4-snip4-10.eps.apple.com [57.103.76.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7579A2FF65B;
-	Thu,  9 Apr 2026 19:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.216.117.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EAC1DC1AB
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 19:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.76.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775762871; cv=none; b=bcTHa4WvDtt2mocXs6gnjj1FkJdA4kbuj4RKe1JttPuth3f+279/GXq26Iyqi06hASnS2FS9dMdLteGRBwlA+YBqM/klOFXBKpxPkhBGt9oLXXUhnVGnifsk9fMsiwX2sBGJY7B+4dkqjgClt3chhs5Ih/4cBeOFNsEeGNx7EKI=
+	t=1775763381; cv=none; b=uMrZjiTJvJXmtwAiq3liSJbJCcxW7Qyu0sZicz/B1P8GosRHi8ll7D0Ts7UtHVT1ouJYid+K715T5jMjL8VC3IxAOd5RHQtkHV6homMwM/zgkiMBLM64kC3pT/vd+RTHo+lfOqIcAeirsHZAjZ34c4mavEwnbJDIeZniIuvNkoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775762871; c=relaxed/simple;
-	bh=hvKCkSYJdC+EscCNzKCE2wd2ammkeMHFsTH8yAUOmbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ubBqbAI5L1Q0fAC/r+ndt5oBKM/w9VI4IromcCw8rui0cDvpQoKZUT/fDZi+zFI5+36BtcvmMG55YLOs6GMNyb/2felAU4yb7CQB57Qi/AVkzGqKpSbZALR9KdlnVj8G2zUeB51qzfWwYxtPLQ5Xx8VNqDMsjNtuSIx3OizrVx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yaina.de; spf=pass smtp.mailfrom=yaina.de; dkim=pass (1024-bit key) header.d=yaina.de header.i=@yaina.de header.b=iZ5C/vUb; arc=none smtp.client-ip=95.216.117.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yaina.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yaina.de
-Received: from lycaon.yaina.de (ip1f118239.dynamic.kabel-deutschland.de [31.17.130.57])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (prime256v1) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "lykos.yaina.de", Issuer "CAcert Class 3 Root" (not verified))
-	by mail.yaina.de (Postfix) with ESMTPSA id EA9117CDFF3D;
-	Thu, 09 Apr 2026 21:27:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yaina.de; s=mail;
-	t=1775762865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OKNHuScRsfaaXjpydSx91/XUUBC1BofoXY1N4elcjjE=;
-	b=iZ5C/vUbOXT3Ludr9yIIMF+lJvYoD+XNfpNCw/9De9kzs449qRvkmGf05g0CLmD4dPV8Yz
-	3IoeWjJxbVIyu75g4OLa7lodm64e5sj85kPvrZvEb0VpWpY5aTR8Wdu87zFYLkIyDHaX1v
-	CTt607Uc7DD55IhmPU9zQral5yy4xsQ=
-Received: by lycaon.yaina.de (Postfix, from userid 500)
-	id 1093B300FBD; Thu, 09 Apr 2026 21:27:44 +0200 (CEST)
-Date: Thu, 9 Apr 2026 21:27:44 +0200
-From: Joerg Reuter <jreuter@yaina.de>
-To: Mashiro Chen <mashiro.chen@mailbox.org>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 net 2/2] net: hamradio: scc: validate bufsize in
- SIOCSCCSMEM ioctl
-Message-ID: <adf9sHv5OHxqUPNk@yaina.de>
-References: <20260409024927.24397-1-mashiro.chen@mailbox.org>
- <20260409024927.24397-3-mashiro.chen@mailbox.org>
+	s=arc-20240116; t=1775763381; c=relaxed/simple;
+	bh=BUKvuc2Nb6RV3qZ8bD5mi8DAxjzqjja1ya7SIU/WrhQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kZ/jZoeYncxY6LwA6F2h0T6fWDNSHQ/u77t68DLonpLwtabDFKiAZxse/gz+fdLllpEQVsLoMnQfc/b/S8aNkxXY1B98Ali/V4WvbEoc3ONXFVOhDSo00zTldMprJIb7jW1rltURPLhJKoxZ1f8jgPG2mgu76pX3LEroPTzw/gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=rWWqLrjS; arc=none smtp.client-ip=57.103.76.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-8 (Postfix) with ESMTPS id 735BA18001DA;
+	Thu, 09 Apr 2026 19:36:16 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775763379; x=1778355379; bh=2JhQQEFawK7tebpx0rSbiCWos0awHKnWIfLSkfuU6iU=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=rWWqLrjSstCb/HhVRnufnBXqUbOvIRBjnd0u3jxLPALfWiSa1/iBjBIOVJSLRTo4rOf72EcAap/q9yIITaYh8AaBD7f9gqMqTbOrAjJMqJHJRzOmqJc4Lv6LN9vj9mFzhuXosQo8aD/byjDaFmxKLyhmfKfX/xx9Cd/NeOUizTqBLLZFXWOb+4uWt7kbg0LN/ajrNzsw9Ic2/SgPiHMdqg3GjVeU9A6G0qVpEIXDWsapSbvm2j9pMojodmbmoxvLh6cPrAjMxjBBum28xHxAZfH4ms81N4TNkEvH5fhhLZL5Z6JH1jI2oJ0W43MVDo6iCoLkFISzX6hrWNW6TPaD5g==
+Received: from mainframe.tailfb0f7b.ts.net (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-8 (Postfix) with ESMTPSA id EC3F1180053D;
+	Thu, 09 Apr 2026 19:36:13 +0000 (UTC)
+From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
+To: horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	linux-nfc@lists.01.org,
+	kuba@kernel.org,
+	krzysztof.kozlowski@linaro.org,
+	stable@vger.kernel.org,
+	framemain@outlook.com
+Subject: Re: [PATCH] nfc: llcp: fix missing return after LLCP_CLOSED check in recv_hdlc and recv_disc
+Date: Thu,  9 Apr 2026 21:34:40 +0200
+Message-ID: <20260409193552.1826407-1-snowwlake@icloud.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260409164527.GP469338@kernel.org>
+References: <20260409164527.GP469338@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409024927.24397-3-mashiro.chen@mailbox.org>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE4MCBTYWx0ZWRfX6MmbZlSwpXKG
+ N0dpA+z8o28LWPqyfdg8DCuq6NKKXSvkNvj9BYytsEOWlBGd01Hmf7HUyJXVYvJE25/KNlgKxHI
+ DQ9IwpeyvtPBP090qA2VfnFA2vaCsByoqHfImdKudSNGqiY9qcQHj8fMXPQvFGQbKs6Pps+UTRx
+ QOEiY7lMnfHu73jKEW/bgujw8/bGW0z6DmmfBaXuHMCjOrVMkvMfJmjjIunxOqLLISCBS7Dkl/7
+ T+O7NHFo8dDfhFA4f1jJeuxu9CRfOtu1QmX+IbHvnZA6axAKxu+2Vb33ErJRTz9bupegn936uhz
+ LQqk8sbc/RBzuzVp0Z4aAAZp9tvNajMRYba9sqjxB1U16MJayHuECV3Ob2SjTI=
+X-Authority-Info-Out: v=2.4 cv=U9WfzOru c=1 sm=1 tr=0 ts=69d7ffb1
+ cx=c_apl:c_pps:t_out a=YrL12D//S6tul8v/L+6tKg==:117
+ a=YrL12D//S6tul8v/L+6tKg==:17 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
+ a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=Im72piG3SYOM60AsYe8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=d8Ku6tdDt9gA:10 a=JKcXVnpmuwdQ7RL0mgk_:22 a=NDDgNl8OaFIu1Hag6_vS:22
+X-Proofpoint-ORIG-GUID: ABVW4LJNy0M1X4AYtoYVXoJiQjY8i8uX
+X-Proofpoint-GUID: ABVW4LJNy0M1X4AYtoYVXoJiQjY8i8uX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ clxscore=1015 mlxlogscore=506 lowpriorityscore=0 adultscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 phishscore=0 spamscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2604090180
+X-Spamd-Result: default: False [-0.57 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[yaina.de:s=mail];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MIXED_CHARSET(0.59)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[icloud.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[icloud.com:s=1a1hai];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[yaina.de:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235496-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[yaina.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lists.01.org,kernel.org,linaro.org,outlook.com];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jreuter@yaina.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[icloud.com:+];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235497-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A0EE33CF0B9
+	FREEMAIL_FROM(0.00)[icloud.com];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[snowwlake@icloud.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,icloud.com:dkim,icloud.com:mid]
+X-Rspamd-Queue-Id: 95F7D3CF0F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Looks great, thanks!
+Thanks for the pointer. Withdrawing this patch — the existing
+submission at:
+  https://lore.kernel.org/all/20260408081006.3723-1-qjx1298677004@gmail.com/
+covers the same fix.
 
-    73, Joerg
-
-> The SIOCSCCSMEM ioctl copies a scc_mem_config from user space and
-> assigns its bufsize field directly to scc->stat.bufsize without any
-> range validation:
-> 
->   scc->stat.bufsize = memcfg.bufsize;
-> 
-> If a privileged user (CAP_SYS_RAWIO) sets bufsize to 0, the receive
-> interrupt handler later calls dev_alloc_skb(0) and immediately writes
-> a KISS type byte via skb_put_u8() into a zero-capacity socket buffer,
-> corrupting the adjacent skb_shared_info region.
-> 
-> Reject bufsize values smaller than 16; this is large enough to hold
-> at least one KISS header byte plus useful data.
-> 
-> Cc: stable@vger.kernel.org
-> Cc: linux-hams@vger.kernel.org
-Acked-by: Joerg Reuter <jreuter@yaina.de>
-> Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
-> ---
->  drivers/net/hamradio/scc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/hamradio/scc.c b/drivers/net/hamradio/scc.c
-> index ae5048efde686a..8569db4a71401c 100644
-> --- a/drivers/net/hamradio/scc.c
-> +++ b/drivers/net/hamradio/scc.c
-> @@ -1909,6 +1909,8 @@ static int scc_net_siocdevprivate(struct net_device *dev,
->  			if (!capable(CAP_SYS_RAWIO)) return -EPERM;
->  			if (!arg || copy_from_user(&memcfg, arg, sizeof(memcfg)))
->  				return -EINVAL;
-> +			if (memcfg.bufsize < 16)
-> +				return -EINVAL;
->  			scc->stat.bufsize   = memcfg.bufsize;
->  			return 0;
->  		
-> -- 
-> 2.53.0
-> 
-
--- 
-Joerg Reuter                                    http://yaina.de/jreuter
-And I make my way to where the warm scent of soil fills the evening air. 
-Everything is waiting quietly out there....                 (Anne Clark)
+Lekë
 
