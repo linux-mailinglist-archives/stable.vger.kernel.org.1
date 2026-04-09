@@ -1,121 +1,137 @@
-Return-Path: <stable+bounces-235481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LjTDArw12kbUwgAu9opvQ
-	(envelope-from <stable+bounces-235481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:29:30 +0200
+	id 6MFoGhTx12n6UwgAu9opvQ
+	(envelope-from <stable+bounces-235483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:33:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4153CEB09
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:29:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFC43CEB76
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:33:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E79A23020D7B
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 18:29:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 696E23024791
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 18:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93BE3DE42F;
-	Thu,  9 Apr 2026 18:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FEE37472D;
+	Thu,  9 Apr 2026 18:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXR37xns"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SPxcErhr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B3E2248A3;
-	Thu,  9 Apr 2026 18:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A832E6116;
+	Thu,  9 Apr 2026 18:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775759341; cv=none; b=omTV5wEVorhSrLMiJFi31SV3+kEpKLZaX+KvJioY56X9GdW4pOTbO8qqrved34gyT/J5vP6wJhJgFOx0ksUNxxPsi7Go4UyKL7SMRhbQOpTqGJsNO8kXtXxpjVMa8m2uUhtCr9AIGz5GARe1eEPXTobR20qIjU3f9AOiT44s3yU=
+	t=1775759627; cv=none; b=qAZxHD9jGtjrp5+kOUqbYX862565YIWbqjVfsIKbjIBgRc/UC3GwFWz0Rsbx1HCQDvkp/HQsF4AvZGfbMjM/SslsiQxMeFPRwLjpATEr11IvA7RbsCE4oqXU+Q7cAOlynGzOG/wwztC+cbSSJMgcQIZKW5Jm1f/vHJ9rACsBbYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775759341; c=relaxed/simple;
-	bh=0AqsaCjs/tsyiHjFNYYlGjRToMZssCVn6w9EUxIWAvU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=U6+tNSwVTmOF8xHx6HsXICYj2bM8Itpw5xSqXoeQIBtAOXfcJe4RWLNk5uYvaYvDMhNaDHULc0RMGrwVKISXOyh0UO2/ByEEBUFCCxcaQ7zzsYtHpROwYvaBT9ou5ROrvC2OmFnfmbG5Jf+Q4TshYWyiYW+eeZjuNuZg7fyUSTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXR37xns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA336C4CEF7;
-	Thu,  9 Apr 2026 18:29:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775759341;
-	bh=0AqsaCjs/tsyiHjFNYYlGjRToMZssCVn6w9EUxIWAvU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=PXR37xnswF1OPt9Ff/ix7mzS4fsQDqAJaJ8OOKycyv4OLM+L5gnLxAnQH7UhwSzgd
-	 /ruxXwtsaCgGannct1CKnX8gFaZfszUTHSBrol1iWWjQlWr9O2QlmwW2eaV/zyiJvG
-	 z/zxRBS+dx/oPxDYT/dKsSHC9d3ezY/tdsNxRiGDSVw5GO40DpGgDR2EaxS1gmp8uZ
-	 jQP0bNf24yFcfOiMFxgCFQ6qHuETyS2/QLoClwwdX9e+6VD2k68x3VZjdri87GFN2f
-	 32nKHKv+uhYGneDIi3uPKk+B2apcF9DZC6/w+yndwwm3dA9WxgqlC1p37E66/dn+eF
-	 p3NcwTVtmLutQ==
-Date: Thu, 9 Apr 2026 20:28:58 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Michael Zaidman <michael.zaidman@gmail.com>
-cc: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>, 
-    Benjamin Tissoires <bentiss@kernel.org>, linux-i2c@vger.kernel.org, 
-    linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v2] HID: ft260: validate report size and payload length
- in raw_event
-In-Reply-To: <CAPnwWgPhb+owa69-pTADpqk=KMWH71EUT6cxwCeT5KGnBWk+Xg@mail.gmail.com>
-Message-ID: <7qr72215-4q40-qon4-808o-7o639qq90q3s@xreary.bet>
-References: <20260324173527.11321-1-sebasjosue84@gmail.com> <20260324201858.46591-1-sebasjosue84@gmail.com> <2o8np813-n9n6-32sn-922p-6qnrq45s7rs7@xreary.bet> <CAPnwWgPhb+owa69-pTADpqk=KMWH71EUT6cxwCeT5KGnBWk+Xg@mail.gmail.com>
+	s=arc-20240116; t=1775759627; c=relaxed/simple;
+	bh=2Mke9B5xsH/9FIs5H7tLC+6ccGXXOxuntv3Vt8y46q4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ptVCL+jmkeHYivADLT9zlE2/BMWpyXAwkEZP18rAl9sYqMH2HWjXCHJTMm70eszASOlZ+CaxieWiSTJyBULqX/dzgSzJ9brzqWfcQJrpwU8eC7/ZJ3YhTA7US66MPxWY0vTV3q++cDlgCgE68jU5sDUCYI39pnZVfOXFeT4GzBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SPxcErhr; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E40262008;
+	Thu,  9 Apr 2026 11:33:32 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E1043FAF5;
+	Thu,  9 Apr 2026 11:33:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775759618; bh=2Mke9B5xsH/9FIs5H7tLC+6ccGXXOxuntv3Vt8y46q4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SPxcErhrEGrfcTD6Otef5JEhCmD9tgWrdUbCZtE/ZbHXWQKao0p7SVr2LaWwhDwnT
+	 7Ad8rEg/X0nOWekqlpbOWRk3NwrmYCbm2aXm94fmBuPxceaIbJ36ndpYcz2EfDBu+a
+	 CIInQmS/s+86kndcxnpn3wZnaGnmfQcNGIlb8s0U=
+Date: Thu, 9 Apr 2026 19:33:34 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Yang Shi <yang@os.amperecomputing.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] arm64: mm: Fix rodata=full block mapping support
+ for realm guests
+Message-ID: <adfw_hNDsIWwSAIv@arm.com>
+References: <20260330161705.3349825-2-ryan.roberts@arm.com>
+ <ac7VD4Z85nS30GCp@arm.com>
+ <ac-W9oNM_O5RTtaf@arm.com>
+ <beacee23-c177-47a1-b8b5-743844b617a8@arm.com>
+ <adTPFrlVCEt-hioX@arm.com>
+ <bc4a0246-33bb-443e-a885-a31b24d4a022@arm.com>
+ <adTh8d9k3y5ybemL@arm.com>
+ <567dff89-9f0f-40a0-ab10-22e061b4faaf@arm.com>
+ <adfDoatH8hj6zN7_@arm.com>
+ <07054475-6b07-4b19-a393-cbe037adef8b@os.amperecomputing.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <07054475-6b07-4b19-a393-cbe037adef8b@os.amperecomputing.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-235481-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[arm.com:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235483-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xreary.bet:mid]
-X-Rspamd-Queue-Id: BC4153CEB09
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid]
+X-Rspamd-Queue-Id: 0EFC43CEB76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 9 Apr 2026, Michael Zaidman wrote:
+On Thu, Apr 09, 2026 at 09:48:58AM -0700, Yang Shi wrote:
+> On 4/9/26 8:20 AM, Catalin Marinas wrote:
+> > On Thu, Apr 09, 2026 at 11:53:41AM +0200, Kevin Brodsky wrote:
+> > > What would make more sense to me is to enable the use of BBML2-noabort
+> > > unconditionally if !force_pte_mapping(). We can then have
+> > > can_set_direct_map() return true if we have BBML2-noabort, and we no
+> > > longer need to check it in map_mem().
+> > 
+> > Indeed.
+> 
+> I'm trying to wrap up my head for this discussion. IIUC, if none of the
+> features is enabled, it means we don't need do anything because the direct
+> map is not changed. For example, if vmalloc doesn't change direct map
+> permission when rodata != full, there is no need to call
+> set_direct_map_*_noflush(). So unconditionally checking BBML2_NOABORT will
+> change the behavior unnecessarily. Did I miss something?
+> 
+> I think the only exception is secretmem if I don't miss something.
+> Currently, secretmem is actually not supported if none of the features is
+> enabled. But BBML2_NOABORT allows to lift the restriction.
 
-> The FT260 uses different report IDs (0xD0 through 0xDE) for different pay=
-load
-> lengths, with each report ID defining a different report size in the HID
-> descriptor. So yes, the device can legitimately send reports shorter than
-> FT260_REPORT_MAX_LENGTH, and a blanket size < 64 check would break valid
-> short transfers.
+Yes, it's secretmem only AFAICT. I think execmem will only change the
+linear map if rodata_full anyway.
 
-Perfect, thanks a lot for the detailed writeup! I was rather suspicious=20
-about the bold statement in the changelog.
-
-Similarly to other Sebasti=E1n's fixes to various other drivers. This will=
-=20
-need more thorough check.
-
-Thanks,
-
---=20
-Jiri Kosina
-SUSE Labs
-
+-- 
+Catalin
 
