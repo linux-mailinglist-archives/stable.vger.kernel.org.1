@@ -1,154 +1,133 @@
-Return-Path: <stable+bounces-235417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DNvARqz12kORggAu9opvQ
-	(envelope-from <stable+bounces-235417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 16:09:30 +0200
+	id UD27KtW012lURwgAu9opvQ
+	(envelope-from <stable+bounces-235418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 16:16:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B48A3CBC73
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 16:09:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44823CBDE8
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 16:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 119BC300F109
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 14:09:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DE3D5300683E
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 14:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CD130BF5C;
-	Thu,  9 Apr 2026 14:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCB33BBA1F;
+	Thu,  9 Apr 2026 14:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="sv1jHw2M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qmal5Jwt"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FD8302CD5;
-	Thu,  9 Apr 2026 14:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB7B2EC0A1;
+	Thu,  9 Apr 2026 14:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775743753; cv=none; b=APtCYi22vrao4OQaCPsbfl3Ced7UYmkMAwGtLrLXjaLcluLkUtTtSyVNLtXFENARh/g+ov3KzOjyGxDrtHCpytek/b2lXypJV+DgkV+xU6cgL/ESytoDB9l/JIj+JLGU6nhsa1G3eKiEfyfjBXnwujiNeu3Oe0MTzscb2T4S8Hs=
+	t=1775744208; cv=none; b=oipbB8iZwkcLu8/GbH/RaF4DaZfTUKgVwhT0ougm+6yPxnjEaT7A/t+bRUsqCOd1oiR9cPl9y1Mm1Zefz5yc0LE7+fjqe/PJT4tUss0aEzO/njIn98dPbBn9Ihw4k746DkHKaACBHDUAl0rrkWfhAPZ6TQTI/HiIsPDpElXrvm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775743753; c=relaxed/simple;
-	bh=ipsSLoMfiPqYFIbUKTrfChsu5vns0/lAN8ULtLYM75Y=;
+	s=arc-20240116; t=1775744208; c=relaxed/simple;
+	bh=9GCDqvf3ouE1tZChLaCxCFk0pdlg3TigRyHsCi6kqYo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZO0LaCL/G48ywYE7wvoousdKTcGoXSA2gKuK9mFykfFOKPXSQAFQijAOxvPumix9qXCLc3buMoDKrfH2Iu6oJmWvXYWCFX3FMMK+gTUHdJYfaC7SoyJ2XglZBB0znHihA0Yr4Q3yN85kcBPWOmlQ49ZtQdFufonl0U1nxL66HDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=sv1jHw2M; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67300328E;
-	Thu,  9 Apr 2026 07:09:04 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 73AF13F632;
-	Thu,  9 Apr 2026 07:09:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775743750; bh=ipsSLoMfiPqYFIbUKTrfChsu5vns0/lAN8ULtLYM75Y=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/VtbZcTbrWFNIruaRXUCu+dq1/luDyyNAe3pCP84KUBaWL+0wni14DNReIO74e1Xq5tnnauvGnSEPpT5Vx7TEi+pbSaIPh3nPd4SMY5dmIsJ4mG4Z5N1gz6RLILH2kF0bIuK5LrquB69z8ZyMQ9003OSnhdWFLS41zg4ouaZ7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qmal5Jwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F58FC4CEF7;
+	Thu,  9 Apr 2026 14:16:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775744208;
+	bh=9GCDqvf3ouE1tZChLaCxCFk0pdlg3TigRyHsCi6kqYo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sv1jHw2MnnzhZ95ZAtsy9ohqi0q0sg1raSFQx/D6Sc5yebvU6+mk44j5jcp2D4bp3
-	 ATO69PDQQiFKd9MZtDbzDQqM4+w8ktvn2NUL4sT400bYAKEpXXSG0RFrMumBZxBfCs
-	 zCd5yijVGGncEZrFYCl3JX5qrICdlR/kARi3old4=
-Date: Thu, 9 Apr 2026 15:09:05 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Dev Jain <dev.jain@arm.com>, Yang Shi <yang@os.amperecomputing.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] arm64: mm: Fix rodata=full block mapping support
- for realm guests
-Message-ID: <adezAR6w9yNfILsn@arm.com>
-References: <20260330161705.3349825-1-ryan.roberts@arm.com>
- <20260330161705.3349825-2-ryan.roberts@arm.com>
- <ac7VD4Z85nS30GCp@arm.com>
- <1db93bd3-cb47-445b-b8ca-6de6f04b41cc@arm.com>
- <adU9KxLC7yKgmyJy@arm.com>
- <d1ecba64-898f-433b-93d4-7a33b9c3f378@arm.com>
+	b=qmal5JwtT3w1nRruUKdqyYRHQyOnwPnxWpM0cQnZbAz/q/gostrAHu/ofb+lnoF4z
+	 sidAJk/IL+ig6zEoh7lBb9TiKLfwXOpJtgXEj7FFaACtqkC3tDOOYSZV51KKw6dYEE
+	 I1XE+ApGlXRSXFo3/qpemlcF44AgpoBdOeOvQ+WSVHueu8QTNNrRmPHrTkMcqWWNAB
+	 oO0zpOwdyfrSNaR3WWRUEibKXATF6lERYe2Yo/8RBXwQzL3ZzrAsVfZEq6+I84byNf
+	 5A7bUDLEb8AVOEw5/JmgsFAWUqoS4r5BnEn84+qx/YwAY4q9NkJ3OtvWefJM+PVEir
+	 BFZJ2lEGSebHg==
+Date: Thu, 9 Apr 2026 15:16:41 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.6 000/160] 6.6.134-rc1 review
+Message-ID: <9716b9fa-132f-415a-8998-89d6d032dd73@sirena.org.uk>
+References: <20260408175913.177092714@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="azmIMgNWjcBpCevv"
 Content-Disposition: inline
-In-Reply-To: <d1ecba64-898f-433b-93d4-7a33b9c3f378@arm.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+X-Cookie: Hailing frequencies open, Captain.
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235418-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235417-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid]
-X-Rspamd-Queue-Id: 8B48A3CBC73
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A44823CBDE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 09, 2026 at 10:38:03AM +0100, Suzuki K Poulose wrote:
-> On 07/04/2026 18:21, Catalin Marinas wrote:
-> > a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full")
-> > introduced force_pte_mapping() but it just copied the logic in the
-> > existing can_set_direct_map(). Looking at the linear_map_requires_bbml2
-> > assignment, we get (!is_realm_world() && is_realm_world()) and it
-> > cancels out, no effect on it but we don't get pte mappings either (even
-> > if we don't have BBML2).
-> 
-> Yep, that's right.
-> > 
-> > I think we need at least some safety checks:
-> > 
-> > 1. BBML2_NOABORT support on the boot CPU - continue with the existing
-> >     logic (as per Ryan's series)
-> > 
-> > 2. !system_supports_bbml2_noabort() - split in
-> >     linear_map_maybe_split_to_ptes(). This does not currently happen
-> >     because linear_map_requires_bbml2 may be false in the absence of
-> >     rodata=full. Not sure how to fix this without some variable telling
-> >     us how the linear map was mapped. The requires_bbml2 flag doesn't
-> > 
-> > 3. Panic in arm64_rsi_init() if !BBML2_NOABORT on the boot CPU _and_ we
-> >     have block mappings already. People can avoid it with rodata=full
-> 
-> It looks like this will be a common case :-(
-> 
-> > 
-> > 4. If (3) is a common case, a better alternative is to rewrite the
-> >     linear map sometime after arm64_rsi_init() but before we call
-> >     split_kernel_leaf_mapping().
-> 
-> We will explore this route.
-> 
-> The other option is to move the RSI detection (and the PSCI probe)
-> earlier to be able to make better decisions early on. I will play with
-> that a bit too.
 
-I thought we could reuse linear_map_split_to_ptes() but this function
-assumes that the primary CPU supports BBML2_NOABORT. To do this live,
-we'd have to clone the active kernel pgtable hierarchy, switch to it and
-then continue with the splitting. kasan_init_shadow() does a bit of this
-but not fully as it only cares about the shadow mapping.
+--azmIMgNWjcBpCevv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hmm, maybe probing the RSI early is easier ;).
+On Wed, Apr 08, 2026 at 08:01:27PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.134 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
--- 
-Catalin
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--azmIMgNWjcBpCevv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnXtMkACgkQJNaLcl1U
+h9CJywf/UMKmsSEO9sIQtprejPg5ou7FJWY24miX8C4zlOJ0v5PvMS2vHBWqoYCV
+krEr4UxHOmHJriess081e10duDg2cwj1rvMlC8zkB2eWBPtOfp9fp1SqtmH7Hlo4
+q0qbhs3RfoHE3hRfRUmG/6Up3O5/VR7qCbB7xJLbohNsuPo5xPRv69RgDcrxI5AL
+DlDB1aZix9MN2a3hlDkqn6qiXItowaV6IpQ91aA6wCF/JO6ZDg+i6njL1dDyl9Ev
+MbFsB2mewdXIXrpaecQ7mXqV13YVCDBTtShsEUHd1SOOKweCAp833qbwVJx1XS2P
+PikHm4YqjcO7xg+MpbL8C3RZFDCScQ==
+=aPaK
+-----END PGP SIGNATURE-----
+
+--azmIMgNWjcBpCevv--
 
