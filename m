@@ -1,187 +1,252 @@
-Return-Path: <stable+bounces-235503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJcGJbIH2GkJWggAu9opvQ
-	(envelope-from <stable+bounces-235503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:10:26 +0200
+	id cOsRGn0J2GlOWggAu9opvQ
+	(envelope-from <stable+bounces-235504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:18:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02AEA3CF368
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:10:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99A53CF54A
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36D2B301A91E
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 20:10:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D7FE301BA79
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 20:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385883346B4;
-	Thu,  9 Apr 2026 20:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9FD33C1BE;
+	Thu,  9 Apr 2026 20:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mIu/X/TR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UTmtqIKl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510132E4247
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 20:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775765408; cv=pass; b=kjyBPo2SOx0yW3rU4o2WZCgx7G91AyoOc9R1AblRIFwOayNrV36mDIf7LfZEwFBEF0rPUb/pmsYFwzr/dJ0c6u0JP+IFmv/6G18aUbTVrrxVvomNALCJMP6oyd4quRQVTg0GOzAMVt8jni8UYPeY/NXlsZxswzkbmi1fZCqflkE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775765408; c=relaxed/simple;
-	bh=Q9ffF1K0u2BSHORopMgTiRBjDBVlRUO0JdIH+0s/vb4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=POv/6E3g8D85KxYKgl3GzBZJ8zKJsnab4DwX3G0Q0UXC+bbjdCD33rJM7iDUMQC69WjP4/gZ3bxpnjDXAy/ITh19rTenlRqyDhkTgsR95iOKBi9JXbGf/5eIINx0D4hJPPwnXg/SBJP0XnU5AE07LireWS8I+F4uQotWYCK7OUs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mIu/X/TR; arc=pass smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50d8c7a393fso768681cf.1
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 13:10:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775765404; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Gzyz8PLjRA0TaFw3nMfhLYkkrj9wvVna0ag/h48DgQ4TtOn00+XSBNlXGSyQwDCBhv
-         FhLoCVKmO649lIMo91PPL0D2gjsekE8zroDrslW+/Zk2fby5MJD24AOtHG3jNgfDyGxC
-         /t0hvBmg/9lmPjQykoAKgunAccSkMLYUuMRT6ia0myA9vG39lfTKRwa4xmtpCbMf+G+5
-         /rZzbc4cd5y7Kt0eBxK7OVCdHZmyTotxiAlpyWaoYSNQFe0ZU5pNMgYWjK2Z6glhc0OZ
-         BXjJpTCgmc7hf8wTqHKZmIGgLbn5qDifjteIEyjUiAUM2ryaZexz3FfXhXPzNKUQVnFq
-         Qgsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ew9YJVqzCV0p3Lp1Qxmpt1qcifyX/ZWozjm6bnofDwU=;
-        fh=T3c5dRgMaBwxl+akQoAhXTq+cckHbw7EHliSw5v+WMM=;
-        b=ZwvYuvDWaGSULSndk6JMueqCMeQaejMca0roTEXbzvGeVrsc5EQx2d92DzWBVlq6Ql
-         yxiS4Dd0Zs26tuUZuQAidX3Ezoj7EcKJQ1v4tRaSdjqGGC2aNZ4wdSddEMbN730WncV6
-         9R9r8DwCn0VlD6gKa+vpWSUGRGydCl+Q+6HZx7+mjmnR3e+xmhqEplDQRdj6+urcQVJZ
-         mBCt4mtOJOWnNuFpi9F2BMy5z/aZcJAPvfolap8FhEpAPy8ap1Y4GNBp+azaGLdTBx1F
-         AhVr0J0F2p6UGFCjG+A0pewGKwehOMqg8efDrkQgOIDlTSUbbnEql5NSfVqAYLOJnASI
-         32SA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E056730BB8C
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 20:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775765878; cv=none; b=otP8y0WRttqG9fyoCQVXUcD4yzJ3eC65alFGofvubcRZRKON6Hcg5UPL9EmGG2a6MMoWZQeOOnfojvFZ9MmyByotxaaWnBxThj/LJkvhFQFGtmj7qv0CDjmDb8cpmBJnM+32rZGqY5kikTXaGPQgt8bgQ7+xKNQ80rLYwogfGJQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775765878; c=relaxed/simple;
+	bh=7mlB3bvkcx9cC95PdWWMYQ+NCpvN+8cOZLms0aqbKFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AIMsHuFPt5ThqyZOJpjVI+nJSuDXVTo6HPdJvg7OkMEDNS8uspUL+KVqv/qZ9OsQaNMhsMUDDpGp5jQ1fW1aJ6t6quDx6C6EkaMeS7S5qTRgLhPRQO+gdWWH606knj0EXgtFytXFmYoPAB/w4EBToj4VKfAcNDd/2Nkj//BGA7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UTmtqIKl; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488af9fdaa7so8422555e9.1
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 13:17:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775765404; x=1776370204; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775765875; x=1776370675; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ew9YJVqzCV0p3Lp1Qxmpt1qcifyX/ZWozjm6bnofDwU=;
-        b=mIu/X/TRcwJKsEtDfio4KRXFDDoqeEbleakapEeItlqMdftlyjPCibESldqPW7aqpb
-         QRRYet5KPzZX4Ac6dbdnHQt7sibnHwoCIx55Cb7qu8sTeb6hM8pUMR7rJbAsbuK7R3cg
-         Z+vZO+JlzlAXb+O8D+MV+T1eXudcrUDq/kXwoxQmkTYY/qVYXY840pjrXXekSPO/O3w4
-         8wLPQ2WrxGc1PvJIamusNhWqzqqW+j796x/xOwuLsMH2rgNvgNUjm/h5RDhmLEtJ0nAu
-         XTmeYEzc2enNs0wzFs5e/Hp4smaz19qWxtTW7ySQR0schZe15YXsLRjCYA5RMyShbXi/
-         qrRw==
+        bh=OW/a1GY3YVi3CjBCoOtuuYxwMISjSqKAg9v5EDBhcuo=;
+        b=UTmtqIKlQJrTpExFH3Inn6WuU20sHtlid0eemfTL5f54cBAMes8iAcXkNA8xbHPUgX
+         Eznqcy0yLUYWWiNiMBYclnVG0BvWz0/16HysskWrMi5JfCF4jVELPYBPMMQX85ilNU1Z
+         G7/8CfBaBYu/DIOs5YBfClralUmrbL0SsafYXZcY1trNmyks0kEIhgLsjkwL203EbrWY
+         OILI6NpmkX8wwuZ+11pKW4D7i6OWJkNx+lvq7VtB2VDZybCGEBLcY73oUR7azEwuOqRk
+         MvNYYkZDPbT86ege6Q2DYHKo5tm66cVvIfkkR7vpxMXnXINHErCe8pOyqX74QF6w01px
+         Wo8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775765404; x=1776370204;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1775765875; x=1776370675;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ew9YJVqzCV0p3Lp1Qxmpt1qcifyX/ZWozjm6bnofDwU=;
-        b=HKBiHaaoDrpVngkjMiiRS7eIqW/bGtQvj5gCYi1y05nfZik/2P/CK/f9maTdMDAh1N
-         05XjX9LTuNb8ucxJlwcCjKLCllrs17MK62CNmXJdRQOBjNjDT7g2UdapWSKcXc1BwuCt
-         XRVi00q1E1N2l/rTBQEbN3rlTn2taKFaPDNF4NxTR904teKbsRXqz2AkhzVLuk7taP73
-         dvEKeJuD/wErTB1lptdxu5Zifz9D6QrS5ik9gxvA3X5PBeYK7H/XplE1PqS4hqA5ciRr
-         1I5GuSKnZvUP5Pq3lDTXFP39vOCWQyHLiu4VoBb6bn1JMwNsWid6081AOCnXDzayBRx/
-         6+xw==
-X-Forwarded-Encrypted: i=1; AJvYcCXm4iwjKmhvD0iUbvZXcS7FAQub7wSoTqEMngSwM1d+u5NKsdQFD6Z/sKC/4zhcJIzUTEkZ5IM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztjtxyXoiAQ9WlGlTU6SGSraCK/CctPmit1vQFQR6ijzDh9Rtj
-	5pCYafLZhvFGwtntRVUhqweBl2PZCVy+oWkYrWmy9Z5IAAFOPLt90G/bbFAyMPhHviJte0+y95A
-	i6shd6oGx3ByKVGy94MqdUkLkbFMMn0zuJPP/vhz/
-X-Gm-Gg: AeBDieu27jm8DaZTxHY7QjHW8rjX1MSCgBuMYQiLj+tEI3JCYcg8PDRLiaK8iP6BD6R
-	xTVctQe7bih7WhMG7u6N3BvlGNMgZ3gfUQiShhH9YYGc3ILw33D69fC52HJittlZnKgLPdcF4mn
-	VHX3zxAjGNXo3rzbkfb0d0hHD//INx5V0Ep4rz19kjdPe99K+iEZLvH6e28t1wMXmuU02vKBGJK
-	5IlAnibM8Jry64CzvF7Gt6F2+xO+R8X9GnAfGstY/0RQu0nLiSIsK9ds0CIVHiu62WOGV7xYgew
-	tzKG6KpiRril7mSC9JqPrHnOQoeJ5Xdgvb3/84v3m23pz+Y=
-X-Received: by 2002:a05:622a:a983:20b0:50d:418a:9770 with SMTP id
- d75a77b69052e-50dc2535cfamr19504341cf.2.1775765403815; Thu, 09 Apr 2026
- 13:10:03 -0700 (PDT)
+        bh=OW/a1GY3YVi3CjBCoOtuuYxwMISjSqKAg9v5EDBhcuo=;
+        b=K3+y5e5jFWJz683xZehYfp0g/8a3g2xNDVQqMhsYbno4G10irI8ZN0ZwYBs8/j8/Ap
+         rrV4yE1eaFkF+hhznoajfLAUrMSSYvS+/WAq095ytSFET2I0PsnsXcNGlu/U6Sme01Ri
+         q7PdH1IyuF95MP1d+vOlZ+TnIJjZrnyc+dlwCxdI285Hy34MoERIMgpuMb/vvcNb1Ngl
+         vx2JlyeOL+gGOz/Xpf72alUVaHgP3F4SVnLu0Qg5F/eea2N1bkjsCmSDZYzTEyPBNfhX
+         8zkqSiBlP8CGAlj7Y8vDl8e+Oznficu+6mhsaF1YZaYKtVxSZYuB7XFZ8zPx0Yqq0n1L
+         Yajg==
+X-Forwarded-Encrypted: i=1; AJvYcCWjzsY4Dfhvbk1i8zzP/BrXHBfjWQIegFMk29S//Z5CGecl+tWVXJpCNNmVA2a73ZQMQmOmDIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzD0C5MQU/TUEyGEUPq6SUNHLyc4J78x8OjzR82T2+qP8Ud9xIc
+	ryjGiKz89q7m4cFIjyee8A2Js1Vhhrjax///k64Nez/JRiTw24GQ5c9E
+X-Gm-Gg: AeBDieuI09mNcFax7xt9HM0ix9AYDYPjJBnkWVUlGYIcz8Dmcnyd+Gl5uzZo2bEqc8d
+	VlVNuC6yd2XzU8xjvG//96xhMWWrHAu5qRv35hrPIRDg7S0BQN3Myjp8JRQEFXCt91E8L8Jmw+P
+	njoR+tLntAtjnjVwWo9TF3VirUXEClKqQg7ZE8cbqQX6fk9FfLH+LN2/VL97nvLmI7AT7xPTULL
+	ylJenHIL5RDHNqesXEhZZ8Zha0FMEPkKIOS1oPxPc4eX3yql0/o24qN1iSaaeH46IZN8sYNXUea
+	/sKH6OUrRWS8iDV/irQefd2xP6OOVO/ecHkamQjcQLlgMCsukyZtNb/4BMGsf/km+Eqx/uM9wII
+	q5yJf1IzW4cJy4xPZfA9oCrcXJ8ve+pMJrX3uFnzj09qy8Ho82+AuMq2/jFvyZ7TQkF7hNOWWTK
+	ZESeK4rgDESaDGEdV2+2doMF44aDwSHEUE6ZY=
+X-Received: by 2002:a05:600c:c173:b0:485:39d1:b4dd with SMTP id 5b1f17b1804b1-488d684b024mr3053825e9.10.1775765874975;
+        Thu, 09 Apr 2026 13:17:54 -0700 (PDT)
+Received: from foxbook (bfi125.neoplus.adsl.tpnet.pl. [83.28.46.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a74sm1485171f8f.3.2026.04.09.13.17.53
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Thu, 09 Apr 2026 13:17:54 -0700 (PDT)
+Date: Thu, 9 Apr 2026 22:17:49 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: JP Hein <jp@jphein.com>, Alan Stern <stern@rowland.harvard.edu>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
+ <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
+ fragile firmware
+Message-ID: <20260409221749.5e6bccab.michal.pecio@gmail.com>
+In-Reply-To: <20260409100247.7cfb62d1.michal.pecio@gmail.com>
+References: <20260331003806.212565-1-jp@jphein.com>
+	<20260331003806.212565-3-jp@jphein.com>
+	<CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
+	<20260409100247.7cfb62d1.michal.pecio@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260409152822.1073083-1-gourry@gourry.net>
-In-Reply-To: <20260409152822.1073083-1-gourry@gourry.net>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 9 Apr 2026 13:09:52 -0700
-X-Gm-Features: AQROBzB0iy5dDbU7EKphm65HVhCwBsaWZDeae_72XosBjnydaerQSoGW-5lujDA
-Message-ID: <CAJuCfpFJ6+OraOT11_bysOZsymk9OB4+C1M_R0UEYgtgXfVA_A@mail.gmail.com>
-Subject: Re: [PATCH] userfaultfd: preserve write protection across UFFDIO_MOVE
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	aarcange@redhat.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235503-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[surenb@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gourry.net:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 02AEA3CF368
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235504-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C99A53CF54A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 9, 2026 at 8:28=E2=80=AFAM Gregory Price <gourry@gourry.net> wr=
-ote:
->
-> move_present_ptes() unconditionally makes the destination PTE writable,
-> dropping uffd-wp write-protection from the source PTE.
->
-> The original intent was to follow mremap() behavior, but mremap()'s
-> move_ptes() preserves the source write state unconditionally.
->
-> Modify uffd to preserve the source write state and check the uffd-wp
-> condition of the source before setting writable on the destination.
->
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price <gourry@gourry.net>
+On Thu, 9 Apr 2026 10:02:47 +0200, Michal Pecio wrote:
+> On Thu, 9 Apr 2026 08:45:17 +0200, Ricardo Ribalda wrote:
+> > A usb device shall not be able crash the whole USB host. I believe
+> > that you already captured some logs and the USB guys are looking
+> > into it. I'd really like to hear what they have to say after
+> > reviewing them.
+> 
+> Sorry, I forgot about this bug. I will take a closer look at logs
+> later today.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+lsusb -v of identical(?) device is found here:
+http://linux-hardware.org/?probe=a1cd74d9ac&log=lsusb
 
-> ---
->  mm/userfaultfd.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index e6dfd5f28acd..783ca68aed88 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -1123,7 +1123,10 @@ static long move_present_ptes(struct mm_struct *mm=
-,
->                         orig_dst_pte =3D pte_mksoft_dirty(orig_dst_pte);
->                 if (pte_dirty(orig_src_pte))
->                         orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
-> -               orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
-> +               if (pte_write(orig_src_pte))
-> +                       orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vm=
-a);
-> +               if (pte_uffd_wp(orig_src_pte))
-> +                       orig_dst_pte =3D pte_mkuffd_wp(orig_dst_pte);
->                 set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
->
->                 src_addr +=3D PAGE_SIZE;
-> --
-> 2.52.0
->
+And I'm looking at the logs here:
+https://github.com/jphein/kiyo-xhci-fix/tree/main/kernel-patches/crash-evidence
+
+crash-6.17-stock-stress-20260330.log
+Empty file, not sure why included at all.
+
+crash-6.17-video-call-20260330.log
+No debug messages. At some point:
+Mar 30 10:00:52 katana kernel: usb 2-3.4: disable of device-initiated U1 failed.
+Mar 30 10:00:53 katana kernel: usb 2-3.4: Failed to set U2 timeout to 0x0,error code -110
+Mar 30 10:00:53 katana kernel: uvcvideo 2-3.4:1.1: usb_set_interface Failed to disable LPM
+Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC control 11 on unit 3: -71 (exp. 1).
+Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC control 11 on unit 3: -71 (exp. 1).
+Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC control 11 on unit 3: -71 (exp. 1).
+
+Not sure if the LPM thing is the cause or a symptom of general EP 0
+disfunction, as seen in subsequent EPROTO errors.
+
+Not sure why usb_set_interface() is called. Is this the start streaming
+case mentioned in some email? What was happening before?
+
+stall-6.17-stock-no-workarounds-20260330.log
+All sorts of repeating errors, including stall on EP1IN ("ep 2") which
+is supposedly isochronous and shouldn't. Clearly some broken state, not
+sure how things got there.
+
+stall-6.17-stress-during-call-20260330.log
+This is the most interesting one.
+
+The first slightly unusual thing is repeated unlinks on EP5IN (int),
+not sure why uvcvideo would do that, possibly result of the stess test.
+I know that such pattern alone can break ASMedia host controllers for
+no reason I understand, though this one is Intel.
+
+It's suspicious that wBytesPerInterval of the endpoint is 8, wMaxPacket
+is 64 and URBs are 16 bytes. Just in case, I attach a test patch which
+rises wBytesPerInterval to match wMaxPacketSize.
+
+The first definite anomaly is Transaction Error on EP5IN:
+Mar 30 16:59:16 katana kernel: xhci_hcd 0000:00:14.0: Transfer error for slot 18 ep 10 on endpoint
+Mar 30 16:59:16 katana kernel: xhci_hcd 0000:00:14.0: Hard-reset ep 10, slot 18
+
+Not sure why endpoint reset follows immediately without retries.
+The test patch also removes one potential reason. We might see whether
+the retries will fail, or if retrying until the transfer succeeds
+magically prevents the subsequent disaster. Perhaps the device gets
+unusually upset about sequence mismatch on this endpoint, which results
+from not clearing this halt condition properly (known problem).
+
+Five seconds later two control URBs are unlinked:
+Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Cancel URB 00000000122aa5e2, dev 3.1, ep 0x0, starting at offset 0x11e227b40
+Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: // Ding dong!
+Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Cancel URB 000000008a55bcd3, dev 3.1, ep 0x0, starting at offset 0x11e227b20
+Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Not queuing Stop Endpoint on slot 18 ep 0 in state 0x44
+
+Probably timeout, i.e. things got stuck. Oddly, state 0x44 indicates
+that this control endpoint has previously halted - error or stall.
+
+Higher layers notice that things are timing out:
+
+Mar 30 16:59:21 katana kernel: usb 2-3.1: pipewire timed out on ep0out len=0/0
+Mar 30 16:59:21 katana kernel: usb 2-3.1: disable of device-initiated U1 failed.
+Mar 30 16:59:21 katana kernel: usb 2-3.1: ThreadPoolSingl timed out on ep0out len=0/1
+
+Nothing works from now. At some point the parent hub reports
+disconnection and reconnection. Still nothing works.
+
+---
+
+Would it be possible to repeat this test with the patch below?
+It overrides the suspicious wBytesPerInterval and hopefully enables
+retries of this failed interrupt URB. We will see what happens.
+
+xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 1d50c91afd7f..17d78b4e07bf 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1464,6 +1464,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
+ 	mult = xhci_get_endpoint_mult(xhci, udev, ep);
+ 	max_packet = xhci_usb_endpoint_maxp(udev, ep);
+ 	max_burst = xhci_get_endpoint_max_burst(udev, ep);
++	if (interval && max_esit_payload < max_packet) {
++		xhci_err(xhci, "max_esit_payload %d -> %d\n", max_esit_payload, max_packet);
++		max_esit_payload = max_packet;
++	}
+ 	avg_trb_len = max_esit_payload;
+ 
+ 	/* FIXME dig Mult and streams info out of ep companion desc */
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 98ef014c8dee..e5823650850a 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2544,6 +2544,7 @@ static void process_bulk_intr_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
+ 		td->status = 0;
+ 		break;
+ 	case COMP_SHORT_PACKET:
++		ep->err_count = 0;
+ 		td->status = 0;
+ 		break;
+ 	case COMP_STOPPED_SHORT_PACKET:
+
+
+
+
 
