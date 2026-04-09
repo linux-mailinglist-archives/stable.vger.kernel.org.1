@@ -1,252 +1,171 @@
-Return-Path: <stable+bounces-235504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOsRGn0J2GlOWggAu9opvQ
-	(envelope-from <stable+bounces-235504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:18:05 +0200
+	id MG4DGL4O2GmlWwgAu9opvQ
+	(envelope-from <stable+bounces-235505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:40:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99A53CF54A
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:18:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE403CF919
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 22:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9D7FE301BA79
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 20:18:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD07D30131DC
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 20:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9FD33C1BE;
-	Thu,  9 Apr 2026 20:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5CD331220;
+	Thu,  9 Apr 2026 20:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UTmtqIKl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tBgUk8hI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E056730BB8C
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 20:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A1F32A3FD;
+	Thu,  9 Apr 2026 20:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775765878; cv=none; b=otP8y0WRttqG9fyoCQVXUcD4yzJ3eC65alFGofvubcRZRKON6Hcg5UPL9EmGG2a6MMoWZQeOOnfojvFZ9MmyByotxaaWnBxThj/LJkvhFQFGtmj7qv0CDjmDb8cpmBJnM+32rZGqY5kikTXaGPQgt8bgQ7+xKNQ80rLYwogfGJQ=
+	t=1775767221; cv=none; b=cT+3W13+kEtGPCwP2mXbEm0ZKKXaxb5HnskuG1EtCo5ZQ1K0Z8qgmkbKlr1n+IAA3ok6lpRKnh3mpoPTWsX+LKeRS+5s0h1GR6zt9EbyTgMBCe6MN3R4InmVagYMPhlk4Ryhqk4g6+7vrhwPijMczG7PbVl5ViUmQ4pWCVODXfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775765878; c=relaxed/simple;
-	bh=7mlB3bvkcx9cC95PdWWMYQ+NCpvN+8cOZLms0aqbKFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AIMsHuFPt5ThqyZOJpjVI+nJSuDXVTo6HPdJvg7OkMEDNS8uspUL+KVqv/qZ9OsQaNMhsMUDDpGp5jQ1fW1aJ6t6quDx6C6EkaMeS7S5qTRgLhPRQO+gdWWH606knj0EXgtFytXFmYoPAB/w4EBToj4VKfAcNDd/2Nkj//BGA7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UTmtqIKl; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488af9fdaa7so8422555e9.1
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 13:17:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775765875; x=1776370675; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OW/a1GY3YVi3CjBCoOtuuYxwMISjSqKAg9v5EDBhcuo=;
-        b=UTmtqIKlQJrTpExFH3Inn6WuU20sHtlid0eemfTL5f54cBAMes8iAcXkNA8xbHPUgX
-         Eznqcy0yLUYWWiNiMBYclnVG0BvWz0/16HysskWrMi5JfCF4jVELPYBPMMQX85ilNU1Z
-         G7/8CfBaBYu/DIOs5YBfClralUmrbL0SsafYXZcY1trNmyks0kEIhgLsjkwL203EbrWY
-         OILI6NpmkX8wwuZ+11pKW4D7i6OWJkNx+lvq7VtB2VDZybCGEBLcY73oUR7azEwuOqRk
-         MvNYYkZDPbT86ege6Q2DYHKo5tm66cVvIfkkR7vpxMXnXINHErCe8pOyqX74QF6w01px
-         Wo8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775765875; x=1776370675;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OW/a1GY3YVi3CjBCoOtuuYxwMISjSqKAg9v5EDBhcuo=;
-        b=K3+y5e5jFWJz683xZehYfp0g/8a3g2xNDVQqMhsYbno4G10irI8ZN0ZwYBs8/j8/Ap
-         rrV4yE1eaFkF+hhznoajfLAUrMSSYvS+/WAq095ytSFET2I0PsnsXcNGlu/U6Sme01Ri
-         q7PdH1IyuF95MP1d+vOlZ+TnIJjZrnyc+dlwCxdI285Hy34MoERIMgpuMb/vvcNb1Ngl
-         vx2JlyeOL+gGOz/Xpf72alUVaHgP3F4SVnLu0Qg5F/eea2N1bkjsCmSDZYzTEyPBNfhX
-         8zkqSiBlP8CGAlj7Y8vDl8e+Oznficu+6mhsaF1YZaYKtVxSZYuB7XFZ8zPx0Yqq0n1L
-         Yajg==
-X-Forwarded-Encrypted: i=1; AJvYcCWjzsY4Dfhvbk1i8zzP/BrXHBfjWQIegFMk29S//Z5CGecl+tWVXJpCNNmVA2a73ZQMQmOmDIE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD0C5MQU/TUEyGEUPq6SUNHLyc4J78x8OjzR82T2+qP8Ud9xIc
-	ryjGiKz89q7m4cFIjyee8A2Js1Vhhrjax///k64Nez/JRiTw24GQ5c9E
-X-Gm-Gg: AeBDieuI09mNcFax7xt9HM0ix9AYDYPjJBnkWVUlGYIcz8Dmcnyd+Gl5uzZo2bEqc8d
-	VlVNuC6yd2XzU8xjvG//96xhMWWrHAu5qRv35hrPIRDg7S0BQN3Myjp8JRQEFXCt91E8L8Jmw+P
-	njoR+tLntAtjnjVwWo9TF3VirUXEClKqQg7ZE8cbqQX6fk9FfLH+LN2/VL97nvLmI7AT7xPTULL
-	ylJenHIL5RDHNqesXEhZZ8Zha0FMEPkKIOS1oPxPc4eX3yql0/o24qN1iSaaeH46IZN8sYNXUea
-	/sKH6OUrRWS8iDV/irQefd2xP6OOVO/ecHkamQjcQLlgMCsukyZtNb/4BMGsf/km+Eqx/uM9wII
-	q5yJf1IzW4cJy4xPZfA9oCrcXJ8ve+pMJrX3uFnzj09qy8Ho82+AuMq2/jFvyZ7TQkF7hNOWWTK
-	ZESeK4rgDESaDGEdV2+2doMF44aDwSHEUE6ZY=
-X-Received: by 2002:a05:600c:c173:b0:485:39d1:b4dd with SMTP id 5b1f17b1804b1-488d684b024mr3053825e9.10.1775765874975;
-        Thu, 09 Apr 2026 13:17:54 -0700 (PDT)
-Received: from foxbook (bfi125.neoplus.adsl.tpnet.pl. [83.28.46.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a74sm1485171f8f.3.2026.04.09.13.17.53
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Thu, 09 Apr 2026 13:17:54 -0700 (PDT)
-Date: Thu, 9 Apr 2026 22:17:49 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: JP Hein <jp@jphein.com>, Alan Stern <stern@rowland.harvard.edu>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
- fragile firmware
-Message-ID: <20260409221749.5e6bccab.michal.pecio@gmail.com>
-In-Reply-To: <20260409100247.7cfb62d1.michal.pecio@gmail.com>
-References: <20260331003806.212565-1-jp@jphein.com>
-	<20260331003806.212565-3-jp@jphein.com>
-	<CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
-	<20260409100247.7cfb62d1.michal.pecio@gmail.com>
+	s=arc-20240116; t=1775767221; c=relaxed/simple;
+	bh=V0o/FTGvKqjzGci4Qq76DzWfDylmgHq07EHcvk1ksBU=;
+	h=Date:To:From:Subject:Message-Id; b=JewY5jn64v9D2spTGpDTcGSKB55T2RYwbLFtjMyZWSI/D66OEl2O23R8Ja68XQFP5o0ZcZSIHgkQcfpdIs+gJKVvZqvTJT8kcrF+KFw7EJN3Bdk+kPw4jc5R6Ttna9nk8bSZSKUs/7/kkn0gsv3Kxs3NGRUAJsC5DbwL3Htsw48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tBgUk8hI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41BA6C4CEF7;
+	Thu,  9 Apr 2026 20:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775767221;
+	bh=V0o/FTGvKqjzGci4Qq76DzWfDylmgHq07EHcvk1ksBU=;
+	h=Date:To:From:Subject:From;
+	b=tBgUk8hIc0NqmqSXM0vKKAhNKPahEEIIgVrEQzGuOAzSoSFC6fiw37j8kErosrN5G
+	 wWjVvODH0UllejqQKhbPcc/lamE9y3Bomxu64DCEKgBMfSc/kkNnlh8WE+2isCnDt6
+	 oWX2LgWDojqoZhKQOfzRJAkAGFNjPc4rbOjkCZfs=
+Date: Thu, 09 Apr 2026 13:40:20 -0700
+To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,rppt@kernel.org,pfalcato@suse.de,peterx@redhat.com,ljs@kernel.org,Liam.Howlett@oracle.com,jannh@google.com,jack@suse.cz,harry@kernel.org,brauner@kernel.org,komlomal@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + userfaultfd-allow-registration-of-ranges-below-mmap_min_addr.patch added to mm-unstable branch
+Message-Id: <20260409204021.41BA6C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235504-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235505-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,zeniv.linux.org.uk,kernel.org,suse.de,redhat.com,oracle.com,google.com,suse.cz,gmail.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C99A53CF54A
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,linux.org.uk:email]
+X-Rspamd-Queue-Id: AAE403CF919
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 9 Apr 2026 10:02:47 +0200, Michal Pecio wrote:
-> On Thu, 9 Apr 2026 08:45:17 +0200, Ricardo Ribalda wrote:
-> > A usb device shall not be able crash the whole USB host. I believe
-> > that you already captured some logs and the USB guys are looking
-> > into it. I'd really like to hear what they have to say after
-> > reviewing them.
-> 
-> Sorry, I forgot about this bug. I will take a closer look at logs
-> later today.
 
-lsusb -v of identical(?) device is found here:
-http://linux-hardware.org/?probe=a1cd74d9ac&log=lsusb
+The patch titled
+     Subject: userfaultfd: allow registration of ranges below mmap_min_addr
+has been added to the -mm mm-unstable branch.  Its filename is
+     userfaultfd-allow-registration-of-ranges-below-mmap_min_addr.patch
 
-And I'm looking at the logs here:
-https://github.com/jphein/kiyo-xhci-fix/tree/main/kernel-patches/crash-evidence
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-allow-registration-of-ranges-below-mmap_min_addr.patch
 
-crash-6.17-stock-stress-20260330.log
-Empty file, not sure why included at all.
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-crash-6.17-video-call-20260330.log
-No debug messages. At some point:
-Mar 30 10:00:52 katana kernel: usb 2-3.4: disable of device-initiated U1 failed.
-Mar 30 10:00:53 katana kernel: usb 2-3.4: Failed to set U2 timeout to 0x0,error code -110
-Mar 30 10:00:53 katana kernel: uvcvideo 2-3.4:1.1: usb_set_interface Failed to disable LPM
-Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC control 11 on unit 3: -71 (exp. 1).
-Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC control 11 on unit 3: -71 (exp. 1).
-Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC control 11 on unit 3: -71 (exp. 1).
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Not sure if the LPM thing is the cause or a symptom of general EP 0
-disfunction, as seen in subsequent EPROTO errors.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Not sure why usb_set_interface() is called. Is this the start streaming
-case mentioned in some email? What was happening before?
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-stall-6.17-stock-no-workarounds-20260330.log
-All sorts of repeating errors, including stall on EP1IN ("ep 2") which
-is supposedly isochronous and shouldn't. Clearly some broken state, not
-sure how things got there.
+------------------------------------------------------
+From: "Denis M. Karpov" <komlomal@gmail.com>
+Subject: userfaultfd: allow registration of ranges below mmap_min_addr
+Date: Thu, 9 Apr 2026 13:33:45 +0300
 
-stall-6.17-stress-during-call-20260330.log
-This is the most interesting one.
+The current implementation of validate_range() in fs/userfaultfd.c
+performs a hard check against mmap_min_addr.  This is redundant because
+UFFDIO_REGISTER operates on memory ranges that must already be backed by a
+VMA.
 
-The first slightly unusual thing is repeated unlinks on EP5IN (int),
-not sure why uvcvideo would do that, possibly result of the stess test.
-I know that such pattern alone can break ASMedia host controllers for
-no reason I understand, though this one is Intel.
+Enforcing mmap_min_addr or capability checks again in userfaultfd is
+unnecessary and prevents applications like binary compilers from using
+UFFD for valid memory regions mapped by application.
 
-It's suspicious that wBytesPerInterval of the endpoint is 8, wMaxPacket
-is 64 and URBs are 16 bytes. Just in case, I attach a test patch which
-rises wBytesPerInterval to match wMaxPacketSize.
+Remove the redundant check for mmap_min_addr.
 
-The first definite anomaly is Transaction Error on EP5IN:
-Mar 30 16:59:16 katana kernel: xhci_hcd 0000:00:14.0: Transfer error for slot 18 ep 10 on endpoint
-Mar 30 16:59:16 katana kernel: xhci_hcd 0000:00:14.0: Hard-reset ep 10, slot 18
+We started using UFFD instead of the classic mprotect approach in the
+binary translator to track application writes.  During development, we
+encountered this bug.  The translator cannot control where the translated
+application chooses to map its memory and if the app requires a
+low-address area, UFFD fails, whereas mprotect would work just fine.  I
+believe this is a genuine logic bug rather than an improvement, and I
+would appreciate including the fix in stable.
 
-Not sure why endpoint reset follows immediately without retries.
-The test patch also removes one potential reason. We might see whether
-the retries will fail, or if retrying until the transfer succeeds
-magically prevents the subsequent disaster. Perhaps the device gets
-unusually upset about sequence mismatch on this endpoint, which results
-from not clearing this halt condition properly (known problem).
-
-Five seconds later two control URBs are unlinked:
-Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Cancel URB 00000000122aa5e2, dev 3.1, ep 0x0, starting at offset 0x11e227b40
-Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: // Ding dong!
-Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Cancel URB 000000008a55bcd3, dev 3.1, ep 0x0, starting at offset 0x11e227b20
-Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Not queuing Stop Endpoint on slot 18 ep 0 in state 0x44
-
-Probably timeout, i.e. things got stuck. Oddly, state 0x44 indicates
-that this control endpoint has previously halted - error or stall.
-
-Higher layers notice that things are timing out:
-
-Mar 30 16:59:21 katana kernel: usb 2-3.1: pipewire timed out on ep0out len=0/0
-Mar 30 16:59:21 katana kernel: usb 2-3.1: disable of device-initiated U1 failed.
-Mar 30 16:59:21 katana kernel: usb 2-3.1: ThreadPoolSingl timed out on ep0out len=0/1
-
-Nothing works from now. At some point the parent hub reports
-disconnection and reconnection. Still nothing works.
-
+Link: https://lkml.kernel.org/r/20260409103345.15044-1-komlomal@gmail.com
+Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Would it be possible to repeat this test with the patch below?
-It overrides the suspicious wBytesPerInterval and hopefully enables
-retries of this failed interrupt URB. We will see what happens.
+ fs/userfaultfd.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 1d50c91afd7f..17d78b4e07bf 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1464,6 +1464,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
- 	mult = xhci_get_endpoint_mult(xhci, udev, ep);
- 	max_packet = xhci_usb_endpoint_maxp(udev, ep);
- 	max_burst = xhci_get_endpoint_max_burst(udev, ep);
-+	if (interval && max_esit_payload < max_packet) {
-+		xhci_err(xhci, "max_esit_payload %d -> %d\n", max_esit_payload, max_packet);
-+		max_esit_payload = max_packet;
-+	}
- 	avg_trb_len = max_esit_payload;
- 
- 	/* FIXME dig Mult and streams info out of ep companion desc */
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 98ef014c8dee..e5823650850a 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2544,6 +2544,7 @@ static void process_bulk_intr_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
- 		td->status = 0;
- 		break;
- 	case COMP_SHORT_PACKET:
-+		ep->err_count = 0;
- 		td->status = 0;
- 		break;
- 	case COMP_STOPPED_SHORT_PACKET:
+--- a/fs/userfaultfd.c~userfaultfd-allow-registration-of-ranges-below-mmap_min_addr
++++ a/fs/userfaultfd.c
+@@ -1238,8 +1238,6 @@ static __always_inline int validate_unal
+ 		return -EINVAL;
+ 	if (!len)
+ 		return -EINVAL;
+-	if (start < mmap_min_addr)
+-		return -EINVAL;
+ 	if (start >= task_size)
+ 		return -EINVAL;
+ 	if (len > task_size - start)
+_
 
+Patches currently in -mm which might be from komlomal@gmail.com are
 
-
+userfaultfd-allow-registration-of-ranges-below-mmap_min_addr.patch
 
 
