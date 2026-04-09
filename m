@@ -1,138 +1,154 @@
-Return-Path: <stable+bounces-235446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNdoBbrR12mrTAgAu9opvQ
-	(envelope-from <stable+bounces-235446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:20:10 +0200
+	id SJtkA8DS12mrTAgAu9opvQ
+	(envelope-from <stable+bounces-235447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:24:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBA03CD92E
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:20:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DCE3CDA08
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3679C302B778
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 16:13:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6DF6304D148
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 16:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3953AEF54;
-	Thu,  9 Apr 2026 16:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E5628689B;
+	Thu,  9 Apr 2026 16:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+ccITAa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ha6ai0lb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFB52EB856;
-	Thu,  9 Apr 2026 16:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A654F3CD8C3
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 16:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775751215; cv=none; b=N7v3kfRxQKq90xVdbg7MHJKZ//sMn9vumPpCkeGagm1px4d2iCbC6FYVkovCtuyyqQWLvzt1DB4Z+Vu3MWt33aC3qnpbT1t8lkSPaX3ccgrQsnDBPlaoPKNqbIAI3hOspV+kgxkfWgD7vzzo1Lx1fxNvyILlI1caPSqeDoj+9EY=
+	t=1775751566; cv=none; b=jpjt8UybymkKUQ327h7quSFFf5HuIMHXdqMmbKPvOAXgm1icpekNpro8FXFG0N4Exer2mrKlmzRH5uWTb3aNzgI1vSyE7c2lizffsuw64qc/dYEYmhLzPOFQU1glyr2mM+NB4cXkikXzucoa4s3PmxZsUb+AuPP7wE/Piwq7nvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775751215; c=relaxed/simple;
-	bh=bsD+hBAisiYo70nFqsBcKxqBI3NMZbjrMkhTOdhdQys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qWBf1tNt67igiWHDX6KzAs29mv7s9xdIiRqafHPBVhN/8THMtm3ojapfM+ZuBWMOIxw6qBPvdi0uJP5xx58moCfHmjjiJ5y6B8sWcp9l5eNC9eGU+j/mF7qDZgoZFhI7D5I9C2FnMA8WiRtxKEWVFtZUJnDCmCxDKzwpJPytgEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+ccITAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA26EC4CEF7;
-	Thu,  9 Apr 2026 16:13:32 +0000 (UTC)
+	s=arc-20240116; t=1775751566; c=relaxed/simple;
+	bh=4ST+hPB0HfJyx4zcBPDhvtmJYMEBRZ/dYXMapLMv6bg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u9UoB1BadOIH9sBHapMEQbO0Z2sQNsjOU7lOTBdB8rXk2iB9r1spW6PKPqlJ0Un0MY44lEhbGqBamI9nuD3zq138QSxawc5hkwR2mKoZUqLF8y3J37kyaSPxbvNLLjA7fxu8e0U+oer1tNVQy+orokfgnEaU4Uxl6l8lude7fyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ha6ai0lb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725D7C2BCB6
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 16:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775751215;
-	bh=bsD+hBAisiYo70nFqsBcKxqBI3NMZbjrMkhTOdhdQys=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M+ccITAa+U/r0Z+V6XD7LFSezBy2I9Auf7y2bdgwo3f3K6JWntejdpUiPly56wQg0
-	 W8uxqIIz6UgdUKTYJiPIEDIR4Exhrbnhe4SFt6X9+AKC3TyyS46YhhRz3myf0XicWY
-	 knXk4d5xAxeFOK3oAAEd9aDkQ2RatcnAXdlQmPXbeczwQSR2nCwxGmDoXw6b5wy1iT
-	 lme/PD6f4qIvDbLnl0VcmDtnfNKw2mxW2V9dGoxmgpCMYbjUAf5RFyC4jLMZMYJEbi
-	 pkEUdnqgE5nFAE11bazhUjeCR7tktqCE9iqUIBzu01PhpDyyeqBDzgxYuPzsonDGu5
-	 8C//BRRVCUxfA==
-Date: Thu, 9 Apr 2026 17:13:30 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Sunny Luo <sunny.luo@amlogic.com>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	William Zhang <william.zhang@broadcom.com>,
-	Kursad Oney <kursad.oney@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH 20/20] spi: mpfs: fix controller deregistration
-Message-ID: <20260409-overbill-although-b0c51fd2a6db@spud>
-References: <20260409120419.388546-1-johan@kernel.org>
- <20260409120419.388546-21-johan@kernel.org>
+	s=k20201202; t=1775751566;
+	bh=4ST+hPB0HfJyx4zcBPDhvtmJYMEBRZ/dYXMapLMv6bg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Ha6ai0lbwR8U5dFvxHDDn3S4cqYm4HR+WmDmiEfue1jHfrutZTZb/fklkVqsjKNhR
+	 7W/YSX1wjvyxCIXtCADAWNlCyuVz+MWZHEHfpZ4qJ8EbUXueZOEu+d9Vf1jc+Rjfde
+	 bXR1VOcyDPwYIf2uk+G3ful6Bba7gNpjVwRLR9Gv5fI/8IXA4xHPCjo8X9SbkpgW4D
+	 zepHaIJp3rlE16hg5AsR3ib6YMvcd9m5UlSH2MKJdFKAvQIxQ57wfHlbuBtjmav+uy
+	 +q09uY/zjecylWD1FIjTxyCzny/Q7iSFTp8gXg6z+obB/22Ecq2wUnAh/xGM+KKkSP
+	 wkjJFJmjAX71Q==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38dd575bcf3so11415771fa.3
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 09:19:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX4Ue45ZGvKk3/AdAqSCEVzhz40AJPlveWt8NZ6VgviPQv6IV6RK8HlsMLB4fWPBVhRJZyVXJ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQZYIQT+DXHOZhUob7rUTNSnr/u6jRGB2Yk6CZiJE0DVlfyiKF
+	MzM4afXCyQynJTMVn2kIunaWGFsx5W2exCTpw7fvGpMMc+D9AjzIM8DyI6ik7SG4xq6zq6+/V2o
+	Q6XlnYazM2NNkqpAEbJMnxdjdhz0cBBQ=
+X-Received: by 2002:a2e:95c3:0:b0:38c:c32e:5b2c with SMTP id
+ 38308e7fff4ca-38e3362371emr11761351fa.19.1775751564937; Thu, 09 Apr 2026
+ 09:19:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Do9K492Dyn9ifzN7"
-Content-Disposition: inline
-In-Reply-To: <20260409120419.388546-21-johan@kernel.org>
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+References: <20260331205849.498295-1-ojeda@kernel.org> <CAJ-ks9nqv30SOiCia8LE6XbKEURNCa9qwwcszsQ0a8FRxR0Msg@mail.gmail.com>
+ <CANiq72mKuQgK_R=xs6270nwYigzCvJiFJ1PcOB+WT3OdXO7E0A@mail.gmail.com>
+In-Reply-To: <CANiq72mKuQgK_R=xs6270nwYigzCvJiFJ1PcOB+WT3OdXO7E0A@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Thu, 9 Apr 2026 12:18:48 -0400
+X-Gmail-Original-Message-ID: <CAJ-ks9nMA1zqGhHhOk8hmfNgoODQ+D-WforPU6iCciYbPsDD-Q@mail.gmail.com>
+X-Gm-Features: AQROBzDZ5E11AfueQzg0LR9apqPigjI17D9aa2qN_B_BOWd8NoNl2G48fdG5R0g
+Message-ID: <CAJ-ks9nMA1zqGhHhOk8hmfNgoODQ+D-WforPU6iCciYbPsDD-Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235447-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235446-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[kernel.org,amlogic.com,aspeedtech.com,kaod.org,upb.ro,broadcom.com,gmail.com,vger.kernel.org,microchip.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,suse.com,google.com,garyguo.net,protonmail.com,umich.edu,vger.kernel.org,atomlin.com];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6EBA03CD92E
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: C1DCE3CDA08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, Apr 3, 2026 at 9:07=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Fri, Apr 3, 2026 at 12:25=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
+> >
+> > Seeing this patch a bit late but in clippy 1.85.0 there is
+> > `#[clippy::format_args]` which would permit us to make the lint work
+> > with our custom macros.
+>
+> +1, that may be good to consider, especially with the bump -- added
+> and backlinked in:
+>
+>   https://github.com/Rust-for-Linux/linux/issues/349
+>
+> Maybe an issue would be good to create too.
 
---Do9K492Dyn9ifzN7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Turns out `#[clippy::format_args]` doesn't work for us due to the
+`fmt!` proc-macro.
 
-On Thu, Apr 09, 2026 at 02:04:19PM +0200, Johan Hovold wrote:
-> Make sure to deregister the controller before disabling underlying
-> resources like interrupts during driver unbind.
->=20
-> Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers=
-")
-> Cc: stable@vger.kernel.org	# 6.0
-> Cc: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+It seems the handling of `#[clippy::format_args]` is more
+sophisticated than (at least I) expected: it doesn't blindly check the
+inputs to annotated macros, but rather looks for the place where
+`fmt::Arguments` are created.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+In our case something like `pr_info!("{}", i)` ends up expanding to
+`core::format_args!("{}", Adapter(&(i)))`, which does not trigger
+`uninlined_format_args`.
 
---Do9K492Dyn9ifzN7
-Content-Type: application/pgp-signature; name="signature.asc"
+We also cannot fix that just by having `fmt!` assign `Adapter(&(i))`
+to a local variable and then return `fmt::Arguments`, since
+`core::format_args!` borrows its arguments. The local would not live
+long enough.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCadfQKQAKCRB4tDGHoIJi
-0iBgAQDebcljZem6CQx3Ioi8+ctRDiQgHPe809WtR0e12XlbxwEAxY6ETfHlH3uJ
-aPCXkMknsfl51Dk/hsGTXqR7b+5X5gI=
-=6k1q
------END PGP SIGNATURE-----
-
---Do9K492Dyn9ifzN7--
+I filed this upstream as https://github.com/rust-lang/rust-clippy/issues/16=
+833.
 
