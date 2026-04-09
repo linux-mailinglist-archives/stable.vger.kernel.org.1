@@ -1,183 +1,370 @@
-Return-Path: <stable+bounces-235305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPNRNANA12npLwgAu9opvQ
-	(envelope-from <stable+bounces-235305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 07:58:27 +0200
+	id QNrpD0tB12npLwgAu9opvQ
+	(envelope-from <stable+bounces-235306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:03:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD57F3C667B
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 07:58:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831D73C66D4
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 89B79300B28C
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 05:58:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5982430053C6
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 06:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21EF307AF4;
-	Thu,  9 Apr 2026 05:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA253093C1;
+	Thu,  9 Apr 2026 06:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ux71kres"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kqZPPd7s"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF8B199FAC;
-	Thu,  9 Apr 2026 05:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143B2EA749;
+	Thu,  9 Apr 2026 06:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775714299; cv=none; b=RvhmEB2BzwE36r7+DmhlMZ6YE5iulRUVT/TVTMwfhlGV+6mOqNctPNigZF2kF5JT/vsGt7t0w1dh1DjJaSnlWtZ2m0A+rIagy8/qZKS5hGk19HUN92u3QMb5xDH4GI4DN/yiMLGVtGC9ie05fvYCbKnR12gV0LFtGavZM5pzU18=
+	t=1775714615; cv=none; b=st1HpH9Q2IdWf1PAIj38vYClh1YcOk9YoukFGNS92wecszh9gPRn35OAWFP1ULvCe0byS0o5zKx8KOIVNvPZB0TjGTfrvSrSHii+jOgaLsw0iVjdIYiPGQoOArF16HbqGaGUTXT5nJ9vyW0tNFUgnz5F4XrvgA+mB6vJTwDRnYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775714299; c=relaxed/simple;
-	bh=hPSDNS2pmKnvE3EWyqx8L6sy8nlq54q5JSgI2/fJNQ0=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=pa74j4tSWVor39xAT5MGoHC+7HuQEZg3nZIJffQReS22c9d7s7+1J3RAahBS98JCgbmNiPFuNsOYcstIDfpHBc9YjG6mOwxQwhSMf8vb6giqWGRUy3s5Yvki9WTWXucP81kG9xrLRXRlx6zwstseoUZ2KtMN9ju//59e+QxKf3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ux71kres; arc=none smtp.client-ip=162.62.58.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1775714286; bh=saUzSOSLabVSqyIgKKzKGgKBGMnBOmvykPoGRA3J8Bw=;
-	h=From:To:Cc:Subject:Date;
-	b=ux71kresDE60aZxj42Z2qIbRprN2W9El/ubf09ByxbAz3AJ5XjLa2K/+XSZ5efTNO
-	 wEA58d0UHbFS0eFaiMXIf2RXnMhH2MwcaPkBcjyv9Mlh/ObwCE3gZZzwtthBt+qBgt
-	 V76zW/B14D8eHCdjEiiC/JCqqK5Xzn2SUx9CD7fA=
-Received: from qq.com ([123.121.145.161])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id A88B52ED; Thu, 09 Apr 2026 13:42:08 +0800
-X-QQ-mid: xmsmtpt1775713328tnu91yjf5
-Message-ID: <tencent_E328416B7CFD436F6029F2DF02AD7ED89C08@qq.com>
-X-QQ-XMAILINFO: MwOvDUWSFAlQxjprT6pL3qbMrvkpgun8Nr+ooi6FDCWXibDtA2kaLL2ABrp2/F
-	 Hntz+3tBAl+xCp6q0Urb3nr7yzt3RwyBhj3HOUph8JkMMM92D1KBeKE5UPS7CdsrC8/YH1yX+OsL
-	 ulseKiyV7vBFfvBpC3tVlf6Db3w7qpU2WFiTISoDMZn1WFMq1ZWoJcFm7SGv2IKrhLK3EybaoSYW
-	 rBrYDJfn+3RtNTG8Mo3TxRya5TgtsxCd++ieI8drVP2eNAkOrr/00I24lAyYd3sC0Cx9jyMpJfI1
-	 IBafI1E/8pNNIs9IxbbE1FXgqRW3j6FgYSsSELPBkf/KOOnJhSww+WO6yrZcakDPoufDI4nk7A/r
-	 mVXdCESkQaG1IS8pod/xV3WzIcFa8wP1esu2QMAikuitBtlf77noyqY7dRNsEXSJT8cT6ban97vR
-	 9nn/RJWl72gX6T8oPVKSYx7EZnIgo0+3p6yE5mfxJOmLVmwP312DxuBZcnYqQibIqtKV0A44pjFS
-	 cJ8zhYRUq2wo31u9dJjTATFCEcge9hTT5p0DIPQcNMtwvWXMfbD2wHlomxlPYAhkZd1pc82JOJb6
-	 ir3Xfp/cqQyL4iv7dw+ggHO+kXiVkAka1jMWmrr6m/k788bO9yDn/uJI+309pI/WzV6bohRlMid0
-	 AJmT07phSC0CKE2TGn4F+sZjuG3d1pIGDkgbuU6KVnkUvgT9Vv8Qp+FwGwubLUFg3gIcNq1W4uqR
-	 xR941YRvBQBtBw9a/6UQSXOwy6ImPaPSwJO05yaWNwmVZrJ03p4RKhY/NBDasluAHF27hhGxkxpj
-	 tiJocSeOwTaBW7mywGD4j1AFnTHSxsQo2/36JwRtxQDVr9qaHZ+0O7Fj2WfFS7cNgl90WnAm/iUn
-	 fyMhAK1VUZFYCQ0a26U/qmFs2WBSviXKasIc+q/GuyNgZba3K8rmPPOqk/E0KQeNr6tVpCPluOAi
-	 Z7V3p0bGCEI2nHuW0J8b/wiTzcpNfZYzldN/iQOcZtCjtKCCqu2PD+ySPnVh6hPX2Qp8whdWQpb1
-	 LGbIc4IyBxpVFiXYPrStLcCT1I3tJvOXVYzz1x/tTE2gv45yalKzrhze2/ZQB5iXmU6EoVbp0AKg
-	 NublnQGwlR9sTgbOaX0Tm5njA+dC6sZPCTF3NdxSDhqhV28ecFZs5CpKMSyA==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Zhaoyang Yu <2426767509@qq.com>
-To: andriy.shevchenko@linux.intel.com
-Cc: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	kees@kernel.org,
-	fourier.thomas@gmail.com,
-	linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	gszhai@bjtu.edu.cn,
-	23120469@bjtu.edu.cn,
-	Zhaoyang Yu <2426767509@qq.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] tty: serial: pch_uart: add check for dma_alloc_coherent()
-Date: Thu,  9 Apr 2026 13:41:58 +0800
-X-OQ-MSGID: <20260409054158.14418-1-2426767509@qq.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1775714615; c=relaxed/simple;
+	bh=B7WAatpG02qYnXdA22elGEqNvhg/IbaWN4HchJSWzZQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=SG6h0GbpTCWgOiTqB4VFYYXnYQN2+whXRy0JI9UhwHQsBN3/kjlxRCR3zhDn5jTHYkHiAtBV6W0jcA8JSQfN+8KKEOc6//0jfQlp/x482AcxiDed9S7MrnSgdaLdglIRpUonj/8893PIE8ovKrhQ/UCK+r3zvuEo2Vd0TXaDaDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kqZPPd7s; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=Jcz/JxJ17MzFPxYCiqkH/kucC2tTtE1pal3PreuZrT0=;
+	b=kqZPPd7stIFeDwsNmwQRwrcA0p25/G+XuNKNXhsXaLrmPVqIjEEWC3xbwgLuTa
+	sGYksLm0bzmlEoNhMQ/PrTNJX9UTEOB+wB0ZdqaqvYknrll/XPHz6BUjkTiXXitG
+	Mrh4YN8NPzeTxBnieqhKA2DXo1OP5tOam4t4qRKkikq2c=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wBXG6fLQNdpDWpfEA--.18284S2;
+	Thu, 09 Apr 2026 14:01:48 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"James E . J . Bottomley" <jejb@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Wang Shuaiwei <wangshuaiwei1@xiaomi.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Manish Pandey <quic_mapa@quicinc.com>,
+	Brian Kao <powenkao@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Archana Patni <archana.patni@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mike Snitzer <snitzer@redhat.com>,
+	Satya Tangirala <satyat@google.com>,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.6.y] scsi: ufs: core: Fix use-after free in init error and remove paths
+Date: Thu,  9 Apr 2026 14:01:47 +0800
+Message-Id: <20260409060147.3175811-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-CM-TRANSID:_____wBXG6fLQNdpDWpfEA--.18284S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtw13XFWfGw4DWryDKrWkCrg_yoW3uw4kpF
+	WYqay5Ar4kKr42gr1DJw48CFyrKw4xG345GrZ2934ruw1jkFn3Wa4vyF109F15GFZxZ3Wj
+	qFWjyr48u3WUZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi_Ma8UUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5g2T-mnXQM2akQAA3+
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235305-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,gmail.com,vger.kernel.org,bjtu.edu.cn,qq.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[2426767509@qq.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qq.com:+];
-	NEURAL_HAM(-0.00)[-0.983];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[qq.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[163.com];
+	TAGGED_FROM(0.00)[bounces-235306-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[163.com:+];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[oracle.com,163.com,micron.com,linaro.org,kernel.org,samsung.com,wdc.com,acm.org,linux.ibm.com,mediatek.com,xiaomi.com,google.com,quicinc.com,linuxfoundation.org,intel.com,arndb.de,kernel.dk,redhat.com,vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BD57F3C667B
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[micron.com:email,oracle.com:email,linaro.org:email]
+X-Rspamd-Queue-Id: 831D73C66D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a check for dma_alloc_coherent() failure to prevent a potential
-NULL pointer dereference in dma_handle_rx(). Properly release DMA
-channels and the PCI device reference using a goto ladder if the
-allocation fails.
+From: André Draszik <andre.draszik@linaro.org>
 
-Fixes: 3c6a483275f4 ("Serial: EG20T: add PCH_UART driver")
+[ Upstream commit f8fb2403ddebb5eea0033d90d9daae4c88749ada ]
+
+devm_blk_crypto_profile_init() registers a cleanup handler to run when
+the associated (platform-) device is being released. For UFS, the
+crypto private data and pointers are stored as part of the ufs_hba's
+data structure 'struct ufs_hba::crypto_profile'. This structure is
+allocated as part of the underlying ufshcd and therefore Scsi_host
+allocation.
+
+During driver release or during error handling in ufshcd_pltfrm_init(),
+this structure is released as part of ufshcd_dealloc_host() before the
+(platform-) device associated with the crypto call above is released.
+Once this device is released, the crypto cleanup code will run, using
+the just-released 'struct ufs_hba::crypto_profile'. This causes a
+use-after-free situation:
+
+  Call trace:
+   kfree+0x60/0x2d8 (P)
+   kvfree+0x44/0x60
+   blk_crypto_profile_destroy_callback+0x28/0x70
+   devm_action_release+0x1c/0x30
+   release_nodes+0x6c/0x108
+   devres_release_all+0x98/0x100
+   device_unbind_cleanup+0x20/0x70
+   really_probe+0x218/0x2d0
+
+In other words, the initialisation code flow is:
+
+  platform-device probe
+    ufshcd_pltfrm_init()
+      ufshcd_alloc_host()
+        scsi_host_alloc()
+          allocation of struct ufs_hba
+          creation of scsi-host devices
+    devm_blk_crypto_profile_init()
+      devm registration of cleanup handler using platform-device
+
+and during error handling of ufshcd_pltfrm_init() or during driver
+removal:
+
+  ufshcd_dealloc_host()
+    scsi_host_put()
+      put_device(scsi-host)
+        release of struct ufs_hba
+  put_device(platform-device)
+    crypto cleanup handler
+
+To fix this use-after free, change ufshcd_alloc_host() to register a
+devres action to automatically cleanup the underlying SCSI device on
+ufshcd destruction, without requiring explicit calls to
+ufshcd_dealloc_host(). This way:
+
+    * the crypto profile and all other ufs_hba-owned resources are
+      destroyed before SCSI (as they've been registered after)
+    * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
+      side-effect
+    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
+      it's not needed anymore
+    * no future drivers using ufshcd_alloc_host() could ever forget
+      adding the cleanup
+
+Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
+Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhaoyang Yu <2426767509@qq.com>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Delete modifications about ufshcd_parse_operating_points() for it's added from
+commit 72208ebe181e3("scsi: ufs: core: Add support for parsing OPP") 
+and that in ufshcd_pltfrm_remove() for it's added from commit 
+897df60c16d54("scsi: ufs: pltfrm: Dellocate HBA during ufshcd_pltfrm_remove()"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
-Changes in v2:
-- Added the Fixes tag for the initial PCH_UART driver commit, per Andy's review.
+ drivers/ufs/core/ufshcd.c        | 31 +++++++++++++++++++++----------
+ drivers/ufs/host/ufshcd-pci.c    |  2 --
+ drivers/ufs/host/ufshcd-pltfrm.c | 25 ++++++++-----------------
+ include/ufs/ufshcd.h             |  1 -
+ 4 files changed, 29 insertions(+), 30 deletions(-)
 
- drivers/tty/serial/pch_uart.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/tty/serial/pch_uart.c b/drivers/tty/serial/pch_uart.c
-index 6729d8e83c3c..ba1fcd663fe2 100644
---- a/drivers/tty/serial/pch_uart.c
-+++ b/drivers/tty/serial/pch_uart.c
-@@ -689,8 +689,7 @@ static void pch_request_dma(struct uart_port *port)
- 	if (!chan) {
- 		dev_err(priv->port.dev, "%s:dma_request_channel FAILS(Tx)\n",
- 			__func__);
--		pci_dev_put(dma_dev);
--		return;
-+		goto err_pci_get;
- 	}
- 	priv->chan_tx = chan;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 2dcb0146c17e..f6aada5150f9 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10475,16 +10475,6 @@ int ufshcd_system_thaw(struct device *dev)
+ EXPORT_SYMBOL_GPL(ufshcd_system_thaw);
+ #endif /* CONFIG_PM_SLEEP  */
  
-@@ -704,18 +703,26 @@ static void pch_request_dma(struct uart_port *port)
- 	if (!chan) {
- 		dev_err(priv->port.dev, "%s:dma_request_channel FAILS(Rx)\n",
- 			__func__);
--		dma_release_channel(priv->chan_tx);
--		priv->chan_tx = NULL;
--		pci_dev_put(dma_dev);
--		return;
-+		goto err_req_tx;
- 	}
- 
- 	/* Get Consistent memory for DMA */
- 	priv->rx_buf_virt = dma_alloc_coherent(port->dev, port->fifosize,
- 				    &priv->rx_buf_dma, GFP_KERNEL);
-+	if (!priv->rx_buf_virt)
-+		goto err_req_rx;
- 	priv->chan_rx = chan;
- 
- 	pci_dev_put(dma_dev);
-+	return;
-+
-+err_req_rx:
-+	dma_release_channel(chan);
-+err_req_tx:
-+	dma_release_channel(priv->chan_tx);
-+	priv->chan_tx = NULL;
-+err_pci_get:
-+	pci_dev_put(dma_dev);
+-/**
+- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
+- * @hba: pointer to Host Bus Adapter (HBA)
+- */
+-void ufshcd_dealloc_host(struct ufs_hba *hba)
+-{
+-	scsi_host_put(hba->host);
+-}
+-EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
+-
+ /**
+  * ufshcd_set_dma_mask - Set dma mask based on the controller
+  *			 addressing capability
+@@ -10503,12 +10493,26 @@ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
+ 	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
  }
  
- static void pch_dma_rx_complete(void *arg)
++/**
++ * ufshcd_devres_release - devres cleanup handler, invoked during release of
++ *			   hba->dev
++ * @host: pointer to SCSI host
++ */
++static void ufshcd_devres_release(void *host)
++{
++	scsi_host_put(host);
++}
++
+ /**
+  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
+  * @dev: pointer to device handle
+  * @hba_handle: driver private handle
+  *
+  * Return: 0 on success, non-zero value on failure.
++ *
++ * NOTE: There is no corresponding ufshcd_dealloc_host() because this function
++ * keeps track of its allocations using devres and deallocates everything on
++ * device removal automatically.
+  */
+ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
+ {
+@@ -10530,6 +10534,13 @@ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
+ 		err = -ENOMEM;
+ 		goto out_error;
+ 	}
++
++	err = devm_add_action_or_reset(dev, ufshcd_devres_release,
++				       host);
++	if (err)
++		return dev_err_probe(dev, err,
++				     "failed to add ufshcd dealloc action\n");
++
+ 	host->nr_maps = HCTX_TYPE_POLL + 1;
+ 	hba = shost_priv(host);
+ 	hba->host = host;
+diff --git a/drivers/ufs/host/ufshcd-pci.c b/drivers/ufs/host/ufshcd-pci.c
+index 4ecaaf52b3e9..3ff799497191 100644
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -620,7 +620,6 @@ static void ufshcd_pci_remove(struct pci_dev *pdev)
+ 	pm_runtime_forbid(&pdev->dev);
+ 	pm_runtime_get_noresume(&pdev->dev);
+ 	ufshcd_remove(hba);
+-	ufshcd_dealloc_host(hba);
+ }
+ 
+ /**
+@@ -665,7 +664,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	err = ufshcd_init(hba, mmio_base, pdev->irq);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Initialization failed\n");
+-		ufshcd_dealloc_host(hba);
+ 		return err;
+ 	}
+ 
+diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
+index 797a4dfe45d9..0112ecbebe46 100644
+--- a/drivers/ufs/host/ufshcd-pltfrm.c
++++ b/drivers/ufs/host/ufshcd-pltfrm.c
+@@ -339,21 +339,17 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	struct device *dev = &pdev->dev;
+ 
+ 	mmio_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(mmio_base)) {
+-		err = PTR_ERR(mmio_base);
+-		goto out;
+-	}
++	if (IS_ERR(mmio_base))
++		return PTR_ERR(mmio_base);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		err = irq;
+-		goto out;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	err = ufshcd_alloc_host(dev, &hba);
+ 	if (err) {
+ 		dev_err(dev, "Allocation failed\n");
+-		goto out;
++		return err;
+ 	}
+ 
+ 	hba->vops = vops;
+@@ -362,13 +358,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	if (err) {
+ 		dev_err(dev, "%s: clock parse failed %d\n",
+ 				__func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 	err = ufshcd_parse_regulator_info(hba);
+ 	if (err) {
+ 		dev_err(dev, "%s: regulator init failed %d\n",
+ 				__func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	ufshcd_init_lanes_per_dir(hba);
+@@ -377,18 +373,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	if (err) {
+ 		dev_err_probe(dev, err, "Initialization failed with error %d\n",
+ 			      err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
+-
+-dealloc_host:
+-	ufshcd_dealloc_host(hba);
+-out:
+-	return err;
+ }
+ EXPORT_SYMBOL_GPL(ufshcd_pltfrm_init);
+ 
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index 8d2efb9e5d66..60942ed0040f 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -1286,7 +1286,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
+ }
+ 
+ int ufshcd_alloc_host(struct device *, struct ufs_hba **);
+-void ufshcd_dealloc_host(struct ufs_hba *);
+ int ufshcd_hba_enable(struct ufs_hba *hba);
+ int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
+ int ufshcd_link_recovery(struct ufs_hba *hba);
 -- 
-2.50.1
+2.34.1
 
 
