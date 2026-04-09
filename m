@@ -1,160 +1,175 @@
-Return-Path: <stable+bounces-235377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wALJI6mI12mwPQgAu9opvQ
-	(envelope-from <stable+bounces-235377-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:08:25 +0200
+	id qIEqBhSO12mtPggAu9opvQ
+	(envelope-from <stable+bounces-235378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:31:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F633C9831
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:08:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1683C9AE9
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:31:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91EA2301FF94
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 11:07:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8730B3009F0F
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 11:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C0F3BE659;
-	Thu,  9 Apr 2026 11:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4F63B95FF;
+	Thu,  9 Apr 2026 11:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aMq3y8kY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7OvAGze"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9533BADB4
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 11:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775732847; cv=none; b=olbOxKs+8SZjTfyeHiNI3pUZjDChWm33SA1jAvrl6TYRkva484L64eHQacX2pKhxCa6xvqots+hW9uZ6lyWSphvJOYQ6UJizKzaGRfIoIaY5Ln2qtf9vsljQ7szfDFioAf8flmp3hAGgSnBk80XDUao8YyTLSGm7r83a+JRiFeg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775732847; c=relaxed/simple;
-	bh=9JKGx38FSGG6Nz7wxP/TB3E0ebPEyEU8JlSvdZZ7I+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a34at8Dhj/8pO/zMb5orJm3x6DXK1ehGBKj/OP0BmLX6wwsglQpjtDQiBOUKDQ+HUQr5tKwRPrDqEM8VtWNNRSijNsMcqp9HrfA9g2q3b//PrKUu3O1/lB9hR/QFzXdN5myLC8/rOqYyHg8B+RoP7fN9jJIMWGxgw5sydZYr//Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aMq3y8kY; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 9 Apr 2026 13:07:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775732844;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3MOpz5+g3vfa9VgxYUiXiTPDPttF9omv9Zm7Y7PMt3M=;
-	b=aMq3y8kYSk6U9TF0ya6Y/9TkYR10vSjPrmQ8LQXBHvijn1e+4kwhrbKyShdznxhl1jF8AL
-	1PmEl4vGdt5H3N4MydL5ojRcIdlIj4i7jeZPY1QseRpWoe33wkgR5u8Dq+xLzotpDVN1EU
-	L1adr84WH1v7z77OOjzhsSnHHhUQ+kc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
-	stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/boot: Fix NULL dereference for missing
- hugepagesz/hugepages value
-Message-ID: <adeIaDdxslGShgq8@linux.dev>
-References: <20260302205901.39610-1-thorsten.blum@linux.dev>
- <20260313204243.GIabR2w3PqVcFxg66B@fat_crate.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54043C141F
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 11:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775734288; cv=pass; b=Z50oV5liHpql25QBDdPZRpG5kUFiYIH01/wmWuZpoDc4qhFxQNaA79plUMwK8Sy80eaKdZ/gdbuK4olM4lsAQWvTMNchO4gQqLTjyJCEu5NOLuYgXIXiP4UUgz+pAxkb6tZqo6MZBgca1TEW1QH3O5WX/qDUCI3zZwco23ZgHYU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775734288; c=relaxed/simple;
+	bh=wV74ewI1AhRdJklJxevMEZCQNqPAxKMh+kZTlh12Gm8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=syj54whulSF+T/9jBtgtzCdN+lh72fjo+OUhDdCrtE984bahigkE8ha6g5z18ns2XOToTuIr5f8Dj6J9DBi/mZQxCdJWYptXRI5s9K7DZ0Bcy26bTd/KSCmneyl3kVWeCRUUyNCjoIu8IDk38nC6J3jxJBCjjOwcFqbOpCRaVYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7OvAGze; arc=pass smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso665306eec.1
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 04:31:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775734284; cv=none;
+        d=google.com; s=arc-20240605;
+        b=V/BFYyObSCqrHGfUJy66SqCnup6MGu1MU8B8fALucctLa1L59Bu2xSJo8TeRS8Y5iL
+         BFBl4ISoorcm+SwgQWFK5U45l6kPFpHBhEP0dLOkTx+TQs4dPuOdRF/xeLZgZ7O1rN+4
+         LUwswI8cCcNzlvDnVLUu/Jz6UoNMZSyJ2RbkvZaSOepuT4uwq27zu+W0tyEdhwE9mMbe
+         fd+1Ri27RQWG9/A3dbp1e1NjaHbBr2HaX1EbMS3rA+m5UrnaIC1TFHXvMw1rotbIO3TS
+         mZ3gQuSicUU/amBTxUs1ItsB15bKUPCTZaOm72ndIXcjzcMx7fmibAYwhlf934OgXIC3
+         OZGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=wV74ewI1AhRdJklJxevMEZCQNqPAxKMh+kZTlh12Gm8=;
+        fh=FaF36JYwqPzVi1PNzXixBawYXsnAHfQ/N1lULyMydqw=;
+        b=KIvAO1B9U+cgBeMINDwjxtkNxsM8gMQTRbRgarKGrNLjASZVCUKlypt2JI3BAsEGqM
+         2w9irkhCtnuM3kIW6U5rr7O+2u+pFHRE4nJ9C0Yf3TKFVW0Xxko7/ycXkae1Mm1OZtp4
+         py8O26jXEm8sZeI1twGRkkLzWYMQkW/QCz9x3zTQ+EBjGOcm20xRqYuz0CAFexGBK2oG
+         fsfBZmJ42Jk/xNkg/NkgyIBJ8giGgn5gkmVTaB4haHOankF1lybW9sqoCN8PhtvaQ2zW
+         eVyxpRbM7LciAtJbNKEmJKBOcVkWpkM3LOBSYuJiG+CNDdXkEV4GjCRyPFZHU1AGQ3Lx
+         Cu1Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775734284; x=1776339084; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wV74ewI1AhRdJklJxevMEZCQNqPAxKMh+kZTlh12Gm8=;
+        b=A7OvAGze0SEWLpZpxTCGIYXmWlV7blVFMYVngeaKWFAFLjMwFNiC9L/xJtLiyrTzOP
+         Egt+PHVxD3VWi7CYco4R57im3OV6yeQkiUmTmSs6o67j0eoDXEAQ9W6U7A68NMWc67bK
+         3tZ3OHnP/S2iYen//zhFVAUaf44T9FKKnaCRVdqlWSbi7aJxLeMuOGU7G3Q41xhlkzUs
+         kZLp22G/XG9gKlaCp5X9WmTIsYwdwc2ci0l8WUvvAggqaC0RpzPSWuBZ+4Zvcth5nyJy
+         4hc9tJJFJokMSb5p9MesT/d4qmltzEozgkbMDZgm0FDBSGYAhKDZKCO5B7060bdHR73X
+         5nYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775734284; x=1776339084;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wV74ewI1AhRdJklJxevMEZCQNqPAxKMh+kZTlh12Gm8=;
+        b=ciqu/NNvUNBLVnhaD3T+mQUWp2DBqpck2icR/Z5+QRoZtPMHp+XDOPSU0AcYP50F44
+         hp/75eHz0bVxMV3teG1427yA5RBaqEJcXJs6h54S0vveIvJjOzXJ+aMi3nWKLkr8XQki
+         5mUz+2RGQCmCL5yRiMqRMZeAgNQ7kP1N5/soneYr7As8zapYy9vOQzQrSkdkDufEcxUD
+         METsmgM1zuNVfKx6RE/Qwua+7jba2Cl4azAU/5VbavUofThiqVyjDU8dt1VAT9OxkXAO
+         ngLIQF8oRM3/xPOPrVdpEjGwIOuW2RD4KTWZnlz0zLFmmu4pLevkMPAzxnMNrWIkIOb+
+         V+7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUnmJe5VkWj2aQGjuFjH1RtgV4+gFzWnTM6RwpbmDlPKYYBpo/mujUYrLMiK7ScOX3KfvtmhZE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBWeCjaGEQQd0K5nKTYF1wQQm0ntz3NbkrDmAVfUcoeeGkhcPS
+	ESHun/QGhYBroOp4/vTB9NccpG+H9yDwgcZdeulLLmkPodebCcp0NifHJKd74sTaJscXqnbEYQn
+	2ztcTIbx1v8O9OJm2/2jLfxDkk556mO0=
+X-Gm-Gg: AeBDiesBqTYUfx6n/ZD4h0e9jNN0W+ksDw+w6fQ/uSY+z44T8yugMTGWB8gdo/1HfXa
+	7SdJ4lrK+yl26zbcmXlzcVpqbsytFQlkIg54i1XiNAcJUzx5djt2O02LB8tLva25792ZwJgo9de
+	Jfo+Mx+YYEYp1UB3M2EfWHtQSNjmHS/P6xr3qVSmXtNQu2NTLzbvF0SpWjo2/+QS/JEDmQrn96S
+	e8ncY/2qaQjE3EyiwLoDRwhNMtTTXzdHluQ028vGY/S0v5msb23hipb/+7q4rXgMxJc7TwZw/6W
+	xylniPaYEyiSdH7xQnvaTAa2fHPjxqbt92dY92baDDz0H6CEj3yXC7iYwTLEGx8Ga8s955uZXvN
+	5zlrrFifbkqd8ccvH0lEolYVkyiGFrApP9YrkOY7Jr3/H2eUYaCoD2NBy3VDaRaqCX4q/0iy8/L
+	8KVcqis5DjhBUCoPUgvgQ=
+X-Received: by 2002:a05:7300:c01b:10b0:2d4:94cc:eebb with SMTP id
+ 5a478bee46e88-2d494ccf578mr627616eec.13.1775734283480; Thu, 09 Apr 2026
+ 04:31:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260313204243.GIabR2w3PqVcFxg66B@fat_crate.local>
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+References: <20260409091742.514769762@linuxfoundation.org> <730e7298-6f6d-4247-bc92-e0cd13cf725c@gmx.de>
+In-Reply-To: <730e7298-6f6d-4247-bc92-e0cd13cf725c@gmx.de>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Thu, 9 Apr 2026 13:31:10 +0200
+X-Gm-Features: AQROBzDXiQ8uJ66Y2fn0dPowu8wZs_w69umFSn694qikBRlmA5wCFnGzCFIwabo
+Message-ID: <CADo9pHgh6_sFzjS-fAYfhzWzf3BM7ujmAGQFpbNU7LJQ5+VZWg@mail.gmail.com>
+Subject: Re: [PATCH 6.19 000/311] 6.19.12-rc2 review
+To: Ronald Warsow <rwarsow@gmx.de>, Luna Jernberg <droidbittin@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235378-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235377-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[gmx.de,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[droidbittin@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 00F633C9831
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gmx.de:email,archlinux.org:url,archboot.com:url,gigabyte.com:url]
+X-Rspamd-Queue-Id: 8D1683C9AE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 13, 2026 at 09:42:43PM +0100, Borislav Petkov wrote:
-> On Mon, Mar 02, 2026 at 09:58:59PM +0100, Thorsten Blum wrote:
-> > In parse_gb_huge_pages(), 'val' can be NULL if '=' is missing from the
-> > boot parameter. The code passes 'val' to memparse() and
-> > simple_strtoull(), which can dereference NULL.
-> > 
-> > Reject 'hugepagesz' and 'hugepages' when no value has been provided and
-> > log a warning.
-> > 
-> > Fixes: 9b912485e0e7 ("x86/boot/KASLR: Add two new functions for 1GB huge pages handling")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> > ---
-> >  arch/x86/boot/compressed/kaslr.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-> > diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-> > index 3b0948ad449f..88ccc3b2c5aa 100644
-> > --- a/arch/x86/boot/compressed/kaslr.c
-> > +++ b/arch/x86/boot/compressed/kaslr.c
-> > @@ -205,6 +205,11 @@ static void parse_gb_huge_pages(char *param, char *val)
-> >  	char *p;
-> >  
-> >  	if (!strcmp(param, "hugepagesz")) {
-> > +		if (!val) {
-> > +			warn("Missing value in hugepagesz= boot parameter\n");
-> > +			return;
-> > +		}
-> > +
-> >  		p = val;
-> >  		if (memparse(p, &p) != PUD_SIZE) {
-> >  			gbpage_sz = false;
-> > @@ -218,6 +223,11 @@ static void parse_gb_huge_pages(char *param, char *val)
-> >  	}
-> >  
-> >  	if (!strcmp(param, "hugepages") && gbpage_sz) {
-> > +		if (!val) {
-> > +			warn("Missing value in hugepages= boot parameter\n");
-> > +			return;
-> > +		}
-> > +
-> >  		p = val;
-> >  		max_gb_huge_pages = simple_strtoull(p, &p, 0);
-> >  		return;
-> 
-> The intent is good even if it is not working fully yet, see below.
+Tested-by: Luna Jernberg <droidbittin@gmail.com>
 
-I fixed this with [*], which prevents parse_gb_huge_pages() from being
-called with a NULL pointer in the first place. Please drop this patch.
+AMD Ryzen 5 5600 6-Core Processor:
+https://www.inet.se/produkt/5304697/amd-ryzen-5-5600-3-5-ghz-35mb on a
+https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-V2-rev-12
+https://www.inet.se/produkt/1903406/gigabyte-b550-aorus-elite-v2
+motherboard :)
 
-> [...]
+running Arch Linux with the testing repos enabled:
+https://archlinux.org/ https://archboot.com/
+https://wiki.archlinux.org/title/Arch_Testing_Team
 
-Thanks,
-Thorsten
-
-[*] https://lore.kernel.org/lkml/20260409105437.108686-4-thorsten.blum@linux.dev/
+Den tors 9 apr. 2026 kl 12:55 skrev Ronald Warsow <rwarsow@gmx.de>:
+>
+> Hi
+>
+> no regressions here on x86_64 (Intel 11th Gen. CPU)
+>
+> Thanks
+>
+> Tested-by: Ronald Warsow <rwarsow@gmx.de>
+>
 
