@@ -1,162 +1,121 @@
-Return-Path: <stable+bounces-235480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CLrE2nv12kbUwgAu9opvQ
-	(envelope-from <stable+bounces-235480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:26:49 +0200
+	id 0LjTDArw12kbUwgAu9opvQ
+	(envelope-from <stable+bounces-235481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:29:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89DD3CEAB1
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:26:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4153CEB09
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 20:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 765ED3033897
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 18:26:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E79A23020D7B
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 18:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56463DE42F;
-	Thu,  9 Apr 2026 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93BE3DE42F;
+	Thu,  9 Apr 2026 18:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OLBrOc5a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXR37xns"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791523AB27C
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 18:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B3E2248A3;
+	Thu,  9 Apr 2026 18:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775759199; cv=none; b=Cvn2ZOTgyhOGPMA9PHpAhnERo92ru2WdlxquzaEN8Y/wDfryK9CwIMXLHvdg+4x1A9gB/RGysBNhnq9ZuzTxQ6fuhnR1fD0CMz5ErBI4caLEJurI04wYKt7JuSnXHOixz/cBqhlFR1pWldVFa7TdNeK29JAsA7P3SOi+jayI/8E=
+	t=1775759341; cv=none; b=omTV5wEVorhSrLMiJFi31SV3+kEpKLZaX+KvJioY56X9GdW4pOTbO8qqrved34gyT/J5vP6wJhJgFOx0ksUNxxPsi7Go4UyKL7SMRhbQOpTqGJsNO8kXtXxpjVMa8m2uUhtCr9AIGz5GARe1eEPXTobR20qIjU3f9AOiT44s3yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775759199; c=relaxed/simple;
-	bh=CFe4r5rqzqt/Sp7WENq4hddAY2QStw41+2r+0OQ2yto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BBh3t3hQXbDY+HwNTMHakWyt0jukiJNI319YThMnghW4S5EQrHLBJ07X+wECbceXk2e441yllti2urVPvh0tW2zOlWjmaYYw4YKdgg5J4oNtFv9PuZ4T3Ag5w9Ko2qL2fobpbvnKuKKQv5uiMBSLZDV8QlUTxttHz0fbTJ4t5vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OLBrOc5a; arc=none smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12c25b90264so1150923c88.1
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 11:26:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775759198; x=1776363998; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VdKL7tHwSlpCH9ecELkoXd/ttoxemvIIYgeBw2frtN0=;
-        b=OLBrOc5atUjmlZ3yQqHjbphUwjKOBYIqMOqptt1ODy1UzauTJJAd04ncO4YisNp7bE
-         zMicFWBDUQUpqwfwGTRqm5Azs/hE1cq73xbV4IbLGJ14H41XqqrBGWn00NMkhj/mqSCI
-         QrmpK9z5Xi3+AGzZ/ol2BnaeH/Pti/o95BJwCDFKWNRe8zNiDoAegll0BYFSyvpXY/p5
-         xAu2EOs0RiwjHcxajQFFmp9H72ckaLXqVB3GWi93lRLxTAVu5eHkX7vv8cggJWaNnTB+
-         mqi+/v8m1rxsL+KYvn+JEIQU1O45wkXXEOmROfOQf9vTvVbA8uHXnRV9spzMQDiNo2r1
-         kn/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775759198; x=1776363998;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VdKL7tHwSlpCH9ecELkoXd/ttoxemvIIYgeBw2frtN0=;
-        b=Og3Qwd+BxsDDEGKGQooshHmYxeXD3LoHI/WlyY7LzRrBSGGEwQh1fTQPA0Wh3Cb9dX
-         4HqIq6dzvocJs4c4Y8nSMCeYqI+RgmQpXDkCWE6nVM/Li6C/zRqtLDa0WxdkMXCw22TP
-         19FjNrSWWWtFW3u34f1npypcBGZ+MTt2+bExW+ypqzPPDV+xgOVrrT7+IYe+djqY9dgi
-         CuKpk8uHTFEGs+q3i9mjJGviI2e6n2dc8e0u1FDXjiXN9w9wNsfjsj8cX/Yl9d6bPOZJ
-         q270HbezVuUISsCucag5+RJuiYkLsANRFuwdiG5Iddykaih8e0C4CjCU9qM6LGGpfbhm
-         b7fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUhB5uz8oyjJGqf/fbul3KchLzKA9MetpULvUEKb4zdqGU63kbgU/l0ZsDme2Rl7Go4rBK83c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0G6vxHrY7mtArUlAkNSjc08qBEx4CVDc4+ONbU7V+70ADtrS/
-	V7fJLljdNfOYhnhdyPhzUVH7OKWRohqiDwcPC7YRK9gaP2tQyFmgKhB8
-X-Gm-Gg: AeBDiesQZVGhFIUX2abe8iIHh1N+ObepLZQ4DhqP8oOHQ/SvlqHYRnDO7JYJPNEIx+e
-	SV5mixwvx3ZRSUdrsH6bTlTk7zEC88SC+k1BbTMIPRPlDtxIFUjGbJUKIZOIeTUzM4V09KZP76R
-	BtYgR6qHsufaXWEtsInhlSXohwisinq4PKWxS5/S6mEiGxJ6A1eXRNKyA5z+6QNchlGzAHmjUEw
-	Gd5Dzg2tFLPq00pVIJWvqGuDcWzqP5PE8OpKT19YVTtA0iUsuiFfgOn073TRYwyB9Gb/swNEgXY
-	aignpg3KXM9W1YCizLv7u4fiWGLvCz2N2Se0A8iwcd5SZE+JYxKtu4w7R9lBhcYcTzTlwOb9YHt
-	Sb4bPEJbiZNN/fjb4K1ZDxtzVVPhExcb2aKgfQ1gHYRXYc+iOOKwyl97ldESltmekjKDDKC4rYr
-	j6S/GWXs+AobUrWAPow0SqZgzQpMa9MvPImZ3WYg2PzVPrnhrQlQ==
-X-Received: by 2002:a05:7022:670a:b0:12b:f881:d8fb with SMTP id a92af1059eb24-12c34e3979dmr94352c88.3.1775759197531;
-        Thu, 09 Apr 2026 11:26:37 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55faa586bsm929906eec.11.2026.04.09.11.26.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 11:26:33 -0700 (PDT)
-Message-ID: <88bf92ac-80fd-45e5-af96-c3454cd0b911@gmail.com>
-Date: Thu, 9 Apr 2026 11:26:30 -0700
+	s=arc-20240116; t=1775759341; c=relaxed/simple;
+	bh=0AqsaCjs/tsyiHjFNYYlGjRToMZssCVn6w9EUxIWAvU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=U6+tNSwVTmOF8xHx6HsXICYj2bM8Itpw5xSqXoeQIBtAOXfcJe4RWLNk5uYvaYvDMhNaDHULc0RMGrwVKISXOyh0UO2/ByEEBUFCCxcaQ7zzsYtHpROwYvaBT9ou5ROrvC2OmFnfmbG5Jf+Q4TshYWyiYW+eeZjuNuZg7fyUSTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXR37xns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA336C4CEF7;
+	Thu,  9 Apr 2026 18:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775759341;
+	bh=0AqsaCjs/tsyiHjFNYYlGjRToMZssCVn6w9EUxIWAvU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=PXR37xnswF1OPt9Ff/ix7mzS4fsQDqAJaJ8OOKycyv4OLM+L5gnLxAnQH7UhwSzgd
+	 /ruxXwtsaCgGannct1CKnX8gFaZfszUTHSBrol1iWWjQlWr9O2QlmwW2eaV/zyiJvG
+	 z/zxRBS+dx/oPxDYT/dKsSHC9d3ezY/tdsNxRiGDSVw5GO40DpGgDR2EaxS1gmp8uZ
+	 jQP0bNf24yFcfOiMFxgCFQ6qHuETyS2/QLoClwwdX9e+6VD2k68x3VZjdri87GFN2f
+	 32nKHKv+uhYGneDIi3uPKk+B2apcF9DZC6/w+yndwwm3dA9WxgqlC1p37E66/dn+eF
+	 p3NcwTVtmLutQ==
+Date: Thu, 9 Apr 2026 20:28:58 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Michael Zaidman <michael.zaidman@gmail.com>
+cc: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>, 
+    Benjamin Tissoires <bentiss@kernel.org>, linux-i2c@vger.kernel.org, 
+    linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH v2] HID: ft260: validate report size and payload length
+ in raw_event
+In-Reply-To: <CAPnwWgPhb+owa69-pTADpqk=KMWH71EUT6cxwCeT5KGnBWk+Xg@mail.gmail.com>
+Message-ID: <7qr72215-4q40-qon4-808o-7o639qq90q3s@xreary.bet>
+References: <20260324173527.11321-1-sebasjosue84@gmail.com> <20260324201858.46591-1-sebasjosue84@gmail.com> <2o8np813-n9n6-32sn-922p-6qnrq45s7rs7@xreary.bet> <CAPnwWgPhb+owa69-pTADpqk=KMWH71EUT6cxwCeT5KGnBWk+Xg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/276] 6.18.22-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260409092720.599045151@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260409092720.599045151@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235480-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-235481-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B89DD3CEAB1
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xreary.bet:mid]
+X-Rspamd-Queue-Id: BC4153CEB09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/9/26 02:27, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.22 release.
-> There are 276 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 11 Apr 2026 09:26:30 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.22-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Thu, 9 Apr 2026, Michael Zaidman wrote:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+> The FT260 uses different report IDs (0xD0 through 0xDE) for different pay=
+load
+> lengths, with each report ID defining a different report size in the HID
+> descriptor. So yes, the device can legitimately send reports shorter than
+> FT260_REPORT_MAX_LENGTH, and a blanket size < 64 check would break valid
+> short transfers.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Perfect, thanks a lot for the detailed writeup! I was rather suspicious=20
+about the bold statement in the changelog.
+
+Similarly to other Sebasti=E1n's fixes to various other drivers. This will=
+=20
+need more thorough check.
+
+Thanks,
+
+--=20
+Jiri Kosina
+SUSE Labs
+
 
