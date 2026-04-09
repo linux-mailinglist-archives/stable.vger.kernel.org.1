@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-235400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFo3FN+W12mGPwgAu9opvQ
-	(envelope-from <stable+bounces-235400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:09:03 +0200
+	id 6FJPAtCW12mGPwgAu9opvQ
+	(envelope-from <stable+bounces-235391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:08:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36003CA2AD
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DCE73CA27F
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70558307411A
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 12:05:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55282306B9C8
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 12:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8FB3C73FC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5263C456D;
 	Thu,  9 Apr 2026 12:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4IvigfN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/rBVe8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80913C2765;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A173BB9FC;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736327; cv=none; b=mhfTNfArzgrzQIQs/iuKFJX1YedTYJFX6sj+tLzBgwrMSEJ5451VDgfY2sfrwiE9WznYW31hIv0lyEMenZy3s/2Vjf9UWmy3N8VlVC5jpUPMh8x+49dYUbtB3i7vG0GD65ThxdtzwfHikaR8j/Nbe6L/yZM0qm9NOkysF8muSCA=
+	t=1775736326; cv=none; b=nvjxT8IfNzRJ81M2nxR26oLYJC/ZZoPsOrpkF+HwopeZ7Y7WkEHGDuTC+aM/ttSQrVkeB8YkgwL4vfRfhp6PVCC5acNC5aXus81yP0UKtu4BuSMqiFj9ZcH7TONms8Es0rNAFxwx43rHA6kHZ8S4bkqOQFL7Gfr6X0CSnK0ME0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775736327; c=relaxed/simple;
-	bh=2KNfJnA46W3qlgDrPGdTrCw4e1Cl0KMREmMjES5TO4c=;
+	s=arc-20240116; t=1775736326; c=relaxed/simple;
+	bh=2uxiTHf7+/Jq9Yfc9KZLO7wTUuJPnmq2OheP+99yRUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvvQ7ue9LIjfEYqROw/yArkGcYVsAlH1NWuS6ngRo0gJMwXOWVInNclk0vf7LDSccZb9NElJwEdbkASonMnsBH/62vuITzm7O5eEDjoFJgKSf+ENpyX4LwDlbkX4mEDVt9Qwr5ru6g6CexdcxJgw4RMnZlpC7avYl385c9MejBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4IvigfN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74129C2BCF5;
+	 MIME-Version; b=arq77VjadJPK/2QLpQF0STOWoTa13dhiw3yroMV7DHUbNEgwzAGz2ghbP4qRT7sAzgEJJmQGmNT/o5h8euCnUlsVPoO0axqyHpmNSDcRxhDGJbq6ImznwyoGLx4EE3TC7vC7dKZbDDINiedSoGeFUdj+mgDN1A38FkHc1BASe6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/rBVe8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3B6C2BCB8;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775736326;
-	bh=2KNfJnA46W3qlgDrPGdTrCw4e1Cl0KMREmMjES5TO4c=;
+	bh=2uxiTHf7+/Jq9Yfc9KZLO7wTUuJPnmq2OheP+99yRUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4IvigfNOt3Srbkzd2lP5K8sLhNBkpeW+Jtch1NtBW4kmw6bU1Lyrsji5xg+maVfB
-	 PhAgA3mbLr62V97E3Yi1E5SdWc0RKztwZhIWenppAp9qbHtSNco7hPXNOnE9g8Aqef
-	 mV1iDPBhvpy5eDUgPWZtZ/EeYdL+I/p5YFUXisautGihB122D1WRwbOCczWuMY50Wa
-	 Vl0VZfgknOJexQEyFu5EbSJI4efH0mYWZhQzJCzIEyEEH4keKL1SydLYyNxkN90Zxb
-	 yHvnVKhRA0PdBUMNhZ9vhUYN7DcnuIdnhtRxCQeDtaT8RKNmu+apHvgIsPjGBUHIrH
-	 eJOY7Tew5m5DQ==
+	b=n/rBVe8wc6VfAWlBoPfgX8EzDkI9BQK8Wwp4cxxpBvtNR3bieUGR7Oy++nCM0qMyu
+	 AIv4HefHJn95pz79VMahvHbvOVpJDaNRaZnYruEBSd9m7Gz8wTLLHhJ8DrtcgrM4NM
+	 acY0HfoXUHvjYcaVdrfKX9ri3wHY1davvVxeG8MlQVcvqwqpm8LaBI/8DmCt6ie4sK
+	 4YjlLY50fII1BijPt18AU+4qOTkFGTRbcKxqDOBGeLmlIgSbJM+HMUbuVZjRBPglht
+	 a2bmBkZesYVUp/kdp4r0C+erKDXEw/XfgjHvS7UeF+LP3a058ewCpl8Pr/B3V7gEmH
+	 LTynMjDiYfofw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAo8S-00000001d7F-0W6T;
+	id 1wAo8S-00000001d7H-0YU0;
 	Thu, 09 Apr 2026 14:05:24 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -62,10 +62,10 @@ Cc: Sunny Luo <sunny.luo@amlogic.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
-Subject: [PATCH 18/20] spi: microchip-core-qspi: fix controller deregistration
-Date: Thu,  9 Apr 2026 14:04:17 +0200
-Message-ID: <20260409120419.388546-19-johan@kernel.org>
+	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+Subject: [PATCH 19/20] spi: microchip-core-spi: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:18 +0200
+Message-ID: <20260409120419.388546-20-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
 References: <20260409120419.388546-1-johan@kernel.org>
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_CC(0.00)[amlogic.com,aspeedtech.com,kaod.org,upb.ro,broadcom.com,gmail.com,vger.kernel.org,kernel.org,microchip.com];
 	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235400-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235391-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
@@ -105,59 +105,43 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C36003CA2AD
+X-Rspamd-Queue-Id: 7DCE73CA27F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Make sure to deregister the controller before disabling underlying
 resources like interrupts during driver unbind.
 
-Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
-Cc: stable@vger.kernel.org	# 6.1
-Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+Fixes: 059f545832be ("spi: add support for microchip "soft" spi controller")
+Cc: stable@vger.kernel.org	# 6.19
+Cc: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/spi/spi-microchip-core-spi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
-index aafe6cbf2aea..eab059fb0bc2 100644
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -692,7 +692,7 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
+index a4c128ae391b..be01c178e2b0 100644
+--- a/drivers/spi/spi-microchip-core-spi.c
++++ b/drivers/spi/spi-microchip-core-spi.c
+@@ -384,7 +384,7 @@ static int mchp_corespi_probe(struct platform_device *pdev)
  
- 	qspi = spi_controller_get_devdata(ctlr);
--	platform_set_drvdata(pdev, qspi);
-+	platform_set_drvdata(pdev, ctlr);
+ 	mchp_corespi_init(host, spi);
  
- 	qspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(qspi->regs))
-@@ -732,7 +732,7 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
- 	ctlr->num_chipselect = 2;
- 	ctlr->use_gpio_descriptors = true;
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		mchp_corespi_disable_ints(spi);
+ 		mchp_corespi_disable(spi);
+@@ -399,6 +399,8 @@ static void mchp_corespi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct mchp_corespi *spi = spi_controller_get_devdata(host);
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "spi_register_controller failed\n");
-@@ -742,9 +742,13 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
- 
- static void mchp_coreqspi_remove(struct platform_device *pdev)
- {
--	struct mchp_coreqspi *qspi = platform_get_drvdata(pdev);
--	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
-+	u32 control;
- 
-+	spi_unregister_controller(ctlr);
++	spi_unregister_controller(host);
 +
-+	control = readl_relaxed(qspi->regs + REG_CONTROL);
- 	mchp_coreqspi_disable_ints(qspi);
- 	control &= ~CONTROL_ENABLE;
- 	writel_relaxed(control, qspi->regs + REG_CONTROL);
+ 	mchp_corespi_disable_ints(spi);
+ 	mchp_corespi_disable(spi);
+ }
 -- 
 2.52.0
 
