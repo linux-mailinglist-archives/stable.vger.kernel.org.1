@@ -1,135 +1,133 @@
-Return-Path: <stable+bounces-235412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JimBLar12kMRQgAu9opvQ
-	(envelope-from <stable+bounces-235412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 15:37:58 +0200
+	id oJIgOfKq12kMRQgAu9opvQ
+	(envelope-from <stable+bounces-235413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 15:34:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9DA3CB5A5
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 15:37:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BC03CB4AD
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 15:34:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EE213152104
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 13:22:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CA7143065D23
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 13:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C1A39FCAD;
-	Thu,  9 Apr 2026 13:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73732877C3;
+	Thu,  9 Apr 2026 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKaoq0Q7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SrDxTJFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D30298CA5;
-	Thu,  9 Apr 2026 13:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D781A9B46;
+	Thu,  9 Apr 2026 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775740836; cv=none; b=q5h7h2qFnq2Ms28a5AUWgyVTNIcMnd794Ap+yAbVko6nemmsKuma9++0P9zjR62mq8dBLcp0gH/GJ19GGOpFRTCtGp51XAvk6psi3iIQ3gpXcnsg31CRzVifh3pRkjtkx1CYsWnWytdrXhN3vyFjzYMuwLPP8sZcx7bc8a/y9OY=
+	t=1775740966; cv=none; b=jzPN6T6R3OExHFzJQmGOX5sywaIRzZzxMNYyT+linvZ/TXLsQarKTw5yCnNN/pLoQvk9YcLQw40fnt5KKm3FH/Tqvves08LVxIYOBXoduhjtVHzWZQtbuvNHW2CS+fWYBJau70MYGH5mua64bGhymtbax9/YYn8hUfux0IJb+qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775740836; c=relaxed/simple;
-	bh=cTQ57aENrRzOfxnUj5wfsKF30U1wQyW8nuZb5QJdE/I=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=MraIE9TCGy/ozu2hh+nMY9u/ViuEnJrJUWjPBFLVjXi4PuVE4ux/wwKEfOGAyqQfZA+Cb+xBz61gZbo8n5OmYLxen5TGNmDDqqXXcpus9BlAO0LFGI+/9xwShlfxPs5rTz+MNuc+ngKvud4tYCrns6fKqvh8O7Ndu8Z4+Sl7jIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKaoq0Q7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44132C4CEF7;
-	Thu,  9 Apr 2026 13:20:36 +0000 (UTC)
+	s=arc-20240116; t=1775740966; c=relaxed/simple;
+	bh=WYsYkc1QDEZTVAvPkUEFw1gnVZ3mMob6ibujT1cYN5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PduHlzVe8clEcs1KiGeqVjauahtqidXPBmJrjxLV9Unh0bQ46dGzwSlJkcUuYCuZvXCCM+TP4UHSGtvqnbx+w1ee0NHxkppkOx41uP4uokPD69SDebLcY2tEKXz7/trkcGf3bK7KtlK17vjWsyuRL+kHCKgHFVaZtiexiN4Q7Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SrDxTJFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7AFC4CEF7;
+	Thu,  9 Apr 2026 13:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775740836;
-	bh=cTQ57aENrRzOfxnUj5wfsKF30U1wQyW8nuZb5QJdE/I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=dKaoq0Q7aF36khnil/jeqor4SqeDiBU6LTMzVk+lRak6WmpqUMIulMIB5wBeni908
-	 LilrlZ1hI/a5iygJOZRitr4/OLNQoHhs8vfwHbZLj9HuLiDaQpk1xb0+d6vbFLzkZV
-	 SUSrXW6VLLGlwGXPktmJlHeSHqvrCBKWad11ieNmWHiVDd75zgnfwcbgcRJCtVYWmc
-	 mI6QIPip2PHMTkBk4cu50OibyXBejG+sYsypW/JruJLDcslNrZKcCsfq1/F2zM80JZ
-	 mHGTPX3AxCA0uMMvDtEGEhmT3duM8Rkn+jXA/8RX5LY7cmHBs+1gJLfDVGwRX/lgl6
-	 gYuh+NC6O2vag==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD4E393088E;
-	Thu,  9 Apr 2026 13:20:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1775740966;
+	bh=WYsYkc1QDEZTVAvPkUEFw1gnVZ3mMob6ibujT1cYN5o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SrDxTJFVQxB0Qy+GfDRyiJx1GBwUjDz+/Kg+pqf+r8GR4+HTlCSPfMimpaAN3XtZF
+	 K1v7X15yeHg4fpE2owAYzvWrP9AQxL0+bt5ONiiiXGBJ2chLgtQLtzd/TC8eUqyX5+
+	 D3rLhqIq8j/EO+LrqFNtJQXV9bAmh89J2VXT+r7xa7nYuBE78FWdBGyxkg6Unhg2g1
+	 8fh1kmwsa4SUksC2+LRgxjRQwc/Z2xuJNwm1j52CMnvQJ+V18DAUX+GkRw+wp2xXqd
+	 pxtwOJWMMk/13VUWEkMb54VP4EyXQYqGXLJs31HMGG6fKZzZb/21EaKsb9LcwTBBRm
+	 7crK3w0OFellA==
+Date: Thu, 9 Apr 2026 14:22:40 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.19 000/311] 6.19.12-rc2 review
+Message-ID: <aef9f91f-44dc-4b85-aab0-02c312d874a6@sirena.org.uk>
+References: <20260409091742.514769762@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/3] net: lan966x: fix page_pool error handling and
- error paths
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177574081204.1154771.5454597841485925839.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Apr 2026 13:20:12 +0000
-References: <20260405055241.35767-1-devnexen@gmail.com>
-In-Reply-To: <20260405055241.35767-1-devnexen@gmail.com>
-To: David CARLIER <devnexen@gmail.com>
-Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IQdZuid8ULEKa0DA"
+Content-Disposition: inline
+In-Reply-To: <20260409091742.514769762@linuxfoundation.org>
+X-Cookie: Hailing frequencies open, Captain.
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235412-lists,stable=lfdr.de,netdevbpf];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235413-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6E9DA3CB5A5
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 98BC03CB4AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+--IQdZuid8ULEKa0DA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Sun,  5 Apr 2026 06:52:38 +0100 you wrote:
-> This series fixes error handling around the lan966x page pool:
-> 
->     1/3 adds the missing IS_ERR check after page_pool_create(), preventing
->         a kernel oops when the error pointer flows into
->         xdp_rxq_info_reg_mem_model().
-> 
->     2/3 plugs page pool leaks in the lan966x_fdma_rx_alloc() and
->         lan966x_fdma_init() error paths, now reachable after 1/3.
-> 
-> [...]
+On Thu, Apr 09, 2026 at 11:25:28AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.12 release.
+> There are 311 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Here is the summary with links:
-  - [net,v3,v3,1/3] net: lan966x: fix page_pool error handling in lan966x_fdma_rx_alloc_page_pool()
-    https://git.kernel.org/netdev/net/c/3fd0da4fd885
-  - [net,v3,v3,2/3] net: lan966x: fix page pool leak in error paths
-    https://git.kernel.org/netdev/net/c/076344a6ad9d
-  - [net,v3,v3,3/3] net: lan966x: fix use-after-free and leak in lan966x_fdma_reload()
-    https://git.kernel.org/netdev/net/c/59c3d55a946c
+Tested-by: Mark Brown <broonie@kernel.org>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+--IQdZuid8ULEKa0DA
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnXqB8ACgkQJNaLcl1U
+h9ACBwf/TiQE5Qov+CzOZ2r2Y1AVIYCP/l8dbWV/Eo9l2IzW79FtsMKMWNXWi1Dr
+xfRyhIqZR9w0AcCkb7QEF/+p+MXJ0pwVbxR6k290R6EdesIJsCHJ14YJAGzttPW3
+fLJ13hW0vhTiyiu+aWzHbyJyz9NBz4yWmd5IRcZIdCA5D1TVUkXA54uHy1UvQrSr
+YjFsZOiLNF2Wl3B08CJ1IBBiMqJlH4DxzUBi288g6gD+8ioIP8fA8cMG9XJEsb1f
+JJfQO+aarU88iQ6aO9S0LRYtTfLml/I74i4YFiCDlGg+JU70ibAu1Fzfe5iGHipy
+M2F+W13507SDITo9Rle2LMrof7McaA==
+=NBH0
+-----END PGP SIGNATURE-----
+
+--IQdZuid8ULEKa0DA--
 
