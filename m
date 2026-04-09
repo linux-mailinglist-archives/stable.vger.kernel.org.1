@@ -1,122 +1,142 @@
-Return-Path: <stable+bounces-235316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMNiNX9F12mIMAgAu9opvQ
-	(envelope-from <stable+bounces-235316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:21:51 +0200
+	id yNnHMQBJ12neMAgAu9opvQ
+	(envelope-from <stable+bounces-235317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:36:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3F13C689D
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:21:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9B63C69F3
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1188A3013EFB
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 06:21:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94F6230191A0
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 06:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212FB315D3B;
-	Thu,  9 Apr 2026 06:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9111533F598;
+	Thu,  9 Apr 2026 06:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tecTUyot"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="m7kafzEa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A862F745D;
-	Thu,  9 Apr 2026 06:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089FA28E0;
+	Thu,  9 Apr 2026 06:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775715707; cv=none; b=duoDRsPh+RmxnPeXJqI6vuBtyb2K6WTmiNr1wTzCVpI423MyGvER90IWKPPydioyEc2vPIUu74gyNZR5YLUk3uuoQW3mNDswr9JYyE4cBLzOFOdX13u/e2r7vnmSL4hiKkmPfe6he0Eb0ai3b4qkgPPNj4vhxLqJf9rrYRLyoEA=
+	t=1775716602; cv=none; b=iKULEdljjefftD/LbxyAYAQ0bEKisx6/jvTekpxo7ds94M8o+rzxyaVAiJWJQ/nH0SpVJHg7RS9vrCt/uL7SxO8q8ylJvZyy0O7xJt2ZgH4FHRHBmBIgtVIHDSnALIgCqQ4RlLboj3cr183l6PsP2pBSSjs6EuL2ynqfFr7o3rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775715707; c=relaxed/simple;
-	bh=Qn4JZaehpW1D4FzWvGTsbu71VymBqoJqc9XDf7PqQm4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KGEf4uWAJgz1yUjrjo9XqeMtpx/i12qzBavfRmgj6k9a0r0zuHoOHwHAI2xOz2hjO8WhjFVufdrKjoSQ0nJrMRAAoRxWpSEYruUUXKbrA6F8QL5BXObe8vLglZsto7VLyN6E2zisWqDdnxwzH2srTIXuWzi0lyb4TfMFqeDam4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tecTUyot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB46C4CEF7;
-	Thu,  9 Apr 2026 06:21:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775715707;
-	bh=Qn4JZaehpW1D4FzWvGTsbu71VymBqoJqc9XDf7PqQm4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tecTUyots3nMLbmUJFf8QGczqvb8m49GlohSdWpE6TQVqQBaKhF+LsrxTM4w4hlrT
-	 x2jzV+6L6pV1L+La6z4Ol34UMLrqGcnWPjyufepfm7SP7pKlyHFPJJatEjEDS/3Pz7
-	 ARypbiyDyCPoY0EVN0gTlgdy1Nb/HyIyNf6PPfR/W5usmZ4GO2QWxcWfjz8K8u7aRU
-	 gc/rjBgmykAR1JJ6Z7bmNnGiuOOqnNHu71T8f09cRG1bjAB5MDsfXZzNBOgepTIqmN
-	 SCsgzvt+uDGzWCLe9l8TVM95rEH4EAepBuZrVQqIZHJQZ2focPUyH0fXqRXhEQzKhd
-	 HdGBHZD58PJEg==
-Date: Thu, 9 Apr 2026 08:21:45 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Cc: tomm.merciai@gmail.com, geert@linux-m68k.org, 
-	laurent.pinchart@ideasonboard.com, linux-renesas-soc@vger.kernel.org, biju.das.jz@bp.renesas.com, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-clk@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6 09/21] dt-bindings: display: renesas,rzg2l-du: Refuse
- port@1 for RZ/G2UL
-Message-ID: <20260409-stoic-accelerated-stingray-fbe025@quoll>
-References: <cover.1775636898.git.tommaso.merciai.xr@bp.renesas.com>
- <8a3dd4df30a6d950e5f38d46f4d9f396da67aa71.1775636898.git.tommaso.merciai.xr@bp.renesas.com>
+	s=arc-20240116; t=1775716602; c=relaxed/simple;
+	bh=Mdt1/CTaPIuqmYPtLEFhJRxjidhAM8Jz4i3zvcKob+I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dJZmprQJIQXJKbNV8Eyg8/9fTFIvE/eFQkaBYckl3xq7Dm45XGogmuaXTcxdVtnC+KBPofzw5b/hNb282rjfoI6he0JzAbM+9asb33NThEXh4NlmQoK/WzcsgFEEN23nHHR8T7Wo8oI/zh0tVVBzgw97tGCbXu8omS3jJDO3qMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=m7kafzEa; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=QR
+	KMF95exbAEJOFMVOBOllgPfninD+Eg8P+VZ5T9aM0=; b=m7kafzEaAniSGEkz/E
+	iq58V4wKPOP1DG1tFvSDT817r33z/qG83KJtHdkXjPo9pUuiz+HQhvv3fgUh49Qh
+	M4Auiwl5G0sPk7UnbY40fpE5xEVS21eBmP4siBjwTOB9CrsnW/ualXW91ZNWp+x1
+	I3Czpql0P1tvYPR3xcjaSOevM=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wB3NK7gSNdpjK3CEA--.589S2;
+	Thu, 09 Apr 2026 14:36:18 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Zheng Qixing <zhengqixing@huawei.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Robert Garcia <rob_garcia@163.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] block: fix resource leak in blk_register_queue() error path
+Date: Thu,  9 Apr 2026 14:36:16 +0800
+Message-Id: <20260409063616.117503-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8a3dd4df30a6d950e5f38d46f4d9f396da67aa71.1775636898.git.tommaso.merciai.xr@bp.renesas.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wB3NK7gSNdpjK3CEA--.589S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF1fuw1kXrW3ZFyxJF4ktFb_yoW8GF1xpw
+	43Wa1UWryvgr48WF4Dua1xGa4UGa1DKw1xWrWfJw1Yva9rKryjkr4v9343Wr18A397CFWx
+	XrnxAFWrtay5CaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zMOJ5UUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAgOaBmnXSOMKyQAA3L
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235316-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235317-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.dk,163.com,lst.de,huawei.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,linux-m68k.org,ideasonboard.com,vger.kernel.org,bp.renesas.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,glider.be,baylibre.com,lists.freedesktop.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.1:email,0.0.0.0:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A3F13C689D
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 6F9B63C69F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 08, 2026 at 12:36:54PM +0200, Tommaso Merciai wrote:
-> The RZ/G2UL DU supports only a single port@0 DPI. Explicitly refuse
-> port@1 in the ports node.
-> 
-> Fixes: 2ef7cb1cea7d ("dt-bindings: display: renesas,rzg2l-du: Document RZ/G2UL DU bindings")
-> Cc: stable@vger.kernel.org
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-Please describe bug being fixed here in such case.
+[ Upstream commit 40f2eb9b531475dd01b683fdaf61ca3cfd03a51e ]
 
-Commit msg so far explains none.
+When registering a queue fails after blk_mq_sysfs_register() is
+successful but the function later encounters an error, we need
+to clean up the blk_mq_sysfs resources.
 
-Best regards,
-Krzysztof
+Add the missing blk_mq_sysfs_unregister() call in the error path
+to properly clean up these resources and prevent a memory leak.
+
+Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250412092554.475218-1-zhengqixing@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Change disk to q in blk_mq_sysfs_unregister(). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ block/blk-sysfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index 4ea84e46a665..c1917992e619 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -900,6 +900,8 @@ int blk_register_queue(struct gendisk *disk)
+ 	if (q->elevator)
+ 		kobject_uevent(&q->elevator->kobj, KOBJ_ADD);
+ 	mutex_unlock(&q->sysfs_lock);
++	if (queue_is_mq(q))
++		blk_mq_sysfs_unregister(q);
+ 
+ 	ret = 0;
+ unlock:
+-- 
+2.34.1
 
 
