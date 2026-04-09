@@ -1,137 +1,139 @@
-Return-Path: <stable+bounces-235443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHbbMFHP12mrTAgAu9opvQ
-	(envelope-from <stable+bounces-235443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:09:53 +0200
+	id sJMhLP3Q12mrTAgAu9opvQ
+	(envelope-from <stable+bounces-235444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:17:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8473F3CD6D9
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:09:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDC03CD88E
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 18:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B533C303D8BE
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 15:58:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 588883080C22
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 16:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE2232D0DE;
-	Thu,  9 Apr 2026 15:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0CE3B7741;
+	Thu,  9 Apr 2026 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4g+7S6M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4gN9/0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E4527FD6D;
-	Thu,  9 Apr 2026 15:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C132FA3C;
+	Thu,  9 Apr 2026 16:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775750313; cv=none; b=m8uewLXT5FyssPsj8UBzuYBc2S8Mo+cBp1ltfYeqKABRXCD7IAdiT5Bn4p89yi4xHA5IQLKadYUBSqlkUHWpEfihtWbLvRzRPSoxBy+lTmmHc/pHHBl0ul9m0PPWI/4Hnrg/gyfEeIj+q61luw4bJvX/EOLlmewbM7dRD0j/NOU=
+	t=1775751029; cv=none; b=Uv0ox4IBfXqJ30ASzpYgvkmkKwlYoo2OcPdpOz7jd8zmkZKD/CSvp2GVczuS3+BdIMK0ebaxmVuHBOPLQ18jWfC2Vp7Sg0qV+Pgg/8S9nkJ/cmMuCMs4VGG1OaW+0uKnAbomDLr34yZBzTqAkz+7R77X5ieHs76jQmgy1lb4kMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775750313; c=relaxed/simple;
-	bh=GuLXsci7CSFRAaC8LLOVPMV3JubvJCiFROVlKUwIi9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZNbaHC6evlidBWd+JKYG5RemfPbyIeDHtcfViHQZKpkYGSyhITcNwoWUh2jSs3+WVNQOmwUhemkaU+7m9aGp4k8cDuYAVClpK9W2wzQZ9+TEmSFQF+8boH4buJ1aZRBbBrlZVYfnrZq75zaH5EChxhjlSUz5k62NBorrK0XkRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4g+7S6M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DB5C4CEF7;
-	Thu,  9 Apr 2026 15:58:28 +0000 (UTC)
+	s=arc-20240116; t=1775751029; c=relaxed/simple;
+	bh=Yc6OpYdGPLY+gHVUVeLoCkvBy0sDE3aiVPq0iTkw80A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhqZ756EX5v9o/SBhgRfFBacNqc0DniLjRMF36Q5yfUhCQMI4fSwgut/KZyipDu24FVvAfihUsj37aDl+XEhed6m1LPIbmktRhgijS3MZWjw6MrXaliBJgKIqpzRL6sb9gPd1f7UG8bWBLkdr8lY3gcnz37s+gnTjeczg+TB4Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4gN9/0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28429C4CEF7;
+	Thu,  9 Apr 2026 16:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775750313;
-	bh=GuLXsci7CSFRAaC8LLOVPMV3JubvJCiFROVlKUwIi9k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4g+7S6M3RN/UsQQp34wS1N1PxlT3PR1NN84YNP/CRcBPUI1nvi3ud1y2NcnoQQVk
-	 VmdX+rBGdkk8EmGkhzfyWIUCO8cc2IEfjlpWomzNFm+8+jX7Mrf1EJ/rqUFyZVx+U0
-	 KNbKvJ5B2buP0oZf/7dle+CQL0IH7thsmdHGlXXsE1BwE7Ob4w7nJW4sNXbP17NXnO
-	 5WDdYeR5AoCZqjLFPrivhLZ62jdYCVg2E4dWnPBgZj96T4uywo2j98MQsUjceuGMGk
-	 yY2hbc/s62pmTgvDx9FEL4+/wxja1JTzOrT7FChkVLtbnCH1TqdIEXJhpZR3UcEQPf
-	 b27L1MU4y8X7w==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.19 000/311] 6.19.12-rc2 review
-Date: Thu,  9 Apr 2026 17:58:21 +0200
-Message-ID: <20260409155821.35076-1-ojeda@kernel.org>
-In-Reply-To: <20260409091742.514769762@linuxfoundation.org>
-References: <20260409091742.514769762@linuxfoundation.org>
+	s=k20201202; t=1775751028;
+	bh=Yc6OpYdGPLY+gHVUVeLoCkvBy0sDE3aiVPq0iTkw80A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T4gN9/0Kye8v+JAWs+ZuDjlBSB5XPY0GiGCFCd4Q4Kt14ngfjkWpFQnSZHICWsGay
+	 N84W/Vu7H4fQmjBOyjrx9qFtlqnEyelyduP/y04SaSRrLV0KwWgNKm++4mJu4sUxBJ
+	 vpD/5LMU+T6W4veDNrgDtra8/9AdNSi8CBxV0TIdpuBkuLR83PsgsyfvOaGAUcosl/
+	 lW3HZOejhZFj5klXy7GtmgaIoIe5F+BTY28zlZIkgSz4aUm/0ZFpu7pfClp7wxKaXy
+	 Hb8JB5lpbekeNFbM1i9K9QSvbE42d7SWF0Zas6qMslaEj3vA35rzqADDZwGXi3aX0c
+	 XNpZOUys8FCBg==
+Date: Thu, 9 Apr 2026 17:10:23 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Sunny Luo <sunny.luo@amlogic.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	William Zhang <william.zhang@broadcom.com>,
+	Kursad Oney <kursad.oney@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+Subject: Re: [PATCH 19/20] spi: microchip-core-spi: fix controller
+ deregistration
+Message-ID: <20260409-untouched-anteater-d1af2a00ffcc@spud>
+References: <20260409120419.388546-1-johan@kernel.org>
+ <20260409120419.388546-20-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="SRNgSkvbSM479uIG"
+Content-Disposition: inline
+In-Reply-To: <20260409120419.388546-20-johan@kernel.org>
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-235443-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235444-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[kernel.org,amlogic.com,aspeedtech.com,kaod.org,upb.ro,broadcom.com,gmail.com,vger.kernel.org,microchip.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8473F3CD6D9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1EDC03CD88E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 09 Apr 2026 11:25:28 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.19.12 release.
-> There are 311 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 11 Apr 2026 09:16:46 +0000.
-> Anything received after that time might be too late.
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+--SRNgSkvbSM479uIG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+On Thu, Apr 09, 2026 at 02:04:18PM +0200, Johan Hovold wrote:
+> Make sure to deregister the controller before disabling underlying
+> resources like interrupts during driver unbind.
+>=20
+> Fixes: 059f545832be ("spi: add support for microchip "soft" spi controlle=
+r")
+> Cc: stable@vger.kernel.org	# 6.19
+> Cc: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-(arm 32-bit seems to build-test fine as well. Same for UML x86_64 on
-a non-debug configuration.)
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Thanks!
+--SRNgSkvbSM479uIG
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cheers,
-Miguel
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCadfPbwAKCRB4tDGHoIJi
+0rJ+AP9mcauj+ZMQFGy0ezVBJfNEYe0htbxSgQ7n1YzbhSoFkQEApNi2PI/Qunk0
+lCP4hNEmprG/eeQtWGggjX1IP82fQgI=
+=qlP9
+-----END PGP SIGNATURE-----
+
+--SRNgSkvbSM479uIG--
 
