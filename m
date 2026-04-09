@@ -1,276 +1,152 @@
-Return-Path: <stable+bounces-235516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LC+Etcx2GmqZggAu9opvQ
-	(envelope-from <stable+bounces-235516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 01:10:15 +0200
+	id eHUJE+I32GlWaAgAu9opvQ
+	(envelope-from <stable+bounces-235517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 01:36:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74663D0710
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 01:10:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458AB3D0802
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 01:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90395301C12E
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 23:10:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C565300E688
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 23:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01E439EF20;
-	Thu,  9 Apr 2026 23:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6DC3A2568;
+	Thu,  9 Apr 2026 23:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jrDz3CdY"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="phx3ueLA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.qs.icloud.com (qs-2006l-snip4-1.eps.apple.com [57.103.85.242])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCDF390223
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 23:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775776208; cv=pass; b=UgtT8u7vvfLUwV/JhNN79IhViV+loCV3fkiT3WZGUi7nfHElZW4dbxr96P0PbiNGpgSf5t0rde9udAc74HES0jE9xnXfVLwusO2CDuIsozBOfOR01yDEdAXy7SPGz4dLyKuk/A24tWjammihtH73B0dRPR4lvlTr/o3M7tDWTaI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775776208; c=relaxed/simple;
-	bh=hnqIVK9AmZg4pLfPqp1hiR8+DY2eWZrisJhjbUazIH8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rj3U4tNOIkL8GzqhgMqPWi3oTKxAfgYc8xxw3xypCM8xV5kQ5Q/OoUYbUU6vP9EvzTz+1zWop0lSOHsADudsbmAwoPZ6TrFK5t9yQXCYAU9Sjv4TNNVt4iRBI9uP6+XI2Grglqg2n3ex+55d8+rNh4GYSUjHYR8Fyzg0BvC5Qos=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jrDz3CdY; arc=pass smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43d17bb1c65so941367f8f.0
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 16:10:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775776205; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kOYH/EIhSDnjEGhWnxa7xj8t0TfWRMzhb1xSYssKo7tdE+8x4/q8V3pTUBlhf/Do8O
-         pq7Fsu+FdduTU8PVfxMD8zZvz5aey65hbGmKGFkgZhvsy73DAjmDzpY4vTKqgLHzJHVr
-         zY/WMfdUEK+jOLWziKtLnivNDGwqxZO452lAuiNzS3Rva+Ap5re7eXNu47m32VSyBGvv
-         3tmsBGA3j/ovemsP1Y2g9p6H2fKkE0rIxppKPsYr71GaFKkSGu/D9Ae3up38hpCPMwt7
-         bg6rXG5Z4pqYd5JdxQW281hd1wqvds7VabzdkEIHx4UWmi949FcAhCj2IlkLA2evsP8V
-         H5gA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=V0720UCU3sQFjdaGRxAYeJgM+ub10KIdf1BhWBleziQ=;
-        fh=lqnijj996HpCtd48O7gliQw1dzwTrdoPblK98PfcT+o=;
-        b=QTXvZxg87Icl4Zp/A6Qhgjs2pLaiaG534h4XsNyUVAkNiMlyO1w4a1jQo1t5vrub0L
-         u38ToZkS8NKFRAK94o59zhtXO3GRaZrVNc/cQtVbIBg/sKV5IQgNBtOmcC2mexd1qCXC
-         hfLJgUlkLo+qK0ABUn3HeSVSiaEjMTu6DQrs41L4i3+R3q+n8sE0x5IqT+G6zAcJxrNm
-         gIC16sFkh29ni1DaoxDsAkpLvmJU7cxorg64iJay4doW0kKT/JnSjv5coRpviF8WY37k
-         NenKYZbIB8syXZCgTdSKjKtelwmgIJJflM6ZnPBIWdtNMYizGp6kFLTjRmplYO67klli
-         n/Sg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775776205; x=1776381005; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V0720UCU3sQFjdaGRxAYeJgM+ub10KIdf1BhWBleziQ=;
-        b=jrDz3CdYmFRT934nCxZI6OsELctFHzOm4dDTOZ1LQ/ALD4AqjCJ/jWxs84N4Ylirgu
-         KGf/tqmbS8Bklr8JYcwaRqLOx2OHl6301or9UharTeqTbCMRiKHY6tnya5epMM7iLSat
-         kRygfffxvCrrv8yQ2hx/+ZEeUC7f42X7P3N4lBXbx70AW2JNY4+z5eSKaJzbhqPrn/97
-         EF8C0k6R/YQG/Y/uMBdhuYQg/DsGyfIuH0FA8L8w6tu60DjOdHdUFE7OOprzbqKJJi0W
-         EOGCPZSV/p3SrYw8My36nzXZ9Z86io9+83yVCN6YSzVJBgD3VpPdRR5KwJI2L15XqVEb
-         VDNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775776205; x=1776381005;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=V0720UCU3sQFjdaGRxAYeJgM+ub10KIdf1BhWBleziQ=;
-        b=aVBauDZZIM7ezgZhhYW7pkMG1IoomdxmvlsnLUmuDMFEHVWCSJ5B4qnIx5bF+u15gF
-         pbnzbWHO57uDiDTtUcfHBhwCud3BQPzmb3xbZPYhcPtJv1OcsJpAh7OVyupeEowkmUdP
-         GzFpbbKJuDIieGQf1dlYBe86EZpblU+sLgV0Rn+9UQPqbza/5GPac5P8OZeQj88KHoSH
-         jhYtG8c/HFdgoqaEljfp9JqrDg02sNs7OqVbZBdYZZJrbeofmg3K0/PNtlX8PfaQ0CQv
-         yToOugHFbWomq5+AjdLhZWOiRKm57/AeBojRf3E9hjEZy+SXgFvP2q9HJgYNbuX8s5+C
-         ZP7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWt08DFkp9bewI0L61DLqH9TMlFnu9xESi0xqTjExbCqqUHWVk3YGbSeHHulEvZi130ZbQswAg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8n6J+EWNEvOXcnBDcNieBxqvyyO4SUaJgzHQ/vlnWPMonWKLA
-	TbAL46+TX1vM4a5d7hoR+nFyJ1DDV85Ah3CkQyWoxumO4quPwv7V7gVAQ3Oy9nfVglIaU1Dd4yw
-	t/b1xka1qAWYil7CmGrnW0fA7YZUEZQg=
-X-Gm-Gg: AeBDievvO1IThVt2jOATicBv6eZiOHCgE8Fk9VkDLlVY1Ov9oaW9UKlGHTRfbwnvEuQ
-	1PKekyZ5DSPzBXPWuZ0FZHh34EhRyuak/KYMUudFAkimLt7xuhJz7IqGn5xlk++dpssXh3p9Oe5
-	LTXRERJh5nTFh6FbsGq5iAkU7ebNgzeWq9THSf0EIQ5HFZk6UjZ8Pyf4QlLPZA0xT6GjRzxVWZS
-	EsW//IKD9crS8ZXdjE/V3rexVPE1nu9G0wDA9LDzzApo1fn0L9r0cSeNuT7UIg/KbnYHdn86O0v
-	6YjyEreAAdkZPHJS
-X-Received: by 2002:a05:6000:2211:b0:43c:f247:4792 with SMTP id
- ffacd0b85a97d-43d642702a4mr1194138f8f.12.1775776205019; Thu, 09 Apr 2026
- 16:10:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A2B3A254D
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 23:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.85.242
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775777756; cv=none; b=qX9d0hUGLathjk890/RG/Q8ZiJi8cCOXjh64LaErw+FejdBW+Bwkzi5hy22AURHHSYmXWa820/ZMlrlN9capqa0DXcahW25QDX/v9tcn5JPIK2jXQZ75gxIVrT+FJUX+HGVoZEK5njOF57x2k5MApO/cD7Zqsp3YPth7QMYMbPs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775777756; c=relaxed/simple;
+	bh=fIVdjJ4nA/At/OaVpVIeoD2VDE67BNQPUm/z89spOBY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oZarTXTe+Ck1jGKLpD/Sy/gUr+zi6n+0aq4uE9yV49ICdWObndGPKiazKhhRgYzV4vc0FgYn+UXkg17Q2xg4NNvGBMZYrAZofnifPJE3BgTlm0Pi3xdkXhyTgmrXFfRMyvIG1wNMy99QZHj03nMAVL+fFVf/nPU9e0Kie6khNJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=phx3ueLA; arc=none smtp.client-ip=57.103.85.242
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-5 (Postfix) with ESMTPS id 0AC5618000B9;
+	Thu, 09 Apr 2026 23:35:51 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775777754; x=1778369754; bh=4wbWKJiuGa3lp3h91TcAJgj5nreIv8DzdANlgKm+/+8=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=phx3ueLA22G+coO9rdxEMIYJZKdlrloBAgmdcvkHxWsMmloLip8VlAHcAJg8piM6qnk1ewwLxszAp8Ggk51Etq6gptZ8lz0fGRKVkiWk3s3e2o12OXvt9roiI7lT/wosL/airdfZcLvV0hnBfQh2V19424Oz6rSava8jAe4ZQpAL4EqsdfycH6DmDd3UFzrrSAfEB8n/vBUeXRrBk+dVy3g1TIqaUo7HqcJCVRFaqQJytN3PhJN10VrYdxQWD9zwW4/qsWs3meReIcW5WqnUtifXFTZYrFpK7zPO9KUNEtGdHeZx6f6X0s5xLtY8a1CoaC8prgrEvnGcTTTNlvXzag==
+Received: from mainframe.tailfb0f7b.ts.net (unknown [17.57.155.37])
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-5 (Postfix) with ESMTPSA id BBEB5180051B;
+	Thu, 09 Apr 2026 23:35:49 +0000 (UTC)
+From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
+To: netdev@vger.kernel.org
+Cc: linux-nfc@lists.01.org,
+	stable@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	=?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
+Subject: [PATCH net 0/3] nfc: llcp: fix OOB reads in TLV parsers and PDU handlers
+Date: Fri, 10 Apr 2026 01:35:13 +0200
+Message-ID: <20260409233517.1891497-1-snowwlake@icloud.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021-io-uring-fixes-cancel-mem-leak-v1-0-26b78b2c973c@ddn.com>
- <4b5a8040-b62c-4d75-a474-70d0b4759461@bsbernd.com>
-In-Reply-To: <4b5a8040-b62c-4d75-a474-70d0b4759461@bsbernd.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 9 Apr 2026 16:09:53 -0700
-X-Gm-Features: AQROBzAWY9HD1HeNgkxoBCmsk_3-haNIvT52DUzlw8juQUIk6-SVKZJCxSZwekw
-Message-ID: <CAJnrk1ZohxcDERszbii8ZM0g1ZzTwk6+wEqRWpCoSwBXzgavkg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] fuse: Fix possible memleak at startup with immediate teardown
-To: Bernd Schubert <bernd@bsbernd.com>
-Cc: Bernd Schubert <bschubert@ddn.com>, Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel@vger.kernel.org, 
-	Jian Huang Li <ali@ddn.com>, stable@vger.kernel.org, 
-	Horst Birthelmer <hbirthelmer@ddn.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: 0Ymg3GRGmhS7R6NWrUsU79xuzFzq56uu
+X-Proofpoint-ORIG-GUID: 0Ymg3GRGmhS7R6NWrUsU79xuzFzq56uu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDIxOCBTYWx0ZWRfX2WO8TgrYBdaf
+ JDL2rqVMw9S7cKCRrFm/7oD30pR8to9wOuZpupNYG6H/JDu4V1SXhC7YJt1muEW0fJFf56u/1eI
+ f7T0oKsy1PnjS5Xe7pIKEPK/MEZlM5vPCwfT0KFAY5256FBNyfdN4ii0My8CZJt5tChPU1q8gaG
+ O5cXRNDHja7DbO1sVUxT0QaELcoaA8LvAKX4mXm0xsY3jH+q92mzuIDpu6pJBdhIcVRLUhm+aDL
+ NAhe44dyVU9eK7Wucfg/HnG1XGAnqMxBMaFRqfgRNRvayH5sUEB+DUSnqy8REs9cjxMYvNa774m
+ tkExx9VAwHlaBN/hU866S3Y73+rkCueq5PAt6evF0YWTuAHFw++Jhfizzu/vjI=
+X-Authority-Info-Out: v=2.4 cv=WIFyn3sR c=1 sm=1 tr=0 ts=69d837d9
+ cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
+ a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=zN5dko5L0ofWfovZziwA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=JKcXVnpmuwdQ7RL0mgk_:22 a=5Q-93EyGrU3sW_9myDOF:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 adultscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=999 spamscore=0 phishscore=0 malwarescore=0
+ classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.22.0-2601150000 definitions=main-2604090218
+X-Spamd-Result: default: False [-0.60 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MIXED_CHARSET(0.56)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[icloud.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[icloud.com:s=1a1hai];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235516-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.01.org,vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,icloud.com];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235517-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[icloud.com:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[snowwlake@icloud.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ddn.com:email,bsbernd.com:email]
-X-Rspamd-Queue-Id: B74663D0710
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[icloud.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,icloud.com:dkim,icloud.com:mid]
+X-Rspamd-Queue-Id: 458AB3D0802
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 9, 2026 at 4:02=E2=80=AFAM Bernd Schubert <bernd@bsbernd.com> w=
-rote:
->
->
->
-> On 10/21/25 23:33, Bernd Schubert wrote:
-> > Do not merge yet, the current series has not been tested yet.
->
-> I'm glad that that I was hesitating to apply it, the DDN branch had it
-> for ages and this patch actually introduced a possible fc->num_waiting
-> issue, because fc->uring->queue_refs might go down to 0 though
-> fuse_uring_cancel() and then fuse_uring_abort() would never stop and
-> flush the queues without another addition.
->
+This series fixes three out-of-bounds read vulnerabilities in the NFC
+LLCP layer, all reachable from RF without prior pairing or session
+establishment.
 
-Hi Bernd and Jian,
+Patch 1 adds missing TLV length bounds checks in nfc_llcp_parse_gb_tlv()
+and nfc_llcp_parse_connection_tlv() — a crafted CONNECT or SNL PDU
+containing a short TLV value field can read beyond the skb tail.
 
-For some reason the "[PATCH 2/2] fs/fuse: fix potential memory leak
-from fuse_uring_cancel" email was never delivered to my inbox, so I am
-just going to write my reply to that patch here instead, hope that's
-ok.
+Patch 2 fixes nfc_llcp_recv_snl(), which accessed TLV fields and
+performed arithmetic on an uncapped length byte before any bounds
+check, enabling a 1-byte heap OOB read and a u8 wrap-around.
 
-Just to summarize, the race is that during unmount, fuse_abort() ->
-fuse_uring_abort() -> ... -> fuse_uring_teardown_entries() -> ... ->
-fuse_uring_entry_teardown() gets run but there may still be sqes that
-are being registered, which results in new ents that are created (and
-leaked) after the teardown logic has finished and the queues are
-stopped/dead. The async teardown work (fuse_uring_async_stop_queues())
-never gets scheduled because at the time of teardown, queue->refs is 0
-as those sqes have not fully created the ents and grabbed refs yet.
-fuse_uring_destruct() runs during unmount, but this doesn't clean up
-the created ents because those registered ents got put on the
-ent_in_userspace list which fuse_uring_destruct() doesn't go through
-to free, resulting in those ents being leaked.
+Patch 3 fixes nfc_llcp_recv_dm(), which read the DM reason byte at
+skb->data[2] without verifying the frame is at least 3 bytes long.
+A 2-byte DM PDU (header only) from a rogue peer triggers a 1-byte
+OOB heap read.
 
-The root cause of the race is that ents are being registered even when
-the queue is already stopped/dead. I think if we at registration time
-check the queue state before calling fuse_uring_prepare_cancel(), we
-eliminate the race altogether. If we see that the abort path has
-already triggered (eg queue->stopped =3D=3D true), we manually free the
-ent and return an error instead of adding it to a list, eg
+All three bugs are independently triggered via RF (AV:A, AC:L, no
+authentication required).
 
-diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-index d88a0c05434a..351c19150aae 100644
---- a/fs/fuse/dev_uring.c
-+++ b/fs/fuse/dev_uring.c
-@@ -969,7 +969,7 @@ static bool is_ring_ready(struct fuse_ring *ring,
-int current_qid)
- /*
-  * fuse_uring_req_fetch command handling
-  */
--static void fuse_uring_do_register(struct fuse_ring_ent *ent,
-+static int fuse_uring_do_register(struct fuse_ring_ent *ent,
-                                   struct io_uring_cmd *cmd,
-                                   unsigned int issue_flags)
- {
-@@ -978,6 +978,16 @@ static void fuse_uring_do_register(struct
-fuse_ring_ent *ent,
-        struct fuse_conn *fc =3D ring->fc;
-        struct fuse_iqueue *fiq =3D &fc->iq;
+Lekë Hapçiu (3):
+  nfc: llcp: add TLV length bounds checks in parse_gb_tlv and
+    parse_connection_tlv
+  nfc: llcp: fix TLV parsing OOB and length underflow in
+    nfc_llcp_recv_snl
+  nfc: llcp: fix OOB read of DM reason byte in nfc_llcp_recv_dm()
 
-+       spin_lock(&queue->lock);
-+       /* abort teardown path is running or has run */
-+       if (queue->stopped) {
-+               spin_unlock(&queue->lock);
-+               atomic_dec(&ring->queue_refs);
-+               kfree(ent);
-+               return -ECONNABORTED;
-+       }
-+       spin_unlock(&queue->lock);
-+
-        fuse_uring_prepare_cancel(cmd, issue_flags, ent);
+ net/nfc/llcp_commands.c |  9 ++++++++-
+ net/nfc/llcp_core.c     | 22 ++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
-        spin_lock(&queue->lock);
-@@ -994,6 +1004,7 @@ static void fuse_uring_do_register(struct
-fuse_ring_ent *ent,
-                        wake_up_all(&fc->blocked_waitq);
-                }
-        }
-+       return 0;
- }
-
- /*
-@@ -1109,9 +1120,7 @@ static int fuse_uring_register(struct io_uring_cmd *c=
-md,
-        if (IS_ERR(ent))
-                return PTR_ERR(ent);
-
--       fuse_uring_do_register(ent, cmd, issue_flags);
--
--       return 0;
-+       return fuse_uring_do_register(ent, cmd, issue_flags);
- }
-
-There's the scenario where the abort path's "queue->stopped =3D true"
-gets set right between when we drop the queue lock and before we call
-fuse_uring_prepare_cancel(), but the fuse_uring_create_ring_ent()
-logic that was called before fuse_uring_do_register() has already
-grabbed the ref on ring->queue_refs, which means in the abort path,
-the async teardown (fuse_uring_async_stop_queues()) work is guaranteed
-to run and clean up / free the entry.
-
-Thanks,
-Joanne
-
-> Thanks,
-> Bernd
->
-> > The race is only easily reproducible with additional patches that
-> > pin pages during FUSE_IO_URING_CMD_REGISTER - slows it down and then
-> > xfstest's generic/001 triggers it reliably. However, I need to update
-> > these pin patches for linux master.
-> >
-> > Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-> > ---
-> > Bernd Schubert (1):
-> >       fuse: Move ring queues_refs decrement
-> >
-> > Jian Huang Li (1):
-> >       fs/fuse: fix potential memory leak from fuse_uring_cancel
-> >
-> >  fs/fuse/dev_uring.c | 33 ++++++++++++++-------------------
-> >  1 file changed, 14 insertions(+), 19 deletions(-)
-> > ---
-> > base-commit: 6548d364a3e850326831799d7e3ea2d7bb97ba08
-> > change-id: 20251021-io-uring-fixes-cancel-mem-leak-820642677c37
-> >
-> > Best regards,
->
+--
+2.34.1
 
