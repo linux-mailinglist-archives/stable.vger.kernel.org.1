@@ -1,168 +1,167 @@
-Return-Path: <stable+bounces-235339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA3OEzZd12kCNAgAu9opvQ
-	(envelope-from <stable+bounces-235339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 10:03:02 +0200
+	id +KlwEIhe12kCNAgAu9opvQ
+	(envelope-from <stable+bounces-235340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 10:08:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67483C76B1
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 10:03:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF85D3C77D5
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 10:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD2563018761
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 08:02:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C1EF306B392
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 08:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A1038BF9C;
-	Thu,  9 Apr 2026 08:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C5538C2A4;
+	Thu,  9 Apr 2026 08:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Niq4Qc+D"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ANVIOUHx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E2837C106
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 08:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C62FF66B
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 08:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775721775; cv=none; b=iWiYB77reelYSCCHKNV8h67pjyKVsUM6a1JQz7R6MiAPbBRaQyOYWtkhfPxAfy6rz0iJksb/qMrP18iLeJWkfV5xQ3I6fQAmoAnpUbv53AoKp5jyQVb4Hnfqm9PVSqxzlSC2AA4pGSZDq8HeMQEgvLL7TKE9kalLgOdbsCMlakw=
+	t=1775721825; cv=none; b=F5lQQJ6t0kJAairLu73LscTR1QnNSDNew5qRg2FLsgZVJRlkWdnGddt8N9fnGMrHe2EKHJJt6cH6Hoir3o6jFJgFgVmg3Md5Ly1AneMZhFeeg7n4TzUWjVSFphwS25I+jEaz3DQEMmboxHytU6JbrcjKt2q+EUEULzTDUTDf03w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775721775; c=relaxed/simple;
-	bh=0Ogc9JSBBGwGPjCCTbrNaU1DTQCu5wAABvOqgchMBC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjbxqVhhKJ8qrPPMBgqSUZEbFvDpvSC1SRH/Oq07PEX1H/NsAilVTpoUk0csw4bhKhAOLIeBZkDjW94+tQ0mNRU3H2Zr3voekgWoYdAym8mcn+v2Q3mRknTSJgAZsHqh0vc/BOQxwXYEIonOrvbDOeS0dVxJNExkzdusIv0UmVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Niq4Qc+D; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43b8982c2f4so294262f8f.2
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 01:02:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775721773; x=1776326573; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9s86D+DhGHsIGvz0sr+SSnyTaFHdgNLB1XeFc1X3fVU=;
-        b=Niq4Qc+D2nv17obUxhZIeefeZtPwo6gAuQFFehxcFHqJdDW1xBIFJFpENtYwG8bwUB
-         h8uCiRm1NfT3Qwo1GzLzvmV4LtW9uGWj0wVqd6pGs+mP7oRBxKLtjG8PJ8NoLXudfpEV
-         39K4S0tNwbfwf7peK6prZL1JpvLc8tW4hu/TA2B+oc4QYvTIqb7WD0+22udNfDutAVYB
-         fAT1cL+YXy8a2u4qcx3iRloMpwTSh5A8+20i6wBbUDE2+vcw0D95NmuaGa+aB13yIRNR
-         /1xgQd8ls/9cihFMwf2jNT6aBZPx78A4WddH1t+g/d/w1Dk2MMF932Eb/ACtVR8Fqyvn
-         /kNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775721773; x=1776326573;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9s86D+DhGHsIGvz0sr+SSnyTaFHdgNLB1XeFc1X3fVU=;
-        b=O8M4LL62U+WwW9IYI8sbQ2OKb+fwDAr8l+PgON7Miy6J0fCjQ2MnZAofCSEHTglL3D
-         3xfhYydX47bHFYdLtSHjmy6+LgB3TQd1XxTvoy1Z/Gx/4FLNeAJfy8onWVL2Y6Um6YvK
-         MOI5flBFw333b6YX0DcJCKhSeOUHKIkeR7PedKCSb+R+Wwz2WlvdwAcFuUPfuzp0XuiD
-         T7bw2g6xByA0JijN+2r/vNsl63oGV/JO+5prI55g0VjmzZY9Zi7GQ0xaEENPnnX5Q9DD
-         2dbjj4QF8G3yrFmOGdz56bn9d00tNGmWHO8wxs+AShOWERhM28ISLA6lFSVmlhC6DRaN
-         ZS+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWKEgR4GR1CJ7m0m7I7Vt/Wt9l4pL0DQLGGB9tVxxhf23bv/aME0nHrO6L0P+aBOttWKzOylt8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbPcy2aj/P/N8qGwDUfJSz0+DOfyDHotNCnCTEEd0Hrl1D5SGh
-	7sNfldeGMdkCsmbTmY66/uEkp2XM3K1YrA/pF2XA82c1gIq8QZggUoDb
-X-Gm-Gg: AeBDieuX1QbSIVlY9q3mFeeFhKbWuQBXqTe1n+m9IJreRxBkVIYwwHMtAMPSWWeOUhi
-	pOYYqRKSq7eIMMWuUTHrEX40aOqgSktBELKfIMcYJAwZq6o0jKos4CyFAF3JsGen7ZloWZw1F8+
-	WVP/X+cKZA+rB6E33W8BAqcusI56B17Dsje9UwdDhoo0rH/fX68+g7KbNyh0yQ+qOMb0/LoNXfm
-	m1yIIujl1yX/nzNgEHEwmECHKpCONo3H7inhedYRBfmuzZDQh/+IZFA8peyBPiCA7nLzQXJVOxw
-	MgprWzADRpKJZjAg+dPksr82bhJ9xX34GjfUtNFRCOWqLIpZnS527XOz24kX9lfClzn31xqLmuo
-	mazDJlj78ChowuN4nlbxyvTIpeQBY/yaPEp7P/3EtzDLXs8c7B+wk3uGmuOJm7Mwbo/ZUJzRvjy
-	ZCIwziDRRA3QSBr5033QNw8MY6F/6IMKlN
-X-Received: by 2002:a5d:5889:0:b0:43b:47ee:4586 with SMTP id ffacd0b85a97d-43d292d34e1mr32435461f8f.29.1775721772525;
-        Thu, 09 Apr 2026 01:02:52 -0700 (PDT)
-Received: from foxbook (bfi53.neoplus.adsl.tpnet.pl. [83.28.46.53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4e5890sm63496077f8f.31.2026.04.09.01.02.51
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Thu, 09 Apr 2026 01:02:52 -0700 (PDT)
-Date: Thu, 9 Apr 2026 10:02:47 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: JP Hein <jp@jphein.com>, Alan Stern <stern@rowland.harvard.edu>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
- fragile firmware
-Message-ID: <20260409100247.7cfb62d1.michal.pecio@gmail.com>
-In-Reply-To: <CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
-References: <20260331003806.212565-1-jp@jphein.com>
-	<20260331003806.212565-3-jp@jphein.com>
-	<CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
+	s=arc-20240116; t=1775721825; c=relaxed/simple;
+	bh=jjbR/eoGb6f2E8yA8XOOOY6CbY9c9VChAD3bZ4+SiU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OQyKrmQRDdWlg+ererA/boxXT8nkgsf78o6G+D5kr+TGLY4qrssma4GaXKTOicGIgKLZj2ywHeBUltBNemUZ0MTxbsPF0jiljdSTBvL+Na6AIMFKTd8K4G9sosFh9HNn5nNmNZR5IPDooYieofTmOCcFTzASZvMCsKHQCD35Qew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=ANVIOUHx; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
+	by cmsmtp with ESMTPS
+	id AbEjwDnsDshqQAkMUwinOy; Thu, 09 Apr 2026 08:03:38 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id AkMUwKbebYA8xAkMUwzbIG; Thu, 09 Apr 2026 08:03:38 +0000
+X-Authority-Analysis: v=2.4 cv=VJfdn8PX c=1 sm=1 tr=0 ts=69d75d5a
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=IwEcxYCC5tnkj01rLLM4Z0rnCw3GY/uODcAOW/UBs6k=; b=ANVIOUHx4G0iEi4Who14L9RYrH
+	BBZfAghsKfknIj+M+8dlETTlvPqtB4Y68Hy5AnoFhlCg9HVax+Ny3s+UeJMknDVgBedaiO5Uc0vFb
+	CIyjVbk2isWgCrdx0fWjD/zjLVJba7O8JIqQHjzsk7XDnmHSu8TfidNc5uuq+atu2Bzh60wtHlLQv
+	cfqUJkwrjd8HgcR2F/F1lkoLroTl0R48TVrbkI6Dnio0QqOU9n5mr82StaeaQdR+KvjvbgnxhXAdy
+	PACEsb6yUscupZARvnXhopROQbt2Yh+s2trjDnBozIID1tUTImIrNK1UK7proW+yNe1LczgAitZDT
+	jsfdSmew==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:37620 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1wAkMT-00000001xIl-21zx;
+	Thu, 09 Apr 2026 02:03:37 -0600
+Message-ID: <b77f7cde-8a8c-4bdb-b886-a675a82015ef@w6rz.net>
+Date: Thu, 9 Apr 2026 01:03:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 000/311] 6.19.12-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260408175939.393281918@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1wAkMT-00000001xIl-21zx
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:37620
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfIiimTXeUJTMxeoPFQZnkw2MetJIfDvPlkda2PXQzQUqMwMfzxCsnFOR5ZEjGCHUWZaOxmTTEdL5caCmcJRy0H/f0FT/HAutq2HS1VVvkAmV/TMtHOA/
+ gWBjko+VfNnAaEGuOzPTyg5bxl1PBrnmRaR3cdOtPNJ0cFX3nUCPKOlcj952dMeJglqY5xa9txgQyQ==
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235339-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-235340-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[w6rz.net:-];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[jphein.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D67483C76B1
+	NEURAL_SPAM(0.00)[0.228];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,w6rz.net:email,w6rz.net:mid]
+X-Rspamd-Queue-Id: AF85D3C77D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 9 Apr 2026 08:45:17 +0200, Ricardo Ribalda wrote:
-> Hi JP
-> 
-> On Tue, 31 Mar 2026 at 02:38, JP Hein <jp@jphein.com> wrote:
-> >
-> > Some USB webcams have firmware that crashes when it receives rapid
-> > consecutive UVC control transfers (SET_CUR). The Razer Kiyo Pro
-> > (1532:0e05) is one such device -- after several hundred rapid
-> > control changes over a few seconds, the device stops responding
-> > entirely, triggering an xHCI stop-endpoint command timeout that
-> > causes the host controller to be declared dead, disconnecting every
-> > USB device on the bus.  
-> 
-> A usb device shall not be able crash the whole USB host. I believe
-> that you already captured some logs and the USB guys are looking into
-> it. I'd really like to hear what they have to say after reviewing
-> them.
+On 4/8/26 11:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.12 release.
+> There are 311 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 10 Apr 2026 17:58:42 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Sorry, I forgot about this bug. I will take a closer look at logs
-later today.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-I see that there is a case which crashes the host controller, but
-without dynamic debug. It would be helpful if this can be reproduced
-with debug enabled.
+Tested-by: Ron Economos <re@w6rz.net>
 
-In the future, please also make sure that there are no unrelated
-devices spamming dmesg, like "slot 17 ep 2" in those "stall" logs.
-Please find this device and disconnect it or unbind its driver.
-
-The initial cause of all that may really be the device getting
-locked up for no good reason, but not 100% sure yet.
-
-Regards,
-Michal
 
