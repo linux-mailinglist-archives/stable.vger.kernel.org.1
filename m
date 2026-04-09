@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-235379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHJ/I7WR12k2PwgAu9opvQ
-	(envelope-from <stable+bounces-235379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:47:01 +0200
+	id mNMqFN2R12k2PwgAu9opvQ
+	(envelope-from <stable+bounces-235380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:47:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A206D3C9D43
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:47:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D449A3C9D86
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C3712300AD69
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 11:45:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E67C306578C
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 11:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014C33C4554;
-	Thu,  9 Apr 2026 11:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022843A2550;
+	Thu,  9 Apr 2026 11:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npZBTkp5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odAE712+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B862E3C1405;
-	Thu,  9 Apr 2026 11:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D1438836A;
+	Thu,  9 Apr 2026 11:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775735117; cv=none; b=pLcpo6Rvd2i79iPnF3+ImbNqNdHusn0Iy5uxrK9qD1wWPWVaf9N4JIN+nNAIAPSLvv8ez/WQ8X2cNKp0ggy/coslp4D+77rUayxvly+qLHVj82b/5tgqI8Xt6zQGE/PxOPEWg+WiYxwAFSjTucl46hbCCSmgaSjLXChJnPwKouI=
+	t=1775735134; cv=none; b=nZnIm1l9ivhrzyx9BjhZBRDf4q8s+KjwWw1H3IJRM3OtgeK4+masd6CxmlYqLtE8zdoplBDOCJ/YesV2Dg+n3rFm6u+injJibpiNmFRDPTiJFMf9ySSrUdqqVLSjgSgNm5aBHzzJ4uPf3t3eFG3BneaN65KxOq/D1uuwUnBktHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775735117; c=relaxed/simple;
-	bh=Y1j3MmZpUQlVDuFTcw/PNkbo7UGMUuMOhCn3l9JqQ7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hf8QJJEuZcx8VpGFoQtjt4y6/OHAM6kfFZXOzflsEQoEf8wZT1aDUjotylk19BFqnLSR3QeAvkAj0dwPPqAA1xUUqYCflhFlH3/6yE+A/H3XNg6Dw1Wru1LbCfVlqshKR1LIb00UhRC1rgAxUu4c4a/pbWIyEbkPQa19ts6gTW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npZBTkp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31641C2BC87;
-	Thu,  9 Apr 2026 11:45:16 +0000 (UTC)
+	s=arc-20240116; t=1775735134; c=relaxed/simple;
+	bh=50MkiAbVt7I8o9d1BKURD7MtyMbFg2dS4KX3vjddlsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JVPV40okyTfcSrpmVT36pr0YV8oXmdl2JGvCU2GUAMt0xzE/mubqg0Bg5kZoDV7HhhzKuVwTxJIFokM8Kso7DSBzQ1r2sCjEpe185na6ChMvqFCydzHGWeaPhhyMX0DGwh8cU4O+Dp8NEbbAP+d42W+UiTV+t0K/79czFb3UTtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odAE712+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524A8C2BC87;
+	Thu,  9 Apr 2026 11:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775735117;
-	bh=Y1j3MmZpUQlVDuFTcw/PNkbo7UGMUuMOhCn3l9JqQ7Y=;
+	s=k20201202; t=1775735134;
+	bh=50MkiAbVt7I8o9d1BKURD7MtyMbFg2dS4KX3vjddlsA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=npZBTkp5+KLL64sUhvX8CaQR+i3F+ReJQFlr4Nb/WqBV7nYzP5e3soZWEJBJPyoPs
-	 EoxPBT2nKw4iiiOhPcJTrBC60gf91iV28YXvGV4bdYMzmDsODsjP5txn80kkKuUkxC
-	 v+TlPsGPH2XtD0pAJMha1h1kBSL4EHj8Bi0ddaT4FhWl/LcJHTySoPOAEm5SGPC8M1
-	 gGk/ZQme+ZPqD8oUDxCdTCemFXtW1Vz7g/IOQoRlBD8Nrfzr3bmZ4HF3i36NW8Lv7d
-	 rWDksFFF0NZQ3aUVK6vg+AIeiJkV0p+Co0P77hTmGOh2Cay1RnyHFoW/bV+EOPKFyW
-	 IeI7Pzr+uH3eA==
+	b=odAE712+YzJkCWXpMCKqBPvOXky+il3Qs33PFyl2IVDg6LTrtnQ6tYkuZwkOuVKd+
+	 2Scmrjk4hfE75I7Q844sJjRCNqWiWaV0Sbhu5uBA0Q1feyHdOOxd8MLas9dPOzw4Ge
+	 fNIao1iCHakTwUZSM2CNKJP9ve/rRZ77EZAA2BH8B0Q+ryX9GBape+wa1jtRsdT50E
+	 xm1quN5u46MQCU4D6yrldaHVgpz41iVuH669Pn7IMOW8o8l0Up1MW/P2Agd67eDAIE
+	 /DjTVFl4gQkQt8qoQnUNoBpzSnczr3cyNJUbsJUENufVZdHZdw9mJucdMzxwfGUDJj
+	 rCaxT8JbczoxQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
@@ -51,9 +51,9 @@ Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
 	Li Xiasong <lixiasong1@huawei.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: fix soft lockup in mptcp_recvmsg()
-Date: Thu,  9 Apr 2026 13:44:40 +0200
-Message-ID: <20260409114439.1158386-2-matttbe@kernel.org>
+Subject: [PATCH 6.6.y] mptcp: fix soft lockup in mptcp_recvmsg()
+Date: Thu,  9 Apr 2026 13:45:26 +0200
+Message-ID: <20260409114525.1159899-2-matttbe@kernel.org>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,7 +61,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5224; i=matttbe@kernel.org; h=from:subject; bh=5reSsoATsqAIK/gcQNsgdVYQUtbmZgGtG20KQdaivkA=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKvT1RntdEJMOmsYnfzZpzYoNmkueDY+8+si/0YlqQYW S8VTvTsKGVhEONikBVTZJFui8yf+byKt8TLzwJmDisTyBAGLk4BmMgHJ0aGe8VR3PwX5+x6NV3x DueUCwqiXboH733+sdEvQvWiCyfnNkaGL9cfSvc5OvyeEy/wuNKplOnG9Rlvt+skF9tPXsQn4LC GGwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5224; i=matttbe@kernel.org; h=from:subject; bh=a/uxjm+nSJGTdf8zPfmSiLHrAtbKBhqHQHfs5R2JC1I=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKvTwyLfu6Snm2iJrzEVf2PxLQu3emZQcsvp0wMejDvo 9fRRHvfjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIl8c2VkWKguH31NafeTmz+9 j96cdORgWfmv+PMCN1x3PbK/22RX/p3hf/49b42WdQ+zIq88at0rmXVn5eLsnVJdcpKPbPycDHW NmAE=
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235379-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235380-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,huawei.com:email]
-X-Rspamd-Queue-Id: A206D3C9D43
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: D449A3C9D86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -161,10 +161,10 @@ Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index e682d52a06b7..c34a06b4f21f 100644
+index 85ef9042873b..517b9a5b6867 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1997,7 +1997,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
+@@ -1960,7 +1960,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
  				struct msghdr *msg,
  				size_t len, int flags, int copied_total,
  				struct scm_timestamping_internal *tss,
@@ -173,7 +173,7 @@ index e682d52a06b7..c34a06b4f21f 100644
  {
  	struct sk_buff *skb, *tmp;
  	int total_data_len = 0;
-@@ -2013,6 +2013,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
+@@ -1976,6 +1976,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
  			/* skip already peeked skbs */
  			if (total_data_len + data_len <= copied_total) {
  				total_data_len += data_len;
@@ -181,7 +181,7 @@ index e682d52a06b7..c34a06b4f21f 100644
  				continue;
  			}
  
-@@ -2053,6 +2054,8 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
+@@ -2016,6 +2017,8 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
  			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
  			__skb_unlink(skb, &msk->receive_queue);
  			__kfree_skb(skb);
@@ -190,7 +190,7 @@ index e682d52a06b7..c34a06b4f21f 100644
  		}
  
  		if (copied >= len)
-@@ -2274,10 +2277,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+@@ -2237,10 +2240,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
  		cmsg_flags = MPTCP_CMSG_INQ;
  
  	while (copied < len) {
@@ -204,7 +204,7 @@ index e682d52a06b7..c34a06b4f21f 100644
  		if (unlikely(bytes_read < 0)) {
  			if (!copied)
  				copied = bytes_read;
-@@ -2335,7 +2340,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+@@ -2298,7 +2303,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
  
  		pr_debug("block timeout %ld\n", timeo);
  		mptcp_cleanup_rbuf(msk, copied);
