@@ -1,150 +1,140 @@
-Return-Path: <stable+bounces-235429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKdKI9TD12mdSQgAu9opvQ
-	(envelope-from <stable+bounces-235429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:20:52 +0200
+	id hukeBdNQ2GkhbwgAu9opvQ
+	(envelope-from <stable+bounces-235552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 03:22:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982513CC8A5
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:20:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5B33D1120
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 03:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A7C7A300D766
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 15:20:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38AE83013AB2
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 01:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEA93DCD81;
-	Thu,  9 Apr 2026 15:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D75E3264E9;
+	Fri, 10 Apr 2026 01:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SpeqoFZ7"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="T4Ia0eYl"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614333D88E4;
-	Thu,  9 Apr 2026 15:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6C829BDBB;
+	Fri, 10 Apr 2026 01:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775748013; cv=none; b=XjLjX5rJVaUiyeSezX9pJHY4C9QarqR3CtdbzPdstIgu/5hDm7fNhh2Amc+dW0wc4Yxmf/OBlLVGM9k8yPGBrEJD0Ta6eeax1SqhOwxTJbJGyXrsj7JWCwp/8UXCiV6djQrZOWOE7amYNEAiWEMC6Nld/utiVgmuGDbX1CPLfUs=
+	t=1775784141; cv=none; b=u544YynQ5PCMcz+UNcP2/81ODrQEi4gdsbaprauIEJZtE572zednLlaSJiske52WP0v3Us0Xdi+JzaJj8JgV8nY2YZBaw2SdSDw+AIEpb8VBMpA1xhiVfA2eN1m/mFlJI3XWQ4PAxI73iQxRrl+DMxXOYbzscWfeNs9FNnzu2WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775748013; c=relaxed/simple;
-	bh=KerjMnaZbfpIlkpvrXSliiJWrSFz9KRVNy8sm9UfXNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HxFe8EgC6x1sgF7cv68HemxbnLcLh+QTo4wp+YjD5q5GEamFNL2VpsaUWVn+SS/fdiECojSf2YnR64C51nQH9tL67FxvwivNiVqTFgYG69iRGcrfMFCEa1OpXx0T7r7OQVPcEyyzGTBJ5iZXealfm9BQqYgl3nLCTg0edc8XYQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SpeqoFZ7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B282C1E7D;
-	Thu,  9 Apr 2026 08:20:04 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B63A33F632;
-	Thu,  9 Apr 2026 08:20:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775748010; bh=KerjMnaZbfpIlkpvrXSliiJWrSFz9KRVNy8sm9UfXNg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SpeqoFZ70V9fK8ZbqkJX+IaOX6lOReIfZ5HI8HTLWt+OY0BTljBMQzT+Pe+cNm/rV
-	 gE/q6NzUJ7ceBGS8P5POeS16bJlewubyPHxMBWKgfM6hQFxbrG3kfGRbtDyJDKFr8E
-	 uKkPugUVopRi2ogCua++AfZf/JJg46wrGQVNLW2Q=
-Date: Thu, 9 Apr 2026 16:20:01 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Dev Jain <dev.jain@arm.com>, Yang Shi <yang@os.amperecomputing.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] arm64: mm: Fix rodata=full block mapping support
- for realm guests
-Message-ID: <adfDoatH8hj6zN7_@arm.com>
-References: <20260330161705.3349825-1-ryan.roberts@arm.com>
- <20260330161705.3349825-2-ryan.roberts@arm.com>
- <ac7VD4Z85nS30GCp@arm.com>
- <ac-W9oNM_O5RTtaf@arm.com>
- <beacee23-c177-47a1-b8b5-743844b617a8@arm.com>
- <adTPFrlVCEt-hioX@arm.com>
- <bc4a0246-33bb-443e-a885-a31b24d4a022@arm.com>
- <adTh8d9k3y5ybemL@arm.com>
- <567dff89-9f0f-40a0-ab10-22e061b4faaf@arm.com>
+	s=arc-20240116; t=1775784141; c=relaxed/simple;
+	bh=OtdwFEyEb8se/ithYk2UGLo+hYsxtwasy+75+RvYfiU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HSsd1rsviBCyWsY/gsR96Ce9Re8n4d+v6Y7oVtDlfn9+1L0TPUOjwmV+Ip0gCavZB3b/EyYCpx30pDwiOPD/nsEjKWItj0tJ5T7nXAMjDOJ/zGLwJdxQ3MtHmACOdldyBU7KtmJ84yWIJpjli4gCaA+eHXtOwkShGCexcrP8pzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=T4Ia0eYl; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D305B113855;
+	Fri, 10 Apr 2026 03:22:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1775784136;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=xpNGb4YWB4vk5Fw9+AtiAS5mIPWhtfd3tfy+j6rlEZM=;
+	b=T4Ia0eYl5boquXW4npr40FUzcytcAIKE9lyrtAdx3591Gky2aF40mU8Af3gv8NpgEvKgsN
+	lAbBE1viTgoH/4YBwzufngSIc86vujOxg+mCyzFYxl8/pbhgTXTJb4Jcd0ea0hYVLaI8XF
+	vSNPpIekHTKkG04pQRUpb4S7G6R6JLE80XSSJpCqUbtLJJW+jAZCeIBx18NySBQXTLVITx
+	lh3cZUZs5ukSFjFhgK3EwX6CS4ntZYCZAhNWA6J7jo2A1twBJjmyf8EfcpR9uGpzcJmhR4
+	Gc6bo/dVicGoP6cBoe7zCNkkSMwJkQCBHrxqUkIK8wJRI2Owk7rV083dgkG2Sg==
+Message-ID: <1665242a-2298-4e76-9618-effdb88c2ad4@nabladev.com>
+Date: Thu, 9 Apr 2026 17:26:13 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <567dff89-9f0f-40a0-ab10-22e061b4faaf@arm.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net,PATCH v2] net: ks8851: Reinstate disabling of BHs around IRQ
+ handler
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui <yiconghui@gmail.com>,
+ linux-kernel@vger.kernel.org
+References: <20260408162535.98108-1-marex@nabladev.com>
+ <6391ee36b7d9c66d33c734650ebfb7fe@tipi-net.de>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <6391ee36b7d9c66d33c734650ebfb7fe@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,redhat.com,raritan.com,gmail.com];
 	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235552-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235429-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[nabladev.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid]
-X-Rspamd-Queue-Id: 982513CC8A5
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 5E5B33D1120
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 09, 2026 at 11:53:41AM +0200, Kevin Brodsky wrote:
-> On 07/04/2026 12:52, Catalin Marinas wrote:
-> >> if we have forced pte mapping then the value of
-> >> can_set_direct_map() is irrelevant - we will never need to split because we are
-> >> already pte-mapped.
-> >
-> > can_set_direct_map() is used in other places, so its value is
-> > relevant, e.g. sys_memfd_secret() is rejected if this function returns
-> > false.
+On 4/9/26 8:52 AM, Nicolai Buchwitz wrote:
+
+Hello Nicolai,
+
+>> @@ -408,7 +426,9 @@ static int ks8851_net_open(struct net_device *dev)
+>>      unsigned long flags;
+>>      int ret;
+>>
+>> -    ret = request_threaded_irq(dev->irq, NULL, ks8851_irq,
+>> +    ret = request_threaded_irq(dev->irq, NULL,
+>> +                   ks->no_bh_in_irq_handler ?
+>> +                   ks8851_irq_nobh : ks8851_irq,
 > 
-> Indeed, I have noticed this before: currently set_direct_map_*_noflush()
-> and other functions will either fail or do nothing if none of the
-> features (rodata=full, etc.) is enabled, even if we would be able to
-> split the linear map using BBML2-noabort.
-
-That's what I have been trying to say to Ryan ;), can_set_direct_map()
-has different meanings depending on the caller: hint that it might split
-or asking whether splitting is permitted. The latter is not captured.
-Ignoring realms, if we have BBML2_NOABORT the kernel won't force pte
-mappings under the assumption that split_kernel_leaf_mapping() is safe.
-However set_direct_map_*_noflush() won't even reach the split function
-because the "can" part says "no, you can't".
-
-> What would make more sense to me is to enable the use of BBML2-noabort
-> unconditionally if !force_pte_mapping(). We can then have
-> can_set_direct_map() return true if we have BBML2-noabort, and we no
-> longer need to check it in map_mem().
-
-Indeed.
-
-> This is a functional change that doesn't have anything to do with realms
-> so it should probably be a separate series - happy to take care of it
-> once the dust settles on the realm handling.
-
-I think it can be done in parallel, it shouldn't interfere with realms.
-The realm part should just affect force_pte_mapping() and
-can_set_direct_map() should return just what's possible, not what may
-need to set the direct map.
-
--- 
-Catalin
+> This works, but wouldn't it be simpler to put the BH disable
+> into the PAR lock/unlock directly?
+> 
+>    static void ks8851_lock_par(...)
+>    {
+>        local_bh_disable();
+>        spin_lock_irqsave(&ksp->lock, *flags);
+>    }
+> 
+>    static void ks8851_unlock_par(...)
+>    {
+>        spin_unlock_irqrestore(&ksp->lock, *flags);
+>        local_bh_enable();
+>    }
+> 
+> No flag, no wrapper, no conditional in request_threaded_irq.
+> And it protects all PAR lock/unlock callsites, not just the
+> IRQ handler.
+That is exactly why I wrapped the IRQ handler, because the BH should be 
+disabled ONLY around the IRQ handler, not around the other call sites.
 
