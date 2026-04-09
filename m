@@ -1,219 +1,218 @@
-Return-Path: <stable+bounces-235380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNMqFN2R12k2PwgAu9opvQ
-	(envelope-from <stable+bounces-235380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:47:41 +0200
+	id UBazIlOS12k2PwgAu9opvQ
+	(envelope-from <stable+bounces-235381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:49:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D449A3C9D86
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:47:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1663C9DBB
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 13:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E67C306578C
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 11:45:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1B88301CFB6
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 11:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022843A2550;
-	Thu,  9 Apr 2026 11:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE163B2FC4;
+	Thu,  9 Apr 2026 11:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odAE712+"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="HftFO2wt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012065.outbound.protection.outlook.com [52.103.72.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D1438836A;
-	Thu,  9 Apr 2026 11:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775735134; cv=none; b=nZnIm1l9ivhrzyx9BjhZBRDf4q8s+KjwWw1H3IJRM3OtgeK4+masd6CxmlYqLtE8zdoplBDOCJ/YesV2Dg+n3rFm6u+injJibpiNmFRDPTiJFMf9ySSrUdqqVLSjgSgNm5aBHzzJ4uPf3t3eFG3BneaN65KxOq/D1uuwUnBktHE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775735134; c=relaxed/simple;
-	bh=50MkiAbVt7I8o9d1BKURD7MtyMbFg2dS4KX3vjddlsA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JVPV40okyTfcSrpmVT36pr0YV8oXmdl2JGvCU2GUAMt0xzE/mubqg0Bg5kZoDV7HhhzKuVwTxJIFokM8Kso7DSBzQ1r2sCjEpe185na6ChMvqFCydzHGWeaPhhyMX0DGwh8cU4O+Dp8NEbbAP+d42W+UiTV+t0K/79czFb3UTtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odAE712+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524A8C2BC87;
-	Thu,  9 Apr 2026 11:45:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775735134;
-	bh=50MkiAbVt7I8o9d1BKURD7MtyMbFg2dS4KX3vjddlsA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=odAE712+YzJkCWXpMCKqBPvOXky+il3Qs33PFyl2IVDg6LTrtnQ6tYkuZwkOuVKd+
-	 2Scmrjk4hfE75I7Q844sJjRCNqWiWaV0Sbhu5uBA0Q1feyHdOOxd8MLas9dPOzw4Ge
-	 fNIao1iCHakTwUZSM2CNKJP9ve/rRZ77EZAA2BH8B0Q+ryX9GBape+wa1jtRsdT50E
-	 xm1quN5u46MQCU4D6yrldaHVgpz41iVuH669Pn7IMOW8o8l0Up1MW/P2Agd67eDAIE
-	 /DjTVFl4gQkQt8qoQnUNoBpzSnczr3cyNJUbsJUENufVZdHZdw9mJucdMzxwfGUDJj
-	 rCaxT8JbczoxQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	Li Xiasong <lixiasong1@huawei.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6.y] mptcp: fix soft lockup in mptcp_recvmsg()
-Date: Thu,  9 Apr 2026 13:45:26 +0200
-Message-ID: <20260409114525.1159899-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E80C38836A;
+	Thu,  9 Apr 2026 11:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775735365; cv=fail; b=WxM7rlNDlR+kRzMd2+okfrpA9XfGNf3CDC6RrwIJKBB+0cvwZsI/apaZtDBmhUiRyoSqaPV/J8LMFPC1/QqY/WTUm5BOux32wM3YsBAfEWD/rZu/ilQVBhhS+Lt21oXgByGuaUGT2Mib7CexVxYXFzQqeMJNUx2Nif0g0eEkSco=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775735365; c=relaxed/simple;
+	bh=FF4Tjh3VTtQ7MufSpUucBUmE+xL/T3PYfH9uD4lvjmw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qpokXE/dtTO5ebh8+MU8hozUqpzZXW/jjJcuJlwQcVi+GE3W64ut0xLMoaWeWAh3P8nxHziqJe0g6HuaeM0xf5EXKI1vq3BcuUmw5XCJphwwpaEjk0VnsMphc6ExxuAGLBDByHCixO3sBxo1m1bwTIXZtI6yzl9RC0qQTJmDGLw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=HftFO2wt; arc=fail smtp.client-ip=52.103.72.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K/Qo6w11ijRyCOoWGJrutCiou206ZwBBJrL9S9izzbVqXkD+ToJDbRGfjCpaci8Pp9HcMc4zt6P3wh1o05K2zyE+R72RsGsfVRO3wEiJChszbhEdEw405U+U6ycTgcbR7YFcQNFAmOL7NCECXXe0H0LtoYNURUgxbue8sf9mE8q5WMzZz/KRR9umqRcAtfib012fMakfdAr80BB+iiJeUBdAtUuG0KDfm7SXMGX/ZNylU+HUUEmjq4z2d3RC3VYHkOZAgowPwmXBe3fIxzFza07brce/Qq6VyN8EwbJqMJ8CXIqkZA0/zGog/fFmSwbPA/OWEqHRBh0d64OsyavkKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FF4Tjh3VTtQ7MufSpUucBUmE+xL/T3PYfH9uD4lvjmw=;
+ b=cFoeN6WdFis/J+0hKJB8avRbGkndwZVUQQwvjHwVMjdNtxLsSIr7YTOfpmDuQ1I2VWbZOj1xg4jsYvxnOY02lcQfjZU1yy8T6TzddZBkYLRF45ie6DicFiS4GwGCeZACxiagt1W7W5djSVYVfNsdyTGrqqasoQzOvQnYLYg+j/TlNuaUabYd4Oy+gSD7EM/4Ig8MvjT0I/WfXw2Blum09bm481okcEReY+Dj7njszkkrCPFKnpr+bQaqCqNURApxYnRQ+/ALrODAlJZe8Orffw3kKkoIJK2TtzbvmOWm5+UFHRETdyE6MTafZsgbdFyT3vITraXtcU/ydKPnDDupFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FF4Tjh3VTtQ7MufSpUucBUmE+xL/T3PYfH9uD4lvjmw=;
+ b=HftFO2wtv8u6aMPT4hhIi75Pqimr537KgrguTESEx2cT+lktvKWaYrpxRyktL6AFZbmsFTwqxDwBJqsRnjGQioKeBef9kyx3RcIc/PdeTgUJa4g1XHq1gl5NbVGFR633njP1ueNtblO3/Wm/E0o9TPFcwbhpZIyTvUvfw6M7CcqVX5CQ+epXODs6Evm4EBEOZkg2peQupaCLhQ/LegRp3Az+cvu76fWIELRMHMMYwJItDkRjQ/ZsGFxd8RXG9OWKgQ37Ba2pOVKMKHkoP9qVP8PUDyWw3fp+JgAkvApaIvrUlA7JngBGMZy0aauhEjDMZKVuKEkJLhI/t3CDsh5l2g==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SY5PR01MB10701.ausprd01.prod.outlook.com (2603:10c6:10:325::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 9 Apr
+ 2026 11:49:18 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9769.017; Thu, 9 Apr 2026
+ 11:49:18 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+CC: Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu
+	<zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
+	<dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo
+	<guochunhai@vivo.com>, "linux-erofs@lists.ozlabs.org"
+	<linux-erofs@lists.ozlabs.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Yuhao Jiang <danisjiang@gmail.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] erofs: fix unsigned underflow in
+ z_erofs_lz4_handle_overlap()
+Thread-Topic: [PATCH] erofs: fix unsigned underflow in
+ z_erofs_lz4_handle_overlap()
+Thread-Index: AQHcx+59WJTQzAOqcU+DqK3g7FYXK7XWVQWAgAA1IoCAAAUUAIAADqQA
+Date: Thu, 9 Apr 2026 11:49:18 +0000
+Message-ID: <1922A494-0E56-4E11-9D3E-3604BCBE33AD@outlook.com>
+References:
+ <SYBPR01MB78811E3B3E935EFCD5D63334AF582@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <31b4e893-44f4-49b4-935f-9cf37b5a0790@linux.alibaba.com>
+ <3F909329-EB34-4B5E-A26D-081D9031DE01@outlook.com>
+ <f608d440-6d26-4dd9-b838-b5ad1e70541c@linux.alibaba.com>
+In-Reply-To: <f608d440-6d26-4dd9-b838-b5ad1e70541c@linux.alibaba.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SYBPR01MB7881:EE_|SY5PR01MB10701:EE_
+x-ms-office365-filtering-correlation-id: b16c0438-d20c-40e6-c039-08de962e0850
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|31061999003|461199028|15080799012|8062599012|8060799015|22091999003|51005399006|12121999013|19110799012|24121999003|440099028|3412199025|26121999003|102099032|40105399003;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?1UYifuPmsOLf1YZMRCu1drfP2OA+Zy8/4URoKDLZNmZONx4TRoAxtwrO0wwu?=
+ =?us-ascii?Q?YTif29O9q3M4ORhHtJz6BTLoRK2S9SQHXPV6xljy2oK654XOjPxetvH+F9gd?=
+ =?us-ascii?Q?n5XyB/0r9pG0Xgp189WUWUqaJiyM+64cxpvCP7mQ7I/kBebxmXPxCDQpIMvF?=
+ =?us-ascii?Q?+hoLoI4tqMNuJ0iKMVu/j9FC7YC7hLwpi3H9nmQuPASlZDofAMwqlhrcCKfd?=
+ =?us-ascii?Q?iWZG1dhY/Ki61UEIuGtdLFdJW9cZB1lco6MsxjisMgeBMUtupDWYNTuBeLtI?=
+ =?us-ascii?Q?RBXldAoaiTf0pdwBZ639qzIDeZAFA23GsKQEu335N8Lq843yYZTaGilyrYIy?=
+ =?us-ascii?Q?SuCVr0YRIyOm3rDxPYombW/Xb9EGEu/mJh4tjrABJlzEEXuAo72CWjc2KON8?=
+ =?us-ascii?Q?XfcMTbkhHRfOIjkHCFmiERTEvDqHsU5itlU/9+x388kzNXOxmMAkoCpsxoRN?=
+ =?us-ascii?Q?17rENRO7u0qZUeuPfSRis1cXUq6LiLTXNgQzpsyZ9OyXfmy0ipCWC2NcEs+o?=
+ =?us-ascii?Q?RBnUiInWbAI6rV155U34fK3nuPVl38zP33LxAfOAdiIjnWt26l/6Cbxykcut?=
+ =?us-ascii?Q?qFArgz7+z4oPK5t39LT55Xr2O38ygf/dDvCIHFz4Xb1LJh3gQSEu3jLA100R?=
+ =?us-ascii?Q?3S2fH1Ct3mVEZ128FE/sOoLZLb0HprNc0+MDGHDqpXrUvCVnYckXNLb0QgOX?=
+ =?us-ascii?Q?w62uBTLNEM8hC1yaus4+zd69aHWEc/5qIdG2TFR+PvWXjc7keZSWwvxEsJs7?=
+ =?us-ascii?Q?5y2/6uiBLk6YnAORlcY6O6qtHrQdrMNonwHsR5X2DDm2a/c4LFr/olcTnXxR?=
+ =?us-ascii?Q?Z8MU7dy/9qSAGWv1Hg1K0Lbgd0uiGymPIieDjliWJGFFX36vNHWyvYdoQ3j4?=
+ =?us-ascii?Q?Jz2VS+mFJXSiZKKmjkrx6HQ6VIuxYZR3GiRe5RWTMs06waxksTMdQwTsCNS7?=
+ =?us-ascii?Q?XKPqePNL6eetonbdUOdvPL0pLarq4qgbDGSA2B7Gcwbgqnz0gcXBQL/QbbW9?=
+ =?us-ascii?Q?G5f/tnbI7ndxPXK9cvNlTjHAgF0YtFnrY92tP/mUZKc9YoY=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?g1O33TwF4eJSjs5WWcrW05KJpOM0tFr81eYLNBK+PhlBmvZ6PNilW1k+iAn1?=
+ =?us-ascii?Q?pIKeXT//ATY+u077Z+0BivY0flbKOsLlS1cK892+hBk2K1GlmUPUoFL3IlpW?=
+ =?us-ascii?Q?BrcC0PZK/ka8WkDamnw4wZSgCDt7nuOj3ZXkmc/cZ0s0E1+gt+xQyOL8k7uw?=
+ =?us-ascii?Q?Q3/gBxwe6M7zDy0XAY+l1DyBVOJtAlyWAsyl6asjRgfa9tgVbwV7dmTKhBsc?=
+ =?us-ascii?Q?RBF27EbVqzfmC1mdy7TZaZsY1xBE5ZArLZPWETsyic6cioBsWKRzfzDJlLxp?=
+ =?us-ascii?Q?M41Gtiyz74anJDPqnrdtsRYYkFNp0kI/m7jV+kh96zP5Z4FWErbGAOy9GV62?=
+ =?us-ascii?Q?PBhE8QYEmt82sDTW8GCtd5tisI/CoNH+WcQZOoYslMECsRAz800jCDlKHgfe?=
+ =?us-ascii?Q?6EhPmREuYB+Iwa4biVgbyMdKC9fe8DAS+I0C6po5XoxCuVJFa/dlBdVwgzJ+?=
+ =?us-ascii?Q?jc+OBiUjp+Yxo+7dbPomPh9XKTWY17eosZYJtLLAILnmSiRdEIl92qO8iv8T?=
+ =?us-ascii?Q?S/3XVqvFrT6pfd2IosUzZTU4rg5gIRYNUlQVOuS6u+8LOjk5NRcGxFrYWNd2?=
+ =?us-ascii?Q?CosnZeFHR+p3QsbivCtc9/ZjM7395jz1UQhfOpdraqx9Jryt0o6vddNOh7fS?=
+ =?us-ascii?Q?5FUyv6YvpNQEU6NkPHTghnVLTEl/yZvZeHp8UB7Cdu4M/0C2ejQKzLUxEkOK?=
+ =?us-ascii?Q?iw+OwjjL0oPsMMa8fxKRowi1q3Fwgkx1ob3gxxpD1VjlzQiVNlpyN2ON6UDn?=
+ =?us-ascii?Q?p90BKu7sDO/OB7f/KjqmmCnNWjSqS0whAmIFjkMc0T1I8kj41Ns2WEp+S69t?=
+ =?us-ascii?Q?zRjRLFMtf1U7ZVb5LkehrNRtitcM0ZX1Uxy6CtDxQ9Y+7eV5/N6pwsd0iXBV?=
+ =?us-ascii?Q?VIQoz3reJT3EmlprKvZO13JnYmhqRhJGxvrIoxUGP9QFZHoA7roA8E+GP6eD?=
+ =?us-ascii?Q?PKdO56gLIaL5v+4D5go8YyPhGQtQ/u0aDbYuPSka/4BgMW6RnRazfk11wQrd?=
+ =?us-ascii?Q?pphRRyY4RNUpy+LCOFZ2UCyOiHZn1hxudEuFxhUzGgReg1A5zwXD63VUjpLD?=
+ =?us-ascii?Q?yqdPz+AW45IhJ/x+kde3UVfLgYFa86URegiDC3KvQTZOCF2xTBWpfBFKfyWY?=
+ =?us-ascii?Q?AgQqxuRsDAbLl+OubNnmUn2NlA/3DW85Up/HDzOirYvm/OP8G4bG4q5YOspw?=
+ =?us-ascii?Q?SLOjWTDZ+c5Nnl4TicXz3D8isl5mH1KsUYaS9IiVwuGH68vNF6FlBFC6KX2e?=
+ =?us-ascii?Q?0d3Jq5Ow/Q3kVYMDVZpJ4qTKSUajpF5RgRJFSwn5Tc3GBBsGXCI99Ef27baX?=
+ =?us-ascii?Q?Q0NPerVWBJMLN6yjzr0TI3gRv6CtsrTaMyMr9IPa1Mz0vapcMyPpCbZ+0rwD?=
+ =?us-ascii?Q?RNbNUpRS66UPhI7P2dYxFgrtVQy7GhXEDkZ9oZtzr3hPh7lsLg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <BE67D951B7ED21459DA316FCC8E8FCE9@ausprd01.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5224; i=matttbe@kernel.org; h=from:subject; bh=a/uxjm+nSJGTdf8zPfmSiLHrAtbKBhqHQHfs5R2JC1I=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKvTwyLfu6Snm2iJrzEVf2PxLQu3emZQcsvp0wMejDvo 9fRRHvfjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIl8c2VkWKguH31NafeTmz+9 j96cdORgWfmv+PMCN1x3PbK/22RX/p3hf/49b42WdQ+zIq88at0rmXVn5eLsnVJdcpKPbPycDHW NmAE=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: b16c0438-d20c-40e6-c039-08de962e0850
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2026 11:49:18.4675
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY5PR01MB10701
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235381-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,linux.alibaba.com,google.com,huawei.com,vivo.com,lists.ozlabs.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235380-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: D449A3C9D86
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:dkim,outlook.com:mid]
+X-Rspamd-Queue-Id: DD1663C9DBB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Li Xiasong <lixiasong1@huawei.com>
+On Thu, Apr 09, 2026 at 06:56:42PM +0800, Gao Xiang wrote:
+> Can you share your initial crafted image binary
+> with `gzip -9 | base64` encoding here?
 
-commit 5dd8025a49c268ab6b94d978532af3ad341132a7 upstream.
+$ gzip -9 < /tmp/erofs-test/test.erofs | base64
+H4sIAJGR12kCA+3SPUoDQRgG4MkmkkZk8QRbRFIIi9hbpEjrHQI5ghfwCN5BLCzTGtLbBI+gdil=
+S
+Jo1CnIm7GEXFxhT6PDDwfrs73/ywIQD/1ePD4r7Ou6ETsrq4mu7XcWfj++Pb58nJU/9iPNtbjha=
+n
+04/9GtX4qVYc814WDqt6FaX5s+ZwXXeq52lndT6IuVvlblytLMvh4Gzwaf90nsvz2DF/21+20T/=
+l
+dgp5s1jXRaN4t/8izsy/OUB6e/Qa79r+JwAAAAAAAL52vQVuGQAAAP6+my1wywAAAAAAAADwu14=
+A
+TsEYtgBQAAA=3D
 
-syzbot reported a soft lockup in mptcp_recvmsg() [0].
+In QEMU:
+$ mount -t erofs -o cache_strategy=3Ddisabled test.erofs /mnt
+$ dd if=3D/mnt/data of=3D/dev/null bs=3D4096 count=3D1
 
-When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
-removed from the sk_receive_queue. This causes sk_wait_data() to always
-find available data and never perform actual waiting, leading to a soft
-lockup.
+> I think the proper place to fix this is in
+> z_erofs_map_sanity_check().
+=20
+I will resend with the check in
+z_erofs_map_sanity_check() instead if the reproducer is acceptable.
 
-Fix this by adding a 'last' parameter to track the last peeked skb.
-This allows sk_wait_data() to make informed waiting decisions and prevent
-infinite loops when MSG_PEEK is used.
-
-[0]:
-watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
-Modules linked in:
-CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_wait_data+0x15/0x190
-Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
-RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
-RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
-R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
-R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
-FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
- inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
- sock_recvmsg+0x94/0xc0 net/socket.c:1100
- __sys_recvfrom+0xb2/0x130 net/socket.c:2256
- __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
- do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
-RIP: 0033:0x7f6e386a4a1d
-Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
-RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
-RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
-R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260330120335.659027-1-lixiasong1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, because commit bc68b0efa1bf ("mptcp: move the
-  whole rx path under msk socket lock protection") and commit
-  d88b2127b242 ("mptcp: add eat_recv_skb helper") (with some
-  dependences) are not in this version. These conflicts were in the
-  context, and not related to this fix. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 85ef9042873b..517b9a5b6867 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1960,7 +1960,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
- 				struct msghdr *msg,
- 				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
--				int *cmsg_flags)
-+				int *cmsg_flags, struct sk_buff **last)
- {
- 	struct sk_buff *skb, *tmp;
- 	int total_data_len = 0;
-@@ -1976,6 +1976,7 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
- 			/* skip already peeked skbs */
- 			if (total_data_len + data_len <= copied_total) {
- 				total_data_len += data_len;
-+				*last = skb;
- 				continue;
- 			}
- 
-@@ -2016,6 +2017,8 @@ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
- 			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
- 			__skb_unlink(skb, &msk->receive_queue);
- 			__kfree_skb(skb);
-+		} else {
-+			*last = skb;
- 		}
- 
- 		if (copied >= len)
-@@ -2237,10 +2240,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		cmsg_flags = MPTCP_CMSG_INQ;
- 
- 	while (copied < len) {
-+		struct sk_buff *last = NULL;
- 		int err, bytes_read;
- 
- 		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags,
--						  copied, &tss, &cmsg_flags);
-+						  copied, &tss, &cmsg_flags,
-+						  &last);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
-@@ -2298,7 +2303,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		pr_debug("block timeout %ld\n", timeo);
- 		mptcp_cleanup_rbuf(msk, copied);
--		err = sk_wait_data(sk, &timeo, NULL);
-+		err = sk_wait_data(sk, &timeo, last);
- 		if (err < 0) {
- 			err = copied ? : err;
- 			goto out_err;
--- 
-2.53.0
+Thanks,
+Junrui Luo
 
 
