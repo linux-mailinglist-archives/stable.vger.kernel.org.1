@@ -1,129 +1,212 @@
-Return-Path: <stable+bounces-235497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKzsObv/12kDWAgAu9opvQ
-	(envelope-from <stable+bounces-235497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:36:27 +0200
+	id CDVyFGIC2Gm2WAgAu9opvQ
+	(envelope-from <stable+bounces-235501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:47:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F7D3CF0F6
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:36:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A4F3CF195
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 21:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 667663009B18
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 19:36:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 603A4301CDA8
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 19:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE8F2F745D;
-	Thu,  9 Apr 2026 19:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B8433B6FC;
+	Thu,  9 Apr 2026 19:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="rWWqLrjS"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qL6rjepe"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.st.icloud.com (p-east2-cluster1-host4-snip4-10.eps.apple.com [57.103.76.23])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010059.outbound.protection.outlook.com [40.93.198.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EAC1DC1AB
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 19:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.76.23
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775763381; cv=none; b=uMrZjiTJvJXmtwAiq3liSJbJCcxW7Qyu0sZicz/B1P8GosRHi8ll7D0Ts7UtHVT1ouJYid+K715T5jMjL8VC3IxAOd5RHQtkHV6homMwM/zgkiMBLM64kC3pT/vd+RTHo+lfOqIcAeirsHZAjZ34c4mavEwnbJDIeZniIuvNkoU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775763381; c=relaxed/simple;
-	bh=BUKvuc2Nb6RV3qZ8bD5mi8DAxjzqjja1ya7SIU/WrhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kZ/jZoeYncxY6LwA6F2h0T6fWDNSHQ/u77t68DLonpLwtabDFKiAZxse/gz+fdLllpEQVsLoMnQfc/b/S8aNkxXY1B98Ali/V4WvbEoc3ONXFVOhDSo00zTldMprJIb7jW1rltURPLhJKoxZ1f8jgPG2mgu76pX3LEroPTzw/gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=rWWqLrjS; arc=none smtp.client-ip=57.103.76.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-8 (Postfix) with ESMTPS id 735BA18001DA;
-	Thu, 09 Apr 2026 19:36:16 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775763379; x=1778355379; bh=2JhQQEFawK7tebpx0rSbiCWos0awHKnWIfLSkfuU6iU=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=rWWqLrjSstCb/HhVRnufnBXqUbOvIRBjnd0u3jxLPALfWiSa1/iBjBIOVJSLRTo4rOf72EcAap/q9yIITaYh8AaBD7f9gqMqTbOrAjJMqJHJRzOmqJc4Lv6LN9vj9mFzhuXosQo8aD/byjDaFmxKLyhmfKfX/xx9Cd/NeOUizTqBLLZFXWOb+4uWt7kbg0LN/ajrNzsw9Ic2/SgPiHMdqg3GjVeU9A6G0qVpEIXDWsapSbvm2j9pMojodmbmoxvLh6cPrAjMxjBBum28xHxAZfH4ms81N4TNkEvH5fhhLZL5Z6JH1jI2oJ0W43MVDo6iCoLkFISzX6hrWNW6TPaD5g==
-Received: from mainframe.tailfb0f7b.ts.net (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-8 (Postfix) with ESMTPSA id EC3F1180053D;
-	Thu, 09 Apr 2026 19:36:13 +0000 (UTC)
-From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-To: horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	linux-nfc@lists.01.org,
-	kuba@kernel.org,
-	krzysztof.kozlowski@linaro.org,
-	stable@vger.kernel.org,
-	framemain@outlook.com
-Subject: Re: [PATCH] nfc: llcp: fix missing return after LLCP_CLOSED check in recv_hdlc and recv_disc
-Date: Thu,  9 Apr 2026 21:34:40 +0200
-Message-ID: <20260409193552.1826407-1-snowwlake@icloud.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260409164527.GP469338@kernel.org>
-References: <20260409164527.GP469338@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2782D7804;
+	Thu,  9 Apr 2026 19:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775764055; cv=fail; b=FQG6xl/qf9wsQCqKFHiA0FEueZ+OkCNhMWDJB3P5oiJ+jJB3iZ/5D5vrebTTvxKEsckgkzVkdSkuAkOBM55fopLDCIcGSADgJC1P77e6Os/McWtlsBmLAc0DldQUED0c+KLSTatCI//j53yA435dXXXXI/fZYxgidZA8jT++8MI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775764055; c=relaxed/simple;
+	bh=lCJKOAz75H6T6OqmTLuhIUjizdYCxlPp9Qu4nLya3hE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r+p6Y0u3yYZ6WUrPqtN3NvRrCEQ46s6Tjb5vjdoDAmD0sd/UjxYH6RpSEO273d4ntit8qgJac6CrsgJWsecd6CyHf3li/a+LMULo/LuRcmR/oi6hc0YTWYMHNi6k+5J9H7ksE5HE6JJJJaQSJuORYLWrVZnnVIMxxkbreEnMXyY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qL6rjepe; arc=fail smtp.client-ip=40.93.198.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fR/SJncJXyGJDztMw/ZGb6/5w6P3ejNCBNuW9marIfd1DW86hF+nuB+8WqSPIzpRiIOarMqueHgI20x+PUmnyQ7NmYIU3HmsKQHpLTZwCHSRzJs2H2qWRjxgmirADAk/XIZ7NH+qZsDvHg4CcGxTRMYdnzijgEr/0ZaL6lfpQn9CnIluuuniRtpGQQ+nDMWagB55WwOkyTK9RmrUegeh7w1BRfUIb8Burn+0mVysCemDKiCY1tVoMfnVkzTNDF3Kw7lHHpReOI3lG2mj7qXECpV5RAix68BDwsKigRCyOpzmTi6o7ydYjKDkoOYGIklUf+7wuWzSAqjumnrzA2Pw4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jIgbzUipeuXrejx/n1+eqDJI1QuSppHL0+80bUAt+qc=;
+ b=KyHFNKAcfDvH6RLGU+K20jMgD2CcSqMMxUXtD/dKgX1bvgRGnNVU8r3PEcoW8SzxXHwU1Wn3jaLccnDVh5QH8llFPnehRJrFZG891akhIx9QRQxSSDrr9xCyYLrjlNOLRDg4Qip/y1jbHrlfP5jQfszU2xPx+6FC/DjtHvoh8CGGpnAcWj4wWf0gvmMHk28szF52BkuG+HnZC9Oxao3cxIS1l2kbc4bcvlbjZo2hWU1Sg7k0EG5KSdya9wfeccByyl/Onvnje2ch+viVb6S5kfJBonKJ7DL7AQSlq+F+PUSGbHG9njqXcdLLa1k7Q3HTgp8PDv0QudlbxCIyUZbO+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jIgbzUipeuXrejx/n1+eqDJI1QuSppHL0+80bUAt+qc=;
+ b=qL6rjepeja9yCsKo2C3P5BkkwNclD1BhTmzfsFg+ajgaUtvCheeKbZaduO26Lv8Ja1OBs/k87TfMh9TDhxYianBLi0gekm9HdjNWkNgs1hyPBoCDYJ5USDjYwACfabZSzV8/WbuX5DAO4rGqtGP/11YVfMDaCpG1zlsG+2M8JkGZ0j+ZXelVQv/trWlUh6kcnQflJIQ0LUvPtZDIr5s59qsm96enP0oj25ZWVBhue5MULVZc1AqPIUFZvOuvSxv+s/Ez52VY+UZS3H9LBu8fbWyT0zQ90NIvjYRu/c/cpgNziApxViwErSnkPQPsuHYFDpe9TJHEZzm4v3+mV6TzQg==
+Received: from SJ0PR05CA0203.namprd05.prod.outlook.com (2603:10b6:a03:330::28)
+ by CH3PR12MB8233.namprd12.prod.outlook.com (2603:10b6:610:129::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.42; Thu, 9 Apr
+ 2026 19:47:26 +0000
+Received: from SJ5PEPF00000203.namprd05.prod.outlook.com
+ (2603:10b6:a03:330:cafe::3d) by SJ0PR05CA0203.outlook.office365.com
+ (2603:10b6:a03:330::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.37 via Frontend Transport; Thu,
+ 9 Apr 2026 19:47:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ5PEPF00000203.mail.protection.outlook.com (10.167.244.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Thu, 9 Apr 2026 19:47:26 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 9 Apr
+ 2026 12:47:09 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 9 Apr
+ 2026 12:47:08 -0700
+Received: from Asurada-Nvidia.nvidia.com (10.127.8.11) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Thu, 9 Apr 2026 12:47:07 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: <jgg@nvidia.com>, <will@kernel.org>, <robin.murphy@arm.com>
+CC: <jamien@nvidia.com>, <joro@8bytes.org>, <praan@google.com>,
+	<baolu.lu@linux.intel.com>, <kevin.tian@intel.com>, <smostafa@google.com>,
+	<miko.lenczewski@arm.com>, <linux-arm-kernel@lists.infradead.org>,
+	<iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH rc v1 0/4] iommu/arm-smmu-v3: Fix device crash on kdump kernel
+Date: Thu, 9 Apr 2026 12:46:49 -0700
+Message-ID: <cover.1775763475.git.nicolinc@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE4MCBTYWx0ZWRfX6MmbZlSwpXKG
- N0dpA+z8o28LWPqyfdg8DCuq6NKKXSvkNvj9BYytsEOWlBGd01Hmf7HUyJXVYvJE25/KNlgKxHI
- DQ9IwpeyvtPBP090qA2VfnFA2vaCsByoqHfImdKudSNGqiY9qcQHj8fMXPQvFGQbKs6Pps+UTRx
- QOEiY7lMnfHu73jKEW/bgujw8/bGW0z6DmmfBaXuHMCjOrVMkvMfJmjjIunxOqLLISCBS7Dkl/7
- T+O7NHFo8dDfhFA4f1jJeuxu9CRfOtu1QmX+IbHvnZA6axAKxu+2Vb33ErJRTz9bupegn936uhz
- LQqk8sbc/RBzuzVp0Z4aAAZp9tvNajMRYba9sqjxB1U16MJayHuECV3Ob2SjTI=
-X-Authority-Info-Out: v=2.4 cv=U9WfzOru c=1 sm=1 tr=0 ts=69d7ffb1
- cx=c_apl:c_pps:t_out a=YrL12D//S6tul8v/L+6tKg==:117
- a=YrL12D//S6tul8v/L+6tKg==:17 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
- a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
- a=Im72piG3SYOM60AsYe8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=d8Ku6tdDt9gA:10 a=JKcXVnpmuwdQ7RL0mgk_:22 a=NDDgNl8OaFIu1Hag6_vS:22
-X-Proofpoint-ORIG-GUID: ABVW4LJNy0M1X4AYtoYVXoJiQjY8i8uX
-X-Proofpoint-GUID: ABVW4LJNy0M1X4AYtoYVXoJiQjY8i8uX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- clxscore=1015 mlxlogscore=506 lowpriorityscore=0 adultscore=0 malwarescore=0
- bulkscore=0 suspectscore=0 phishscore=0 spamscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2604090180
-X-Spamd-Result: default: False [-0.57 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000203:EE_|CH3PR12MB8233:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef21bf16-a864-4c41-f02c-08de9670d3bc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|36860700016|376014|82310400026|1800799024|13003099007|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	RUrvPWsTlikyxvpzMrKbIiB+IZ2/nFu73ta0KCUzal4FatunUETss+Go2Hk7Qf6x/a2WvQvn2oIf8f/9yu6n2cFpItOpsiKBrQNZa7GCj/YeffpdAUG4MC5798t0+pvBMLMNkifQfVj0buCtBdZBZ2avf6d+viIbnCkKm7IEe545WOIgADb9nSvZP1XoWrTzGZIz+v5qgEJDgJ8ABm/NfR15LcWOVZ5Eute84kinUOjY5fPk2v9XBrDjksPhsOyHEe2q75Kn0GJOeuwqEIzLNtk4Xoil4GFRVTngypHjk7ZDq5rzn88tZE0Q2LWlMfIM8TGoyeZ/4MTZvfydOTUiLNweHOwNisuUBs4lmx+gt/K37qIi075KZ4t2XPGQzlTjWgoCObM9HDgJwRAKqOjvbrozDwWN9I+j+DE/1gfCRjpx9RKUSNowZWODMRxX3ZoYahRb3+fB4NN0FY0Y4UEDdQYh8NsbDV1nvTKiQhfJHKzHh8LYU4CSevhGBh4y10tzPJ6/pTh0uOfUOd1N6YbEiXqZnJRP3fQVUD9G5JDmmO6vtSnVZ4T9QDSTeEFRrnwhV15H3oea5eCrSR+0r4pnYJSi6wgBjhKITul6uG5pJV6nTDYy+2n5pGsu1/Q/q4swRYnNIfIuAXdTOIgmGsa781nItvwtVmSC8d3r1Stb2l3p2Y1OUrsG/ZfwB6Kk823xPFr2MsahW5Uzd6E3jIQV+bGPMJ/bByeEkLE3Q4trRNYuhMEkyH/1CGfSsX4eFjo6aJOQyv7peK0ydu67PgNM2w==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(376014)(82310400026)(1800799024)(13003099007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ydUKGYi7z52fcyrSN55qnLcymtFiFrOUZ1yD4TPVXA/t2ElfX1yKgu4aEQI6DcKA3TD8/G1wpl2yG93Nx8h+z1uSAozOHJ7B+q76lOrrwKBge2fBh9M5eqoF0+jwWIGD292nu/LlyYRtBSkv/fy18eG7H/C8qRNd1bmT4CippqmcdGZ2qVI3ZCtPfzs+zjCdJUzfCE3bg01qbjJBJVkpM4gRcD909HCCAhh5UhCvSOhYhsvh2ZF7lnut1+A1m0HTePw/0JqfNpAinCXL61HdhYgkIf2Vwou22/eKx6xepnuPF0RVmju/hspiZvgxJ7dWvI3SdIRLscJlL82YEtY8FMAZtgOoaxYN6gdLHXDsZYenf2VQWaZittbvNPpIp7WQewTghOxOv3gsZeJWj22ig51ZuLYUR4Ly3pEge1x5YJdPqJObvsVwDp1XOuldlBXI
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 19:47:26.5806
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef21bf16-a864-4c41-f02c-08de9670d3bc
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF00000203.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8233
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MIXED_CHARSET(0.59)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[icloud.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[icloud.com:s=1a1hai];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lists.01.org,kernel.org,linaro.org,outlook.com];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[icloud.com:+];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235497-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235501-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[icloud.com];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[snowwlake@icloud.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[nicolinc@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,nvidia.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,icloud.com:dkim,icloud.com:mid]
-X-Rspamd-Queue-Id: 95F7D3CF0F6
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: C2A4F3CF195
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Thanks for the pointer. Withdrawing this patch — the existing
-submission at:
-  https://lore.kernel.org/all/20260408081006.3723-1-qjx1298677004@gmail.com/
-covers the same fix.
+When transitioning to a kdump kernel, the primary kernel might have crashed
+while endpoint devices were actively bus-mastering DMA. Currently, the SMMU
+driver aggressively resets the hardware during probe by clearing CR0_SMMUEN
+and setting the Global Bypass Attribute (GBPA) to ABORT.
 
-Lekë
+In a kdump scenario, this aggressive reset is highly destructive:
+a) If GBPA is set to ABORT, in-flight DMA will be aborted, generating fatal
+   PCIe AER or SErrors that may panic the kdump kernel
+b) If GBPA is set to BYPASS, in-flight DMA targeting some IOVAs will bypass
+   the SMMU and corrupt the physical memory at those 1:1 mapped IOVAs.
+
+To safely absorb in-flight DMA, the kdump kernel must leave SMMUEN=1 intact
+and avoid modifying STRTAB_BASE. This allows HW to continue translating in-
+flight DMA using the crashed kernel's page tables until the endpoint device
+drivers probe and quiesce their respective hardware.
+
+However, the ARM SMMUv3 architecture specification states that updating the
+SMMU_STRTAB_BASE register while SMMUEN == 1 is UNPREDICTABLE or ignored.
+
+This leaves a kdump kernel no choice but to adopt the stream table from the
+crashed kernel.
+
+In this series:
+ - Introduce an ARM_SMMU_OPT_KDUMP
+ - Skip SMMUEN and STRTAB_BASE resets in arm_smmu_device_reset()
+ - Map the crashed kernel's stream tables into the kdump kernel [*]
+ - Defer any default domain attachment to retain STEs until device drivers
+   explicitly request it.
+
+[*] This is implemented via memremap, which only works on a coherent SMMU.
+
+Note that the entire series requires Jason's work that was merged in v6.12:
+85196f5 ("iommu/arm-smmu-v3: Reorganize struct arm_smmu_strtab_cfg").
+I have a backported version that is verified with a v6.8 kernel. I can send
+if we see a strong need after this version is accepted.
+
+This is on Github:
+https://github.com/nicolinc/iommufd/commits/smmuv3_kdump-v1
+
+Nicolin Chen (4):
+  iommu/arm-smmu-v3: Add arm_smmu_adopt_strtab() for kdump
+  iommu/arm-smmu-v3: Implement is_attach_deferred() for kdump
+  iommu/arm-smmu-v3: Retain SMMUEN during kdump device reset
+  iommu/arm-smmu-v3: Detect ARM_SMMU_OPT_KDUMP in
+    arm_smmu_device_hw_probe()
+
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |   1 +
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 176 +++++++++++++++++++-
+ 2 files changed, 174 insertions(+), 3 deletions(-)
+
+-- 
+2.43.0
+
 
