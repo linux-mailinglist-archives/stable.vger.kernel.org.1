@@ -1,170 +1,190 @@
-Return-Path: <stable+bounces-235406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GRdIluc12kUQQgAu9opvQ
-	(envelope-from <stable+bounces-235406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:32:27 +0200
+	id yFZ1Ku2g12kUQQgAu9opvQ
+	(envelope-from <stable+bounces-235408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:51:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79E73CA736
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:32:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C7F3CAA15
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 14:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB79D3013AB6
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 12:32:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E33EE3055D68
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 12:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB433ACF06;
-	Thu,  9 Apr 2026 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651E63CE4BC;
+	Thu,  9 Apr 2026 12:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSXSGc5+"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="Zaj2EkXd"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5D923536B;
-	Thu,  9 Apr 2026 12:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775737942; cv=none; b=EWArj6qnpAB7ILbQpPySvxl8Sb/YBUb3JFDp7Q1yOSu+ITER4vIhVBzrcizubcRBAS7rSS7lUuPwEzQ3V8wlSLQm3qOJQUyYAZA3T1ZSaq8NIQ9u3vx72v5VWY+SsuJdkjrWz66QVy1kRnvC4lTZT84dQ76haCZjBwukFCHWEbg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775737942; c=relaxed/simple;
-	bh=bf/fTJTLf42b9YRz0Y848rPIntArjL/rr8fAy4vfxi8=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=pUUfnyyl3p9JSb16AQq2F1759NTSiahf40Jl1pmKkZWbMqUfNtYkXFMJDpGzSAtW7TQOtz2SCgT/tUDjxR+LHGEGK87aNkaG4g2rgEfqxFLFyaz/SCgkfTv6yos0x5FPqCfOrPyCM1e6M1UOqwPowPB0Bxj60QEGHd/LhD7i4sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSXSGc5+; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775737941; x=1807273941;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=bf/fTJTLf42b9YRz0Y848rPIntArjL/rr8fAy4vfxi8=;
-  b=MSXSGc5+aK1dchuwiVq1jmaQJVMf+gJ021qO4WGFik0NkKAuwxLSF+w8
-   iux0CwcfKYqtaoJE8xDgkAn2uj88VKvpsLyAWx3alXIX0pAL4IH8HEwZd
-   ydSJpB2zPfe34gaLIajyN25ASd4UujcU7TFJLB/2thy6iygGvGNwtDVsB
-   sraLjowt2727bMC/E0kxw8SNZ9FvGxl3C4872wn7CChspTfD0uzPXrnoK
-   P+hg58FC76W9DJZoChf3y1m4AEXv5etPWVFPR6gvvjMWt+Mc3MtN2yGd5
-   OGdeCGqX2fST+66mDgvna2dwfohr366MFO/v1Ii/VQfs8t/OV90DJORd0
-   A==;
-X-CSE-ConnectionGUID: 5fIbLMuKTfC+6vUH6Kx6vg==
-X-CSE-MsgGUID: UxOV/NeARCqJm6jlat0/1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76812275"
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="76812275"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 05:32:20 -0700
-X-CSE-ConnectionGUID: 6pf938EHQgi/jludPsza6w==
-X-CSE-MsgGUID: zURT8er0R6KgBPLicLbFYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="252092525"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.197])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 05:32:17 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Thu, 9 Apr 2026 15:32:13 +0300 (EEST)
-To: Rong Zhang <i@rong.moe>
-cc: "Derek J . Clark" <derekjohn.clark@gmail.com>, 
-    Hans de Goede <hansg@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet <corbet@lwn.net>, 
-    Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/3] platform/x86: lenovo-wmi-other: Balance component
- bind and unbind
-In-Reply-To: <20260401190221.1595264-3-i@rong.moe>
-Message-ID: <e305f001-645b-0d90-f2df-ef6f1d44e00e@linux.intel.com>
-References: <499fa3efd5be054ffdda77dd00ad4d8d3391e073.camel@rong.moe> <20260401190221.1595264-3-i@rong.moe>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3793CD8C7
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 12:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775738875; cv=pass; b=upS+KkHXg/8X5toihMero49/QtCubag0x1FovCgYCmW/qPKAmfhtj9q5PbjGFvSSs0HUarT+5iZwk7hBI+Kd9JDtLezg4W7tMrMkrIclPzQBeFt5gOeQTOzsjlysD+HQRWX9cAHJakAv3L8qOzG1hNva9hB3K9rvQyb1eL7Nla8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775738875; c=relaxed/simple;
+	bh=gp844TgNbVN4Boctbpe1hqdTAmWlS0VRvFZ6t8UR8qA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oz44lxe2+Ecfaw2n7+VWRFIoFDTy2r4TwPgJ+SKYl9+MFsITAFGVQGRZuFYCN9SDkF9+oW0Ya9NJ9wSOud9u7/t6HMe7xXtL6kSckBzlPdnXsgXU8aaM1GDXT4jmdjQwXyr/PYCtaCAJDSNI3vOjAX/8n14TGenGNfSWweeo6WE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=Zaj2EkXd; arc=pass smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12c1fcce8f8so4400265c88.1
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 05:47:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775738873; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ciqHK5IU13uQJ7m4jl3W7rlBJ7D8FbGjrJH1d/d26XXxJvvpQsU+P/rdDWBP8GIa7J
+         RyiEhn4odkboszOCNqNoq6P8AGZl7v3VB5ml8aodrH+TjnQDMdWtUrTs7qHBTckrsNeo
+         CG6YT6QI63zQBUY4YdIE+rckQML9Ll1+IzpuIFpbJBt79X0jcZjF3fOG0qCNwxAj65XG
+         Hvh2q2nuMNTYahwa+xJZ6P/GtDukjSbh9Yrws8Jvs+kXq0adhT1qMDewQzZ50P8jk0Et
+         2+WOzEEOYy5x9rp6mXsed+g3mAc0AKr/EBhOQkDC3PJqjgk48Xf5k8MYD/ksZDpq3Gkk
+         kZ6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=clF8G1qfvN08Sp4J/MPRuZGu4kx06Gnjll/MPTIavwQ=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=RkSxlWY7ADw6AgKbwDRWstfO3cLZyjodxy9C0X1zXL9fVZvdVW/3xcn255k4iMupBJ
+         oh+Kf3WCh/hb8DUbR5k8s6jVTFqpfkPaolQTuB0vKM93ZcIKeWgcCtupRaw6PAk5kNXw
+         1vFGLGY4LRVGyyDoAf/Y8BYap+nNmCIZdONUsjJ4bbTBhS6h9gJTe9A4ri5MBpcFIx7F
+         P4urkvYJ5KwypEMR2UIdlkzbRCMSvMPYa4vag45lpvm24DKOK7cqFQluYic/MvYuu51i
+         9PQ7rPHQEWAjCfn3/jD9eMpnWEMrmqBa6VAASduRD4rSTtAkGm00KsqLSViSH9gP1RGm
+         KuGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1775738873; x=1776343673; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=clF8G1qfvN08Sp4J/MPRuZGu4kx06Gnjll/MPTIavwQ=;
+        b=Zaj2EkXd6bW+B/SmEj5OTu4/UjrOO0uh1p6PdckSIvEBK/azBmDw/3l3yhEWSJRqLp
+         bkRUV1k6eeAhWsdFyLxBSFDfPEmsfTAqEXsWinWpdQOEq4l56TrfwQsHdku3fRWGERCx
+         MccrNXh1s3OhPoz+woAEEg7KWmi+HscK1q62dcYr6mDNXfvST/oqT2n0zK498RzVPHcp
+         /qYFHhDR4sfFoIBdADUbeFuQAVxXo0a3ns8enIkhPFijsba5Mx/WzFY0jmt/dNfgm5jB
+         lo6E9R+jIO4WwVts80tRZcXmh9isXcIN2OgBboM+0H+ShUQw9UPo7/mP9S2efbsBPl+d
+         rGGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775738873; x=1776343673;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=clF8G1qfvN08Sp4J/MPRuZGu4kx06Gnjll/MPTIavwQ=;
+        b=DelodIjTqS0oZAM44VLHSB/n0eEQk/EzTbQjSkmPsJJlJEZuQq8JjYqu+KKSwJZl/k
+         M6lWerDIXhi2jA8B971+jGXtZ4Zt9vYN2GfgTYzI+vKWnMUSgZWN8EfgFJEKFpUqomSI
+         io4fR3S5QOfX9RjnH9LuPgOl5GXWBTzaV4IV9lPy0YEX976mc9HzB65Ydi0IcjzAvIXh
+         MY8ksFWzmf7DC5FAlrbqNDtGzv25iy+22fdtdSkbnJOztkzw1ZZjMmhBvKPjghMF40BC
+         Y1YK+OtNUcHma1U1NjdwpYibp/N+L3owPG8oEAeFSNLdxgEggpdl2hOyfIZ4QvdAVY7Y
+         UJFA==
+X-Gm-Message-State: AOJu0Yw5X+0UKf6zLonEhuG1LFiTPU+JIZaAuPsWZwU/u2xYgVaMdG/G
+	TFPPpi0TvtN8XtzP8ZXlTUngP0v1IO2ikqdnXpFnkxYfbmQEOekElTctm2ET7X0qjQKcdgpiAi8
+	wKdvJncBFwPjZNTdmgMnhHBm041ZVHkuNbi6KRNMhFj35CUWtlwvzQPw=
+X-Gm-Gg: AeBDievmZ8VYZIrNcbVngET2OJESjePpZid1qRa5viGn6bWQfTa0Z0AyNejzMtB6/++
+	zIh3yMlvW3uaRuK9xGWZAIu7aaZSm4SVdzGG0ruvy+4hPtvw4DYWJeqOXoEG44JcomKDgsN/gom
+	t7HXEBwvESQbf/x5NwWbFrh2L3oa7yjST0mBhliqp56TDm/83VdBmpanEBqlKSnyaLLPNYGPHMg
+	z8TI3OOuiVI8HtVdp0kVmUzbGnfiDI74HI+hHKBB4ZT5041h7iB8uMM5z5ppKyrVSF6NF4HizWX
+	NyS7JulH
+X-Received: by 2002:a05:7022:ec14:b0:128:bae0:e03c with SMTP id
+ a92af1059eb24-12bfb765c2emr15030680c88.30.1775738872880; Thu, 09 Apr 2026
+ 05:47:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-587754840-1775737933=:968"
-X-Spamd-Result: default: False [0.34 / 15.00];
+References: <20260409091742.514769762@linuxfoundation.org>
+In-Reply-To: <20260409091742.514769762@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Thu, 9 Apr 2026 21:47:37 +0900
+X-Gm-Features: AQROBzDpesM5rBlFRlPesY5ydN6kgOYpzmgUph8X1hZLOKx52MExGMjSyoyKCmo
+Message-ID: <CAKL4bV6JjJL-z9-k-2gPAm+JkfDq_a0j6WBzdnFdtw4wbyhJoA@mail.gmail.com>
+Subject: Re: [PATCH 6.19 000/311] 6.19.12-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	CTYPE_MIXED_BOGUS(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[futuring-girl.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[futuring-girl.com:s=google];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235406-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,squebb.ca,gmx.de,lwn.net,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+,1:+];
+	TAGGED_FROM(0.00)[bounces-235408-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[takeshi.ogasawara@futuring-girl.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[futuring-girl.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: D79E73CA736
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,mail.gmail.com:mid,futuring-girl.com:dkim]
+X-Rspamd-Queue-Id: C4C7F3CAA15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Greg
 
---8323328-587754840-1775737933=:968
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+On Thu, Apr 9, 2026 at 6:34=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.19.12 release.
+> There are 311 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 11 Apr 2026 09:16:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.19.12-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-On Thu, 2 Apr 2026, Rong Zhang wrote:
+6.19.12-rc2 tested.
 
-> When lwmi_om_master_bind() fails, the master device's components are
-> left bound, with the aggregate device destroyed due to the failure
-> (found by sashiko.dev [1]).
->=20
-> Balance calls to component_bind_all() and component_unbind_all() when an
-> error is propagated to the component framework.
->=20
-> No functional change intended.
->=20
-> Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
-> Cc: stable@vger.kernel.org
-> Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.cl=
-ark%40gmail.com [1]
-> Signed-off-by: Rong Zhang <i@rong.moe>
-> ---
->  drivers/platform/x86/lenovo/wmi-other.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/platform/x86/lenovo/wmi-other.c b/drivers/platform/x=
-86/lenovo/wmi-other.c
-> index b47418df099f..4b47b5886e33 100644
-> --- a/drivers/platform/x86/lenovo/wmi-other.c
-> +++ b/drivers/platform/x86/lenovo/wmi-other.c
-> @@ -1068,8 +1068,11 @@ static int lwmi_om_master_bind(struct device *dev)
-> =20
->  =09priv->cd00_list =3D binder.cd00_list;
->  =09priv->cd01_list =3D binder.cd01_list;
-> -=09if (!priv->cd00_list || !priv->cd01_list)
-> +=09if (!priv->cd00_list || !priv->cd01_list) {
-> +=09=09component_unbind_all(dev, NULL);
-> +
->  =09=09return -ENODEV;
-> +=09}
-> =20
->  =09lwmi_om_fan_info_collect_cd00(priv);
-> =20
->=20
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
---=20
- i.
+[    0.000000] Linux version 6.19.12-rc2rv-g0d57c706dc2f
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20260209, GNU ld (GNU
+Binutils) 2.46) #1 SMP PREEMPT_DYNAMIC Thu Apr  9 21:18:43 JST 2026
 
---8323328-587754840-1775737933=:968--
+Thanks
 
