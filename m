@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-235513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OB1vDjkq2GnIZAgAu9opvQ
-	(envelope-from <stable+bounces-235513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 00:37:45 +0200
+	id 6L32OjQq2GnIZAgAu9opvQ
+	(envelope-from <stable+bounces-235514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 00:37:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBC03D0506
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 00:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6183D04F7
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 00:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA8933038A5C
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 22:35:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F49F301A3A4
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 22:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C00F395D90;
-	Thu,  9 Apr 2026 22:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F16396585;
+	Thu,  9 Apr 2026 22:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="0t9nIDvw"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="l0Wer/zk"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.st.icloud.com (p-east2-cluster3-host5-snip4-6.eps.apple.com [57.103.77.197])
+Received: from outbound.st.icloud.com (p-east2-cluster3-host11-snip4-2.eps.apple.com [57.103.77.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B26539525E
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 22:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.77.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81ABF395D9D
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 22:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.77.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775774118; cv=none; b=nP7wsC4pMmiw0Q+uamobeYQbt9vdHzTRqmx2lbz0y6Ikvh1D7Dr515bHRo67pQToijTorR3EsA5t6vR+0m11/PBh4ZFJYkXw8W/iLQOY4Y2WcKHfWI6kxNXo6+Mz7wfIdRn8I9PSCw6chfvm7RHH2ytWW4WQ+owXs9Qs6XzGiEI=
+	t=1775774119; cv=none; b=nHLMzEhe7qaF8FJJHNzlBAKfN9/87Wc7TrxysTRDi4m5VL8ItZs0AckP1/HtjKiLPmt4kY/EcTwwf3WTrdVdP/2+YaaZr1JnBt8ZkqXA6GywSCepJ5YQKwV0CzDy9zxgSDwSr4bQRa/vihprZIfwYkCY0Xep3Joo5LAAWfni1XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775774118; c=relaxed/simple;
-	bh=ulwU50iu2o6IASyl6sYJbbyBQSTqqepbhFfy+GkNcmg=;
+	s=arc-20240116; t=1775774119; c=relaxed/simple;
+	bh=8S6RQt1olzPV8F2So5I1DbM61w/JWVH3wNVRvHPlEPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HBd3oxVi8rGcgcUKFNe26uUquSqrc2ZgB05s1zfj+43zYcK16X6bk3LOMsxdoQdymUw2Gv8MmPZNSkAgHOgyAV1SKqKFK3pdukOcfvrKXk2j7HHXBVukWbcKvbvCmirquGTJVoK4srzZOaOZ6ESwFGjtpsa0Eh0Mak5Kzm4RF2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=0t9nIDvw; arc=none smtp.client-ip=57.103.77.197
+	 MIME-Version:Content-Type; b=cfK3RQ1xqKE2XeBG+m/kxq0sJQjubvuhw7xfKWG5SSUkP3ntF0+kWEkm6KrbM0gxaTpcevRKdTM82bKr0BrByIBU1gvLGxPbPzL8j1vYsSPQ4UyGaQVFlgvjvzUwcyEj8QX9qQH2/OhbQUS5IbFVObgwFtoCk1ktm9JlGeOY0Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=l0Wer/zk; arc=none smtp.client-ip=57.103.77.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-9 (Postfix) with ESMTPS id E8F791800409;
-	Thu, 09 Apr 2026 22:35:13 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775774116; x=1778366116; bh=W0BUziTTsLVn2ctTi4opPvfWcnGNG9tOXIGstDAEeh8=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=0t9nIDvwm9ajIUo9zAZFByiLHiDzIvKQJYbM3xK3mp/hEnMwxmAnVDcR1nB+H/GgIlCAc1viJF1n18TW9VRwmhJpVSPdVvYSs1Z93YZ3m9JPTLz6THmDsQEVxzQJUUpZcN7jMA2q/DQz6zf+rwbcounAaqHKgAQ2y4vIj3G7sVfzrW+gkHHzqngEo6x0p5nR4oaDwZ7zta+4O4+tzwTje7mcfsWU0tLVMAdPVh+bepbIerjXVUDv5wAc5Ch7O5BfUt1qk+6S+fkzBBrTTnuf0Rncl4hVMF14CSunrnJ8jAnDJV3I0peae4gapj1hgUA6BOscBNvnvLIly+eYetmU4g==
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-9 (Postfix) with ESMTPS id 14DB418000AB;
+	Thu, 09 Apr 2026 22:35:15 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775774117; x=1778366117; bh=ZXXDLB2PUJ6vUR0wUEhcQKOb3E/u++jkUsUBsK8oyrE=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=l0Wer/zkI0xHQR2lsmdmxfkEmEWKac4wRBrMAcO9bpe5R0IeI9tZ+f7YkmzjNwuNcpuITSp5+H9/3oq0Iq6Pvn9YprxiqBIrquI+3tJzY4k+HcUR9MRDWQ7AKzN82bwxyZS/vpvAZ9JXxxyipkhMV/Hbd8wzFaqRoebkFbwADLrI4j6BdG5KBXq2zPbsv/+FlCtQDOofEttXm5hqvn33zzDT7hflUe8eujA6Uiz4xCdYu0ZsR3InOxrqaYKqe9ld1Xbbjmyi4apvlp9b8wYfNfFUFzpiFSCoU3gZg88YHhhVP6PFho7HdM6BsHz7vK4ehciZY4h4ZZD/+RulYcM3DA==
 Received: from mainframe.tailfb0f7b.ts.net (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-9 (Postfix) with ESMTPSA id 5450A1800413;
-	Thu, 09 Apr 2026 22:35:12 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-9 (Postfix) with ESMTPSA id 875771800145;
+	Thu, 09 Apr 2026 22:35:14 +0000 (UTC)
 From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
 To: netdev@vger.kernel.org
 Cc: linux-wireless@vger.kernel.org,
 	stable@vger.kernel.org,
 	krzysztof.kozlowski@linaro.org,
 	=?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-Subject: [PATCH net 3/4] nfc: digital: Fix OOB read of RTOX byte in digital_in_recv_dep_res()
-Date: Fri, 10 Apr 2026 00:34:33 +0200
-Message-ID: <20260409223436.1887988-4-snowwlake@icloud.com>
+Subject: [PATCH net 4/4] nfc: digital: Fix OOB read of DID byte in digital_tg_recv_dep_req()
+Date: Fri, 10 Apr 2026 00:34:34 +0200
+Message-ID: <20260409223436.1887988-5-snowwlake@icloud.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260409223436.1887988-1-snowwlake@icloud.com>
 References: <20260409223436.1887988-1-snowwlake@icloud.com>
@@ -61,28 +61,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: HwK4j0U-hqZpT0gCNQF0Jr2bsORHlaeq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDIwOSBTYWx0ZWRfX1OI+geBrEt9E
- WUp3MlYIyW1njDybpcRxj6FZuh12/jShyREKOE0JlQFjDG1pedKkb9w4idH8g6g5wm9rWg8mVwL
- wHxSTn+e2FrWzkew9SeFOAI4Nokfh8qQyv8GsoKxly3zMkRwmghFRmIWSCMnlVgWAravCNlkAFi
- ELP6IcXUIaZc02jN6wLwJcbip/rZWEO8K39P/7OCb3l94pgmKyMkdrr8NuUGdM7q/8CK8Ux5QBq
- EUV2LmgALPeC0+4Ub4TxovJPZ584YuV9SPqViSb1ts6kB0pLl5buGk/ELZ8C/R/a/7q/d3/X8nQ
- k2vL4wl8t/hck/V7Y+wCG0sX4ixTFUchUH74rC7t5hvt0HQTq+GPV36k0GS6mI=
-X-Authority-Info-Out: v=2.4 cv=V+ZwEOni c=1 sm=1 tr=0 ts=69d829a2
+X-Proofpoint-GUID: HdqTIsLjanfCzdreGKM4hW60-mkcGHO3
+X-Proofpoint-ORIG-GUID: HdqTIsLjanfCzdreGKM4hW60-mkcGHO3
+X-Authority-Info-Out: v=2.4 cv=BZ7VE7t2 c=1 sm=1 tr=0 ts=69d829a4
  cx=c_apl:c_pps:t_out a=YrL12D//S6tul8v/L+6tKg==:117
  a=YrL12D//S6tul8v/L+6tKg==:17 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
  a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8
- a=RRCwjdIKexL7UHSVY30A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=_7PiEvq1_GSvmz9hKDsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
  a=JKcXVnpmuwdQ7RL0mgk_:22 a=5Q-93EyGrU3sW_9myDOF:22
-X-Proofpoint-GUID: HwK4j0U-hqZpT0gCNQF0Jr2bsORHlaeq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDIwOSBTYWx0ZWRfX4iUYDphLCofg
+ 3jOpr/sy0Kyu78wIHHnO5jRq2385LdxloMaBz1uh4T9hwBWqiBDsFt1DKnnHAJuxt5uzFy2T5EH
+ YCZlEGUcPqsrGsYdqcVT9goRJxJjN00LyCut5Zo3pf8OZdpk2JJSqkz1ZzFQLf+wPtwTndclfG2
+ PJrJrXITmZmTJDBvIGg7PeGT7W8ZmTlJ8K2xg3YFdtUVu5VO6rscLQX0K+UJ8ESuzrRaH+BDQVY
+ A+vsibnsze21LEG6JU45CKkKWcfcXDNOllVEVTaVDsiVJuXOVyFboSxPF8UnDGrUNZx0kG9HzhL
+ Y3VUb/yC6kQLVE8tvB/IMkHw/655Gq3mrni48Z+Lv2N04mJJZK5TPn+kKQpgo8=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- spamscore=0 mlxscore=0 malwarescore=0 phishscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 bulkscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ phishscore=0 spamscore=0 suspectscore=0 mlxscore=0 adultscore=0 clxscore=1015
+ mlxlogscore=999 bulkscore=0 lowpriorityscore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
  definitions=main-2604090209
 X-Spamd-Result: default: False [-0.57 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -94,7 +94,7 @@ X-Spamd-Result: default: False [-0.57 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235513-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235514-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[vger.kernel.org,linaro.org,icloud.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -112,34 +112,31 @@ X-Spamd-Result: default: False [-0.57 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[icloud.com:dkim,icloud.com:email,icloud.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AEBC03D0506
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,icloud.com:dkim,icloud.com:email,icloud.com:mid]
+X-Rspamd-Queue-Id: 2B6183D04F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In the SUPERVISOR_PDU / timeout (RTOX) branch of digital_in_recv_dep_res(),
-the RTOX value byte is read from resp->data[0] after skb_pull() has
-stripped the 3-byte DEP_RES header:
+digital_tg_recv_dep_req() guards against short frames with:
 
-  skb_pull(resp, size);   /* size = sizeof(struct digital_dep_req_res) = 3 */
-  ...
-  case DIGITAL_NFC_DEP_PFB_SUPERVISOR_PDU:
-      ...
-      rtox = DIGITAL_NFC_DEP_RTOX_VALUE(resp->data[0]);
+  if (resp->len < size ...)   /* size = sizeof(struct digital_dep_req_res) = 3 */
 
-If the remote device sends a DEP_RES frame that is exactly the minimum
-length (3 bytes -- dir + cmd + pfb only, no payload), the skb_pull leaves
-resp->len == 0 and the read of resp->data[0] is a 1-byte out-of-bounds
-read of kernel heap memory beyond the socket buffer.
+This guarantees resp->len >= 3 (dir + cmd + pfb).  However, when the
+DID bit is set in pfb, the code immediately accesses resp->data[3] — the
+DID byte — which is one byte past the guaranteed minimum:
 
-The I-PDU and ACK/NACK branches are not affected because they either
-pass resp directly to upper layers or perform a separate minimum-length
-check before accessing payload bytes.  Only the RTOX branch is missing
-its guard.
+  if (DIGITAL_NFC_DEP_DID_BIT_SET(pfb)) {
+      if (ddev->did && (ddev->did == resp->data[3])) {
 
-Add a resp->len >= 1 check before the RTOX value read.
+A remote NFC-DEP initiator can trigger this with a 3-byte DEP_REQ frame
+that has the DID bit set in the PFB field, causing a 1-byte
+out-of-bounds read of kernel heap memory.
 
-Fixes: 4b60cfce7aba ("NFC Digital: Implement NFC-DEP initiator TX and RX")
+Increment the minimum required length to 4 when the DID bit is present
+before accessing resp->data[3], mirroring the pattern used for the
+size++ / check at the end of the DID block.
+
+Fixes: 7d0911c07b44 ("NFC Digital: Implement NFC-DEP target TX and RX")
 Cc: stable@vger.kernel.org
 Signed-off-by: Lekë Hapçiu <snowwlake@icloud.com>
 ---
@@ -150,20 +147,18 @@ diff --git a/net/nfc/digital_dep.c b/net/nfc/digital_dep.c
 index XXXXXXX..XXXXXXX 100644
 --- a/net/nfc/digital_dep.c
 +++ b/net/nfc/digital_dep.c
-@@ -866,6 +866,12 @@
- 			goto error;
- 		}
- 
-+		if (!resp->len) {
-+			PROTOCOL_ERR("14.8.4.1");
+@@ -1117,6 +1117,11 @@ static int digital_tg_recv_dep_req(struct nfc_digital_dev *ddev, void *arg,
+ 	pfb = dep_req->pfb;
+
+ 	if (DIGITAL_NFC_DEP_DID_BIT_SET(pfb)) {
++		if (resp->len < size + 1) {
 +			rc = -EIO;
-+			goto error;
++			goto exit;
 +		}
 +
- 		rtox = DIGITAL_NFC_DEP_RTOX_VALUE(resp->data[0]);
- 		if (!rtox || rtox > DIGITAL_NFC_DEP_RTOX_MAX) {
- 			PROTOCOL_ERR("14.8.4.1");
-
+ 		if (ddev->did && (ddev->did == resp->data[3])) {
+ 			size++;
+ 		} else {
 --
 2.34.1
 
