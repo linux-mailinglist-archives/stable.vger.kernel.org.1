@@ -1,170 +1,140 @@
-Return-Path: <stable+bounces-235331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLw8NstV12kFMggAu9opvQ
-	(envelope-from <stable+bounces-235331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 09:31:23 +0200
+	id CGvJBP5V12kFMggAu9opvQ
+	(envelope-from <stable+bounces-235332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 09:32:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699A13C70DD
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 09:31:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 730703C70EA
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 09:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 737F4303DAC8
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 07:27:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCEA63004F6B
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 07:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B4A37A4B9;
-	Thu,  9 Apr 2026 07:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957C8379EEF;
+	Thu,  9 Apr 2026 07:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="eMdR91Iw"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TtjjEYWU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp134-33.sina.com.cn (smtp134-33.sina.com.cn [180.149.134.33])
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B8521257F
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 07:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D3334AB1D;
+	Thu,  9 Apr 2026 07:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775719640; cv=none; b=GEefcDAfY4s6jaoglqmZM6M/Fa1Yow2rEaIP47sKRXo3eUFCDYvUWwIrQeZ6HaW+C4ycUB+nKo5NJBSELrJxeBOSasuKbsxcEesN1AUCSQa3N8Ewe8IuozcgMt1q/OngSSf24dUX8y3lUd50jlJahhWw8lLLoihHVhOjo2kCXOE=
+	t=1775719714; cv=none; b=K83cEQDj67ZegtT0ZL02gh+8r2/7tGaA3JwNnWieAqBGb5xR2J/GsnDW72MZHG36CYOHXhjFg/pPoQKgSi3D+tDgBH4eXQgrkW+WS5uPu2uYeR1Mr61a9a4QTsiqobXJxoKZEAxmOxVPKCjsYj88NNQTTaPolBFxYlv+zhJsOik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775719640; c=relaxed/simple;
-	bh=IBKDApS8cl9ptSAnQtUs+GTa1DVVnMGBPGv+drTGiIU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q32hndSLI3RRcIBa9csvo+PfxWLlORJnH7bf1SAyH2c9AUFhF0L8DYDNL+1YtosTw/cWzIqN4Akz67B/ldbd7Kq+KfUKJ8k5u2zcMsUBrVoMgd+uKV4/TaimwljPvnRQv0sBCTiWoENKiXZ511UBy9rNRG+kEdI+Z0GqLnt/3Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=eMdR91Iw; arc=none smtp.client-ip=180.149.134.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1775719634;
-	bh=B9Ky8dM7FipFI/IZO7wupdIYKTEbpR7DFPjKqs0Wqbs=;
-	h=From:Subject:Date:Message-Id;
-	b=eMdR91Iw6/Pc50l7PXVY+DlXhdMFhgQagAKZAzpzZIh24EJvd++AdJjaMysXiQVXS
-	 Sunu2pyF/vUFvjOdvVigAzPvSREi6QFnt8Cg38iYsFgAWBFnkHMM+4irSosWTrP0T2
-	 WRu77dqTbz0R+Klpm0lHx1cnZOPXynvWBI7kI7T8=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.21) with ESMTP
-	id 69D754A500005FD3; Thu, 9 Apr 2026 15:26:34 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 6621113408540
-X-SMAIL-UIID: BA6D2CF94FC24441B027FD2B1276A3BE-20260409-152634-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	imv4bel@gmail.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	luiz.von.dentz@intel.com
-Subject: [PATCH 5.15.y] Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold
-Date: Thu,  9 Apr 2026 15:26:29 +0800
-Message-Id: <20260409072629.621981-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1775719714; c=relaxed/simple;
+	bh=T+NBLdVh9E+C14UHYRM9W0fnw2PgPYNp7mcnmntw9c8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L9ZkLEihO3PBl2rTn/nHVJ4odExZhKI/4Ziw9sUKwUWUzRtZ4Bj9zGU8mscTiCzXxlAjpUi7a6aiUvDD/wW2VVmpRF8fxrPFOhnOUZSc4kNvJ7H4f7EF+p5vN8SGshH+6x7DqRG6aIBGCBoXHPxIaWGZs5x1fLenkohRPSQLLRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TtjjEYWU; arc=none smtp.client-ip=115.124.30.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1775719703; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=kJ7vJ+oFAlZFw8EfHMuaHDk+cVLH8+ocGz5ZHIMeP74=;
+	b=TtjjEYWUnRJHP1hL4/OSPMQrPdzL1ELG6UAANkF6FrjgyrigiaE23AAUkiPdbgeFmTi8mO5wpZcoZT49I8OsdDashO3dflCXDsekuzfhZm/cIbvj5i+9Huj4cvnNg5svQsk/DitOgzjeeCGFAIGSzOUaj4RAmDxupKXUWLNrrt8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R421e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X0hg9id_1775719701;
+Received: from 30.221.132.163(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X0hg9id_1775719701 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 09 Apr 2026 15:28:22 +0800
+Message-ID: <31b4e893-44f4-49b4-935f-9cf37b5a0790@linux.alibaba.com>
+Date: Thu, 9 Apr 2026 15:28:21 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] erofs: fix unsigned underflow in
+ z_erofs_lz4_handle_overlap()
+To: Junrui Luo <moonafterrain@outlook.com>, Gao Xiang <xiang@kernel.org>,
+ Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+ Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
+ <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
+ Chunhai Guo <guochunhai@vivo.com>
+Cc: linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
+References: <SYBPR01MB78811E3B3E935EFCD5D63334AF582@SYBPR01MB7881.ausprd01.prod.outlook.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <SYBPR01MB78811E3B3E935EFCD5D63334AF582@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235331-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235332-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_TO(0.00)[outlook.com,kernel.org,gmail.com,linux.alibaba.com,google.com,huawei.com,vivo.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,holtmann.org,gmail.com,davemloft.net,kernel.org,intel.com];
-	DKIM_TRACE(0.00)[sina.cn:+];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
-	FREEMAIL_FROM(0.00)[sina.cn];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.995];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sina.cn:dkim,sina.cn:email,sina.cn:mid]
-X-Rspamd-Queue-Id: 699A13C70DD
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.alibaba.com:dkim,linux.alibaba.com:mid]
+X-Rspamd-Queue-Id: 730703C70EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 598dbba9919c5e36c54fe1709b557d64120cb94b ]
 
-sco_recv_frame() reads conn->sk under sco_conn_lock() but immediately
-releases the lock without holding a reference to the socket. A concurrent
-close() can free the socket between the lock release and the subsequent
-sk->sk_state access, resulting in a use-after-free.
+On 2026/4/9 14:57, Junrui Luo wrote:
+> In z_erofs_lz4_handle_overlap(), the index expression
+> "rq->outpages - rq->inpages + i" is computed in unsigned arithmetic.
+> If outpages < inpages, the subtraction wraps to a large value and
+> the subsequent rq->out[] access reads past the decompressed_pages
+> array.
+> 
+> z_erofs_map_sanity_check() does not enforce m_plen <= m_llen, so a
+> crafted image declaring m_plen > m_llen can produce outpages < inpages.
 
-Other functions in the same file (sco_sock_timeout(), sco_conn_del())
-correctly use sco_sock_hold() to safely hold a reference under the lock.
+For this kind of stuff, do you have a reproducer?
 
-Fix by using sco_sock_hold() to take a reference before releasing the
-lock, and adding sock_put() on all exit paths.
+`m_plen > m_llen` can happen on partial decoding only.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
----
- net/bluetooth/sco.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> The in-place branch is currently unreachable: it requires both
+> partial_decoding == false and omargin > 0, but these are mutually
+> exclusive. partial_decoding == false requires pcl->length == m_llen,
+> which in turn requires (offset + end == m_la + m_llen) where
+> offset + end is page-aligned from folio boundaries. This forces
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index d98648bcc1a8..d0ef74c45914 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -311,7 +311,7 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	struct sock *sk;
- 
- 	sco_conn_lock(conn);
--	sk = conn->sk;
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
- 
- 	if (!sk)
-@@ -320,11 +320,15 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	BT_DBG("sk %p len %u", sk, skb->len);
- 
- 	if (sk->sk_state != BT_CONNECTED)
--		goto drop;
-+		goto drop_put;
- 
--	if (!sock_queue_rcv_skb(sk, skb))
-+	if (!sock_queue_rcv_skb(sk, skb)) {
-+		sock_put(sk);
- 		return;
-+	}
- 
-+drop_put:
-+	sock_put(sk);
- drop:
- 	kfree_skb(skb);
- }
--- 
-2.34.1
+I'm not sure what you're saying, but I don't think
+you really understand the entire logic.
+
+> m_la + m_llen to be page-aligned, making oend page-aligned and
+> omargin zero.
+
+`m_la + m_llen` should not be page-aligned for typical
+erofs images, you can just mkfs.erofs -zlz4hc with some
+file and check it yourself.
+
+BTW, I just check upstream, and the inplace branch
+works prefectly.
+
+Thanks,
+Gao Xiang
 
 
