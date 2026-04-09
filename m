@@ -1,148 +1,152 @@
-Return-Path: <stable+bounces-235461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNFlNNXh12lRUQgAu9opvQ
-	(envelope-from <stable+bounces-235461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 19:28:53 +0200
+	id YLgaBFDj12kVUQgAu9opvQ
+	(envelope-from <stable+bounces-235463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 19:35:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A303CE210
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 19:28:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EC23CE308
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 19:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9755330022A8
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 17:28:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EDEAF3021D24
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 17:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC5F3A9D9D;
-	Thu,  9 Apr 2026 17:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2CA3E315A;
+	Thu,  9 Apr 2026 17:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzAzUss1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwAnZbz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506233368B2;
-	Thu,  9 Apr 2026 17:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EA63C8728;
+	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775755703; cv=none; b=iKGZIxV7nghdbNLk6RXTZPKthhyyV4CVFwPLAAnWS04uIT60sX9JYh1FlIaPvzruLvicmZrAmrT3pk0ZcvI+xJQR8e1PJohoDNUHn/Z8RsWYPWVsS+0Bw9HnAHkN5pd6oO3Q3RMvcMNaTvCJwpuLszrGbuapJ9Dju9kAmQwHtHA=
+	t=1775756056; cv=none; b=q3R+FKADF9Mvhz62DPQju+K0jHC3TnaZK9DbtMH+KZI3YO06SegqgUFrrTyDnWoBE4B43oreWlkw1TTmc16ggRcy6eh+KlaKsZPG42e1nM2++GmiVr5eLTDX22ZYLlWgzrAf/9bVx7Kj5hYbvSMpqQAv+vR6Q5IlxYhzyMRGGhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775755703; c=relaxed/simple;
-	bh=y0PYRGHEEhfr/UPh5rGGI9pOq/mPtSMx5dxO7eD7Pn8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I56+Wkfif7ANXbqZskLDDZxZ+KhPWRjzHLWpb0l3OduCdUZuNlCtcGkGqXzNDK3ieU7CdbZWO8pcp280c9vyOH+ucdSf6BD/oEOq2oLd2gLwKkdNa5B7pTZTpWPXhqvnY3aOAy7nm44UFuRKCv+ELX+pJ8XCnwqr7islVsVx8tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzAzUss1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E85C4CEF7;
-	Thu,  9 Apr 2026 17:28:13 +0000 (UTC)
+	s=arc-20240116; t=1775756056; c=relaxed/simple;
+	bh=Gj136g/kwa38w+/k4mfmIaV2zPHIHZSBmkO4GwE8mh0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gWGQPLVb83gRwNp9i7sNaIYDVFcoKlikDRiJlB08HXXytQkN6YJu3E19HAXJ+74pB4XnEP1METriGhpY5DAZVTTRjA4k1C86ZsWNe3Cc3N2eREZ5ErvEZe9YB8Kdsj9Trn2W/9rMYYARph3Pt30/q2vIdvFeCSCJRlRv+M16g5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwAnZbz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7303AC4CEF7;
+	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775755703;
-	bh=y0PYRGHEEhfr/UPh5rGGI9pOq/mPtSMx5dxO7eD7Pn8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mzAzUss1f0F1Jh+i2cblS9rT4BDQ3bpDNTkKZY/drShROxFxLbujn3ZIcHfY7uVDr
-	 UEdwZHm1gXY1OG8L8KoeCKr6qvNuxqBMjVwqEIdQw/IDvYeRfkOtSCpI/gbhivScTk
-	 EZeGL1Wwc0aWuA8BwqJi4AzfRs5xWadvPZSwP5fPI//ePLPi4VlPx1SBreN30MzYP8
-	 DnRmTUqw0KKJOrbqEZSRRYjP78S2nF1CxiWKHKG4SwxrfiRPN+yhLK6IXzCz6xQOhv
-	 wfCAf6UlkaSTReaXJaDefs8CSZQNHvqGPt4zBrEvwHbQElHbksopjNqgQQtdPe49Ga
-	 pUjfrDEvGXT7g==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 36A5D1AC52C8; Thu, 09 Apr 2026 18:27:47 +0100 (BST)
-Date: Thu, 9 Apr 2026 18:27:47 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Johan Hovold <johan@kernel.org>, Sunny Luo <sunny.luo@amlogic.com>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	William Zhang <william.zhang@broadcom.com>,
-	Kursad Oney <kursad.oney@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
-Subject: Re: [PATCH 18/20] spi: microchip-core-qspi: fix controller
- deregistration
-Message-ID: <adfhk208Am8lfgES@sirena.co.uk>
-References: <20260409120419.388546-1-johan@kernel.org>
- <20260409120419.388546-19-johan@kernel.org>
- <20260409-unease-salaried-8bcb673e9a5a@spud>
+	s=k20201202; t=1775756055;
+	bh=Gj136g/kwa38w+/k4mfmIaV2zPHIHZSBmkO4GwE8mh0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=LwAnZbz7kLjfhAYbCLyIhuPpnoma3Cg8ewiptOI8XjjNfII5XbnopoK5uE1lMjTDQ
+	 MwV56q2WIQyZERKL5RC+hllnY0CKnsKbxjKG+Ih4poNyism4K2eZogpS4uFYQWqmW0
+	 B43q38CsBBQGPF2ehaeSPWtKfvqIppgCxrc7wDrhAEimUJbovVpI2PEJXvwcKslzXi
+	 ggTBXzAi41+fL6RJUXMMH4GAOcsIjxppumSxzV6q7k7o30HCg0z5du76WCacC2c3An
+	 Ozoe4URuEuJfqPUl8GZ3Y138IebjGeZSQGmOB/VpuD+E+rYgvWaenYlOMtUaLvTL77
+	 ciSy6pIEjIY6Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60DC8F364A9;
+	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH v3 0/5] net: qrtr: ns: A bunch of fixs
+Date: Thu, 09 Apr 2026 23:04:11 +0530
+Message-Id: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NX8g/Nl2V53loNcU"
-Content-Disposition: inline
-In-Reply-To: <20260409-unease-salaried-8bcb673e9a5a@spud>
-X-Cookie: Are we not men?
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABPj12kC/02OSw6CMBCGr2K6dkiZtqS68h7GRamDVIXqFIjGc
+ HeLLnQzyTf5Xy+RiAMlsV29BNMUUoh9BrVeCd+6/kQQjpkFSqykUiXceWBowgNqI9FjRabRlcj
+ yG1N+f6L2hy+nsT6THxb/omg4djC0TO4vEjeYc40u0JYGrYYSLmPtdhfinq5F5NNibUMaIj8/M
+ ydcKr52LdVv0YQgobHWldqaja/ULqZU3Ed39bHrinzEYZ7nNxs5c970AAAA
+X-Change-ID: 20260331-qrtr-fix-b502c26e5f46
+To: Manivannan Sadhasivam <mani@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Yiming Qian <yimingqian591@gmail.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+X-Mailer: b4 0.15.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=949;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=Gj136g/kwa38w+/k4mfmIaV2zPHIHZSBmkO4GwE8mh0=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBp1+MUJAogw19JAzFEh47vDzrMQ1OW1lrxzap1O
+ SpdPxnd5bKJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCadfjFAAKCRBVnxHm/pHO
+ 9bAMB/9lerWH44bHX4s2xq30YdjVETr4NMjyYm+h7jlQDLvEUlhGRvDlkkAo/MesNCdkAHmS6n8
+ kmnCD+AgovjwjpP9rN23JQ7VH4/qCX/togkVa1lXKFe6Kr5L4zJrn63ns8EaniqsaLUO+pTliI3
+ SlhJ+y6+MXOoJfA0zYWf5xBw6FSvAeKic5luupbgYaXdiqJknM40BzmufTzyeaiXuRHVjRB6HQK
+ BWW+1wZh8oUFmMZc0fpAtBmmEgGYlC+PWBYZzOSjyK16fNSEm5rguhmwz+yvzaVAe1tKpw0TG2o
+ q5Xxpsq0jBj409/ihH6rDYvypeTVF7heOnJL6ao8tODvKMfP
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235461-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,amlogic.com,aspeedtech.com,kaod.org,upb.ro,broadcom.com,gmail.com,vger.kernel.org,microchip.com];
+	TAGGED_FROM(0.00)[bounces-235463-lists,stable=lfdr.de,manivannan.sadhasivam.oss.qualcomm.com];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,oss.qualcomm.com];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[manivannan.sadhasivam@oss.qualcomm.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.co.uk:mid]
-X-Rspamd-Queue-Id: 33A303CE210
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 92EC23CE308
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi,
 
---NX8g/Nl2V53loNcU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This series fixes a bunch of possible memory exhaustion issues in the QRTR
+nameserver.
 
-On Thu, Apr 09, 2026 at 05:13:07PM +0100, Conor Dooley wrote:
-> On Thu, Apr 09, 2026 at 02:04:17PM +0200, Johan Hovold wrote:
-> > Make sure to deregister the controller before disabling underlying
-> > resources like interrupts during driver unbind.
+---
+Changes in v3:
+- Fixed the issues in remove() callback and other places reported by Sashiko
+- Link to v2: https://patch.msgid.link/20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com
 
-> > Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
-> > Cc: stable@vger.kernel.org	# 6.1
-> > Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+---
+Manivannan Sadhasivam (5):
+      net: qrtr: ns: Limit the maximum server registration per node
+      net: qrtr: ns: Limit the maximum number of lookups
+      net: qrtr: ns: Free the node during ctrl_cmd_bye()
+      net: qrtr: ns: Limit the total number of nodes
+      net: qrtr: ns: Fix use-after-free in driver remove()
 
-> Where are you getting these CCs from? I am listed as maintainer for this
-> driver but didn't get CCed, only seeing this because I am CCed on
-> another patch in the set. Please use get_maintainer.pl.
+ net/qrtr/ns.c | 79 +++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 69 insertions(+), 10 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260331-qrtr-fix-b502c26e5f46
 
-They're the author of the commit referenced in the Fixes: tag.
+Best regards,
+--  
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
---NX8g/Nl2V53loNcU
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnX4ZIACgkQJNaLcl1U
-h9C62Af/bmwTKGNkq6iZYZN6/trucX+orEfgA4hiHC2hsPSDqS/FpsiyS5D2cmZv
-I38Pk2CYhS1cg50wYx7S8BnfhE7713+9XA9cVexzJZ4ZY0lcBMJR4JUg3gSgWMWn
-RgPwvYtLSL7Qx9KBHTb8XaIAbcGUwpODnuw6iHrhhvWiRnXq85Ts2QKhN23nJfqe
-PrAbyh59xh5Ija9tvS1LvvHy50JTzvnWRxPRPeb46LAs9gFF7kFJRw3zA/5lLW9F
-nwRj0JMzaNtjX/fWOG9zyZo0fpVxlwo6+vdTv0pwNO8fhFrhgnLJU+hX/XKxB7H4
-J27CrS0qcdfR7kxmobPYXA7BhIYDnw==
-=6u6i
------END PGP SIGNATURE-----
-
---NX8g/Nl2V53loNcU--
 
