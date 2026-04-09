@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-235311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLrwAxFE12ksMAgAu9opvQ
-	(envelope-from <stable+bounces-235311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:15:45 +0200
+	id MDHUJEtE12ksMAgAu9opvQ
+	(envelope-from <stable+bounces-235312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:16:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F1E3C6814
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B870C3C682C
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 08:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3C09D30091C8
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 06:15:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9ECBB300B2B6
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 06:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8481931196F;
-	Thu,  9 Apr 2026 06:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3502314A90;
+	Thu,  9 Apr 2026 06:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="B0I6hNPB"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Hd0rW/aI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E8A30F531
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 06:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614452F3C0E
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 06:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775715337; cv=none; b=Ueygeb4qx2SRAupkSqBsFDIFO6fdqG44XRMLgupbCT0FXMNzhVeNqrkEBgvdrVyuFAadT3WjYWP71WPS3LWzMV4ZzjoEpI7iJzlWSe24uE4epLi6FQlz4FizVFaFkFFNwKPPwoJO6J4jiduW8Zr7NVqMPRk1uL7i97SoqvN4E1M=
+	t=1775715397; cv=none; b=EZsJv6eAdIscbupVvjQ0L72IIDmAQo1gHC+H7UJ7ut/zd1yveY7EdvjbGCa7xfXBlhPxrkmRmg3IrXGGzt44rp3TAGF4wKgI78G37StoC8PPWwVLmF18Zsz6SIMF5TviINmoINOcnApFLNPoZzZsSzIwxLMVptA5XE0tMYSo4+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775715337; c=relaxed/simple;
-	bh=gynYxE/cJH5GXtEhmWuEkMGUWBTMJgN5AYOWIKIc/fw=;
+	s=arc-20240116; t=1775715397; c=relaxed/simple;
+	bh=6mtZ2X/mdA60+76qSb3+Yz+RcEgdrZe9vvYKjMR4EV0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q6c0AeRBxvxyoTO7T5kdhsu6SQiNbM/67kZq+BXGI9Pv5ohymnCh1tFpr185KPtjOQlu9lvKJXPQiZ3st9Gbdm+ba423NroIFB0USmdX3YmY3tAm49GgLS+sLqJE59PATK1/3J89TVPQ+bpYs3qJlzwX7rkrnMs4kW6y46A73hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=B0I6hNPB; arc=none smtp.client-ip=209.85.128.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=OjLWEKsZNNC5v3ZzaSrE62G23hOLBwrzYUkMp03Dkrke3fkZiwlCoX8SKbfhQNoV8Ze0LmkVNcsvUakzr8Qq273sjC8QHM00eDMAx/i11utucuIus996Gs3MZraDGuouaDHpBFgLYogy15r8faMz/ZFxUu1Al28+Gk7Gf5IvAzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Hd0rW/aI; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488a29e6110so4797315e9.3
-        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 23:15:35 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b00ed86fso5013595e9.3
+        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 23:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1775715334; x=1776320134; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1775715394; x=1776320194; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=unrWXz/BvVWB09BOLpqqeC5jaEKVeUeeeLOkPeGWieU=;
-        b=B0I6hNPB7lK6mDWRfFNugwyMfBvZvaPBINNsBbhVXANfP6BF+/W3EsubwUPLCOe2ko
-         MOLHeicRXdXM1t5LL5/Hc++XhbiwQjCz95KhVflHfnDOaApJS7Rcs7D1+tLNKb9H8Mvv
-         yI4OsZezi3CUuPJkOtaIYXE2/YKiuKRnBmateOTMOCCVeogBpyNmYmT4IEYqIjMGg/zI
-         yBXK2K3lq85bjV9rlM4nwfbSXsCgnhwLKmrVn1XjszAwgBXCRHHF04BaCBF1Nu1lfkI+
-         lRWV/BsmV2xOoVf/L6RLDhtnAl5DSXrxlZi+CUyqERxH/YUMbrsDBMgaADqbRh+dKWZ0
-         KGQw==
+        bh=3pwoe3OCa92TGfyBz5HTxfCfcGY3puyChc6eX9sLAHM=;
+        b=Hd0rW/aIjAq8kgmwINIZGXsk8HBYdiEOy29tZPsUNH++v1hvgx0mR7Bu+SVCkmm1Iq
+         0x9xnjd7DIRYx7IrPgoksTOOxpLaei8YvEdyCX99grxAEUBRdXkT3YC3o+rxFyvLW5RK
+         DruzDvmB14dxYLkfnNhdxe7t6bNmJGlkgKwiMnT0GLT3thvUqm1rGtBFSIn46lD/HJCH
+         JhcYe1bwO/QTyJD8YPjOqEeQ176VTSzE8urK41/rwLfQDJW1oPfsevaeOOR02n5pjobT
+         wjc6jj7zlmHhM794dr1mZnfgJPC0TNYzZj81W8cHkYWHM+6AET37aGlpC0z0SP8te03C
+         tKBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775715334; x=1776320134;
+        d=1e100.net; s=20251104; t=1775715394; x=1776320194;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=unrWXz/BvVWB09BOLpqqeC5jaEKVeUeeeLOkPeGWieU=;
-        b=lcdOFP/Ykmf8bEfCXCnlflzlbuHgQXlBBtGLe5KJtXyJcHdqW9piBTp1swDBQKwXXb
-         fbI4BMydKWTBhw32mkBAJC9amREZm3M8GvAkQ5ju8R0tGXnU3Mep91Mzd21R8N2Rb2KM
-         jXf5Tor1cCPU9+jiJytRSz3H3U/99b/4lAsSTFVFEjHcqIWN1QiXQa349aUUGVoTPvkX
-         Ar0CUvF8AfQIxScxsLXHEIjGvm299yb1F8LBQtV+0LDRWlcJCPCKDKXOuqxtF0X5CMVV
-         rsNKGdqyqEHvocpKueOiMsR6GYvHbftbxfgUYq7h0wo8wb1AgKGKDLu2dQURJHIrLDj0
-         PBMQ==
-X-Gm-Message-State: AOJu0YyEiK2siYgj9Qc8Fp6QhzpsNfO9UjEzuMV/+pIfGHFhn1bkMHq0
-	teoKXgS42WzYLsqRBt1rWE+s4dzMhAwwiqy0hfsn3XrNj4SQ2MJeMXTQxx1BuBCRL4E=
-X-Gm-Gg: AeBDieuTRE2um+6kTsfY2ufNVKWHYAuu7F19fBEnFs2mrPLF0wrU+Gq6eVO2Q3lAMEr
-	tzxR2tPSyWlboMOok922dLypT/VSwppchCwBO9gOJCoap6a02eAsawDSrXn0oBPWdIWLu5ZTctL
-	YyQVRyJn2L+Dp26d1jOrJG1qur6/1iyrWU/jMl4f8U/O+0A8O77RQleg+uYeQwfk+69T2ggc/R/
-	MCI1vG8+uPQ4DBGlF9aoXeZxazfnlZ/aN9q6n/OBUJulT8r10mVhO6sIE8UEWypkHqHjeYS4V4o
-	cxQJGd5ecBHTpP/FWD7yIsiaAunuHzeHMKZjnJueGqQi7VYXkTtLJyjfaKxnYIsE0/J48oXGX7e
-	PjNa0xkdmo66n1ASobPtsNaGpeV50aoEg98Fwm96uq6zXDnB7noGVJO3/K8YHDHvEILflIQHhiy
-	9sXW1gBnFc3xPBb8vswjsTp82kpxG08DBZBzwSKkCavTz08SYS
-X-Received: by 2002:a05:600c:5292:b0:486:fe39:28b7 with SMTP id 5b1f17b1804b1-488996f08f5mr359918855e9.9.1775715334280;
-        Wed, 08 Apr 2026 23:15:34 -0700 (PDT)
+        bh=3pwoe3OCa92TGfyBz5HTxfCfcGY3puyChc6eX9sLAHM=;
+        b=edfavLrFF+RTWt5aIfzWkyFdneNNZyqgOQ4oPFYjnM6w4Tp57SGwFFenb7kZPbJ46W
+         zxSZh2sLn0DP30eJTKGYQ9Gyz7QrSD53ooAZGK5vlaDaHxkHP4zseB8/f3M8TZ8c2/bB
+         9Y/aGL2jW4yMqAPL65LCDLlGJFAMvtm7J/PKP6eXXvIQRvYmmszLV2pigWsUrGwxznNq
+         t1gJ/YWWjARIqmKBtPqKuHVR1kPYG7XYM2AOkBjd/mEZ5lyi+AjwXt3cgod57fULEq0t
+         BPchsxCixyVcg23wxn6Bc0yiHt9B6rVevAPFosQg64zOq9iJzjZ6nxTo1XjNKl6PBmeV
+         GysQ==
+X-Gm-Message-State: AOJu0YxT1rcf9Yo/Ka86BGQjHEhznndy855RPFMjWfHQqB/NqifUzv9x
+	j5Uy7HUiQU9oGIiP+L8Bc1YEC0qYVCL5phFvuorkfNHXG7HnwEAqMPrpMgXkiEa+N58=
+X-Gm-Gg: AeBDieudAejaPxC3vFVDK6qAqn6nOjyd4PMfzVhQDmh44Jiu5YZznk9RRtbLGUJ8Pvf
+	8rR6nPXz80ZRGoS8hAEg+XzWFUvhUYeE0gbKDlY8ZESUXUo1XZ3gjH/2LU+Qgr2QYVg2iKy6Sdv
+	9Qeraf6bNzfIZiJPCWznnXC6lJrsusLBln+21PPdgrNzDnkV4raX3LGHWZFq12z4qaJcX0M+VOu
+	Uh/ZTHDYObXKgaghjfog0AXzpBbMJEUncsOTzdU8zEA0Ue+5GQoV2nk6itkXgOUQcOrXCRFyD/K
+	bCI0p3BwtxaveiODVC4Wu0n8jsC9MdJgE8UE/JU5rs07hr+29KJG4yUA4EHf9a1nQwPRLdPE9C2
+	+AOyWFwI526mdyaqvJCYAf/n5VK+cUGA1gERqE2v/OVgyjPERstlKoU9vV9+WxU33yO4SH+g5kj
+	3cu0nMT7p+1p6LKuiLAYvL+A5Jq9fZMqH/46I/UaziYl8RKPpz
+X-Received: by 2002:a05:600c:c10f:b0:488:869c:edaa with SMTP id 5b1f17b1804b1-488ccfa937dmr21335925e9.7.1775715393819;
+        Wed, 08 Apr 2026 23:16:33 -0700 (PDT)
 Received: from u94a (114-140-130-35.adsl.fetnet.net. [114.140.130.35])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9546344aae6sm4114265241.5.2026.04.08.23.15.21
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-953fbac435dsm17406228241.11.2026.04.08.23.16.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 23:15:32 -0700 (PDT)
-Date: Thu, 9 Apr 2026 14:15:08 +0800
+        Wed, 08 Apr 2026 23:16:32 -0700 (PDT)
+Date: Thu, 9 Apr 2026 14:16:15 +0800
 From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
@@ -83,9 +83,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
 	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.19 000/311] 6.19.12-rc1 review
-Message-ID: <7we3hoy35kjuwbrzarr4266ylu4x4zcurpuhuhkuzhijbhq2fx@o3zp2r6kgvoh>
-References: <20260408175939.393281918@linuxfoundation.org>
+Subject: Re: [PATCH 6.18 000/277] 6.18.22-rc1 review
+Message-ID: <7w3vhnc4trepnsgwqp7qotxre3crgpnsenqnupxec4d6z6gmev@l2eh3sbjfb7g>
+References: <20260408175933.836769063@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,7 +94,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -105,7 +105,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235311-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235312-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -123,14 +123,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 14F1E3C6814
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:dkim,suse.com:email]
+X-Rspamd-Queue-Id: B870C3C682C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 08, 2026 at 08:00:00PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.12 release.
-> There are 311 patches in this series, all will be posted as a response
+On Wed, Apr 08, 2026 at 07:59:45PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.22 release.
+> There are 277 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -142,7 +142,7 @@ test_verifier in BPF selftests all passes[1] on x86_64.
 
 Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-1: https://github.com/shunghsiyu/libbpf/actions/runs/24153838933/job/70487760072
+1: https://github.com/shunghsiyu/libbpf/actions/runs/24153838933/job/70487760128
 
 [...]
 
