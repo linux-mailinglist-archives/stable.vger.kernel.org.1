@@ -1,50 +1,90 @@
-Return-Path: <stable+bounces-235295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDFhNZYN12npKggAu9opvQ
-	(envelope-from <stable+bounces-235295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:23:18 +0200
+	id +KVTDgYU12kSKwgAu9opvQ
+	(envelope-from <stable+bounces-235296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:50:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8140D3C582F
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:23:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4893C5B5B
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4FAC300CE56
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 02:22:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A2BC302CD29
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 02:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC013367F33;
-	Thu,  9 Apr 2026 02:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6022B367F40;
+	Thu,  9 Apr 2026 02:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="wl8qgk7H";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="L31CVT8E"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA86364946;
-	Thu,  9 Apr 2026 02:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D7523AE62;
+	Thu,  9 Apr 2026 02:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775701363; cv=none; b=kAGgOVUDNyLVEOGEGaOVK+AwMbwxVBHL+7h/Fa3cYNfDvbZKGiSz9vp8JeIESaIi9HcxOOjdWW8hD1ZB7C2S+eaXGZ29JRbjE0eEDw+q+N2RJljQgZhfgK9Gd5CTDw8gbLReBrZdLXJfi7CKHphJ6NFhSIhH/1y0EvKpHT11sjA=
+	t=1775703003; cv=none; b=LEcUUQTXqw/isheZKjxq7nGWUXxmMfIk9AjKEFP20zV2PwRuvRA6eF05ZWtKEYcnIPs7TgIz3tlw229K/pnb50glL/bGa5nlZL3yBdCWtRUs2Vkb+Y8ozU79EBgQbv7kg7DLHmUI/Q9MeKBqzPO3sPGGsB3OggGeEhkKnbDGdvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775701363; c=relaxed/simple;
-	bh=UJMv3wK8OWOgWMvRa8idznhH0AwTgTCogVObQl/K87o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IHDtNPt3WMe3jO72yUR0JS7EonmPtinhH+DuC8/ptzP15XvbOgnmwhUBeTNGCX1Ik68NG5Rl+bOrmUS4iroa3HQ1qcDsYQ/+dxawbYvAL5x2I9NpX2AUuHM8BQXro/ts1s9zLjqvXTseERmEy2jcRcSX2S10uQ5chGb9Jv8sPrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-01 (Coremail) with SMTP id qwCowAA33mlrDddpWiiyDA--.15423S2;
-	Thu, 09 Apr 2026 10:22:35 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: robh@kernel.org,
-	saravanak@kernel.org
-Cc: devicetree@vger.kernel.org,
+	s=arc-20240116; t=1775703003; c=relaxed/simple;
+	bh=0Pbj/t9PBA+V4Pfq4iqpUh+BvdT7LJ1OhIxqSu0zNZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ciU4O9HueC3Upy6sL+y3+Lvs3kre+Y6wqPyNHTTRqZg1sQdmDJ8KMHKbqDUuD8hQfl5OI2AXG+h+WRzUf9ZwEb5tsr5xeqAEswXt7Wbbt5dSz1VnD/u1ej3xDw0qsXT1SUPEckc8/kUWMcnBWjNd7+24yB6XKyMkOwvX/I19KUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=wl8qgk7H; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=L31CVT8E; arc=none smtp.client-ip=91.198.250.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4frktZ4bmqzB14V;
+	Thu,  9 Apr 2026 04:49:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1775702998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GsidmfB0EwnTNO061hNze2h62VV8OIyujPFbtg3of64=;
+	b=wl8qgk7HJK8ClFdJmmlV5Ml3K9YwnztQS9upxm2OxqJjAmztHeNAyR0OJ5MC8dqWKLuohR
+	JwERnE9heEMtBxwZBGfVlLhyZOGWUPVFaEc3meXkESZzCKHqJo1G0Aggej81KqPzYuHpuA
+	/eprfRiZ3mH/LbLTc62ViQF1OCpdAP/NZv9/eySJz479J+Cal/QocLjfyjSQsdVx5ahH8l
+	4KXcGCZ/6Ps4K0AoMDLv+sAs0VartZWoO7sbGkFyqNhUYm15MToqyNIAC85Vfq64Wd7vv8
+	Wo48Q4qYBSKgOWaj8/KJJedgZTC44V+Wlh+HfW/t33Dy2NGcVSkrdnlO5B9gpg==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=L31CVT8E;
+	spf=pass (outgoing_mbo_mout: domain of mashiro.chen@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=mashiro.chen@mailbox.org
+From: Mashiro Chen <mashiro.chen@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1775702997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GsidmfB0EwnTNO061hNze2h62VV8OIyujPFbtg3of64=;
+	b=L31CVT8EQppmgQQoIEObaUH1PTbNAEPieZR+C6RVCXhEGqFyWPswcnsseuKC+5wgBLEIVK
+	3jpLTG3SnCI000X+m6IKMWxUoryCRgfvlHl+9mp4Hyn+DieNLNtHMOCs0uf6CyUyynasNZ
+	gf+9Bb5Q+X2/iyrFfuyPAkvHkz5l7jLwzgeoEiROqqKaF56JQsnTXYvGyHlL7BmfvfJS9S
+	9XI5U4WQIbX6u1EVDATbz/Jtdhlg6IjLxLNZ3/5KKyuW8psIPi3Ivzp68ffeyKgmvb0mic
+	JrUyBPiBC+xrfDiG3xS+cOqdBVgvndsLcGR4/2iK9Qu9hg3383wYEH9J2w6c0g==
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jreuter@yaina.de,
+	linux-hams@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	Mashiro Chen <mashiro.chen@mailbox.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] of: unittest: fix use-after-free in of_unittest_changeset()
-Date: Thu,  9 Apr 2026 02:22:33 +0000
-Message-Id: <20260409022233.418103-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH v2 net 1/2] net: hamradio: bpqether: validate frame length in bpq_rcv()
+Date: Thu,  9 Apr 2026 10:49:26 +0800
+Message-ID: <20260409024927.24397-2-mashiro.chen@mailbox.org>
+In-Reply-To: <20260409024927.24397-1-mashiro.chen@mailbox.org>
+References: <20260409024927.24397-1-mashiro.chen@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,92 +92,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAA33mlrDddpWiiyDA--.15423S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw1fKw1DtFy3ury5WryfJFb_yoW8XFy7pr
-	Wa9a42yrWDJF47Jay0v347ZFyayasxtrWrGF1UK3WFvan8JFy7Ar1UJayYgFyDuFn7uas0
-	v3W0qr1UX3WjyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F
-	4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
-	xVWUAVWUtwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvj
-	DU0xZFpf9x0JUS1v3UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8MA2nW9r9e9QAAsU
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-MBO-RS-META: pgimnr9g3bswf9q61zcp5it94phwbyo4
+X-MBO-RS-ID: f1c15c24337190e2404
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235296-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[mailbox.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235295-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.917];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mashiro.chen@mailbox.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8140D3C582F
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[yaina.de:email,mailbox.org:dkim,mailbox.org:email,mailbox.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BA4893C5B5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The variable 'parent' is assigned the value of 'nchangeset' earlier in the
-function, meaning both point to the same struct device_node. The call to
-of_node_put(nchangeset) can decrement the reference count to zero and
-free the node if there are no other holders. After that, the code still
-uses 'parent' to check for the presence of a property and to read a
-string property, leading to a use-after-free.
+The BPQ length field is decoded as:
 
-Fix this by moving the of_node_put() call after the last access to
-'parent', avoiding the UAF.
+  len = skb->data[0] + skb->data[1] * 256 - 5;
 
-Fixes: 1c668ea65506 ("of: unittest: Use of_property_present()")
+If the sender sets bytes [0..1] to values whose combined value is
+less than 5, len becomes negative.  Passing a negative int to
+skb_trim() silently converts to a huge unsigned value, causing the
+function to be a no-op.  The frame is then passed up to AX.25 with
+its original (untrimmed) payload, delivering garbage beyond the
+declared frame boundary.
+
+Additionally, a negative len corrupts the 64-bit rx_bytes counter
+through implicit sign-extension.
+
+Add a bounds check before pulling the length bytes: reject frames
+where len is negative or exceeds the remaining skb data.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Cc: linux-hams@vger.kernel.org
+Acked-by: Joerg Reuter <jreuter@yaina.de>
+Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
 ---
- drivers/of/unittest.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/hamradio/bpqether.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 2940295843e6..eae7ebdf5130 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -896,8 +896,6 @@ static void __init of_unittest_changeset(void)
+diff --git a/drivers/net/hamradio/bpqether.c b/drivers/net/hamradio/bpqether.c
+index 045c5177262eaf..214fd1f819a1bb 100644
+--- a/drivers/net/hamradio/bpqether.c
++++ b/drivers/net/hamradio/bpqether.c
+@@ -187,6 +187,9 @@ static int bpq_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_ty
  
- 	unittest(!of_changeset_apply(&chgset), "apply failed\n");
+ 	len = skb->data[0] + skb->data[1] * 256 - 5;
  
--	of_node_put(nchangeset);
--
- 	/* Make sure node names are constructed correctly */
- 	unittest((np = of_find_node_by_path("/testcase-data/changeset/n2/n21")),
- 		 "'%pOF' not added\n", n21);
-@@ -919,6 +917,7 @@ static void __init of_unittest_changeset(void)
- 	if (!ret)
- 		unittest(strcmp(propstr, "hello") == 0, "original value not in updated property after revert");
++	if (len < 0 || len > skb->len - 2)
++		goto drop_unlock;
++
+ 	skb_pull(skb, 2);	/* Remove the length bytes */
+ 	skb_trim(skb, len);	/* Set the length of the data */
  
-+	of_node_put(nchangeset);
- 	of_changeset_destroy(&chgset);
- 
- 	of_node_put(n1);
 -- 
-2.34.1
+2.53.0
 
 
