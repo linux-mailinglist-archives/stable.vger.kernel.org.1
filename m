@@ -1,140 +1,165 @@
-Return-Path: <stable+bounces-235552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id hukeBdNQ2GkhbwgAu9opvQ
-	(envelope-from <stable+bounces-235552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 03:22:27 +0200
+	id mDt9O+PH12n6SwgAu9opvQ
+	(envelope-from <stable+bounces-235430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:38:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5B33D1120
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 03:22:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58043CCD4A
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38AE83013AB2
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 01:22:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C78C73082A32
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 15:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D75E3264E9;
-	Fri, 10 Apr 2026 01:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ADF3E3145;
+	Thu,  9 Apr 2026 15:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="T4Ia0eYl"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="SHcTFoW2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6C829BDBB;
-	Fri, 10 Apr 2026 01:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FD43DFC90
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 15:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775784141; cv=none; b=u544YynQ5PCMcz+UNcP2/81ODrQEi4gdsbaprauIEJZtE572zednLlaSJiske52WP0v3Us0Xdi+JzaJj8JgV8nY2YZBaw2SdSDw+AIEpb8VBMpA1xhiVfA2eN1m/mFlJI3XWQ4PAxI73iQxRrl+DMxXOYbzscWfeNs9FNnzu2WA=
+	t=1775748514; cv=none; b=MRtKe3QMQI+nEnYNtVLbVOln3494D5cockpEDxXfRnrVOcdGqC+TYVIfebu00w0tSU/LRauUlTRv/LGxj40VnrMh2w3liG01D1vmtOSaFtR/0ZJhQIMv9ZRiYo3kscI3ijfLXMdaxltjmgesSNALcGyBtfgmzDpEcXSHihqZld4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775784141; c=relaxed/simple;
-	bh=OtdwFEyEb8se/ithYk2UGLo+hYsxtwasy+75+RvYfiU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HSsd1rsviBCyWsY/gsR96Ce9Re8n4d+v6Y7oVtDlfn9+1L0TPUOjwmV+Ip0gCavZB3b/EyYCpx30pDwiOPD/nsEjKWItj0tJ5T7nXAMjDOJ/zGLwJdxQ3MtHmACOdldyBU7KtmJ84yWIJpjli4gCaA+eHXtOwkShGCexcrP8pzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=T4Ia0eYl; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D305B113855;
-	Fri, 10 Apr 2026 03:22:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1775784136;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=xpNGb4YWB4vk5Fw9+AtiAS5mIPWhtfd3tfy+j6rlEZM=;
-	b=T4Ia0eYl5boquXW4npr40FUzcytcAIKE9lyrtAdx3591Gky2aF40mU8Af3gv8NpgEvKgsN
-	lAbBE1viTgoH/4YBwzufngSIc86vujOxg+mCyzFYxl8/pbhgTXTJb4Jcd0ea0hYVLaI8XF
-	vSNPpIekHTKkG04pQRUpb4S7G6R6JLE80XSSJpCqUbtLJJW+jAZCeIBx18NySBQXTLVITx
-	lh3cZUZs5ukSFjFhgK3EwX6CS4ntZYCZAhNWA6J7jo2A1twBJjmyf8EfcpR9uGpzcJmhR4
-	Gc6bo/dVicGoP6cBoe7zCNkkSMwJkQCBHrxqUkIK8wJRI2Owk7rV083dgkG2Sg==
-Message-ID: <1665242a-2298-4e76-9618-effdb88c2ad4@nabladev.com>
-Date: Thu, 9 Apr 2026 17:26:13 +0200
+	s=arc-20240116; t=1775748514; c=relaxed/simple;
+	bh=/N+eEafkkkzcKAncyso2/4KjnGl5N91tx2c0DHFGeLQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aI4VvTh9ZpFNcjycZtj5rG6Uz8g6w4Qk8Z830Ysq1agp/AkbjtBPJDiLWqYmrCWZFDPfPE1XMvnq9xZvZpIPnKJaOpkWBhPRnU9KMNkX77Sg/LJ4aRFlsIPpruKMwdiUXMr+PHRjtvJHtr51AdBporKAKLPngE+vp0e13PINeOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=SHcTFoW2; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cfc2d1fdbfso76339885a.3
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 08:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1775748510; x=1776353310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+DnPa6Sb2TShUFRzmwJOmZQYJ7+4xed43t8HDhFa3Hg=;
+        b=SHcTFoW2BPOwnFPlBCZDt0RphHQbNTZtV0tIYoNutZKRhF6MRelWO4hoBNoZ34v2bz
+         x6hxZeyNWEQ+k5tcW0pCVC06mB772IW6sokj3AQ01zLlYfy4tdHPQ/fgah4K4uLo1DtZ
+         kI3/ssKfioatVcABhuaEDizZLaws+iBdv/pFqHuZmocsdOax3Mc1KKMk5RyIrXSnWbiM
+         q8G204gQ7t08Pprr7rLUZ4AEYR1TB/ovcHTeaIK5fH6eImnmnwQ0sorAFCmWyVlywOgC
+         gct/DwNjicysvmaQxSkZDAQes96ZRgXhnu4IRdW/rkjTrKBmdnDJLNeISZ8keQes4+L8
+         Xr8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775748510; x=1776353310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+DnPa6Sb2TShUFRzmwJOmZQYJ7+4xed43t8HDhFa3Hg=;
+        b=c4ZUyrZg7QOEgUjM/sod0UcKsyi4Q//KR10lBbOxnPNHiOCe/jzuU/6k8aV6Koynly
+         Nc5QV9b+/RDOp3u/1Qet9OtJ8maWtrv3OGfQJI1iY8nurQGQWxaRz8cCoOAQ8zwVeA9Q
+         m9ZaozYOGLIPDhymBFlcvpQkE+qpzSLG3kCYx6HtErVUmjzoXgjJOVeNi1CBgO6Ymzes
+         x3OPwqGsP5tXZQaye2kAF34wX4x21O7UTVLn28R09XSTPT8YKGags2KDoRVdVDo1geuQ
+         sa+mTS/RCGYVNEL6zW8SdIFHsIxZpQu2nEJUDZkE2a+U7h+1kPqKMFoA6xoPK79T26cj
+         7SbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVoVu11Jn6jAygkU2EouOgelekCjgYsixAkxcagsOVApq3oXvZc8CoyjbmTjQ+H1goplgo3YU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsYDuibaz1fixfLRxDRsZMxLRvhB5cQHC6yggn1oT/gUXKc6PM
+	YBIblYlTrkmnXOBiGz7hNqvVzWGfErJX45PQR8j7oIQX4mSQv3LxBLz9BGjhDIhxGJU=
+X-Gm-Gg: AeBDiesd30F9rH82PcMt8Ma5CCwKYNKWgMhoqAWHCrKQo+ypRYAKzS7qE3MC2hrbBvv
+	W6rugvWL4vz1eEexr62Cpa2OzUd9RqmufEY4VOgHzLMyFyb3YcMKGH/pMjmxkbBrmR7JtfxGdv9
+	i4JOZjwcpowzg/VemmodSC3gYgZh74arVQAS7Qq10covoI00AX0LK+suh59YrJ2oq5LU9HDb8Qf
+	eXsbHoDzKxvtTWVzzs3tHndfn7c+Hj3gUaVzSb+pr3h/Eb3/1XTC1Sky/aLIwEdEL2kUPoWGnzm
+	UA1bjYRBBe8g43Mp7MphxYOydKqsMCMbnRgLrmgLCRraJDiQsRoMkd+00c537RKZPXGBSma797j
+	QOR3TV1EEa/1YHUH7yifb5ZIbvekAqLbHaDkz155cVg4zy6RhkcTeIzL/rdImPd92AkS5q/pmBu
+	geZrsr8DKqShjI67KaBcEaM21dVXSmDV8jPvjF9kmGkHnFeo79kj0tdY2mAqmsUlpZg6ul6miSp
+	5ta1azj4r04Aa8XLg==
+X-Received: by 2002:a05:620a:4486:b0:8d8:ba4a:596c with SMTP id af79cd13be357-8d8ba4a5bb4mr1928631685a.51.1775748509683;
+        Thu, 09 Apr 2026 08:28:29 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d3f588d2b1sm1529802085a.43.2026.04.09.08.28.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 08:28:29 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	surenb@google.com,
+	aarcange@redhat.com,
+	stable@vger.kernel.org
+Subject: [PATCH] userfaultfd: preserve write protection across UFFDIO_MOVE
+Date: Thu,  9 Apr 2026 11:28:22 -0400
+Message-ID: <20260409152822.1073083-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net,PATCH v2] net: ks8851: Reinstate disabling of BHs around IRQ
- handler
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui <yiconghui@gmail.com>,
- linux-kernel@vger.kernel.org
-References: <20260408162535.98108-1-marex@nabladev.com>
- <6391ee36b7d9c66d33c734650ebfb7fe@tipi-net.de>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <6391ee36b7d9c66d33c734650ebfb7fe@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,redhat.com,raritan.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235430-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235552-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[gourry.net];
+	DKIM_TRACE(0.00)[gourry.net:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[nabladev.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 5E5B33D1120
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gourry.net:dkim,gourry.net:email,gourry.net:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B58043CCD4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/9/26 8:52 AM, Nicolai Buchwitz wrote:
+move_present_ptes() unconditionally makes the destination PTE writable,
+dropping uffd-wp write-protection from the source PTE.
 
-Hello Nicolai,
+The original intent was to follow mremap() behavior, but mremap()'s
+move_ptes() preserves the source write state unconditionally.
 
->> @@ -408,7 +426,9 @@ static int ks8851_net_open(struct net_device *dev)
->>      unsigned long flags;
->>      int ret;
->>
->> -    ret = request_threaded_irq(dev->irq, NULL, ks8851_irq,
->> +    ret = request_threaded_irq(dev->irq, NULL,
->> +                   ks->no_bh_in_irq_handler ?
->> +                   ks8851_irq_nobh : ks8851_irq,
-> 
-> This works, but wouldn't it be simpler to put the BH disable
-> into the PAR lock/unlock directly?
-> 
->    static void ks8851_lock_par(...)
->    {
->        local_bh_disable();
->        spin_lock_irqsave(&ksp->lock, *flags);
->    }
-> 
->    static void ks8851_unlock_par(...)
->    {
->        spin_unlock_irqrestore(&ksp->lock, *flags);
->        local_bh_enable();
->    }
-> 
-> No flag, no wrapper, no conditional in request_threaded_irq.
-> And it protects all PAR lock/unlock callsites, not just the
-> IRQ handler.
-That is exactly why I wrapped the IRQ handler, because the BH should be 
-disabled ONLY around the IRQ handler, not around the other call sites.
+Modify uffd to preserve the source write state and check the uffd-wp
+condition of the source before setting writable on the destination.
+
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ mm/userfaultfd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index e6dfd5f28acd..783ca68aed88 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1123,7 +1123,10 @@ static long move_present_ptes(struct mm_struct *mm,
+ 			orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+ 		if (pte_dirty(orig_src_pte))
+ 			orig_dst_pte = pte_mkdirty(orig_dst_pte);
+-		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		if (pte_write(orig_src_pte))
++			orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		if (pte_uffd_wp(orig_src_pte))
++			orig_dst_pte = pte_mkuffd_wp(orig_dst_pte);
+ 		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ 
+ 		src_addr += PAGE_SIZE;
+-- 
+2.52.0
+
 
