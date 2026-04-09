@@ -1,85 +1,53 @@
-Return-Path: <stable+bounces-235298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJtPEooU12kSKwgAu9opvQ
-	(envelope-from <stable+bounces-235298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:52:58 +0200
+	id +Gc5GyoV12k1KwgAu9opvQ
+	(envelope-from <stable+bounces-235299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:55:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7EF3C5BCD
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:52:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93113C5C6E
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 04:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54D3C301E3E5
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 02:50:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5BA7305AD67
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 02:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208C136AB72;
-	Thu,  9 Apr 2026 02:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F7B371067;
+	Thu,  9 Apr 2026 02:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="G60PAVWB";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YaK8ZsWs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl7VHVcr"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38EF28686;
-	Thu,  9 Apr 2026 02:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.237
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6108F36EA8F;
+	Thu,  9 Apr 2026 02:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775703049; cv=none; b=WwNQgbkTI2OqKODtcSXOf8HBUZsz+IQP2zSMfN92Bv+SbTDjjy8udrNc7sr870+3pwPxTOWYlEO/sjxVoltMphZS1WQaHRIi7w3f9HQmjKKjig64P9bQxrRpEjCVi7ckf/eu0nVWuRZ/DpHuyVRoDIMt4CVznvsv14LuhhRtNTw=
+	t=1775703078; cv=none; b=hPrQAQy5n+CfvONg3FttUDvh3PX59mMefZ8wl+xBpbCHbox8lRhv70dDSuQ4Xvi21/KC/A2TOP2mvPLKVFGDM81Al4S4PMj2AL9HpoYHKOzHSFOsWGljDmaKK0eRpNmnlduFcicDaHhcm6yCBX9zyS8uBmTj7kvxT/Vi/iDQg4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775703049; c=relaxed/simple;
-	bh=5J5ZO6fBKGSx8kRLsewuIHgetXG4DNnuNKeDnEdeSL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J6cQP3XWUQwNRVLusYwfmGIlf/BcYvv5h4qkf+dqVzCH72qBSFCsC4iNhvjTqACZLl5MuhcsUfMrQWP0jkNbcNNVwx4IY6b3cVEQvQdYfEvmEFBhc7wp7QrZA0+kNF3DcDEg1O8kk8wwDgxZALarAuXNzCI4nxjd01JMK5u1oCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=G60PAVWB; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YaK8ZsWs; arc=none smtp.client-ip=91.198.250.237
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4frkvV17YzzB12V;
-	Thu,  9 Apr 2026 04:50:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775703046;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=pffMbmSi5wWfzvmmZ19zBe3ASxdB2Pb24bLa/ZO63cc=;
-	b=G60PAVWB3rClMPUhUvDATFIeEh/6a7M2W3xxyTpXiSQRNtSedWXDdMALE93vjyzhgeFPqa
-	1ka/WBaO3K+Pra0mo62yblLLQyBRLHuFAG4hY85L1BovUvRh8RcxTRXta9XPRhmo7fJcEk
-	QHen7Hxb8WCfuqkPP7lJF2Ix+VsNkhmWzBihZccXHOa+JkQ3w0QRNLJ+wmEgvO82ej7N0x
-	X5wEndRXaMdNTIFauPbSeaUOVJWVfhjjGhUtDgT4aeq7O7ithWMemV73Weagsq+NuLyDsZ
-	UGavlouYcnhVFrTJrqaxLzN7u3N1uds/lAfoY/dShTeaRI+DtnCF3kBJB0IOLg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=YaK8ZsWs;
-	spf=pass (outgoing_mbo_mout: domain of mashiro.chen@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=mashiro.chen@mailbox.org
-From: Mashiro Chen <mashiro.chen@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775703044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=pffMbmSi5wWfzvmmZ19zBe3ASxdB2Pb24bLa/ZO63cc=;
-	b=YaK8ZsWs+GlKI8nrLchTNB+pHwLAAgMMHDUP9oaM7X3I2WWwFT17fW3m7d9tp+Nl6YZbHh
-	mU0lETsHpZtbMTNfVoo7NI7QxdxO2tGRGfu5cJSqGzXZMatKEDvJHrA5ktpv0kcAddNR6G
-	w33mj9etJJEhaSYwxFW5Z4kdSE8Acrcs46P3mcm2YByVD2zoxB9URCtzmN1OjZainoeiOZ
-	56ga7f0bCpQeiRsLSiqV7P4e1VDZXkt9uVmg75C2iaGK0VFenftYF5knKbviY7JD400ZI1
-	MBRHUDnoiNzGqM0vFpgeguqO1NIw3vQ06ZIPPwPdYCzULeJQjhKnWonmEbdI4A==
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jreuter@yaina.de,
-	linux-hams@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mashiro Chen <mashiro.chen@mailbox.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 net] net: ax25: fix integer overflow in ax25_rx_fragment()
-Date: Thu,  9 Apr 2026 10:50:26 +0800
-Message-ID: <20260409025026.24575-1-mashiro.chen@mailbox.org>
+	s=arc-20240116; t=1775703078; c=relaxed/simple;
+	bh=tcfDya9MYNNiDKrZlg8HsEmnKPVeUFjzwubY5+gbTFM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=oNt6Ru7Xiq7Nc3hAKwPDu9RaRteVr2GFfz1AQArYMYEauP4IpzFGjeatA9m94TZuuaHMT1ovzyQCpmT9Rdgke8HEq3XS8b2fRpH3Bihq+osbxw+0WP7h+SprqW/Z4aVdmbCsLsLDoTPFf5HiTDZ0HX7n5D5szKecLbwfox0OK0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl7VHVcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181E2C2BC9E;
+	Thu,  9 Apr 2026 02:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775703078;
+	bh=tcfDya9MYNNiDKrZlg8HsEmnKPVeUFjzwubY5+gbTFM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Kl7VHVcr1JyqWb1Z1fexDnvGjkAOnEmQsa5UPZx/a4e5EKArWPfrvGoDZA80sJ8FU
+	 mhYJqTCSE8zpvvOBqXbb9pVSoJHORH8W6u1/WS11f67tEp/60uYFstknCMfMivpz7R
+	 91DnTXgd0lCgL1ka4Nk45/dd2Cmls5i0JUfAlE6HGCrCykuWDV4V3F/Ii2mZliY0Y0
+	 kQ7e5cnDhE8Iu8xLESsTqnT2XrjdVAbygp0Wyek01/PGA3w3L6RvPRliivHZE3k5/c
+	 f2dBSd8ofN3OFuV++0TFV3x0x+m6gAceJcXj4QGNgS9xn+TnMbARMMleqPxuf45vOC
+	 yjYNGa5TcVbaw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE763930793;
+	Thu,  9 Apr 2026 02:50:55 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,92 +55,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: 35ib8kudtt1jz7rqdyz1rkbsa6k8ye6u
-X-MBO-RS-ID: 5f4dc865e5cefd5ceb9
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Subject: Re: [PATCH net v2] Revert "mptcp: add needs_id for netlink appending
+ addr"
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177570305429.968772.9148300524372539778.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Apr 2026 02:50:54 +0000
+References: 
+ <20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org>
+In-Reply-To: 
+ <20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-235299-lists,stable=lfdr.de,netdevbpf];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235298-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mashiro.chen@mailbox.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yaina.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailbox.org:dkim,mailbox.org:email,mailbox.org:mid]
-X-Rspamd-Queue-Id: DB7EF3C5BCD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C93113C5C6E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The ax25_cb fragmentation reassembly accumulator:
+Hello:
 
-  ax25->fraglen += skb->len;
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-operates on the unsigned short field 'fraglen' declared in ax25_cb:
+On Tue, 07 Apr 2026 10:41:41 +0200 you wrote:
+> This commit was originally adding the ability to add MPTCP endpoints
+> with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
+> net namespace level, is not supposed to handle endpoints with such ID,
+> because this ID 0 is reserved to the initial subflow, as mentioned in
+> the MPTCPv1 protocol [1], a per-connection setting.
+> 
+> Note that 'ip mptcp endpoint add id 0' stops early with an error, but
+> other tools might still request the in-kernel PM to create MPTCP
+> endpoints with this restricted ID 0.
+> 
+> [...]
 
-  unsigned short  paclen, fragno, fraglen;
+Here is the summary with links:
+  - [net,v2] Revert "mptcp: add needs_id for netlink appending addr"
+    https://git.kernel.org/netdev/net/c/8e2760eaab77
 
-When fragments accumulate with a combined payload exceeding 65535
-bytes, fraglen wraps to near zero.  The subsequent allocation:
-
-  skb = alloc_skb(AX25_MAX_HEADER_LEN + ax25->fraglen, GFP_ATOMIC);
-
-then allocates a tiny buffer.  Every skb_put() call in the copy loop
-that follows writes far beyond the allocated headroom, corrupting
-the kernel heap.
-
-An attacker on an AX.25 link that supports multi-fragment I-frames
-(AX25_SEG_FIRST / AX25_SEG_REM mechanism) can trigger this by
-sending enough continuation fragments to wrap the 16-bit counter.
-With AX.25 segment numbers limited to 7 bits (max 127 continuation
-fragments), a fragment payload of ~516 bytes per fragment is
-sufficient to overflow.
-
-Fix mirrors the identical bug fixed in NET/ROM (nr_in.c): check for
-overflow before adding skb->len to fraglen, and abort fragment
-reassembly cleanly if the limit would be exceeded.
-
-Cc: stable@vger.kernel.org
-Cc: linux-hams@vger.kernel.org
-Acked-by: Joerg Reuter <jreuter@yaina.de>
-Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
----
- net/ax25/ax25_in.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-index d75b3e9ed93de8..68202c19b19e3f 100644
---- a/net/ax25/ax25_in.c
-+++ b/net/ax25/ax25_in.c
-@@ -41,6 +41,11 @@ static int ax25_rx_fragment(ax25_cb *ax25, struct sk_buff *skb)
- 				/* Enqueue fragment */
- 				ax25->fragno = *skb->data & AX25_SEG_REM;
- 				skb_pull(skb, 1);	/* skip fragno */
-+				if ((unsigned int)ax25->fraglen + skb->len > USHRT_MAX) {
-+					skb_queue_purge(&ax25->frag_queue);
-+					ax25->fragno = 0;
-+					return 1;
-+				}
- 				ax25->fraglen += skb->len;
- 				skb_queue_tail(&ax25->frag_queue, skb);
- 
+You are awesome, thank you!
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
