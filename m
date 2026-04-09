@@ -1,200 +1,175 @@
-Return-Path: <stable+bounces-235426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CtsBAXA12mdSQgAu9opvQ
-	(envelope-from <stable+bounces-235426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:04:37 +0200
+	id MBmoLNDD12mdSQgAu9opvQ
+	(envelope-from <stable+bounces-235428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:20:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811A63CC5CF
-	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:04:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045493CC89E
+	for <lists+stable@lfdr.de>; Thu, 09 Apr 2026 17:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B6CCC3006B77
-	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 15:04:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E199230293FB
+	for <lists+stable@lfdr.de>; Thu,  9 Apr 2026 15:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5653BADAB;
-	Thu,  9 Apr 2026 15:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F9B37F8A2;
+	Thu,  9 Apr 2026 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xK1lL8Wj"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="LZpz0Xab"
 X-Original-To: stable@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010069.outbound.protection.outlook.com [40.93.198.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1847A346E6C
-	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 15:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775747071; cv=fail; b=UCXfY0PUIPKyg3kUZKvJQVwQfS8eGsen94y9P2B4+ynWzneH5B0L8s/TVxO73pFID/q9lHDeAOWDOP/UgCL4jxvOOow7J8VCFXzxZvHbIFadsnnUImAIzYdFxmfGmcDqSk6zqj0G/mhUxL7VaGujUdXSweD5mT4dDtMGd3WyH1A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775747071; c=relaxed/simple;
-	bh=lv3+4N4IhV8jWcfGLr+ZSePROiQx0k82F55Ck283ruE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sRiW3P6kNcG5ODaEcTrcrD6/12QPaXj4cvICaxtH1qNrClb5KWwi/PU4PyjZd0bxOPal5jSv9lT+ToW3mNP8Ekat5XmdVzqMQfnb7nXuv78Boj7qf6t9/g+lIMfxXOE8thyahDvpVa87L5NksZBN72qkkWwshlNNZXO+XsIdvZ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xK1lL8Wj; arc=fail smtp.client-ip=40.93.198.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qSScazgzSeXwmNlww/qZxIRWhG4oJVCSbQzT4fn2XPf5psi3cDqrew1s4ikableCnPCiv59Ql5D65TJzijFx1aR5AEjDQYh5exWt5exQ41+OVR0dQHg8do6M92fpkdny+L8NuN4UaQ/wgEndgyte41ykOYtp3HACHEbFywB0lHD66ndz0eC4qABV4uHArVtPPu31zACJbZ4VcREOJW1stuljJuC0o9NqJFcucCRrzNWuxT0LSIUrTUYugFpHYQyjfIU9Ig1UFm1D2I5wetpYLUDmd1ryXdmys3JZ8tRepO0wEq8ZgNEgwoSSSEHGcHDeN+tfbIAZq54acD63m3rfMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OLPWFCtcO8oAN8Kn1bgv2s50En4GYZLQUZjXWv3u2H4=;
- b=aIfJjq8ZEN4ZsACeSohmDDgvcZi8LgKRmBJ0KlS3liBOPHdxkctYE1QCl9xt3YcprzzQE7YqKZV6wi/EC9BsTGz350cF4BR509EwXNJY8kDNCXxhJaYCL/m/lf8pPksSHFpEj2r59hefHaoDLbbYFxfGgGFJEB0nE/kAshsHQaSRimtbFWNORgIpRkdG+N9sT7yelmcqcHOG+eNkslLElfYEGaMNO+AnPtZK9UDAdm/alOKD9wOT4kIWQGjKwm6Puw6csHqHMt9PYnv3Ef0ZQqBjri78tDTcwknYBygVytaKJZTOvEtxkxqkK3a2/ku37/z00+LHqkNS2jkQ8YOVjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OLPWFCtcO8oAN8Kn1bgv2s50En4GYZLQUZjXWv3u2H4=;
- b=xK1lL8WjStSYzBte9AUBwPZsYsDsF/k83nHn48Rw2BXYjC8H5pkMZKmyNpknl8kkKXIushjNopUj+GvNSkgyGBkH5HAysTbbOQKFJSW9jFzu/NqXJ3/1eAkTBViYMjpdlQPQlujHNC+hCFjg5FDoUDkvScUowNVc49Pybu6rMQs=
-Received: from SJ0PR03CA0197.namprd03.prod.outlook.com (2603:10b6:a03:2ef::22)
- by SJ0PR12MB8091.namprd12.prod.outlook.com (2603:10b6:a03:4d5::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 9 Apr
- 2026 15:04:21 +0000
-Received: from SJ1PEPF00001CE2.namprd05.prod.outlook.com
- (2603:10b6:a03:2ef:cafe::a7) by SJ0PR03CA0197.outlook.office365.com
- (2603:10b6:a03:2ef::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.41 via Frontend Transport; Thu,
- 9 Apr 2026 15:04:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00001CE2.mail.protection.outlook.com (10.167.242.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Thu, 9 Apr 2026 15:04:21 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 9 Apr
- 2026 10:04:16 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 9 Apr
- 2026 10:04:16 -0500
-Received: from aaurabin-tumbleweed.amd.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Thu, 9 Apr 2026 10:04:15 -0500
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
- Zuo" <jerry.zuo@amd.com>, Dan Wheeler <daniel.wheeler@amd.com>, Ray Wu
-	<Ray.Wu@amd.com>, Ivan Lipski <ivan.lipski@amd.com>, Alex Hung
-	<alex.hung@amd.com>, Chuanyu Tseng <Chuanyu.Tseng@amd.com>, Wenjing Liu
-	<wenjing.liu@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
- Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>, Dillon Varone
-	<dillon.varone@amd.com>
-Subject: [PATCH 3/6] drm/amd/display: fix math_mod() using arg1 instead of arg2
-Date: Thu, 9 Apr 2026 11:03:11 -0400
-Message-ID: <20260409150413.34779-4-aurabindo.pillai@amd.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260409150413.34779-1-aurabindo.pillai@amd.com>
-References: <20260409150413.34779-1-aurabindo.pillai@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB013D3498
+	for <stable@vger.kernel.org>; Thu,  9 Apr 2026 15:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775747763; cv=none; b=tOUKagjG9Xb+tpHXlxlRRUiulTcqXmVm6r+t5DEGrgQ58xYYSB0dv4w47LXyRbM65rV0MFbL3EFbTIhXeyn13MRFAM1wd5dAer1XAbWo8GizXoBMFrjd5072EeNBvrZYXNp2RNLhHy9iVr2VM2e4mkJtzhJEEv7Dum5/2jq1ypQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775747763; c=relaxed/simple;
+	bh=lPGV8AFmLuXxJZ6gD+bLN7/Il/AxPMIpR2Jc3CtNGME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UdyQ95GadW8TIzLap0j60A3a/6Y454bqs5tYA4BphYgGwClJwLB/DQL4OgZjAVXe3V6Ub4/UE0FToLVTp2LaVuJ66eykQL53eEIOS8CO+ioXkzaxExa8qoyM0gUPv0KofqvTVwVzi4sAwYi2Za4Qs30TEBUmoPYVa52/BJydElE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=LZpz0Xab; arc=none smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-64eb84d1e37so815214d50.2
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 08:16:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1775747761; x=1776352561; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hPQPBOBgtkvcgYqzt6x5wusYckTuQGEX69sblOJCEYc=;
+        b=LZpz0XabV91fVUzyHR1SDVj1rFMbOlzdFmKE8y6NboHza3kYCGutR8Y8oMSvras3YG
+         GkGgkeNuY90ChDeiWD9GIZSJkGg/7iv9K/r+Jrm3o7ttWwqpDUGijwuyLMXMwgw6AVSh
+         ilTMnM/rrH3qEpZEF6FbT436ZDGur6BMfJLynCF+fEUebegfu38RZv4414ndahk8DqSb
+         48UMG2C2vksL8dwd3cY9mS1v5yL18e9Vahmf0n5D5Bhde7CxLj9Cmiw1ctbDQ2c9+YEj
+         RkzsEM392XkRgMtxM/hBWE/zD40uu8R+hbm9+iMSUS13dmC9husxaThRkAfx6WUUPs3i
+         gfBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775747761; x=1776352561;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hPQPBOBgtkvcgYqzt6x5wusYckTuQGEX69sblOJCEYc=;
+        b=ExVVI9iOta13PDnaRf35dRSvI6uknz2F6uK39qbozYGYH08sKLbHyOZC0qaY9z5GSH
+         n60bOr+3eaxrFBK/ZzOtSIi8iehZCZeC0n7LYc+ABnj2tnWZQxmmzKKiEHdvfmdPx/sV
+         cPhm5EHTJ75rkaBnMGwzSNcWlH1zab4uoBAZ7CQsgth+wymn3umJZaF8ERJN0vzf4gzX
+         pUv8BHsXdAbsIYoz1f1b0MtKj4Gf11qo2GPQPIVzWgEOhFDD34kRceh4lDthKxEalAaz
+         8QCLKo5cwVwEGx7RF2jDy6xgJrqIFlIAifMCJ5xqIQBnK2iYGkW9kD8vIulWu3gbK3dm
+         jm2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWLM4vEvrnuAG9NVWOwiGJteEq6A0ayJntIanE8sbo5h/PwieBiWel13D86wAllj3h1XdC8FIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymWeRUi1xWmDL+37jhzFpBQytEYhNYul0vStPW/IydqIbyaYCM
+	GIXVd2OQi/ey7YviSghnalbMzGFPTSsuW5jdQYmPVXEEfxbg1/dFLlawHPmSYwKzqzw=
+X-Gm-Gg: AeBDiesSGEof47osLhKBrfToiGLPaKZFHQ6fsg6WXIk4JLfCimJJyuWTJnT1aY8bfsh
+	uPZsfJ89jfmjtGNclc+ZJb4+q7Zyy/3Uk3bHJ0Y7SNllqPQ1UwIDk7HwMKOtCTDwVlH51jXU1EF
+	YP1UQZeAonKIoqSy8ibVdCJmzuCXUJTeCf3hRUNLJ7VRI4U+4jz4tUoDnxCrmmQyp57PCyxdQMa
+	p9OpfQ4/Q1I3zsjtHmJZjMVdI2ghow8PayEo47/1w8AKxmOVpN4+lZSfcKP5re4o7n4lBi4ziKz
+	poxOfYoxSRTfOIZWRXz/ORvoK0+QF7VmjABWwGtzYy7zshmUFMYKeBSYClAIcZAykABci52IfWA
+	YYZBB/Oe2N5uOhS5GS65mh0MOktbs/ky/7aAQtUKYfNLGsWkjsk4d5B8h65sVmbqmWurkUGPax6
+	+s+gCJgfhUQnJLibSZU/+daluU/i0kCyTLPHxUjRCo8C/NjKLQ1pLjcz/h3pDbi8uUnYpgQg==
+X-Received: by 2002:a05:690e:43d1:b0:650:8c3:8df2 with SMTP id 956f58d0204a3-650488afacemr17793279d50.62.1775747760893;
+        Thu, 09 Apr 2026 08:16:00 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a8067c73sm1700572085a.24.2026.04.09.08.16.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 08:16:00 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wAr6t-00000008Ihi-0wvj;
+	Thu, 09 Apr 2026 12:15:59 -0300
+Date: Thu, 9 Apr 2026 12:15:59 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Sina Hassani <sina@openai.com>
+Cc: kevin.tian@intel.com, joro@8bytes.org, will@kernel.org,
+	robin.murphy@arm.com, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Aaron Wisner <awiz@openai.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] Fixes a race in iopt_unmap_iova_range
+Message-ID: <20260409151559.GR2551565@ziepe.ca>
+References: <CAAJpGJTztK=BTvr6s_e4epJffKchmXmqba82wxE_SOXUN6FWYg@mail.gmail.com>
+ <20260407011210.GM2551565@ziepe.ca>
+ <CAAJpGJQXnMjhC4C7Z6bAQJN5y48fsbiwPd3YF5vft+1MBNFLVQ@mail.gmail.com>
+ <20260407012726.GN2551565@ziepe.ca>
+ <CAAJpGJTNKxCfcZxgDj_sZYUozrOe=vxbWUUi4PVwdfvGx=WEfg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE2:EE_|SJ0PR12MB8091:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8eb01720-b42d-41fe-d687-08de964947f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	TNszhk14xTbaAOWeVv3ZYamR7q+NsSWv8V0Y4LhK6X7n+DW+qzohb9OoDM+NhyDo3w7DOi/WnWgtNtjBj38j8QQ9Vj7DJSwVLCEEmoJ/rFKY8CPFx6v1uc3sc0l7/B81aJ8AyiDe3gHuxs5/Pymnam+wut3LZM2THJ3gezsUrcZeYD2dmQ3Sf6qOdQxdjI6Tor9UxbOgPg4fVcf48sT9BOYD6faX2dCIrAnunxV1wWN21/Ts+m7u98VL0XmU0weXhyD32hci+Mjwl9Y9hKOz/g954sxb4myAapO2jC5NrcDhv6IgEXzxFFh0FHgEOgwo0kk2n0bYbDlhg69ssfN0wq4h3rMgNwnWUgayQSFwmLHqYxqb4367bAKTuuhRAjboTSGOXPYaSJuG2d1AjxAWppiJLSS2UKAPblTmruqqkL9CC3LBuYELC0R9i38frfVT4RMMx7FqypWAWMJQWs4dkK5a0MR2Sr6L/djP88T9sXHX4vEuDbnyX4hDM3AuzFoxMctxWqvMgH3eAxfbdh4/jeFjfDRJPhr/8z1f9oY3Z9oY3IGA/yjfYp1zN03qDSH1fwIlzCgWtWA0wTfYDw621+lz2poNQon1u3xM3Mse87H+wI4w5VJSnNgj/hCTl2rHVzWvBJH3LK3Om4dkZuxF50bxXVw7Ps0uk8NWmaIWelKrkkFsO3JEdXCxryOn3gQIsZb3g4tENDReOW2xXLxhmtMMeD0iOLbDPtwsaVAFPKn78K7pUSTXx46CBZCWins0duZSXJjmc3xtYuPR8/nuvA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	KWEiBKqgfNUGPYWA3z4ftnYzx5KNa9J1mLlf5bV5ve5gVwNoUHrFA0m94r/wIaPkKurzZI25eR2lDzKMEPEP1yHnl3iL2GVTSOZ+ooUvdXGdIordsXqirpor+HfM0LZDO8TWFKfBNWj0WaVqeAi9JkGpcUeL8cypoe0aCK2xQFG1QS73uoRPfSiaGr16/RR0AJDhW/0C/ANupv1/qt/GILNPOC6CLs8x6gZXX4vJy7p3h5gIVORVlLELeqHVpRx6JQmf89w78u3ExtWkvJC6q9aAcdNgmBN7ivGHkCSV0ZbJE/abmd6ysozRN66PruG49PnbKHnZ3inxba3aUaBznPQFn7YAfIi+u8GHRGZB3cu5Rb5oTZqFVbx3re6qvAAFswPpju80/wu1QpEo0bhCGb09DpmQ8KbHrJSvNT0t/sXsvWi+qkPkU2vp5Z+NoCAJ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 15:04:21.5587
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8eb01720-b42d-41fe-d687-08de964947f0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8091
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+In-Reply-To: <CAAJpGJTNKxCfcZxgDj_sZYUozrOe=vxbWUUi4PVwdfvGx=WEfg@mail.gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235426-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ziepe.ca:+];
+	TAGGED_FROM(0.00)[bounces-235428-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[ziepe.ca];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[9];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amd.com:+];
-	FROM_NEQ_ENVFROM(0.00)[aurabindo.pillai@amd.com,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 811A63CC5CF
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 045493CC89E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+On Mon, Apr 06, 2026 at 06:40:05PM -0700, Sina Hassani wrote:
+> On Mon, Apr 6, 2026 at 6:27 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> >
+> > On Mon, Apr 06, 2026 at 06:17:24PM -0700, Sina Hassani wrote:
+> > > On Mon, Apr 6, 2026 at 6:12 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> > > >
+> > > > On Mon, Apr 06, 2026 at 04:07:01PM -0700, Sina Hassani wrote:
+> > > >
+> > > > > io_pagetable *iopt, unsigned long start,
+> > > > >                 unmapped_bytes += area_last - area_first + 1;
+> > > > >
+> > > > >                 down_write(&iopt->iova_rwsem);
+> > > > > +
+> > > > > +               /* Do not reconsider things already unmapped in case of
+> > > > > +                * concurrent allocation */
+> > > > > +               start = area_last + 1;
+> > > >
+> > > > area_last can be ULONG_MAX so this literally overflows to 0. It is why
+> > > > I formed the suggestion I gave as I did
+> > > >
+> > > Yes, in which case the  if (start < area_last) that follows will catch
+> > > it. Are you suggesting I compare against ULONG_MAX instead?
+> >
+> > iommufd does not have any overflows to 0 and rely on it tricks like
+> > this. You should just compare to the existing iteration last
+> >
+> Just to confirm that I understand correctly, like this?
+> 
+> +               if (area_last >= last) {
+> +                       break;
+> +.              } else {
+> +.                      start = area_last + 1;
+> +               }
 
-[Why]
-math_mod() multiplied by arg1 instead of arg2, returning a wrong
-result for any non-trivial modulo operation.
+Yeah that looks Ok
 
-[How]
-Replace arg1 with arg2 in the subtraction term to correctly
-implement fmod(arg1, arg2).
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
----
- .../dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c b/drivers/gpu/drm/amd/display/dc/dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c
-index e17b5ceba447..dc5bc649f3ac 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c
-@@ -23,7 +23,7 @@ double math_mod(const double arg1, const double arg2)
- 		return arg2;
- 	if (isNaN(arg2))
- 		return arg1;
--	return arg1 - arg1 * ((int)(arg1 / arg2));
-+	return arg1 - arg2 * ((int)(arg1 / arg2));
- }
- 
- double math_min2(const double arg1, const double arg2)
--- 
-2.53.0
-
+Jason
 
