@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-235606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDNvBqyy2Gk8hAgAu9opvQ
-	(envelope-from <stable+bounces-235606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:56 +0200
+	id KF4sOaey2Gk8hAgAu9opvQ
+	(envelope-from <stable+bounces-235605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2A23D3F2F
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4BD3D3F1A
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CBDAF3026CE9
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8C337302D65C
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22EE3B3880;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D1D3B2FF2;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dfFlyhYn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="awGcN0E3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674DB3AE19B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD8E3AEF5C;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=to9sUd9j9I2rtoH0mmFb4O+acXXSiUI+1ygD34IQ8gTsGHITvINTMRwoPITfbP40RfeV9y6xRXcVyNBITNbwDB3WqW/l+5zd+9shauBLM2y3nw4TslVSOFueiRlKAcxFtdl1RDOa5LZR6lNugBMD3SeUMwmCu3gxD/DqF+yKEUc=
+	t=1775809137; cv=none; b=UXC68GFmaIMq911P9DEgx9ZED7h0udj1PmpHfvY8tkkkFSWclPdZJpuWAgtQLlKkPEJTX6eR9ZqAcnHxhB74b04xyxrJmKobJ1phzRaCITnjrv8EdcUAdNxH4qTJO85wVcmkpbv1FDj42aDTEtqSi29yG2ryciAOq+jWQm55iXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=+1G0p8bXWSQOcdEhs/Gm8CKcKsG3wwwQO4VMpksKxdM=;
+	bh=tQQxsN8J624vyJL19f/zZB5glHjuQJ9UEw5ZMILF0gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPikjLAAB4l3ljmJ1Liid2wePO0Zopy0poSr55x8g4sPxy6CLFavIPcr7qZAU9QcL7L/lrc/HwoMO23mCMpfPcu8vmU90SRa2bUXIAwSEoSoSNe5Lm1xIfKJwyXyetl1yRaufkVrBqnYe9apJqQmRfyjMLM/YK+mGsCXROy4smw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dfFlyhYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB6FC4AF4D;
+	 MIME-Version; b=cd+4g1f+ljedjeFwRglq/3Yig+pCMLTFoN8v+OsxxM12JaE7KpeKUyxEwSYQ31YHd/MzuqVAUv+frVIU6P7qF9w0+paF8zpg1CByQthTaMQva/YFLihf23rC2iaHXxxO2t/l5bmDiu2ROw/ip8rRplOuSiLIC2K9KzjUvkpHT2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=awGcN0E3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3798C4AF60;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775809136;
-	bh=+1G0p8bXWSQOcdEhs/Gm8CKcKsG3wwwQO4VMpksKxdM=;
+	s=k20201202; t=1775809137;
+	bh=tQQxsN8J624vyJL19f/zZB5glHjuQJ9UEw5ZMILF0gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfFlyhYn42zP2bZRr+j5hhAdh/ug9aRJl/uTgz2uDJyKV16CyHAYgxKW7yCI3iZEW
-	 wu9lYUa+TCYjB+wufngLAa3eHSpBUFCAj5TU31LoDelN0fNRZx7P0yqevmTnAW/ImX
-	 trP1LjbI6DkQq8PGqMx5V+i7QnFpuhvhoho5xUlSkYtQd/GX5uarhDfBVT9LV3wfs/
-	 p0SfOFhdBOeVcdetcMiBoQ5HVl7Q6mNLTXMDNgK2uSR3mNu67rqYJjZQMvmikWoJ2c
-	 TxGhJpgBvXv9nE5QM6jIArdd7+Z3kFaBZy1CEsMCp+TNR6GhnSLPk+DC2vCY78epl9
-	 GCxzXTV25C+sA==
+	b=awGcN0E3s2FvTPS2QKXzhjz+xy9uko/PoWKO7gH6cWPPlcderCuFWJr43a3wIv8Xo
+	 zxjq0w0Raobwbl+efZCf7W5uX7TsnV0mZIOy0FNRN4WYtEzq/qYnmkYCoyos6g7xrR
+	 IP747KYQAIJqmrV/r9UmGE9pQ6FK/6JVOyjhX7svOZfWlLhzTzAXiKMWTye861WrGI
+	 6cwXgGu6wSviF1jakmb+yoXZ3WIU2oFSjipo1kDANXN23zcjw1H4W+D2Y+9bbXJf3N
+	 5bgQoH3cb4efeKzjzrmBD+nvJHoeB6PNMjyTVCk7I9Llt1BKWDWrwXSCzvYGaUlzNP
+	 efD4+ndTQ3aPQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74o-000000026uy-0A2Q;
+	id 1wB74o-000000026v0-0CRO;
 	Fri, 10 Apr 2026 10:18:54 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -76,10 +76,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Jingoo Han <jg1.han@samsung.com>
-Subject: [PATCH 22/26] spi: tegra20-sflash: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:52 +0200
-Message-ID: <20260410081757.503099-23-johan@kernel.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 23/26] spi: ti-qspi: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:53 +0200
+Message-ID: <20260410081757.503099-24-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -101,10 +101,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org,samsung.com];
+	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org,linutronix.de];
 	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235606-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235605-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
@@ -118,53 +118,66 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email]
-X-Rspamd-Queue-Id: DB2A23D3F2F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linutronix.de:email]
+X-Rspamd-Queue-Id: 8B4BD3D3F1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Make sure to deregister the controller before disabling underlying
 resources like clocks during driver unbind.
 
-Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
+Note that the controller is suspended before disabling and releasing
+resources since commit 3ac066e2227c ("spi: spi-ti-qspi: Suspend the
+queue before removing the device") which avoids issues like unclocked
+accesses but prevents SPI device drivers from doing I/O during
+deregistration.
+
+Fixes: 3b3a80019ff1 ("spi: ti-qspi: one only one interrupt handler")
 Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-ti-qspi.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index d9d536d7f7b6..9256729f2d49 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -505,7 +505,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 	tegra_sflash_writel(tsd, tsd->def_command_reg, SPI_COMMAND);
- 	pm_runtime_put(&pdev->dev);
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index d1d880a8ed7d..1fbd710d616f 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -888,7 +888,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	qspi->mmap_enabled = false;
+ 	qspi->current_cs = -1;
  
 -	ret = devm_spi_register_controller(&pdev->dev, host);
 +	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
- 		goto exit_pm_disable;
-@@ -528,11 +528,17 @@ static void tegra_sflash_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_controller_get_devdata(host);
+ 	if (!ret)
+ 		return 0;
  
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	free_irq(tsd->irq, tsd);
+@@ -903,19 +903,17 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ static void ti_qspi_remove(struct platform_device *pdev)
+ {
+ 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+-	int rc;
  
+-	rc = spi_controller_suspend(qspi->host);
+-	if (rc) {
+-		dev_alert(&pdev->dev, "spi_controller_suspend() failed (%pe)\n",
+-			  ERR_PTR(rc));
+-		return;
+-	}
++	spi_controller_get(qspi->host);
++
++	spi_unregister_controller(qspi->host);
+ 
+ 	pm_runtime_put_sync(&pdev->dev);
  	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
+ 
+ 	ti_qspi_dma_cleanup(qspi);
 +
-+	spi_controller_put(host);
++	spi_controller_put(qspi->host);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ static const struct dev_pm_ops ti_qspi_pm_ops = {
 -- 
 2.52.0
 
