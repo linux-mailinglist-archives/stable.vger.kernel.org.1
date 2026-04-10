@@ -1,148 +1,125 @@
-Return-Path: <stable+bounces-235629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIBcIP4R2Wl+lggAu9opvQ
-	(envelope-from <stable+bounces-235629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 17:06:38 +0200
+	id WJXvNrAX2Wm7lwgAu9opvQ
+	(envelope-from <stable+bounces-235630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 17:30:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4EF3D8F35
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 17:06:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D133D953B
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 17:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 769C33047521
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 15:02:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5038F3115F20
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 15:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38E93D902A;
-	Fri, 10 Apr 2026 15:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B233DEAE6;
+	Fri, 10 Apr 2026 15:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkKMSHsa"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="LyUOJVZs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EB93D891B;
-	Fri, 10 Apr 2026 15:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2D63DE437
+	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 15:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775833362; cv=none; b=gGtpuQvZDAgNLdDJ6evKnBRvlGQG5XXpR04ujVX0+36gu2wWrFuVGinnFUfZ9OzBYC5fV9ANfkvKdqnVXnoAqenrYcAehUrXukTkBzQfoxExQh+YbFGp2azxn6AixMAKhHqNs2Zph2IH5YdMw3bgIZu6ax6c/DOnAa1NofME0WA=
+	t=1775834344; cv=none; b=Q7R6dYjoimvJBim6ytS7XI7OYCOF/3OZMCpTpysPk6jKnbXc7U6/dODeQmzygaOQsdXpm0QSYVB4HN9iHa6S7x+QgE+0FPGbqL/jMB1E0gZBImd7/d9p+JCo99faviC0/q1OHLX1i1wogrP6zvKu/EhdeM5TFHhLF13pztFR19I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775833362; c=relaxed/simple;
-	bh=atcdLfEzGCk7sNy6PlWGj//0B89T1lqmjP4hSanhbAo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gpjaG1Fvg2hZvTCBjWTMghN8W1vgp3Di6dOFfkSpcPY1ipCksZdnk/W6zS0fmJX9lFP20hS/nJ3GwLZ0nmbPzuAm7mfl7NIKfu/LMNWnWvCIi42IYLYjtwDnT7/vpq92C/vnxbovYLny3t29wTAZlYryAoFZ+89rFZEQA30oWms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkKMSHsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF82C2BC87;
-	Fri, 10 Apr 2026 15:02:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775833362;
-	bh=atcdLfEzGCk7sNy6PlWGj//0B89T1lqmjP4hSanhbAo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=gkKMSHsaFUxtGTMBpEQovhvqntBsuEEVDg+N/o0y3EUyJR+fX8ZDmXFW1vQHheZR/
-	 gDAceUB3mJ5Dn8UTmLlwZnnnfHu9Xgmt6Mzfc5yM+KuEvi9xCxAh2Sdvk52ThR4Klz
-	 M7ozUcNZiXQBdrZiGUNevzXwUqb5b0Nl4AZnQn5RxYY336ADdWT5pq5ElFitFedjj/
-	 gsa7OYH1OoMjA3pJzsZmN2ZaqWHaZddMLqiL5tcDaXPiZ5ZKp+hpBLTAiZxryTY3zy
-	 YS/lO/DgPOU6Y+N5hHhRT2lJFf1IPeFHK3Qt4HljQ5H/byl8s3qOQ0L3a07ct6vZGj
-	 BUhnQn5LkNleA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>, chenhuacai@kernel.org,
- jiaxun.yang@flygoat.com
-Cc: linux-kernel@vger.kernel.org, George Guo <guodongtai@kylinos.cn>,
- stable@vger.kernel.org, Kexin Liu <liukexin@kylinos.cn>
-Subject: Re: [PATCH 1/1] irqchip/loongson-pch-pic: Fix vec_count reading for
- 32-bit and 64-bit
-In-Reply-To: <20260410013053.3877-1-dongtai.guo@linux.dev>
-References: <20260410013053.3877-1-dongtai.guo@linux.dev>
-Date: Fri, 10 Apr 2026 17:02:39 +0200
-Message-ID: <871pgm2700.ffs@tglx>
+	s=arc-20240116; t=1775834344; c=relaxed/simple;
+	bh=RxpvA3eh9SHzgt4/2lh3Inm/8L4wRVYBA0eII59VMSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rK8VkPLqkRi975MkvMAOaL/69XJ2baGa/Zw8u7xgb8368mUASiRC3mEikj7sMxCAHxk6HdGV8j7A3va8GRf61p6jLX9z7jVdeUK4/fzKXVDiU3CALhd/qfHcNX+2vQEm4tkHoDoc4M6BqZE2eeTpUf5TShHUBzepiV/1VVVeEtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=LyUOJVZs; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from trampoline.thunk.org (pool-173-48-116-90.bstnma.fios.verizon.net [173.48.116.90])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 63AFImgN015769
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Apr 2026 11:18:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1775834330; bh=OY6G15C9EgyOfaVMAdim+tczgIT2XZ6nQM0Fntgveyc=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=LyUOJVZs8BaMuQinHijvZ1RHGXBxgfwVz47W7x4TAX820fc8LmDtCGXwjNrEDvOPT
+	 aH6gJJbBgO2dee8/VC23R4CaVt1E8xjO3w3BZckVlokpqHmCEub5/soycXjKnoZUyw
+	 nOFNSxGsQsPcVZNOT/Lald5fw9VQ+2o4N0OI6hiOYTOcop4Y8hzuWrU+ZvW26s4FbJ
+	 hZou7VzIDgsrvFI9AtMYKKMpnoTLmdV34yW1YN03T7BhwBNearJhgE20RmnQLhQ55m
+	 o6kgd2YecXWlc/hzbtcQ4iDw/uw+h4Y34LGmFD8Iqt5tt6aU5b+Tzdan3b74b/hg/l
+	 d6fLmdggHQu4Q==
+Received: by trampoline.thunk.org (Postfix, from userid 15806)
+	id EED782E00DB; Fri, 10 Apr 2026 11:18:47 -0400 (EDT)
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: adilger.kernel@dilger.ca, Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        syzbot+fb32afec111a7d61b939@syzkaller.appspotmail.com
+Subject: Re: [PATCH v2] ext4: fix bounds check in check_xattrs() to prevent out-of-bounds access
+Date: Fri, 10 Apr 2026 11:18:34 -0400
+Message-ID: <177583430878.2758959.10038208065851589867.b4-ty@b4>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260328150038.349497-1-kartikey406@gmail.com>
+References: <20260328150038.349497-1-kartikey406@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [2.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[mit.edu,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[mit.edu:s=outgoing];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235629-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-235630-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[dilger.ca,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[tytso@mit.edu,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mit.edu:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,fb32afec111a7d61b939];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: BE4EF3D8F35
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 39D133D953B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 10 2026 at 09:30, George Guo wrote:
-> From: George Guo <guodongtai@kylinos.cn>
->
-> Commit 0370a5e740f2 ("irqchip/loongson-pch-pic: Adjust irqchip driver for
-> 32BIT/64BIT") changed vec_count reading from readq() to readl() to support
-> both 32-bit and 64-bit platforms. However, on virtual 64-bit platforms
-> (QEMU 8.2.0) this causes incorrect vec_count value, leading to panic:
 
-Is this problem limited to qemu?
+On Sat, 28 Mar 2026 20:30:38 +0530, Deepanshu Kartikey wrote:
+> The bounds check for the next xattr entry in check_xattrs() uses
+> (void *)next >= end, which allows next to point within sizeof(u32)
+> bytes of end. On the next loop iteration, IS_LAST_ENTRY() reads 4
+> bytes via *(__u32 *)(entry), which can overrun the valid xattr region.
+> 
+> For example, if next lands at end - 1, the check passes since
+> next < end, but IS_LAST_ENTRY() reads 4 bytes starting at end - 1,
+> accessing 3 bytes beyond the valid region.
+> 
+> [...]
 
-> WARNING: drivers/acpi/irq.c:63 at acpi_register_gsi+0xe8/0x108
-> Call Trace:
-> [<900000000024c634>] show_stack+0x64/0x188
-> [<9000000000245154>] dump_stack_lvl+0x6c/0x9c
+Applied, thanks!
 
-Please trim your backtrace as documented:
+[1/1] ext4: fix bounds check in check_xattrs() to prevent out-of-bounds access
+      commit: eceafc31ea7b42c984ece10d79d505c0bb6615d5
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces
-
-> @@ -343,7 +343,12 @@ static int pch_pic_init(phys_addr_t addr, unsigned long size, int vec_base,
->  		priv->table[i] = PIC_UNDEF_VECTOR;
->  
->  	priv->ht_vec_base = vec_base;
-> -	priv->vec_count = ((readl(priv->base + 4) >> 16) & 0xff) + 1;
-> +
-> +	if (IS_ENABLED(CONFIG_64BIT))
-> +		priv->vec_count = ((readq(priv->base) >> 48) & 0xff) + 1;
-> +	else
-> +		priv->vec_count = ((readl(priv->base + 4) >> 16) & 0xff) + 1;
-
-This does not make sense at all.
-
-     readl(base + 4) >> 16
-
-is fully equivalent to
-
-     readq(base) >> 48
-
-on a little endian machine, no?
-
-This needs a better explanation in the change log about the root cause
-and why this is the correct solution to fix the problem.
-
-If there is no other solution then this needs a big fat comment in the
-code explaining the reason. Otherwise the next AI agent will notice the
-equivalence and people will send cleanup patches....
-
-Thanks,
-
-        tglx
+Best regards,
+-- 
+Theodore Ts'o <tytso@mit.edu>
 
