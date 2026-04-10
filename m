@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-235593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOm6LIKy2Gk8hAgAu9opvQ
-	(envelope-from <stable+bounces-235593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:14 +0200
+	id MMliFxS02GmshAgAu9opvQ
+	(envelope-from <stable+bounces-235595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:25:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5203F3D3E94
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53E63D40F7
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 79553300558E
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6046A308F066
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9136B3AF663;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06E23B0AD8;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZg4og6i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="az6fv2rf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321F43ACEFD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D623ACF07;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=atgHW5p7I1I1Xr2DGoRTt7F37k8/teSJulieeW9srnl+OSl4LvfT1tFbBDxet3p7wb/SB3ZQOZSl9lb1VhRgmrifHeBSlaTBH7Q/NIHLP82ydZPMEZAFHpJARqu2QaHyV4VW6FExsZLzWluXp8cbHO9jDXTT5oH+cFIMqTH2MF4=
+	t=1775809137; cv=none; b=G5a+Un89geonew/O4be8uskFJGE0beEVkbxtBqXo2kEeDJKhGXZM5F8BSj3ey2n7QD5xy1Op4vYd67eY9s03t8BS8dmxgTwdgQKdg1ZAt96ZvdbqIErj+SYoH9g7qLRKuGdLepDcgsxm/pZgUNRaNC+4CX3gL3hTsXPAgd7c7Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=wWTTYuWiW92SRM4Rfco7ThNu3zooqDKXAYr/i/dV+78=;
+	bh=UYGlDi1cPoopc+/rV7EGEP17fwrJo+7fHh3T+dg3/bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aX26541B9hf7faWdZXnfkonbn8eCEMVc6v4JRYhzQXsS2wnrXgCY2Bj34oMLz1Z4/xpaS5yDYaiAm7B59F7Sd8h8RO5xoPI16aN6RQtViX3B4FHzkPZ4MzPhV0bwaIfy/09LULRpSS1Zyz5ucpYvUqnGR1uRUkyXTN+Ni9KwpF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZg4og6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED3FC2BCF6;
+	 MIME-Version; b=VlD20Sh7rs0Y+MKC+Zb1sfZkUCE9ucJzl1y3+E0p4DPzkNjCoB1pRpTv3lU6hGI0T2e3OJprRteW0/tQOwj9OgUEYrJE0qdEfZFGxWPI29c7eD9Td+Z+LBmqcA7/Ptw2c1y4nOFhJVeP5SoCVcDWxh753HbovMng9M2wN3kipew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=az6fv2rf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9863DC2BCC9;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=wWTTYuWiW92SRM4Rfco7ThNu3zooqDKXAYr/i/dV+78=;
+	bh=UYGlDi1cPoopc+/rV7EGEP17fwrJo+7fHh3T+dg3/bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZg4og6iMbQcxAgaZuzyoe++nr+DOXPstoQmGLb6LA8FVKXqqbISGN0IwEt/edTi0
-	 v9O3kskB5j03/bPJud4EozS7VgZPfg9ju20Q7E7zh4o89RsASFFq3Jh5ibYXzYzhhU
-	 sq7DTRqtyCV/LR2ChamFVxb8M2lbIhoNUrl5DeArZr/Enaw7b7n3EpmMHaNxPgoQlN
-	 /aka5iwoE2uX09wwCm8Zbcrx/375OjNm++2zk7P97PhpynyIWf/ZLe6nKoCoUaOQoV
-	 lQuNkiSJDG8as38dVlclyWxtp2dX9GbDn7gTUyY8IT5vapFbf8P2Zhw6aZzrLeu+bO
-	 3QFOCiwzjX97w==
+	b=az6fv2rf1uNhu+Zx/knqA2/WkMsBVre7Q510MlAegOtuelUJeMFz6cyFnZdcohtAr
+	 wlQ8S/KW0XoYXe84FZ9TYHw9LRWAPvQ5hi25ucO0EQGucy3s5BfEucF05Ti54UTZoK
+	 dCj/wH0wwhqlBAzuEiwdyPePs+XWOdeWuvNrNqS7p7o1yp6aNBEvmsO0TCSCj19ale
+	 zXsfHdzVnVaWAzshrwS2w1pmD6UGBCnIpyAo9XBemTZJ4LP7p4CqauP0zNinJRWDCX
+	 2WE3Xnq/8O+famIU9M0sAUJXDktTf2rtXnUhuynzOQWjeVcwjatmpg8I/PFkhKJpPP
+	 1Yim7V2On3/0w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026ui-40iJ;
+	id 1wB74n-000000026uk-43fo;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -76,10 +76,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Yash Shah <yash.shah@sifive.com>
-Subject: [PATCH 14/26] spi: sifive: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:44 +0200
-Message-ID: <20260410081757.503099-15-johan@kernel.org>
+	Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH 15/26] spi: slave-mt27xx: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:45 +0200
+Message-ID: <20260410081757.503099-16-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -96,18 +96,18 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org,mediatek.com];
 	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235593-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235595-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
@@ -118,54 +118,51 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sifive.com:email]
-X-Rspamd-Queue-Id: 5203F3D3E94
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D53E63D40F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind.
+resources like clocks (by disabling runtime PM) during driver unbind.
 
-Note that clocks were also disabled before the recent commit
-140039c23aca ("spi: sifive: Simplify clock handling with
-devm_clk_get_enabled()").
-
-Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
-Cc: stable@vger.kernel.org	# 5.1
-Cc: Yash Shah <yash.shah@sifive.com>
+Fixes: 805be7ddf367 ("spi: mediatek: add spi slave for Mediatek MT2712")
+Cc: stable@vger.kernel.org	# 4.20
+Cc: Leilk Liu <leilk.liu@mediatek.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-sifive.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-slave-mt27xx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index 54adbc057af6..74a3e32fd2b5 100644
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -392,7 +392,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
- 		 irq, host->num_chipselect);
+diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx.c
+index ce889cb33228..7aedeaa5889d 100644
+--- a/drivers/spi/spi-slave-mt27xx.c
++++ b/drivers/spi/spi-slave-mt27xx.c
+@@ -453,7 +453,7 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_host failed\n");
- 		goto put_host;
-@@ -411,8 +411,14 @@ static void sifive_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct sifive_spi *spi = spi_controller_get_devdata(host);
+ 	pm_runtime_enable(&pdev->dev);
  
-+	spi_controller_get(host);
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	clk_disable_unprepare(mdata->spi_clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev,
+@@ -473,7 +473,15 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
+ 
+ static void mtk_spi_slave_remove(struct platform_device *pdev)
+ {
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
 +
-+	spi_unregister_controller(host);
++	spi_controller_get(ctlr);
 +
- 	/* Disable all the interrupts just in case */
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
++	spi_unregister_controller(ctlr);
 +
-+	spi_controller_put(host);
+ 	pm_runtime_disable(&pdev->dev);
++
++	spi_controller_put(ctlr);
  }
  
- static int sifive_spi_suspend(struct device *dev)
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.52.0
 
