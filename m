@@ -1,188 +1,159 @@
-Return-Path: <stable+bounces-235603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFDnNpKy2Gk8hAgAu9opvQ
-	(envelope-from <stable+bounces-235603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:30 +0200
+	id CPuXMgi22GnnhAgAu9opvQ
+	(envelope-from <stable+bounces-235609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:34:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1153D3EE0
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B4F3D4256
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 83DCC302708A
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20180303CA62
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51DE3B2FD5;
-	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4DF3AC0EC;
+	Fri, 10 Apr 2026 08:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrukzgyA"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="YqBm9Us/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3FC3AE1A3;
-	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418FB38737F
+	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 08:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=AiX6Xldgm11jSHxq4H4sj6bfLSUcZtkI1kgjwVbYLV25PIsYAHdIYnh5e9maQTYw1e00ZpLvLvGxO6IO+zAPoDFGGyPu0HHGe5HsH5JP9W873AIFl0CQkM2QZ1Z+gp0TZ7N1oNBTzoa4truDN23onQ3ZomzwmGPuy8H7msMMy9g=
+	t=1775809648; cv=none; b=FKbizAQyEQE6JmjbpKcW/wwuBmiTm0GWVggEXmWh916LqNli83gmkB53NxYAdVb2fLQh9MustmeVNqNLx7Aimjzcqr2W98MZoc6/SkS58iyBXD6ChA5ffUunCgsqdwLYIJQfRVkyUX4isyCjmcQAOzj5i/n1Ar+ZqRJxZZlWOlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=6qpvDK+D39vYskh1A0D06Ay6d+QTGZD5ES00ceu6HvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdsN9+W1L0HOaI1ouXsDG6U1P3nHk8mCbBZRVHVe9Peyc3JU9VurcscIdNxQ2ugu5VVYPdongwwWUFMrwZ+Z4mv7KpyMh3H0psaFzqNWo0NQIvabVLhdGdMCNw4WxjKN4Fokc/XzWut+s4VL/LHREAac4YtMM0vMVcqJ2Q+Gsag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrukzgyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF33C4AF0E;
-	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775809136;
-	bh=6qpvDK+D39vYskh1A0D06Ay6d+QTGZD5ES00ceu6HvQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrukzgyAG0McZs9Q9eguGVr33ZLSuVZzD/J9PyVfw840gjRdf8Pll0o8d3Kp1M5Fa
-	 LSi8zQp/pEWRDx56Yz0A2uolGWs4hmtLDoCgZzisms67KPNuJ7R5n1UK8Xv88+t42b
-	 xdeBrYovNNNc98qE6m8paGpQHeURAxVenuE31cALjIbVdqZBWhu3gXTgJT58UlJheN
-	 VAAteDFLWbI4UDj/A6q3OOmlR1M9csJ4wlh2pK5NAHJaSudcHtq7GQFFdWs3CuUfg5
-	 /0T+vZDzy3CqxzTO0p0cHJHOudwr46C/bPnRGJEa1Ib+KD2rxvTefIoUaA9S1+AbRx
-	 w94IkhqtwXOKQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wB74o-000000026v6-0KYC;
-	Fri, 10 Apr 2026 10:18:54 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Masahisa Kojima <kojima.masahisa@socionext.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [PATCH 26/26] spi: zynq-qspi: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:56 +0200
-Message-ID: <20260410081757.503099-27-johan@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
-References: <20260410081757.503099-1-johan@kernel.org>
+	s=arc-20240116; t=1775809648; c=relaxed/simple;
+	bh=52kyBI9vczm0mxdcasMFMZYg1vBayzSBT4M/Wh668Ik=;
+	h=From:To:Subject:Date:Message-Id; b=Hjy9Cz8/Xfbs+AXkwYaXFDIYeTPQ7Xf9P5mzxh9uFsO+/Wmz6orzTK43E+/HfPO2kj0OZgRsmX+c2c4JJYR2i6jOjIk8il2WqTvu0ZrNaSG5WGDBEZRYcRv+engOwlNVXXDhqYN5kO+Hj9KncS9n47nstsIcV4pOKI/eJ3pD0oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=YqBm9Us/; arc=none smtp.client-ip=120.232.169.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=YqBm9Us/IzxDee2ZSpZiUC7OzkQJFGIq6UpoDqkKXUryV+4nqa3vsRcCcU1cHLKYuO8DP7n4hKTya
+	 Z6bVfScKtVN8KVy9TSVojxkLBGvLY6fxj4n+TqeoXL/tBR9TyQT8kVnkn9eNK6Chv97XFVB6HaBo61
+	 FWBEg3ngKcDAc5+E=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[183.241.248.246])
+	by rmsmtp-lg-appmail-43-12057 (RichMail) with SMTP id 2f1969d8b3a9d35-67e8a;
+	Fri, 10 Apr 2026 16:24:10 +0800 (CST)
+X-RM-TRANSID:2f1969d8b3a9d35-67e8a
+From: Rajani Kantha <681739313@139.com>
+To: joe@dama.to,
+	kuba@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 6.12.y] nfc: nci: complete pending data exchange on device close
+Date: Fri, 10 Apr 2026 16:24:03 +0800
+Message-Id: <20260410082403.2384-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org,xilinx.com];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235603-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235609-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[139.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AB1153D3EE0
+	NEURAL_HAM(-0.00)[-0.968];
+	FREEMAIL_FROM(0.00)[139.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 00B4F3D4256
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Make sure to deregister the controller before disabling it during driver
-unbind.
+From: Jakub Kicinski <kuba@kernel.org>
 
-Note that clocks were also disabled before the recent commit
-1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
-devm_clk_get_enabled()").
+[ Upstream commit 66083581945bd5b8e99fe49b5aeb83d03f62d053 ]
 
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+In nci_close_device(), complete any pending data exchange before
+closing. The data exchange callback (e.g.
+rawsock_data_exchange_complete) holds a socket reference.
+
+NIPA occasionally hits this leak:
+
+unreferenced object 0xff1100000f435000 (size 2048):
+  comm "nci_dev", pid 3954, jiffies 4295441245
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    27 00 01 40 00 00 00 00 00 00 00 00 00 00 00 00  '..@............
+  backtrace (crc ec2b3c5):
+    __kmalloc_noprof+0x4db/0x730
+    sk_prot_alloc.isra.0+0xe4/0x1d0
+    sk_alloc+0x36/0x760
+    rawsock_create+0xd1/0x540
+    nfc_sock_create+0x11f/0x280
+    __sock_create+0x22d/0x630
+    __sys_socket+0x115/0x1d0
+    __x64_sys_socket+0x72/0xd0
+    do_syscall_64+0x117/0xfc0
+    entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: 38f04c6b1b68 ("NFC: protect nci_data_exchange transactions")
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260303162346.2071888-4-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/nfc/nci/core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index af252500195c..406fd9d5337e 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -643,7 +643,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 
- 	xqspi = spi_controller_get_devdata(ctlr);
- 	xqspi->dev = dev;
--	platform_set_drvdata(pdev, xqspi);
-+	platform_set_drvdata(pdev, ctlr);
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
-@@ -702,9 +702,9 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	/* QSPI controller initializations */
- 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
--		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto remove_ctlr;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index d10e2c81131a..058d4eb530fb 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -567,6 +567,10 @@ static int nci_close_device(struct nci_dev *ndev)
+ 		flush_workqueue(ndev->cmd_wq);
+ 		del_timer_sync(&ndev->cmd_timer);
+ 		del_timer_sync(&ndev->data_timer);
++		if (test_bit(NCI_DATA_EXCHANGE, &ndev->flags))
++			nci_data_exchange_complete(ndev, NULL,
++						   ndev->cur_conn_id,
++						   -ENODEV);
+ 		mutex_unlock(&ndev->req_lock);
+ 		return 0;
  	}
+@@ -597,6 +601,11 @@ static int nci_close_device(struct nci_dev *ndev)
+ 	flush_workqueue(ndev->cmd_wq);
  
-@@ -728,9 +728,16 @@ static int zynq_qspi_probe(struct platform_device *pdev)
-  */
- static void zynq_qspi_remove(struct platform_device *pdev)
- {
--	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
+ 	del_timer_sync(&ndev->cmd_timer);
++	del_timer_sync(&ndev->data_timer);
 +
-+	spi_controller_get(ctlr);
-+
-+	spi_unregister_controller(ctlr);
++	if (test_bit(NCI_DATA_EXCHANGE, &ndev->flags))
++		nci_data_exchange_complete(ndev, NULL, ndev->cur_conn_id,
++					   -ENODEV);
  
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
-+
-+	spi_controller_put(ctlr);
- }
- 
- static const struct of_device_id zynq_qspi_of_match[] = {
+ 	/* Clear flags except NCI_UNREG */
+ 	ndev->flags &= BIT(NCI_UNREG);
 -- 
-2.52.0
+2.17.1
+
 
 
