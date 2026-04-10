@@ -1,252 +1,241 @@
-Return-Path: <stable+bounces-235568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BCjBhSH2GmoeggAu9opvQ
-	(envelope-from <stable+bounces-235568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 07:13:56 +0200
+	id MLZPM/+W2GkgfggAu9opvQ
+	(envelope-from <stable+bounces-235569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:21:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE7B3D23D3
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 07:13:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D773D2B42
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4CAA5300DD5F
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 05:13:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B41973012E47
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 06:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED123290C2;
-	Fri, 10 Apr 2026 05:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E09B35B63B;
+	Fri, 10 Apr 2026 06:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kOsDZn0V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fcEe0YMn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2662E8DEF
-	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 05:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775798031; cv=none; b=Ms8maOoIQeeCaF9kntrajQtttSdkVhhbC1au/01vj+uPUSjoC8WCCB7S2nmILs12ae6Fk+RV8K+Y5ke3yP0w85uhBRdlsYmzMZgeaWF1Tfg+6jdH4lWpRLaBWitE9qZW3+7bZV+QgCFQY7cKfe7nAWrUAU0h8LwQ0ek8RSuc48k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775798031; c=relaxed/simple;
-	bh=s5fpXjIkhtlnDKMlfUjkhC0TSxbru1oy54/jPyduY7w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NpPftUKoEEZRKoo8jZVUOUc+L3nl82O9h7nfy5bkg/JkYb4N9YywKURefAT4nwH7TaAcp7M5ZwCCnOmuop9Hz9rzJnqwUGjYj0OW2Es/XkrZnlPBu4aByNmV1/aKwPFAbR/4hN8CeL0l40+NMMwsH5NvbFi7+DPflay4paWz4KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kOsDZn0V; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82735a41920so611490b3a.2
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 22:13:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775798029; x=1776402829; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ip96ksr0TNIaLn5SBuG1rHY2Vx5CuZDHx4f8G1URE3U=;
-        b=kOsDZn0V8BiixpdX/R5//HWQmoLmutwBGzL2zrtirzc6Lj0n8BrNIXjLGnXK6NkC84
-         /qsbN2wVtnrscTdqoTmFq2Kz7bCEvi0rGtQPfR0Gs9Pbe12CKgo7ovsGgO7EhmRwJVLm
-         99GcaADJce2S+TyL5lFyw4X2q128r5CXb5VbHaJsslHFzDUDS/deSvjRt/IHSCAoP+ST
-         xo5B+8q/HahZzqEXvUTDqpJ/SKu31znGvNq7GASmS8DVuqKREC3nlLclDtejoEckuG2F
-         5rQmdZLG3pHqeDhE/Vh1P/gqB9XaR59eGzk190o0f04kaTY50azoRMA9AHg2aMeH2WGY
-         rlMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775798029; x=1776402829;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ip96ksr0TNIaLn5SBuG1rHY2Vx5CuZDHx4f8G1URE3U=;
-        b=rnVY/emGw2XRUdhZSTRDvPZ3Uf7mqtDMCyib1tlM1W1WPVhwlp4WYel7J6M6a0ixW0
-         csu2mkmCBJtK/XlFvjV+hhTJ8jU0mbBz8RhkSNYaroAcmLxcCBhhoDh8G1zb4lDGAd5O
-         lVHYYhlS0267qjNPiN5jgJCm6LgL3X0AUa4enpa3u+9uvy41fpyCR1DGhdsKYzUCtAMr
-         kU5Y4r2wry4lybyesLOIB5OrzdtJShO+taQoEogvrs/vRT9IuKbuF/oZHH26p8yldCF/
-         5KioDShsjB/nFRt5hZImzun5UJyBgtK0nkObGKHVbTNCB5eirs+OM45qfNKCl7DCgz/4
-         JOsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU88zD1aaC8e31QSKkzMp5Kgn971bljcuYOv3xf60njOmvYRz31j9KNd4bgMnlX1OXVFyfNLd8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBKEgwG4qz+y+72Z5oXht+59ZjnR+1uX3bexHNuEqUK1+By+Wf
-	Zc0Uju1FixR1+dZqNtKEcdk6Ogz7Pt89GY9I7RyHEUbY2XFUtRuqKFDf
-X-Gm-Gg: AeBDiev7G7zBscz5oED2+XQkrSgbmlo9sTmFXelTYiggemFjnt9kwB45cvARVqNqNVe
-	DKiq/md1a/lF46UEXC9ZCWR7RQ2hiyxZ90Ym0sf4Nkb+e2wVYay0RqSLgkR8GSD9mHoLdm13jHQ
-	7w5lejuwyC9hb2neZG2uwietaTArrWhTb49Hz0CAibOVRxZh61Rz09/mbIOaSzyodnJQ/peggQk
-	Kqg1anS/ItsUz0BUp6/uRKgcEkgQBD7fTCSUlBoDYaYtkPnoWy234j94CyUsF/XuigtoCXiLrv8
-	bYxpoLvJkqJfoOSDXRUdPI8k11VgmiaKTzwqWlLl2E4OgmzQsJyUuHjZtuOgZPZlYibcdtz3tvK
-	iMQP+bLjqv8YJM6IJfJooUFEDD999FRxusGVI0DeNVPmdGY29MIc1+484bTCOdOOTdmD/hJU+WX
-	MycyGd/vW2lNxFWDqhQRX9Y1+f9gykCMh/DnFoz40m3cFSUCt276G5NwvVB9RYclO841n2sGQQV
-	A4gHo5uaOxIUJIl0vXWqDTiyq/lxSMFaQ==
-X-Received: by 2002:a05:6a00:124a:b0:81f:be3c:9c9e with SMTP id d2e1a72fcca58-82f0c297e11mr1989065b3a.33.1775798028953;
-        Thu, 09 Apr 2026 22:13:48 -0700 (PDT)
-Received: from localhost.localdomain (59-190-207-251f1.hyg2.eonet.ne.jp. [59.190.207.251])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c33de57sm1295283b3a.21.2026.04.09.22.13.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 22:13:48 -0700 (PDT)
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>,
-	stable@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ALSA: 6fire: fix use-after-free on disconnect
-Date: Fri, 10 Apr 2026 08:13:41 +0300
-Message-Id: <20260410051341.1069716-1-berkcgoksel@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5177A2F9C37;
+	Fri, 10 Apr 2026 06:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775802109; cv=fail; b=Q51+bmefXOGYwjQUeZX4lJafTXWCLxXj53QxYJMy84AOgaM4dwMjpay5rDxnRuIOgt+2p8CSYpcHAs5MszhFrn1S2oxKQyX3+W3SKm489fjuP6v4nvN/IL8fpmqhnEQn+A+OH1sRHhPmh7Fu98y0+JZQzo7dp4i7Bjw+2HyNclo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775802109; c=relaxed/simple;
+	bh=ACi1PjbPmVaxohhSrkdiO1+Ue4u16wI9QCRuqULvglE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=l4Y7JDMCdezcGabr14K7X+Zw7Ko/YsEnm9s46VyAoAKFOZrCkpw/+3zWm4YJp2QzExd3C7CN+LmtEE43eCoj8RUngHCslv2wa6XFo2L2RH+OzE2QNEB0kEuvtWfi+6Vddw8vc4CgIglnwL+OcTiWusACBQ+AOTpDqzTxzvnUM4g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fcEe0YMn; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775802107; x=1807338107;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ACi1PjbPmVaxohhSrkdiO1+Ue4u16wI9QCRuqULvglE=;
+  b=fcEe0YMnQW2Wn8nGV7HqOwZ/Wn58rXFV7VvzGmAOUZX7qRTN8ZJOjlVW
+   YP2F1yFl05XY3hBn1jy5kbF+mkSfLMaR+QUhL7/YVHTFy1ybSOlaYmPzs
+   FaPCNywg/BlKfLRBE21qutS2H5eFbnF0eDkuWyi99FRlw6/xag9Dsp/Mt
+   6jjq6HBUStT0T1lma5OY/CnDVV77AhVt8GDA/OcKhKKxIRy8x1UIhdlpD
+   U70Y0L+EAeI/KAwN74JEvg/0UH8Me+ca9NOWfPEZ6EHa1MpTN2jINIFs2
+   cV0KH3Y7hYyiW/w042Pq3q/HXy7IfYI9IyUIyhDr7GdgwDNiwmT4kOCPG
+   g==;
+X-CSE-ConnectionGUID: FIk8ghYqTq+cRVHR/AR7WQ==
+X-CSE-MsgGUID: 68c23YlVQH2i+8AgC1KqAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="99448338"
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; 
+   d="scan'208";a="99448338"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 23:21:47 -0700
+X-CSE-ConnectionGUID: T56ifS0GSp+8gxpbVVR7vw==
+X-CSE-MsgGUID: 1gnJAAD9RdWw8olYrYw2dA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; 
+   d="scan'208";a="259467421"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 23:21:47 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 9 Apr 2026 23:21:46 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 9 Apr 2026 23:21:46 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.51) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 9 Apr 2026 23:21:45 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BqAm4yukeSmO2Z0GrDusQsv5SVuzjtqAMaXGrJZ9ndVzMU/golc9wFa5i4I70PI9VFwwJRxDRjXZfYrqvLKPA8QSQ19QZ0Xfn0baVr5d8WDnOFIYs7W3aE99BL7TuYDJWmIxyrYoG5IXXQz6IAbr6Ck/1T17SGahnl0AXu15ZPPFYrTOIuAyskbJc7xKvw7w/HwKzx6Sow0d27WrdwKyaYer2iHrB1G+aUDf85Yiu1yS4qaq5cpxTlB3z3+sHo7iiAVzNqGn7De9sCVBJRVEywK8tSuUrUKHHFTpA1tvqw2p4IbDMoSV+FLZhvANQENifpYFsZQ2HyOJuDWRvldAYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9qvbQ9p0Q+Wt6udN3azpWG6jzgGLkdcJDro9CfrxzyY=;
+ b=m19a8vi+ws4+YHMBNrkYLvBSh/UG5QnRbx9bq37x8JPyC0hzMpYG8lBU+2lQ+WuS0f8m4pv1/9K27QjykAbge90CNm6Py91b3kHdwvOVdEtGdeebKG78yuAOh+gaGch0m47Nhc7CSDZQp5wc+pzQ0OPYWjj+BivL4CEq+Y59ANoBAsuPn4hzAZhzyqrnsROjtHul/OyqP5CygQoaoEdqLLRC8GeGdX71Jyg4gWQOGEksVA8Lp1nSTnNpEjSJQ64UKacSzhNdOhBIVRIFZ2bpInKdqqgwGwuvCay8CnIEPIqXx+0sJ2mdi7fcJvpnhW3qvV7FWyYprzEvq3VXLVNlbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
+ by CH2PR11MB8814.namprd11.prod.outlook.com (2603:10b6:610:281::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9791.32; Fri, 10 Apr
+ 2026 06:21:43 +0000
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f]) by BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f%5]) with mapi id 15.20.9791.032; Fri, 10 Apr 2026
+ 06:21:43 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Nicolin Chen <nicolinc@nvidia.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+	"will@kernel.org" <will@kernel.org>, "robin.murphy@arm.com"
+	<robin.murphy@arm.com>
+CC: "jamien@nvidia.com" <jamien@nvidia.com>, "joro@8bytes.org"
+	<joro@8bytes.org>, "praan@google.com" <praan@google.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "smostafa@google.com"
+	<smostafa@google.com>, "miko.lenczewski@arm.com" <miko.lenczewski@arm.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH rc v1 3/4] iommu/arm-smmu-v3: Retain SMMUEN during kdump
+ device reset
+Thread-Topic: [PATCH rc v1 3/4] iommu/arm-smmu-v3: Retain SMMUEN during kdump
+ device reset
+Thread-Index: AQHcyFm5eLnC7m0EKUmoliIG7zFQg7XX016w
+Date: Fri, 10 Apr 2026 06:21:43 +0000
+Message-ID: <BN9PR11MB527631CAE6281C630FB148B88C592@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <cover.1775763475.git.nicolinc@nvidia.com>
+ <c116eba01bcd88ba3b8ba47dc08132c4546e91f5.1775763475.git.nicolinc@nvidia.com>
+In-Reply-To: <c116eba01bcd88ba3b8ba47dc08132c4546e91f5.1775763475.git.nicolinc@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|CH2PR11MB8814:EE_
+x-ms-office365-filtering-correlation-id: bebc9ffd-b4d7-4b9c-843a-08de96c96f34
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021|18002099003|56012099003|22082099003;
+x-microsoft-antispam-message-info: FQRrUS42aQ9dBVKRAY+9P0UdDbC1WFbrPSrSrSIW/PkBNxliaVpQUKYgwahD94CinOdZIQiBiLrhDb6xHYAyEaeXhY2kPpgWnlmCZZfGtE3SirhXmVEB2KuDAdL+sjlLq/kWqhO4JehxVkE1VNuvpekOUKwcbWtuonANEeNzAPVD8ofewMiuy4/2JYHclAjPHEy3xaOhhi037xQVidWzm7ir0Gpsg1ut7x0pX/VsOvtPjw+EHRAOh85l4ZKd7QFbT2j75ds6dA+lXTRxlwePtpoAa+s+U/pdO4MkOzmFl6nMu1HuMKwuD25PU7UhGxdH9+i/T9i8UDnlKvscPBUHY2e9BLAGBiiVK94ciIcGE2efKxsUfpYIL6m/VS5HUzcZByf/EazipdUiuTFNilngkiKj0/JFeRZiP/uNaeIMn8YSa1dGzA9tnCaBYq1FHWPRAX3b9+VxygwqbpJ4Ehks0vLsdZdfCNJfuF/2ZETLZv5ztgSb4BX94FlQEaTHJ5yUOMRXfhNImE7i4esQpYqhtLNSku0y3YSpzQkGJDJTvVsn7stcGL7fGeMcd9rqerTd0wfnSgqHelzrwL6JZEwBFB2y+426mcRltuB9XyNLmwAe+3El6SbpYSWNLju7Ak8WhY8bMUml4FQWPlW1yGeMktODqU5TNfWjNm5XY2g/e7Wk2qoeFhVb/FtSsp2vQB1FrpXrb7apZZyZG5hSwmP2r0UDr48d0NPkrLO0086ucqQ4uHnunmUHHepyuG0lhOpNL7RHt738Bx4Nj075p8lM/WArK8RDDmwDU8nlRudbiEY=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?DjYvnfSEWDjX2MoUKPvNdXOpjwm/3sIpSa+xk86kCBpZlsg14re4Tj5Z1hMK?=
+ =?us-ascii?Q?pjppgpS9QdFbO3fydtpqrqhRZ+qouOfMqbsYUQCalgBKeb97Cyxh65fuCkz9?=
+ =?us-ascii?Q?kPzTivCzuK0Aodt5roqIYSIB/DvwnGbKIsEY5pYMZMwd4YBaJk0tBVQOpS9C?=
+ =?us-ascii?Q?r5s8bLreRRTOLqH3JutrpWxP8nIYMlTUl7zNU7jliRHJV3vDOLQiAR/SWEeW?=
+ =?us-ascii?Q?zM0QY/U8zHQP+5+v+mm5PsetfpOnlINMHSXSm519YD1HSvlF9rOV6ZkY9Ifm?=
+ =?us-ascii?Q?wxPgix55nlaKabwOqfIqXfrWYNA5/jcB1T50I4XhOk/woYeMnWJ4OUprWHfo?=
+ =?us-ascii?Q?PU/oSc1ggpQ957Zgnt7/Jx+2njd9uG7ndkimUepFzHZIVi5beOghA6yE+eFI?=
+ =?us-ascii?Q?mqCxH+qdS+EhJmnZWD2477cIYRyhwaJRF+CtM35yZozTKDlN5cXcI6BRI+Hw?=
+ =?us-ascii?Q?bvEavF3Kj+1E3l31aVgsUG5is08+ZBNklGUFZTvulFrRMVZ03mWrmHfNx4Dw?=
+ =?us-ascii?Q?2mxS1ND+oBkDfatsO4RytsjuoREXpsYBveR4pFxkMMQ/Fvo/5B7ZosTntWts?=
+ =?us-ascii?Q?zsMXIl8YK22goWgaIo80mEAc0qP5r4m3GTKX8URlCcgblLIqJlQ8Fkfpotsb?=
+ =?us-ascii?Q?z2B3lY4zGjsxuGnDTz2ALh3kf1yb4VJDF0NtsqRkoV8E8uiWnvKWS6jBVZTb?=
+ =?us-ascii?Q?EdskTUEHzkirOQYZ6/7H1T7IdetG0AbgkOeJReM9w1tBaKUscBXZq/R51xa5?=
+ =?us-ascii?Q?8AYNv+4RSLPgia40QnUJbxEdp9X8FutK6XbR+wz6a4lcZuAVIh+uwo/jChPr?=
+ =?us-ascii?Q?yxDVxI/OoMlIl1Oi9O5lukzIUvMdSb2g6vOrvK8d13RevLcyX+/ARO45AK3s?=
+ =?us-ascii?Q?x6kwnkvi/LiYxV6UWiMiGplIl6lmNcyRZ44kFqPmVXOzDMQtz1Guv23kqa7t?=
+ =?us-ascii?Q?TrlfcRke9qUcjhWWNtIMAf4Z1QzClUMNLUukhoPZWZUBq9oywZe0WE88QK3A?=
+ =?us-ascii?Q?oLrK0/ijdsSEk0mOYMTv3LmaiHG8DjByxGbg5+3FvkEzMZW7GJTDtmBe1Xa7?=
+ =?us-ascii?Q?sgZNU9Xjr+Yn/8cLUMDwnTcshSVh1Q7Ff08hgJd+YBvJrBdSNLcRSE9tTxsa?=
+ =?us-ascii?Q?SslZBMfd7m6qkIgLyaOWhNI1zsO2PnV5SnFG5m0TIOOg3UA/s0aqkfkt7RZ9?=
+ =?us-ascii?Q?m7gNtSoG/kwtY2+ovdP5AJPebpZn1sQGZO5XGc1ta0sd/jXZVaVRj610V6ze?=
+ =?us-ascii?Q?QTyv9caqtsnrj0FPd7F7Wm1hPKxQgUqakmt9JfaQntfzeNBxePSHlwc65wo2?=
+ =?us-ascii?Q?3r6crfs11uFR1JTsxyqbEWGVt8CUzMxxxFmIpZQ0EbXC2DfIbCCl3Nwtkbf/?=
+ =?us-ascii?Q?oB6o3WbugudIC7B/jQMUAiDCCV/aRjTY+Zl93wybc4RKyMZpo6UXshEy9eAu?=
+ =?us-ascii?Q?YXt2G/peOWAgKFtktPYQJCGTlTX+eQrMXSnLcOoboCCwnrgkW1TixPVZpUAM?=
+ =?us-ascii?Q?OOw+wl+l0Vl5eAaUU1DsaJcJxf1QLRCRelUyZ99E9hq5xi8zrFX6FHQiXEYK?=
+ =?us-ascii?Q?xU3GD9C4pUBT+X/yIBpjl1yCILsWuL53SzVl8eaI99QJFVNF0zAK6PjfmmBB?=
+ =?us-ascii?Q?6GK8GX6FAwoB03SE/75NT6oZgHb5LkNZMj0gJVqYWC9OKl+j89FOImjrZ1nG?=
+ =?us-ascii?Q?EOGsmxvaUX/wz1h+IXxIlji3IkajFbh0LQPxUYNDfIR10QcIJx0fLCHa5GvP?=
+ =?us-ascii?Q?k7LQh7GLlw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Exchange-RoutingPolicyChecked: rjlEhtaueCOwI5wtz4fwRniunoy2+XA3k2bAJAv6EcPimI8+UpeczviFe7rPdORtb98RAI57lFfkboVGyPyHLjJEH3Y9WdkYDJgevtUhAOjF5G+NzAXGa4WozGM2/FkFl6FOrdSKgJ22bX123FVBlQqiccXlTo5gsb3HHHasnUdGP2k6I5EndTK/yjfqtomcY6zRUJUfDjZtVuE6BlJG/lHR3dtU9Yfl9NLUH0Wv83truxQtkUs6QPLzjXZpsvvmAw213llGaiVox3rPRQqR8IqktxH/U3sbwmT431tfOAMwbmBsY+CmNqGzm00u4GQ1fBc7c7cHXjmm44Vc0PMb5A==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bebc9ffd-b4d7-4b9c-843a-08de96c96f34
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2026 06:21:43.1453
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Y85H/FZ30ZaSTc8qAULaqIxbPX8dHFsxubGgrBcEOoCSwj4n3OM9uZuYRJFIQ5MBCOiWW99E2qQ+Q8scTDKTzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8814
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-235568-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235569-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[berkcgoksel@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[kevin.tian@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7FE7B3D23D3
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 70D773D2B42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In usb6fire_chip_abort(), the chip struct is allocated as the card's
-private data (via snd_card_new with sizeof(struct sfire_chip)).  When
-snd_card_free_when_closed() is called and no file handles are open, the
-card and embedded chip are freed synchronously.  The subsequent
-chip->card = NULL write then hits freed slab memory.
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Friday, April 10, 2026 3:47 AM
+>=20
+>  	/* Clear CR0 and sync (disables SMMU and queue processing) */
+>  	reg =3D readl_relaxed(smmu->base + ARM_SMMU_CR0);
+>  	if (reg & CR0_SMMUEN) {
+>  		dev_warn(smmu->dev, "SMMU currently enabled!
+> Resetting...\n");
 
-Call trace:
-  usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
-  usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
-  usb_unbind_interface+0x1a8/0x88c drivers/usb/core/driver.c:458
-  ...
-  hub_event+0x1a04/0x4518 drivers/usb/core/hub.c:5953
+move to after the check of kdump kernel
 
-Fix by moving the card lifecycle out of usb6fire_chip_abort() and into
-usb6fire_chip_disconnect().  The card pointer is saved in a local
-before any teardown, snd_card_disconnect() is called first to prevent
-new opens, URBs are aborted while chip is still valid, and
-snd_card_free_when_closed() is called last so chip is never accessed
-after the card may be freed.
+> @@ -5038,6 +5064,11 @@ static int arm_smmu_device_reset(struct
+> arm_smmu_device *smmu)
+>  		return ret;
+>  	}
+>=20
+> +	/*
+> +	 * Disable EVTQ and PRIQ in kdump kernel. The old kernel's CDs and
+> page
+> +	 * tables may be corrupted, which could trigger event spamming.
+> PRIQ is
+> +	 * also useless since we cannot service page requests during kdump.
+> +	 */
+>  	if (is_kdump_kernel())
+>  		enables &=3D ~(CR0_EVTQEN | CR0_PRIQEN);
+>=20
 
-Fixes: a0810c3d6dd2 ("ALSA: 6fire: Release resources at card release")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
----
-Patch applies to 7.0-rc6 (upstream master 5619b098e2fb).
-Tested on 7.0.0-rc5 (arm64) with KASAN:
-
-[   11.274798] BUG: KASAN: slab-use-after-free in usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
-[   11.274798] BUG: KASAN: slab-use-after-free in usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
-[   11.275503] Write of size 8 at addr ffff000013230a98 by task kworker/0:1/12
-[   11.276469] CPU: 0 UID: 0 PID: 12 Comm: kworker/0:1 Not tainted 7.0.0-rc5-g663cf2b1ad64-dirty #10 PREEMPT
-[   11.276485] Hardware name: linux,dummy-virt (DT)
-[   11.276504] Workqueue: usb_hub_wq hub_event
-[   11.276562] Call trace:
-[   11.276582]  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
-[   11.276616]  dump_stack_lvl+0x138/0x1c8 lib/dump_stack.c:120
-[   11.276666]  print_report+0x118/0x5d4 mm/kasan/report.c:482
-[   11.276669]  kasan_report+0xc0/0x100 mm/kasan/report.c:595
-[   11.276678]  __asan_report_store8_noabort+0x20/0x2c mm/kasan/report_generic.c:386
-[   11.276684]  usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
-[   11.276688]  usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
-[   11.276692]  usb_unbind_interface+0x1a8/0x88c drivers/usb/core/driver.c:458
-[   11.276697]  device_release_driver_internal+0x450/0x63c drivers/base/dd.c:1367
-[   11.276699]  bus_remove_device+0x2a0/0x4f4 drivers/base/bus.c:657
-[   11.276701]  device_del+0x31c/0x870 drivers/base/core.c:3880
-[   11.276720]  usb_disable_device+0x2e8/0x6ec drivers/usb/core/message.c:1476
-[   11.276737]  usb_disconnect+0x294/0x8d8 drivers/usb/core/hub.c:2345
-[   11.276776]  hub_event+0x1a04/0x4518 drivers/usb/core/hub.c:5953
-[   11.276836]  process_one_work+0x8a4/0x1dc0 kernel/workqueue.c:3276
-[   11.276850]  worker_thread+0x57c/0xcac kernel/workqueue.c:3440
-[   11.276888]  kthread+0x3e4/0x494 kernel/kthread.c:436
-[   11.276890]  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-
-[   11.339324] Allocated by task 12:
-[   11.339765]  kasan_save_stack+0x3c/0x64 mm/kasan/common.c:57
-[   11.340193]  kasan_save_track+0x20/0x3c mm/kasan/common.c:78
-[   11.340615]  __kasan_kmalloc+0xb8/0xbc mm/kasan/common.c:415
-[   11.341108]  snd_card_new+0x70/0x11c sound/core/init.c:184
-[   11.341555]  usb6fire_chip_probe+0x298/0x864 sound/usb/6fire/chip.c:120
-
-[   11.353835] Freed by task 12:
-[   11.354171]  kasan_save_stack+0x3c/0x64 mm/kasan/common.c:57
-[   11.354599]  kasan_save_track+0x20/0x3c mm/kasan/common.c:78
-[   11.355023]  kasan_save_free_info+0x4c/0x78 mm/kasan/generic.c:584
-[   11.355505]  __kasan_slab_free+0x5c/0x88 mm/kasan/common.c:285
-[   11.355945]  kfree+0x164/0x61c mm/slub.c:6483
-[   11.356285]  snd_card_do_free sound/core/init.c:597 [inline]
-[   11.356778]  release_card_device+0x16c/0x1fc sound/core/init.c:153
-[   11.357221]  snd_card_free_when_closed+0x30/0x44 sound/core/init.c:612
-[   11.357696]  usb6fire_chip_abort sound/usb/6fire/chip.c:58 [inline]
-[   11.358103]  usb6fire_chip_disconnect+0x298/0x358 sound/usb/6fire/chip.c:182
-
- sound/usb/6fire/chip.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/sound/usb/6fire/chip.c b/sound/usb/6fire/chip.c
-index 5ff78814e687..874f6cd503ca 100644
---- a/sound/usb/6fire/chip.c
-+++ b/sound/usb/6fire/chip.c
-@@ -53,11 +53,6 @@ static void usb6fire_chip_abort(struct sfire_chip *chip)
- 			usb6fire_comm_abort(chip);
- 		if (chip->control)
- 			usb6fire_control_abort(chip);
--		if (chip->card) {
--			snd_card_disconnect(chip->card);
--			snd_card_free_when_closed(chip->card);
--			chip->card = NULL;
--		}
- 	}
- }
- 
-@@ -168,6 +163,7 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
- static void usb6fire_chip_disconnect(struct usb_interface *intf)
- {
- 	struct sfire_chip *chip;
-+	struct snd_card *card;
- 
- 	chip = usb_get_intfdata(intf);
- 	if (chip) { /* if !chip, fw upload has been performed */
-@@ -178,8 +174,19 @@ static void usb6fire_chip_disconnect(struct usb_interface *intf)
- 				chips[chip->regidx] = NULL;
- 			}
- 
-+			/*
-+			 * Save card pointer before teardown.
-+			 * snd_card_free_when_closed() may free card (and
-+			 * the embedded chip) immediately, so it must be
-+			 * called last and chip must not be accessed after.
-+			 */
-+			card = chip->card;
- 			chip->shutdown = true;
-+			if (card)
-+				snd_card_disconnect(card);
- 			usb6fire_chip_abort(chip);
-+			if (card)
-+				snd_card_free_when_closed(card);
- 		}
- 	}
- }
--- 
-2.34.1
-
+then just don't enable them in earlier lines?
 
