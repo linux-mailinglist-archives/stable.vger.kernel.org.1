@@ -1,90 +1,94 @@
-Return-Path: <stable+bounces-235562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPJNFEB62GkFdwgAu9opvQ
-	(envelope-from <stable+bounces-235562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 06:19:12 +0200
+	id MNJXI+p/2GlSeAgAu9opvQ
+	(envelope-from <stable+bounces-235563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 06:43:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16753D2061
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 06:19:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4923D2228
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 06:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 261283015840
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 04:19:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 78200301C10D
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 04:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2656D325704;
-	Fri, 10 Apr 2026 04:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9B733260F;
+	Fri, 10 Apr 2026 04:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nKdtQT4t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="haz6t1fr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74DE2D97BA
-	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 04:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA35332601
+	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 04:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775794745; cv=none; b=NaprooFjQGHRcUxCqYBejyhdqg8WUYqPeYeDFjcplaxTGJSKH2IF/tEEm1k08/nV5kIAa4PRlaevdJpUmqRjIpR5iHjt1hJa5smlN0OpV67+hEhfgagk52x1nB/L8sdy8dJKbphnwaMiO1CgXjuQoExeRNlS5iHFDvdDGW5cwxo=
+	t=1775796199; cv=none; b=RnHPAkPYXFE+SdLXedimjoipEZ5ArR5ulKvAuH4fDq62Fy/RmdPndJZQsd9sAELmHt62o3QVLWmjV5vczmLgpja3UozbTpVjCqkWttJUT3dlKBoFRSuFn7KXcV5fiVdEvBjE3M+cyCiuuTzzorAGCruDzXoY+rLoc4fFmDRB6Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775794745; c=relaxed/simple;
-	bh=NEUcm4XzPfP/HJy8rIOWDFJWp7Ebx68TFO0vLONSQsw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XD2xOdthLGb+Y2DQWUis7SUsqQW+EZSvbI82ix+SyZYtSFxAa9Tw+sk72pEH9Q8Yq1CF+DwHuDYfYiUqt0bE63KEmMHPCFr+RawoUOQo4Y81fVeJpqe+g3++d1GyWTw2uUK4BauH2Fs1jEeT5N40M1r3dRMrQQctqnqVCfMQWYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nKdtQT4t; arc=none smtp.client-ip=209.85.219.54
+	s=arc-20240116; t=1775796199; c=relaxed/simple;
+	bh=iN3sIFcZLTLFMSNhoVbJjjcQ9cXhEOUIXwgOoP8u4v4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bPR4EY7IyBCkYmf4hidWykZF/2WPo/agTjJmykQ7S/vzM/NNCziRovaHfZ3Gtryg/dKK8CpYEv92abtkM8Q6YjuQQp7NGK6ce1ncUIrbVc0B68boYBZcJzHnNoMF/j4gHpjgrl/FGpipunggoZshu7B64+j7iloKtrUT/8Db904=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=haz6t1fr; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8a151012558so19179216d6.3
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 21:19:04 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82c70e4654eso765000b3a.2
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 21:43:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775794743; x=1776399543; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ArSw/Jy6VI8sSzLBGSoBorIgScihUu+vrKWP2sPCXow=;
-        b=nKdtQT4tjffo4RTnMAfp7y9y4WGKPge6DfPHVcres02jEvUBWEFM4wMJ5biaja4ew4
-         rDvStteyZfsR2AYlFXKgwnYlFyiXTxRyrwJJeCWaSosDpvlXIhjFa5DhnbEJswdS3IdJ
-         4ql69eWYUuse6CP23QW9SjfIQN2Ba/WsZ/cYQdFV75dn2Cc77RBNPcGlbVG8qcU9zIFF
-         uKYu8u93ZfEjQma2gcW31hLYVC0crU2sk1yLkAmnv7FFRSgZbCvjqYfsuAVLCUAggj7w
-         Fdjl/aOgogh0eaMAGDoPwaWPBqvU8QICNa8SrqJzsksJje0jifV2uSPLRWX+52q6U8YB
-         ZAdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775794743; x=1776399543;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775796197; x=1776400997; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ArSw/Jy6VI8sSzLBGSoBorIgScihUu+vrKWP2sPCXow=;
-        b=G7FR+JaKYyEgh7+AzodndJ99Ux3SylLYocaObbZbNQZTvyA4QLYf33fEfSoiud86ZR
-         ggkbASNBQexg5y9Ljq6HmLgYS9Q/0kY4qu67k4e73sQ9jOnNs+L9we7BCEdXX+FOew5A
-         /5X6m+WtpxSRzO6y0TGo0PycP/F4f/OrmkqYSTq3Ew+guBov8US5kdnJFpx+ah2iTnsc
-         EeB3PRsVGlvAZv2ZxHAosRxX9h43EgCAUJbak06kguw1bIGqXbK86Oe9M4iPudhGt8ZE
-         Lt20H1nx5XzaeRsLTKUaoiAn1vQE/Mdc4Y+bMhmmbIk4sig/DyJkpUJbgLk34S9hKrpd
-         7o+A==
-X-Gm-Message-State: AOJu0YwZeKzwuz0K5ACLIAomUol2/gLHPfWAA7B/a9ZUkJDrHzAaOrh0
-	oQ/FqT6NPU2753BsBTHIxrqpvRn+0VO8D7XWceNyu/2IR+tE9rgwYNVN
-X-Gm-Gg: AeBDievhqVvk/gdu0LXZejK8aJyQig9uq98zCze7IprNB6cEL1EM0NXcFyTLJF+yFb1
-	cbS6Gm9zl/zdSNFTz2wKIpo2l009AI0Uhq79E+d/FoHwTTXuvFJpGZCYGKOocpywwsM04syKH3f
-	9Xu2lgqRpRhtw/XSpO7OdVSqDzONSagu0HzPWRbD2aniZJvriIANNv2tqNgTITE2L9p9wbXyfwZ
-	CNlZD22dLkOiJ0YuxRMTTOeVghZb/6CTfrb1iK8VBdnOPNPVAmBkqt9DXJvbsi/r1i1I6cjlNNz
-	bsGoeaZltR7oX7yTJYTMjyHeIr/s40OSDViCNmd5VH1bUZ+cNAiqRv6AfhAAl9KGkDZQDC+2V/q
-	t6y/x2FGt5B2VPtqISg9irGvvoWKu6E7+AH5he44E26Q31qKzYXhFRXFMAuwps/oBx8k++dBH2a
-	vBXR4oM3qVy9RzGU3oL4QPjppqlz0xp39rn/tAfCcYCdZ0WDPkEJgNLSPQebGDVOZXUNWa/Fqud
-	OLutN9cepX7yqN9Fv7sAA4sqJ4m
-X-Received: by 2002:a05:6214:54c4:b0:89f:123c:4d9c with SMTP id 6a1803df08f44-8ac861ad302mr23047736d6.18.1775794743411;
-        Thu, 09 Apr 2026 21:19:03 -0700 (PDT)
-Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84a104ddsm12905896d6.14.2026.04.09.21.19.02
+        bh=jBXWLvahdu/HVwF/Faib/MOJG0gD/Btl4TI2BjLmBLY=;
+        b=haz6t1frmpIqYW0OEJZSjetGTEipnYfZ+6Nuz2T90s25he1rc6ttvliAM7d2RbAmhS
+         lPipSVMRet6ciCh170bkHLnNRc6p1gwnXkVlxOHThbxx5wxnXDx876I5pJpR2WiqXrkS
+         Rz6AaMf0vk+EvgZyU9sX4AuRm2aZD+ebzYtrACvwkRHsq9/pE5nRzC51gUvaxo1lw8Un
+         SSDoF/3Z/Q1HiPCSrbirOiwbtfCAZzytdElspX+iwwseQ4BGJfZy97k+JHaQBVzFebmI
+         8AEKmPEslYb4QKI+9/yLQr8ERRx4hHxTeap2Xp6uncICm8ySDXe0MANpF+Alu0ZLTFLX
+         Ut2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775796197; x=1776400997;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jBXWLvahdu/HVwF/Faib/MOJG0gD/Btl4TI2BjLmBLY=;
+        b=U8xArdAkL5X9BXdwBm7m3Ttk+4Wp2EDzfa+RxQB0L2XSPUpf7xGdKCwnITJt7kxb+w
+         7NQa/ysjKQvwnKQO1gW4EMmzyRNUOVp3X5C2ly92JLbI8dBU16cDfs0tvSYKxZRtdcdR
+         WRXGqHvVuzbZXT4gk6e5NnGQhb+00kTXNYnLvYl/Fl/pvN1WWHUjC/EOEdEB/AZr6F5h
+         Xkupi0l5nVJFxblr57jRBbqdsOn8t8mTIJ7zvRq3HzOg1s1XpT0O0PWkQVBZaSVX0cmL
+         QV4dvCV97T8xUf2k06fSzFIYXE01vwpQ4XSwMkuSCLrznTqtvyhTyWtARTrUZm+6oO/E
+         J0zw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1Aq5tR9O0L/KI2ZTOIVPU3IBk05AXCMp5cEKLZp/3sgLxaRa7EMVWkCTnepacEVZzhxmVNXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLVC+ihQ+J4IpD4HonGKCgugjPIiF9fQsOkHns3DYxRljNx2VN
+	zujH3Ekl2wUqePk2OOOsQspmegCZmvwcMyqPGbwT5+slTWRmAalYJzGG
+X-Gm-Gg: AeBDietrYlIa2KqAknFOmEjwvS09hqUbzYlfMwdgHxxiCzlKXr8sf/Ql6+Fw67yf5Yj
+	fUndAAY0D74CxkcRlp7iaqN2ZQ4tdLy5si22LhsAwsLygaCNYt0mIkCzoopwKnH2hSGqd+A/isM
+	EUuGBa/OY2JIrGh1tsd27ZwtR+wZIQuw4h/8BYVNon9x3ENVyMTUc3E1Wg3Pwem54PetNZ3836m
+	rTZoYjqi3yhrLfX3pguNrKgRxargXj6aWbteShM7E71nUlZlj/i749aG2eBKri3CgmsJbZIIOQE
+	oE+V5WfGHhv6NUidbkK4+mEG939POANcOSu9EZ18AlHqrmIa9tUqQHTOHT1UB7stAmaJ4iAH8tJ
+	QRRNTf6cteLOYy4W2Owa/jDHsexyssuPMvlRv1tPgVqZjlRXfYDEvCuFhkn/ZMJMLZtKZPJKXB2
+	5rbFNs6T6O91lk+oeP6HZeheJeJ2o=
+X-Received: by 2002:a05:6a00:b908:b0:82c:6da7:2d3d with SMTP id d2e1a72fcca58-82f0c250a31mr2001305b3a.11.1775796196784;
+        Thu, 09 Apr 2026 21:43:16 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c30e7besm1200109b3a.5.2026.04.09.21.43.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 21:19:03 -0700 (PDT)
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
-To: dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Subject: [PATCH] drm/dp/mst: fix buffer overflows in sideband chunk accumulation
-Date: Fri, 10 Apr 2026 04:19:01 +0000
-Message-Id: <20260410041901.2438960-1-ashutoshdesai993@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Thu, 09 Apr 2026 21:43:16 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Quanmin Yan <yanquanmin1@huawei.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Fri, 10 Apr 2026 12:42:58 +0800
+Message-ID: <20260410044259.95877-2-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260410044259.95877-1-aethernet65535@gmail.com>
+References: <20260410044259.95877-1-aethernet65535@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,21 +102,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-235562-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[huawei.com,lists.linux.dev,kvack.org,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-235563-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[aethernet65535@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -121,66 +125,73 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B16753D2061
+X-Rspamd-Queue-Id: EE4923D2228
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-drm_dp_sideband_append_payload() has three related bugs when processing
-device-provided sideband reply data:
+Problem
+=======
+When a user sets an invalid 'addr_unit' (e.g., 3) via
+DAMON_LRU_SORT, 'min_region_sz' becomes a non-power-of-2
+value. This value eventually reaches damon_commit_ctx(), which does:
 
-1. Zero-length curchunk_len underflow: msg_len is a 6-bit field taken
-   directly from the DP sideband header. If a device sends msg_len=0,
-   curchunk_len is set to zero. The condition (curchunk_idx >= curchunk_len)
-   is immediately true, and curchunk_len-1 wraps to 255 (u8 underflow).
-   drm_dp_msg_data_crc4() reads 255 bytes from chunk[48], then memcpy()
-   writes 255 bytes into msg[], both far out of bounds.
+    dst->maybe_corrupted = true;
+    if (!is_power_of_2(src->min_region_sz))
+        return -EINVAL;
 
-2. chunk[48] overflow: curchunk_len can reach 63 (6-bit field). chunk[] is
-   only 48 bytes. Multi-iteration payload assembly appends 16-byte blocks
-   until curchunk_idx reaches curchunk_len, writing up to 15 bytes past
-   the end of chunk[] into msg[].
+Although -EINVAL is returned, 'maybe_corrupted' is already set. The
+running kdamond observers this flag and terminates unexpectedly.
 
-3. msg[256] overflow: each chunk contributes (curchunk_len-1) bytes to
-   msg[]. No check ensures curlen + (curchunk_len-1) stays within msg[256],
-   so the memcpy can spill into adjacent struct fields.
+"Unexpected termination" here means the kdamond exits without any user
+request (e.g., not by writing 'N' to 'enabled').
 
-All three are reachable from any DP MST device that can forge sideband
-reply messages on a physical connection.
+User Impact
+===========
+Once kdamond terminates this way, it cannot be restarted via sysfs
+because:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+1. DAMON_LRU_SORT is built into the kernel, so it cannot be unloaded and
+   reloaded at runtime.
+2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
+   Writing 'Y' does nothing, as 'enabled' is already Y.
+
+Reproduction
+============
+1. Enable DAMON_LRU_SORT
+2. Set addr_unit=3
+3. Commit inputs via 'commit_inputs'
+4. Observe kdamond termination
+
+Solution
+========
+Add an early validation in damon_lru_sort_apply_parameters() to check
+'min_region_sz' before any state change occurs. If it is non-power-of-2,
+return -EINVAL immediately, preventing 'maybe_corrupted' from being set.
+
+Fixes: 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
+Cc: <stable@vger.kernel.org> # 6.18.x
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ mm/damon/lru_sort.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index f2a7dbc5e..5261a4a54 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -789,6 +789,12 @@ static bool drm_dp_sideband_append_payload(struct drm_dp_sideband_msg_rx *msg,
- {
- 	u8 crc4;
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 554559d72976..3fd176ef9d9c 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
+ 	param_ctx->addr_unit = addr_unit;
+ 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
  
-+	/* curchunk_len must be >= 1 (min 1 CRC byte) and fit in chunk[] */
-+	if (!msg->curchunk_len ||
-+	    msg->curchunk_len > ARRAY_SIZE(msg->chunk) ||
-+	    msg->curchunk_idx + replybuflen > ARRAY_SIZE(msg->chunk))
-+		return false;
++	if (!is_power_of_2(param_ctx->min_region_sz)) {
++		err = -EINVAL;
++		goto out;
++	}
 +
- 	memcpy(&msg->chunk[msg->curchunk_idx], replybuf, replybuflen);
- 	msg->curchunk_idx += replybuflen;
- 
-@@ -799,6 +805,9 @@ static bool drm_dp_sideband_append_payload(struct drm_dp_sideband_msg_rx *msg,
- 			print_hex_dump(KERN_DEBUG, "wrong crc",
- 				       DUMP_PREFIX_NONE, 16, 1,
- 				       msg->chunk,  msg->curchunk_len, false);
-+		/* Guard against accumulated msg[] overflow */
-+		if (msg->curlen + msg->curchunk_len - 1 > ARRAY_SIZE(msg->msg))
-+			return false;
- 		/* copy chunk into bigger msg */
- 		memcpy(&msg->msg[msg->curlen], msg->chunk, msg->curchunk_len - 1);
- 		msg->curlen += msg->curchunk_len - 1;
+ 	if (!damon_lru_sort_mon_attrs.sample_interval) {
+ 		err = -EINVAL;
+ 		goto out;
 -- 
-2.34.1
+2.53.0
 
 
