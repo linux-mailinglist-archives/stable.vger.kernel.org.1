@@ -1,132 +1,243 @@
-Return-Path: <stable+bounces-235647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJE/CcEr2WnhmwgAu9opvQ
-	(envelope-from <stable+bounces-235647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 18:56:33 +0200
+	id OHBeEvsu2Wl+nAgAu9opvQ
+	(envelope-from <stable+bounces-235648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 19:10:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5853DACA2
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 18:56:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71CF3DAE6D
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 19:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1FEF304F666
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 16:53:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 403283006174
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 17:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3EC3E3D8C;
-	Fri, 10 Apr 2026 16:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CF63E2741;
+	Fri, 10 Apr 2026 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+A3PRtU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rfplRdNw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5936A3E3160;
-	Fri, 10 Apr 2026 16:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775839908; cv=none; b=hw6r2ePL08hgpuMdEAJmoDq/PbeLmRkZ6BcxtgGMBlBQeIf9ChaAI6dFeCrb9Dl//EvLQqeLMW/K1oYMYnqMGQQv/YRudVXJ2cAdBnejKonorSF/D0FWqww6ZN5LEE9Cl6UCAG4v5fhSnCmEewPXaytcrp74ZzozR/rZUtLOYSI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775839908; c=relaxed/simple;
-	bh=NQfGQ1DrLGSYbEP7ZD609eRpMsqCIGzMff2uyo3WNVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHtnx17x6oALA/+hDOB9ZdtllZOl3riGp9cwIsjyQd14QhtIYYg78rPiDdb3+iR8+KuiVcxJ34n8RIEW0P1Au74WLbWkKu2CeQc02X22XoTX3U3WrsCYknXpx5JegZ/wJCk0aenPYEdz6DBdHeEk1JSGp/DSpYnEXONWG7gS08c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+A3PRtU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C52C19421;
-	Fri, 10 Apr 2026 16:51:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775839907;
-	bh=NQfGQ1DrLGSYbEP7ZD609eRpMsqCIGzMff2uyo3WNVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o+A3PRtUgea3IQiAC27/t8SEo6+EkHm3jAffV6MNTmZI+rFHVKnUVNAttnK6S+GV5
-	 mav0o7GUg3Y8mgKmWnmxTOLU09kBRtNWZdDnPHb5r0m9aG1cODLRVT2E7/agJYhijs
-	 jOsiKnc+XRRbBHOv587KtIL6tAAn6ybohfTZWoJ1jd6Ru1Hmf/OZeaDkr39eF75ftD
-	 Ul16rJkDp0IBT5MwZIP/EIJlmnEQ/RCcsHhGLoacDhJa7sYGnM1/xP/zYpavAX2swV
-	 wR/uoEaB6aGpzXI33upO6wUnHYPXRz3Lfb5N9nnZnrnaVllQiLxuWzEMSfQNM/lnCi
-	 n9mrojpQpICXQ==
-Date: Fri, 10 Apr 2026 10:51:45 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>, linux-scsi@vger.kernel.org,
-	martin.petersen@oracle.com, sathya.prakash@broadcom.com,
-	chandrakanth.patil@broadcom.com, stable@vger.kernel.org,
-	Mira Limbeck <m.limbeck@proxmox.com>
-Subject: Re: [PATCH v1] mpt3sas: Limit NVMe request size to 2 MiB
-Message-ID: <adkqob9VZ-G6mrsW@kbusch-mbp>
-References: <20260409184217.32992-1-ranjan.kumar@broadcom.com>
- <eec3bbd3-5503-423b-bb3e-22657026d573@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5563DFC77
+	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 17:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775840991; cv=pass; b=C/kgvv3a8MXQblXogi/BNE7zD4Dzh7CRMi66T8PANPZwzCW112RJEaJHD+paw1MjJEk1XmXT4aVjXSexOlqSrX7fB9Kzvzl6ymanAC2rLnePk7aQggf9h1v9LOYXcGbSqrpbVqlm4pont2k9dQKAuG1X5Of5/0ZLC7YY8nitLiQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775840991; c=relaxed/simple;
+	bh=AdRLWuRnA9WFkshkxgv4Av+3azQPL66RiuSI1tP85uw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RjsIOQGHwliJs6ztKtYelG82bQs6K30cAMxWsWyyuU68KFInACnpsSCqMOX8t5Z2coJnvzX7Of322cqF+ljQsnfWDpu6WknckODunaBpXhPaXL6b+JEK2zc2HTi3yp2GSoDvs0i0QT7PB/2U2+xi/blJibrDqJuLS2Yf6Fhqd1E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rfplRdNw; arc=pass smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43cfd832155so1476422f8f.1
+        for <stable@vger.kernel.org>; Fri, 10 Apr 2026 10:09:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775840989; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fJdaiBJxCoiBJKB6O5/KXEyAoNUlMdq+G2ER3VRHbn6e+rulEtN7AYtElNX1RHry9X
+         6XBwfyuA4tpP0cGwsTJRqOJMUY9swzbje6FdTgj0Kf+NHPQJaxmBwoIihbDo0mJhaFKq
+         lIVNXG1lx5AeRcD/UkWzhNOwFBum+NsGqjzWU97pgBJS3It0GomPrKAFCrjjjGXb2UPb
+         KZylE28LSaipMa4dh8PY2kyToahmhj+UOWucCa/5hjYOc1urDF/OtHbTd2dCnY3IxgHC
+         qTzL6DuToXj6q4LuD8rMtB8/ma/dzOftovdD9YcDnqjtPOm6rkHtUeq8jPjpdfpFZrCB
+         bA3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AdRLWuRnA9WFkshkxgv4Av+3azQPL66RiuSI1tP85uw=;
+        fh=7hiZSCwoZyaOUYS8VK5gCG7hrrxoWW2nUz6wtZ1T8O0=;
+        b=FqX8QH7Ml0j9FzyaCyr1tBo1fZiSAxuDNSCbMrb6JQa2gB+YBQM6iZpEv4Hr0dMtNz
+         hKNt3GMKJ2n1477XmGKLDTTezF9sJyHkBWb9QliZ+bk40CYmHpEapRZyxJxcVFL+zijB
+         pOb4ydLcUSX2vWYYiHasuEMCOJqXV+SrV0SWkj7HrIHdDV3k5RI+7M+cfRbSh+yX/jJh
+         he+Uiy5CQfux4AEPT3b9pvSEdjwocWIJmxNsicBdVXl6laDvl91S8IGXFvDy6i2I32rJ
+         ziSDupZvUFgrgHNQOaThsYP6ioiOjGrY2Z87Q1dUeL5GbqKYLC7/54H6hbQPcPLYzg0Z
+         DQNg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775840989; x=1776445789; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AdRLWuRnA9WFkshkxgv4Av+3azQPL66RiuSI1tP85uw=;
+        b=rfplRdNwLmtq1485FcQYnG9yYcA4JqOjnRrd0GTnhOcjOWDMzTWZxHMu1UhSZvmJYE
+         JKDJyeEtpkXeKIBSKBuOKchW5Ecwo+7TfwDN/ZJDBFK9PCbRuBXB2R9WnFVWwHfBIr6l
+         U5eCWH3VErvykzhIYEn7jOaQDuvFUGQWrMTku6tpX7IMQ7nelXnrhZecJ4ybKbbwQa2S
+         0Rpb7rTrSFYHk+EuHHbeb+gWp9a49TNq7+3oaZayWBcK7vxKo91a9k45udlvTCtrQlsr
+         CRGmzh7YITLIHqGuNT1z+R884JxNWTgyNen4HuES1hU5EWI7JGDxPyugarqSWXbxSgx6
+         ZxCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775840989; x=1776445789;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AdRLWuRnA9WFkshkxgv4Av+3azQPL66RiuSI1tP85uw=;
+        b=E5M9e+x1MHUzSifd2Tgqx90QGg4t5GS1IfCyCjBoGY/KGwm/yldB8wsvk0+D7tKifp
+         b5iUd81oNykTmabPpA5zarGG3SJQvp/LX/n7Kr1x9oN8sc59+Fiq6PH3D+BWlvl/SndU
+         qC92SbLEEcjJVLcwgvkImvnNzFckc9RuzvuzDy7ZIDb7AOChuqMFbK5mV/UySHyRpRHe
+         SRNfkrPtb+Fj1ww0+4qje2U/6qnYiqdm5iUmqY4nW+QTYBlVesYY7eXC4iSPa3d0oaOn
+         ba8HN/3pOxYwV6NAS3EAYQoagvMXm6PVQbU4SUkQ+Mr0L7nc7L8aaYYGJjPGvlgZ1h7F
+         MdbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXrgJ7HDWv+Qe/jMJ36JKO+YM4wPWZR7zHI7/eQ6R/uBxOuDre6a3+U3K/yCmtsp2Za5mS3fM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0hknNe8eKRjaFpNta3qHoHWfoLT3Ragy0jXfJK8jlDJRb6Ja5
+	FtGiPPCWKPLMDK/aKCyGdIo5BCRL0SGnaE1akdfcCwEkSD+IazBQktkbbU9Y3TtvtYqhqR6v4vk
+	fKN8pxRgOgzqZgvVy02VfWzy1YNHxuww=
+X-Gm-Gg: AeBDietYnHM8MRPv4z5NBoxoZIfbE36oD+0kz9Rbze2UJwhM110dlTdTtKW4C9/AUX2
+	Jm3HbNNcOIWxtHCwqKOMGiyqAuSGRX7LlISXySgWUQRswE2JAw/PorlcWVPeeugl/oouIunHOzB
+	xIlKYQvJ9DVvEDsq0pd0RG0cmuZJmJ0Yr1J0iPPnwVlQsWWvpH6XdEqI2igVRxoVHWSNWYkwUOK
+	sPJtHH3yQo7BlFlKbfVJjRaH0SOCQjRs64634bqfDSS8/XdzRUjm0fmXvqxvWPLo3Nc1l4ciuN0
+	R0dKiA==
+X-Received: by 2002:a5d:64e6:0:b0:43d:c75:9479 with SMTP id
+ ffacd0b85a97d-43d642b6965mr6229236f8f.31.1775840988642; Fri, 10 Apr 2026
+ 10:09:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eec3bbd3-5503-423b-bb3e-22657026d573@kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+References: <20251021-io-uring-fixes-cancel-mem-leak-v1-0-26b78b2c973c@ddn.com>
+ <4b5a8040-b62c-4d75-a474-70d0b4759461@bsbernd.com> <CAJnrk1ZohxcDERszbii8ZM0g1ZzTwk6+wEqRWpCoSwBXzgavkg@mail.gmail.com>
+ <adiiTGjP1tqZfIrI@fedora>
+In-Reply-To: <adiiTGjP1tqZfIrI@fedora>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Fri, 10 Apr 2026 10:09:36 -0700
+X-Gm-Features: AQROBzCpZMIPHwwS4vGwVuACseQ5RHtCi6FxKCwQuR_ShPf8SxJSWHzXmO8Ytvg
+Message-ID: <CAJnrk1Y37_=OtwZHK_-AEN9Fysoi8VapeiQmv-xxvWjZJZn8+Q@mail.gmail.com>
+Subject: Re: Re: [PATCH 0/2] fuse: Fix possible memleak at startup with
+ immediate teardown
+To: Horst Birthelmer <horst@birthelmer.de>
+Cc: Bernd Schubert <bernd@bsbernd.com>, Bernd Schubert <bschubert@ddn.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel@vger.kernel.org, 
+	Jian Huang Li <ali@ddn.com>, stable@vger.kernel.org, 
+	Horst Birthelmer <hbirthelmer@ddn.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235647-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235648-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DF5853DACA2
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bsbernd.com:email,birthelmer.de:email]
+X-Rspamd-Queue-Id: A71CF3DAE6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 10, 2026 at 06:11:22AM +0200, Damien Le Moal wrote:
-> On 2026/04/09 20:42, Ranjan Kumar wrote:
-> 
-> >  		if (pcie_device->nvme_mdts)
-> > -			lim->max_hw_sectors = pcie_device->nvme_mdts / 512;
-> > +			lim->max_hw_sectors = min_t(u32,
-> > +					pcie_device->nvme_mdts / 512,
-> > +					(SZ_2M / 512) - 8);
-> > +		else
-> > +			lim->max_hw_sectors = (SZ_2M / 512) - 8;
-> 
-> I am very confused here: SZ_2MB assumes that you have an SSD with a minimum page
-> size of 4K, which can fit 4K / 8 = 512 PRP entries, each referencing 4K (one
-> page), so a maximum of 2MiB. However, if I am not mistaken, there is nothing in
-> nvme specs that forces the MPS field to be 0 (which leads to a page size of 4K).
+On Fri, Apr 10, 2026 at 12:21=E2=80=AFAM Horst Birthelmer <horst@birthelmer=
+.de> wrote:
 >
-> So this seems incorrect to me, even though that will probably work for the vast
-> majority of SSDs out there, some exotic ones will not be correctly supported.
-> 
-> Keith ? Am I missing something here ?
-> 
-> Or do we simply do not care about SSDs with a minimum page size > 4K having
-> their maximum command size truncated ?
+> On Thu, Apr 09, 2026 at 04:09:53PM -0700, Joanne Koong wrote:
+> > On Thu, Apr 9, 2026 at 4:02=E2=80=AFAM Bernd Schubert <bernd@bsbernd.co=
+m> wrote:
+> > >
+> > >
+> > >
+> > > On 10/21/25 23:33, Bernd Schubert wrote:
+> > > > Do not merge yet, the current series has not been tested yet.
+> > >
+> > > I'm glad that that I was hesitating to apply it, the DDN branch had i=
+t
+> > > for ages and this patch actually introduced a possible fc->num_waitin=
+g
+> > > issue, because fc->uring->queue_refs might go down to 0 though
+> > > fuse_uring_cancel() and then fuse_uring_abort() would never stop and
+> > > flush the queues without another addition.
+> > >
+> >
+> > Hi Bernd and Jian,
+> >
+> > For some reason the "[PATCH 2/2] fs/fuse: fix potential memory leak
+> > from fuse_uring_cancel" email was never delivered to my inbox, so I am
+> > just going to write my reply to that patch here instead, hope that's
+> > ok.
+> >
+> > Just to summarize, the race is that during unmount, fuse_abort() ->
+> > fuse_uring_abort() -> ... -> fuse_uring_teardown_entries() -> ... ->
+> > fuse_uring_entry_teardown() gets run but there may still be sqes that
+> > are being registered, which results in new ents that are created (and
+> > leaked) after the teardown logic has finished and the queues are
+> > stopped/dead. The async teardown work (fuse_uring_async_stop_queues())
+> > never gets scheduled because at the time of teardown, queue->refs is 0
+> > as those sqes have not fully created the ents and grabbed refs yet.
+> > fuse_uring_destruct() runs during unmount, but this doesn't clean up
+> > the created ents because those registered ents got put on the
+> > ent_in_userspace list which fuse_uring_destruct() doesn't go through
+> > to free, resulting in those ents being leaked.
+> >
+> > The root cause of the race is that ents are being registered even when
+> > the queue is already stopped/dead. I think if we at registration time
+> > check the queue state before calling fuse_uring_prepare_cancel(), we
+> > eliminate the race altogether. If we see that the abort path has
+> > already triggered (eg queue->stopped =3D=3D true), we manually free the
+> > ent and return an error instead of adding it to a list, eg
+>
+> In my case (Bernd mentioned that I was investigating a hang during umount=
+)
+> there were a lot of requests created during teardown, so what happened
+> was very similar, but for exact the opposite reason.
+> In fuse_uring_abort() queue_refs was already 0 due to an optimization
+> where the ring teardown ran before fuse_abort_conn().
 
-Spec doesn't require it, but industry converged on that as always being
-the minimum supported page size. The nvme driver rejects any device that
-doesn't support 4k pages because they can't be reliably supported on a
-lot of archs, even ones with larger page sizes. So it should be a safe
-assumption that everyone supports 4k since no on is complaining. :)
+Hi Horst,
 
-On the patch, I initially left the "- 8" in the calculation to account
-for page offsets. But it's not necessary because that gets absorbed in
-PRP1 within the command, so we'd have at most 512 entries in the PRP
-list for a 2M transfer.
+Just to clarify, is this with running locally patched changes on your
+ddn kernel? In the upstream code I'm seeing that teardown is only
+called by the abort path, eg fuse_abort_conn() -> fuse_uring_abort()
+-> fuse_uring_stop_queues() -> teardown logic, so I'm not seeing how
+it's possible for teardown to run before fuse_abort_conn(). Is there
+something I'm missing?
+
+> Thus the queue->stopped was never set.
+>
+> How do we make sure that fuse_uring_teardown_entries() has not been
+> called by fuse_uring_async_stop_queues()?
+
+If i'm understanding your question correctly, your question is what
+ensures the teardown logic in fuse_uring_async_stop_queues() hasn't
+already executed by the time we drop the queue lock after checking if
+the queue has been stopped? In fuse_uring_async_stop_queues(), the
+async teardown work gets continuously rescheduled so long as
+queue_refs > 0. The ent holds a reference on the queue, so when the
+queue lock is dropped that async teardown work will be continuously
+running until it cleans up that (and any other) ents.
+
+>
+> Maybe I'm missing something?
+>
+> My fix was to remove the check for queue_refs > 0 in fuse_uring_abort()
+> and make sure that even if the teardown was complete nothing bad happens
+> in fuse_uring_abort_end_requests() and fuse_uring_stop_queues().
+
+I'll look more at this path today.
+
+Thanks,
+Joanne
+>
+> Thanks,
+> Horst
+>
 
