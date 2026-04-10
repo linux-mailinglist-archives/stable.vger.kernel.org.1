@@ -1,211 +1,207 @@
-Return-Path: <stable+bounces-235657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHRxNtxC2WnCnwgAu9opvQ
-	(envelope-from <stable+bounces-235657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 20:35:08 +0200
+	id UGN6GCZJ2WmkoAgAu9opvQ
+	(envelope-from <stable+bounces-235658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 21:01:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457413DB7C4
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 20:35:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A103DBC04
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 21:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46C0930342A7
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 18:33:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8ED91301BA6A
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 19:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC8E3E024F;
-	Fri, 10 Apr 2026 18:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="O0Bvc2aL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A82A2D3EC1;
+	Fri, 10 Apr 2026 19:01:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp04-ext3.udag.de (smtp04-ext3.udag.de [62.146.106.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3C43E317F
-	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 18:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775845993; cv=pass; b=nRDINvWqp8fVJ11tq5u6xumToCdfoe8pa/+lZvpq5a3K7azjPvd6BotPtu1bKdOTFFHME8W1HcPuUPwgjPeQgbi24dS/ussN0/LVn4IccSziLFsCmz4jtkQ6Lzuw0qOYUrSIzaGbNgU7pvwVtYhUg9YyPdinirI5c7Pyk6Y9Vrw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775845993; c=relaxed/simple;
-	bh=bjLxVnOZzU/qm7UB5DlwY9dDfszNtgL7RNt+HQuKZ4w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EwskB0DKf2MBXGuA4F+r/6NDgfqvknzHFp8zarzhqAqkdVzDXOv/6xT2w8GIVSo9L6VOQ9zv3YMaeO4EufKlWsIfevvxF9UjIg83MVRGqs+rIyxPYlcvLeOGUtXMNWi7nbClc3iyT82RM6HU0fyPlUe0T/oKTNHhMOgj2GfmVlY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=O0Bvc2aL; arc=pass smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-79a46260385so27617477b3.3
-        for <stable@vger.kernel.org>; Fri, 10 Apr 2026 11:33:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775845991; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X5dINoD8dxWxk6sZRorgqe+W2Sp5j8oDwrfY22P/kqQDj2AxD/AmpEu1QwJcP8dF+D
-         GwFcnigNnGWim6Qp04pYv0QtzRA0oXFcPJRxm642l2fxS6z1QgIYN/Cs6C62VzH+lLed
-         9l13SBrDurOWrVnv20Tmo1zVauPES8F0wCtdoKPWDgD2FCZlj7HKo8rvVIqUpO9G/ska
-         8DVNbuRzYgUUjkPm36DDFJQ0NmkMVEcW48Xx/iHTy2uhe7U+j/N3Vna/NOkEwUNzF7yV
-         /resXHWjzTmIGf6TF+IigzDAL3/RvvW2NS7fha4W10+06C/PnZMq7bQTlI5TZKIeDep9
-         0EOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LmZVgx4du5Y8gMF1xPyxrDio1rDedaQrWT161jIwWcU=;
-        fh=XG+kGK7yUiQnpzQPOHftegnGp9w/wWfCNd6+03YAvvw=;
-        b=lsYJp6Wlw//OHsWhcPDetnwt7Av0V8nd1VsTU8ROXx3S6MCrqOGyRpJqwJaCJZarnI
-         kuhLSCZvDfOJ5+5qeQ3WIjyjZcPdw0CDq9DH1xX7Alp49fqSiiph1FdUgU3o5ThPcdJs
-         4UavMQzoNW1IcKgZZ7Fo6lRMRgiG8BCY2IOVgVX9tUw4iTLt6jQYoqpurseInenio44A
-         dOdNRHyd4luFWmrG27DnIyiv4qvyNdnBdNMaQFlDUcU/thE9L/O4NPOePGZA1sECy8Gb
-         kgXfhnnYq9sNypd3Togv/cxOObMgTGMlGkCAoVTHBk333A/30fAhI+dRHSOAyFT3rAjB
-         VAMg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1775845991; x=1776450791; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LmZVgx4du5Y8gMF1xPyxrDio1rDedaQrWT161jIwWcU=;
-        b=O0Bvc2aLOQjBnmqmW6Tp0yAn+D4mV1cHTwdXUwTkw4Ol8d9UMwzL0CA7j/y73PYz4y
-         iJWa25Dfg1z8X4v1H7ipXcOxADae4Xk9P66XnB+r+xSG44J7V8ZqJfEIa7RX32ZzR86I
-         yMPGmmIWIABA18aieUgTC5t6c+1Wj+BmZa8yU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775845991; x=1776450791;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LmZVgx4du5Y8gMF1xPyxrDio1rDedaQrWT161jIwWcU=;
-        b=AcVtnLmqrxeKxze7NHVI5sSdSmumQMaOmtro7f8+WYMpczwtSsS8o3tYrKSwiCExBg
-         LyebRu/q/bNFD09shE8zmZ+DYLqoDimq76W4SXf+fTdY89BzdaKf+AsxhR2pQWryLceP
-         LOhN/O7HSjMsC48fsPQNxjAtrbR390QtMCpsDJLugT3KJYCuI4WpZBVgdxUI+pLCvi1J
-         tfV60UtqcMHeLphORfZsDnWU8Yc95C2bwaiA+Lc0vePstl/ZT9AmUe3YDKPnJyxABNEx
-         QkynkOFrfZQpMA+vH4pxO3H8McMa99LtRK4KK/mBYu1570TMti+gRsnj5LlOoz/hM4WV
-         vGbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVtRZ0Oo9Z2K1kj43/oqnjqlC+R2B02XoUQVs9w7gjqyi3CFbWUqhwuqgJ+6kPFi+wVTVk9gSY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlP6BIofdOem/+/Z8cxGbVzc2cbjY1QcHzggoxnU4DQH5jTYg7
-	xDzplrAX3C0eIdYgKTXOwYN6xvdyZmDHeHq3Py663B4T9wQekqS89rP/9LrfJhrqnC6YlcTAGQo
-	8civvWXjRFaDzNTDbL/dQt3qy3qSEm8vUVJD9WkPkNg==
-X-Gm-Gg: AeBDieuR1Sl6lcGS7cZ1Q/m7Eem2+Q4umybVK+ITQX0wmdnbV2hA9jfq/zVA3vR6AHM
-	A0ENBQGt2cOZ8sBePmpXZ/5VNDn7Q3uGDFOmYUYyJ8oUD/Z6sEz/pHSXTpSVOcJpb+kjJuLmNAr
-	uJ4UrEmU0uLYscmb/nV90s62AHPGF6VHF6NVmygb2vOYicp0ujgsQDl885uNgg+ISUiDw+KXkYS
-	GTe12YL27idkW2VM52/KWbhprHgs2/K/qxKqtLC2Np28sjoYhPY8YA6Nik4RZJbz+5YoRDvlF5M
-	FiWaKcR4GwRuanlhr8XMqQqQUH0B9m5kOBXlicyGj7oJxMRW1UViJyvbX8fgKbhAkVo4slhfUOD
-	qUr4EhGfyZncdMlKVfbDv0V7aAGDs0gPSyctkhyKpb5XcRERdmKIkgOtLWHdkkah0MxaltonajA
-	==
-X-Received: by 2002:a05:690c:dd4:b0:79b:dd37:69b4 with SMTP id
- 00721157ae682-7af6f8094ddmr45213367b3.13.1775845991067; Fri, 10 Apr 2026
- 11:33:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B52336EE1;
+	Fri, 10 Apr 2026 19:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.146.106.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775847715; cv=none; b=nPieDhjMKl1hqU7cojehfa1g6dn1tOEQWN/qQPRGr5ItKaiOcXu1QCgQWruqwy96n6ya6dRy+zU9l38oISKYDs9BCOZpUmiRcJn55AwOibkBsVv3T+Cum7KiuK15sZGdWMTfzndOp3w+Jf+dwRPkJizkI1+1xQy57+2DGhjwYoA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775847715; c=relaxed/simple;
+	bh=uF/tNSKxFJCiDWNBVZ0HgIRhwm7YuanhgVLGVWK0EGk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HXIqUdfXigvEhnvZfG5vKDjlx0Z2MKkDX8nCLH07njmYlSvbtCZebPFEs0FN3FPQzvjMosVZyiNNy6QkOtfl/cjOTLEgG4Mg4gPtdX3BjiONUuvlyRixsyZTYTFeMEh3HuJBHAQAWTEumavMDhCBPaOn4JkwouFFA9/nn88oTDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=birthelmer.de; spf=pass smtp.mailfrom=birthelmer.de; arc=none smtp.client-ip=62.146.106.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=birthelmer.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birthelmer.de
+Received: from localhost (113-140-067-156.ip-addr.inexio.net [156.67.140.113])
+	by smtp04-ext3.udag.de (Postfix) with ESMTPA id 53E07E0731;
+	Fri, 10 Apr 2026 20:55:30 +0200 (CEST)
+Authentication-Results: smtp04-ext3.udag.de;
+	auth=pass smtp.auth=birthelmercom-0001 smtp.mailfrom=horst@birthelmer.de
+Date: Fri, 10 Apr 2026 20:55:29 +0200
+From: Horst Birthelmer <horst@birthelmer.de>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Bernd Schubert <bernd@bsbernd.com>, Bernd Schubert <bschubert@ddn.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel@vger.kernel.org, Jian Huang Li <ali@ddn.com>, 
+	stable@vger.kernel.org, Horst Birthelmer <hbirthelmer@ddn.com>
+Subject: Re: Re: Re: [PATCH 0/2] fuse: Fix possible memleak at startup with
+ immediate teardown
+Message-ID: <adlE6dSPAlMH-ek-@fedora>
+References: <20251021-io-uring-fixes-cancel-mem-leak-v1-0-26b78b2c973c@ddn.com>
+ <4b5a8040-b62c-4d75-a474-70d0b4759461@bsbernd.com>
+ <CAJnrk1ZohxcDERszbii8ZM0g1ZzTwk6+wEqRWpCoSwBXzgavkg@mail.gmail.com>
+ <adiiTGjP1tqZfIrI@fedora>
+ <CAJnrk1Y37_=OtwZHK_-AEN9Fysoi8VapeiQmv-xxvWjZJZn8+Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAJpGJQ4VyeaZyVwh0Y-tanUCAqiY8v=rmiGr8cp_XmFph=SGQ@mail.gmail.com>
- <BL1PR11MB52718837B34DB23713CEC2978C592@BL1PR11MB5271.namprd11.prod.outlook.com>
-In-Reply-To: <BL1PR11MB52718837B34DB23713CEC2978C592@BL1PR11MB5271.namprd11.prod.outlook.com>
-From: Sina Hassani <sina@openai.com>
-Date: Fri, 10 Apr 2026 11:33:00 -0700
-X-Gm-Features: AQROBzCwnHPksNb0jtEzoTvVsAsoVyPLtOpmO6_Mi6ZtDuZiNJaDZ1zSwIh3Rkg
-Message-ID: <CAAJpGJTeCs8x52ruotE1bLnmY1HGnaBeqcHeGKCfUt25NWN2UA@mail.gmail.com>
-Subject: Re: [PATCH v3] Fixes a race in iopt_unmap_iova_range
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, "joro@8bytes.org" <joro@8bytes.org>, "will@kernel.org" <will@kernel.org>, 
-	"robin.murphy@arm.com" <robin.murphy@arm.com>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Aaron Wisner <awiz@openai.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[openai.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[openai.com:s=google];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJnrk1Y37_=OtwZHK_-AEN9Fysoi8VapeiQmv-xxvWjZJZn8+Q@mail.gmail.com>
+X-Spamd-Result: default: False [-0.86 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[birthelmer.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235657-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235658-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[openai.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sina@openai.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[]
-X-Rspamd-Queue-Id: 457413DB7C4
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horst@birthelmer.de,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bsbernd.com:email]
+X-Rspamd-Queue-Id: C8A103DBC04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 9, 2026 at 8:28=E2=80=AFPM Tian, Kevin <kevin.tian@intel.com> w=
-rote:
->
-> > From: Sina Hassani <sina@openai.com>
-> > Sent: Friday, April 10, 2026 6:10 AM
+On Fri, Apr 10, 2026 at 10:09:36AM -0700, Joanne Koong wrote:
+> On Fri, Apr 10, 2026 at 12:21 AM Horst Birthelmer <horst@birthelmer.de> wrote:
 > >
-> > Bug: iopt_unmap_iova_range releases the lock on iova_rwsem inside the
-> > loop
-> > body when getting to the more expensive unmap operations. This is fine =
-on
-> > its own except the loop condition is based on the first area that match=
-es
-> > the unmap address range. If a concurrent call to map picks an area that=
- was
-> > unmapped in the previous iterations, this loop will try to mistakenly u=
-nmap
-> > them.
+> > On Thu, Apr 09, 2026 at 04:09:53PM -0700, Joanne Koong wrote:
+> > > On Thu, Apr 9, 2026 at 4:02 AM Bernd Schubert <bernd@bsbernd.com> wrote:
+> > > >
+> > > >
+> > > >
+> > > > On 10/21/25 23:33, Bernd Schubert wrote:
+> > > > > Do not merge yet, the current series has not been tested yet.
+> > > >
+> > > > I'm glad that that I was hesitating to apply it, the DDN branch had it
+> > > > for ages and this patch actually introduced a possible fc->num_waiting
+> > > > issue, because fc->uring->queue_refs might go down to 0 though
+> > > > fuse_uring_cancel() and then fuse_uring_abort() would never stop and
+> > > > flush the queues without another addition.
+> > > >
+> > >
+> > > Hi Bernd and Jian,
+> > >
+> > > For some reason the "[PATCH 2/2] fs/fuse: fix potential memory leak
+> > > from fuse_uring_cancel" email was never delivered to my inbox, so I am
+> > > just going to write my reply to that patch here instead, hope that's
+> > > ok.
+> > >
+> > > Just to summarize, the race is that during unmount, fuse_abort() ->
+> > > fuse_uring_abort() -> ... -> fuse_uring_teardown_entries() -> ... ->
+> > > fuse_uring_entry_teardown() gets run but there may still be sqes that
+> > > are being registered, which results in new ents that are created (and
+> > > leaked) after the teardown logic has finished and the queues are
+> > > stopped/dead. The async teardown work (fuse_uring_async_stop_queues())
+> > > never gets scheduled because at the time of teardown, queue->refs is 0
+> > > as those sqes have not fully created the ents and grabbed refs yet.
+> > > fuse_uring_destruct() runs during unmount, but this doesn't clean up
+> > > the created ents because those registered ents got put on the
+> > > ent_in_userspace list which fuse_uring_destruct() doesn't go through
+> > > to free, resulting in those ents being leaked.
+> > >
+> > > The root cause of the race is that ents are being registered even when
+> > > the queue is already stopped/dead. I think if we at registration time
+> > > check the queue state before calling fuse_uring_prepare_cancel(), we
+> > > eliminate the race altogether. If we see that the abort path has
+> > > already triggered (eg queue->stopped == true), we manually free the
+> > > ent and return an error instead of adding it to a list, eg
 > >
-> > How to reproduce: I was able to reproduce this by having one userspace
-> > thread mapping buffers and passing them to another thread that unmaps
-> > them. The problem easily shows up as ebusy errors if you use single pag=
-e
-> > mappings.
+> > In my case (Bernd mentioned that I was investigating a hang during umount)
+> > there were a lot of requests created during teardown, so what happened
+> > was very similar, but for exact the opposite reason.
+> > In fuse_uring_abort() queue_refs was already 0 due to an optimization
+> > where the ring teardown ran before fuse_abort_conn().
+> 
+> Hi Horst,
+> 
+> Just to clarify, is this with running locally patched changes on your
+> ddn kernel? In the upstream code I'm seeing that teardown is only
+> called by the abort path, eg fuse_abort_conn() -> fuse_uring_abort()
+> -> fuse_uring_stop_queues() -> teardown logic, so I'm not seeing how
+> it's possible for teardown to run before fuse_abort_conn(). Is there
+> something I'm missing?
+
+Yes and no ... ;-)
+The original patch this whole discussion was started by had a call to
+the teardown of the entries and I had that applied.
+But even without that the problem can still occur that queue_refs is 0
+by the time fuse_abort_conn() is called.
+
+> 
+> > Thus the queue->stopped was never set.
 > >
-> > The fix: A simple fix that I implemented here is to advance the start
-> > pointer after we unmap an area. That way we are only looking at the
-> > IOVA range that is mapped and hence guaranteed to not have any overlaps
-> > in each iteration.
+> > How do we make sure that fuse_uring_teardown_entries() has not been
+> > called by fuse_uring_async_stop_queues()?
+> 
+> If i'm understanding your question correctly, your question is what
+> ensures the teardown logic in fuse_uring_async_stop_queues() hasn't
+> already executed by the time we drop the queue lock after checking if
+> the queue has been stopped? In fuse_uring_async_stop_queues(), the
+> async teardown work gets continuously rescheduled so long as
+> queue_refs > 0. The ent holds a reference on the queue, so when the
+> queue lock is dropped that async teardown work will be continuously
+> running until it cleans up that (and any other) ents.
+> 
+
+You understand correctly.
+If the fuse_async_stop_queues() runs there is still a window where
+we have queue_refs == 0. If in that window fuse_abort_conn() runs
+we never actually stop the queues and we can accept requests which
+will never be processed.
+
+I have never seen this happen without the patch mentioned above,
+but with that 'optimization' it happens regularly when you are able to
+kill the fuse server and the application using the file system more or
+less at the same time e.g. by an OOM event, when the kernel tries to
+free resources.
+
+To me this looks like nothing will stop this from happening, though,
+but maybe I'm just not familiar enough with the uring code ...
+
 > >
-> > Test: I tested this against the repro mentioned above and it works fine=
-.
+> > Maybe I'm missing something?
 > >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sina Hassani <sina@openai.com>
-> > ---
-> >  drivers/iommu/iommufd/io_pagetable.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/drivers/iommu/iommufd/io_pagetable.c
-> > b/drivers/iommu/iommufd/io_pagetable.c
-> > index ee003bb2f647..e306871de06d 100644
-> > --- a/drivers/iommu/iommufd/io_pagetable.c
-> > +++ b/drivers/iommu/iommufd/io_pagetable.c
-> > @@ -814,6 +814,14 @@ static int iopt_unmap_iova_range(struct
-> > io_pagetable *iopt, unsigned long start,
-> >                 unmapped_bytes +=3D area_last - area_first + 1;
-> >
-> >                 down_write(&iopt->iova_rwsem);
-> > +
-> > +               /* Do not reconsider things already unmapped in case of
-> > +                * concurrent allocation */
-> > +               if (area_last >=3D last) {
-> > +                       break;
-> > +               } else {
-> > +                       start =3D area_last + 1;
-> > +               }
-> >         }
->
-> this could simply be:
->
->         if (area_last >=3D last)
->                 break;
->         start =3D area_last + 1;
-done
->
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+> > My fix was to remove the check for queue_refs > 0 in fuse_uring_abort()
+> > and make sure that even if the teardown was complete nothing bad happens
+> > in fuse_uring_abort_end_requests() and fuse_uring_stop_queues().
+> 
+> I'll look more at this path today.
+> 
+> Thanks,
+> Joanne
+
+Thanks,
+Horst
 
