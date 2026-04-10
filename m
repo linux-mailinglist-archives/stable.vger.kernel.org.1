@@ -1,89 +1,68 @@
-Return-Path: <stable+bounces-235554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2J9wAtdU2Gn1bwgAu9opvQ
-	(envelope-from <stable+bounces-235554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 03:39:35 +0200
+	id uKMcBWZj2GlDcwgAu9opvQ
+	(envelope-from <stable+bounces-235555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 04:41:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4F03D129E
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 03:39:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131953D1807
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 04:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 395D63017267
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 01:39:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5362301022C
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 02:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D674632BF51;
-	Fri, 10 Apr 2026 01:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6566F1DED49;
+	Fri, 10 Apr 2026 02:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YX3Ro4w8"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="EZ9wirjF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-76.sinamail.sina.com.cn (mail115-76.sinamail.sina.com.cn [218.30.115.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D7F299929
-	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 01:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6409261B92
+	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 02:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775785167; cv=none; b=nG5EiLzHTHJS8w36WcEnSMqdSjoHLuGbEiXbimdGY+K+xHFFa7kstBx/hXmuq98UruFvppN00miPI3rbIEMMixdOn2PT+79XG9fTk7TmP42VykAlcIr+cYgYLJr1aidES89P3eIQWXMaGMTthwHqOaqS0WIfBku7cYI3L5NHMw4=
+	t=1775788896; cv=none; b=ZKZRfC0S4a20bgIWfADmcptDvgtjB1kgFXY7tdsPDmwyfKZrbfpacrbatCbx7w8C/atFRaGIJ2iF9leJCqislaKVBsyTzLWTUtnd70JxKZJfhMuxFLwzBmm0YblRmW8bdhjg/WbS0ENpHtVHb+kE6H/7XdeW10AUwPd/qoitvo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775785167; c=relaxed/simple;
-	bh=UmYbWjFmL0HUR06WzBtGfn94DTlfpaiNwHkys0bQ2mo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AC9Z6gdYfKXzwllRgynN73eA/T4tgYUyeep7Pq5pJwtqEweCsupFga9799nH9peFGTYA9OdqEgGswt9QinWJtD9EcDm49B+JOY4LHwB3ZCQd20eCQeSdrkjo3trL0dngrL1XKT47vQZTcn6pGLu4oWGP67NnON4P3JIfVP3/zGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YX3Ro4w8; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c70b5594f4so149835585a.1
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 18:39:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775785165; x=1776389965; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LbmLmSM6DVlP3rK+1kHNDWZ++XMdSOh/sxx/yDae12E=;
-        b=YX3Ro4w8G3EOLYF1vwbcVwIHmgTEIwUXANJ2WSFC2juJOBy+ibV6plhAE8jvRdDzAJ
-         1brNlhrF/5uhYNMnNPQutwD0JEACt1cytcp9IisuonqQ/q4ArPTNzHIXWZUhfYX0lTnh
-         51sxuSWGJAbQ7QbVIFj5tbazaoUfoC+ZgA8uNjy8hncSmrWr+txCU/IrjdvGU76fjupT
-         F4T4TKqND6j5IelHTVitrxh6pm5wBnAu0kN9OpWAsZtEVBOu5su78nDwq9NakIc6DX6N
-         cUUNYgHVeyohIQ+gAXi3wFRgToq67DamkYMNPyVdTQ3ZP73Lmb17HByCoGDL0iIwf7tc
-         02wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775785165; x=1776389965;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LbmLmSM6DVlP3rK+1kHNDWZ++XMdSOh/sxx/yDae12E=;
-        b=IBE+YTO4yDZLLEXP5N1Ji1loW2D5VTXN4strcC6x/hBBHtOpQNXscf5do5QiB6jpu7
-         NqyKhXG7FXZBVWzIY6IosF1H5t7wTq2JeSkFtalQgIIkrp+z7zqxlUczVnqVfb2V+VFb
-         ytyQhPzR5BEptSiTl2ymXAoG/c/gSGoBJ5pY9Yk2CB3HnX3eUOQNM/di/tAN2pp4haR8
-         1AizDHeszfFIsMZjWWJ/wVaFPcgcgy8rP12R9WZ9R4SHyeR9/9frsdtSpVvsBCXYB30S
-         KKLrgwqh7OL+SCpJQwuB4wZneAtb/0rXHPIqZKiEsN0+RvdLfZqP3fP7JtKgr8bmHC0K
-         qpNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmxv8Mri+YEPC0zog6xfO6ZorMqBFJMMVtdcRRndHz2rRsPZLZ4A8QQkCYbCikKznCHBmNk1c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe9NMH8VIioWSE7eABL40ZPBI+ZtYk6890G2WZ8M0wZ5myhFlW
-	Rqrq3Kl5i7KbLHhHIo4pD+PjMD/DNczUEB3RSiyyxOBszKTC47MN8n5V
-X-Gm-Gg: AeBDievavXfocA5B10yB5I8G9N9wjqWIU89miF3pckQOgUIHHWHPAmNXSI72bqUxX5I
-	uFLNOry5Y8GQ/1aqkEOHZkHGB8OSiYhwQuIwn8rBjnxo8UQSwPjWUd5Prp5ZsEUiafYfNPjnIrN
-	7PbwMHxHJkS248kmrzH6n780q4pUj5uTBtdaKPb5HwLVS7Hd79e8EVbs4C+JPmvUL4X1CDn7/l4
-	huYirmZM7KSrzmU7/zra0pdcD2wAPCoBD85q0FHI3EosdNS9EySFbgcaXt8qiIw6wWW1gsWAN7b
-	OsIihVhLw0d4Mm0nPjF+JEn3vTop3VSBJRtFVkYHK8pC9R2wT040YxbEplFZykXf/54269XbwjG
-	4EmNV5K7FIiW+Pvpx41ABFTLZQqSa3txkBRR8RYzcdIbOC1mHdmAOpc9e+Qhs/A5voe86ryIHl+
-	ddGistrPrYCc1clNxm4ShpaFoK16IY+T4SX2gkpVf9dcPzeT7BvFMDlz3OL/whCd2SyZVsuGfXE
-	yQe1N7uuGhv5buyfOQ8oHMwTl4w0r8ZSgEYliw=
-X-Received: by 2002:a05:620a:254f:b0:8cf:de26:91e2 with SMTP id af79cd13be357-8ddd03a2c5cmr148941085a.16.1775785165305;
-        Thu, 09 Apr 2026 18:39:25 -0700 (PDT)
-Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb6949954sm98525285a.21.2026.04.09.18.39.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 18:39:24 -0700 (PDT)
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
-To: dri-devel@lists.freedesktop.org
-Cc: mcanal@igalia.com,
-	itoral@igalia.com,
+	s=arc-20240116; t=1775788896; c=relaxed/simple;
+	bh=a4lni9hcsti9FZ1wRpFGW1X6Y+us/2ONM6YdbyDS/ig=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y2YfTjxsx/ZyXmKQrYONAdNGj7+TG/xUzKYygajQ1YWcXgX9A3LJTt5bETT7poIOkx0kqDw60xHJYVtRlH2E6x5GLTZFGzrofLqm/ClW4Brdq+Z/81vG73SShyG1Cmx0zjNJK2ifwZd1tUMqRfxHyNZwtn79zqXQ8TgsLw1pND0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=EZ9wirjF; arc=none smtp.client-ip=218.30.115.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1775788892;
+	bh=ruYH7ms7tY97YQislZdAnstwK+shvlV+EpfW2XTw8BM=;
+	h=From:Subject:Date:Message-Id;
+	b=EZ9wirjFkt53a1uAyzKKzQ45O60kZHr+9GMUGbN5T5yL4sJ0H402v4LIs54mrLULO
+	 A1iMUZ/CxsVyK+JQvFhYxPWAL8cLN9RsI6xr8LHhQ8xQ87h8v4n31qebKJelWWRb+O
+	 jKZCvDfohxJWKGZwlK07kLUdlgFgnNYLtLpVSSQ8=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.22) with ESMTP
+	id 69D863300000308F; Fri, 10 Apr 2026 10:40:51 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 2701797602325
+X-SMAIL-UIID: 35D1CE780ABD41B7A80F43E657DA5241-20260410-104051-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Subject: [PATCH] drm/v3d: Limit ioctl extension chain depth to prevent infinite loop
-Date: Fri, 10 Apr 2026 01:39:07 +0000
-Message-Id: <20260410013907.2404175-1-ashutoshdesai993@gmail.com>
+	arielsilver77@gmail.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org,
+	mchehab+huawei@kernel.org
+Subject: [PATCH 5.15.y] media: dvb-net: fix OOB access in ULE extension header tables
+Date: Fri, 10 Apr 2026 10:40:48 +0800
+Message-Id: <20260410024048.3765362-1-jianqkang@sina.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -92,85 +71,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[igalia.com,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235554-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-235555-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DF4F03D129E
+	FREEMAIL_FROM(0.00)[sina.cn];
+	TAGGED_RCPT(0.00)[stable,huawei];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 131953D1807
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-v3d_get_extensions() walks a userspace-provided singly-linked list of
-ioctl extensions without any bound on the chain length.  A local user
-can craft a self-referential extension (ext->next == &ext) with zero
-in_sync_count and out_sync_count, which bypasses the existing duplicate-
-extension guard:
+From: Ariel Silver <arielsilver77@gmail.com>
 
-    if (se->in_sync_count || se->out_sync_count)
-            return -EINVAL;
+[ Upstream commit 24d87712727a5017ad142d63940589a36cd25647 ]
 
-The guard never fires because v3d_get_multisync_post_deps() returns
-immediately when count is zero, leaving both fields at zero on every
-iteration.  The result is an infinite loop in kernel context, blocking
-the calling thread and pegging a CPU core indefinitely.
+The ule_mandatory_ext_handlers[] and ule_optional_ext_handlers[] tables
+in handle_one_ule_extension() are declared with 255 elements (valid
+indices 0-254), but the index htype is derived from network-controlled
+data as (ule_sndu_type & 0x00FF), giving a range of 0-255. When
+htype equals 255, an out-of-bounds read occurs on the function pointer
+table, and the OOB value may be called as a function pointer.
 
-Both i915 (stackdepth = 512) and xe (MAX_USER_EXTENSIONS = 16) impose
-an explicit depth limit on the same pattern.  Apply the same defence to
-V3D by capping the walk at 16 extensions.
+Add a bounds check on htype against the array size before either table
+is accessed. Out-of-range values now cause the SNDU to be discarded.
 
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Ariel Silver <arielsilver77@gmail.com>
+Signed-off-by: Ariel Silver <arielsilver77@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/dvb-core/dvb_net.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index 18f2bf1fe..491eeb6b3 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -802,12 +802,18 @@ v3d_get_extensions(struct drm_file *file_priv,
- 	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
- 	struct v3d_dev *v3d = v3d_priv->v3d;
- 	struct drm_v3d_extension __user *user_ext;
-+	unsigned int ext_count = 0;
- 	int ret;
+diff --git a/drivers/media/dvb-core/dvb_net.c b/drivers/media/dvb-core/dvb_net.c
+index c594b1bdfcaa..c8cbe901bcf0 100644
+--- a/drivers/media/dvb-core/dvb_net.c
++++ b/drivers/media/dvb-core/dvb_net.c
+@@ -228,6 +228,9 @@ static int handle_one_ule_extension( struct dvb_net_priv *p )
+ 	unsigned char hlen = (p->ule_sndu_type & 0x0700) >> 8;
+ 	unsigned char htype = p->ule_sndu_type & 0x00FF;
  
- 	user_ext = u64_to_user_ptr(ext_handles);
- 	while (user_ext) {
- 		struct drm_v3d_extension ext;
- 
-+		if (ext_count++ >= 16) {
-+			drm_dbg(&v3d->drm, "Too many V3D ioctl extensions\n");
-+			return -E2BIG;
-+		}
++	if (htype >= ARRAY_SIZE(ule_mandatory_ext_handlers))
++		return -1;
 +
- 		if (copy_from_user(&ext, user_ext, sizeof(ext))) {
- 			drm_dbg(&v3d->drm, "Failed to copy submit extension\n");
- 			return -EFAULT;
+ 	/* Discriminate mandatory and optional extension headers. */
+ 	if (hlen == 0) {
+ 		/* Mandatory extension header */
 -- 
 2.34.1
 
