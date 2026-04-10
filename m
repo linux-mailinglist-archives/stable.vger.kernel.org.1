@@ -1,98 +1,97 @@
-Return-Path: <stable+bounces-235521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0C+rE6U+2GlqaQgAu9opvQ
-	(envelope-from <stable+bounces-235521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 02:04:53 +0200
+	id gLEfCVdD2GnfaggAu9opvQ
+	(envelope-from <stable+bounces-235522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 02:24:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62BB3D0B49
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 02:04:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4893D0C2E
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 02:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 006AF302800C
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 00:02:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 955523013D54
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 00:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2BD175A84;
-	Fri, 10 Apr 2026 00:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B394F2777FD;
+	Fri, 10 Apr 2026 00:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="cXJUnTom"
+	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="z6IkpPg9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818C940DFA1
-	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 00:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABAA26F29C
+	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 00:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775779324; cv=pass; b=ErYD9s8ksNSXrTi3kQXA2Z2MHtS8h0NmhTzNEh90C1fcPkGZprgFWHD52knvebWYb0UqITGJlJ6uOjaUsimEA94qVnvUuRCrHwbFoIZ2rs1/D8+w5B7WKSYEvCKtZNknDlhihwEAvGfxh/YFkS9kxZMo50sqrjwwG/iOMYMrqGk=
+	t=1775780690; cv=pass; b=kIaTT5GL0Nyf3Rbti0KynTQwEcHtGxO9EZTzg27MhhHeRSvM/hhTrl+0L8uyD5OVv+OS/Cy0zbI/X8wX8HOU/68+vzVpFt3WRbZv/lflp3Re+YadST43XwNx78Eth8BEQFu7TW3eOWQL9AEUjURlwcZU42vbt4wlKSpjQ4l67po=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775779324; c=relaxed/simple;
-	bh=OqkhPKuwJTgVvODTDio79Bncv8rCq1GOtat4+zlBoAE=;
+	s=arc-20240116; t=1775780690; c=relaxed/simple;
+	bh=lGEEv9glUe1Iivgjd8wqmSvhwzywsg/HbvNLx2jLX8w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nfe/OqcmBXAIrB3EVuLMW/+QbQLr1UiMgvMUIM5iOInSv5+GIbxKdLZSsUmhCIbgBmoyNZWPv7JQhMBXrGDhd5nLQi2LuqytMs7ZhRRbXJwMIuokopH0fluAAyU+HVuOOYsSBYl2tvwHVhJf2tXoHff2wvhYEzbv9/I6PQWFleA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=cXJUnTom; arc=pass smtp.client-ip=209.85.167.173
+	 To:Cc:Content-Type; b=IN6NNcSpDM7mrXrw/sn9AYjtxXhHsOw/ejiUxnjMgN+ofYLJhMM+66HMuGsTsiTB2KcAo5oGGsUR3WOt4+C01coOU+7AmbHNNrU50P9URinYfX8oEDsbAdoOdDrPyt6zW3fN38YTCTLns0hslmBne3TWooDkL4R00WXxKeFrYMM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=z6IkpPg9; arc=pass smtp.client-ip=74.125.224.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jphein.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4767e6ff822so526221b6e.1
-        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 17:02:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775779320; cv=none;
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64e87a81639so1530484d50.0
+        for <stable@vger.kernel.org>; Thu, 09 Apr 2026 17:24:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775780688; cv=none;
         d=google.com; s=arc-20240605;
-        b=Cd54sERT2D27cDIxW5pnHThSpxfVd6Tr3Qw6zCSS1Ut9esiLG/rK6Lzw7KOiuuM6Mf
-         u8xqQAfErh5hCANb4jwNSftqgde7gfP00mT0r3Vyholhx6JkPtdD/Poo3Y8+yV8C7wU/
-         Qs0UnfXUMy+kz6DAXa92DrvrIvEI30US3hdCfsBQVStFXgjmkxf+k+JHn24uZgGW/5mi
-         KxOvW+9DkeflTvObku/tqbVKMxiU7fnzI1eTQUqXPInt/1j6TqM2qHPuh/FGQjuw+qDE
-         XpnLbber2sX29x/k1DTr4yVzwglXLTcYK0yHU7NlZtt56Ta//vbf2gLu9V95Qmh8C6pq
-         1DYA==
+        b=ZVDeeBE6K/UW1R7iDTMNAJ/rxddGKiBprtgpjen6erLLHqRq1iPchP+TUZyJpgWm1K
+         CbMZ4cVi7cXYdI1Io/iALGunc8/InVV+bpY30a2JUNSFWUT9APZdlM1aiHVpx45LetGM
+         UCYpuxDa3PnxeUO5CCNKJwluDJJAlGCjh7uOlYMfukQd4tW0JfTUfxCfAXaZytdMkHl2
+         ouN+a5Jr4rcWQP+e6nZYH7BlvlHK8uglBb77VNFYfEaS+qP0JRlmrn6iYYaJgHb5o9TV
+         Eq/kYS8eV3GbRb++3UrVynivVp4GKAyq8Roz7eaFP+UPFwq5dTNDvQhVI7/mzhluBxXA
+         jrVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jc78a/EunYqTwvivmXqfl8KojEjyw2hs8EqL5eaIqdI=;
-        fh=rkTfk8RRTBRzVmtb5ZfYwJtmNURdCGVdNJEZjW+bsVE=;
-        b=U0LyXiEbjA4yS9rgCScBqXF/hRUyGyfCEdtqRHnZ/5OPy84QmcrrhTmHAJcWzPi1Vl
-         M4FQiwCGPp97Svb92fWE0h59qq6X8qjkXZY3y4AH9OQd7SkQqZhOrBaBS8VccJFkrJv9
-         eoBHP3oKweOILccpbB1Hr5TiXYFwzkNJZbW4w4YE7zLNKT1N2B6DFiJ0f+D6Zwk79Psd
-         4C6++HYo5KXaWD5bpAd3yWVYVIxLKy0TtOENkdkqwY7Xp5VLD7tZjOWZwCGVnPH2zzpc
-         C63M+yrFK62PnHrzqCFS3mlHb4o/YLVjpoSXQUsMWNf5dm4msJPSfrqDmry8Lc89XQ5B
-         LZ1Q==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=PSTynu5H3U6NvBdR0vN3EDqTZRC1PjpEAUrWz8MB7/U=;
+        fh=gx6nRu1rnC+R0FnArL+/CelOqhI3d7MkaJPS8ISYxeo=;
+        b=NqUb/wvPPVJIXJYYldSHOEiDC67X7SJPD3abjmfaXTkmuhNvMxflqnF1DH/oDrC9WR
+         YTRI++DBVFVCcrv/3pIPEhVHo9AyajZviGhxnr2nCb5ezz2S5t9/iiTKwx5R9mHo0EkE
+         FlWick0ToA3G9305f4iAVffdcm1E+3oIl4H4zwf2LANjz/k+bMfUy042lQQbEDiR2dD+
+         46A2MouO+316y2UEo/jAGidyBl63WrJT1cxDrU+/9iA0RKT375JhC6AVmvAbkshR5OTS
+         IYBKAkF4YOtC9B+Js+3zv26P+uPYPwo24lfscsIKZbxSoCTLu5Me2riVK1hbYc40oHgQ
+         TbJA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jphein.com; s=google; t=1775779320; x=1776384120; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jc78a/EunYqTwvivmXqfl8KojEjyw2hs8EqL5eaIqdI=;
-        b=cXJUnTomVzDEReB7K2NFAIpl9uD8icE0IohbdSArkJ/0d6FCNFKjts7/arpGbvfQEX
-         cR/Bzia9IE2lLt2a2Ww7g/yOBvekY2lSP7FkslsaSTnInVpd1umGRRlqfTe4R9rubZTQ
-         O3dtnJXnuDlcFU8FVbp/viP8TwAgEKGSfFSekBn4JW0MpGHwzG+fjGSXcWgQP2g76e5W
-         mLwgMwkR/ElgyJuBx804TBEFlFZT6yha1bJhSDQHaQdRXuH47iWzL6sMYTUB6RPnCcSv
-         LEuyLr3H+E2Uwa+Kj3vJvE1DngPNeXLRBEAN5Y0LgKMFrcMEU3LP4lYLfHYE0tabNtmT
-         KoRg==
+        d=jphein.com; s=google; t=1775780688; x=1776385488; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PSTynu5H3U6NvBdR0vN3EDqTZRC1PjpEAUrWz8MB7/U=;
+        b=z6IkpPg9FiZX7MjmO1pGQMtosfRaIzbLwoFgylFlF55hVUqQhcRlvSN078b6SW9kVT
+         q3pnL8Qi+AVlztf2QjgGn3bgTB8vQaVYK4PfjCZgGlltRiqodgHVd2yxVKdUYA/KGLL5
+         0TtRYwCyepCMB0L0tNfOTSrnNase9xvbmhH8K1Rj3QLMUvqtpcdpR4GU4MaE478fBpGD
+         Nq1RbjedD/gswOODFUoazeB9M3movUAegUCfEdlJNRtPgnCf4NSqhHJbepgTYjB4OKqf
+         mOfVcWa31DtojL8eIKY4lkLvhyL6BV9qJAkr7ttMK0ndQIIBSIrFJtlUZZYeyhT9BbtJ
+         dTtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775779320; x=1776384120;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jc78a/EunYqTwvivmXqfl8KojEjyw2hs8EqL5eaIqdI=;
-        b=BRotBz/mi6l2NNS05NE7rn3G3fQiJeWLx4PM/PKx5QM8Zv49z7ba4bjGmWF8TQF9zp
-         CuGhrXVrPWgpjpHQJz1nC+zJq5g5VfiSLAwwQqm/Bo++y4u4/Q/WT04fAZ2K22G+1S81
-         3X5RQjbeKNf2mspb2Z3d/9Sw/pDGWnXd6eFU7O9UN5QDAI4wKGKymJhR4w/IcKrlzDPC
-         E6eFq4wVoCtiuE9Ufh9h2XBgAxCv/lYnwi+oe5f5YNWCG2lGavdwtb8pS1ot7/mBulNG
-         OXF9OEDu6uX/fPXLnAaOodeoNxhqn4nI414PzSwbU4QKzEoq52BXSCYXD45ZFOFdcWJr
-         YdAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUlZWPpuX6QvLMrtb87sF65GVgn+msZbVLhb2segWTZrO+ZTeqCtZbs/M8jc97GYbBpU/aI2w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdDVtNeubT1OMnkOpN/BP9JT0nR0i/HR9QW2wSf3t2EIRIN1b9
-	suM4N5RuF5cUvy9z+5iQ16XHZtl7bRlnWqY5bloFrZR52lmUd1TLGBWtStwtNVrNgqEIclzrLry
-	keAnz9O35C7e7u5/IfDw9eqr5fkOW6yuurvXuIRwJ
-X-Gm-Gg: AeBDieucA0LE29NFDuto9xTj40xSDRUcVs1XpjT38FIz5moxgIv31RMu0gFaRquljTr
-	ahBPG9gGdzSUJ5TokWd1aM2CcSX2H5G/JXofa06mt4U3bHplqKnivasaHU2A1HBsd2xQO5rr3hP
-	XH3uIV6xkgQtA3lvwzihXWCZjfMZLqSiuQybELNV0c4SzeeCiNFx8WgWo/xun0o49URqpT+wzRr
-	q2Lkx1jLM/rUKX0ebDmJatzbEx2UclmJTRXQnYWQJ+II/KmCv/6CFb7+FB2p+XenQ2Dlbxa40H+
-	U27U
-X-Received: by 2002:a05:6808:4e83:b0:450:c602:751d with SMTP id
- 5614622812f47-4789f30a117mr478569b6e.21.1775779316316; Thu, 09 Apr 2026
- 17:01:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775780688; x=1776385488;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PSTynu5H3U6NvBdR0vN3EDqTZRC1PjpEAUrWz8MB7/U=;
+        b=CN5mmBhoNUDEuMnztdRoyyXnrwt9urjQ0BkHyd6iVL6sJPk/WBS4CeisN3xhkvZgw/
+         qm/OydGBpA/gih3exuOzk8ItJy7vANRK9FVkc239yXu6TehF2wn4fhUh3DCe1CimucPJ
+         CFek8PWNuD8bZrEDP1ULSp8xilZwSNr1q6YYFQCvQq62c42TAnbJHnGdrEYD3FNhPbg+
+         vtZvRjLBanesqABmWaNpzer4cQF65PqHLKKDOjyUDeq3pLve7n1QpfEYPf6+cvr5mMWV
+         Zk0d7V1qK5q5yifnNBdv4Ib3N+ylKQIah7iOz8gKwVsYCiDLRT3Ma3Tpqi0BQ332q8YJ
+         fdnw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4jMEsU6OWRBBs8HGKTChWh2CzixWfdviGWGigPIgH6rMWiYBD+cSc++AD4RAj7RSGXwf++dI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/b2F9ZIYGSg7GhbuWbrdUkb9FixTZ64kumvsPpfqysP16D8eR
+	PrAJrw+M4gauZMs6733DPL2ArPx6aaZfTqyzoL6m0iKz0ueHefwh0uzIxH+C8kES8HZwxvP3PQE
+	n4dP/WxwNfKUly49i13c5oF5aomehLt7AF+TPwx7djf6UFs7SP7c=
+X-Gm-Gg: AeBDiev8W0kRoN7BTJu7lV+XxLtqiQQLJObGN5B/j59aSy3hzYTjdNOP8kbzdJrS7A+
+	YD12p+6MsbjXP6r2jVK79uuRPnI1gSbGxCW3lfgGcQv3We3wh+HIEog35O4h5lPWkljKwpRUTfw
+	nfxJAhOsNgSxqCy0nVJSP40clz/pQF6BkIY1vJsqqjKQywFzzUAHbUJ1ZQFNuhuQYe09KES0sm4
+	zySt5gFUbuV+YME3yjIQiru3As6AJ8P6eC4mx8M+gVb6bYegBYITqELnyAiLQKEsczoXYbkFKWP
+	+dNmcNjLSg1ITksNU6ee6pkVNmqYDSRDi8GZ8/VnsLsKmkR7LiMbUPNI83qp8mAxcw==
+X-Received: by 2002:a05:690e:244e:b0:650:36e6:2acf with SMTP id
+ 956f58d0204a3-65198a9d38cmr786361d50.15.1775780688340; Thu, 09 Apr 2026
+ 17:24:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,11 +101,12 @@ MIME-Version: 1.0
 References: <20260331003806.212565-1-jp@jphein.com> <20260331003806.212565-3-jp@jphein.com>
  <CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
  <20260409100247.7cfb62d1.michal.pecio@gmail.com> <20260409221749.5e6bccab.michal.pecio@gmail.com>
-In-Reply-To: <20260409221749.5e6bccab.michal.pecio@gmail.com>
+ <CAD5VvzBQLGDrbrds=OrOOh5ptmVjP+nyq-jRHF5dCFzw+S6iQA@mail.gmail.com>
+In-Reply-To: <CAD5VvzBQLGDrbrds=OrOOh5ptmVjP+nyq-jRHF5dCFzw+S6iQA@mail.gmail.com>
 From: Jeffrey Hein <jp@jphein.com>
-Date: Thu, 9 Apr 2026 17:01:45 -0700
-X-Gm-Features: AQROBzCWR2NkuRnQiJgvPU8426NPJ01KrykU49Mu-hXTwhh-nbRO23E0Iqy8PeU
-Message-ID: <CAD5VvzBQLGDrbrds=OrOOh5ptmVjP+nyq-jRHF5dCFzw+S6iQA@mail.gmail.com>
+Date: Thu, 9 Apr 2026 17:24:36 -0700
+X-Gm-Features: AQROBzDJCjlxavks6Ub5ZF6jfWDfLUTJG7_G3iHuw1Ym3HvJjO5KZjGocMMy4Jc
+Message-ID: <CAD5VvzCVxn6ehen4vzbzJzm3Akc-0BREhMZrfsffXTz782jQcw@mail.gmail.com>
 Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
  fragile firmware
 To: Michal Pecio <michal.pecio@gmail.com>
@@ -115,18 +115,17 @@ Cc: Ricardo Ribalda <ribalda@chromium.org>, Alan Stern <stern@rowland.harvard.ed
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-media@vger.kernel.org, 
 	linux-usb@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[jphein.com,reject];
 	R_DKIM_ALLOW(-0.20)[jphein.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235521-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235522-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
@@ -139,189 +138,41 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[jp@jphein.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[jphein.com:+];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-hardware.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: C62BB3D0B49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[jphein.com:dkim,mail.gmail.com:mid,linux-hardware.org:url]
+X-Rspamd-Queue-Id: 7E4893D0C2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Michal,
+One more thing -- you mentioned referencing an lsusb from
+linux-hardware.org for an "identical(?) device". Here is the actual
+lsusb -vv from our device, confirming the wBytesPerInterval mismatch
+you found.
 
-Thanks for the detailed analysis.
+EP5 IN (interrupt) from raw SS Endpoint Companion descriptor:
 
-> crash-6.17-stock-stress-20260330.log
-> Empty file, not sure why included at all.
+  Endpoint Descriptor:
+    bEndpointAddress     0x85  EP 5 IN
+    bmAttributes            3  (Interrupt)
+    wMaxPacketSize     0x0040  1x 64 bytes
+    bInterval               8
+  SS Endpoint Companion:
+    bMaxBurst               0
+    bmAttributes         0x00
+    wBytesPerInterval       8
 
-Sorry about that -- removed.
+So wBytesPerInterval (8) is indeed 8x smaller than wMaxPacketSize (64),
+matching what you saw in the third-party listing.
 
-> Not sure why usb_set_interface() is called. Is this the start
-> streaming case mentioned in some email? What was happening before?
+Note that lsusb -vv does not decode wBytesPerInterval for this
+endpoint -- the value above was parsed from the raw descriptor bytes
+in sysfs. The full lsusb -vv (934 lines) is now in the repo:
 
-Yes, this is the start-streaming path. The app (Google Meet via
-browser) opens the video device, which triggers usb_set_interface()
-to select the alt setting for the isochronous endpoint. The LPM
-disable failure happens during that transition.
+    https://github.com/jphein/kiyo-xhci-fix/blob/main/kernel-patches/crash-evidence/lsusb-vv-kiyo-pro.txt
 
-> It's suspicious that wBytesPerInterval of the endpoint is 8,
-> wMaxPacket is 64 and URBs are 16 bytes.
+I will follow up with the test results from your patch.
 
-Interesting find. I had not looked at the interrupt endpoint
-descriptors closely.
-
-> Would it be possible to repeat this test with the patch below?
-
-Absolutely. I will apply your patch, rebuild xhci-hcd, reproduce
-the crash with dynamic debug enabled (xhci_hcd +p, usbcore +p),
-only the Kiyo connected, and grab dmesg via SSH during the crash.
-
-The CI bot flagged a dts-bindings failure on v6 but all code checks
-(compile, smatch, sparse, checkpatch) passed -- unrelated to the
-UVC patches.
-
-Will follow up with traces.
-
-Thanks,
 JP
-
-
-
-On Thu, Apr 9, 2026 at 1:17=E2=80=AFPM Michal Pecio <michal.pecio@gmail.com=
-> wrote:
->
-> On Thu, 9 Apr 2026 10:02:47 +0200, Michal Pecio wrote:
-> > On Thu, 9 Apr 2026 08:45:17 +0200, Ricardo Ribalda wrote:
-> > > A usb device shall not be able crash the whole USB host. I believe
-> > > that you already captured some logs and the USB guys are looking
-> > > into it. I'd really like to hear what they have to say after
-> > > reviewing them.
-> >
-> > Sorry, I forgot about this bug. I will take a closer look at logs
-> > later today.
->
-> lsusb -v of identical(?) device is found here:
-> http://linux-hardware.org/?probe=3Da1cd74d9ac&log=3Dlsusb
->
-> And I'm looking at the logs here:
-> https://github.com/jphein/kiyo-xhci-fix/tree/main/kernel-patches/crash-ev=
-idence
->
-> crash-6.17-stock-stress-20260330.log
-> Empty file, not sure why included at all.
->
-> crash-6.17-video-call-20260330.log
-> No debug messages. At some point:
-> Mar 30 10:00:52 katana kernel: usb 2-3.4: disable of device-initiated U1 =
-failed.
-> Mar 30 10:00:53 katana kernel: usb 2-3.4: Failed to set U2 timeout to 0x0=
-,error code -110
-> Mar 30 10:00:53 katana kernel: uvcvideo 2-3.4:1.1: usb_set_interface Fail=
-ed to disable LPM
-> Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC c=
-ontrol 11 on unit 3: -71 (exp. 1).
-> Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC c=
-ontrol 11 on unit 3: -71 (exp. 1).
-> Mar 30 10:00:54 katana kernel: usb 2-3.4: Failed to query (SET_CUR) UVC c=
-ontrol 11 on unit 3: -71 (exp. 1).
->
-> Not sure if the LPM thing is the cause or a symptom of general EP 0
-> disfunction, as seen in subsequent EPROTO errors.
->
-> Not sure why usb_set_interface() is called. Is this the start streaming
-> case mentioned in some email? What was happening before?
->
-> stall-6.17-stock-no-workarounds-20260330.log
-> All sorts of repeating errors, including stall on EP1IN ("ep 2") which
-> is supposedly isochronous and shouldn't. Clearly some broken state, not
-> sure how things got there.
->
-> stall-6.17-stress-during-call-20260330.log
-> This is the most interesting one.
->
-> The first slightly unusual thing is repeated unlinks on EP5IN (int),
-> not sure why uvcvideo would do that, possibly result of the stess test.
-> I know that such pattern alone can break ASMedia host controllers for
-> no reason I understand, though this one is Intel.
->
-> It's suspicious that wBytesPerInterval of the endpoint is 8, wMaxPacket
-> is 64 and URBs are 16 bytes. Just in case, I attach a test patch which
-> rises wBytesPerInterval to match wMaxPacketSize.
->
-> The first definite anomaly is Transaction Error on EP5IN:
-> Mar 30 16:59:16 katana kernel: xhci_hcd 0000:00:14.0: Transfer error for =
-slot 18 ep 10 on endpoint
-> Mar 30 16:59:16 katana kernel: xhci_hcd 0000:00:14.0: Hard-reset ep 10, s=
-lot 18
->
-> Not sure why endpoint reset follows immediately without retries.
-> The test patch also removes one potential reason. We might see whether
-> the retries will fail, or if retrying until the transfer succeeds
-> magically prevents the subsequent disaster. Perhaps the device gets
-> unusually upset about sequence mismatch on this endpoint, which results
-> from not clearing this halt condition properly (known problem).
->
-> Five seconds later two control URBs are unlinked:
-> Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Cancel URB 00000000=
-122aa5e2, dev 3.1, ep 0x0, starting at offset 0x11e227b40
-> Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: // Ding dong!
-> Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Cancel URB 00000000=
-8a55bcd3, dev 3.1, ep 0x0, starting at offset 0x11e227b20
-> Mar 30 16:59:21 katana kernel: xhci_hcd 0000:00:14.0: Not queuing Stop En=
-dpoint on slot 18 ep 0 in state 0x44
->
-> Probably timeout, i.e. things got stuck. Oddly, state 0x44 indicates
-> that this control endpoint has previously halted - error or stall.
->
-> Higher layers notice that things are timing out:
->
-> Mar 30 16:59:21 katana kernel: usb 2-3.1: pipewire timed out on ep0out le=
-n=3D0/0
-> Mar 30 16:59:21 katana kernel: usb 2-3.1: disable of device-initiated U1 =
-failed.
-> Mar 30 16:59:21 katana kernel: usb 2-3.1: ThreadPoolSingl timed out on ep=
-0out len=3D0/1
->
-> Nothing works from now. At some point the parent hub reports
-> disconnection and reconnection. Still nothing works.
->
-> ---
->
-> Would it be possible to repeat this test with the patch below?
-> It overrides the suspicious wBytesPerInterval and hopefully enables
-> retries of this failed interrupt URB. We will see what happens.
->
-> xhci-mem.c b/drivers/usb/host/xhci-mem.c
-> index 1d50c91afd7f..17d78b4e07bf 100644
-> --- a/drivers/usb/host/xhci-mem.c
-> +++ b/drivers/usb/host/xhci-mem.c
-> @@ -1464,6 +1464,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
->         mult =3D xhci_get_endpoint_mult(xhci, udev, ep);
->         max_packet =3D xhci_usb_endpoint_maxp(udev, ep);
->         max_burst =3D xhci_get_endpoint_max_burst(udev, ep);
-> +       if (interval && max_esit_payload < max_packet) {
-> +               xhci_err(xhci, "max_esit_payload %d -> %d\n", max_esit_pa=
-yload, max_packet);
-> +               max_esit_payload =3D max_packet;
-> +       }
->         avg_trb_len =3D max_esit_payload;
->
->         /* FIXME dig Mult and streams info out of ep companion desc */
-> diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-> index 98ef014c8dee..e5823650850a 100644
-> --- a/drivers/usb/host/xhci-ring.c
-> +++ b/drivers/usb/host/xhci-ring.c
-> @@ -2544,6 +2544,7 @@ static void process_bulk_intr_td(struct xhci_hcd *x=
-hci, struct xhci_virt_ep *ep,
->                 td->status =3D 0;
->                 break;
->         case COMP_SHORT_PACKET:
-> +               ep->err_count =3D 0;
->                 td->status =3D 0;
->                 break;
->         case COMP_STOPPED_SHORT_PACKET:
->
->
->
->
 
