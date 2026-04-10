@@ -1,298 +1,317 @@
-Return-Path: <stable+bounces-235619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJHGA5Pe2GnHjAgAu9opvQ
-	(envelope-from <stable+bounces-235619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 13:27:15 +0200
+	id qCMcBDrp2GnjjggAu9opvQ
+	(envelope-from <stable+bounces-235620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 14:12:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D853D625B
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 13:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FEA73D68DC
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 14:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3FD3F3033208
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 11:27:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F65F3029A40
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 12:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2033339E197;
-	Fri, 10 Apr 2026 11:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E803B9618;
+	Fri, 10 Apr 2026 12:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="GRkoHqEc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Tne5brQ6"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="SQdTiCBL";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="nmuhF7D8"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFF53B9613;
-	Fri, 10 Apr 2026 11:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775820420; cv=none; b=QJ5/AYC1np068eFTots4Kt5VKYMutiGBV47VDZZcF8tkJV78DmvzLXsMpwMGZx2NtaBPM6P3bc0LKDAbJHy2CVnAbTMMvDo+zjlLRsLj+gAgsLcR4vFcg5vWJgprPrg0lO6nqdW/MuIZ9/7Re8JfMuTRjqDZ2yeUaXxApjRt3i0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775820420; c=relaxed/simple;
-	bh=t3sydj9RC0hGhyZ/c6JaM+nYJwCW1IuLr5C1AiYuufk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UHINUcXxDwJmCKTT3IkxGef2JmCqaw8dGf5DhswbGrJOBOlpspi6sQpgOmuDnNTZk5L6QuclREJBx0r5a1bOIuTmjxiI91920EasH/RKSLKB0BHJli2JXY0TD5HkORrQAVOSEFyRmTU3YQBSwm9wiPueiPDAMJ565fZ+CHFmC6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=GRkoHqEc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Tne5brQ6; arc=none smtp.client-ip=103.168.172.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id CAD591400143;
-	Fri, 10 Apr 2026 07:26:57 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Fri, 10 Apr 2026 07:26:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1775820417;
-	 x=1775906817; bh=CFIuDoJP1rz4n9s/VPto6c+bmWc9hheKSJdyP8Mn2/s=; b=
-	GRkoHqEcbux1ZUjLcUtPR5+5E1o6+NE64G8vH4+yJB3pqLe+3jrCdz95NhI/nyyK
-	F6pJsrTZNj9M07yx3xjfyb4s95pTRUm6G3nyEYijOOJUbGbFW63pfdht8gGUwoXY
-	kR6wzn4OFifLKwOcvZOvpRNNOX2347FUpVqwF7AyAPHkQ1ZqnNL/4WX9eql4pvO9
-	X5o7+zE4K+1UNMU2Dj91bYYKkb8QjUptbj0CwXoQ+b2/FPxHzjD/fjN4rve/OGFR
-	tblPzcn/Imd+OzxihobNrQfODMi3lUDUxVvQCNbjp6uLAs7ZawPE57gp7KWAYGQS
-	WykVdqALHigeAtYuR9wiUA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775820417; x=
-	1775906817; bh=CFIuDoJP1rz4n9s/VPto6c+bmWc9hheKSJdyP8Mn2/s=; b=T
-	ne5brQ6VOluwXXjjsZ0Zozk55zd9ZC2QY9G8rCGGCnm8ZpZ8w9PR6A2fwoG8dkVa
-	4nct25LE7HFLTAnoLSm3e5HdE6l+5EhHOJKdQdAnYD4HYOzWw9OpOihrg95A7jhG
-	V0MbxkgnJQyDWEhZvVHsHOG7L8rFG0awSYbW0KS3VfeLpdy+A95PO5DxT3aTFvsJ
-	VMvmqQZS3qV7kj5r7ojU8537ly55T2UMaV+ONhC32sAsuMnHAw4m8Wb7IoLY4X5q
-	HakbAZHI6jD/H8UR6OsDqVSQVFU0O29IS21pceN+W0uk+8N47/INbG07eES3Ch1W
-	6DCIL/taZz2Y9T13c6Hcw==
-X-ME-Sender: <xms:gd7YaeZUukWF3tfFcrcmOrwaDNunKQHhtqJUfIkaUvVMBSN2N3WTkA>
-    <xme:gd7YaSE4VF8vTh_hU9UOmM7Nxfcyll4SLCc7T26NiSewOZ6YjeFBAJx1NfTOlhw7M
-    MD_fQvs8_AqJt_f-D-jvi9u6iNZctSixakS3CcGaB6W0dd7pyPU>
-X-ME-Received: <xmr:gd7YaXJgauVOjSbPC_m9ZcIZskg3V_VxW4t5dEUxx-j4nCcK-Wb_RHWKBs9-JRYD8uH8ddM0elRTJbtBvWudG4chNH2OVtJ--y4VvJNPTUBMRT2Z1w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvledvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepuegvrhhnugcu
-    ufgthhhusggvrhhtuceosggvrhhnugessghssggvrhhnugdrtghomheqnecuggftrfgrth
-    htvghrnheptdeuvdeuudeltddukefhueeludduieejvdevveevteduvdefuedvkeffjeel
-    ueeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsvghrnhgusegsshgsvghrnhgurdgtohhm
-    pdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjoh
-    grnhhnvghlkhhoohhnghesghhmrghilhdrtghomhdprhgtphhtthhopegsshgthhhusggv
-    rhhtseguughnrdgtohhmpdhrtghpthhtohepmhhikhhlohhssehsiigvrhgvughirdhhuh
-    dprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprghlihesuggunhdrtghomhdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhsghirhhthhgvlhhmvghr
-    seguughnrdgtohhm
-X-ME-Proxy: <xmx:gd7YaVPcVliCSvnY16WM9ZnW2MBcq-K4EFM5H5ocfXKR9ci93m3u7w>
-    <xmx:gd7Yafm8TDGiGPgRiqTyWWtjZMIVXzj2BsDs1PNqNG9ZIuJxKwUVgg>
-    <xmx:gd7YaR4naaHlN54bgKF3Yzu75o38Hs2qxeLJ1HPRhjLS7By0l_xLkg>
-    <xmx:gd7Yab1ZH9oLysakvN0-h2fuEiqd-LfykuHEowLCFonlDVtz2gqZOQ>
-    <xmx:gd7YaRoENormQipKriJrJvsIxvzwxubpDPRT0jt17mKKL1YTh80bMenw>
-Feedback-ID: i5c2e48a5:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Apr 2026 07:26:56 -0400 (EDT)
-Message-ID: <3eabbc7b-010f-4d4c-9145-30d69fe1aa79@bsbernd.com>
-Date: Fri, 10 Apr 2026 13:26:54 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCE93A1682;
+	Fri, 10 Apr 2026 12:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775823143; cv=fail; b=smD6mXfupGZuiblHOmBAPHD6rN9E0mMIzpQhgWcTo5v8XZumJ8C7BS41obGDdi4zC1fHo7rNxxZOat3FM8dyiJ37UkekIwO+BSH+P+llIGPABvpQynntfUpvFOYoo+21JDr9N47SFUWg+cyP7I+AHM27E+Uoq9pI3rbSXZUUBWg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775823143; c=relaxed/simple;
+	bh=9yGVmMhSb3Jp6hW0dXX2N9tcpaBYH/GqsGrzBduTH7Q=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=OIq+mY7U0uPLX3rLqT5MsE6ss1r8s9rj6zTxttOCVjatjGuy0ddfrtdwLdxFHt+UDt4liwnEImsPrI8JrZ9al2nQIv1v2p61JE/y9Z/UL6bLWkZDS67c8bPkRikxTQ6uwVduJIUs4W6Flkm/XSnb5JoWiOhqSqRa5F1/fsvMskg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=SQdTiCBL; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=nmuhF7D8; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63A8tSBt682195;
+	Fri, 10 Apr 2026 12:12:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=REssa50ZWev5ziUm9p7T5CiV5quPAFwNkSwnYfymf1M=; b=
+	SQdTiCBLTA0Ax4EmB4Nm6cflEFIVKdGlRGwodvjU1J060wBykWdB5O9hLFEsFvse
+	gD8wKL7FNyxAooW6/hItlV+5kEQ47gWw0IRWXb9NFdtGBE59ZhREBv4MlxSbyxiI
+	o1+sQFFIczYXf4aPZD7OcTC0zCO4yjQOx67b4/wxLOHjy0Ll/AM8iPdykGI4rv7M
+	j9kn1CbWzTqQ4RR2DifEhgYPIZfpVHKsjb1JV2c2SJCeXVdiwzdkokVtx17vhOGw
+	vA1h2BNZLukE159bZx8ZYJC/zioc59OOBtMeTK3ToRzsIsyZS3I4p4HpPCyeGEMH
+	m/os+OlT/ISPWmIW3tonGQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dcmqb1k7s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Apr 2026 12:12:19 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 63AAoPwq005113;
+	Fri, 10 Apr 2026 12:12:18 GMT
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010009.outbound.protection.outlook.com [52.101.61.9])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ddgxt3x48-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Apr 2026 12:12:18 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h++iCYv5U5ZC67AnSpzw85elXJyoefnl87SURUW54o4xMv8xp8uGBvvB7AUM725yOgD3ButYiwmq0HrsGRYDjXiM6TSLW5zN+0RkNxmpRs8mCzfOouNW5X0AQX9lvYoWsHtBsCgHDigdWTden2PeEA9JhBq+W1cNCSdU55Q9SM9U9LZWidIXaiXg97AI7Tp0bc8kYz10FtYl/3+1SeYoKbHZizFhD+nHtBHtJ+2PxurCzbpRz5q6e88gdnNRpFpZE1fQWzRml27g/TjmDlCDhFXWiuT3bMXvTyecZ8Cf09jcDFN2oE94Xw6mLcjNP9Oiu39Z6kEAWO5fj1gTGVzDkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=REssa50ZWev5ziUm9p7T5CiV5quPAFwNkSwnYfymf1M=;
+ b=tw8Rg/oJtkGe+9J0NFOKf8N/eGS0GoB677zz2b/N7VtnUvZjw/KEOkTnk5zrR9BW32LIF6yoQACWlu2p7hqsdMydFoArmC2rPH1e6l5hYx5dYfr0sfg51Wxq63NvWIxScuGLaSMJQTjYd5iW6Gg0xyWnUnLpwcQmErTLiRALh9DkB/A9OZFXCC5a4oUsrFOHQKi+SabBqFGs4HeMUFv3RK0R7C1i8uNIw0QtpdEBXG5y1sBq1zEqWn/M+uppUYmrOPvNQUQJysoaUxVVGgDIipJHPgZef3paLEi1xeGsupYE1gOlm2nn6QJJGwrfv3M4Kv6b8GQpSTa9clxJRTBvrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=REssa50ZWev5ziUm9p7T5CiV5quPAFwNkSwnYfymf1M=;
+ b=nmuhF7D8Y+fNrVIPd4pkE+rYLSCAzO22CIJp3hIAXLhh8dySKQFN1V9YqiRfLPjpEYH8kkOVgW1WSmfToCyHL5fUlyXpvldWBMBCVxBKhYKxpmsN4PkYFVthfEC80nWuAJ9B0UO+IKVqPqFXtfS7+5DG7LWG7HUvF3yx92OOLBg=
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
+ by BN0PR10MB5207.namprd10.prod.outlook.com (2603:10b6:408:12c::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.42; Fri, 10 Apr
+ 2026 12:12:09 +0000
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a%6]) with mapi id 15.20.9769.018; Fri, 10 Apr 2026
+ 12:12:09 +0000
+Message-ID: <71b9df58-41fa-4b40-b3c9-c8820bc6ded2@oracle.com>
+Date: Fri, 10 Apr 2026 17:42:02 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 007/242] io_uring/kbuf: uninline __io_put_kbufs
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Vegard Nossum <vegard.nossum@oracle.com>
+References: <20260408175927.064985309@linuxfoundation.org>
+ <20260408175927.347004376@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20260408175927.347004376@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DX0P273CA0086.AREP273.PROD.OUTLOOK.COM
+ (2603:1086:300:5d::11) To DS3PR10MB997700.namprd10.prod.outlook.com
+ (2603:10b6:8:347::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] fuse: Fix possible memleak at startup with immediate
- teardown
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Bernd Schubert <bschubert@ddn.com>, Miklos Szeredi <miklos@szeredi.hu>,
- linux-fsdevel@vger.kernel.org, Jian Huang Li <ali@ddn.com>,
- stable@vger.kernel.org, Horst Birthelmer <hbirthelmer@ddn.com>
-References: <20251021-io-uring-fixes-cancel-mem-leak-v1-0-26b78b2c973c@ddn.com>
- <4b5a8040-b62c-4d75-a474-70d0b4759461@bsbernd.com>
- <CAJnrk1ZohxcDERszbii8ZM0g1ZzTwk6+wEqRWpCoSwBXzgavkg@mail.gmail.com>
-From: Bernd Schubert <bernd@bsbernd.com>
-In-Reply-To: <CAJnrk1ZohxcDERszbii8ZM0g1ZzTwk6+wEqRWpCoSwBXzgavkg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
-	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm3,messagingengine.com:s=fm2];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|BN0PR10MB5207:EE_
+X-MS-Office365-Filtering-Correlation-Id: adc5ccb9-b769-4513-ca6a-08de96fa63be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ZpC+jn7wDsmpFXpN9AmgFFvvR4MLRQCVdowOyOPHb3oP7RJkMRKNrdUn825REPB9KwxRmdIxlvspV/j42IZv1BwMUj6gOicX2/rCOT1cTNA1QuvHAURZQ/crkgvz/gO0r4enmSMK++Abw1Z6FasIQyGLjxQJkIjmX1WixgDy+f/PAm2pXSVMYhjpI/7urPKxpcoXDqM3qrQ96xdfwdVlrjrHlmbAF2Hav8Q0ldXS5dc2GIGjpx5VKGrtxMocXecYKqo+1upczt22Y2SwnZguJvC7UF7ruQzvelXwt0sScgXpCG8qSHsr4+LQWdTspV2PqDM8/z7iVp4QYWK1iLyKg7T+0vXBuBvHNvSeO/UUP+SopwKfpkVuVqmlNMX5wZChPBhSRfd5lsavEbj7aonPN5wAdTWa4hJ+W4fSgWZ392xUYsfRHtIG2KLs+ITRVHTBGaghf0xNfxbXdvFyrk0zojmxUuNib5VAbJRQundTgkTR825EhhCtPh7QKJCtSBpYAqLDMQzMaTTvdF3oWl3Wtn2iUrlvPzWaHOaIivBNrJelPIP9RyEGdF8XA3My4zAlw352nFkpVE7zWiWndlejtNRpve9U0fgbJIvJABpI7C/098lh/4EGASKNS4WXfzJ06kTTmXIoZuRFS+tIA+dT35xtwBzN23rK7IJgcZzQSpJJDCFvcnGvyx8LYeEjVPhXyFQR6bD9mobdQvw55qaZeWfavDWBCZ4DfBfAWjuHFJs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZWZLdHQrT0NYeDJJazRMQ2JPVmx0QkU0eThVbk9heElQTW1XSmx1bDVJYzI5?=
+ =?utf-8?B?amxLSzNYMktiQUtQTWtGVkFuRDNVSUM3M1pIYnFyL2NNK0Q4OE1MWnNCSnBz?=
+ =?utf-8?B?ekwwKzRQS0F6ZXJTTHFyWE81WjR0VVpzb2F3R3UycGlKL1BLNmhMVkR1b09l?=
+ =?utf-8?B?a3JEY2NIbHhIVEhIWmltRFNtZGJ3Sm9OOFZ3MjFIc0tBS1prSHFOY0NPK0l1?=
+ =?utf-8?B?RGNKNzVzcFpkZU4xNFJQN0FDRGNkdys2OTNSVk1EeFN5NHA5TER6OTJsTG8y?=
+ =?utf-8?B?OU1zWW83NUw5Vmlad2xPU3ZuUXpJTFI0M3F3azJ5TE93eDB5VTJoWmFiaHNH?=
+ =?utf-8?B?VEM3RUY3SEhLTjJXU1RoRC9MZEh0aGJsbjArUUhGaitsRVJKcnBybEh1eUxW?=
+ =?utf-8?B?U3lSdEU1ZzU2OWRoYmpIWjhEM0VUczBNaTg4cTU0Y2VldVY1NkJaakd2ZzVx?=
+ =?utf-8?B?eTZYRDQ3V3JnY1FDeUJteXdHYnVFNEhpdFJuTWQ5QnRkZjRxc2dkajJtZkYv?=
+ =?utf-8?B?N3pRekN2RW0zVFZtc1BLK2gzTWpMNll6aVNBTVJzQmVmT3FvNXZRVDR1c28v?=
+ =?utf-8?B?MncwQnVIdEJaU0svMGMrL2xnbXdqNTB6YjB0K1Z0dXpRUVJkbU9VUjd6YXg1?=
+ =?utf-8?B?WTJWSFlLa2Z1VlYwV3p1Q0dSWmF6bm1zTDNhaGkxSWNYam5LeFNSK0oxV0U5?=
+ =?utf-8?B?dy95Z3hxa3Zjd2x6U0VsMGNscWxCN3ByOE41TFFmejlpOE4wVGRMb3lmZkVq?=
+ =?utf-8?B?Z1JuQzFRVlIvOEd5SzNpZWdGMnRRR3RHd1JPNXB4Qm5YeXBXWHF1UzJmWmJV?=
+ =?utf-8?B?VkFvdXZYd05DRG9MOFlQMm1BNU9oR1QwTDVQdzdzZzZuTWRHTWl4elZXbUZO?=
+ =?utf-8?B?c2JyemV3UjgzSjVXN0dQbnlsOUZTZWlYTGZnTWJmeUdsTFc1STdSTlArT2xS?=
+ =?utf-8?B?M2RIZnFSRGFPSGlqc09iTEV4MXN1bmphUlkwRDRCNG5sdkJYdGFDQktXbksx?=
+ =?utf-8?B?QWRhWHEyaGRHVVdVTVRuN3Bmcnk3MkNYV1BYRUdaUEs1ZTU2MVNwTkdWcGZY?=
+ =?utf-8?B?ZUdLQVJxWU5TTkVDRXF6d1h1M1NpL29uQ2ZjamVtSEpGVkMzMXF3NVVrVjlL?=
+ =?utf-8?B?enRuUG1CRUx1aW5CVWg0d0d5bkdmSHN2L3VFSUJoRW85bDFISGhVenl4ZUYz?=
+ =?utf-8?B?VlFmR1RkS2RNbERkTXlvQ2RhNlRJNWpjVFUzNitRM1VKWUJ6Nmo4Ly8rV2VL?=
+ =?utf-8?B?U0hUZEJPRGJUZEVsaytJdFRyN2Y1MkhjbWVkMGFmaC9qcXc3NlJvdUJWWVVD?=
+ =?utf-8?B?bEhmVVh5aC9HRmVEbXVZVWY4NitlWC8yb2t3RVA4ODVBMlBINWNKK0JMTURU?=
+ =?utf-8?B?Tjg2VGdLd1VNenJKSWV1WnkrN1pBSnVTeFloNk9xc0xiVU43cWRSZU1KSGc3?=
+ =?utf-8?B?bS9tbzdMSlBiOXJpTXhuKytjUXA2U0Mwcjdxcll1M2cwaGJ5MkNxb1Q4Z0Ux?=
+ =?utf-8?B?REJpTzRaVW1LRHNla3h3MVk0SVlSTlpFZEVoQkRqQktQTktOQ1Zya1BLc0Ew?=
+ =?utf-8?B?MStJNXFXa2UwNS9EUUd6ckFjNkJsTU83akRHa3JCMHJLUWxTN0lrd1g5V0Jp?=
+ =?utf-8?B?RnV1bHhwQXVUa0ZzTGZDZDZlMldjNDFvR1lob1JIbGVzM0duUWxyTkgvSW5T?=
+ =?utf-8?B?VlNONjdtallra0pTY0dNNjlXUEtYd2tUaDBOY2J0V2QxVGdMc0FPUkxYNmlO?=
+ =?utf-8?B?ZFVqYmxSRHJsY2M0VDd0NmF4ejFRLytHRkkzdFptcDNjUURlTXFiSVMwa2Qz?=
+ =?utf-8?B?d1ZoWVlWY0JNT2Z4OTR4UmpBSkxCQzZEOVVFYWhrS2xsQkhwcVdHUHh6c3FV?=
+ =?utf-8?B?b3pEdGpaMy9YN1FyRGxISGpPQlcxd0tkZ21pRnp3QVpqOXJ3RzF0K0tPRzlI?=
+ =?utf-8?B?R05Fb3BaRld4VzN0UUNGa1N3SHo2b1J2ZmNybEhaUmZ1R2NGMERyckhHb0NL?=
+ =?utf-8?B?SmtIMm03NGgyeVcxeS9XQkcrMmtUcXMvUGEybmFrNlNFNGo3OUNHb0VMQ1Bw?=
+ =?utf-8?B?aFl6bUlhNjRLOEhBT1pjL1NxN3RHUjFZL296WHJhWFY0dTNvOVhLRzNIR2tD?=
+ =?utf-8?B?ME03cDE2UnJQSW8wdDBvLzJ1a2RZMDJmV2JLZGgxckFjWFpxeUxqc211VlZJ?=
+ =?utf-8?B?cTVIQWt3UmV3T0prYm8rclZ5K3hKNDM4S3Y4QitiWEM1bHpFbS83QUFGbmh3?=
+ =?utf-8?B?UlFuam13a2NzV0RqeG5WL1ducnVFUDkrelRJWDBIZkh1SzdtaS84ZWZyck9z?=
+ =?utf-8?B?bkpNaDV6OWo2UFhwSWN4ZVRhZ24rWXlLZWptMGg3M1VIblVyUzV6ejZpRHZQ?=
+ =?utf-8?Q?ooX5FXYHPC+2BjGdNalpsddZqZCqb0X8uL/Sk?=
+X-Exchange-RoutingPolicyChecked:
+	iA7gcihXKpeuFKvFYq1+JZ1jJoI7ouQ1BOKWeru8S0LunLidX13L5jYbeWWV8ZTIWL4ACXBy7loseMYi5ya7YE92r3zJkmJTWbQe4j1ffQaepRwXAU4Iz/sxjCT+NaI8t7Kv60tVa7+i+CBL/bvUj4kVyYdXgHDcpNDGqW+DmHnQooNVExmXvzojXp0ge6Sej524YvP1RlKXZYkXSq93f8pEDzhPt9Lvkphzx3uuZmtJjLU8LatrpdMEzd9myPrIkNMmwgIS9gt2SqHmDbkfjGoKjlcqfAAl0z+DKL0gUqMLWziD7oUmxxNfMZlxv/FkBy2xmexRDn1CVwDEao4psg==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	TPkZXtYBMp/ziDFsZ+FjezjNFgd8x9Jy50RgLHcDyxJ/Xq+LzWrm3URpohjuYDQ9mwNfs1TxceLrp2uCnnRa/Ypvj2iCgEVsJqUmw8cuMIuCS21i3v6+tRPGRsGCgjBjPpDOnGpatgaCRLfUHsbWDm9u2MxYnTH4HV/tc/+ZO4ifJt7yVijPPuKFjOup9HRd+tIl3USyK29qGBg79bXUUI8V6wVn8wx6hP6XEQhSANYkN61ZD4ofA7eCctG3Uv82/3o/pUZGYlKG5TYPrRfbIk5wHvQsf9fuzGAWReDkvENLDq5PI+AnCn5ckOtwwvzX+1xI8tniLyt/av+59z80DZGvEQ9GqrsK8LiDhKEZpqG5R31+lTKM5vhW5i56Mf6cesoGHWQv7Y52MFiMUf9LpoK8zkCUr2eaEM9uUMz9EWYH7nnnX1t4TznJVb5p95Ib63ci6g4QsWGjIi480z5RNtE1XSqrCuRyB/AUQuM9qsEdPx/JxBUYrFngu7zABm28o+NzyIshomdg6U7CW0YBkquC8STG9AjnUayyPU8MYI5lJWdr2hLmtCgO6v2wMjDeaDE8yJmVv6DiDLuun1XVS/m9mVXEic8yl0upBRhqrug=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: adc5ccb9-b769-4513-ca6a-08de96fa63be
+X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2026 12:12:09.4279
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SwtAko9B021s+iXoSGb5hJQRrYcmzQDrVbwoWG3U2UjRtXZ+xFlzp5u/6opw81r1AQ6Vvhv+4sRbntaWOUeqZwqXIjeJAno4o7WO6fbKNR/vxyzDcVmXjHq2Rsjs1BL7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5207
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-10_03,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0
+ mlxlogscore=547 mlxscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2604010000 definitions=main-2604100113
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEwMDExMyBTYWx0ZWRfX3bjErFnw/HRr
+ kLAOLZQ1Mi6HrhonqmKrx/7H4Ol20V50Hrx3hkowgEtq5sJv0m5iiM3dZXYrf4MT07IDE/Bfqnn
+ 56CFiGc0/7i937mx0UIerElT1szCHDM5IkCeCT2VXQ/V2e9/EdbdbRidFUlvLBMFbevvyBd+TPU
+ PxrEcsJ7+gezpXx+ucUl5rz2QRXokKsh1PpTjkoEmihaoGJnoGTcCRQeUs/EBnYkeRvLagMY1V7
+ vnFO2mEpKaPX1ELMmsFgzRsxQiSmeuTg0Xbq/oPd4IguCRDctruE0O6auzYFYR21R+wbavkolgM
+ pj15UQYHLjdD3qaxERl8Zd4vm8gQ8u8br1cypDGSNtniG8X7FKpSbxs6mzuXbaZlA93fLIPYD31
+ iQQ/fd3qWCSfjXQwp8LRaoyJqHaOS2UOc553HFXKuW33kd0ubP11q7x4vza/hjsqo06O3sXMrBR
+ x8YPpO7e2rbaG2QYPQw==
+X-Proofpoint-GUID: u2rvWax613pSWdcgzsD5-WIHzruXkWHV
+X-Authority-Analysis: v=2.4 cv=Oux/DS/t c=1 sm=1 tr=0 ts=69d8e923 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=x0eKOSpe3m1H3M0S9YoZ:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=ag1SF4gXAAAA:8 a=e7rztebOFDt66QtvFqYA:9 a=QEXdDO2ut3YA:10
+ a=Yupwre4RP9_Eg_Bd0iYG:22
+X-Proofpoint-ORIG-GUID: u2rvWax613pSWdcgzsD5-WIHzruXkWHV
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
-	TAGGED_FROM(0.00)[bounces-235619-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235620-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,kernel.dk,oracle.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.onmicrosoft.com:dkim,kernel.dk:email,oracle.com:dkim,oracle.com:mid];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 64D853D625B
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 6FEA73D68DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Joanne,
+Hi Greg,
 
-On 4/10/26 01:09, Joanne Koong wrote:
-> On Thu, Apr 9, 2026 at 4:02 AM Bernd Schubert <bernd@bsbernd.com> wrote:
->>
->>
->>
->> On 10/21/25 23:33, Bernd Schubert wrote:
->>> Do not merge yet, the current series has not been tested yet.
->>
->> I'm glad that that I was hesitating to apply it, the DDN branch had it
->> for ages and this patch actually introduced a possible fc->num_waiting
->> issue, because fc->uring->queue_refs might go down to 0 though
->> fuse_uring_cancel() and then fuse_uring_abort() would never stop and
->> flush the queues without another addition.
->>
+
+On 08/04/26 23:30, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Hi Bernd and Jian,
+> ------------------
 > 
-> For some reason the "[PATCH 2/2] fs/fuse: fix potential memory leak
-> from fuse_uring_cancel" email was never delivered to my inbox, so I am
-> just going to write my reply to that patch here instead, hope that's
-> ok.
+> From: Pavel Begunkov <asml.silence@gmail.com>
 > 
-> Just to summarize, the race is that during unmount, fuse_abort() ->
-> fuse_uring_abort() -> ... -> fuse_uring_teardown_entries() -> ... ->
-> fuse_uring_entry_teardown() gets run but there may still be sqes that
-> are being registered, which results in new ents that are created (and
-> leaked) after the teardown logic has finished and the queues are
-> stopped/dead. The async teardown work (fuse_uring_async_stop_queues())
-> never gets scheduled because at the time of teardown, queue->refs is 0
-> as those sqes have not fully created the ents and grabbed refs yet.
-> fuse_uring_destruct() runs during unmount, but this doesn't clean up
-> the created ents because those registered ents got put on the
-> ent_in_userspace list which fuse_uring_destruct() doesn't go through
-> to free, resulting in those ents being leaked.
+> Commit 5d3e51240d89678b87b5dc6987ea572048a0f0eb upstream.
 > 
-> The root cause of the race is that ents are being registered even when
-> the queue is already stopped/dead. I think if we at registration time
-> check the queue state before calling fuse_uring_prepare_cancel(), we
-> eliminate the race altogether. If we see that the abort path has
-> already triggered (eg queue->stopped == true), we manually free the
-> ent and return an error instead of adding it to a list, eg
+> __io_put_kbufs() and other helper functions are too large to be inlined,
+> compilers would normally refuse to do so. Uninline it and move together
+> with io_kbuf_commit into kbuf.c.
 > 
-> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-> index d88a0c05434a..351c19150aae 100644
-> --- a/fs/fuse/dev_uring.c
-> +++ b/fs/fuse/dev_uring.c
-> @@ -969,7 +969,7 @@ static bool is_ring_ready(struct fuse_ring *ring,
-> int current_qid)
->  /*
->   * fuse_uring_req_fetch command handling
->   */
-> -static void fuse_uring_do_register(struct fuse_ring_ent *ent,
-> +static int fuse_uring_do_register(struct fuse_ring_ent *ent,
->                                    struct io_uring_cmd *cmd,
->                                    unsigned int issue_flags)
->  {
-> @@ -978,6 +978,16 @@ static void fuse_uring_do_register(struct
-> fuse_ring_ent *ent,
->         struct fuse_conn *fc = ring->fc;
->         struct fuse_iqueue *fiq = &fc->iq;
+> io_kbuf_commitSigned-off-by: Pavel Begunkov <asml.silence@gmail.com>
 > 
-> +       spin_lock(&queue->lock);
-> +       /* abort teardown path is running or has run */
-> +       if (queue->stopped) {
-> +               spin_unlock(&queue->lock);
-> +               atomic_dec(&ring->queue_refs);
-> +               kfree(ent);
-> +               return -ECONNABORTED;
-> +       }
-> +       spin_unlock(&queue->lock);
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> Link: https://lore.kernel.org/r/3dade7f55ad590e811aff83b1ec55c9c04e17b2b.1738724373.git.asml.silence@gmail.com
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+...
+
+>   
+> +static inline bool __io_put_kbuf_ring(struct io_kiocb *req, int len, int nr)
+> +{
+> +	struct io_buffer_list *bl = req->buf_list;
+> +	bool ret = true;
 > +
->         fuse_uring_prepare_cancel(cmd, issue_flags, ent);
-> 
->         spin_lock(&queue->lock);
-> @@ -994,6 +1004,7 @@ static void fuse_uring_do_register(struct
-> fuse_ring_ent *ent,
->                         wake_up_all(&fc->blocked_waitq);
->                 }
->         }
-> +       return 0;
->  }
-> 
->  /*
-> @@ -1109,9 +1120,7 @@ static int fuse_uring_register(struct io_uring_cmd *cmd,
->         if (IS_ERR(ent))
->                 return PTR_ERR(ent);
-> 
-> -       fuse_uring_do_register(ent, cmd, issue_flags);
+> +	if (bl) {
+> +		ret = io_kbuf_commit(req, bl, len, nr);
+> +		req->buf_index = bl->bgid;
+> +	}
+> +	req->flags &= ~REQ_F_BUFFER_RING;
+> +	return ret;
+> +}
+> +...
+
+
+Looks like this backport is undoing the commit: 0866809dfe19 
+("io_uring/kbuf: propagate BUF_MORE through early buffer commit path")
+
+^^ in additions above we don't have this:
+
+@@ -165,7 +165,9 @@ static inline bool __io_put_kbuf_ring(struct 
+io_kiocb *req, int len, int nr)
+                 ret = io_kbuf_commit(req, bl, len, nr);
+                 req->buf_index = bl->bgid;
+         }
+-       req->flags &= ~REQ_F_BUFFER_RING;
++       if (ret && (req->flags & REQ_F_BUF_MORE))
++               ret = false;
++       req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
+         return ret;
+  }
+
+but this is being part of what is removed below. I think we should 
+re-backport commit: 418eab7a6f3c ("io_uring/kbuf: propagate BUF_MORE 
+through early buffer commit path") ?
+
+
+
+> -static inline bool __io_put_kbuf_ring(struct io_kiocb *req, int len, int nr)
+> -{
+> -	struct io_buffer_list *bl = req->buf_list;
+> -	bool ret = true;
 > -
-> -       return 0;
-> +       return fuse_uring_do_register(ent, cmd, issue_flags);
->  }
-> 
-> There's the scenario where the abort path's "queue->stopped = true"
-> gets set right between when we drop the queue lock and before we call
-> fuse_uring_prepare_cancel(), but the fuse_uring_create_ring_ent()
-> logic that was called before fuse_uring_do_register() has already
-> grabbed the ref on ring->queue_refs, which means in the abort path,
-> the async teardown (fuse_uring_async_stop_queues()) work is guaranteed
-> to run and clean up / free the entry.
-
-
-I don't think your changes are needed, it should be handled by
-IO_URING_F_CANCEL -> fuse_uring_cancel(). That is exactly where the
-initial leak was - these commands came after abort and
-fuse_uring_cancel() in linux upstream then puts the entries onto the
-&queue->ent_in_userspace list.
-Issue in master is, fuse_uring_stop_queues() might have been run already
-- entries then get leaked and fuse_uring_destruct() later might give a
-warning. That part can be reproduced with xfstests, before it starts any
-of the tests it does some funny start stop actions.
-
-Initial *simple* patch was to either add a new list or to just remove
-the warning and to also handle either that new list or
-queue->ent_in_userspace list  in fuse_uring_destruct(). The comment
-explaining why it is needed was much longer than the rest of the patch.
-The hard part in the long term would be tranfer the knowledge for that
-requirement.
-
-You then asked to handle the release directly in fuse_uring_cancel()
-without another list
-https://lore.kernel.org/r/CAJnrk1YaRRKHA-jVPAKZYpydaKcdswLG0XO7pUQZZ4-pTewkHQ@mail.gmail.com
-
-Yes possible and this is what the next patch version does. However,
-given fuse_uring_cancel() runs outside of all the fuse locks, it is racy
-and I therefore asked in the introduction patch not to merge it yet.
-
-https://lore.kernel.org/all/20251021-io-uring-fixes-cancel-mem-leak-v1-0-26b78b2c973c@ddn.com/
-
-
-Turns out my suspicion was right ;)
-
-Queue references might go to 0 when nothing is in flight and then
-fuse_uring_abort(), which _might_ race and come a little later, then
-might not doing anything.
-
-        if (atomic_read(&ring->queue_refs) > 0) {
-                fuse_uring_abort_end_requests(ring);
-                fuse_uring_stop_queues(ring);
-        }
-
-As Horst figure out, removing this check for queue_refs avoids the
-issue. I'm rather sure that the check was needed during development and
-avoided some null pointer derefs, as that is what I remember. But I
-don't think it is needed anymore.
+> -	if (bl) {
+> -		ret = io_kbuf_commit(req, bl, len, nr);
+> -		req->buf_index = bl->bgid;
+> -	}
+> -	if (ret && (req->flags & REQ_F_BUF_MORE))
+> -		ret = false;
+> -	req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
+> -	return ret;
+> -}
+> -
 
 
 Thanks,
-Bernd
+Harshit
 
