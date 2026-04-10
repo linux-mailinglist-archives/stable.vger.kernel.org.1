@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-235598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOT6NZ6y2Gk8hAgAu9opvQ
-	(envelope-from <stable+bounces-235598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:42 +0200
+	id mOm6LIKy2Gk8hAgAu9opvQ
+	(envelope-from <stable+bounces-235593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B78B3D3EFC
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5203F3D3E94
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09B23302AED9
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 79553300558E
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23973B27F5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9136B3AF663;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pwf6v3Id"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZg4og6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B733ACF14;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321F43ACEFD;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=cr/j6NzV+rH3ygLe8oaDIAlSMQFNg+djd1z7/30bHw0hrsLTEIFm+HCjm4qHdbUPZRGz2dF90EqHhuzHheTz5xsQURf547riI76+YyZxnQrEFazTk7uzhwOVge2KVZ+Ns59GF6iFIQNah2McLDT7pc73iPsXuT62C9+VEop89SY=
+	t=1775809137; cv=none; b=atgHW5p7I1I1Xr2DGoRTt7F37k8/teSJulieeW9srnl+OSl4LvfT1tFbBDxet3p7wb/SB3ZQOZSl9lb1VhRgmrifHeBSlaTBH7Q/NIHLP82ydZPMEZAFHpJARqu2QaHyV4VW6FExsZLzWluXp8cbHO9jDXTT5oH+cFIMqTH2MF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=o0vXBeK2SgguF0rsfM5b6rJ0D7VG7idXDew+BdwPXro=;
+	bh=wWTTYuWiW92SRM4Rfco7ThNu3zooqDKXAYr/i/dV+78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9hhq8yjCo+55CkpZ23cZPR2uol06qrPWkuQ9l8AH9t8M1dGiK9qdnCDc4d9A85lcqsakqnQR9tpvFHGEPAU5s4LlfB3EaaDEJFBVb1x6KuPhNHTNE7CKdlR0QZzdhvbaO4vPa/V3uzqrki9gkaNNstgEhzrp4wX2OU97WQPOEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pwf6v3Id; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A575BC2BCB7;
+	 MIME-Version; b=aX26541B9hf7faWdZXnfkonbn8eCEMVc6v4JRYhzQXsS2wnrXgCY2Bj34oMLz1Z4/xpaS5yDYaiAm7B59F7Sd8h8RO5xoPI16aN6RQtViX3B4FHzkPZ4MzPhV0bwaIfy/09LULRpSS1Zyz5ucpYvUqnGR1uRUkyXTN+Ni9KwpF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZg4og6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED3FC2BCF6;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=o0vXBeK2SgguF0rsfM5b6rJ0D7VG7idXDew+BdwPXro=;
+	bh=wWTTYuWiW92SRM4Rfco7ThNu3zooqDKXAYr/i/dV+78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pwf6v3Id3kuqyR244ThJ9QoniphIr4Z27UsLc0NgaJHnx8a5LTLVXdK/DQO8v/vir
-	 psz2w4xJd9hsCtXAy7Bl5Z1q8kUqd+EZqkw+D9zfTkIYGhQEbWqB8hVJGjG0eHheiv
-	 SkwR18v82EGCUKsWweLMDPLqJt71EmQIGaKyjzQuCSNxXkxqT/jaqzNUEfZpFPi/mD
-	 yWAhNysds1cMPNEZU1wq28qbsHckhkLa56jw4GWfIHSBTA1Gbvy25k+dxMtPRSenfv
-	 IoanASpqQ9/jc7BZbh3u6VZybjmpg0jeYXxvQWwiVf5a2yZY9VVV4P0HHYjeDnbN1X
-	 19QV44ED4OqiA==
+	b=VZg4og6iMbQcxAgaZuzyoe++nr+DOXPstoQmGLb6LA8FVKXqqbISGN0IwEt/edTi0
+	 v9O3kskB5j03/bPJud4EozS7VgZPfg9ju20Q7E7zh4o89RsASFFq3Jh5ibYXzYzhhU
+	 sq7DTRqtyCV/LR2ChamFVxb8M2lbIhoNUrl5DeArZr/Enaw7b7n3EpmMHaNxPgoQlN
+	 /aka5iwoE2uX09wwCm8Zbcrx/375OjNm++2zk7P97PhpynyIWf/ZLe6nKoCoUaOQoV
+	 lQuNkiSJDG8as38dVlclyWxtp2dX9GbDn7gTUyY8IT5vapFbf8P2Zhw6aZzrLeu+bO
+	 3QFOCiwzjX97w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026ug-3xxG;
+	id 1wB74n-000000026ui-40iJ;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -76,10 +76,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Subject: [PATCH 13/26] spi: sh-msiof: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:43 +0200
-Message-ID: <20260410081757.503099-14-johan@kernel.org>
+	Yash Shah <yash.shah@sifive.com>
+Subject: [PATCH 14/26] spi: sifive: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:44 +0200
+Message-ID: <20260410081757.503099-15-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -101,10 +101,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org,linux-m68k.org];
+	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235598-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235593-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
@@ -114,57 +114,58 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8B78B3D3EFC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sifive.com:email]
+X-Rspamd-Queue-Id: 5203F3D3E94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind.
 
-Fixes: 1bd6363bc0c6 ("spi: sh-msiof: Use core message handling instead of spi-bitbang")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Note that clocks were also disabled before the recent commit
+140039c23aca ("spi: sifive: Simplify clock handling with
+devm_clk_get_enabled()").
+
+Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Yash Shah <yash.shah@sifive.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sifive.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 7f3e08810560..f114b6313f4f 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1289,9 +1289,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		dev_warn(dev, "DMA not available, using PIO\n");
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 54adbc057af6..74a3e32fd2b5 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -392,7 +392,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+ 		 irq, host->num_chipselect);
  
--	ret = devm_spi_register_controller(dev, ctlr);
-+	ret = spi_register_controller(ctlr);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
  	if (ret < 0) {
--		dev_err(dev, "devm_spi_register_controller error.\n");
-+		dev_err(dev, "failed to register controller\n");
- 		goto err2;
- 	}
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+ 		goto put_host;
+@@ -411,8 +411,14 @@ static void sifive_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct sifive_spi *spi = spi_controller_get_devdata(host);
  
-@@ -1309,8 +1309,14 @@ static void sh_msiof_spi_remove(struct platform_device *pdev)
- {
- 	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
- 
-+	spi_controller_get(p->ctlr);
++	spi_controller_get(host);
 +
-+	spi_unregister_controller(p->ctlr);
++	spi_unregister_controller(host);
 +
- 	sh_msiof_release_dma(p);
- 	pm_runtime_disable(&pdev->dev);
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
 +
-+	spi_controller_put(p->ctlr);
++	spi_controller_put(host);
  }
  
- static const struct platform_device_id spi_driver_ids[] = {
+ static int sifive_spi_suspend(struct device *dev)
 -- 
 2.52.0
 
