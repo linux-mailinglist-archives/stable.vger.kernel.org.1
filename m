@@ -1,148 +1,177 @@
-Return-Path: <stable+bounces-235669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJVTFChy2WkqpwgAu9opvQ
-	(envelope-from <stable+bounces-235669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 23:56:56 +0200
+	id wlrXABpz2WmSpwgAu9opvQ
+	(envelope-from <stable+bounces-235670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 00:00:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF593DD122
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 23:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB183DD136
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 00:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80AAB3009520
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 21:56:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83178300B473
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 21:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6A53D9DD6;
-	Fri, 10 Apr 2026 21:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6451F3DD51E;
+	Fri, 10 Apr 2026 21:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="KhzMWRpN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YQ6DZwT8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp03-ext2.udag.de (smtp03-ext2.udag.de [62.146.106.30])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD1C377561;
-	Fri, 10 Apr 2026 21:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.146.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61DD3B38B7;
+	Fri, 10 Apr 2026 21:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775858210; cv=none; b=gCmXlm3zJpilSREvPsiiplEyrTd+4mFLroxevtWgLxxrBAPRBFnd8xgyyMbPcbim3xk8GdfzApT/EYnMZ5RKhP5CxMPkf/j29REjLUNKpTQR5eN0UwTiDXG3iP002aDjSSeSm1sm1c9QPNakWLAPFx5hRA715J3frDRdGopIm/I=
+	t=1775858308; cv=none; b=RGnV1pr7DWulrwzN2sxc0mYd8xNYcRyZ8PoKMdTL5LDVrFGtCYAQ4sYuaTJ32cjoumNgtA5B9wU7waK/CXmMrNNEXGblo3nLWBSOSugVCyfJ+ygAXGJ6jzUsSwXtCnMpA8G+5EKnYm5eBoMKLQ+LNjaLVOv7RcvqLDdy7Rz1Zcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775858210; c=relaxed/simple;
-	bh=z3Ev7tO/Cz5kcZdXrQTDKcOqxFiXfAHhtBFhGLLVMPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gi31pO2Bvo3qu/xrbFteSan/1BFYhauxa7KWI2zVbB+0LuIGVFEhUDe4PcHYepzm1LmhFtUEeCpiH+AQpX7IhfTfiGfDVNiJRWtFqaLsFEltTXlsP+9eoqB5fN7bi+kzan8fqv6kzUCyS6ahN02vZV54JA8wg6qfyWC7+YuFJnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=birthelmer.de; spf=pass smtp.mailfrom=birthelmer.de; arc=none smtp.client-ip=62.146.106.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=birthelmer.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birthelmer.de
-Received: from localhost (113-140-067-156.ip-addr.inexio.net [156.67.140.113])
-	by smtp03-ext2.udag.de (Postfix) with ESMTPA id 4D43AE05AA;
-	Fri, 10 Apr 2026 23:49:11 +0200 (CEST)
-Authentication-Results: smtp03-ext2.udag.de;
-	auth=pass smtp.auth=birthelmercom-0001 smtp.mailfrom=horst@birthelmer.de
-Date: Fri, 10 Apr 2026 23:49:10 +0200
-From: Horst Birthelmer <horst@birthelmer.de>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Bernd Schubert <bernd@bsbernd.com>, Bernd Schubert <bschubert@ddn.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel@vger.kernel.org, Jian Huang Li <ali@ddn.com>, 
-	stable@vger.kernel.org, Horst Birthelmer <hbirthelmer@ddn.com>
-Subject: Re: Re: Re: Re: [PATCH 0/2] fuse: Fix possible memleak at startup
- with immediate teardown
-Message-ID: <adlpMVjXfOKyIUPr@fedora>
-References: <20251021-io-uring-fixes-cancel-mem-leak-v1-0-26b78b2c973c@ddn.com>
- <4b5a8040-b62c-4d75-a474-70d0b4759461@bsbernd.com>
- <CAJnrk1ZohxcDERszbii8ZM0g1ZzTwk6+wEqRWpCoSwBXzgavkg@mail.gmail.com>
- <adiiTGjP1tqZfIrI@fedora>
- <CAJnrk1Y37_=OtwZHK_-AEN9Fysoi8VapeiQmv-xxvWjZJZn8+Q@mail.gmail.com>
- <adlE6dSPAlMH-ek-@fedora>
- <CAJnrk1acOQ4vm0bj+uLsx7vRodcwJBbfxjY=mn0BJ_j_eMr11Q@mail.gmail.com>
+	s=arc-20240116; t=1775858308; c=relaxed/simple;
+	bh=aw8TOKkE+5QyIGiF5qlPUgilCcZuHeODVen8Sg+YsJI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Osv6gtxpv8+N0HUxnbFqdNWCDbOScn1ZoVsaYJ0buyB1h+qLHfyOLV5wFO1Xwnhc3O34P2G9eMT2+BA6SvrsrKVth/HEV9bgKOGbxnmNj2GWOK4F/5MW+el+SF8IK4WxrJKA+DJHiAt70S/v7mvAp/kjMu1PmIJWdq8Mb6jlB3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=KhzMWRpN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YQ6DZwT8; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 93F211D0005E;
+	Fri, 10 Apr 2026 17:58:25 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-04.internal (MEProxy); Fri, 10 Apr 2026 17:58:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775858305;
+	 x=1775944705; bh=FmE4y9ifJWsccxbLkChS2A9WBPeo+cWUSgVE5dCIPwA=; b=
+	KhzMWRpNBFbqy06ZhE7+v1VZSSYTH4plNL89QCAMsZvR9P7XGatwxVlndE6+zD9n
+	K83HqAuy0H4Wt6xlouT1IWuJPhUoGx6zA1T+mOEVqIvgWzP99ItXme+jdzJOOyzw
+	UhXLrKxincpkwb9REWtVOdbpUaMjE8PstMgTM6DHHcoCj3lw0NDoUV4M1C0sXRxA
+	IH9TcK1cu+toppDbcFOb3PGvSfoJUGgPyflOh/nRxYW+Kg4gH1QpLtGKukVfXYnF
+	6CXHWYfAKKnezOc0lyy58FwbC6wzbb5sMW9Vih5rm32jIdx7mxUg6Nq2KyB0/dFm
+	7WZkVr7BgDhxbGTgsVcLsw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775858305; x=
+	1775944705; bh=FmE4y9ifJWsccxbLkChS2A9WBPeo+cWUSgVE5dCIPwA=; b=Y
+	Q6DZwT8P9tYJ4LR19iFmKmw9vxhXZI+ltdUg1aGoQwl+6Lj70W0nri7twTOTCdTn
+	L4395s1PirlQBU3trsEd9SCvbSb3TRHV51dnXqUZ6wSfDNkA/ky3HkP7/Yqpz6JN
+	0mnbhVlS5I6fFW8UTwWMY9sh1m+a+pM9TVvX0/pXSnAoWjZQljA2koPF8fjEk6Yv
+	TVFvkCXxFXb09TVK1NbbS1y1nVKvOYpV86D6cb29nR0QtspwPIb+/o94grZ+Ks8W
+	58C5kVfl37JJdVz8DHF5+rJJ4u9IVe8Nl9ByQA2EnX0HBe2/fghjKes/uOUHWZDt
+	C8RIWt0s02Z20NUyWnSRA==
+X-ME-Sender: <xms:gHLZaaramTROBJgKKsLOLabWIdpBQnY0ATVmEgMuQnNXusSggj_XbQ>
+    <xme:gHLZaUglsnxyqy6S_PCaMp_v32BEwIqNx_3VuYF9NeUOBn9H0NhzxmLEyFpq0RFNc
+    vFkF_7FTTtIKhhukecqN3xQdAhmm1tztTsyDNdGno-JbZ2Zhr9_nCs>
+X-ME-Received: <xmr:gHLZaat2zPxwUhCMy14aY1SdqVPJUJsJuM6y42xytH-t2DCfEfzKFHYezyz-xhi8jLmcKRvkZma8gOk4VaiXf2kdmhxXpx3L>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeftdehiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
+    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
+    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
+    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
+    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
+    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
+X-ME-Proxy: <xmx:gHLZad0Sw1jPGfXvgiPlZJRVMumuA4AEv3NAUPbWls-0WRCisBsbOg>
+    <xmx:gHLZaRxPKZODoa6f5DgcqNby76i2-tW8GP1evh5nUIpuhlqhPxuNXQ>
+    <xmx:gHLZaYVt1buybkqWqlwTu8pnTllzPmXtxCBLBwsZL-xGreZKM_Wptw>
+    <xmx:gHLZaTBBqxAVarI8SKfgdU8da1M28Ro-uJyBHGpGP-aq2bMLMbcaPA>
+    <xmx:gXLZab9iGSymeg5efbUO2q-Ppw0ufVDbmgf87MWcKcWOWgCAKacUKl7A>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Apr 2026 17:58:22 -0400 (EDT)
+Message-ID: <dcc48de2-09bc-40af-9370-57b29161db4a@pobox.com>
+Date: Fri, 10 Apr 2026 14:58:21 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1acOQ4vm0bj+uLsx7vRodcwJBbfxjY=mn0BJ_j_eMr11Q@mail.gmail.com>
-X-Spamd-Result: default: False [-0.86 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/160] 6.6.134-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260408175913.177092714@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[birthelmer.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235669-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	TAGGED_FROM(0.00)[bounces-235670-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horst@birthelmer.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: BBF593DD122
+X-Rspamd-Queue-Id: 3BB183DD136
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 10, 2026 at 01:09:36PM -0700, Joanne Koong wrote:
+On 4/8/26 11:01, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.134 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Gotcha, thanks for clarifying.
+> Responses should be made by Fri, 10 Apr 2026 17:58:42 +0000.
+> Anything received after that time might be too late.
 > 
-> Without the original patch, can queue_refs still be 0 by the time
-> fuse_abort_conn() is called? The only case where I see that is when
-> the sqes are in the middle of being registered but haven't grabbed the
-> queue ref yet, and then the abort logic runs (I am going to write more
-> about this race in a reply to Bernd's other message in this thread),
-> but other than that I don't see how without the original patch we run
-> into this case since teardown -> queue ref decrement only happens in
-> fuse_uring_stop_list_entries() which only is triggered on the abort
-> path. Are you talking about a subsequent fuse_abort_conn() call (the
-> one called from fuse_dev_release())?
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.134-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 > 
-
-To your first question if this can happen without the patch.
-I have not seen it but the async teardown of the entry could run before
-fuse_abort_conn() could it not?
-
-With the patch the stack usually looks something like
-
-Daemon Process Exit
-  └─> io_uring_task_cancel()
-      └─> io_uring_cancel_generic(true, NULL)
-          └─> io_uring_try_cancel_requests(ctx, current, true)
-              └─> io_uring_try_cancel_uring_cmd(ctx, task, true) 
-                  └─> file->f_op->uring_cmd(cmd, IO_URING_F_CANCEL) 
-                      └─> fuse_uring_cmd(cmd, IO_URING_F_CANCEL) 
-                          └─> fuse_uring_cancel(cmd, issue_flags)
-                              └─> fuse_uring_entry_teardown(ent, issue_flags) 
-
-And this runs before fuse_abort_conn().
-
-Without the patch fuse_uring_cancel() does not call fuse_uring_entry_teardown() directly.
-You are completely right in the current version there is no other call to 
-fuse_uring_stop_queues() than the one in Fuse_uring_abort().
-
-So yes, without the modification there is no way queue_refs == 0 by the time
-fuse_abort_conn() runs.
-
-To your second question. 
-Yes I meant fuse_dev_release().
-
+> thanks,
 > 
-> Thanks,
-> Joanne
-> >
+> greg k-h
 
-Thanks,
-Horst
+Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well, no
+regressions observed.
+
+Tested-by: Barry K. Nathan <barryn@pobox.com>
+
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
