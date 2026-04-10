@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-235597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBWVFoyy2Gk8hAgAu9opvQ
-	(envelope-from <stable+bounces-235597-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:24 +0200
+	id uOT6NZ6y2Gk8hAgAu9opvQ
+	(envelope-from <stable+bounces-235598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433ED3D3EC0
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B78B3D3EFC
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 10:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F3703006120
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09B23302AED9
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 08:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D703B0ADC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23973B27F5;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzJ+aOVJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pwf6v3Id"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DEB3ACF0B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B733ACF14;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=BjtwqcdlfLrUxpL2uqhgyfhgt6y4nr6DWB45VbViFjArTHJuXrcZjmQ/jQFKmxznME25/HaBufVbgMlz5mpRUEwDoS7kgMpovLT51OQO0i7+Jb35u+oRFYEKgR5xC7ASzP2Sh6C4fueGTmaIBXfpzkzOwr1dDwHEWJ+cyf2IaYk=
+	t=1775809137; cv=none; b=cr/j6NzV+rH3ygLe8oaDIAlSMQFNg+djd1z7/30bHw0hrsLTEIFm+HCjm4qHdbUPZRGz2dF90EqHhuzHheTz5xsQURf547riI76+YyZxnQrEFazTk7uzhwOVge2KVZ+Ns59GF6iFIQNah2McLDT7pc73iPsXuT62C9+VEop89SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=SHAf3I+yXF6tFQdQ6E9G7b2TWAaGV8lr5L4tBHqtFGM=;
+	bh=o0vXBeK2SgguF0rsfM5b6rJ0D7VG7idXDew+BdwPXro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mV0SnXH3iiZjGXw0AaGeSOwIzlALXw3C/MpggQIGKGAi6ffwz5pgXHVV80fe6VB3lT2/iY0diFgqZ8eXQ9s9g5UqU/Bwaj3vpwqTgP2cu7hzwSdYs+6cOKy3JTrkmCMg/5yTEIJHQ7fmDODPANQ/YksU++NdG7nR4WUAxLyuCQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzJ+aOVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E53C2BCC6;
+	 MIME-Version; b=S9hhq8yjCo+55CkpZ23cZPR2uol06qrPWkuQ9l8AH9t8M1dGiK9qdnCDc4d9A85lcqsakqnQR9tpvFHGEPAU5s4LlfB3EaaDEJFBVb1x6KuPhNHTNE7CKdlR0QZzdhvbaO4vPa/V3uzqrki9gkaNNstgEhzrp4wX2OU97WQPOEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pwf6v3Id; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A575BC2BCB7;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=SHAf3I+yXF6tFQdQ6E9G7b2TWAaGV8lr5L4tBHqtFGM=;
+	bh=o0vXBeK2SgguF0rsfM5b6rJ0D7VG7idXDew+BdwPXro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hzJ+aOVJBjwWhkmSrUOop98ozUK83FJJdEV5izdavhefnuzW/xjNw8E28I6xEg491
-	 TGmhx+WSJI166QJvzBIDpIp39ngKL4jiitoWRmCmNzJo5Zz3QoyGEF6vBe3PDRu1Ks
-	 YG/yjU9NWjIZW0OWKkWmfFxobFiwGUeIBaneyUGLa6FClAGV4eskOd0HRSEsq9/ZjC
-	 pSYiJAm1JdcYoLrMWTRfBG3v2eYD2dr05I1pm2nCm7nKcOWCegWkAvuUgNMLaK/5yR
-	 CIgm+2RSrQTRZ/BIKSvJe8LszO8RbJ8WQFfs+gxsE8PuQNV5mB6EqfdnJwK1AgvtoX
-	 +YA5uhFYvQuMQ==
+	b=Pwf6v3Id3kuqyR244ThJ9QoniphIr4Z27UsLc0NgaJHnx8a5LTLVXdK/DQO8v/vir
+	 psz2w4xJd9hsCtXAy7Bl5Z1q8kUqd+EZqkw+D9zfTkIYGhQEbWqB8hVJGjG0eHheiv
+	 SkwR18v82EGCUKsWweLMDPLqJt71EmQIGaKyjzQuCSNxXkxqT/jaqzNUEfZpFPi/mD
+	 yWAhNysds1cMPNEZU1wq28qbsHckhkLa56jw4GWfIHSBTA1Gbvy25k+dxMtPRSenfv
+	 IoanASpqQ9/jc7BZbh3u6VZybjmpg0jeYXxvQWwiVf5a2yZY9VVV4P0HHYjeDnbN1X
+	 19QV44ED4OqiA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026ue-3vCw;
+	id 1wB74n-000000026ug-3xxG;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -75,10 +75,11 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 12/26] spi: sh-hspi: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:42 +0200
-Message-ID: <20260410081757.503099-13-johan@kernel.org>
+	stable@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Subject: [PATCH 13/26] spi: sh-msiof: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:43 +0200
+Message-ID: <20260410081757.503099-14-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -100,10 +101,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[27];
+	FREEMAIL_CC(0.00)[gmail.com,collabora.com,nxp.com,pengutronix.de,codeconstruct.com.au,kernel.org,linaro.org,sifive.com,linux.alibaba.com,socionext.com,nvidia.com,amd.com,vger.kernel.org,linux-m68k.org];
+	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235597-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235598-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
@@ -113,57 +114,57 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 433ED3D3EC0
+X-Rspamd-Queue-Id: 8B78B3D3EFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Make sure to deregister the controller before releasing underlying
-resources like clocks during driver unbind.
+resources like DMA during driver unbind.
 
-Fixes: 49e599b8595f ("spi: sh-hspi: control spi clock more correctly")
-Cc: stable@vger.kernel.org	# 3.4
+Fixes: 1bd6363bc0c6 ("spi: sh-msiof: Use core message handling instead of spi-bitbang")
+Cc: stable@vger.kernel.org	# 3.15
+Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-sh-hspi.c | 10 ++++++++--
+ drivers/spi/spi-sh-msiof.c | 10 ++++++++--
  1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index e03eaca1b1a7..1e3ca718ca73 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -257,9 +257,9 @@ static int hspi_probe(struct platform_device *pdev)
- 	ctlr->transfer_one_message = hspi_transfer_one_message;
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 7f3e08810560..f114b6313f4f 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -1289,9 +1289,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		dev_warn(dev, "DMA not available, using PIO\n");
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+-	ret = devm_spi_register_controller(dev, ctlr);
 +	ret = spi_register_controller(ctlr);
  	if (ret < 0) {
--		dev_err(&pdev->dev, "devm_spi_register_controller error.\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto error2;
+-		dev_err(dev, "devm_spi_register_controller error.\n");
++		dev_err(dev, "failed to register controller\n");
+ 		goto err2;
  	}
  
-@@ -279,9 +279,15 @@ static void hspi_remove(struct platform_device *pdev)
+@@ -1309,8 +1309,14 @@ static void sh_msiof_spi_remove(struct platform_device *pdev)
  {
- 	struct hspi_priv *hspi = platform_get_drvdata(pdev);
+ 	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
  
-+	spi_controller_get(hspi->ctlr);
++	spi_controller_get(p->ctlr);
 +
-+	spi_unregister_controller(hspi->ctlr);
++	spi_unregister_controller(p->ctlr);
 +
+ 	sh_msiof_release_dma(p);
  	pm_runtime_disable(&pdev->dev);
- 
- 	clk_put(hspi->clk);
 +
-+	spi_controller_put(hspi->ctlr);
++	spi_controller_put(p->ctlr);
  }
  
- static const struct of_device_id hspi_of_match[] = {
+ static const struct platform_device_id spi_driver_ids[] = {
 -- 
 2.52.0
 
