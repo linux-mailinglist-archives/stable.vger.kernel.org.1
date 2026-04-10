@@ -1,239 +1,193 @@
-Return-Path: <stable+bounces-235652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDd7ICQ02WmjnQgAu9opvQ
-	(envelope-from <stable+bounces-235652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 19:32:20 +0200
+	id 8F49AOM02WmjnQgAu9opvQ
+	(envelope-from <stable+bounces-235653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 19:35:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEF13DB139
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 19:32:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5973DB1B3
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 19:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 923293006D6E
-	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 17:32:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11F073029628
+	for <lists+stable@lfdr.de>; Fri, 10 Apr 2026 17:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A76137F8AD;
-	Fri, 10 Apr 2026 17:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E073DB65F;
+	Fri, 10 Apr 2026 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="p1wOarP+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qdUGxLfu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qlrp1ZP8"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3626017A305;
-	Fri, 10 Apr 2026 17:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D708E3BE161
+	for <stable@vger.kernel.org>; Fri, 10 Apr 2026 17:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775842334; cv=none; b=LcB55YCENgoNUA+jSm8IY6BwdgEQw5zrwlRgqdCHlhPXDnEbopjQE+SYceDDRzbQj9KTm4/+CDb4cTNBqV/E8uQ6phmVf4czMdxhy5nQEifkNtCNgdO3ZXkw+MzM+3hW2QApHQu3aQPDXHunu7P94px6lkToupf7V+YvF60PWy8=
+	t=1775842498; cv=none; b=Pb0pAd9L40qx4hGvwb4EpY93a4KZxuHgs9WJFf7m6yye+5FJgjD1abXgz9uuKRzc0Wbn0AL6WHwumB0uT1kJjsUKwbA7oh2Uz6QLJmcpxtPRZB/27zDCnaTvt2sb+meOc84TLTi1Of9WYoPhrOLCs+akqMjj+c8GvdcIcRenWnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775842334; c=relaxed/simple;
-	bh=bUsWh/yw1W/amtJgDhJgM72W1uhcD2NkLna+KD+bUcU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JVkN6AxljQ/ZMpLUxUVenhKEuNi0fFhtJ/zVWKUNi/zycXI7EvLQtHza2RI2fMYwXsZnw+8Cym/66X4+uzDwwvv88HxOIGpnsG97FaEWAdd9NjgiWXSNrUFdpYuVDUHi8oemU+ET5ILOodoBjCtKz4LdpKpbKghpmyN+GVvv0jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=p1wOarP+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qdUGxLfu; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 76E1BEC0089;
-	Fri, 10 Apr 2026 13:32:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 10 Apr 2026 13:32:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1775842332;
-	 x=1775928732; bh=9nsoedfE+K3/woflcmO8L1ESwJbR62Nllbvoq/1bSkI=; b=
-	p1wOarP++IEH9Y2tXCNLYA/xmxp0cT0ycpIS7pQbhXgpj6Yk7gUqTjBE6Qg1okVZ
-	5ObQ8L3PrZ6QTR5tVukOTYyklpz+t2gLOw+8Xa5srhRANuw4igdMdWgPeAekIzOf
-	ZRNxYDtMNINxmXBgG+5moCuYkNRLDJg53TPgva+/bOfoVCn6inHTfo64sq6Izf7R
-	F55tVs/StrDOdpQkD/g1k1Ceq4E3+Hc6MtfTSxu/eTpsQgotJsNG7tVmy63EF/y9
-	FeaiGyolx9eDd+gO4gwXMPBjPUItb0JPJXvC5AqzN+PtRZkEff9MZ4BGVECkf9Go
-	yLC4a3lD9mfKnIXuzp0KHw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775842332; x=
-	1775928732; bh=9nsoedfE+K3/woflcmO8L1ESwJbR62Nllbvoq/1bSkI=; b=q
-	dUGxLfuEZZjw07WDQUUZBTX4QvwSWiJafBLZjwR6NY8irQlg4OD5iqrMtO5sD7ph
-	egrK2Hvt08vRScBsxbOp47w4t7sY0mf00aUbatnO5vxdMI7NFGM0E5PoBfNVNDdx
-	OcaQn5FaH3wsVjtMAfsL/a3AMOiVq3hVVr7Ll6YH35ubi9irY0kowV2DiU7If19D
-	XepSMMuQKKRtl+roGB0+95fA4NF2tdSVTIoL0FDY2WAfHEwnJHuy3sKvl3Pb9TdD
-	qDJ77tC5N1yq9oZ4Y26evuIPARkpWxTpNfvdPKInsjMU2PAur1EoomE8JxPWzfb2
-	/w66jsCj3ms2WuzR5Gf6w==
-X-ME-Sender: <xms:HDTZaXPthSse4XLiHDfsPAUIzUtzbbnyAZAlrB5NvaxOHCNb7nlsrw>
-    <xme:HDTZab-JSPAlQd09W1lRNl5SvlcxfJxUCQJqYY3MmWPmncAQuHRaNvhSoRPi92w9I
-    sugErVEbushElbnIjt4spr2yw7G_SjsWmvHyVTb4DYdW8Sm3vrP>
-X-ME-Received: <xmr:HDTZac7O9kBv_lRqnmV2b6_Y1aoshiaisEvxEC0dZmsNwmWu5EznB-H-7EyBJz5A3E-3Zax0y-PYap1dHmHloTp5bUQTMN2lQGm7Z1C_WpyEmKx6Uw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeftddtvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepuegvrhhnugcu
-    ufgthhhusggvrhhtuceosggvrhhnugessghssggvrhhnugdrtghomheqnecuggftrfgrth
-    htvghrnheptdeuvdeuudeltddukefhueeludduieejvdevveevteduvdefuedvkeffjeel
-    ueeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsvghrnhgusegsshgsvghrnhgurdgtohhm
-    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjoh
-    grnhhnvghlkhhoohhnghesghhmrghilhdrtghomhdprhgtphhtthhopehhohhrshhtsegs
-    ihhrthhhvghlmhgvrhdruggvpdhrtghpthhtohepsghstghhuhgsvghrthesuggunhdrtg
-    homhdprhgtphhtthhopehmihhklhhoshesshiivghrvgguihdrhhhupdhrtghpthhtohep
-    lhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegrlhhiseguughnrdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohephhgsihhrthhhvghlmhgvrhesuggunhdrtghomh
-X-ME-Proxy: <xmx:HDTZaZ4fg5GiDXr6c5KRaEZub3D0W4IUJPRO-WbhBctrvb_zNV_AvA>
-    <xmx:HDTZadq6p28tXHyYCFPuyb9pxjIuJ-_sbi7z-KezX8PuSaXfcyVkaw>
-    <xmx:HDTZaSNL9rt6jA1tdybwU211tKtIfwPre_b1FW7RmgaT4iT-inZ-JQ>
-    <xmx:HDTZad1EwXRNmw2suti6y37Igr01p6JNTyPQJkpbOvUo3zFqKT4BMg>
-    <xmx:HDTZafoUJybffwfkanHBNyKIgw5bTwuiuoKTp5em_ojZbPuqG1BjwpeT>
-Feedback-ID: i5c2e48a5:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Apr 2026 13:32:11 -0400 (EDT)
-Message-ID: <b002dbde-cea0-4558-a918-db228ce8b48d@bsbernd.com>
-Date: Fri, 10 Apr 2026 19:32:10 +0200
+	s=arc-20240116; t=1775842498; c=relaxed/simple;
+	bh=DYw7oNNqEGz4ESlBhGL7OiIoItzBIY1f9AUIG+wjyw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b6rB86u0kp0PKN77ATLhNdwrBea2YTxdaYb+59mQ7C3QTutYSj8e7wCYPtJYgmkTar+/uHN7ROS7vCQLf/WZVAbhmjzPAnPXLSLHoby3MsQZYxjiCxEVYS27kIkaH4c9CPIWsH0wsFvJL6xFEbMnBuNINYrBXPb1wH7c5G2nhdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qlrp1ZP8; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4888375f735so22808725e9.3
+        for <stable@vger.kernel.org>; Fri, 10 Apr 2026 10:34:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775842495; x=1776447295; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/pLuXGk4XEx5958UjMrbFYUUsyqqJwTgYTzxJrMDu/k=;
+        b=Qlrp1ZP87eQvFJUtSeKn0aBF76hRL/Wg6vLuntEvoQZ4IOpH5aFSSwxtEfzCyr/nFi
+         /8aVSMunWwTOrwNDyDJ/PiNfnoN8uPRo2Qs+7z9qZm4/yFi08GuiMfUTyD0TzPGwufuv
+         UIZVDUy9vftJkJlkKZsg0tUCnfu/AwdEaQXRS0gToUF/yXN2qAuhYOoMdbNzknz1kDtg
+         Yy+DVd5KEX9g+HePRNRWrC2fmwN/dWiOqwL9+9j90d9/o4RJ2olSDJp88VWjubT1viOL
+         RFgGiOus6uIbiTCEEdE+r9vXokIthR5+bdFPqFP2N9fioTedXfwO5eE/suthgfMW2tst
+         s1Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775842495; x=1776447295;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/pLuXGk4XEx5958UjMrbFYUUsyqqJwTgYTzxJrMDu/k=;
+        b=C+PnCWQQTvqLYlhr4fWwN1JXpWb8T9Bcw+IVwknJoYznzZCVFq5FxRfqWUW6zNVxs2
+         uyGHY61XYijSVvY++fhT7eii6rPxU5/51S36T2xeShtUHMUxtdwSz0YX/nzDWpQjDtLz
+         WvizHSkf1hAaIlCIq/Wix0/ExxF2N5KAjNA+WAc5EOvcbeciL3/v0nghh6Q6hheK2jgM
+         DcawbxPFKw8rvPRZ+/0m7DwtU0Lnykcwtc8A0jnw2Bu3ZNWQTtmdDtZTIYWMNYuQVQF1
+         a8IGCZQEFXU/sIbhEEuaVwTERt2QjOx3GnhFDRua/5bviROZtBVurjrklkxfQUw1myGc
+         64Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCWudW/NwjKT37hPlFOQZLqRy3ekBX2hQqjNfbLH6xbl0P2Msd5ZYJ998XQh6CZzC3AcDvGCfIw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxax7bafxRUuWKnAhcud1dY7MFXA942y5SYvFOq7gpfuLZSU4kL
+	sfjj1ZdJsXJKhJ9dzhdiGVibRU9GLK33rdg7XwQXQhyBiR2WuC6i7/zq6MbAORhm5FA=
+X-Gm-Gg: AeBDiesc4YmKIp31VxsKpCzuD7cY4supOVjbwvSKEMSUrBeBgc/KXpyU3NsAZD5PehV
+	TVLyRLKVZs92j1TXsPNGRrFnAa/bHygD9/iTb64Acp2YEslK8QZ6K/LRpqPU6Wcs5Ty1EMUZ0IY
+	wcIwpcMTBnMo50a1PoYcZ0mgJJG9AEccFoZQvd8c0cPl3fPkHzDqKmTGSu3G43JpHFvvdVs6C7O
+	B6QXNewreR9hjwc7OnU8KI3fr0KaqNeAeb0VUaSDtq0RnzO7HLw6J65y2QoeOJ9cDrNnvQ4uNCS
+	UUoX6htLnDLH0uMfkQqh4JAOK2lJ/4O8e+EaBfdaBbU6JJLCUFV2/mVOSvl0s2JeDJXsc8N4VoH
+	zLHGozqJG7jrX6ee+l5dCENEV7yF05yWzGhtQTUXfmRh2AojXW02UQMgheDpJVghaeYf4JkHHPK
+	fqjjC5E2MeJBGKnXjga6GtvQKt++bC2Gx6gyYMhkvj1SyDDOgHLkQu0XwS8MvlcvaBQ+t/zAgL1
+	J9bXCZL+BhO
+X-Received: by 2002:a05:600c:8709:b0:488:945a:ed63 with SMTP id 5b1f17b1804b1-488d6655adfmr58259555e9.0.1775842494835;
+        Fri, 10 Apr 2026 10:34:54 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d531f229sm119327525e9.3.2026.04.10.10.34.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 10:34:54 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 net-next] Bluetooth: hci_conn: fix potential UAF in create_big_sync
+Date: Fri, 10 Apr 2026 18:34:51 +0100
+Message-ID: <20260410173451.4797-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] fuse: Fix possible memleak at startup with immediate
- teardown
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Horst Birthelmer <horst@birthelmer.de>, Bernd Schubert
- <bschubert@ddn.com>, Miklos Szeredi <miklos@szeredi.hu>,
- linux-fsdevel@vger.kernel.org, Jian Huang Li <ali@ddn.com>,
- stable@vger.kernel.org, Horst Birthelmer <hbirthelmer@ddn.com>
-References: <20251021-io-uring-fixes-cancel-mem-leak-v1-0-26b78b2c973c@ddn.com>
- <4b5a8040-b62c-4d75-a474-70d0b4759461@bsbernd.com>
- <CAJnrk1ZohxcDERszbii8ZM0g1ZzTwk6+wEqRWpCoSwBXzgavkg@mail.gmail.com>
- <adiiTGjP1tqZfIrI@fedora>
- <CAJnrk1Y37_=OtwZHK_-AEN9Fysoi8VapeiQmv-xxvWjZJZn8+Q@mail.gmail.com>
- <a9b8887d-f80a-4a0b-a1a5-3dd52dd23497@bsbernd.com>
- <CAJnrk1aSE3ukj=6aoG-UhsFQN1Eo1_AEZk07X+M_z2GM-dq-AA@mail.gmail.com>
-From: Bernd Schubert <bernd@bsbernd.com>
-Content-Language: fr
-In-Reply-To: <CAJnrk1aSE3ukj=6aoG-UhsFQN1Eo1_AEZk07X+M_z2GM-dq-AA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
-	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm3,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
-	TAGGED_FROM(0.00)[bounces-235652-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235653-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,bsbernd.com:dkim,bsbernd.com:email,bsbernd.com:mid,birthelmer.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7AEF13DB139
+	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5E5973DB1B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Add hci_conn_valid() check in create_big_sync() to detect stale
+connections before proceeding with BIG creation. Fix
+create_big_complete() to handle the resulting -ECANCELED error
+and validate the connection under hci_dev_lock() before
+dereferencing, following the established pattern used by
+create_le_conn_complete() and create_pa_complete().
 
+Without this, create_big_complete() would unconditionally
+dereference the stale conn pointer on error, causing a
+use-after-free via hci_connect_cfm() and hci_conn_del().
 
-On 4/10/26 19:28, Joanne Koong wrote:
-> On Fri, Apr 10, 2026 at 10:18 AM Bernd Schubert <bernd@bsbernd.com> wrote:
->>
->>
->>
->> On 4/10/26 19:09, Joanne Koong wrote:
->>> On Fri, Apr 10, 2026 at 12:21 AM Horst Birthelmer <horst@birthelmer.de> wrote:
->>>>
->>>> On Thu, Apr 09, 2026 at 04:09:53PM -0700, Joanne Koong wrote:
->>>>> On Thu, Apr 9, 2026 at 4:02 AM Bernd Schubert <bernd@bsbernd.com> wrote:
->>>>>>
->>>>>>
->>>>>>
->>>>>> On 10/21/25 23:33, Bernd Schubert wrote:
->>>>>>> Do not merge yet, the current series has not been tested yet.
->>>>>>
->>>>>> I'm glad that that I was hesitating to apply it, the DDN branch had it
->>>>>> for ages and this patch actually introduced a possible fc->num_waiting
->>>>>> issue, because fc->uring->queue_refs might go down to 0 though
->>>>>> fuse_uring_cancel() and then fuse_uring_abort() would never stop and
->>>>>> flush the queues without another addition.
->>>>>>
->>>>>
->>>>> Hi Bernd and Jian,
->>>>>
->>>>> For some reason the "[PATCH 2/2] fs/fuse: fix potential memory leak
->>>>> from fuse_uring_cancel" email was never delivered to my inbox, so I am
->>>>> just going to write my reply to that patch here instead, hope that's
->>>>> ok.
->>>>>
->>>>> Just to summarize, the race is that during unmount, fuse_abort() ->
->>>>> fuse_uring_abort() -> ... -> fuse_uring_teardown_entries() -> ... ->
->>>>> fuse_uring_entry_teardown() gets run but there may still be sqes that
->>>>> are being registered, which results in new ents that are created (and
->>>>> leaked) after the teardown logic has finished and the queues are
->>>>> stopped/dead. The async teardown work (fuse_uring_async_stop_queues())
->>>>> never gets scheduled because at the time of teardown, queue->refs is 0
->>>>> as those sqes have not fully created the ents and grabbed refs yet.
->>>>> fuse_uring_destruct() runs during unmount, but this doesn't clean up
->>>>> the created ents because those registered ents got put on the
->>>>> ent_in_userspace list which fuse_uring_destruct() doesn't go through
->>>>> to free, resulting in those ents being leaked.
->>>>>
->>>>> The root cause of the race is that ents are being registered even when
->>>>> the queue is already stopped/dead. I think if we at registration time
->>>>> check the queue state before calling fuse_uring_prepare_cancel(), we
->>>>> eliminate the race altogether. If we see that the abort path has
->>>>> already triggered (eg queue->stopped == true), we manually free the
->>>>> ent and return an error instead of adding it to a list, eg
->>>>
->>>> In my case (Bernd mentioned that I was investigating a hang during umount)
->>>> there were a lot of requests created during teardown, so what happened
->>>> was very similar, but for exact the opposite reason.
->>>> In fuse_uring_abort() queue_refs was already 0 due to an optimization
->>>> where the ring teardown ran before fuse_abort_conn().
->>>
->>> Hi Horst,
->>>
->>> Just to clarify, is this with running locally patched changes on your
->>> ddn kernel? In the upstream code I'm seeing that teardown is only
->>> called by the abort path, eg fuse_abort_conn() -> fuse_uring_abort()
->>> -> fuse_uring_stop_queues() -> teardown logic, so I'm not seeing how
->>> it's possible for teardown to run before fuse_abort_conn(). Is there
->>> something I'm missing?
->>
->> See my mail please it explains the history and shows the patch I had
->> posted to the list and which is not applied yet. The DDN branches have
->> it applied.
-> 
-> Hi Bernd,
-> 
-> Can you link to which mail you are referring to? Which patch are you
-> talking about?
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
 
-The mail I had sent earlier today, a few hours after Horsts. Somehow I
-have the bad feeling that half of my mails are going into a spam folder.
-I hope you get this one.
+v1 -> v2: fix create_big_complete() to handle -ECANCELED and
+  validate conn under hci_dev_lock(), matching the pattern in
+  create_le_conn_complete() and create_pa_complete().
+v1: https://lore.kernel.org/r/20260408155638.95927-1-devnexen@gmail.com
+ net/bluetooth/hci_conn.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Here is the link to the message-id
-https://lore.kernel.org/all/3eabbc7b-010f-4d4c-9145-30d69fe1aa79@bsbernd.com/
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 11d3ad8d2551..feebe933efc8 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2130,6 +2130,9 @@ static int create_big_sync(struct hci_dev *hdev, void *data)
+ 	u32 flags = 0;
+ 	int err;
+ 
++	if (!hci_conn_valid(hdev, conn))
++		return -ECANCELED;
++
+ 	if (qos->bcast.out.phys == BIT(1))
+ 		flags |= MGMT_ADV_FLAG_SEC_2M;
+ 
+@@ -2204,11 +2207,22 @@ static void create_big_complete(struct hci_dev *hdev, void *data, int err)
+ 
+ 	bt_dev_dbg(hdev, "conn %p", conn);
+ 
++	if (err == -ECANCELED)
++		return;
++
++	hci_dev_lock(hdev);
++
++	if (!hci_conn_valid(hdev, conn))
++		goto done;
++
+ 	if (err) {
+ 		bt_dev_err(hdev, "Unable to create BIG: %d", err);
+ 		hci_connect_cfm(conn, err);
+ 		hci_conn_del(conn);
+ 	}
++
++done:
++	hci_dev_unlock(hdev);
+ }
+ 
+ struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst, __u8 sid,
+-- 
+2.53.0
 
-
-Thanks,
-Bernd
 
