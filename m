@@ -1,161 +1,137 @@
-Return-Path: <stable+bounces-235679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id TSgtAHSW2WlfrAgAu9opvQ
-	(envelope-from <stable+bounces-235679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 02:31:48 +0200
+	id eOOWMNGj2Wm9rggAu9opvQ
+	(envelope-from <stable+bounces-235680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 03:28:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B573DDB83
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 02:31:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BDF3DDDC7
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 03:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6B01B3004D15
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 00:31:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D42DC3033F8F
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 01:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C90282F04;
-	Sat, 11 Apr 2026 00:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FC221ADCB;
+	Sat, 11 Apr 2026 01:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FfNCVnmu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VbFyfsAp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848871A2C0B;
-	Sat, 11 Apr 2026 00:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AC81F419A
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 01:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775867501; cv=none; b=oRTZz6DtL/etVmZEUaIMBV2BqBji50tizcCT59oOAARB7uPflzJJz64dRSMK5b5TloTllkA4kmKSo28VY5x6GHZMiI1N4MersrcAqkIiA9AWLw7gNirgGpulJu4uWQrj23lRqXJVhpup6NHP30/bqQd410xI8Eb+HLxY6bqU7XQ=
+	t=1775870910; cv=none; b=eBBPJ0iRUMqeOnO1EZlIwTfm2Yi1MUrLTIcVE3Yh6SDSirYjz2Ol+hT+0yaHqwZmFMTRqi7DZgqfEg4LEcRKtZvbqOSGu5rw71vZY1ixKU0VM5hRFkRWqFzSpp8ka4koYrQnjx9Y6qd6Rw+48HfvWf8ZLy2jaHoceT3dWCW47XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775867501; c=relaxed/simple;
-	bh=dVDQNOGwtDFVlDJtIVCvFSoT4S89W4qmZQOGM/EHZxE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lfbB3TKPSrREskDQW54cBvdMPhMXLLevaAP6k0EGwrRgc94VXFxnfD/65g2QpE88D8kEVsslSAbz49BO247VAgjxf/s/WHIla3JG9JkbplmcEy7IKyZOfGmMR0Oye3EMTLxcHZbq+IvVW8p4t1oaG60mSXL11kPl/tk3fspAvoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FfNCVnmu; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775867501; x=1807403501;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dVDQNOGwtDFVlDJtIVCvFSoT4S89W4qmZQOGM/EHZxE=;
-  b=FfNCVnmuMSkTHJ75qB+1TO6v6BdFKa28R6us/MAAXXPGwQ1srXchPlOe
-   pUH7+TtKcBAQEBjyUBkAvni0oiFIEEYtO3WC1Zv0ITa1D9mgP8rJieK7z
-   rjAEa1vwJx/wwy2q5tbvr1JbjzyleGEjQ3/2Q+ZjMpBGNrlFO10FkTpx7
-   An1i95Dm6ZHWQJZPYbKh1H4zb49yVPMteNgCZ2Xbek3un9e14LoIpD28n
-   IBw/ehCsdjafHtFMtatgjXsXm4hNBO2/eHrio6b++GTxtu/77ctSlpf3b
-   7kGXa9lN+gqEd1Ka4yITEvNuPMelOS3MTvuffHG+SDSqJLY5ieF02cM2q
-   g==;
-X-CSE-ConnectionGUID: cg0xm7Y9TXivpToDgTgaVQ==
-X-CSE-MsgGUID: 1ZU+6c8zQo+qTRlzj8a9xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11755"; a="94467958"
-X-IronPort-AV: E=Sophos;i="6.23,172,1770624000"; 
-   d="scan'208";a="94467958"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 17:31:40 -0700
-X-CSE-ConnectionGUID: mfdpzJpeQdW45ctNkNwMTQ==
-X-CSE-MsgGUID: JTzVCBYWS++fDNQuxIrmOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,172,1770624000"; 
-   d="scan'208";a="226524924"
-Received: from lkp-server01.sh.intel.com (HELO 3eaaf1a74b89) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 10 Apr 2026 17:31:38 -0700
-Received: from kbuild by 3eaaf1a74b89 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wBMG7-000000000UL-1RBI;
-	Sat, 11 Apr 2026 00:31:35 +0000
-Date: Sat, 11 Apr 2026 08:31:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Huacai Chen <chenhuacai@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, loongarch@lists.linux.dev,
-	Xuefeng Li <lixuefeng@loongson.cn>, Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] LoongArch: Show CPU vulnerabilites correctly
-Message-ID: <202604110810.YFUm5KE1-lkp@intel.com>
-References: <20260409122348.2438400-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1775870910; c=relaxed/simple;
+	bh=QBESViLoUMaOvRo3YjwM21rRh/6OI+lAc8gz6A9NrgY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type; b=Wp7mGHtgRSMM4GbxzxJJk85W3/0kwnFhb2FuM/m5Rvf6ltpZlYCjU5GJgd+gqJ1sieE5ChB06yvuNW+vhRxS1neF+QyUBXVk6jUfEp9zxaCmq4/sUd0rWEc5H0EG5BG77siivyUC1PU+Ulf6OKsX59tYmmHisas0gPWXM4pwEp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VbFyfsAp; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43cfd96354aso1598042f8f.1
+        for <stable@vger.kernel.org>; Fri, 10 Apr 2026 18:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775870907; x=1776475707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QBESViLoUMaOvRo3YjwM21rRh/6OI+lAc8gz6A9NrgY=;
+        b=VbFyfsApJchq1m12IqaBm8K9hcSFia3h+2cVTOnJ/DLNy/b1wUXMrYSgznclGFgolp
+         WN0Bz7Epb+G8ZzwcLf/0yDumN4ssPU2kvzq5kRIePOeD0QyYAX2kcPrD27kNuq8n92zO
+         iCakwvsa1uH3yCb6w1k7JZ53/1+85ABr32dHH88NdeBQeHfAuD1EzNvVU8xtIzd34PiF
+         KMl6bVcFjpndKXcCXFOJ/KQzDvWaGAMsRun/1G6BYhunhcDgG095CyH1KayRgkS1fdVR
+         V2Cy0Eo0umhiMOQS09MDSwdcBueawSYeGAu8P3cVQ/VZ5TOVWLkW72vyDiOCP1Hy2Exc
+         xJpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775870907; x=1776475707;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QBESViLoUMaOvRo3YjwM21rRh/6OI+lAc8gz6A9NrgY=;
+        b=qg+l4VSvel6Jnhb78G8ajisn7CKOaHml9BgGznrmG3CBj56EpnfB8ybNnPpek9kv3U
+         BpNcJKMxU6RWbCJuINWO3bHs5KoKRZ0I9oN9yMp/cHRhv3TVWdwRHNiZFByjTDpv60q2
+         QHNStsUDxOG/LQXOaWzv8neC1sGz/lU2FjfsyFJvEuzjhAryk5bVIqyluQeNVhKM6TIf
+         VSPmMbwMj1uKRDdKNxCxQDC3j08pbfr/DsLzcLZX82Xhwfc9jS1gwZcJFTX0/rkj71kF
+         zq1PWqAgrcx516UEQFn3zm0JgkbrWYUKkstL4E4kVksKYxRmO5a7ROnEC8CHvRsj4GON
+         xIcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVb0tUS0Akl8a0yIEJUlEhGiq9V5V5gs46YUaE4IlTZCuV+F0OOEc3P3dTEQkIh0LKpvFf1CzI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEFnsnb6PKmrjf7hPDq8yHRZSjdO56IWs0HKTbQ+18/pXYWosx
+	2JLdcCKuJOMx9YqHEeSeFDRYzKoiTpHIPu1KN4KmkkkGt4M8gHD92hYK
+X-Gm-Gg: AeBDiesiTYrJBOmOM0w0fKRh+3Qr5Ei4pXzZibRDhiPUfIltF+/DE0u07Ixlll2eGPY
+	JqEh79ex9Ysoq7qsQ27NoYv8nztyjqu1O1iFHWHchiAJdx1i1bqPuA4g0vypoD7iXmycmHPzb5c
+	npkN8epD65mKM2hi7loxHrnDMXO+2TvSvcODbCjTr5HGuuNEqaygJ511x+ifBVgMp2YWbrek4X9
+	DQECHGhKoG3c5L1UB87fHxiR6AR1MDXcFR0qiUwZNlT13K+Qy5jV08ubQqKEWP+nBLV712pxZbH
+	Q9sIlsu68qcuyOPyPZ/WHunWm5C+54qnTTx09oMKX66pgDfXhnuQuKIOqLzdKQuV2XPULXTL59P
+	GzvWt9TfoXZbUo7EDT62bakWJf7vQkBGh4AcdTpKP5Ie+v1SqBVsPfd/AvkqqQLOQEMuM55E2g2
+	3CRBmP+/4Ec8Mw5uVm5Pf9ENZ5mQDSP2dvJhGQTreO7Rxc7NbdPGM=
+X-Received: by 2002:a05:6000:2211:b0:43d:2fc7:4816 with SMTP id ffacd0b85a97d-43d641e7d3cmr7775174f8f.0.1775870907203;
+        Fri, 10 Apr 2026 18:28:27 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([86.1.69.5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e468c5sm12268373f8f.20.2026.04.10.18.28.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Apr 2026 18:28:26 -0700 (PDT)
+Date: Sat, 11 Apr 2026 02:28:26 +0100
+From: Josh Law <joshlaw48@gmail.com>
+To: barryn@pobox.com
+CC: achill@achill.org, akpm@linux-foundation.org, broonie@kernel.org,
+ conor@kernel.org, f.fainelli@gmail.com, gregkh@linuxfoundation.org,
+ hargar@microsoft.com, jonathanh@nvidia.com, linux-kernel@vger.kernel.org,
+ linux@roeck-us.net, lkft-triage@lists.linaro.org, patches@kernelci.org,
+ patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de,
+ shuah@kernel.org, sr@sladewatkins.com, stable@vger.kernel.org,
+ sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org
+Subject: Re: [PATCH 6.1 000/312] 6.1.168-rc1 review
+In-Reply-To: <be550d5f-a5bc-4cab-aa75-1c7481ba39c8@pobox.com>
+Message-ID: <6F70FC25-AE09-4A97-9798-D1CE49239B00@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409122348.2438400-1-chenhuacai@loongson.cn>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,linuxfoundation.org,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-235679-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-235680-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[joshlaw48@gmail.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,01.org:url,git-scm.com:url]
-X-Rspamd-Queue-Id: C7B573DDB83
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 45BDF3DDDC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Huacai,
+(Compiled and booted on Geobook 1E without any dmesg oddities)
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on linus/master]
-[also build test WARNING on v7.0-rc7 next-20260410]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Huacai-Chen/LoongArch-Show-CPU-vulnerabilites-correctly/20260411-011556
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260409122348.2438400-1-chenhuacai%40loongson.cn
-patch subject: [PATCH] LoongArch: Show CPU vulnerabilites correctly
-config: loongarch-randconfig-001-20260411 (https://download.01.org/0day-ci/archive/20260411/202604110810.YFUm5KE1-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 14.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260411/202604110810.YFUm5KE1-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604110810.YFUm5KE1-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> arch/loongarch/kernel/cpu-probe.c:407:36: warning: 'struct device_attribute' declared inside parameter list will not be visible outside of this definition or declaration
-     407 |                             struct device_attribute *attr, char *buf)
-         |                                    ^~~~~~~~~~~~~~~~
->> arch/loongarch/kernel/cpu-probe.c:406:9: warning: no previous prototype for 'cpu_show_spectre_v1' [-Wmissing-prototypes]
-     406 | ssize_t cpu_show_spectre_v1(struct device *dev,
-         |         ^~~~~~~~~~~~~~~~~~~
-
-
-vim +407 arch/loongarch/kernel/cpu-probe.c
-
-   405	
- > 406	ssize_t cpu_show_spectre_v1(struct device *dev,
- > 407				    struct device_attribute *attr, char *buf)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Tested-by: Josh Law <joshlaw48@gmail.com>
 
