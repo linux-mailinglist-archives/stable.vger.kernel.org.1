@@ -1,60 +1,84 @@
-Return-Path: <stable+bounces-235772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id R85sIPK+2mkC6AgAu9opvQ
-	(envelope-from <stable+bounces-235772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 23:36:50 +0200
+	id aOXzDveP2mmI3wgAu9opvQ
+	(envelope-from <stable+bounces-235760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 20:16:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4303E1C3D
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 23:36:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D023E146A
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 20:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 744D230209E0
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 21:36:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01DCD3026CA4
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 18:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376CE280CFB;
-	Sat, 11 Apr 2026 21:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6294E2FE05B;
+	Sat, 11 Apr 2026 18:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GG59J4Qu"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eLvft3lV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F571FC8;
-	Sat, 11 Apr 2026 21:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A6A14F9FB;
+	Sat, 11 Apr 2026 18:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775943404; cv=none; b=qIc0tFc4DFSD1R/eA+QFHOCGhgaonevEvFzMNMMWuM942kvjtC4QDFoMukkovULUXnFg2YSDBYyHvss1n2vpA7EbyFgz97GdBjF0cze39DGH8uYel/zyMvktThstTGk+6tE4SAqfP64+wbAfNojeUqfboDeE14XAspGfJRZr5k0=
+	t=1775931263; cv=none; b=qZZS2qTmuqxtYsm3FkP3dj9Goa49KMx5t/5A/QyMymQoMAHwcihQGH94/pX77fMYEkMH8p/rrDZRZyNaGi/bsuExdDQcHJc40M5Y7x3o6mjRVDwlh6OpFXJJsbyhz9i7niXzx9eU1jdjh0bP1Oi8sgOo3Edtk5Lhn8HSfBOE57I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775943404; c=relaxed/simple;
-	bh=QPyTCBOcvix0CTzcdOfzWMx07raK0kRLMFwQNf37D0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CkjMT/rYXKRXGb8+9kWWgBZPl8NOZW+qlAs3H55cAhJbdBtO+ebCXRvrCGg99lBiEgcM8mADVdvDsZBHQPGCKF+4FP5ApR5ea47YYCfwxS0/3U+IAj7kyqegrvjQzrON6KhNXgd2j8UUsjcNaC49O49XRbFW109bLPnUs8DTDgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GG59J4Qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E15C116C6;
-	Sat, 11 Apr 2026 21:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775943403;
-	bh=QPyTCBOcvix0CTzcdOfzWMx07raK0kRLMFwQNf37D0Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GG59J4QuLV9E77nTCwE5A0NmaXg4XnCb9AHxSdTolltGc5w6hPwUzKtPiGUZt5ttt
-	 WeivEuzp+8KD5CUscFpoGf5ckvEThPb/gBUGdGLiMgL7Aye8xX1BMseiH/8gDjJAL7
-	 zDy0ZiH8NTtyr8QE7NuyvRhS80hHKPE4O5h/SXmkozeit7AdSD2c9Ir1UMDe3+IDMq
-	 mHDYgkRfpYmxv+ax1TmLIuC+SVmwlGaFy+L9GchgfbxzRehhG5988aGS8l6rbOdDuG
-	 MXUj9F4V5oR8b9sDZY357POBMSypneEah9DLjST58YwC/fvkHX7Yk6IoY2TwnT6yPn
-	 hhj7jeZrblGzg==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 18 . x" <stable@vger.kernel.org>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: disallow non-power of two min_region_sz on damon_start()
-Date: Sat, 11 Apr 2026 14:36:36 -0700
-Message-ID: <20260411213638.77768-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1775931263; c=relaxed/simple;
+	bh=dDvAtt+VeYbJ8peI/sGKxhCmGdpPy5Z2A7aSBmraeeA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hYR6XXt3qETymU/m7SaOgNCubU9f4wRIHDsnrKSNV4Y9GaVlmWL5JCvkwzZb+kEeP5piBy97at4J/vPX8flZt09QPe1ynRp2Fb2Z51PndPQmDcIuSayRnW9Adry0SLoiIZ2r+ldo21nyow2AO0DCVUbEkK+93F9dhl/T2lzGlGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eLvft3lV; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63BFPita3909595;
+	Sat, 11 Apr 2026 18:14:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=sf5L2LHSp2gdD6RQtrFoA0HeuUB9dxabi9juCEOAJ
+	yI=; b=eLvft3lVNoNaAo3DGaEpU+GXpGx/25PyGlReFF586Q6EEu0XuN47RnVaL
+	7iLDqDT3/CRsTvT6o87Vq+jdfofrogMpiO7JMNep7/ego7YlsH4zLC25+vBVbyJs
+	qCQZG9bF+JQiUhbhnpmqT24dmI56/aQGW8hr1MdUtXm4kIUZg3eO741WsAVlHnfo
+	pO9zlujnV9Aq6cmFc4oSqVTEioGdjyASqpA4VRuq6N67dETvg9p0PWiRJqN3Uqfu
+	pimF5/f2p69nRNlTz7EV/zfmij4S/mtRLg7rFUVCwnR1BOGOyVeVDE+iCcePuEEv
+	j683BpAGDuvARsKnI78ayUmTqPYUQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfdxwsrmd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 11 Apr 2026 18:14:02 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63BD2Prd030062;
+	Sat, 11 Apr 2026 18:14:01 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcme7w6yf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 11 Apr 2026 18:14:01 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63BIDvqq47382960
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 11 Apr 2026 18:13:57 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E662620043;
+	Sat, 11 Apr 2026 18:13:56 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DDA1920040;
+	Sat, 11 Apr 2026 18:13:54 +0000 (GMT)
+Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 11 Apr 2026 18:13:54 +0000 (GMT)
+From: adubey@linux.ibm.com
+To: bpf@vger.kernel.org
+Cc: hbathini@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+        ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
+        shuah@kernel.org, linux-kselftest@vger.kernel.org,
+        stable@vger.kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
+Subject: [PATCH v3 0/5] powerpc/bpf: Add support for verifier selftest
+Date: Sat, 11 Apr 2026 18:14:08 -0400
+Message-ID: <20260411221413.44304-1-adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,74 +86,210 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDExMDE1NyBTYWx0ZWRfX8oVqAZ2IBF6k
+ BADqp/Rn8mg+oBOjqgU9MBtHh9t5PwPKwkC9NHbLlU/m9z3p0KXOFBIQGkjil9BAy77tpODQYDE
+ 8SYazMp6fIjKiY4AEnbYKysI1ygIMSw0tffp1lwdRnuzoabFOgPI3QdkezE/xhLW+SEpe8IQZtW
+ i1hqEUOxdZeyW7+3SLkbrrR34xopEN/mTZVgmz5t4jqAG2sywoiHMOxMUmpeI8X5biSZAiaBc2y
+ hGfQ03e1wXRJku9W1Saz3I0pLlsm4/WaEcGuE1nadAfKsRyXutprQlb+N+63a/iqflorxcbPI2w
+ 2rVI9CL3e5RaY0OUyQMo1zM7YQSEReXV1pcFT/WpW9uiv1CmqaG5Ron8RaCqi9Ls9dM4pTExvuy
+ 4WamcJXfT1wvfTTwz9RvpPigVQupxDfylgzY4gGRm1tczU+waKlm70HWXyUGayFdO/KKNwcmlO9
+ YLgLHxi9IQLGHwGwQ3Q==
+X-Proofpoint-ORIG-GUID: 4ORPvybNgQe8p3vbsIEhY1igoLFOtzbh
+X-Authority-Analysis: v=2.4 cv=TId1jVla c=1 sm=1 tr=0 ts=69da8f6a cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=UrLCjDVe54a93DmA31EA:9
+X-Proofpoint-GUID: 4ORPvybNgQe8p3vbsIEhY1igoLFOtzbh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-11_05,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 spamscore=0 adultscore=0 phishscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
+ definitions=main-2604110157
+X-Spamd-Result: default: False [3.34 / 15.00];
+	DATE_IN_FUTURE(4.00)[3];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235772-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235760-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CA4303E1C3D
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: A8D023E146A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
-introduced a bug that allows unaligned DAMON region address ranges.
-Commit c80f46ac228b ("mm/damon/core: disallow non-power of two
-min_region_sz") fixed it, but only for damon_commit_ctx() use case.
-Still, DAMON sysfs interface can emit non-power of two min_region_sz via
-damon_start().  Fix the path by adding the is_power_of_2() check on
-damon_start().
+From: Abhishek Dubey <adubey@linux.ibm.com>
 
-The issue was discovered by sashiko [1].
+The verifier selftest validates JITed instructions by matching expected
+disassembly output. The first two patches fix issues in powerpc instruction
+disassembly that were causing test flow failures. The fix is common for 
+64-bit & 32-bit powerpc. Add support for the powerpc-specific "__powerpc64"
+architecture tag in the third patch, enabling proper test filtering in
+verifier test files. Introduce verifier testcases for tailcalls on powerpc64
+in the final patch.
 
-[1] https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org
+The first patch in series is fix patch, correcting memory alignment with
+8-byte boundary for long branch trampoline address. The subsequent
+patches enables verifier selftests on powerpc.
 
-Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Issue Details:
+--------------
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3703f62a876b3..c107d74c77e74 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1368,6 +1368,11 @@ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive)
- 	int i;
- 	int err = 0;
- 
-+	for (i = 0; i < nr_ctxs; i++) {
-+		if (!is_power_of_2(ctxs[i]->min_region_sz))
-+			return -EINVAL;
-+	}
-+
- 	mutex_lock(&damon_lock);
- 	if ((exclusive && nr_running_ctxs) ||
- 			(!exclusive && running_exclusive_ctxs)) {
+    The Long branch stub in the trampoline implementation[1] provides
+    flexibility to handles short as well as long branch distance to
+    actual trampoline. Whereas, the 8 bytes long dummy_tramp_addr field
+    sitting before long branch stub leads to failure when enabling
+    verifier based seltest for ppc64.
+    
+    The verifier selftests require disassembing the final jited image
+    to get native instructions. Later the disassembled instruction
+    sequence is matched against sequence of instructions provided in
+    test-file under __jited() wrapper. The final jited image contains
+    Out-of-line stub and Long branch stub as part of epilogue jitting
+    for a bpf program. The 8 bytes space for dummy_tramp is sandwiched
+    between both above mentioned stubs. These 8 bytes contain memory
+    address of dummy trampoline during trampoline invocation which don't
+    correspond to any powerpc instructions. So, disassembly fails
+    resulting in failure of verifier selftests.
+    
+    The following code snippet shows the problem with current arrangement
+    made for dummy_tramp_addr.
+    
+    /* Out-of-line stub */
+    mflr    r0  
+    [b|bl]  tramp
+    mtlr    r0 //only with OOL 
+    b       bpf_func + 4 
+    /* Long branch stub */
+    .long   <dummy_tramp_addr>  <---Invalid bytes sequence, disassembly fails
+    mflr    r11 
+    bcl     20,31,$+4
+    mflr    r12 
+    ld      r12, -8-SZL(r12)
+    mtctr   r12 
+    mtlr    r11 //retain ftrace ABI 
+    bctr
 
-base-commit: 872b6168e577ea326324255fa8b6716a89124680
+    Consider test program binary of size 112 bytes:
+    0:  00000060 10004de8 00002039 f8ff21f9 81ff21f8 7000e1fb 3000e13b
+    28: 3000e13b 2a006038 f8ff7ff8 00000039 7000e1eb 80002138 7843037d
+    56: 2000804e a602087c 00000060 a603087c bcffff4b c0341d00 000000c0
+    84: a602687d 05009f42 a602887d f0ff8ce9 a603897d a603687d 2004804e
+
+    Disassembly output of above binary for ppc64le:
+    pc:0     left:112    00 00 00 60  :  nop
+    pc:4     left:108    10 00 4d e8  :  ld 2, 16(13)
+    pc:8     left:104    00 00 20 39  :  li 9, 0
+    pc:12    left:100    f8 ff 21 f9  :  std 9, -8(1)
+    pc:16    left:96     81 ff 21 f8  :  stdu 1, -128(1)
+    pc:20    left:92     70 00 e1 fb  :  std 31, 112(1)
+    pc:24    left:88     30 00 e1 3b  :  addi 31, 1, 48
+    pc:28    left:84     30 00 e1 3b  :  addi 31, 1, 48
+    pc:32    left:80     2a 00 60 38  :  li 3, 42
+    pc:36    left:76     f8 ff 7f f8  :  std 3, -8(31)
+    pc:40    left:72     00 00 00 39  :  li 8, 0
+    pc:44    left:68     70 00 e1 eb  :  ld 31, 112(1)
+    pc:48    left:64     80 00 21 38  :  addi 1, 1, 128
+    pc:52    left:60     78 43 03 7d  :  mr    3, 8
+    pc:56    left:56     20 00 80 4e  :  blr
+    pc:60    left:52     a6 02 08 7c  :  mflr 0
+    pc:64    left:48     00 00 00 60  :  nop
+    pc:68    left:44     a6 03 08 7c  :  mtlr 0
+    pc:72    left:40     bc ff ff 4b  :  b .-68
+    pc:76    left:36     c0 34 1d 00  :
+    ...
+
+    Failure log:
+    Can't disasm instruction at offset 76: c0 34 1d 00 00 00 00 c0 a6 02 68 7d 05 00 9f 42
+    --------------------------------------
+
+    Observation:
+    Can't disasm instruction at offset 76 as this address has
+    ".long <dummy_tramp_addr>" (0xc0341d00000000c0)
+    But valid instructions follow at offset 84 onwards.
+
+    Move the long branch address space to the bottom of the long
+    branch stub. This allows uninterrupted disassembly until the
+    last 8 bytes. Exclude these last bytes from the overall
+    program length to prevent failure in assembly generation.
+
+    Following is disassembler output for same test program with moved down
+    dummy_tramp_addr field:
+    .....
+    .....
+    pc:68    left:44     a6 03 08 7c  :  mtlr 0
+    pc:72    left:40     bc ff ff 4b  :  b .-68
+    pc:76    left:36     a6 02 68 7d  :  mflr 11
+    pc:80    left:32     05 00 9f 42  :  bcl 20, 31, .+4
+    pc:84    left:28     a6 02 88 7d  :  mflr 12
+    pc:88    left:24     14 00 8c e9  :  ld 12, 20(12)
+    pc:92    left:20     a6 03 89 7d  :  mtctr 12
+    pc:96    left:16     a6 03 68 7d  :  mtlr 11
+    pc:100   left:12     20 04 80 4e  :  bctr
+    pc:104   left:8      c0 34 1d 00  :
+
+    Failure log:
+    Can't disasm instruction at offset 104: c0 34 1d 00 00 00 00 c0
+    ---------------------------------------
+    Disassembly logic can truncate at 104, ignoring last 8 bytes.
+
+    Update the dummy_tramp_addr field offset calculation from the end
+    of the program to reflect its new location, for bpf_arch_text_poke()
+    to update the actual trampoline's address in this field.
+
+    [1] https://lore.kernel.org/all/20241030070850.1361304-18-hbathini@linux.ibm.com
+
+v2->v3:
+  Removed fixed NOP from bottom of long branch stub
+  Rebased on top of bpf-next
+
+v1->v2:
+  Added fix-patch to correct memory alignment in-place
+  Moved the optional alignmnet NOP before OOL stub
+
+[v1]: https://lore.kernel.org/bpf/20260225013627.22098-1-adubey@linux.ibm.com
+[v2]: https://lore.kernel.org/bpf/20260403004011.44417-1-adubey@linux.ibm.com
+
+Abhishek Dubey (5):
+  powerpc/bpf: fix alignment of long branch trampoline  address
+  powerpc/bpf: Move out dummy_tramp_addr after Long branch stub
+  selftest/bpf: Fixing powerpc JIT disassembly failure
+  selftest/bpf: Enable verifier selftest for powerpc64
+  selftest/bpf: Add tailcall verifier selftest for powerpc64
+
+ arch/powerpc/net/bpf_jit.h                    |  4 +-
+ arch/powerpc/net/bpf_jit_comp.c               | 60 ++++++++++++----
+ arch/powerpc/net/bpf_jit_comp64.c             |  4 +-
+ .../selftests/bpf/jit_disasm_helpers.c        | 13 +++-
+ tools/testing/selftests/bpf/progs/bpf_misc.h  |  1 +
+ .../bpf/progs/verifier_tailcall_jit.c         | 69 +++++++++++++++++++
+ tools/testing/selftests/bpf/test_loader.c     |  5 ++
+ 7 files changed, 136 insertions(+), 20 deletions(-)
+
 -- 
-2.47.3
+2.52.0
 
