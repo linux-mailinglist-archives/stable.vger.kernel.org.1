@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-235707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JjOENkg2mnEyggAu9opvQ
-	(envelope-from <stable+bounces-235707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 12:22:17 +0200
+	id mDseNo8g2mnEyggAu9opvQ
+	(envelope-from <stable+bounces-235708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 12:21:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52F73DF4CD
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 12:22:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7463DF4B6
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 12:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4843303CE01
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:20:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 868E2302CD39
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0745B33B6DB;
-	Sat, 11 Apr 2026 10:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7674033A6EB;
+	Sat, 11 Apr 2026 10:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R0kxDyK8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TpAY4gLg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AF825524C
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 10:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115B925524C
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 10:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775902845; cv=none; b=af2st7v/b80M7iwwE+wWNei0RMY/u1zG4ge9/cV3vLMhNul2nxbtHCH4m7+yvYD7PG5A0zY6UKG5Wboq/4DVmjhX68HHGAHTXc7UixNizVasuLT7fRtGA50mIwZ3feKNJsG89WeXwPjzwrhUFeY28ab/ER1weZuAufQc1dL2JS8=
+	t=1775902851; cv=none; b=AqyBi+TLkPbulM/N+fLDh69i+k343F9M2Ws8n/BfEKcxcyVW1b19FoKXHA8UKxTt9W1WHnshjCK7M4V9+WruVYGqKUIaUzlFAoBgyIbca1HHL037lawkFXHaKuXWFdpvM2i9/d+l7bksPfDsQW3uHnDS/UU+kvqcqAa9nd0bjgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775902845; c=relaxed/simple;
-	bh=v/MHjmzIaGHN4Qn7xMSgzvsQfHk+V7OhpRzw6XqcYq4=;
+	s=arc-20240116; t=1775902851; c=relaxed/simple;
+	bh=ZmRm9kdYBDk7rz8ZbtmocwkWC5GPoFQcrzLsFOXz88I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqeNkEC4hvz7fvVLX7YehgXbWTVnXEc1mgUakxTNt7Qg7HOpDrz9Ccl5/yOnja4GCYnPMRClT5zLBSbatQ/vx3J5esjwVhpeWcn5t3o4BmvtZmZzWpUMRnTL7759cX9ZFjh7RZjBT9qXqIbaixau5T77YKBPO+Gdq2UfvUPpW/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R0kxDyK8; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version; b=PKYzFBWJCOlLlOD1pAn4qi9WcjW0q4IVF9kSj20P0JjqTRGCfr6KU+VuI9/1XtlwmCGKVyqkji+URGQ2cLetYd0xF16mX/QDig4N/pTj66V3+YOIR3iOkltwnZUFTPogxdhjOaIJOMDu+43AdPrPAULr66aL9P8/kvglL8pQAC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TpAY4gLg; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so44913085e9.2
-        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 03:20:44 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so20189035e9.3
+        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 03:20:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775902843; x=1776507643; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775902848; x=1776507648; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7bcNm6kUH/j+VOxDc1J57rxd+Hi0doQAdioZZTWHdjs=;
-        b=R0kxDyK8CBy7CY0Ljiie5zV5y8kz0uD6O0D/ejEWpkTeGuP3mB8CxAEz/rHPSILvUj
-         i0WovglCZpzdwKs2HFhI9tvcSYnzL6iKkOhcmIz9hnSjuqPzZzsNspvR1Z6OnbB2nHSY
-         MCrw8ggqn1hzkpD0SukraeLdEolriMz59D9exzgWSqolLGiz1snQhaT/FHR0i5pW/pAi
-         DYxo9LLIxfgMqGkrWI8yz5jCIKIX+bC4b772gqk0Mdwpjd4hc7cFGs1OcKvksbBiYUqD
-         60gBGkBbBipTRsOmzw4HFvbSAtqpH14Ly2j8jQ6sukiJoiG2Ac7ZSNqWXI2OmtfBYxoA
-         Vujw==
+        bh=LMe81/am5TvWiY3wr2sfayvId1Z3wpJTYL6BB0Qd3QA=;
+        b=TpAY4gLgVsq+M00CdViaKjjpIzHJPtogr/Tgux03wC0ll6RpaA5gwtjWaUpKfCqRGJ
+         U/1aLT7iSgDcajfMytHkc/hzwHeiO5gPdmX//WPpRXgnmR+1BJxob3dxZ4SFB7Gw91xa
+         TR9ayG+Tkop1vhwvtEaFbw+F/XuvoheuRniktUQoRdsyNwmPXNikgx72WSRW+5faMOst
+         UC0o5yX29p2XaKe54Z+BO5T8QPR7N0RCrshSQjLDxqPlq3w129OsfFFRg/FkhP//cm3K
+         bZdhd6Xvga9lLyJxgrm+nnXBZJda/lo3zX5RFnawzMDo0/SDDAFdZgb4L80jorpphDl/
+         Zp4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775902843; x=1776507643;
+        d=1e100.net; s=20251104; t=1775902848; x=1776507648;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7bcNm6kUH/j+VOxDc1J57rxd+Hi0doQAdioZZTWHdjs=;
-        b=QRHhUgFgu8sIIRNT1bstG8kfL0jkD/yno3Y4pV3uI4lwvGwxROz7vH+rjc8J/gW+OC
-         hJPivKFOwv4zOd7NO117MKJYD9slezomQe4Hgm36aEEM8YtArl2uBweLTk13ZIhE5xUB
-         0mmWJD5BtxqpRFEgdGGJAKNNplAONfVipFBp/itU1ylAcLFGBJVxjZVI3TYeWmGrYBfh
-         C+bFL10WCgHdEV4SM28i2Q9cbBV5OEikBEBAKRtwbR9FCXhjxYon0KoN7yVy5Lk7qGnL
-         YNPH7MJv5kLUI01SEQ7iE4hxRqSBPZXqFDHHJ6zQQeu9TjZqQLLgvkdhaq6vGbkCfCoo
-         rbzA==
-X-Gm-Message-State: AOJu0YxoDWz+v6Vb1UyiR+EVF2zG2N3eCpyOBzb6H5wEm48+0bEOMlz9
-	LiuLa5hr3/BOczsIXvZg4+NPNMwi04kHLqQfHNI/XRKwW8CjsL6QcG4B
-X-Gm-Gg: AeBDievXHr9aQRw8N9MRqmYa+7VvuWJguMr+lg9FYTI5huEGUDiEu05waj3BqT41QJb
-	PCf31Q7v6IXrw9IvSR4WvoDlUXwFm7NDuA/yOD0121NscZJdAaYVf5WuLIzQnHuA0KIssLcqoVl
-	ZJl7ZgXNHje+JjNljVpr4NVHLUpnq+uNZJy+/tvNnURdnBa00SylF6L5i/24bRrs5is4c1XFKQ3
-	gBKPqsX+axQLv/x+eGoVVW27ogyF27yq+sunWKqrmIrbYamiM5WLFePzX9ud4PxKJcae/eFjdLY
-	OCLEdTDlQDreyEhXsdQq8eSkahRpTMw4oh4rN3dmw3+/QWUvQRIj5FxOa1ohCtQq3jK3tNqC/Ar
-	rGDfMkEGvb+x8GOcweT3/6GF/9D151aWNYi/k9UJZRusAb84FExQ8W/U6CFnuWK2CjOeRCzZwqr
-	lpsTdA9tND+914uTibowu5zNKT1UHbv6Es+C4Wl1I=
-X-Received: by 2002:a05:600c:3149:b0:488:ab26:8fe0 with SMTP id 5b1f17b1804b1-488d68432f2mr84578065e9.15.1775902842815;
-        Sat, 11 Apr 2026 03:20:42 -0700 (PDT)
+        bh=LMe81/am5TvWiY3wr2sfayvId1Z3wpJTYL6BB0Qd3QA=;
+        b=eKqaMQ27gYt3zZJzmgv76d4TLIX1xdhpG/Q6IRquNgj2plNSEpDLp69WqxJutk3z7S
+         lEnC9dRScV0hKmeALCHtVuBJPfAFPMBTFJ6SQkrGyS0apOFev4VjvpyYoayy7vJMVlo5
+         04GSIEYQ+y1irm0DIL5IIae32MFug5sRarxiVLjrI/CgJSC/eSbk030l+et3i/8YDVnL
+         h8FFTWxH3BssqcOT00XOw88UB2/w7AzzKB72ASg9UxBGaLBLymiWEQBrRAo/lkK1Z3hE
+         xOzAW/TEr8rqCNbK2m+5EksDFKvvhQvC19Flp1yrA4xQHTeWMv58PB11X3iS7ARlrIiL
+         tQbg==
+X-Gm-Message-State: AOJu0YwA1gum3ZRdD20QL8uaTGzUxVI0N3esZKT+kfBe8P+ds3vwcpda
+	ZYNHtOEAx7Vz38ooTvjPMfoJlohfz/g1pBBMHd9r/BdBwNPxhUm9imp7
+X-Gm-Gg: AeBDietjRUB8ihh8d742uY+5iky8KyhNW8xwHwdvzYCR/I8Mkf6MJNbE9iUWx7CxcN6
+	SQavLICKyOEMaJwbe+iBcvQi1r8ookIrLSjeQ1JTT1fxXzTTc4dScX5jP0ysj8WUH46/Pmyb5/m
+	m5Ak6e4b3CbF9jL03sqIoFzbJa7O8N+zxjE8D04tuMqAlU/E45qpdKsrvdhMOXeY1JwxZR+bj19
+	2XODRvhYIqIfukjTLWYR4psAEdGTSlNFnzQUs+IJNvsYO9WodMcDiHCV+b8QBH4eJfOWih/izpv
+	pOwmaFwIn93prLurEIKh8/ZZLe1RtPONttl1Vy4lSAfeeErcsTlEkPUFaT72R4b8Kgs/tJsXvvI
+	egoMlBaTy3UwYP+BT/5OEAXt/Yu2RWDqGjEtiMgaoW4wCEgVXkT1FujAGH2xCTLiG/EDJmpUI2m
+	o87OIqaJgZI9wqMNN+XeW+6FKRQo4MpGqZXQMW65s=
+X-Received: by 2002:a05:600c:8907:b0:488:ab1d:dcc5 with SMTP id 5b1f17b1804b1-488d6ac1bafmr53484555e9.27.1775902848377;
+        Sat, 11 Apr 2026 03:20:48 -0700 (PDT)
 Received: from egonzo (82-64-73-52.subs.proxad.net. [82.64.73.52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d681ec15sm41856945e9.20.2026.04.11.03.20.41
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d681ec15sm41856945e9.20.2026.04.11.03.20.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 03:20:42 -0700 (PDT)
+        Sat, 11 Apr 2026 03:20:48 -0700 (PDT)
 From: Dave Penkler <dpenkler@gmail.com>
 To: gregkh@linuxfoundation.org,
 	linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org,
 	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 1/2] gpib: Remove useless code
-Date: Sat, 11 Apr 2026 12:20:24 +0200
-Message-ID: <20260411102025.2000-2-dpenkler@gmail.com>
+Subject: [PATCH 2/2] gpib: Fix inappropriate ioctl error return
+Date: Sat, 11 Apr 2026 12:20:25 +0200
+Message-ID: <20260411102025.2000-3-dpenkler@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260411102025.2000-1-dpenkler@gmail.com>
 References: <20260411102025.2000-1-dpenkler@gmail.com>
@@ -99,7 +99,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -109,8 +109,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235707-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-235708-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dpenkler@gmail.com,stable@vger.kernel.org];
@@ -121,38 +121,41 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B52F73DF4CD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8D7463DF4B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This code is a hangover from an earlier approach in the
-driver where the driver modules were called gpibXX
-It no longer serves any purpose.
+The driver was returning -ENOTTY in the case the ioctl command
+was not recognised. Change it to -EBADRQC.
 
+Fixes: 9dde4559e939 ("staging: gpib: Add GPIB common core driver")
 Signed-off-by: Dave Penkler <dpenkler@gmail.com>
 ---
- drivers/gpib/common/gpib_os.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/gpib/common/gpib_os.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/gpib/common/gpib_os.c b/drivers/gpib/common/gpib_os.c
-index 2b4ec6aa893b..fca181b8c749 100644
+index fca181b8c749..aafc4439b2fa 100644
 --- a/drivers/gpib/common/gpib_os.c
 +++ b/drivers/gpib/common/gpib_os.c
-@@ -544,13 +544,6 @@ int ibopen(struct inode *inode, struct file *filep)
- 	priv = filep->private_data;
- 	init_gpib_file_private((struct gpib_file_private *)filep->private_data);
+@@ -606,7 +606,7 @@ long ibioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 	unsigned int minor = iminor(file_inode(filep));
+ 	struct gpib_board *board;
+ 	struct gpib_file_private *file_priv = filep->private_data;
+-	long retval = -ENOTTY;
++	long retval = -EBADRQC;
  
--	if (board->use_count == 0) {
--		int retval;
--
--		retval = request_module("gpib%i", minor);
--		if (retval)
--			dev_dbg(board->gpib_dev, "request module returned %i\n", retval);
--	}
- 	if (board->interface) {
- 		if (!try_module_get(board->provider_module)) {
- 			dev_err(board->gpib_dev, "try_module_get() failed\n");
+ 	if (minor >= GPIB_MAX_NUM_BOARDS) {
+ 		pr_err("gpib: invalid minor number of device file\n");
+@@ -799,7 +799,6 @@ long ibioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 		mutex_unlock(&board->big_gpib_mutex);
+ 		return write_ioctl(file_priv, board, arg);
+ 	default:
+-		retval = -ENOTTY;
+ 		goto done;
+ 	}
+ 
 -- 
 2.53.0
 
