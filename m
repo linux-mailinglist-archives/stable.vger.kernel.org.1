@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-235753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PgWBzKE2mnI3QgAu9opvQ
-	(envelope-from <stable+bounces-235753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 19:26:10 +0200
+	id ALM3HyWE2mnI3QgAu9opvQ
+	(envelope-from <stable+bounces-235755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 19:25:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE583E1045
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 19:26:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134073E103E
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 19:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 917DC3074066
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 17:25:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A6CB0300BBA8
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 17:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29583921DC;
-	Sat, 11 Apr 2026 17:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9663B8BA5;
+	Sat, 11 Apr 2026 17:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ifg7ekE7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDheNJIF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCC63559F5
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 17:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168433BA233
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 17:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775928345; cv=none; b=t42d7XxxTfknosSs7Tpn9v9jPhh0xzrifqAwpHuhaj9CN0sUEMAlR+kPUiPJZxRAopKhEIUkzqpeMqTtPTHy2eq4/TD+Xg/pP7rs71oR7LgF3l/Ip4Mn5d3yzLobqA+xWxicBALIh7NgxW4dFTMbdTAWor6jmtywEoBbltyHGuA=
+	t=1775928347; cv=none; b=jAwVwenFZeUqPa3UatrSWpSrsurRVpcD6+yT1WVJoCGY++63Zzj6AhKorQLnPXIQripE0NHPcEYv3SjkgC8v+ndE0uQVHpol+8MySvgF1SZK3Coti5OJoTR5R0puhXCFXVvYe1Q4aX9rL6lGWSErxx1TUUBMRpEZU7mlmPfoBWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775928345; c=relaxed/simple;
-	bh=BYqC83A8zTQVLCU9POBwg0dY9bxEakCTwwfMYSgk/zc=;
+	s=arc-20240116; t=1775928347; c=relaxed/simple;
+	bh=cHEItWMGsxui7obTfk7zB3iBxAZVZx29TwvBEW3RklA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKktPwP/YOQNy/hbTtHD9D5K1vvhux1ejMbQjYnXreNlABOzoJ2G0ELIMxo2Ls5pcrF2rNwuAwEyz/xA7rcpj52sH1TbeFqSmw78MM6JyF4RfJ5Fn/lL5PWVx0ql1HbDEPxioHVKka6D2ilPgdub4jhxRI06oVE5pjEw2iXGQMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ifg7ekE7; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=umcs5XQOFvglJA8TPyNI5WgdB4gBF60lrGJ32VGGA+2mQopVKfiUqErYeoUpkyxFR1JMuN8EKH+CYgsPgrHIpcd2FUrnyaLekkDYOZsBwGLCqcqoVxNTiUSc+zPWX6qEAeuB9hINmqT8IQ7mzhvCBUf8RVM6n+Y2TUanbGtiql0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDheNJIF; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4888375f735so28978225e9.3
-        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 10:25:44 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-488a29e6110so34194975e9.3
+        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 10:25:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775928343; x=1776533143; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775928344; x=1776533144; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A+2kzE1Uy+0YpvuWhiuVakov5m+Oa7pSGVxJwpmI3mE=;
-        b=Ifg7ekE7NeyAPsssO4J2iDpVVTQkNBkq//kOTjhxfVQp8ub0NEAPPVhMD38HhSGean
-         f9ly0YYtPvEHJZuRXgxLoc0l6WPSTZ66l3m+Mton+KZHfVqOzpKc+OtAGEioHRk3OhU7
-         dq6COULyuQWKzHtiJ8EkPIZux8MCcyJKFFsfAW2RacWsMRvQz2+9ZAMFEhaAo/zNXkWJ
-         eZzTXQv3qoF5wLDqaPSZGl3nOvg/x7iYBIaQzVV8UpknPDlZczUYBs5dKkiNHinKa+BE
-         lH2IsERyVDdbccuNthi4bSkC2au0dIThQ5Fi0Ksp9LM+EycMIN21uXtpwtsU0wQQW5OS
-         q6Wg==
+        bh=K1qlsFSO91cSuxSu+S/gRW8mV0vEe3bbJ+ZdqYahD6g=;
+        b=RDheNJIF163YHMjFjOstxuFyouuxeNcCEEKQE9cBagNsYwCsf41pF+HD4UuiUJ5Ml2
+         eMB+cxqFfoHHLzEiOT4DU8ghpojEufi0XUSFWD8R/2zdN3/wM0wWKNkslwxG2nMOn3E/
+         bEAE7bv+tmHPSG2asgMgdgF44ZoxReS7w0PA/XEOwmKpwIcRl+96B5ZogIpTasjJgEJL
+         EnYEPaVNSPBpEslxqZnL5VU4M4zByeQUca5Q9DdHPnlWUlRwZFFgBSzrDR0gmaKnIckQ
+         XbIj5YxDvPAD+P5gvdfoxVkp8+qjzkC6VQe96Z44FWwv3J9MxAS1JeWgcY6KpZlB+QxT
+         gD+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775928343; x=1776533143;
+        d=1e100.net; s=20251104; t=1775928344; x=1776533144;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=A+2kzE1Uy+0YpvuWhiuVakov5m+Oa7pSGVxJwpmI3mE=;
-        b=ZghtGtfOCiB5VM+Lb1tXVv+61T2eRxwH/J9cMyCICirtFvAPjVkIFgIcRgTkuLARiO
-         z8aZ5QYzzM2sW4zQ+8ZkSFy44Wk7zmfj+U2i5O3lpJhlzn/ELlwRu7Xre0aTgQNZSp+l
-         VHZgFOue9jdH4/VlOGuuKGH2Pv8ydNoZVNZ7DNQn939PuLiaJz1kzJEaiqcKVZhsKRq4
-         R1rnn8hgaFA8ELwWZTH1+2vnbXJsYCkTlr6xJAKUbyajBCDyWTwvp/hRt0xue2HaMbVA
-         roY/LjYMItpCAI7SmniAKkri7WSEPwoJJTb3PpfXwGUcbFcU9MEzPPz8yNeg/H7SbLWU
-         rNyQ==
-X-Gm-Message-State: AOJu0YzYE25w5zAfGPXYryobX/hLmHp8zKaWSpkejhSxH6W9zYevF77j
-	XRtQLAcAVFsHaF/BELa9hWAq5Jzff+r65iserLo9iCQSwdrWdQor7TeBC7SisWBP
-X-Gm-Gg: AeBDieuLthftonKr9CEri/ycMfOTR2/AG+AQG+sPy4wtnlRHt1b8lAJ92NSrlCtXLxs
-	PLv7XRjLdgvtVLYj5kkQBDDNMXARY3tQOUaokixw+GWVbQyWSWceu6C1R5BdmE8TqTu9UEUdXH7
-	j1qaV8qh3mobJWQujxp+mi/aIaaUdg/GNPjL3K/l5OYzPVZFeC6Ow5XDPYPQb3/xYPR7CxzVrB3
-	LoHgNOKGb1GP6i6qwoGtokZFw/ZH+aD+1vAEw9uF1M1XyxjdM4Wyjn30noEq/7/ki84SdJS0yZY
-	028qBXLNa8bM1SDa5u7Y3SbYMB0g029gcKSglJNUytlwyeJRWzHIT8oi0P0QBSdJEk6tTgFEvpi
-	OmWMO9mOelGHQ5KD46l/C4m+IbndlaC57uDasVe9N30LcKycSVMXOLFIJ8cNWanWh0RIErjghkW
-	OE/DY7E80ZZ3FBe0yPldNjntAzPfhHGOapBI6Kfp4=
-X-Received: by 2002:a05:600c:5487:b0:488:ae26:435e with SMTP id 5b1f17b1804b1-488d683d4f0mr95332785e9.16.1775928342842;
-        Sat, 11 Apr 2026 10:25:42 -0700 (PDT)
+        bh=K1qlsFSO91cSuxSu+S/gRW8mV0vEe3bbJ+ZdqYahD6g=;
+        b=b1w3S5geC6CI/3gjT3EP36mOuAZm/mTj5rf9n+aWf2+3RosRZBg+08jPrRoUWKNVEb
+         i+T9+D2x8tacxjgvwoLeVrQNRCRBPTfsyEpcDNu8sOhFxNeu74heUZiWEGtLx+hOlUGT
+         IWxrvMaLa2pk8bNrsNYp0LG/UzPZpJUwvpqV5YbdtiwyN+pFUFJS2ft48x89L1lA+dV2
+         bQHKRcazZwUQjVj1VKyveKdOwmECw982Tp3hMv5QIBTExp8fPSze0XMlINhFCHoEn1Bt
+         yvhTuuzHVoMpEpbhbwigLCgbqUqo0fABKn7hVWpM1REn9pImWyK/GLQadFUfA3CtZYgC
+         enOQ==
+X-Gm-Message-State: AOJu0YwgbhXPFr98/2P03sJ1K2p7yjFhvYUwSfDCi1Y513TIbuJQWqDk
+	Uh1LhIDI6sEdZMF3oTPkg9D0Bv+65VyKZl/+DKtgnRHXReRgCHPTJ2k6ZawNigTX
+X-Gm-Gg: AeBDievO08M0ebwE9IiSijd6PhBE+GkK94huK1hUziJe+RmwYzkZQge8IGDSbjPgfdh
+	DXnI3WyF0dhNQszoiPkPl8pmKjxoswG0puzpJwpQ7jNSQQwDWr1GQzP94arGiQjt68kV3ch6vIY
+	tVs8zmWijCL44wmbH6bSRmboBMlzi5OBNZvu3ER8NFsG6huYumY8moWbUjZCTv+VfI0JwkPkuAX
+	Rs2u0igLzAKIBQgfERPqkRCYuIru4B7VfZCxSygZIdDDVECA56T2wgtrCWrIGnSYosfWwCMWQpb
+	lOzGDduw/ZFN1/J8IKmuwdaGXwYoobiWKiPTEuhoKTdz0hzJoHeupMzqNwjJvRjwt9ueG2Mf50Q
+	nJTDl5nyumUJbnfE6ypEMB5z9rSGiRszY5lL9lN9eA5bEuA93jzPDxtAo+1P3wNRN1bCOb5MrPc
+	YmVcqs8ax6NTOJIcEbK3SwZWfO9Hg9eXwxAXOgNw8=
+X-Received: by 2002:a05:600c:45cd:b0:488:a82f:bb96 with SMTP id 5b1f17b1804b1-488d68c7fc2mr86711185e9.29.1775928344407;
+        Sat, 11 Apr 2026 10:25:44 -0700 (PDT)
 Received: from egonzo (82-64-73-52.subs.proxad.net. [82.64.73.52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67b4903sm64176515e9.5.2026.04.11.10.25.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67b4903sm64176515e9.5.2026.04.11.10.25.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 10:25:42 -0700 (PDT)
+        Sat, 11 Apr 2026 10:25:44 -0700 (PDT)
 From: Dave Penkler <dpenkler@gmail.com>
 To: gregkh@linuxfoundation.org,
 	linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org,
 	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 5/6] gpib: Add attach routine for pci_xl board
-Date: Sat, 11 Apr 2026 19:25:10 +0200
-Message-ID: <20260411172511.26546-6-dpenkler@gmail.com>
+Subject: [PATCH 6/6] gpib; Add register and unregister calls
+Date: Sat, 11 Apr 2026 19:25:11 +0200
+Message-ID: <20260411172511.26546-7-dpenkler@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260411172511.26546-1-dpenkler@gmail.com>
 References: <20260411172511.26546-1-dpenkler@gmail.com>
@@ -99,7 +99,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -109,8 +109,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235753-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-235755-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dpenkler@gmail.com,stable@vger.kernel.org];
@@ -121,55 +121,54 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AAE583E1045
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 134073E103E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add new attach routine for 72130 based boards.
+Register the driver for new 72130 based pci_xl board type with the
+common driver on module initialisation.
+Unregister the driver on registration error and module exit.
 
 Signed-off-by: Dave Penkler <dpenkler@gmail.com>
 ---
- drivers/gpib/ines/ines_gpib.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/gpib/ines/ines_gpib.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/gpib/ines/ines_gpib.c b/drivers/gpib/ines/ines_gpib.c
-index 118e6c7b0ff1..af9693c33b23 100644
+index af9693c33b23..3562f3184c28 100644
 --- a/drivers/gpib/ines/ines_gpib.c
 +++ b/drivers/gpib/ines/ines_gpib.c
-@@ -350,6 +350,7 @@ static irqreturn_t ines_interrupt(struct gpib_board *board)
- }
+@@ -1500,6 +1500,12 @@ static int __init ines_init_module(void)
+ 		goto err_pci_unaccel;
+ 	}
  
- static int ines_pci_attach(struct gpib_board *board, const struct gpib_board_config *config);
-+static int ines_pci_xl_attach(struct gpib_board *board, const struct gpib_board_config *config);
- static int ines_pci_accel_attach(struct gpib_board *board, const struct gpib_board_config *config);
- static int ines_isa_attach(struct gpib_board *board, const struct gpib_board_config *config);
- 
-@@ -932,6 +933,24 @@ static int ines_pci_attach(struct gpib_board *board, const struct gpib_board_con
- 	return 0;
- }
- 
-+static int ines_pci_xl_attach(struct gpib_board *board, const struct gpib_board_config *config)
-+{
-+	struct ines_priv *ines_priv;
-+	struct nec7210_priv *nec_priv;
-+	int retval;
++	ret = gpib_register_driver(&ines_pci_xl_interface, THIS_MODULE);
++	if (ret) {
++		pr_err("gpib_register_driver failed: error = %d\n", ret);
++		goto err_pci_xl;
++	}
 +
-+	retval = ines_common_pci_attach(board, config);
-+	if (retval < 0)
-+		return retval;
-+
-+	ines_priv = board->private_data;
-+	ines_priv->pci_chip_type = PCI_CHIP_INES_72130;
-+	nec_priv = &ines_priv->nec7210_priv;
-+	nec7210_board_online(nec_priv, board);
-+
-+	return 0;
-+}
-+
- static int ines_pci_accel_attach(struct gpib_board *board, const struct gpib_board_config *config)
+ 	ret = gpib_register_driver(&ines_pci_accel_interface, THIS_MODULE);
+ 	if (ret) {
+ 		pr_err("gpib_register_driver failed: error = %d\n", ret);
+@@ -1554,6 +1560,8 @@ static int __init ines_init_module(void)
+ 	gpib_unregister_driver(&ines_pci_accel_interface);
+ err_pci_accel:
+ 	gpib_unregister_driver(&ines_pci_unaccel_interface);
++err_pci_xl:
++	gpib_unregister_driver(&ines_pci_xl_interface);
+ err_pci_unaccel:
+ 	gpib_unregister_driver(&ines_pci_interface);
+ err_pci:
+@@ -1566,6 +1574,7 @@ static void __exit ines_exit_module(void)
  {
- 	struct ines_priv *ines_priv;
+ 	gpib_unregister_driver(&ines_pci_interface);
+ 	gpib_unregister_driver(&ines_pci_unaccel_interface);
++	gpib_unregister_driver(&ines_pci_xl_interface);
+ 	gpib_unregister_driver(&ines_pci_accel_interface);
+ 	gpib_unregister_driver(&ines_isa_interface);
+ #ifdef CONFIG_GPIB_PCMCIA
 -- 
 2.53.0
 
