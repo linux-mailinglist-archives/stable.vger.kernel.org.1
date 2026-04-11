@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-235731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGLNLjZW2mmk0QgAu9opvQ
-	(envelope-from <stable+bounces-235731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:09:58 +0200
+	id iNq3F41W2mmk0QgAu9opvQ
+	(envelope-from <stable+bounces-235732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:11:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D543E0421
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B563E0431
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F31C2301738D
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 14:09:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09B813020EA7
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 14:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C4336164B;
-	Sat, 11 Apr 2026 14:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF9236BCE8;
+	Sat, 11 Apr 2026 14:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNGQr+Qg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrF7Xki0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CA52E06EA
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 14:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1988036AB4A
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775916591; cv=none; b=noqz0oN/yt2ipqBYVpXl7QVECjegA3yO78d37kjkFOaFNO6zg6LmdUU6ri+WQkFSBxuTzf5CjmT1PsipdSozLteI5XusQMyA8/PWNXQaoVuYuQihErv0L31OKY37dPmYh7cybN8xLjlDguDo83KuC3Uf5ZXZGhbwVcGRKFdnMxg=
+	t=1775916681; cv=none; b=rG8pI4Tln9OXZkWGMxfX9fMsC5LqwuJQS/xVD7u2TN3rKkE7T1R6mycz3dO0f65FQH4Nz1E/4P306QytNampQRHwzS35Msv84JarBdNjTxilblJWXA3D6iCGTxPGFTtlWAUVzXQYxmLer37u/6P6iX6koMqUvHDii32FGqm2N/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775916591; c=relaxed/simple;
-	bh=8DsvQTDrlTFwzEw+FtRuhf/lz0Nr86JpIFyIAy4gCrU=;
+	s=arc-20240116; t=1775916681; c=relaxed/simple;
+	bh=3IZWDVxV5IKml+MLHbm4TQvSOkNrVaWNS1SgeurtMuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skUqXxtlo3vvMdDewrZHwEp3Oxtz0pp//DEC/u89lsmcmWsK/MWrkTbgQXDVid1gJMi8/+CqoY+ifslU3uJuh3oNmw25ppPxxHuGc/HawjoRP+riPsmElYjtG+l8mEdAOO2p+afPRiBHK9tqosGn7Kf6iEJafjFtiscjEGJoHBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNGQr+Qg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BDAC4CEF7;
-	Sat, 11 Apr 2026 14:09:49 +0000 (UTC)
+	 MIME-Version; b=j6QoLj+pBXxmVzR31q0LkdcmBcKZMq8NCj/Zb/kckivJqtlVKGcA1C/cYWfZZwBK7YX7JGVapLqaeobv/NcL1PjqlSBzHyH0iBakanQPv/UFB4tVZFp7g0+qv8/C57uVfFVfAHUxt+e2COoR95EI3jAhuPDZZRr8SzxEPYBsDB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrF7Xki0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C82C4CEF7;
+	Sat, 11 Apr 2026 14:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775916590;
-	bh=8DsvQTDrlTFwzEw+FtRuhf/lz0Nr86JpIFyIAy4gCrU=;
+	s=k20201202; t=1775916680;
+	bh=3IZWDVxV5IKml+MLHbm4TQvSOkNrVaWNS1SgeurtMuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNGQr+QgrYsZkkdkDLMD0ZJQEEaGO0wwUIPJ8wQw7acZg4C7DYCDz6ipjXkTo4No4
-	 LlYR8+6ALhsCmxnVWULhOexbdOh+pNyz2Ktq2tsxjIeqzGdZoAZUGj16snFSkgGo0+
-	 6g/iWJW+IRmgdnnsm6ywEZoQ/MyKFFDdPDdVIOjor/GUVjB6t1Wlkcc/o8q9+Iolg+
-	 O2CWf2sKSxwFJukbgHfgvIkiCy99SHNvWI1qCV/nZY2ospcRgJxwJQvN3643D391lU
-	 bh1r/Ni9hm6QKI869POieGIv1420/w2rYGuC9qa5EYYqzOpZe9kg/0SVXGHAOKMywg
-	 B1dHApsggTsAw==
+	b=NrF7Xki0sKTYX18npAiFnJ4JZZSXkEDNui3yO+Lzisfd0vzChv02ePiDYdJEx5Tqy
+	 /foqPyG+cJlo7teZDHOlwERwK8h+8kSKKbuOEYV0uUW8HP7iGmV7BFDcFR996Pu/hB
+	 zJ4QQuZREKtrETTyMizvow5zFpf+FLPhTzARDzc8Daefe5JaOYtWaf7TWZhPuqIr9K
+	 ffssRb1je49JkJm69yserCe9j+RoxSisxvY+CL+sTPLCFfeAWZaXLQ+zvj5RpEXF/7
+	 2DQuAv+RLko8+4qcAc5gIwniL5LfqFQAWeEBNQNzFQ8LcUrykgc/bBwsKCDaOau9Sd
+	 b+WlbOyT72ooQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jimmy Hu <hhhuuu@google.com>,
+Cc: Kuen-Han Tsai <khtsai@google.com>,
 	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] usb: gadget: uvc: fix NULL pointer dereference during unbind race
-Date: Sat, 11 Apr 2026 10:09:48 -0400
-Message-ID: <20260411140948.765851-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
+Date: Sat, 11 Apr 2026 10:11:18 -0400
+Message-ID: <20260411141118.767712-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026040804-unworldly-variable-d69c@gregkh>
-References: <2026040804-unworldly-variable-d69c@gregkh>
+In-Reply-To: <2026040856-salutary-stress-ecc2@gregkh>
+References: <2026040856-salutary-stress-ecc2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235731-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235732-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,252 +88,84 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[harvard.edu:email,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 33D543E0421
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 50B563E0431
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jimmy Hu <hhhuuu@google.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit eba2936bbe6b752a31725a9eb5c674ecbf21ee7d ]
+[ Upstream commit e1eabb072c75681f78312c484ccfffb7430f206e ]
 
-Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
-shutdown") introduced two stages of synchronization waits totaling 1500ms
-in uvc_function_unbind() to prevent several types of kernel panics.
-However, this timing-based approach is insufficient during power
-management (PM) transitions.
+A race condition between gether_disconnect() and eth_stop() leads to a
+NULL pointer dereference. Specifically, if eth_stop() is triggered
+concurrently while gether_disconnect() is tearing down the endpoints,
+eth_stop() attempts to access the cleared endpoint descriptor, causing
+the following NPE:
 
-When the PM subsystem starts freezing user space processes, the
-wait_event_interruptible_timeout() is aborted early, which allows the
-unbind thread to proceed and nullify the gadget pointer
-(cdev->gadget = NULL):
+  Unable to handle kernel NULL pointer dereference
+  Call trace:
+   __dwc3_gadget_ep_enable+0x60/0x788
+   dwc3_gadget_ep_enable+0x70/0xe4
+   usb_ep_enable+0x60/0x15c
+   eth_stop+0xb8/0x108
 
-[  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
-[  814.178583][ T3173] PM: suspend entry (deep)
-[  814.192487][ T3173] Freezing user space processes
-[  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
+Because eth_stop() crashes while holding the dev->lock, the thread
+running gether_disconnect() fails to acquire the same lock and spins
+forever, resulting in a hardlockup:
 
-When the PM subsystem resumes or aborts the suspend and tasks are
-restarted, the V4L2 release path is executed and attempts to access the
-already nullified gadget pointer, triggering a kernel panic:
+  Core - Debugging Information for Hardlockup core(7)
+  Call trace:
+   queued_spin_lock_slowpath+0x94/0x488
+   _raw_spin_lock+0x64/0x6c
+   gether_disconnect+0x19c/0x1e8
+   ncm_set_alt+0x68/0x1a0
+   composite_setup+0x6a0/0xc50
 
-[  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
-[  814.386727][ T3173] Restarting tasks ...
-[  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
-[  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
-[  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
-[  814.404078][ T4558] Call trace:
-[  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
-[  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
-[  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
-[  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
-[  814.404095][ T4558]  v4l2_release+0xcc/0x130
+The root cause is that the clearing of dev->port_usb in
+gether_disconnect() is delayed until the end of the function.
 
-Address the race condition and NULL pointer dereference by:
+Move the clearing of dev->port_usb to the very beginning of
+gether_disconnect() while holding dev->lock. This cuts off the link
+immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+safely bail out.
 
-1. State Synchronization (flag + mutex)
-Introduce a 'func_unbound' flag in struct uvc_device. This allows
-uvc_function_disconnect() to safely skip accessing the nullified
-cdev->gadget pointer. As suggested by Alan Stern, this flag is protected
-by a new mutex (uvc->lock) to ensure proper memory ordering and prevent
-instruction reordering or speculative loads. This mutex is also used to
-protect 'func_connected' for consistent state management.
-
-2. Explicit Synchronization (completion)
-Use a completion to synchronize uvc_function_unbind() with the
-uvc_vdev_release() callback. This prevents Use-After-Free (UAF) by
-ensuring struct uvc_device is freed after all video device resources
-are released.
-
-Fixes: b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly shutdown")
+Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
 Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
-Link: https://patch.msgid.link/20260320065427.1374555-1-hhhuuu@google.com
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ replaced guard()/scoped_guard() macros ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uvc.c    | 46 +++++++++++++++++++++++---
- drivers/usb/gadget/function/uvc.h      |  3 ++
- drivers/usb/gadget/function/uvc_v4l2.c | 13 ++++++--
- 3 files changed, 56 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/u_ether.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
-index 5df1b68e5eacc..1c07982fa5c2c 100644
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -393,6 +393,14 @@ uvc_function_disconnect(struct uvc_device *uvc)
- {
- 	int ret;
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index 1f420ff8f4232..e84178bffe780 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1175,6 +1175,10 @@ void gether_disconnect(struct gether *link)
  
-+	mutex_lock(&uvc->lock);
-+	if (uvc->func_unbound) {
-+		dev_dbg(&uvc->vdev.dev, "skipping function deactivate (unbound)\n");
-+		mutex_unlock(&uvc->lock);
-+		return;
-+	}
-+	mutex_unlock(&uvc->lock);
+ 	DBG(dev, "%s\n", __func__);
+ 
++	spin_lock(&dev->lock);
++	dev->port_usb = NULL;
++	spin_unlock(&dev->lock);
 +
- 	if ((ret = usb_function_deactivate(&uvc->func)) < 0)
- 		uvcg_info(&uvc->func, "UVC disconnect failed with %d\n", ret);
+ 	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
+ 
+@@ -1212,10 +1216,6 @@ void gether_disconnect(struct gether *link)
+ 	dev->header_len = 0;
+ 	dev->unwrap = NULL;
+ 	dev->wrap = NULL;
+-
+-	spin_lock(&dev->lock);
+-	dev->port_usb = NULL;
+-	spin_unlock(&dev->lock);
  }
-@@ -411,6 +419,15 @@ static ssize_t function_name_show(struct device *dev,
- 
- static DEVICE_ATTR_RO(function_name);
- 
-+static void uvc_vdev_release(struct video_device *vdev)
-+{
-+	struct uvc_device *uvc = video_get_drvdata(vdev);
-+
-+	/* Signal uvc_function_unbind() that the video device has been released */
-+	if (uvc->vdev_release_done)
-+		complete(uvc->vdev_release_done);
-+}
-+
- static int
- uvc_register_video(struct uvc_device *uvc)
- {
-@@ -422,7 +439,7 @@ uvc_register_video(struct uvc_device *uvc)
- 	uvc->vdev.v4l2_dev->dev = &cdev->gadget->dev;
- 	uvc->vdev.fops = &uvc_v4l2_fops;
- 	uvc->vdev.ioctl_ops = &uvc_v4l2_ioctl_ops;
--	uvc->vdev.release = video_device_release_empty;
-+	uvc->vdev.release = uvc_vdev_release;
- 	uvc->vdev.vfl_dir = VFL_DIR_TX;
- 	uvc->vdev.lock = &uvc->video.mutex;
- 	uvc->vdev.device_caps = V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_STREAMING;
-@@ -596,6 +613,9 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
- 	int ret = -EINVAL;
- 
- 	uvcg_info(f, "%s()\n", __func__);
-+	mutex_lock(&uvc->lock);
-+	uvc->func_unbound = false;
-+	mutex_unlock(&uvc->lock);
- 
- 	opts = fi_to_f_uvc_opts(f->fi);
- 	/* Sanity check the streaming endpoint module parameters.
-@@ -888,18 +908,25 @@ static void uvc_free(struct usb_function *f)
- static void uvc_function_unbind(struct usb_configuration *c,
- 				struct usb_function *f)
- {
-+	DECLARE_COMPLETION_ONSTACK(vdev_release_done);
- 	struct usb_composite_dev *cdev = c->cdev;
- 	struct uvc_device *uvc = to_uvc(f);
- 	long wait_ret = 1;
-+	bool connected;
- 
- 	uvcg_info(f, "%s()\n", __func__);
-+	mutex_lock(&uvc->lock);
-+	uvc->func_unbound = true;
-+	uvc->vdev_release_done = &vdev_release_done;
-+	connected = uvc->func_connected;
-+	mutex_unlock(&uvc->lock);
- 
- 	/* If we know we're connected via v4l2, then there should be a cleanup
- 	 * of the device from userspace either via UVC_EVENT_DISCONNECT or
- 	 * though the video device removal uevent. Allow some time for the
- 	 * application to close out before things get deleted.
- 	 */
--	if (uvc->func_connected) {
-+	if (connected) {
- 		uvcg_dbg(f, "waiting for clean disconnect\n");
- 		wait_ret = wait_event_interruptible_timeout(uvc->func_connected_queue,
- 				uvc->func_connected == false, msecs_to_jiffies(500));
-@@ -910,8 +937,13 @@ static void uvc_function_unbind(struct usb_configuration *c,
- 	video_unregister_device(&uvc->vdev);
- 	v4l2_device_unregister(&uvc->v4l2_dev);
- 
--	if (uvc->func_connected) {
--		/* Wait for the release to occur to ensure there are no longer any
-+	mutex_lock(&uvc->lock);
-+	connected = uvc->func_connected;
-+	mutex_unlock(&uvc->lock);
-+
-+	if (connected) {
-+		/*
-+		 * Wait for the release to occur to ensure there are no longer any
- 		 * pending operations that may cause panics when resources are cleaned
- 		 * up.
- 		 */
-@@ -921,6 +953,10 @@ static void uvc_function_unbind(struct usb_configuration *c,
- 		uvcg_dbg(f, "done waiting for release with ret: %ld\n", wait_ret);
- 	}
- 
-+	/* Wait for the video device to be released */
-+	wait_for_completion(&vdev_release_done);
-+	uvc->vdev_release_done = NULL;
-+
- 	usb_ep_free_request(cdev->gadget->ep0, uvc->control_req);
- 	kfree(uvc->control_buf);
- 
-@@ -938,6 +974,8 @@ static struct usb_function *uvc_alloc(struct usb_function_instance *fi)
- 		return ERR_PTR(-ENOMEM);
- 
- 	mutex_init(&uvc->video.mutex);
-+	mutex_init(&uvc->lock);
-+	uvc->func_unbound = true;
- 	uvc->state = UVC_STATE_DISCONNECTED;
- 	init_waitqueue_head(&uvc->func_connected_queue);
- 	opts = fi_to_f_uvc_opts(fi);
-diff --git a/drivers/usb/gadget/function/uvc.h b/drivers/usb/gadget/function/uvc.h
-index d1a4ef74742b7..4fb751eb31726 100644
---- a/drivers/usb/gadget/function/uvc.h
-+++ b/drivers/usb/gadget/function/uvc.h
-@@ -130,6 +130,9 @@ struct uvc_device {
- 	enum uvc_state state;
- 	struct usb_function func;
- 	struct uvc_video video;
-+	struct completion *vdev_release_done;
-+	struct mutex lock;	/* protects func_unbound and func_connected */
-+	bool func_unbound;
- 	bool func_connected;
- 	wait_queue_head_t func_connected_queue;
- 
-diff --git a/drivers/usb/gadget/function/uvc_v4l2.c b/drivers/usb/gadget/function/uvc_v4l2.c
-index 65abd55ce2348..2a1efaf3708ee 100644
---- a/drivers/usb/gadget/function/uvc_v4l2.c
-+++ b/drivers/usb/gadget/function/uvc_v4l2.c
-@@ -234,12 +234,18 @@ uvc_v4l2_subscribe_event(struct v4l2_fh *fh,
- 	if (sub->type < UVC_EVENT_FIRST || sub->type > UVC_EVENT_LAST)
- 		return -EINVAL;
- 
--	if (sub->type == UVC_EVENT_SETUP && uvc->func_connected)
-+	mutex_lock(&uvc->lock);
-+
-+	if (sub->type == UVC_EVENT_SETUP && uvc->func_connected) {
-+		mutex_unlock(&uvc->lock);
- 		return -EBUSY;
-+	}
- 
- 	ret = v4l2_event_subscribe(fh, sub, 2, NULL);
--	if (ret < 0)
-+	if (ret < 0) {
-+		mutex_unlock(&uvc->lock);
- 		return ret;
-+	}
- 
- 	if (sub->type == UVC_EVENT_SETUP) {
- 		uvc->func_connected = true;
-@@ -247,6 +253,7 @@ uvc_v4l2_subscribe_event(struct v4l2_fh *fh,
- 		uvc_function_connect(uvc);
- 	}
- 
-+	mutex_unlock(&uvc->lock);
- 	return 0;
- }
- 
-@@ -255,7 +262,9 @@ static void uvc_v4l2_disable(struct uvc_device *uvc)
- 	uvc_function_disconnect(uvc);
- 	uvcg_video_enable(&uvc->video, 0);
- 	uvcg_free_buffers(&uvc->video.queue);
-+	mutex_lock(&uvc->lock);
- 	uvc->func_connected = false;
-+	mutex_unlock(&uvc->lock);
- 	wake_up_interruptible(&uvc->func_connected_queue);
- }
+ EXPORT_SYMBOL_GPL(gether_disconnect);
  
 -- 
 2.53.0
