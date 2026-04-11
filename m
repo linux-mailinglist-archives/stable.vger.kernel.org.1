@@ -1,62 +1,87 @@
-Return-Path: <stable+bounces-235748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEI8DXN32mn82ggAu9opvQ
-	(envelope-from <stable+bounces-235748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 18:31:47 +0200
+	id YAy4JguE2mnI3QgAu9opvQ
+	(envelope-from <stable+bounces-235749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 19:25:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882C63E0DD7
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 18:31:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0316F3E1030
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 19:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78A70301FD7B
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:31:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED46A301DBAA
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 17:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2812D2488;
-	Sat, 11 Apr 2026 16:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B72F266565;
+	Sat, 11 Apr 2026 17:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rbdL375O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nFDDRXLk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938E1201278
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 16:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840962DEA64
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 17:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775925077; cv=none; b=s6ibEroIi7s4s99jEJCbdggjRh8CV2QfscZsRgOrpy+Sa7App8J0YY5JZ+mRr98syapajluH2jRuahNxQvpqWBfkKAvjXWiDH7vyLGngdrfiDCadXEdgFyfyq7y1pywxqitcuU7IWcewbakQ/DkSu1Z/aj/9jf9GaSWX7lDR37Q=
+	t=1775928326; cv=none; b=LkulDJMlVWW0FJJuf4IWgR9WOuKm/tH3cxaSL7OPdCofJ6ovbRRbucLfpbQ+i9YiDU7U2bQ+0NFeTMPZZ7Fg79tSqgaoNR9nt3Nn2TCf6jjTcxBX8xkwa3HcOr8p46kcKxAjsy5iV8g7OGlfc1gdWIjNYJpBIAk8WcamxorKYxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775925077; c=relaxed/simple;
-	bh=On8ReSxPJ5qBkpomhFYtGtrJJCZijBIsdWJBM7AxDMA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiocbD0IuCMycLt1MmWeFzeJhwCL9SViEt7swJj+dTcFBwxnHoSAa83DMWw69P4d9Kw/mG+tJwmB2yyuQlKfB5pKpAsjioqkXxE5o7fZuNjL9be8HB6qExPvjGDIy0mT8M7RLjCWMwLP/3ZmlHGrPH3R3MrcVGpat/bNZ+YeI94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rbdL375O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB86C4CEF7;
-	Sat, 11 Apr 2026 16:31:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775925077;
-	bh=On8ReSxPJ5qBkpomhFYtGtrJJCZijBIsdWJBM7AxDMA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbdL375Oupw+IMDYQ1uFFSveyPyGsgM02EaViZGFUupKdbppz30UNPKK8Y9EzWaPM
-	 87sThvcRxMysvVoTiTzy2ek2ohfPYrP6nyKKpETeQ/CLQNQo2y1uyAKd9WU5NmFhWt
-	 n1FIbLxmBlKueyVtB/6qamjmXNuB8pRDbu35QRAii7BRrUq8f2SLeSdqcFi1f3z6ez
-	 dUGxcuqddCvoq0v46n+iwiBu/eTS61DqkKutcDUZ1aXX0D3IZyFHVI6NavXQji3dXI
-	 Wz10S8Ga8JQ0PNzHUQaj0vGv/Uixnsy4Tx3rpKkhwbKisaMy7VZmW6OiEJJtq7zJlS
-	 CRPLkXkUbeoUg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jimmy Hu <hhhuuu@google.com>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] usb: gadget: uvc: fix NULL pointer dereference during unbind race
-Date: Sat, 11 Apr 2026 12:31:15 -0400
-Message-ID: <20260411163115.807395-1-sashal@kernel.org>
+	s=arc-20240116; t=1775928326; c=relaxed/simple;
+	bh=Tuw0emNVnOIZjZOyAWwN2ljYJKnUjn/6trIEUns70xs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B/4DK31vtnN/urM/0yxMD10LntrDzvGijYAWRHttMGtg7dvzJgjpPGUE7RdQrQPUcIsLXVok8qmCdrMveyTsYHc4JDCCQqXA287OLSGfJeeQnci8szG6DK00hpgMk2GpHWWT0Mmgh+EiR3ukqZGZ0WYCq7a4ketHFTqt7X5iAQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nFDDRXLk; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so4512785e9.2
+        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 10:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775928324; x=1776533124; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MN+HVA/RjkCeJZrYT+pjGcZdWVMti7+q0Kfc2GJS5Kg=;
+        b=nFDDRXLk74YXXQ0bdMSZ7P4VJFpo5ex4VXggmUjSdxi25eFcPAWJdXUeWA4oLvzt/U
+         HaUMJ1xCabA2pD0oAvlJ4a6yfPs+q8D9A48qN5cgzS5je2RFAzLTy3olDbjoBE31EcLz
+         xisrehLe2CcfKkMxK7ajugs6R6r44U5VfiRr/+bybJGJMLAkGfKbPLny1F6L5jRMePu0
+         Jxj4Th48BCKWAPh44PBl92+uj1QbAzcQVFHzbKE3HpFIQhwP+Pnax8sGk2OAvVly+NHL
+         O2cHnmq4gLzMbJ0VYwdnsp9r+PR+NlBHmn1FxkOfjTU2bBUA+eLp0ymbRcOrLe1gm/wh
+         Cs9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775928324; x=1776533124;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MN+HVA/RjkCeJZrYT+pjGcZdWVMti7+q0Kfc2GJS5Kg=;
+        b=qJ8Km0e9gOhlnQQIsGNBhrkCMjYAKDibXLRXSup4BwkqIbdnQiRPaZBfyuh/vRijmf
+         i3uMJFNrxmZ5NOQYnshDK8hWX5Lialkjdvj8P+uO+9s7oe0v3wWUMNy73TJjLAjGvwKY
+         5JCsBQiyWiDaiueDqzilwSr4tw3RfASsYI7nO9Y6POJ/bWzv6JQC0d9fX1k66PtaqRG9
+         j+LPI3yPB4zg+hRw+cK84hDqfTiGIK6uBQGx3EgGiq1YVY+E6FfDXwfBoABs6IOuYV51
+         mwSrNwVe1djaFiYVJrpFRJeAY9vbjO1cHloxra3Ubn76vI7PZZ8iTABXLpxRgmZvuKWT
+         Dy8g==
+X-Gm-Message-State: AOJu0YzhKok8LSa+HQR7PYw4KeU9JNE6S129rajldtcV0E32Cl/6FemT
+	ortRYn2nEfRoVfA/v3jvo3tH1W2zAS0CaFjgKc3b8ygVard8XWakQfqM
+X-Gm-Gg: AeBDieua6+ARYw9lz1yWIp2jGaddPDPaUXnl7FFahylMIgr0ClpGiNyEUctrj0SGXLZ
+	fUxH9ti5KnFWfuPZWW+Ju21F9SAGhuIigf2guzjTHA5AfkfTbhgGWOxlNvxebABxCXAUDbjMGcF
+	Ie4PjEgW/YqT/tOsUqrILWEUZcMwlepI+lec7wReQccjzsZIecJvL71V/oxcx/Ch5HrjAL1laYL
+	3FINQaB5avMFmfx9hxdfcZVEe4c33ItRSx2FfBjnsbM2ZAtMl3EKq5ygrOEVJu1nyzDZ7KU4knb
+	5U+EnBE5G2PSxcjNipJTll2Qi0nCUY6tvHvUCdtjJO2vqMvGRpvSwsZ5+/zqidvjBexO4/DFJ0T
+	IA+W2pbidKF9JgRplfpNCVSGiffLs7Tbw7FNsLAp70107M5XSKkqDx34euhm0r4H2vLpBO1dp1e
+	NbAjUvyjDMvvy9q0QYeLpPwQMMtPr2PF0UVG2eqRY=
+X-Received: by 2002:a05:600c:5249:b0:485:7f02:afd5 with SMTP id 5b1f17b1804b1-488d680079bmr94667985e9.13.1775928323572;
+        Sat, 11 Apr 2026 10:25:23 -0700 (PDT)
+Received: from egonzo (82-64-73-52.subs.proxad.net. [82.64.73.52])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67b4903sm64176515e9.5.2026.04.11.10.25.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Apr 2026 10:25:23 -0700 (PDT)
+From: Dave Penkler <dpenkler@gmail.com>
+To: gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 0/6] gpib: Add support for ines pci_xl board
+Date: Sat, 11 Apr 2026 19:25:05 +0200
+Message-ID: <20260411172511.26546-1-dpenkler@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026040805-algebra-rebalance-8bdc@gregkh>
-References: <2026040805-algebra-rebalance-8bdc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,274 +93,69 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235748-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235749-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[dpenkler@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,harvard.edu:email]
-X-Rspamd-Queue-Id: 882C63E0DD7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0316F3E1030
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jimmy Hu <hhhuuu@google.com>
+INES have 2 pci boards that both have the same vendor and device ID
+[16da:0011]. The older board is based on the 72010 chip that has a
+number of extended registers that are missing in the 72130 based
+board. This caused random error messages when the 72130 based board was
+being used. The one extended register in the 72130 chip is the bus
+status register which is at a different offset and has a different
+layout.
 
-[ Upstream commit eba2936bbe6b752a31725a9eb5c674ecbf21ee7d ]
+The proprietary ines driver uses some undocumented heuristics
+to determine which board is being used. In order to configure the
+correct behaviour of the linux ines gpib driver for the 72130 based
+board we introduce a new board type "ines_pci_xl" and rely on user
+configuration to set the appropriate board type. The chip type is set
+in the ines_pci_xl_attach() routine and the ines72130_line_status()
+routine accesses the 72130 bus status register.
 
-Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
-shutdown") introduced two stages of synchronization waits totaling 1500ms
-in uvc_function_unbind() to prevent several types of kernel panics.
-However, this timing-based approach is insufficient during power
-management (PM) transitions.
+Patch 1: Add the chip type enum, the BSR offset and bit mask enums
+Patch 2: Adds the 72130 specific line_status routine
+Patch 3: Avoids accessing the extended registers when in 72130 mode
+Patch 4: Adds the pci_xl gpib_interface initialisation structure
+Patch 5: Add the attach routine for the 72130 based  pci_xl board
+Patch 6: Adds the common driver register and unregister calls
 
-When the PM subsystem starts freezing user space processes, the
-wait_event_interruptible_timeout() is aborted early, which allows the
-unbind thread to proceed and nullify the gadget pointer
-(cdev->gadget = NULL):
+Dave Penkler (6):
+  gpib: Add enums for INES 72130 based cards
+  gpib: Add ines 72130 line_status routine
+  gpib: Don't use extended registers
+  gpib: Add ines_pci_xl_interface
+  gpib: Add attach routine for pci_xl board
+  gpib; Add register and unregister calls
 
-[  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
-[  814.178583][ T3173] PM: suspend entry (deep)
-[  814.192487][ T3173] Freezing user space processes
-[  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
+ drivers/gpib/ines/ines.h      | 16 +++++++
+ drivers/gpib/ines/ines_gpib.c | 90 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 106 insertions(+)
 
-When the PM subsystem resumes or aborts the suspend and tasks are
-restarted, the V4L2 release path is executed and attempts to access the
-already nullified gadget pointer, triggering a kernel panic:
-
-[  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
-[  814.386727][ T3173] Restarting tasks ...
-[  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
-[  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
-[  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
-[  814.404078][ T4558] Call trace:
-[  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
-[  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
-[  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
-[  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
-[  814.404095][ T4558]  v4l2_release+0xcc/0x130
-
-Address the race condition and NULL pointer dereference by:
-
-1. State Synchronization (flag + mutex)
-Introduce a 'func_unbound' flag in struct uvc_device. This allows
-uvc_function_disconnect() to safely skip accessing the nullified
-cdev->gadget pointer. As suggested by Alan Stern, this flag is protected
-by a new mutex (uvc->lock) to ensure proper memory ordering and prevent
-instruction reordering or speculative loads. This mutex is also used to
-protect 'func_connected' for consistent state management.
-
-2. Explicit Synchronization (completion)
-Use a completion to synchronize uvc_function_unbind() with the
-uvc_vdev_release() callback. This prevents Use-After-Free (UAF) by
-ensuring struct uvc_device is freed after all video device resources
-are released.
-
-Fixes: b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly shutdown")
-Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
-Link: https://patch.msgid.link/20260320065427.1374555-1-hhhuuu@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ replaced guard()/scoped_guard() macros ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/function/f_uvc.c    | 46 +++++++++++++++++++++++---
- drivers/usb/gadget/function/uvc.h      |  3 ++
- drivers/usb/gadget/function/uvc_v4l2.c | 13 ++++++--
- 3 files changed, 56 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
-index 5d39aff263f00..7821e72842220 100644
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -393,6 +393,14 @@ uvc_function_disconnect(struct uvc_device *uvc)
- {
- 	int ret;
- 
-+	mutex_lock(&uvc->lock);
-+	if (uvc->func_unbound) {
-+		dev_dbg(&uvc->vdev.dev, "skipping function deactivate (unbound)\n");
-+		mutex_unlock(&uvc->lock);
-+		return;
-+	}
-+	mutex_unlock(&uvc->lock);
-+
- 	if ((ret = usb_function_deactivate(&uvc->func)) < 0)
- 		uvcg_info(&uvc->func, "UVC disconnect failed with %d\n", ret);
- }
-@@ -411,6 +419,15 @@ static ssize_t function_name_show(struct device *dev,
- 
- static DEVICE_ATTR_RO(function_name);
- 
-+static void uvc_vdev_release(struct video_device *vdev)
-+{
-+	struct uvc_device *uvc = video_get_drvdata(vdev);
-+
-+	/* Signal uvc_function_unbind() that the video device has been released */
-+	if (uvc->vdev_release_done)
-+		complete(uvc->vdev_release_done);
-+}
-+
- static int
- uvc_register_video(struct uvc_device *uvc)
- {
-@@ -421,7 +438,7 @@ uvc_register_video(struct uvc_device *uvc)
- 	uvc->vdev.v4l2_dev = &uvc->v4l2_dev;
- 	uvc->vdev.fops = &uvc_v4l2_fops;
- 	uvc->vdev.ioctl_ops = &uvc_v4l2_ioctl_ops;
--	uvc->vdev.release = video_device_release_empty;
-+	uvc->vdev.release = uvc_vdev_release;
- 	uvc->vdev.vfl_dir = VFL_DIR_TX;
- 	uvc->vdev.lock = &uvc->video.mutex;
- 	uvc->vdev.device_caps = V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_STREAMING;
-@@ -595,6 +612,9 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
- 	int ret = -EINVAL;
- 
- 	uvcg_info(f, "%s()\n", __func__);
-+	mutex_lock(&uvc->lock);
-+	uvc->func_unbound = false;
-+	mutex_unlock(&uvc->lock);
- 
- 	opts = fi_to_f_uvc_opts(f->fi);
- 	/* Sanity check the streaming endpoint module parameters.
-@@ -887,18 +907,25 @@ static void uvc_free(struct usb_function *f)
- static void uvc_function_unbind(struct usb_configuration *c,
- 				struct usb_function *f)
- {
-+	DECLARE_COMPLETION_ONSTACK(vdev_release_done);
- 	struct usb_composite_dev *cdev = c->cdev;
- 	struct uvc_device *uvc = to_uvc(f);
- 	long wait_ret = 1;
-+	bool connected;
- 
- 	uvcg_info(f, "%s()\n", __func__);
-+	mutex_lock(&uvc->lock);
-+	uvc->func_unbound = true;
-+	uvc->vdev_release_done = &vdev_release_done;
-+	connected = uvc->func_connected;
-+	mutex_unlock(&uvc->lock);
- 
- 	/* If we know we're connected via v4l2, then there should be a cleanup
- 	 * of the device from userspace either via UVC_EVENT_DISCONNECT or
- 	 * though the video device removal uevent. Allow some time for the
- 	 * application to close out before things get deleted.
- 	 */
--	if (uvc->func_connected) {
-+	if (connected) {
- 		uvcg_dbg(f, "waiting for clean disconnect\n");
- 		wait_ret = wait_event_interruptible_timeout(uvc->func_connected_queue,
- 				uvc->func_connected == false, msecs_to_jiffies(500));
-@@ -909,8 +936,13 @@ static void uvc_function_unbind(struct usb_configuration *c,
- 	video_unregister_device(&uvc->vdev);
- 	v4l2_device_unregister(&uvc->v4l2_dev);
- 
--	if (uvc->func_connected) {
--		/* Wait for the release to occur to ensure there are no longer any
-+	mutex_lock(&uvc->lock);
-+	connected = uvc->func_connected;
-+	mutex_unlock(&uvc->lock);
-+
-+	if (connected) {
-+		/*
-+		 * Wait for the release to occur to ensure there are no longer any
- 		 * pending operations that may cause panics when resources are cleaned
- 		 * up.
- 		 */
-@@ -920,6 +952,10 @@ static void uvc_function_unbind(struct usb_configuration *c,
- 		uvcg_dbg(f, "done waiting for release with ret: %ld\n", wait_ret);
- 	}
- 
-+	/* Wait for the video device to be released */
-+	wait_for_completion(&vdev_release_done);
-+	uvc->vdev_release_done = NULL;
-+
- 	usb_ep_free_request(cdev->gadget->ep0, uvc->control_req);
- 	kfree(uvc->control_buf);
- 
-@@ -937,6 +973,8 @@ static struct usb_function *uvc_alloc(struct usb_function_instance *fi)
- 		return ERR_PTR(-ENOMEM);
- 
- 	mutex_init(&uvc->video.mutex);
-+	mutex_init(&uvc->lock);
-+	uvc->func_unbound = true;
- 	uvc->state = UVC_STATE_DISCONNECTED;
- 	init_waitqueue_head(&uvc->func_connected_queue);
- 	opts = fi_to_f_uvc_opts(fi);
-diff --git a/drivers/usb/gadget/function/uvc.h b/drivers/usb/gadget/function/uvc.h
-index 6c4fc4913f4fd..ff67d0c4ebc43 100644
---- a/drivers/usb/gadget/function/uvc.h
-+++ b/drivers/usb/gadget/function/uvc.h
-@@ -118,6 +118,9 @@ struct uvc_device {
- 	enum uvc_state state;
- 	struct usb_function func;
- 	struct uvc_video video;
-+	struct completion *vdev_release_done;
-+	struct mutex lock;	/* protects func_unbound and func_connected */
-+	bool func_unbound;
- 	bool func_connected;
- 	wait_queue_head_t func_connected_queue;
- 
-diff --git a/drivers/usb/gadget/function/uvc_v4l2.c b/drivers/usb/gadget/function/uvc_v4l2.c
-index 65abd55ce2348..2a1efaf3708ee 100644
---- a/drivers/usb/gadget/function/uvc_v4l2.c
-+++ b/drivers/usb/gadget/function/uvc_v4l2.c
-@@ -234,12 +234,18 @@ uvc_v4l2_subscribe_event(struct v4l2_fh *fh,
- 	if (sub->type < UVC_EVENT_FIRST || sub->type > UVC_EVENT_LAST)
- 		return -EINVAL;
- 
--	if (sub->type == UVC_EVENT_SETUP && uvc->func_connected)
-+	mutex_lock(&uvc->lock);
-+
-+	if (sub->type == UVC_EVENT_SETUP && uvc->func_connected) {
-+		mutex_unlock(&uvc->lock);
- 		return -EBUSY;
-+	}
- 
- 	ret = v4l2_event_subscribe(fh, sub, 2, NULL);
--	if (ret < 0)
-+	if (ret < 0) {
-+		mutex_unlock(&uvc->lock);
- 		return ret;
-+	}
- 
- 	if (sub->type == UVC_EVENT_SETUP) {
- 		uvc->func_connected = true;
-@@ -247,6 +253,7 @@ uvc_v4l2_subscribe_event(struct v4l2_fh *fh,
- 		uvc_function_connect(uvc);
- 	}
- 
-+	mutex_unlock(&uvc->lock);
- 	return 0;
- }
- 
-@@ -255,7 +262,9 @@ static void uvc_v4l2_disable(struct uvc_device *uvc)
- 	uvc_function_disconnect(uvc);
- 	uvcg_video_enable(&uvc->video, 0);
- 	uvcg_free_buffers(&uvc->video.queue);
-+	mutex_lock(&uvc->lock);
- 	uvc->func_connected = false;
-+	mutex_unlock(&uvc->lock);
- 	wake_up_interruptible(&uvc->func_connected_queue);
- }
- 
 -- 
 2.53.0
 
