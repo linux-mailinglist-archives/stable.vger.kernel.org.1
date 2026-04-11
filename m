@@ -1,207 +1,180 @@
-Return-Path: <stable+bounces-235695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UL3DM+ML2mmDyAgAu9opvQ
-	(envelope-from <stable+bounces-235695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:52:51 +0200
+	id kOdlMUMN2mmVyAgAu9opvQ
+	(envelope-from <stable+bounces-235696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:58:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356A93DF059
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:52:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3243B3DF0DA
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6836930252A5
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 08:52:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 960C03059FE6
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 08:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65B52D949B;
-	Sat, 11 Apr 2026 08:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5562E282B;
+	Sat, 11 Apr 2026 08:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K799DHjo"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KRsfDmVP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AD12DB7BA
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 08:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDAD2F690F
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 08:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775897558; cv=none; b=gKaGuMrZKEOScqIP8KX6xCr5BRYKt+6No9BuXUPR2EyaSLBg99ItyhY+eEKWYr//PCG7qgNZpNp7tJP4WSMBobyY5SEG1uPELtHLf1Pt1gKCH0X1QkDKw1pnZezyZ2njzsI00YGvdjN1r82NBejDKPIgISFWcrw45WNL4cLdRNA=
+	t=1775897829; cv=none; b=NsKgBJ1qpFedY8iveGRq6ezbgOuN/5zuWA3i5YccYwpoOIfD/LVWTguVjlZsVkOCU9XueMlMSYwlKqf6NOVvdmVGU3KmzBV2GxQf5z/hmRelyy1V3roIPwxS6QRIwNuqiVCCEJDWo0AO4Ygv8gEwjCR2da8m4Vfi2smauCOvj0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775897558; c=relaxed/simple;
-	bh=5MOekENutohx2KQWO5DZt7CmPzwY3/lBPVI2yzBUVwM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LX8hbwdSriWpbpUtJT3Uc5zy9cxpEnqiysSUhpcEW3P+ty7r2+zuuwxMsgvJEia1KLFA2Fb5x9q5puMbKI36cZxEcLFBD3ENOa6Y0AOGm4QWVxCKuFQE5vLEoxYS6aNfxYCNS1CFXZAKbX/uHtGY1cnBK/t633rVidIzXtCvNsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K799DHjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3636AC2BC87
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 08:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775897558;
-	bh=5MOekENutohx2KQWO5DZt7CmPzwY3/lBPVI2yzBUVwM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=K799DHjoZ6ACVudY6FJjO9FcVaYCHOlJM1+eD3MjepGTBOjZPBiiUGY7Dwc7tUL8N
-	 UcL9UD5rlwluD7EkfP3ks3K73nMM59sZ3sw0MEs2I5lYfGbIw8aYvF+4ApEb+bijgC
-	 VzQmTe21q28E5vZO+QbOcQmyJd3Z9xkqjQQksYUzTdJWhZeRbBam2icQc1JWC5FJLg
-	 Do8ztZyN3HfjROpbFq9kjASckV8h8wb3Il4HyQbl9Jcn7hn4QcWyNVAZ6STH1XmMFJ
-	 4gfejYtu+sGZt8wvQBkMxUQjNnlTzjODGBnlpfi+tEK2ffTqQsqzatKd5ibapxraFJ
-	 vsZv3Y9bjX5kw==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b9c745e18a0so216003566b.1
-        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 01:52:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUrN3DHanlotB3cE9qmSSXZIvDbHgB7oVb7MqXv6QsXFCmKSwTtBt/gIUoU6XKeatndLHEUW1Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztEOnlwVE6zDI/ir37MGhtA356VM8eQV7y2MlGSLc204qkc8Hb
-	hLQgTzR0pktjVD5FXxkUFEQDECMIBAOZFhjW67EeNRcVBKipUBKPA1znRbtvrCXvv4PEWpkooth
-	D0wiiu5d6Fo1rHhQk/Wn1jCvpK6JiEA4=
-X-Received: by 2002:a17:907:d7c6:b0:b9d:6a04:beb0 with SMTP id
- a640c23a62f3a-b9d6a04bf1fmr361632566b.4.1775897556789; Sat, 11 Apr 2026
- 01:52:36 -0700 (PDT)
+	s=arc-20240116; t=1775897829; c=relaxed/simple;
+	bh=S62t+upgojIYhz1p6dALu+kyrentByS35lQhzLSLXbY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Btm5GlO/jPhcNpz/YNxDApw+ChihzgE/fk76xSUtgyDF4dOHb+eCv5wxjVuWCOfEikYBUVzmfpTbVbP93m4cZnJ/uy0IPvoV2yUE/11f3MdQ8ZXAsmfn71LnsYWqHrhEf3hY4Zd11V9S7l4FODOLWonLTSdgHjlqDBxfLrVwlrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KRsfDmVP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775897827;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0M8NeyGOtxqcK9n3lFvZBV03uT/fzw4I/4MxBJJ99Zo=;
+	b=KRsfDmVPWBonH1ozX0MndaoOKBoVtN3sCTb4IjXm5nhc21V+tpdCR3JV9aliiZHURn9Ja4
+	d9Adz86aOCwdJuUyvkKOIVxonQWI7RK4eCVYePYMz7MdCPAcO8lnaJs4673TCSffrU1A4I
+	Udda8O5LhtprUveVNEl6Y3qwZJFjIac=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-dmUAf5kmOlS93i-o0tjmrA-1; Sat,
+ 11 Apr 2026 04:57:04 -0400
+X-MC-Unique: dmUAf5kmOlS93i-o0tjmrA-1
+X-Mimecast-MFC-AGG-ID: dmUAf5kmOlS93i-o0tjmrA_1775897822
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 92B2F18002CA;
+	Sat, 11 Apr 2026 08:57:02 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.48.47])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 89B153000C1F;
+	Sat, 11 Apr 2026 08:56:58 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paulo Alcantara <pc@manguebit.org>,
+	Xiaoli Feng <xifeng@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/4] netfs: fix error handling in netfs_extract_user_iter()
+Date: Sat, 11 Apr 2026 09:56:40 +0100
+Message-ID: <20260411085643.3221565-3-dhowells@redhat.com>
+In-Reply-To: <20260411085643.3221565-1-dhowells@redhat.com>
+References: <20260411085643.3221565-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260409164846.3176046-2-stefan.wiehler@nokia.com>
-In-Reply-To: <20260409164846.3176046-2-stefan.wiehler@nokia.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 11 Apr 2026 16:52:43 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H43d0v6XUcCc8sVW-FO6+N0RDq6n4fUzW=NORu8TshozA@mail.gmail.com>
-X-Gm-Features: AQROBzBgPmM7xj64sYDIZDhh9-zGBb560-EB0bGCgqgM3P3TNYbvyCznb1OhnFM
-Message-ID: <CAAhV-H43d0v6XUcCc8sVW-FO6+N0RDq6n4fUzW=NORu8TshozA@mail.gmail.com>
-Subject: Re: [PATCH v2] mips: mm: Call rcutree_report_cpu_starting() even earlier
-To: Stefan Wiehler <stefan.wiehler@nokia.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235695-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235696-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 356A93DF059
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,manguebit.org:email,linux.dev:email]
+X-Rspamd-Queue-Id: 3243B3DF0DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi, Stefan,
+From: Paulo Alcantara <pc@manguebit.org>
 
-On Fri, Apr 10, 2026 at 12:51=E2=80=AFAM Stefan Wiehler
-<stefan.wiehler@nokia.com> wrote:
->
-> rcutree_report_cpu_starting() must be called on secondary CPUs before
-> allocating memory to avoid the following Lockdep-RCU splat when
-> CONFIG_PROVE_RCU_LIST=3Dy:
->
->   WARNING: suspicious RCU usage
->   6.6.119-00d46e15c416-fct #1 Not tainted
->   -----------------------------
->   /kernel/locking/lockdep.c:3762 RCU-list traversed in non-reader section=
-!!
->
->   other info that might help us debug this:
->
->   RCU used illegally from offline CPU!
->   rcu_scheduler_active =3D 1, debug_locks =3D 1
->   no locks held by swapper/1/0.
->
->   stack backtrace:
->   CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-00d46e15c416-fct #1
->   Stack : 80000000029e37d8 0000000000000000 0000000000000008 80000000029e=
-37e8
->           80000000029e37e8 80000000029e3978 0000000000000000 000000000000=
-0000
->           0000000000000000 0000000000000001 ffffffff80d9df38 ffffffff810e=
-19c0
->           0000000000000000 0000000000000010 ffffffff80a7d140 000000000000=
-0000
->           ffffffff81c20814 0000000000000000 ffffffff80da0000 000000000000=
-0000
->           ffffffff80cadf38 0000000000000000 0000000000000000 80000000029a=
-b680
->           72f093276415c1f3 ffffffff81c2084f ffffffff80da0000 ffffffffc014=
-9ed8
->           fffffffffffffffe 80000000029e0000 80000000029e37e0 80000000029a=
-bf58
->           ffffffff80129fb0 0000000000000000 0000000000000000 000000000000=
-0000
->           0000000000000000 0000000000000000 ffffffff80129fd0 000000000000=
-0000
->           ...
->   Call Trace:
->   [<ffffffff80129fd0>] show_stack+0x60/0x158
->   [<ffffffff80a8cd84>] dump_stack_lvl+0x88/0xbc
->   [<ffffffff801c78f8>] lockdep_rcu_suspicious+0x1c0/0x240
->   [<ffffffff801cc80c>] __lock_acquire+0x121c/0x29d8
->   [<ffffffff801ce14c>] lock_acquire+0x184/0x448
->   [<ffffffff80a9ba30>] _raw_spin_lock_irqsave+0x50/0x90
->   [<ffffffff80367038>] ___slab_alloc+0xa08/0x1808
->   [<ffffffff80367e70>] __slab_alloc.isra.0+0x38/0x78
->   [<ffffffff8036b7d4>] __kmem_cache_alloc_node+0x35c/0x370
->   [<ffffffff80308ed8>] __kmalloc+0x58/0xd0
->   [<ffffffff80a8f064>] r4k_tlb_uniquify+0x7c/0x428
->   [<ffffffff80143e8c>] tlb_init+0x7c/0x110
->   [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
->   [<ffffffff80133258>] start_secondary+0x28/0x128
->
-> See also commit 55702ec9603e ("mips/smp: Call
-> rcutree_report_cpu_starting() earlier").
->
-> Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack over=
-flow")
-> Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-> Cc: stable@vger.kernel.org
-> ---
-> V1 -> V2: Reorder rcutree_report_cpu_starting() call in
-> start_secondary(), fix function name
->
-> v1: https://patchwork.kernel.org/project/linux-mips/patch/20260407083324.=
-906742-2-stefan.wiehler@nokia.com/
-> ---
->  arch/mips/kernel/smp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index 4868e79f3b30..bdb47c70d4f5 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -359,8 +359,8 @@ asmlinkage void start_secondary(void)
->         unsigned int cpu =3D raw_smp_processor_id();
->
->         cpu_probe();
-> -       per_cpu_trap_init(false);
->         rcutree_report_cpu_starting(cpu);
-> +       per_cpu_trap_init(false);
-Please see 5056c596c3d1848021a4eaa76ee42f4c05c50346 ("LoongArch/smp:
-Call rcutree_report_cpu_starting() at tlb_init()"), maybe MIPS will
-have similar issues.
+In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
+extract user pages, bail out on -ENOMEM, otherwise return the error
+code only if @npages == 0, allowing short DIO reads and writes to be
+issued.
 
-Huacai
+This fixes mmapstress02 from LTP tests against CIFS.
 
->         mips_clockevent_init();
->         mp_ops->init_secondary();
->         cpu_report();
-> --
-> 2.42.0
->
->
+Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
+Reported-by: Xiaoli Feng <xifeng@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Cc: netfs@lists.linux.dev
+Cc: stable@vger.kernel.org
+Cc: linux-cifs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/iterator.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
+index 154a14bb2d7f..adca78747f23 100644
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -22,7 +22,7 @@
+  *
+  * Extract the page fragments from the given amount of the source iterator and
+  * build up a second iterator that refers to all of those bits.  This allows
+- * the original iterator to disposed of.
++ * the original iterator to be disposed of.
+  *
+  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
+  * allowed on the pages extracted.
+@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 		ret = iov_iter_extract_pages(orig, &pages, count,
+ 					     max_pages - npages, extraction_flags,
+ 					     &offset);
+-		if (ret < 0) {
+-			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
++		if (unlikely(ret <= 0)) {
++			ret = ret ?: -EIO;
+ 			break;
+ 		}
+ 
+@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 		npages += cur_npages;
+ 	}
+ 
++	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
++		for (i = 0; i < npages; i++)
++			unpin_user_page(bv[i].bv_page);
++		kvfree(bv);
++		return ret;
++	}
++
+ 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
+ 	return npages;
+ }
+
 
