@@ -1,533 +1,152 @@
-Return-Path: <stable+bounces-235734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAN4IMxa2mmB0ggAu9opvQ
-	(envelope-from <stable+bounces-235734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:29:32 +0200
+	id ffk9DGNb2mnb0ggAu9opvQ
+	(envelope-from <stable+bounces-235735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:32:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C88E3E0526
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC263E0571
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 16:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D05723096247
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 14:24:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA3E5300951A
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 14:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EC121773D;
-	Sat, 11 Apr 2026 14:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B58B246774;
+	Sat, 11 Apr 2026 14:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NyXqTOck"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ue5+mMr2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AAE33B6F8
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 14:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7219138552F
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 14:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775917488; cv=none; b=njy0k3wUFGpCFXF2nigSlP65zwgGg+7GL5IrQr8fncolIzblxf7B980dsQHhe2wCKfDh8XrWyjMX2O+0sGonBsbdlI6hg4jTSkoRq2nwM/uz93Geou205YVNkgluMd4BcTw+Ewea/qIL98zfR5QLmuqD7TFkRrY9ooaINGoc2Ns=
+	t=1775917765; cv=none; b=Z8SCfDRdtPuH5X57VSDuOtZyTdnkAbGJr2DP4I6gpMI8L8L6yKhEILLgkphc5gsJB+3+mEEV2b5R1rfWOgWHMsfK23Dea+MDx6Emfzir7gvnoXuwum2k7bDlnFdd77ZqrFCfOx9LHJx4f9Yj+R0Sxb0ojeyPRRfvx1I+bHJRn9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775917488; c=relaxed/simple;
-	bh=j+x3PCgP1Se9ivNhc/2JYKHi2nOUtgXNEF0lqKG5h4M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l0jb2lKMAVl2bByhZh7VQD3Rg9sdFBPEbS3wtxAovNc5m/djPXLBSgst7c8+Wr6EPl8BahWSFioFm7d6Mi3kMGfnns4NbUlvWnhBluVGCTtpbHn7pIiKUYIOg3a9vbvScnqvmodud3QZ4HQ6wzfbAnFvKe5jMQRwN4V+tb2Y8ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NyXqTOck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5477DC4CEF7
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 14:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775917488;
-	bh=j+x3PCgP1Se9ivNhc/2JYKHi2nOUtgXNEF0lqKG5h4M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NyXqTOckxxtZJ7hfGgAY0j55PzYpOFKxx8y8Fyb00sHEmdICoX1kE9tJ4acUL5T+w
-	 B16pTin1cPcWg/9pRyMQWAk8OOA8Z3znLBcLR21LvB9xwHiPpKgkyBEcx7HZ0tBkla
-	 +47VN2UeY4nkIV5yxSJMpos4qVA8wpAlezPaxdGdG4i0o0NVAZCWKJTCdq1NAFj9Sb
-	 SpzZ5nLxOKzdOJg+bVm0DuZ1nGNBPF4tuH8x5IMltyxs9VxySm7xAnurU/MpZSHcp6
-	 6QrnzBOnK+Qszkjklp7yvBhOd5F+q0AfZAjs7W1GBK0BrXAJ1kkH6dCG0R3dTIZZ3U
-	 F0lyHWcUKnGgw==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b9b1ffbb9f5so424518066b.2
-        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 07:24:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUu9EmQdXGKmAYV5xF1bFXks9f+vGhvCiZHB5+GX+Wmh5102rc+zsj2y73UbuzGHK53zM1KL+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/AJP77wyEMwn/eNBHn+DM0pKnTlYxQl27bSd0hc52IZ3IX0Ao
-	5sVM7Y0wU1Ym0HXdChWXDnHHtEbpSFfx+Ks+001cyLXPMwNzaF2nNBmxo/g894VVSUDRB3WnHEI
-	TixsIiRYoQwqxFhWckh1ioG1xDbrlanQ=
-X-Received: by 2002:a17:907:9452:b0:b9d:6cd8:dccc with SMTP id
- a640c23a62f3a-b9d728149femr413268166b.48.1775917486809; Sat, 11 Apr 2026
- 07:24:46 -0700 (PDT)
+	s=arc-20240116; t=1775917765; c=relaxed/simple;
+	bh=KrHFq7r4Xovyi5P7utoDg9Lma3g9Qp+emCY4VkvO3AA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TbFxFU9ZWIsj240Q+AhZv3BQMbOwgnq/iLfvoDzXe3UnhCzxR5i/VUzHTLOJDf6ECf7PonwMJPAP7vE9/V1wvT9QTQrvia75J44tM5wgMEjpwMUz2T0Auba/dWla3DOkJkAx7Ji6nFFpFzJkYwRxPB+yyHgn4jasjRH+pODS22s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ue5+mMr2; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775917759;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hAPo+F3jMH2I7xItiYLcaM+9S3+H5Eq1ikmT0n242L8=;
+	b=ue5+mMr2JI6l0KzmB7iHuu/GYGrv20M/Byg9l+U66V9qTHBKJtg8HUDt8OBOibX0NXZp3X
+	ep+l6RAyk7GaqNgsYrfe7SFqpn1CY9DvitpBQGYgg7hCn01OlXHsZYfzR7qWqyfFPtZCuE
+	L1CSnGQir9/U6g7ZWPXgFyhlHUqTkcc=
+From: Lance Yang <lance.yang@linux.dev>
+To: lgs201920130244@gmail.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
+Date: Sat, 11 Apr 2026 22:28:58 +0800
+Message-Id: <20260411142858.85496-1-lance.yang@linux.dev>
+In-Reply-To: <20260411062152.2092967-1-lgs201920130244@gmail.com>
+References: <20260411062152.2092967-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251227012712.2921408-1-lixianglai@loongson.cn>
- <20251227012712.2921408-3-lixianglai@loongson.cn> <08143343-cb10-9376-e7df-68ad854b9275@loongson.cn>
- <9e1a8d4f-251f-f78e-01a3-5c483249fac8@loongson.cn> <dec5cb06-6858-20f2-facb-d5e7f44f5d16@loongson.cn>
- <df8f52e3-fea5-763a-d5fd-629308dc6fcc@loongson.cn> <a1009e1e-34de-68b4-7680-d2a99a06a71c@loongson.cn>
- <efa4ef2d-aef7-0f64-07bc-55d0c4d1d6d2@loongson.cn> <ebd5a137-1bee-8fab-71bf-5f359dabe5d8@loongson.cn>
- <4ad5180d-cb4d-b916-3872-b24c5a2cd1d8@loongson.cn> <aeb75309-61eb-a3fa-fdaa-544978d2534a@loongson.cn>
- <f6d9b67f-451f-6881-cfc0-c37df96de087@loongson.cn>
-In-Reply-To: <f6d9b67f-451f-6881-cfc0-c37df96de087@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 11 Apr 2026 22:24:35 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4xPKOYqH+=4A+NpWraF7SkuVN7FUBsNZfxgCBFLDNO_Q@mail.gmail.com>
-X-Gm-Features: AQROBzCNsw5iZMfK-VcI8hQalP9sj_81yILO95DFCsrXE-QkHQHSZg6UzHrYJRI
-Message-ID: <CAAhV-H4xPKOYqH+=4A+NpWraF7SkuVN7FUBsNZfxgCBFLDNO_Q@mail.gmail.com>
-Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Jinyang He <hejinyang@loongson.cn>, lixianglai <lixianglai@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org, 
-	WANG Xuerui <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
-	Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235734-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235735-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,mail.gmail.com:mid,rivosinc.com:email,loongson.cn:email]
-X-Rspamd-Queue-Id: 1C88E3E0526
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
+X-Rspamd-Queue-Id: 5CC263E0571
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 8, 2026 at 9:26=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrote=
-:
->
->
->
-> On 2025/12/30 =E4=B8=8B=E5=8D=881:53, Jinyang He wrote:
-> > On 2025-12-30 12:03, Bibo Mao wrote:
-> >
-> >>
-> >>
-> >> On 2025/12/30 =E4=B8=8A=E5=8D=8811:36, Jinyang He wrote:
-> >>> On 2025-12-30 10:24, Bibo Mao wrote:
-> >>>
-> >>>>
-> >>>>
-> >>>> On 2025/12/29 =E4=B8=8B=E5=8D=886:41, Jinyang He wrote:
-> >>>>> On 2025-12-29 18:11, lixianglai wrote:
-> >>>>>
-> >>>>>> Hi Jinyang:
-> >>>>>>>
-> >>>>>>> On 2025-12-29 11:53, lixianglai wrote:
-> >>>>>>>> Hi Jinyang:
-> >>>>>>>>> On 2025-12-27 09:27, Xianglai Li wrote:
-> >>>>>>>>>
-> >>>>>>>>>> Insert the appropriate UNWIND macro definition into the
-> >>>>>>>>>> kvm_exc_entry in
-> >>>>>>>>>> the assembly function to guide the generation of correct ORC
-> >>>>>>>>>> table entries,
-> >>>>>>>>>> thereby solving the timeout problem of loading the
-> >>>>>>>>>> livepatch-sample module
-> >>>>>>>>>> on a physical machine running multiple vcpus virtual machines.
-> >>>>>>>>>>
-> >>>>>>>>>> While solving the above problems, we have gained an additional
-> >>>>>>>>>> benefit,
-> >>>>>>>>>> that is, we can obtain more call stack information
-> >>>>>>>>>>
-> >>>>>>>>>> Stack information that can be obtained before the problem is
-> >>>>>>>>>> fixed:
-> >>>>>>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> >>>>>>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> >>>>>>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> >>>>>>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> >>>>>>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> >>>>>>>>>> [<0>] kvm_exc_entry+0x100/0x1e0
-> >>>>>>>>>>
-> >>>>>>>>>> Stack information that can be obtained after the problem is
-> >>>>>>>>>> fixed:
-> >>>>>>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> >>>>>>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> >>>>>>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> >>>>>>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> >>>>>>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> >>>>>>>>>> [<0>] kvm_exc_entry+0x104/0x1e4
-> >>>>>>>>>> [<0>] kvm_enter_guest+0x38/0x11c
-> >>>>>>>>>> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
-> >>>>>>>>>> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
-> >>>>>>>>>> [<0>] sys_ioctl+0x498/0xf00
-> >>>>>>>>>> [<0>] do_syscall+0x98/0x1d0
-> >>>>>>>>>> [<0>] handle_syscall+0xb8/0x158
-> >>>>>>>>>>
-> >>>>>>>>>> Cc: stable@vger.kernel.org
-> >>>>>>>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-> >>>>>>>>>> ---
-> >>>>>>>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
-> >>>>>>>>>> Cc: WANG Xuerui <kernel@xen0n.name>
-> >>>>>>>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-> >>>>>>>>>> Cc: Bibo Mao <maobibo@loongson.cn>
-> >>>>>>>>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
-> >>>>>>>>>> Cc: Xianglai Li <lixianglai@loongson.cn>
-> >>>>>>>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
-> >>>>>>>>>> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-> >>>>>>>>>>
-> >>>>>>>>>>   arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++--------=
--
-> >>>>>>>>>>   1 file changed, 19 insertions(+), 9 deletions(-)
-> >>>>>>>>>>
-> >>>>>>>>>> diff --git a/arch/loongarch/kvm/switch.S
-> >>>>>>>>>> b/arch/loongarch/kvm/switch.S
-> >>>>>>>>>> index 93845ce53651..a3ea9567dbe5 100644
-> >>>>>>>>>> --- a/arch/loongarch/kvm/switch.S
-> >>>>>>>>>> +++ b/arch/loongarch/kvm/switch.S
-> >>>>>>>>>> @@ -10,6 +10,7 @@
-> >>>>>>>>>>   #include <asm/loongarch.h>
-> >>>>>>>>>>   #include <asm/regdef.h>
-> >>>>>>>>>>   #include <asm/unwind_hints.h>
-> >>>>>>>>>> +#include <linux/kvm_types.h>
-> >>>>>>>>>>     #define HGPR_OFFSET(x)        (PT_R0 + 8*x)
-> >>>>>>>>>>   #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
-> >>>>>>>>>> @@ -110,9 +111,9 @@
-> >>>>>>>>>>        * need to copy world switch code to DMW area.
-> >>>>>>>>>>        */
-> >>>>>>>>>>       .text
-> >>>>>>>>>> +    .p2align PAGE_SHIFT
-> >>>>>>>>>>       .cfi_sections    .debug_frame
-> >>>>>>>>>>   SYM_CODE_START(kvm_exc_entry)
-> >>>>>>>>>> -    .p2align PAGE_SHIFT
-> >>>>>>>>>>       UNWIND_HINT_UNDEFINED
-> >>>>>>>>>>       csrwr    a2,   KVM_TEMP_KS
-> >>>>>>>>>>       csrrd    a2,   KVM_VCPU_KS
-> >>>>>>>>>> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
-> >>>>>>>>>>       /* restore per cpu register */
-> >>>>>>>>>>       ld.d    u0, a2, KVM_ARCH_HPERCPU
-> >>>>>>>>>>       addi.d    sp, sp, -PT_SIZE
-> >>>>>>>>>> +    UNWIND_HINT_REGS
-> >>>>>>>>>>         /* Prepare handle exception */
-> >>>>>>>>>>       or    a0, s0, zero
-> >>>>>>>>>> @@ -200,7 +202,7 @@ ret_to_host:
-> >>>>>>>>>>       jr      ra
-> >>>>>>>>>>     SYM_CODE_END(kvm_exc_entry)
-> >>>>>>>>>> -EXPORT_SYMBOL(kvm_exc_entry)
-> >>>>>>>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
-> >>>>>>>>>>     /*
-> >>>>>>>>>>    * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu
-> >>>>>>>>>> *vcpu)
-> >>>>>>>>>> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
-> >>>>>>>>>>       /* Save host GPRs */
-> >>>>>>>>>>       kvm_save_host_gpr a2
-> >>>>>>>>>>   +    /*
-> >>>>>>>>>> +     * The csr_era member variable of the pt_regs structure
-> >>>>>>>>>> is required
-> >>>>>>>>>> +     * for unwinding orc to perform stack traceback, so we
-> >>>>>>>>>> need to put
-> >>>>>>>>>> +     * pc into csr_era member variable here.
-> >>>>>>>>>> +     */
-> >>>>>>>>>> +    pcaddi    t0, 0
-> >>>>>>>>>> +    st.d    t0, a2, PT_ERA
-> >>>>>>>>> Hi, Xianglai,
-> >>>>>>>>>
-> >>>>>>>>> It should use `SYM_CODE_START` to mark the `kvm_enter_guest`
-> >>>>>>>>> rather than
-> >>>>>>>>> `SYM_FUNC_START`, since the `SYM_FUNC_START` is used to mark
-> >>>>>>>>> "C-likely"
-> >>>>>>>>> asm functionw.
-> >>>>>>>>
-> >>>>>>>> Ok, I will use SYM_CODE_START to mark kvm_enter_guest in the
-> >>>>>>>> next version.
-> >>>>>>>>
-> >>>>>>>>> I guess the kvm_enter_guest is something like exception
-> >>>>>>>>> handler becuase the last instruction is "ertn". So usually it
-> >>>>>>>>> should
-> >>>>>>>>> mark UNWIND_HINT_REGS where can find last frame info by "$sp".
-> >>>>>>>>> However, all info is store to "$a2", this mark should be
-> >>>>>>>>>   `UNWIND_HINT sp_reg=3DORC_REG_A2(???) type=3DUNWIND_HINT_TYPE=
-_REGS`.
-> >>>>>>>>> I don't konw why save this function internal PC here by `pcaddi
-> >>>>>>>>> t0, 0`,
-> >>>>>>>>> and I think it is no meaning(, for exception handler, they save
-> >>>>>>>>> last PC
-> >>>>>>>>> by read CSR.ERA). The `kvm_enter_guest` saves registers by
-> >>>>>>>>> "$a2"("$sp" - PT_REGS) beyond stack ("$sp"), it is dangerous if=
- IE
-> >>>>>>>>> is enable. So I wonder if there is really a stacktrace through
-> >>>>>>>>> this function?
-> >>>>>>>>>
-> >>>>>>>> The stack backtracking issue in switch.S is rather complex
-> >>>>>>>> because it involves the switching between cpu root-mode and
-> >>>>>>>> guest-mode:
-> >>>>>>>> Real stack backtracking should be divided into two parts:
-> >>>>>>>> part 1:
-> >>>>>>>>     [<0>] kvm_enter_guest+0x38/0x11c
-> >>>>>>>>     [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
-> >>>>>>>>     [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
-> >>>>>>>>     [<0>] sys_ioctl+0x498/0xf00
-> >>>>>>>>     [<0>] do_syscall+0x98/0x1d0
-> >>>>>>>>     [<0>] handle_syscall+0xb8/0x158
-> >>>>>>>>
-> >>>>>>>> part 2:
-> >>>>>>>>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> >>>>>>>>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> >>>>>>>>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> >>>>>>>>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> >>>>>>>>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> >>>>>>>>     [<0>] kvm_exc_entry+0x104/0x1e4
-> >>>>>>>>
-> >>>>>>>>
-> >>>>>>>> In "part 1", after executing kvm_enter_guest, the cpu switches
-> >>>>>>>> from root-mode to guest-mode.
-> >>>>>>>> In this case, stack backtracking is indeed very rare.
-> >>>>>>>>
-> >>>>>>>> In "part 2", the cpu switches from the guest-mode to the root-mo=
-de,
-> >>>>>>>> and most of the stack backtracking occurs during this phase.
-> >>>>>>>>
-> >>>>>>>> To obtain the longest call chain, we save pc in kvm_enter_guest
-> >>>>>>>> to pt_regs.csr_era,
-> >>>>>>>> and after restoring the sp of the root-mode cpu in kvm_exc_entry=
-,
-> >>>>>>>> The ORC entry was re-established using "UNWIND_HINT_REGS",
-> >>>>>>>>  and then we obtained the following stack backtrace as we wanted=
-:
-> >>>>>>>>
-> >>>>>>>>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> >>>>>>>>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> >>>>>>>>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> >>>>>>>>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> >>>>>>>>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> >>>>>>>>     [<0>] kvm_exc_entry+0x104/0x1e4
-> >>>>>>> I found this might be a coincidence=E2=80=94correct behavior due =
-to the
-> >>>>>>> incorrect
-> >>>>>>> UNWIND_HINT_REGS mark and unusual stack adjustment.
-> >>>>>>>
-> >>>>>>> First, the kvm_enter_guest contains only a single branch
-> >>>>>>> instruction, ertn.
-> >>>>>>> It hardware-jump to the CSR.ERA address directly, jump into
-> >>>>>>> kvm_exc_entry.
-> >>>>>>>
-> >>>>>>> At this point, the stack layout looks like this:
-> >>>>>>> -------------------------------
-> >>>>>>>   frame from call to `kvm_enter_guest`
-> >>>>>>> -------------------------------  <- $sp
-> >>>>>>>   PT_REGS
-> >>>>>>> -------------------------------  <- $a2
-> >>>>>>>
-> >>>>>>> Then kvm_exc_entry adjust stack without save any register (e.g.
-> >>>>>>> $ra, $sp)
-> >>>>>>> but still marked UNWIND_HINT_REGS.
-> >>>>>>> After the adjustment:
-> >>>>>>> -------------------------------
-> >>>>>>>   frame from call to `kvm_enter_guest`
-> >>>>>>> -------------------------------
-> >>>>>>>   PT_REGS
-> >>>>>>> -------------------------------  <- $a2, new $sp
-> >>>>>>>
-> >>>>>>> During unwinding, when the unwinder reaches kvm_exc_entry,
-> >>>>>>> it meets the mark of PT_REGS and correctly recovers
-> >>>>>>>  pc =3D regs.csr_era, sp =3D regs.sp, ra =3D regs.ra
-> >>>>>>>
-> >>>>>> Yes, here unwinder does work as you say.
-> >>>>>>
-> >>>>>>> a) Can we avoid "ertn" rather than `jr reg (or jirl ra, reg, 0)`
-> >>>>>>> instead, like call?
-> >>>>>> No,  we need to rely on the 'ertn instruction return PIE to CRMD I=
-E,
-> >>>>>> at the same time to ensure that its atomic,
-> >>>>>> there should be no other instruction than' ertn 'more appropriate
-> >>>>>> here.
-> >>>>> You are right! I got it.
-> >>>>>>
-> >>>>>>> The kvm_exc_entry cannot back to kvm_enter_guest
-> >>>>>>> if we use "ertn", so should the kvm_enter_guest appear on the
-> >>>>>>> stacktrace?
-> >>>>>>>
-> >>>>>>
-> >>>>>> It is flexible. As I mentioned above, the cpu completes the switch
-> >>>>>> from host-mode to guest mode through kvm_enter_guest,
-> >>>>>> and then the switch from guest mode to host-mode through
-> >>>>>> kvm_exc_entry. When we ignore the details of the host-mode
-> >>>>>> and guest-mode switching in the middle, we can understand that the
-> >>>>>> host cpu has completed kvm_enter_guest->kvm_exc_entry.
-> >>>>>> From this perspective, I think it can exist in the call stack, and
-> >>>>>> at the same time, we have obtained the maximum call stack
-> >>>>>> information.
-> >>>>>>
-> >>>>>>
-> >>>>>>> b) Can we adjust $sp before entering kvm_exc_entry? Then we can m=
-ark
-> >>>>>>> UNWIND_HINT_REGS at the beginning of kvm_exc_entry, which somethi=
-ng
-> >>>>>>> like ret_from_kernel_thread_asm.
-> >>>>>>>
-> >>>>>> The following command can be used to dump the orc entries of the
-> >>>>>> kernel:
-> >>>>>> ./tools/objtool/objtool --dump vmlinux
-> >>>>>>
-> >>>>>> You can observe that not all orc entries are generated at the
-> >>>>>> beginning of the function.
-> >>>>>> For example:
-> >>>>>> handle_tlb_protect
-> >>>>>> ftrace_stub
-> >>>>>> handle_reserved
-> >>>>>>
-> >>>>>> So, is it unnecessary for us to modify UNWIND_HINT_REGS in order
-> >>>>>> to place it at the beginning of the function.
-> >>>>>>
-> >>>>>> If you have a better solution, could you provide an example of the
-> >>>>>> modification?
-> >>>>>> I can test the feasibility of the solution.
-> >>>>>>
-> >>>>> The expression at the beginning of the function is incorrect
-> >>>>> (feeling sorry).
-> >>>>> It should be marked where have all stacktrace info.
-> >>>>> Thanks for all the explaining, since I'm unfamiliar with kvm, I
-> >>>>> need these to help my understanding.
-> >>>>>
-> >>>>> Can you try with follows, with save regs by $sp, set more precise
-> >>>>> era to pt_regs, and more unwind hint.
-> >>>>>
-> >>>>>
-> >>>>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switc=
-h.S
-> >>>>> index f1768b7a6194..8ed1d7b72c54 100644
-> >>>>> --- a/arch/loongarch/kvm/switch.S
-> >>>>> +++ b/arch/loongarch/kvm/switch.S
-> >>>>> @@ -14,13 +14,13 @@
-> >>>>>   #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
-> >>>>>
-> >>>>>   .macro kvm_save_host_gpr base
-> >>>>> -    .irp n,1,2,3,22,23,24,25,26,27,28,29,30,31
-> >>>>> +    .irp n,1,2,22,23,24,25,26,27,28,29,30,31
-> >>>>>       st.d    $r\n, \base, HGPR_OFFSET(\n)
-> >>>>>       .endr
-> >>>>>   .endm
-> >>>>>
-> >>>>>   .macro kvm_restore_host_gpr base
-> >>>>> -    .irp n,1,2,3,22,23,24,25,26,27,28,29,30,31
-> >>>>> +    .irp n,1,2,22,23,24,25,26,27,28,29,30,31
-> >>>>>       ld.d    $r\n, \base, HGPR_OFFSET(\n)
-> >>>>>       .endr
-> >>>>>   .endm
-> >>>>> @@ -88,6 +88,7 @@
-> >>>>>       /* Load KVM_ARCH register */
-> >>>>>       ld.d    a2, a2,    (KVM_ARCH_GGPR + 8 * REG_A2)
-> >>>>>
-> >>>>> +111:
-> >>>>>       ertn /* Switch to guest: GSTAT.PGM =3D 1, ERRCTL.ISERR =3D 0,
-> >>>>> TLBRPRMD.ISTLBR =3D 0 */
-> >>>>>   .endm
-> >>>>>
-> >>>>> @@ -158,9 +159,10 @@ SYM_CODE_START(kvm_exc_entry)
-> >>>>>       csrwr    t0, LOONGARCH_CSR_GTLBC
-> >>>>>       ld.d    tp, a2, KVM_ARCH_HTP
-> >>>>>       ld.d    sp, a2, KVM_ARCH_HSP
-> >>>>> +    UNWIND_HINT_REGS
-> >>>>> +
-> >>>>>       /* restore per cpu register */
-> >>>>>       ld.d    u0, a2, KVM_ARCH_HPERCPU
-> >>>>> -    addi.d    sp, sp, -PT_SIZE
-> >>>>>
-> >>>>>       /* Prepare handle exception */
-> >>>>>       or    a0, s0, zero
-> >>>>> @@ -184,10 +186,11 @@ SYM_CODE_START(kvm_exc_entry)
-> >>>>>       csrwr    s1, KVM_VCPU_KS
-> >>>>>       kvm_switch_to_guest
-> >>>>>
-> >>>>> +    UNWIND_HINT_UNDEFINED
-> >>>>>   ret_to_host:
-> >>>>> -    ld.d    a2, a2, KVM_ARCH_HSP
-> >>>>> -    addi.d  a2, a2, -PT_SIZE
-> >>>>> -    kvm_restore_host_gpr    a2
-> >>>>> +    ld.d    sp, a2, KVM_ARCH_HSP
-> >>>>> +    kvm_restore_host_gpr    sp
-> >>>>> +    addi.d    sp, sp, PT_SIZE
-> >>>>>       jr      ra
-> >>>>>
-> >>>>>   SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
-> >>>>> @@ -200,11 +203,15 @@ SYM_CODE_END(kvm_exc_entry)
-> >>>>>    *  a0: kvm_run* run
-> >>>>>    *  a1: kvm_vcpu* vcpu
-> >>>>>    */
-> >>>>> -SYM_FUNC_START(kvm_enter_guest)
-> >>>>> +SYM_CODE_START(kvm_enter_guest)
-> >>>>> +    UNWIND_HINT_UNDEFINED
-> >>>>>       /* Allocate space in stack bottom */
-> >>>>> -    addi.d    a2, sp, -PT_SIZE
-> >>>>> +    addi.d    sp, sp, -PT_SIZE
-> >>>>>       /* Save host GPRs */
-> >>>>> -    kvm_save_host_gpr a2
-> >>>>> +    kvm_save_host_gpr sp
-> >>>>> +    la.pcrel a2, 111f
-> >>>>> +    st.d     a2, sp, PT_ERA
-> >>>>> +    UNWIND_HINT_REGS
-> >>>>>
-> >>>> why the label 111f is more accurate?  Supposing there is hw
-> >>>> breakpoint here and backtrace is called, what is the call trace
-> >>>> stack then? obvious label 111f is not executed instead.
-> >>> Xianglai said marking it as regs can get more stack infos, so I use
-> >>> UNWIND_HINT_REGS marked here, though it not called. Remove
-> >>> UNWIND_HINT_REGS thenforbid unwind from here.
-> >>> This function is called and should usually be marked as "call",
-> >>> but it is complex by switching the stack and use `ertn` calls
-> >>> another function.
-> >>>
-> >>>
-> >>>>
-> >>>> UNWIND_HINT_REGS is used for nested kernel stack, is that right?
-> >>>> With nested interrupt and exception handlers on LoongArch kernel, is
-> >>>> UNWIND_HINT_REGS used?
-> >>>>
-> >>>> SYM_CODE_START(ret_from_fork_asm)
-> >>>>         UNWIND_HINT_REGS
-> >>>>         move            a1, sp
-> >>>>         bl              ret_from_fork
-> >>>>         STACKLEAK_ERASE
-> >>>>         RESTORE_STATIC
-> >>>>         RESTORE_SOME
-> >>>>         RESTORE_SP_AND_RET
-> >>>> SYM_CODE_END(ret_from_fork_asm)
-> >>>> With this piece of code, what is contents of pt_regs? In generic it
-> >>>> is called from sys_clone, era is user PC address, is that right? If =
-so,
-> >>>> what is detailed usage in the beginning of ret_from_fork_asm?
-> >>> The stacktrace shows the control flow where the PC will go back, so
-> >>> it is right because when PC is in ret_from_fork_asm, it is already
-> >>> another thread. The era means it will go back user mode.
-> >> The problem is that user mode era shows unwind with error, and
-> >> user_mode(regs) is not accurate. here is piece of code.
-> >>                 pc =3D regs->csr_era;
-> >>                 if (!__kernel_text_address(pc))
-> >>                         goto err;
-> >> will UNWIND_HINT_END_OF_STACK be better than UNWIND_HINT_REGS?
-> >
-> > You are right. And the reason why current the unwinder does not cause
-> > error is in case ORC_TYPE_REGS we process it by user_mode(regs).
-> Any process about UNWIND_HINT_REGS usage, is nested exception unwind
-> supported now?
->
-> Talking without any actions seems not be style of Loongson :)
-From my point of view, Tiezhu's simple solution is acceptable...
 
-Huacai
+On Sat, Apr 11, 2026 at 02:21:52PM +0800, Guangshuo Li wrote:
+>After kobject_init_and_add(), the lifetime of the embedded struct
+>kobject is expected to be managed through the kobject core reference
+>counting.
+>
+>In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
+>directly with kfree() rather than releasing the kobject reference with
+>kobject_put(). This may leave the reference count of the embedded struct
 
+Right. As documented for kobject_init_and_add(), once it has been
+called, the error path should go through kobject_put():
+
+/**
+ * kobject_init_and_add() - Initialize a kobject structure and add it to
+ *                          the kobject hierarchy.
+...
+ *
+ * This function combines the call to kobject_init() and kobject_add().
+ *
+ * If this function returns an error, kobject_put() must be called to
+ * properly clean up the memory associated with the object.  This is the
+...
+ */
+int kobject_init_and_add(struct kobject *kobj, const struct kobj_type *ktype,
+			 struct kobject *parent, const char *fmt, ...)
+
+>kobject unbalanced, resulting in a refcount leak and potentially leading
+>to a use-after-free.
+
+IIUC, this looks more like wrong kobject lifetime handling and likely a
+leak, not a clear UAF :)
+
+>Fix this by using kobject_put(&thpsize->kobj) in the failure path and
+>letting thpsize_release() handle the final cleanup.
 >
-> Regards
-> Bibo Mao
-> >
-> > Jinyang
-> >
->
+>Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+>---
+
+Apart from that, LGTM.
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
