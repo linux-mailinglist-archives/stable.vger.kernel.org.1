@@ -1,180 +1,172 @@
-Return-Path: <stable+bounces-235696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOdlMUMN2mmVyAgAu9opvQ
-	(envelope-from <stable+bounces-235696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:58:43 +0200
+	id foU3GWMR2mlAyQgAu9opvQ
+	(envelope-from <stable+bounces-235697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 11:16:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3243B3DF0DA
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9169F3DF203
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 11:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 960C03059FE6
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 08:57:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B2AF301589B
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 09:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5562E282B;
-	Sat, 11 Apr 2026 08:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ACE2E4257;
+	Sat, 11 Apr 2026 09:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KRsfDmVP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZvHhTpy"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDAD2F690F
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 08:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8956CCA52
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 09:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775897829; cv=none; b=NsKgBJ1qpFedY8iveGRq6ezbgOuN/5zuWA3i5YccYwpoOIfD/LVWTguVjlZsVkOCU9XueMlMSYwlKqf6NOVvdmVGU3KmzBV2GxQf5z/hmRelyy1V3roIPwxS6QRIwNuqiVCCEJDWo0AO4Ygv8gEwjCR2da8m4Vfi2smauCOvj0o=
+	t=1775898973; cv=none; b=FVHcAQANuI9GEuhh5dKqMyKvfoUQ3hCYqF2vV3gsSQUN5L4pE9LKvDfibV4HaWDRFAFiB7PLYnswiQtOgxN+/6UeZ9mEm5VJKHoiZ470tulzVnA6a9UllMzNVq8QqO82jnEHn3UUSxfqk0vyPJUY3/EgQIBs7VhK3s7gR1BJquo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775897829; c=relaxed/simple;
-	bh=S62t+upgojIYhz1p6dALu+kyrentByS35lQhzLSLXbY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Btm5GlO/jPhcNpz/YNxDApw+ChihzgE/fk76xSUtgyDF4dOHb+eCv5wxjVuWCOfEikYBUVzmfpTbVbP93m4cZnJ/uy0IPvoV2yUE/11f3MdQ8ZXAsmfn71LnsYWqHrhEf3hY4Zd11V9S7l4FODOLWonLTSdgHjlqDBxfLrVwlrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KRsfDmVP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775897827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0M8NeyGOtxqcK9n3lFvZBV03uT/fzw4I/4MxBJJ99Zo=;
-	b=KRsfDmVPWBonH1ozX0MndaoOKBoVtN3sCTb4IjXm5nhc21V+tpdCR3JV9aliiZHURn9Ja4
-	d9Adz86aOCwdJuUyvkKOIVxonQWI7RK4eCVYePYMz7MdCPAcO8lnaJs4673TCSffrU1A4I
-	Udda8O5LhtprUveVNEl6Y3qwZJFjIac=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-dmUAf5kmOlS93i-o0tjmrA-1; Sat,
- 11 Apr 2026 04:57:04 -0400
-X-MC-Unique: dmUAf5kmOlS93i-o0tjmrA-1
-X-Mimecast-MFC-AGG-ID: dmUAf5kmOlS93i-o0tjmrA_1775897822
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 92B2F18002CA;
-	Sat, 11 Apr 2026 08:57:02 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.48.47])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 89B153000C1F;
-	Sat, 11 Apr 2026 08:56:58 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Xiaoli Feng <xifeng@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/4] netfs: fix error handling in netfs_extract_user_iter()
-Date: Sat, 11 Apr 2026 09:56:40 +0100
-Message-ID: <20260411085643.3221565-3-dhowells@redhat.com>
-In-Reply-To: <20260411085643.3221565-1-dhowells@redhat.com>
-References: <20260411085643.3221565-1-dhowells@redhat.com>
+	s=arc-20240116; t=1775898973; c=relaxed/simple;
+	bh=7GboR0y2SpiDT88pAnxNKZZ01hYbTlXaj65NGPOWs1A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u3HBz2OWaDjna/DMVRCYuQHGzkzAca8TDgZkG6HPeu9G7uvt5/+xuKolZcA325fH3Qa/NNq5cYFbxxj6hv1f8jHB9uoVJAtlNBSS9hRLFjqNU5+gK23pfxcjONQH3Ze5t0u+ad/47SpaYP0Q8qVJvmTk8tmk6gDaoD9UQuvrPww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZvHhTpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0C2C2BCB0
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 09:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775898973;
+	bh=7GboR0y2SpiDT88pAnxNKZZ01hYbTlXaj65NGPOWs1A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QZvHhTpyM4luFhDVo5ARCAQPO9FkbFVqfjKu6ejkOMCwvhYG2pFK86quidEZQBymq
+	 3X1zoJ0SJJMfhhvMKuZsYtFnUUdii6D9+Vvd1J0k+QXrnH0Jh4X/grTDm2JZuSngol
+	 H6egIsOMoD0OBQXBhXV0zVNzqRux9uOkOIas2HvtJt7hxzNSs+jxjGBw5LmuQ4kwKr
+	 H5P+E4fn6YliotaF/dwJg9Be4EMV8kuFowlq4aZM+JNn34DInTuTBIX049U8LfG/0W
+	 cfLO2eQJ9A5z+CGsgmMPBs87iS3UA1s96AevSfsA0ylYqk8/2918XBSmDWwyTXEGcp
+	 ghGvxkgqcdKvA==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b9358bc9c50so393040466b.1
+        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 02:16:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUTeTp0H0o/+V9C4nr6mm4oznFHuON9Z9amDP0x1LjAyk/5vrD8oRITnDHJjlNqjzRzHBNpOuw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz94Z5icEcfcD+PNjMg9F4F197tKEUiuGX7BNOMRm12x9OeXwjI
+	HF/2MMPleCkQo+X8J9L32m9c+NtE1eug8QuMcF80fgV+P6N2Cc7GJweZsPJxjjXvHNxjrqa8NrV
+	ABdYodYW4G2RwngWDJkwgk8o2DrPVoTs=
+X-Received: by 2002:a17:906:5184:20b0:b98:36cd:7e11 with SMTP id
+ a640c23a62f3a-b9d7277c0c4mr275009166b.45.1775898971793; Sat, 11 Apr 2026
+ 02:16:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Spamd-Result: default: False [-0.66 / 15.00];
+References: <20260410013053.3877-1-dongtai.guo@linux.dev> <871pgm2700.ffs@tglx>
+In-Reply-To: <871pgm2700.ffs@tglx>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 11 Apr 2026 17:16:16 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5dkdG+Gx8z8KyBND052yNxdc0s4eCw=0mtFhdm9G-oyw@mail.gmail.com>
+X-Gm-Features: AQROBzC7LcPGobBczQ2QVZoP6lG9dpzjZNjcvo1rmVnhbsobqSEVtPTla39wpSQ
+Message-ID: <CAAhV-H5dkdG+Gx8z8KyBND052yNxdc0s4eCw=0mtFhdm9G-oyw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] irqchip/loongson-pch-pic: Fix vec_count reading for
+ 32-bit and 64-bit
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: George Guo <dongtai.guo@linux.dev>, jiaxun.yang@flygoat.com, 
+	linux-kernel@vger.kernel.org, George Guo <guodongtai@kylinos.cn>, 
+	stable@vger.kernel.org, Kexin Liu <liukexin@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235696-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235697-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,manguebit.org:email,linux.dev:email]
-X-Rspamd-Queue-Id: 3243B3DF0DA
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,kylinos.cn:email]
+X-Rspamd-Queue-Id: 9169F3DF203
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Paulo Alcantara <pc@manguebit.org>
+On Fri, Apr 10, 2026 at 11:02=E2=80=AFPM Thomas Gleixner <tglx@kernel.org> =
+wrote:
+>
+> On Fri, Apr 10 2026 at 09:30, George Guo wrote:
+> > From: George Guo <guodongtai@kylinos.cn>
+> >
+> > Commit 0370a5e740f2 ("irqchip/loongson-pch-pic: Adjust irqchip driver f=
+or
+> > 32BIT/64BIT") changed vec_count reading from readq() to readl() to supp=
+ort
+> > both 32-bit and 64-bit platforms. However, on virtual 64-bit platforms
+> > (QEMU 8.2.0) this causes incorrect vec_count value, leading to panic:
+>
+> Is this problem limited to qemu?
+I think it is a qemu bug rather than a kernel bug. Since qemu 8.2.0 is
+old, I suggest use qemu 10.2.0 to test.
 
-In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
-extract user pages, bail out on -ENOMEM, otherwise return the error
-code only if @npages == 0, allowing short DIO reads and writes to be
-issued.
 
-This fixes mmapstress02 from LTP tests against CIFS.
+Huacai
 
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Reported-by: Xiaoli Feng <xifeng@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Cc: netfs@lists.linux.dev
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/iterator.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 154a14bb2d7f..adca78747f23 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -22,7 +22,7 @@
-  *
-  * Extract the page fragments from the given amount of the source iterator and
-  * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to disposed of.
-+ * the original iterator to be disposed of.
-  *
-  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-  * allowed on the pages extracted.
-@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		ret = iov_iter_extract_pages(orig, &pages, count,
- 					     max_pages - npages, extraction_flags,
- 					     &offset);
--		if (ret < 0) {
--			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
-+		if (unlikely(ret <= 0)) {
-+			ret = ret ?: -EIO;
- 			break;
- 		}
- 
-@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		npages += cur_npages;
- 	}
- 
-+	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
-+		for (i = 0; i < npages; i++)
-+			unpin_user_page(bv[i].bv_page);
-+		kvfree(bv);
-+		return ret;
-+	}
-+
- 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
- 	return npages;
- }
-
+>
+> > WARNING: drivers/acpi/irq.c:63 at acpi_register_gsi+0xe8/0x108
+> > Call Trace:
+> > [<900000000024c634>] show_stack+0x64/0x188
+> > [<9000000000245154>] dump_stack_lvl+0x6c/0x9c
+>
+> Please trim your backtrace as documented:
+>
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#ba=
+cktraces
+>
+> > @@ -343,7 +343,12 @@ static int pch_pic_init(phys_addr_t addr, unsigned=
+ long size, int vec_base,
+> >               priv->table[i] =3D PIC_UNDEF_VECTOR;
+> >
+> >       priv->ht_vec_base =3D vec_base;
+> > -     priv->vec_count =3D ((readl(priv->base + 4) >> 16) & 0xff) + 1;
+> > +
+> > +     if (IS_ENABLED(CONFIG_64BIT))
+> > +             priv->vec_count =3D ((readq(priv->base) >> 48) & 0xff) + =
+1;
+> > +     else
+> > +             priv->vec_count =3D ((readl(priv->base + 4) >> 16) & 0xff=
+) + 1;
+>
+> This does not make sense at all.
+>
+>      readl(base + 4) >> 16
+>
+> is fully equivalent to
+>
+>      readq(base) >> 48
+>
+> on a little endian machine, no?
+>
+> This needs a better explanation in the change log about the root cause
+> and why this is the correct solution to fix the problem.
+>
+> If there is no other solution then this needs a big fat comment in the
+> code explaining the reason. Otherwise the next AI agent will notice the
+> equivalence and people will send cleanup patches....
+>
+> Thanks,
+>
+>         tglx
 
