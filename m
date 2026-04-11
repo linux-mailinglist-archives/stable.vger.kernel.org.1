@@ -1,154 +1,321 @@
-Return-Path: <stable+bounces-235712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHqXDYox2mk5zAgAu9opvQ
-	(envelope-from <stable+bounces-235712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 13:33:30 +0200
+	id 0Cx3O+oz2mlezAgAu9opvQ
+	(envelope-from <stable+bounces-235713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 13:43:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403033DF816
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 13:33:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB903DF899
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 13:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6BC95300C6C4
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 11:33:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B6913058318
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 11:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8803E330675;
-	Sat, 11 Apr 2026 11:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052A633DED1;
+	Sat, 11 Apr 2026 11:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VabrCVK8"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="AlTA3i+/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A99F1E633C
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 11:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B2833F585
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 11:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775907204; cv=none; b=n9hRjeUeEmNPLhNUAL5GgV85FFA0R6otxBfKBge476aSNdMBmsnwzKUMvLYSmCvPapEJ/p37x4rHShRqgcYg474r7Omwm1OKClP9BCscnxGnjLvrQpx2mrwZ4rx6k+cOUqzUmTeeyhZTb6FslWea5XzrK/fPF52joNVsbigfdXo=
+	t=1775907793; cv=none; b=bLYwly5+4OI5R3AJnkyTOtLGE/OhKy7ZNli+6wMJCQ1auyFdCxpYfcc3C9Hz6dMqldpsNnSnvkSdWnzAl+ViguHAoLcdB7HBPTQyGHkSSdsNo5Guv96f7y8TN9pDFqx4228FvZDV6SvQ94aDSdHxjGX1iPOLIVNXQu0ExuX0i1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775907204; c=relaxed/simple;
-	bh=yCwfZVKRGy2sHdV6NywY4rfux68HZ7RD7Myz9Y2oT9Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fVz3YzQeVnwYtT+vzmme2ngxDB16Y7v+zOaTphLzQGDJ2fRj6Ux2T+RRxfSD5IlRJceosXDrUYO5kGZDUNg6mXlCs6+cObU3MusNti8MLo5vpDKhJ4ku6RM7rRJGIkwSAltHMNzP2T5HZ5WiWIDsCKbCZac/fbCZA9pXSWTDBMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VabrCVK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA71C2BC9E
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 11:33:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775907204;
-	bh=yCwfZVKRGy2sHdV6NywY4rfux68HZ7RD7Myz9Y2oT9Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VabrCVK8tz5wBVZC810196634nz76SAF/45GK1Aw0Uu6hCz8eS619DbBz+XmxtFtY
-	 VjMlHS+OxjC5iUA31/NfDB/TAgrPj7TipXcag38TppwrFZhEEfy/lpbzqoJxmhpNDc
-	 bMOwL6b/JTC2vFr2EwValOEMiqxsYYeMrNzo+87ddeGSTgsE5jZmwUjn/bjuOK43uz
-	 ndruIIqbOs+etoYHpHxJc59RIfUvpIqXMScb4P+B4PdobrDZQucZx4JZKRG9d1PUIq
-	 0jtHkd/vlyeEgS8xvIfMqQfQMNisGN+atqIiaprMEl5O8Ds5bGEuhtZXwHTdsqesb4
-	 BInykFIM+Rehg==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-40ea611d1a4so1271997fac.2
-        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 04:33:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXK0OeFlML/qLKSVOTPF2klbz7nlBbw3Fid6+WL0km9IfauLeU/SDKpItJOnG73x+wzAt3Am+A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLd2s5j1NCHjjQDJp0+EwjanSNN692cHDB5Nd7ZB286Hll4DMR
-	JBLzRSpctDH03Mh9p9k2ZQHaYhNKANjkxY1+6uAik6Bi5VMNMhEfdV/fS3qadSTF7GvhRuw4eCT
-	nzYBTJfjvTG6n+wp/ey76u+kBgGfUnLQ=
-X-Received: by 2002:a05:6820:841a:b0:67c:27a7:8c4d with SMTP id
- 006d021491bc7-68be86e7a4bmr2185898eaf.48.1775907203103; Sat, 11 Apr 2026
- 04:33:23 -0700 (PDT)
+	s=arc-20240116; t=1775907793; c=relaxed/simple;
+	bh=SIisgWIq7iz0fEX6zbuC2vzUQFNOenfE175SXgsqSCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gjLNW4jcI8iLZgTsYI4THoB3/cfE4chMWr8m6v8k/cz8rdebePd8yREnaayayTTzrVHjrf9KQfgvLET/ffhaMt5QooUBlSHT1JN9M03ITUkIY9CDFRD23BbAyv+9Mc2989jaB7isnxngEtqOCFvSaIcm6iDS19btnBCotWBnIcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=AlTA3i+/; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so37583975e9.2
+        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 04:43:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1775907790; x=1776512590; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2xnheHvaNltUuBI9CjLhmlXKJ1g2zxubkvsSzZotxIQ=;
+        b=AlTA3i+/aEmGGqWaBB/kIenOvnULZwPvTCVjI0P+kS15UAYBEzTk4h4GhouQd55ocE
+         LAgQ03YVZ0Iqqhif14f/F1dM7IT4GAVEXJwcCBkQ2KMgYea9wVaDgLvRctwtcF9q+oAe
+         vGFL1k305VFnGQbB8cRSO1PW7ybMsQOW33tZHAFTztQhz3VbLLH81jq66YqJCmI85Aif
+         R2d+kISc8scZXfIvU0nPu2W1f7rIspQ1V7bYtijgohYBgA/nfr4NjLu8bcYSNDM4hbVC
+         OcKCweXLKSE9Z3HCLqSlBDjiO5dlJgLkwV4Wb8xCidGG5N6YSVY74+B2rD8HxxgTl4Ct
+         U3nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775907790; x=1776512590;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2xnheHvaNltUuBI9CjLhmlXKJ1g2zxubkvsSzZotxIQ=;
+        b=YmYFD5GQFMcMC4rI4HOvRpRWTNn7z6of+OlWjuCkxU/yMkzOqq017EMZjE3f04kGjQ
+         Emj7HDdQcH1Zxg3b4z+JTPNAgryPAnf1kYXwraoys9mRfd9pjPpTRlgnCV95jVB3+ZYH
+         iflDgTvmoD0CnE9smkjny0Mro3G+/zX51oTJ5qD2Iwp1NcoAp1qERk+EJuX3RWikxoRa
+         QM72EsWRlFMSW1eWwp1W1/GsKJzk2W0YUR0R54yDBkq7l2Hx7AOmWgnp/hkcCM9CNMUv
+         7kQZWypnS9U5zkr5T1JdVVwTxfEmbu9dJuKz6ubozfYjZgAmO4xGDoulOpJoeOfKf8t7
+         Ik+A==
+X-Forwarded-Encrypted: i=1; AJvYcCUN7MXTTIGJ/3A8KO+RkClBdPxeDpzc5bh/OEN3635KNWp6icn9daHJJPgpKzBZNOaFyWJ1oBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw40u46ab9rAON+KdwLhUt/rADPY+pUlhiVgbOAc+18YHlRDTR6
+	upkX5mIsDmqsUnBNkhaAnpzfNDgkKeZuEjPgyZFpyjtC/+SjEDzOC3w1qtEQahyDJ2Q=
+X-Gm-Gg: AeBDieuXeFHFsP6VEIvFek2pYZH4yynS2L0Zp9vSLwE6qmK1Q2+myrMBdVnmGQvg+kS
+	iLDf7Km7J2inifLEPGhqpfnLprFnxO8aLeqmvSCNLJzMJT1CL/HvsEgMtf604lnajIOPPl24Aob
+	PY/5t+QPhDiciHgFa3T3Jyq432PQVwxtpts3dLarDVRGTGUnt8LQ3QlXox+FlCtCBZ79QuqK7PD
+	B3VQtAmBzIlohWQ+EbdctJIClOtjGarqCL9om8QgyYSttv+53xIZk2j5WNgwpt1Oc9tn5O/qPa+
+	uRjci6tAnGuFlAJJXe8vMokjp6Dy9VeNdpp8OZDF4T6fmQ+Lew1AGakTgNN0CEO+46Z3GvDzqkf
+	o/vWENFoRJ4rzoXowOCK9RiA+PlelOI+xzwLkwxEwOYeaxbj+ds8wPWjtFFOHJS1h63PDIk2Uij
+	0iPAgVj1aIi1i2vRW6sXPrr45nYbskW3SgKGNYkqxV+fASLaYABv3QlCINkIKR9fc=
+X-Received: by 2002:a05:600c:c171:b0:488:a894:b27a with SMTP id 5b1f17b1804b1-488d67f0105mr91856815e9.8.1775907789889;
+        Sat, 11 Apr 2026 04:43:09 -0700 (PDT)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e5c981sm15776447f8f.33.2026.04.11.04.43.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Apr 2026 04:43:09 -0700 (PDT)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: vkoul@kernel.org,
+	Frank.Li@kernel.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	biju.das.jz@bp.renesas.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	p.zabel@pengutronix.de,
+	geert+renesas@glider.be,
+	fabrizio.castro.jz@renesas.com,
+	long.luu.ur@renesas.com
+Cc: claudiu.beznea@tuxon.dev,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 01/17] dmaengine: sh: rz-dmac: Move interrupt request after everything is set up
+Date: Sat, 11 Apr 2026 14:42:47 +0300
+Message-ID: <20260411114303.2814115-2-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260411114303.2814115-1-claudiu.beznea.uj@bp.renesas.com>
+References: <20260411114303.2814115-1-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260410103451.2014607-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260410103451.2014607-1-lgs201920130244@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Sat, 11 Apr 2026 13:33:09 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iADp9n2y0VYRYVd7dbCmrs8DePUiHt8NfdWpei88CVsA@mail.gmail.com>
-X-Gm-Features: AQROBzA1eomXPQ2GoLn5YRzGqNl9QPHF9M4-G07uNibocYRp9f3nIytu6184pUg
-Message-ID: <CAJZ5v0iADp9n2y0VYRYVd7dbCmrs8DePUiHt8NfdWpei88CVsA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: power: Use put_device() in power resource add error path
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[tuxon.dev:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235712-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-235713-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[tuxon.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,perex.cz,suse.com,bp.renesas.com,pengutronix.de,glider.be,renesas.com];
+	DKIM_TRACE(0.00)[tuxon.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 403033DF816
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bp.renesas.com:mid]
+X-Rspamd-Queue-Id: 6AB903DF899
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 10, 2026 at 12:35=E2=80=AFPM Guangshuo Li <lgs201920130244@gmai=
-l.com> wrote:
->
-> After device_initialize(), the lifetime of struct device is managed by
-> the driver core through reference counting.
->
-> acpi_add_power_resource() initializes device->dev via
-> acpi_init_device_object(), which installs acpi_release_power_resource()
-> as the release callback. If acpi_device_add() fails, however, the error
-> path calls acpi_release_power_resource() directly instead of dropping
-> the device reference with put_device().
->
-> This bypasses the normal device lifetime rules and frees the object
-> without releasing the reference acquired by device_initialize(), which
-> may lead to a refcount leak and potentially a use-after-free. Fix it by
-> calling put_device(&device->dev) and let the release callback handle
-> the final cleanup.
->
-> Fixes: 781d737c7466 ("ACPI: Drop power resources driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/acpi/power.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-> index 361a7721a6a8..f96f954876a7 100644
-> --- a/drivers/acpi/power.c
-> +++ b/drivers/acpi/power.c
-> @@ -991,7 +991,7 @@ struct acpi_device *acpi_add_power_resource(acpi_hand=
-le handle)
->         return device;
->
->   err:
-> -       acpi_release_power_resource(&device->dev);
-> +       put_device(&device->dev);
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Please use acpi_dev_put() here.
+Once the interrupt is requested, the interrupt handler may run immediately.
+Since the IRQ handler can access channel->ch_base, which is initialized
+only after requesting the IRQ, this may lead to invalid memory access.
+Likewise, the IRQ thread may access uninitialized data (the ld_free,
+ld_queue, and ld_active lists), which may also lead to issues.
 
-Also, acpi_add_single_object() has the exact same problem, so it would
-be good to fix them both together in one patch.
+Request the interrupts only after everything is set up. To keep the error
+path simpler, use dmam_alloc_coherent() instead of dma_alloc_coherent().
 
->         return NULL;
->  }
->
-> --
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+---
 
-Thanks!
+Changes in v4:
+- none, this patch is new
+
+ drivers/dma/sh/rz-dmac.c | 88 +++++++++++++++-------------------------
+ 1 file changed, 33 insertions(+), 55 deletions(-)
+
+diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
+index 625ff29024de..9f206a33dcc6 100644
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -981,25 +981,6 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+ 	channel->index = index;
+ 	channel->mid_rid = -EINVAL;
+ 
+-	/* Request the channel interrupt. */
+-	scnprintf(pdev_irqname, sizeof(pdev_irqname), "ch%u", index);
+-	irq = platform_get_irq_byname(pdev, pdev_irqname);
+-	if (irq < 0)
+-		return irq;
+-
+-	irqname = devm_kasprintf(dmac->dev, GFP_KERNEL, "%s:%u",
+-				 dev_name(dmac->dev), index);
+-	if (!irqname)
+-		return -ENOMEM;
+-
+-	ret = devm_request_threaded_irq(dmac->dev, irq, rz_dmac_irq_handler,
+-					rz_dmac_irq_handler_thread, 0,
+-					irqname, channel);
+-	if (ret) {
+-		dev_err(dmac->dev, "failed to request IRQ %u (%d)\n", irq, ret);
+-		return ret;
+-	}
+-
+ 	/* Set io base address for each channel */
+ 	if (index < 8) {
+ 		channel->ch_base = dmac->base + CHANNEL_0_7_OFFSET +
+@@ -1012,9 +993,9 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+ 	}
+ 
+ 	/* Allocate descriptors */
+-	lmdesc = dma_alloc_coherent(&pdev->dev,
+-				    sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+-				    &channel->lmdesc.base_dma, GFP_KERNEL);
++	lmdesc = dmam_alloc_coherent(&pdev->dev,
++				     sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
++				     &channel->lmdesc.base_dma, GFP_KERNEL);
+ 	if (!lmdesc) {
+ 		dev_err(&pdev->dev, "Can't allocate memory (lmdesc)\n");
+ 		return -ENOMEM;
+@@ -1030,7 +1011,24 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+ 	INIT_LIST_HEAD(&channel->ld_free);
+ 	INIT_LIST_HEAD(&channel->ld_active);
+ 
+-	return 0;
++	/* Request the channel interrupt. */
++	scnprintf(pdev_irqname, sizeof(pdev_irqname), "ch%u", index);
++	irq = platform_get_irq_byname(pdev, pdev_irqname);
++	if (irq < 0)
++		return irq;
++
++	irqname = devm_kasprintf(dmac->dev, GFP_KERNEL, "%s:%u",
++				 dev_name(dmac->dev), index);
++	if (!irqname)
++		return -ENOMEM;
++
++	ret = devm_request_threaded_irq(dmac->dev, irq, rz_dmac_irq_handler,
++					rz_dmac_irq_handler_thread, 0,
++					irqname, channel);
++	if (ret)
++		dev_err(dmac->dev, "failed to request IRQ %u (%d)\n", irq, ret);
++
++	return ret;
+ }
+ 
+ static void rz_dmac_put_device(void *_dev)
+@@ -1099,7 +1097,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ 	const char *irqname = "error";
+ 	struct dma_device *engine;
+ 	struct rz_dmac *dmac;
+-	int channel_num;
+ 	int ret;
+ 	int irq;
+ 	u8 i;
+@@ -1132,18 +1129,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ 			return PTR_ERR(dmac->ext_base);
+ 	}
+ 
+-	/* Register interrupt handler for error */
+-	irq = platform_get_irq_byname_optional(pdev, irqname);
+-	if (irq > 0) {
+-		ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
+-				       irqname, NULL);
+-		if (ret) {
+-			dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
+-				irq, ret);
+-			return ret;
+-		}
+-	}
+-
+ 	/* Initialize the channels. */
+ 	INIT_LIST_HEAD(&dmac->engine.channels);
+ 
+@@ -1169,6 +1154,18 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ 			goto err;
+ 	}
+ 
++	/* Register interrupt handler for error */
++	irq = platform_get_irq_byname_optional(pdev, irqname);
++	if (irq > 0) {
++		ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
++				       irqname, NULL);
++		if (ret) {
++			dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
++				irq, ret);
++			goto err;
++		}
++	}
++
+ 	/* Register the DMAC as a DMA provider for DT. */
+ 	ret = of_dma_controller_register(pdev->dev.of_node, rz_dmac_of_xlate,
+ 					 NULL);
+@@ -1210,16 +1207,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ dma_register_err:
+ 	of_dma_controller_free(pdev->dev.of_node);
+ err:
+-	channel_num = i ? i - 1 : 0;
+-	for (i = 0; i < channel_num; i++) {
+-		struct rz_dmac_chan *channel = &dmac->channels[i];
+-
+-		dma_free_coherent(&pdev->dev,
+-				  sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+-				  channel->lmdesc.base,
+-				  channel->lmdesc.base_dma);
+-	}
+-
+ 	reset_control_assert(dmac->rstc);
+ err_pm_runtime_put:
+ 	pm_runtime_put(&pdev->dev);
+@@ -1232,18 +1219,9 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ static void rz_dmac_remove(struct platform_device *pdev)
+ {
+ 	struct rz_dmac *dmac = platform_get_drvdata(pdev);
+-	unsigned int i;
+ 
+ 	dma_async_device_unregister(&dmac->engine);
+ 	of_dma_controller_free(pdev->dev.of_node);
+-	for (i = 0; i < dmac->n_channels; i++) {
+-		struct rz_dmac_chan *channel = &dmac->channels[i];
+-
+-		dma_free_coherent(&pdev->dev,
+-				  sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+-				  channel->lmdesc.base,
+-				  channel->lmdesc.base_dma);
+-	}
+ 	reset_control_assert(dmac->rstc);
+ 	pm_runtime_put(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-- 
+2.43.0
+
 
