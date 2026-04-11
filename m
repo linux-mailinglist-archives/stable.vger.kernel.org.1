@@ -1,244 +1,207 @@
-Return-Path: <stable+bounces-235694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MF9JF/wI2mkcyAgAu9opvQ
-	(envelope-from <stable+bounces-235694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:40:28 +0200
+	id UL3DM+ML2mmDyAgAu9opvQ
+	(envelope-from <stable+bounces-235695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:52:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF6F3DEFFA
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:40:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356A93DF059
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 10:52:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 59BA4300C30D
-	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 08:40:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6836930252A5
+	for <lists+stable@lfdr.de>; Sat, 11 Apr 2026 08:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653FE31353C;
-	Sat, 11 Apr 2026 08:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65B52D949B;
+	Sat, 11 Apr 2026 08:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SMGvZkLx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K799DHjo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE70630EF91
-	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 08:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AD12DB7BA
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 08:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775896824; cv=none; b=qI/ldIUm/+KVIotb5lR44i4jih84mbk15NqmWulKrZ2TurJRLdwkwyODsV5++e2KjXsSqiwU1590hSRE4IkUuyqVxJPRUlV5kHqLPCGbY4ege2yjipZY18h0AdSoGJxRa2byuIRXfs/wwvu3a8qeWeqQdRMOA77gyIGcoqVQrNE=
+	t=1775897558; cv=none; b=gKaGuMrZKEOScqIP8KX6xCr5BRYKt+6No9BuXUPR2EyaSLBg99ItyhY+eEKWYr//PCG7qgNZpNp7tJP4WSMBobyY5SEG1uPELtHLf1Pt1gKCH0X1QkDKw1pnZezyZ2njzsI00YGvdjN1r82NBejDKPIgISFWcrw45WNL4cLdRNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775896824; c=relaxed/simple;
-	bh=mIRP6L+hb77SJIiAE3rkIP7boFxJE9dvNqAhHyLa+zk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c8CPAwJ1UP+Yl2QHKW9x8FGGsCRHI3y5PHJ5nHb2ACrpa0EQzg2ujXPeU1aFKbmJJj1Za/I393FIgrrReLxayxGq6UNmp3EUjoEuU/0i3ZGdvjFSlYMURzmysIZpNfutbJv9x/Id1KmSDvUGB6NH5a6Q785tIMbrISZZ5VZFA7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SMGvZkLx; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35e30bb6482so689701a91.0
-        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 01:40:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775896822; x=1776501622; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gij9R0BiMf/CLJF+fbkJbgQX286SYIp1XpOlyH59MlQ=;
-        b=SMGvZkLxv9G4ISNcKd3SG4ZfTidXAj+c4ucXqdZtpPiL7pNlMRSYYvgxHX9lEsXpP5
-         NpYUz5s8Qq7NItfukbPEsKmG/NJb4ztFBUBD9DYS6TCcE7xZptVdMyM6klfDv/u175DB
-         Vb5sZh0L5F/a4RenDGHfYZCX6Fg6wKnqJD7EZeErNj+zPWrEYgygmp8iI14CK8eDXKcJ
-         qsjA0WrXW6qeKifbk+1sZwizNdw5VS1ssuA2xfkHnV4Voso6sVxjWINooUKk/CRIHH76
-         bo0l3leNO1XsGGN6OM9yht63AEP9eEM0PnatfOk+8PWL41+IN2qrXYXfK/0J9xn37zFi
-         H/ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775896822; x=1776501622;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gij9R0BiMf/CLJF+fbkJbgQX286SYIp1XpOlyH59MlQ=;
-        b=TWsHhiJRdqck4pmilcgQsjUKFchyfPqtKpj9TW8zPtw0sqokcdakyIX5pg/X+tZQTw
-         peCOo3oKG7Ald9NMEiv8qNouXBBtfiG+fXud0NQZk4YRVCwqhblLbd5vuKmdZz+3NF2w
-         qY43lfAYldCjAbGNT2umtcoCkNs/9ZPVdix70fwpwhjGFRcjoggaK8TQzhPa+lRzSR4F
-         P5mBMQzH2JcN+Yn/VGR8v820944lEw+3ESXiRrauBh0iGO/FroM7YMS7NWVW/KNL0fPK
-         UrGuItGht7/N6mSaW6VenYhl9OWhNV5mGtyfyE19Zd/oEYGjFHhTP/aiV5MbO0rhRva6
-         1j1A==
-X-Forwarded-Encrypted: i=1; AJvYcCViPQ2dqnmEO9o9EndiQK/0FrCYF/zz5eVivwx6DlMaeOPTxRU8aM94iZ9LVg3ubQqE/0dhRiU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7dDZFABNmwiH+AvjiDS5uYtl0v1mB3blcm5a+dCLSSHSH64g+
-	iSVkVEX51O0NExbwky5asdg5dF8YA6ymM9qcN+OF8ldNJ3zAcvE79qUD
-X-Gm-Gg: AeBDietpt3dOpdAsQG1higyG0NbPJE37go7xhfe08+fGZzECt0T889SSlUAQijfXif3
-	OgKJafqBZLLQmgxc+7nq6rpWh6kFxlnVlJt+YyjsFfHTK3yYuhaNqQaAlIetNDhGSHliEWZew89
-	OX2AFepoB06qTmzmjImAN1OMnjC2BJMUgk0d5YgxYlAvOgBETnZHh6TlGcCrjkKQh/Yya4vecWE
-	jGSrc8ISIpi1j3WHpALmZozSLPDMh81BSniCOqydQd8aQiq6rtiexxmCDwbRnZhjB+K33xS/OAl
-	d67847fhFkQcPNclEbt5wmcPFG1LsQ7/JqJKaBAuahoKzuUgZ1CQgZQ0Ca6eWJnirVqBGQEcO1P
-	FHjuDsXNNh6DDU72eCapU2P8jdJ4/D1KWv4J1fZ14PMeY6kczE0fq/pQffHXmo+/S2lUYEq91h1
-	aIT5Gjl57DbFBjL/xd0xhyE12YsLc=
-X-Received: by 2002:a17:902:c950:b0:2b2:5be3:ba34 with SMTP id d9443c01a7336-2b2d580c7dbmr37649635ad.0.1775896822160;
-        Sat, 11 Apr 2026 01:40:22 -0700 (PDT)
-Received: from kali ([2402:e280:3d7c:a2:536a:b505:93f5:9d5d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f3a8f7sm53874255ad.71.2026.04.11.01.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 01:40:21 -0700 (PDT)
-From: Pavitra Jha <jhapavitra98@gmail.com>
-To: w@1wt.eu
-Cc: chandrashekar.devegowda@intel.com,
-	linux-wwan@lists.linux.dev,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Pavitra Jha <jhapavitra98@gmail.com>
-Subject: [PATCH] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
-Date: Sat, 11 Apr 2026 04:39:57 -0400
-Message-ID: <20260411083957.567676-1-jhapavitra98@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1775897558; c=relaxed/simple;
+	bh=5MOekENutohx2KQWO5DZt7CmPzwY3/lBPVI2yzBUVwM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LX8hbwdSriWpbpUtJT3Uc5zy9cxpEnqiysSUhpcEW3P+ty7r2+zuuwxMsgvJEia1KLFA2Fb5x9q5puMbKI36cZxEcLFBD3ENOa6Y0AOGm4QWVxCKuFQE5vLEoxYS6aNfxYCNS1CFXZAKbX/uHtGY1cnBK/t633rVidIzXtCvNsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K799DHjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3636AC2BC87
+	for <stable@vger.kernel.org>; Sat, 11 Apr 2026 08:52:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775897558;
+	bh=5MOekENutohx2KQWO5DZt7CmPzwY3/lBPVI2yzBUVwM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=K799DHjoZ6ACVudY6FJjO9FcVaYCHOlJM1+eD3MjepGTBOjZPBiiUGY7Dwc7tUL8N
+	 UcL9UD5rlwluD7EkfP3ks3K73nMM59sZ3sw0MEs2I5lYfGbIw8aYvF+4ApEb+bijgC
+	 VzQmTe21q28E5vZO+QbOcQmyJd3Z9xkqjQQksYUzTdJWhZeRbBam2icQc1JWC5FJLg
+	 Do8ztZyN3HfjROpbFq9kjASckV8h8wb3Il4HyQbl9Jcn7hn4QcWyNVAZ6STH1XmMFJ
+	 4gfejYtu+sGZt8wvQBkMxUQjNnlTzjODGBnlpfi+tEK2ffTqQsqzatKd5ibapxraFJ
+	 vsZv3Y9bjX5kw==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b9c745e18a0so216003566b.1
+        for <stable@vger.kernel.org>; Sat, 11 Apr 2026 01:52:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUrN3DHanlotB3cE9qmSSXZIvDbHgB7oVb7MqXv6QsXFCmKSwTtBt/gIUoU6XKeatndLHEUW1Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztEOnlwVE6zDI/ir37MGhtA356VM8eQV7y2MlGSLc204qkc8Hb
+	hLQgTzR0pktjVD5FXxkUFEQDECMIBAOZFhjW67EeNRcVBKipUBKPA1znRbtvrCXvv4PEWpkooth
+	D0wiiu5d6Fo1rHhQk/Wn1jCvpK6JiEA4=
+X-Received: by 2002:a17:907:d7c6:b0:b9d:6a04:beb0 with SMTP id
+ a640c23a62f3a-b9d6a04bf1fmr361632566b.4.1775897556789; Sat, 11 Apr 2026
+ 01:52:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+References: <20260409164846.3176046-2-stefan.wiehler@nokia.com>
+In-Reply-To: <20260409164846.3176046-2-stefan.wiehler@nokia.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 11 Apr 2026 16:52:43 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H43d0v6XUcCc8sVW-FO6+N0RDq6n4fUzW=NORu8TshozA@mail.gmail.com>
+X-Gm-Features: AQROBzBgPmM7xj64sYDIZDhh9-zGBb560-EB0bGCgqgM3P3TNYbvyCznb1OhnFM
+Message-ID: <CAAhV-H43d0v6XUcCc8sVW-FO6+N0RDq6n4fUzW=NORu8TshozA@mail.gmail.com>
+Subject: Re: [PATCH v2] mips: mm: Call rcutree_report_cpu_starting() even earlier
+To: Stefan Wiehler <stefan.wiehler@nokia.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[intel.com,lists.linux.dev,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-235694-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235695-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EEF6F3DEFFA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 356A93DF059
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
-a loop bound over port_msg->data[] without checking that the message buffer
-contains sufficient data. A modem sending port_count=65535 in a 12-byte
-buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
+Hi, Stefan,
 
-Add a struct_size() check after extracting port_count and before the loop.
-Pass msg_len from both call sites: skb->len at the DPMAIF path after
-skb_pull(), and the captured rt_feature->data_len at the handshake path.
+On Fri, Apr 10, 2026 at 12:51=E2=80=AFAM Stefan Wiehler
+<stefan.wiehler@nokia.com> wrote:
+>
+> rcutree_report_cpu_starting() must be called on secondary CPUs before
+> allocating memory to avoid the following Lockdep-RCU splat when
+> CONFIG_PROVE_RCU_LIST=3Dy:
+>
+>   WARNING: suspicious RCU usage
+>   6.6.119-00d46e15c416-fct #1 Not tainted
+>   -----------------------------
+>   /kernel/locking/lockdep.c:3762 RCU-list traversed in non-reader section=
+!!
+>
+>   other info that might help us debug this:
+>
+>   RCU used illegally from offline CPU!
+>   rcu_scheduler_active =3D 1, debug_locks =3D 1
+>   no locks held by swapper/1/0.
+>
+>   stack backtrace:
+>   CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-00d46e15c416-fct #1
+>   Stack : 80000000029e37d8 0000000000000000 0000000000000008 80000000029e=
+37e8
+>           80000000029e37e8 80000000029e3978 0000000000000000 000000000000=
+0000
+>           0000000000000000 0000000000000001 ffffffff80d9df38 ffffffff810e=
+19c0
+>           0000000000000000 0000000000000010 ffffffff80a7d140 000000000000=
+0000
+>           ffffffff81c20814 0000000000000000 ffffffff80da0000 000000000000=
+0000
+>           ffffffff80cadf38 0000000000000000 0000000000000000 80000000029a=
+b680
+>           72f093276415c1f3 ffffffff81c2084f ffffffff80da0000 ffffffffc014=
+9ed8
+>           fffffffffffffffe 80000000029e0000 80000000029e37e0 80000000029a=
+bf58
+>           ffffffff80129fb0 0000000000000000 0000000000000000 000000000000=
+0000
+>           0000000000000000 0000000000000000 ffffffff80129fd0 000000000000=
+0000
+>           ...
+>   Call Trace:
+>   [<ffffffff80129fd0>] show_stack+0x60/0x158
+>   [<ffffffff80a8cd84>] dump_stack_lvl+0x88/0xbc
+>   [<ffffffff801c78f8>] lockdep_rcu_suspicious+0x1c0/0x240
+>   [<ffffffff801cc80c>] __lock_acquire+0x121c/0x29d8
+>   [<ffffffff801ce14c>] lock_acquire+0x184/0x448
+>   [<ffffffff80a9ba30>] _raw_spin_lock_irqsave+0x50/0x90
+>   [<ffffffff80367038>] ___slab_alloc+0xa08/0x1808
+>   [<ffffffff80367e70>] __slab_alloc.isra.0+0x38/0x78
+>   [<ffffffff8036b7d4>] __kmem_cache_alloc_node+0x35c/0x370
+>   [<ffffffff80308ed8>] __kmalloc+0x58/0xd0
+>   [<ffffffff80a8f064>] r4k_tlb_uniquify+0x7c/0x428
+>   [<ffffffff80143e8c>] tlb_init+0x7c/0x110
+>   [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
+>   [<ffffffff80133258>] start_secondary+0x28/0x128
+>
+> See also commit 55702ec9603e ("mips/smp: Call
+> rcutree_report_cpu_starting() earlier").
+>
+> Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack over=
+flow")
+> Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+> Cc: stable@vger.kernel.org
+> ---
+> V1 -> V2: Reorder rcutree_report_cpu_starting() call in
+> start_secondary(), fix function name
+>
+> v1: https://patchwork.kernel.org/project/linux-mips/patch/20260407083324.=
+906742-2-stefan.wiehler@nokia.com/
+> ---
+>  arch/mips/kernel/smp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+> index 4868e79f3b30..bdb47c70d4f5 100644
+> --- a/arch/mips/kernel/smp.c
+> +++ b/arch/mips/kernel/smp.c
+> @@ -359,8 +359,8 @@ asmlinkage void start_secondary(void)
+>         unsigned int cpu =3D raw_smp_processor_id();
+>
+>         cpu_probe();
+> -       per_cpu_trap_init(false);
+>         rcutree_report_cpu_starting(cpu);
+> +       per_cpu_trap_init(false);
+Please see 5056c596c3d1848021a4eaa76ee42f4c05c50346 ("LoongArch/smp:
+Call rcutree_report_cpu_starting() at tlb_init()"), maybe MIPS will
+have similar issues.
 
-Fixes: 1e3e8eb9b6e3 ("net: wwan: t7xx: Add control DMA interface")
-Cc: stable@vger.kernel.org
-Reported-by: Pavitra Jha <jhapavitra98@gmail.com>
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
----
- drivers/net/wwan/t7xx/t7xx_modem_ops.c     | 14 +++++++-------
- drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c | 12 +++++++++---
- drivers/net/wwan/t7xx/t7xx_port_proxy.h    |  2 +-
- 3 files changed, 17 insertions(+), 11 deletions(-)
+Huacai
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_modem_ops.c b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-index 7968e208d..d0559fe16 100644
---- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-+++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-@@ -453,25 +453,25 @@ static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_inf
- {
- 	enum mtk_feature_support_type ft_spt_st, ft_spt_cfg;
- 	struct mtk_runtime_feature *rt_feature;
-+	size_t feat_data_len;
- 	int i, offset;
- 
- 	offset = sizeof(struct feature_query);
- 	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
- 		rt_feature = data + offset;
--		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
--
-+		feat_data_len = le32_to_cpu(rt_feature->data_len);
-+		offset += sizeof(*rt_feature) + feat_data_len;
- 		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
- 		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
- 			continue;
--
- 		ft_spt_st = FIELD_GET(FEATURE_MSK, rt_feature->support_info);
- 		if (ft_spt_st != MTK_FEATURE_MUST_BE_SUPPORTED)
- 			return -EINVAL;
--
--		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM)
--			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
-+		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM) {
-+			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
-+						   feat_data_len);
-+		}
- 	}
--
- 	return 0;
- }
- 
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-index ae632ef96..d984a688d 100644
---- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-+++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-@@ -124,7 +124,7 @@ static int fsm_ee_message_handler(struct t7xx_port *port, struct t7xx_fsm_ctl *c
-  * * 0		- Success.
-  * * -EFAULT	- Message check failure.
-  */
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len)
- {
- 	struct device *dev = &md->t7xx_dev->pdev->dev;
- 	unsigned int version, port_count, i;
-@@ -141,6 +141,13 @@ int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
- 	}
- 
- 	port_count = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
-+
-+	if (msg_len < struct_size(port_msg, data, port_count)) {
-+		dev_err(dev, "Port enum msg too short: need %zu, have %zu\n",
-+			struct_size(port_msg, data, port_count), msg_len);
-+		return -EINVAL;
-+	}
-+
- 	for (i = 0; i < port_count; i++) {
- 		u32 port_info = le32_to_cpu(port_msg->data[i]);
- 		unsigned int ch_id;
-@@ -154,7 +161,6 @@ int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
- 
- 	return 0;
- }
--
- static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
- {
- 	const struct t7xx_port_conf *port_conf = port->port_conf;
-@@ -191,7 +197,7 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
- 
- 	case CTL_ID_PORT_ENUM:
- 		skb_pull(skb, sizeof(*ctrl_msg_h));
--		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data);
-+		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
- 		if (!ret)
- 			ret = port_ctl_send_msg_to_md(port, CTL_ID_PORT_ENUM, 0);
- 		else
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_proxy.h b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-index f0918b36e..7c3190bf0 100644
---- a/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-+++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-@@ -103,7 +103,7 @@ void t7xx_port_proxy_reset(struct port_proxy *port_prox);
- void t7xx_port_proxy_uninit(struct port_proxy *port_prox);
- int t7xx_port_proxy_init(struct t7xx_modem *md);
- void t7xx_port_proxy_md_status_notify(struct port_proxy *port_prox, unsigned int state);
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg);
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len);
- int t7xx_port_proxy_chl_enable_disable(struct port_proxy *port_prox, unsigned int ch_id,
- 				       bool en_flag);
- void t7xx_port_proxy_set_cfg(struct t7xx_modem *md, enum port_cfg_id cfg_id);
--- 
-2.51.0
-
+>         mips_clockevent_init();
+>         mp_ops->init_secondary();
+>         cpu_report();
+> --
+> 2.42.0
+>
+>
 
