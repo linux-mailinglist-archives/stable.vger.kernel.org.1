@@ -1,161 +1,240 @@
-Return-Path: <stable+bounces-235834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HDWC0va22llHgkAu9opvQ
-	(envelope-from <stable+bounces-235834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:45:47 +0200
+	id WNizEfXa22mlHgkAu9opvQ
+	(envelope-from <stable+bounces-235835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:48:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EE73E529D
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:45:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03B33E5372
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5C4143002B70
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 17:45:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE50300F5D7
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 17:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4483735A3A6;
-	Sun, 12 Apr 2026 17:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88381359A90;
+	Sun, 12 Apr 2026 17:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m9/xkXd1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4sQV6Yl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FC42BE057
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 17:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776015942; cv=none; b=tHo0Vy06AIezWl6Rn5xK+4k22ghSCsy0jH6LLoGAB9To6frvgA229USNvHuLkGEcuA0TEoe/3O4Qkv1LOGRsrXdGDBaQM0W5V6enaxJedzcNRbFhls/enlDWAndCx9EsPjXsP4m1slE7Lrkgra3yoZaOxm5bf8g43rcqi7CRfpQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776015942; c=relaxed/simple;
-	bh=MvFqTtD18D5DAv92JGkSRWZaXoO1lYwBKr6BusmvkEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tw8/bu7xLI6O/FuSMhejleed1i6PrrFeKUQK+Clts49ouLaZnG9t+eIEPTb+CQyMrvqU5R60yJ9VS0C0HPoW3f+oWoQJ6MLWkh6H2n+nOc5VrEku8drOGFVgHSO4K4SrU27lW4tqzts1dGhaLefKZaMOqgKxWXmVDDEXKfMFMQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m9/xkXd1; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154A42C325C
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 17:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776016103; cv=pass; b=jnBsrXGxT+eEFJOADcxiIaqyzQi556vE11jIgNoI1d0fGFPU7AtqXfPtIXvOSfC39inc5la9lfmGQeTX5ctRUqJjJ7QmNTItkXjYLCgkUr/lMYpXC0Va9Trrub0ao2wktwqTXWNmzkRj/ojPmmwwmOgx1OkEr7ToXng9QcIpEHs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776016103; c=relaxed/simple;
+	bh=1U9YXGvaFLWp/pMA/TbhPIX0/XY0ub2iN4cWCFnziwQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iSazvYxG6DCqHrkJuQgXd4gGfCdGoLzPU8qtz5btF2pjj9SYCTE85dv08vOnT89Vk/xxnt79Mt+XQBoNVEvSstUkFtBfTVwT9kiQWcEfOWBzO2UTcLZ5hbIsbF3RLBXyG3FL1RvBaCA5oeV8wyg98bzUuG+iqIZT5QF8QeRBPUo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4sQV6Yl; arc=pass smtp.client-ip=74.125.224.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-827270d50d4so3367652b3a.3
-        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 10:45:40 -0700 (PDT)
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-650775f427eso3472006d50.2
+        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 10:48:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776016101; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fDpgixZpcnhVqnfOcwIF3GAC98mQNdExuhA3Je/CyRLv3KMQ+A2p/OO2i0K77kdzyZ
+         CeE6Ntu6TpUGJ1u31fbb4KlKu7PIHn6nRWMl4JxlcoPFtXBxp+d237zzD2R8J+aEZbBv
+         TTnpxc15bd4Btrvn2FEXhWZJkHKV4+uHtIi4iHMFpRUzMXkxpWt9aVb0ARbjubaGP8bZ
+         rTAglObf7+aSagkr9IBn4a+gh8d+ZyIcogISbIfD081W+vqY0zDj2zc7oMVeI7384pRd
+         0HZ+3VBQRXG0NlxEIRgHP9YeTQxrK+qKMJyoW4bPctu7SbFO6NlkmP2u38n17zv2XvjQ
+         49Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Rm8zl5J35CpU3jnFsSRYIzi1x6YziVzsrJSoZV0+Zq4=;
+        fh=eTuxFz2wnl6wW5SMgj1x5upZ6bMkOCr2S+deqo4pYq0=;
+        b=i3DCZUAAI6QH85NNk3GNcmGSWyyG8ziagiGXNGKs6ad2RTdiKvXKBRp6sx7g9FEA2y
+         KufDeHfMRm8Zo01hK4Bh77PWacZ8ZwFENad8JLvdYws+WmAb9DJpQZ4q/p9hPA7O566S
+         fquuUHMNJfT+amgxeLMILS6Tcb2i/0rBOoS1XNJwYXcm0lDmtpNfcAMcSKh+jE7VfDTS
+         hg/vR6Lhd+dTCmMZncTRxsuct4H4r0rbQlmLd667+tMgT4JqBmN+V8HPNyg26zwg6scu
+         HY9cxdNChTSOihxiu7j1JoGxIWUkSUaEHorcRjGbgESiZSBxgpg6kopK1oDzvj3RtP0T
+         dVKA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776015940; x=1776620740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/OoU5jmpe1DqxkQY//ANPB23eMZd7k19jDj8fX9LlbM=;
-        b=m9/xkXd1+VePVXd/wRrhpvwXmPE104FdETsUUVnDZfunl6jKJcgN51Hlw03J/WKWfs
-         y68H0G8yiHjqUwkhbjpa/ZsNcp6NbFIdskZM9bhF7EY5pdzdpns2KYFMgrwNROuV+Cyi
-         IscnSBfR2dRcctyrWX4CHALqRMrMEQAmXrbheytT0Zaso22bPPae4TM0YRRcU2o467Rm
-         TFNQfXrfJ+Fhtjyk5JXYalukcJ+ElOeDrYe9L4Su01ijiJF+6a6nrhLGM9DWynCGp+rx
-         zbz7peRrwoqUEOFMzyooImNMGy4Aqy/4HJLEE563ixx8OF6B+8MnpyYzQO+tV1lRzh5d
-         sy3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776015940; x=1776620740;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776016101; x=1776620901; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/OoU5jmpe1DqxkQY//ANPB23eMZd7k19jDj8fX9LlbM=;
-        b=TTyFbXpc+KK1G989TdfI7UDTcs0IV9JwOEaMAYESzrUOLzG2cxhcRFgye9EyW0Dqgu
-         T/6BPHa8VTpoSGPG6R0YrP/V4CnaqiPXuG0LQEhQq+HWQKp81NMyehZ2Km3o0XvpnsJV
-         p5vdCWygA6XTZt0AlOj1QdEyoviThZ+3cqqx3eCZpEpxy8ucmgb1JsTbPZTxSfiFICIs
-         wbfi/ULjNgk3v16Rw0geXl4rRrSYV3W0MrW5FjsWsRjqMVB4VKkmeeSvqqdzLxijvn5Z
-         ZzSYk2Vry0OMasi7JSaOL/TLncP3g+ZdtZdDUoE0gHDwucM97gOynNbOOUCRusYNLSTn
-         HfrQ==
-X-Gm-Message-State: AOJu0YzK34vtC3ND+h7J97qd37BkvejiZLbLTnFU8lYkrBaoJ88lJ5a2
-	IP+6SWGsngSaXnVLdde42pTYwExgSHF5ngAH7DUdMwt7p6uYMMya2uvg
-X-Gm-Gg: AeBDies6n8bA47DtWCkkETPGjzpGl3KSzn1sq2yAOdqrzv3/n2Q2xRfOQ+GH/ni2OBc
-	zPpJhFdEOcDOBvTDtDGz7aeC/Tt0RUf4fkWcANdozp15JlTdENk1NpV4RwI0GW0MVML4qAn2pvJ
-	AsKeoxzOU8kMdG6+lwuMJAHYcZcoCGESAlzuN5Po/ggN1iDxNZ102hPYrj6V+gFWcK7Ik6RKWgH
-	RfNjIa6uN111zybmjFPrWwA4ubZgBeQt27tWBOFC2hjWIV9ePn77QAqd+DnskgA1tq0OtSP7QTm
-	JpSzcQDjMKmzSOKt6FYrn9uYdFWOeNXaU7Vj8uuwbABoCg2VMlFTrELAFzoWS4t2e/x4E0l1DPA
-	H6+9zq9XgXqfwelbD0520yGeYhoVv7pC65YwNCs7oH3ioKTXdo0J8dE74cYsBLHmPZgw0C5GFw9
-	ZhSEpQa2wFwKbS1vAncLjQwOnDTw==
-X-Received: by 2002:a05:6a00:a245:b0:82c:6d88:2a8e with SMTP id d2e1a72fcca58-82f0c28903fmr11551470b3a.20.1776015940377;
-        Sun, 12 Apr 2026 10:45:40 -0700 (PDT)
-Received: from lgs.. ([2409:893d:1188:142d:6dbb:2e05:75d3:967e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4e182csm8999464b3a.45.2026.04.12.10.45.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 10:45:39 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Curtis Malainey <cujomalainey@chromium.org>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] ALSA: hwdep: fix NULL dereference on error path
-Date: Mon, 13 Apr 2026 01:45:29 +0800
-Message-ID: <20260412174529.2597250-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=Rm8zl5J35CpU3jnFsSRYIzi1x6YziVzsrJSoZV0+Zq4=;
+        b=S4sQV6YlaxIod1IIDgEGaeQ6gMKS8hzfFu0febT5co6KjzZD2Ru5P1veXndQmIAaMb
+         PpwB4RkesuEw9xfPAveLsLPT9h5h5tI95a0Nfq+iH7Tf+bABNj0eZtHzWVpAKMPMfQkE
+         unHaAxxTAcNZa0jX1h+PKugpMbvVIoKWErCPvd7T0BKXDqI4rkAAfDbe1TowYHL/OXNR
+         NPvbe6bORiaWgdruue4ogndGBrkqqAM1LEcCjARqfmSh4PrjGAJlMSyDWNf+Y8NUR6lO
+         4wxm+BZjimEMOlQROX6JPqW5s2ICrCmibuNBK/xB1wLuCsOtZVFPQdm8J7Uh14xrovl3
+         SuBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776016101; x=1776620901;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Rm8zl5J35CpU3jnFsSRYIzi1x6YziVzsrJSoZV0+Zq4=;
+        b=QvN6GuT4NbV2EPOrozBTQV5dBD7VQVftWHVcU5v8Phq/s6hYzQ6rPa8C7+uon9+t+Y
+         n2fuQTy5wvb798GAidYC+BFzMh4FZq/v6FRj8Q+ankLLNc1oEWwjc/OSh+oxRu0HXWaN
+         9/+jlEiOEvpQXDLOp+M1QG4ZXySN/MWamD4J1EIT8L+9s+IjcJJGR5zhPd76tPtuW3EN
+         j99fID0FFm+XdwzhV8uNXyuzYo4fmRW5+uw76gSbYPtjVfmXHa+18fN/0g2rQRjxk+vW
+         sLZBK5nQEgxZGeRqSDGr/MeLithcqZsPo8FGB6xO4m588VxOAQMteyl0fBps/Dbf5qGk
+         2GCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+av6DucOKMkdYIpsbB8aRDv1EAnDn1mCQmSDt4njz3o8V/Wmbzcr+yiPteSiNzABx7xxwnmkM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDCnPF6ixxaC/TUC0Y+rrcFU503hXOpTqaB3bVPlXulsfQcj2c
+	Lh1kPsOkcA72sEx9jutv064nn5ePDTK2i5JUEmr7umH5UEy9VQRv7bIjuciCCou3V8d58ij+Nu/
+	GySZEa5X+zuMrU95EEg4FYiZ46vqTf0k=
+X-Gm-Gg: AeBDietO2ol7MVEUN+GqATn8XAECv+jLODsGWWbl30k3voUMR7ojrfnEa2+5tFdI9Nu
+	XZeU3zEiAMsCP3XR1H3LRSqHWFEAyB7GaDKH8utsVf17oRKKkboVqUY00Vn7ojrmlJ05ijqfdzx
+	R+sgQHu4pzh4qkbTbRQ66wykLmGifPdJhjFJxSlz/9QLdVJ2kOGBhoeyQuR2tE+rQgXJ/5h3YCX
+	2tFcITJrgHuo3+ftJr9IKhHsWh9zJTaVVoIWgzH1ZnYp7cagU6p/tboaO8aXp7wyr50EmQKWJV5
+	KEaFxIHW
+X-Received: by 2002:a05:690e:4841:b0:649:e6de:8f4a with SMTP id
+ 956f58d0204a3-65198b72cdemr7352447d50.42.1776016101031; Sun, 12 Apr 2026
+ 10:48:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+References: <20260411062152.2092967-1-lgs201920130244@gmail.com>
+ <20260411142858.85496-1-lance.yang@linux.dev> <848180C7-F98C-44B2-AB1F-579BF9EEA28E@nvidia.com>
+ <3e688ea1-05ba-4e75-9d92-2751ff6f3b7b@linux.dev> <75F536FE-6710-4AE7-B6DB-2997D846237E@nvidia.com>
+In-Reply-To: <75F536FE-6710-4AE7-B6DB-2997D846237E@nvidia.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Mon, 13 Apr 2026 01:48:11 +0800
+X-Gm-Features: AQROBzCTa9E1N3xrHdXc-IGVPR5wSvNpHV_7nILnImYBrIIchwBXudfJpaQLPfQ
+Message-ID: <CANUHTR_F3gZpzV0YHmJw_6yBwgG5a6-M2aaNNjmLq5Q9cZ-0KQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
+To: Zi Yan <ziy@nvidia.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235834-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[perex.cz,suse.com,gmail.com,chromium.org,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235835-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 31EE73E529D
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: A03B33E5372
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-snd_hwdep_new() allocates a hwdep instance first and then allocates
-hwdep->dev via snd_device_alloc().
+Hi Lance, Zi,
 
-When snd_device_alloc() fails, hwdep->dev remains NULL, because
-snd_device_alloc() clears *dev_p before attempting to allocate the
-device object. The error path then calls snd_hwdep_free(), which
-unconditionally invokes put_device(hwdep->dev).
+Thanks for the review and for pointing this out.
 
-This may lead to a NULL pointer dereference in put_device().
+You are right =E2=80=94 that was my mistake in the changelog wording. After
+rechecking the failure path more carefully, I do not think a
+use-after-free can actually happen here. The real issue is that the
+error path skips the proper kobject cleanup flow, so the problem is
+better described as an unbalanced kobject reference / refcount
+handling issue rather than a potential UAF.
 
-Fixes: 897c8882df58 ("ALSA: hwdep: Don't embed device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- sound/core/hwdep.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I will update the commit message accordingly and send a v2 shortly.
 
-diff --git a/sound/core/hwdep.c b/sound/core/hwdep.c
-index 09200df2932c..aa35bee8da6b 100644
---- a/sound/core/hwdep.c
-+++ b/sound/core/hwdep.c
-@@ -343,7 +343,8 @@ static void snd_hwdep_free(struct snd_hwdep *hwdep)
- 		return;
- 	if (hwdep->private_free)
- 		hwdep->private_free(hwdep);
--	put_device(hwdep->dev);
-+	if (hwdep->dev)
-+		put_device(hwdep->dev);
- 	kfree(hwdep);
- }
- 
--- 
-2.43.0
+Thanks,
+Guangshuo
 
+Zi Yan <ziy@nvidia.com> =E4=BA=8E2026=E5=B9=B44=E6=9C=8812=E6=97=A5=E5=91=
+=A8=E6=97=A5 21:33=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On 11 Apr 2026, at 23:24, Lance Yang wrote:
+>
+> > On 2026/4/12 09:49, Zi Yan wrote:
+> >> On 11 Apr 2026, at 10:28, Lance Yang wrote:
+> >>
+> >>> On Sat, Apr 11, 2026 at 02:21:52PM +0800, Guangshuo Li wrote:
+> >>>> After kobject_init_and_add(), the lifetime of the embedded struct
+> >>>> kobject is expected to be managed through the kobject core reference
+> >>>> counting.
+> >>>>
+> >>>> In thpsize_create(), if kobject_init_and_add() fails, thpsize is fre=
+ed
+> >>>> directly with kfree() rather than releasing the kobject reference wi=
+th
+> >>>> kobject_put(). This may leave the reference count of the embedded st=
+ruct
+> >>>
+> >>> Right. As documented for kobject_init_and_add(), once it has been
+> >>> called, the error path should go through kobject_put():
+> >>>
+> >>> /**
+> >>>   * kobject_init_and_add() - Initialize a kobject structure and add i=
+t to
+> >>>   *                          the kobject hierarchy.
+> >>> ...
+> >>>   *
+> >>>   * This function combines the call to kobject_init() and kobject_add=
+().
+> >>>   *
+> >>>   * If this function returns an error, kobject_put() must be called t=
+o
+> >>>   * properly clean up the memory associated with the object.  This is=
+ the
+> >>> ...
+> >>>   */
+> >>> int kobject_init_and_add(struct kobject *kobj, const struct kobj_type=
+ *ktype,
+> >>>                      struct kobject *parent, const char *fmt, ...)
+> >>>
+> >>>> kobject unbalanced, resulting in a refcount leak and potentially lea=
+ding
+> >>>> to a use-after-free.
+> >>>
+> >>> IIUC, this looks more like wrong kobject lifetime handling and likely=
+ a
+> >>> leak, not a clear UAF :)
+> >>
+> >> kobject_put() ends up with calling kobj_type->release(), which is just
+> >> kfree(to_thpsize(kobj)), equivalent to kfree(thpsize) in the old code.
+> >> IIUC, there is no leak. Let me know if I miss anything.
+> >
+> > Right, the fix is correct. I was only commenting on the changelog
+> > wording, especially:
+> >
+> > "resulting in a refcount leak and potentially leading to a use-after-fr=
+ee"
+> >
+> > The old code does skip the required kobject cleanup path, but is
+> > a UAF actually possible there?
+>
+> That is my question too. The original code might not cause any real issue=
+.
+>
+> Guangshuo, let us know if we get it wrong. Thanks.
+>
+> >
+> > Just a wording nit.
+>
+>
+> --
+> Best Regards,
+> Yan, Zi
 
