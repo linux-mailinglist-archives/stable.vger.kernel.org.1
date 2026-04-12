@@ -1,116 +1,168 @@
-Return-Path: <stable+bounces-235813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IVWKEOV22mxDgkAu9opvQ
-	(envelope-from <stable+bounces-235813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:51:15 +0200
+	id KGl9BWWW22n1DgkAu9opvQ
+	(envelope-from <stable+bounces-235819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:56:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FBF3E3D9A
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7123C3E3E0D
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA2433024A4A
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:50:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C36413011119
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D963437B01E;
-	Sun, 12 Apr 2026 12:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2E037B03B;
+	Sun, 12 Apr 2026 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVJiijhl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bVcqOo8J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA25376492;
-	Sun, 12 Apr 2026 12:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DBC37756E
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775998210; cv=none; b=bcRUlnhOy7JYwKiikZV1tMyUnUVUFJKpaCfMCDWUdd4hPJOAirSTRBQ269Oon1IOv0NZOcOH7+BJHAk277clrDNLUyf+z3Vd4qx3K8tMgBNODXw9RSGiwzN73sPEzdQ+eXWOjjxXo4JlD99NISwg6/Lg4Wu0CWy9GmNcme3oF3U=
+	t=1775998540; cv=none; b=SQiSkdrwdIG8IG8RSDSPKFXhFsI9Tqtgc3tGg1sGyhARAL/DKEXQg1NFR05R7u/ZaCuTdXhWGwvXgU5qHLtUEbA0xbaOpEYc/SNfFFCRlhHPU7/fUeTgCpUN71Uk36wruOtrZeFcKotPRXMoelH1DA72D0k98M6ZN7W28dj8ftQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775998210; c=relaxed/simple;
-	bh=UctMIAZJjUIkI9bcFxFVqtMglx8Sn3GMHxD5PPywcD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n1t5y2Y2bW5LIKzoTi5CZjRLkpnKimsmW597qQu5n+9xgcJjKIGfDfYNkrhxoTeqSJfzexc1ECMTpVjGM2m/1gx+1i3RpbMO7RRqFTSzgG/jD6ROtNBeQ8P+J7q5OrNFQ0JxEe6DbZIU1P5FyNNz4fkIz2j8fsHnt3bUSp5TYT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVJiijhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995D9C19424;
-	Sun, 12 Apr 2026 12:50:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775998210;
-	bh=UctMIAZJjUIkI9bcFxFVqtMglx8Sn3GMHxD5PPywcD4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LVJiijhlBb3b8995eHFh0+LVGq4XGVZVjQr+WlYMF2XHwIMkfeyzE1ylwx2du7s9v
-	 IVuHUNJEXwMOglYKE4m7UXDTd0cIbAlMuua0PKRlxdKNa/2Fzov2d45VdcP3Ki7M0n
-	 S318Ec8ZJFEXPRi8827HjMzU3Oc84wBf6cjbHvVasuFH1z3wizT1xmsuq9VvrBpvtQ
-	 IPjCGILrRAw6lWAcxZCcLH0QxoUyd47L8cTPXjN0VZfP8+smpznmtFaX0lAbj3+BiK
-	 7iQM793FIGhpkTIYwn73xzpWJFRjOr/9na/QJtgUxwIbClhcbSwKPjGmzebdOhrPNW
-	 XZw+6AUJ09vGw==
-Date: Sun, 12 Apr 2026 15:50:05 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Junrui Luo <moonafterrain@outlook.com>
-Cc: Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Xi Wang <wangxi11@huawei.com>,
-	Weihang Li <liweihang@huawei.com>, Wei Xu <xuwei5@hisilicon.com>,
-	Shengming Shu <shushengming1@huawei.com>,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] RDMA/hns: fix out-of-bounds write in IRQ array during
- configuration
-Message-ID: <20260412125005.GB21470@unreal>
-References: <SYBPR01MB7881512F49EA80F0146EEEA1AF5CA@SYBPR01MB7881.ausprd01.prod.outlook.com>
+	s=arc-20240116; t=1775998540; c=relaxed/simple;
+	bh=YdktwupOCGYDsXBTCp/6UncgNDvXr/nreRmag7N1hVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LGRo11VKxbyirp7XOu9p2V8c+gATD45ONWo8wcenvRnBhUDb3/5OlhomwlO6GJjKPYCW5dEE4n6ImQtaENmnjqxpRTV2xmrMojmhg0TeWfnIEpTxKmNkzvKaToANOEJZksUOzQ6Vp4Gixlx0mOmqkpOW3bL9avJ+zfzEJhJxYSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bVcqOo8J; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35dac556bb2so2061809a91.1
+        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 05:55:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775998538; x=1776603338; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qxOe3LAamwoRd6++BiNK2MTql5chiY2Vdpn2Z4OwuWg=;
+        b=bVcqOo8Jvoe1L6QXbziWmAhyWrgPxr9lofUOovJZ14okenwZV2HnMHI9rE6IidT/sZ
+         eIyfhxKw7LZeSDrTcD5lNQa2M+7ietcMLu8rk2kpe/dXz38lWuvRPb2rXwM6WSinCS3n
+         X9Ghg8oBlW+WzX3cQVtcMrXs8d2oriYceTQk9LSuQCxLalN3bhMkUBLcjhLRaiyFt0wn
+         5RVpeDyfZAbE2qrkvM1QfpHV0hUOyqaSQfz2xL0jg+fLY+K5I1azMpqLbgbK/EAzBIPT
+         rQKsSMFXL2e5buL8JxZ3aBlNwftpypvdmB0r47tIZ++YjWxsHxTbc2IomQJdjLhD7n8z
+         OA6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775998538; x=1776603338;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qxOe3LAamwoRd6++BiNK2MTql5chiY2Vdpn2Z4OwuWg=;
+        b=Fy83AIz8e9avS/Jz9spkYPjkOu0rsAPfB61xlkz9Cil/+gxuuBLj5d88jD9DG/5PCp
+         UYW/NiBcP6T93PtU6bazW8pV08Q3AfORhyON3UWkuSYgLoEN6Oas0YqectFmXpBiGT3y
+         2EycElT4ZcWn1AFDiiodrZDzpiyQfZGDhzQh0Bn3PCE7z3yMqq9ia94pAg41AJrzHpkX
+         +48JgiwjATLDAbF5wSEIC9w3GEcWWTu8S0Ha3qf1AvMmpR09GpuJQTqyTkDNb01S0+nL
+         r/+cIogg/n9aUkbJVpM6J5/c3pkab4MwCAdPoqrOJhK2FW6P2OT54w5sRdanVepnLSf3
+         HoZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8N2pT2Il+sMa+/uRBolql/8hZPbLbsl8m9IEXkOtuIdOkWvVzxBUaJBzfuAdHy5FBznoP0BvM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSosPWWuhjM2pmkopKWiTe6+AnUBldu+NNjiwnwUXFc1GP9eYX
+	DoBAZmZb/OoG9Qni6qedyMfjQ7bPE2f+MRLIQJN0XMWVsjih4aMHw9We
+X-Gm-Gg: AeBDieuLUb8tzqDtj+zO6hjPWGGmyBG1dUGWonMd4u+kDBYxtTHSECsiaoRBqMUf9xQ
+	IpH5VeQNeqeDk4jhx/7WduNVWeyuL+8azVOfx5BkmtAzmeqCYeDB9RHTRdzjg8FrIeVVkdoaSJi
+	BTz8T06w/zbDl96bs2K0jZuy67qgYAMzA+ImdMpPyqyoVomWuhibUnqhi8NEp1k3D9YG22pxQrL
+	Za7d3ovh3mDvm8p7FyNBL9CEGg7SFho0vi2TaOmuYpr86sqLcFGZyiuEBIkGvCRscDijBAMG9M9
+	vTFjQ6ROaudokkAXX3lKLrzrXuDdxaMvrOun0VDOPcI909Rr1MpeuBcpd2hFc/feQKVEmjUfS7t
+	j8MUSEBV1eIGadHoO1wHMBjTntP/KjSWeXXjLaFJF5Jo5LAq0/wLORAnWnaso/+1tgC4hrxrodj
+	M5peVNsH9R/AQeGA==
+X-Received: by 2002:a17:90a:1089:b0:35f:b1ad:fdfc with SMTP id 98e67ed59e1d1-35fb1ae003fmr1164183a91.27.1775998538284;
+        Sun, 12 Apr 2026 05:55:38 -0700 (PDT)
+Received: from lgs.. ([101.32.189.54])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fb1ed394csm1481298a91.11.2026.04.12.05.55.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Apr 2026 05:55:37 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Emil Renner Berthing <kernel@esmil.dk>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] clk: starfive: jh7110: fix memory leak in jh7110_reset_controller_register() error path
+Date: Sun, 12 Apr 2026 20:54:50 +0800
+Message-ID: <20260412125450.2509092-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SYBPR01MB7881512F49EA80F0146EEEA1AF5CA@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235813-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-235819-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[huawei.com,hisilicon.com,ziepe.ca,vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 00FBF3E3D9A
+X-Rspamd-Queue-Id: 7123C3E3E0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Apr 05, 2026 at 04:15:44PM +0800, Junrui Luo wrote:
-> hns_roce_hw_v2_get_cfg() writes IRQ vector numbers into hr_dev->irq[]
-> using handle->rinfo.num_vectors as the loop bound. num_vectors originates
-> from firmware via hclge_query_pf_resource() without validation against
-> the array size.
-> 
-> If firmware reports more than 128 MSI-X vectors for RoCE, the loop
-> overflows hr_dev->irq[], corrupting adjacent struct members in the
-> heap-allocated hns_roce_dev structure.
+jh7110_reset_controller_register() allocates a jh71x0_reset_adev with
+kzalloc() before calling auxiliary_device_init().
 
-Is this an actual issue, or just another imagined problem?
+When auxiliary_device_init() returns an error, the function exits
+without freeing rdev. Since the release callback is only expected to
+handle cleanup after successful initialization, rdev should be freed
+explicitly in this path.
 
-Thanks
+Add the missing kfree(rdev) before returning from the
+auxiliary_device_init() error path.
+
+Fixes: edab7204afe5 ("clk: starfive: Add StarFive JH7110 system clock driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/clk/starfive/clk-starfive-jh7110-sys.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/clk/starfive/clk-starfive-jh7110-sys.c b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
+index 52833d4241c5..55cd0ccbdb84 100644
+--- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c
++++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
+@@ -360,8 +360,10 @@ int jh7110_reset_controller_register(struct jh71x0_clk_priv *priv,
+ 	adev->id = adev_id;
+ 
+ 	ret = auxiliary_device_init(adev);
+-	if (ret)
++	if (ret) {
++		kfree(rdev);
+ 		return ret;
++	}
+ 
+ 	ret = auxiliary_device_add(adev);
+ 	if (ret) {
+-- 
+2.43.0
+
 
