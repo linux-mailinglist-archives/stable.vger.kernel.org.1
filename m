@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-235808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id af6xF3qJ22l4DAkAu9opvQ
-	(envelope-from <stable+bounces-235808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:00:58 +0200
+	id CMULNu+L22nuDAkAu9opvQ
+	(envelope-from <stable+bounces-235809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:11:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DBE3E3B1F
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 523503E3B99
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 09B9B300B859
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:00:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1734301048B
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62933258CD0;
-	Sun, 12 Apr 2026 12:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1129B36B071;
+	Sun, 12 Apr 2026 12:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQx7+D/9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iT5Niv06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DA237B409
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96783382F1
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775995204; cv=none; b=seG2ly44Nwo5RWV3Nevp5H0/r6TYZMkS8zNKK7GnhKDZmyocEyiaJN/VogHq8GJDTxVpQzj4i9maPElx/nocCPtulhDp8SV7+cx0kX2wT9RCorQ2k1exSQ5yxP9txr4NaHD6Uv5+UHyIDxuCXFSYrzd/ASGmuXxQy2F7l1M6Sbs=
+	t=1775995880; cv=none; b=CrvVg/g0TRhxGhCpAgxEA8+GEgl6PusTdY1kUdjBTYQjZ4YFh6lSl80QM7on8d78uuEgVsvxkD0+VRo7aozkvNxTiO7r7tiXBRhJVJ7TmsFImcFEvbBDgR171fXsL0EZQbn7Qe6mFCTZDHw2Q/Csyy2VNI0OuoHQITTOZ1Fvuo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775995204; c=relaxed/simple;
-	bh=N49dKV3PD2oEa//TiAOA4ONTh/tS5mfmxWTFO5KOO9M=;
+	s=arc-20240116; t=1775995880; c=relaxed/simple;
+	bh=ZyKw8wUOUn5OuInmSBqYcBDG/vqNSPfWkN+wrqufmx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMOUXABK3A5IUXe89B7rbniaQF6ie+nxS07vaqQcmeH0PJ3r7h7b2N8qsGFw4Q/nm7izrBVI9woUckCLIX9Fx+qDvY49jHhrnai0k1gi/ILtKzoaw2Tkv7u9qMHWnOiuttd83C6aEjBdJEWhFM/EqB2utuIP/zyNEP83LGE72AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EQx7+D/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A27C19424;
-	Sun, 12 Apr 2026 12:00:02 +0000 (UTC)
+	 MIME-Version; b=N9Fi9/9tqlhLXJD0EExO+4HF8ZtBgV0+32QhLJ55dTzqe0yL9XeTYfNZNHPPU2ManL3rHMLBXMRrBBCGEJEJI2Dkqh5Q5/uthtWBFKYtPYgZFcPYRTRWIADQmVMXSVVYGiJxMKZzer7UoLZcMwd0eRsyYfQTCOn8/QpQIrDasdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iT5Niv06; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2D4C19424;
+	Sun, 12 Apr 2026 12:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775995203;
-	bh=N49dKV3PD2oEa//TiAOA4ONTh/tS5mfmxWTFO5KOO9M=;
+	s=k20201202; t=1775995880;
+	bh=ZyKw8wUOUn5OuInmSBqYcBDG/vqNSPfWkN+wrqufmx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQx7+D/9EhIWhndpYwjiIrdSJKO20Wef9M4dvViuOuYy9NZqQ2hTVw0H6U0RQ3m/w
-	 SAEsX4RgNKDsHdPQR7rT4d7iik4nBRX6EjR7N+F3Xy8SqdcFzHRcXAAbG/AZx6gI69
-	 YajPvz2BquR16QaKdIGgYAs5R0cN9Ntd2Bf7yEgAzosSkMdFXIBY2BVXIj4eVA3qix
-	 5hqQSTnXZgmeINmr6ZcaSYbQaCp31h946Gnazel8rTM/L5ffYJ0dSlxJDj9XeFCsWv
-	 p8Ax10D/MU76OuqrJ3u58GNAgFexRsg1fx2trHcAk1glMC5BRyx2nOEvXIQDKXG2PP
-	 p+SSRkYr5VHSQ==
+	b=iT5Niv06U02CNXgbuIH38ox6ofFp9Z7N0I7n/jOeaG/SSbWZwfOrCT/v5GClYvr9R
+	 lh2XCRQLS+E/wI3hAELUD1qvB+VG12lB67EpzIhnXPfwa/cAxMdZ0mHTvcXsAGXICs
+	 BD4gU4S1cdnGkI7ttb95ejnWQQyKVyxxcaCxzzAeDdfPjGkZQxDUjwdLyoOUpw9wOU
+	 MDfOugXDm+XK5TitXYy5fu7RMrJPqvI/JosgBtJMj61jcj05lZ2SMNSfUu4NjSJXWz
+	 ZFLo3Q2LgkpUV9r4RDJKy3ghV9smCG2jWkdwMfrwGgB4mCIsmupdEpYx3i34POW/cW
+	 zKF19YLMElPCg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Michael Zimmermann <sigmaepsilon92@gmail.com>,
 	stable <stable@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] usb: gadget: f_hid: move list and spinlock inits from bind to alloc
-Date: Sun, 12 Apr 2026 08:00:00 -0400
-Message-ID: <20260412120000.2096246-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] usb: gadget: f_hid: move list and spinlock inits from bind to alloc
+Date: Sun, 12 Apr 2026 08:11:18 -0400
+Message-ID: <20260412121118.2103786-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026040827-jitters-comic-f139@gregkh>
-References: <2026040827-jitters-comic-f139@gregkh>
+In-Reply-To: <2026040828-repaying-spherical-743f@gregkh>
+References: <2026040828-repaying-spherical-743f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linuxfoundation.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235808-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235809-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: C1DBE3E3B1F
+X-Rspamd-Queue-Id: 523503E3B99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -130,7 +130,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index 1293bc9157087..f8cc26af702c9 100644
+index c285b23c3707c..e3738a1aa9f48 100644
 --- a/drivers/usb/gadget/function/f_hid.c
 +++ b/drivers/usb/gadget/function/f_hid.c
 @@ -996,13 +996,8 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
