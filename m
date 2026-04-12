@@ -1,135 +1,258 @@
-Return-Path: <stable+bounces-235806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCCQFZBd22mWAwkAu9opvQ
-	(envelope-from <stable+bounces-235806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 10:53:36 +0200
+	id MMNuKghy22lmCAkAu9opvQ
+	(envelope-from <stable+bounces-235807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:20:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC8D3E3293
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 10:53:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AF03E369B
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE1B1301410A
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 08:53:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A8AD3011C6F
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 10:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE26E308F39;
-	Sun, 12 Apr 2026 08:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA88375ADF;
+	Sun, 12 Apr 2026 10:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="WiaDtoKu"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="bj31Cg2g"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A73258CD0;
-	Sun, 12 Apr 2026 08:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A761DE2AD;
+	Sun, 12 Apr 2026 10:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775984013; cv=none; b=DIkRhhTeuP9kEEC6gBeUeTvp6tTt0P8cRAnkgD257BVHK0zvlATI1aMB4u9/RksCdtSbkiR4YsMTkveahCkD6UKakBZm4TiDgQFlcBFBxEVSRnuY5AaxZJ4GYyzFHw1QQWbWABNUBnIRd+qqCee0Y7bLZnfSIQtCRp7JT90QOS0=
+	t=1775989131; cv=none; b=H7FF6pwilMayQ/GjPrze9AWhrKa0vo6os09v7cNWs051k8agSP6twqBWrf+SSjh6Y/M/Z9+XiY0Jm5tNOzoItzWGKbXDxqHG0XUviNxuKBZUgqxnqBJd68EA7oC1cN/FQ4xFbnStlWWvGJ/wwiSaP9divVtId2/of/B0TL3jg8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775984013; c=relaxed/simple;
-	bh=Ryv+QLCznVi+RuncF+Lf2KQgNd1K2NjirDuh130bHUI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WXLPlEhsMENo/Lx34zOqEAE6xfvP4IHqpQ/rxMKmhdVUVHPBuA7DW8q6KkSIGO8yUXalYnV9+ruev35oK595G4MJKAIvkX7tjPQWtdRs2mIMptJHzrYwrUbt1t/RpwXITPm0UVeN2xxkccWFeMequHCdswYypWh3N9TWvnY6iDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=WiaDtoKu; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=WYpLRYkMbXSWE9ve1QFlr1Bs81ubQxWsPh6vsjodu/8=; 
-	b=WiaDtoKueG88pKo90spEdcho2TG/yukRkr9zpcVeoDnmwg5XpsdBfOeyKgRYcK/otuCZDBHfOKF
-	fuUrTuh/xaFTn90wMeTMBTlfFuVWztyCq9j9C9ZETVXcmC0X7Flk9ntdMwHuKYbzOPYOHAHF0Mlid
-	g9CuoVhMztlO0+IW41/KAdcNVTofw7C4EEGVSGv0FlGMepfoQ8Fmbavv6mm8O2JVLrRfF1ywPqu/M
-	LHnBLCl1TYZCZgqnTZVPda2A4r0N2qdp48r/moguPiiGS2CVshZ6zghicb1bz+ehF921B17gLONfR
-	pbA90gysq79ZUH84NwTIyeVTyjbl/3BGKVIg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wBq9t-005UKA-1i;
-	Sun, 12 Apr 2026 16:53:29 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sun, 12 Apr 2026 16:53:28 +0800
-Date: Sun, 12 Apr 2026 16:53:28 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Cc: linux-crypto@vger.kernel.org, qat-linux@intel.com,
-	stable@vger.kernel.org, Ahsan Atta <ahsan.atta@intel.com>,
-	Laurent M Coquerel <laurent.m.coquerel@intel.com>
-Subject: Re: [PATCH] crypto: qat - fix IRQ cleanup on 6xxx probe failure
-Message-ID: <adtdiPr5F0df5vga@gondor.apana.org.au>
-References: <20260401093146.268157-1-giovanni.cabiddu@intel.com>
+	s=arc-20240116; t=1775989131; c=relaxed/simple;
+	bh=+4mMOOJxRW72GzvKAHUQQThFwjr2r/cMI9CO9sZLikM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N1vbGPcWgOG8GcDvyi25EIr9hbEOHbnkPvydrqKQs1XxuTQbywPVpV5cZjsIoSincwdQT/1rJRM4yRFwdrJvopPWNsyljAo5yb/pZDIEATfv0ZUWD1JNHxXRrG3Qn8L2e8yYUJoukxN8wUO1UmEfWmFmKE1xHW/CchumgyZ8tQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=bj31Cg2g; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1775989121;
+	bh=UKrZ9HfNpKHGaF0K78euP7i/QvJB8oaJWnntzN6o0dc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bj31Cg2g4HzWT9eEcs4ZjnA9xR4guhJJb5O5u1QasEgeFwYBqKuFWm7b4KkJcSZhz
+	 hvbrDQ4hYz9oUUcyLaSC2oonuuPtOcPZO6gu0alkyIjBRrDrvGrinuPL7YLjI3J34b
+	 hP2+X6hi0QoM4KPWF0ZYadFhf0UmYOTNTc50f07A=
+Received: from stargazer (unknown [IPv6:2409:8a4c:e10:5280:f007:4005:95fb:69ef])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 76D2365992;
+	Sun, 12 Apr 2026 06:18:33 -0400 (EDT)
+From: Xi Ruoyao <xry111@xry111.site>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ziyao Li <liziyao@uniontech.com>
+Cc: niecheng1@uniontech.com,
+	zhanjun@uniontech.com,
+	guanwentao@uniontech.com,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	kernel@uniontech.com,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lain Fearyncess Yang <fsf@live.com>,
+	Ayden Meng <aydenmeng@yeah.net>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Xi Ruoyao <xry111@xry111.site>,
+	stable@vger.kernel.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH v8] PCI: loongson: Override PCIe bridge supported speeds for Loongson-3C6000 series
+Date: Sun, 12 Apr 2026 18:17:31 +0800
+Message-ID: <20260412101731.107059-1-xry111@xry111.site>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260401093146.268157-1-giovanni.cabiddu@intel.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235806-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[uniontech.com,aosc.io,vger.kernel.org,lists.linux.dev,linux.intel.com,live.com,yeah.net,xry111.site,kernel.org,loongson.cn];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235807-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[xry111.site:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,apana.org.au:url,gondor.apana.org.au:dkim,gondor.apana.org.au:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: BDC8D3E3293
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[live.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:email,yeah.net:email,xry111.site:dkim,xry111.site:email,xry111.site:mid]
+X-Rspamd-Queue-Id: 55AF03E369B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 01, 2026 at 10:31:11AM +0100, Giovanni Cabiddu wrote:
-> When adf_dev_up() partially completes and then fails, the IRQ
-> handlers registered during adf_isr_resource_alloc() are not detached
-> before the MSI-X vectors are released.
-> 
-> Since the device is enabled with pcim_enable_device(), calling
-> pci_alloc_irq_vectors() internally registers pcim_msi_release() as a
-> devres action. On probe failure, devres runs pcim_msi_release() which
-> calls pci_free_irq_vectors(), tearing down the MSI-X vectors while IRQ
-> handlers (for example 'qat0-bundle0') are still attached. This causes
-> remove_proc_entry() warnings:
-> 
->     [   22.163964] remove_proc_entry: removing non-empty directory 'irq/143', leaking at least 'qat0-bundle0'
-> 
-> Moving the devm_add_action_or_reset() before adf_dev_up() does not solve
-> the problem since devres runs in LIFO order and pcim_msi_release(),
-> registered later inside adf_dev_up(), would still fire before
-> adf_device_down().
-> 
-> Fix by calling adf_dev_down() explicitly when adf_dev_up() fails, to
-> properly free IRQ handlers before devres releases the MSI-X vectors.
-> 
-> Fixes: 17fd7514ae68 ("crypto: qat - add qat_6xxx driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-> Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-> Reviewed-by: Laurent M Coquerel <laurent.m.coquerel@intel.com>
-> ---
->  drivers/crypto/intel/qat/qat_6xxx/adf_drv.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+From: Ziyao Li <liziyao@uniontech.com>
 
-Patch applied.  Thanks.
+Older steppings of the Loongson-3C6000 series incorrectly report the
+supported link speeds on their PCIe bridges (device IDs 0x3c19, 0x3c29)
+as only 2.5 GT/s, despite the upstream bus supporting speeds from
+2.5 GT/s up to 16 GT/s.
+
+As a result, since commit 774c71c52aa4 ("PCI/bwctrl: Enable only if more
+than one speed is supported"), bwctrl will be disabled if there's only
+one 2.5 GT/s value in vector `supported_speeds`.
+
+Also, the amdgpu driver reads the value by pcie_get_speed_cap() in
+amdgpu_device_partner_bandwidth(), for its dynamic adjustment of PCIe
+clocks and lanes in power management. We hope this patch can prevent
+similar problems in future driver changes (similar checks may be
+implemented in other GPU, storage controller, NIC, etc. drivers).
+
+Manually override the `supported_speeds` field for affected PCIe bridges
+with those found on the upstream bus to correctly reflect the supported
+link speeds.
+
+This patch was originally found from AOSC OS[1].
+
+Link: https://github.com/AOSC-Tracking/linux/pull/2 #1
+Tested-by: Lain Fearyncess Yang <fsf@live.com>
+Tested-by: Ayden Meng <aydenmeng@yeah.net>
+Signed-off-by: Ayden Meng <aydenmeng@yeah.net>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Link: https://github.com/AOSC-Tracking/linux/commit/4392f441363abdf6fa0a0433d73175a17f493454
+[Ziyao Li: move from drivers/pci/quirks.c to drivers/pci/controller/pci-loongson.c]
+Signed-off-by: Ziyao Li <liziyao@uniontech.com>
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+[Xi Ruoyao: Fix falling through logic and add kernel log output;
+ add Fixes tag and rebase to 7.0-rc7]
+Cc: stable@vger.kernel.org
+Fixes: cd89edda4002 ("PCI: loongson: Add ACPI init support")
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+---
+
+Changes in v8:
+- Add the Fixes tag.
+- Link to v7: https://lore.kernel.org/all/20260121-loongson-pci1-v7-1-fc79c85a574d@uniontech.com/
+
+Ziyao Li's original commentary message follows below:
+
+The reason of not just copying pdev->bus->self->supported_speeds is
+that we're concerned that this approach assumes the upstream port
+reports the same capabilities as bridge, which may not always be the
+case in future silicon revisions.
+
+Our current conservative approach ensures we only enable speeds that
+are physically supported by checking the actual max_bus_speed. For
+example, if there's a future Loongson-3C9999 where the virtual bridge
+reports Gen4 support but the physical bridge only supports Gen3.
+
+In this scenario, directly copying the upstream port's supported_speeds
+would incorrectly report Gen4 support for the downstream bridge. The
+current patch ensures we only set speed bits up to what the hardware
+actually supports, based on the measured max_bus_speed. This seems
+safer for future silicon.
+
+Changes in v7:
+- adjust commit message
+- Link to v6: https://lore.kernel.org/r/20260114-loongson-pci1-v6-1-ee8a18f5d242@uniontech.com
+
+Changes in v6:
+- adjust commit message
+- Link to v5: https://lore.kernel.org/r/20260113-loongson-pci1-v5-1-264c9b4a90ab@uniontech.com
+
+Changes in v5:
+- style adjust
+- Link to v4: https://lore.kernel.org/r/20260113-loongson-pci1-v4-1-1921d6479fe4@uniontech.com
+
+Changes in v4:
+- rename subject
+- use 0x3c19/0x3c29 instead of 3c19/3c29
+- Link to v3: https://lore.kernel.org/r/20260109-loongson-pci1-v3-1-5ddc5ae3ba93@uniontech.com
+
+Changes in v3:
+- Adjust commit message
+- Make the program flow more intuitive
+- Link to v2: https://lore.kernel.org/r/20260104-loongson-pci1-v2-1-d151e57b6ef8@uniontech.com
+
+Changes in v2:
+- Link to v1: https://lore.kernel.org/r/20250822-loongson-pci1-v1-1-39aabbd11fbd@uniontech.com
+- Move from arch/loongarch/pci/pci.c to drivers/pci/controller/pci-loongson.c
+- Fix falling through logic and add kernel log output by Xi Ruoyao
+
+ drivers/pci/controller/pci-loongson.c | 36 +++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controller/pci-loongson.c
+index bc630ab8a283..a4250d7af1bf 100644
+--- a/drivers/pci/controller/pci-loongson.c
++++ b/drivers/pci/controller/pci-loongson.c
+@@ -176,6 +176,42 @@ static void loongson_pci_msi_quirk(struct pci_dev *dev)
+ }
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, loongson_pci_msi_quirk);
+ 
++/*
++ * Older steppings of the Loongson-3C6000 series incorrectly report the
++ * supported link speeds on their PCIe bridges (device IDs 0x3c19,
++ * 0x3c29) as only 2.5 GT/s, despite the upstream bus supporting speeds
++ * from 2.5 GT/s up to 16 GT/s.
++ */
++static void loongson_pci_bridge_speed_quirk(struct pci_dev *pdev)
++{
++	u8 old_supported_speeds = pdev->supported_speeds;
++
++	switch (pdev->bus->max_bus_speed) {
++	case PCIE_SPEED_16_0GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_16_0GB;
++		fallthrough;
++	case PCIE_SPEED_8_0GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_8_0GB;
++		fallthrough;
++	case PCIE_SPEED_5_0GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_5_0GB;
++		fallthrough;
++	case PCIE_SPEED_2_5GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_2_5GB;
++		break;
++	default:
++		pci_warn(pdev, "unexpected max bus speed");
++
++		return;
++	}
++
++	if (pdev->supported_speeds != old_supported_speeds)
++		pci_info(pdev, "fixing up supported link speeds: 0x%x => 0x%x",
++			 old_supported_speeds, pdev->supported_speeds);
++}
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c19, loongson_pci_bridge_speed_quirk);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c29, loongson_pci_bridge_speed_quirk);
++
+ static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bus)
+ {
+ 	struct pci_config_window *cfg;
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.53.0
+
 
