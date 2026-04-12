@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-235815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCOSGjyW22njDgkAu9opvQ
-	(envelope-from <stable+bounces-235815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:24 +0200
+	id mPQVIUWW22njDgkAu9opvQ
+	(envelope-from <stable+bounces-235816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80433E3DDA
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DFE3E3DE1
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90C85300F120
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:55:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C35C301053C
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA78337756E;
-	Sun, 12 Apr 2026 12:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF9F37B012;
+	Sun, 12 Apr 2026 12:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRPdQo/I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSQeE3qA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF15A18EB0
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5288D18EB0
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775998519; cv=none; b=sM+m2pjc51RKqmXNPpMgmT8LVnwAFTmwQ0NzQNLPqC83hXmcG75qGbMIfKcqbQ47E/0teyaj8OdvTLw8Uth2KI6dVpYI0Ak3K5rU2QBfyHI6pWfL4b00u9NgEnclPvqsTaQgwnkSZomsHUU4pa24M6ZqtGXBRSUcrfe9wuGNhks=
+	t=1775998520; cv=none; b=RvoT9jjba5KZu182BJFiyKLfhGnEih9HH1gCJN8j+g8yO0FHRe2uQ/fszXRJxEShjP7tJ192ZVS4tg+t1oYtGPUh/HglGOfQztFkbw+QtHpqoDmPpzghfyuYgKeOuVx13oIzLfvYtVpFuRSp0pY68B4yNKLHohbfu1MTzxl5D4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775998519; c=relaxed/simple;
-	bh=EY/glukiHG0CuNq3pY3NMBV0SIwR/PXUF7VtG3U8UDo=;
+	s=arc-20240116; t=1775998520; c=relaxed/simple;
+	bh=AwATX5nbBOftf0bMUoGhFfHeSPUGYHkchTfyuuL0GWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDpznrtmp2pD3AYCiaSGOWPmfNAaNiZUHsD05gAP5dtUnMlThFBWz301UHdgnxU4CEt1W/SnCorYf7BM/MbP5GFqyNahQJGNrna4H8PvQaQLntoG1NeiPbmNf/gkoVkjkTa9/1LKqXmRyyU5icTRe/t+k9z4sDS/aPWbMmHcxjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRPdQo/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C142FC19424;
-	Sun, 12 Apr 2026 12:55:18 +0000 (UTC)
+	 MIME-Version; b=XoKDxJB8dFVGhy2pcyd5UivHXE41qkXsAXzT8Tgs+t4NuP7garM9UL+Uoa8k9KajyUT0IbcVk9x1P9JxE6rDkaadIS0Ga3e6coebvTlqsP2sQ+B9PrY0uySkb78cLNWioAyWjxd+GuPGu+NVqNvrj1BCPSfXFl0JgShF0R8UfCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSQeE3qA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C053C2BCB0;
+	Sun, 12 Apr 2026 12:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775998519;
-	bh=EY/glukiHG0CuNq3pY3NMBV0SIwR/PXUF7VtG3U8UDo=;
+	s=k20201202; t=1775998520;
+	bh=AwATX5nbBOftf0bMUoGhFfHeSPUGYHkchTfyuuL0GWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRPdQo/IoXhJPoPfmPwmwiAyYt7oFVEjsvUJpObSALy5ElSADphkIUCHsBpPWcxEs
-	 PGMfYtmRDd1ZicdmxYuc+13eFSWZSTGgEuhbh4IAcKMqzkD9XNaHyBYff0MAkWkIyc
-	 ox2H1LwyP1gsAwylf9O3fzrUgi3ZoAOWqQ4jm/yc+rVxUwctoQCKG4xAMY9+ZF5bEz
-	 Rwk7gXY5muIT/hZNGvfNTQp07B1fwoMRPQp97q3FgPLQtJNd8w7r9lwXTzS3GFOV+F
-	 bDKOuUY8D6YV4aNSg5NoC8byf08GOa2hR49byXAvt+DDIySWE9sgre4GaBLBB9LVzd
-	 6m8XZpALgpAFw==
+	b=FSQeE3qAi7g021H5cNm9eJSfCWv26XmciE8naSrHVpDrlqWwq0oYZHC5Be8crM1uf
+	 Bd+2aIr0vIY8TWwGYRilOhFfw3sYymapU7K+Jd390Z9QM17A9EGSn1q/5EDSl2582Q
+	 rpAqXHFJ78W4lKJ8NcLOKnZS+mgI1V+K/u6UymGfQ7pvrsNxqcY8O6p6UC5bKpP6D+
+	 9VYbc7Ei7KkyHHfEkYk9t5DZKNKHVX4PqQ6+RDZrV+e+Nf4rmM1Z1gPCua+HfCtJoQ
+	 d5T//Vrl2zmGIcTBqbIxfBOF6VP16UFQUTZFwlb923k+mrh0p3icx6vD+hg476rtfb
+	 ax13N4oc80Q6A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bo Liu <liubo03@inspur.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/4] rfkill: Use sysfs_emit() to instead of sprintf()
-Date: Sun, 12 Apr 2026 08:55:14 -0400
-Message-ID: <20260412125517.2219007-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/4] rfkill: sync before userspace visibility/changes
+Date: Sun, 12 Apr 2026 08:55:15 -0400
+Message-ID: <20260412125517.2219007-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041215-clamp-serpent-1558@gregkh>
+In-Reply-To: <20260412125517.2219007-1-sashal@kernel.org>
 References: <2026041215-clamp-serpent-1558@gregkh>
+ <20260412125517.2219007-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235815-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235816-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,106 +87,133 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[corigine.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,inspur.com:email]
-X-Rspamd-Queue-Id: B80433E3DDA
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 20DFE3E3DE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Bo Liu <liubo03@inspur.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 796703baead0c2862f7f2ebb9b177590af533035 ]
+[ Upstream commit 2c3dfba4cf84ac4f306cc6653b37b6dd6859ae9d ]
 
-Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-should only use sysfs_emit() or sysfs_emit_at() when formatting the
-value to be returned to user space.
+If userspace quickly opens /dev/rfkill after a new
+instance was created, it might see the old state of
+the instance from before the sync work runs and may
+even _change_ the state, only to have the sync work
+change it again.
 
-Signed-off-by: Bo Liu <liubo03@inspur.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230206081641.3193-1-liubo03@inspur.com
+Fix this by doing the sync inline where needed, not
+just for /dev/rfkill but also for sysfs.
+
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Stable-dep-of: ea245d78dec5 ("net: rfkill: prevent unlimited numbers of rfkill events from being created")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/rfkill/core.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
 diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index dac4fdc7488a3..65913ac35bd59 100644
+index 65913ac35bd59..981771598f1eb 100644
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
-@@ -685,7 +685,7 @@ static ssize_t name_show(struct device *dev, struct device_attribute *attr,
+@@ -48,6 +48,7 @@ struct rfkill {
+ 	bool			persistent;
+ 	bool			polling_paused;
+ 	bool			suspended;
++	bool			need_sync;
+ 
+ 	const struct rfkill_ops	*ops;
+ 	void			*data;
+@@ -368,6 +369,17 @@ static void rfkill_set_block(struct rfkill *rfkill, bool blocked)
+ 		rfkill_event(rfkill);
+ }
+ 
++static void rfkill_sync(struct rfkill *rfkill)
++{
++	lockdep_assert_held(&rfkill_global_mutex);
++
++	if (!rfkill->need_sync)
++		return;
++
++	rfkill_set_block(rfkill, rfkill_global_states[rfkill->type].cur);
++	rfkill->need_sync = false;
++}
++
+ static void rfkill_update_global_state(enum rfkill_type type, bool blocked)
+ {
+ 	int i;
+@@ -730,6 +742,10 @@ static ssize_t soft_show(struct device *dev, struct device_attribute *attr,
  {
  	struct rfkill *rfkill = to_rfkill(dev);
  
--	return sprintf(buf, "%s\n", rfkill->name);
-+	return sysfs_emit(buf, "%s\n", rfkill->name);
++	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
++	mutex_unlock(&rfkill_global_mutex);
++
+ 	return sysfs_emit(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_SW) ? 1 : 0);
  }
- static DEVICE_ATTR_RO(name);
  
-@@ -694,7 +694,7 @@ static ssize_t type_show(struct device *dev, struct device_attribute *attr,
+@@ -751,6 +767,7 @@ static ssize_t soft_store(struct device *dev, struct device_attribute *attr,
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
+ 	rfkill_set_block(rfkill, state);
+ 	mutex_unlock(&rfkill_global_mutex);
+ 
+@@ -783,6 +800,10 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
  {
  	struct rfkill *rfkill = to_rfkill(dev);
  
--	return sprintf(buf, "%s\n", rfkill_types[rfkill->type]);
-+	return sysfs_emit(buf, "%s\n", rfkill_types[rfkill->type]);
++	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
++	mutex_unlock(&rfkill_global_mutex);
++
+ 	return sysfs_emit(buf, "%d\n", user_state_from_blocked(rfkill->state));
  }
- static DEVICE_ATTR_RO(type);
  
-@@ -703,7 +703,7 @@ static ssize_t index_show(struct device *dev, struct device_attribute *attr,
+@@ -805,6 +826,7 @@ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
+ 	rfkill_set_block(rfkill, state == RFKILL_USER_STATE_SOFT_BLOCKED);
+ 	mutex_unlock(&rfkill_global_mutex);
+ 
+@@ -1032,14 +1054,10 @@ static void rfkill_uevent_work(struct work_struct *work)
+ 
+ static void rfkill_sync_work(struct work_struct *work)
  {
- 	struct rfkill *rfkill = to_rfkill(dev);
+-	struct rfkill *rfkill;
+-	bool cur;
+-
+-	rfkill = container_of(work, struct rfkill, sync_work);
++	struct rfkill *rfkill = container_of(work, struct rfkill, sync_work);
  
--	return sprintf(buf, "%d\n", rfkill->idx);
-+	return sysfs_emit(buf, "%d\n", rfkill->idx);
- }
- static DEVICE_ATTR_RO(index);
- 
-@@ -712,7 +712,7 @@ static ssize_t persistent_show(struct device *dev,
- {
- 	struct rfkill *rfkill = to_rfkill(dev);
- 
--	return sprintf(buf, "%d\n", rfkill->persistent);
-+	return sysfs_emit(buf, "%d\n", rfkill->persistent);
- }
- static DEVICE_ATTR_RO(persistent);
- 
-@@ -721,7 +721,7 @@ static ssize_t hard_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct rfkill *rfkill = to_rfkill(dev);
- 
--	return sprintf(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_HW) ? 1 : 0 );
-+	return sysfs_emit(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_HW) ? 1 : 0);
- }
- static DEVICE_ATTR_RO(hard);
- 
-@@ -730,7 +730,7 @@ static ssize_t soft_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct rfkill *rfkill = to_rfkill(dev);
- 
--	return sprintf(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_SW) ? 1 : 0 );
-+	return sysfs_emit(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_SW) ? 1 : 0);
+ 	mutex_lock(&rfkill_global_mutex);
+-	cur = rfkill_global_states[rfkill->type].cur;
+-	rfkill_set_block(rfkill, cur);
++	rfkill_sync(rfkill);
+ 	mutex_unlock(&rfkill_global_mutex);
  }
  
- static ssize_t soft_store(struct device *dev, struct device_attribute *attr,
-@@ -764,7 +764,7 @@ static ssize_t hard_block_reasons_show(struct device *dev,
- {
- 	struct rfkill *rfkill = to_rfkill(dev);
+@@ -1087,6 +1105,7 @@ int __must_check rfkill_register(struct rfkill *rfkill)
+ 			round_jiffies_relative(POLL_INTERVAL));
  
--	return sprintf(buf, "0x%lx\n", rfkill->hard_block_reasons);
-+	return sysfs_emit(buf, "0x%lx\n", rfkill->hard_block_reasons);
- }
- static DEVICE_ATTR_RO(hard_block_reasons);
- 
-@@ -783,7 +783,7 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct rfkill *rfkill = to_rfkill(dev);
- 
--	return sprintf(buf, "%d\n", user_state_from_blocked(rfkill->state));
-+	return sysfs_emit(buf, "%d\n", user_state_from_blocked(rfkill->state));
- }
- 
- static ssize_t state_store(struct device *dev, struct device_attribute *attr,
+ 	if (!rfkill->persistent || rfkill_epo_lock_active) {
++		rfkill->need_sync = true;
+ 		schedule_work(&rfkill->sync_work);
+ 	} else {
+ #ifdef CONFIG_RFKILL_INPUT
+@@ -1171,6 +1190,7 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
+ 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
+ 		if (!ev)
+ 			goto free;
++		rfkill_sync(rfkill);
+ 		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
+ 		list_add_tail(&ev->list, &data->events);
+ 	}
 -- 
 2.53.0
 
