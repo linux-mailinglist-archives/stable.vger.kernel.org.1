@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-235787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPK9IwAr22kT+AgAu9opvQ
-	(envelope-from <stable+bounces-235787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:17:52 +0200
+	id +OJjG/Iq22kT+AgAu9opvQ
+	(envelope-from <stable+bounces-235790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:17:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD0B3E2D15
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:17:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE8B3E2D00
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E66330179D3
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 05:16:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3EC03014C7D
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 05:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472E923F26A;
-	Sun, 12 Apr 2026 05:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05000277017;
+	Sun, 12 Apr 2026 05:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kXBf/e2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UW5+1LiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1A41DE4E0
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 05:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9ED1DE4E0
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 05:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775970987; cv=none; b=ZFNhBrFD0UpIBRWEUQVXqazV5fbxTtxc9o32cshRyx3svcCdJucAqan4uirXtJFghX+kH6FCUjpXek/b7TTkD0g97j1Wgv94k0pIE35PFu2Jiqntw1atpIA7p7727cBOPJBGLEWBURU00QGlTQziaGj4i/InFZ40SX6050USJ+w=
+	t=1775971055; cv=none; b=nL9wuJrgxnDWZZNHrxWWjqITQOTEV8DVLkoaKcj6RtdOTE/MqJJGUz6GH4GaNGLCL/jP7dN9yoG1lF8XxJ3za8M5+v/jU/8/bFNiFzq5l2GYgZ1ADf+IgmIiPbxyMfRykR5WqLR/TPvUnqd4uPf9hiY/rgJSa5J1PKnrpgap7eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775970987; c=relaxed/simple;
-	bh=eVc4DoXQHKSEjpLbhEus7DOrqhqpradNt8bS1eDfA3Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TFblVa51tgmPLxfE/YDOp7iDz+EQsp0eyBttNvD8aS8O7wz3NrKc12PzzGAsZdPG+suGaYYuzmsNjT/Z/qVr6CTLnM43QQ73wEMoBDZSWSUbl3hC5dbGkn9xGZC/94KbUG/saHAATtnlgsD4XqYDo5Wfj5f0zRkCxVogvbqEVmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kXBf/e2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D97C19424;
-	Sun, 12 Apr 2026 05:16:26 +0000 (UTC)
+	s=arc-20240116; t=1775971055; c=relaxed/simple;
+	bh=AVDtBQNstLZ20HiUsQtgX1j1YeHtNkG87qisyabwY8o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dgH+UIZhFGKwz2XD0Xub7ag4hQ4sIap16uAkT1jbWiMIX5gcfS7GP7uQf34+XIlzn8d/osIV9FDAe44yqqxjVrnSWSt4Lv3EWd9l+NYZqb6Pl+GPEtLbrxGjU9F0TeuEUoQyqfblK2L3z/Tz8XVkuRK9GdRXczULB/DTfbr64Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UW5+1LiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED038C19424;
+	Sun, 12 Apr 2026 05:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775970986;
-	bh=eVc4DoXQHKSEjpLbhEus7DOrqhqpradNt8bS1eDfA3Y=;
+	s=korg; t=1775971055;
+	bh=AVDtBQNstLZ20HiUsQtgX1j1YeHtNkG87qisyabwY8o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2kXBf/e2z3RCZ15ie/zBv1EN6wHwnoI6YIs/FfAVagRioTFjPt4kZiAIdBlsa7vK9
-	 B/KEL0b9cVz8AFrURjqz93PTIUx8h8kVYsSZHX/DymJA7qXPltaAca3vn6Wh6kQkTL
-	 w2AXWPEd/ObmaQtQ3V8KImCW5HB19JCLSdHuNrHo=
-Subject: FAILED: patch "[PATCH] net: rfkill: prevent unlimited numbers of rfkill events from" failed to apply to 5.10-stable tree
-To: gregkh@linuxfoundation.org,bird@lzu.edu.cn,johannes.berg@intel.com,johannes@sipsolutions.net,stable@kernel.org,tomapufckgml@gmail.com,yifanwucs@gmail.com,yuantan098@gmail.com
+	b=UW5+1LiJMHnwDVBVAiHOxn2z7fn1AIpbyn//nOgsn4+omx7rUQDSWCeYX2cy38o6O
+	 +yOnsMZkghU8CbzaJLXTO+nvwJGsGtm3bOGmZkhBD0PZgfgB7CeZ49No79Gnd1achJ
+	 tTVSoOtr+/SVaSRbxNfy+XfPz75HfGxEw62u/mp4=
+Subject: FAILED: patch "[PATCH] Revert "mptcp: add needs_id for netlink appending addr"" failed to apply to 6.6-stable tree
+To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 12 Apr 2026 07:16:16 +0200
-Message-ID: <2026041216-ideology-snowplow-e524@gregkh>
+Date: Sun, 12 Apr 2026 07:17:24 +0200
+Message-ID: <2026041224-kinfolk-mustiness-e33d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,50 +57,49 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235787-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235790-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,lzu.edu.cn,intel.com,sipsolutions.net,kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,sipsolutions.net:email,msgid.link:url]
-X-Rspamd-Queue-Id: DDD0B3E2D15
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ietf.org:url,msgid.link:url,gregkh:email]
+X-Rspamd-Queue-Id: DBE8B3E2D00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x ea245d78dec594372e27d8c79616baf49e98a4a1
+git cherry-pick -x 8e2760eaab778494fc1fa257031e0e1799647f46
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041216-ideology-snowplow-e524@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041224-kinfolk-mustiness-e33d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,114 +111,103 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ea245d78dec594372e27d8c79616baf49e98a4a1 Mon Sep 17 00:00:00 2001
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Mon, 30 Mar 2026 11:14:13 +0200
-Subject: [PATCH] net: rfkill: prevent unlimited numbers of rfkill events from
- being created
+From 8e2760eaab778494fc1fa257031e0e1799647f46 Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 7 Apr 2026 10:41:41 +0200
+Subject: [PATCH] Revert "mptcp: add needs_id for netlink appending addr"
 
-Userspace can create an unlimited number of rfkill events if the system
-is so configured, while not consuming them from the rfkill file
-descriptor, causing a potential out of memory situation.  Prevent this
-from bounding the number of pending rfkill events at a "large" number
-(i.e. 1000) to prevent abuses like this.
+This commit was originally adding the ability to add MPTCP endpoints
+with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
+net namespace level, is not supposed to handle endpoints with such ID,
+because this ID 0 is reserved to the initial subflow, as mentioned in
+the MPTCPv1 protocol [1], a per-connection setting.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Note that 'ip mptcp endpoint add id 0' stops early with an error, but
+other tools might still request the in-kernel PM to create MPTCP
+endpoints with this restricted ID 0.
 
-diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index 2444237bc36a..4827e1fb8804 100644
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -73,11 +73,14 @@ struct rfkill_int_event {
- 	struct rfkill_event_ext	ev;
- };
+In other words, it was wrong to call the mptcp_pm_has_addr_attr_id
+helper to check whether the address ID attribute is set: if it was set
+to 0, a new MPTCP endpoint would be created with ID 0, which is not
+expected, and might cause various issues later.
+
+Fixes: 584f38942626 ("mptcp: add needs_id for netlink appending addr")
+Cc: stable@vger.kernel.org
+Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.2-9 [1]
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+index 82e59f9c6dd9..0ebf43be9939 100644
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -720,7 +720,7 @@ static void __mptcp_pm_release_addr_entry(struct mptcp_pm_addr_entry *entry)
  
-+/* Max rfkill events that can be "in-flight" for one data source */
-+#define MAX_RFKILL_EVENT	1000
- struct rfkill_data {
- 	struct list_head	list;
- 	struct list_head	events;
- 	struct mutex		mtx;
- 	wait_queue_head_t	read_wait;
-+	u32			event_count;
- 	bool			input_handler;
- 	u8			max_size;
- };
-@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_unregister(void)
- }
- #endif /* CONFIG_RFKILL_LEDS */
- 
--static void rfkill_fill_event(struct rfkill_event_ext *ev,
--			      struct rfkill *rfkill,
--			      enum rfkill_operation op)
-+static int rfkill_fill_event(struct rfkill_int_event *int_ev,
-+			     struct rfkill *rfkill,
-+			     struct rfkill_data *data,
-+			     enum rfkill_operation op)
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 					     struct mptcp_pm_addr_entry *entry,
+-					     bool needs_id, bool replace)
++					     bool replace)
  {
-+	struct rfkill_event_ext *ev = &int_ev->ev;
- 	unsigned long flags;
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	int ret = -EINVAL;
+@@ -779,7 +779,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
  
- 	ev->idx = rfkill->idx;
-@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfkill_event_ext *ev,
- 					RFKILL_BLOCK_SW_PREV));
- 	ev->hard_block_reasons = rfkill->hard_block_reasons;
- 	spin_unlock_irqrestore(&rfkill->lock, flags);
-+
-+	scoped_guard(mutex, &data->mtx) {
-+		if (data->event_count++ > MAX_RFKILL_EVENT) {
-+			data->event_count--;
-+			return -ENOSPC;
-+		}
-+		list_add_tail(&int_ev->list, &data->events);
-+	}
-+	return 0;
+-	if (!entry->addr.id && needs_id) {
++	if (!entry->addr.id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -790,7 +790,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id && needs_id)
++	if (!entry->addr.id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -923,7 +923,7 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk,
+ 		return -ENOMEM;
+ 
+ 	entry->addr.port = 0;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true, false);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, false);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -977,18 +977,6 @@ static int mptcp_nl_add_subflow_or_signal_addr(struct net *net,
+ 	return 0;
  }
  
- static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
-@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
- 		ev = kzalloc_obj(*ev);
- 		if (!ev)
- 			continue;
--		rfkill_fill_event(&ev->ev, rfkill, op);
--		mutex_lock(&data->mtx);
--		list_add_tail(&ev->list, &data->events);
--		mutex_unlock(&data->mtx);
-+		if (rfkill_fill_event(ev, rfkill, data, op)) {
-+			kfree(ev);
-+			continue;
-+		}
- 		wake_up_interruptible(&data->read_wait);
+-static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
+-				      struct genl_info *info)
+-{
+-	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
+-
+-	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
+-					 mptcp_pm_address_nl_policy, info->extack) &&
+-	    tb[MPTCP_PM_ADDR_ATTR_ID])
+-		return true;
+-	return false;
+-}
+-
+ /* Add an MPTCP endpoint */
+ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+@@ -1037,9 +1025,7 @@ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ 			goto out_free;
+ 		}
  	}
- }
-@@ -1186,10 +1200,8 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
- 		if (!ev)
- 			goto free;
- 		rfkill_sync(rfkill);
--		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
--		mutex_lock(&data->mtx);
--		list_add_tail(&ev->list, &data->events);
--		mutex_unlock(&data->mtx);
-+		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
-+			kfree(ev);
- 	}
- 	list_add(&data->list, &rfkill_fds);
- 	mutex_unlock(&rfkill_global_mutex);
-@@ -1259,6 +1271,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
- 		ret = -EFAULT;
- 
- 	list_del(&ev->list);
-+	data->event_count--;
- 	kfree(ev);
-  out:
- 	mutex_unlock(&data->mtx);
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
+-						!mptcp_pm_has_addr_attr_id(attr, info),
+-						true);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
+ 		goto out_free;
 
 
