@@ -1,125 +1,106 @@
-Return-Path: <stable+bounces-235854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cF85M6kG3GkgLQkAu9opvQ
-	(envelope-from <stable+bounces-235854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:55:05 +0200
+	id GMqzFBMI3GmoLQkAu9opvQ
+	(envelope-from <stable+bounces-235855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 23:01:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F4E3E5F94
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:55:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1936E3E5FE7
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 23:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 235923009F33
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:55:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CAE1300BCAD
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3637F8D9;
-	Sun, 12 Apr 2026 20:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEA837FF5A;
+	Sun, 12 Apr 2026 20:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e5grjL1x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EirTS/vN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A756B37F016;
-	Sun, 12 Apr 2026 20:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FFF351C30;
+	Sun, 12 Apr 2026 20:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776027297; cv=none; b=FTftdhwCHV3F/E9B9WOF0yRi0Vr1w+mNNqyqa8d9UGIgdXwk9M66kqBXP4f1mlKMllIaAuVzhm3GIqeKPch06uNi+SW70vdqECUqjhKqk+xbAhb7FiupM2YAQmoxMZtr6/rm1EpHzkMfEAlx8it60gQXjXgzysgp9LKhOeQ/+aY=
+	t=1776027509; cv=none; b=LWmwRtbpzoEB+4l3faBB7XYdV1js9cw83DrMO7nPrvqDt2U6X90ug0NfB+68JLpRbieIA+7+VBxp2NQLGLo5SgT9rCvvgKIzEo+rpkesI4GXo0dN7ezjbl3ICHUbYgixg9U+Izygm8a84UocUKEmMjPCQVLNPNg0E3vZmGAJHhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776027297; c=relaxed/simple;
-	bh=JgnDkB/9kfGW0qhDMSzACRY/lg2jFuAyF5Rw+5W0+X8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p6UsSJIa52nQ1+f5WKRYgzz7vRtLAzGCEn6Du8LPLMC5Ve5BMgbzBvR1oxImXvNLGd69phxRCY4CBjYEDa7YGTn1cZB5k+TE5gD6coigE10wFxanDQuuUgZm3ciKGMwhosUctslCVRtDrSfYGI53zyypKX8fGaKR9PBNSF2OPkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e5grjL1x; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3FE6C4E429E2;
-	Sun, 12 Apr 2026 20:54:55 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 066285FFB9;
-	Sun, 12 Apr 2026 20:54:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 01F14104500EE;
-	Sun, 12 Apr 2026 22:54:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776027294; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=DkmreSeOF6tVK6TvM9FYzgfhtfGfnhkMGODWKQyuItM=;
-	b=e5grjL1xmihcOQbZ9hJC+KfO4+W7w0YClp7AbHtsIYnmnMoNehazns1tD/M/1neKn3sLv6
-	yuuFuiaUC9xy/kBnBqiuj2duJIpblYyj84sIbIuN3NbEnZNDawrUre9H5/u62Z8+d/H3yR
-	3MJie5lQzv60zcB0J+BdjJnZyt4BLfMZ5IYiO7yExLv9H6s1hZIilpV3ZN8ha2pgqoGgpr
-	zYMiWrBzP3N2DV936Ynt9osY6DgdvrM1Pvje8Osofck7m+6zXmRkXhr2/Mm0SNiC0zYTdg
-	3NDZoVLQQXIasKi02qsdeatWEUXiuqQppiFT3R3m0lbiE0FDHjxeQ3F1qPW36w==
-Date: Sun, 12 Apr 2026 22:54:53 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-	Johan Hovold <johan@kernel.org>
-Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] rtc: ntxec: fix OF node reference imbalance
-Message-ID: <177602728247.2842050.14857102553395575976.b4-ty@b4>
-References: <20260407122717.2676774-1-johan@kernel.org>
+	s=arc-20240116; t=1776027509; c=relaxed/simple;
+	bh=UuQrIK1aHRDtycvnWsa1Fwi8cjQTRLCMiv417Myy+ds=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CdYvbaMkAcvh5p8Z05ffkss+F8gbCyrrCFX7EDQGg0zqhem1/xfG/Zq5FU6qinqDFd+SGBecDjIJTVmWfpqiQjGq+bN4F+esvqfeU71J+uX8fGS+/Talv7HRN1N0VMV1C0xGEKFkcL5tsl+vBeUDrAwePVgl8eecKDyraq+1rMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EirTS/vN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F71C19424;
+	Sun, 12 Apr 2026 20:58:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776027508;
+	bh=UuQrIK1aHRDtycvnWsa1Fwi8cjQTRLCMiv417Myy+ds=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EirTS/vNi0+PFAF/vsi/uXnaMv1Dz1SMdJRU/B+gZm/HCLWTakhjvnr8k6znCwm/D
+	 QQsFkOdoasjSYryQKWj7hplaHhzfabTVxVEiv+3op45wbabHAMdLu88gKPotGp3t+o
+	 pbtMfF8rtsGlLyDs77eBUBYVKdQAMamioPCVrQBnHIZ8Nh0TNfXcreYH7+1N+IZse9
+	 MUg/L1ZrgrjNEpzM4ZR4oDEkBLNc0IviWWbsoi/HGIsJIzOVKurqqYGvwflFPECJP7
+	 12IpAS/Q9AkPx2wBu7zS0vPrBcYAYN0BB4Szhr9J7TCK4fTUE6qYKaiZDGLUFRGq6D
+	 xihgY1kW11bcA==
+Date: Sun, 12 Apr 2026 13:58:27 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?TGVrw6sgSGFww6dpdQ==?= <snowwlake@icloud.com>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ stable@vger.kernel.org, krzysztof.kozlowski@linaro.org
+Subject: Re: [PATCH net 1/4] nfc: digital: Fix stack buffer overflow in
+ digital_in_recv_sensf_res()
+Message-ID: <20260412135827.0cb6f44c@kernel.org>
+In-Reply-To: <20260409223436.1887988-2-snowwlake@icloud.com>
+References: <20260409223436.1887988-1-snowwlake@icloud.com>
+	<20260409223436.1887988-2-snowwlake@icloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260407122717.2676774-1-johan@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235854-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235855-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.net,kernel.org];
+	FREEMAIL_TO(0.00)[icloud.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[bootlin.com:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexandre.belloni@bootlin.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 44F4E3E5F94
+X-Rspamd-Queue-Id: 1936E3E5FE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 07 Apr 2026 14:27:17 +0200, Johan Hovold wrote:
-> The driver reuses the OF node of the parent multi-function device but
-> fails to take another reference to balance the one dropped by the
-> platform bus code when unbinding the MFD and deregistering the child
-> devices.
-> 
-> Fix this by using the intended helper for reusing OF nodes.
-> 
-> [...]
+On Fri, 10 Apr 2026 00:34:31 +0200 Lek=C3=AB Hap=C3=A7iu wrote:
+> The function digital_in_recv_sensf_res() validates that the incoming
+> SENSF_RES frame is at least DIGITAL_SENSF_RES_MIN_LENGTH (17) bytes,
+> but does not check that it is at most NFC_SENSF_RES_MAXSIZE (18) bytes
+> before copying into the 18-byte target.sensf_res stack buffer.
 
-Applied, thanks!
-
-[1/1] rtc: ntxec: fix OF node reference imbalance
-      https://git.kernel.org/abelloni/c/30c4d2f26bb3
-
-Best regards,
-
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Hm, third similar fix we received for this.
+struct digital_sensf_res is 19 bytes, you're capping the length at 18
+something else is wrong here..
 
