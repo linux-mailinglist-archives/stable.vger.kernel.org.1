@@ -1,184 +1,137 @@
-Return-Path: <stable+bounces-235823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MLoFuek22ldEgkAu9opvQ
-	(envelope-from <stable+bounces-235823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 15:57:59 +0200
+	id a6xEEHC322mlFgkAu9opvQ
+	(envelope-from <stable+bounces-235824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 17:17:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA753E4195
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 15:57:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9A33E4733
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 17:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 103B130143C6
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 13:57:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BF56830041F6
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 15:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B983033F5;
-	Sun, 12 Apr 2026 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D860C381AF0;
+	Sun, 12 Apr 2026 15:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="svDDyImP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+le5F8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204782FFF8D;
-	Sun, 12 Apr 2026 13:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993CE26E71F;
+	Sun, 12 Apr 2026 15:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776002269; cv=none; b=gCTzQvtDf63y46wzWpHmm1NuULBVMf21OlwfvSpSNQmxWydxJA6pjmC3Z74EOMiMeFfrN2lQDC4MelcPnvSuRHPu22a0tHZx9zgPjXjr1nItcjUTgB+7Pw1bgFCq8hNvY2VqX3gEwiPgSFqtu6Mhc9NfdxA3XGAMIYZYUP+m0UM=
+	t=1776007020; cv=none; b=GQd0pHg7/m/8SQGDosujY1HiA4GBs9wrd0Yr9AlAt+P0Knb9mz+uAl0BOmcsIkRs8AWSHmdywbmKn/sYrJibIieKYxfFD9KHMyHr+e0amxwklf5YjjnYs+6I5GDBtyq0k4hZnaSB5Lns/3ao7NH+QPv494YSp6AFQkq8ZgdAjxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776002269; c=relaxed/simple;
-	bh=omA3b8cnvVduHXpR7xoDKK9/EF0M495B7bsB034M4LE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m3YIJpZd82JXTfEsj6KiT+Y3ak0U+LTQ+6wU0j2HMPtRduXXIZl3B0fCv+pdJ07yEsbNItf/F+Jx3aw8nT7p/NEdcjwmQRjrgt7N7VJ9j7Qb6x1rwsyXQxWyDp4E551rhHR37Y4d/n2NqSOAa7niX7sBZJMeQw3H/xjr+cNpZyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=svDDyImP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6DFC19424;
-	Sun, 12 Apr 2026 13:57:46 +0000 (UTC)
+	s=arc-20240116; t=1776007020; c=relaxed/simple;
+	bh=5zef6enKB5ySdyV6i+5YPI+rubdsXOoMloPeHZAGqaQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YdJzGWOH+pv0xBVkTMVeSpN+2YB8v5faB5hhEWAzDI/gWe1AZNARc6tcquLnTWfqNSQPTzEYEds/mWrObcVGG2UsdjiHjuI3MYO3TilG9dUyUxk5XGxPWgzJSRCxHwR5muBljwJan0HuF0rBP6UAftADLDu37/kjvOa+AaoTp7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+le5F8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38EAC19424;
+	Sun, 12 Apr 2026 15:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776002268;
-	bh=omA3b8cnvVduHXpR7xoDKK9/EF0M495B7bsB034M4LE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=svDDyImPczF6y2qdapLRapLEotgPw98OlHHirsGGM9Sb6TjUxtmBAbkPwtMXDgUoh
-	 QyrB6DLH+edAIq1qi3xeISbu0RhbrKwIkqxgq5o3I4ILLk2OPpG1K/F6CXVabaxIdV
-	 /Z+cnrvh+uuy7Fax36lhsfuJnjOL5upPdavGCcyhk+AgAx2hR01DyZmGfH0mXpbMBX
-	 KKINIDvJsW0w73pb4DNFcIMZPBiwZbS42ugYT2TjfFNCreHkjJjO6BRSaD/PUDp8AZ
-	 zUl507IjWJuKEyUy4DVkW4u7A7tuPULax3nrKUkN5V14nC1LuUriM5orNLADEyoL74
-	 HBKfLGbTS+pJQ==
-Date: Sun, 12 Apr 2026 14:57:43 +0100
-From: Simon Horman <horms@kernel.org>
-To: Kangzheng Gu <xiaoguai0992@gmail.com>
-Cc: pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, kees@kernel.org, thorsten.blum@linux.dev,
-	arnd@arndb.de, sjur.brandeland@stericsson.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v5] net: caif: fix stack out-of-bounds write in
- cfctrl_link_setup()
-Message-ID: <20260412135743.GK469338@kernel.org>
-References: <0f9e9d4e-8083-4297-91d3-10d0f614c87c@redhat.com>
- <20260408125333.38489-1-xiaoguai0992@gmail.com>
+	s=k20201202; t=1776007020;
+	bh=5zef6enKB5ySdyV6i+5YPI+rubdsXOoMloPeHZAGqaQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=R+le5F8UT4rF8r3/IO4T90e5P2z+XSrdsi6VeJJtPQODVjN8AJvp7CNXTTbO48vk2
+	 AcAFPlTtNOnXXx3HuUPQSSTKLZnXtjGnJi3sjMLpAhhle4UG4yMI7IaysVXlScxlb7
+	 0FegLuHidt3kZs9a+M18aeWyNx/3YT6BaEv8mFRDyTpe5OH6JfbpPenBFBsR+unBfG
+	 IZNOuE9Fk4CGcgZwtWGVOCr4ZH3Q7aKoAIyobjdHIUl0w5G69pWA+xskPAjzGQWWaz
+	 ARMEt3o0yuMvMXT0MNshgfrX6ZidFUMumL2hbtjsV+xFWSYFsXMjICW/JJ54MIRAt2
+	 raplHc9VlMeCw==
+Date: Sun, 12 Apr 2026 16:16:51 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>, Gyeyoung Baek <gye976@gmail.com>,
+ David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] iio: chemical: mhz19b: reject oversized serial replies
+Message-ID: <20260412161651.3479e47e@jic23-huawei>
+In-Reply-To: <ac4rKEMYAl-FJ5e8@ashevche-desk.local>
+References: <20260402054015.38565-1-pengpeng@iscas.ac.cn>
+	<ac4rKEMYAl-FJ5e8@ashevche-desk.local>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260408125333.38489-1-xiaoguai0992@gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235823-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235824-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[iscas.ac.cn,gmail.com,baylibre.com,analog.com,kernel.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0FA753E4195
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: CA9A33E4733
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 08, 2026 at 12:53:33PM +0000, Kangzheng Gu wrote:
-> cfctrl_link_setup() copies the RFM volume name from a received control
-> packet into linkparam.u.rfm.volume until a '\0' is found. A malformed
-> packet can omit the terminator and make the copy run past the 20-byte
-> stack buffer.
-> 
-> Stop copying once the buffer is full and mark the frame as failed by
-> setting CFCTRL_ERR_BIT so the link setup is rejected.
-> 
-> Fixes: b482cd2053e3 ("net-caif: add CAIF core protocol stack")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kangzheng Gu <xiaoguai0992@gmail.com>
-> ---
->  v5:
->  - remove the Reported-by.
->  - print a warn message and reject link setup by setting CFCTRL_ERR_BIT.
->  - using %zu to adapt the compilation of 32-bit kernel.
->  - add rate limit to error message
-> 
->  net/caif/cfctrl.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
-> index c6cc2bfed65d..373ab1dc67a7 100644
-> --- a/net/caif/cfctrl.c
-> +++ b/net/caif/cfctrl.c
-> @@ -416,8 +416,16 @@ static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp
->  		cp = (u8 *) linkparam.u.rfm.volume;
->  		for (tmp = cfpkt_extr_head_u8(pkt);
->  		     cfpkt_more(pkt) && tmp != '\0';
-> -		     tmp = cfpkt_extr_head_u8(pkt))
-> +		     tmp = cfpkt_extr_head_u8(pkt)) {
-> +			if (cp >= (u8 *)linkparam.u.rfm.volume +
-> +			    sizeof(linkparam.u.rfm.volume) - 1) {
-> +				pr_warn_ratelimited("Request reject, volume name length exceeds %zu\n",
-> +						    sizeof(linkparam.u.rfm.volume));
-> +				cmdrsp |= CFCTRL_ERR_BIT;
-> +				break;
-> +			}
->  			*cp++ = tmp;
-> +		}
->  		*cp = '\0';
->  
->  		if (CFCTRL_ERR_BIT & cmdrsp)
+On Thu, 2 Apr 2026 11:39:04 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-I am wondering if it would be best to follow the pattern for
-writing linkparam.u.utility.name elsewhere in this function.
-That:
-1. Uses a somewhat more succinct loop control structure
-2. Silently truncates input without updating cmdrsp if overrun would occur
+> On Thu, Apr 02, 2026 at 01:40:15PM +0800, Pengpeng Hou wrote:
+> > mhz19b_receive_buf() appends each serdev chunk into the fixed
+> > MHZ19B_CMD_SIZE receive buffer and advances buf_idx by len without
+> > checking that the chunk fits in the remaining space. A large callback
+> > can therefore overflow st->buf before the command path validates the
+> > reply.
+> > 
+> > Reset the reply state before each command and reject oversized serial
+> > replies before copying them into the fixed buffer. When an oversized
+> > reply is detected, wake the waiter and report -EMSGSIZE instead of
+> > overwriting st->buf.  
+> 
+> ...
+> 
+> >  	struct completion buf_ready;
+> >  
+> >  	u8 buf_idx;
+> > +	bool buf_overflow;  
+> 
+> + blank line here.
+> 
+> (No need to resend just for this.)
+> 
 
-Something like this (compile tested only!):
+This version addressed the comment I just made on v2 so all good.
 
-diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
-index c6cc2bfed65d..ba184c11386e 100644
---- a/net/caif/cfctrl.c
-+++ b/net/caif/cfctrl.c
-@@ -15,6 +15,7 @@
- #include <net/caif/cfctrl.h>
- 
- #define container_obj(layr) container_of(layr, struct cfctrl, serv.layer)
-+#define RFM_VOLUME_LEN 20
- #define UTILITY_NAME_LENGTH 16
- #define CFPKT_CTRL_PKT_LEN 20
- 
-@@ -414,10 +415,11 @@ static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp
- 		 */
- 		linkparam.u.rfm.connid = cfpkt_extr_head_u32(pkt);
- 		cp = (u8 *) linkparam.u.rfm.volume;
--		for (tmp = cfpkt_extr_head_u8(pkt);
--		     cfpkt_more(pkt) && tmp != '\0';
--		     tmp = cfpkt_extr_head_u8(pkt))
-+		caif_assert(sizeof(linkparam.u.rfm.volume) >= RFM_VOLUME_LEN);
-+		for(i = 0; i < RFM_VOLUME_LEN - 1 && cfpkt_more(pkt); i++) {
-+			tmp = cfpkt_extr_head_u8(pkt);
- 			*cp++ = tmp;
-+		}
- 		*cp = '\0';
- 
- 		if (CFCTRL_ERR_BIT & cmdrsp)
+I tweaked whilst applying.
+Applied to the fixes-togreg branch of iio.git.
 
-Also, it seems that writing linkparam.u.utility.paramlen elsewhere
-in this function also has a potential buffer overrun (by one byte).
+Note I'm unlikely to send another fixes pull request this cycle, so
+I'll rebase that branch on rc1 once available and send out then.
+
+Thanks,
+
+Jonathan
 
