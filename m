@@ -1,221 +1,150 @@
-Return-Path: <stable+bounces-235842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOjwDcHe22lMHgkAu9opvQ
-	(envelope-from <stable+bounces-235842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:04:49 +0200
+	id ULL5Eq3e22lMHgkAu9opvQ
+	(envelope-from <stable+bounces-235841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:04:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB653E5536
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:04:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F013E5528
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C152300CC8C
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 18:04:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4DF1E3009F27
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 18:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A212935E92B;
-	Sun, 12 Apr 2026 18:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0D235B632;
+	Sun, 12 Apr 2026 18:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailo.com header.i=@mailo.com header.b="Q9G4Fy76"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="lCNWNRZH"
 X-Original-To: stable@vger.kernel.org
-Received: from mailo.com (msg-3.mailo.com [213.182.54.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372FC306D3F;
-	Sun, 12 Apr 2026 18:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.182.54.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33CB3126DD;
+	Sun, 12 Apr 2026 18:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776017082; cv=none; b=Xf1VybTeBa2/l6ZkiyeJ7chJaxFk1x/iZkxISQEZgTtMVoV7KZ3WgXAsTD6cr1POX5s4GqSMhZOJv03HagBv+GRlv2K54qfe9TAe+UcATNZybDfL0ntK5PzjDVJlKDlFbPnB+//1F5SZecVqf21KnK2Hdhp43VGqxjsZxU/DVOk=
+	t=1776017065; cv=none; b=Un4FASCDQlDhutg/VbdEZUsJX9t1S8Kvq+mvJFGqstTkf/+3LvJt21o+Jf5k+28RWe3nRMTrYWiGWbvGGoVXss7BWC+tnhfkzZxJoGtAWvpIbXWsre3FBsn2Mqp/VIjTddiMk/JvNyivJVQwolkGqIpNtBYn5nUVgoz35SVz+HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776017082; c=relaxed/simple;
-	bh=zGtQNwdBpG7hGH3GJ3R5Yyk5zoQ8fadQOvnmQc9cQvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mJ8SkeBo+p61tDEMddZRyheHj+wqViUqcjndhwAJKmXin0QLdwoCdHyUWB5r5OHCY3hTz7OhKwMmRIqWviTRWfHohNKC0Upt9Acdm2f1fm1UVlhdXtmaP0raL44/RgwWFH/z3EHYTGwUpK4m8q5ZyjAxBWoYz2nkyFNZNWB8084=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mailo.com; spf=pass smtp.mailfrom=mailo.com; dkim=pass (1024-bit key) header.d=mailo.com header.i=@mailo.com header.b=Q9G4Fy76; arc=none smtp.client-ip=213.182.54.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mailo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailo.com; s=mailo;
-	t=1776017043; bh=loomyRVspJJPOiGDTGgJ5VyDTwHaaRENDunEDfMh1tY=;
-	h=X-EA-Auth:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	b=Q9G4Fy76eVx44jdFL79OTn3+/BKYtx0uPxoaA8M+npOJke7KYjT2WDrGsXv5hLekN
-	 4EKbneQarI+guEiQ2ukb+BUpnRG96AjoBniAzSWAS//NCAdHdXiEqoO28TxNE4vU3y
-	 PVlRqe13o7rF9Czs1tXirJlbMqVOqPfNKT5fHxBM=
-Received: by b221-9.in.mailobj.net [192.168.90.29] with ESMTP
-	via ip-20.mailobj.net [213.182.54.20]
-	Sun, 12 Apr 2026 20:04:03 +0200 (CEST)
-X-EA-Auth: 9db1yhh7x8IcLMwmwS2jLjz9b1Dd5xgugMOT61ALM+RMVIDpfz1eUoPt5AZ4Jb0jah5GhDhPddDSHfpb0da43kZN1L5uYLKtbEkAKGS/HrtC8O0T/Sm1KA==
-Message-ID: <dd3c3358-de0f-4a56-9c81-04aceaab4058@mailo.com>
-Date: Sun, 12 Apr 2026 20:04:02 +0200
+	s=arc-20240116; t=1776017065; c=relaxed/simple;
+	bh=aLdgOQAfkrBrSvxflLil3kfDz3PtawHxAG0TMS4EbWU=;
+	h=Date:To:From:Subject:Message-Id; b=ESCrzXoBY9tbkrdrS+9ojqzEUC3slrOYPnm+DlNYjQdMOyHOpffzdWwtbN/gBj7u/W0sCMgctILGpQ/HGquiYVM8T+bl0v9cVY6s4ZAY9JmeKWEK9rRBr2H/XQrecFDaYbnL+LKOgoAy9KJ990VbISQv/ihfKK0dYudaFRJ435c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lCNWNRZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21E7C19424;
+	Sun, 12 Apr 2026 18:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776017065;
+	bh=aLdgOQAfkrBrSvxflLil3kfDz3PtawHxAG0TMS4EbWU=;
+	h=Date:To:From:Subject:From;
+	b=lCNWNRZHRY4qlcts/ScB95Wx3u9YCjD9Af8i6adCQkpXEtN7vocy/2I1Ht9Vs3Ur1
+	 bvxicrbkYGgIfshG1bmkAR/rEU2me49CCUIpEQ2p0VrDyr7hNAwKAAQQAUksx2lqnE
+	 2puphGwd+vow3w3vqEMGw0itwQQIsLoxpuj6PT1Y=
+Date: Sun, 12 Apr 2026 11:04:21 -0700
+To: mm-commits@vger.kernel.org,vishal.moola@gmail.com,stable@vger.kernel.org,osalvador@suse.de,david@kernel.org,balbirs@nvidia.com,matthew.brost@intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260412180424.C21E7C19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bug#1131025: [6.12.y regression] Regression with 58130e7ce6cb
- ("PCI/ERR: Ensure error recoverability at all times"): echo vfio-pci
- >driver_override does not work for DVB Adapter
-To: Bernd Schumacher <bernd@bschu.de>, Lukas Wunner <lukas@wunner.de>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
- 1131025@bugs.debian.org, Salvatore Bonaccorso <carnil@debian.org>,
- Bjorn Helgaas <bhelgaas@google.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Mario Limonciello <mario.limonciello@amd.com>,
- regressions@lists.linux.dev, stable@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alex Williamson <alex@shazbot.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-References: <74bcd84500e5efcca035624f325e400dd8a21f44.camel@bschu.de>
- <acgohjvBpVcR7HcK@wunner.de>
- <5f9386146f426e2847550681cb7188471205607f.camel@bschu.de>
- <aclRwznwq6KpA2qA@wunner.de>
- <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
- <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
- <ac0Y85OShbK6mHEV@monoceros>
- <8275e5b86696dec133889713258c2e158a443496.camel@bschu.de>
- <ac19pxEZKvQuQwFV@wunner.de>
- <7173609c404c5444e634dd3ab26f55f2788d82e4.camel@bschu.de>
- <ac_VqcBbKRDkHp69@wunner.de>
- <79618160f928d7ed4ba0a84f3ab420427c5b8d10.camel@bschu.de>
-Content-Language: en-US
-From: "Alexandre N." <an.tech@mailo.com>
-In-Reply-To: <79618160f928d7ed4ba0a84f3ab420427c5b8d10.camel@bschu.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mailo.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mailo.com:s=mailo];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[an.tech@mailo.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235841-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235842-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[mailo.com:+]
-X-Rspamd-Queue-Id: ECB653E5536
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,suse.de,kernel.org,nvidia.com,intel.com,linux-foundation.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B9F013E5528
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/4/26 11:54, Bernd Schumacher wrote:
-> Am Freitag, dem 03.04.2026 um 16:58 +0200 schrieb Lukas Wunner:
->> If you cherry-pick these two upstream commits onto v6.12.73,
->> does the issue go away?
->>
->>    4d4c10f763d7 ("PCI: Explicitly put devices into D0 when
->> initializing")
->>    907a7a2e5bf4 ("PCI/PM: Set up runtime PM even for devices without
->> PCI PM")
->>
-> 
-> Yes, with the two patches together it works!!!
-> 
-> I am not sure, if you need the dmesg. But I have attached it.
-> 
-> Thanks!
-> Bernd
 
-Hi,
+The patch titled
+     Subject: mm/zone_device: do not touch device folio after calling ->folio_free()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch
 
-(This is my first post to a kernel mailing list, apologies if I've
-made any formatting or etiquette mistakes.)
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch
 
-Independent confirmation on different hardware and a different
-stable branch, plus test results for the proposed fix on 6.19.11.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-   Hardware:   PCI 1b4b:9215  Marvell 88SE9215 PCIe 2.0 x1 4-port
-               SATA 6 Gb/s controller, whole-device passthrough to a
-               Windows 10 guest via QEMU/libvirt on
-               an AMD Ryzen 7 7700 8-Core x86_64 host (Arch Linux).
-   Last good:  linux 6.18.9
-   First bad:  linux 6.18.13  (contains stable backport 71c50e60421b
-                               of upstream a2f1e22390ac, "PCI/ERR:
-                               Ensure error recoverability at all
-                               times", first backported in 6.18.10)
-   Also bad:   linux 6.19.11  (mainline carries a2f1e22390ac)
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Confirmed by rolling linux back to 6.18.9 with everything else
-untouched: problem vanishes. Rolling forward to 6.18.13 or any
-later versions in 6.18/6.19 reproduces it everytime.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Symptom
--------
-Guest side:
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-  * Stock Microsoft storahci.sys: Device Manager shows the controller
-    with status "This device cannot start. (Code 10) An I/O adapter
-    hardware error has occurred." None of the disks wired to the
-    controller are visible.
-  * Vendor Marvell 92xx storage driver: Device Manager reports the
-    controller as healthy and the driver loads, but the physically
-    attached disks are not detected.
+------------------------------------------------------
+From: Matthew Brost <matthew.brost@intel.com>
+Subject: mm/zone_device: do not touch device folio after calling ->folio_free()
+Date: Fri, 10 Apr 2026 16:03:46 -0700
 
-Host side (before applying the pci-stub workaround described below),
-a subsequent libvirt-managed detach/rebind cycle on VM shutdown
-pagefaults the host in ahci's probe path:
+The contents of a device folio can immediately change after calling
+->folio_free(), as the folio may be reallocated by a driver with a
+different order.  Instead of touching the folio again to extract the
+pgmap, use the local stack variable when calling percpu_ref_put_many().
 
-   BUG: unable to handle page fault for address: ...
-   RIP: 0010:ahci_save_initial_config+0x1aa/0x2e0
-   Call Trace:
-    ahci_init_one+0x3a7/0xbf0
-    local_pci_probe+0x46/0xa0
-    ...
+Link: https://lkml.kernel.org/r/20260410230346.4009855-1-matthew.brost@intel.com
+Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-virt-manager becomes unresponsive, any command to bind/unbind the
-driver or reset the device will hang. When shutting down the host,
-the system will log a shutdown sequence but will never actually
-turn off. A hard shutdown (long press on the power button)
-is necessary.
+ mm/memremap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 6.18.9 the same libvirt detach/rebind round trip through ahci
-is clean, there's no page fault error, virt-manager is fine and
-the host can shutdown properly.
+--- a/mm/memremap.c~mm-zone_device-do-not-touch-device-folio-after-calling-folio_free
++++ a/mm/memremap.c
+@@ -454,7 +454,7 @@ void free_zone_device_folio(struct folio
+ 		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
+ 			break;
+ 		pgmap->ops->folio_free(folio);
+-		percpu_ref_put_many(&folio->pgmap->ref, nr);
++		percpu_ref_put_many(&pgmap->ref, nr);
+ 		break;
+ 
+ 	case MEMORY_DEVICE_GENERIC:
+_
 
-Testing the proposed fix on 6.19.11
------------------------------------
-Cherry-picked both fix commits identified in this thread:
+Patches currently in -mm which might be from matthew.brost@intel.com are
 
-   4d4c10f763d7 ("PCI: Explicitly put devices into D0 when
-                  initializing")
-   907a7a2e5bf4 ("PCI/PM: Set up runtime PM even for devices without
-                  PCI PM")
-
-onto v6.19.11. The resulting diff against the unpatched 6.19.11 tree
-is minimal with only one added line (pm_runtime_enable after
-pm_runtime_set_active in pci_pm_init). The guest-side regression
-persists: still Code 10 with storahci, still empty SATA ports
-with the Marvell vendor driver.
-
-I'd be happy to help to test further patches if that would help
-narrow down what the 88SE9215 additionally needs.
-
-Workaround for other affected users searching for this symptom
---------------------------------------------------------------
-Pin linux at a version before a2f1e22390ac was backported (6.18.9
-in my case). Additionally, add  pci-stub.ids=1b4b:9215  to the
-kernel command line, which ensures ahci driver does not load for
-the SATA controller. On the pinned kernel, both the guest-side
-and host-side symptoms are absent.
-
-I can provide additional info or logs if you need.
-
-Thanks!
-
-Alexandre N.
-
+mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch
 
 
