@@ -1,120 +1,225 @@
-Return-Path: <stable+bounces-235785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id W/3xKjIo22m49wgAu9opvQ
-	(envelope-from <stable+bounces-235785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:05:54 +0200
+	id sAjWKvQq22kT+AgAu9opvQ
+	(envelope-from <stable+bounces-235786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:17:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CAC3E2C0D
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:05:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9503E2D07
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AB26301779C
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 05:05:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C01903016528
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 05:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6B23644DE;
-	Sun, 12 Apr 2026 05:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C1123F26A;
+	Sun, 12 Apr 2026 05:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfSqAwy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZBmiWMG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6151514F8;
-	Sun, 12 Apr 2026 05:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF941DE4E0
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 05:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775970342; cv=none; b=F3f+2ThfXy7l0uY7gcfxxE1J8ZZ0Zl44HCSLENNBHeizNgaYOYMhsCNq9JiFNQ11op/SHWkJs8jpdYYGsDLzCwa+vPdXDw0sY29xK2bUiqZ8JJFM86MFKCYaRdmKUhkper0gUheTVzhEoV7gPUm3ol3hCIylXKcTqDLta9qX0JE=
+	t=1775970978; cv=none; b=KSLqfUhQRvoBx1U63C1Jl/ojrE6iLqN+yRxginIY0SC3TtLk0pdDM6SH0GMYmHf7dVyUXX9WDKxYqU1WlQZXJloJcfJmY2b6yh3NftwM5ySQd7F625+Oso/9AbKqFFszUVZ29/9HUvoNvpO5omsuCguwbdSevP48QtYGFlqEgsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775970342; c=relaxed/simple;
-	bh=je9Ga57D0+4x29jYylGg79PsMExeTZ6iunGQDBzl0Cg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=usornB1tTKOPZydxiiiERbq8zKjU9h73Sy5QRfPFVwJfCodQnB1YMrk/s/OGafAPyUrI/EXj9wNhjbqgAk0JD3AmuR2/nYnlzlpYekFwwPAn85gc/9B0f1zxdty52i8BpuIgb+zLwEKXApnVMtFkT9T/92HY+mW/QD78Q4dWV4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfSqAwy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74A9C19424;
-	Sun, 12 Apr 2026 05:05:41 +0000 (UTC)
+	s=arc-20240116; t=1775970978; c=relaxed/simple;
+	bh=cfKGr5aXpVeGSkz+jv48kdCfFub4kRCvEQlQgoBuMCg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sfzlqJtsHnZROz0RzmYuxkr23Ki6j+IUFpJwNlZlKS+ZGwZaO1SYbvCh26x7PEhM7ElRCCygYhpR7mmrU8AsV8awa+pjTbNQ6H0c79UmxXoGj3GiGYn/ZYhM8Qe/JPX95pjYVyzu5bJsfu63jHKPsoncn5X8t9dkrL97mSDr1DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZBmiWMG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E58C19424;
+	Sun, 12 Apr 2026 05:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775970342;
-	bh=je9Ga57D0+4x29jYylGg79PsMExeTZ6iunGQDBzl0Cg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BfSqAwy+c3TRygrAAnwiUos0vWdKEVdQichPdPlupfcmjAFQdtjb8GIoIIj/oFgMc
-	 9ORaQ63dIekPe4jtaTE1seH8FzwIzEgV5ZB46GEbir5zJMgEMXSDO6iandKzB+aIc4
-	 bkHEQLdhRXak/t0wTAbZLPYTilIL7Z71VEPIIT7Y=
-Date: Sun, 12 Apr 2026 07:05:39 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pavitra Jha <jhapavitra98@gmail.com>
-Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: MAX3420 UDC: out-of-bounds read/write via unvalidated wIndex in
- USB SETUP packet
-Message-ID: <2026041211-prevalent-busload-0453@gregkh>
-References: <CALFbBidSiJTD2zdczQ1_mxv8Xm9Pqspnz8LDppHp2hudkLSoxw@mail.gmail.com>
+	s=korg; t=1775970978;
+	bh=cfKGr5aXpVeGSkz+jv48kdCfFub4kRCvEQlQgoBuMCg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=OZBmiWMGFl9NfPRjgROe/6k5weLwD4XCLu4zH/CGjLFZ3BYqA8NoU/W0Bdz7pFAPm
+	 DGHonSbcKH6zXkcMY7gT1n5Xz2bCg3gUQB8Vb358YANkeim+KL3D2JHBZ4yN085Bj3
+	 CL9gDLdXjG+RGLtOpcUuusGyS5knem0FRfLXprvY=
+Subject: FAILED: patch "[PATCH] net: rfkill: prevent unlimited numbers of rfkill events from" failed to apply to 6.1-stable tree
+To: gregkh@linuxfoundation.org,bird@lzu.edu.cn,johannes.berg@intel.com,johannes@sipsolutions.net,stable@kernel.org,tomapufckgml@gmail.com,yifanwucs@gmail.com,yuantan098@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 12 Apr 2026 07:16:15 +0200
+Message-ID: <2026041215-clamp-serpent-1558@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALFbBidSiJTD2zdczQ1_mxv8Xm9Pqspnz8LDppHp2hudkLSoxw@mail.gmail.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235786-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235785-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.984];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,lzu.edu.cn,intel.com,sipsolutions.net,kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 18CAC3E2C0D
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email,intel.com:email,msgid.link:url,lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:email]
+X-Rspamd-Queue-Id: 0C9503E2D07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Apr 11, 2026 at 11:28:08PM +0530, Pavitra Jha wrote:
-> Hello,
-> 
-> I am reporting an out-of-bounds read and write in the MAX3420 USB
-> Device Controller driver. The issue arises from using a
-> host-controlled wIndex field from a USB SETUP packet as a direct index
-> into a fixed-size endpoint array without validating that the index is
-> within bounds.
-> 
-> The driver handles USB control requests originating from an external
-> USB host and therefore must treat all request fields as untrusted.
 
-Did you look in the mailing list archives for this driver?  This has
-been discussed in the past, most recently:
-	https://lore.kernel.org/r/20260121203944.1898-2-qikeyu2017@gmail.com
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Please get this hardware and validate that this even actually can
-happen, as last time around, it was stated that it could not due to how
-the hardware worked.  If that is incorrect, we'll be glad to take the
-change, but that needs to actually be tested, not just attempted with a
-fake device in qemu.
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x ea245d78dec594372e27d8c79616baf49e98a4a1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041215-clamp-serpent-1558@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ea245d78dec594372e27d8c79616baf49e98a4a1 Mon Sep 17 00:00:00 2001
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Mon, 30 Mar 2026 11:14:13 +0200
+Subject: [PATCH] net: rfkill: prevent unlimited numbers of rfkill events from
+ being created
+
+Userspace can create an unlimited number of rfkill events if the system
+is so configured, while not consuming them from the rfkill file
+descriptor, causing a potential out of memory situation.  Prevent this
+from bounding the number of pending rfkill events at a "large" number
+(i.e. 1000) to prevent abuses like this.
+
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index 2444237bc36a..4827e1fb8804 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -73,11 +73,14 @@ struct rfkill_int_event {
+ 	struct rfkill_event_ext	ev;
+ };
+ 
++/* Max rfkill events that can be "in-flight" for one data source */
++#define MAX_RFKILL_EVENT	1000
+ struct rfkill_data {
+ 	struct list_head	list;
+ 	struct list_head	events;
+ 	struct mutex		mtx;
+ 	wait_queue_head_t	read_wait;
++	u32			event_count;
+ 	bool			input_handler;
+ 	u8			max_size;
+ };
+@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_unregister(void)
+ }
+ #endif /* CONFIG_RFKILL_LEDS */
+ 
+-static void rfkill_fill_event(struct rfkill_event_ext *ev,
+-			      struct rfkill *rfkill,
+-			      enum rfkill_operation op)
++static int rfkill_fill_event(struct rfkill_int_event *int_ev,
++			     struct rfkill *rfkill,
++			     struct rfkill_data *data,
++			     enum rfkill_operation op)
+ {
++	struct rfkill_event_ext *ev = &int_ev->ev;
+ 	unsigned long flags;
+ 
+ 	ev->idx = rfkill->idx;
+@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfkill_event_ext *ev,
+ 					RFKILL_BLOCK_SW_PREV));
+ 	ev->hard_block_reasons = rfkill->hard_block_reasons;
+ 	spin_unlock_irqrestore(&rfkill->lock, flags);
++
++	scoped_guard(mutex, &data->mtx) {
++		if (data->event_count++ > MAX_RFKILL_EVENT) {
++			data->event_count--;
++			return -ENOSPC;
++		}
++		list_add_tail(&int_ev->list, &data->events);
++	}
++	return 0;
+ }
+ 
+ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
+@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
+ 		ev = kzalloc_obj(*ev);
+ 		if (!ev)
+ 			continue;
+-		rfkill_fill_event(&ev->ev, rfkill, op);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, op)) {
++			kfree(ev);
++			continue;
++		}
+ 		wake_up_interruptible(&data->read_wait);
+ 	}
+ }
+@@ -1186,10 +1200,8 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
+ 		if (!ev)
+ 			goto free;
+ 		rfkill_sync(rfkill);
+-		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
++			kfree(ev);
+ 	}
+ 	list_add(&data->list, &rfkill_fds);
+ 	mutex_unlock(&rfkill_global_mutex);
+@@ -1259,6 +1271,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
+ 		ret = -EFAULT;
+ 
+ 	list_del(&ev->list);
++	data->event_count--;
+ 	kfree(ev);
+  out:
+ 	mutex_unlock(&data->mtx);
+
 
