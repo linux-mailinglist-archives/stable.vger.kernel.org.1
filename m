@@ -1,93 +1,61 @@
-Return-Path: <stable+bounces-235819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGl9BWWW22n1DgkAu9opvQ
-	(envelope-from <stable+bounces-235819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:56:05 +0200
+	id 4djdLyiW22njDgkAu9opvQ
+	(envelope-from <stable+bounces-235814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7123C3E3E0D
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 033D03E3DD2
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C36413011119
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:55:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB99D300EF7C
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2E037B03B;
-	Sun, 12 Apr 2026 12:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D93F37B41E;
+	Sun, 12 Apr 2026 12:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bVcqOo8J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PyFP2Qa5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DBC37756E
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E166D36494B
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775998540; cv=none; b=SQiSkdrwdIG8IG8RSDSPKFXhFsI9Tqtgc3tGg1sGyhARAL/DKEXQg1NFR05R7u/ZaCuTdXhWGwvXgU5qHLtUEbA0xbaOpEYc/SNfFFCRlhHPU7/fUeTgCpUN71Uk36wruOtrZeFcKotPRXMoelH1DA72D0k98M6ZN7W28dj8ftQ=
+	t=1775998494; cv=none; b=BF/Uti9XKiiFE4D2Yy+GwWeCEkBLe4+pFOCareDLF9c4f2avVQQPb4OGpk0ami6onUSe1SfKIPJGNjX3mmobtxHOrgAh9PpVarjc8ySA8w5UiLmeenWLrVknYZXKdw2iijsbrHhva+mJNOGKAx1wCNzZ8IXRP+anqld6L3vI4Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775998540; c=relaxed/simple;
-	bh=YdktwupOCGYDsXBTCp/6UncgNDvXr/nreRmag7N1hVo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LGRo11VKxbyirp7XOu9p2V8c+gATD45ONWo8wcenvRnBhUDb3/5OlhomwlO6GJjKPYCW5dEE4n6ImQtaENmnjqxpRTV2xmrMojmhg0TeWfnIEpTxKmNkzvKaToANOEJZksUOzQ6Vp4Gixlx0mOmqkpOW3bL9avJ+zfzEJhJxYSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bVcqOo8J; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35dac556bb2so2061809a91.1
-        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 05:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775998538; x=1776603338; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qxOe3LAamwoRd6++BiNK2MTql5chiY2Vdpn2Z4OwuWg=;
-        b=bVcqOo8Jvoe1L6QXbziWmAhyWrgPxr9lofUOovJZ14okenwZV2HnMHI9rE6IidT/sZ
-         eIyfhxKw7LZeSDrTcD5lNQa2M+7ietcMLu8rk2kpe/dXz38lWuvRPb2rXwM6WSinCS3n
-         X9Ghg8oBlW+WzX3cQVtcMrXs8d2oriYceTQk9LSuQCxLalN3bhMkUBLcjhLRaiyFt0wn
-         5RVpeDyfZAbE2qrkvM1QfpHV0hUOyqaSQfz2xL0jg+fLY+K5I1azMpqLbgbK/EAzBIPT
-         rQKsSMFXL2e5buL8JxZ3aBlNwftpypvdmB0r47tIZ++YjWxsHxTbc2IomQJdjLhD7n8z
-         OA6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775998538; x=1776603338;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qxOe3LAamwoRd6++BiNK2MTql5chiY2Vdpn2Z4OwuWg=;
-        b=Fy83AIz8e9avS/Jz9spkYPjkOu0rsAPfB61xlkz9Cil/+gxuuBLj5d88jD9DG/5PCp
-         UYW/NiBcP6T93PtU6bazW8pV08Q3AfORhyON3UWkuSYgLoEN6Oas0YqectFmXpBiGT3y
-         2EycElT4ZcWn1AFDiiodrZDzpiyQfZGDhzQh0Bn3PCE7z3yMqq9ia94pAg41AJrzHpkX
-         +48JgiwjATLDAbF5wSEIC9w3GEcWWTu8S0Ha3qf1AvMmpR09GpuJQTqyTkDNb01S0+nL
-         r/+cIogg/n9aUkbJVpM6J5/c3pkab4MwCAdPoqrOJhK2FW6P2OT54w5sRdanVepnLSf3
-         HoZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8N2pT2Il+sMa+/uRBolql/8hZPbLbsl8m9IEXkOtuIdOkWvVzxBUaJBzfuAdHy5FBznoP0BvM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSosPWWuhjM2pmkopKWiTe6+AnUBldu+NNjiwnwUXFc1GP9eYX
-	DoBAZmZb/OoG9Qni6qedyMfjQ7bPE2f+MRLIQJN0XMWVsjih4aMHw9We
-X-Gm-Gg: AeBDieuLUb8tzqDtj+zO6hjPWGGmyBG1dUGWonMd4u+kDBYxtTHSECsiaoRBqMUf9xQ
-	IpH5VeQNeqeDk4jhx/7WduNVWeyuL+8azVOfx5BkmtAzmeqCYeDB9RHTRdzjg8FrIeVVkdoaSJi
-	BTz8T06w/zbDl96bs2K0jZuy67qgYAMzA+ImdMpPyqyoVomWuhibUnqhi8NEp1k3D9YG22pxQrL
-	Za7d3ovh3mDvm8p7FyNBL9CEGg7SFho0vi2TaOmuYpr86sqLcFGZyiuEBIkGvCRscDijBAMG9M9
-	vTFjQ6ROaudokkAXX3lKLrzrXuDdxaMvrOun0VDOPcI909Rr1MpeuBcpd2hFc/feQKVEmjUfS7t
-	j8MUSEBV1eIGadHoO1wHMBjTntP/KjSWeXXjLaFJF5Jo5LAq0/wLORAnWnaso/+1tgC4hrxrodj
-	M5peVNsH9R/AQeGA==
-X-Received: by 2002:a17:90a:1089:b0:35f:b1ad:fdfc with SMTP id 98e67ed59e1d1-35fb1ae003fmr1164183a91.27.1775998538284;
-        Sun, 12 Apr 2026 05:55:38 -0700 (PDT)
-Received: from lgs.. ([101.32.189.54])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fb1ed394csm1481298a91.11.2026.04.12.05.55.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 05:55:37 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Emil Renner Berthing <kernel@esmil.dk>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] clk: starfive: jh7110: fix memory leak in jh7110_reset_controller_register() error path
-Date: Sun, 12 Apr 2026 20:54:50 +0800
-Message-ID: <20260412125450.2509092-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1775998494; c=relaxed/simple;
+	bh=orY2Y2pMo9fEFOHWcMYw2aGtcGDN0MueBeDwf36Kzns=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f/x/w2fEkVl6rqoRT2XuvGR3P2VbJNtBuHezc+D0gt/UYFPYSyICJdG2NR3EppDfpcFgtpknlKAPCsWJaFX37J4E/2ilecHu0pwSxAR/HBow5EhlK13jK/8cedzSHlNBFYBFfcaktPsvxnn411cef6jQlyKcM5EeRaljquajZ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PyFP2Qa5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B0BC19424;
+	Sun, 12 Apr 2026 12:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775998493;
+	bh=orY2Y2pMo9fEFOHWcMYw2aGtcGDN0MueBeDwf36Kzns=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PyFP2Qa5MD+fmk/KT2I7jJ0oBgKy+Fd6cicBe129dR4K7BL5Y3KU9520/d9obH+iA
+	 bPpZjSARKbA73FL4IN3TDHlUezWU6apyIM00UzVQhFQDY62e53ls7EsJWXgIed2z/E
+	 TxNb40K7RIbKum/0o8dUE0phhLu/I/Nb9B8ILbF20zX1dyq5i1WXjyeRi993/+0dJr
+	 bkAjc+EzWeow4SagRq4XCGXk8bBit89DOITLA0gKqVP4CgRY9f05f6QKOlFgh9JvGh
+	 efJ0ZCdVCTQ1/ybtvRMc6picpMwnsNvZ2SI+5BeaYUZ1Lr2uKs1VExuvkL233aYLCg
+	 8n6ZmzwOYLV7Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] Revert "mptcp: add needs_id for netlink appending addr"
+Date: Sun, 12 Apr 2026 08:54:51 -0400
+Message-ID: <20260412125451.2218427-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041224-maggot-dallying-8241@gregkh>
+References: <2026041224-maggot-dallying-8241@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,73 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-235819-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235814-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7123C3E3E0D
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 033D03E3DD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-jh7110_reset_controller_register() allocates a jh71x0_reset_adev with
-kzalloc() before calling auxiliary_device_init().
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-When auxiliary_device_init() returns an error, the function exits
-without freeing rdev. Since the release callback is only expected to
-handle cleanup after successful initialization, rdev should be freed
-explicitly in this path.
+[ Upstream commit 8e2760eaab778494fc1fa257031e0e1799647f46 ]
 
-Add the missing kfree(rdev) before returning from the
-auxiliary_device_init() error path.
+This commit was originally adding the ability to add MPTCP endpoints
+with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
+net namespace level, is not supposed to handle endpoints with such ID,
+because this ID 0 is reserved to the initial subflow, as mentioned in
+the MPTCPv1 protocol [1], a per-connection setting.
 
-Fixes: edab7204afe5 ("clk: starfive: Add StarFive JH7110 system clock driver")
+Note that 'ip mptcp endpoint add id 0' stops early with an error, but
+other tools might still request the in-kernel PM to create MPTCP
+endpoints with this restricted ID 0.
+
+In other words, it was wrong to call the mptcp_pm_has_addr_attr_id
+helper to check whether the address ID attribute is set: if it was set
+to 0, a new MPTCP endpoint would be created with ID 0, which is not
+expected, and might cause various issues later.
+
+Fixes: 584f38942626 ("mptcp: add needs_id for netlink appending addr")
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.2-9 [1]
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied changes to net/mptcp/pm_netlink.c instead of renamed net/mptcp/pm_kernel.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/starfive/clk-starfive-jh7110-sys.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c | 24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/clk/starfive/clk-starfive-jh7110-sys.c b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-index 52833d4241c5..55cd0ccbdb84 100644
---- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-+++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-@@ -360,8 +360,10 @@ int jh7110_reset_controller_register(struct jh71x0_clk_priv *priv,
- 	adev->id = adev_id;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 38e17f2f15d0f..3ac09bfe6e4b2 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1076,7 +1076,7 @@ static void __mptcp_pm_release_addr_entry(struct mptcp_pm_addr_entry *entry)
  
- 	ret = auxiliary_device_init(adev);
--	if (ret)
-+	if (ret) {
-+		kfree(rdev);
- 		return ret;
-+	}
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 					     struct mptcp_pm_addr_entry *entry,
+-					     bool needs_id, bool replace)
++					     bool replace)
+ {
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	unsigned int addr_max;
+@@ -1135,7 +1135,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
  
- 	ret = auxiliary_device_add(adev);
- 	if (ret) {
+-	if (!entry->addr.id && needs_id) {
++	if (!entry->addr.id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -1146,7 +1146,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id && needs_id)
++	if (!entry->addr.id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -1279,7 +1279,7 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc
+ 	entry->ifindex = 0;
+ 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
+ 	entry->lsk = NULL;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true, false);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, false);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -1498,18 +1498,6 @@ static int mptcp_nl_add_subflow_or_signal_addr(struct net *net,
+ 	return 0;
+ }
+ 
+-static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
+-				      struct genl_info *info)
+-{
+-	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
+-
+-	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
+-					 mptcp_pm_address_nl_policy, info->extack) &&
+-	    tb[MPTCP_PM_ADDR_ATTR_ID])
+-		return true;
+-	return false;
+-}
+-
+ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *attr = info->attrs[MPTCP_PM_ENDPOINT_ADDR];
+@@ -1551,9 +1539,7 @@ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ 			goto out_free;
+ 		}
+ 	}
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
+-						!mptcp_pm_has_addr_attr_id(attr, info),
+-						true);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
+ 		goto out_free;
 -- 
-2.43.0
+2.53.0
 
 
