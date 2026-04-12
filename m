@@ -1,198 +1,183 @@
-Return-Path: <stable+bounces-235799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GDoKSlD22mx/AgAu9opvQ
-	(envelope-from <stable+bounces-235799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 09:00:57 +0200
+	id OOSFK/5H22mg/QgAu9opvQ
+	(envelope-from <stable+bounces-235800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 09:21:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C173E2F6A
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 09:00:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599A03E2FD0
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 09:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB58F302AC2C
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:00:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4B41302A506
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 07:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DDA306498;
-	Sun, 12 Apr 2026 07:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0823F29DB86;
+	Sun, 12 Apr 2026 07:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RLfU1jeD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m10z6pAI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9C741C71
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 07:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBFF1D0DEE;
+	Sun, 12 Apr 2026 07:18:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775977226; cv=none; b=E0q07gGEXtXkOvbzZIrwlJ5kNTsR8HO3pNo6t0cILO32/62IKgjv1PeM0jTkbx9gmQgXFFrXSsTiKs6pb17Zldjvqat/AiAttR4o2NkR12Cx3e61cHG8kgPI3qW8LtZKHJAw2S3bSpQfVSRWJ4P+Sj6FW9riv7ARs89xhi9QKTU=
+	t=1775978331; cv=none; b=tVeXt/+G1zMkfSgWzXvAjgQLzie2P0CCHpCutKHAXzDoVUMD096FWeLKusGzH4eMdxO+RpqLPrWrt4VK+oFxvoz2cmITbC4UX8BWBV/Vo7/aG8vhfb+YdifrFEsGD0JVt9OTOR8GsvfKFe5pLV0QqUSxQpRD62f2KocGVixo4Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775977226; c=relaxed/simple;
-	bh=ad9MM76H3qA9Zm7zGQguyywPJdrDLgkSlTE6M7PNjQo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KosX6CdIn02Fyq3Ob43jH+CTMLz6ju7JYTrYrykZcJ+g2/ukOZ6pfFS36fm5kO7lWDN1a0kbwKyv4hgA5iNc8ayq4S+zXRRAxYYtzAvnoNxcASqgsjxkzcd2QdlgQnVBaKhYmgaZ/xC6t0y1FBvbwywLzS6gahjvpGOJJVIldVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RLfU1jeD; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2adff872068so17561565ad.1
-        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 00:00:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775977225; x=1776582025; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=agxSRs+wZOd7cJK+5GqSX8xmNcbffxfyow5lUhwJHXU=;
-        b=RLfU1jeDB0QcLU6yoq0DSphkvC2ZedtGBQANvfP39al0Xey+Gl2DCzzBaawSQsspmV
-         xdAojTbPeexAnx0gXu13GagRZ3pBWXM5UgAj5kG1fEW2iRcqSESQNCfBdj05bGWQrUce
-         CoRbqytSTv8jz06gRpn0cfR6H4btauwrL4X9/152Z1/1XqHkQortAMRviBn5da5ihEe+
-         JZSzPngIwHcmaPL3IJdMSk5UxRVHzJe92gmPPxzDp9aQ/zHk/pkc9vQVa5uzwsUBGVhX
-         6yDMjomF7jaQqRPkYWd6u72ptFaTE7CnPHnzJEMQeAIMSWcZPtBKya5Oir9MNHwWrWCG
-         /HPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775977225; x=1776582025;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=agxSRs+wZOd7cJK+5GqSX8xmNcbffxfyow5lUhwJHXU=;
-        b=fJgNUxwuV0Tqn9skk7xdlAMUqwAkwaur1dpWHQkE6pCQAZCYOWGdRim0QHRXZ74DDK
-         5hLMp8aiFMYp5tDviu5hf/GZfIyvHBRnhna55dBmJhGxQho954egZhM25O8y+ZFxWgNg
-         BMlo/e5gnF/YhAgdpBOjwPWNquVEdCHHjoewzEL9TS8FIiUygwUTYt2BHgtiY8wb8cwt
-         EE/oYA/BGy+HJf4dR2b+jYExuxjBICgKexKQpTVWli8vIeyMPjISAbW0SkARxwn7WuTN
-         fH6NRMwcb9FCeiwaAGTqtu2MoESh1WY7xaAwVMCGgf0gvEZjC3l2RlJXAEiHn7mP46O2
-         5ePA==
-X-Forwarded-Encrypted: i=1; AFNElJ/groae9uJDa738dAYMRFezNQU9V02EzpaTmklEsm6F7mRhkqj6jhMyya+t3UckHGV+K867thA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzM0YbbIJ48I6xEIcAagx50AAnv8svR7CkHUomWSPmijSx9GkAL
-	K8SzgKbdUl/iygEitHX+Qrqpi32o3GGUAIWMJ+vOxgLlfTyB/9a+OhAa
-X-Gm-Gg: AeBDiesUwwa5BVMco/ziNlXmm7o1TmhhwZ2cNh4kIjcmWBU+mp/wpLrrxKIn+eI/cyA
-	oQ6MSxJZvW2f5J4BipUkYnkIQDFP1xIheSQ2n3R7Oc7vFt2dw/43vQ+PQbrSG9EiQ43Xb2QecPa
-	JOjLjOLBUNCPvBVxWN4k9kR71/NfK5y0eVNAn/pvLFSCsHLtsg3ZTqlstxZQSMpkxQqRFJkc5kR
-	gcxB/7Q4CFL38l5jqSZAIS3L5YdKuNqvLtfz5bHPL2BkDv2clkrSJEkm07yDh4HmcRcS/O9TOu9
-	AKroj930BgxCd5vDmqeEDKhO4d8gycdSXJB1wiRTmU3gr5EIpD081uxCeg0xOkn3zbsBiCWJf7o
-	c7i+1+8fcS2XSgCot+bekq8nDtfeAMAth80nR2Xu1hxQMqyV1pAaJI/qXNPefJ1mvvNa8JgwkOH
-	+du84px4QFQeJRwKnbxWqB
-X-Received: by 2002:a17:903:b8e:b0:2b2:647b:a744 with SMTP id d9443c01a7336-2b2d5a584d8mr101853925ad.24.1775977222380;
-        Sun, 12 Apr 2026 00:00:22 -0700 (PDT)
-Received: from lgs.. ([223.80.110.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b45c217ba6sm1798355ad.36.2026.04.12.00.00.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 00:00:22 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] device-dax: Fix refcount leak in __devm_create_dev_dax() error path
-Date: Sun, 12 Apr 2026 15:00:10 +0800
-Message-ID: <20260412070010.2402830-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1775978331; c=relaxed/simple;
+	bh=M2q6fVN26ughkEGfu20rE5cnyO5lzYFas6acWBvvtds=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W9VM7QSVZNkoQgstgfu18JsPkzCYfyJjOIAnrr9IbjweB0ALzEdp4Ta0xCKxbQjj8DImmtdIBoW4BPibIG0eCmctCaDE6dCsUzkLL3zSR8Yhc43XYWvJ2ylr3KVW4b7NjSldamNYfUdKr2yztDz1uwdlODytSmpBot82xyFFsis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m10z6pAI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD04C2BCB1;
+	Sun, 12 Apr 2026 07:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775978331;
+	bh=M2q6fVN26ughkEGfu20rE5cnyO5lzYFas6acWBvvtds=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=m10z6pAIDKUMcDbcp5f4XhPXIRl7mPw33d5PTtWLXcfB4CQJWt6KkRoBn93u3L1pN
+	 9SXswhN6HFY+wNxKD3fYjBdS2U72KXQJu9kpX0dXiVg6mBiCScRynZHAM2AqJCtKj+
+	 spbHZCuKuuHAHSpTt/rMT6aOTmnSImQovYQBL6zf7kCkH2lV21+JUphA42rLp1jEr1
+	 xxOQwP0dSsEBFN3mms0QjSaOBnDVCPWZAaXKiG4IS3wiQenKBQOysFuQ504WUGO7yZ
+	 9ElHeT8+iCOzu0mpH4Mbo2SDWs2bZJXYQSRWAaw2UBwZNleB+lIPA3R3eXDYRSJvCY
+	 Yhfguv4VsEbCA==
+Message-ID: <52c6b77a-bb2b-423d-98b7-cb1bbf606bfb@kernel.org>
+Date: Sun, 12 Apr 2026 09:18:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mpt3sas: Limit NVMe request size to 2 MiB
+To: Ranjan Kumar <ranjan.kumar@broadcom.com>, linux-scsi@vger.kernel.org,
+ martin.petersen@oracle.com
+Cc: sathya.prakash@broadcom.com, chandrakanth.patil@broadcom.com,
+ stable@vger.kernel.org, Mira Limbeck <m.limbeck@proxmox.com>,
+ Keith Busch <kbusch@kernel.org>
+References: <20260411080006.50010-1-ranjan.kumar@broadcom.com>
+ <20260411080006.50010-2-ranjan.kumar@broadcom.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260411080006.50010-2-ranjan.kumar@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235800-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235799-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 34C173E2F6A
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 599A03E2FD0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-After device_initialize(), the embedded struct device in dev_dax is
-expected to be released through the device core with put_device().
+On 4/11/26 10:00, Ranjan Kumar wrote:
+> Some firmware reports NVMe maximum transfer sizes that follow the drive
+> capability. When those values are very large, the block layer may build
+> I/O that this driver cannot handle, which can cause a kernel oops.
+> 
+> When an NVMe device is set up, cap how large a single transfer may be
+> to the smaller of the firmware-reported limit and roughly two mebibytes
+> with a small margin. If no valid limit is reported, apply the same
+> upper bound.
 
-In __devm_create_dev_dax(), several failure paths after
-device_initialize() free dev_dax directly instead of dropping the device
-reference, which bypasses the normal device core lifetime handling and
-leaks the reference held on the embedded struct device.
+What margin ? I do not see any...
 
-Fix this by assigning dev->type before device_initialize(), so the
-release callback is available, use put_device() in the
-post-initialization error paths, and keep dev_dax range cleanup explicit
-since it is not handled by dev_dax_release().
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP")
+> Reported-by: Mira Limbeck <m.limbeck@proxmox.com>
+> Closes: https://lore.kernel.org/r/291f78bf-4b4a-40dd-867d-053b36c564b3@proxmox.com
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9b8b84879d4a
+> Suggested-by: Keith Busch <kbusch@kernel.org>
+> Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+> ---
+>  drivers/scsi/mpt3sas/mpt3sas_scsih.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+> index 6ff788557294..fca9d6722fc8 100644
+> --- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+> +++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+> @@ -54,6 +54,7 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/raid_class.h>
+>  #include <linux/unaligned.h>
+> +#include <linux/sizes.h>
+>  
+>  #include "mpt3sas_base.h"
+>  
+> @@ -2737,9 +2738,17 @@ scsih_sdev_configure(struct scsi_device *sdev, struct queue_limits *lim)
+>  				"connector name( %s)\n", ds,
+>  				pcie_device->enclosure_level,
+>  				pcie_device->connector_name);
+> -
 
-Fixes: c2f3011ee697f ("device-dax: add an allocation interface for device-dax instances")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-v2:
-  - clarify the commit message around the device reference leak
-  - drop the unsupported use-after-free claim
-  - set dev->type before device_initialize() so put_device() can use the
-    release callback on post-init failures
-  - simplify the post-initialization error paths to use explicit range
-    cleanup plus put_device()
+Spurious whiteline change. The white line is nice before the big block below.
 
- drivers/dax/bus.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+> +		/*
+> +		 * Firmware may report large NVMe MDTS values on some ASICs.
 
-diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index fde29e0ad68b..2d92674d0d6e 100644
---- a/drivers/dax/bus.c
-+++ b/drivers/dax/bus.c
-@@ -1453,6 +1453,7 @@ static struct dev_dax *__devm_create_dev_dax(struct dev_dax_data *data)
- 	}
- 
- 	dev = &dev_dax->dev;
-+	dev->type = &dev_dax_type;
- 	device_initialize(dev);
- 	dev_set_name(dev, "dax%d.%d", dax_region->id, dev_dax->id);
- 
-@@ -1499,7 +1500,6 @@ static struct dev_dax *__devm_create_dev_dax(struct dev_dax_data *data)
- 	dev->devt = inode->i_rdev;
- 	dev->bus = &dax_bus_type;
- 	dev->parent = parent;
--	dev->type = &dev_dax_type;
- 
- 	rc = device_add(dev);
- 	if (rc) {
-@@ -1522,14 +1522,13 @@ static struct dev_dax *__devm_create_dev_dax(struct dev_dax_data *data)
- 	return dev_dax;
- 
- err_alloc_dax:
--	kfree(dev_dax->pgmap);
- err_pgmap:
- 	free_dev_dax_ranges(dev_dax);
- err_range:
--	free_dev_dax_id(dev_dax);
-+	put_device(dev);
-+	return ERR_PTR(rc);
- err_id:
- 	kfree(dev_dax);
--
- 	return ERR_PTR(rc);
- }
- 
+What ASICs ? The SSD controller or the HBA controller ? Also, does the HBA
+firmware change the MDTS ? Or does it report the SSD reported MDTS as is ? If it
+is the former, then an explanation would be nice. If it is the latter, instead
+of "Firmware may report" I suggest "The NVMe device controller may report"
+
+> +		 * Limit max_hw_sectors to the smaller of the reported MDTS
+> +		 * and 2 MiB to avoid issuing I/O the driver cannot handle.
+
+Without any explanations, 2MiB appears to be a "magic" value here. There is a
+clear explanation for it with the 4K device page size that can fit 512 PRP
+entries each pointing to one 4K page. So let's state that.
+
+> +		 */
+>  		if (pcie_device->nvme_mdts)
+> -			lim->max_hw_sectors = pcie_device->nvme_mdts / 512;
+> +			lim->max_hw_sectors = min_t(u32,
+> +					pcie_device->nvme_mdts / 512,
+> +					(SZ_2M / 512));
+> +		else
+> +			lim->max_hw_sectors = (SZ_2M / 512);
+
+		lim->max_hw_sectors = SZ_2M >> SECTOR_SHIFT;
+		if (pcie_device->nvme_mdts)
+			lim->max_hw_sectors = min_t(u32, lim->max_hw_sectors,
+					pcie_device->nvme_mdts >> SECTOR_SHIFT);
+
+is I think a bit nicer.		
+
+>  
+>  		pcie_device_put(pcie_device);
+>  		spin_unlock_irqrestore(&ioc->pcie_device_lock, flags);
+
+
 -- 
-2.43.0
-
+Damien Le Moal
+Western Digital Research
 
