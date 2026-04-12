@@ -1,218 +1,232 @@
-Return-Path: <stable+bounces-235818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Z6gFGViW22n1DgkAu9opvQ
-	(envelope-from <stable+bounces-235818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:52 +0200
+	id oKxeJzef22keEQkAu9opvQ
+	(envelope-from <stable+bounces-235820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 15:33:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17F13E3DFF
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 14:55:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13E73E4030
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 15:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7C2A3012C70
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 12:55:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A2CA300E24A
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 13:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E36937756E;
-	Sun, 12 Apr 2026 12:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C9337BE8C;
+	Sun, 12 Apr 2026 13:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfqghYgW"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ur7k4J8c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011024.outbound.protection.outlook.com [40.93.194.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321BA18EB0
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775998522; cv=none; b=etwKkVLVj033o7MhC1/bSfENzkwdhVv8xiRggoghHGB8iIk2SWNpNyP2iKh3dgGQWgHq/B65e2atkPcONeuyq2dh2LuE0dXaMImGNUnLTYymdEDlrAb3bG2Jr4K023zld36bi5MOltDrFKr9oNZ5Qqb2P7Cw/lnM3mTAJwATwj8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775998522; c=relaxed/simple;
-	bh=21XVKAFEMZEuNtPCNZWqqwqdKFGnrESixTYj9ydv5o8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D99627BF93;
+	Sun, 12 Apr 2026 13:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776000818; cv=fail; b=VkJUbLUvMUJ+Q+0CPrbIxxa64g6cYFdMm133F1JL1PCHRsBpE7VBpW03DPeTdKRKjlm6vqwEe2W/giRkJv6mMKkkIRKGuInZr9r0QFF+tThRY4l4aankzVARYWo/wQ6Q25bFXkdviofz6hUDxqYs2+GPT5YxMvfsBYC760mzHVU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776000818; c=relaxed/simple;
+	bh=gR2COM4bHnKMhh/Dr8v7u0nNr+bsbYEuI2+NVElsyFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIQb8zBLlKMdZY0ca5Kjeg9Nq3x6hSp88dlKG5NaqGU4Ll28EHXnDT6ZBUuZP/T8125CB5hOIojQFpUbgjazrHXhvbU4DWtyou6s4mD7zSjQhviCK87oOtkCstbSwWt7/koP+p4SrJhnrSGpMXKrzxAS0XO8hsZkcSXzyqGE26M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfqghYgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4EAC19424;
-	Sun, 12 Apr 2026 12:55:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775998522;
-	bh=21XVKAFEMZEuNtPCNZWqqwqdKFGnrESixTYj9ydv5o8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BfqghYgWay/iZNaKyooZyygr3eg/dlK2hz8KdbTw/4i2Xb5JQtmkxLW2BQWam2uU6
-	 Gg6rBofs4JgpA+07kDIgAvBWv/akHxM/dPXVZ5rGvYxKlSAIHhjB7XAvKzODNQmdTq
-	 HkzNXGAf1HcKEyptlU2ZSUpGD1FznCrUOxj4rjhfhL6MjVvVd99i4NFCCSkhfLzcsV
-	 VnHhDrxgrVGIixA1Xvp+kIfdTzDbRHUVgW5JMmepzz2gdkZ8fV3Kj3owUYD90hnJgP
-	 r3CJwkKGVvwD53dcgFnfydt1li53o3QRONMzCGRnY1TCrqYC6lx9QKM9cLtLWNeo+b
-	 RhnHXZPNZ62GQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	stable <stable@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 4/4] net: rfkill: prevent unlimited numbers of rfkill events from being created
-Date: Sun, 12 Apr 2026 08:55:17 -0400
-Message-ID: <20260412125517.2219007-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260412125517.2219007-1-sashal@kernel.org>
-References: <2026041215-clamp-serpent-1558@gregkh>
- <20260412125517.2219007-1-sashal@kernel.org>
+	 Content-Type:MIME-Version; b=N/oTjE94NdZXrHGbWIWhaE/E16ZqDdp/iVsAOxrY2/DP3H0W6R/vz76cwRy8RI6mRVwCfC5mN1v0R59rx7GZxW8pBouoQkfomw28h/OxINSKeTterg0dIp7/2qsQBjicQCMhNcncPjGD0K5LViXHj7BIZBBYr6Dlu6t+SoyDrZs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ur7k4J8c; arc=fail smtp.client-ip=40.93.194.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FbXuhoIYc6q7+cLsfkYgzdwAchXix2QUmCEPcb0gtx9KjBdmbaCudSv1mztCCv2VJbhTflipHNt+nXeL+q6T+o+woeTKbRqQO6TH7FRpwznfKEBs41d+tBHd91P6kKxzDC/ThKi920ALkpItVVXJ4BaZCZOT9hvGmHUjOvhmhqIE0im1pJ48RSU+SHipozIZZMRt4AYeeYCrA04myGGh5OmhhDSQxHAA+AAeNFdMP4mc+GcKREOmcOT2Jw8fWKVffAGwNOItBqLA9wRNiyz/6KItgwF7X7vgE9fXsVvLutEx0f5uR8nSD5J9HBngISFIeD0W+ph5/hdGsKt/mFbQKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EpBmBlPdRX4ZLoUEr9DehrQz8kVTuCblfio2G47yQNY=;
+ b=L80owmyvYmrTcLwQIRGm/K88gVq6yX/sPFMb0+QxIH8EMyHv+AE/gpy1cPQg37w0XyT5TtXjYR36wO3FjoWsaMpc0yf2CI4ynP088jBm4v9cIk2lJm3fLlKXRw4g0WhRwAp3zcK4eP70D3jyfN6uG49JQxo6lok40cM73W5E/SlshjxmXBrts/nhUegckb/tvD/OR8zdTrQRxa0yraHGynrmx4lJssByUb83kohklrPYe5eZVvSEoJdah3zcaaj51WLv7yQwOymS3v78KMufjpnBTv/FXMCdvCwsr9rnoxuw3Czy+Bt4SMG18Ko+FDYcLyfs1vVww9OQhCwWk8K6fg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EpBmBlPdRX4ZLoUEr9DehrQz8kVTuCblfio2G47yQNY=;
+ b=ur7k4J8ceZleOg+UjVMzGgmHGefuRgvdXv1LxXV10aEVCFky4oksjgv+jENZ+V4HxCUjD9zclyT/FvhNYfHaClXGak/ky9V+6E0v/TGtG2M9UYA0ynKHviSH50MHiFy0mpQDduNKo5yTLwWEGnw/KS+Og2fgExNki2U5lgLSKrerhlpfiYsGS4qOFnxbmOEPNZiqnW857qOxVpRYkPGMIYXuiyRcGJqJmW40/2jVUuJLgQE5NSSqlad2Z/WiBn3hG3kmolQBR3Z5HxcLCBovT+uNA5D1egE0baUvCAbhgvXuDsbzvDF7Zc+Mm5Ox+0pPwwZ4iNqdmPhe1VdJKzcOvQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ LV8PR12MB9110.namprd12.prod.outlook.com (2603:10b6:408:18b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Sun, 12 Apr
+ 2026 13:33:31 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.046; Sun, 12 Apr 2026
+ 13:33:31 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lance Yang <lance.yang@linux.dev>, lgs201920130244@gmail.com
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
+Date: Sun, 12 Apr 2026 09:33:29 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <75F536FE-6710-4AE7-B6DB-2997D846237E@nvidia.com>
+In-Reply-To: <3e688ea1-05ba-4e75-9d92-2751ff6f3b7b@linux.dev>
+References: <20260411062152.2092967-1-lgs201920130244@gmail.com>
+ <20260411142858.85496-1-lance.yang@linux.dev>
+ <848180C7-F98C-44B2-AB1F-579BF9EEA28E@nvidia.com>
+ <3e688ea1-05ba-4e75-9d92-2751ff6f3b7b@linux.dev>
+Content-Type: text/plain
+X-ClientProxiedBy: DS7P220CA0006.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:8:1ca::10) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|LV8PR12MB9110:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84f6b9b2-f075-4b38-c323-08de98981688
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	2FZKZWxOI/YM400zFEZZNXBo8GOWPVcgzP9/t/p/O2RLcUlk2LH8z8ZFS04w/nHvYgolXWsDMCuEuB3KJEsgJLuIUJpsg6A8dPcUWYhCOTRiL9FeRGDfqDsOrBwfmfVX9m8VHLeVMofzwFXBql5Ahj/4TNWp3cdiRoyN2zLU5A3Zyeez9yGyGcyQN+GpNpy1TEY9H/tGJ64v1TWwcVl8y+CldJEckXpbgxnQdwjNXB0DwQJyeSgNn8zlSnsp3MPFGQSteXA8YdNtX+HaYTXNwDg6u9vyPY6EDhyrrq29FmfX0dLBBZJoA487Y95PyEo4ZRylw5CtGC2yiMxi+oiwxAu0WqFyZWyHPuCWYbp0hAU18/3knfI9d1DgUcyARoPAuC7NuOdNMXUFpMnnJRRgjLiaDCh0qYbIE4ctUpmG9dSDwZNe9V5QhA0UoR9RmqotoDKMjY32cJNpRvUR1dITct3KVUSMCRQBWSsG2dkjg57qQrJ4vgLsDt8O3Fcm9Zt9hKXE55EGTc8oNtSaMcS/oNELlGw5Qba2RpySi+itXvczfBE9f+RwF7Nv/aXt19RKRW1DIqUnm5A1nqhPucRELFcJd5n6LGIhX5IRPmuRJNG0KCcrGMjDGlUswGoTRbOyEpCAeTPgIjgi424j5d2sINX3pKQ9d1JuCRsw1+khxeYjoNPM7J3sNBBXjbEGRyDobn11JvNpQwge9MrAOvIA8rt+Jh3e8Lkm6WT2Lczt0V8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?3ioTfFh8/wE98UQNx8Mhp5QI2Ta9OksjEy4pmLWGHDkeW3ffmOpxRCFn81Q/?=
+ =?us-ascii?Q?UJvxzz0rZO6yXUE5IvbkCpZ+o1rHBAKGWSbrttKl+jEkBKrrReCGjOvYKLK0?=
+ =?us-ascii?Q?3+4allELL7mvlR8owoP3+3jP3wSwuSoLatvTnVtVg2V2jwiH4Pu6eL6lLgOw?=
+ =?us-ascii?Q?na2/AuEaZFST2K9qK0bsESxshMbvodqUogFFdmv1jpdItT6Uuv4TqT6EpD3Q?=
+ =?us-ascii?Q?6s4wPf9AXoOmkW3KXISaoT6aAvQ1vzw8dpBlySDZWq3Tg0PVZodoDQ+vjWbM?=
+ =?us-ascii?Q?smwWsYzyMEJli0Unq+dmm0JIUgQLh962DjrCr6WAE1Q6ncyIp/t1rW4htmd/?=
+ =?us-ascii?Q?Nj3T/b4nWkxPwnVB3NhJu2cng3FAgBIhBJvcG44vNu3IY4HG8jU2NdzJxxPs?=
+ =?us-ascii?Q?48m6YrWC6YTxBGgLORL6gGjK8mQPKR+L/Hw5EB31XNSb1v5HRN30+jA0HFsH?=
+ =?us-ascii?Q?AtBhuSfWp+n/ntn750iGZXMZq8Xklge0zLphnaW4cLHaqxKE1nc6KETiJisy?=
+ =?us-ascii?Q?HHNXYIPutXvLZe3/guML/iNOlXO6v2DSxqD/+YN6Jzpu2MZ2v4GkuC7hgc0x?=
+ =?us-ascii?Q?tfuo9vXVXcZc0jC0NBdydbcfYuKC1UF+AuZJRG18S49q/qmSrX7wb6ZbJP/o?=
+ =?us-ascii?Q?l9fHe1mPYlm+4xo4pk8UcYuNaS3t74gA2EpalkU9P8jpuOyMgXuQbdnHaNvd?=
+ =?us-ascii?Q?1r7QMZAfJP8YGtOaC3fkyfmUVp4M4nZmYs9GdDAYj9F5PvgpIle7L29ME1oZ?=
+ =?us-ascii?Q?mHb4Q13oi5ttiMzK48hwkBW/kTREvWcghpqOephew/P9l5fqHITPRDVe9RQ8?=
+ =?us-ascii?Q?cXNk/xOy/EeUojy5tkRLgHjIVzZl9MKCSvlOJCDQCNBiOKQvs3Bz/MJl0KYh?=
+ =?us-ascii?Q?BLHPGpet0hoJOENcAmgjqY6n/Fy6TEePf5xXaoxus/uQTXiI02X5srUuwyhD?=
+ =?us-ascii?Q?qomL8S8Gl6OafmVQtrCtgJUB71vRFXq9PIsl+jBlH2sA/UXaunYz+/MyReeA?=
+ =?us-ascii?Q?vpdMR+r8n+q2H0apRedWVWN8MdFUnzCVo4kkGBJfQ+gLLuMGon6ndv7K0D0p?=
+ =?us-ascii?Q?XFpe43S+CCJlsDBhCJ0VrVt+yGPcWd4hWpNKhvjR2B3wS577v6/YJBpsrC+H?=
+ =?us-ascii?Q?fgV/fhKkXyFPRiTyV5VpgfcVLxCJBsfxklbZlor6jQupgETwgFu3Xm/6rFWm?=
+ =?us-ascii?Q?2vCek/+6rqkyjYA92NctuKnEyOIR/g8o4Xc8J8pgfjyRS8VqLCPAC6RTskat?=
+ =?us-ascii?Q?Ylgfdvqu8cO9UmgDvRGDg9igxvlDE5l5xdcHbgSa/BaDuMCrEioaOWFowSsW?=
+ =?us-ascii?Q?Z6sc7dazJPolGeP5QcPf4JccdFvvEweG/8xknrVZO/V6/sgQFE3hMFcmDDE+?=
+ =?us-ascii?Q?MEFomo7EoBjr2yC2esMObOc5FsNO1iORnZvIkLcFKr4jZQ5ALEYt0gc7boTP?=
+ =?us-ascii?Q?myp7s7OLPXRbsZt1bh35Q0cOva5XNzIShjzzy2wpK+5Lp4e1Kx33H7hABAWw?=
+ =?us-ascii?Q?1wrRpelPFNFXs/RhviBKa6Rko/YGch/6joY2ji76h4oLgs3nF8viC/dewGSY?=
+ =?us-ascii?Q?Is8YTpen68dSUr7JqWCCjFNO0odgGdP4r1De4ExNt2OPidvlLsQ0c/kE8R6r?=
+ =?us-ascii?Q?WI2wWwSYhuLVFHvcLja83aJQZ7bqH2ByeFMNP7tcjcVrxfwxG/EDFuxV3AbC?=
+ =?us-ascii?Q?9ZrTIhJGkchEXGhhWqjLAz2GP3jdHzuQvFZpR2tvkeUZuWZB?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84f6b9b2-f075-4b38-c323-08de98981688
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2026 13:33:31.5008
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: f1RRuVH1pc+s5Z/VXgwMzlDbnhIkDP3vpjv7rcRZc5wVoiD2hZV9Ls1RTv3t2IMs
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9110
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,sipsolutions.net,gmail.com,lzu.edu.cn,kernel.org,intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-235820-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235818-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[linux.dev,gmail.com];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ziy@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: B17F13E3DFF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,Nvidia.com:dkim]
+X-Rspamd-Queue-Id: F13E73E4030
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On 11 Apr 2026, at 23:24, Lance Yang wrote:
 
-[ Upstream commit ea245d78dec594372e27d8c79616baf49e98a4a1 ]
+> On 2026/4/12 09:49, Zi Yan wrote:
+>> On 11 Apr 2026, at 10:28, Lance Yang wrote:
+>>
+>>> On Sat, Apr 11, 2026 at 02:21:52PM +0800, Guangshuo Li wrote:
+>>>> After kobject_init_and_add(), the lifetime of the embedded struct
+>>>> kobject is expected to be managed through the kobject core reference
+>>>> counting.
+>>>>
+>>>> In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
+>>>> directly with kfree() rather than releasing the kobject reference with
+>>>> kobject_put(). This may leave the reference count of the embedded struct
+>>>
+>>> Right. As documented for kobject_init_and_add(), once it has been
+>>> called, the error path should go through kobject_put():
+>>>
+>>> /**
+>>>   * kobject_init_and_add() - Initialize a kobject structure and add it to
+>>>   *                          the kobject hierarchy.
+>>> ...
+>>>   *
+>>>   * This function combines the call to kobject_init() and kobject_add().
+>>>   *
+>>>   * If this function returns an error, kobject_put() must be called to
+>>>   * properly clean up the memory associated with the object.  This is the
+>>> ...
+>>>   */
+>>> int kobject_init_and_add(struct kobject *kobj, const struct kobj_type *ktype,
+>>> 			 struct kobject *parent, const char *fmt, ...)
+>>>
+>>>> kobject unbalanced, resulting in a refcount leak and potentially leading
+>>>> to a use-after-free.
+>>>
+>>> IIUC, this looks more like wrong kobject lifetime handling and likely a
+>>> leak, not a clear UAF :)
+>>
+>> kobject_put() ends up with calling kobj_type->release(), which is just
+>> kfree(to_thpsize(kobj)), equivalent to kfree(thpsize) in the old code.
+>> IIUC, there is no leak. Let me know if I miss anything.
+>
+> Right, the fix is correct. I was only commenting on the changelog
+> wording, especially:
+>
+> "resulting in a refcount leak and potentially leading to a use-after-free"
+>
+> The old code does skip the required kobject cleanup path, but is
+> a UAF actually possible there?
 
-Userspace can create an unlimited number of rfkill events if the system
-is so configured, while not consuming them from the rfkill file
-descriptor, causing a potential out of memory situation.  Prevent this
-from bounding the number of pending rfkill events at a "large" number
-(i.e. 1000) to prevent abuses like this.
+That is my question too. The original code might not cause any real issue.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/rfkill/core.c | 35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+Guangshuo, let us know if we get it wrong. Thanks.
 
-diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index 7ec100adf5945..7a995e7a491b5 100644
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -73,11 +73,14 @@ struct rfkill_int_event {
- 	struct rfkill_event_ext	ev;
- };
- 
-+/* Max rfkill events that can be "in-flight" for one data source */
-+#define MAX_RFKILL_EVENT	1000
- struct rfkill_data {
- 	struct list_head	list;
- 	struct list_head	events;
- 	struct mutex		mtx;
- 	wait_queue_head_t	read_wait;
-+	u32			event_count;
- 	bool			input_handler;
- 	u8			max_size;
- };
-@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_unregister(void)
- }
- #endif /* CONFIG_RFKILL_LEDS */
- 
--static void rfkill_fill_event(struct rfkill_event_ext *ev,
--			      struct rfkill *rfkill,
--			      enum rfkill_operation op)
-+static int rfkill_fill_event(struct rfkill_int_event *int_ev,
-+			     struct rfkill *rfkill,
-+			     struct rfkill_data *data,
-+			     enum rfkill_operation op)
- {
-+	struct rfkill_event_ext *ev = &int_ev->ev;
- 	unsigned long flags;
- 
- 	ev->idx = rfkill->idx;
-@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfkill_event_ext *ev,
- 					RFKILL_BLOCK_SW_PREV));
- 	ev->hard_block_reasons = rfkill->hard_block_reasons;
- 	spin_unlock_irqrestore(&rfkill->lock, flags);
-+
-+	scoped_guard(mutex, &data->mtx) {
-+		if (data->event_count++ > MAX_RFKILL_EVENT) {
-+			data->event_count--;
-+			return -ENOSPC;
-+		}
-+		list_add_tail(&int_ev->list, &data->events);
-+	}
-+	return 0;
- }
- 
- static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
-@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
- 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
- 		if (!ev)
- 			continue;
--		rfkill_fill_event(&ev->ev, rfkill, op);
--		mutex_lock(&data->mtx);
--		list_add_tail(&ev->list, &data->events);
--		mutex_unlock(&data->mtx);
-+		if (rfkill_fill_event(ev, rfkill, data, op)) {
-+			kfree(ev);
-+			continue;
-+		}
- 		wake_up_interruptible(&data->read_wait);
- 	}
- }
-@@ -1190,10 +1204,8 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
- 		if (!ev)
- 			goto free;
- 		rfkill_sync(rfkill);
--		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
--		mutex_lock(&data->mtx);
--		list_add_tail(&ev->list, &data->events);
--		mutex_unlock(&data->mtx);
-+		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
-+			kfree(ev);
- 	}
- 	list_add(&data->list, &rfkill_fds);
- 	mutex_unlock(&rfkill_global_mutex);
-@@ -1263,6 +1275,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
- 		ret = -EFAULT;
- 
- 	list_del(&ev->list);
-+	data->event_count--;
- 	kfree(ev);
-  out:
- 	mutex_unlock(&data->mtx);
--- 
-2.53.0
+>
+> Just a wording nit.
 
+
+--
+Best Regards,
+Yan, Zi
 
