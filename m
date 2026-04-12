@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-235802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LkIIcRa22n6AgkAu9opvQ
-	(envelope-from <stable+bounces-235802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 10:41:40 +0200
+	id OMx3LvBc22mWAwkAu9opvQ
+	(envelope-from <stable+bounces-235803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 10:50:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289F83E31C5
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 10:41:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 715E63E3224
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 10:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0358C301A71F
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 08:41:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 985A93021D3C
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 08:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A10E30E0EF;
-	Sun, 12 Apr 2026 08:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BC730E846;
+	Sun, 12 Apr 2026 08:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="SE09pf7/"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="cVmDrF4z"
 X-Original-To: stable@vger.kernel.org
 Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36156309F19;
-	Sun, 12 Apr 2026 08:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7CF258CD0;
+	Sun, 12 Apr 2026 08:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775983292; cv=none; b=iuIPDzx4q46AVkjsGj0M+AIp9xSxza3ZIK5oixNFr+32Qd+kQ8ZoOmUuLU7m64KdNQ2mQQ+d8pZGB/9D5fyOwv3owEQ1lEg/R5UzsD1GUgjviJlLXtEU0MM17z8Ci1TdLlkSeUxuErZlJGyPuH51A/rudP6fraKQdMVK3O+EVOY=
+	t=1775983837; cv=none; b=VlSMAxlaf+UGDtSQWtgXuqMwJERGc2cSbX5K5OHasImdyZfvrvQ29GJypf983aVS6dDv3/DgPDtoVsgEHF7g6pIPwcBhE2x5tCXZC0OKRh88zAHKqa50KQzI5P2IhjZHFI2MerVqT+ji+d9VyjP7/D1YckZuohBlxB55zLqj8TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775983292; c=relaxed/simple;
-	bh=oQAEvTJgHms6g9wIHlgei9I45CaNjIPrE2vJ8uq/F20=;
+	s=arc-20240116; t=1775983837; c=relaxed/simple;
+	bh=/fmU5zOVQBJ+rZCjKqynNobyDEsvFblCE8VDVfA4of0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fxeSlGcqQC7kaT2oq8e9xOR4shRvjp0EhCFGWEvUEUy7BtxKuEwuskhrnXSkzQuQg89yPI5HXlyTUGjfkOtwiqREc/+ssilGNXXjgT9yU+qBKLdaUHqkswk8EnsSVj3UJQJ1mh9TdWjVAY54s1/QDjBjEY6OXN81Cf705z/nkJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=SE09pf7/; arc=none smtp.client-ip=180.181.231.80
+	 Content-Type:Content-Disposition:In-Reply-To; b=RsugyJ09gk+pCVCUvFvGjpRr/RepFLhTZf8hy6JrAoXrWqzlWjvyUoMbR1IKfWrWF5ZEVpT3paJNquJ0Gd1J0sa0mSqQ0P1674ILqhnH+UocCcI7Rkl7jFSJ2qF8bvee5U0fyQXfTh9oCFbJ7FSuKZFpmvTPLJ6MrUqPAqHAQDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=cVmDrF4z; arc=none smtp.client-ip=180.181.231.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=nAz8Z4Vd4S+N7HdZJMZc4HMb1LyZQJySdWx6FshsIBM=; 
-	b=SE09pf7/HX05JKPsXaHx2yBsUsfdXVNpi72qWGwLOh89cv3xZaiYcnay6h6YSwMUGTrwgla19zf
-	DoxBOupL7Bqq8i9lSWwBRxZMfDTFJVIj5chjwNmiJ3+lzdUYDzVHUXAlO8KwfkbiOA81nS+GrNAoK
-	yj8PrBG6zo5VaDJlH3/UMqGts6q00yAtTTWRKmWUOjrk/Ig/V+YUwZ7pJhPVjxeBfzpiiZQ12gcLt
-	EsXISu41skE+C8GwIVfbgxZGvl9rW1wnw7AUKA8kuE04Dlo7czGTJ1vcrboQHcAX61KTdEoqcVMz7
-	omcI2RSEodaqPnN5QAnwdE733un5T/FrW/fQ==;
+	from:content-type:reply-to; bh=E4RgOiL/638KlhyxgpKe98aPbuCcn9RCJVgDup0avGk=; 
+	b=cVmDrF4z6V9JQHnIbmfzyqLTnRelPy475ZDNSL7PoviLV7hS312t9hBO8jniDmNNkSKu1bGA1jH
+	GP5XKmhiAmcJ9GXmBok00A4kxNryzLYp39FoigJOpPWkm02Hi9nioh/tRrRuRKs11kbkl3uRG4a4w
+	9iddgy4wKlE3O2v++J0AE6na+YkahIfrofXgAilc1aBmPHbgAB8X49PYHuNByaskud8CT3b8CdwgE
+	wKJdiw1WFG/xh8U8swDlhXcIUl/XBMgVRMYQ1P5SIUKhs4c32HzZZRhK+f6sjqjkkecGfbTfQD1up
+	59y3edkDVuzB6KjdiBYAE+cN894myKWKZFMQ==;
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
 	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wBpxv-005UCq-2q;
-	Sun, 12 Apr 2026 16:41:07 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sun, 12 Apr 2026 16:41:06 +0800
-Date: Sun, 12 Apr 2026 16:41:06 +0800
+	id 1wBq6x-005UEe-26;
+	Sun, 12 Apr 2026 16:50:27 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sun, 12 Apr 2026 16:50:26 +0800
+Date: Sun, 12 Apr 2026 16:50:26 +0800
 From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>, stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] crypto: atmel-ecc - fix potential use-after-free in
- remove path
-Message-ID: <adtaojnrwm9Bclln@gondor.apana.org.au>
-References: <20260402130536.892838-3-thorsten.blum@linux.dev>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: gilad@benyossef.com, davem@davemloft.net, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: ccree: fix a memory leak in cc_mac_digest()
+Message-ID: <adtc0v9KCWbphJUn@gondor.apana.org.au>
+References: <20260330033402.2758074-1-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,85 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260402130536.892838-3-thorsten.blum@linux.dev>
+In-Reply-To: <20260330033402.2758074-1-lihaoxiang@isrc.iscas.ac.cn>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235803-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235802-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gondor.apana.org.au:dkim,gondor.apana.org.au:mid,linux.dev:email]
-X-Rspamd-Queue-Id: 289F83E31C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,apana.org.au:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gondor.apana.org.au:dkim,gondor.apana.org.au:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 715E63E3224
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 02, 2026 at 03:05:38PM +0200, Thorsten Blum wrote:
-> Flush the Atmel I2C workqueue before teardown to prevent a potential
-> use-after-free if a queued callback runs while the device is being
-> removed.
+On Mon, Mar 30, 2026 at 11:34:02AM +0800, Haoxiang Li wrote:
+> Add cc_unmap_result() if cc_map_hash_request_final()
+> fails to prevent potential memory leak.
 > 
-> Drop the early return to ensure the driver always unregisters the KPP
-> algorithm and removes the client from the global list instead of
-> aborting teardown when the device is busy.
-> 
-> Fixes: 11105693fa05 ("crypto: atmel-ecc - introduce Microchip / Atmel ECC driver")
+> Fixes: 63893811b0fc ("crypto: ccree - add ahash support")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 > ---
->  drivers/crypto/atmel-ecc.c | 15 +--------------
->  1 file changed, 1 insertion(+), 14 deletions(-)
-> 
-> diff --git a/drivers/crypto/atmel-ecc.c b/drivers/crypto/atmel-ecc.c
-> index b6a77c8d439c..6dbd0f70dd84 100644
-> --- a/drivers/crypto/atmel-ecc.c
-> +++ b/drivers/crypto/atmel-ecc.c
-> @@ -346,21 +346,8 @@ static void atmel_ecc_remove(struct i2c_client *client)
->  {
->  	struct atmel_i2c_client_priv *i2c_priv = i2c_get_clientdata(client);
->  
-> -	/* Return EBUSY if i2c client already allocated. */
-> -	if (atomic_read(&i2c_priv->tfm_count)) {
-> -		/*
-> -		 * After we return here, the memory backing the device is freed.
-> -		 * That happens no matter what the return value of this function
-> -		 * is because in the Linux device model there is no error
-> -		 * handling for unbinding a driver.
-> -		 * If there is still some action pending, it probably involves
-> -		 * accessing the freed memory.
-> -		 */
-> -		dev_emerg(&client->dev, "Device is busy, expect memory corruption.\n");
-> -		return;
-> -	}
-> -
->  	crypto_unregister_kpp(&atmel_ecdh_nist_p256);
-> +	atmel_i2c_flush_queue();
+>  drivers/crypto/ccree/cc_hash.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-I don't think this works.  Even if you unregister the algorithm,
-existing tfm's can still access the driver.
-
-You'll need something a bit fancier than this to deal with it by
-failing any calls to existing tfm's gracefully.
-
-Thanks,
+Patch applied.  Thanks.
 -- 
 Email: Herbert Xu <herbert@gondor.apana.org.au>
 Home Page: http://gondor.apana.org.au/~herbert/
