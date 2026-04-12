@@ -1,179 +1,180 @@
-Return-Path: <stable+bounces-235837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDYnIWnc22lMHgkAu9opvQ
-	(envelope-from <stable+bounces-235837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:54:49 +0200
+	id iK85B7bc22lMHgkAu9opvQ
+	(envelope-from <stable+bounces-235838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:56:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD30F3E53F5
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:54:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5783E5414
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FF4B30087A9
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 17:54:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBF073002B64
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 17:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D191236308D;
-	Sun, 12 Apr 2026 17:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B2E3624C4;
+	Sun, 12 Apr 2026 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rbiioped"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0jC2DR9B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5025D2DC76A
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 17:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD8F329E4B;
+	Sun, 12 Apr 2026 17:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776016485; cv=none; b=DRKgUbKYrOBeUDHDrnrZ5GgRBEtpEznd33lAUgybHMVlsEMxn0i4TSG2jprFk6HiHbq667r9aorlr4irJUuoI+bNAMinYpf3ETZYEZXnTCy2sFluJUufLNjxoszhlBkgg8aLzQ4SBxO+aC/4IUKTgc/a1M3YPYOOfBK5MS99KGU=
+	t=1776016555; cv=none; b=uwaegAGJPcTccHYGnsFnYyzJXXSeePqejNwEj8lH2R4PBBtxBmS7QjQr7XkT8FK2eOno4Dn2oMaBLckXDkyC9B2cALwvsHBVHrXcH31LvZKXtlPVavqGIoR7t002laPn9GHAQeohnj95SvxNZWOmo2DqrlvXtp3L36o3PXMaLms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776016485; c=relaxed/simple;
-	bh=eWr2u+WsL7203seYPlzK90nPqYFM0pnWF51zgRqHmO4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RMLT2ZynrtQQ1zaolJ9xDsZgLHspZenV60KWvK8ykFxj2qs1VSdkbl1v/mrb8FjD4gyF23mb9bIowULcQPymxoOETDpACH6W+trmhi0UKThsLSLnRrdJXn8pGmY6E45QZz/MoXEb4ke9zZGwfU7ZQTd7ow4iH4lHJy/YHuzoCrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rbiioped; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b4583f0a1aso2813885ad.3
-        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 10:54:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776016483; x=1776621283; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YDfdf5SNMNx3/WAzaXsxgQ2xJAL/YKTWXjEjNPHPnao=;
-        b=RbiiopedT4gGaRXLBcAzMvNSvVOywXDFCwOEJZy21acz3aqvf5LQgeX2xJK8ELnhdn
-         xyefg2oAkkpiNYir8KKTKNCVPvqxYn96Qs7Wq2iBZrWJwi5NGHlgQY8yeUD0qOrE4Mg2
-         QeTJsFLMefCBWU8H9a8F2OTCZd9I8Wl5OXKrLlQePE3Znfk5+VsqeET36HOjygfyzvLx
-         Jo5MG3wEsnWb8FSawN33u8XX7u3m3PS9bZJgeGWukh9Pt0Xo/uC7DpNFlOc2OprD2FGA
-         0btHEOYu5SnXJtcomSCKe+gxJuX8xy3ZQn9+jUKJe8QyFemVrh6gn8sj0XQwtXoYS7a7
-         kimg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776016484; x=1776621284;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YDfdf5SNMNx3/WAzaXsxgQ2xJAL/YKTWXjEjNPHPnao=;
-        b=f1R+43JppzSiQhBr9J8MkD5G7GRVgSw0jxagn47v/mf37rdk3I98GazvKUVmOjO+iD
-         vKqZIuTwWy/O23Oxxhbb4XZQs+Uoq/YwwHPnD8C1sMUID4GbxxSW0oh/e3RDBoGCFb6W
-         u2+ue23+PTVNY8fT1IfRZGwk3HCqW6ak1o5gBd2pg+1kVqgTm+uf0UBgi+2p7P0DNsM+
-         kiBMCR45CBv/q8g2sAnppZyP9gCOgNrSKYfvjIS/vZXMbCO8fISl5QsE0c7NPwKwR+dc
-         QRj3fgtOG7dnMYxFdE1s2KRC1rj8AW/TOeSaO/c2knbT5/qmWrsmU9fKXA2FW5QR80Tv
-         7pDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+K0qPrupxbjne5D4BfIGvpMlxsYfA5gxNzlG95jsw/E/mapZAqWM0Pz8pyWPZS8sa/WN8B4MA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuLH/xiBsVhidwsp0iGsg9Yb/n7I57nHOdx5JJgX8r2HKPZHO5
-	7nftSxkJ764JYzXOy6rg2/I9lCbxEQ8aIkM4WQsVVMwjFWEpqGzufjHg
-X-Gm-Gg: AeBDietLdxcRHYEbzDuuNDLI6RmsguZfkBCMrVos61mbpJ4fyQtGeYHsV9ZGUdRuYbS
-	0GhOnRsFkvyJ2C9y5V07rOsseW6OswXcle9pieCxDziF7cQCGGPrZ7Ti6JOH8O1Obhz0jKS9YQN
-	zez1HnxTL7GryvWUT7EVti4nCl17Nw9zGA0EPvGn/3W/SjctGaGFVSWBHUhLRiqNxhqxGcBZWBw
-	OPqtZ6uQvTwI0ESLQkbH2AMUP8zYGe1zesnYHdYTs+JbwnDnEc2Q7daZ6lyfsGSUfc25l3Wci0o
-	R9cmbG56eAePFkGfdLVHHz1NtDaq204PaGWu70kMqHof4QOioK9/zoz4tYKrYtFP4s0jxarby47
-	lu/FGOxIoM2YapxDJBwJjM1TgcmtG3THYuImxHNO80R6unlBRCTfTiAHB43q9Y4WDmrkVVXp6Mb
-	1HfFKImGgYO8GAcBbUWiaDobxD
-X-Received: by 2002:a17:902:f642:b0:2b4:5986:cd80 with SMTP id d9443c01a7336-2b45986d953mr20083035ad.26.1776016483595;
-        Sun, 12 Apr 2026 10:54:43 -0700 (PDT)
-Received: from lgs.. ([2409:893d:1188:142d:6dbb:2e05:75d3:967e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f25d83sm92119835ad.58.2026.04.12.10.54.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 10:54:42 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm: thp: Fix refcount leak in thpsize_create() error path
-Date: Mon, 13 Apr 2026 01:54:28 +0800
-Message-ID: <20260412175428.2613383-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1776016555; c=relaxed/simple;
+	bh=x2S9LN/2FFE0/+kI1Vz4eWRekS5JbdDRAcR7NFxUnfQ=;
+	h=Date:To:From:Subject:Message-Id; b=XIYZKEhDPxCUDasgFI4RQNBI+Kmn+/KAbKagP91oX6yIxzRNvl+3RwC/cic+jFU7PEY00wMvj7JoSScdNs87JILesnIhG/urH7AIAcc+huQE4Wqp85pWBsko6ll8TAq6oVQD1OryLigrBbA84w1k84hqU1befDpXaoXF0Fz+JtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0jC2DR9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E105C19424;
+	Sun, 12 Apr 2026 17:55:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776016554;
+	bh=x2S9LN/2FFE0/+kI1Vz4eWRekS5JbdDRAcR7NFxUnfQ=;
+	h=Date:To:From:Subject:From;
+	b=0jC2DR9BAH+6qO8RaQAe7CKiqIKrmYshAbwg0b4S+0Sz1BtChAoI18M3U6HLY01n7
+	 8+0ihkz9wbsik0stqr0fRDIORA+uyUorQborYy96i4OhtxXmJyzFNRRfvXQ+JTYbmn
+	 /bUR2X5XIOevOEV8R7n7rSzs0+zuCNcQh0j4KY3k=
+Date: Sun, 12 Apr 2026 10:55:51 -0700
+To: mm-commits@vger.kernel.org,vishal.l.verma@intel.com,stable@vger.kernel.org,dave.jiang@intel.com,dan.j.williams@intel.com,lgs201920130244@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + device-dax-fix-refcount-leak-in-__devm_create_dev_dax-error-path.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260412175554.5E105C19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-235837-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235838-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,intel.com,gmail.com,linux-foundation.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DD30F3E53F5
+X-Rspamd-Queue-Id: 1A5783E5414
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-After kobject_init_and_add(), the lifetime of the embedded struct
-kobject is expected to be managed through the kobject core reference
-counting.
 
-In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
-directly with kfree() rather than releasing the kobject reference with
-kobject_put(). This may leave the reference count of the embedded struct
-kobject unbalanced, resulting in a refcount leak.
+The patch titled
+     Subject: device-dax: Fix refcount leak in __devm_create_dev_dax() error path
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     device-dax-fix-refcount-leak-in-__devm_create_dev_dax-error-path.patch
 
-Fix this by using kobject_put(&thpsize->kobj) in the failure path and
-letting thpsize_release() handle the final cleanup.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/device-dax-fix-refcount-leak-in-__devm_create_dev_dax-error-path.patch
 
-Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
-Cc: stable@vger.kernel.org
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Subject: device-dax: Fix refcount leak in __devm_create_dev_dax() error path
+Date: Sun, 12 Apr 2026 15:00:10 +0800
+
+After device_initialize(), the embedded struct device in dev_dax is
+expected to be released through the device core with put_device().
+
+In __devm_create_dev_dax(), several failure paths after
+device_initialize() free dev_dax directly instead of dropping the device
+reference, which bypasses the normal device core lifetime handling and
+leaks the reference held on the embedded struct device.
+
+Fix this by assigning dev->type before device_initialize(), so the release
+callback is available, use put_device() in the post-initialization error
+paths, and keep dev_dax range cleanup explicit since it is not handled by
+dev_dax_release().
+
+Link: https://lkml.kernel.org/r/20260412070010.2402830-1-lgs201920130244@gmail.com
+Fixes: c2f3011ee697f ("device-dax: add an allocation interface for device-dax instances")
 Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-v2:
-  - Drop the incorrect UAF mention from the commit message
-  - Clarify that the bug is an unbalanced kobject reference in the
-  - kobject_init_and_add() failure path
 
- mm/huge_memory.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/dax/bus.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 40cf59301c21..c8ffa188a198 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -726,10 +726,8 @@ static struct thpsize *thpsize_create(int order, struct kobject *parent)
+--- a/drivers/dax/bus.c~device-dax-fix-refcount-leak-in-__devm_create_dev_dax-error-path
++++ a/drivers/dax/bus.c
+@@ -1453,6 +1453,7 @@ static struct dev_dax *__devm_create_dev
+ 	}
  
- 	ret = kobject_init_and_add(&thpsize->kobj, &thpsize_ktype, parent,
- 				   "hugepages-%lukB", size);
--	if (ret) {
--		kfree(thpsize);
-+	if (ret)
- 		goto err;
--	}
+ 	dev = &dev_dax->dev;
++	dev->type = &dev_dax_type;
+ 	device_initialize(dev);
+ 	dev_set_name(dev, "dax%d.%d", dax_region->id, dev_dax->id);
  
+@@ -1499,7 +1500,6 @@ static struct dev_dax *__devm_create_dev
+ 	dev->devt = inode->i_rdev;
+ 	dev->bus = &dax_bus_type;
+ 	dev->parent = parent;
+-	dev->type = &dev_dax_type;
  
- 	ret = sysfs_add_group(&thpsize->kobj, &any_ctrl_attr_grp);
--- 
-2.43.0
+ 	rc = device_add(dev);
+ 	if (rc) {
+@@ -1522,14 +1522,13 @@ static struct dev_dax *__devm_create_dev
+ 	return dev_dax;
+ 
+ err_alloc_dax:
+-	kfree(dev_dax->pgmap);
+ err_pgmap:
+ 	free_dev_dax_ranges(dev_dax);
+ err_range:
+-	free_dev_dax_id(dev_dax);
++	put_device(dev);
++	return ERR_PTR(rc);
+ err_id:
+ 	kfree(dev_dax);
+-
+ 	return ERR_PTR(rc);
+ }
+ 
+_
+
+Patches currently in -mm which might be from lgs201920130244@gmail.com are
+
+device-dax-fix-refcount-leak-in-__devm_create_dev_dax-error-path.patch
 
 
