@@ -1,150 +1,132 @@
-Return-Path: <stable+bounces-235841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULL5Eq3e22lMHgkAu9opvQ
-	(envelope-from <stable+bounces-235841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:04:29 +0200
+	id yg/CGuvh22krIQkAu9opvQ
+	(envelope-from <stable+bounces-235843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:18:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F013E5528
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:04:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F893E55CC
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4DF1E3009F27
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 18:04:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2E61B3002B3D
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 18:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0D235B632;
-	Sun, 12 Apr 2026 18:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A60B3624CC;
+	Sun, 12 Apr 2026 18:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="lCNWNRZH"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Nk+5ppuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33CB3126DD;
-	Sun, 12 Apr 2026 18:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E7326A08F;
+	Sun, 12 Apr 2026 18:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776017065; cv=none; b=Un4FASCDQlDhutg/VbdEZUsJX9t1S8Kvq+mvJFGqstTkf/+3LvJt21o+Jf5k+28RWe3nRMTrYWiGWbvGGoVXss7BWC+tnhfkzZxJoGtAWvpIbXWsre3FBsn2Mqp/VIjTddiMk/JvNyivJVQwolkGqIpNtBYn5nUVgoz35SVz+HE=
+	t=1776017893; cv=none; b=BzlF1HD9AEWWi0CYW4JKQsWyZNdKsbWcp8TZHOY2PX0BuZYWJnjlU5TlqnqPsqQB47alsDPBpeSyQB68BXMG6lpkw1/6fhTjjuMDbRzT8xdPH+9bGZBJ+w5BwYFiLRQaxM0bD7DFmKPOOSHEOQcEt7KOfOYWYWnPgIUZUOdHhL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776017065; c=relaxed/simple;
-	bh=aLdgOQAfkrBrSvxflLil3kfDz3PtawHxAG0TMS4EbWU=;
-	h=Date:To:From:Subject:Message-Id; b=ESCrzXoBY9tbkrdrS+9ojqzEUC3slrOYPnm+DlNYjQdMOyHOpffzdWwtbN/gBj7u/W0sCMgctILGpQ/HGquiYVM8T+bl0v9cVY6s4ZAY9JmeKWEK9rRBr2H/XQrecFDaYbnL+LKOgoAy9KJ990VbISQv/ihfKK0dYudaFRJ435c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lCNWNRZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21E7C19424;
-	Sun, 12 Apr 2026 18:04:24 +0000 (UTC)
+	s=arc-20240116; t=1776017893; c=relaxed/simple;
+	bh=m1HogzxVR1Ef4cOOJK5L0Qa1mWVjgFEef8ioM1/IH7M=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=CqJGLzz7F0wAiYd8oyrYtaFcs+W5xDm4kgECPOawdZ6WUwbMIaYSZhVmsgbOze901th1lnQ5z/el6U5vRnSiwSoF1Cbm0kbIj9RnnmvPIHiiyArShEUBW4UHTxl693oNMlX8fK31GYGXVfqgrj/FPopb78WOX81SjM24UF//r9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Nk+5ppuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258D1C19424;
+	Sun, 12 Apr 2026 18:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776017065;
-	bh=aLdgOQAfkrBrSvxflLil3kfDz3PtawHxAG0TMS4EbWU=;
-	h=Date:To:From:Subject:From;
-	b=lCNWNRZHRY4qlcts/ScB95Wx3u9YCjD9Af8i6adCQkpXEtN7vocy/2I1Ht9Vs3Ur1
-	 bvxicrbkYGgIfshG1bmkAR/rEU2me49CCUIpEQ2p0VrDyr7hNAwKAAQQAUksx2lqnE
-	 2puphGwd+vow3w3vqEMGw0itwQQIsLoxpuj6PT1Y=
-Date: Sun, 12 Apr 2026 11:04:21 -0700
-To: mm-commits@vger.kernel.org,vishal.moola@gmail.com,stable@vger.kernel.org,osalvador@suse.de,david@kernel.org,balbirs@nvidia.com,matthew.brost@intel.com,akpm@linux-foundation.org
+	s=korg; t=1776017893;
+	bh=m1HogzxVR1Ef4cOOJK5L0Qa1mWVjgFEef8ioM1/IH7M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Nk+5ppuSiTQeOq2FwCiWUDwzwb6fS2FZt8aspI2LcvNSvaBff1TbkFAbLbyo87Ij0
+	 D9NvS+5xY6CReMsm/7eZmA5kqhh8ogR4ISpfEG2oA4RmZyi/wE4L2lBdhzkaRNd0N6
+	 2zpiR/sjIb4YnbRapqjHmXNpLVonvjQOFORS5VUg=
+Date: Sun, 12 Apr 2026 11:18:07 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260412180424.C21E7C19424@smtp.kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ rppt@kernel.org, peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] userfaultfd: preserve write protection across
+ UFFDIO_MOVE
+Message-Id: <20260412111807.42c3edf86d19528d7cb1bb7b@linux-foundation.org>
+In-Reply-To: <20260409152822.1073083-1-gourry@gourry.net>
+References: <20260409152822.1073083-1-gourry@gourry.net>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MV_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235841-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235843-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,suse.de,kernel.org,nvidia.com,intel.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B9F013E5528
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: E9F893E55CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Thu,  9 Apr 2026 11:28:22 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-The patch titled
-     Subject: mm/zone_device: do not touch device folio after calling ->folio_free()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch
+> move_present_ptes() unconditionally makes the destination PTE writable,
+> dropping uffd-wp write-protection from the source PTE.
+> 
+> The original intent was to follow mremap() behavior, but mremap()'s
+> move_ptes() preserves the source write state unconditionally.
+> 
+> Modify uffd to preserve the source write state and check the uffd-wp
+> condition of the source before setting writable on the destination.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch
+Please can we have a description of the userspace-visible impact of the
+bug.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Cc: stable@vger.kernel.org
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+especially when cc:stable, thanks.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+>
+> ...
+>
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1123,7 +1123,10 @@ static long move_present_ptes(struct mm_struct *mm,
+>  			orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+>  		if (pte_dirty(orig_src_pte))
+>  			orig_dst_pte = pte_mkdirty(orig_dst_pte);
+> -		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
+> +		if (pte_write(orig_src_pte))
+> +			orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
+> +		if (pte_uffd_wp(orig_src_pte))
+> +			orig_dst_pte = pte_mkuffd_wp(orig_dst_pte);
+>  		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+>  
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Matthew Brost <matthew.brost@intel.com>
-Subject: mm/zone_device: do not touch device folio after calling ->folio_free()
-Date: Fri, 10 Apr 2026 16:03:46 -0700
-
-The contents of a device folio can immediately change after calling
-->folio_free(), as the folio may be reallocated by a driver with a
-different order.  Instead of touching the folio again to extract the
-pgmap, use the local stack variable when calling percpu_ref_put_many().
-
-Link: https://lkml.kernel.org/r/20260410230346.4009855-1-matthew.brost@intel.com
-Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memremap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/memremap.c~mm-zone_device-do-not-touch-device-folio-after-calling-folio_free
-+++ a/mm/memremap.c
-@@ -454,7 +454,7 @@ void free_zone_device_folio(struct folio
- 		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
- 			break;
- 		pgmap->ops->folio_free(folio);
--		percpu_ref_put_many(&folio->pgmap->ref, nr);
-+		percpu_ref_put_many(&pgmap->ref, nr);
- 		break;
- 
- 	case MEMORY_DEVICE_GENERIC:
-_
-
-Patches currently in -mm which might be from matthew.brost@intel.com are
-
-mm-zone_device-do-not-touch-device-folio-after-calling-folio_free.patch
-
+(presently wondering if this is backward compatible)
 
