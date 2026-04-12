@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-235848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIx2FnD622mbKAkAu9opvQ
-	(envelope-from <stable+bounces-235848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:02:56 +0200
+	id oCr9HnH622mbKAkAu9opvQ
+	(envelope-from <stable+bounces-235849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:02:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50813E5D02
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:02:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB95C3E5D0B
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8265300A53B
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:02:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B3B8300B863
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4CC23D281;
-	Sun, 12 Apr 2026 20:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8B62DA765;
+	Sun, 12 Apr 2026 20:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFJAQGbL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmJGIahU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820013D994
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 20:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036DD3D994
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 20:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776024171; cv=none; b=MsbpMWixU3zYHsPL7T1JuPSq8FnKhycO2eozEMmvlz1YUeUtAHZZeeN5lliQ/cFY/D0vHPtNq7Up1+bdZU4FtAKALEERKbmG8Z6uPBaZN7HwxMNYTLN9YEBYyTEA1cVJI4RLbpkDqycl1qlJja8k4eKknOqVl+PIg6TzIbGpwE8=
+	t=1776024174; cv=none; b=hqLIFfdOUteaJzYy7qSeZETz7cmUFnx4zbZjnpExbve34yfySkHRGEfTMu2aEZX/9bSXbeyuJvslffqTMnzZi+VlGeSfgs+rPPXojL/wyQlHLvSXUGS+JzHLXP5355OMJkL/mGiYgYHpjXtpUtX5O9Ep0ixkIBr3aELNhIfdmc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776024171; c=relaxed/simple;
-	bh=l1KlPvbjV6Kf7otFy5PnxrB9calB5whgtwodZCuEnUY=;
+	s=arc-20240116; t=1776024174; c=relaxed/simple;
+	bh=xaR01DCqfuhnTtupYzR6lcnuU3QeZUVkGVSnkD8ZQbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ddrbs8wEPLcCcI/OgNqqOMvICYuO8sLBwWltLiGgqdc74yHUjgGkE0jSL8qKxx8fntGB8IIfauVSebjAY8+vFo/PDcxqEjNlnaLU9BjpL2JQ1PKXqIC/KZG4AIa2/MN6W8Bu7BuTD3RHDu7Yxv4CSe5FlaP4fLFKH2Qtv1mN2Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFJAQGbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7270EC19424;
-	Sun, 12 Apr 2026 20:02:50 +0000 (UTC)
+	 MIME-Version; b=D1fJc9DUdgM4yro+wGEkSYcmDU5yWa0IlHPxP1pevKw2HpjyvHAgp/pLZVkkBKN1rtsN+G+t4vr00vpD2OaHcYN4xnl/lUl/p7QErWLglXcJEJasOZqiKMueHIaLVezcU1h8xJq2gVGDO4hNqR8dUD20AvSV8Dj0TOBKpLwcyyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmJGIahU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2BDC19424;
+	Sun, 12 Apr 2026 20:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776024171;
-	bh=l1KlPvbjV6Kf7otFy5PnxrB9calB5whgtwodZCuEnUY=;
+	s=k20201202; t=1776024173;
+	bh=xaR01DCqfuhnTtupYzR6lcnuU3QeZUVkGVSnkD8ZQbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFJAQGbLtJdXmCYbv2St9bLir8xD6YZsYTOgrTZS9vfsgOqPy+b4PaQyVls/SN6/w
-	 mLrZfPgVP7ZOECzC55LVQOeSaQSoitgW9Gz59j8O7YFNfSqxsxa7uZgfNoyYGe9/fw
-	 n1pYdawmzHvmvoKrl7foc6UYB42V+IPSeQCLyWYEgKS/2fbxWLO6/MibqcoLl+xTui
-	 fTtpelcw/GTxDzvExW3KDsOHER59nEI3MSTOGwb5l7FYY7j0Q6AU8iW6/3woWLHgHU
-	 8tjx/vFSRxtecUcTVJ9AN4DHIgLOnr53jzhT6sIyNzjm/RtSXvOsXHFpnBntpQMVEk
-	 /UUNn70+bRdcQ==
+	b=DmJGIahUpLWPk5tw1QW2opKpYr0lF3ZrpyhP40mAnPl4k2vryGTvaW4MNLckidcFA
+	 MitZkasBW2/rLQdxgKEOhA5qxudE+fp2A53AwBmLgunwz1KIiW6xHUkAmbrTmCG19p
+	 cHr3SXMYoQLxSu+eHhqxC2HynUfBH1sxldxWJUexga+Dp083XGw56RtSnTugwX0oGt
+	 PEe+2k4vtsoh5nfz9WsZmW06EwnpmPs7cJY1sWNY/R7qHENVPT8MaIl9X9mcS2GG2D
+	 yho5whplFxsMN/+dcBguzlnu2B0mGeg/yPPNErcz6H+yoq869bd42g+EqAcNr3wtkD
+	 LB/FJN8PHnWyA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Justin Iurman <justin.iurman@gmail.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
-Date: Sun, 12 Apr 2026 16:02:48 -0400
-Message-ID: <20260412200248.2405054-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] Revert "mptcp: add needs_id for netlink appending addr"
+Date: Sun, 12 Apr 2026 16:02:51 -0400
+Message-ID: <20260412200251.2405108-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041204-extrovert-unashamed-ae30@gregkh>
-References: <2026041204-extrovert-unashamed-ae30@gregkh>
+In-Reply-To: <2026041225-carry-wolf-ae7e@gregkh>
+References: <2026041225-carry-wolf-ae7e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,26 +63,24 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[uniroma2.it,6wind.com,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235848-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235849-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,137 +88,114 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,6wind.com:email]
-X-Rspamd-Queue-Id: C50813E5D02
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ietf.org:url]
+X-Rspamd-Queue-Id: EB95C3E5D0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit c3812651b522fe8437ebb7063b75ddb95b571643 ]
+[ Upstream commit 8e2760eaab778494fc1fa257031e0e1799647f46 ]
 
-The seg6 lwtunnel uses a single dst_cache per encap route, shared
-between seg6_input_core() and seg6_output_core(). These two paths
-can perform the post-encap SID lookup in different routing contexts
-(e.g., ip rules matching on the ingress interface, or VRF table
-separation). Whichever path runs first populates the cache, and the
-other reuses it blindly, bypassing its own lookup.
+This commit was originally adding the ability to add MPTCP endpoints
+with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
+net namespace level, is not supposed to handle endpoints with such ID,
+because this ID 0 is reserved to the initial subflow, as mentioned in
+the MPTCPv1 protocol [1], a per-connection setting.
 
-Fix this by splitting the cache into cache_input and cache_output,
-so each path maintains its own cached dst independently.
+Note that 'ip mptcp endpoint add id 0' stops early with an error, but
+other tools might still request the in-kernel PM to create MPTCP
+endpoints with this restricted ID 0.
 
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+In other words, it was wrong to call the mptcp_pm_has_addr_attr_id
+helper to check whether the address ID attribute is set: if it was set
+to 0, a new MPTCP endpoint would be created with ID 0, which is not
+expected, and might cause various issues later.
+
+Fixes: 584f38942626 ("mptcp: add needs_id for netlink appending addr")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260404004405.4057-2-andrea.mayer@uniroma2.it
+Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.2-9 [1]
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ added missing dst reference loop guard in seg6_output_core() ]
+[ applied changes to net/mptcp/pm_netlink.c instead of renamed net/mptcp/pm_kernel.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_iptunnel.c | 41 +++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ net/mptcp/pm_netlink.c | 24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index b186d85ec5b3f..264a14aef4523 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
- }
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 92ca81a5df675..a16a7a538c425 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1080,7 +1080,7 @@ static void __mptcp_pm_release_addr_entry(struct mptcp_pm_addr_entry *entry)
  
- struct seg6_lwt {
--	struct dst_cache cache;
-+	struct dst_cache cache_input;
-+	struct dst_cache cache_output;
- 	struct seg6_iptunnel_encap tuninfo[];
- };
- 
-@@ -486,7 +487,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	slwt = seg6_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_input);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -502,7 +503,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 		/* cache only if we don't create a dst reference loop */
- 		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
--			dst_cache_set_ip6(&slwt->cache, dst,
-+			dst_cache_set_ip6(&slwt->cache_input, dst,
- 					  &ipv6_hdr(skb)->saddr);
- 			local_bh_enable();
- 		}
-@@ -561,7 +562,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_output);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -586,9 +587,12 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 			goto drop;
- 		}
- 
--		local_bh_disable();
--		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
--		local_bh_enable();
-+		/* cache only if we don't create a dst reference loop */
-+		if (orig_dst->lwtstate != dst->lwtstate) {
-+			local_bh_disable();
-+			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 
- 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 		if (unlikely(err))
-@@ -695,11 +699,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 
- 	slwt = seg6_lwt_lwtunnel(newts);
- 
--	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
--	if (err) {
--		kfree(newts);
--		return err;
--	}
-+	err = dst_cache_init(&slwt->cache_input, GFP_ATOMIC);
-+	if (err)
-+		goto err_free_newts;
-+
-+	err = dst_cache_init(&slwt->cache_output, GFP_ATOMIC);
-+	if (err)
-+		goto err_destroy_input;
- 
- 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
- 
-@@ -714,11 +720,20 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	*ts = newts;
- 
- 	return 0;
-+
-+err_destroy_input:
-+	dst_cache_destroy(&slwt->cache_input);
-+err_free_newts:
-+	kfree(newts);
-+	return err;
- }
- 
- static void seg6_destroy_state(struct lwtunnel_state *lwt)
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 					     struct mptcp_pm_addr_entry *entry,
+-					     bool needs_id, bool replace)
++					     bool replace)
  {
--	dst_cache_destroy(&seg6_lwt_lwtunnel(lwt)->cache);
-+	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwt);
-+
-+	dst_cache_destroy(&slwt->cache_input);
-+	dst_cache_destroy(&slwt->cache_output);
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	unsigned int addr_max;
+@@ -1133,7 +1133,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id && needs_id) {
++	if (!entry->addr.id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -1144,7 +1144,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id && needs_id)
++	if (!entry->addr.id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -1271,7 +1271,7 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc
+ 	entry->ifindex = 0;
+ 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
+ 	entry->lsk = NULL;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true, false);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, false);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -1513,18 +1513,6 @@ static int mptcp_nl_add_subflow_or_signal_addr(struct net *net,
+ 	return 0;
  }
  
- static int seg6_fill_encap_info(struct sk_buff *skb,
+-static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
+-				      struct genl_info *info)
+-{
+-	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
+-
+-	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
+-					 mptcp_pm_addr_policy, info->extack) &&
+-	    tb[MPTCP_PM_ADDR_ATTR_ID])
+-		return true;
+-	return false;
+-}
+-
+ static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
+@@ -1566,9 +1554,7 @@ static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
+ 			goto out_free;
+ 		}
+ 	}
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
+-						!mptcp_pm_has_addr_attr_id(attr, info),
+-						true);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG(info, "too many addresses or duplicate one");
+ 		goto out_free;
 -- 
 2.53.0
 
