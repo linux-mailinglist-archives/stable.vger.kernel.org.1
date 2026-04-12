@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-235864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id xm+QJO0V3GmsMQkAu9opvQ
-	(envelope-from <stable+bounces-235864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 00:00:13 +0200
+	id sIApBSki3GloNAkAu9opvQ
+	(envelope-from <stable+bounces-235865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 00:52:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5EC3E63D3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 00:00:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B01B3E6590
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 00:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3588300AB19
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:00:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 723C5300C9B0
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D7829E11A;
-	Sun, 12 Apr 2026 22:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88DD314A6B;
+	Sun, 12 Apr 2026 22:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uWwyDlSn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5se7dEo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660243630A0
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 22:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D316146A66
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 22:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776031209; cv=none; b=JyMhPXJ4jINoCgUDCyvqdycU74626yAFS9sM3+LwHZevkXRHP+8GiznfB96T+NL+4SA9zDv0MfuPx1l20BKsuo+g/vhNkhGMxJeGfhQSX19zRs3YFuAT4EkBPAl1AsXpUG4B2OpifEf5vPFsSkDdW2+zP3hm9sj3KEMhu8M/86A=
+	t=1776034303; cv=none; b=fb+IDvWSDwZXZIQcZGee75Mnu7lTzHunK4QlSQVN+7UGqV0EgtsRdMEVtxEoJrOxEXLGISEnA5cUCaPr82o1pf/fAs7CLwk9DsPHEgF/NmzV5AaPT3UbK5CHBVHPYQWDOg9WPILZUqIl4dtRhTRGwCtnJhwdCpRR4Daym5fGucI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776031209; c=relaxed/simple;
-	bh=GONf6d+BqlNcxoEtP1tY1Yjo7UEVjVvmuorsF4TM02M=;
+	s=arc-20240116; t=1776034303; c=relaxed/simple;
+	bh=9QeYRr7hEjqnp69Cd116s2nHALLqQ2uz7slGWSXSBLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQX5OwQYgna3/aSASCYHC7fhD8HptvSBCfELrB8tR4Hg6xOzUFse7N+2HQdCSIAf40avlvUufeapAens8LID2twPHKMslgDtM7Kz7v7SZLOyRhIIfxakTwR/eoFVR++dcKHLnutaABOs3Eh/EfvE+xECZR9cP1zetYK7r5et+7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uWwyDlSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D74CC2BCB0;
-	Sun, 12 Apr 2026 22:00:08 +0000 (UTC)
+	 MIME-Version; b=DHvsZZT2hkzdo44xdSomxCXvINZLUk8wtLFaUyl7APwEi0U8CLhsjxAkVnwSlist26wWsHH+Q/6qg6OY+7u4oNF5VOt6w8ingbUHHixVoXGfWYtkQ7GUkCldw9AohxN7lac20Sq5fZgMg226unoubjXiOD+3hNKxhrANbMF34N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5se7dEo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659B7C19424;
+	Sun, 12 Apr 2026 22:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776031209;
-	bh=GONf6d+BqlNcxoEtP1tY1Yjo7UEVjVvmuorsF4TM02M=;
+	s=k20201202; t=1776034303;
+	bh=9QeYRr7hEjqnp69Cd116s2nHALLqQ2uz7slGWSXSBLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWwyDlSnfFmfTw2Ebevn49FxuZ765FA4TI2HvKQnwZsPKuGjGvWb7smNs4QQAjYeF
-	 mUtNVs2/0r+/ySdRLae8274EGL7b7GIEbc75VmaoiDnUk7vpoaJRrg8eC9MpHgWmts
-	 hTtX8ngizrlEygnwSxXdNwxaHj+TVqtn2wTQAd9sOzEcdDqxAOxxNt2Sqk1ar4DQYI
-	 TWG/pF2Z693GZnJvP7mD2gbeNYwaJ6yWhkKZEGx+pKg+jJl+XjEV9gk9kNE+QZTEVV
-	 gN89+Vd8LQJD4VQoyZ/lgO5wpc8MpZNQ8r592di2AmBdpHyeusyJUI5D3vji5Gr4K9
-	 Nzp8OHBkp/DpQ==
+	b=p5se7dEosGlrR/EpMKo3geiPXEX9iPAwJFMtfatm9+GGlmaB3evgpxp7oKQEhpcAR
+	 o2u2nli5bV38Ios34y+OldvDGCgbPK+gsd1OsmY2o5noE99TM4W/meveupPXMkhGt2
+	 XbllIaj0tvL32pAshcBV59W2+ToMW2je5pS1yUA0m6yvvNwTL0EzTP/kCQRG28bdxM
+	 KY2QsdcnKamI7LuPXIHAFGcORentkoxxDLzrZen5M1VhyWfiETvyG7dIG0/cSfpTR8
+	 U4nooiWHGwFyvhq6pQA57Fcuz+FwML9FnDaqhAnPLVuevDSgoxMfsxbp+M2ZoHflFF
+	 l2AAju9U+kZAg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
@@ -51,12 +51,12 @@ Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
 	Justin Iurman <justin.iurman@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
-Date: Sun, 12 Apr 2026 18:00:05 -0400
-Message-ID: <20260412220005.2440027-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
+Date: Sun, 12 Apr 2026 18:51:40 -0400
+Message-ID: <20260412225140.2461891-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041204-pedicure-icky-445b@gregkh>
-References: <2026041204-pedicure-icky-445b@gregkh>
+In-Reply-To: <2026041205-decent-bottle-51e5@gregkh>
+References: <2026041205-decent-bottle-51e5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235864-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235865-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[uniroma2.it,6wind.com,gmail.com,kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,9 +90,9 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DB5EC3E63D3
+X-Rspamd-Queue-Id: 7B01B3E6590
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -117,17 +117,17 @@ Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
 Link: https://patch.msgid.link/20260404004405.4057-2-andrea.mayer@uniroma2.it
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ added missing dst reference loop guard in seg6_output_core() ]
+[ adapted cache field references ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_iptunnel.c | 41 +++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ net/ipv6/seg6_iptunnel.c | 34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
 diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 4188c16754839..62dde5c506b10 100644
+index 986459a85fbd1..5da46c76d335a 100644
 --- a/net/ipv6/seg6_iptunnel.c
 +++ b/net/ipv6/seg6_iptunnel.c
-@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
+@@ -45,7 +45,8 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
  }
  
  struct seg6_lwt {
@@ -137,25 +137,25 @@ index 4188c16754839..62dde5c506b10 100644
  	struct seg6_iptunnel_encap tuninfo[];
  };
  
-@@ -486,7 +487,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	slwt = seg6_lwt_lwtunnel(lwtst);
+@@ -326,7 +327,7 @@ static int seg6_input(struct sk_buff *skb)
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
  
  	local_bh_disable();
 -	dst = dst_cache_get(&slwt->cache);
 +	dst = dst_cache_get(&slwt->cache_input);
- 	local_bh_enable();
  
- 	err = seg6_do_srh(skb, dst);
-@@ -504,7 +505,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 		/* cache only if we don't create a dst reference loop */
- 		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
+ 	skb_dst_drop(skb);
+ 
+@@ -334,7 +335,7 @@ static int seg6_input(struct sk_buff *skb)
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
 -			dst_cache_set_ip6(&slwt->cache, dst,
 +			dst_cache_set_ip6(&slwt->cache_input, dst,
  					  &ipv6_hdr(skb)->saddr);
- 			local_bh_enable();
  		}
-@@ -563,7 +564,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 	} else {
+@@ -363,7 +364,7 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
  	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
  
  	local_bh_disable();
@@ -163,24 +163,17 @@ index 4188c16754839..62dde5c506b10 100644
 +	dst = dst_cache_get(&slwt->cache_output);
  	local_bh_enable();
  
- 	err = seg6_do_srh(skb, dst);
-@@ -587,9 +588,12 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 			goto drop;
+ 	if (unlikely(!dst)) {
+@@ -384,7 +385,7 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
  		}
  
--		local_bh_disable();
+ 		local_bh_disable();
 -		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
--		local_bh_enable();
-+		/* cache only if we don't create a dst reference loop */
-+		if (orig_dst->lwtstate != dst->lwtstate) {
-+			local_bh_disable();
-+			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
++		dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
+ 		local_bh_enable();
+ 	}
  
- 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 		if (unlikely(err))
-@@ -697,11 +701,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+@@ -461,11 +462,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
  
  	slwt = seg6_lwt_lwtunnel(newts);
  
@@ -199,7 +192,7 @@ index 4188c16754839..62dde5c506b10 100644
  
  	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
  
-@@ -716,11 +722,20 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+@@ -480,11 +483,20 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
  	*ts = newts;
  
  	return 0;
