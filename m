@@ -1,97 +1,62 @@
-Return-Path: <stable+bounces-235847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFSuOCDw22mjJAkAu9opvQ
-	(envelope-from <stable+bounces-235847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 21:18:56 +0200
+	id oIx2FnD622mbKAkAu9opvQ
+	(envelope-from <stable+bounces-235848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:02:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED8B3E5ADC
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 21:18:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50813E5D02
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 22:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B15AA3003351
-	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 19:18:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8265300A53B
+	for <lists+stable@lfdr.de>; Sun, 12 Apr 2026 20:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBEC363C40;
-	Sun, 12 Apr 2026 19:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4CC23D281;
+	Sun, 12 Apr 2026 20:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CQC+kjDZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFJAQGbL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E453537C4
-	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 19:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820013D994
+	for <stable@vger.kernel.org>; Sun, 12 Apr 2026 20:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776021533; cv=none; b=bsYKxI7D5T8GldN73oHg/c53c7RY3JGlGlb/LZkpgAYH/xXsUPsaeUwCZ08mI55rGH/4+PtdWFxs1ygxzNLskLqB/aEKWFI61NDTmjDrGdQIm7cIhcZSknUQCmp5i+UHq0iGYOtpUzVdWrcRH87Wao+8t6UKEnTKOv7LdS2vHJ4=
+	t=1776024171; cv=none; b=MsbpMWixU3zYHsPL7T1JuPSq8FnKhycO2eozEMmvlz1YUeUtAHZZeeN5lliQ/cFY/D0vHPtNq7Up1+bdZU4FtAKALEERKbmG8Z6uPBaZN7HwxMNYTLN9YEBYyTEA1cVJI4RLbpkDqycl1qlJja8k4eKknOqVl+PIg6TzIbGpwE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776021533; c=relaxed/simple;
-	bh=D3Zx7q+jagPNX2zM/ItOrdAtZmXCdo7UO8rhYFHyMFo=;
+	s=arc-20240116; t=1776024171; c=relaxed/simple;
+	bh=l1KlPvbjV6Kf7otFy5PnxrB9calB5whgtwodZCuEnUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5SkgLS6V6XooUEE513PZZgGfEFyWRuve2KdsJK3fm+1O0JdUD0YcC/PhI93SwRbXY2nOxoN9CCBQpXQ3jtQUhY7hZryqjKRFAI/KmpljxnOjBp+kyq5FKYFjIxh9YPo3q5MLKBXmjFc4yQdTzRrTdqdI3D41lMXVgNZCKeO2/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CQC+kjDZ; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a8fba3f769so16446505ad.2
-        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 12:18:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776021531; x=1776626331; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GcSoI/8gd+Lz5ms3qNFjtNkgBdfJJNG1XR3lhET5sGQ=;
-        b=CQC+kjDZhd70jXeIeHedF6mZHVL/mOGtNGAEPwiKiHZBuS4yUQeS13+fOXcFRnEers
-         TI9RwmpQh+xttNN7fyyXpl9EJUZiqDXw3rLqzILCPqrce7v+SI0psRj7eOMnL9CvstkZ
-         lc50nrU1FpAO7oh3acX33VJ4uYF26GSbIsZPbmwyt/urWPL80JMOHuFIJ/bcUUAMmj2M
-         6DyTRnlg+D+m++M0ElvUAeGZoGDjrw7hoDj1kngw6uAIKdPQ1WOPPTvvFdVHJlDnNYEw
-         42pKLHZ7B61rSNDQ26VGwyYuHH9g/3l1sDu4bSFA5jAltPW3dUWrhO9Nn1/it0wmLu4c
-         yjsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776021531; x=1776626331;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GcSoI/8gd+Lz5ms3qNFjtNkgBdfJJNG1XR3lhET5sGQ=;
-        b=hLAVAF3DiD4GcgeGlAkiMB8K09StLWta8quFEA7l8fan/CakuCShzqFBMnaNpvASpo
-         0Hkra/uchVFBY3poRgtgm6oYstsQmT530G5YZ9WA2hcGtK0Z8D2VKQ1p7unOfWLqL0Qv
-         VU43fBp6/nFlMcot8rjM5hFPmtv4aEwkJSDsXlxOS/TwjExd2Mke/OTyfySUrYV3WLjU
-         mNgrP5m6uOSaEFa+drr9ce6tk3020odoN7t0zb7dMTWDVXVarq3QDpB680crKIW6C0GY
-         XYwHi20BxOp6TUJTQuAYwkokm5+nJJZd6RbeJDHxHPLErRKGKnG4DGpTOc02zB/si2SL
-         QQrQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9wfkUfojdXDtxM0PhqjmeMQFgAYvVMIvJ63VeZUxb+FdjFZlJY6QVoegHLU/UzN+8LvxRonSc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtltuZqZZ9QoCK/QAolTU20zcUlKipLmYgaSRbCVNaK6QAlv0/
-	jlYUI3eru8NoanXM75Sq62/+1+EsYZbOtzdnkm/sNhbUVhHFcjtxkbex
-X-Gm-Gg: AeBDiesPzA3YynJV8QODAb4/ZehSZiWf+t9NYUJ3id+jl4TZFLb63Gt/STdsME9p+1e
-	N6H7IhXqBGTlungs5R62xmHkyCLYgW9l5gZsdG37hu9Yqn2aKbCwemJ+mkqdrO601bBeafg+dWH
-	FcUsPDRkuQaZolOXnp714BB7rlu/auTacNG5tr1ha2RdTrGhsSsKLnBQKFifj15yzy/FceArIq0
-	3CuWJy36pqRb3iOM7b8oDwMSD7XGaAcGGyfZqab2NRVZRoMQ2yphlk7r3ysnxboKAygFLwnMCDw
-	7qTVN8VXyROjJhfRIy3kq+M7Y/3mAIWqKzYWIReDZT7zDyutIXE5UZsR7e6l3JFvfpr5hWCEZN4
-	KJmeph6AtEDPfnKdXfKuhvEKs8B9fo+aSr2JkQK0n1EP5e2tX3S4LAo0QY23D1MOCGaWq9eU72z
-	OcttuPSMVmc9TrMTjD5BK87Q==
-X-Received: by 2002:a17:903:c11:b0:2b2:5099:2f3e with SMTP id d9443c01a7336-2b2d59416b7mr68154855ad.4.1776021531368;
-        Sun, 12 Apr 2026 12:18:51 -0700 (PDT)
-Received: from ubuntu24.lan ([2602:ffe4:1:2113:9dfd:1ff:3726:3839])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b45cbf11b1sm13864075ad.17.2026.04.12.12.18.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 12:18:50 -0700 (PDT)
-From: Yiyang Chen <cyyzero16@gmail.com>
-To: Balbir Singh <balbirs@nvidia.com>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: linux-kernel@vger.kernel.org,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Dr . Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yiyang Chen <cyyzero16@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] taskstats: retain dead thread stats in TGID queries
-Date: Mon, 13 Apr 2026 03:18:33 +0800
-Message-ID: <99c79e8529eb2c125ffd1eaa9f5d6b479fec227c.1776020234.git.cyyzero16@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1776020234.git.cyyzero16@gmail.com>
-References: <cover.1776020234.git.cyyzero16@gmail.com>
+	 MIME-Version; b=Ddrbs8wEPLcCcI/OgNqqOMvICYuO8sLBwWltLiGgqdc74yHUjgGkE0jSL8qKxx8fntGB8IIfauVSebjAY8+vFo/PDcxqEjNlnaLU9BjpL2JQ1PKXqIC/KZG4AIa2/MN6W8Bu7BuTD3RHDu7Yxv4CSe5FlaP4fLFKH2Qtv1mN2Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFJAQGbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7270EC19424;
+	Sun, 12 Apr 2026 20:02:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776024171;
+	bh=l1KlPvbjV6Kf7otFy5PnxrB9calB5whgtwodZCuEnUY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NFJAQGbLtJdXmCYbv2St9bLir8xD6YZsYTOgrTZS9vfsgOqPy+b4PaQyVls/SN6/w
+	 mLrZfPgVP7ZOECzC55LVQOeSaQSoitgW9Gz59j8O7YFNfSqxsxa7uZgfNoyYGe9/fw
+	 n1pYdawmzHvmvoKrl7foc6UYB42V+IPSeQCLyWYEgKS/2fbxWLO6/MibqcoLl+xTui
+	 fTtpelcw/GTxDzvExW3KDsOHER59nEI3MSTOGwb5l7FYY7j0Q6AU8iW6/3woWLHgHU
+	 8tjx/vFSRxtecUcTVJ9AN4DHIgLOnr53jzhT6sIyNzjm/RtSXvOsXHFpnBntpQMVEk
+	 /UUNn70+bRdcQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
+Date: Sun, 12 Apr 2026 16:02:48 -0400
+Message-ID: <20260412200248.2405054-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041204-extrovert-unashamed-ae30@gregkh>
+References: <2026041204-extrovert-unashamed-ae30@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,172 +64,165 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,uni-hamburg.de,linux-foundation.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-235847-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[uniroma2.it,6wind.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cyyzero16@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-235848-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8ED8B3E5ADC
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,6wind.com:email]
+X-Rspamd-Queue-Id: C50813E5D02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-fill_stats_for_tgid() builds TGID stats from two sources: the cached
-aggregate in signal->stats and a scan of the live threads in the group.
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-However, fill_tgid_exit() only accumulates delay accounting into
-signal->stats. This means that once a thread exits, TGID queries lose
-the fields that fill_stats_for_tgid() adds for live threads.
+[ Upstream commit c3812651b522fe8437ebb7063b75ddb95b571643 ]
 
-This gap was introduced incrementally by two earlier changes that
-extended fill_stats_for_tgid() but did not make the corresponding
-update to fill_tgid_exit():
+The seg6 lwtunnel uses a single dst_cache per encap route, shared
+between seg6_input_core() and seg6_output_core(). These two paths
+can perform the post-encap SID lookup in different routing contexts
+(e.g., ip rules matching on the ingress interface, or VRF table
+separation). Whichever path runs first populates the cache, and the
+other reuses it blindly, bypassing its own lookup.
 
-- commit 8c733420bdd5 ("taskstats: add e/u/stime for TGID command")
-  added ac_etime, ac_utime, and ac_stime to the TGID query path.
-- commit b663a79c1915 ("taskstats: add context-switch counters")
-  added nvcsw and nivcsw to the TGID query path.
+Fix this by splitting the cache into cache_input and cache_output,
+so each path maintains its own cached dst independently.
 
-As a result, those fields were accounted for live threads in TGID
-queries, but were dropped from the cached TGID aggregate after thread
-exit. The final TGID exit notification emitted when group_dead is true
-also copies that cached aggregate, so it loses the same fields.
-
-Factor the per-task TGID accumulation into tgid_stats_add_task() and
-use it in both fill_stats_for_tgid() and fill_tgid_exit(). This keeps
-the cached aggregate used for dead threads aligned with the live-thread
-accumulation used by TGID queries.
-
-Fixes: 8c733420bdd5 ("taskstats: add e/u/stime for TGID command")
-Fixes: b663a79c1915 ("taskstats: add context-switch counters")
+Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yiyang Chen <cyyzero16@gmail.com>
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260404004405.4057-2-andrea.mayer@uniroma2.it
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ added missing dst reference loop guard in seg6_output_core() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/ipv6/seg6_iptunnel.c | 41 +++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/taskstats.c b/kernel/taskstats.c
-index 0cd680ccc7e5..a80be5d9f52b 100644
---- a/kernel/taskstats.c
-+++ b/kernel/taskstats.c
-@@ -210,13 +210,39 @@ static int fill_stats_for_pid(pid_t pid, struct taskstats *stats)
- 	return 0;
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index b186d85ec5b3f..264a14aef4523 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
  }
  
-+static void tgid_stats_add_task(struct taskstats *stats,
-+				struct task_struct *tsk, u64 now_ns)
-+{
-+	u64 delta, utime, stime;
+ struct seg6_lwt {
+-	struct dst_cache cache;
++	struct dst_cache cache_input;
++	struct dst_cache cache_output;
+ 	struct seg6_iptunnel_encap tuninfo[];
+ };
+ 
+@@ -486,7 +487,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	slwt = seg6_lwt_lwtunnel(lwtst);
+ 
+ 	local_bh_disable();
+-	dst = dst_cache_get(&slwt->cache);
++	dst = dst_cache_get(&slwt->cache_input);
+ 	local_bh_enable();
+ 
+ 	err = seg6_do_srh(skb, dst);
+@@ -502,7 +503,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 		/* cache only if we don't create a dst reference loop */
+ 		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+-			dst_cache_set_ip6(&slwt->cache, dst,
++			dst_cache_set_ip6(&slwt->cache_input, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+ 			local_bh_enable();
+ 		}
+@@ -561,7 +562,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+ 	local_bh_disable();
+-	dst = dst_cache_get(&slwt->cache);
++	dst = dst_cache_get(&slwt->cache_output);
+ 	local_bh_enable();
+ 
+ 	err = seg6_do_srh(skb, dst);
+@@ -586,9 +587,12 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 			goto drop;
+ 		}
+ 
+-		local_bh_disable();
+-		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
+-		local_bh_enable();
++		/* cache only if we don't create a dst reference loop */
++		if (orig_dst->lwtstate != dst->lwtstate) {
++			local_bh_disable();
++			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
++			local_bh_enable();
++		}
+ 
+ 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 		if (unlikely(err))
+@@ -695,11 +699,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 
+ 	slwt = seg6_lwt_lwtunnel(newts);
+ 
+-	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
+-	if (err) {
+-		kfree(newts);
+-		return err;
+-	}
++	err = dst_cache_init(&slwt->cache_input, GFP_ATOMIC);
++	if (err)
++		goto err_free_newts;
 +
-+	/*
-+	 * Each accounting subsystem calls its functions here to
-+	 * accumulate its per-task stats for tsk, into the per-tgid structure
-+	 *
-+	 *	per-task-foo(tsk->signal->stats, tsk);
-+	 */
-+	delayacct_add_tsk(stats, tsk);
++	err = dst_cache_init(&slwt->cache_output, GFP_ATOMIC);
++	if (err)
++		goto err_destroy_input;
+ 
+ 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
+ 
+@@ -714,11 +720,20 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	*ts = newts;
+ 
+ 	return 0;
 +
-+	/* calculate task elapsed time in nsec */
-+	delta = now_ns - tsk->start_time;
-+	/* Convert to micro seconds */
-+	do_div(delta, NSEC_PER_USEC);
-+	stats->ac_etime += delta;
-+
-+	task_cputime(tsk, &utime, &stime);
-+	stats->ac_utime += div_u64(utime, NSEC_PER_USEC);
-+	stats->ac_stime += div_u64(stime, NSEC_PER_USEC);
-+
-+	stats->nvcsw += tsk->nvcsw;
-+	stats->nivcsw += tsk->nivcsw;
-+}
-+
- static int fill_stats_for_tgid(pid_t tgid, struct taskstats *stats)
++err_destroy_input:
++	dst_cache_destroy(&slwt->cache_input);
++err_free_newts:
++	kfree(newts);
++	return err;
+ }
+ 
+ static void seg6_destroy_state(struct lwtunnel_state *lwt)
  {
- 	struct task_struct *tsk, *first;
- 	unsigned long flags;
- 	int rc = -ESRCH;
--	u64 delta, utime, stime;
--	u64 start_time;
-+	u64 now_ns;
+-	dst_cache_destroy(&seg6_lwt_lwtunnel(lwt)->cache);
++	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwt);
++
++	dst_cache_destroy(&slwt->cache_input);
++	dst_cache_destroy(&slwt->cache_output);
+ }
  
- 	/*
- 	 * Add additional stats from live tasks except zombie thread group
-@@ -233,30 +259,12 @@ static int fill_stats_for_tgid(pid_t tgid, struct taskstats *stats)
- 	else
- 		memset(stats, 0, sizeof(*stats));
- 
--	start_time = ktime_get_ns();
-+	now_ns = ktime_get_ns();
- 	for_each_thread(first, tsk) {
- 		if (tsk->exit_state)
- 			continue;
--		/*
--		 * Accounting subsystem can call its functions here to
--		 * fill in relevant parts of struct taskstsats as follows
--		 *
--		 *	per-task-foo(stats, tsk);
--		 */
--		delayacct_add_tsk(stats, tsk);
--
--		/* calculate task elapsed time in nsec */
--		delta = start_time - tsk->start_time;
--		/* Convert to micro seconds */
--		do_div(delta, NSEC_PER_USEC);
--		stats->ac_etime += delta;
- 
--		task_cputime(tsk, &utime, &stime);
--		stats->ac_utime += div_u64(utime, NSEC_PER_USEC);
--		stats->ac_stime += div_u64(stime, NSEC_PER_USEC);
--
--		stats->nvcsw += tsk->nvcsw;
--		stats->nivcsw += tsk->nivcsw;
-+		tgid_stats_add_task(stats, tsk, now_ns);
- 	}
- 
- 	unlock_task_sighand(first, &flags);
-@@ -275,18 +283,14 @@ static int fill_stats_for_tgid(pid_t tgid, struct taskstats *stats)
- static void fill_tgid_exit(struct task_struct *tsk)
- {
- 	unsigned long flags;
-+	u64 now_ns;
- 
- 	spin_lock_irqsave(&tsk->sighand->siglock, flags);
- 	if (!tsk->signal->stats)
- 		goto ret;
- 
--	/*
--	 * Each accounting subsystem calls its functions here to
--	 * accumalate its per-task stats for tsk, into the per-tgid structure
--	 *
--	 *	per-task-foo(tsk->signal->stats, tsk);
--	 */
--	delayacct_add_tsk(tsk->signal->stats, tsk);
-+	now_ns = ktime_get_ns();
-+	tgid_stats_add_task(tsk->signal->stats, tsk, now_ns);
- ret:
- 	spin_unlock_irqrestore(&tsk->sighand->siglock, flags);
- 	return;
+ static int seg6_fill_encap_info(struct sk_buff *skb,
 -- 
-2.43.0
+2.53.0
 
 
