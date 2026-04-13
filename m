@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBtYLUMe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:03 +0200
+	id wBYwNSog3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12B63EFD61
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CEF3F045C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57CE93033D7A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 38C2730326E6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FFD2D8364;
-	Mon, 13 Apr 2026 16:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7506231716A;
+	Mon, 13 Apr 2026 16:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kodq2p6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPWCH+FD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8730C30DED5;
-	Mon, 13 Apr 2026 16:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364E9317141;
+	Mon, 13 Apr 2026 16:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098130; cv=none; b=U+nK+LEaUTKAspHboFqGO12t0/HC8BNvA1rwerPHCX+Uk4WNEJ9TEL8KO3Pd8uI58Wk2io/rmtZ4w5+T2T54GxqGOr/7qGdUGqybQvMuRyUhXl3wBEnipdqRKD3+ZtlXw+JIoLn0pC4/6Caf40KwyKo9RiV1JAEX9F95uRY27PE=
+	t=1776099225; cv=none; b=IdYidghz56uRAQobWFGq/tuzM9DmrU18DrDouTZV/9UFPrG138h3qIA/7uZp1XX7brREIiZA9vIqJc/RsnA5SCcyVPRfVZlV8N2c6FnfZqv+HIJJH7jQUGw4DNCjuy32vaKlABoPYqLVHo5eLym3LT7JLL521dc/j1kBUqlAlkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098130; c=relaxed/simple;
-	bh=XYj96bOIIGkGrkK4/NQMGH0RvaIdLNKAgdgdBODiIIM=;
+	s=arc-20240116; t=1776099225; c=relaxed/simple;
+	bh=t2D+uIKJSKdbw/ioZIYfHP+/sNpTDMM3ar7w7tYCrLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V33wSiSHbfPOPwzN/1VQgEVhyHQIH6DyQxJYe9Ecq2smmNvwnFFdJKjJ/mf/mj40kXXXDDyAt40kslztP32lTyXgkmDuGnjZg1vns6/jDOo7pKxAY81KYfKpXPVHyA6iaMxhiwN5fo1uWbrKyY5D8ylC9iijKfsAYftrPpUB0oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kodq2p6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C64C2BCAF;
-	Mon, 13 Apr 2026 16:35:29 +0000 (UTC)
+	 MIME-Version; b=Pe4t1m3/ApZvxD3D5dgS6ff609qR3Ga1mY+2sgZRs1ImBGVVPci9E7Kzolge1pEgvH9DhbZS9JYgANq7eYloOiWTvVy2AMwJilhbIOcsHIjnhD6NgTh8DTA6T0sj0zIqHj3JfS4VbZsC476OG+vV7VO+tpTMSRRZljoCm1n0LnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPWCH+FD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3A5C2BCAF;
+	Mon, 13 Apr 2026 16:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098130;
-	bh=XYj96bOIIGkGrkK4/NQMGH0RvaIdLNKAgdgdBODiIIM=;
+	s=korg; t=1776099225;
+	bh=t2D+uIKJSKdbw/ioZIYfHP+/sNpTDMM3ar7w7tYCrLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kodq2p6B5rYxRtT+TYdj9K7TxLeuQzbQbheRfZAgGzsJ2YLShXIPxTJTyedqhxcuP
-	 kmBD9SmnTkiBqUeBiVw6m8/uVrup0fUz0t/LXvCkVUAYVGWEIphQFcAtjbV7q7EUsR
-	 aa8sYOgm5+y1rn4fr9YkYNlBc0vL0HvMTVB8fIk4=
+	b=HPWCH+FDdVY002FhdpIepKJXAjNRTxnBOyyfOEeVqBX8L6b+LNDlr75vkeUOuTFPC
+	 BL4Y0eBtpZhdjdkdiGpXF5+33PzNlLTNoEncdHpWE/tB875r8dheIO/oRRQyQbDlY9
+	 J49sVI/rrUUpRzVkYXuBaPo8Z8JD0V9WgzMdk0JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xietangxin <xietangxin@yeah.net>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 373/570] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+	Qi Tang <tpluszz77@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 259/491] net/smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
 Date: Mon, 13 Apr 2026 17:58:24 +0200
-Message-ID: <20260413155844.453060108@linuxfoundation.org>
+Message-ID: <20260413155828.749036419@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +69,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236919-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237349-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,yeah.net:email]
-X-Rspamd-Queue-Id: D12B63EFD61
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: A1CEF3F045C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xietangxin <xietangxin@yeah.net>
+From: Qi Tang <tpluszz77@gmail.com>
 
-commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
+[ Upstream commit 24dd586bb4cbba1889a50abe74143817a095c1c9 ]
 
-A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
-and the device's IFF_XMIT_DST_RELEASE flag is cleared
-(e.g., during the configuration of tc route filter rules).
+smc_rx_splice() allocates one smc_spd_priv per pipe_buffer and stores
+the pointer in pipe_buffer.private.  The pipe_buf_operations for these
+buffers used .get = generic_pipe_buf_get, which only increments the page
+reference count when tee(2) duplicates a pipe buffer.  The smc_spd_priv
+pointer itself was not handled, so after tee() both the original and the
+cloned pipe_buffer share the same smc_spd_priv *.
 
-When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
-expects the driver to hold the reference to skb->dst until the packet
-is fully transmitted and freed. In virtio_net with napi_tx=N,
-skbs may remain in the virtio transmit ring for an extended period.
+When both pipes are subsequently released, smc_rx_pipe_buf_release() is
+called twice against the same object:
 
-If the network namespace is destroyed while these skbs are still pending,
-the corresponding dst_ops structure has freed. When a subsequent packet
-is transmitted, free_old_xmit() is triggered to clean up old skbs.
-It then calls dst_release() on the skb associated with the stale dst_entry.
-Since the dst_ops (referenced by the dst_entry) has already been freed,
-a UAF kernel paging request occurs.
+  1st call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [correct]
+  2nd call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [UAF]
 
-fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
-the dst reference before the skb is queued in virtio_net.
+KASAN reports a slab-use-after-free in smc_rx_pipe_buf_release(), which
+then escalates to a NULL-pointer dereference and kernel panic via
+smc_rx_update_consumer() when it chases the freed priv->smc pointer:
 
-Call Trace:
- Unable to handle kernel paging request at virtual address ffff80007e150000
- CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
-  ...
-  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
-  dst_release+0xe0/0x110  net/core/dst.c:177
-  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
-  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
-  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
-  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
-  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
-  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
-  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
-  ...
+  BUG: KASAN: slab-use-after-free in smc_rx_pipe_buf_release+0x78/0x2a0
+  Read of size 8 at addr ffff888004a45740 by task smc_splice_tee_/74
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x53/0x70
+   print_report+0xce/0x650
+   kasan_report+0xc6/0x100
+   smc_rx_pipe_buf_release+0x78/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-Reproduction Steps:
-NETDEV="enp3s0"
+  BUG: kernel NULL pointer dereference, address: 0000000000000020
+  RIP: 0010:smc_rx_update_consumer+0x8d/0x350
+  Call Trace:
+   <TASK>
+   smc_rx_pipe_buf_release+0x121/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  Kernel panic - not syncing: Fatal exception
 
-config_qdisc_route_filter() {
-    tc qdisc del dev $NETDEV root
-    tc qdisc add dev $NETDEV root handle 1: prio
-    tc filter add dev $NETDEV parent 1:0 \
-	protocol ip prio 100 route to 100 flowid 1:1
-    ip route add 192.168.1.100/32 dev $NETDEV realm 100
-}
+Beyond the memory-safety problem, duplicating an SMC splice buffer is
+semantically questionable: smc_rx_update_cons() would advance the
+consumer cursor twice for the same data, corrupting receive-window
+accounting.  A refcount on smc_spd_priv could fix the double-free, but
+the cursor-accounting issue would still need to be addressed separately.
 
-test_ns() {
-    ip netns add testns
-    ip link set $NETDEV netns testns
-    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
-    ip netns exec testns ping -c 1 10.0.32.1
-    ip netns del testns
-}
+The .get callback is invoked by both tee(2) and splice_pipe_to_pipe()
+for partial transfers; both will now return -EFAULT.  Users who need
+to duplicate SMC socket data must use a copy-based read path.
 
-config_qdisc_route_filter
-
-test_ns
-sleep 2
-test_ns
-
-Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
-Cc: stable@vger.kernel.org
-Signed-off-by: xietangxin <xietangxin@yeah.net>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
-Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
+Fixes: 9014db202cb7 ("smc: add support for splice()")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Link: https://patch.msgid.link/20260318064847.23341-1-tpluszz77@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/smc/smc_rx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1831,6 +1831,7 @@ static netdev_tx_t start_xmit(struct sk_
- 	/* Don't wait up for transmitted skbs to be freed. */
- 	if (!use_napi) {
- 		skb_orphan(skb);
-+		skb_dst_drop(skb);
- 		nf_reset_ct(skb);
- 	}
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index 5f20538cbf990..0845905520f8c 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -129,9 +129,16 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
+ 	sock_put(sk);
+ }
  
++static bool smc_rx_pipe_buf_get(struct pipe_inode_info *pipe,
++				struct pipe_buffer *buf)
++{
++	/* smc_spd_priv in buf->private is not shareable; disallow cloning. */
++	return false;
++}
++
+ static const struct pipe_buf_operations smc_pipe_ops = {
+ 	.release = smc_rx_pipe_buf_release,
+-	.get = generic_pipe_buf_get
++	.get	 = smc_rx_pipe_buf_get,
+ };
+ 
+ static void smc_rx_spd_release(struct splice_pipe_desc *spd,
+-- 
+2.51.0
+
 
 
 
