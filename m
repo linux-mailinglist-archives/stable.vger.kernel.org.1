@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-236351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +G7iEGQZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:16 +0200
+	id OHHRJaQe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5E23EEF5D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADE93EFE73
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 36678313E850
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 53203302A180
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E822E8B9B;
-	Mon, 13 Apr 2026 16:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B8E30C359;
+	Mon, 13 Apr 2026 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGwJhm8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypOU2hof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8F22E11B9;
-	Mon, 13 Apr 2026 16:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5661D280CFB;
+	Mon, 13 Apr 2026 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096681; cv=none; b=sLoKJZtyoywn2P/8Q+VUDZoTbTSCfId9CetydQhPAJup1SDWamDKWui8gcOuHSvuETOO8XwlA4qHcauXIjuSTL9aQH3paLY7st6b+Ex0iNIDPXYceaQa9iPY+KDkAc7tJIShdqA+hI7CYtL518jaqEL3kaZUgrgs3JfxlvZR3Ec=
+	t=1776098401; cv=none; b=CRFsbAWWlXQSFA325XowjQpTyp7tU4zOdMhcE7L3JJ1sZvy/aEqwseXJ/Q3vMCm43A87yrGsHH8fbT/+vlqWv/cLICUAqiJYPurCpy25asI+D3fboUhXlYWlFoelNQsbUQ77gwnlxetPChfd529UTzcUSLTJ36+FA0a8XjgrSXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096681; c=relaxed/simple;
-	bh=WTskjp22NB9z6bsbqpBgV+tw97LBo7iQrAUs3YtKm94=;
+	s=arc-20240116; t=1776098401; c=relaxed/simple;
+	bh=K93ZGlO0rUn7OaOFel7iC0Nc63Ag+s25HuOv2YRsViE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPNjNDCmbC+lxOT53lX8VmFhEreDMDTI/va6j6C6z74QcgkqVnqL9irbmc8YlMcPcE7gUQY0w7i7+PV0XnFuzTCgBvbU2kwR07D99TbOwQIZJU/dRawoIvUhATUbJPu4P5s9Bhp31BUgyiTHMq2o7MVhGQkszd6ahu8EzECJFsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGwJhm8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F56EC2BCAF;
-	Mon, 13 Apr 2026 16:11:21 +0000 (UTC)
+	 MIME-Version; b=mejZlbehMUsEPdiAe95/l1IAqCCpD8OL9yHtONhhx6i3ZYU/fcdVSn1oKXviHSzj6terzhSQIN9UQws8MJOvvt2tTBN8wxJEAnH9ZSVotKZRAiSn5ytcqkD2450k/JVgCD2U29BcyszChNNOmKmDDs+mXoIDDApgMeCz3vTNXz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypOU2hof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FD1C2BCAF;
+	Mon, 13 Apr 2026 16:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096681;
-	bh=WTskjp22NB9z6bsbqpBgV+tw97LBo7iQrAUs3YtKm94=;
+	s=korg; t=1776098401;
+	bh=K93ZGlO0rUn7OaOFel7iC0Nc63Ag+s25HuOv2YRsViE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGwJhm8pVMb/iPe8dg13AonU664ApwhTsmxGEZpFNJ+W9MskCQEFbBLCUuc0R2xdW
-	 FiI0coCw46/2OqzZrgvji86awnnu1adP8g52ateSb0kCm6T8lNhCpRV+g4JY5GfLjf
-	 +EYvZa/QHbTrjo8tCON/tUcj9F5N/+9vqIiypzxw=
+	b=ypOU2hofNqFgimrh7nqrIsdCx+lmpsn+h1JY1IlEakvLNU/TskJu0c4dWtQiWXkqe
+	 PkS0kYyXhuc1VKDuuG1yAYzg6Kh0MR90BER/5LGTcUbp51Au3WPZLruL9BzYpjnQ+1
+	 FBiV3Iqhr2yDwL+30yVTMUZhKSYwzbKMEodT+CW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 14/70] btrfs: make wait_on_extent_buffer_writeback() static inline
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 478/570] bridge: br_nd_send: validate ND option lengths
 Date: Mon, 13 Apr 2026 18:00:09 +0200
-Message-ID: <20260413155728.719886288@linuxfoundation.org>
+Message-ID: <20260413155848.367971664@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,86 +78,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237027-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236351-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,wdc.com:email]
-X-Rspamd-Queue-Id: DA5E23EEF5D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,blackwall.org:email,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 1ADE93EFE73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit 075adeeb9204359e8232aeccf8b3c350ff6d9ff4 ]
+commit 850837965af15707fd3142c1cf3c5bfaf022299b upstream.
 
-The simple helper can be inlined, no need for the separate function.
+br_nd_send() walks ND options according to option-provided lengths.
+A malformed option can make the parser advance beyond the computed
+option span or use a too-short source LLADDR option payload.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 316fb1b3169e ("btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Validate option lengths against the remaining NS option area before
+advancing, and only read source LLADDR when the option is large enough
+for an Ethernet address.
+
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260326034441.2037420-3-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c | 6 ------
- fs/btrfs/extent_io.h | 7 ++++++-
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ net/bridge/br_arp_nd_proxy.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 2e8dc928621cb..3bcb368c4127e 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1671,12 +1671,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
- 	return ret;
- }
- 
--void wait_on_extent_buffer_writeback(struct extent_buffer *eb)
--{
--	wait_on_bit_io(&eb->bflags, EXTENT_BUFFER_WRITEBACK,
--		       TASK_UNINTERRUPTIBLE);
--}
--
- /*
-  * Lock extent buffer status and pages for writeback.
-  *
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index c63ccfb9fc37c..e22c4abefb9b4 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -266,7 +266,12 @@ void free_extent_buffer_stale(struct extent_buffer *eb);
- #define WAIT_PAGE_LOCK	2
- int read_extent_buffer_pages(struct extent_buffer *eb, int wait, int mirror_num,
- 			     const struct btrfs_tree_parent_check *parent_check);
--void wait_on_extent_buffer_writeback(struct extent_buffer *eb);
-+static inline void wait_on_extent_buffer_writeback(struct extent_buffer *eb)
-+{
-+	wait_on_bit_io(&eb->bflags, EXTENT_BUFFER_WRITEBACK,
-+		       TASK_UNINTERRUPTIBLE);
-+}
-+
- void btrfs_readahead_tree_block(struct btrfs_fs_info *fs_info,
- 				u64 bytenr, u64 owner_root, u64 gen, int level);
- void btrfs_readahead_node_child(struct extent_buffer *node, int slot);
--- 
-2.53.0
-
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -285,12 +285,14 @@ static void br_nd_send(struct net_bridge
+ 	ns_olen = request->len - (skb_network_offset(request) +
+ 				  sizeof(struct ipv6hdr)) - sizeof(*ns);
+ 	for (i = 0; i < ns_olen - 1; i += (ns->opt[i + 1] << 3)) {
+-		if (!ns->opt[i + 1]) {
++		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
+ 			kfree_skb(reply);
+ 			return;
+ 		}
+ 		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
+-			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
++			if ((ns->opt[i + 1] << 3) >=
++			    sizeof(struct nd_opt_hdr) + ETH_ALEN)
++				daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
+ 			break;
+ 		}
+ 	}
 
 
 
