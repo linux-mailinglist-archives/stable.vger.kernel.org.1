@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-237077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NMbK2Ug3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:09 +0200
+	id APinADwd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-237079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958D33F0522
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFFC3EF9E2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92D09309BB2A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 13E27303CE48
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A29130C359;
-	Mon, 13 Apr 2026 16:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ADF1A680C;
+	Mon, 13 Apr 2026 16:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTHJSYpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NtWUNA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072C1307AC7;
-	Mon, 13 Apr 2026 16:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5584A30C359;
+	Mon, 13 Apr 2026 16:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098528; cv=none; b=kQ2v7EY5wz/ytjVNmTHUKXK04me6TplzsoA50JSQ/YsYj5LBXhpsIJEOai9tdy7l8NvqgTCKhwumXYg07pdovI3ehE3viRhdWKNp9r146mE3HuIutpFL7//0pal9OhYL07UH8LrCtS2BID0Mgc8xaPQypGXiQpI90h2sekch/VI=
+	t=1776098533; cv=none; b=QV3BU7kP64PPhKfNNmjtk9rUcTr6/COH9Cw+Yje0S4W2gC3XJioCv0lQSNEIJ4jdP1qSZ234c/KFPOaIcn/DwfOp0BZFVhsePZbjkQUs77wqliOmP7vk/ogYfZhMf0RXPUBr6bf/1fJAl7u97HiyKoT//aUXkNv5zucbR35Wz5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098528; c=relaxed/simple;
-	bh=fykuKx+Utz7rd7t7CZmQwqw2MnLMEQObMNXsR6jcyTE=;
+	s=arc-20240116; t=1776098533; c=relaxed/simple;
+	bh=yNzV8xp23tdHhS5UKPEUV3K8u6rIugzd+QzMP2xIJ3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfDMuXBRYKzxgMWnaJym2E/L0/i1HB2b73A7alOnOkZU65e5VQqIbnBivIWh2+9dx0Ku3w7fXfjaLFVBQaWRSU9h4XZh52g9iRWx9xqP88rf2MCoPXNrb0N3FQL/NEMMWxYyHYmbUf0JZbTwF+3HvyKRcFTylUYAWR9iTaBOXQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTHJSYpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F679C2BCAF;
-	Mon, 13 Apr 2026 16:42:07 +0000 (UTC)
+	 MIME-Version; b=IqhyDuy6pqXmOOYr4CFexEyRc1GKwruIA+9I5+uihbozrHgHkHgHz+uVE4qKyrqtnNEuBt6x6/LzTosupB82qxcoJsLPI6rW/2vLe0KDb3ceSXsfUeaD8cEDEbEqxAHa4iwDOBYIXSXJrOb+qa/a6etK7FFjC9ytlK3wltXvasg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NtWUNA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88ECC2BCAF;
+	Mon, 13 Apr 2026 16:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098527;
-	bh=fykuKx+Utz7rd7t7CZmQwqw2MnLMEQObMNXsR6jcyTE=;
+	s=korg; t=1776098533;
+	bh=yNzV8xp23tdHhS5UKPEUV3K8u6rIugzd+QzMP2xIJ3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTHJSYpM6vI/7jxCOHJyuTcdSjsNBVOqejm+OUxBENAMiQ+5fFcIfF/vPuXDmCv4e
-	 8Fy+k5+E1iZGt07SjWIfOLXw3xM1NSHrw1vQJdpz+TqLTS5Kk6jY3y7I7Zl9fbZ0yv
-	 uOPkVQTqlW4KhB9dx4xhKCgJjY+BSYh6bAviQSbw=
+	b=2NtWUNA9L8FvXgJv4FUFwo+gTmmX8+/YisRjGxhBY8oUE1WPcu0iIv8+k03CemFRT
+	 DjuWAYrZvtZluBDHwd4irLcW4M0Sr4MOhK58X80GytNEpce3FNhNHaqQLxvFFKPuae
+	 arXMi7sYFtLqbUOyGQ8XlA+cMJZujutdkUPTmeZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mathieu.desnoyers@efficios.com,
-	zhang.run@zte.com.cn,
-	yang.tao172@zte.com.cn,
-	ran.xiaokai@zte.com.cn,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Luo Haiyang <luo.haiyang@zte.com.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 560/570] tracing: Fix potential deadlock in cpu hotplug with osnoise
-Date: Mon, 13 Apr 2026 18:01:31 +0200
-Message-ID: <20260413155851.449717833@linuxfoundation.org>
+Subject: [PATCH 5.15 561/570] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
+Date: Mon, 13 Apr 2026 18:01:32 +0200
+Message-ID: <20260413155851.487917062@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -73,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237077-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237079-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,efficios.com:email,zte.com.cn:email]
-X-Rspamd-Queue-Id: 958D33F0522
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pm.me:email]
+X-Rspamd-Queue-Id: 8AFFC3EF9E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,91 +100,74 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Luo Haiyang <luo.haiyang@zte.com.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 1f9885732248d22f788e4992c739a98c88ab8a55 ]
+[ Upstream commit beef2634f81f1c086208191f7228bce1d366493d ]
 
-The following sequence may leads deadlock in cpu hotplug:
-
-    task1        task2        task3
-    -----        -----        -----
-
- mutex_lock(&interface_lock)
-
-            [CPU GOING OFFLINE]
-
-            cpus_write_lock();
-            osnoise_cpu_die();
-              kthread_stop(task3);
-                wait_for_completion();
-
-                      osnoise_sleep();
-                        mutex_lock(&interface_lock);
-
- cpus_read_lock();
-
- [DEAD LOCK]
-
-Fix by swap the order of cpus_read_lock() and mutex_lock(&interface_lock).
+When a compound request consists of QUERY_DIRECTORY + QUERY_INFO
+(FILE_ALL_INFORMATION) and the first command consumes nearly the entire
+max_trans_size, get_file_all_info() would blindly call smbConvertToUTF16()
+with PATH_MAX, causing out-of-bounds write beyond the response buffer.
+In get_file_all_info(), there was a missing validation check for
+the client-provided OutputBufferLength before copying the filename into
+FileName field of the smb2_file_all_info structure.
+If the filename length exceeds the available buffer space, it could lead to
+potential buffer overflows or memory corruption during smbConvertToUTF16
+conversion. This calculating the actual free buffer size using
+smb2_calc_max_out_buf_len() and returning -EINVAL if the buffer is
+insufficient and updating smbConvertToUTF16 to use the actual filename
+length (clamped by PATH_MAX) to ensure a safe copy operation.
 
 Cc: stable@vger.kernel.org
-Cc: <mathieu.desnoyers@efficios.com>
-Cc: <zhang.run@zte.com.cn>
-Cc: <yang.tao172@zte.com.cn>
-Cc: <ran.xiaokai@zte.com.cn>
-Fixes: bce29ac9ce0bb ("trace: Add osnoise tracer")
-Link: https://patch.msgid.link/20260326141953414bVSj33dAYktqp9Oiyizq8@zte.com.cn
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Luo Haiyang <luo.haiyang@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[ adapted guard() macros to lock/unlock calls ]
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Reported-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted variable declarations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_osnoise.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ksmbd/smb2pdu.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -1620,8 +1620,8 @@ static void osnoise_hotplug_workfn(struc
- 	if (!osnoise_busy)
- 		goto out_unlock_trace;
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -4580,6 +4580,8 @@ static int get_file_all_info(struct ksmb
+ 	int conv_len;
+ 	char *filename;
+ 	u64 time;
++	int buf_free_len, filename_len;
++	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
  
--	mutex_lock(&interface_lock);
- 	cpus_read_lock();
-+	mutex_lock(&interface_lock);
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
+@@ -4591,6 +4593,16 @@ static int get_file_all_info(struct ksmb
+ 	if (IS_ERR(filename))
+ 		return PTR_ERR(filename);
  
- 	if (!cpu_online(cpu))
- 		goto out_unlock;
-@@ -1634,8 +1634,8 @@ static void osnoise_hotplug_workfn(struc
- 	start_kthread(cpu);
++	filename_len = strlen(filename);
++	buf_free_len = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_query_info_rsp, Buffer) +
++			offsetof(struct smb2_file_all_info, FileName),
++			le32_to_cpu(req->OutputBufferLength));
++	if (buf_free_len < (filename_len + 1) * 2) {
++		kfree(filename);
++		return -EINVAL;
++	}
++
+ 	inode = file_inode(fp->filp);
+ 	generic_fillattr(file_mnt_user_ns(fp->filp), inode, &stat);
  
- out_unlock:
--	cpus_read_unlock();
- 	mutex_unlock(&interface_lock);
-+	cpus_read_unlock();
- out_unlock_trace:
- 	mutex_unlock(&trace_types_lock);
- }
-@@ -1772,16 +1772,16 @@ osnoise_cpus_write(struct file *filp, co
- 	if (running)
- 		osnoise_tracer_stop(tr);
- 
--	mutex_lock(&interface_lock);
- 	/*
- 	 * osnoise_cpumask is read by CPU hotplug operations.
- 	 */
- 	cpus_read_lock();
-+	mutex_lock(&interface_lock);
- 
- 	cpumask_copy(&osnoise_cpumask, osnoise_cpumask_new);
- 
--	cpus_read_unlock();
- 	mutex_unlock(&interface_lock);
-+	cpus_read_unlock();
- 
- 	if (running)
- 		osnoise_tracer_start(tr);
+@@ -4622,7 +4634,8 @@ static int get_file_all_info(struct ksmb
+ 	file_info->Mode = fp->coption;
+ 	file_info->AlignmentRequirement = 0;
+ 	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
+-				     PATH_MAX, conn->local_nls, 0);
++				     min(filename_len, PATH_MAX),
++				     conn->local_nls, 0);
+ 	conv_len *= 2;
+ 	file_info->FileNameLength = cpu_to_le32(conv_len);
+ 	rsp->OutputBufferLength =
 
 
 
