@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-236852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGDfFgsd3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:51 +0200
+	id UOwpOhwj3WkoaQkAu9opvQ
+	(envelope-from <stable+bounces-237307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6D53EF936
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53B73F0D2E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 551983039D92
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02443306F200
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD746291864;
-	Mon, 13 Apr 2026 16:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C482431B803;
+	Mon, 13 Apr 2026 16:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueDD/uTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RX86SfBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD46238D27;
-	Mon, 13 Apr 2026 16:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B3A31DD97;
+	Mon, 13 Apr 2026 16:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097958; cv=none; b=uvcfK2NrRDoL18uot8TrUoP/GHLNYuwjjaKk1aAodoiZxq06kXVe6CPFF/E2rPCczQg88gu7/tf5uDoNln4Ph53uxuRKQmzA8+lEg6lhK0HQBJHkjRBdWorrpL5AnPdnmWFm7pzZSaySiTj4dwdgLDk7uD7OnlYbAYFwnXYR1hM=
+	t=1776099119; cv=none; b=ip1HaBii7tCuSgrfjGbx80f6xY8vhzzrZF+CdT8Ll0N9Rphqd4xQdaOIAeveJLlij3gl90yuOeByYzSiR6OIa31HO/dOZDCgg+ADWPPrVqSSxjfeaIX1JrSWmjY8wZNy26DCiModCQke0gCixG6UUa9kEQkOQu3HcEkgl/49omY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097958; c=relaxed/simple;
-	bh=jz88/7hqtxUJQzlWyLTf09NYoLn7LZ3uvV2D5TTANYU=;
+	s=arc-20240116; t=1776099119; c=relaxed/simple;
+	bh=5eGSW9KUHvwFhuPlTMj1EhBOOeElYv80co4VZC3cj3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHEoWwTQXJp2WUdnw0jvTLEE/r3BGSLQI/cTVFCa3g8foyFr2YQD3ORGTLa5OI+Gbqg5UGJSJg2YzWfd717Fzkg/sglXfiPrvn5LZWoaxtXqkeskW2u+AoIxNsF+I4GoojEtap4k7Q8GFpZVZ8tzfuPfJiQhugzqfjNMaKPhCxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueDD/uTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7D5C2BCAF;
-	Mon, 13 Apr 2026 16:32:37 +0000 (UTC)
+	 MIME-Version; b=MGoD4z/QE3/f4U+JHY2T+lPjlTTuoDsen/oDZTzGWH6YFum4IpEHM8aA83xc2koT6aMJ2s2QyCmnRDtngFjYw+Ev8XbvwCx/ndKPC6BHeByHB/u5W/CyYqWvndHFevSKmh//hFBvQPcj8kocshKg1KOO/OIjr8EKBsaxYRHpz/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RX86SfBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20035C2BCB0;
+	Mon, 13 Apr 2026 16:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097958;
-	bh=jz88/7hqtxUJQzlWyLTf09NYoLn7LZ3uvV2D5TTANYU=;
+	s=korg; t=1776099119;
+	bh=5eGSW9KUHvwFhuPlTMj1EhBOOeElYv80co4VZC3cj3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ueDD/uTz9x+eZPWBwrUW+PPyZs80jTmFz/ea0+9Z6P+re1jZEf++hgN8NRlTwc1w4
-	 gw6AcYOVYQc/WN0uSapBJaZ1T2aim4/sSwRyAug8yfDJmfCYvYCH0Am1jBDm895/Ir
-	 TwfuatiQmF/ZSBLyxfh5/FR73Oj4N8RBXqV6tWxc=
+	b=RX86SfBTLQIfMo6akAk2N+HUcZ/SyY9b3bp7A1ZONm2P6/s+e102f16Pe8D/d/4Pi
+	 LnNGxjXwXQHEf9KOpG72ESt+nFGi5Duuf2TV5o5mP7PedP264PBkLQJRienw2aU+08
+	 ysTYa3wL856DtrC1w6cvi0oxtPXB8vy7Xo3fbrXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Kohei Enju <kohei@enjuk.jp>,
+	Simon Horman <horms@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 331/570] dma-mapping: add missing `inline` for `dma_free_attrs`
-Date: Mon, 13 Apr 2026 17:57:42 +0200
-Message-ID: <20260413155842.893847599@linuxfoundation.org>
+Subject: [PATCH 5.10 218/491] igc: fix missing update of skb->tail in igc_xmit_frame()
+Date: Mon, 13 Apr 2026 17:57:43 +0200
+Message-ID: <20260413155827.226775105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +71,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237307-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236852-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email]
-X-Rspamd-Queue-Id: DC6D53EF936
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,enjuk.jp:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: E53B73F0D2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 2cdaff22ed26f1e619aa2b43f27bb84f2c6ef8f8 ]
+[ Upstream commit 0ffba246652faf4a36aedc66059c2f94e4c83ea5 ]
 
-Under an UML build for an upcoming series [1], I got `-Wstatic-in-inline`
-for `dma_free_attrs`:
+igc_xmit_frame() misses updating skb->tail when the packet size is
+shorter than the minimum one.
+Use skb_put_padto() in alignment with other Intel Ethernet drivers.
 
-      BINDGEN rust/bindings/bindings_generated.rs - due to target missing
-    In file included from rust/helpers/helpers.c:59:
-    rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs' is used in an inline function with external linkage [-Wstatic-in-inline]
-       17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
-          |         ^
-    rust/helpers/dma.c:12:1: note: use 'static' to give inline function 'rust_helper_dma_free_attrs' internal linkage
-       12 | __rust_helper void rust_helper_dma_free_attrs(struct device *dev, size_t size,
-          | ^
-          | static
-
-The issue is that `dma_free_attrs` was not marked `inline` when it was
-introduced alongside the rest of the stubs.
-
-Thus mark it.
-
-Fixes: ed6ccf10f24b ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA")
-Closes: https://lore.kernel.org/rust-for-linux/20260322194616.89847-1-ojeda@kernel.org/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260325015548.70912-1-ojeda@kernel.org
+Fixes: 0507ef8a0372 ("igc: Add transmit and receive fastpath and interrupt handlers")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index d7b91f82b0dce..96f4d63390aea 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -218,8 +218,8 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
- {
- 	return NULL;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 7593e8b7469c5..e59de43704b51 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1522,11 +1522,8 @@ static netdev_tx_t igc_xmit_frame(struct sk_buff *skb,
+ 	/* The minimum packet size with TCTL.PSP set is 17 so pad the skb
+ 	 * in order to meet this minimum size requirement.
+ 	 */
+-	if (skb->len < 17) {
+-		if (skb_padto(skb, 17))
+-			return NETDEV_TX_OK;
+-		skb->len = 17;
+-	}
++	if (skb_put_padto(skb, 17))
++		return NETDEV_TX_OK;
+ 
+ 	return igc_xmit_frame_ring(skb, igc_tx_queue_mapping(adapter, skb));
  }
--static void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
--		dma_addr_t dma_handle, unsigned long attrs)
-+static inline void dma_free_attrs(struct device *dev, size_t size,
-+		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
- {
- }
- static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
 -- 
 2.51.0
 
