@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-237432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELpzCNIk3WlSaQkAu9opvQ
-	(envelope-from <stable+bounces-237432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:02 +0200
+	id GB5ZDHke3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899323F113A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A3EF3EFDDB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3D4BE30ECB60
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 551F9301D336
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C643368B5;
-	Mon, 13 Apr 2026 16:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D762D5A19;
+	Mon, 13 Apr 2026 16:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XClEGc1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnQ5XHeq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5817E332621;
-	Mon, 13 Apr 2026 16:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FE026B971;
+	Mon, 13 Apr 2026 16:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099442; cv=none; b=T4O172n/0f528u4W1oAVBdpo/d4Ci4Zc1IRHR6o6M1eF9esqySZe367hHBC8jPO89iGxXiXUhCF52993kxzzZqLZ1M+Dr9FSc6vBYzRyhCnkP76wO0KyKgs7e+Ma6V3S4NcrOSbZwKcOoJzsdZlnCUMdXIcKDlm4FHT70WZvzM8=
+	t=1776098256; cv=none; b=UuNtUMNIVmjiNT05guPhYUIbXeRipbZoHKZ0i7DiLKECsRehNioRCESbpREkdwkwFPnFVto6uu1FB7D6dO1alyQAET4qCT0IWLbYLrbFCBzPMLgd2I0mjwWpnLFTMYV7LXhuIDPKKDo8WkMcBSx+MGdHKJ1T3i1d1bB/G8ywXZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099442; c=relaxed/simple;
-	bh=M1m9Gq0GkKBo6XP8y2HGSOaZ5fbQ8x3SridUWdWW5aE=;
+	s=arc-20240116; t=1776098256; c=relaxed/simple;
+	bh=4ebsYMOhy0cNRlK2XsZeyevxQGZ3hDIePKsQtARORYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IO/9ONKXU8Oe+imK/gMSyX/82AHHCCzzzfMQqK+5Cwui4o8TLTaOQjwlqE4layVX+FcMvhpJYKEaDpfOLhQukGFSOmAOW3I8pSpVjsYla/FeLdxBb1JXWnlWIJD3GHbQjwKISEkttvZZ31bK+BS59h47U6O2Y5k+9GzXfdBfIkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XClEGc1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3143C2BCAF;
-	Mon, 13 Apr 2026 16:57:21 +0000 (UTC)
+	 MIME-Version; b=Tn0GHbWQeM2yxYgbRMpGC9hZ73fhNg3ZGSXnGE51f2H+KmSSfDBtKhTyY2Pp/+KMQ15Pc2u1Yq5d8OnJrmIhX6tbwsgq8/fjqWSrGtmuBhU0kSmP8ryemEcDheoIRU0aTNGY8SS9YnqiO9/+6p+KekXtUVBK7R31ArT8FH4BxWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnQ5XHeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D790C2BCAF;
+	Mon, 13 Apr 2026 16:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099442;
-	bh=M1m9Gq0GkKBo6XP8y2HGSOaZ5fbQ8x3SridUWdWW5aE=;
+	s=korg; t=1776098256;
+	bh=4ebsYMOhy0cNRlK2XsZeyevxQGZ3hDIePKsQtARORYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XClEGc1FYF6VquA80zrC1n7jbQx0mEczU0uxhcsiYfi6GiPEWEFzI1UryqClAa5dJ
-	 +yupOwtAEfNjUzBvA4mP9dW1TLDO9WX6UGa0VndpuQ7QqdEy8VlTZXGCV/oU9cuVQF
-	 zBvNwF+T2q94QfLK4xFuEsRGm00uGB86OP8HfcQg=
+	b=qnQ5XHeq9ziaJM4+Nm8ndOUMEmlSh8l7dfUixgK9N13x8hFuq6INPktwfXQLSrDPB
+	 L5xV8sWQYvNsGyEsI7icRhrgBkGQkQeLveSYQa61pQ2gBJi9WUPfyZNO/B7UsO5Goz
+	 usc8rH+wSOv2hpDhc4wbDCVjhiPi9t0N0dlFQysI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 341/491] netfilter: ctnetlink: zero expect NAT fields when CTA_EXPECT_NAT absent
+	stable <stable@kernel.org>,
+	JP Hein <jp@jphein.com>
+Subject: [PATCH 5.15 455/570] USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
 Date: Mon, 13 Apr 2026 17:59:46 +0200
-Message-ID: <20260413155831.806285285@linuxfoundation.org>
+Message-ID: <20260413155847.513669553@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +67,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237432-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-236969-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,intel.com:email]
-X-Rspamd-Queue-Id: 899323F113A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,jphein.com:email]
+X-Rspamd-Queue-Id: 9A3EF3EFDDB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: JP Hein <jp@jphein.com>
 
-[ Upstream commit 35177c6877134a21315f37d57a5577846225623e ]
+commit 8b7a42ecdcdeb55580d9345412f7f8fc5aca3f6c upstream.
 
-ctnetlink_alloc_expect() allocates expectations from a non-zeroing
-slab cache via nf_ct_expect_alloc().  When CTA_EXPECT_NAT is not
-present in the netlink message, saved_addr and saved_proto are
-never initialized.  Stale data from a previous slab occupant can
-then be dumped to userspace by ctnetlink_exp_dump_expect(), which
-checks these fields to decide whether to emit CTA_EXPECT_NAT.
+The Razer Kiyo Pro (1532:0e05) is a USB 3.0 UVC webcam whose firmware
+does not handle USB Link Power Management transitions reliably. When LPM
+is active, the device can enter a state where it fails to respond to
+control transfers, producing EPIPE (-32) errors on UVC probe control
+SET_CUR requests. In the worst case, the stalled endpoint triggers an
+xHCI stop-endpoint command that times out, causing the host controller
+to be declared dead and every USB device on the bus to be disconnected.
 
-The safe sibling nf_ct_expect_init(), used by the packet path,
-explicitly zeroes these fields.
+This has been reported as Ubuntu Launchpad Bug #2061177. The failure
+mode is:
 
-Zero saved_addr, saved_proto and dir in the else branch, guarded
-by IS_ENABLED(CONFIG_NF_NAT) since these fields only exist when
-NAT is enabled.
+  1. UVC probe control SET_CUR returns -32 (EPIPE)
+  2. xHCI host not responding to stop endpoint command
+  3. xHCI host controller not responding, assume dead
+  4. All USB devices on the affected xHCI controller disconnect
 
-Confirmed by priming the expect slab with NAT-bearing expectations,
-freeing them, creating a new expectation without CTA_EXPECT_NAT,
-and observing that the ctnetlink dump emits a spurious
-CTA_EXPECT_NAT containing stale data from the prior allocation.
+Disabling LPM prevents the firmware from entering the problematic low-
+power states that precede the stall. This is the same approach used for
+other webcams with similar firmware issues (e.g., Logitech HD Webcam C270).
 
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2061177
+Signed-off-by: JP Hein <jp@jphein.com>
+Link: https://patch.msgid.link/20260331003806.212565-2-jp@jphein.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/core/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 8d35e17a0f7e7..befc9d2bc0b52 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3568,6 +3568,12 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 						 exp, nf_ct_l3num(ct));
- 		if (err < 0)
- 			goto err_out;
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	} else {
-+		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
-+		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
-+		exp->dir = 0;
-+#endif
- 	}
- 	return exp;
- err_out:
--- 
-2.53.0
-
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -476,6 +476,8 @@ static const struct usb_device_id usb_qu
+ 	/* Razer - Razer Blade Keyboard */
+ 	{ USB_DEVICE(0x1532, 0x0116), .driver_info =
+ 			USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL },
++	/* Razer - Razer Kiyo Pro Webcam */
++	{ USB_DEVICE(0x1532, 0x0e05), .driver_info = USB_QUIRK_NO_LPM },
+ 
+ 	/* Lenovo ThinkPad OneLink+ Dock twin hub controllers (VIA Labs VL812) */
+ 	{ USB_DEVICE(0x17ef, 0x1018), .driver_info = USB_QUIRK_RESET_RESUME },
 
 
 
