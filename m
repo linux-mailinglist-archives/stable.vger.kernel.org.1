@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDoaM0Qe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:04 +0200
+	id YCJyOBoZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F3A3EFD68
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BC63EEE77
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37D1A3256B3B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2E6533012E71
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFF830BB9B;
-	Mon, 13 Apr 2026 16:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B103090F5;
+	Mon, 13 Apr 2026 16:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsm/7eAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+tMrQZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4A3302146;
-	Mon, 13 Apr 2026 16:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE892FE056;
+	Mon, 13 Apr 2026 16:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097417; cv=none; b=Dh6gUjG8rMrbjGTKQrLV+t1HcVbwCN44h842Kp7eus4HA0WBrjlZuULp/F3X0ZfcVyX2lPL0Orv9EHv+0EzfXF1N8vUztKoHOSKfrUsIEV+x0WZ06s1RMK0f96jtL/ThvFx5S9ToxYZz37vkyfB+e2BYIOEhoz80KLm5bVyF5VQ=
+	t=1776097445; cv=none; b=FqpaS7EUyaDJO2ynnMcIwBm6Sw5tMjdUVGf2hi/rpw/0hcrMt2G/4uND0IN6BTj44AD22sR7TVSd4XOcb4HwuJh8xMCmE/QmhKQrKfqkYkFHtkLb56A2NpvS2XILStexMdFHtYFZO0l+UoPOVgKv/nV0qjELHb5uSe0SXLCWkK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097417; c=relaxed/simple;
-	bh=bRv7uQzSZLd6lg8nwJYX4/gbtRj0RRSXDFcrl7xa0mE=;
+	s=arc-20240116; t=1776097445; c=relaxed/simple;
+	bh=5Okewgd4NiqWD4ZG5ZBFt4Sdud1WX61xyeJpcvAfRKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FtMYq5y6d433e9liyiMY/0+8PvJn99Rr77y66GEzJSh78aCRawSCnPntnujRCfNaHeIBhqS10xKja4tjhNRGa7esa1UhJ5eiKT95rHpFrshJuwhEHCdL73bC8g1veejawVZnWLn3aPK4DDrl483Y6N9DS29o1P4j9z29idM4srY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsm/7eAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5212C2BCB0;
-	Mon, 13 Apr 2026 16:23:36 +0000 (UTC)
+	 MIME-Version; b=qpQUH+bCx2KoP6pkN9PX/ZE4fMYgOqz2b09tPPMNTuT0zrxO1AumryUEprs/sYHJ5H0C7uQQUHUDhzGIhCCJkXjVzAFZU5wGZwWRAQmqug30I7kBQHLSocWogybqekFZpM8M4m4ekxoW6foZXq7ZkNofqjiBQe3waP5uvcC2NIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+tMrQZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3860FC2BCAF;
+	Mon, 13 Apr 2026 16:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097417;
-	bh=bRv7uQzSZLd6lg8nwJYX4/gbtRj0RRSXDFcrl7xa0mE=;
+	s=korg; t=1776097445;
+	bh=5Okewgd4NiqWD4ZG5ZBFt4Sdud1WX61xyeJpcvAfRKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsm/7eAO5RFJdGtdZ03kq1JlOO97ezR9iO8ZvWpF5BZWnykRpcjZ2xFuEBYU9KLRy
-	 2fxgXwp2Fq/lV3HlcgM6QNVtEyXooSebvlfeQ5Suwjoqr8VHi5HBBfxIK/PlPlSTtC
-	 Ij8//6kbuIYolgHijVJ40S8nJONdCXHybKanhRD0=
+	b=k+tMrQZ6qcGugGKWnPdnBxAK45YNlSwOXNRwMFHaJbe0YeMJ1gNbQL5saZuJtn9VN
+	 NSaArRMK01F6ZtePUqm0dpKkbd1PCKvQra1hce7x0Cw9tUTSC9J8j99ccyXZMjgJXE
+	 ybSAUCxkHh29jf51afKt19LqPDg5N2IRkFnk5Bbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Shi <cshi008@fiu.edu>,
-	Weidong Zhu <weizhu@fiu.edu>,
-	Dave Tian <daveti@purdue.edu>,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Keith Busch <kbusch@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/570] nvme-pci: Fix slab-out-of-bounds in nvme_dbbuf_set
-Date: Mon, 13 Apr 2026 17:54:12 +0200
-Message-ID: <20260413155834.976293585@linuxfoundation.org>
+Subject: [PATCH 5.15 122/570] i40e: fix src IP mask checks and memcpy argument names in cloud filter
+Date: Mon, 13 Apr 2026 17:54:13 +0200
+Message-ID: <20260413155835.013901056@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -66,35 +65,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236636-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236648-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,purdue.edu:email,sung-woo.kim:email]
-X-Rspamd-Queue-Id: 46F3A3EFD68
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: 91BC63EEE77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,125 +101,83 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit b4e78f1427c7d6859229ae9616df54e1fc05a516 ]
+[ Upstream commit e809085f492842ce7a519c9ef72d40f4bca89c13 ]
 
-dev->online_queues is a count incremented in nvme_init_queue. Thus,
-valid indices are 0 through dev->online_queues − 1.
+Fix following issues in the IPv4 and IPv6 cloud filter handling logic in
+both the add and delete paths:
 
-This patch fixes the loop condition to ensure the index stays within the
-valid range. Index 0 is excluded because it is the admin queue.
+- The source-IP mask check incorrectly compares mask.src_ip[0] against
+  tcf.dst_ip[0]. Update it to compare against tcf.src_ip[0]. This likely
+  goes unnoticed because the check is in an "else if" path that only
+  executes when dst_ip is not set, most cloud filter use cases focus on
+  destination-IP matching, and the buggy condition can accidentally
+  evaluate true in some cases.
 
-KASAN splat:
+- memcpy() for the IPv4 source address incorrectly uses
+  ARRAY_SIZE(tcf.dst_ip) instead of ARRAY_SIZE(tcf.src_ip), although
+  both arrays are the same size.
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
-BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
-Read of size 2 at addr ffff88800592a574 by task kworker/u8:5/74
+- The IPv4 memcpy operations used ARRAY_SIZE(tcf.dst_ip) and ARRAY_SIZE
+  (tcf.src_ip), Update these to use sizeof(cfilter->ip.v4.dst_ip) and
+  sizeof(cfilter->ip.v4.src_ip) to ensure correct and explicit copy size.
 
-CPU: 0 UID: 0 PID: 74 Comm: kworker/u8:5 Not tainted 6.19.0-dirty #10 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Workqueue: nvme-reset-wq nvme_reset_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xea/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xce/0x5d0 mm/kasan/report.c:482
- kasan_report+0xdc/0x110 mm/kasan/report.c:595
- __asan_report_load2_noabort+0x18/0x20 mm/kasan/report_generic.c:379
- nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
- nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
- nvme_reset_work+0x36b/0x8c0 drivers/nvme/host/pci.c:3252
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
+- In the IPv6 delete path, memcmp() uses sizeof(src_ip6) when comparing
+  dst_ip6 fields. Replace this with sizeof(dst_ip6) to make the intent
+  explicit, even though both fields are struct in6_addr.
 
-Allocated by task 34 on cpu 1 at 4.241550s:
- kasan_save_stack+0x2c/0x60 mm/kasan/common.c:57
- kasan_save_track+0x1c/0x70 mm/kasan/common.c:78
- kasan_save_alloc_info+0x3c/0x50 mm/kasan/generic.c:570
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0xb5/0xc0 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __do_kmalloc_node mm/slub.c:5657 [inline]
- __kmalloc_node_noprof+0x2bf/0x8d0 mm/slub.c:5663
- kmalloc_array_node_noprof include/linux/slab.h:1075 [inline]
- nvme_pci_alloc_dev drivers/nvme/host/pci.c:3479 [inline]
- nvme_probe+0x2f1/0x1820 drivers/nvme/host/pci.c:3534
- local_pci_probe+0xef/0x1c0 drivers/pci/pci-driver.c:324
- pci_call_probe drivers/pci/pci-driver.c:392 [inline]
- __pci_device_probe drivers/pci/pci-driver.c:417 [inline]
- pci_device_probe+0x743/0x920 drivers/pci/pci-driver.c:451
- call_driver_probe drivers/base/dd.c:583 [inline]
- really_probe+0x29b/0xb70 drivers/base/dd.c:661
- __driver_probe_device+0x3b0/0x4a0 drivers/base/dd.c:803
- driver_probe_device+0x56/0x1f0 drivers/base/dd.c:833
- __driver_attach_async_helper+0x155/0x340 drivers/base/dd.c:1159
- async_run_entry_fn+0xa6/0x4b0 kernel/async.c:129
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-The buggy address belongs to the object at ffff88800592a000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 244 bytes to the right of
- allocated 1152-byte region [ffff88800592a000, ffff88800592a480)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x5928
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-anon flags: 0xfffffc0000040(head|node=0|zone=1|lastcpupid=0x1fffff)
-page_type: f5(slab)
-raw: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
-raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
-head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 000fffffc0000003 ffffea0000164a01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88800592a400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88800592a480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88800592a500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                                                             ^
- ffff88800592a580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88800592a600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
-Fixes: 0f0d2c876c96 (nvme: free sq/cq dbbuf pointers when dbbuf set fails)
-Acked-by: Chao Shi <cshi008@fiu.edu>
-Acked-by: Weidong Zhu <weizhu@fiu.edu>
-Acked-by: Dave Tian <daveti@purdue.edu>
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 0a2207a1be6a6..04cccbb05372a 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -321,7 +321,7 @@ static void nvme_dbbuf_set(struct nvme_dev *dev)
- 		/* Free memory and continue on */
- 		nvme_dbbuf_dma_free(dev);
- 
--		for (i = 1; i <= dev->online_queues; i++)
-+		for (i = 1; i < dev->online_queues; i++)
- 			nvme_dbbuf_free(&dev->queues[i]);
- 	}
- }
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 907727604c702..2d5d30702067e 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3715,10 +3715,10 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		cfilter.n_proto = ETH_P_IP;
+ 		if (mask.dst_ip[0] & tcf.dst_ip[0])
+ 			memcpy(&cfilter.ip.v4.dst_ip, tcf.dst_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
+-		else if (mask.src_ip[0] & tcf.dst_ip[0])
++			       sizeof(cfilter.ip.v4.dst_ip));
++		else if (mask.src_ip[0] & tcf.src_ip[0])
+ 			memcpy(&cfilter.ip.v4.src_ip, tcf.src_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
++			       sizeof(cfilter.ip.v4.src_ip));
+ 		break;
+ 	case VIRTCHNL_TCP_V6_FLOW:
+ 		cfilter.n_proto = ETH_P_IPV6;
+@@ -3773,7 +3773,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		/* for ipv6, mask is set for all sixteen bytes (4 words) */
+ 		if (cfilter.n_proto == ETH_P_IPV6 && mask.dst_ip[3])
+ 			if (memcmp(&cfilter.ip.v6.dst_ip6, &cf->ip.v6.dst_ip6,
+-				   sizeof(cfilter.ip.v6.src_ip6)))
++				   sizeof(cfilter.ip.v6.dst_ip6)))
+ 				continue;
+ 		if (mask.vlan_id)
+ 			if (cfilter.vlan_id != cf->vlan_id)
+@@ -3859,10 +3859,10 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		cfilter->n_proto = ETH_P_IP;
+ 		if (mask.dst_ip[0] & tcf.dst_ip[0])
+ 			memcpy(&cfilter->ip.v4.dst_ip, tcf.dst_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
+-		else if (mask.src_ip[0] & tcf.dst_ip[0])
++			       sizeof(cfilter->ip.v4.dst_ip));
++		else if (mask.src_ip[0] & tcf.src_ip[0])
+ 			memcpy(&cfilter->ip.v4.src_ip, tcf.src_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
++			       sizeof(cfilter->ip.v4.src_ip));
+ 		break;
+ 	case VIRTCHNL_TCP_V6_FLOW:
+ 		cfilter->n_proto = ETH_P_IPV6;
 -- 
 2.51.0
 
