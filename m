@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-236504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFnPHaQa3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:36 +0200
+	id AKTSEAYn3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386323EF31F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA803F15C2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2CBD1303EFF9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FEB630E39AB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93F32F6931;
-	Mon, 13 Apr 2026 16:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D1D33F8A4;
+	Mon, 13 Apr 2026 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv8rQ9dK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ei2CfFet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2F72E11B9;
-	Mon, 13 Apr 2026 16:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B4C299929;
+	Mon, 13 Apr 2026 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097072; cv=none; b=KHNOBWvKTJSJUaXqY8zkJvaksxJ6Qc3+FnFBI6VRgprHWIZEZ5vH7rt8ZaKdgRG/0F7eJ3ybfNSqAurazrthsivK/A7ereRkQezBO3Q7YBpVRCgJayf1ivhvY/RtXvc6YBOSy2yfou1kHZwMqYdihg66L/wrQ0uAg7dlRPzjBnc=
+	t=1776099615; cv=none; b=DVevhm4oZPXC1eCoBJ8CSe39r4oJvo0RjmaLK5a8+M7X+/BoDOsxZi77r5ZrP87thLrTp9Ed9IDX4QCUiCR3mXpiD4FBq4JmRv+qgq/k3UUEcut6pWGyUMPnI7ADGjVbSAyuETMz99igXAoNNWmdemGxfIW/3PsZb94rMu9B0gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097072; c=relaxed/simple;
-	bh=YBkYHUcCwZKbPxHlctxdjsv5uQVqg7Yz3h3vUOQBbTM=;
+	s=arc-20240116; t=1776099615; c=relaxed/simple;
+	bh=ZWntAkkj+FDQR+Wh+BTq5BACdUov9m/5CpM5nrE0wOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QA2UafzWmMitz5BIw3hpV5Ox5MYolAayLIqWFI2AR7jDM8wH/xzeZPJ6h0NCgGmAM0Q/86jzPwTJYumAhHDEqHsZNOJkeUc9BJauMuue0lxHyFaJYYuM3zZCAmiWHzAaIWm6NCTo1zAyOUfcMi3BixkRN5YUAhDcGruQB3sjLII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jv8rQ9dK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEC1C2BCB0;
-	Mon, 13 Apr 2026 16:17:52 +0000 (UTC)
+	 MIME-Version; b=HcLIezU27aqhl8fnon26QqmqbnMTdezvUFc1WGnvtS6eDh2ryiLrEMJYGaRTti1PtLDrzy+BcDcggiM5y+ner+Xo4ki8BH1MfOhBvvscv/cN8Gogv5zq8eOQGFVeRVSNCWMwsIMsYzELC8en06tdor4/83inQYRPPoiRIcW8Lm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ei2CfFet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14B0C2BCAF;
+	Mon, 13 Apr 2026 17:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097072;
-	bh=YBkYHUcCwZKbPxHlctxdjsv5uQVqg7Yz3h3vUOQBbTM=;
+	s=korg; t=1776099615;
+	bh=ZWntAkkj+FDQR+Wh+BTq5BACdUov9m/5CpM5nrE0wOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jv8rQ9dKeuiFHSlvzswCKWCMhUzRn3Pe38ZxM2eYfhQwZ6CWxPiq61nDEdCsj/7QC
-	 QQMn2+yjn1DTNMGpz3sNZzmkWPzsNTZ10PwKSj3ZTQM/xPQ9SuIs6wqQZBKi8jfn3T
-	 Ly3QzSxSCBwAP/aO6zOPvJ0asV11hsnAXQJ9Q/jA=
+	b=ei2CfFetzMDdYZLezjtaK/fs3jUYp73cQj9l3iL/rh6oLIdoLc+qdOnrtOWl4/OPN
+	 r/koPj3RxpdBskppyS5Py1hl2YsVHx8t/kLP0olNONCZv2/EEJ7XHnT9kj1SKdZEha
+	 FbT/EAinJewmeSzmuNJLD7h+gAWYAeTpDxbOOTc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
+	YunJe Shin <ioerts@kookmin.ac.kr>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	linux-nvme@lists.infradead.org,
 	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.1 19/55] apparmor: fix unprivileged local user can do privileged policy management
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 408/491] nvmet-tcp: fix use-before-check of sg in bounds validation
 Date: Mon, 13 Apr 2026 18:00:53 +0200
-Message-ID: <20260413155725.545818723@linuxfoundation.org>
+Message-ID: <20260413155834.306257066@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236504-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237500-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,207 +88,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,canonical.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 386323EF31F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8EA803F15C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Cengiz Can <cengiz.can@canonical.com>
 
-commit 6601e13e82841879406bf9f369032656f441a425 upstream.
+The stable backport of commit 52a0a9854934 ("nvmet-tcp: add bounds
+checks in nvmet_tcp_build_pdu_iovec") placed the bounds checks after
+the iov_len calculation:
 
-Backport for api changes introduced in
-90c436a64a6e ("apparmor: pass cred through to audit info.")
+    while (length) {
+        u32 iov_len = min_t(u32, length, sg->length - sg_offset);
 
-An unprivileged local user can load, replace, and remove profiles by
-opening the apparmorfs interfaces, via a confused deputy attack, by
-passing the opened fd to a privileged process, and getting the
-privileged process to write to the interface.
+        if (!sg_remaining) {    /* too late: sg already dereferenced */
 
-This does require a privileged target that can be manipulated to do
-the write for the unprivileged process, but once such access is
-achieved full policy management is possible and all the possible
-implications that implies: removing confinement, DoS of system or
-target applications by denying all execution, by-passing the
-unprivileged user namespace restriction, to exploiting kernel bugs for
-a local privilege escalation.
+In mainline, the checks come first because C99 allows mid-block variable
+declarations. The stable backport moved the declaration to the top of the
+loop to satisfy C89 declaration rules, but this ended up placing the
+sg->length dereference before the sg_remaining and sg->length guards.
 
-The policy management interface can not have its permissions simply
-changed from 0666 to 0600 because non-root processes need to be able
-to load policy to different policy namespaces.
+If sg_next() returns NULL at the end of the scatterlist, the next
+iteration dereferences a NULL pointer in the iov_len calculation before
+the sg_remaining check can prevent it.
 
-Instead ensure the task writing the interface has privileges that
-are a subset of the task that opened the interface. This is already
-done via policy for confined processes, but unconfined can delegate
-access to the opened fd, by-passing the usual policy check.
+Fix this by moving the iov_len declaration to function scope and
+keeping the assignment after the bounds checks, matching the ordering
+in mainline.
 
-Fixes: b7fd2c0340eac ("apparmor: add per policy ns .load, .replace, .remove interface files")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 043b4307a99f ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
+Cc: stable@vger.kernel.org
+Cc: YunJe Shin <ioerts@kookmin.ac.kr>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: linux-nvme@lists.infradead.org
+Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/apparmorfs.c     |   19 +++++++++++-------
- security/apparmor/include/policy.h |    5 ++--
- security/apparmor/policy.c         |   39 +++++++++++++++++++++++++++++++++++--
- 3 files changed, 52 insertions(+), 11 deletions(-)
+ drivers/nvme/target/tcp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -412,7 +412,8 @@ static struct aa_loaddata *aa_simple_wri
- }
- 
- static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
--			     loff_t *pos, struct aa_ns *ns)
-+			     loff_t *pos, struct aa_ns *ns,
-+			     const struct cred *ocred)
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 5d8e57e5fdb18..6db9dcdbb3c34 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -300,7 +300,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
  {
- 	struct aa_loaddata *data;
- 	struct aa_label *label;
-@@ -423,7 +424,7 @@ static ssize_t policy_update(u32 mask, c
- 	/* high level check about policy management - fine grained in
- 	 * below after unpack
- 	 */
--	error = aa_may_manage_policy(label, ns, mask);
-+	error = aa_may_manage_policy(current_cred(), label, ns, ocred, mask);
- 	if (error)
- 		goto end_section;
+ 	struct bio_vec *iov = cmd->iov;
+ 	struct scatterlist *sg;
+-	u32 length, offset, sg_offset;
++	u32 length, offset, sg_offset, iov_len;
+ 	unsigned int sg_remaining;
+ 	int nr_pages;
  
-@@ -444,7 +445,8 @@ static ssize_t profile_load(struct file
- 			    loff_t *pos)
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
--	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns);
-+	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns,
-+				  f->f_cred);
+@@ -317,8 +317,6 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
  
- 	aa_put_ns(ns);
+ 	while (length) {
+-		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+-
+ 		if (!sg_remaining) {
+ 			nvmet_tcp_fatal_error(cmd->queue);
+ 			return;
+@@ -328,6 +326,8 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 			return;
+ 		}
  
-@@ -462,7 +464,7 @@ static ssize_t profile_replace(struct fi
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
- 	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
--				  buf, size, pos, ns);
-+				  buf, size, pos, ns, f->f_cred);
- 	aa_put_ns(ns);
- 
- 	return error;
-@@ -486,7 +488,8 @@ static ssize_t profile_remove(struct fil
- 	/* high level check about policy management - fine grained in
- 	 * below after unpack
- 	 */
--	error = aa_may_manage_policy(label, ns, AA_MAY_REMOVE_POLICY);
-+	error = aa_may_manage_policy(current_cred(), label, ns,
-+				     f->f_cred, AA_MAY_REMOVE_POLICY);
- 	if (error)
- 		goto out;
- 
-@@ -1808,7 +1811,8 @@ static int ns_mkdir_op(struct user_names
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(label, NULL, AA_MAY_LOAD_POLICY);
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
-+				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
- 		return error;
-@@ -1857,7 +1861,8 @@ static int ns_rmdir_op(struct inode *dir
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(label, NULL, AA_MAY_LOAD_POLICY);
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
-+				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
- 		return error;
---- a/security/apparmor/include/policy.h
-+++ b/security/apparmor/include/policy.h
-@@ -307,8 +307,9 @@ static inline int AUDIT_MODE(struct aa_p
- 
- bool aa_policy_view_capable(struct aa_label *label, struct aa_ns *ns);
- bool aa_policy_admin_capable(struct aa_label *label, struct aa_ns *ns);
--int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns,
--			 u32 mask);
-+int aa_may_manage_policy(const struct cred *subj_cred,
-+			 struct aa_label *label, struct aa_ns *ns,
-+			 const struct cred *ocred, u32 mask);
- bool aa_current_policy_view_capable(struct aa_ns *ns);
- bool aa_current_policy_admin_capable(struct aa_ns *ns);
- 
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -736,14 +736,44 @@ bool aa_current_policy_admin_capable(str
- 	return res;
- }
- 
-+static bool is_subset_of_obj_privilege(const struct cred *cred,
-+				       struct aa_label *label,
-+				       const struct cred *ocred)
-+{
-+	if (cred == ocred)
-+		return true;
++		iov_len = min_t(u32, length, sg->length - sg_offset);
 +
-+	if (!aa_label_is_subset(label, cred_label(ocred)))
-+		return false;
-+	/* don't allow crossing userns for now */
-+	if (cred->user_ns != ocred->user_ns)
-+		return false;
-+	if (!cap_issubset(cred->cap_inheritable, ocred->cap_inheritable))
-+		return false;
-+	if (!cap_issubset(cred->cap_permitted, ocred->cap_permitted))
-+		return false;
-+	if (!cap_issubset(cred->cap_effective, ocred->cap_effective))
-+		return false;
-+	if (!cap_issubset(cred->cap_bset, ocred->cap_bset))
-+		return false;
-+	if (!cap_issubset(cred->cap_ambient, ocred->cap_ambient))
-+		return false;
-+	return true;
-+}
-+
-+
- /**
-  * aa_may_manage_policy - can the current task manage policy
-+ * @subj_cred; subjects cred
-  * @label: label to check if it can manage policy
-- * @op: the policy manipulation operation being done
-+ * @ns: namespace being managed by @label (may be NULL if @label's ns)
-+ * @ocred: object cred if request is coming from an open object
-+ * @mask: contains the policy manipulation operation being done
-  *
-  * Returns: 0 if the task is allowed to manipulate policy else error
-  */
--int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns, u32 mask)
-+int aa_may_manage_policy(const struct cred *subj_cred, struct aa_label *label,
-+			 struct aa_ns *ns, const struct cred *ocred, u32 mask)
- {
- 	const char *op;
- 
-@@ -759,6 +789,11 @@ int aa_may_manage_policy(struct aa_label
- 		return audit_policy(label, op, NULL, NULL, "policy_locked",
- 				    -EACCES);
- 
-+	if (ocred && !is_subset_of_obj_privilege(subj_cred, label, ocred))
-+		return audit_policy(label, op, NULL, NULL,
-+				    "not privileged for target profile",
-+				    -EACCES);
-+
- 	if (!aa_policy_admin_capable(label, ns))
- 		return audit_policy(label, op, NULL, NULL, "not policy admin",
- 				    -EACCES);
+ 		iov->bv_page = sg_page(sg);
+ 		iov->bv_len = iov_len;
+ 		iov->bv_offset = sg->offset + sg_offset;
+-- 
+2.53.0
+
 
 
 
