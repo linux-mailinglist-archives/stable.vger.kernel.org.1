@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-236828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NTsDkQg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-236828-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:36 +0200
+	id qLPkMm8d3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822AF3F04C2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93D03EFA99
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CD5730515DA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 887B7302359B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A06129E0E5;
-	Mon, 13 Apr 2026 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00A026ED41;
+	Mon, 13 Apr 2026 16:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PevKGg/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opkmbZ9i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C730292B2E;
-	Mon, 13 Apr 2026 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8025E28A1E6;
+	Mon, 13 Apr 2026 16:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097896; cv=none; b=HDLiusQEaEtG/UguILJyYRguiAG48sfMmcw9vzNBPycVBKytSoL9PZpC+tY1yrQ+VtxVBuUupU2qzCooJSnHsAJx10W5/3LO82qq9piP1l/orDy1y387dTKSpRgT3SD1aLEmVgOroNeH26SZFxrimB8L++TpdnxF/fgxaROOY+4=
+	t=1776097901; cv=none; b=u9GJ1EaKuAB8abvvl2f5K3lmGFJYChsdfbzkppn0Wjjf6iAPcWFDFd6crVQdX5jbcIOxhEPjS9Lmczv968/7BfNXe0kYTdTx2vO426U9ZE1Yw4Jd8dn7n3TXnIliTzX0zGOFt6gXhGJWRUq3Xap9EoDNq6us8sAC7+Ozn4Cb460=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097896; c=relaxed/simple;
-	bh=pVaedmrN0bYj6RoGzYZEm/kz+2VwE3cuerPo53nRYXg=;
+	s=arc-20240116; t=1776097901; c=relaxed/simple;
+	bh=wxhqkamsxio5rUIqzZ9AiCt9k+HUdn04b/6acVG2MmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5YMapDTvJQDNYMxNoR3szHzGw/BsMd5vfSxYpFQtaGtEQ6/NfQJcEr0azNKVCw73mp4eAH3oJ2iz0SuaaaZoqJskPryae4oWszSRXuo++01Iss6/K8Dt5yBxOXlNvfsUSeUTAVzSrbEn3sUggm2g8AWMZak9PBpTZ6ELbaFd/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PevKGg/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B42C2BCB0;
-	Mon, 13 Apr 2026 16:31:35 +0000 (UTC)
+	 MIME-Version; b=oR/Tg+cASfe0bl/1beYYBseZzMe4b5P76IeceeD/xXbM3QIuElLGxQgSTBqKYpW0ToxyYzzrKjqBeUoEFqMM2qyc5OphIo3xCZAyudQ4fLXyFxJ0HvD3ah3pm+n0tgbPQdHGa0JhOeDCFoIB6U8igiYbcTbUZr4/Y1JkODHsp+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opkmbZ9i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158A1C2BCB7;
+	Mon, 13 Apr 2026 16:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097896;
-	bh=pVaedmrN0bYj6RoGzYZEm/kz+2VwE3cuerPo53nRYXg=;
+	s=korg; t=1776097901;
+	bh=wxhqkamsxio5rUIqzZ9AiCt9k+HUdn04b/6acVG2MmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PevKGg/OrT3mU7BYh3F9QjDgnEVSp9duVl9m/twwB/oSUpE0JyBQcJ0KSqqwVztAi
-	 YV8OnxgPPFO8aSRbsSz0i+5nHJCuFj+DmUNtqvrPkrK7vTKMZW3e1auBauBuBNWWde
-	 yKpZvMJO5KjVWp8PanIChjUlqu0SI2ru+yJdCMOI=
+	b=opkmbZ9iaJZu5rYI7KeB0NxeKjtZBda13Rwzb2LFw7N+GPYHsHlfxCpmBH05WpchT
+	 wFyDSlgQ/z9e6DO0BcYn+lSwgYsk18k7KO76NQeM9vFzOMEEl/2CyGCrEHMXzvD+u0
+	 Kppm63JLNCqZB2BITaoQe39xyicaaivXcYfHI+cI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 315/570] af_key: validate families in pfkey_send_migrate()
-Date: Mon, 13 Apr 2026 17:57:26 +0200
-Message-ID: <20260413155842.296785207@linuxfoundation.org>
+Subject: [PATCH 5.15 316/570] can: statistics: add missing atomic access in hot path
+Date: Mon, 13 Apr 2026 17:57:27 +0200
+Message-ID: <20260413155842.334301638@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -66,35 +64,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236828-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b518dfc8e021988fbd55];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236830-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email]
-X-Rspamd-Queue-Id: 822AF3F04C2
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hartkopp.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,pengutronix.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: E93D03EFA99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,82 +99,74 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit eb2d16a7d599dc9d4df391b5e660df9949963786 ]
+[ Upstream commit 46eee1661aa9b49966e6c43d07126fe408edda57 ]
 
-syzbot was able to trigger a crash in skb_put() [1]
+Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+fixed a KCSAN issue in can_receive() but missed to convert the 'matches'
+variable used in can_rcv_filter().
 
-Issue is that pfkey_send_migrate() does not check old/new families,
-and that set_ipsecrequest() @family argument was truncated,
-thus possibly overfilling the skb.
-
-Validate families early, do not wait set_ipsecrequest().
-
-[1]
-
-skbuff: skb_over_panic: text:ffffffff8a752120 len:392 put:16 head:ffff88802a4ad040 data:ffff88802a4ad040 tail:0x188 end:0x180 dev:<NULL>
- kernel BUG at net/core/skbuff.c:214 !
-Call Trace:
- <TASK>
-  skb_over_panic net/core/skbuff.c:219 [inline]
-  skb_put+0x159/0x210 net/core/skbuff.c:2655
-  skb_put_zero include/linux/skbuff.h:2788 [inline]
-  set_ipsecrequest net/key/af_key.c:3532 [inline]
-  pfkey_send_migrate+0x1270/0x2e50 net/key/af_key.c:3636
-  km_migrate+0x155/0x260 net/xfrm/xfrm_state.c:2848
-  xfrm_migrate+0x2140/0x2450 net/xfrm/xfrm_policy.c:4705
-  xfrm_do_migrate+0x8ff/0xaa0 net/xfrm/xfrm_user.c:3150
-
-Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
-Reported-by: syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69b5933c.050a0220.248e02.00f2.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260318173413.28235-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/key/af_key.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ net/can/af_can.c | 4 ++--
+ net/can/af_can.h | 2 +-
+ net/can/proc.c   | 3 ++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index 925fe4f89966b..638333f1b8c7d 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -3518,7 +3518,7 @@ static int set_sadb_kmaddress(struct sk_buff *skb, const struct xfrm_kmaddress *
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index edf01b73d2878..85b01dea76dff 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -469,7 +469,7 @@ int can_rx_register(struct net *net, struct net_device *dev, canid_t can_id,
  
- static int set_ipsecrequest(struct sk_buff *skb,
- 			    uint8_t proto, uint8_t mode, int level,
--			    uint32_t reqid, uint8_t family,
-+			    uint32_t reqid, sa_family_t family,
- 			    const xfrm_address_t *src, const xfrm_address_t *dst)
+ 	rcv->can_id = can_id;
+ 	rcv->mask = mask;
+-	rcv->matches = 0;
++	atomic_long_set(&rcv->matches, 0);
+ 	rcv->func = func;
+ 	rcv->data = data;
+ 	rcv->ident = ident;
+@@ -573,7 +573,7 @@ EXPORT_SYMBOL(can_rx_unregister);
+ static inline void deliver(struct sk_buff *skb, struct receiver *rcv)
  {
- 	struct sadb_x_ipsecrequest *rq;
-@@ -3583,12 +3583,17 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	rcv->func(skb, rcv->data);
+-	rcv->matches++;
++	atomic_long_inc(&rcv->matches);
+ }
  
- 	/* ipsecrequests */
- 	for (i = 0, mp = m; i < num_bundles; i++, mp++) {
--		/* old locator pair */
--		size_pol += sizeof(struct sadb_x_ipsecrequest) +
--			    pfkey_sockaddr_pair_size(mp->old_family);
--		/* new locator pair */
--		size_pol += sizeof(struct sadb_x_ipsecrequest) +
--			    pfkey_sockaddr_pair_size(mp->new_family);
-+		int pair_size;
-+
-+		pair_size = pfkey_sockaddr_pair_size(mp->old_family);
-+		if (!pair_size)
-+			return -EINVAL;
-+		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
-+
-+		pair_size = pfkey_sockaddr_pair_size(mp->new_family);
-+		if (!pair_size)
-+			return -EINVAL;
-+		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
+ static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buff *skb)
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 22f3352c77fec..87887014f5628 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -52,7 +52,7 @@ struct receiver {
+ 	struct hlist_node list;
+ 	canid_t can_id;
+ 	canid_t mask;
+-	unsigned long matches;
++	atomic_long_t matches;
+ 	void (*func)(struct sk_buff *skb, void *data);
+ 	void *data;
+ 	char *ident;
+diff --git a/net/can/proc.c b/net/can/proc.c
+index 0533a3c4ff0e1..f81f8a698071e 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -196,7 +196,8 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
+ 			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
+ 
+ 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
+-				r->func, r->data, r->matches, r->ident);
++			   r->func, r->data, atomic_long_read(&r->matches),
++			   r->ident);
  	}
+ }
  
- 	size += sizeof(struct sadb_msg) + size_pol;
 -- 
 2.51.0
 
