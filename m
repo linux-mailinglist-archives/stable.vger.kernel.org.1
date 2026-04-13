@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHLwDgsX3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:15 +0200
+	id UAWyNLge3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948333EE8D6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43C13EFEC8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EF30308FD5D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3D8F1306F7A2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8612C032C;
-	Mon, 13 Apr 2026 16:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707EC280CFB;
+	Mon, 13 Apr 2026 16:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9v/kmR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVNG6egW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C5526F293;
-	Mon, 13 Apr 2026 16:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C9730C359;
+	Mon, 13 Apr 2026 16:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096434; cv=none; b=aO370ro6+ZUXfIPXD5anKt2nx5suTqdQ5BC7zFTJ9ExXWBdyWH7M30JJvZwNAK3/vD41nFuCAuHhV67641Ceziz+x324wMnNsxsk65Llqwio0rnp0Jg1Pz0Tj8wP8yrsaV6nnuHlJfAo9XKEerYaBX40ztofIYVZTB+ByoNnl68=
+	t=1776098303; cv=none; b=GCWfnhT4bvRMAH7XrjCd3/pqIv+E5hkcrpBZ/5z4hQ8XtluLH9YFQC9KDcFmpP8pvsIkbCeKr+B+iMZMHYMt1uZ0CBVCSkfQPSgA5AWl7iM46XA6shMkiPfO8ghClY0Omh99dT4VrP/zF4oSuSFGo3mZkeywH3M8XuVRt7bchZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096434; c=relaxed/simple;
-	bh=MmZCIhG5NCdezPmY7jkM/JMxV1bhBz+LRlJhK2zWwEk=;
+	s=arc-20240116; t=1776098303; c=relaxed/simple;
+	bh=SVCAQDi8Qc+3wYu333QbWnb51/ztUnc64rBHNBzwCHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flU60st9aC/dEF0MqEqqmF5Ad5AM2e+YZhbf8HzZBIOJiYLOTDkHOGTMX36rpo+k+FwufR37ERVaWt09jFTYQASMuyx5K8pSrOpFs1rsTihsmb1O5pfLSo63tO3agG6Z/EuK8n31FxeFgRi5/wRhAegrz6JYLh1OSaEiNuLzdR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9v/kmR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E7BC2BCAF;
-	Mon, 13 Apr 2026 16:07:13 +0000 (UTC)
+	 MIME-Version; b=R459t0sgqaPZhRQZsSu/jM06LeMkVAoZAXMxjCBnVnWy+5qccO9HNsUWHY0M8yGIFnedSFu/Ya1BEwb9qd1pQCoJMELHHM+lWK+r/KPkBTlzWrhb9s8BRfUKpMBQk6maEbslqO6jFUEJ9naUTvwb5KuRkg8hRCYDui1quBeBlNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVNG6egW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD670C2BCAF;
+	Mon, 13 Apr 2026 16:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096434;
-	bh=MmZCIhG5NCdezPmY7jkM/JMxV1bhBz+LRlJhK2zWwEk=;
+	s=korg; t=1776098303;
+	bh=SVCAQDi8Qc+3wYu333QbWnb51/ztUnc64rBHNBzwCHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9v/kmR7P/iJRz+3eARPeHOrsar04jqy2c1Bfv3/F1yAwqp9a0x02Um5Ovhj1P19Q
-	 TEj7aF2N5b9T0SfkTUFrrXah68+dJcqHCX4SHgacyK5xLgbuji5MCR9kJ2fJNpaNZa
-	 NWs1jhUSJzVMrb7jLXFXVetFD3diXW+M7O+jBcEI=
+	b=hVNG6egWk0n9ziyVxWjlgWBKqRc7zD4RJQZjBUw5rotxnPtAu0Cw8pmpwvhELXE15
+	 U82DLMgiAL8lFaiMXv/10/AlyOe5Fm2zbNu88UrKZCBBvfWCwn1ku3J6KvqgMK+L7U
+	 OmJMpaESXc65WDJh6cFa4+4F9F103B5UBIeZ/tOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Thanki <vishalthanki@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 02/83] wifi: rt2x00usb: fix devres lifetime
-Date: Mon, 13 Apr 2026 17:59:30 +0200
-Message-ID: <20260413155731.116478285@linuxfoundation.org>
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 440/570] hwmon: (tps53679) Fix device ID comparison and printing in tps53676_identify()
+Date: Mon, 13 Apr 2026 17:59:31 +0200
+Message-ID: <20260413155846.956451408@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +68,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,wp.pl,intel.com];
-	TAGGED_FROM(0.00)[bounces-236252-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-236988-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,wp.pl:email]
-X-Rspamd-Queue-Id: 948333EE8D6
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,juniper.net:email]
+X-Rspamd-Queue-Id: D43C13EFEC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 25369b22223d1c56e42a0cd4ac9137349d5a898e upstream.
+[ Upstream commit ca34ee6d0307a0b4e52c870dfc1bb8a3c3eb956e ]
 
-USB drivers bind to USB interfaces and any device managed resources
-should have their lifetime tied to the interface rather than parent USB
-device. This avoids issues like memory leaks when drivers are unbound
-without their devices being physically disconnected (e.g. on probe
-deferral or configuration changes).
+tps53676_identify() uses strncmp() to compare the device ID buffer
+against a byte sequence containing embedded non-printable bytes
+(\x53\x67\x60). strncmp() is semantically wrong for binary data
+comparison; use memcmp() instead.
 
-Fix the USB anchor lifetime so that it is released on driver unbind.
+Additionally, the buffer from i2c_smbus_read_block_data() is not
+NUL-terminated, so printing it with "%s" in the error path is
+undefined behavior and may read past the buffer. Use "%*ph" to
+hex-dump the actual bytes returned.
 
-Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Vishal Thanki <vishalthanki@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260327113219.1313748-1-johan@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Per the datasheet, the expected device ID is the 6-byte sequence
+54 49 53 67 60 00 ("TI\x53\x67\x60\x00"), so compare all 6 bytes
+including the trailing NUL.
+
+Fixes: cb3d37b59012 ("hwmon: (pmbus/tps53679) Add support for TI TPS53676")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260330155618.77403-1-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/tps53679.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-@@ -828,7 +828,7 @@ int rt2x00usb_probe(struct usb_interface
- 	if (retval)
- 		goto exit_free_device;
+diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
+index 81b9d813655ad..de91996886dbb 100644
+--- a/drivers/hwmon/pmbus/tps53679.c
++++ b/drivers/hwmon/pmbus/tps53679.c
+@@ -156,8 +156,8 @@ static int tps53676_identify(struct i2c_client *client,
+ 	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
+ 	if (ret < 0)
+ 		return ret;
+-	if (strncmp("TI\x53\x67\x60", buf, 5)) {
+-		dev_err(&client->dev, "Unexpected device ID: %s\n", buf);
++	if (ret != 6 || memcmp(buf, "TI\x53\x67\x60\x00", 6)) {
++		dev_err(&client->dev, "Unexpected device ID: %*ph\n", ret, buf);
+ 		return -ENODEV;
+ 	}
  
--	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
-+	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
- 					sizeof(struct usb_anchor),
- 					GFP_KERNEL);
- 	if (!rt2x00dev->anchor) {
+-- 
+2.53.0
+
 
 
 
