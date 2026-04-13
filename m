@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-236202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMx/NoAW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:56 +0200
+	id 0HeTFW8i3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EA83EE7FA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1463F0B67
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A95E306A400
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:06:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E35C3318EB84
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DADC288C3D;
-	Mon, 13 Apr 2026 16:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62D0280CFB;
+	Mon, 13 Apr 2026 16:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0cHu3wX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drPVFTSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F405280CFB;
-	Mon, 13 Apr 2026 16:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C0C30C360;
+	Mon, 13 Apr 2026 16:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096305; cv=none; b=AiOJOiLuYaS5pSNG9nCBo7fT0iSd/dR7sfe8kFAt7w3Td9Dx9YjAuYJDxML3YTlmfh3TvsyX0Rs5pmJmykZOlpjjnYs50xCeu7i6K2JmXguO7AJ2A9gqF6PLHXWu1OsGZD/X+0TNxCakLDZh5TIxfQ7wBS13bZO53Dy6C4A2q48=
+	t=1776098282; cv=none; b=r1irKn3CiEM8vA7a1F6JA1BBdwjZ1zPGqoc/XOMB5dmnaSsqiTixcC3qbiDqTZF5u7AED2yA1M+HRa/kEjW0CfHJP89ew4HlUTAJWOKycmQoxbaUivmCUn0dDFRkT38G7QrQ5mfXiy4DjFdwuwOPMFUVZiY15WdsaD9q1/81Cs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096305; c=relaxed/simple;
-	bh=/lS2rvAXSR/0HCr+tqudfXRqcMtX3V3/yCHYi8WSawA=;
+	s=arc-20240116; t=1776098282; c=relaxed/simple;
+	bh=4okYdYoFegQOZoyq/oWFH3jZoITFdH2y07dBNwSY6b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CaEbJ5ffEFSKswNVpr7gU5QwzGPTqi+Gy5D4LZunS9hIiS12QJCwiXUcwwa1fv5r7P68nGAqbHApx6c3dx4YJQmVhkb5RR0RPpVDCxE0UW9MyTpYqK2hWRGmYUUGFFxa/MMtFifC6mH/ZX78+dPivFmdPZj39Kvsr6EBk/85i60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0cHu3wX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F57C2BCB0;
-	Mon, 13 Apr 2026 16:05:04 +0000 (UTC)
+	 MIME-Version; b=TJdXxp4lIOZVLpTnfCdXRSSV1iUhPbyskvmIdbPybF6U0XNFlKMGilVl4rpLFKbvbagQth48z8efA9pP41TQbkSfMt2vD8YwHN9iTUOYC1QQsweHE47+9YH2AV7JfE2YBYBi/VUhSdGFK/Ja14hba9hBwIv/hdPE+/kWvrsGrIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drPVFTSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F87BC2BCAF;
+	Mon, 13 Apr 2026 16:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096305;
-	bh=/lS2rvAXSR/0HCr+tqudfXRqcMtX3V3/yCHYi8WSawA=;
+	s=korg; t=1776098282;
+	bh=4okYdYoFegQOZoyq/oWFH3jZoITFdH2y07dBNwSY6b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0cHu3wXvDDR21Mz6rtqRSGeuA3SF3FVXp76G1oXm4FrfuO9EVOwaxe9Jclv3yh4O
-	 5Ijz6OWUtxB2WULu+KCOibd6ohTvkZu4jH1DofYjI+zk+Y73UW7qkri6jfBX9E0Cg5
-	 O8Z/LJ8opongW8sJU33wSLETOZ3o/xEWJpy66ajQ=
+	b=drPVFTSdAy9aSb7A0wY4h7AerWke5Ht8S4sVuuiBDdanKtjS3jFQZWeaNjiYNa0ho
+	 dA3nyhqQSW1vGKVkwV3ehB9GnyRTZwWuhlFmegWa6nT/oCDrL+/b3Obugfw3qUDDZH
+	 Ev8hP8dEh61VyJ4ds6YMWaXvG9lywwd6mojliQqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 47/86] net/mlx5: Update the list of the PCI supported devices
-Date: Mon, 13 Apr 2026 17:59:54 +0200
-Message-ID: <20260413155733.326944573@linuxfoundation.org>
+	Jonathan Cameron <jic23@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 464/570] iio: gyro: mpu3050: Move iio_device_register() to correct location
+Date: Mon, 13 Apr 2026 17:59:55 +0200
+Message-ID: <20260413155847.850596975@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,66 +71,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-236980-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236202-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email]
-X-Rspamd-Queue-Id: 68EA83EE7FA
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: AC1463F0B67
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-commit a9d4f4f6e65e0bf9bbddedecc84d67249991979c upstream.
+commit 4c05799449108fb0e0a6bd30e65fffc71e60db4d upstream.
 
-Add the upcoming ConnectX-10 NVLink-C2C device ID to the table of
-supported PCI device IDs.
+iio_device_register() should be at the end of the probe function to
+prevent race conditions.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260403091756.139583-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Place iio_device_register() at the end of the probe function and place
+iio_device_unregister() accordingly.
+
+Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/gyro/mpu3050-core.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -2267,6 +2267,7 @@ static const struct pci_device_id mlx5_c
- 	{ PCI_VDEVICE(MELLANOX, 0x1023) },			/* ConnectX-8 */
- 	{ PCI_VDEVICE(MELLANOX, 0x1025) },			/* ConnectX-9 */
- 	{ PCI_VDEVICE(MELLANOX, 0x1027) },			/* ConnectX-10 */
-+	{ PCI_VDEVICE(MELLANOX, 0x2101) },			/* ConnectX-10 NVLink-C2C */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d2) },			/* BlueField integrated ConnectX-5 network controller */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d3), MLX5_PCI_DEV_IS_VF},	/* BlueField integrated ConnectX-5 network controller VF */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d6) },			/* BlueField-2 integrated ConnectX-6 Dx network controller */
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -1238,12 +1238,6 @@ int mpu3050_common_probe(struct device *
+ 		goto err_power_down;
+ 	}
+ 
+-	ret = iio_device_register(indio_dev);
+-	if (ret) {
+-		dev_err(dev, "device register failed\n");
+-		goto err_cleanup_buffer;
+-	}
+-
+ 	dev_set_drvdata(dev, indio_dev);
+ 
+ 	/* Check if we have an assigned IRQ to use as trigger */
+@@ -1266,9 +1260,20 @@ int mpu3050_common_probe(struct device *
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_put(dev);
+ 
++	ret = iio_device_register(indio_dev);
++	if (ret) {
++		dev_err(dev, "device register failed\n");
++		goto err_iio_device_register;
++	}
++
+ 	return 0;
+ 
+-err_cleanup_buffer:
++err_iio_device_register:
++	pm_runtime_get_sync(dev);
++	pm_runtime_put_noidle(dev);
++	pm_runtime_disable(dev);
++	if (irq)
++		free_irq(mpu3050->irq, mpu3050->trig);
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ err_power_down:
+ 	mpu3050_power_down(mpu3050);
+@@ -1282,13 +1287,13 @@ int mpu3050_common_remove(struct device
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
+ 
++	iio_device_unregister(indio_dev);
+ 	pm_runtime_get_sync(dev);
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ 	if (mpu3050->irq)
+ 		free_irq(mpu3050->irq, mpu3050->trig);
+-	iio_device_unregister(indio_dev);
+ 	mpu3050_power_down(mpu3050);
+ 
+ 	return 0;
 
 
 
