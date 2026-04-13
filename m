@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-236699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFLMKCwh3Wn4aAkAu9opvQ
-	(envelope-from <stable+bounces-236699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:28 +0200
+	id kMt2KOQe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96483F078A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F26AB3EFF66
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88647311A295
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2A00316288D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207F52FFFA4;
-	Mon, 13 Apr 2026 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BB730B50A;
+	Mon, 13 Apr 2026 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CglqJEBh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pGqidcCn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D929A3093CF
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 16:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C143090F5
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097574; cv=none; b=bTZJdzMsPlHdgZ3//G61A1odW5emaGlaw4xKafQzbi6NHkR3GvacwAT8kRQOta2YtROd1VkfMQV6248RVuBq1lUIVBvp6aUxp20Rn3fWe7kXXFKcMr3xH56QAVyal05Jcy7lefW+aNToebAqRkYA6NxhkSKfz3dhB1By+xyZZwg=
+	t=1776097576; cv=none; b=ktNuh3BzR7n9vtQTjEMk3yfSK6gW55ux2mn311klZfDPdsj3HxHOZFuakVh5PpjQ91XVLuaEBVo82xfitD5ByZjKuTfxfesyiAahFUTxx8RCvqREBBiWvdRVb838SkoYAeQoCCIcWd+mkn1S56l1ullDXZFGB8wVKwHdsqKMvA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097574; c=relaxed/simple;
-	bh=dQOHcafIfnLxbgdYrYMzpMEyQcT7YY4XR3Vbq/f/8Rk=;
+	s=arc-20240116; t=1776097576; c=relaxed/simple;
+	bh=UvBwHEXHiHFNGnxPqoZMeJpTKwlwZoSPRv/z8O97M0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Us7lB2LkXwI+7WIOqVfvSTYM6sKp/8ZeYCRibLw7atvkAQdeb6Tq4txt1G/WKCkseH/T+hWErI80kTTe261xZRnBdlPaY5Oz69uV0NcaFCnNrpMfLC6qRBgEoDN35jDO4KVqfJf106asiS+6uykVnHy+8fpYsOPbYE8Ut7uroMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CglqJEBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F91BC2BCAF;
-	Mon, 13 Apr 2026 16:26:13 +0000 (UTC)
+	 MIME-Version; b=W55EP/+2NAjESDk0idtpWS+opEYYMBz7f1pRmgw8AmpKdWppD5jpt2okLOa0+VD1rUA/M6FE1ores2YxsVa5u60pFi3TstYVm6uvD+tppmNQP3KywKQONpnhNYZmKUPrj8LDrlggRGxRsuniyx3AtwjyRYcUAqMqPpXyHnxRzoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pGqidcCn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4EC9C2BCB7;
+	Mon, 13 Apr 2026 16:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776097574;
-	bh=dQOHcafIfnLxbgdYrYMzpMEyQcT7YY4XR3Vbq/f/8Rk=;
+	s=k20201202; t=1776097576;
+	bh=UvBwHEXHiHFNGnxPqoZMeJpTKwlwZoSPRv/z8O97M0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CglqJEBhjMy0cWeOOemkzB5cvOv8gvXF/HhnVR1XxajBKkalhCQXFV0Rb40mbOjaj
-	 E942tW+co+ZRzF8oOwReRRp2MYjAgk3lKS7mwPY0o9va0DJg/TRhpXOjtZ7QxiAkPg
-	 MzNZy279hnyR9MplyqwwqIe1v/spcnOVqE/50H++xvRztTiEH9gsXPWnJB7t2SjaWW
-	 zPuf4+BfC6DsUGa7hNICJZCY3SMlwu7YAW9zzPWiXpHpTyHG/H4CwlbBPGXBrgjQQ6
-	 qY0IQayXHCmy53tIlEjYuGue0r5x4Hx5H27TrYHaE7+XcM3WhrQtr2vp3eXSQeRlZ9
-	 9hK8/+lBNTKDA==
+	b=pGqidcCneD4O6kInIGi4Y43Ce9RS6HONSKQ8v3/zsEyF59sAAV7r8QINh4ExzbLRX
+	 vNTUe7/ghqGMJ+S/+R4NIDXnMgJk0GMOVUABqT8M4di6IcGyIiAjPAhtRKKPBa8sO+
+	 UbLBeOscocr+fiASaTTUqYGoH0DO0cG0+Q57Rinioy0/fmou4wCoKDSsxW/N0n+n7b
+	 QIoJS+dv6Y/KV6XPav0K3dx3rxC7KB+EuDWuCDb8gklIYRB6O7v/eczMZE9rO3qN0P
+	 4509teLGtWeeamHfA0dWHwJTsNC1HafCJ46SShBU7tRjQh7G4+O6xhyDB/XJFLj/My
+	 nm75ZtSvcrSQA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com,
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com,
 	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
 	Mark Fasheh <mark@fasheh.com>,
 	Joel Becker <jlbec@evilplan.org>,
 	Junxiao Bi <junxiao.bi@oracle.com>,
@@ -58,12 +57,13 @@ Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	Heming Zhao <heming.zhao@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/3] ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
-Date: Mon, 13 Apr 2026 12:26:09 -0400
-Message-ID: <20260413162611.3289109-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/3] ocfs2: validate inline data i_size during inode read
+Date: Mon, 13 Apr 2026 12:26:10 -0400
+Message-ID: <20260413162611.3289109-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041354-dork-imperial-5aba@gregkh>
+In-Reply-To: <20260413162611.3289109-1-sashal@kernel.org>
 References: <2026041354-dork-imperial-5aba@gregkh>
+ <20260413162611.3289109-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,10 +82,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[yandex.ru,syzkaller.appspotmail.com,linux.alibaba.com,gmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-236699-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-236700-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -95,29 +95,47 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,c16daba279a1161acfb0];
+	TAGGED_RCPT(0.00)[stable,c897823f699449cc3eb4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E96483F078A
+X-Rspamd-Queue-Id: F26AB3EFF66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit a2b1c419ff72ec62ff5831684e30cd1d4f0b09ee ]
+[ Upstream commit 1524af3685b35feac76662cc551cbc37bd14775f ]
 
-In 'ocfs2_validate_inode_block()', add an extra check whether an inode
-with inline data (i.e.  self-contained) has no clusters, thus preventing
-an invalid inode from being passed to 'ocfs2_evict_inode()' and below.
+When reading an inode from disk, ocfs2_validate_inode_block() performs
+various sanity checks but does not validate the size of inline data.  If
+the filesystem is corrupted, an inode's i_size can exceed the actual
+inline data capacity (id_count).
 
-Link: https://lkml.kernel.org/r/20251023141650.417129-1-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c16daba279a1161acfb0
+This causes ocfs2_dir_foreach_blk_id() to iterate beyond the inline data
+buffer, triggering a use-after-free when accessing directory entries from
+freed memory.
+
+In the syzbot report:
+  - i_size was 1099511627576 bytes (~1TB)
+  - Actual inline data capacity (id_count) is typically <256 bytes
+  - A garbage rec_len (54648) caused ctx->pos to jump out of bounds
+  - This triggered a UAF in ocfs2_check_dir_entry()
+
+Fix by adding a validation check in ocfs2_validate_inode_block() to ensure
+inodes with inline data have i_size <= id_count.  This catches the
+corruption early during inode read and prevents all downstream code from
+operating on invalid data.
+
+Link: https://lkml.kernel.org/r/20251212052132.16750-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c897823f699449cc3eb4
+Tested-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251211115231.3560028-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20251212040400.6377-1-kartikey406@gmail.com/T/ [v2]
 Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
 Cc: Mark Fasheh <mark@fasheh.com>
 Cc: Joel Becker <jlbec@evilplan.org>
 Cc: Junxiao Bi <junxiao.bi@oracle.com>
@@ -128,28 +146,45 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/inode.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ocfs2/inode.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
-index 7c9dfd50c1c17..a25af01463cf6 100644
+index a25af01463cf6..a673d877291c7 100644
 --- a/fs/ocfs2/inode.c
 +++ b/fs/ocfs2/inode.c
-@@ -1418,6 +1418,14 @@ int ocfs2_validate_inode_block(struct super_block *sb,
+@@ -1418,12 +1418,25 @@ int ocfs2_validate_inode_block(struct super_block *sb,
  		goto bail;
  	}
  
-+	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
-+	    le32_to_cpu(di->i_clusters)) {
-+		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
-+				 (unsigned long long)bh->b_blocknr,
-+				 le32_to_cpu(di->i_clusters));
-+		goto bail;
-+	}
+-	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
+-	    le32_to_cpu(di->i_clusters)) {
+-		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
+-				 (unsigned long long)bh->b_blocknr,
+-				 le32_to_cpu(di->i_clusters));
+-		goto bail;
++	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
++		struct ocfs2_inline_data *data = &di->id2.i_data;
 +
- 	rc = 0;
++		if (le32_to_cpu(di->i_clusters)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode %llu: %u clusters\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le32_to_cpu(di->i_clusters));
++			goto bail;
++		}
++
++		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
++					 (unsigned long long)bh->b_blocknr,
++					 (unsigned long long)le64_to_cpu(di->i_size),
++					 le16_to_cpu(data->id_count));
++			goto bail;
++		}
+ 	}
  
- bail:
+ 	rc = 0;
 -- 
 2.53.0
 
