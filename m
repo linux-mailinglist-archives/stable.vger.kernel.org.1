@@ -1,178 +1,181 @@
-Return-Path: <stable+bounces-235908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEYxDQWB3GmYSAkAu9opvQ
-	(envelope-from <stable+bounces-235908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:37:09 +0200
+	id OEl5Ga2D3GnnSAkAu9opvQ
+	(envelope-from <stable+bounces-235909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:48:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DFD3E781F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:37:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B123E78F6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 029743014BD1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 05:36:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 625DA3003985
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 05:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103A730BB97;
-	Mon, 13 Apr 2026 05:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294E53358A7;
+	Mon, 13 Apr 2026 05:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="h1AsM6NQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D1kbALBW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDB22C11E4
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 05:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776058594; cv=none; b=GhHO/1KoGDaTQJrBsRuSDYpXCT2Zg16nuOD6YUoyzo/QTj6uSEKD+HHQYXlam4na5WY5B6kNfmLb6UUyiwNtxoe9ss/AudwB+xe2JvBxsAU953vXowZQcVz+Ma9b8jzAy7iNs8oemGmxR4oquNQbZVJme/Nnk0XD8PnH9PzmmvQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776058594; c=relaxed/simple;
-	bh=rFIWaQVIzDr7LJ2pLxgr0TzD6LrP2YpDnjbHqEmKV08=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gA5c0yhzVVTUeXUk6C323oWo9bAuPCQjOv9WnW11jRKRjH7IVqBiX8CdISfKQz8DXnyguj07XwB6IahIZC5EDqqYmDOyaNcJfk7j2lJpCrgAmoKDXfD6JsrbdacCuqbrGZP6Gm8U/7YPD3htUWuxbKG5O5CeUoHJTsB+BuZExHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=h1AsM6NQ; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cd71fb9f06so246070485a.2
-        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 22:36:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F315329365
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 05:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776059303; cv=pass; b=GSolOF7rpvSY0goFFK1PbvFdePxoQfuw12vBP51ySMZKe4rxsTtetNnGk2P1ZE86XzM/VLgWUeTw3AHfHQAcSPiNK40d8Gjt5CozqI8Tc+vGfpqy865q2sl/gKeLf1VWsM9HUK/iiV7HseRezvPyLYvl4v8hXnUDKipvb4hd+CU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776059303; c=relaxed/simple;
+	bh=igt2Es3IqJum7K3P9h4iERQJBtAxhpKyYYTdHjquAUA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JBI8IOPV8yZ8OLJI2VPp/B7HYGpXJZjeBsnKJeeiVkzhd96u8Y0SzNCIw+F8h43OK3s8hD/cPo/ZLUO0nigB4xMV1GqQmnFrfNuSkJxeDxadXdbYdW3/4rLj8EL3JGeID6vQ2wri+buR7fWWRMuoDHcxju79t1NIG1KRdzCMAPk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D1kbALBW; arc=pass smtp.client-ip=74.125.224.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-651ce2484d5so380104d50.1
+        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 22:48:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776059295; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I91hn4bRaMMrIbWh1xg0DSHgKysXuN84+ywhAuTx2l2vN1XKaG8n8kI2FNyWPuUA4N
+         GsgHKTQ03DD0BN1cLhfLCFNo2lhVA6lCZ5VzNcpoa6zU0JMnEJM6ldz1fLiG5HkSxbZx
+         OKI3ljZaRCjosIUKQfPKp1usDBHZGxkfVy0YQe6eA8GlquX9tQTSELbMNx9wH1974HL6
+         sBR64D+gmgUgKCDL1tLA1/r5Rl7C2Idvussqw037+Ii/ag1GdPxpnks0p/A8MnfgDCrF
+         G+BILEfEO6X5y/7ZQNgxhXOvhF3fazUCGnjaV2AVpk7EB4jQH81gA7dSxJPjyA9B5/MU
+         U7ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=igt2Es3IqJum7K3P9h4iERQJBtAxhpKyYYTdHjquAUA=;
+        fh=K7T0s/lHWBq0ztdyEjtIpBFmRmz2+UA7mZnUuBo3SJ4=;
+        b=Mc13rf6KjwnJctyihoREFlvBFwRubFkiHQWxUlZRN8g0pdywTFoaQ4ueK2kxACGI6x
+         d/qFvVw9F2nm7ZjBvp7Aw/TT+r3DgD2KCMLlpxTPlLQTh5SDTjqQY7s5yrwmQ0r5mQjS
+         kQedDkpPR/2W+CKpnq/CC+jblx6XJTEnfSrYVkamgbSHaaxTN5ANZohI7V8bnhnIALs7
+         A2KDsmy1WkSlzKH/nWlMIlySJWTB7vdLveZXkahjEMwIGa2zVSHExtPsW2D3lrAsJMW1
+         nQq0Y7yUJu1L2cWPosFiLwZ7QMnz1HPdPfCO/HAPXzgr8k8HT/OUDXwt27dB4Dgjc5pf
+         ZzrA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1776058592; x=1776663392; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/X2QfEAZrHNubsDZK1Rva+fNiB1w8v4TMc0y0Ptc/zQ=;
-        b=h1AsM6NQiNmlG6J8HLnQKdP741Abn1BRxDHZlWhZQRBQpgctOF8jORxQXgQnCghtvr
-         Zx6gJ83LDQGQ9Abu1o46TBlMnf54gD8xs7/8wg3H8PwEuHNnvmbVt0AaGEmU/KdlrALk
-         pLiRgs/kAY7rIt2SOfaIzio2+bTK+JgnGCeY8zg+9I+BYOg0urNUT2I9eSt5NtUVMNfS
-         EJ9BWKnNK7g9WlNP0ZY+EW44VwBuFQZ7cYvgttyDPCNNwhFZmkyl2AqIxMk2+GV7AxHM
-         /jyP1k7QDJju0ngYZ1f+CTXY4GXAEwlpe4gs7bmUTzq+bkR/N/BIf8RNyw6GuTYhugUu
-         aSUQ==
+        d=gmail.com; s=20251104; t=1776059295; x=1776664095; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=igt2Es3IqJum7K3P9h4iERQJBtAxhpKyYYTdHjquAUA=;
+        b=D1kbALBWISUXixtTGiAn1YtHLaD1vci/HrAEznoIqZRakKRz7y4Wtat9sCmbmCqPpv
+         bxsr3Ug/HeANneENKvEzR/3cKGzc5zKoqje0MXlB/92k6MTt9zMF4dPe/WiW6/IejkMF
+         1dMyvlZ75NfUMWIt3CcSS6saPCc8PdSyAhpZJtIZQWqyKoQAUTHOgQH5EBsVZMFqJYxW
+         0uqLwSA45tYjf2BvBCn/tewW/fTqv7OzFoVaadhNkHRA73bGxMNNfUD0xUlIKXknaNzT
+         nDsffdvNzXKptLcWtHPAfK9S+R/eaD6PqyUQd65r4VthuYKR5Ks+yX4ursgY479kjDKJ
+         FOdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776058592; x=1776663392;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/X2QfEAZrHNubsDZK1Rva+fNiB1w8v4TMc0y0Ptc/zQ=;
-        b=ctigIx2Cge/MlvGy0VNIaztpUM1s9kehibazkT2m9gwQwYQ3BshwUU4Q0eQJ14aGjf
-         lrfziD1hsyQe0nxJ8icLWgriwu0ONrWg5iyyjclLugl6LVRAtkHjZOjoDa12qcGuFxXL
-         dgnDWCWJz3wniK/gBA3sOHknmYfbREwvSzNpLGEqU9/il5J2f2RyMFVj0bswVA/X1nGn
-         ugzZ+41/DyvYPeAJ25ENgC86CDnJY2h50SUxAzBe4llkxYJsQV1wWRgXa4Nd+uO/WNNg
-         y0od2vtn4N6nFz8IaGGrdbWfXYxccEQ/OpeDcTZ0yUCbdzRU6xI1DdH5ejX2nhTNlA7t
-         s+Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCUnc/b4AM9dhCx+wDG+L1mqVzlKhf7mSLwSlrkQo2WKwiRfsA0zBtnIRiovXgnxGyBh4mtGUDw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSV26xQX9n5RkQTPU4C/gUB1ibMYBpoDZ0xMReNkVHVWdISy3H
-	XF/MSXrqlPPPgdzTNXEN/p5IxG/Zx7o9d+RI/z14/ZSsXk4Yjaxq1ihDfGRHz8na/kE=
-X-Gm-Gg: AeBDiesbSA/cUo/PrbfseT5a+F9Kh7C8MLbAJmxQ3P66Qs6zh5k+6n5+/iu81heYAWE
-	12Q7d9w/Wd+DWiIWL99sViu/wekuA3VbEsn0rbaF5trxq14mLkJSf8mhkiKUFps3OQaTpUm2PZU
-	Cs7MYDcbUVmof6vvxoumlck3mNl4ISpX4Gh6d2F6la+To3l6csyKsvM17dxeeN/5652tACc7iAR
-	kXv5hVXzZA1akjozMri0gkgEiWp4wHmw6eKyGsmUDYl4Hbv5WudQroXfx233PR0JM2VMGZLauzQ
-	Pf3OEOtFrjzFg88zpiNRSFW8VSv3JBvBpOzGLAfgL/V2RruKwabigH5EJA99hh+ylt47NFD8WuR
-	oX033SnDiY/7KdyN5a07QipcBRryGqTL04Bvzw3D3+p1DUZVzqTC/RqiXjGtC70WyYUSzVYrJ+N
-	kJNyxKHMfKBd6DgxR310Q125SPEtBRnDvy3xfKc6v1WpqIzHHGJ/CCFem3a4Apd1TDJ4bTfUxlL
-	+2REtnH+FVS
-X-Received: by 2002:a05:620a:4013:b0:8d7:4f7c:873b with SMTP id af79cd13be357-8ddcdbe3c79mr1768071585a.14.1776058592318;
-        Sun, 12 Apr 2026 22:36:32 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8aca9f7e0b0sm25350806d6.11.2026.04.12.22.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 22:36:31 -0700 (PDT)
-Date: Mon, 13 Apr 2026 01:36:29 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	rppt@kernel.org, peterx@redhat.com, surenb@google.com,
-	aarcange@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: preserve write protection across UFFDIO_MOVE
-Message-ID: <adyA3X2k1GdzxOEZ@gourry-fedora-PF4VCD3F>
-References: <20260409152822.1073083-1-gourry@gourry.net>
- <20260412111807.42c3edf86d19528d7cb1bb7b@linux-foundation.org>
+        d=1e100.net; s=20251104; t=1776059295; x=1776664095;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=igt2Es3IqJum7K3P9h4iERQJBtAxhpKyYYTdHjquAUA=;
+        b=VegOz73L8WgfbEVQhGsRzT+XRL0gecrRLnYrSiAjCggJf7FxuIwwo9Olu3O3Itk/DD
+         urO1gPHml9OEksvCm4Kq/tq7jkzCHIDLOQwPExSoSgoem8G8kf7mK/J5jqVEesKv0oYG
+         ZHpLPY/DWhst0mOqsmX/XzCLOpoOkhseoLe6gSWKYfkpbcia7R7b/TtP99WwSxlYCCsH
+         7EDjoI88gTeKD7d/NZXjjKxWxDfkOgVn6fK+ga4EdlI1BOX8ku1RQPK+GXABtR3G4sBX
+         B+B7uOUo/JotIl3dmoOCTGtbNyRK1DyFnM4ClmjdYu8gl3ycuWGXyR1szs+e2+qmjR5N
+         Pk5w==
+X-Forwarded-Encrypted: i=1; AFNElJ/ddms6vMI0rCG5bN0JgtwDk1gyjBM3uyFs0/tBT/k8SuQ7TH8vUoYo0Vo/N/kqZK6ftLResDQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRfvsGjwLZVDzrntPXsz0rkO7WKxtadumjKnzzY57H0kfQUgSN
+	a3r8YuYutlvaIXmLYawmN0VwmZBZPZ0Tf1YHWw5M1A95dTlzIXoQykDieuhufmyWWKH5iFKiX57
+	F+sSxvS+BBmJDO4tuG7qCeTxOzdK59K4=
+X-Gm-Gg: AeBDietroqfHzF7P4lRmHoTNts2MX+t6R77c4t5FHANvrjgqll7vhu4UALUShboc+bl
+	KRDaAN1T/qFhOvXi5SGFF0lx8TvsDnW9AXjHTl4FDJqIH/wQX0hjDrFv7eRBH/NhZfPm52RT94J
+	Jl2FRfNXwLH5JToWkuRSvoD6bJD8BOqsjHgeuMpTZPFg0nM7ZHFKtZe0ZCvVpy1HUjI2aACJn/D
+	AqVRmVnsohPC0IilXFfeQkopz7M2MbW0lQLSdaLkL16pe2X/wyhCmYRodd/BQMgJDc7d+CoPLG+
+	/qHSs6xm7eLH64IdNQ==
+X-Received: by 2002:a05:690e:e85:b0:651:c732:f13f with SMTP id
+ 956f58d0204a3-651c732f2d2mr2879385d50.27.1776059295016; Sun, 12 Apr 2026
+ 22:48:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260412111807.42c3edf86d19528d7cb1bb7b@linux-foundation.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+References: <20260412174529.2597250-1-lgs201920130244@gmail.com> <87qzojwi1m.wl-tiwai@suse.de>
+In-Reply-To: <87qzojwi1m.wl-tiwai@suse.de>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Mon, 13 Apr 2026 13:48:05 +0800
+X-Gm-Features: AQROBzBBMm9HXnAJg2gaO5NfrkSceM-v1coDuu3HdhTg1kiFqwZxvg2otGHIv_s
+Message-ID: <CANUHTR_1s1aoE7SfYH7NNcaoM2VWcc6wAoN_Xh=7y6D__Pe8tA@mail.gmail.com>
+Subject: Re: [PATCH] ALSA: hwdep: fix NULL dereference on error path
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Curtis Malainey <cujomalainey@chromium.org>, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gourry.net:+];
-	TAGGED_FROM(0.00)[bounces-235908-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[gourry.net];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235909-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 95DFD3E781F
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: F2B123E78F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Apr 12, 2026 at 11:18:07AM -0700, Andrew Morton wrote:
-> On Thu,  9 Apr 2026 11:28:22 -0400 Gregory Price <gourry@gourry.net> wrote:
-> 
-> > move_present_ptes() unconditionally makes the destination PTE writable,
-> > dropping uffd-wp write-protection from the source PTE.
-> > 
-> > The original intent was to follow mremap() behavior, but mremap()'s
-> > move_ptes() preserves the source write state unconditionally.
-> > 
-> > Modify uffd to preserve the source write state and check the uffd-wp
-> > condition of the source before setting writable on the destination.
-> 
-> Please can we have a description of the userspace-visible impact of the
-> bug.
+Hi Takashi,
+
+Thanks for the correction.
+
+I overlooked the NULL check in put_device(), so the reported NULL
+dereference on this error path is not valid.
+
+Sorry for the noise. Please disregard this patch.
+
+Thanks,
+Guangshuo
+
+Takashi Iwai <tiwai@suse.de> =E4=BA=8E2026=E5=B9=B44=E6=9C=8813=E6=97=A5=E5=
+=91=A8=E4=B8=80 13:22=E5=86=99=E9=81=93=EF=BC=9A
 >
-
-Simply:
-
-  UFFDIO_MOVE silently drops write protection from the source PTE when
-  moving pages to a destination, leading to missing write-protect faults
-  after the page has been moved.
-
-I ran into this while futzing around with some user space management of
-VM memory, and expecting a move to continue firing WP faults after.
-
-But Sashiko actually made a useful (though obtuse) observation which
-has made me realize _MOVE is actually ambiguous on what to do with
-source region UFFD modes.
-
-> > +		if (pte_uffd_wp(orig_src_pte))
-> > +			orig_dst_pte = pte_mkuffd_wp(orig_dst_pte);
-
-This line assumes the destination must have intended to be WP, and the
-the result is essentially stale uffd wp bits in the opposite case (a
-user not intending to carry over WP now carries it over).
-
-tl;dr: this is more of a semantic change than I'd intended, and the
-existing tests did not catch it.
-
-The correct solution here is to make a UFFDIO_MOVE_MODE_WP flag to copy
-the UFFDIO_COPY_MODE_WP pattern.  Otherwise:
-
-> (presently wondering if this is backward compatible)
-
-Yes, you're right to wonder - this does break backward compatibilty.
-
-Will come back around with UFFDIO_MOVE_MODE_WP.
-
-~Gregory
+> On Sun, 12 Apr 2026 19:45:29 +0200,
+> Guangshuo Li wrote:
+> >
+> > snd_hwdep_new() allocates a hwdep instance first and then allocates
+> > hwdep->dev via snd_device_alloc().
+> >
+> > When snd_device_alloc() fails, hwdep->dev remains NULL, because
+> > snd_device_alloc() clears *dev_p before attempting to allocate the
+> > device object. The error path then calls snd_hwdep_free(), which
+> > unconditionally invokes put_device(hwdep->dev).
+> >
+> > This may lead to a NULL pointer dereference in put_device().
+>
+> put_device() has a NULL check by itself, so it's safe to pass NULL
+> there.
+>
+>
+> thanks,
+>
+> Takashi
 
