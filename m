@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-236895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CulFDob3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:06 +0200
+	id 2G/LI+Yj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F157C3EF4DC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839A13F0F8C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 916F430231EF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8CC51309B424
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520BE30DD1D;
-	Mon, 13 Apr 2026 16:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C188317141;
+	Mon, 13 Apr 2026 16:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bx9v5psV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cc+dwZwf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155D72D0C7E;
-	Mon, 13 Apr 2026 16:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10757313298;
+	Mon, 13 Apr 2026 16:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098069; cv=none; b=K8c0gpu9oDSrPiR7KLeQ4a7pUMkn6zkdTxGZC9WsaNhyHxerJnRa4+7EpkzuExDo+mKA3ILPfuTwARd9jnl9uhLosV/IUgyRpVciMEnsim8pPXCa3mCfYFqd/n+HYFY8tHqIWwO0iDesfXWWjnJ/juFtxL+a2QKC+MMno3yXAQo=
+	t=1776099251; cv=none; b=hq+YagUxtclD62QqOe1HwOenix3lrdNIaOCJn0nc1U1lMw/fluSjIboYktGkwyS2dBFZZbHU0VFJNowyFfKWi7L148E77LssVY8voGDaTfCFdtI4V+SY5D2p/2Hqm62U7+QI8Javtxrkon9YwH+ocKW4ZwLl0KKu/B5k84Ila7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098069; c=relaxed/simple;
-	bh=oAdP3iW4n29ijjwD2d4f1LwdX/+uvPYGz54SZ1kbZJk=;
+	s=arc-20240116; t=1776099251; c=relaxed/simple;
+	bh=PrAT9vKzFQS8nREN3SK0MgOrQu0ZWojH3kpaYZB5UdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gowbzHtxE/wudlpC/JpY/HAzlwAourE2u8A4LTZgmFnd1gpcwbPlJhziUbwZp4JJIAVOIe3hcHsYtaeG+5DKGBX1333X9TDYPqUa0fpRG1JmS0kQlUJKL0HZ55W/SbuyBS6WAlxomGKsOvDmI4TII40nlvDKVUKFp38w7M6ea1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx9v5psV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683F1C2BCAF;
-	Mon, 13 Apr 2026 16:34:28 +0000 (UTC)
+	 MIME-Version; b=NwljP/idYGfpotrpx8JtIU45GHB3bdBlrrc7LBSaHweAkzb6+/1CFSTbxrFb2dtZf1SyBjgWCjxFVkJwYyC1jTTHRXezDYPP6gvyY/vzeu/EbRVw0lJCC03KQtFDStxk4uSECj90qXQremCOo5kEhwfaomsWyUb4xHrOf7ARpy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cc+dwZwf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995BEC2BCAF;
+	Mon, 13 Apr 2026 16:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098068;
-	bh=oAdP3iW4n29ijjwD2d4f1LwdX/+uvPYGz54SZ1kbZJk=;
+	s=korg; t=1776099250;
+	bh=PrAT9vKzFQS8nREN3SK0MgOrQu0ZWojH3kpaYZB5UdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bx9v5psVKBUpxV4t1KcrlgNg9XWtL8GPA1j2//Cl5wW9RupriF+Yv2nefACZqNkdZ
-	 W1suj63v3sDHirq6JC2OR7gP23OFwbEo210RDt5wIfXSi2ozmHjQynezHFExO0dMuq
-	 ooPYUPQCAPjH9sSky6AG+1n6H3mSgtvdYixorKD0=
+	b=Cc+dwZwfhHoSD/PKFrTqN/6lFjljhmZwUB7CoxxV/lF0y2TfttMF1V9w2sItl8zHd
+	 gy6TF3j60rq4rpqDbExEX32GCJUmPcdtoQOSquWEmXhkzPXDI7XiLQyUWEXXQWbYX+
+	 NundNi+klD7jpLLWPBIHwEUTxIpCisihB86jOejE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 382/570] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 268/491] netfilter: ip6t_rt: reject oversized addrnr in rt_mt6_check()
 Date: Mon, 13 Apr 2026 17:58:33 +0200
-Message-ID: <20260413155844.788659069@linuxfoundation.org>
+Message-ID: <20260413155829.084565570@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,130 +70,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237359-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236895-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: F157C3EF4DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 839A13F0F8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Ren Wei <n05ec@lzu.edu.cn>
 
-commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
+[ Upstream commit 9d3f027327c2fa265f7f85ead41294792c3296ed ]
 
-There's issue as follows:
-...
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Reject rt match rules whose addrnr exceeds IP6T_RT_HOPS.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+rt_mt6() expects addrnr to stay within the bounds of rtinfo->addrs[].
+Validate addrnr during rule installation so malformed rules are rejected
+before the match logic can use an out-of-range value.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): error count since last fsck: 1
-EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
-EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
-...
-
-According to the log analysis, blocks are always requested from the
-corrupted block group. This may happen as follows:
-ext4_mb_find_by_goal
-  ext4_mb_load_buddy
-   ext4_mb_load_buddy_gfp
-     ext4_mb_init_cache
-      ext4_read_block_bitmap_nowait
-      ext4_wait_block_bitmap
-       ext4_validate_block_bitmap
-        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
-         return -EFSCORRUPTED; // There's no logs.
- if (err)
-  return err;  // Will return error
-ext4_lock_group(ac->ac_sb, group);
-  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
-   goto out;
-
-After commit 9008a58e5dce ("ext4: make the bitmap read routines return
-real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
-as corrupt on block bitmap error") is no real solution for allocating
-blocks from corrupted block groups. This is because if
-'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
-'ext4_mb_load_buddy()' may return an error. This means that the block
-allocation will fail.
-Therefore, check block group if corrupted when ext4_mb_load_buddy()
-returns error.
-
-Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv6/netfilter/ip6t_rt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2280,8 +2280,12 @@ int ext4_mb_find_by_goal(struct ext4_all
- 		return 0;
- 
- 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
--	if (err)
-+	if (err) {
-+		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
-+		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
-+			return 0;
- 		return err;
+diff --git a/net/ipv6/netfilter/ip6t_rt.c b/net/ipv6/netfilter/ip6t_rt.c
+index 4ad8b2032f1f9..5561bd9cea818 100644
+--- a/net/ipv6/netfilter/ip6t_rt.c
++++ b/net/ipv6/netfilter/ip6t_rt.c
+@@ -157,6 +157,10 @@ static int rt_mt6_check(const struct xt_mtchk_param *par)
+ 		pr_debug("unknown flags %X\n", rtinfo->invflags);
+ 		return -EINVAL;
+ 	}
++	if (rtinfo->addrnr > IP6T_RT_HOPS) {
++		pr_debug("too many addresses specified\n");
++		return -EINVAL;
 +	}
- 
- 	ext4_lock_group(ac->ac_sb, group);
- 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
+ 	if ((rtinfo->flags & (IP6T_RT_RES | IP6T_RT_FST_MASK)) &&
+ 	    (!(rtinfo->flags & IP6T_RT_TYP) ||
+ 	     (rtinfo->rt_type != 0) ||
+-- 
+2.51.0
+
 
 
 
