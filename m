@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YAJiBBQl3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:08 +0200
+	id kFI0JZce3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0523F119E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 249273EFE2B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DF6231D5863
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1530A3282E0E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F1528C874;
-	Mon, 13 Apr 2026 16:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA0C30B508;
+	Mon, 13 Apr 2026 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AugTNrid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGYpe+ym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2D62E2850;
-	Mon, 13 Apr 2026 16:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EFD28505E;
+	Mon, 13 Apr 2026 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098696; cv=none; b=e1RhXOIZ9omYaoiAPo8n57RXFGNJRsRsXUMZfIkgBk8Kn9/p9K0o+iObXlVrEBzLlO9zYX3cWDedZOWU/Wpoeb+scDNaXfhQrkCzRfKA5abKBGQBzMQ5Lff/VHI5HPbNIMWOGmDj7GbvpnOw3Qbs1HyoUvEd6cVchdFiCf7a4nc=
+	t=1776097479; cv=none; b=OaZsyDI162in2Tk2Eu68qIJT05ztsSzCx/AMdS5tkOpka87E50N1u2lmJBE805DBAhn6HFa5XTqC8deufcIa3E49w28aO76ycfBGm/JOLpV9M+1bSGXX+H86uz+ndmcaTn0fk1S1OS1cv2hJSvu1h/bzxB7OYbqgG9VNHcpdw8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098696; c=relaxed/simple;
-	bh=UbWa89KLVpLdu3bnuwmEgM+Pb/JCsojmUpQkCfoqeTs=;
+	s=arc-20240116; t=1776097479; c=relaxed/simple;
+	bh=Wv59DP0TxSAV8dSD65NNXmxg3eEYiaTXcpXltR+4uH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdPnDIlFIiXohsdeiXYDtt9ytpGnTyl2uywHySvw8V9T7DnA3wVyiY6ZxSLhgGVG2tBRQVoPXWee+WriECZNFTbIHo5OU2f793KfoQqkLETLqFM3vlpduUhiWHmEN4k6mCmOroaO5aYWUWp4SwYX1spYB3+g8DPq9Uex8jsJCuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AugTNrid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705A3C2BCAF;
-	Mon, 13 Apr 2026 16:44:56 +0000 (UTC)
+	 MIME-Version; b=axxnmzySb3f7EZuSonHWr0dTiqPAI4Vsckzhx5HleILJMPfmt+fl5NdlEKNmnr3JkzCsM/YdggeYrYy4X96LFXLL3gMDpUCcXxrKXU7f967w2gRTinICZqh95i0JEr3f/WBzdcGTG0saKiqxGnYepG+AH/ZGMeCIUIF3PUJytH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGYpe+ym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDB3C2BCB3;
+	Mon, 13 Apr 2026 16:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098696;
-	bh=UbWa89KLVpLdu3bnuwmEgM+Pb/JCsojmUpQkCfoqeTs=;
+	s=korg; t=1776097479;
+	bh=Wv59DP0TxSAV8dSD65NNXmxg3eEYiaTXcpXltR+4uH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AugTNridrnPem65Qoku8Od0A/qoL3+t9ncI1+4n3o/9OpkLwL7EJDG+0OTmm7uR2U
-	 Qjub+C9tcJhHtV0X6bjaPOkU/6SDlVOKzBUXrXI4X7/aDzCl9x0Sya3GNBWiFJQG2a
-	 XYpxEzNZL5WuJIN2yqDjIrJKlQ7j/7/Rkwc1s2pA=
+	b=sGYpe+ymXhMYkMhnq83RETDhPgJ6SX/30kNuDs84fAOjMxY3cSBRUczFa82JUOIkN
+	 crzqxyk2qvAh5JCChPr9EXfE3YgWdwX4wXZ4xPxerr7bvutQKXtnZpE6240OV2JK2l
+	 8PVYFm5990YCl/Uytug3TWqhuNbqWKEZI67SKa9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chintan Vankar <c-vankar@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/491] net: ethernet: ti: am65-cpsw-nuss/cpsw-ale: Fix multicast entry handling in ALE table
-Date: Mon, 13 Apr 2026 17:54:41 +0200
-Message-ID: <20260413155820.405069530@linuxfoundation.org>
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.15 151/570] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
+Date: Mon, 13 Apr 2026 17:54:42 +0200
+Message-ID: <20260413155836.106760314@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,103 +66,157 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236661-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237142-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,ti.com:email]
-X-Rspamd-Queue-Id: 6E0523F119E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 249273EFE2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chintan Vankar <c-vankar@ti.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit be11a537224d72b906db6b98510619770298c8a4 ]
+commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
 
-In the current implementation, flushing multicast entries in MAC mode
-incorrectly deletes entries for all ports instead of only the target port,
-disrupting multicast traffic on other ports. The cause is adding multicast
-entries by setting only host port bit, and not setting the MAC port bits.
+This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
+that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
+ceph_handle_auth_reply(), the value of the payload_len field of such a
+message is stored in a variable of type int. A value greater than
+INT_MAX leads to an integer overflow and is interpreted as a negative
+value. This leads to decrementing the pointer address by this value and
+subsequently accessing it because ceph_decode_need() only checks that
+the memory access does not exceed the end address of the allocation.
 
-Fix this by setting the MAC port's bit in the port mask while adding the
-multicast entry. Also fix the flush logic to preserve the host port bit
-during removal of MAC port and free ALE entries when mask contains only
-host port.
+This patch fixes the issue by changing the data type of payload_len to
+u32. Additionally, the data type of result_msg_len is changed to u32,
+as it is also a variable holding a non-negative length.
 
-Fixes: 5c50a856d550 ("drivers: net: ethernet: cpsw: add multicast address to ALE table")
-Signed-off-by: Chintan Vankar <c-vankar@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260224181359.2055322-1-c-vankar@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also, an additional layer of sanity checks is introduced, ensuring that
+directly after reading it from the message, payload_len and
+result_msg_len are not greater than the overall segment length.
+
+BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
+
+CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: ceph-msgr ceph_con_workfn [libceph]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ print_report+0xd1/0x620
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? kasan_complete_mode_report_info+0x72/0x210
+ kasan_report+0xe7/0x130
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ __asan_report_load_n_noabort+0xf/0x20
+ ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ mon_dispatch+0x973/0x23d0 [libceph]
+ ? apparmor_socket_recvmsg+0x6b/0xa0
+ ? __pfx_mon_dispatch+0x10/0x10 [libceph]
+ ? __kasan_check_write+0x14/0x30i
+ ? mutex_unlock+0x7f/0xd0
+ ? __pfx_mutex_unlock+0x10/0x10
+ ? __pfx_do_recvmsg+0x10/0x10 [libceph]
+ ceph_con_process_message+0x1f1/0x650 [libceph]
+ process_message+0x1e/0x450 [libceph]
+ ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
+ ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
+ ? save_fpregs_to_fpstate+0xb0/0x230
+ ? raw_spin_rq_unlock+0x17/0xa0
+ ? finish_task_switch.isra.0+0x13b/0x760
+ ? __switch_to+0x385/0xda0
+ ? __kasan_check_write+0x14/0x30
+ ? mutex_lock+0x8d/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ ceph_con_workfn+0x248/0x10c0 [libceph]
+ process_one_work+0x629/0xf80
+ ? __kasan_check_write+0x14/0x30
+ worker_thread+0x87f/0x1570
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? __pfx_try_to_wake_up+0x10/0x10
+ ? kasan_print_address_stack_frame+0x1f7/0x280
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x396/0x830
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ ? __pfx_kthread+0x10/0x10
+ ? __kasan_check_write+0x14/0x30
+ ? recalc_sigpending+0x180/0x210
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x3f7/0x610
+ ? __pfx_ret_from_fork+0x10/0x10
+ ? __switch_to+0x385/0xda0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+[ idryomov: replace if statements with ceph_decode_need() for
+  payload_len and result_msg_len ]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- drivers/net/ethernet/ti/cpsw_ale.c       | 9 ++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ net/ceph/auth.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 07510e068742e..2dc3e5be1d717 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -305,7 +305,7 @@ static void am65_cpsw_nuss_ndo_slave_set_rx_mode(struct net_device *ndev)
- 	cpsw_ale_set_allmulti(common->ale,
- 			      ndev->flags & IFF_ALLMULTI, port->port_id);
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -205,9 +205,9 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	s32 result;
+ 	u64 global_id;
+ 	void *payload, *payload_end;
+-	int payload_len;
++	u32 payload_len;
+ 	char *result_msg;
+-	int result_msg_len;
++	u32 result_msg_len;
+ 	int ret = -EINVAL;
  
--	port_mask = ALE_PORT_HOST;
-+	port_mask = BIT(port->port_id) | ALE_PORT_HOST;
- 	/* Clear all mcast from ALE */
- 	cpsw_ale_flush_multicast(common->ale, port_mask, -1);
- 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index bec6a68a973c4..eb4262017d235 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -420,14 +420,13 @@ static void cpsw_ale_flush_mcast(struct cpsw_ale *ale, u32 *ale_entry,
- 				      ale->port_mask_bits);
- 	if ((mask & port_mask) == 0)
- 		return; /* ports dont intersect, not interested */
--	mask &= ~port_mask;
-+	mask &= (~port_mask | ALE_PORT_HOST);
- 
--	/* free if only remaining port is host port */
--	if (mask)
-+	if (mask == 0x0 || mask == ALE_PORT_HOST)
-+		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
-+	else
- 		cpsw_ale_set_port_mask(ale_entry, mask,
- 				       ale->port_mask_bits);
--	else
--		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
- }
- 
- int cpsw_ale_flush_multicast(struct cpsw_ale *ale, int port_mask, int vid)
--- 
-2.51.0
-
+ 	mutex_lock(&ac->mutex);
+@@ -217,10 +217,12 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	result = ceph_decode_32(&p);
+ 	global_id = ceph_decode_64(&p);
+ 	payload_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, payload_len, bad);
+ 	payload = p;
+ 	p += payload_len;
+ 	ceph_decode_need(&p, end, sizeof(u32), bad);
+ 	result_msg_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, result_msg_len, bad);
+ 	result_msg = p;
+ 	p += result_msg_len;
+ 	if (p != end)
 
 
 
