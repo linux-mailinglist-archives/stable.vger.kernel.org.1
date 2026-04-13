@@ -1,260 +1,127 @@
-Return-Path: <stable+bounces-235940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIQ8IIyY3GnVTgkAu9opvQ
-	(envelope-from <stable+bounces-235940-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:17:32 +0200
+	id kLihECea3GkxUAkAu9opvQ
+	(envelope-from <stable+bounces-235941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:24:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA013E8221
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:17:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9393E82CB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DFE4F30080B4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:17:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32CCA3009F85
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FDB3932DA;
-	Mon, 13 Apr 2026 07:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBA1392825;
+	Mon, 13 Apr 2026 07:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EMPBYo7m";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZvsBVw15";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EMPBYo7m";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZvsBVw15"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ULGSXsZe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAA2391E4E
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8005D3932C5
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776064634; cv=none; b=SPxryRFBXlTc+4Gf1P0gKa7LjsRaajuyVh84dH2Uu7covXW6n5KFPupyhSUjLgj7OVDnzhUTRKxx20L8rfg786EklCCQ3TKWp5OoR+mqV7w6S6k8vh2CgOd1twqTP3x0GvbBDcQdKEPG8D5UInF56pdYv3U5Pcv7YALqQnQNC38=
+	t=1776065027; cv=none; b=TYK499UTSQLanj44v4HJNnyA0WS4Jeg71uvgEFErazwYFQbiTZ2OqeeylA8rYbW9buXK1uiL+4/pVCOOJAly5xserI0RHWI687CE3IJodNbvFWeB9BMUTMUn/XfK34pyZeSWzEXW8Pmeng+ZuySKxNozb0HJysqgiSMpaz+SK/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776064634; c=relaxed/simple;
-	bh=ze4rn4nn/Wo6g0BVi89lHVlN8HQ2KybbuWDeVEPYQ2c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aPlC060BbVwcM8yldGfeiyiQ74lBJpmnWzGqGgcW7JVU923UQDE7RiELG76fNmykyommfFZ37kLuK7RXvlw6rtnfQudsjrXj0gbCxIaUkd5sav4he8QHwzFuysNhx9YMMAmcNRyol9uIUWlLiAAC6c33R9Vv3aPZa3yUZuriA68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EMPBYo7m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZvsBVw15; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EMPBYo7m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZvsBVw15; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0D7BB6A7CA;
-	Mon, 13 Apr 2026 07:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776064631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rW5R3xGds9bg8qA2Ep9wnIOEprJ657jFgsGGoKUBMeQ=;
-	b=EMPBYo7maOolaDclqrmqB7DoCjl8hY7R4nEKa6AIy3rB1y3LfX+HoXBy7v/39LT1OKozid
-	PuG7L6eBwWC+Lp1r7PzZRvDZ4NYYI+DPKy1TUuFlIPTi4EdrW/bHW1Z9cjxBUis2Uw17Sw
-	HoiFtvk2JVm4WKbGYsztTjtOmWmQ+QE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776064631;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rW5R3xGds9bg8qA2Ep9wnIOEprJ657jFgsGGoKUBMeQ=;
-	b=ZvsBVw15CdLOkuECwK4FZfeeJL2S20COYfNUOGcCvtUx5gkYos6MV477z2JoIsUf6YWR/H
-	+S/m0SXjg3jbqcDQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776064631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rW5R3xGds9bg8qA2Ep9wnIOEprJ657jFgsGGoKUBMeQ=;
-	b=EMPBYo7maOolaDclqrmqB7DoCjl8hY7R4nEKa6AIy3rB1y3LfX+HoXBy7v/39LT1OKozid
-	PuG7L6eBwWC+Lp1r7PzZRvDZ4NYYI+DPKy1TUuFlIPTi4EdrW/bHW1Z9cjxBUis2Uw17Sw
-	HoiFtvk2JVm4WKbGYsztTjtOmWmQ+QE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776064631;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rW5R3xGds9bg8qA2Ep9wnIOEprJ657jFgsGGoKUBMeQ=;
-	b=ZvsBVw15CdLOkuECwK4FZfeeJL2S20COYfNUOGcCvtUx5gkYos6MV477z2JoIsUf6YWR/H
-	+S/m0SXjg3jbqcDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5E7034AD72;
-	Mon, 13 Apr 2026 07:17:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iMDYFXaY3GkWRQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 13 Apr 2026 07:17:10 +0000
-Message-ID: <2fe8ce91-2dc5-4cf2-b7cf-d495e5cff14b@suse.de>
-Date: Mon, 13 Apr 2026 09:17:09 +0200
+	s=arc-20240116; t=1776065027; c=relaxed/simple;
+	bh=0zZfHOOWFWw4+HC5cgC+7XSH/R0wjD1a138VWny+jHA=;
+	h=Cc:From:Subject:Content-Type:To:Date:Message-Id:Mime-Version; b=Wfufbkyxsu+VUvZBcdCOr9LYEAUvhdMxnC5y1IkmNvo4G14PBXCFacXyqiZ0kH7uSrEUookhN3lf3EudGwdsch6MazThfO8JVidCZeN++d6wqr3jwaEUWy4EATlTpB142JUcc7KZfaLN5rJUiGo4FU81oLF7+U6/SBloLJE0bKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ULGSXsZe; arc=none smtp.client-ip=209.127.231.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1776065019; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=jP3ET5/NQK/iIZIBTGcvS9TsKHd5N6bf39hH0vZuuvw=;
+ b=ULGSXsZeW6xQzUEpP1k8aHAryB5PWPQ6p4GKAaCNNrruM5qNpvWkFPfUN6CXUyRx89mU/R
+ MCD0nNXzCgv8ejMYtcVv5TiLE+wYLTVmneMZgytg2Qhz/B7T/SEcXX0xNWln+SGe5I3Abx
+ 3UTRv1Fv+Wn7AFYT9uKk9lb9jeEeeaiM9MnqMOS2twn4Uzbu+RhUN43QiqXpR/azdKOuff
+ 9C82I28t0D0WB07YCyWpjoS9d9EfBFitRgLBqZyW4xiqaU4FMViRtW4BiJFBIs8G6l0xGr
+ IQE2Kct7dkt1WgqQYkK1sqkV55mS4oAW6KvTLGxNUJV9CRAwlxX/t/cbRpEsEg==
+Cc: <virtualization@lists.linux.dev>, <linux-kernel@vger.kernel.org>, 
+	"Jinhui Guo" <guojinhui.liam@bytedance.com>, <stable@vger.kernel.org>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+Subject: [PATCH] virtio_pci_modern: Use GFP_ATOMIC with spin_lock_irqsave held in virtqueue_exec_admin_cmd()
+X-Mailer: git-send-email 2.17.1
+X-Lms-Return-Path: <lba+269dc99f9+728868+vger.kernel.org+guojinhui.liam@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+	"Jason Wang" <jasowang@redhat.com>, 
+	"Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, 
+	=?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	"Jiri Pirko" <jiri@resnulli.us>
+Date: Mon, 13 Apr 2026 15:22:49 +0800
+Message-Id: <20260413072249.30433-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] hv: Select CONFIG_SYSFB only for CONFIG_HYPERV_VMBUS
-To: Saurabh Singh Sengar <ssengar@microsoft.com>,
- "javierm@redhat.com" <javierm@redhat.com>, "arnd@arndb.de" <arnd@arndb.de>,
- "ardb@kernel.org" <ardb@kernel.org>,
- "ilias.apalodimas@linaro.org" <ilias.apalodimas@linaro.org>,
- "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
- "kernel@xen0n.name" <kernel@xen0n.name>,
- "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
- "mripard@kernel.org" <mripard@kernel.org>,
- "airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch"
- <simona@ffwll.ch>, KY Srinivasan <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>, Dexuan Cui <DECUI@microsoft.com>,
- Long Li <longli@microsoft.com>, "deller@gmx.de" <deller@gmx.de>
-Cc: "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
- "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
- Michael Kelley <mhklinux@outlook.com>,
- Saurabh Sengar <ssengar@linux.microsoft.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260402092305.208728-1-tzimmermann@suse.de>
- <20260402092305.208728-2-tzimmermann@suse.de>
- <KUZP153MB14449BBE44CBAEEA7621A4A0BE51A@KUZP153MB1444.APCP153.PROD.OUTLOOK.COM>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <KUZP153MB14449BBE44CBAEEA7621A4A0BE51A@KUZP153MB1444.APCP153.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MID_CONTAINS_FROM(1.00)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,lists.linux.dev,vger.kernel.org,lists.freedesktop.org,outlook.com,linux.microsoft.com];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[microsoft.com,redhat.com,arndb.de,kernel.org,linaro.org,xen0n.name,linux.intel.com,gmail.com,ffwll.ch,gmx.de];
-	TAGGED_FROM(0.00)[bounces-235940-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235941-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guojinhui.liam@bytedance.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:url,suse.de:dkim,suse.de:email,suse.de:mid,outlook.com:email]
-X-Rspamd-Queue-Id: 8CA013E8221
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AF9393E82CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi
+virtqueue_exec_admin_cmd() holds admin_vq->lock with spin_lock_irqsave(),
+which disables interrupts.  Using GFP_KERNEL inside this critical section
+is unsafe because kmalloc() may sleep, leading to potential deadlocks or
+scheduling violations.
 
-Am 02.04.26 um 12:50 schrieb Saurabh Singh Sengar:
->> Hyperv's sysfb access only exists in the VMBUS support. Therefore only select
->> CONFIG_SYSFB for CONFIG_HYPERV_VMBUS. Avoids sysfb code on systems
->> that don't need it.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: 96959283a58d ("Drivers: hv: Always select CONFIG_SYSFB for Hyper-V
->> guests")
->> Cc: Michael Kelley <mhklinux@outlook.com>
->> Cc: Saurabh Sengar <ssengar@linux.microsoft.com>
->> Cc: Wei Liu <wei.liu@kernel.org>
->> Cc: "K. Y. Srinivasan" <kys@microsoft.com>
->> Cc: Haiyang Zhang <haiyangz@microsoft.com>
->> Cc: Dexuan Cui <decui@microsoft.com>
->> Cc: Long Li <longli@microsoft.com>
->> Cc: linux-hyperv@vger.kernel.org
->> Cc: <stable@vger.kernel.org> # v6.16+
->> ---
->>   drivers/hv/Kconfig | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig index
->> 7937ac0cbd0f..2d0b3fcb0ff8 100644
->> --- a/drivers/hv/Kconfig
->> +++ b/drivers/hv/Kconfig
->> @@ -9,7 +9,6 @@ config HYPERV
->>   	select PARAVIRT
->>   	select X86_HV_CALLBACK_VECTOR if X86
->>   	select OF_EARLY_FLATTREE if OF
->> -	select SYSFB if EFI && !HYPERV_VTL_MODE
->>   	select IRQ_MSI_LIB if X86
->>   	help
->>   	  Select this option to run Linux as a Hyper-V client operating @@ -62,6
->> +61,7 @@ config HYPERV_VMBUS
->>   	tristate "Microsoft Hyper-V VMBus driver"
->>   	depends on HYPERV
->>   	default HYPERV
->> +	select SYSFB if EFI && !HYPERV_VTL_MODE
->>   	help
->>   	  Select this option to enable Hyper-V Vmbus driver.
->>
->> --
->> 2.53.0
-> Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Switch to GFP_ATOMIC to ensure the allocation is non-blocking.
 
-This fix is independent from the rest of the series. Do you want to 
-merge it or can I take it into DRM trees?
+Fixes: 4c3b54af907e ("virtio_pci_modern: use completion instead of busy loop to wait on admin cmd result")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+---
+ drivers/virtio/virtio_pci_modern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards
-Thomas
-
->
-
+diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+index 6d8ae2a6a8ca..db8e4f88b749 100644
+--- a/drivers/virtio/virtio_pci_modern.c
++++ b/drivers/virtio/virtio_pci_modern.c
+@@ -101,7 +101,7 @@ static int virtqueue_exec_admin_cmd(struct virtio_pci_admin_vq *admin_vq,
+ 		return -EIO;
+ 
+ 	spin_lock_irqsave(&admin_vq->lock, flags);
+-	ret = virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_KERNEL);
++	ret = virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_ATOMIC);
+ 	if (ret < 0) {
+ 		if (ret == -ENOSPC) {
+ 			spin_unlock_irqrestore(&admin_vq->lock, flags);
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+2.20.1
 
