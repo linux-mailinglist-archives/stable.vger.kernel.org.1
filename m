@@ -1,216 +1,174 @@
-Return-Path: <stable+bounces-237181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKibIqQe3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:40 +0200
+	id qOc9ADQl3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3F13EFE72
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063053F11DE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A34B304B376
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1409D30438FA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2766A3161BF;
-	Mon, 13 Apr 2026 16:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525A233123B;
+	Mon, 13 Apr 2026 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="htDO4oMg";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nCm0IdyY"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hu3tnQJT"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BC0314D0D
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 16:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345FA3203B6
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 16:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098796; cv=none; b=hRzL3TVenevMnrEWeV83vu/wJEXytIm0ysPSRY0bl7J/o++O/TW2H7To0vPjo9J9q14eTbSXHMlH7EbrPujOBzTOnPOMZfcSE7dtRtZVazjH5WvP7UyjytO1j6Hzx95bGkId8XlwWIGOmBi1L0wZtOL2ypOzop9GXU0qUsN0Ck0=
+	t=1776099529; cv=none; b=GwtP+SdmJsrndlYnJzeZ/6BqkCvffyipBRu/kHKlJv2CWjk9+GmJmBpYrSaiB68UDjkOXzgBn5XjECIn0BzhvnkxaaS2eXSSYoL9ShovLBnQi4HyfYo2ZMhaarcBWA80qUUCHiFvl9CJoX7wymCRpLEG8poFOOFTFOzTXUb+olA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098796; c=relaxed/simple;
-	bh=chmoZmOPdz8JE9W/6rS9Q7KoVVIpZZr66rPx9xp9BsI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q3cDJRCDUWXtQT7PzCAluud5h0qJVSNa9xPiOypDAgS1AJT0Yz9Y4uI+cb+pLXXL1DDvWuuXhTO09dSgqCStzbE5GdROs2+6SwMdD2SS4C7e4jG47CmcVr5+rL94PtGQj7E8fyZVBPlkmsoo5TPdHNrHYQCnXrJjqdFSFlljew0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=htDO4oMg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nCm0IdyY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776098794;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1PPAOec4m3Xk8tVFNcRUtZ/nDnCQH6sVE60gTwlAeyg=;
-	b=htDO4oMg2Uo9kmZkopVhtAqMtaNqgidY4hyH9l+altf//ZboOah8Q4KonEKedW2fSvCNCM
-	ug/7NRSZ3PWT/10gqBYm+QIlizVLNjlT+WHSVH5w5RAwXPhB17a3h5uLpdTiyTHcYFMaSX
-	dx5dnsQ4/xh/4XBnwpiPyXGb5ztv5rE=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-09DLJFeXN_6QBX2IiOy9Rw-1; Mon, 13 Apr 2026 12:46:33 -0400
-X-MC-Unique: 09DLJFeXN_6QBX2IiOy9Rw-1
-X-Mimecast-MFC-AGG-ID: 09DLJFeXN_6QBX2IiOy9Rw_1776098793
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8954803bd74so46474696d6.0
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 09:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776098792; x=1776703592; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1PPAOec4m3Xk8tVFNcRUtZ/nDnCQH6sVE60gTwlAeyg=;
-        b=nCm0IdyYtOjNTVR5kNc3p7a9tDLYUUC1jlCtZR/vXV72SFpc3nQg8DFRiqTsteq2+1
-         hvSUCb7ERLOC4oCFVya4o9swoLXTEUV7DnIEEZWm/j9BUbnroHQg2sX9KOIcjOift4JT
-         lXPX3tZMjuD9T13T+C8ZiBigCQV12iSE/E4FHnQMQh7wHxAEQHihXxTUaJW+IP7gXMQY
-         hT7x6YmMYDjQR2K0AJRTqPufNCsURo+5PpDU4e7uf4cytaqTN2N0NTrsv8mTsB37FmHK
-         59zX0In2hy4dyQ/pOKiig4PsogkpnLy/CI3VOxlQZyjqtiq/28THEcUSTlLc1bF5xeWd
-         dTpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776098792; x=1776703592;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1PPAOec4m3Xk8tVFNcRUtZ/nDnCQH6sVE60gTwlAeyg=;
-        b=SDZYxLf8vSIfVKIuUHVhXD8DUPkTPLFMdkR+O/YC4xPjuaMkHg058T8C2ewueQtwat
-         0r/SlWrlpTlrVGi1UAXAjPlhQDx3IERuJ9p3w4DZp+P+wZYS4e9ndYgsByVGQBSJembM
-         znnU8hEhBe3phWdED3Z2Apbp2QZS7WztTY1Wy7Zn7sQ32XcWE8co7TWqG1Zhu6F0IVKT
-         05dUmHak/NQNXQP0Larw0lam0pECFiB9zZUYhlfpBHuIjYuiu98QzDPt9cTUW+YQcSVw
-         lkbzGM9awxJ3+PbmOxbSOtr9KtG1aX+ulFKkd+7mbuvNs6WYkIsLbnaGc5x1Y6D8CjVd
-         TcBA==
-X-Forwarded-Encrypted: i=1; AFNElJ/mNPCe27s/FhaK9cUSr6/U8SH7qNCoRAkIDr0EH1qdMdlzepXrcIb3lAndtpZDT8hICrKu49o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm1mBCFPQYBheDy6rL5YLN/22OqXdYt4zGbPNL7vq0Dfyk6Eb3
-	fPYxisNcYYsm0JYhC40V0Jvp4wj65hz0T28sL7HEKMS9z6xHLx3/eSWQCPTHzgnA/FTAWnnYH4l
-	s5kQB1rQpu7h4hQsgroD0VSRGwOFdBDd8dwJ3oxFyVaxMxoRUfQ/qLUynpQ==
-X-Gm-Gg: AeBDietk+uJKK0bIlEDzLsJkJ8/WaQK2/FM56QJKcLs6oqDobN3c7X8iQ+UpulUlSnY
-	LzVf69WIBEPtME1Rvs0W38v2Bd2BBfxdfwcxAPWp/jG1pwMRag71ZYXY4hijCtANlrGISK7nSH1
-	RolkUSon6ScAGIb/XFJ6KZOPShW1kQifX0pzSFiRh6QDFnI/ZtHRQLcN50pQIEq9RJ7DmGvnc9A
-	nr8zHKBKslVKhYIH5DYrWgLZuc36z3uXVwf36cgc9MNVDK1ij8xiDm0x6c4eS3Q/QwT9MJgCMyS
-	CKeyDnTdkUkgc2F267ny4Zmst9fEpmrgTQ8bnqUDYIT34kNbYg0V0u5rVrPnxORwh8vOVAGiUBo
-	P1cIlEXy4xFwAieqTxMfK3SfFD9pKbdADnfxZZClwqb+T0EKLHYQtn7Er
-X-Received: by 2002:a05:6214:3118:b0:8ac:a1a8:43 with SMTP id 6a1803df08f44-8aca1a806ddmr100344976d6.52.1776098792419;
-        Mon, 13 Apr 2026 09:46:32 -0700 (PDT)
-X-Received: by 2002:a05:6214:3118:b0:8ac:a1a8:43 with SMTP id 6a1803df08f44-8aca1a806ddmr100344376d6.52.1776098791686;
-        Mon, 13 Apr 2026 09:46:31 -0700 (PDT)
-Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84a104ddsm96436786d6.14.2026.04.13.09.46.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 09:46:31 -0700 (PDT)
-Date: Mon, 13 Apr 2026 12:46:29 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Emil Renner Berthing <kernel@esmil.dk>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] clk: starfive: jh7110: fix memory leak in
- jh7110_reset_controller_register() error path
-Message-ID: <ad0d5fIAkjblQcIt@redhat.com>
-References: <20260413143643.3002454-1-lgs201920130244@gmail.com>
+	s=arc-20240116; t=1776099529; c=relaxed/simple;
+	bh=NW79sEuPdbHoQcLLfX2FnTYtxYGQ26IoLIPnKdpQb1M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YfCOZbSzlXsHiIinCLIZXBRWKo0p4BAuNS8nOgSWVMnOcRqJho7Ma79IQU6wYEBJiQhOVIV5XH/+stXgQSfAP+IOJRfNOD8eT4B6vKYqLfqGC3Tqe+JosUlVSS61OnJyndaJ4Tr63ymXAYVoVuffUFYk2V2cWpCCe6hkALMf8Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hu3tnQJT; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UN/jdZ4ycKnKbeFApRknBikRqWnRbiWbPLgeGde1veI=; b=hu3tnQJTejBwSJkcNx4SYw4K1S
+	TwNJMjeIThhSNR/2TfQMuztwgEKJy8RMYNWsrZWE25qko7CvmD1edQOrnMeaONPpI7eKQQGY+y7c2
+	zHaGiyYpGsXEwtMT2/Jz/KEPlYEAjwjRJTqh+7Y64j/L0PZKAGUfCdYbLHme02CI8FO/QukKtEktv
+	PvSmPYc22npROwqLWeyyY247Zk5Lo78SwHt2M5mXhHhqPlO0QQagMQAbkn5em4W7/Cdfm194oupgt
+	sxw0FHjcdM0ojTkXpQqR3+wD8rLb+/hiVGFtIB/0J0IZlwEVpC3RoGXSZF+22sWJ5gBSt1ZyT++XM
+	xSnKaADQ==;
+Received: from [189.7.87.169] (helo=[192.168.0.2])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1wCKcS-00FVfH-O6; Mon, 13 Apr 2026 18:58:40 +0200
+Message-ID: <616c212a-067d-485c-802c-c1375094c53e@igalia.com>
+Date: Mon, 13 Apr 2026 13:58:36 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413143643.3002454-1-lgs201920130244@gmail.com>
-User-Agent: Mutt/2.3.1 (2026-03-20)
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/v3d: Limit ioctl extension chain depth to prevent
+ infinite loop
+To: Ashutosh Desai <ashutoshdesai993@gmail.com>,
+ dri-devel@lists.freedesktop.org
+Cc: itoral@igalia.com, stable@vger.kernel.org
+References: <80158c8c-a270-498b-b947-bc3276359d4b@igalia.com>
+ <20260413152115.3444105-1-ashutoshdesai993@gmail.com>
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Content-Language: en-US
+Autocrypt: addr=mcanal@igalia.com; keydata=
+ xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
+ /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
+ gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
+ SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
+ G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
+ AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
+ dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
+ P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
+ O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
+ GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
+ 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
+ FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
+ TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
+ Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
+ 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
+ LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
+ T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
+ wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
+ zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
+ it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
+ Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
+ uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
+ raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
+In-Reply-To: <20260413152115.3444105-1-ashutoshdesai993@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	TAGGED_FROM(0.00)[bounces-237181-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237466-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.883];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bmasney@redhat.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[igalia.com:-];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1A3F13EFE72
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 063053F11DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Guangshuo,
+Hi Ashutosh,
 
-I missed that you sent a new version. My same comment from the v2 still
-applies. See below for details.
+On 13/04/26 12:21, Ashutosh Desai wrote:
+> Hi Maíra,
+> 
+> On 4/13/26 09:16, Maíra Canal wrote:
+>> How about checking if (!multisync.in_sync_count &&
+>> !multisync.out_sync_count)? After all, it doesn't make any sense to have
+>> an empty multisync.
+>>
+>> I believe this is better strategy than using a hard-coded max.
+> 
+> That check makes good semantic sense and directly closes the attack
+> vector - I agree an empty multisync isn't useful.
+> 
+> That said, I'd like to raise one thought before sending v3. The reason
+> xe and i915 added a general depth limit wasn't just to fix a specific
+> known loop - it was to make the extension walker generically robust as
+> the extension set grows. If a future extension is added that can also
+> tolerate a second visit without erroring out, the unbounded walk
+> vulnerability class reappears without a counter. Since the current
+> architectural maximum is 2 (one multisync + one CPU job extension),
+> capping the walk at 2 would reflect the real limit and provide that
+> safety net without being arbitrary.
 
-On Mon, Apr 13, 2026 at 10:36:43PM +0800, Guangshuo Li wrote:
-> jh7110_reset_controller_register() allocates a jh71x0_reset_adev with
-> kzalloc() and sets jh7110_reset_adev_release() as the release callback
-> for its embedded auxiliary_device before calling auxiliary_device_init().
-> 
-> If auxiliary_device_init() fails, the function returns immediately
-> without freeing the allocated rdev. The release callback is not
-> available for this path, because it is only reached after a successful
-> auxiliary_device_init(), for example when auxiliary_device_add() fails
-> and auxiliary_device_uninit() is called.
-> 
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review. Free rdev explicitly when
-> auxiliary_device_init() returns an error.
-> 
-> Fixes: edab7204afe5 ("clk: starfive: Add StarFive JH7110 system clock driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v3:
->   - clarify the changelog to describe the exact failure path
->   - note that the issue was identified by a static analysis tool
->     developed by me and confirmed by manual review
->   - apologize for sending the initial public posting as v2 by mistake
-> 
-> v2:
->   - initial public posting; v1 was mistakenly skipped
-> 
->  drivers/clk/starfive/clk-starfive-jh7110-sys.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clk/starfive/clk-starfive-jh7110-sys.c b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-> index 52833d4241c5..55cd0ccbdb84 100644
-> --- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-> +++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-> @@ -360,8 +360,10 @@ int jh7110_reset_controller_register(struct jh71x0_clk_priv *priv,
->  	adev->id = adev_id;
->  
->  	ret = auxiliary_device_init(adev);
-> -	if (ret)
-> +	if (ret) {
-> +		kfree(rdev);
->  		return ret;
-> +	}
->  
->  	ret = auxiliary_device_add(adev);
->  	if (ret) {
+The problem I see is maintainability. We will need to keep updating this
+macro as the number of extensions increase. So far, all the extensions
+we have can only be added once, so we can guarantee that per-extension.
 
-There's actually another leak in the error path for
-auxiliary_device_add(). I think this code should be
-converted to devm_kzalloc().
+If in the future we have an extension that can be added multiple times,
+it would make sense to add this hard-coded limit.
 
-There is no devm_kzalloc_obj() yet, however according to [1] that should
-be coming soon.
+I'd prefer to check the multisync extension and make sure that a single
+one non-empty is added.
 
-[1] https://lore.kernel.org/lkml/20260330154108.GA3389518@killaraus.ideasonboard.com/
+Best regards,
+- Maíra
 
-Brian
+> 
+> Happy to go either way - just wanted to raise it before sending v3.
+> What do you think?
+> 
+> Best regards,
+> Ashutosh
 
 
