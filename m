@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-237408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEnUOv8g3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:43 +0200
+	id EKxjEgIh3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9297D3F071D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AE13F0729
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8B9063040555
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1229A302018C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2E03264F2;
-	Mon, 13 Apr 2026 16:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0932C31F9BC;
+	Mon, 13 Apr 2026 16:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dP30lIKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2KFe/qC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738C6325490;
-	Mon, 13 Apr 2026 16:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C145A3203B6;
+	Mon, 13 Apr 2026 16:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099378; cv=none; b=LSGF14rfDedgU0NXhL4FHX1w+ozU1lSTQcqUT/XRvNqy/LWQdW89Y9CmaBaeK0e+hI9U0c5zEV8ZAGlsMnJ0GUDu2WAGGT9fLz1Ds9Gm/nT+Gsh1sHP1gZN4f0cHAgBTZVwH6o/s6QJbtOcMamRsQsPu8dhAqwMvHXR1z30VRPA=
+	t=1776099380; cv=none; b=IP36aBDagSdBRsFM4TDGN4sXbQgbnSZHDImcMESR66LCkP0ONrZU7vXq3FfE7ZIaxWummrzl0g8+V+Joe1V615M0r9ctIzm+arZYJ3IuYDohsHyvUv/qYHlWzZNoU6oi5wWeG0vsNPQJeiuVDh0ICb+YWQq+qOimYDsbWv7FdPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099378; c=relaxed/simple;
-	bh=5vVsgnxo87IuJvSlgP6OpDuGVHBRdBv74GVngPrB9EM=;
+	s=arc-20240116; t=1776099380; c=relaxed/simple;
+	bh=wuSCxlnWdpaBQuvfG/Fji7SakW6YQJmfWuar5Xsbry4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzTbAlN+HV1P7XnKOdUhIWA0KLlDkAaMHkxNYCRX+WCFURPRytiu4lcqoWF2X6sNC47wULcLyBEow6pxqTLiQav7h7vmH5I2EK7vbaN4ROEBlfeKQbhVEO1fNFXEU9YrmIxIQUWZl+TtvM1yGc5Ee7JmOXhPbM/Ir7LLpHNqdSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dP30lIKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C62C2BCAF;
-	Mon, 13 Apr 2026 16:56:17 +0000 (UTC)
+	 MIME-Version; b=OB9oqiZSvJWyOcUpYWwQ2g9t1eO6zs0R49bflVlvX6ea8Hny592+jM+3pMrFspkdQ/ItLGnvXW2ocUW5VQBRwV1/bAZkAGnvHKOus53dfyX0ES7vLKoY1umKWnx1ymonZVQv//LrD2nSiwc5xO5dMToYM3tH2dJJckGMJQH+47Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2KFe/qC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BF6C2BCAF;
+	Mon, 13 Apr 2026 16:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099378;
-	bh=5vVsgnxo87IuJvSlgP6OpDuGVHBRdBv74GVngPrB9EM=;
+	s=korg; t=1776099380;
+	bh=wuSCxlnWdpaBQuvfG/Fji7SakW6YQJmfWuar5Xsbry4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dP30lIKB2YBJe2JguWCeoIzwkPwelXRXe5M6A0OBAE0CQ3rPeDXl3kft55H7fCOeN
-	 pvm7OlrwKRPES0733igp0C65pIrEhZYNiEwGX+aiY7GupeRotP7SAqReRYDjz0ibE5
-	 oWKif3ZWOBkhdu019Umnf9+ZWHo/dWPpxSdFReyU=
+	b=R2KFe/qCaIZ2iEcPG0PKnYWvZ6AkRSOFSvvsYq/RT+eo/9xFG9dyNJQHkb1a/vtIf
+	 MnEGr91Eaq3IwQLRZ7Z98kUNdvJSyqvH2Cj7NUGE9vb1qoXi7fAi5dC/Tqzfopmb4e
+	 wijmmKeMbPe7AqgKD95dmi/UB1KyqYmECkUwomFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 285/491] ASoC: Intel: catpt: Fix the device initialization
-Date: Mon, 13 Apr 2026 17:58:50 +0200
-Message-ID: <20260413155829.714600433@linuxfoundation.org>
+Subject: [PATCH 5.10 286/491] ACPICA: include/acpi/acpixf.h: Fix indentation
+Date: Mon, 13 Apr 2026 17:58:51 +0200
+Message-ID: <20260413155829.752049036@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -74,25 +73,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237408-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237409-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 9297D3F071D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 35AE13F0729
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,61 +99,174 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 5a184f1cb43a8e035251c635f5c47da5dc3e3049 ]
+[ Upstream commit 7a9d74e7e403cb2e60d4d00c05f2f3ab2a33d0c3 ]
 
-The DMA mask shall be coerced before any buffer allocations for the
-device are done.  At the same time explain why DMA mask of 31 bits is
-used in the first place.
+A bunch of the functions declared in include/acpi/acpixf.h have their
+name aligned a space after the '(' of e.g. the
+`ACPI_EXTERNAL_RETURN_STATUS(acpi_status` line above rather then being
+directly aligned after the '('.
 
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: 7a10b66a5df9 ("ASoC: Intel: catpt: Device driver lifecycle")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260320101217.1243688-1-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This breaks applying patches generated from the ACPICA upstream git,
+remove the extra space before the function-names and all the arguments
+to fix this.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/catpt/device.c | 10 +++++++++-
- sound/soc/intel/catpt/dsp.c    |  3 ---
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ include/acpi/acpixf.h | 120 +++++++++++++++++++++---------------------
+ 1 file changed, 60 insertions(+), 60 deletions(-)
 
-diff --git a/sound/soc/intel/catpt/device.c b/sound/soc/intel/catpt/device.c
-index a701799597956..db67509f051ad 100644
---- a/sound/soc/intel/catpt/device.c
-+++ b/sound/soc/intel/catpt/device.c
-@@ -263,7 +263,15 @@ static int catpt_acpi_probe(struct platform_device *pdev)
- 	if (IS_ERR(cdev->pci_ba))
- 		return PTR_ERR(cdev->pci_ba);
+diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+index be7de305a6220..f9a86e3329715 100644
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -587,82 +587,82 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_install_initialization_handler
+ 			    (acpi_init_handler handler, u32 function))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_sci_handler(acpi_sci_handler
+-							  address,
+-							  void *context))
+-ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_remove_sci_handler(acpi_sci_handler
+-							 address))
++				acpi_install_sci_handler(acpi_sci_handler
++							 address,
++							 void *context))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_global_event_handler
+-				 (acpi_gbl_event_handler handler,
+-				  void *context))
++				acpi_remove_sci_handler(acpi_sci_handler
++							address))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_fixed_event_handler(u32
+-								  acpi_event,
+-								  acpi_event_handler
+-								  handler,
+-								  void
+-								  *context))
++				acpi_install_global_event_handler
++				(acpi_gbl_event_handler handler,
++				 void *context))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_remove_fixed_event_handler(u32 acpi_event,
++				acpi_install_fixed_event_handler(u32
++								 acpi_event,
+ 								 acpi_event_handler
+-								 handler))
+-ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_gpe_handler(acpi_handle
+-							  gpe_device,
+-							  u32 gpe_number,
+-							  u32 type,
+-							  acpi_gpe_handler
+-							  address,
+-							  void *context))
++								 handler,
++								 void
++								 *context))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_gpe_raw_handler(acpi_handle
+-							      gpe_device,
+-							      u32 gpe_number,
+-							      u32 type,
+-							      acpi_gpe_handler
+-							      address,
+-							      void *context))
++				acpi_remove_fixed_event_handler(u32 acpi_event,
++								acpi_event_handler
++								handler))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_remove_gpe_handler(acpi_handle gpe_device,
++				acpi_install_gpe_handler(acpi_handle
++							 gpe_device,
+ 							 u32 gpe_number,
++							 u32 type,
+ 							 acpi_gpe_handler
+-							 address))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_notify_handler(acpi_handle device,
+-							 u32 handler_type,
+-							 acpi_notify_handler
+-							 handler,
++							 address,
+ 							 void *context))
++ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
++				acpi_install_gpe_raw_handler(acpi_handle
++							     gpe_device,
++							     u32 gpe_number,
++							     u32 type,
++							     acpi_gpe_handler
++							     address,
++							     void *context))
++ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
++				acpi_remove_gpe_handler(acpi_handle gpe_device,
++							u32 gpe_number,
++							acpi_gpe_handler
++							address))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_remove_notify_handler(acpi_handle device,
++			    acpi_install_notify_handler(acpi_handle device,
+ 							u32 handler_type,
+ 							acpi_notify_handler
+-							handler))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_address_space_handler(acpi_handle
+-								device,
+-								acpi_adr_space_type
+-								space_id,
+-								acpi_adr_space_handler
+-								handler,
+-								acpi_adr_space_setup
+-								setup,
+-								void *context))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_remove_address_space_handler(acpi_handle
++							handler,
++							void *context))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_remove_notify_handler(acpi_handle device,
++						       u32 handler_type,
++						       acpi_notify_handler
++						       handler))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_install_address_space_handler(acpi_handle
+ 							       device,
+ 							       acpi_adr_space_type
+ 							       space_id,
+ 							       acpi_adr_space_handler
+-							       handler))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_exception_handler
+-			     (acpi_exception_handler handler))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_interface_handler
+-			     (acpi_interface_handler handler))
++							       handler,
++							       acpi_adr_space_setup
++							       setup,
++							       void *context))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_remove_address_space_handler(acpi_handle
++							      device,
++							      acpi_adr_space_type
++							      space_id,
++							      acpi_adr_space_handler
++							      handler))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_install_exception_handler
++			    (acpi_exception_handler handler))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_install_interface_handler
++			    (acpi_interface_handler handler))
  
--	/* alloc buffer for storing DRAM context during dx transitions */
-+	/*
-+	 * As per design HOST is responsible for preserving firmware's runtime
-+	 * context during D0 -> D3 -> D0 transitions.  Addresses used for DMA
-+	 * to/from HOST memory shall be outside the reserved range of 0xFFFxxxxx.
-+	 */
-+	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
-+	if (ret)
-+		return ret;
-+
- 	cdev->dxbuf_vaddr = dmam_alloc_coherent(dev, catpt_dram_size(cdev),
- 						&cdev->dxbuf_paddr, GFP_KERNEL);
- 	if (!cdev->dxbuf_vaddr)
-diff --git a/sound/soc/intel/catpt/dsp.c b/sound/soc/intel/catpt/dsp.c
-index 38a92bbc1ed56..2c67d2d35cdae 100644
---- a/sound/soc/intel/catpt/dsp.c
-+++ b/sound/soc/intel/catpt/dsp.c
-@@ -125,9 +125,6 @@ int catpt_dmac_probe(struct catpt_dev *cdev)
- 	dmac->dev = cdev->dev;
- 	dmac->irq = cdev->irq;
- 
--	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
--	if (ret)
--		return ret;
- 	/*
- 	 * Caller is responsible for putting device in D0 to allow
- 	 * for I/O and memory access before probing DW.
+ /*
+  * Global Lock interfaces
 -- 
 2.53.0
 
