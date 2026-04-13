@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHWWA0gZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:48 +0200
+	id eI/IKjka3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072FF3EEF03
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267033EF1F1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4C271307AF49
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D44E30E85B9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A2D2DA74A;
-	Mon, 13 Apr 2026 16:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2BE3093CF;
+	Mon, 13 Apr 2026 16:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HgPU7BA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIHWsYfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B162D73B5;
-	Mon, 13 Apr 2026 16:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EECC27280A;
+	Mon, 13 Apr 2026 16:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096908; cv=none; b=tdwqvVfomXStgLbIQI0t/n6CvrsY2FFMlkC9t/BE79JPiP5ayNWTaJxnGeFfXvh4XxShOQ2sy2+dCrhgRvuTcvElHS3+DMYJ/vqWQCdnSF/Ac28S2xYGE3yXg3lT3kY512kqJ77gOT807+cLvsigpp6rp+TfBSEeEVZBKpgK2WY=
+	t=1776097003; cv=none; b=pEYqRHNJNPanwEYh+TfvHXVnv4W/pOXQlCx0kXW2AytKTbJzflmUTKVHTGCDtg8uXab6xAJsb6jBuCAjUFWDfUijncm388yClw1qHPWIGkG9laDhf7Z1F8apyCE7VCg8bz8PsGbBPCroer05hOG5/FoPFnvqeG8Rc2zB2TxirUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096908; c=relaxed/simple;
-	bh=SzwiXfBmdRAxaV4rPYvbTD8d9EzWv9ICrpomKh0dKmc=;
+	s=arc-20240116; t=1776097003; c=relaxed/simple;
+	bh=emCCImVyosW8Mm+qOCcCSzkMrziAvVw4JRBZiS1subQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCP1YnQOWg3p/4CEZZb8fmC6Wk5DF3aQBgvkwMgtqc+xDpz57HJ2XxLzpj9rOhNr3c7x1bKhdWtwuy4Tj18b8FOrnB+WAbuu9qOTI2fe0Fv+l3jHbjNhC2yr6JvwBJ6T9I7s/UitTiNdy9DpyF9zGoXdykUyhfVQ2Yf14Cb1kxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HgPU7BA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAFBC2BCB3;
-	Mon, 13 Apr 2026 16:15:07 +0000 (UTC)
+	 MIME-Version; b=fjIW82dakeNMSnA2Rj+3m2eCJcLpiJEw1plBaIbDI021EOEqOSgEhqIeYuNeF8wZqQt9QyKZIWYoqYmSn3ZX9Bfo0iWRp5C42uwKKOuI25VrBeNSRHgiQ+1eS8F8fho1GBbcQplzNJhSL8QFelTy504izq7Xkpr8JsMbB2/Mvb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIHWsYfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163FAC2BCAF;
+	Mon, 13 Apr 2026 16:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096908;
-	bh=SzwiXfBmdRAxaV4rPYvbTD8d9EzWv9ICrpomKh0dKmc=;
+	s=korg; t=1776097003;
+	bh=emCCImVyosW8Mm+qOCcCSzkMrziAvVw4JRBZiS1subQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1HgPU7BATGJcNGr0H/FGKSMD6ZE/LNVp2Hrphx37rwdhXv9f9QoHTuPLaMMxcMv6/
-	 HK/K40WylW17P2jMsIEvrAJZO0UPG/dF9xDyWlqsP+3skZo5jwseKRdifZCE0BtTNc
-	 nfDd7gx6KgUC202ScKXF26iLzuC2PmbEPhfz39a8=
+	b=bIHWsYfxoar8czmvVwrPjXH1G6a+VzTWcf3Odb77kVIAeLXEzsZqxnvHsEnhyhiKG
+	 N36Lpow4N6yqL4wRX3/c6fIQclsEAsqusY/55IW0JPswUAlqlNY6VOT9ko9kEXHZEr
+	 Usne+++k9qeJnLRURg+mO5B314lxEqDap8F64akA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 31/50] EDAC/mc: Fix error path ordering in edac_mc_alloc()
-Date: Mon, 13 Apr 2026 18:00:58 +0200
-Message-ID: <20260413155725.676120506@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 25/55] ACPICA: Add a depth argument to acpi_execute_reg_methods()
+Date: Mon, 13 Apr 2026 18:00:59 +0200
+Message-ID: <20260413155725.769602533@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236439-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236476-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,77 +89,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,alien8.de:email]
-X-Rspamd-Queue-Id: 072FF3EEF03
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 267033EF1F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-commit 51520e03e70d6c73e33ee7cbe0319767d05764fe upstream.
+[ Upstream commit cdf65d73e001fde600b18d7e45afadf559425ce5 ]
 
-When the mci->pvt_info allocation in edac_mc_alloc() fails, the error path
-will call put_device() which will end up calling the device's release
-function.
+A subsequent change will need to pass a depth argument to
+acpi_execute_reg_methods(), so prepare that function for it.
 
-However, the init ordering is wrong such that device_initialize() happens
-*after* the failed allocation and thus the device itself and the release
-function pointer are not initialized yet when they're called:
+No intentional functional changes.
 
-  MCE: In-kernel MCE decoding enabled.
-  ------------[ cut here ]------------
-  kobject: '(null)': is not initialized, yet kobject_put() is being called.
-  WARNING: lib/kobject.c:734 at kobject_put, CPU#22: systemd-udevd
-  CPU: 22 UID: 0 PID: 538 Comm: systemd-udevd Not tainted 7.0.0-rc1+ #2 PREEMPT(full)
-  RIP: 0010:kobject_put
-  Call Trace:
-   <TASK>
-   edac_mc_alloc+0xbe/0xe0 [edac_core]
-   amd64_edac_init+0x7a4/0xff0 [amd64_edac]
-   ? __pfx_amd64_edac_init+0x10/0x10 [amd64_edac]
-   do_one_initcall
-   ...
-
-Reorder the calling sequence so that the device is initialized and thus the
-release function pointer is properly set before it can be used.
-
-This was found by Claude while reviewing another EDAC patch.
-
-Fixes: 0bbb265f7089 ("EDAC/mc: Get rid of silly one-shot struct allocation in edac_mc_alloc()")
-Reported-by: Claude Code:claude-opus-4.5
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260331121623.4871-1-bp@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/8451567.NyiUUSuA9g@rjwysocki.net
+Stable-dep-of: 71bf41b8e913 ("ACPI: EC: Evaluate _REG outside the EC scope more carefully")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/edac_mc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/acpica/acevents.h |    2 +-
+ drivers/acpi/acpica/evregion.c |    6 ++++--
+ drivers/acpi/acpica/evxfregn.c |   10 +++++++---
+ drivers/acpi/ec.c              |    2 +-
+ include/acpi/acpixf.h          |    1 +
+ 5 files changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/edac/edac_mc.c
-+++ b/drivers/edac/edac_mc.c
-@@ -369,13 +369,13 @@ struct mem_ctl_info *edac_mc_alloc(unsig
- 	if (!mci->layers)
- 		goto error;
+--- a/drivers/acpi/acpica/acevents.h
++++ b/drivers/acpi/acpica/acevents.h
+@@ -188,7 +188,7 @@ acpi_ev_detach_region(union acpi_operand
+ 		      u8 acpi_ns_is_locked);
  
-+	mci->dev.release = mci_release;
-+	device_initialize(&mci->dev);
-+
- 	mci->pvt_info = kzalloc(sz_pvt, GFP_KERNEL);
- 	if (!mci->pvt_info)
- 		goto error;
+ void
+-acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
++acpi_ev_execute_reg_methods(struct acpi_namespace_node *node, u32 max_depth,
+ 			    acpi_adr_space_type space_id, u32 function);
  
--	mci->dev.release = mci_release;
--	device_initialize(&mci->dev);
--
- 	/* setup index and various internal pointers */
- 	mci->mc_idx = mc_num;
- 	mci->tot_dimms = tot_dimms;
+ acpi_status
+--- a/drivers/acpi/acpica/evregion.c
++++ b/drivers/acpi/acpica/evregion.c
+@@ -65,6 +65,7 @@ acpi_status acpi_ev_initialize_op_region
+ 						acpi_gbl_default_address_spaces
+ 						[i])) {
+ 			acpi_ev_execute_reg_methods(acpi_gbl_root_node,
++						    ACPI_UINT32_MAX,
+ 						    acpi_gbl_default_address_spaces
+ 						    [i], ACPI_REG_CONNECT);
+ 		}
+@@ -665,6 +666,7 @@ cleanup1:
+  * FUNCTION:    acpi_ev_execute_reg_methods
+  *
+  * PARAMETERS:  node            - Namespace node for the device
++ *              max_depth       - Depth to which search for _REG
+  *              space_id        - The address space ID
+  *              function        - Passed to _REG: On (1) or Off (0)
+  *
+@@ -676,7 +678,7 @@ cleanup1:
+  ******************************************************************************/
+ 
+ void
+-acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
++acpi_ev_execute_reg_methods(struct acpi_namespace_node *node, u32 max_depth,
+ 			    acpi_adr_space_type space_id, u32 function)
+ {
+ 	struct acpi_reg_walk_info info;
+@@ -710,7 +712,7 @@ acpi_ev_execute_reg_methods(struct acpi_
+ 	 * regions and _REG methods. (i.e. handlers must be installed for all
+ 	 * regions of this Space ID before we can run any _REG methods)
+ 	 */
+-	(void)acpi_ns_walk_namespace(ACPI_TYPE_ANY, node, ACPI_UINT32_MAX,
++	(void)acpi_ns_walk_namespace(ACPI_TYPE_ANY, node, max_depth,
+ 				     ACPI_NS_WALK_UNLOCK, acpi_ev_reg_run, NULL,
+ 				     &info, NULL);
+ 
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -85,7 +85,8 @@ acpi_install_address_space_handler_inter
+ 	/* Run all _REG methods for this address space */
+ 
+ 	if (run_reg) {
+-		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
++		acpi_ev_execute_reg_methods(node, ACPI_UINT32_MAX, space_id,
++					    ACPI_REG_CONNECT);
+ 	}
+ 
+ unlock_and_exit:
+@@ -261,6 +262,7 @@ ACPI_EXPORT_SYMBOL(acpi_remove_address_s
+  * FUNCTION:    acpi_execute_reg_methods
+  *
+  * PARAMETERS:  device          - Handle for the device
++ *              max_depth       - Depth to which search for _REG
+  *              space_id        - The address space ID
+  *
+  * RETURN:      Status
+@@ -269,7 +271,8 @@ ACPI_EXPORT_SYMBOL(acpi_remove_address_s
+  *
+  ******************************************************************************/
+ acpi_status
+-acpi_execute_reg_methods(acpi_handle device, acpi_adr_space_type space_id)
++acpi_execute_reg_methods(acpi_handle device, u32 max_depth,
++			 acpi_adr_space_type space_id)
+ {
+ 	struct acpi_namespace_node *node;
+ 	acpi_status status;
+@@ -294,7 +297,8 @@ acpi_execute_reg_methods(acpi_handle dev
+ 
+ 		/* Run all _REG methods for this address space */
+ 
+-		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
++		acpi_ev_execute_reg_methods(node, max_depth, space_id,
++					    ACPI_REG_CONNECT);
+ 	} else {
+ 		status = AE_BAD_PARAMETER;
+ 	}
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1531,7 +1531,7 @@ static int ec_install_handlers(struct ac
+ 	}
+ 
+ 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+-		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
++		acpi_execute_reg_methods(scope_handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
+ 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+ 	}
+ 
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -666,6 +666,7 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			     void *context))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_execute_reg_methods(acpi_handle device,
++						     u32 nax_depth,
+ 						     acpi_adr_space_type
+ 						     space_id))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
 
 
 
