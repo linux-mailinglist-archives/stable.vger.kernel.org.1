@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOo3Gk4a3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:10 +0200
+	id iITYBvEa3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CD43EF218
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7528D3EF3FA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F82530659E1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:06:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63CC33123FC9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D40329DB64;
-	Mon, 13 Apr 2026 16:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DB22D97B5;
+	Mon, 13 Apr 2026 16:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LysX4bcU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="So4Hqr3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26A4263C7F;
-	Mon, 13 Apr 2026 16:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB752D63F8;
+	Mon, 13 Apr 2026 16:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096308; cv=none; b=LU7KmIC7AifY2uElKFHz1TGTQrlnF4Fu7DlbO/6R8kxZugqihQ3MvfQaP9yu0fQjxsXS0CmlSrmiDqj4sCSpVIb9nbpCj6GZM1TCD97KOMpMhGMptHze/oWPijvi1hubUS4VE9PSqspV30yaqJbHHtkTa1cBOp/V1pBPyzMXwIk=
+	t=1776096481; cv=none; b=GnPGAmPpwgYudMiBAD9iLucEzOjD8RB+uD+Gtlqou5Tyl9LLdMMMYETm1tmrcg1SOYhm0o4e0meWepNnbEAIDPlhLwcdjdNnm9XHv4l6sNIqaGj5944/QcmRoiTfl9Lygq1psQha4XYA/2IcrJVw9rQwtYurxyU1GnZmxZ1+G64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096308; c=relaxed/simple;
-	bh=2FNQx/brcU2USIOor9pflNXG5YS8n9Z5qJ+xCw21UAM=;
+	s=arc-20240116; t=1776096481; c=relaxed/simple;
+	bh=RgV3cVadXrqJhRUla+lVvTgC9I7xUMhqo+KpwCKGz3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXDKycKu9u6PzZZB4xVM275hgAkD7qJ6sISG3b/C2Yorj8/cnf1k06BxrfW6XUHZtamG+sLNWfpw+LcUr1ZaImO2OnXUhhHHPLAFuWb/mksRiz8XbPkxJO2e6MMewcBhoxxOCT2d2A3kMnQjmgEAfLXAx7qWTsXmFilZz9rsr6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LysX4bcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C7CC2BCB0;
-	Mon, 13 Apr 2026 16:05:07 +0000 (UTC)
+	 MIME-Version; b=k8F5wQZikx8Jqsy3PxFImfmH2Ja8gkoHxBFXbudtLFoDy3YlkU/FXRisdjV/+Xei++p6iauUAdRORVnQvA8X5tQlXJHCSD6Xdwmf0aWCCo5vqZC4AWPE9j7YWqKf1/Dk3FtNdTTCXs7hQ0IiyYNks9q8CYAC+OVxdQnpgoRrkek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=So4Hqr3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268A7C2BCB6;
+	Mon, 13 Apr 2026 16:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096307;
-	bh=2FNQx/brcU2USIOor9pflNXG5YS8n9Z5qJ+xCw21UAM=;
+	s=korg; t=1776096480;
+	bh=RgV3cVadXrqJhRUla+lVvTgC9I7xUMhqo+KpwCKGz3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LysX4bcUX3Qs6+EceEW9qOcbNrBJ6530ixy+4zN5/urS22W+tkUBZb8uU3bpDpiU7
-	 Qrr9gYqDioiO610M/cmTV7MVjHtrgJLR3mdEUwy//9xmXykilYqe5yD9deT0tEg183
-	 1VshMqa/Xga74HnQIQ+r5gCHrJVz3QHPaND6uw8c=
+	b=So4Hqr3JSjwZ41Cb0umgLpHw506M+WKfBAL9N35y4y9dQjZic3gNQ5wqvsQ/HPkSZ
+	 6vA+yaHs8vD9OVGYDL7wKdTXsyySZhFCOsNro/tsCI7ByGiwP04FfK5i+Q3oNF41Ps
+	 eoFbdnasZH2hogyW9FLMO+FEkoBWDx+7hHqqF1KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.19 48/86] pmdomain: imx8mp-blk-ctrl: Keep the NOC_HDCP clock enabled
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 27/83] wifi: brcmsmac: Fix dma_free_coherent() size
 Date: Mon, 13 Apr 2026 17:59:55 +0200
-Message-ID: <20260413155733.364427215@linuxfoundation.org>
+Message-ID: <20260413155732.033055871@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236203-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236270-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email,nxp.com:email]
-X-Rspamd-Queue-Id: D2CD43EF218
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.983];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 7528D3EF3FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit e91d5f94acf68618ea3ad9c92ac28614e791ae7d upstream.
+commit 12cd7632757a54ce586e36040210b1a738a0fc53 upstream.
 
-Keep the NOC_HDCP clock always enabled to fix the potential hang
-caused by the NoC ADB400 port power down handshake.
+dma_alloc_consistent() may change the size to align it. The new size is
+saved in alloced.
 
-Fixes: 77b0ddb42add ("soc: imx: add i.MX8MP HDMI blk ctrl HDCP/HRV_MWR")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Change the free size to match the allocation size.
+
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260218130741.46566-3-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -352,9 +352,6 @@ static void imx8mp_hdmi_blk_ctrl_power_o
- 		regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(12));
- 		regmap_clear_bits(bc->regmap, HDMI_TX_CONTROL0, BIT(3));
- 		break;
--	case IMX8MP_HDMIBLK_PD_HDCP:
--		regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(11));
--		break;
- 	case IMX8MP_HDMIBLK_PD_HRV:
- 		regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(3) | BIT(4) | BIT(5));
- 		regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(15));
-@@ -408,9 +405,6 @@ static void imx8mp_hdmi_blk_ctrl_power_o
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(7));
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(22) | BIT(24));
- 		break;
--	case IMX8MP_HDMIBLK_PD_HDCP:
--		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(11));
--		break;
- 	case IMX8MP_HDMIBLK_PD_HRV:
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(15));
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(3) | BIT(4) | BIT(5));
-@@ -439,7 +433,7 @@ static int imx8mp_hdmi_power_notifier(st
- 	regmap_write(bc->regmap, HDMI_RTX_CLK_CTL0, 0x0);
- 	regmap_write(bc->regmap, HDMI_RTX_CLK_CTL1, 0x0);
- 	regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL0,
--			BIT(0) | BIT(1) | BIT(10));
-+			BIT(0) | BIT(1) | BIT(10) | BIT(11));
- 	regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(0));
- 
- 	/*
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+@@ -483,7 +483,7 @@ static void *dma_ringalloc(struct dma_in
+ 	if (((desc_strtaddr + size - 1) & boundary) != (desc_strtaddr
+ 							& boundary)) {
+ 		*alignbits = dma_align_sizetobits(size);
+-		dma_free_coherent(di->dmadev, size, va, *descpa);
++		dma_free_coherent(di->dmadev, *alloced, va, *descpa);
+ 		va = dma_alloc_consistent(di, size, *alignbits,
+ 			alloced, descpa);
+ 	}
 
 
 
