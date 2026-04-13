@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-237396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MBuA9Qj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:48 +0200
+	id 2L9TGVMU3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C373F0F59
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D053B3EE4D0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 91C953071836
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA3B63026C8E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92638325490;
-	Mon, 13 Apr 2026 16:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F229A25332E;
+	Mon, 13 Apr 2026 16:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtQ6JTvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frNLlThc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557CB31E84D;
-	Mon, 13 Apr 2026 16:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E8023EA94;
+	Mon, 13 Apr 2026 16:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099347; cv=none; b=JN38UBsaQYyGrS2p4PvuHuAsoPg/hpOzH9iwMJGg0858k7o7gbN3nJ7rDmmmgV/pCr96Ueom2H2Uq9nH+e+rocRtsL3QX62QgE6WrlqMAlHJYU7/N4rQP5XRv5j+IfzU92LmvNyahA8Zj7OpuPQ2h7BT5BNzOrqApwqKsIVA3gA=
+	t=1776096261; cv=none; b=GfOmxDHqmrNaOJPSd26kGTNbcnkvxaC3YN6cifaAUuxxHQt7U8ccrkZebWCznFc3Dh6n1CHvHRSzgf52gJRwPlLTYlpDgvVZ2gFzfWh9UCxCcyQteh/BQbIDbtQ1Q9L8/ZWtgBuxsjNXd0brptbJR9HY/7tRf0pTr537JNkcs5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099347; c=relaxed/simple;
-	bh=CU/dqCCYYWTtE6oOn73EU2K3Y4wrn1tOQq6iSD3ysJY=;
+	s=arc-20240116; t=1776096261; c=relaxed/simple;
+	bh=9pMtRG4h8/UbvMhJ08UNOc49FwYStzNYBqRu/c+gn/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uP1TmgWDFuLqQfLDtdMneN8IbTUrNHaEQH9axA5ZYyg1oAOXJWvtNV5BHd8lz79ZQsiae9zuPgsIxZHc9JR+4+ey3+AqG/00NGOdiVzxbB2Jt5Z1oaG/1yvMLuQtufGVuyOc9CC1eF+YDsosFnL9BtJFqco6tS54oCtRUGaUDh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtQ6JTvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E056DC2BCAF;
-	Mon, 13 Apr 2026 16:55:46 +0000 (UTC)
+	 MIME-Version; b=JkMaXRnLu4L553OpzANmL8FRvLqCXecyJ3bzDX5zjxKt0WGw+veUjaU4eYI/StkXNmA9gpiA63wlULVyQJASrPwc5QWUj/mbO4wQXVe5uDoMtP1Dw32o3KQBOWYzcVlDhGufMmeD6glE8kyAmIoHN9KGwuXDKJDTrYoDspzSNYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frNLlThc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE47C2BCAF;
+	Mon, 13 Apr 2026 16:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099347;
-	bh=CU/dqCCYYWTtE6oOn73EU2K3Y4wrn1tOQq6iSD3ysJY=;
+	s=korg; t=1776096261;
+	bh=9pMtRG4h8/UbvMhJ08UNOc49FwYStzNYBqRu/c+gn/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtQ6JTvUaLmM8WFPACZcm2aZPhGthnJPSasI+an4StNEKhtPKd2FIWHsLo6cPlix4
-	 lRT3XtPAOe3iQHARF8Oe8SD2FveZMarVVDxYoldGiNvqEtJgMu0MX4hKj2AmYkr8Py
-	 Dk9nkThnM5ZXSw6Lu/43bOZScqNClfDB2nZ1gQJ0=
+	b=frNLlThc2t9f7MNurAhoa66LTpaex9F42llCxbx7IyLbb4K3LCeOZmGSBk2DXvu4q
+	 2AMnulO3mCP3450Cv/79uIDXSMbV5gx5S6aYjCvYyKr70XsdpaHISfqG+OwTcYKNkf
+	 eI9POWwvCTpi5FeIt19OUMjimMmN29kDz6zVQ6X4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 305/491] ext4: make recently_deleted() properly work with lazy itable initialization
+	stable <stable@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.19 03/86] xfrm_user: fix info leak in build_report()
 Date: Mon, 13 Apr 2026 17:59:10 +0200
-Message-ID: <20260413155830.459739616@linuxfoundation.org>
+Message-ID: <20260413155731.701554304@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237396-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236185-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,57 +90,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 15C373F0F59
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,davemloft.net:email]
+X-Rspamd-Queue-Id: D053B3EE4D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit bd060afa7cc3e0ad30afa9ecc544a78638498555 upstream.
+commit d10119968d0e1f2b669604baf2a8b5fdb72fa6b4 upstream.
 
-recently_deleted() checks whether inode has been used in the near past.
-However this can give false positive result when inode table is not
-initialized yet and we are in fact comparing to random garbage (or stale
-itable block of a filesystem before mkfs). Ultimately this results in
-uninitialized inodes being skipped during inode allocation and possibly
-they are never initialized and thus e2fsck complains.  Verify if the
-inode has been initialized before checking for dtime.
+struct xfrm_user_report is a __u8 proto field followed by a struct
+xfrm_selector which means there is three "empty" bytes of padding, but
+the padding is never zeroed before copying to userspace.  Fix that up by
+zeroing the structure before setting individual member variables.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: stable <stable@kernel.org>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ialloc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/xfrm/xfrm_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -686,6 +686,12 @@ static int recently_deleted(struct super
- 	if (unlikely(!gdp))
- 		return 0;
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -4108,6 +4108,7 @@ static int build_report(struct sk_buff *
+ 		return -EMSGSIZE;
  
-+	/* Inode was never used in this filesystem? */
-+	if (ext4_has_group_desc_csum(sb) &&
-+	    (gdp->bg_flags & cpu_to_le16(EXT4_BG_INODE_UNINIT) ||
-+	     ino >= EXT4_INODES_PER_GROUP(sb) - ext4_itable_unused_count(sb, gdp)))
-+		return 0;
-+
- 	bh = sb_find_get_block(sb, ext4_inode_table(sb, gdp) +
- 		       (ino / inodes_per_block));
- 	if (!bh || !buffer_uptodate(bh))
+ 	ur = nlmsg_data(nlh);
++	memset(ur, 0, sizeof(*ur));
+ 	ur->proto = proto;
+ 	memcpy(&ur->sel, sel, sizeof(ur->sel));
+ 
 
 
 
