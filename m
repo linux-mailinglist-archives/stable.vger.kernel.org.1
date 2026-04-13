@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMvcLuEh3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:29 +0200
+	id YFDKL98e3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8DF3F09B5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500C33EFF57
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 84B6C3031EE5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92DEC329170F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D17314D0D;
-	Mon, 13 Apr 2026 16:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4053093B2;
+	Mon, 13 Apr 2026 16:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irrBp3ba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqLxvX+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B743A23E342;
-	Mon, 13 Apr 2026 16:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81819306B0A;
+	Mon, 13 Apr 2026 16:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098830; cv=none; b=gycUM8Izyo3Xbg+0urpFooev4YGhd/Q7AT9P4ZZqCDQoxsbqV2vGoE74k1d8GeA+0YSn1go3AS7/1wUsVc9NE4iSTuyympNKXCVA9fsuIto8QyCg95kGpm/fkN/HTqym6Y+TkciNPXI/9DUS13qjm2TfxRR2KqcFu/naz2Xa4y4=
+	t=1776097571; cv=none; b=MTg/UmLkJBbLReMkdtmj98NV46x/Cv49TzNsdjBAr4l8gbmIJV0tlgNdpqfA65tv3Jxiy3PjLDbOnAraFSr+5BmpMHQDnyF+G+Xe+NRzqv6NxhpG/3WewAIgycYesvLbcEU/3jGw1gBKu4KDJO5N34eYrqb7qE/DU2BFgrZ1PZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098830; c=relaxed/simple;
-	bh=tpcrtmCq64kgPu6QW5SyVSbUQptbHEzmTh+oUTIFtJM=;
+	s=arc-20240116; t=1776097571; c=relaxed/simple;
+	bh=EcOU2VTN+FxNV09sh24Lvj1PAGhAG5OfSb8ws5YzkP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UpgeucOYYAiSEyb0UoGjiDvxVXD+r4cT8Rjxg/cUWNfnws5v+08cHBRXRIdCPhI/KbzW1hM4Ch2hUG6Ta+HEwXjpbwMZ1J1ogyw8IzhhzlDncHco5AeFN8fZsH72JTgONnwGbeXnXqK7UIOrFPCvXcnefpCLht4itTavUwHmmdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irrBp3ba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E43CC2BCAF;
-	Mon, 13 Apr 2026 16:47:10 +0000 (UTC)
+	 MIME-Version; b=Cy+7e6dm0BP5nI5tl8j0qX9iD7GlErwv8TNfqzT7+75hG22y/NOrc+oAN/pPtXcOP4BIkL+shjrPRR4i/PgqW2xnlUxGPDBzTtWTyJl2PdMfUNPive/UWw9bW9LK7ib0F8jOiSdd4K+YqT1QmQ8Bya5C6MA+E+w92cChbyFuO5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqLxvX+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19184C2BCAF;
+	Mon, 13 Apr 2026 16:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098830;
-	bh=tpcrtmCq64kgPu6QW5SyVSbUQptbHEzmTh+oUTIFtJM=;
+	s=korg; t=1776097571;
+	bh=EcOU2VTN+FxNV09sh24Lvj1PAGhAG5OfSb8ws5YzkP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irrBp3ba2zqPVY3TAeJq6K6eaqaD7l7HFzA4A8OLII0FHvcrP4X98JdLjmhoe7Vlt
-	 +KJh3uWOOkoCF/RPiErxBwlD4ozbgNzdq7aP7+Mnju6E94plre+tGBdRQHL1m0XiDl
-	 V+54IOLlW1mKoJ6c4N6EgzX+qaDMB4Ae2X9T9wZQ=
+	b=NqLxvX+bzBe/FhG2EBVCmsrpw38JpXzwY9dgVR05YhBLZWRiTlMDqaHuA/Mfe4Nvn
+	 X3wxyDWQb8CGEbr2i2plOURmWwW2m54bsNejbaNfx9VjoSaybrqwYFJJbIz7e2j4oK
+	 mq2k0DJQC/J0FGSLPqE+kWnLy4FIBXwNEtdYzwdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuangpeng Bai <shuangpeng.kernel@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/491] serial: caif: hold tty->link reference in ldisc_open and ser_release
+	Linus Walleij <linusw@kernel.org>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 187/570] iio: gyro: mpu3050-core: fix pm_runtime error handling
 Date: Mon, 13 Apr 2026 17:55:18 +0200
-Message-ID: <20260413155821.779274012@linuxfoundation.org>
+Message-ID: <20260413155837.464467750@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +65,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237195-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236697-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: AA8DF3F09B5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email]
+X-Rspamd-Queue-Id: 500C33EFF57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-[ Upstream commit 288598d80a068a0e9281de35bcb4ce495f189e2a ]
+commit acc3949aab3e8094641a9c7c2768de1958c88378 upstream.
 
-A reproducer triggers a KASAN slab-use-after-free in pty_write_room()
-when caif_serial's TX path calls tty_write_room(). The faulting access
-is on tty->link->port.
+The return value of pm_runtime_get_sync() is not checked, allowing
+the driver to access hardware that may fail to resume. The device
+usage count is also unconditionally incremented. Use
+pm_runtime_resume_and_get() which propagates errors and avoids
+incrementing the usage count on failure.
 
-Hold an extra kref on tty->link for the lifetime of the caif_serial line
-discipline: get it in ldisc_open() and drop it in ser_release(), and
-also drop it on the ldisc_open() error path.
+In preenable, add pm_runtime_put_autosuspend() on set_8khz_samplerate()
+failure since postdisable does not run when preenable fails.
 
-With this change applied, the reproducer no longer triggers the UAF in
-my testing.
-
-Link: https://gist.github.com/shuangpengbai/c898debad6bdf170a84be7e6b3d8707f
-Link: https://lore.kernel.org/netdev/20260301220525.1546355-1-shuangpeng.kernel@gmail.com
-Fixes: e31d5a05948e ("caif: tty's are kref objects so take a reference")
-Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260306034006.3395740-1-shuangpeng.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/caif/caif_serial.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/gyro/mpu3050-core.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index 1b6a696182f72..02aea5a4b8ca8 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -312,6 +312,7 @@ static void ser_release(struct work_struct *work)
- 			dev_close(ser->dev);
- 			unregister_netdevice(ser->dev);
- 			debugfs_deinit(ser);
-+			tty_kref_put(tty->link);
- 			tty_kref_put(tty);
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -321,7 +321,9 @@ static int mpu3050_read_raw(struct iio_d
  		}
- 		rtnl_unlock();
-@@ -346,6 +347,7 @@ static int ldisc_open(struct tty_struct *tty)
+ 	case IIO_CHAN_INFO_RAW:
+ 		/* Resume device */
+-		pm_runtime_get_sync(mpu3050->dev);
++		ret = pm_runtime_resume_and_get(mpu3050->dev);
++		if (ret)
++			return ret;
+ 		mutex_lock(&mpu3050->lock);
  
- 	ser = netdev_priv(dev);
- 	ser->tty = tty_kref_get(tty);
-+	tty_kref_get(tty->link);
- 	ser->dev = dev;
- 	debugfs_init(ser, tty);
- 	tty->receive_room = N_TTY_BUF_SIZE;
-@@ -354,6 +356,7 @@ static int ldisc_open(struct tty_struct *tty)
- 	rtnl_lock();
- 	result = register_netdevice(dev);
- 	if (result) {
-+		tty_kref_put(tty->link);
- 		tty_kref_put(tty);
- 		rtnl_unlock();
- 		free_netdev(dev);
--- 
-2.51.0
-
+ 		ret = mpu3050_set_8khz_samplerate(mpu3050);
+@@ -652,14 +654,20 @@ out_trigger_unlock:
+ static int mpu3050_buffer_preenable(struct iio_dev *indio_dev)
+ {
+ 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
++	int ret;
+ 
+-	pm_runtime_get_sync(mpu3050->dev);
++	ret = pm_runtime_resume_and_get(mpu3050->dev);
++	if (ret)
++		return ret;
+ 
+ 	/* Unless we have OUR trigger active, run at full speed */
+-	if (!mpu3050->hw_irq_trigger)
+-		return mpu3050_set_8khz_samplerate(mpu3050);
++	if (!mpu3050->hw_irq_trigger) {
++		ret = mpu3050_set_8khz_samplerate(mpu3050);
++		if (ret)
++			pm_runtime_put_autosuspend(mpu3050->dev);
++	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int mpu3050_buffer_postdisable(struct iio_dev *indio_dev)
 
 
 
