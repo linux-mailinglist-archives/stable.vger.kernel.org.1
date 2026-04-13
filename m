@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MInGFvoU3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:08:26 +0200
+	id UNjfOEIX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DB23EE5AE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:08:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879A93EE94A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C9AD304BC87
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2699312DDAD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48E1282F3D;
-	Mon, 13 Apr 2026 16:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CA226ED41;
+	Mon, 13 Apr 2026 16:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUM0IvPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPhyhnAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FB9281357;
-	Mon, 13 Apr 2026 16:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA3627BF6C;
+	Mon, 13 Apr 2026 16:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096282; cv=none; b=i579a0h9NV7uwQHHwSgrb37C3h7UuYeGIrSxEADsQcek2vOh4fUUzEhsNbddSu2Z0pzmQ4oMTzxLGL4dwzjwCwG3SzGJIPxqD+nYw9dcDhOt9V4iVTbLNPWoye58cf9VLMaQaNuZaUhQQBYPXc191EU+xXadfz67+UJnk64scDk=
+	t=1776096503; cv=none; b=AqslQ64pYDHtVpE3M5pa5AaZ6afUpAUWhDio50rst7OOOqHsoBBCe4Dx6XVsBtZyNkw1wqeVGjiU1aTtINBOT0RQBXgpqXcqJKSpA3fGIBuIDueFIpr3o8TriH1jFS+svkQf0ARRWAFkjdfv9mmJx79SvnTH7wb3ckCU5ME7di8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096282; c=relaxed/simple;
-	bh=sXzsWrdiFkuLOAoIuyc/arWGxgwBSiKrIIwICOc3r70=;
+	s=arc-20240116; t=1776096503; c=relaxed/simple;
+	bh=YGI7GKECVqgfRsX3u3Fltyaq/omvldBXab/uOso12wU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TCPZelBj9Wljk+m45kxBRvVXqSHAlvfWDMSC/8BeQFs953GM3pRvNtiVOrytpSQrlimtj0bprxX5585FtdNujmsyw2P4VvDRfUqtV+RbixpEyip7//+yo+YSQF8hLHmzYE6wUDUhDBQF3shopmBcq90jiEfn+LrVNVJXV+pcYi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUM0IvPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D806EC2BCAF;
-	Mon, 13 Apr 2026 16:04:41 +0000 (UTC)
+	 MIME-Version; b=SrWOfmWfIbxLu2r2W0yDsf6u6TehIB+6yhrh/N+T6rnRG84dhvYVv5ZQBwD4s2LWvLLQdCBe4IyatPTws1wbJoD+86oWR1Eia8bOVNOpZlvxFoNocx/tNKzdZfFVXJGcOUmowj9guR6A4z41GNlEwsdL45GZv53L8CbnmpaAlvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPhyhnAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C16C2BCB4;
+	Mon, 13 Apr 2026 16:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096282;
-	bh=sXzsWrdiFkuLOAoIuyc/arWGxgwBSiKrIIwICOc3r70=;
+	s=korg; t=1776096503;
+	bh=YGI7GKECVqgfRsX3u3Fltyaq/omvldBXab/uOso12wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUM0IvPU4iefYDICEXMIkoF27Ai3TXC5HhylYXhORRIheGQF2jXE0tQ48zAOx9Wga
-	 w0DMyP5ofIlXRzaJHWWVyNsht/+ZgvlufABaP6M+dienVbrfDHK6A7iSl7y8EC/oTS
-	 vjQPvCvh1X1KpAQKf+aYO+Q4fMLfeLUDE22YLbto=
+	b=KPhyhnArLMngwluPHtzO1vik8k0/RkoGvLxT7YLFFa9OV+WxMGWaOqNgXs8KVXYli
+	 Bm2FqwNitE4YixbXUY8UQqdiCM/1QaReEXc6LlJT5+gAPSqFAD7irxSVdNho6Rq5w+
+	 D4wb+CiLN+1uHb7Cz2eFSv43Sx9C5Ff3YQe02ShU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.19 30/86] platform/x86/intel-uncore-freq: Handle autonomous UFS status bit
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.18 09/83] Input: uinput - fix circular locking dependency with ff-core
 Date: Mon, 13 Apr 2026 17:59:37 +0200
-Message-ID: <20260413155732.699411844@linuxfoundation.org>
+Message-ID: <20260413155731.377932017@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,197 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236193-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-236279-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.977];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: D3DB23EE5AE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 879A93EE94A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
-commit 4ab604b3f3aa8dcccc7505f5d310016682a99d5f upstream.
+commit 4cda78d6f8bf2b700529f2fbccb994c3e826d7c2 upstream.
 
-When the AUTONOMOUS_UFS_DISABLED bit is set in the header, the ELC
-(Efficiency Latency Control) feature is non-functional. Hence, return
-error for read or write to ELC attributes.
+A lockdep circular locking dependency warning can be triggered
+reproducibly when using a force-feedback gamepad with uinput (for
+example, playing ELDEN RING under Wine with a Flydigi Vader 5
+controller):
 
-Fixes: bb516dc79c4a ("platform/x86/intel-uncore-freq: Add support for efficiency latency control")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+  ff->mutex -> udev->mutex -> input_mutex -> dev->mutex -> ff->mutex
+
+The cycle is caused by four lock acquisition paths:
+
+1. ff upload: input_ff_upload() holds ff->mutex and calls
+   uinput_dev_upload_effect() -> uinput_request_submit() ->
+   uinput_request_send(), which acquires udev->mutex.
+
+2. device create: uinput_ioctl_handler() holds udev->mutex and calls
+   uinput_create_device() -> input_register_device(), which acquires
+   input_mutex.
+
+3. device register: input_register_device() holds input_mutex and
+   calls kbd_connect() -> input_register_handle(), which acquires
+   dev->mutex.
+
+4. evdev release: evdev_release() calls input_flush_device() under
+   dev->mutex, which calls input_ff_flush() acquiring ff->mutex.
+
+Fix this by introducing a new state_lock spinlock to protect
+udev->state and udev->dev access in uinput_request_send() instead of
+acquiring udev->mutex.  The function only needs to atomically check
+device state and queue an input event into the ring buffer via
+uinput_dev_event() -- both operations are safe under a spinlock
+(ktime_get_ts64() and wake_up_interruptible() do not sleep).  This
+breaks the ff->mutex -> udev->mutex link since a spinlock is a leaf in
+the lock ordering and cannot form cycles with mutexes.
+
+To keep state transitions visible to uinput_request_send(), protect
+writes to udev->state in uinput_create_device() and
+uinput_destroy_device() with the same state_lock spinlock.
+
+Additionally, move init_completion(&request->done) from
+uinput_request_send() to uinput_request_submit() before
+uinput_request_reserve_slot().  Once the slot is allocated,
+uinput_flush_requests() may call complete() on it at any time from
+the destroy path, so the completion must be initialised before the
+request becomes visible.
+
+Lock ordering after the fix:
+
+  ff->mutex -> state_lock (spinlock, leaf)
+  udev->mutex -> state_lock (spinlock, leaf)
+  udev->mutex -> input_mutex -> dev->mutex -> ff->mutex (no back-edge)
+
+Fixes: ff462551235d ("Input: uinput - switch to the new FF interface")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260325192909.3417322-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/all/CABXGCsMoxag+kEwHhb7KqhuyxfmGGd0P=tHZyb1uKE0pLr8Hkg@mail.gmail.com/
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Link: https://patch.msgid.link/20260407075031.38351-1-mikhail.v.gavrilov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/input/misc/uinput.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -537,6 +537,7 @@ static void set_cdie_id(int domain_id, s
- #define UNCORE_VERSION_MASK			GENMASK_ULL(7, 0)
- #define UNCORE_LOCAL_FABRIC_CLUSTER_ID_MASK	GENMASK_ULL(15, 8)
- #define UNCORE_CLUSTER_OFF_MASK			GENMASK_ULL(7, 0)
-+#define UNCORE_AUTONOMOUS_UFS_DISABLED		BIT(32)
- #define UNCORE_MAX_CLUSTER_PER_DOMAIN		8
+--- a/drivers/input/misc/uinput.c
++++ b/drivers/input/misc/uinput.c
+@@ -57,6 +57,7 @@ struct uinput_device {
+ 	struct input_dev	*dev;
+ 	struct mutex		mutex;
+ 	enum uinput_state	state;
++	spinlock_t		state_lock;
+ 	wait_queue_head_t	waitq;
+ 	unsigned char		ready;
+ 	unsigned char		head;
+@@ -146,19 +147,15 @@ static void uinput_request_release_slot(
+ static int uinput_request_send(struct uinput_device *udev,
+ 			       struct uinput_request *request)
+ {
+-	int retval;
++	int retval = 0;
  
- static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_device_id *id)
-@@ -598,6 +599,7 @@ static int uncore_probe(struct auxiliary
+-	retval = mutex_lock_interruptible(&udev->mutex);
+-	if (retval)
+-		return retval;
++	spin_lock(&udev->state_lock);
  
- 	for (i = 0; i < num_resources; ++i) {
- 		struct tpmi_uncore_power_domain_info *pd_info;
-+		bool auto_ufs_enabled;
- 		struct resource *res;
- 		u64 cluster_offset;
- 		u8 cluster_mask;
-@@ -647,6 +649,8 @@ static int uncore_probe(struct auxiliary
- 			continue;
- 		}
+ 	if (udev->state != UIST_CREATED) {
+ 		retval = -ENODEV;
+ 		goto out;
+ 	}
  
-+		auto_ufs_enabled = !(header & UNCORE_AUTONOMOUS_UFS_DISABLED);
+-	init_completion(&request->done);
+-
+ 	/*
+ 	 * Tell our userspace application about this new request
+ 	 * by queueing an input event.
+@@ -166,7 +163,7 @@ static int uinput_request_send(struct ui
+ 	uinput_dev_event(udev->dev, EV_UINPUT, request->code, request->id);
+ 
+  out:
+-	mutex_unlock(&udev->mutex);
++	spin_unlock(&udev->state_lock);
+ 	return retval;
+ }
+ 
+@@ -175,6 +172,13 @@ static int uinput_request_submit(struct
+ {
+ 	int retval;
+ 
++	/*
++	 * Initialize completion before allocating the request slot.
++	 * Once the slot is allocated, uinput_flush_requests() may
++	 * complete it at any time, so it must be initialized first.
++	 */
++	init_completion(&request->done);
 +
- 		/* Find out number of clusters in this resource */
- 		pd_info->cluster_count = hweight8(cluster_mask);
+ 	retval = uinput_request_reserve_slot(udev, request);
+ 	if (retval)
+ 		return retval;
+@@ -289,7 +293,14 @@ static void uinput_destroy_device(struct
+ 	struct input_dev *dev = udev->dev;
+ 	enum uinput_state old_state = udev->state;
  
-@@ -689,7 +693,9 @@ static int uncore_probe(struct auxiliary
++	/*
++	 * Update state under state_lock so that concurrent
++	 * uinput_request_send() sees the state change before we
++	 * flush pending requests and tear down the device.
++	 */
++	spin_lock(&udev->state_lock);
+ 	udev->state = UIST_NEW_DEVICE;
++	spin_unlock(&udev->state_lock);
  
- 			cluster_info->uncore_root = tpmi_uncore;
+ 	if (dev) {
+ 		name = dev->name;
+@@ -366,7 +377,9 @@ static int uinput_create_device(struct u
+ 	if (error)
+ 		goto fail2;
  
--			if (TPMI_MINOR_VERSION(pd_info->ufs_header_ver) >= UNCORE_ELC_SUPPORTED_VERSION)
-+			if ((TPMI_MINOR_VERSION(pd_info->ufs_header_ver) >=
-+			     UNCORE_ELC_SUPPORTED_VERSION) &&
-+			    auto_ufs_enabled)
- 				cluster_info->elc_supported = true;
++	spin_lock(&udev->state_lock);
+ 	udev->state = UIST_CREATED;
++	spin_unlock(&udev->state_lock);
  
- 			ret = uncore_freq_add_entry(&cluster_info->uncore_data, 0);
+ 	return 0;
+ 
+@@ -384,6 +397,7 @@ static int uinput_open(struct inode *ino
+ 		return -ENOMEM;
+ 
+ 	mutex_init(&newdev->mutex);
++	spin_lock_init(&newdev->state_lock);
+ 	spin_lock_init(&newdev->requests_lock);
+ 	init_waitqueue_head(&newdev->requests_waitq);
+ 	init_waitqueue_head(&newdev->waitq);
 
 
 
