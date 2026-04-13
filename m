@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-236951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGTdCZgj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:48 +0200
+	id aD0aIuIV3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943F13F0E92
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0862B3EE6AD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89F29305B29D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A9193063D45
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858202D5A19;
-	Mon, 13 Apr 2026 16:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8B1257844;
+	Mon, 13 Apr 2026 16:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8T8/E71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhRwxUgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484D9280CFB;
-	Mon, 13 Apr 2026 16:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE761D6DB5;
+	Mon, 13 Apr 2026 16:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098210; cv=none; b=Vkyzeo1f9WORtZy4abrHYbwVEFWAPynHQCqZzNT0v3VCQycrL4IM5hCmFygAQLB+wGwZW81cYoSrfENa9sOqGJ1e+k5tC49YdvFm8iXCIoUDqv36r/PRHAl6CL3j0c3WWgESKaLMjULIT7TRfwjJi2VAFXEQT76IQpYcwkg4lZ8=
+	t=1776096233; cv=none; b=u+kOj9RE+3eh6EdJgJC7ZxQlU5CmRPa0i2SRY+2vr9KA1TUaXnrI0xp445f2QkEeqmQD/tXbeReX3JkKx8gEhvs0e0h+/Zw+DPm3fhJfDzTt0h9FivGJKZHp2HMGyPJ/Rvpzp7iC2pzIvSyGRiH35QMP2VaBStiVy61iKcj9VWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098210; c=relaxed/simple;
-	bh=HSMuRvSKEit6Pfbt6IXbAQEvtZxckm02KGMLtvgqNeY=;
+	s=arc-20240116; t=1776096233; c=relaxed/simple;
+	bh=WBnIb/bfWAH3cb0NpcjPa8NJs00y5//B0BlhYr0mhMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jaoaVmGUK0NFPFJaiiZFD7vbb2lKLAc+Xo57HpG2XRFdNVk+PbYwlSWMaSBQtReu/F9KF9awkskmt9324/Cf5y1/+VmVx1om7i+SfYr777JRyE9n9uFNp5DqAh/v6vcgITRZIzSN/TPUrqfSTU0wo4sLMXE4zgzFlsleEuThmsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8T8/E71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D0BC2BCAF;
-	Mon, 13 Apr 2026 16:36:49 +0000 (UTC)
+	 MIME-Version; b=nbuEZCiTRr1GYtnCUSKj5Hsl3VHSYru2VobeloRcHmcFSttu5BcCGstkFf2udnly0KWFj8y4plu1yAoZxejLcRms7JGMYp8ikfkIwi+CHLgGvvVuklnxaStN8oOrzHF5QB+RAZrJeRI9gqiYiFLRJjTc8KkNaYuCHPoMi0ovAZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhRwxUgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79BBC2BCAF;
+	Mon, 13 Apr 2026 16:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098210;
-	bh=HSMuRvSKEit6Pfbt6IXbAQEvtZxckm02KGMLtvgqNeY=;
+	s=korg; t=1776096233;
+	bh=WBnIb/bfWAH3cb0NpcjPa8NJs00y5//B0BlhYr0mhMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8T8/E71a6HE+5qLvAJQAYST+Fj0WAUnz/MYAYnbndPQEPJTZB1u5g7pR7k+o4fXF
-	 sYh0ni2VCKIw6bBhxcHGAyNmW+WN7VStQdMTSAFuyx6V3d5EFJ5Vr4rAEKtZvIqrDK
-	 63YVa/KOUXUuZrI9WLIYIEMRbZ+cU6rzZ0smclxQ=
+	b=DhRwxUgOO6f8K2plrbhlS+9f2Byl1maLw2GPCqsGd735gxkI2Dx9uMb5TF97bD4md
+	 I+K2p/2zLlr4dxZAMRtm4sRXjcyjPHSChkRmnDIntsmS+K6gWRIZQgM9780FNRdOI1
+	 gO05dnBi7mWC4afrxf+unOkwQnfpi3yQq28p4Poc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 435/570] net/sched: cls_flow: fix NULL pointer dereference on shared blocks
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Drew Fustini <fustini@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.19 19/86] firmware: thead: Fix buffer overflow and use standard endian macros
 Date: Mon, 13 Apr 2026 17:59:26 +0200
-Message-ID: <20260413155846.771138112@linuxfoundation.org>
+Message-ID: <20260413155732.296843277@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +69,176 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236951-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236174-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 943F13F0E92
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,samsung.com:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0862B3EE6AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Michal Wilczynski <m.wilczynski@samsung.com>
 
-[ Upstream commit 1a280dd4bd1d616a01d6ffe0de284c907b555504 ]
+commit 88c4bd90725557796c15878b7cb70066e9e6b5ab upstream.
 
-flow_change() calls tcf_block_q() and dereferences q->handle to derive
-a default baseclass.  Shared blocks leave block->q NULL, causing a NULL
-deref when a flow filter without a fully qualified baseclass is created
-on a shared block.
+Addresses two issues in the TH1520 AON firmware protocol driver:
 
-Check tcf_block_shared() before accessing block->q and return -EINVAL
-for shared blocks.  This avoids the null-deref shown below:
+1. Fix a potential buffer overflow where the code used unsafe pointer
+   arithmetic to access the 'mode' field through the 'resource' pointer
+   with an offset. This was flagged by Smatch static checker as:
+   "buffer overflow 'data' 2 <= 3"
 
-=======================================================================
-KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
-RIP: 0010:flow_change (net/sched/cls_flow.c:508)
-Call Trace:
- tc_new_tfilter (net/sched/cls_api.c:2432)
- rtnetlink_rcv_msg (net/core/rtnetlink.c:6980)
- [...]
-=======================================================================
+2. Replace custom RPC_SET_BE* and RPC_GET_BE* macros with standard
+   kernel endianness conversion macros (cpu_to_be16, etc.) for better
+   portability and maintainability.
 
-Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260331050217.504278-2-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The functionality was re-tested with the GPU power-up sequence,
+confirming the GPU powers up correctly and the driver probes
+successfully.
+
+[   12.702370] powervr ffef400000.gpu: [drm] loaded firmware
+powervr/rogue_36.52.104.182_v1.fw
+[   12.711043] powervr ffef400000.gpu: [drm] FW version v1.0 (build
+6645434 OS)
+[   12.719787] [drm] Initialized powervr 1.0.0 for ffef400000.gpu on
+minor 0
+
+Fixes: e4b3cbd840e5 ("firmware: thead: Add AON firmware protocol driver")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/17a0ccce-060b-4b9d-a3c4-8d5d5823b1c9@stanley.mountain/
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Drew Fustini <fustini@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flow.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/firmware/thead,th1520-aon.c             |    7 --
+ include/linux/firmware/thead/thead,th1520-aon.h |   74 ------------------------
+ 2 files changed, 3 insertions(+), 78 deletions(-)
 
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
-index 22ed49748302f..74a6dbd234213 100644
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -501,8 +501,16 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 		}
+--- a/drivers/firmware/thead,th1520-aon.c
++++ b/drivers/firmware/thead,th1520-aon.c
+@@ -170,10 +170,9 @@ int th1520_aon_power_update(struct th152
+ 	hdr->func = TH1520_AON_PM_FUNC_SET_RESOURCE_POWER_MODE;
+ 	hdr->size = TH1520_AON_RPC_MSG_NUM;
  
- 		if (TC_H_MAJ(baseclass) == 0) {
--			struct Qdisc *q = tcf_block_q(tp->chain->block);
-+			struct tcf_block *block = tp->chain->block;
-+			struct Qdisc *q;
+-	RPC_SET_BE16(&msg.resource, 0, rsrc);
+-	RPC_SET_BE16(&msg.resource, 2,
+-		     (power_on ? TH1520_AON_PM_PW_MODE_ON :
+-				 TH1520_AON_PM_PW_MODE_OFF));
++	msg.resource = cpu_to_be16(rsrc);
++	msg.mode = cpu_to_be16(power_on ? TH1520_AON_PM_PW_MODE_ON :
++					  TH1520_AON_PM_PW_MODE_OFF);
  
-+			if (tcf_block_shared(block)) {
-+				NL_SET_ERR_MSG(extack,
-+					       "Must specify baseclass when attaching flow filter to block");
-+				goto err2;
-+			}
-+
-+			q = tcf_block_q(block);
- 			baseclass = TC_H_MAKE(q->handle, baseclass);
- 		}
- 		if (TC_H_MIN(baseclass) == 0)
--- 
-2.53.0
-
+ 	ret = th1520_aon_call_rpc(aon_chan, &msg);
+ 	if (ret)
+--- a/include/linux/firmware/thead/thead,th1520-aon.h
++++ b/include/linux/firmware/thead/thead,th1520-aon.h
+@@ -97,80 +97,6 @@ struct th1520_aon_rpc_ack_common {
+ #define RPC_GET_SVC_FLAG_ACK_TYPE(MESG) (((MESG)->svc & 0x40) >> 6)
+ #define RPC_SET_SVC_FLAG_ACK_TYPE(MESG, ACK) ((MESG)->svc |= (ACK) << 6)
+ 
+-#define RPC_SET_BE64(MESG, OFFSET, SET_DATA)                                \
+-	do {                                                                \
+-		u8 *data = (u8 *)(MESG);                                    \
+-		u64 _offset = (OFFSET);                                     \
+-		u64 _set_data = (SET_DATA);                                 \
+-		data[_offset + 7] = _set_data & 0xFF;                       \
+-		data[_offset + 6] = (_set_data & 0xFF00) >> 8;              \
+-		data[_offset + 5] = (_set_data & 0xFF0000) >> 16;           \
+-		data[_offset + 4] = (_set_data & 0xFF000000) >> 24;         \
+-		data[_offset + 3] = (_set_data & 0xFF00000000) >> 32;       \
+-		data[_offset + 2] = (_set_data & 0xFF0000000000) >> 40;     \
+-		data[_offset + 1] = (_set_data & 0xFF000000000000) >> 48;   \
+-		data[_offset + 0] = (_set_data & 0xFF00000000000000) >> 56; \
+-	} while (0)
+-
+-#define RPC_SET_BE32(MESG, OFFSET, SET_DATA)			    \
+-	do {							    \
+-		u8 *data = (u8 *)(MESG);			    \
+-		u64 _offset = (OFFSET);				    \
+-		u64 _set_data = (SET_DATA);			    \
+-		data[_offset + 3] = (_set_data) & 0xFF;		    \
+-		data[_offset + 2] = (_set_data & 0xFF00) >> 8;	    \
+-		data[_offset + 1] = (_set_data & 0xFF0000) >> 16;   \
+-		data[_offset + 0] = (_set_data & 0xFF000000) >> 24; \
+-	} while (0)
+-
+-#define RPC_SET_BE16(MESG, OFFSET, SET_DATA)		       \
+-	do {						       \
+-		u8 *data = (u8 *)(MESG);		       \
+-		u64 _offset = (OFFSET);			       \
+-		u64 _set_data = (SET_DATA);		       \
+-		data[_offset + 1] = (_set_data) & 0xFF;	       \
+-		data[_offset + 0] = (_set_data & 0xFF00) >> 8; \
+-	} while (0)
+-
+-#define RPC_SET_U8(MESG, OFFSET, SET_DATA)	  \
+-	do {					  \
+-		u8 *data = (u8 *)(MESG);	  \
+-		data[OFFSET] = (SET_DATA) & 0xFF; \
+-	} while (0)
+-
+-#define RPC_GET_BE64(MESG, OFFSET, PTR)                                      \
+-	do {                                                                 \
+-		u8 *data = (u8 *)(MESG);                                     \
+-		u64 _offset = (OFFSET);                                      \
+-		*(u32 *)(PTR) =                                              \
+-			(data[_offset + 7] | data[_offset + 6] << 8 |        \
+-			 data[_offset + 5] << 16 | data[_offset + 4] << 24 | \
+-			 data[_offset + 3] << 32 | data[_offset + 2] << 40 | \
+-			 data[_offset + 1] << 48 | data[_offset + 0] << 56); \
+-	} while (0)
+-
+-#define RPC_GET_BE32(MESG, OFFSET, PTR)                                      \
+-	do {                                                                 \
+-		u8 *data = (u8 *)(MESG);                                     \
+-		u64 _offset = (OFFSET);                                      \
+-		*(u32 *)(PTR) =                                              \
+-			(data[_offset + 3] | data[_offset + 2] << 8 |        \
+-			 data[_offset + 1] << 16 | data[_offset + 0] << 24); \
+-	} while (0)
+-
+-#define RPC_GET_BE16(MESG, OFFSET, PTR)                                       \
+-	do {                                                                  \
+-		u8 *data = (u8 *)(MESG);                                      \
+-		u64 _offset = (OFFSET);                                       \
+-		*(u16 *)(PTR) = (data[_offset + 1] | data[_offset + 0] << 8); \
+-	} while (0)
+-
+-#define RPC_GET_U8(MESG, OFFSET, PTR)          \
+-	do {                                   \
+-		u8 *data = (u8 *)(MESG);       \
+-		*(u8 *)(PTR) = (data[OFFSET]); \
+-	} while (0)
+-
+ /*
+  * Defines for SC PM Power Mode
+  */
 
 
 
