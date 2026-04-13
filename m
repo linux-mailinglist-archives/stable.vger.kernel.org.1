@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNC0OGge3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:40 +0200
+	id uGChCZkZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9BA3EFDBE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D89323EF00A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B9196300D77E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 414B8301B04A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2453148A3;
-	Mon, 13 Apr 2026 16:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA323093B2;
+	Mon, 13 Apr 2026 16:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sn4EfF/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEMpvX/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAF2223DCE;
-	Mon, 13 Apr 2026 16:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330512E11B9;
+	Mon, 13 Apr 2026 16:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098751; cv=none; b=HVCYFt69mHgP1Qgpjr2Z7Y0p7gvyq+U5TiMrDzaKTMUm+d/AXbg/mG4zkXJKtGdDEgWjTaP14Zn5DEGyFltwh2NUthAotf/7kUmvmUKmvWyMfUS60mDzdyF5j7vIKeFxxDZP05CLZq2S9HhS19leD188uXll+1dL3nJHW/Wljrc=
+	t=1776097597; cv=none; b=sJcTUQ+6vZ5euogLTHaD7lgjqI8vdRSTN0oCj1TIBQuSppFcg1psbd3EYxLEeMb3+ExbouGa8/hcH7jxL3tHyF860WK7aidqKiUh83sbciO6H6Typxv+p1oIEQOZPgcV1si99p57GNuTStsfaMS8wZ7OKZBVG0DzwOcHkBABmkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098751; c=relaxed/simple;
-	bh=e9YTI7gxT/WdHKZ3D8WZ3GKhOzI0GGF44OjAbi9+Vck=;
+	s=arc-20240116; t=1776097597; c=relaxed/simple;
+	bh=yXnO+fBfe1WQ3NFhpDeUAeG1l2t2ymDzwtCcBdx8NoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVW7YPYchm1HZTCrLYauhqV+MIYQMg3/ZWUJKyrTfKQAToxpU36PVkii3koYy/DKMPiI2GCZL6Pjmu37Q+P4Irlu1iNDQY0QSXDdCD3ViwDOfFpxR9t2wswWpGpxOZYQ8/bJKRClz/mRvk8ImI1sNrZh1NukF8hTeVdAgShTVoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sn4EfF/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A9CC2BCAF;
-	Mon, 13 Apr 2026 16:45:50 +0000 (UTC)
+	 MIME-Version; b=d0/rw5KnbN3g5vZrkpAdaWoaA5Hn5FBRUnMSRFbHsoR384cyvWO/nim3Yf0h6FPOMw9fgyAD7DQbr961rBsMmA4Kgl4Uy1Le52Epba3q4gL15h4/lYhGP5I45ir0oQCyzMPmNS5cX+XlMpzdI6POOsn/JDPSycb1K8HxPkJssZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEMpvX/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD724C2BCAF;
+	Mon, 13 Apr 2026 16:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098751;
-	bh=e9YTI7gxT/WdHKZ3D8WZ3GKhOzI0GGF44OjAbi9+Vck=;
+	s=korg; t=1776097597;
+	bh=yXnO+fBfe1WQ3NFhpDeUAeG1l2t2ymDzwtCcBdx8NoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sn4EfF/oWT9A5zc/D4mqN6R08CjiYNcA5uYnM5GApm7kYCwzlGJhHFpBwlQlGUT6D
-	 An45VXxB1AmjFC6vuJN7XBhiis6sVDsULb+Hwa+1PMkGPOG64DT8m06TeoQw4MHBKl
-	 vakMuFDCDPJvrLF51IGF7nMYLqTW1bMcNZuHqoWs=
+	b=xEMpvX/Fs0TsodQACTUkq0UguhiwKt6fZsA81N9YjHF3Ck6nFJUViOYyl0WbJJG3R
+	 fz4EkbYXjoQfNYzGye8ljRg6AOVdbRLfGjjaLQ7W3tCJF9sVcPxumpPSiQlUQDQ7kS
+	 WTCvI440Ld06GkUFQEwGsitS9eHkjS+qyjq7Zq6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/491] indirect_call_wrapper: do not reevaluate function pointer
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.15 156/570] ceph: fix i_nlink underrun during async unlink
 Date: Mon, 13 Apr 2026 17:54:47 +0200
-Message-ID: <20260413155820.627801907@linuxfoundation.org>
+Message-ID: <20260413155836.294449413@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,173 +66,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236711-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237163-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 7F9BA3EFDBE
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ionos.com:email]
+X-Rspamd-Queue-Id: D89323EF00A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 710f5c76580306cdb9ec51fac8fcf6a8faff7821 ]
+commit ce0123cbb4a40a2f1bbb815f292b26e96088639f upstream.
 
-We have an increasing number of READ_ONCE(xxx->function)
-combined with INDIRECT_CALL_[1234]() helpers.
+During async unlink, we drop the `i_nlink` counter before we receive
+the completion (that will eventually update the `i_nlink`) because "we
+assume that the unlink will succeed".  That is not a bad idea, but it
+races against deletions by other clients (or against the completion of
+our own unlink) and can lead to an underrun which emits a WARNING like
+this one:
 
-Unfortunately this forces INDIRECT_CALL_[1234]() to read
-xxx->function many times, which is not what we wanted.
+ WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
+ Modules linked in:
+ CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : drop_nlink+0x50/0x68
+ lr : ceph_unlink+0x6c4/0x720
+ sp : ffff80012173bc90
+ x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
+ x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
+ x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
+ x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
+ x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
+ x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
+ x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
+ x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
+ x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
+ Call trace:
+  drop_nlink+0x50/0x68 (P)
+  vfs_unlink+0xb0/0x2e8
+  do_unlinkat+0x204/0x288
+  __arm64_sys_unlinkat+0x3c/0x80
+  invoke_syscall.constprop.0+0x54/0xe8
+  do_el0_svc+0xa4/0xc8
+  el0_svc+0x18/0x58
+  el0t_64_sync_handler+0x104/0x130
+  el0t_64_sync+0x154/0x158
 
-Fix these macros so that xxx->function value is not reloaded.
+In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
+CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
 
-$ scripts/bloat-o-meter -t vmlinux.0 vmlinux
-add/remove: 0/0 grow/shrink: 1/65 up/down: 122/-1084 (-962)
-Function                                     old     new   delta
-ip_push_pending_frames                        59     181    +122
-ip6_finish_output                            687     681      -6
-__udp_enqueue_schedule_skb                  1078    1072      -6
-ioam6_output                                2319    2312      -7
-xfrm4_rcv_encap_finish2                       64      56      -8
-xfrm4_output                                 297     289      -8
-vrf_ip_local_out                             278     270      -8
-vrf_ip6_local_out                            278     270      -8
-seg6_input_finish                             64      56      -8
-rpl_output                                   700     692      -8
-ipmr_forward_finish                          124     116      -8
-ip_forward_finish                            143     135      -8
-ip6mr_forward2_finish                        100      92      -8
-ip6_forward_finish                            73      65      -8
-input_action_end_bpf                        1091    1083      -8
-dst_input                                     52      44      -8
-__xfrm6_output                               801     793      -8
-__xfrm4_output                                83      75      -8
-bpf_input                                    500     491      -9
-__tcp_check_space                            530     521      -9
-input_action_end_dt6                         291     280     -11
-vti6_tnl_xmit                               1634    1622     -12
-bpf_xmit                                    1203    1191     -12
-rpl_input                                    497     483     -14
-rawv6_send_hdrinc                           1355    1341     -14
-ndisc_send_skb                              1030    1016     -14
-ipv6_srh_rcv                                1377    1363     -14
-ip_send_unicast_reply                       1253    1239     -14
-ip_rcv_finish                                226     212     -14
-ip6_rcv_finish                               300     286     -14
-input_action_end_x_core                      205     191     -14
-input_action_end_x                           355     341     -14
-input_action_end_t                           205     191     -14
-input_action_end_dx6_finish                  127     113     -14
-input_action_end_dx4_finish                  373     359     -14
-input_action_end_dt4                         426     412     -14
-input_action_end_core                        186     172     -14
-input_action_end_b6_encap                    292     278     -14
-input_action_end_b6                          198     184     -14
-igmp6_send                                  1332    1318     -14
-ip_sublist_rcv                               864     848     -16
-ip6_sublist_rcv                             1091    1075     -16
-ipv6_rpl_srh_rcv                            1937    1920     -17
-xfrm_policy_queue_process                   1246    1228     -18
-seg6_output_core                             903     885     -18
-mld_sendpack                                 856     836     -20
-NF_HOOK                                      756     736     -20
-vti_tunnel_xmit                             1447    1426     -21
-input_action_end_dx6                         664     642     -22
-input_action_end                            1502    1480     -22
-sock_sendmsg_nosec                           134     111     -23
-ip6mr_forward2                               388     364     -24
-sock_recvmsg_nosec                           134     109     -25
-seg6_input_core                              836     810     -26
-ip_send_skb                                  172     146     -26
-ip_local_out                                 140     114     -26
-ip6_local_out                                140     114     -26
-__sock_sendmsg                               162     136     -26
-__ip_queue_xmit                             1196    1170     -26
-__ip_finish_output                           405     379     -26
-ipmr_queue_fwd_xmit                          373     346     -27
-sock_recvmsg                                 173     145     -28
-ip6_xmit                                    1635    1607     -28
-xfrm_output_resume                          1418    1389     -29
-ip_build_and_send_pkt                        625     591     -34
-dst_output                                   504     432     -72
-Total: Before=25217686, After=25216724, chg -0.00%
+Meanwhile, between this call and the following drop_nlink() call, a
+worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
+just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
+completion).  These will lead to a set_nlink() call, updating the
+`i_nlink` counter to the value received from the MDS.  If that new
+`i_nlink` value happens to be zero, it is illegal to decrement it
+further.  But that is exactly what ceph_unlink() will do then.
 
-Fixes: 283c16a2dfd3 ("indirect call wrappers: helpers to speed-up indirect calls of builtin")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260227172603.1700433-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The WARNING can be reproduced this way:
+
+1. Force async unlink; only the async code path is affected.  Having
+   no real clue about Ceph internals, I was unable to find out why the
+   MDS wouldn't give me the "Fxr" capabilities, so I patched
+   get_caps_for_async_unlink() to always succeed.
+
+   (Note that the WARNING dump above was found on an unpatched kernel,
+   without this kludge - this is not a theoretical bug.)
+
+2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
+   completion gets handled by a worker thread before drop_nlink() is
+   called.  This guarantees that the `i_nlink` is already zero before
+   drop_nlink() runs.
+
+The solution is to skip the counter decrement when it is already zero,
+but doing so without a lock is still racy (TOCTOU).  Since
+ceph_fill_inode() and handle_cap_grant() both hold the
+`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
+seems like the proper lock to protect the `i_nlink` updates.
+
+I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
+`afs_vnode.cb_lock`).  All three have the zero check as well.
+
+Cc: stable@vger.kernel.org
+Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/indirect_call_wrapper.h | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ fs/ceph/dir.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/indirect_call_wrapper.h b/include/linux/indirect_call_wrapper.h
-index cfcfef37b2f1a..6afdd080c7c1b 100644
---- a/include/linux/indirect_call_wrapper.h
-+++ b/include/linux/indirect_call_wrapper.h
-@@ -16,22 +16,26 @@
-  */
- #define INDIRECT_CALL_1(f, f1, ...)					\
- 	({								\
--		likely(f == f1) ? f1(__VA_ARGS__) : f(__VA_ARGS__);	\
-+		typeof(f) __f1 = (f);					\
-+		likely(__f1 == f1) ? f1(__VA_ARGS__) : __f1(__VA_ARGS__);	\
- 	})
- #define INDIRECT_CALL_2(f, f2, f1, ...)					\
- 	({								\
--		likely(f == f2) ? f2(__VA_ARGS__) :			\
--				  INDIRECT_CALL_1(f, f1, __VA_ARGS__);	\
-+		typeof(f) __f2 = (f);					\
-+		likely(__f2 == f2) ? f2(__VA_ARGS__) :			\
-+				  INDIRECT_CALL_1(__f2, f1, __VA_ARGS__);	\
- 	})
- #define INDIRECT_CALL_3(f, f3, f2, f1, ...)					\
- 	({									\
--		likely(f == f3) ? f3(__VA_ARGS__) :				\
--				  INDIRECT_CALL_2(f, f2, f1, __VA_ARGS__);	\
-+		typeof(f) __f3 = (f);						\
-+		likely(__f3 == f3) ? f3(__VA_ARGS__) :				\
-+				  INDIRECT_CALL_2(__f3, f2, f1, __VA_ARGS__);	\
- 	})
- #define INDIRECT_CALL_4(f, f4, f3, f2, f1, ...)					\
- 	({									\
--		likely(f == f4) ? f4(__VA_ARGS__) :				\
--				  INDIRECT_CALL_3(f, f3, f2, f1, __VA_ARGS__);	\
-+		typeof(f) __f4 = (f);						\
-+		likely(__f4 == f4) ? f4(__VA_ARGS__) :				\
-+				  INDIRECT_CALL_3(__f4, f3, f2, f1, __VA_ARGS__);	\
- 	})
- 
- #define INDIRECT_CALLABLE_DECLARE(f)	f
--- 
-2.51.0
-
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1148,6 +1148,7 @@ static int ceph_unlink(struct inode *dir
+ 	struct ceph_fs_client *fsc = ceph_sb_to_client(dir->i_sb);
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct inode *inode = d_inode(dentry);
++	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_mds_request *req;
+ 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
+ 	int err = -EROFS;
+@@ -1193,7 +1194,19 @@ retry:
+ 			 * We have enough caps, so we assume that the unlink
+ 			 * will succeed. Fix up the target inode and dcache.
+ 			 */
+-			drop_nlink(inode);
++
++			/*
++			 * Protect the i_nlink update with i_ceph_lock
++			 * to precent racing against ceph_fill_inode()
++			 * handling our completion on a worker thread
++			 * and don't decrement if i_nlink has already
++			 * been updated to zero by this completion.
++			 */
++			spin_lock(&ci->i_ceph_lock);
++			if (inode->i_nlink > 0)
++				drop_nlink(inode);
++			spin_unlock(&ci->i_ceph_lock);
++
+ 			d_delete(dentry);
+ 		} else if (err == -EJUKEBOX) {
+ 			try_async = false;
 
 
 
