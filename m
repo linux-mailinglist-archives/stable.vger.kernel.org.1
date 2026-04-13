@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLpzA60Y3Wn3ZwkAu9opvQ
-	(envelope-from <stable+bounces-236379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:13 +0200
+	id kGgMMhUc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86AF53EECFA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BEF3EF6FF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FA4D30C86C0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D0C213001477
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6FF283FEF;
-	Mon, 13 Apr 2026 16:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CA030BF4E;
+	Mon, 13 Apr 2026 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jh6Spzxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mINuTxMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFB32765FF;
-	Mon, 13 Apr 2026 16:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE051307AC7;
+	Mon, 13 Apr 2026 16:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096754; cv=none; b=EB4b15Am0d9aQDDZThWBuIeTK7Djbu8abmy59F0uBMoSoEFC69grKzzJmD+zBeDvNE0JZsul4NCqLjRYEITSnNdCGYxAtK6dGsrOpFKvFefoYQ+u8Ius71ARclkoM4u9fhA/EUfZVLRgLHCRT0jJvjpXlfjBG6lFaJz41iwaoY0=
+	t=1776098323; cv=none; b=RyTwElJOZgJA3/59zS8QMudhS2TW/kBhs8f50l63HyJ8VYxKPdCsDfyjgsZaX+i3/3+1LR29shHRec7F+7oiHvO2562drKCTiQ4FAs3KmYfgFSagAj3E8jJPf5wWK5mLihcsDiihh6Uu4wwcwVHTRgOe2IpWcozlq7qwaxX77ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096754; c=relaxed/simple;
-	bh=FCS3r5MiBOQ5NQOYtULG18z4vH+Nhnl4uEIof6zt9Uo=;
+	s=arc-20240116; t=1776098323; c=relaxed/simple;
+	bh=i3qGnVI38FANtCGHqAmeE5HPak2kzSbvjMwcdHXjPt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r83rMiSv7l3ofyakZiVoSpfLEZlVNnDmGl/WLQ+RqL+aMvCo2RE85RH/F/yct3GpoTfZWZ77bMWF5noV1xlWe3jt/xjSb9M5iWcx7yrxH5KkMb2XlAORj/BffmVgD63OXm12t5WJATmvWOemfrVG3gxSLl13cuw4ULLMGcmZAOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jh6Spzxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D64C2BCAF;
-	Mon, 13 Apr 2026 16:12:33 +0000 (UTC)
+	 MIME-Version; b=CeSSvnJ+zk7QGDDXe2sZnLG7WIfgjJ1DaIVrqKceChyafFl+iLl18qRXk9rDZyOOeSTGDmFKMcSj6gb/AXGc95fXECwtDNZvsCnNYzFuIrsBaNyPD8uMxd86j9y26B1DXg2KSVOdsdn4wGoTgNtRpAuW98645Hacx2BsSuYEwuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mINuTxMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A71C2BCAF;
+	Mon, 13 Apr 2026 16:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096753;
-	bh=FCS3r5MiBOQ5NQOYtULG18z4vH+Nhnl4uEIof6zt9Uo=;
+	s=korg; t=1776098323;
+	bh=i3qGnVI38FANtCGHqAmeE5HPak2kzSbvjMwcdHXjPt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jh6SpzxbsEuFPnRTf4RiUj3/D2d8TKRDC6txtGaEi+uYGWS0bhw+cotGzdq+sciJv
-	 PCAbbyVzh9v0Ta+mb2SJflUyzaMlrt6CB7Db3ZwfONXIFJEDtZ9oLmZBcXJUc7gBWQ
-	 HLdKLjF0bozT6ZSpnlefRhp2V4YsV1SWjLGVv5jk=
+	b=mINuTxMY0Lq7by2XM+4xE8knPI+cr63zZx34EInCd3y0VsOeaUDgNRce/PSV4NCF0
+	 kEDAIa5xuxEZSqsmdBAMldKxAveZtAdinRtoMH0IaPUMt4VpO4lT9ewlmnFETyFeD7
+	 85TWuP49PMl0cshFrZw4SEnMIQMu1q3qkw/L8O00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Daniel Vacek <neelx@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 17/70] btrfs: remove unused flag EXTENT_BUFFER_READAHEAD
+	syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.15 481/570] comedi: Reinit dev->spinlock between attachments to low-level drivers
 Date: Mon, 13 Apr 2026 18:00:12 +0200
-Message-ID: <20260413155728.830660975@linuxfoundation.org>
+Message-ID: <20260413155848.478567972@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236996-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236379-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,cc9f7f4a7df09f53c4a4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 86AF53EECFA
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 62BEF3EF6FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vacek <neelx@suse.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 350362e95fbbe86008c240093697756d52049686 ]
+commit 4b9a9a6d71e3e252032f959fb3895a33acb5865c upstream.
 
-This flag is no longer being used.  It was added by commit ab0fff03055d
-("btrfs: add READAHEAD extent buffer flag") and used in commits:
+`struct comedi_device` is the main controlling structure for a COMEDI
+device created by the COMEDI subsystem.  It contains a member `spinlock`
+containing a spin-lock that is initialized by the COMEDI subsystem, but
+is reserved for use by a low-level driver attached to the COMEDI device
+(at least since commit 25436dc9d84f ("Staging: comedi: remove RT
+code")).
 
-79fb65a1f6d9 ("Btrfs: don't call readahead hook until we have read the entire eb")
-78e62c02abb9 ("btrfs: Remove extent_io_ops::readpage_io_failed_hook")
-371cdc0700c7 ("btrfs: introduce subpage metadata validation check")
+Some COMEDI devices (those created on initialization of the COMEDI
+subsystem when the "comedi.comedi_num_legacy_minors" parameter is
+non-zero) can be attached to different low-level drivers over their
+lifetime using the `COMEDI_DEVCONFIG` ioctl command.  This can result in
+inconsistent lock states being reported when there is a mismatch in the
+spin-lock locking levels used by each low-level driver to which the
+COMEDI device has been attached.  Fix it by reinitializing
+`dev->spinlock` before calling the low-level driver's `attach` function
+pointer if `CONFIG_LOCKDEP` is enabled.
 
-Finally all the code using it was removed by commit f26c92386028 ("btrfs: remove
-reada infrastructure").
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 316fb1b3169e ("btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cc9f7f4a7df09f53c4a4
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260225132427.86578-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/comedi/drivers.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index f21fd8b50abc8..4126fe7f3f10e 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -39,8 +39,6 @@ enum {
- 	EXTENT_BUFFER_UPTODATE,
- 	EXTENT_BUFFER_DIRTY,
- 	EXTENT_BUFFER_CORRUPT,
--	/* this got triggered by readahead */
--	EXTENT_BUFFER_READAHEAD,
- 	EXTENT_BUFFER_TREE_REF,
- 	EXTENT_BUFFER_STALE,
- 	EXTENT_BUFFER_WRITEBACK,
--- 
-2.53.0
-
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -1001,6 +1001,14 @@ int comedi_device_attach(struct comedi_d
+ 		ret = -EIO;
+ 		goto out;
+ 	}
++	if (IS_ENABLED(CONFIG_LOCKDEP)) {
++		/*
++		 * dev->spinlock is for private use by the attached low-level
++		 * driver.  Reinitialize it to stop lock-dependency tracking
++		 * between attachments to different low-level drivers.
++		 */
++		spin_lock_init(&dev->spinlock);
++	}
+ 	dev->driver = driv;
+ 	dev->board_name = dev->board_ptr ? *(const char **)dev->board_ptr
+ 					 : dev->driver->driver_name;
 
 
 
