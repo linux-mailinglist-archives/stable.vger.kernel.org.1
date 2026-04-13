@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAL6ImgZ3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:20 +0200
+	id IHz+BSsl3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1211B3EEF67
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D1C3F11C4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 406D0308AF76
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DC41B3044D16
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3C42F362B;
-	Mon, 13 Apr 2026 16:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641C4330649;
+	Mon, 13 Apr 2026 16:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDQws/Nf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxc83Su5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9D4274B58;
-	Mon, 13 Apr 2026 16:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278873203B6;
+	Mon, 13 Apr 2026 16:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096684; cv=none; b=Yhck+Dr6Qs08HhbeOMo+g24Ar0hXR1bPKpWIIDkA73fHOC1PIbvT4B6VRw1h8/neabqhA9xtD6YWtDr+LjBFSE2FfLNB8YIDs3s4cn82DCgtPCIHWLhck+Qfnx5ZoasDzIrVxwnIVlbeWWUbOM8spK12zHBlN5yQRoAJMHNSRxY=
+	t=1776099525; cv=none; b=FHWyZi68IV40cLBsN290dYnoWwzeZ34a8wgfOGGdOtk7jEi20A2rzqb+jIJ49EzgkPekcSNLeuis3jZu/rQPOldQA1ItDhwn27b+XRvXLqfANEmKGaax9Mm0skGlu1XbyH/2YSfAPpy4Rptr5w2nPA+6czXCtjguMLOrnIdFlng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096684; c=relaxed/simple;
-	bh=AUcFfsjoIC0pAjeFd+MS0TmUiWphBMMcOtOnhd4wQVE=;
+	s=arc-20240116; t=1776099525; c=relaxed/simple;
+	bh=7tKTTs05w0DGw8hKfaE9N2gMwJKBRh/osiIVTij5SNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgIkyFHzrwwdshsdk4GQ2zj7VQL1hYgS/DTmpt56g7HVh0ahkGkhExaWtltTpDEkwSrf6yaGLfZ+JUat4i45Fwis6korknwKwNnqEQbCEt6FFlAtZNBI9x6Ps7PWtCt1a/6igiw9mH6kdV7JoWL+UYYaw9L/Ptpmwr5vA7F2XAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDQws/Nf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFFDC2BCAF;
-	Mon, 13 Apr 2026 16:11:23 +0000 (UTC)
+	 MIME-Version; b=anBbCMy9cmP6Lp3mNliRFUK8iFTXZNiMAmgqr+b9nhGMDHG3PermeLjn/grSmn8d1W2fRjQeten7XhR0s+JP+XxBjn1cWJAVCMKfS5mpbUHsTbCEzUi9trHyVuUQGQa9r90YnD2D0EtV06x2NRe0lwTSAj3KMAcdfFiAl6r3D+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxc83Su5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D12CC2BCAF;
+	Mon, 13 Apr 2026 16:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096684;
-	bh=AUcFfsjoIC0pAjeFd+MS0TmUiWphBMMcOtOnhd4wQVE=;
+	s=korg; t=1776099524;
+	bh=7tKTTs05w0DGw8hKfaE9N2gMwJKBRh/osiIVTij5SNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDQws/Nf8v5+OwshMNqKIEmi73ZD1H0vtLWId/9KLDrs+x0jwRe9ybbMOgJah9sMT
-	 7TiPnduN1hdtuhv54XL49lVmfhr+rDlMFe9d+lkw25rYvdxSod0qPyiRoUDFyu7TqQ
-	 1+C7mM+5OSsSpf5kNoMNHH48SXVtQScGtVFZ5d5I=
+	b=sxc83Su5qds2Wv6U2USjmMowBMBp/JFSi7D+6Lci23yBlxTRCp9rB3PXthz9/qY+O
+	 L+2P/pYybSVkyXgUYUuZ/AiI0cA2XOWWuA901BkIDQxMenInAO3ugsUH9qU7M60dFR
+	 PatYWkPPw7nJmYrd+qbJOD8pxjFDNLfTxFEX8DcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH 6.12 23/70] arm64: dts: renesas: white-hawk-cpu-common: Add pin control for DSI-eDP IRQ
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 5.10 373/491] drm/ast: dp501: Fix initialization of SCU2C
 Date: Mon, 13 Apr 2026 18:00:18 +0200
-Message-ID: <20260413155729.053333533@linuxfoundation.org>
+Message-ID: <20260413155832.998865330@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +65,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236352-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237464-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,glider.be:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1211B3EEF67
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lists.freedesktop.org:email]
+X-Rspamd-Queue-Id: 08D1C3F11C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 8219a455efd4ba11c1d30c1bbc9ce853466c19bf upstream.
+commit 2f42c1a6161646cbd29b443459fd635d29eda634 upstream.
 
-When the DSI to eDP bridge was added, pin control for the IRQ pin was
-left out, because the pin controller did not support INTC-EX pins yet.
+Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
+and tries to set it to source data from VGA. But writes the update to
+offset 0x0, with unknown results. Write the result to SCU instead.
 
-Commit 10544ec1b3436037 ("pinctrl: renesas: r8a779g0: Add INTC-EX
-pins, groups, and function") added support for these pins, so add the
-missing pin control description.
+The bug only happens in ast_init_analog(). There's similar code in
+ast_init_dvo(), which works correctly.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/89bab2008891be1f003a3c0dbcdf36af3b98da70.1729240573.git.geert+renesas@glider.be
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.16+
+Link: https://patch.msgid.link/20260327133532.79696-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/ast/ast_dp501.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi
-+++ b/arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi
-@@ -239,6 +239,9 @@
- 	clock-frequency = <400000>;
+--- a/drivers/gpu/drm/ast/ast_dp501.c
++++ b/drivers/gpu/drm/ast/ast_dp501.c
+@@ -484,7 +484,7 @@ static void ast_init_analog(struct drm_d
+ 	/* Finally, clear bits [17:16] of SCU2c */
+ 	data = ast_read32(ast, 0x1202c);
+ 	data &= 0xfffcffff;
+-	ast_write32(ast, 0, data);
++	ast_write32(ast, 0x1202c, data);
  
- 	bridge@2c {
-+		pinctrl-0 = <&irq0_pins>;
-+		pinctrl-names = "default";
-+
- 		compatible = "ti,sn65dsi86";
- 		reg = <0x2c>;
- 
-@@ -343,6 +346,11 @@
- 		function = "i2c1";
- 	};
- 
-+	irq0_pins: irq0 {
-+		groups = "intc_ex_irq0_a";
-+		function = "intc_ex";
-+	};
-+
- 	keys_pins: keys {
- 		pins = "GP_5_0", "GP_5_1", "GP_5_2";
- 		bias-pull-up;
+ 	/* Disable DVO */
+ 	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xa3, 0xcf, 0x00);
 
 
 
