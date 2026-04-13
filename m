@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-236624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2O35A90Y3Wn3ZwkAu9opvQ
-	(envelope-from <stable+bounces-236624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:01 +0200
+	id 0D5pKLkk3WlSaQkAu9opvQ
+	(envelope-from <stable+bounces-237108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C614C3EEDA2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7503F110E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E1415301DA4B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0352531445C4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B433C30BBAE;
-	Mon, 13 Apr 2026 16:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A477A30BF68;
+	Mon, 13 Apr 2026 16:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPAiqxlx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwVpS/y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FF124DCF6;
-	Mon, 13 Apr 2026 16:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64114280CFB;
+	Mon, 13 Apr 2026 16:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097386; cv=none; b=IVVfCoT4JHL/RT4AoFcIQfgv/Ad19hBBVpvLrLdENhmjOeyKVvawZCK5JVgVnVxGx1RAQFRlkFj/MOgCW1FSjSLWSznFFxhmvHyzr7bepK4XtYzIitZ4DIl3iJ0s/Jcbx5ZNRsZLAfjups7j/o8uY+AHWP729bUoy3FRie5rj1Y=
+	t=1776098609; cv=none; b=QGUXbtiXduUdMan03A5+LIwXZU1KHrU7ny//yuiaDelpMs12SI/9aZ4Z5lUwsu9SYyHTevPbfQ8yEWwL+c79BIPsrRf3oxfp0KVzMfiAtG08UL2ayNvkXWU/QwNYUrGy2vX7wuqG6YoAdoXPerVRk/+8N0jfltGiWNcSUBbHVfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097386; c=relaxed/simple;
-	bh=NHTpzRwzAlrmLz1N1fuTUp+MUsOfZNxxe4UI8px6R3o=;
+	s=arc-20240116; t=1776098609; c=relaxed/simple;
+	bh=suMYbWd0nfbr/qlcHdb3j2W4U2BZQmJmYv0YoOOygiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYM/eUNu7WoDIYbPBZEtEcXbYIY8mfr2F8R0bq5r6vIE5txfjI0OyysC/eLltgMs+RvmDYw5x1NG+Kwmdtko6E9B05ndpJhV4V9S5aHC6je3Sgx+YRkMsSGibWFpCR2OLdaXLq4aX3soYXa+DO2m4cdQ2hxwY8kn/KyIumnTQ5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPAiqxlx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC04C2BCAF;
-	Mon, 13 Apr 2026 16:23:05 +0000 (UTC)
+	 MIME-Version; b=s1GqHg7cjWDJkwQeMveCnl0G6R7hW394O+EE2BWr21odrS4aU4Wabr88aoxnuhZLUGV2Y+/uNWT50bOdLYPo28Kna69VI+OcRjJEeIlWxjNjQ21gdF6Zl6P4O8LOIyfXbNEtTP+LHV78NmD16e0HpH0GxUabcPeXcQdeGiabcgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwVpS/y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E10C2BCAF;
+	Mon, 13 Apr 2026 16:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097386;
-	bh=NHTpzRwzAlrmLz1N1fuTUp+MUsOfZNxxe4UI8px6R3o=;
+	s=korg; t=1776098609;
+	bh=suMYbWd0nfbr/qlcHdb3j2W4U2BZQmJmYv0YoOOygiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPAiqxlxy7kouJXuNWgSwWjL2q/RyXF7myoTDDRGN/w7IvLmTyESdD1HqZ3cGCFr1
-	 kMzxlFzA2/+25pyYE3lkjsqwfV7kU4QIdOaINGMDNo76i4TnIfOgBkHlliPRMaP6l1
-	 vaRzwd9GIFMH4KTkCC9CnU1ZEe3qaXDGoH2bPCMU=
+	b=UwVpS/y5oIo7gqMM9+rGN7vFwcUmm7Nw4Btnecr7VpCzXWLzEadT1PyQfc73saUzT
+	 1QfN6gUj68OgbN4r/Wn8+dYOe2GOmB1eZlj/TAld0W79XXea4AvoglWQn46aao7SLF
+	 SHc1ngvupTqfNKyqZ7+URiG28t7VWFFxtLPvuyCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Dull <monderasdor@gmail.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Ben Hutchings <benh@debian.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/570] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
-Date: Mon, 13 Apr 2026 17:54:06 +0200
-Message-ID: <20260413155834.751474752@linuxfoundation.org>
+Subject: [PATCH 5.10 002/491] ip6_tunnel: Fix usage of skb_vlan_inet_prepare()
+Date: Mon, 13 Apr 2026 17:54:07 +0200
+Message-ID: <20260413155819.141850594@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +67,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236624-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-237108-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: C614C3EEDA2
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,decadent.org.uk:email]
+X-Rspamd-Queue-Id: EB7503F110E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
+Backports of commit 81c734dae203 "ip6_tunnel: use
+skb_vlan_inet_prepare() in __ip6_tnl_rcv()" broke IPv6 tunnelling in
+stable branches 5.10-6.12 inclusive.  This is because the return value
+of skb_vlan_inet_prepare() had the opposite sense (0 for error rather
+than for success) before commit 9990ddf47d416 "net: tunnel: make
+skb_vlan_inet_prepare() return drop reasons".
 
-nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
-entry from the queue data structures, taking ownership of the entry.
-For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
-attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
-present but NFQA_VLAN_TCI missing), the function returns immediately
-without freeing the dequeued entry or its sk_buff.
+For branches including commit c504e5c2f964 "net: skb: introduce
+kfree_skb_reason()" etc. (i.e. 6.1 and newer) it was simple to
+backport commit 9990ddf47d416, but for 5.10 and 5.15 that doesn't seem
+to be practical.
 
-This leaks the nf_queue_entry, its associated sk_buff, and all held
-references (net_device refcounts, struct net refcount).  Repeated
-triggering exhausts kernel memory.
+So just reverse the sense of the return value test here.
 
-Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
-on the error path, consistent with other error handling in this file.
-
-Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
-Reviewed-by: David Dull <monderasdor@gmail.com>
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: f9c5c5b791d3 ("ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()")
+Fixes: 64c71d60a21a ("ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()")
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_queue.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_tunnel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index d5f5b93a99a08..3925fcb7a222c 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -1250,8 +1250,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 855622a6a304f..e8c4e02e75d43 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -876,7 +876,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
  
- 	if (entry->state.pf == PF_BRIDGE) {
- 		err = nfqa_parse_bridge(entry, nfqa);
--		if (err < 0)
-+		if (err < 0) {
-+			nfqnl_reinject(entry, NF_DROP);
- 			return err;
-+		}
- 	}
+ 	skb_reset_network_header(skb);
  
- 	if (nfqa[NFQA_PAYLOAD]) {
+-	if (skb_vlan_inet_prepare(skb, true)) {
++	if (!skb_vlan_inet_prepare(skb, true)) {
+ 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+ 		DEV_STATS_INC(tunnel->dev, rx_errors);
+ 		goto drop;
 -- 
 2.51.0
 
