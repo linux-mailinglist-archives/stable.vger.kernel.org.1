@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-237152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDiJOCIe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:30 +0200
+	id OJrTJ2MZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB803EFCD3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8033EEF56
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2F742301906F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD36D3020742
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52B5314A6B;
-	Mon, 13 Apr 2026 16:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CF43090F5;
+	Mon, 13 Apr 2026 16:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moBr1wgY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/8QjPs6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8926313535;
-	Mon, 13 Apr 2026 16:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F332E11B9;
+	Mon, 13 Apr 2026 16:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098722; cv=none; b=oZoNXYry//uPoQYGn3Ucz6OsHrXh2nRokmfaIcrzQoYm+luG+GGN49ZozQzj10qLVlx0gs50kNTZAxDATs2cNGHdPRHhMrbus2MDgPRkG6y8E7PAlX4ly5yCexDg0v+9ZP0tKyzgS95YUx/NKqmWz4ozLoYjqsVs1o8I9PnK9Hg=
+	t=1776097545; cv=none; b=NkK7sAuoD9Cs7vkip4bgmBCe32fNiga2t2ZXW8pxEGkVTn7CE6ODBMdai2Ow0Q1xCk7Wit/Wpm5N7LHoYkPWJsbO2cbX5k1qplXzn6dr9GusowOU4JDPl7RB5q3hhggto8I0w4zXBvrHpBg2vZTC4P8449eXnj8V8ZAa3ShlAr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098722; c=relaxed/simple;
-	bh=05/JKXehflWoOKHu2N2fOfItz9YZsU4C3u3h/sHMVwc=;
+	s=arc-20240116; t=1776097545; c=relaxed/simple;
+	bh=K/GU9mEWgR0clouEsa4+jF/HxePxHIZPbYYX+4V+rUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjDe/P4ETmitiBOZz6SF7gFvi9vDCMLf/B/0shKvQezNe77pA5wrw+0s4TaqXE7+GeJh/ahEj4DNXymlWz2W7UiuJHXTJKJ7tGTm+WJMe0LSzweFWyHMWtbItLmx2DRtQgrSink7aR+JR0lqeEEohr6QmyKvgygNQCb4ym0DiyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moBr1wgY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F03FC2BCAF;
-	Mon, 13 Apr 2026 16:45:22 +0000 (UTC)
+	 MIME-Version; b=c/gtw15NafcSQp3tVGOi351gQ+UnS+U/8cRn0B2/Lp5Xc/7584BE5mbfXbSY5OvNYtVlFNefS90Dre+JaNa3qWUa0wULXznKhyN/CTp7JMFZAo2o+XVDDMkkkpkiG0Z3WtW9SrA1ULkbeipha1eiI3+qIzGmxo/g1uoAKqaNr1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/8QjPs6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E75DC2BCAF;
+	Mon, 13 Apr 2026 16:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098722;
-	bh=05/JKXehflWoOKHu2N2fOfItz9YZsU4C3u3h/sHMVwc=;
+	s=korg; t=1776097545;
+	bh=K/GU9mEWgR0clouEsa4+jF/HxePxHIZPbYYX+4V+rUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moBr1wgYsmmV86NR1MAZlpDT6+XvqWsJl3PVyYi54v+0w1VBBudQd6FaxVM6VM9zl
-	 E6YQgYdMn6LmUqAcKOVFrI4VCL9pdsiKQ+2Yxn764Mpu4iD4G18vEjwTfKFvEfacCy
-	 ZW6rxbwc9GVOcO6PU6fnAYLsvPnWzNCp2oujK8kQ=
+	b=0/8QjPs6cMAO3hsDojNrnFAprfrr4qEnxbYPiLDP05309D7OerSmwKLIisocVmEP/
+	 Qy3kYgPwc06OscfEJHep/ArepwouGceXln+I/OikVFdAjD4XIgZVx3CDZb9gbC8CMi
+	 u1O3UYGXokOFetmvVMg8XYEAKL8ZLet8fkaws3mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/491] net/sched: teql: fix NULL pointer dereference in iptunnel_xmit on TEQL slave xmit
-Date: Mon, 13 Apr 2026 17:55:08 +0200
-Message-ID: <20260413155821.407310022@linuxfoundation.org>
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 5.15 178/570] x86/apic: Disable x2apic on resume if the kernel expects so
+Date: Mon, 13 Apr 2026 17:55:09 +0200
+Message-ID: <20260413155837.124789016@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,107 +75,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237152-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236687-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: 8FB803EFCD3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alien8.de:email,intel.com:email]
+X-Rspamd-Queue-Id: 6B8033EEF56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
 
-[ Upstream commit 0cc0c2e661af418bbf7074179ea5cfffc0a5c466 ]
+commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
 
-teql_master_xmit() calls netdev_start_xmit(skb, slave) to transmit
-through slave devices, but does not update skb->dev to the slave device
-beforehand.
+When resuming from s2ram, firmware may re-enable x2apic mode, which may have
+been disabled by the kernel during boot either because it doesn't support IRQ
+remapping or for other reasons. This causes the kernel to continue using the
+xapic interface, while the hardware is in x2apic mode, which causes hangs.
+This happens on defconfig + bare metal + s2ram.
 
-When a gretap tunnel is a TEQL slave, the transmit path reaches
-iptunnel_xmit() which saves dev = skb->dev (still pointing to teql0
-master) and later calls iptunnel_xmit_stats(dev, pkt_len). This
-function does:
+Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
+disabled, i.e. when x2apic_mode = 0.
 
-    get_cpu_ptr(dev->tstats)
+The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
+pre-sleep configuration or initial boot configuration for each CPU, including
+MSR state:
 
-Since teql_master_setup() does not set dev->pcpu_stat_type to
-NETDEV_PCPU_STAT_TSTATS, the core network stack never allocates tstats
-for teql0, so dev->tstats is NULL. get_cpu_ptr(NULL) computes
-NULL + __per_cpu_offset[cpu], resulting in a page fault.
+  When executing from the power-on reset vector as a result of waking from an
+  S2 or S3 sleep state, the platform firmware performs only the hardware
+  initialization required to restore the system to either the state the
+  platform was in prior to the initial operating system boot, or to the
+  pre-sleep configuration state. In multiprocessor systems, non-boot
+  processors should be placed in the same state as prior to the initial
+  operating system boot.
 
- BUG: unable to handle page fault for address: ffff8880e6659018
- #PF: supervisor write access in kernel mode
- #PF: error_code(0x0002) - not-present page
- PGD 68bc067 P4D 68bc067 PUD 0
- Oops: Oops: 0002 [#1] SMP KASAN PTI
- RIP: 0010:iptunnel_xmit (./include/net/ip_tunnels.h:664 net/ipv4/ip_tunnel_core.c:89)
- Call Trace:
-  <TASK>
-  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
-  __gre_xmit (net/ipv4/ip_gre.c:478)
-  gre_tap_xmit (net/ipv4/ip_gre.c:779)
-  teql_master_xmit (net/sched/sch_teql.c:319)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  sch_direct_xmit (net/sched/sch_generic.c:347)
-  __dev_queue_xmit (net/core/dev.c:4802)
-  neigh_direct_output (net/core/neighbour.c:1660)
-  ip_finish_output2 (net/ipv4/ip_output.c:237)
-  __ip_finish_output.part.0 (net/ipv4/ip_output.c:315)
-  ip_mc_output (net/ipv4/ip_output.c:369)
-  ip_send_skb (net/ipv4/ip_output.c:1508)
-  udp_send_skb (net/ipv4/udp.c:1195)
-  udp_sendmsg (net/ipv4/udp.c:1485)
-  inet_sendmsg (net/ipv4/af_inet.c:859)
-  __sys_sendto (net/socket.c:2206)
+  (further ahead)
 
-Fix this by setting skb->dev = slave before calling
-netdev_start_xmit(), so that tunnel xmit functions see the correct
-slave device with properly allocated tstats.
+  If this is an S2 or S3 wake, then the platform runtime firmware restores
+  minimum context of the system before jumping to the waking vector. This
+  includes:
 
-Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260304044216.3517851-3-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	CPU configuration. Platform runtime firmware restores the pre-sleep
+	configuration or initial boot configuration of each CPU (MSR, MTRR,
+	firmware update, SMBase, and so on). Interrupts must be disabled (for
+	IA-32 processors, disabled by CLI instruction).
+
+	(and other things)
+
+So at least as per the spec, re-enablement of x2apic by the firmware is
+allowed if "x2apic on" is a part of the initial boot configuration.
+
+  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
+
+  [ bp: Massage. ]
+
+Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_teql.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/apic/apic.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index e9dfa140799c3..4c65b4ed5ccd3 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -315,6 +315,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
- 			if (__netif_tx_trylock(slave_txq)) {
- 				unsigned int length = qdisc_pkt_len(skb);
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1916,6 +1916,7 @@ early_initcall(validate_x2apic);
  
-+				skb->dev = slave;
- 				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
- 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
- 				    NETDEV_TX_OK) {
--- 
-2.51.0
-
+ static inline void try_to_enable_x2apic(int remap_mode) { }
+ static inline void __x2apic_enable(void) { }
++static inline void __x2apic_disable(void) { }
+ #endif /* !CONFIG_X86_X2APIC */
+ 
+ void __init enable_IR_x2apic(void)
+@@ -2726,6 +2727,11 @@ static void lapic_resume(void)
+ 	if (x2apic_mode) {
+ 		__x2apic_enable();
+ 	} else {
++		if (x2apic_enabled()) {
++			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
++			__x2apic_disable();
++		}
++
+ 		/*
+ 		 * Make sure the APICBASE points to the right address
+ 		 *
 
 
 
