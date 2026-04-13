@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-237360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBvPBeYj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:06 +0200
+	id QBB8Cz4b3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4700E3F0F8A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC133EF4F3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B006B309BB19
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5AF8301DA52
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3C3313298;
-	Mon, 13 Apr 2026 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750D32F90C5;
+	Mon, 13 Apr 2026 16:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zU8VGpG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAmiOvhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A218531714F;
-	Mon, 13 Apr 2026 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B8F2E54D1;
+	Mon, 13 Apr 2026 16:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099253; cv=none; b=jJCh5PSpLhgg3gssTouoehtTP9M6mm/qH+As61L/0ZgjQSQ3pXH2DkOY4O5BWqnAVr667XdN4tHmXbwB8knBaROtxI60yq4pgB+Ak1rdhU+kJnVTUxN9+cKthyB7x1bX8tcYE7WCzt2ymkLwx7vopw9Klj51s/7zv1XsS2InM7Q=
+	t=1776098074; cv=none; b=RglUqo7WgYEeRw7BgmHmfYjDprotK4BAT8Yu1xpEdmvO5bAxzPks3qOlQcyNwXJvMvxeKtveCA+r7g16S3nspkFm+QbsFpMWpmvWmnK4WnRXHCLeGyZlS+AFRcdeF+VMIGsuEDM+4jNJo3U4putm93f2I79rqCn22ArA8CymF48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099253; c=relaxed/simple;
-	bh=+rpgd452iUSBFpF/4TEVnH5qXNfJJiIDI6n+dPRh3mo=;
+	s=arc-20240116; t=1776098074; c=relaxed/simple;
+	bh=1R90otRC61UKouH7tMOYWBtXrzlxFordpLyWgodLGEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CV9Yj/VxjBQt5PPpby1qqyBgtpWwLQSMJ3fBDsyt1WN/zZ/UfHuvSUsQgMZ2mCaQOj8Oxrw7byzUedSQf36/Tu7mRqRyYLRJYcWMf8FNLDDNYTKUFEJJqXJSe2yprWA1j4zRGtKn41HZSWo1YhgTwnSz/6fsVZuh7L/OfFqvo00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zU8VGpG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376D8C2BCAF;
-	Mon, 13 Apr 2026 16:54:13 +0000 (UTC)
+	 MIME-Version; b=eJXkYkAIWL31RJM94NIECOlXo0s1lYo2dWTP5/FVhxnmZhuMYtbniOpvkBowb2tQjM00aCkvfeyfWFMQ0D61l1sOO8R428cwU9zNRWKSGFcYuyVGYabJwcHmAaVDE8U1ZusBkZFko2ExuD7VKLenssQwpU5TqvZr7OJthRwdGOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAmiOvhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E0FC2BCB0;
+	Mon, 13 Apr 2026 16:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099253;
-	bh=+rpgd452iUSBFpF/4TEVnH5qXNfJJiIDI6n+dPRh3mo=;
+	s=korg; t=1776098073;
+	bh=1R90otRC61UKouH7tMOYWBtXrzlxFordpLyWgodLGEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zU8VGpG4v2jC2AUGFgOz22HiZKb4924F3bpI/8QfKFuX4rxd3pbQo12L71hYXNw00
-	 4kIcEIBAUfiG8QLwF1OXcxUHXEJQKmlPnjmNJyrZWB8OWkIrBWcLYvuQ9TlQbug9I6
-	 h4ZYAn5XMr/RJwEbkQp2Y9FZCLSs1LjyZGgLFAes=
+	b=CAmiOvhdOEaAhCGdQdCSH1B9HbYKYPNgd96FJKiaxNNZYIACRZpBQkQKWnvEOuAPa
+	 GXaXMeKfObxynmK86WM/DYSzzFUkO94exHC+d64skonO5wjhntqwApViXSNweTj6Cj
+	 phF4B0v8Sb1Ygyz8u9o5fIhLxuQwe2ubCCSzPoCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/491] netfilter: nf_conntrack_expect: skip expectations in other netns via proc
-Date: Mon, 13 Apr 2026 17:58:34 +0200
-Message-ID: <20260413155829.120948440@linuxfoundation.org>
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.15 384/570] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
+Date: Mon, 13 Apr 2026 17:58:35 +0200
+Message-ID: <20260413155844.863584974@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +71,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236897-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237360-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4700E3F0F8A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.cz:email,alibaba.com:email]
+X-Rspamd-Queue-Id: CDC133EF4F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Baokun Li <libaokun@linux.alibaba.com>
 
-[ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
+commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 upstream.
 
-Skip expectations that do not reside in this netns.
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
 
-Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
-conntrack entries via proc").
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
 
-Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
+
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
+
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
+
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_expect.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/fast_commit.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index 516a9f05a87a7..e53e225d9489f 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -607,11 +607,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
- {
- 	struct nf_conntrack_expect *expect;
- 	struct nf_conntrack_helper *helper;
-+	struct net *net = seq_file_net(s);
- 	struct hlist_node *n = v;
- 	char *delim = "";
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1582,19 +1582,21 @@ static int ext4_fc_replay_inode(struct s
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
  
- 	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		ext4_debug("Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
+ 	}
  
-+	if (!net_eq(nf_ct_exp_net(expect), net))
-+		return 0;
-+
- 	if (expect->timeout.function)
- 		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
- 			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
--- 
-2.51.0
-
+ 	/*
+@@ -1610,13 +1612,14 @@ static int ext4_fc_replay_inode(struct s
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /*
 
 
 
