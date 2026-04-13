@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEtuAykl3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:29 +0200
+	id oEuWDxQh3Wn5aAkAu9opvQ
+	(envelope-from <stable+bounces-236686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5913F11BD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F393F075D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 222F231F245B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0622306F5D3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FB6314A8E;
-	Mon, 13 Apr 2026 16:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E233093CF;
+	Mon, 13 Apr 2026 16:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DL3t62mA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9ay8Ggf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4A4313298;
-	Mon, 13 Apr 2026 16:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580062E11B9;
+	Mon, 13 Apr 2026 16:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098720; cv=none; b=k3CVeo2BCIbSGbOtbJb5UJhrl3uTocdbwfi+9Dbe5sl4kR0Y33/CVqcAnPkcHBk4D6vp4J9vX1ANJlMzkWtBFg1sAnkRJsRSF+Sd2tJnY6FYKxssyv6Pn/nW0KUpTvJQ88pJ0xzoLf/5m3o30qansaGkULYbxV+QW85rFK8KcfM=
+	t=1776097543; cv=none; b=L6HGh2UYQqxgc0DTfD7qC4y3wdO1SHRIJ/8ugQ7VwnpX5MpWf6YCBvxQf/wvg2A7+sACpBomkRRERxxp3VJMc5YHNMKou+YCAf/B8yz9sxNYCnTft/ZySyb/9CkSlvHUcmTV3fys1m39mGDjSfuo3/Tyo+yBOPbliqrmOu5dCx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098720; c=relaxed/simple;
-	bh=c340HEZl+Ex4+drztkhxBeafVaYlq2k2jiJWLtL9N+4=;
+	s=arc-20240116; t=1776097543; c=relaxed/simple;
+	bh=fRmrnudce4AhCHpmffNm52D4qilj4rLm8f1obFKjrmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIzd5CmxSgioNfxWbxHxR0JuD3SDofasxPd916cbHFJeT4tzoH9Yi4VYcTovweeS8VA2/lsbqUbUZOEaE/WDA+xFoJKoi5pr4eYEkFki8yv3rtK2yLewluYw9a8ApUCgj3VN22Q/R0PTkOZmVxDs87OFEi7PFwYbl+0D72qd/14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DL3t62mA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A1BC2BCAF;
-	Mon, 13 Apr 2026 16:45:19 +0000 (UTC)
+	 MIME-Version; b=iC/BcLsUN8aQpgSNnvdvIj47qwbtu/2WDifKlHZhhmjGWB5Wn4cXYIzOmdBal3Pz7DHiQkGDQRNgqca0Wj5nDvtGK/r2UvhBk9pLgBiDdQaPajWe+5T+aeKGLepNXxOs4gez8O/28EVwU14Wb021JP1DirP0afHyB4TkLt/ZMCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9ay8Ggf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E291EC2BCAF;
+	Mon, 13 Apr 2026 16:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098720;
-	bh=c340HEZl+Ex4+drztkhxBeafVaYlq2k2jiJWLtL9N+4=;
+	s=korg; t=1776097543;
+	bh=fRmrnudce4AhCHpmffNm52D4qilj4rLm8f1obFKjrmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DL3t62mANqHjTYh3wGX1TxdrWlvDW09cWj+2mJjJXwBjsU6vwjFS0gABa0c7mm5Jn
-	 Q9UnecleR/oSO9wu3wL65lqBxnJ3A6D29TVz5yBAszBwRdLUDesJ4b/AhYWc9LAHpx
-	 sQk6rceZS4mfq6lRvfiqayHI9jm0a5fFYfXQn/TI=
+	b=P9ay8GgfnVubSKyPWyZd1UfDn4vC95RlzN7FpgiEEGE6FUucNHS9XEFlH0e9ZkDfX
+	 8AapFCnK0C5h/mZ4c5aIjwlo46Uq/g/CaCPCFOOou1WyWgQeeik20FwL4BeD7nPQaw
+	 Vgt09RBTpz8VyMWszpED6epHk0xHD0Xg61ipIx/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/491] net/mlx5e: Fix DMA FIFO desync on error CQE SQ recovery
-Date: Mon, 13 Apr 2026 17:55:07 +0200
-Message-ID: <20260413155821.369629181@linuxfoundation.org>
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 177/570] scsi: core: Fix error handling for scsi_alloc_sdev()
+Date: Mon, 13 Apr 2026 17:55:08 +0200
+Message-ID: <20260413155837.087422683@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237151-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236686-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,95 +88,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 5B5913F11BD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: 94F393F075D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-[ Upstream commit 1633111d69053512d099658d4a05fc736fab36b0 ]
+commit 4ce7ada40c008fa21b7e52ab9d04e8746e2e9325 upstream.
 
-In case of a TX error CQE, a recovery flow is triggered,
-mlx5e_reset_txqsq_cc_pc() resets dma_fifo_cc to 0 but not dma_fifo_pc,
-desyncing the DMA FIFO producer and consumer.
+After scsi_sysfs_device_initialize() was called, error paths must call
+__scsi_remove_device().
 
-After recovery, the producer pushes new DMA entries at the old
-dma_fifo_pc, while the consumer reads from position 0.
-This causes us to unmap stale DMA addresses from before the recovery.
-
-The DMA FIFO is a purely software construct with no HW counterpart.
-At the point of reset, all WQEs have been flushed so dma_fifo_cc is
-already equal to dma_fifo_pc. There is no need to reset either counter,
-similar to how skb_fifo pc/cc are untouched.
-
-Remove the 'dma_fifo_cc = 0' reset.
-
-This fixes the following WARNING:
-    WARNING: CPU: 0 PID: 0 at drivers/iommu/dma-iommu.c:1240 iommu_dma_unmap_page+0x79/0x90
-    Modules linked in: mlx5_vdpa vringh vdpa bonding mlx5_ib mlx5_vfio_pci ipip mlx5_fwctl tunnel4 mlx5_core ib_ipoib geneve ip6_gre ip_gre gre nf_tables ip6_tunnel rdma_ucm ib_uverbs ib_umad vfio_pci vfio_pci_core act_mirred act_skbedit act_vlan vhost_net vhost tap ip6table_mangle ip6table_nat ip6table_filter ip6_tables iptable_mangle cls_matchall nfnetlink_cttimeout act_gact cls_flower sch_ingress vhost_iotlb iptable_raw tunnel6 vfio_iommu_type1 vfio openvswitch nsh rpcsec_gss_krb5 auth_rpcgss oid_registry xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter overlay zram zsmalloc rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core fuse [last unloaded: nf_tables]
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5_for_upstream_min_debug_2024_12_30_21_33 #1
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:iommu_dma_unmap_page+0x79/0x90
-    Code: 2b 4d 3b 21 72 26 4d 3b 61 08 73 20 49 89 d8 44 89 f9 5b 4c 89 f2 4c 89 e6 48 89 ef 5d 41 5c 41 5d 41 5e 41 5f e9 c7 ae 9e ff <0f> 0b 5b 5d 41 5c 41 5d 41 5e 41 5f c3 66 2e 0f 1f 84 00 00 00 00
-    Call Trace:
-     <IRQ>
-     ? __warn+0x7d/0x110
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? report_bug+0x16d/0x180
-     ? handle_bug+0x4f/0x90
-     ? exc_invalid_op+0x14/0x70
-     ? asm_exc_invalid_op+0x16/0x20
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? iommu_dma_unmap_page+0x2e/0x90
-     dma_unmap_page_attrs+0x10d/0x1b0
-     mlx5e_tx_wi_dma_unmap+0xbe/0x120 [mlx5_core]
-     mlx5e_poll_tx_cq+0x16d/0x690 [mlx5_core]
-     mlx5e_napi_poll+0x8b/0xac0 [mlx5_core]
-     __napi_poll+0x24/0x190
-     net_rx_action+0x32a/0x3b0
-     ? mlx5_eq_comp_int+0x7e/0x270 [mlx5_core]
-     ? notifier_call_chain+0x35/0xa0
-     handle_softirqs+0xc9/0x270
-     irq_exit_rcu+0x71/0xd0
-     common_interrupt+0x7f/0xa0
-     </IRQ>
-     <TASK>
-     asm_common_interrupt+0x22/0x40
-
-Fixes: db75373c91b0 ("net/mlx5e: Recover Send Queue (SQ) from error state")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305142634.1813208-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1ac22c8eae81 ("scsi: core: Fix refcount leak for tagset_refcnt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260304164603.51528-1-junxiao.bi@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/scsi/scsi_scan.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-index 13dd34c571b9f..ce533e7d679a8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -28,7 +28,6 @@ static void mlx5e_reset_txqsq_cc_pc(struct mlx5e_txqsq *sq)
- 		  "SQ 0x%x: cc (0x%x) != pc (0x%x)\n",
- 		  sq->sqn, sq->cc, sq->pc);
- 	sq->cc = 0;
--	sq->dma_fifo_cc = 0;
- 	sq->pc = 0;
- }
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -339,12 +339,8 @@ static struct scsi_device *scsi_alloc_sd
+ 	 * default device queue depth to figure out sbitmap shift
+ 	 * since we use this queue depth most of times.
+ 	 */
+-	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
+-		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
+-		put_device(&starget->dev);
+-		kfree(sdev);
+-		goto out;
+-	}
++	if (scsi_realloc_sdev_budget_map(sdev, depth))
++		goto out_device_destroy;
  
--- 
-2.51.0
-
+ 	scsi_change_queue_depth(sdev, depth);
+ 
 
 
 
