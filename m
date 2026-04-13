@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-236587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YH2MBK0d3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:33 +0200
+	id oMMjCrQd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F593EFB5A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E0E3EFB79
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50F64301F9AF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:21:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F93D3028355
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485BB2FFFBE;
-	Mon, 13 Apr 2026 16:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D9A2FFFBE;
+	Mon, 13 Apr 2026 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gp8Da2CX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQv8NM43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E732E11B9;
-	Mon, 13 Apr 2026 16:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E6426CE32;
+	Mon, 13 Apr 2026 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097291; cv=none; b=dh5wLg/NQ2Ct1KsRUpNPIY1vDpD9ehFGRWVYKzk28YOomJ/BOX3oapQHhg9n4ElCCWo8FKqLRVQe9OL1AtLsdtx2SWMNwKGkP1g0+YknBekklFcXHB/LcxBjtqn+daW3l+PoORe4LYVXZfksZCpVxA8Z5zmMJpSuzTXvYMAh0OU=
+	t=1776097296; cv=none; b=tsUJvyhMT7gaCwy1oWeJQBwbUgpvVokCDrBop0bamExO1fIPVjcEj8VVzhddyDITddbvwq6KuRLDZECbap7FlPGqB41iGgltpFVaE9GSAz/kSHXxXgUbPgBzG+ybmoh+2r7WwObv6oRdkE2xTjL27Y+E7Alc3YV4TeuTAoK3Iu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097291; c=relaxed/simple;
-	bh=sGkezUqRDfVq7r76w5vmK9mo2aY0/CPY2zli/ixk620=;
+	s=arc-20240116; t=1776097296; c=relaxed/simple;
+	bh=yHYM6cYqrgvQXDLPHmyPh3Vf3mNKxJYZnrGOjIfQRjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwV4Fju5ysakBSrt5BsQOI3boNAr3t1SIpbFSsAHRkEhnGO+Rb1x4gWYWBnQc94+pUelccQlVr9qgt8+4dVu+ovJTnzeeAi5VZnFfPhN3mF2YF3ZMv4dYp59NpCD9coPuZiL/sKciEkiY3JL8HRzZ9FtRxtpcsV5mvDKiLjG8Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gp8Da2CX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927C9C2BCAF;
-	Mon, 13 Apr 2026 16:21:30 +0000 (UTC)
+	 MIME-Version; b=GxX8JF/HbJGvxjlrVyAF960Y2/2NhoYVW+mzgBQXWxvnxRnwY+ryCjrTUg0xwqzFKn7bqrGPfF5uS5vFUrt4cxSbw+br4wq8+29mGlZzgVzecRJpkAWiOotRKbPQgVMnC+2lSD5ly5JBHbY0hk7yu6aAgJy4L91eGsTXH2X4sSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQv8NM43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA6AC2BCAF;
+	Mon, 13 Apr 2026 16:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097290;
-	bh=sGkezUqRDfVq7r76w5vmK9mo2aY0/CPY2zli/ixk620=;
+	s=korg; t=1776097296;
+	bh=yHYM6cYqrgvQXDLPHmyPh3Vf3mNKxJYZnrGOjIfQRjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gp8Da2CXH4VVr+s/NKMqlB5Ns6xvcao3yrB9i1lS1phlGfKKZ6vdfi7DSoYyIvy07
-	 MvOK0/VdQLzH3d1V1qTgdy9iopIieSUqfNQWhi+Zt+u2Afiwn3a0k26JEL9Xu5gvL2
-	 UPhn70XEc/Gxdp22wMyxctVnEQ+/Bg5h1RTYLCU8=
+	b=lQv8NM43R4hWEkLBwzx5wHVJpbsFQYv6miz9TMpjviRnrAlfD2OqsuEcWQuKXVheO
+	 oG1V/Tvc6NOygwXzGy0xkkWVn51EuCVePheuUNUpPKvRj+JCWe1Yzs3HXQYophnTao
+	 L+dfnLH2PoOzCtALW5jyaPEh9Lj2KYGn1V2MK7aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Koichiro Den <den@valinux.co.jp>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/570] amd-xgbe: fix sleep while atomic on suspend/resume
-Date: Mon, 13 Apr 2026 17:53:30 +0200
-Message-ID: <20260413155833.400917769@linuxfoundation.org>
+Subject: [PATCH 5.15 080/570] net: sched: avoid qdisc_reset_all_tx_gt() vs dequeue race for lockless qdiscs
+Date: Mon, 13 Apr 2026 17:53:31 +0200
+Message-ID: <20260413155833.438344312@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236587-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236589-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 93F593EFB5A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,valinux.co.jp:email]
+X-Rspamd-Queue-Id: 84E0E3EFB79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,118 +99,110 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit e2f27363aa6d983504c6836dd0975535e2e9dba0 ]
+[ Upstream commit 7f083faf59d14c04e01ec05a7507f036c965acf8 ]
 
-The xgbe_powerdown() and xgbe_powerup() functions use spinlocks
-(spin_lock_irqsave) while calling functions that may sleep:
-- napi_disable() can sleep waiting for NAPI polling to complete
-- flush_workqueue() can sleep waiting for pending work items
+When shrinking the number of real tx queues,
+netif_set_real_num_tx_queues() calls qdisc_reset_all_tx_gt() to flush
+qdiscs for queues which will no longer be used.
 
-This causes a "BUG: scheduling while atomic" error during suspend/resume
-cycles on systems using the AMD XGBE Ethernet controller.
+qdisc_reset_all_tx_gt() currently serializes qdisc_reset() with
+qdisc_lock(). However, for lockless qdiscs, the dequeue path is
+serialized by qdisc_run_begin/end() using qdisc->seqlock instead, so
+qdisc_reset() can run concurrently with __qdisc_run() and free skbs
+while they are still being dequeued, leading to UAF.
 
-The spinlock protection in these functions is unnecessary as these
-functions are called from suspend/resume paths which are already serialized
-by the PM core
+This can easily be reproduced on e.g. virtio-net by imposing heavy
+traffic while frequently changing the number of queue pairs:
 
-Fix this by removing the spinlock. Since only code that takes this lock
-is xgbe_powerdown() and xgbe_powerup(), remove it completely.
+  iperf3 -ub0 -c $peer -t 0 &
+  while :; do
+    ethtool -L eth0 combined 1
+    ethtool -L eth0 combined 2
+  done
 
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260302042124.1386445-1-Raju.Rangoju@amd.com
+With KASAN enabled, this leads to reports like:
+
+  BUG: KASAN: slab-use-after-free in __qdisc_run+0x133f/0x1760
+  ...
+  Call Trace:
+   <TASK>
+   ...
+   __qdisc_run+0x133f/0x1760
+   __dev_queue_xmit+0x248f/0x3550
+   ip_finish_output2+0xa42/0x2110
+   ip_output+0x1a7/0x410
+   ip_send_skb+0x2e6/0x480
+   udp_send_skb+0xb0a/0x1590
+   udp_sendmsg+0x13c9/0x1fc0
+   ...
+   </TASK>
+
+  Allocated by task 1270 on cpu 5 at 44.558414s:
+   ...
+   alloc_skb_with_frags+0x84/0x7c0
+   sock_alloc_send_pskb+0x69a/0x830
+   __ip_append_data+0x1b86/0x48c0
+   ip_make_skb+0x1e8/0x2b0
+   udp_sendmsg+0x13a6/0x1fc0
+   ...
+
+  Freed by task 1306 on cpu 3 at 44.558445s:
+   ...
+   kmem_cache_free+0x117/0x5e0
+   pfifo_fast_reset+0x14d/0x580
+   qdisc_reset+0x9e/0x5f0
+   netif_set_real_num_tx_queues+0x303/0x840
+   virtnet_set_channels+0x1bf/0x260 [virtio_net]
+   ethnl_set_channels+0x684/0xae0
+   ethnl_default_set_doit+0x31a/0x890
+   ...
+
+Serialize qdisc_reset_all_tx_gt() against the lockless dequeue path by
+taking qdisc->seqlock for TCQ_F_NOLOCK qdiscs, matching the
+serialization model already used by dev_reset_queue().
+
+Additionally clear QDISC_STATE_NON_EMPTY after reset so the qdisc state
+reflects an empty queue, avoiding needless re-scheduling.
+
+Fixes: 6b3ba9146fe6 ("net: sched: allow qdiscs to handle locking")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Link: https://patch.msgid.link/20260228145307.3955532-1-den@valinux.co.jp
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 10 ----------
- drivers/net/ethernet/amd/xgbe/xgbe-main.c |  1 -
- drivers/net/ethernet/amd/xgbe/xgbe.h      |  3 ---
- 3 files changed, 14 deletions(-)
+ include/net/sch_generic.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 00312543f2267..046f38d4bac61 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1181,7 +1181,6 @@ int xgbe_powerdown(struct net_device *netdev, unsigned int caller)
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 55127305478df..dd6203f3f0a5e 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -742,13 +742,23 @@ static inline bool skb_skip_tc_classify(struct sk_buff *skb)
+ static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
  {
- 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
- 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
--	unsigned long flags;
+ 	struct Qdisc *qdisc;
++	bool nolock;
  
- 	DBGPR("-->xgbe_powerdown\n");
- 
-@@ -1192,8 +1191,6 @@ int xgbe_powerdown(struct net_device *netdev, unsigned int caller)
- 		return -EINVAL;
+ 	for (; i < dev->num_tx_queues; i++) {
+ 		qdisc = rtnl_dereference(netdev_get_tx_queue(dev, i)->qdisc);
+ 		if (qdisc) {
++			nolock = qdisc->flags & TCQ_F_NOLOCK;
++
++			if (nolock)
++				spin_lock_bh(&qdisc->seqlock);
+ 			spin_lock_bh(qdisc_lock(qdisc));
+ 			qdisc_reset(qdisc);
+ 			spin_unlock_bh(qdisc_lock(qdisc));
++			if (nolock) {
++				clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
++				clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
++				spin_unlock_bh(&qdisc->seqlock);
++			}
+ 		}
  	}
- 
--	spin_lock_irqsave(&pdata->lock, flags);
--
- 	if (caller == XGMAC_DRIVER_CONTEXT)
- 		netif_device_detach(netdev);
- 
-@@ -1209,8 +1206,6 @@ int xgbe_powerdown(struct net_device *netdev, unsigned int caller)
- 
- 	pdata->power_down = 1;
- 
--	spin_unlock_irqrestore(&pdata->lock, flags);
--
- 	DBGPR("<--xgbe_powerdown\n");
- 
- 	return 0;
-@@ -1220,7 +1215,6 @@ int xgbe_powerup(struct net_device *netdev, unsigned int caller)
- {
- 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
- 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
--	unsigned long flags;
- 
- 	DBGPR("-->xgbe_powerup\n");
- 
-@@ -1231,8 +1225,6 @@ int xgbe_powerup(struct net_device *netdev, unsigned int caller)
- 		return -EINVAL;
- 	}
- 
--	spin_lock_irqsave(&pdata->lock, flags);
--
- 	pdata->power_down = 0;
- 
- 	xgbe_napi_enable(pdata, 0);
-@@ -1247,8 +1239,6 @@ int xgbe_powerup(struct net_device *netdev, unsigned int caller)
- 
- 	xgbe_start_timers(pdata);
- 
--	spin_unlock_irqrestore(&pdata->lock, flags);
--
- 	DBGPR("<--xgbe_powerup\n");
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-main.c b/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-index a218dc6f2edd5..dfd1add6dbaac 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-@@ -185,7 +185,6 @@ struct xgbe_prv_data *xgbe_alloc_pdata(struct device *dev)
- 	pdata->netdev = netdev;
- 	pdata->dev = dev;
- 
--	spin_lock_init(&pdata->lock);
- 	spin_lock_init(&pdata->xpcs_lock);
- 	mutex_init(&pdata->rss_mutex);
- 	spin_lock_init(&pdata->tstamp_lock);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index 27fc9fb00cd73..998e56e1a7702 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -1050,9 +1050,6 @@ struct xgbe_prv_data {
- 	unsigned int pp3;
- 	unsigned int pp4;
- 
--	/* Overall device lock */
--	spinlock_t lock;
--
- 	/* XPCS indirect addressing lock */
- 	spinlock_t xpcs_lock;
- 	unsigned int xpcs_window_def_reg;
+ }
 -- 
 2.51.0
 
