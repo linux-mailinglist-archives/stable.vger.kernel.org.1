@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-237078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KzcMmUg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:09 +0200
+	id QJs9I1oc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AAD3F0526
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB583EF77D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E18BB30B2A5E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 842BC3215911
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF4430DEDD;
-	Mon, 13 Apr 2026 16:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401EA5C9E;
+	Mon, 13 Apr 2026 16:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xb6bTPqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6owg/52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3BB30C371;
-	Mon, 13 Apr 2026 16:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043951E9B3D;
+	Mon, 13 Apr 2026 16:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098531; cv=none; b=l6hoZ+k4pbeR1MGK0aaYdCCGKHONEumtjdflRHsKjb6oH+wFR/xx4IgPZkqea/EZ9E9TmXGgAxHWpbcEXYOzr4BWTqmweY89Ggn0gTwRqeBozCUWlCa2aSH4avbbFjPKtF7TDd+2uSaLEvdNdTqhAH4g/eldapFRDIdmkpc7jDM=
+	t=1776096929; cv=none; b=JhovwmsmYcAO5deYBGiBxJI7jchY/4n7Gm8aWIbAPnqQCoDJhFERaYTZY//YDBOvxljqVNbwEFKiiN3wz7tvamoR8LXZp50UTDuYvuFLjljGVEFwKaFA2jlFx3nfYB8PSoTWPd0PrSbdrKd3kdU1tfCq5WX6SdxCoPnI16tnUlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098531; c=relaxed/simple;
-	bh=pSpHiebUu3bUEaY72l/GWi0P7sXe4IbT9Z30oJ8oiPU=;
+	s=arc-20240116; t=1776096929; c=relaxed/simple;
+	bh=Xkb/Yoc71Tj1J7PHCI8bVD7h+sVUNQYjEsDHRDXU7+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uO55z0EspnDY7sJ2DBBG3Qkdh686sG6aNSp6sc6cAULdt37h/V7HLuq4nwr5OBGnmG1XVzwXx3umlfWzSJpiSWVslBcIGF3UjHU4ul+SXZZblAigvb3LEiWGgn73eRXFVUA8Yt8ccLBHA2BMB3+0/+mCcqN2ma2ZR4l5RByGSBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xb6bTPqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32651C2BCAF;
-	Mon, 13 Apr 2026 16:42:10 +0000 (UTC)
+	 MIME-Version; b=JOzzcxFyko8HpigmELQApPJhZh3CBwQsGCwADhLvbQChsVYum8mVogJw0FhobVjTm5MphDPOlK8wocej/AZKPwM+l/oqJCMYt6CSkVoK/iXVV93TD6KUGW3ilA2DjcQ7VCa6aMuX/6Cy8cto9Xh8Tqg5kAPPG9o+8+qGgUrhCdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6owg/52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655DAC2BCAF;
+	Mon, 13 Apr 2026 16:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098530;
-	bh=pSpHiebUu3bUEaY72l/GWi0P7sXe4IbT9Z30oJ8oiPU=;
+	s=korg; t=1776096928;
+	bh=Xkb/Yoc71Tj1J7PHCI8bVD7h+sVUNQYjEsDHRDXU7+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xb6bTPqtULWIpqz+Wxt2ICOM6kzRpcLI3HEd0sVH8rfEuctKZX026goiMR6O+eAYE
-	 vu7F3HPI9yDwj+KZ8HctRsX7VCYsDKN+KEVBkL7OnqeY0lmKcnjNfOoEAMfdXCn5Gk
-	 Q966te7H4L8/9yL6B1EhNWY7DkDiJFbC8GVq8Tg0=
+	b=l6owg/527WtbMXx0CJaC6JTX8T137WbC2/S5+8KgfU1PmJA0KbId8kGOpVO8MHZ8o
+	 jPqHOiFv15JBWfzCnFiNrpfMy7gJd9dmpPEdLtaSYf4Crg6Il0H9fkMuXoG9GPF080
+	 zfWI2I88BORbGIgb9Wak4wq/6AHtINhnDLbS4/mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 543/570] Revert "mptcp: add needs_id for netlink appending addr"
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 47/50] rxrpc: fix reference count leak in rxrpc_server_keyring()
 Date: Mon, 13 Apr 2026 18:01:14 +0200
-Message-ID: <20260413155850.786692199@linuxfoundation.org>
+Message-ID: <20260413155726.267702433@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,140 +76,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236447-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237078-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,ietf.org:url]
-X-Rspamd-Queue-Id: F2AAD3F0526
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lzu.edu.cn:email,auristor.com:email]
+X-Rspamd-Queue-Id: DFB583EF77D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-[ Upstream commit 8e2760eaab778494fc1fa257031e0e1799647f46 ]
+commit f125846ee79fcae537a964ce66494e96fa54a6de upstream.
 
-This commit was originally adding the ability to add MPTCP endpoints
-with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
-net namespace level, is not supposed to handle endpoints with such ID,
-because this ID 0 is reserved to the initial subflow, as mentioned in
-the MPTCPv1 protocol [1], a per-connection setting.
+This patch fixes a reference count leak in rxrpc_server_keyring()
+by checking if rx->securities is already set.
 
-Note that 'ip mptcp endpoint add id 0' stops early with an error, but
-other tools might still request the in-kernel PM to create MPTCP
-endpoints with this restricted ID 0.
-
-In other words, it was wrong to call the mptcp_pm_has_addr_attr_id
-helper to check whether the address ID attribute is set: if it was set
-to 0, a new MPTCP endpoint would be created with ID 0, which is not
-expected, and might cause various issues later.
-
-Fixes: 584f38942626 ("mptcp: add needs_id for netlink appending addr")
-Cc: stable@vger.kernel.org
-Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.2-9 [1]
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-15-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted changes from pm_kernel.c to pm_netlink.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   24 +++++-------------------
- 1 file changed, 5 insertions(+), 19 deletions(-)
+ net/rxrpc/server_key.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -972,8 +972,7 @@ static bool address_use_port(struct mptc
- }
+--- a/net/rxrpc/server_key.c
++++ b/net/rxrpc/server_key.c
+@@ -125,6 +125,9 @@ int rxrpc_server_keyring(struct rxrpc_so
  
- static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
--					     struct mptcp_pm_addr_entry *entry,
--					     bool needs_id)
-+					     struct mptcp_pm_addr_entry *entry)
- {
- 	struct mptcp_pm_addr_entry *cur;
- 	unsigned int addr_max;
-@@ -1000,7 +999,7 @@ static int mptcp_pm_nl_append_new_local_
- 			goto out;
- 	}
+ 	_enter("");
  
--	if (!entry->addr.id && needs_id) {
-+	if (!entry->addr.id) {
- find_next:
- 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
- 						    MAX_ADDR_ID + 1,
-@@ -1011,7 +1010,7 @@ find_next:
- 		}
- 	}
++	if (rx->securities)
++		return -EINVAL;
++
+ 	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
+ 		return -EINVAL;
  
--	if (!entry->addr.id && needs_id)
-+	if (!entry->addr.id)
- 		goto out;
- 
- 	__set_bit(entry->addr.id, pernet->id_bitmap);
-@@ -1152,7 +1151,7 @@ int mptcp_pm_nl_get_local_id(struct mptc
- 	entry->ifindex = 0;
- 	entry->flags = 0;
- 	entry->lsk = NULL;
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
- 	if (ret < 0)
- 		kfree(entry);
- 
-@@ -1374,18 +1373,6 @@ next:
- 	return 0;
- }
- 
--static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
--				      struct genl_info *info)
--{
--	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
--
--	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
--					 mptcp_pm_addr_policy, info->extack) &&
--	    tb[MPTCP_PM_ADDR_ATTR_ID])
--		return true;
--	return false;
--}
--
- static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
-@@ -1412,8 +1399,7 @@ static int mptcp_nl_cmd_add_addr(struct
- 			return ret;
- 		}
- 	}
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
--						!mptcp_pm_has_addr_attr_id(attr, info));
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
- 	if (ret < 0) {
- 		GENL_SET_ERR_MSG(info, "too many addresses or duplicate one");
- 		if (entry->lsk)
 
 
 
