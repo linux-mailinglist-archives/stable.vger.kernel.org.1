@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBIlC4si3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:19 +0200
+	id aKx2Gs8c3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2879A3F0BC4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1F23EF860
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E830F30630A8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 501F0302D58A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20536317141;
-	Mon, 13 Apr 2026 16:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741E827466A;
+	Mon, 13 Apr 2026 16:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhyoO4Mn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRzBXrlf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55633161BF;
-	Mon, 13 Apr 2026 16:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38571238D27;
+	Mon, 13 Apr 2026 16:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099034; cv=none; b=Op7gWX9l/Zf+5fNZyvSeTuem6jE+oNtfQVvkLrveSpQJ2ad+XD5jRXvrAzFuvBCGbyLA856PxLe9X4d7XAR9U4aFDTY0FpZJ4uhLSGATwcoaAmZ9++RMYFJCalf5Hg0OjLtzCHn+UodJboqh4jhubQ5HhhIHYI+zJVLJKTtzuPY=
+	t=1776097940; cv=none; b=N74WjX+IegkkumpNJaHj0yuUhrL6jHVISj9sSLx/dXFXKKqvIlGR0LF5eg12XuynW0R0X3DohovotngqWqPGLrQjc5ZXhZXQ6wA667kQsg4uFIIZpX6PciD9JpvVsh068FrQCoBto+mrqUsWXChMCGdLb6nGxb+xHyfFKi9GHTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099034; c=relaxed/simple;
-	bh=BTB2l3NXFp0AjC1GXaHE+ZUFu9TAhkpMCzO4bx5JoFM=;
+	s=arc-20240116; t=1776097940; c=relaxed/simple;
+	bh=rlbAQZ0OvzQcak6ttHdV35YclqqmYVA9YSUmpaJCLz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2BCUP3e4FmezWzVkWD2/3fh1Ck+Iwcwh+nDgmVBSRG/S1Rj71WSFxUYlmgV9EUk3MQaHzlhkP27LE95cLyDhjbKnzlidkdS5f2s42dOSni0I0QPzwv5AnSGBEYsNstCi4vlAR+jsz8S6Vn4ID939feF/T2YBQsLc3Gba/siPWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhyoO4Mn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFAEC2BCAF;
-	Mon, 13 Apr 2026 16:50:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rX9hem4bjT6c7oq1I3RavhzF1ZLoLLmbmJAyDWLBUbpluenFjQhOVkO5Ju0i8vG/SbSmTz0v4W3/YthWErHdWqo0Dx/CsyzxN1eNAAoEmJrwSolNxGetBOUF0kucFyAIHx8gHGWFlAlhLKbtA97CcC5ryFL/DVES4O08nS6hzac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRzBXrlf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24D5C2BCAF;
+	Mon, 13 Apr 2026 16:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099034;
-	bh=BTB2l3NXFp0AjC1GXaHE+ZUFu9TAhkpMCzO4bx5JoFM=;
+	s=korg; t=1776097940;
+	bh=rlbAQZ0OvzQcak6ttHdV35YclqqmYVA9YSUmpaJCLz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhyoO4MnX7e7/58fci+pvEpvw1sj3wFIw8QPNtdb/tK9gde8eJa24X8XalVcUvaBu
-	 9Zy48G4bkBzHpd7I6W0B5T6FsR156TsNbRDpdtl+jF1xj5xKDcxtRBGxGIetdocPSl
-	 H3dRvjrSI3byQjm0EwkZ1itk1QbAEchR5mvNjj8w=
+	b=pRzBXrlf460/l9gR7IMhxBXvyeH9Alr6h7/Aes9Q0CSWvB2+OXS5vr+YP8cwyk+Od
+	 4Xaqnd05T7JJir7lAnpaQRPvtu5F9TV94VqzfKylPVBDcYSzdjS9YZhI9NehVKIXw6
+	 KNE64sDCPYlnbiyQTd2poZk2CDpWAss23yPrgDh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corentin Labbe <clabbe@baylibre.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Leif Skunberg <diamondback@cohunt.app>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/491] mtd: partitions: redboot: fix style issues
-Date: Mon, 13 Apr 2026 17:57:10 +0200
-Message-ID: <20260413155825.990247919@linuxfoundation.org>
+Subject: [PATCH 5.15 300/570] platform/x86: intel-hid: Enable 5-button array on ThinkPad X1 Fold 16 Gen 1
+Date: Mon, 13 Apr 2026 17:57:11 +0200
+Message-ID: <20260413155841.738933215@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,236 +64,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237274-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-236845-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,bootlin.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email]
-X-Rspamd-Queue-Id: 2879A3F0BC4
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BF1F23EF860
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corentin Labbe <clabbe@baylibre.com>
+From: Leif Skunberg <diamondback@cohunt.app>
 
-[ Upstream commit eb1765c40530ccc8690b9dad88cec6aaa6bfb498 ]
+[ Upstream commit b38d478dad79e61e8a65931021bdfd7a71741212 ]
 
-This patch fixes easy checkpatch issues.
+The Lenovo ThinkPad X1 Fold 16 Gen 1 has physical volume up/down
+buttons that are handled through the intel-hid 5-button array
+interface. The firmware does not advertise 5-button array support via
+HEBC, so the driver relies on a DMI allowlist to enable it.
 
-Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20210520114851.1274609-2-clabbe@baylibre.com
-Stable-dep-of: 8e2f8020270a ("mtd: Avoid boot crash in RedBoot partition table parser")
+Add the ThinkPad X1 Fold 16 Gen 1 to the button_array_table so the
+volume buttons work out of the box.
+
+Signed-off-by: Leif Skunberg <diamondback@cohunt.app>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260210085625.34380-1-diamondback@cohunt.app
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/parsers/redboot.c |   69 ++++++++++++++++++++----------------------
- 1 file changed, 34 insertions(+), 35 deletions(-)
+ drivers/platform/x86/intel/hid.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -17,15 +17,15 @@
- #include <linux/module.h>
- 
- struct fis_image_desc {
--    unsigned char name[16];      // Null terminated name
--    uint32_t	  flash_base;    // Address within FLASH of image
--    uint32_t	  mem_base;      // Address in memory where it executes
--    uint32_t	  size;          // Length of image
--    uint32_t	  entry_point;   // Execution entry point
--    uint32_t	  data_length;   // Length of actual data
--    unsigned char _pad[256-(16+7*sizeof(uint32_t))];
--    uint32_t	  desc_cksum;    // Checksum over image descriptor
--    uint32_t	  file_cksum;    // Checksum over image data
-+	unsigned char name[16];      // Null terminated name
-+	u32	  flash_base;    // Address within FLASH of image
-+	u32	  mem_base;      // Address in memory where it executes
-+	u32	  size;          // Length of image
-+	u32	  entry_point;   // Execution entry point
-+	u32	  data_length;   // Length of actual data
-+	unsigned char _pad[256 - (16 + 7 * sizeof(u32))];
-+	u32	  desc_cksum;    // Checksum over image descriptor
-+	u32	  file_cksum;    // Checksum over image data
- };
- 
- struct fis_list {
-@@ -91,12 +91,12 @@ static int parse_redboot_partitions(stru
- 
- 	parse_redboot_of(master);
- 
--	if ( directory < 0 ) {
-+	if (directory < 0) {
- 		offset = master->size + directory * master->erasesize;
- 		while (mtd_block_isbad(master, offset)) {
- 			if (!offset) {
--			nogood:
--				printk(KERN_NOTICE "Failed to find a non-bad block to check for RedBoot partition table\n");
-+nogood:
-+				pr_notice("Failed to find a non-bad block to check for RedBoot partition table\n");
- 				return -EIO;
- 			}
- 			offset -= master->erasesize;
-@@ -114,8 +114,8 @@ static int parse_redboot_partitions(stru
- 	if (!buf)
- 		return -ENOMEM;
- 
--	printk(KERN_NOTICE "Searching for RedBoot partition table in %s at offset 0x%lx\n",
--	       master->name, offset);
-+	pr_notice("Searching for RedBoot partition table in %s at offset 0x%lx\n",
-+		  master->name, offset);
- 
- 	ret = mtd_read(master, offset, master->erasesize, &retlen,
- 		       (void *)buf);
-@@ -151,14 +151,13 @@ static int parse_redboot_partitions(stru
- 			     && swab32(buf[i].size) < master->erasesize)) {
- 				int j;
- 				/* Update numslots based on actual FIS directory size */
--				numslots = swab32(buf[i].size) / sizeof (struct fis_image_desc);
-+				numslots = swab32(buf[i].size) / sizeof(struct fis_image_desc);
- 				for (j = 0; j < numslots; ++j) {
--
- 					/* A single 0xff denotes a deleted entry.
- 					 * Two of them in a row is the end of the table.
- 					 */
- 					if (buf[j].name[0] == 0xff) {
--				  		if (buf[j].name[1] == 0xff) {
-+						if (buf[j].name[1] == 0xff) {
- 							break;
- 						} else {
- 							continue;
-@@ -185,8 +184,8 @@ static int parse_redboot_partitions(stru
- 	}
- 	if (i == numslots) {
- 		/* Didn't find it */
--		printk(KERN_NOTICE "No RedBoot partition table detected in %s\n",
--		       master->name);
-+		pr_notice("No RedBoot partition table detected in %s\n",
-+			  master->name);
- 		ret = 0;
- 		goto out;
- 	}
-@@ -205,7 +204,7 @@ static int parse_redboot_partitions(stru
- 			break;
- 
- 		new_fl = kmalloc(sizeof(struct fis_list), GFP_KERNEL);
--		namelen += strlen(buf[i].name)+1;
-+		namelen += strlen(buf[i].name) + 1;
- 		if (!new_fl) {
- 			ret = -ENOMEM;
- 			goto out;
-@@ -214,13 +213,13 @@ static int parse_redboot_partitions(stru
- 		if (data && data->origin)
- 			buf[i].flash_base -= data->origin;
- 		else
--			buf[i].flash_base &= master->size-1;
-+			buf[i].flash_base &= master->size - 1;
- 
- 		/* I'm sure the JFFS2 code has done me permanent damage.
- 		 * I now think the following is _normal_
- 		 */
- 		prev = &fl;
--		while(*prev && (*prev)->img->flash_base < new_fl->img->flash_base)
-+		while (*prev && (*prev)->img->flash_base < new_fl->img->flash_base)
- 			prev = &(*prev)->next;
- 		new_fl->next = *prev;
- 		*prev = new_fl;
-@@ -240,7 +239,7 @@ static int parse_redboot_partitions(stru
- 		}
- 	}
- #endif
--	parts = kzalloc(sizeof(*parts)*nrparts + nulllen + namelen, GFP_KERNEL);
-+	parts = kzalloc(sizeof(*parts) * nrparts + nulllen + namelen, GFP_KERNEL);
- 
- 	if (!parts) {
- 		ret = -ENOMEM;
-@@ -249,23 +248,22 @@ static int parse_redboot_partitions(stru
- 
- 	nullname = (char *)&parts[nrparts];
- #ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
--	if (nulllen > 0) {
-+	if (nulllen > 0)
- 		strcpy(nullname, nullstring);
--	}
- #endif
- 	names = nullname + nulllen;
- 
--	i=0;
-+	i = 0;
- 
- #ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
- 	if (fl->img->flash_base) {
--	       parts[0].name = nullname;
--	       parts[0].size = fl->img->flash_base;
--	       parts[0].offset = 0;
-+		parts[0].name = nullname;
-+		parts[0].size = fl->img->flash_base;
-+		parts[0].offset = 0;
- 		i++;
- 	}
- #endif
--	for ( ; i<nrparts; i++) {
-+	for ( ; i < nrparts; i++) {
- 		parts[i].size = fl->img->size;
- 		parts[i].offset = fl->img->flash_base;
- 		parts[i].name = names;
-@@ -273,17 +271,17 @@ static int parse_redboot_partitions(stru
- 		strcpy(names, fl->img->name);
- #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
- 		if (!memcmp(names, "RedBoot", 8) ||
--				!memcmp(names, "RedBoot config", 15) ||
--				!memcmp(names, "FIS directory", 14)) {
-+		    !memcmp(names, "RedBoot config", 15) ||
-+		    !memcmp(names, "FIS directory", 14)) {
- 			parts[i].mask_flags = MTD_WRITEABLE;
- 		}
- #endif
--		names += strlen(names)+1;
-+		names += strlen(names) + 1;
- 
- #ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
--		if(fl->next && fl->img->flash_base + fl->img->size + master->erasesize <= fl->next->img->flash_base) {
-+		if (fl->next && fl->img->flash_base + fl->img->size + master->erasesize <= fl->next->img->flash_base) {
- 			i++;
--			parts[i].offset = parts[i-1].size + parts[i-1].offset;
-+			parts[i].offset = parts[i - 1].size + parts[i - 1].offset;
- 			parts[i].size = fl->next->img->flash_base - parts[i].offset;
- 			parts[i].name = nullname;
- 		}
-@@ -297,6 +295,7 @@ static int parse_redboot_partitions(stru
-  out:
- 	while (fl) {
- 		struct fis_list *old = fl;
-+
- 		fl = fl->next;
- 		kfree(old);
- 	}
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 6331469ee6585..cbc4ec2f8479b 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -102,6 +102,13 @@ static const struct dmi_system_id button_array_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Tablet Gen 2"),
+ 		},
+ 	},
++	{
++		.ident = "Lenovo ThinkPad X1 Fold 16 Gen 1",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Fold 16 Gen 1"),
++		},
++	},
+ 	{
+ 		.ident = "Microsoft Surface Go 3",
+ 		.matches = {
+-- 
+2.51.0
+
 
 
 
