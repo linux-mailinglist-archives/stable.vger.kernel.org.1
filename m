@@ -1,151 +1,168 @@
-Return-Path: <stable+bounces-235994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOTxAorT3GmcWQkAu9opvQ
-	(envelope-from <stable+bounces-235994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:29:14 +0200
+	id oDGgFXDR3GmcWQkAu9opvQ
+	(envelope-from <stable+bounces-235988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:20:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D963EB4E0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:29:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5173E3EB30D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB35B3039FDE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 11:25:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23BB6300533F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 11:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159A63C1978;
-	Mon, 13 Apr 2026 11:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Nu0Z2fK2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F9635C1A9;
+	Mon, 13 Apr 2026 11:20:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518AA3BD237;
-	Mon, 13 Apr 2026 11:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A96237713
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776079525; cv=none; b=MwzzZiW+U/FWeprNyU5/TlwY5kbc09ivs5v+H2E/BI5a/qPpSC5V+TByDkCehriD3kZ6dj8R1brN/z/H2WrsDaye9YM8VJJVNxon3imxMWxuztMaQagJ1Lhomted5q8mMr/f+fHk1LY7kzx3n41zIM79xQ6Fyzf22cwbVX+spbk=
+	t=1776079210; cv=none; b=RFxTi7MhjpAjt6ihY0ZEy0MPDBZI6dgOw28JuGxwyUAn54Vv0Hu7K6KzRU2dObzQss4cErBPBeNlh3ufwl38eZyIyM/1lFMd8hhxF/XHV9mcNqCis/9W3R97Od4gCSnPpTrn7/sZQPwaO0MSu4oFWpy58iNEfr7OFHjOSHhvULQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776079525; c=relaxed/simple;
-	bh=sBsy7wiURkqL+0vpLzA9Y4+lOXzxczT1/17y/eMNeeg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h2NUATqh260RYMoR5ybcL//e1fEMaaYbQvmIeWAkrJD7xPbYBgovyzxd9Z/PMsT0z6mwXu2FV5KYNecPcADgx8lDDUXa90B3twqaGyYSel/4//Bij56BFZB+lrxd4Mx1405cjsIetymZB9AV/ZXecYBldaoB/c1BN+hAHYpjyOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Nu0Z2fK2; arc=none smtp.client-ip=188.68.63.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fvPwk3wXpz44RF;
-	Mon, 13 Apr 2026 13:16:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1776078966;
-	bh=sBsy7wiURkqL+0vpLzA9Y4+lOXzxczT1/17y/eMNeeg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Nu0Z2fK2qdcLAra+sPdOu3GnffrczwsWk2/6Ws8yzq/WG0B8868SWtjgb2qjMBquN
-	 Gijdw29i5boobMXtZCXobaXET/14kj5Q3M6AGc0NrSucWh43rR6jU3h3oRYZT6LSSV
-	 a2zAvLS+lZMp3/fQrtYdhCIlauR2jeeGxe/Smq0C1ueTYL/P+cVU+c/idqhhhKD7+6
-	 fqpSGoVp1NRsOYzUwE8cpktmTRRQx4UReYL2e17F/9NTE0/t5dK/k954hI/byOwmXP
-	 7URR5jEuWDxFA0nxDQfovWoFo+Bq9orEoDpeOcfAXLTk9qNlqGj5RYO5S6vFqAWtmy
-	 L62Xx/7onYOfg==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fvPwk39y5z44NQ;
-	Mon, 13 Apr 2026 13:16:06 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fvPwj5GqSz8sgW;
-	Mon, 13 Apr 2026 13:16:05 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id ED1D6632D3;
-	Mon, 13 Apr 2026 13:16:04 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <e21c9e47-36e2-4f15-a7a5-af239a0abb89@leemhuis.info>
-Date: Mon, 13 Apr 2026 13:16:03 +0200
+	s=arc-20240116; t=1776079210; c=relaxed/simple;
+	bh=rDqDIcDjUb0VpL3FU/kMhZXqPYmOWlUOOS1/0cEl8S4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TFkNPY9KKrqYadQqqpiS4vzx2fxfSmK+JWZ9HR8FY3Uo0xGlgnzKsniUMDfhABIz01HOEGoVAN8CqslwyEneMCoooKtUvNr3Db7hPC261LzyQm6BDzNPHGMgBttkv+9GbLT9uRPlHuA9IDSwiTS1i+G/I0XKMo9go4t8+fAQYVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-60fbbac2938so252378137.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 04:20:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776079208; x=1776684008;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=spY+sCtjjyNHa35V5Fv1YWHcDXm5PFGT49jlGmNzKes=;
+        b=bPpAGan5Les2vlkkJMzQA+7ZcVCP72GIZUT6Hk5GMtmGV/1Uc6xzVCCMTG50BfXUw0
+         9wsEN8dCKHqnDE3Fu3BGPdTaaNrAAU8hwfQffI1jf/NjcGrfIUtZ32fCqmFOEOCsTs0M
+         4K7f7BBvvPF9Wn3T7Rp+ijGRr47lMAAa/lM8Hsd9JJVsTtJU2/5LfF4E0NDfM0dePBXg
+         L6GvUrK/Iey5NBk6te384U6KRYIgi/4Ld9HmfCG57EVnam9FC0jkDeA9lXwBODfYx8UB
+         c6NG96Arqc9NV5dMD717NozJi5YSAG7nGhjwl4uK+HlQpRnbqONiEE2bZ60Ljp9bdzZA
+         JoNA==
+X-Forwarded-Encrypted: i=1; AFNElJ/IfphsYfXqVXAdNSKY+WRrXWG1QNLkc5Y9biSfqcL/NQ6lCRrfpMJsbULegQNkKRJuTzj9Eac=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw44qgLmRpD5dtpFp/D8QO3MQkqjH3E1HM7y4uncxX8IBvM016Y
+	qfY7HjQ1VAOvgXW3I6C0uBL11xd7s6UU91ZA4oPdFH7QJdkhu4xbQbOzC8K3iBOm
+X-Gm-Gg: AeBDiet1Fne2D/cn+kodcFjpGsDNIsYqDXwJvWYEwmZlTFlmGtl+vbTbZ4ru2hJuY3J
+	C86cvrzgKJwwhxX+xab1grfgWe819VMcFkOvhbKnEPjH/EIK+rhHPes/H2zYrOQ9A/zKXLVVYMm
+	x+7aT3rr/BZs6WCXoZj+aDJeH4RhiBUFGo+PhcXLkT9fW6TL9/Da1QnIZsyACPFZLQWzwIYcCCz
+	IDV1Jjr9rhZ5Xe0QrdA0+f0DtsneC2ZVpbVY5MZKMDu/oUAl3l4fG49WIo3utmqrVpn+8LsmOjC
+	Qmc0zVnkrD+VG3PHTLOYgp3uT9OmX3EqlpUodP1opGOUmkFrOIZ1vh63jaPa/mbxgSrD6+aLXf7
+	QYUm+x6ALZMQnN186FH+0KVcq6FaGTmbGrFnZQl+U1ip5c4htNZb8FpKLkTV/HBCJAxHmOAhCAg
+	LNq72sNw3q0AIbgsaFku3BSlgZU/TiBHla1L+jhpnaaE/O1gZkU1H/lpgZEldOUfvaeq74VF5uc
+	bA=
+X-Received: by 2002:a05:6102:38cf:b0:610:2912:adcc with SMTP id ada2fe7eead31-6102912e1eamr367840137.30.1776079208032;
+        Mon, 13 Apr 2026 04:20:08 -0700 (PDT)
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com. [209.85.221.176])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-609dbb1c650sm6000833137.11.2026.04.13.04.20.06
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 04:20:06 -0700 (PDT)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-56d958880ecso1349419e0c.2
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 04:20:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+d0dxmTub5t5190qEhaARtK8CRwX03nJYgNTcSuLZvJeG0i8O8Rc4FvEfURWZZJxxEEytwEVw=@vger.kernel.org
+X-Received: by 2002:a05:6122:4896:b0:56d:3b69:87d2 with SMTP id
+ 71dfb90a1353d-56f3bd131bfmr5403354e0c.11.1776079205905; Mon, 13 Apr 2026
+ 04:20:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] failure to reconnect on SMB server restart with
- custom TCP port (not 445): Host is down (at least since 6.6.95)
-To: Henrique Carvalho <henrique.carvalho@suse.com>,
- Shyam Prasad N <nspmangalore@gmail.com>
-Cc: "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
- Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org
-References: <20260310235642.6d9798f4@plasteblaster>
- <c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
- <CANT5p=q2Lv4pSvEm5EWcM73b7NZsbt1kYEFJtjaAZRS6Gz_OjQ@mail.gmail.com>
- <42utcrhajix2x3feckj7ap373osq65sgfz6ximnaj4rasszret@ymhf44ddz2wh>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <42utcrhajix2x3feckj7ap373osq65sgfz6ximnaj4rasszret@ymhf44ddz2wh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177607896533.133677.5958693862348892053@mxe9fb.netcup.net>
-X-NC-CID: p2st6aj6lJATH9pglzrLnOICtj3C/5s4Klt+kHiVVKr+zXdjuRc=
-X-Spamd-Result: default: False [-1.66 / 15.00];
+References: <PUZPR03MB71159178A9463AF8E5C1B4709F582@PUZPR03MB7115.apcprd03.prod.outlook.com>
+ <87wlyfeks1.wl-kuninori.morimoto.gx@renesas.com> <20260410085604.GD2712636@killaraus.ideasonboard.com>
+ <87lder39bh.wl-kuninori.morimoto.gx@renesas.com> <2026041351-skyward-constrain-e6e2@gregkh>
+In-Reply-To: <2026041351-skyward-constrain-e6e2@gregkh>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 13 Apr 2026 13:19:53 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUi9gD_VsKrjiCLpUbb54TjB3ngvLLZQgP58v+-JrZ2Cg@mail.gmail.com>
+X-Gm-Features: AQROBzCXS3Rtzm78Yt3IYT8Aw6T2DKFES7o9n_yRdY-kkisN_8hmyngBWofoPa0
+Message-ID: <CAMuHMdUi9gD_VsKrjiCLpUbb54TjB3ngvLLZQgP58v+-JrZ2Cg@mail.gmail.com>
+Subject: Re: [Renesas Linux Kernel Test Report] DU/Device Tree: Missing pin
+ control for DSI-eDP IRQ
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, stable@vger.kernel.org, 
+	Peri-Dev <oss-upstream-dev@lm.renesas.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Tong Duc Duy <duy.tong-duc@banvien.com.vn>, 
+	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>, Duy Nguyen <duy.nguyen.rh@renesas.com>, 
+	Chu Quoc Khanh <khanh.chu@banvien.com.vn>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	TAGGED_FROM(0.00)[bounces-235994-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[suse.com,gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-235988-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[linux-m68k.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 70D963EB4E0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 5173E3EB30D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/12/26 16:03, Henrique Carvalho wrote:
+Hi Greg,
+
+On Mon, 13 Apr 2026 at 12:46, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> On Mon, Apr 13, 2026 at 02:04:02AM +0000, Kuninori Morimoto wrote:
+> > Linux LTS v6.6 / v6.12 backported this commit
+> >
+> >       9133bc3f0564890218cbba6cc7e81ebc0841a6f1
+> >       ("drm/bridge: ti-sn65dsi86: Add support for DisplayPort mode with HPD")
+> >
+> > Because of that, Renesas needs this commit.
+> >
+> >       8219a455efd4ba11c1d30c1bbc9ce853466c19bf
+> >       ("arm64: dts: renesas: white-hawk-cpu-common:
+> >        Add pin control for DSI-eDP IRQ")
+> >
+> > Could you please backport it too ?
 >
-> Sure, I read the comment in the code and the MS-SMB2 protocol. The
-> protocol states that "client MUST ignore [Port] on receipt". Since we
-> are not using p->Port, I don'se see how this is a protocol violation.
-> 
-> We're using the port that was selected on mount and copied over to
-> server->dstaddr, so that when server->dstaddr is overwridden,
-> server->dstaddr keeps the user selected port.
-> 
-> Now, even if we only fix that for primary channels, the secondary
-> channels will still get the wrong port when they are overwridden, no? So
-> I don't see how that fixes the issue.
-> 
-> Apologies if I'm missing something.
+> It does not apply properly to 6.6.y or 6.1.y, so can you provide working
+> backports there?
 
-Lo! What happened to this? I saw that Henrique posted "smb: client:
-preserve destination port when parsing server interfaces" a month ago at
-https://lore.kernel.org/all/20260311160856.635916-1-henrique.carvalho@suse.com/
-which looks like a fix[1] for this regression, but unless I'm missing
-something (which very well might be the case) it still is waiting for
-review, as I can't see it in -next.
+Commit 8219a455efd4ba11 ("arm64: dts: renesas: white-hawk-cpu-common:
+Add pin control for DSI-eDP IRQ") has a runtime dependency on commit
+10544ec1b3436037 ("pinctrl: renesas: r8a779g0: Add INTC-EX pins,
+groups, and function") in v6.11, so you cannot just backport it.
+Do we really need it on v6.6?
 
-Ciao, Thorsten
+> I've added it to 6.12.y now.
 
-[1] not totally sure, lacks a reported-by and link or closes tag
-pointing to the report. A stable tag would also be great to ensure the
-fix is backported.
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
