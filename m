@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-236430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0N1BCy8Z3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:23 +0200
+	id wG1KD4ci3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AB73EEEAF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B26D13F0BAE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0EB33075EF0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7F8EB305D0D2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AFB274B5C;
-	Mon, 13 Apr 2026 16:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320D033290F;
+	Mon, 13 Apr 2026 17:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da9cpmk3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNvFb+EN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8869A26A1CF;
-	Mon, 13 Apr 2026 16:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E953231F9BC;
+	Mon, 13 Apr 2026 17:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096885; cv=none; b=AOgGsuykfN64LSyceKk45OUz/Rh76mKgwgCoUESpn+U0kZJ+vsPKvnv+DORpWyUU+i83Mnhal7Mnoj0yHYdLJ38f3sdQ5DZtHEzKJEPj/iZ6ehJCpR4+sRHl6RRu3VMNMscjJLV5ElKsLavakRAtpMoUcGegTap9OsuFRuWbAYw=
+	t=1776099623; cv=none; b=Dadi9v81LeKYEinaz4DrODjECDGVCgT7rWKPzIVoNHSM1zcLm3V5dDpgkufJ4J7/c9A3A22/YjzGon/DA862LYm4rznDCdWrmRzAfxbxouPP3NlFEtd1Zj1NzrUVApocVrb2LJflIp0uJlTjO9H2WgYZ71CX4bgGoQnTSAro9xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096885; c=relaxed/simple;
-	bh=jIhH6/TsaK+lFXJdLhIp/cpjBCHLgjXZVK2srDH1pPI=;
+	s=arc-20240116; t=1776099623; c=relaxed/simple;
+	bh=/kspHvZtvylmXJC7ieHAQt90p38GyAgZwPJkESiWZ5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JI7IBDWHUoaVvNFqbL0hxnwlLpSIH9zLVkIfPPmVl/a0ueJt/1gPixTURlyBbi5w6ze2NSqo/tyxnnohj2GGu1TirLKpkdPU9MmpLOop7IStApuw+e51zt4jo/JKFzWRB4IaLj72rQ6xR1U+C0jxZkMeRzktMHe8duHEHSCKiQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da9cpmk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA077C2BCB4;
-	Mon, 13 Apr 2026 16:14:44 +0000 (UTC)
+	 MIME-Version; b=Y0FA8Lu48HEX49BTMEFafG/zZB+GG5bSmZuJOzLLH+nZJfrwb5nwuKJXYY8GZowHtHcxv0h0JpPHaMj8xhkvjI9/2EjzZ7pgJ3317m0litEJb0tTRZmNu6XSGt3/rn3QHR1Y4UWspQp51AraRtC/doH2zXEiSoeRmsBKwY5l5Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNvFb+EN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8091CC2BCAF;
+	Mon, 13 Apr 2026 17:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096885;
-	bh=jIhH6/TsaK+lFXJdLhIp/cpjBCHLgjXZVK2srDH1pPI=;
+	s=korg; t=1776099622;
+	bh=/kspHvZtvylmXJC7ieHAQt90p38GyAgZwPJkESiWZ5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=da9cpmk3c5/Qa8mvSnt2jXseaTGuB2qvyGuIsGYnfio3GEYkyef3lSnAwvJ9V8aki
-	 oMShjg7Qn8VZOMoeSijPOF7iGhVqkyzfKroMDJWvVNiS8bH90BYBUK2iXTAmLpkcM8
-	 CEUvtB6Y95fMZQHpYDnpBlqZUhngSIwQ/INYJLUs=
+	b=nNvFb+ENoMdNkqBZU/k2Cws0UkZ1aE4fSTPAbA18ogogt4jlKkEDqQnW4OoX6TR/w
+	 zvdj+oKEZ5JLfqjDMzjwETMAgyQDE+ptoJj28W9mJOHu5xCTRa2LZk57eVYAdLfdzC
+	 WngLYpWk4g7EmCnGLPRQoalTAj4gIW70s8enHDOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.6 29/50] batman-adv: reject oversized global TT response buffers
+	Taegu Ha <hataegu0826@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 411/491] usb: gadget: f_uac1_legacy: validate control request size
 Date: Mon, 13 Apr 2026 18:00:56 +0200
-Message-ID: <20260413155725.600200158@linuxfoundation.org>
+Message-ID: <20260413155834.416971444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,96 +68,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236430-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
+	TAGGED_FROM(0.00)[bounces-237503-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,simonwunderlich.de:email,narfation.org:email]
-X-Rspamd-Queue-Id: 54AB73EEEAF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: B26D13F0BAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Taegu Ha <hataegu0826@gmail.com>
 
-commit 3a359bf5c61d52e7f09754108309d637532164a6 upstream.
+commit 6e0e34d85cd46ceb37d16054e97a373a32770f6c upstream.
 
-batadv_tt_prepare_tvlv_global_data() builds the allocation length for a
-global TT response in 16-bit temporaries. When a remote originator
-advertises a large enough global TT, the TT payload length plus the VLAN
-header offset can exceed 65535 and wrap before kmalloc().
+f_audio_complete() copies req->length bytes into a 4-byte stack
+variable:
 
-The full-table response path still uses the original TT payload length when
-it fills tt_change, so the wrapped allocation is too small and
-batadv_tt_prepare_tvlv_global_data() writes past the end of the heap object
-before the later packet-size check runs.
+  u32 data = 0;
+  memcpy(&data, req->buf, req->length);
 
-Fix this by rejecting TT responses whose TVLV value length cannot fit in
-the 16-bit TVLV payload length field.
+req->length is derived from the host-controlled USB request path,
+which can lead to a stack out-of-bounds write.
 
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Validate req->actual against the expected payload size for the
+supported control selectors and decode only the expected amount
+of data.
+
+This avoids copying a host-influenced length into a fixed-size
+stack object.
+
+Signed-off-by: Taegu Ha <hataegu0826@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260401191311.3604898-1-hataegu0826@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_uac1_legacy.c |   47 ++++++++++++++++++++++------
+ 1 file changed, 37 insertions(+), 10 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -844,8 +844,8 @@ batadv_tt_prepare_tvlv_global_data(struc
+--- a/drivers/usb/gadget/function/f_uac1_legacy.c
++++ b/drivers/usb/gadget/function/f_uac1_legacy.c
+@@ -360,19 +360,46 @@ static int f_audio_out_ep_complete(struc
+ static void f_audio_complete(struct usb_ep *ep, struct usb_request *req)
  {
- 	u16 num_vlan = 0;
- 	u16 num_entries = 0;
--	u16 change_offset;
--	u16 tvlv_len;
-+	u16 tvlv_len = 0;
-+	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
- 	u8 *tt_change_ptr;
-@@ -863,6 +863,11 @@ batadv_tt_prepare_tvlv_global_data(struc
- 	if (*tt_len < 0)
- 		*tt_len = batadv_tt_len(num_entries);
+ 	struct f_audio *audio = req->context;
+-	int status = req->status;
+-	u32 data = 0;
+ 	struct usb_ep *out_ep = audio->out_ep;
  
-+	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
-+		*tt_len = 0;
-+		goto out;
-+	}
+-	switch (status) {
+-
+-	case 0:				/* normal completion? */
+-		if (ep == out_ep)
++	switch (req->status) {
++	case 0:
++		if (ep == out_ep) {
+ 			f_audio_out_ep_complete(ep, req);
+-		else if (audio->set_con) {
+-			memcpy(&data, req->buf, req->length);
+-			audio->set_con->set(audio->set_con, audio->set_cmd,
+-					le16_to_cpu(data));
++		} else if (audio->set_con) {
++			struct usb_audio_control *con = audio->set_con;
++			u8 type = con->type;
++			u32 data;
++			bool valid_request = false;
 +
- 	tvlv_len = *tt_len;
- 	tvlv_len += change_offset;
- 
++			switch (type) {
++			case UAC_FU_MUTE: {
++				u8 value;
++
++				if (req->actual == sizeof(value)) {
++					memcpy(&value, req->buf, sizeof(value));
++					data = value;
++					valid_request = true;
++				}
++				break;
++			}
++			case UAC_FU_VOLUME: {
++				__le16 value;
++
++				if (req->actual == sizeof(value)) {
++					memcpy(&value, req->buf, sizeof(value));
++					data = le16_to_cpu(value);
++					valid_request = true;
++				}
++				break;
++			}
++			}
++
++			if (valid_request)
++				con->set(con, audio->set_cmd, data);
++			else
++				usb_ep_set_halt(ep);
++
+ 			audio->set_con = NULL;
+ 		}
+ 		break;
 
 
 
