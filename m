@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-236750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFqWC8MZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:51 +0200
+	id YB9sBQAf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2963EF0B3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D4F3EFFCC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B116D301AA9F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A6343029D64
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC0830C34A;
-	Mon, 13 Apr 2026 16:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D153223DCE;
+	Mon, 13 Apr 2026 16:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZiOxgW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxUvm6Au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D12130ACE6;
-	Mon, 13 Apr 2026 16:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400CE316197;
+	Mon, 13 Apr 2026 16:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097697; cv=none; b=lD6K6q17G7HJ/bS4lUkGH5Tb/+PC1ReQtD2D4wcDqFVfTC6+Lck0T+AA/iYpr3bkyKfLmbVbL4xcuAuk/pVWvguN5o+cXjkPQBI36KGl/hTd+c6bKg1A5MNrPD4SaXsHvv1mgPwEkC1AHu+O2BR6coiWcJfqZWETFWAVf5oNA9E=
+	t=1776098882; cv=none; b=AFdl4Ckc/k38GdXziADpcmOPHdEk8nHIgnivB3kofljeH5Y18VqJeR2ZH3ACmomRqqBFjOJDRnkiqcTgT+Lfgej+kEy4aQTG3pvC1Jf1tzSdTD9H2JP8PZ9E/L26oxRyO14jlvaxT4lAJKuCjNDfq+bmeLxmv72O2KDmtdhWX1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097697; c=relaxed/simple;
-	bh=I0JKeJPt6KFiZ9Y1TjErgIjE5lpHPzCI/thof5ycNGg=;
+	s=arc-20240116; t=1776098882; c=relaxed/simple;
+	bh=KDGjr3vQKZJoNY/EDaaSGYS0wzXDUm94Le23b6brav8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhBAyUPKdzvvfFfCkodx5maJXSSQ0D/6SxG0Du+OEmQaTEVGlRFoUtodqiL/7s1EgyZ/0PZ75CZHwSHcnYSeAFdL4w4sGPehycThXxFH9Au4jm6Z+Du7d1wc5ykhjPx8WEP2b5kekt5P2+TzteK4Uz3Wa/oz4msONjI4LzIIQf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZiOxgW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C08C2BCAF;
-	Mon, 13 Apr 2026 16:28:16 +0000 (UTC)
+	 MIME-Version; b=lydmT47G9YuJqgM3yDYaBp1dJ/mr/RTRYzsPf4EWhYDulbgFJDofkSkDqy+YmIkjC6V5J9RHY01wLkKxmTz9NhBbsPIbMD5nflgA7NkaLDmuExU4fqD4sCw5BcZPzsYyKHwOhzYi6+L/VESDILnjKkooWbP05m8eKJuDzQvHpHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxUvm6Au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1628C2BCAF;
+	Mon, 13 Apr 2026 16:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097697;
-	bh=I0JKeJPt6KFiZ9Y1TjErgIjE5lpHPzCI/thof5ycNGg=;
+	s=korg; t=1776098882;
+	bh=KDGjr3vQKZJoNY/EDaaSGYS0wzXDUm94Le23b6brav8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZiOxgW3x4eYbC7cyAZ+QhVoqkhyY0nDDndre8kkzH68w8qcln1wczNxqJqKwf0qK
-	 1dYjUy0q8raMsk/bgs4AO/6jGjv9r4nAlJTvF1CRrhC28DIp7EAvNYv70wq5DBy7GE
-	 Niuh88wPrm0h9d8xxWA2m+wIWlbvpCT662C5TFzo=
+	b=dxUvm6Auv1Q+Pqxtj7KE59jnSW2knzuEdyhXj8ka+FyoPlgR/uruYgItUI9UIdJee
+	 kYIRcnCJKhhKyGSogXf4pVe/oKiEfMXiKPLS3EUPL+5YHSiE7EyM/7q3BXFRKvGp58
+	 3/5NC8SUExnGXlCccCwpTKcjFhtpeGIxW7jkxUv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Natalie Vock <natalie.vock@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 238/570] drm/amd/display: Use GFP_ATOMIC in dc_create_stream_for_sink
-Date: Mon, 13 Apr 2026 17:56:09 +0200
-Message-ID: <20260413155839.382202166@linuxfoundation.org>
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 5.10 125/491] x86/apic: Disable x2apic on resume if the kernel expects so
+Date: Mon, 13 Apr 2026 17:56:10 +0200
+Message-ID: <20260413155823.722728163@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +68,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236750-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,amd.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237215-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,gmx.de:email]
-X-Rspamd-Queue-Id: EE2963EF0B3
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sony.com:email,uefi.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: D0D4F3EFFCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Natalie Vock <natalie.vock@gmx.de>
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
 
-[ Upstream commit 28dfe4317541e57fe52f9a290394cd29c348228b ]
+commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
 
-This can be called while preemption is disabled, for example by
-dcn32_internal_validate_bw which is called with the FPU active.
+When resuming from s2ram, firmware may re-enable x2apic mode, which may have
+been disabled by the kernel during boot either because it doesn't support IRQ
+remapping or for other reasons. This causes the kernel to continue using the
+xapic interface, while the hardware is in x2apic mode, which causes hangs.
+This happens on defconfig + bare metal + s2ram.
 
-Fixes "BUG: scheduling while atomic" messages I encounter on my Navi31
-machine.
+Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
+disabled, i.e. when x2apic_mode = 0.
 
-Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b42dae2ebc5c84a68de63ec4ffdfec49362d53f1)
+The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
+pre-sleep configuration or initial boot configuration for each CPU, including
+MSR state:
+
+  When executing from the power-on reset vector as a result of waking from an
+  S2 or S3 sleep state, the platform firmware performs only the hardware
+  initialization required to restore the system to either the state the
+  platform was in prior to the initial operating system boot, or to the
+  pre-sleep configuration state. In multiprocessor systems, non-boot
+  processors should be placed in the same state as prior to the initial
+  operating system boot.
+
+  (further ahead)
+
+  If this is an S2 or S3 wake, then the platform runtime firmware restores
+  minimum context of the system before jumping to the waking vector. This
+  includes:
+
+	CPU configuration. Platform runtime firmware restores the pre-sleep
+	configuration or initial boot configuration of each CPU (MSR, MTRR,
+	firmware update, SMBase, and so on). Interrupts must be disabled (for
+	IA-32 processors, disabled by CLI instruction).
+
+	(and other things)
+
+So at least as per the spec, re-enablement of x2apic by the firmware is
+allowed if "x2apic on" is a part of the initial boot configuration.
+
+  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
+
+  [ bp: Massage. ]
+
+Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
 Cc: stable@vger.kernel.org
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/apic.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -167,7 +167,7 @@ struct dc_stream_state *dc_create_stream
- 	if (sink == NULL)
- 		return NULL;
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1901,6 +1901,7 @@ early_initcall(validate_x2apic);
  
--	stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
-+	stream = kzalloc(sizeof(struct dc_stream_state), GFP_ATOMIC);
- 	if (stream == NULL)
- 		goto alloc_fail;
+ static inline void try_to_enable_x2apic(int remap_mode) { }
+ static inline void __x2apic_enable(void) { }
++static inline void __x2apic_disable(void) { }
+ #endif /* !CONFIG_X86_X2APIC */
  
+ void __init enable_IR_x2apic(void)
+@@ -2664,6 +2665,11 @@ static void lapic_resume(void)
+ 	if (x2apic_mode) {
+ 		__x2apic_enable();
+ 	} else {
++		if (x2apic_enabled()) {
++			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
++			__x2apic_disable();
++		}
++
+ 		/*
+ 		 * Make sure the APICBASE points to the right address
+ 		 *
 
 
 
