@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-236751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QK3UMzkf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-236751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:09 +0200
+	id uJqXEAEf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A40C3F00CB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE533EFFD3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AA2531E2AD6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 87115302A362
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4903E3090F5;
-	Mon, 13 Apr 2026 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33935314A8E;
+	Mon, 13 Apr 2026 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3dVWoaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eaeybo7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE3430ACE6;
-	Mon, 13 Apr 2026 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAF7223DCE;
+	Mon, 13 Apr 2026 16:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097700; cv=none; b=sgobf7i2Pq3C5sRI/APchlYseYVxsmcXzGf5oOKM8XAgltDADOZY+tBGcbrwLumK3SMUkTKRwsENnPAXDhZu08141kwaMToly9wyZBJUdcKlBJ3sy3/z/g8smeUwnVAG68zYZsmnXrOPyt/fIvshhgp6q7By1iTuL/IZzVMbEZs=
+	t=1776098885; cv=none; b=ZGYuxPbPh97vs6d3xXn0U7x2KbbXBy3hToVrKAyyvcUdFlDT+yDNeIBDIBQTjasXUMH/VI49+wGZTsTGD/BAXaAiuAAiy5Xub68qzvseZgDu4YVtTPy4CBaGpmKH853VmvgyQnZgu/nrFu1ZhGZ2EL31R0tiyM/porP8T+CeXPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097700; c=relaxed/simple;
-	bh=jTNkRTCZ0aIjf/OqaFXTj07Ov64bAGAckXHEKoEUFvA=;
+	s=arc-20240116; t=1776098885; c=relaxed/simple;
+	bh=bizKiEYqvnFN0O0kEWSQTCfq0h6yjToNvUIiFQ6naxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dO/eUrRDMM5jAW9oKJ8UYQjPGaL46tlLv9Kg2I65e7ps86qpDU3qnMD+URdAAsp6MaC6q2DyTysm04Nd5KN86fJkmY5MgzC79Kz6YFnhUtZq3YZSMLTiG1IvYUI/50T9DGKRXAsPxBL7BTVIP+aWoLYL/JUQGO+HE9Sla486rX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3dVWoaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96162C2BCAF;
-	Mon, 13 Apr 2026 16:28:19 +0000 (UTC)
+	 MIME-Version; b=Vrbe0kRr0MvVKBVwlmUgArCoJF+WRMFbv0Gyuk6Ai6s3IQD0biCOGJUVcy5cwfMUmHznvEwodJM6WxIPC+JCUdMRFnc5pC5Ctvn6QtPyYPvlQeLeYqk9jsml9akldf2FgD8k6ZXGrx9TyirFG/e1NUDILArHBrQhqD1I8tLdazw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eaeybo7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F464C2BCAF;
+	Mon, 13 Apr 2026 16:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097699;
-	bh=jTNkRTCZ0aIjf/OqaFXTj07Ov64bAGAckXHEKoEUFvA=;
+	s=korg; t=1776098884;
+	bh=bizKiEYqvnFN0O0kEWSQTCfq0h6yjToNvUIiFQ6naxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3dVWoaU6A5vVasBqBV+6MikD5FPaFgd0z+biFYO5TJFwWSOGuy3mUhEB9CseRiIZ
-	 HBi3A5QL2XxfXqgBsO/Ca30mIA8bXMq8H4fOXoz8Qum4K0c0WsK9tuVLPfRy6GJrp5
-	 /aa8Plyy8B5+OazKcnvSA+vlzWPWdXZN0oaFEPkI=
+	b=Eaeybo7E3bdFEKHxR+icC+znWbKYx/ElC+WWrzXn6lfg/CUeQY05MQpuvGYUNjtak
+	 iZUxZ0a716RWw26RFgignosE27H8PWatmWgpxQMDw/i72Ln4PN0GpiUepHucQRXx7O
+	 RWDRc6LCfM80IDzp9bpcUIAycTWYzhpbZpH7uN68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Lorenz <lorenz-frank@web.de>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 239/570] mptcp: pm: avoid sending RM_ADDR over same subflow
-Date: Mon, 13 Apr 2026 17:56:10 +0200
-Message-ID: <20260413155839.420340663@linuxfoundation.org>
+	Josh Law <objecting@objecting.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 5.10 126/491] lib/bootconfig: fix snprintf truncation check in xbc_node_compose_key_after()
+Date: Mon, 13 Apr 2026 17:56:11 +0200
+Message-ID: <20260413155823.759720109@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,173 +67,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236751-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-237216-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 4A40C3F00CB
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,objecting.org:email]
+X-Rspamd-Queue-Id: CFE533EFFD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Josh Law <objecting@objecting.org>
 
-[ Upstream commit fb8d0bccb221080630efcd9660c9f9349e53cc9e ]
+commit 1120a36bb1e9b9e22de75ecb4ef0b998f73a97f1 upstream.
 
-RM_ADDR are sent over an active subflow, the first one in the subflows
-list. There is then a high chance the initial subflow is picked. With
-the in-kernel PM, when an endpoint is removed, a RM_ADDR is sent, then
-linked subflows are closed. This is done for each active MPTCP
-connection.
+snprintf() returns the number of characters that would have been
+written excluding the NUL terminator.  Output is truncated when the
+return value is >= the buffer size, not just > the buffer size.
 
-MPTCP endpoints are likely removed because the attached network is no
-longer available or usable. In this case, it is better to avoid sending
-this RM_ADDR over the subflow that is going to be removed, but prefer
-sending it over another active and non stale subflow, if any.
+When ret == size, the current code takes the non-truncated path,
+advancing buf by ret and reducing size to 0.  This is wrong because
+the output was actually truncated (the last character was replaced by
+NUL).  Fix by using >= so the truncation path is taken correctly.
 
-This modification avoids situations where the other end is not notified
-when a subflow is no longer usable: typically when the endpoint linked
-to the initial subflow is removed, especially on the server side.
+Link: https://lore.kernel.org/all/20260312191143.28719-4-objecting@objecting.org/
 
-Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
+Fixes: 76db5a27a827 ("bootconfig: Add Extra Boot Config support")
 Cc: stable@vger.kernel.org
-Reported-by: Frank Lorenz <lorenz-frank@web.de>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/612
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-2-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ pm.c => pm_netlink.c + replaced subflow_get_local_id() with subflow->local_id ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josh Law <objecting@objecting.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c         |    2 -
- net/mptcp/pm_netlink.c |   57 +++++++++++++++++++++++++++++++++++++++----------
- net/mptcp/protocol.h   |    2 +
- 3 files changed, 49 insertions(+), 12 deletions(-)
+ lib/bootconfig.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -55,7 +55,7 @@ int mptcp_pm_remove_addr(struct mptcp_so
- 	msk->pm.rm_list_tx = *rm_list;
- 	rm_addr |= BIT(MPTCP_RM_ADDR_SIGNAL);
- 	WRITE_ONCE(msk->pm.addr_signal, rm_addr);
--	mptcp_pm_nl_addr_send_ack(msk);
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, rm_list);
- 	return 0;
- }
- 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -753,9 +753,23 @@ bool mptcp_pm_nl_is_init_remote_addr(str
- 	return addresses_equal(&mpc_remote, remote, remote->port);
- }
- 
--void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+static bool subflow_in_rm_list(const struct mptcp_subflow_context *subflow,
-+			       const struct mptcp_rm_list *rm_list)
-+{
-+	u8 i, id = subflow->local_id;
-+
-+	for (i = 0; i < rm_list->nr; i++) {
-+		if (rm_list->ids[i] == id)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list)
- {
--	struct mptcp_subflow_context *subflow;
-+	struct mptcp_subflow_context *subflow, *same_id = NULL;
- 
- 	msk_owned_by_me(msk);
- 	lockdep_assert_held(&msk->pm.lock);
-@@ -766,18 +780,39 @@ void mptcp_pm_nl_addr_send_ack(struct mp
- 
- 	__mptcp_flush_join_list(msk);
- 	mptcp_for_each_subflow(msk, subflow) {
--		if (__mptcp_subflow_active(subflow)) {
--			struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		if (!__mptcp_subflow_active(subflow))
-+			continue;
- 
--			spin_unlock_bh(&msk->pm.lock);
--			pr_debug("send ack for %s\n",
--				 mptcp_pm_should_add_signal(msk) ? "add_addr" : "rm_addr");
--
--			mptcp_subflow_send_ack(ssk);
--			spin_lock_bh(&msk->pm.lock);
--			break;
-+		if (unlikely(rm_list &&
-+			     subflow_in_rm_list(subflow, rm_list))) {
-+			if (!same_id)
-+				same_id = subflow;
-+		} else {
-+			goto send_ack;
- 		}
- 	}
-+
-+	if (same_id)
-+		subflow = same_id;
-+	else
-+		return;
-+
-+send_ack:
-+	{
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+
-+		spin_unlock_bh(&msk->pm.lock);
-+		pr_debug("send ack for %s\n",
-+			 mptcp_pm_should_add_signal(msk) ? "add_addr" : "rm_addr");
-+
-+		mptcp_subflow_send_ack(ssk);
-+		spin_lock_bh(&msk->pm.lock);
-+	}
-+}
-+
-+void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+{
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, NULL);
- }
- 
- int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -753,6 +753,8 @@ void mptcp_pm_add_addr_send_ack(struct m
- bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
- 				     const struct mptcp_addr_info *remote);
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list);
- void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
- 			       const struct mptcp_rm_list *rm_list);
- void mptcp_pm_mp_prio_received(struct sock *sk, u8 bkup);
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -250,7 +250,7 @@ int __init xbc_node_compose_key_after(st
+ 			       depth ? "." : "");
+ 		if (ret < 0)
+ 			return ret;
+-		if (ret > size) {
++		if (ret >= size) {
+ 			size = 0;
+ 		} else {
+ 			size -= ret;
 
 
 
