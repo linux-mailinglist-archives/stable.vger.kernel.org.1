@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uH/HKM8j3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:43 +0200
+	id 2IAHHTIe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35483F0F38
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D64033EFD24
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E049E30AAC0D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C20AA30877B9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195003203B6;
-	Mon, 13 Apr 2026 16:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F58280CFB;
+	Mon, 13 Apr 2026 16:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="de5teJwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytg+Hbkw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D5B31E84D;
-	Mon, 13 Apr 2026 16:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC4E311C2D;
+	Mon, 13 Apr 2026 16:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099331; cv=none; b=N+owGdxA1oOhHtOyeLeLFaPQBm2e1niaWHCAdUvJyYK5YBG7Ccnq7ZD94WzcJE1jJzOycHX0KpvKj5dHxik3SkXv4WKbRMgxZxWJwIcbQh7Ef9x5mJX+hCQwQJiUlmbzKM7JQ/1RibV+qenRyutqdN95D/4GCNn9ztax9/XPSqQ=
+	t=1776098148; cv=none; b=A16LPl8p7gyAa4XploDKOT9VfHMg9bYT3GSoE7EC72ZdDzb7bspEl3XwlN4aZswKNtXtWayF3wpOAuj5oLxWBjIAdCHl/7kp3TAjnLlbWxcWmtyx/v+4kPCQSCTwSd6mt2iwY/wyqWIh++uR+Znlo+8/mwU5G3heB4xMO3k4CDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099331; c=relaxed/simple;
-	bh=7fCWoOyxxiOLh7UdD9wVreEOkJfipJ/cREHmsTwSZo8=;
+	s=arc-20240116; t=1776098148; c=relaxed/simple;
+	bh=5sHXCPINNLYREC1QGAJcMfQZthnYRd7AMKI+ttwesCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/reay7TdyKPdej0zct3Sk7r2aB8nAI2tdr5N6dv1K+KNhuvqP5iwsQ8o24LfD7H/YQ2qNl21JM5b111kRfPvFzGNWGaALysaiLdcd+cXMG9DLHeFn29i98HVKNHDsU7nlpNSYsF2l1EMTU9huYjU0oVOugco59E2RJ0weJZuMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=de5teJwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FD7C2BCAF;
-	Mon, 13 Apr 2026 16:55:31 +0000 (UTC)
+	 MIME-Version; b=oJwHxP4KjZjyEnrz8/aq+oOcq9BTWVNw1sOig7o3iFADvHvZm5o6XNPYP/2pUrS3sswJP/AWm9xTx72/94BRUH6UIop/JrgG5MjcYTbkoEeDsITngfTw95LN3OECGCuR4IqBoibObnJQ6hF4H3HfYeNKfHR/wNqf8TeqHNGFFnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytg+Hbkw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDECC2BCB0;
+	Mon, 13 Apr 2026 16:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099331;
-	bh=7fCWoOyxxiOLh7UdD9wVreEOkJfipJ/cREHmsTwSZo8=;
+	s=korg; t=1776098148;
+	bh=5sHXCPINNLYREC1QGAJcMfQZthnYRd7AMKI+ttwesCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=de5teJwETHVP/G8TowniCEWFNebXJUKw3y/ShVC63k7LGOUuDRM0nIiuZjYlQhiql
-	 VhaC3FrK9fCXp1d9YFMPMzd9t4QSDQkTfFrfCweQ/8dhcsuCA5IhKCg4YaA7cKWPCv
-	 RgM5WH8xG2LEMkptWgGK3wws4UzrM+TgapMOUz9g=
+	b=ytg+HbkwTeE998gLbqkAFCeikIRKf7OwjYMfCtzRS7aY6zvx6sU9R2sh+MzJT+nuX
+	 1XIt8igauIcP31YzSyebKngWt9YiV+5jCR1BWL+efVnyBY2QYzmC/ZfwOkGgC7Hd/2
+	 jx6AmZ/pa7hTcnvallVx/d7cQGpmHgoPq0JGOR0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xietangxin <xietangxin@yeah.net>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 299/491] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 413/570] ipv6: prevent possible UaF in addrconf_permanent_addr()
 Date: Mon, 13 Apr 2026 17:59:04 +0200
-Message-ID: <20260413155830.237800544@linuxfoundation.org>
+Message-ID: <20260413155845.942977636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237390-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236927-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,yeah.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email]
-X-Rspamd-Queue-Id: D35483F0F38
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,sashiko.dev:url,msgid.link:url]
+X-Rspamd-Queue-Id: D64033EFD24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xietangxin <xietangxin@yeah.net>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
+[ Upstream commit fd63f185979b047fb22a0dfc6bd94d0cab6a6a70 ]
 
-A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
-and the device's IFF_XMIT_DST_RELEASE flag is cleared
-(e.g., during the configuration of tc route filter rules).
+The mentioned helper try to warn the user about an exceptional
+condition, but the message is delivered too late, accessing the ipv6
+after its possible deletion.
 
-When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
-expects the driver to hold the reference to skb->dst until the packet
-is fully transmitted and freed. In virtio_net with napi_tx=N,
-skbs may remain in the virtio transmit ring for an extended period.
+Reorder the statement to avoid the possible UaF; while at it, place the
+warning outside the idev->lock as it needs no protection.
 
-If the network namespace is destroyed while these skbs are still pending,
-the corresponding dst_ops structure has freed. When a subsequent packet
-is transmitted, free_old_xmit() is triggered to clean up old skbs.
-It then calls dst_release() on the skb associated with the stale dst_entry.
-Since the dst_ops (referenced by the dst_entry) has already been freed,
-a UAF kernel paging request occurs.
-
-fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
-the dst reference before the skb is queued in virtio_net.
-
-Call Trace:
- Unable to handle kernel paging request at virtual address ffff80007e150000
- CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
-  ...
-  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
-  dst_release+0xe0/0x110  net/core/dst.c:177
-  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
-  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
-  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
-  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
-  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
-  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
-  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
-  ...
-
-Reproduction Steps:
-NETDEV="enp3s0"
-
-config_qdisc_route_filter() {
-    tc qdisc del dev $NETDEV root
-    tc qdisc add dev $NETDEV root handle 1: prio
-    tc filter add dev $NETDEV parent 1:0 \
-	protocol ip prio 100 route to 100 flowid 1:1
-    ip route add 192.168.1.100/32 dev $NETDEV realm 100
-}
-
-test_ns() {
-    ip netns add testns
-    ip link set $NETDEV netns testns
-    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
-    ip netns exec testns ping -c 1 10.0.32.1
-    ip netns del testns
-}
-
-config_qdisc_route_filter
-
-test_ns
-sleep 2
-test_ns
-
-Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
-Cc: stable@vger.kernel.org
-Signed-off-by: xietangxin <xietangxin@yeah.net>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
-Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://sashiko.dev/#/patchset/8c8bfe2e1a324e501f0e15fef404a77443fd8caf.1774365668.git.pabeni%40redhat.com
+Fixes: f1705ec197e7 ("net: ipv6: Make address flushing on ifdown optional")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/ef973c3a8cb4f8f1787ed469f3e5391b9fe95aa0.1774601542.git.pabeni@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/addrconf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1740,6 +1740,7 @@ static netdev_tx_t start_xmit(struct sk_
- 	/* Don't wait up for transmitted skbs to be freed. */
- 	if (!use_napi) {
- 		skb_orphan(skb);
-+		skb_dst_drop(skb);
- 		nf_reset_ct(skb);
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 68038aa522db0..4b50898e45be9 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3547,12 +3547,12 @@ static void addrconf_permanent_addr(struct net *net, struct net_device *dev)
+ 		if ((ifp->flags & IFA_F_PERMANENT) &&
+ 		    fixup_permanent_addr(net, idev, ifp) < 0) {
+ 			write_unlock_bh(&idev->lock);
+-			in6_ifa_hold(ifp);
+-			ipv6_del_addr(ifp);
+-			write_lock_bh(&idev->lock);
+ 
+ 			net_info_ratelimited("%s: Failed to add prefix route for address %pI6c; dropping\n",
+ 					     idev->dev->name, &ifp->addr);
++			in6_ifa_hold(ifp);
++			ipv6_del_addr(ifp);
++			write_lock_bh(&idev->lock);
+ 		}
  	}
  
+-- 
+2.53.0
+
 
 
 
