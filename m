@@ -1,359 +1,179 @@
-Return-Path: <stable+bounces-236438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOkBJBUc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:45 +0200
+	id KLqyLiof3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E35003EF6FE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3AC3F006D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 906393100DDA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 046A63014923
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6962D292B4B;
-	Mon, 13 Apr 2026 16:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1422EBB8C;
+	Mon, 13 Apr 2026 16:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6VbItXT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UN5wjk3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B97A2820A9;
-	Mon, 13 Apr 2026 16:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53F624E4A1;
+	Mon, 13 Apr 2026 16:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096906; cv=none; b=uNPFVMy9pybIBVUWf5QoQjcylp8hADaKKAyL1QtDVULSR3TvroDByV7J2odCPy3/jrce0M356vAvCwWIBb9SqowCHaCDEZuPePfaf1iAU6MTk/f5tZH0tUyFycMKNsqhAJtYv/G3Vj2wbsaJgBu1OH+RTxtPtNFiGa7TJknrBAE=
+	t=1776098365; cv=none; b=jntdd9TN2JzFiLVtHxkYiK/NILhE2fJu41uRyfISnS0Tw36Qq81NJpAoFFo645WZvvScE/af+C/e34xpkeOBkCurZQop6RA60xiYre0lMfMDkavSmq3GFDDPbgGscJ06bXm3lXS82asivuSpt/D/YU67QX5kKef9RhdlqTSmapg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096906; c=relaxed/simple;
-	bh=1p1WFVcVXjIL0iCXQ4rNU+KqLT3YyxKb/zJIpkN7aR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UwNbwEfgmzMSnS3LomFsrA2VCz8USxBowz5Ad4XnTz6Egmh2q/2puAum3AyOK+YJ+5zwNDfaMthoUVBE6G/k8Tu5mVr3h3clMoMG6fnSInrielVyPEhlfZZCKWvyIae9nVtCKxc+5EvwR3rFVVx21iTkluhb2X3RiXNPiFTQ8o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6VbItXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5263BC2BCAF;
-	Mon, 13 Apr 2026 16:15:05 +0000 (UTC)
+	s=arc-20240116; t=1776098365; c=relaxed/simple;
+	bh=U71P5GufQDHv47s+sunhcmd30uFEazj4kOx8GHndY0g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pJK17bFyC0GaeZyfqRfwwGtKcHaUM/L8BUEMXsrqKX6BRSlD27clljYN6Omqg2OoId8vZ+TGgRkloOkcI1NnChFTPUddqZh9GbvG5VCnQMWw1o0GkK36GM3PxmzdeEjFFYRcMLilZMzfv3AgOf8RUZjI/I/RrS2G4E3mz4wiIjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UN5wjk3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78532C2BCAF;
+	Mon, 13 Apr 2026 16:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096905;
-	bh=1p1WFVcVXjIL0iCXQ4rNU+KqLT3YyxKb/zJIpkN7aR0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Z6VbItXT0ngGvIn1kCH6f48BN4biyX2cQ5vJ9kE1fwuSQXdmuWJVB3yu04zhCiM3e
-	 o4izaUtt/LQ7HqSPhYSfdsy3KzHajlVntqrKB8hWuqc2YvvARicAqf5AW32zeFNg4V
-	 B2Kv/dNImlPU4LY6KvhNkoNYCxBR5q69zxPBNGN0=
+	s=korg; t=1776098364;
+	bh=U71P5GufQDHv47s+sunhcmd30uFEazj4kOx8GHndY0g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UN5wjk3lwOhWjRzQFgxGmFpOxtKd3kolV7b3m5I4ZqzultTI/FnyuqcyK4w0hWRz+
+	 Wwp6Mq+vVdDXdkhKJNQm1RXujMJk3NK8HxMZP+L5Eo+glZBylWj9BSZpQ1W6UMQeKX
+	 l48W9cbPPWsc1rbZpKS+oJco2yM43g2+y/lpQDWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 6.6 00/50] 6.6.135-rc1 review
+	syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com,
+	syzbot+1065a199625a388fce60@syzkaller.appspotmail.com,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 496/570] net: mctp: Dont access ifa_index when missing
 Date: Mon, 13 Apr 2026 18:00:27 +0200
-Message-ID: <20260413155724.497323914@linuxfoundation.org>
+Message-ID: <20260413155849.037731314@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.135-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.6.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.6.135-rc1
-X-KernelTest-Deadline: 2026-04-15T15:57+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236438-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237013-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,codeconstruct.com.au,kernel.org,sina.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,e76d52dadc089b9d197f,1065a199625a388fce60];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E35003EF6FE
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,sina.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: BD3AC3F006D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is the start of the stable review cycle for the 6.6.135 release.
-There are 50 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.135-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-and the diffstat can be found below.
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-thanks,
+[ Upstream commit f11cf946c0a92c560a890d68e4775723353599e1 ]
 
-greg k-h
+In mctp_dump_addrinfo, ifa_index can be used to filter interfaces, but
+only when the struct ifaddrmsg is provided. Otherwise it will be
+comparing to uninitialised memory - reproducible in the syzkaller case from
+dhcpd, or busybox "ip addr show".
 
--------------
-Pseudo-Shortlog of commits:
+The kernel MCTP implementation has always filtered by ifa_index, so
+existing userspace programs expecting to dump MCTP addresses must
+already be passing a valid ifa_index value (either 0 or a real index).
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.6.135-rc1
+BUG: KMSAN: uninit-value in mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
+ mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
+ rtnl_dump_all+0x3ec/0x5b0 net/core/rtnetlink.c:4380
+ rtnl_dumpit+0xd5/0x2f0 net/core/rtnetlink.c:6824
+ netlink_dump+0x97b/0x1690 net/netlink/af_netlink.c:2309
 
-Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-    Revert "PCI: Enable ACS after configuring IOMMU for OF platforms"
+[ The context change is due to the commit 2d45eeb7d5d7
+("mctp: no longer rely on net->dev_index_head[]") in v6.14
+which is irrelevant to the logic of this patch. ]
 
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix missing error checks for rxkad encryption/decryption failure
+Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
+Reported-by: syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68135815.050a0220.3a872c.000e.GAE@google.com/
+Reported-by: syzbot+1065a199625a388fce60@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/681357d6.050a0220.14dd7d.000d.GAE@google.com/
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250508-mctp-addr-dump-v2-1-c8a53fd2dd66@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mctp/device.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix key/keyring checks in setsockopt(RXRPC_SECURITY_KEY/KEYRING)
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index c00a2550e2e0e..aec7ffad2666a 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -99,12 +99,19 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ 	struct net_device *dev;
+ 	struct ifaddrmsg *hdr;
+ 	struct mctp_dev *mdev;
+-	int ifindex;
+-	int idx, rc;
+-
+-	hdr = nlmsg_data(cb->nlh);
+-	// filter by ifindex if requested
+-	ifindex = hdr->ifa_index;
++	int idx;
++	int ifindex = 0, rc;
++
++	/* Filter by ifindex if a header is provided */
++	if (cb->nlh->nlmsg_len >= nlmsg_msg_size(sizeof(*hdr))) {
++		hdr = nlmsg_data(cb->nlh);
++		ifindex = hdr->ifa_index;
++	} else {
++		if (cb->strict_check) {
++			NL_SET_ERR_MSG(cb->extack, "mctp: Invalid header for addr dump request");
++			return -EINVAL;
++		}
++	}
+ 
+ 	rcu_read_lock();
+ 	for (; mcb->h < NETDEV_HASHENTRIES; mcb->h++, mcb->idx = 0) {
+-- 
+2.53.0
 
-Luxiao Xu <rakukuip@gmail.com>
-    rxrpc: fix reference count leak in rxrpc_server_keyring()
-
-Yuqi Xu <xuyuqiabc@gmail.com>
-    rxrpc: reject undecryptable rxkad response tickets
-
-Douya Le <ldy3087146292@gmail.com>
-    rxrpc: Only put the call ref if one was acquired
-
-Anderson Nascimento <anderson@allelesecurity.com>
-    rxrpc: Fix key reference count leak from call->key
-
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix call removal to use RCU safe deletion
-
-David Carlier <devnexen@gmail.com>
-    net: lan966x: fix page_pool error handling in lan966x_fdma_rx_alloc_page_pool()
-
-Baolin Wang <baolin.wang@linux.alibaba.com>
-    mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
-
-Tyllis Xu <livelycarpet87@gmail.com>
-    net: stmmac: fix integer underflow in chain mode
-
-Pengpeng Hou <pengpeng@iscas.ac.cn>
-    net: qualcomm: qca_uart: report the consumed byte on RX skb allocation failure
-
-Johan Hovold <johan@kernel.org>
-    mmc: vub300: fix NULL-deref on disconnect
-
-Jacky Bai <ping.bai@nxp.com>
-    pmdomain: imx8mp-blk-ctrl: Keep the NOC_HDCP clock enabled
-
-Michael Guralnik <michaelgur@nvidia.com>
-    net/mlx5: Update the list of the PCI supported devices
-
-Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-    drm/i915/gt: fix refcount underflow in intel_engine_park_heartbeat
-
-Haoze Xie <royenheart@gmail.com>
-    batman-adv: hold claim backbone gateways by reference
-
-David Carlier <devnexen@gmail.com>
-    net: altera-tse: fix skb leak on DMA mapping error in tse_start_xmit()
-
-Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-    net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    EDAC/mc: Fix error path ordering in edac_mc_alloc()
-
-Lukas Wunner <lukas@wunner.de>
-    X.509: Fix out-of-bounds access when parsing extensions
-
-Ruide Cao <caoruide123@gmail.com>
-    batman-adv: reject oversized global TT response buffers
-
-Pengpeng Hou <pengpeng@iscas.ac.cn>
-    nfc: pn533: allocate rx skb before consuming bytes
-
-Shawn Guo <shawnguo@kernel.org>
-    arm64: dts: hisilicon: hi3798cv200: Add missing dma-ranges
-
-Shawn Guo <shawnguo@kernel.org>
-    arm64: dts: hisilicon: poplar: Correct PCIe reset GPIO polarity
-
-Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-    arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
-
-Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-    Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
-
-Thomas Fourier <fourier.thomas@gmail.com>
-    wifi: brcmsmac: Fix dma_free_coherent() size
-
-Oleh Konko <security@1seal.org>
-    tipc: fix bc_ackers underflow on duplicate GRP_ACK_MSG
-
-Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-    xfrm: clear trailing padding in build_polexpire()
-
-Tuan Do <tuan@calif.io>
-    netfilter: nft_ct: fix use-after-free in timeout object destroy
-
-Maarten Lankhorst <dev@lankhorst.se>
-    Revert "drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug"
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR
-
-Andrea Mayer <andrea.mayer@uniroma2.it>
-    seg6: separate dst_cache for input and output paths in seg6 lwtunnel
-
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
-    Revert "mptcp: add needs_id for netlink appending addr"
-
-Michael Zimmermann <sigmaepsilon92@gmail.com>
-    usb: gadget: f_hid: move list and spinlock inits from bind to alloc
-
-Li Xiasong <lixiasong1@huawei.com>
-    mptcp: fix soft lockup in mptcp_recvmsg()
-
-Srujana Challa <schalla@marvell.com>
-    virtio_net: clamp rss_max_key_size to NETDEV_RSS_KEY_LEN
-
-André Draszik <andre.draszik@linaro.org>
-    scsi: ufs: core: Fix use-after free in init error and remove paths
-
-Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-    ASoC: simple-card-utils: Don't use __free(device_node) at graph_util_parse_dai()
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: mm: Rewrite TLB uniquification for the hidden bit feature
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: mm: Suppress TLB uniquification on EHINV hardware
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: Always record SEGBITS in cpu_data.vmbits
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: uinput - take event lock when submitting FF request "event"
-
-Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-    Input: uinput - fix circular locking dependency with ff-core
-
-Jiayuan Chen <jiayuan.chen@linux.dev>
-    mptcp: fix slab-use-after-free in __inet_lookup_established
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    net: rfkill: prevent unlimited numbers of rfkill events from being created
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    xfrm_user: fix info leak in build_report()
-
-Johan Hovold <johan@kernel.org>
-    wifi: rt2x00usb: fix devres lifetime
-
-Eric Biggers <ebiggers@kernel.org>
-    lib/crypto: chacha: Zeroize permuted_state before it leaves scope
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- .../arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |   2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi  |  24 +-
- .../boot/dts/hisilicon/hi3798cv200-poplar.dts      |   2 +-
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi     |   1 +
- arch/mips/include/asm/cpu-features.h               |   1 -
- arch/mips/include/asm/cpu-info.h                   |   2 -
- arch/mips/include/asm/mipsregs.h                   |   2 +
- arch/mips/kernel/cpu-probe.c                       |  13 +-
- arch/mips/kernel/cpu-r3k-probe.c                   |   2 +
- arch/mips/mm/tlb-r4k.c                             | 285 +++++++++++++++++----
- crypto/asymmetric_keys/x509_cert_parser.c          |   8 +-
- drivers/edac/edac_mc.c                             |   6 +-
- drivers/gpu/drm/drm_file.c                         |   5 +-
- drivers/gpu/drm/drm_mode_config.c                  |   9 +-
- drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c   |  26 +-
- drivers/input/misc/uinput.c                        |  35 ++-
- drivers/mmc/host/vub300.c                          |   2 +-
- drivers/net/ethernet/altera/altera_tse_main.c      |   1 +
- drivers/net/ethernet/mellanox/mlx5/core/main.c     |   1 +
- .../net/ethernet/microchip/lan966x/lan966x_fdma.c  |   2 +
- drivers/net/ethernet/qualcomm/qca_uart.c           |   2 +-
- drivers/net/ethernet/stmicro/stmmac/chain_mode.c   |  11 +-
- drivers/net/virtio_net.c                           |  16 +-
- .../net/wireless/broadcom/brcm80211/brcmsmac/dma.c |   2 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c     |   2 +-
- drivers/nfc/pn533/uart.c                           |  11 +-
- drivers/pci/pci-driver.c                           |   8 -
- drivers/pci/pci.c                                  |  10 +-
- drivers/pci/pci.h                                  |   1 -
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c             |   8 +-
- drivers/ufs/core/ufshcd.c                          |  31 ++-
- drivers/ufs/host/ufshcd-pci.c                      |   2 -
- drivers/ufs/host/ufshcd-pltfrm.c                   |  25 +-
- drivers/usb/gadget/function/f_hid.c                |  11 +-
- include/net/netfilter/nf_conntrack_timeout.h       |   1 +
- include/trace/events/rxrpc.h                       |   2 +-
- include/ufs/ufshcd.h                               |   1 -
- lib/crypto/chacha.c                                |   4 +
- mm/filemap.c                                       |  11 +-
- net/batman-adv/bridge_loop_avoidance.c             |  27 +-
- net/batman-adv/translation-table.c                 |   9 +-
- net/ipv6/seg6_iptunnel.c                           |  41 ++-
- net/mptcp/pm_netlink.c                             |  24 +-
- net/mptcp/protocol.c                               |  13 +-
- net/mptcp/protocol.h                               |   1 +
- net/mptcp/subflow.c                                |  15 +-
- net/netfilter/nft_ct.c                             |   2 +-
- net/netfilter/nft_set_pipapo.c                     |  20 +-
- net/rfkill/core.c                                  |  35 ++-
- net/rxrpc/af_rxrpc.c                               |   6 -
- net/rxrpc/call_object.c                            |  25 +-
- net/rxrpc/io_thread.c                              |   3 +-
- net/rxrpc/key.c                                    |   2 +-
- net/rxrpc/rxkad.c                                  |  63 +++--
- net/rxrpc/server_key.c                             |   3 +
- net/tipc/group.c                                   |   6 +-
- net/tls/tls_sw.c                                   |  10 +
- net/xfrm/xfrm_user.c                               |   3 +
- sound/soc/generic/simple-card-utils.c              |   7 +-
- 60 files changed, 599 insertions(+), 308 deletions(-)
 
 
 
