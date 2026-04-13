@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-237022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Ej4AkUf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:21 +0200
+	id 2Aw/CYsY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214483F0118
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7AD3EEC78
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 49B23301C61F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D83C030CBB61
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE972D5A19;
-	Mon, 13 Apr 2026 16:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B01A2472A2;
+	Mon, 13 Apr 2026 16:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oD/VNV0a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6pY9Aqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DEF1A680C;
-	Mon, 13 Apr 2026 16:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1831B24E4AF;
+	Mon, 13 Apr 2026 16:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098388; cv=none; b=DFLFbs89J+1zf5XVgG1TC9yuqH64c3XS250RnGpsbbwEYpBe76v8BVWSlJO5xkM/jYFl/TD3NlNXaYWa+m3S6W8ZZ8BGH4+OoZMs7I9BicDILIt9SvvydimCA9pgYc/r9f5AWHIO+jXzhU/RWJh+olbt9dJfe55JFZHIEVT+OC4=
+	t=1776096731; cv=none; b=RS7ToyqnSnU27qXqkA0UuKtgeN+eOMB7/EhUBFJCASEtzGdG8k5+kY409aIc1t2i5cvLJtPOHQTFUdLJwzz89hmN60fsfWN7W290ZiukL4S2AZLMHyKCiAitvAOo8VquL/Fg1g7hiYnMLYv6AGnigvlggY+opPPUQK53QFzsv5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098388; c=relaxed/simple;
-	bh=2ib9Y+v8AUQkWxsetPn0KRJWhzSIkxc6E8dFFd90ah8=;
+	s=arc-20240116; t=1776096731; c=relaxed/simple;
+	bh=A6L2uBe7DcWg/NziCIN7B7R7afWvSL4cwYtLwnhLqMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o4RrxJip537yGYVrMPZKQDPRZ154Rjmf+bzaRHL/E2CEnseH9H8pCj1m9uox4CwXKYkP4DE6maZ4k4OkU34DvbcvWDmxVHhV0l0pkmy6IB7m43SIrehtTEjBhAWzt+sLYXLzKtFJ5OdLpkOIeCld5r9RSvC/Hd/St6/xLl10vz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oD/VNV0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB010C2BCAF;
-	Mon, 13 Apr 2026 16:39:47 +0000 (UTC)
+	 MIME-Version; b=m6w4qP3rBq+h77w4+hZnClowuuOtCQbroErB2wdx3pHCPNd8sitwnOFbLlYqzQOt7chsZJNPzvbq6q9i5E/r76Cz4pQNGVEeRoz7+2+b8ZPlFD3JZi1qcpCDbgBusYjgKKSktWh9h0CeDE9g8ciY+9npAb7oUhM7ns4d3om6I2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6pY9Aqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65126C2BCAF;
+	Mon, 13 Apr 2026 16:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098388;
-	bh=2ib9Y+v8AUQkWxsetPn0KRJWhzSIkxc6E8dFFd90ah8=;
+	s=korg; t=1776096730;
+	bh=A6L2uBe7DcWg/NziCIN7B7R7afWvSL4cwYtLwnhLqMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oD/VNV0aoWuDdLB8T+BgfqLELC+jIGxw2d3O9NdH+EAksBV2PJdllc8s3Q6BzH0TC
-	 KrGm1wzsJjKgqxSzjHzlJzTF4f5qlELbOMbUxXUpLX3i6ADyIpRfQaCvXoHKxTqldK
-	 K8sjDPli/mxo/SYo4HPV07ngyT17kg4BWm1aVJ8k=
+	b=p6pY9Aqhj2Kz0nG7eE9YWtwQDS9qk9eWYw5K2Y+zD7LEXX8h6Lnv3Do9vKQVI9024
+	 FpTfZoYkVR5h25rUawJ98ij7OQuhqq2h1iWKQQw1tOvS+Qm4ZYuoDka4UKgKd8erIN
+	 ZX8SH7byG6O4Rk3KEg4j9ZTJtN0W5W9gojKXhCi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	VitaliiT <vitaly.torshyn@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 504/570] ACPI: EC: Evaluate orphan _REG under EC device
+	Shawn Guo <shawnguo@kernel.org>,
+	Wei Xu <xuwei5@hisilicon.com>
+Subject: [PATCH 6.12 40/70] arm64: dts: hisilicon: hi3798cv200: Add missing dma-ranges
 Date: Mon, 13 Apr 2026 18:00:35 +0200
-Message-ID: <20260413155849.333061481@linuxfoundation.org>
+Message-ID: <20260413155729.676559359@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,190 +63,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237022-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236370-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.993];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 214483F0118
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[8a22000:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hisilicon.com:email]
+X-Rspamd-Queue-Id: 9A7AD3EEC78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Shawn Guo <shawnguo@kernel.org>
 
-commit 0e6b6dedf16800df0ff73ffe2bb5066514db29c2 upstream.
+commit 1af997cad473d505248df6d9577183bb91f69670 upstream.
 
-After starting to install the EC address space handler at the ACPI
-namespace root, if there is an "orphan" _REG method in the EC device's
-scope, it will not be evaluated any more.  This breaks EC operation
-regions on some systems, like Asus gu605.
+Reboot starts failing on Poplar since commit 8424ecdde7df ("arm64: mm:
+Set ZONE_DMA size based on devicetree's dma-ranges"), which effectively
+changes zone_dma_bits from 30 to 32 for arm64 platforms that do not
+properly define dma-ranges in device tree.  It's unclear how Poplar reboot
+gets broken by this change exactly, but a dma-ranges limiting zone_dma to
+the first 1 GB fixes the regression.
 
-To address this, use a wrapper around an existing ACPICA function to
-look for an "orphan" _REG method in the EC device scope and evaluate
-it if present.
-
-Fixes: 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the namespace root")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218945
-Reported-by: VitaliiT <vitaly.torshyn@gmail.com>
-Tested-by: VitaliiT <vitaly.torshyn@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/acevents.h |    4 +++
- drivers/acpi/acpica/evregion.c |    6 ----
- drivers/acpi/acpica/evxfregn.c |   54 +++++++++++++++++++++++++++++++++++++++++
- drivers/acpi/ec.c              |    3 ++
- include/acpi/acpixf.h          |    4 +++
- 5 files changed, 66 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/acpi/acpica/acevents.h
-+++ b/drivers/acpi/acpica/acevents.h
-@@ -191,6 +191,10 @@ void
- acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
- 			    acpi_adr_space_type space_id, u32 function);
+--- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
++++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
+@@ -122,6 +122,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		ranges = <0x0 0x0 0xf0000000 0x10000000>;
++		dma-ranges = <0x0 0x0 0x0 0x40000000>;
  
-+void
-+acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *node,
-+				  acpi_adr_space_type space_id);
-+
- acpi_status
- acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function);
- 
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -20,10 +20,6 @@ extern u8 acpi_gbl_default_address_space
- 
- /* Local prototypes */
- 
--static void
--acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
--				  acpi_adr_space_type space_id);
--
- static acpi_status
- acpi_ev_reg_run(acpi_handle obj_handle,
- 		u32 level, void *context, void **return_value);
-@@ -799,7 +795,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
-  *
-  ******************************************************************************/
- 
--static void
-+void
- acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
- 				  acpi_adr_space_type space_id)
- {
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -304,3 +304,57 @@ acpi_execute_reg_methods(acpi_handle dev
- }
- 
- ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
-+
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_execute_orphan_reg_method
-+ *
-+ * PARAMETERS:  device          - Handle for the device
-+ *              space_id        - The address space ID
-+ *
-+ * RETURN:      Status
-+ *
-+ * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
-+ *              device. This is a _REG method that has no corresponding region
-+ *              within the device's scope.
-+ *
-+ ******************************************************************************/
-+acpi_status
-+acpi_execute_orphan_reg_method(acpi_handle device, acpi_adr_space_type space_id)
-+{
-+	struct acpi_namespace_node *node;
-+	acpi_status status;
-+
-+	ACPI_FUNCTION_TRACE(acpi_execute_orphan_reg_method);
-+
-+	/* Parameter validation */
-+
-+	if (!device) {
-+		return_ACPI_STATUS(AE_BAD_PARAMETER);
-+	}
-+
-+	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
-+	if (ACPI_FAILURE(status)) {
-+		return_ACPI_STATUS(status);
-+	}
-+
-+	/* Convert and validate the device handle */
-+
-+	node = acpi_ns_validate_handle(device);
-+	if (node) {
-+
-+		/*
-+		 * If an "orphan" _REG method is present in the device's scope
-+		 * for the given address space ID, run it.
-+		 */
-+
-+		acpi_ev_execute_orphan_reg_method(node, space_id);
-+	} else {
-+		status = AE_BAD_PARAMETER;
-+	}
-+
-+	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
-+	return_ACPI_STATUS(status);
-+}
-+
-+ACPI_EXPORT_SYMBOL(acpi_execute_orphan_reg_method)
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1521,6 +1521,9 @@ static int ec_install_handlers(struct ac
- 
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
- 		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
-+		if (scope_handle != ec->handle)
-+			acpi_execute_orphan_reg_method(ec->handle, ACPI_ADR_SPACE_EC);
-+
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
- 
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -661,6 +661,10 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 						     acpi_adr_space_type
- 						     space_id))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_execute_orphan_reg_method(acpi_handle device,
-+							   acpi_adr_space_type
-+							   space_id))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_remove_address_space_handler(acpi_handle
- 							      device,
- 							      acpi_adr_space_type
+ 		crg: clock-reset-controller@8a22000 {
+ 			compatible = "hisilicon,hi3798cv200-crg", "syscon", "simple-mfd";
 
 
 
