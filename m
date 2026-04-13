@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-237232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aH4dOC4f3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:58 +0200
+	id AMESCYQh3Wn4aAkAu9opvQ
+	(envelope-from <stable+bounces-236739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8E73F0092
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838173F0874
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D58B2302C1F5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F8A5329B780
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91F7223DCE;
-	Mon, 13 Apr 2026 16:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F4626CE32;
+	Mon, 13 Apr 2026 16:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XweZzGSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wj8MU5YJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFB6316197;
-	Mon, 13 Apr 2026 16:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A1E2E11B9;
+	Mon, 13 Apr 2026 16:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098926; cv=none; b=pbPlNhU5GDPJ1drZ4xfStEjNI27jHo2/WV5Zt1Mle8cY7UH3JPW652bhL0A9UVlhCfCfqIUEVJrmvr84luLyB4U8rKBVW9meNF1B02uB4x1xfJL/F3bkYi2WXDnCa6VqMRdJ7JpstAMuaTp7bW2FSJMWoNVcB9uBjQ9oWFOoNU4=
+	t=1776097669; cv=none; b=nNj9B8qNFCsw9R3zN0dLcTqxEcqpcibPIYyXKkS+BwU1cgSM5O0IDJM34OIs6+WtAWl8N+/eBpDw/fTUDvyBOrSbOPnhLxmoaBAaNMwpCIzHSoVpgDa2j5mw3qRZvMDdn1iFRXLtSPg4OLtq3lSGNFM0lXzbuJZm1FWaePsSjEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098926; c=relaxed/simple;
-	bh=BJK51bvPPdiQb5Aze5Rcn6y4PaiZdmwXso1lhX6/6q0=;
+	s=arc-20240116; t=1776097669; c=relaxed/simple;
+	bh=zA9g0ricYT1oDN/Z/dAvRcvDvJHtd+fRPx9DKLEHU+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9NLOlGALO9kYXozFslh8KizbXVAMICjY47wH+tbnYqjJzpd0WA1W9oZpG4RZFgwqtAAmDUHmweNp3l8ISYr0EJZ66Ig71wQR/eJnzDRWTsiUF8CZbTUtKVs2DIvx1QnRY9rQVyUnkq7cjZ9sHlBon3S7HikprtLWspds79zbNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XweZzGSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA415C2BCAF;
-	Mon, 13 Apr 2026 16:48:45 +0000 (UTC)
+	 MIME-Version; b=c5Boe+lfOR1lmpyVAp0XjCDwf+ZUn1GcBde4uuZKO755q1IlT1IljiccaxIU7VqcocOjmygiKzCq7DSWVwVv6wzra+DJODSoCO8sjTO59Yhc6nFjuZA6Y4GuQ60dVyL0+/IQQOJJUJsymwIhbIZ76WiNrTPS4JKFDNyLlkUyEWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wj8MU5YJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35A3C2BCAF;
+	Mon, 13 Apr 2026 16:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098926;
-	bh=BJK51bvPPdiQb5Aze5Rcn6y4PaiZdmwXso1lhX6/6q0=;
+	s=korg; t=1776097669;
+	bh=zA9g0ricYT1oDN/Z/dAvRcvDvJHtd+fRPx9DKLEHU+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XweZzGSVwEcleCXF23ffDaSSLL9XMj+QQukIMmPBSjsPW3ak9WlJ9ZlkY/NXSGcCh
-	 mENlZqdEAs8ynSN7A5G6wTCaAlETPOAyc3c5y9AknZl+Ed4Wm3TC7J4VTd+mR9FGlR
-	 teVD6ykiqfKgOMAcYfe+vvSvKDmNgq3r72cKymiI=
+	b=wj8MU5YJu0AhvrCa7EULv3h7Xv5zwsytxmw87lSTa9k3D8Hs0NdSaP0LZr6O3ACqq
+	 8hkZUiNwofS11GTxgU0bCoJHldiNjG5pADGwCrxy6XkXnazWHl7vEoqvgB5cmBAHiJ
+	 D8bwHTqc5oNkqhG5VDvS3M9ibopxoPInmyH/z0cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/491] time: add kernel-doc in time.c
-Date: Mon, 13 Apr 2026 17:55:55 +0200
-Message-ID: <20260413155823.160341422@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 5.15 225/570] drm/exynos: vidi: use ctx->lock to protect struct vidi_context member variables related to memory alloc/free
+Date: Mon, 13 Apr 2026 17:55:56 +0200
+Message-ID: <20260413155838.883387639@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,438 +65,235 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236739-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237232-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,infradead.org:email]
-X-Rspamd-Queue-Id: AB8E73F0092
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 838173F0874
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 67b3f564cb1e769ef8e45835129a4866152fcfdb ]
+commit 52b330799e2d6f825ae2bb74662ec1b10eb954bb upstream.
 
-Add kernel-doc for all APIs that do not already have it.
+Exynos Virtual Display driver performs memory alloc/free operations
+without lock protection, which easily causes concurrency problem.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
-Acked-by: John Stultz <jstultz@google.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20230704052405.5089-3-rdunlap@infradead.org
-Stable-dep-of: 755a648e78f1 ("time/jiffies: Mark jiffies_64_to_clock_t() notrace")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example, use-after-free can occur in race scenario like this:
+```
+	CPU0				CPU1				CPU2
+	----				----				----
+  vidi_connection_ioctl()
+    if (vidi->connection) // true
+      drm_edid = drm_edid_alloc(); // alloc drm_edid
+      ...
+      ctx->raw_edid = drm_edid;
+      ...
+								drm_mode_getconnector()
+								  drm_helper_probe_single_connector_modes()
+								    vidi_get_modes()
+								      if (ctx->raw_edid) // true
+								        drm_edid_dup(ctx->raw_edid);
+								          if (!drm_edid) // false
+								          ...
+				vidi_connection_ioctl()
+				  if (vidi->connection) // false
+				    drm_edid_free(ctx->raw_edid); // free drm_edid
+				    ...
+								          drm_edid_alloc(drm_edid->edid)
+								            kmemdup(edid); // UAF!!
+								            ...
+```
+
+To prevent these vulns, at least in vidi_context, member variables related
+to memory alloc/free should be protected with ctx->lock.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/time.c | 169 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 158 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |   43 +++++++++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 483f8a3e24d0c..6f81aead1856d 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -365,11 +365,14 @@ SYSCALL_DEFINE1(adjtimex_time32, struct old_timex32 __user *, utp)
- }
- #endif
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -185,15 +185,17 @@ static ssize_t vidi_store_connection(str
+ 				const char *buf, size_t len)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+-	int ret;
++	int ret, new_connected;
  
--/*
-- * Convert jiffies to milliseconds and back.
-+/**
-+ * jiffies_to_msecs - Convert jiffies to milliseconds
-+ * @j: jiffies value
-  *
-  * Avoid unnecessary multiplications/divisions in the
-- * two most common HZ cases:
-+ * two most common HZ cases.
-+ *
-+ * Return: milliseconds value
-  */
- unsigned int jiffies_to_msecs(const unsigned long j)
- {
-@@ -388,6 +391,12 @@ unsigned int jiffies_to_msecs(const unsigned long j)
- }
- EXPORT_SYMBOL(jiffies_to_msecs);
+-	ret = kstrtoint(buf, 0, &ctx->connected);
++	ret = kstrtoint(buf, 0, &new_connected);
+ 	if (ret)
+ 		return ret;
  
-+/**
-+ * jiffies_to_usecs - Convert jiffies to microseconds
-+ * @j: jiffies value
-+ *
-+ * Return: microseconds value
-+ */
- unsigned int jiffies_to_usecs(const unsigned long j)
- {
- 	/*
-@@ -408,8 +417,15 @@ unsigned int jiffies_to_usecs(const unsigned long j)
- }
- EXPORT_SYMBOL(jiffies_to_usecs);
+-	if (ctx->connected > 1)
++	if (new_connected > 1)
+ 		return -EINVAL;
  
--/*
-+/**
-  * mktime64 - Converts date to seconds.
-+ * @year0: year to convert
-+ * @mon0: month to convert
-+ * @day: day to convert
-+ * @hour: hour to convert
-+ * @min: minute to convert
-+ * @sec: second to convert
-+ *
-  * Converts Gregorian date to seconds since 1970-01-01 00:00:00.
-  * Assumes input in normal date format, i.e. 1980-12-31 23:59:59
-  * => year=1980, mon=12, day=31, hour=23, min=59, sec=59.
-@@ -427,6 +443,8 @@ EXPORT_SYMBOL(jiffies_to_usecs);
-  *
-  * An encoding of midnight at the end of the day as 24:00:00 - ie. midnight
-  * tomorrow - (allowable under ISO 8601) is supported.
-+ *
-+ * Return: seconds since the epoch time for the given input date
-  */
- time64_t mktime64(const unsigned int year0, const unsigned int mon0,
- 		const unsigned int day, const unsigned int hour,
-@@ -471,8 +489,7 @@ EXPORT_SYMBOL(ns_to_kernel_old_timeval);
-  * Set seconds and nanoseconds field of a timespec variable and
-  * normalize to the timespec storage format
-  *
-- * Note: The tv_nsec part is always in the range of
-- *	0 <= tv_nsec < NSEC_PER_SEC
-+ * Note: The tv_nsec part is always in the range of 0 <= tv_nsec < NSEC_PER_SEC.
-  * For negative values only the tv_sec field is negative !
-  */
- void set_normalized_timespec64(struct timespec64 *ts, time64_t sec, s64 nsec)
-@@ -501,7 +518,7 @@ EXPORT_SYMBOL(set_normalized_timespec64);
-  * ns_to_timespec64 - Convert nanoseconds to timespec64
-  * @nsec:       the nanoseconds value to be converted
-  *
-- * Returns the timespec64 representation of the nsec parameter.
-+ * Return: the timespec64 representation of the nsec parameter.
-  */
- struct timespec64 ns_to_timespec64(const s64 nsec)
- {
-@@ -548,6 +565,8 @@ EXPORT_SYMBOL(ns_to_timespec64);
-  * runtime.
-  * the _msecs_to_jiffies helpers are the HZ dependent conversion
-  * routines found in include/linux/jiffies.h
-+ *
-+ * Return: jiffies value
-  */
- unsigned long __msecs_to_jiffies(const unsigned int m)
- {
-@@ -560,6 +579,12 @@ unsigned long __msecs_to_jiffies(const unsigned int m)
- }
- EXPORT_SYMBOL(__msecs_to_jiffies);
- 
-+/**
-+ * __usecs_to_jiffies: - convert microseconds to jiffies
-+ * @u:	time in milliseconds
-+ *
-+ * Return: jiffies value
-+ */
- unsigned long __usecs_to_jiffies(const unsigned int u)
- {
- 	if (u > jiffies_to_usecs(MAX_JIFFY_OFFSET))
-@@ -568,7 +593,10 @@ unsigned long __usecs_to_jiffies(const unsigned int u)
- }
- EXPORT_SYMBOL(__usecs_to_jiffies);
- 
--/*
-+/**
-+ * timespec64_to_jiffies - convert a timespec64 value to jiffies
-+ * @value: pointer to &struct timespec64
-+ *
-  * The TICK_NSEC - 1 rounds up the value to the next resolution.  Note
-  * that a remainder subtract here would not do the right thing as the
-  * resolution values don't fall on second boundries.  I.e. the line:
-@@ -582,8 +610,9 @@ EXPORT_SYMBOL(__usecs_to_jiffies);
-  *
-  * The >> (NSEC_JIFFIE_SC - SEC_JIFFIE_SC) converts the scaled nsec
-  * value to a scaled second value.
-+ *
-+ * Return: jiffies value
-  */
--
- unsigned long
- timespec64_to_jiffies(const struct timespec64 *value)
- {
-@@ -601,6 +630,11 @@ timespec64_to_jiffies(const struct timespec64 *value)
- }
- EXPORT_SYMBOL(timespec64_to_jiffies);
- 
-+/**
-+ * jiffies_to_timespec64 - convert jiffies value to &struct timespec64
-+ * @jiffies: jiffies value
-+ * @value: pointer to &struct timespec64
-+ */
- void
- jiffies_to_timespec64(const unsigned long jiffies, struct timespec64 *value)
- {
-@@ -618,6 +652,13 @@ EXPORT_SYMBOL(jiffies_to_timespec64);
- /*
-  * Convert jiffies/jiffies_64 to clock_t and back.
-  */
++	mutex_lock(&ctx->lock);
 +
-+/**
-+ * jiffies_to_clock_t - Convert jiffies to clock_t
-+ * @x: jiffies value
-+ *
-+ * Return: jiffies converted to clock_t (CLOCKS_PER_SEC)
-+ */
- clock_t jiffies_to_clock_t(unsigned long x)
- {
- #if (TICK_NSEC % (NSEC_PER_SEC / USER_HZ)) == 0
-@@ -632,6 +673,12 @@ clock_t jiffies_to_clock_t(unsigned long x)
- }
- EXPORT_SYMBOL(jiffies_to_clock_t);
+ 	/* use fake edid data for test. */
+ 	if (!ctx->raw_edid)
+ 		ctx->raw_edid = (struct edid *)fake_edid_info;
+@@ -201,14 +203,21 @@ static ssize_t vidi_store_connection(str
+ 	/* if raw_edid isn't same as fake data then it can't be tested. */
+ 	if (ctx->raw_edid != (struct edid *)fake_edid_info) {
+ 		DRM_DEV_DEBUG_KMS(dev, "edid data is not fake data.\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail;
+ 	}
  
-+/**
-+ * clock_t_to_jiffies - Convert clock_t to jiffies
-+ * @x: clock_t value
-+ *
-+ * Return: clock_t value converted to jiffies
-+ */
- unsigned long clock_t_to_jiffies(unsigned long x)
- {
- #if (HZ % USER_HZ)==0
-@@ -649,6 +696,12 @@ unsigned long clock_t_to_jiffies(unsigned long x)
- }
- EXPORT_SYMBOL(clock_t_to_jiffies);
++	ctx->connected = new_connected;
++	mutex_unlock(&ctx->lock);
++
+ 	DRM_DEV_DEBUG_KMS(dev, "requested connection.\n");
  
-+/**
-+ * jiffies_64_to_clock_t - Convert jiffies_64 to clock_t
-+ * @x: jiffies_64 value
-+ *
-+ * Return: jiffies_64 value converted to 64-bit "clock_t" (CLOCKS_PER_SEC)
-+ */
- u64 jiffies_64_to_clock_t(u64 x)
- {
- #if (TICK_NSEC % (NSEC_PER_SEC / USER_HZ)) == 0
-@@ -671,6 +724,12 @@ u64 jiffies_64_to_clock_t(u64 x)
- }
- EXPORT_SYMBOL(jiffies_64_to_clock_t);
+ 	drm_helper_hpd_irq_event(ctx->drm_dev);
  
-+/**
-+ * nsec_to_clock_t - Convert nsec value to clock_t
-+ * @x: nsec value
-+ *
-+ * Return: nsec value converted to 64-bit "clock_t" (CLOCKS_PER_SEC)
-+ */
- u64 nsec_to_clock_t(u64 x)
- {
- #if (NSEC_PER_SEC % USER_HZ) == 0
-@@ -687,6 +746,12 @@ u64 nsec_to_clock_t(u64 x)
- #endif
+ 	return len;
++fail:
++	mutex_unlock(&ctx->lock);
++	return ret;
  }
  
-+/**
-+ * jiffies64_to_nsecs - Convert jiffies64 to nanoseconds
-+ * @j: jiffies64 value
-+ *
-+ * Return: nanoseconds value
-+ */
- u64 jiffies64_to_nsecs(u64 j)
- {
- #if !(NSEC_PER_SEC % HZ)
-@@ -697,6 +762,12 @@ u64 jiffies64_to_nsecs(u64 j)
- }
- EXPORT_SYMBOL(jiffies64_to_nsecs);
+ static DEVICE_ATTR(connection, 0644, vidi_show_connection,
+@@ -243,11 +252,14 @@ int vidi_connection_ioctl(struct drm_dev
+ 		return -EINVAL;
+ 	}
  
-+/**
-+ * jiffies64_to_msecs - Convert jiffies64 to milliseconds
-+ * @j: jiffies64 value
-+ *
-+ * Return: milliseconds value
-+ */
- u64 jiffies64_to_msecs(const u64 j)
- {
- #if HZ <= MSEC_PER_SEC && !(MSEC_PER_SEC % HZ)
-@@ -719,6 +790,8 @@ EXPORT_SYMBOL(jiffies64_to_msecs);
-  * note:
-  *   NSEC_PER_SEC = 10^9 = (5^9 * 2^9) = (1953125 * 512)
-  *   ULLONG_MAX ns = 18446744073.709551615 secs = about 584 years
-+ *
-+ * Return: nsecs converted to jiffies64 value
-  */
- u64 nsecs_to_jiffies64(u64 n)
- {
-@@ -750,6 +823,8 @@ EXPORT_SYMBOL(nsecs_to_jiffies64);
-  * note:
-  *   NSEC_PER_SEC = 10^9 = (5^9 * 2^9) = (1953125 * 512)
-  *   ULLONG_MAX ns = 18446744073.709551615 secs = about 584 years
-+ *
-+ * Return: nsecs converted to jiffies value
-  */
- unsigned long nsecs_to_jiffies(u64 n)
- {
-@@ -757,10 +832,16 @@ unsigned long nsecs_to_jiffies(u64 n)
- }
- EXPORT_SYMBOL_GPL(nsecs_to_jiffies);
++	mutex_lock(&ctx->lock);
+ 	if (ctx->connected == vidi->connection) {
++		mutex_unlock(&ctx->lock);
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "same connection request.\n");
+ 		return -EINVAL;
+ 	}
++	mutex_unlock(&ctx->lock);
  
--/*
-- * Add two timespec64 values and do a safety check for overflow.
-+/**
-+ * timespec64_add_safe - Add two timespec64 values and do a safety check
-+ * for overflow.
-+ * @lhs: first (left) timespec64 to add
-+ * @rhs: second (right) timespec64 to add
-+ *
-  * It's assumed that both values are valid (>= 0).
-  * And, each timespec64 is in normalized form.
-+ *
-+ * Return: sum of @lhs + @rhs
-  */
- struct timespec64 timespec64_add_safe(const struct timespec64 lhs,
- 				const struct timespec64 rhs)
-@@ -778,6 +859,15 @@ struct timespec64 timespec64_add_safe(const struct timespec64 lhs,
- 	return res;
+ 	if (vidi->connection) {
+ 		struct edid *raw_edid;
+@@ -270,20 +282,27 @@ int vidi_connection_ioctl(struct drm_dev
+ 					  "failed to allocate raw_edid.\n");
+ 			return -ENOMEM;
+ 		}
++		mutex_lock(&ctx->lock);
+ 		ctx->raw_edid = raw_edid;
++		mutex_unlock(&ctx->lock);
+ 	} else {
+ 		/*
+ 		 * with connection = 0, free raw_edid
+ 		 * only if raw edid data isn't same as fake data.
+ 		 */
++		mutex_lock(&ctx->lock);
+ 		if (ctx->raw_edid && ctx->raw_edid !=
+ 				(struct edid *)fake_edid_info) {
+ 			kfree(ctx->raw_edid);
+ 			ctx->raw_edid = NULL;
+ 		}
++		mutex_unlock(&ctx->lock);
+ 	}
+ 
++	mutex_lock(&ctx->lock);
+ 	ctx->connected = vidi->connection;
++	mutex_unlock(&ctx->lock);
++
+ 	drm_helper_hpd_irq_event(ctx->drm_dev);
+ 
+ 	return 0;
+@@ -298,7 +317,7 @@ static enum drm_connector_status vidi_de
+ 	 * connection request would come from user side
+ 	 * to do hotplug through specific ioctl.
+ 	 */
+-	return ctx->connected ? connector_status_connected :
++	return READ_ONCE(ctx->connected) ? connector_status_connected :
+ 			connector_status_disconnected;
  }
  
-+/**
-+ * get_timespec64 - get user's time value into kernel space
-+ * @ts: destination &struct timespec64
-+ * @uts: user's time value as &struct __kernel_timespec
-+ *
-+ * Handles compat or 32-bit modes.
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int get_timespec64(struct timespec64 *ts,
- 		   const struct __kernel_timespec __user *uts)
- {
-@@ -801,6 +891,14 @@ int get_timespec64(struct timespec64 *ts,
- }
- EXPORT_SYMBOL_GPL(get_timespec64);
+@@ -320,22 +339,24 @@ static int vidi_get_modes(struct drm_con
+ 	struct vidi_context *ctx = ctx_from_connector(connector);
+ 	struct edid *edid;
+ 	int edid_len;
+-	int count;
++	int count = 0;
  
-+/**
-+ * put_timespec64 - convert timespec64 value to __kernel_timespec format and
-+ * 		    copy the latter to userspace
-+ * @ts: input &struct timespec64
-+ * @uts: user's &struct __kernel_timespec
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int put_timespec64(const struct timespec64 *ts,
- 		   struct __kernel_timespec __user *uts)
- {
-@@ -839,6 +937,15 @@ static int __put_old_timespec32(const struct timespec64 *ts64,
- 	return copy_to_user(cts, &ts, sizeof(ts)) ? -EFAULT : 0;
+ 	/*
+ 	 * the edid data comes from user side and it would be set
+ 	 * to ctx->raw_edid through specific ioctl.
+ 	 */
++
++	mutex_lock(&ctx->lock);
+ 	if (!ctx->raw_edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "raw_edid is null.\n");
+-		return 0;
++		goto fail;
+ 	}
+ 
+ 	edid_len = (1 + ctx->raw_edid->extensions) * EDID_LENGTH;
+ 	edid = kmemdup(ctx->raw_edid, edid_len, GFP_KERNEL);
+ 	if (!edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "failed to allocate edid\n");
+-		return 0;
++		goto fail;
+ 	}
+ 
+ 	drm_connector_update_edid_property(connector, edid);
+@@ -344,6 +365,8 @@ static int vidi_get_modes(struct drm_con
+ 
+ 	kfree(edid);
+ 
++fail:
++	mutex_unlock(&ctx->lock);
+ 	return count;
  }
  
-+/**
-+ * get_old_timespec32 - get user's old-format time value into kernel space
-+ * @ts: destination &struct timespec64
-+ * @uts: user's old-format time value (&struct old_timespec32)
-+ *
-+ * Handles X86_X32_ABI compatibility conversion.
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int get_old_timespec32(struct timespec64 *ts, const void __user *uts)
+@@ -489,11 +512,15 @@ static int vidi_remove(struct platform_d
  {
- 	if (COMPAT_USE_64BIT_TIME)
-@@ -848,6 +955,16 @@ int get_old_timespec32(struct timespec64 *ts, const void __user *uts)
- }
- EXPORT_SYMBOL_GPL(get_old_timespec32);
+ 	struct vidi_context *ctx = platform_get_drvdata(pdev);
  
-+/**
-+ * put_old_timespec32 - convert timespec64 value to &struct old_timespec32 and
-+ * 			copy the latter to userspace
-+ * @ts: input &struct timespec64
-+ * @uts: user's &struct old_timespec32
-+ *
-+ * Handles X86_X32_ABI compatibility conversion.
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int put_old_timespec32(const struct timespec64 *ts, void __user *uts)
- {
- 	if (COMPAT_USE_64BIT_TIME)
-@@ -857,6 +974,13 @@ int put_old_timespec32(const struct timespec64 *ts, void __user *uts)
- }
- EXPORT_SYMBOL_GPL(put_old_timespec32);
++	mutex_lock(&ctx->lock);
++
+ 	if (ctx->raw_edid != (struct edid *)fake_edid_info) {
+ 		kfree(ctx->raw_edid);
+ 		ctx->raw_edid = NULL;
+ 	}
  
-+/**
-+ * get_itimerspec64 - get user's &struct __kernel_itimerspec into kernel space
-+ * @it: destination &struct itimerspec64
-+ * @uit: user's &struct __kernel_itimerspec
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int get_itimerspec64(struct itimerspec64 *it,
- 			const struct __kernel_itimerspec __user *uit)
- {
-@@ -872,6 +996,14 @@ int get_itimerspec64(struct itimerspec64 *it,
- }
- EXPORT_SYMBOL_GPL(get_itimerspec64);
++	mutex_unlock(&ctx->lock);
++
+ 	component_del(&pdev->dev, &vidi_component_ops);
  
-+/**
-+ * put_itimerspec64 - convert &struct itimerspec64 to __kernel_itimerspec format
-+ * 		      and copy the latter to userspace
-+ * @it: input &struct itimerspec64
-+ * @uit: user's &struct __kernel_itimerspec
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int put_itimerspec64(const struct itimerspec64 *it,
- 			struct __kernel_itimerspec __user *uit)
- {
-@@ -887,6 +1019,13 @@ int put_itimerspec64(const struct itimerspec64 *it,
- }
- EXPORT_SYMBOL_GPL(put_itimerspec64);
- 
-+/**
-+ * get_old_itimerspec32 - get user's &struct old_itimerspec32 into kernel space
-+ * @its: destination &struct itimerspec64
-+ * @uits: user's &struct old_itimerspec32
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int get_old_itimerspec32(struct itimerspec64 *its,
- 			const struct old_itimerspec32 __user *uits)
- {
-@@ -898,6 +1037,14 @@ int get_old_itimerspec32(struct itimerspec64 *its,
- }
- EXPORT_SYMBOL_GPL(get_old_itimerspec32);
- 
-+/**
-+ * put_old_itimerspec32 - convert &struct itimerspec64 to &struct
-+ *			  old_itimerspec32 and copy the latter to userspace
-+ * @its: input &struct itimerspec64
-+ * @uits: user's &struct old_itimerspec32
-+ *
-+ * Return: %0 on success or negative errno on error
-+ */
- int put_old_itimerspec32(const struct itimerspec64 *its,
- 			struct old_itimerspec32 __user *uits)
- {
--- 
-2.51.0
-
+ 	return 0;
 
 
 
