@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBToGUcW3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:59 +0200
+	id oPndKLgW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D633E3EE774
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A413EE840
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37DC330B329D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5CBC730E7566
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43305299931;
-	Mon, 13 Apr 2026 16:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F3C29D27A;
+	Mon, 13 Apr 2026 16:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpGXrXd1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBQQAhb/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0678323EA94;
-	Mon, 13 Apr 2026 16:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DC7280035;
+	Mon, 13 Apr 2026 16:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096339; cv=none; b=Dmm0AoWOKBFWQis4lEnVAqFZ+EenVRvDeLNFCeLJcgd0qjV/Vp/LGmz8vbjmuYXrYO+qH00RQJkCZaORybrb6xm9l4JbYJzuKiuDLX7wr/9aRQmMe3sZWVtf1vmEG8dxwre6MbHthkKKs9kOOqdnhaOxjXIfrudjUPM14bU6Vl0=
+	t=1776096521; cv=none; b=JzLhlPZaTH6peRt+Or1akf0xoZQ8QTVmDbV3oTHnekVOK6SybyVZStRGrjtyNK1ewBbjIKaQZws6PWWZl1faV77SksBIdEIfdqKBFaUFrANAArhyeChQDFLcK9+ZGGpHkKp1Q+dmGNE3jeXfH6ERBTL9r4Bd4wCU/gf+xQxLugY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096339; c=relaxed/simple;
-	bh=A2hy1uuajh0vsPeO4unk7+E1aBgjuG0eRjxbMiLK1gI=;
+	s=arc-20240116; t=1776096521; c=relaxed/simple;
+	bh=1yJCZIT+3k6zp8KqKSbRdwv4jXDSgW859NtNkWdo4tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7cRgvAicJTMH97W60PSfWcpwyXdffpSoEDoVjbZoIe/57foKfbR3NMI11mGEXX6jN8+zF4brC9TXOlhN3D3qk6LArPbH1OcORrdjSbtQ0UmmhzIZdSOZA7QYRVTUh0kZCaQezVHM7r89CAJdymju5uqLXnvtFhtlm9pZ7svjso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpGXrXd1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8884CC2BCAF;
-	Mon, 13 Apr 2026 16:05:38 +0000 (UTC)
+	 MIME-Version; b=QQtJlRLLZAdiUf6iIZhHced69mJ8rhOitPASQtokCpDQjHuyBP0IsxjGDOndQwtx9RY+tkq8fl9oBfv5lEsMdgz5AMDmYj2BYw3FEaXdJbOXIHk1pQiDnB8NEKm/5rqa/hRPrGQcOajbY1vicTw18n211cyffape1ppEnzxg52o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBQQAhb/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B30CC2BCB0;
+	Mon, 13 Apr 2026 16:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096338;
-	bh=A2hy1uuajh0vsPeO4unk7+E1aBgjuG0eRjxbMiLK1gI=;
+	s=korg; t=1776096521;
+	bh=1yJCZIT+3k6zp8KqKSbRdwv4jXDSgW859NtNkWdo4tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpGXrXd1XDpsn9tsb4BpQ7I9AQSYpr9IEwofItXnVTJAL4ja0tPLMlJOeVRrTKNZZ
-	 RftmF0I6qELFFx2+Hwb3JXJP+cN2BhWAQiTlzMZYhc3tFEcYvB3805zNhcaZVaBv4k
-	 FQwF3wFujmWeFiL3hUVKrH6CZtWvgjlcfueZcjOE=
+	b=bBQQAhb/f7UkznS/8UEXeRbp9pqanaIdAXw4MSZxn6nMDtir0W7dIcalzlbjtMzeT
+	 j8OxTAWkZxCC2I0X0CRKkOC62QiitYthT/D42Qmo7jBb9BJEXbu2S2Rc9dUpou4TBK
+	 6o9N2qr5Y2p9/+rJ1ifN/2V2jRWrhGkKWpR9j+Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.19 32/86] Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 11/83] MIPS: Always record SEGBITS in cpu_data.vmbits
 Date: Mon, 13 Apr 2026 17:59:39 +0200
-Message-ID: <20260413155732.771576876@linuxfoundation.org>
+Message-ID: <20260413155731.449274704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236215-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236287-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,105 +87,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D633E3EE774
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,franken.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 26A413EE840
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 4cd46ea0eb4504f7f4fea92cb4601c5c9a3e545e upstream.
+commit 8374c2cb83b95b3c92f129fd56527225c20a058c upstream.
 
-This reverts commit c24a9b698fb02cd0723fa8375abab07f94b97b10.
+With a 32-bit kernel running on 64-bit MIPS hardware the hardcoded value
+of `cpu_vmbits' only records the size of compatibility useg and does not
+reflect the size of native xuseg or the complete range of values allowed
+in the VPN2 field of TLB entries.
 
-It's been found that there's a significant per-unit variance in accepted
-supply voltages and the current set still makes some units unstable.
+An upcoming change will need the actual VPN2 value range permitted even
+in 32-bit kernel configurations, so always include the `vmbits' member
+in `struct cpuinfo_mips' and probe for SEGBITS when running on 64-bit
+hardware and resorting to the currently hardcoded value of 31 on 32-bit
+processors.  No functional change for users of `cpu_vmbits'.
 
-Revert back to nominal values.
-
-Cc: stable@vger.kernel.org
-Fixes: c24a9b698fb0 ("arm64: dts: imx8mq-librem5: Set the DVS voltages lower")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |    2 -
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi   |   22 +++++---------------
- 2 files changed, 7 insertions(+), 17 deletions(-)
+ arch/mips/include/asm/cpu-features.h |  1 -
+ arch/mips/include/asm/cpu-info.h     |  2 --
+ arch/mips/include/asm/mipsregs.h     |  2 ++
+ arch/mips/kernel/cpu-probe.c         | 13 ++++++++-----
+ arch/mips/kernel/cpu-r3k-probe.c     |  2 ++
+ 5 files changed, 12 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-@@ -7,7 +7,7 @@
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 404390bb87eaf..3f11e5218e6c6 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -484,7 +484,6 @@
+ # endif
+ # ifndef cpu_vmbits
+ # define cpu_vmbits cpu_data[0].vmbits
+-# define __NEED_VMBITS_PROBE
+ # endif
+ #endif
  
- &a53_opp_table {
- 	opp-1000000000 {
--		opp-microvolt = <950000>;
-+		opp-microvolt = <1000000>;
- 	};
- };
+diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
+index fd60837ce50bc..211b578af6aa0 100644
+--- a/arch/mips/include/asm/cpu-info.h
++++ b/arch/mips/include/asm/cpu-info.h
+@@ -80,9 +80,7 @@ struct cpuinfo_mips {
+ 	int			srsets; /* Shadow register sets */
+ 	int			package;/* physical package number */
+ 	unsigned int		globalnumber;
+-#ifdef CONFIG_64BIT
+ 	int			vmbits; /* Virtual memory size in bits */
+-#endif
+ 	void			*data;	/* Additional data */
+ 	unsigned int		watch_reg_count;   /* Number that exist */
+ 	unsigned int		watch_reg_use_cnt; /* Usable by ptrace */
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index f799c0d723dac..12a095dbf9e2a 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1871,6 +1871,8 @@ do {									\
  
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -844,8 +844,8 @@
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
- 				regulator-ramp-delay = <1250>;
--				rohm,dvs-run-voltage = <880000>;
--				rohm,dvs-idle-voltage = <820000>;
-+				rohm,dvs-run-voltage = <900000>;
-+				rohm,dvs-idle-voltage = <850000>;
- 				rohm,dvs-suspend-voltage = <810000>;
- 				regulator-always-on;
- 			};
-@@ -856,8 +856,8 @@
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
- 				regulator-ramp-delay = <1250>;
--				rohm,dvs-run-voltage = <950000>;
--				rohm,dvs-idle-voltage = <850000>;
-+				rohm,dvs-run-voltage = <1000000>;
-+				rohm,dvs-idle-voltage = <900000>;
- 				regulator-always-on;
- 			};
+ #define read_c0_entryhi()	__read_ulong_c0_register($10, 0)
+ #define write_c0_entryhi(val)	__write_ulong_c0_register($10, 0, val)
++#define read_c0_entryhi_64()	__read_64bit_c0_register($10, 0)
++#define write_c0_entryhi_64(val) __write_64bit_c0_register($10, 0, val)
  
-@@ -866,14 +866,14 @@
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
--				rohm,dvs-run-voltage = <850000>;
-+				rohm,dvs-run-voltage = <900000>;
- 			};
+ #define read_c0_guestctl1()	__read_32bit_c0_register($10, 4)
+ #define write_c0_guestctl1(val)	__write_32bit_c0_register($10, 4, val)
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 1e49e05ac8b1c..489612ed9d498 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -210,11 +210,14 @@ static inline void set_elf_base_platform(const char *plat)
  
- 			buck4_reg: BUCK4 {
- 				regulator-name = "buck4";
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
--				rohm,dvs-run-voltage = <930000>;
-+				rohm,dvs-run-voltage = <1000000>;
- 			};
+ static inline void cpu_probe_vmbits(struct cpuinfo_mips *c)
+ {
+-#ifdef __NEED_VMBITS_PROBE
+-	write_c0_entryhi(0x3fffffffffffe000ULL);
+-	back_to_back_c0_hazard();
+-	c->vmbits = fls64(read_c0_entryhi() & 0x3fffffffffffe000ULL);
+-#endif
++	int vmbits = 31;
++
++	if (cpu_has_64bits) {
++		write_c0_entryhi_64(0x3fffffffffffe000ULL);
++		back_to_back_c0_hazard();
++		vmbits = fls64(read_c0_entryhi_64() & 0x3fffffffffffe000ULL);
++	}
++	c->vmbits = vmbits;
+ }
  
- 			buck5_reg: BUCK5 {
-@@ -1407,13 +1407,3 @@
- 	fsl,ext-reset-output;
- 	status = "okay";
- };
--
--&a53_opp_table {
--	opp-1000000000 {
--		opp-microvolt = <850000>;
--	};
--
--	opp-1500000000 {
--		opp-microvolt = <950000>;
--	};
--};
+ static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
+diff --git a/arch/mips/kernel/cpu-r3k-probe.c b/arch/mips/kernel/cpu-r3k-probe.c
+index 0c826f729f752..edcf04de0a6fb 100644
+--- a/arch/mips/kernel/cpu-r3k-probe.c
++++ b/arch/mips/kernel/cpu-r3k-probe.c
+@@ -137,6 +137,8 @@ void cpu_probe(void)
+ 	else
+ 		cpu_set_nofpu_opts(c);
+ 
++	c->vmbits = 31;
++
+ 	reserve_exception_space(0, 0x400);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
