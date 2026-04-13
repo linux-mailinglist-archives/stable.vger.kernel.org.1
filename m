@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-236014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sH4FEsnc3GlwXgkAu9opvQ
-	(envelope-from <stable+bounces-236014-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:08:41 +0200
+	id qCd6EHre3GnrXgkAu9opvQ
+	(envelope-from <stable+bounces-236015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:15:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8503EBB6F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:08:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C403EBC47
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 30A873007AC3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:08:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 430CD30097C3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0363BD25E;
-	Mon, 13 Apr 2026 12:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1C23C3443;
+	Mon, 13 Apr 2026 12:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0ogeqNK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdHckjD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60722D94A0
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFEA3AC0E7
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776082115; cv=none; b=grLpmzHQw54D1i64rjY4VXe3bDJrXmuwmx4/b0ukwgvhP4gX2SUXHxjfLeig4WbwG9mfZi0ZdY9jb5Bn+39UInr4JAi98xi9J2+DrUdFtCDSvb8yi7sHzyaxTKYhTwVUnmYvPgtAyyCUpR+xT1tSOixoy3XSjueRxQg/3kGL0T8=
+	t=1776082192; cv=none; b=TwSDPhE0AVYonkEfpdpVdYK4ck4+nQr01wU03Nh9WRrShcz3aFF/8ohj6cFef2BjRy0W9Yj+9aAaIGpBFq3e3P65NBUvTQDF4BBjTpSI2nNFTUIWzwcAjZ4tbNeYpOpvWPvIiZQW6ZvFo+Fbu0Lx3NeXhIB4ePlKvnmFUdx1B3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776082115; c=relaxed/simple;
-	bh=4BvExntQhsSjjHJrNTkHimeH0wbJLV5Tl4x9yUYYJg8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s7IwDXz9IR2K6RyNt0MVjfQ+l6DstJf+F4s42hx+sMGjD+v+aMRgBlLCbDAS9cGo/JjInZbyknQT6BvQZBlE6Z18M0B5xn4Zap/I+fDsjBrhxnHlOFGFssHQ1Fr6rCWdwrUCvAPK9xfiR7Us2khlTOTh8tn+o16hNaaiJg8g5a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0ogeqNK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5B9C116C6;
-	Mon, 13 Apr 2026 12:08:35 +0000 (UTC)
+	s=arc-20240116; t=1776082192; c=relaxed/simple;
+	bh=gW6qjnHQXIWJqvOfGAAF4GfMIkFp7ppIMAuaWAv7qe4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mZ9RkUki6I05SD/Jnt4apUE8HZSb1hcUPNjcF7YnRGdUc3RaRODtg9xwZcVuOfzqFWs7y2DhUP9cFXxZ7QTp5TsYEvArj8qMmFgd16kt+yk/k/joQmHtiiAB/O7YdsLx4VV2Q9Fd2O9mWO30FCZq7Rni5sCo9me/r/ietwtiYxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdHckjD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFA2C116C6;
+	Mon, 13 Apr 2026 12:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776082115;
-	bh=4BvExntQhsSjjHJrNTkHimeH0wbJLV5Tl4x9yUYYJg8=;
+	s=korg; t=1776082192;
+	bh=gW6qjnHQXIWJqvOfGAAF4GfMIkFp7ppIMAuaWAv7qe4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=c0ogeqNKUeb3BJKKLTUytlOF2AiwIXJhfptAG7ExeAo20I3vH6zwoTjRTsrtS6xyf
-	 qBDGZjmEOiN4mu/ZVhQmpwtWgmrz8cu2JCfx+OzMXPVvLypQvtOr92ENrt1fQNUXlw
-	 7vFHhO8sleVQ+iqeDQNJfpQHXFLl2+amw4k8rGMY=
-Subject: FAILED: patch "[PATCH] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with" failed to apply to 6.1-stable tree
-To: dwmw@amazon.co.uk,seanjc@google.com
+	b=KdHckjD2PFXIuvIzXPMe/PMlvQPkcKjmEV26XW02H3hjfiDziVogahzGokTjpdCj3
+	 yB1K3owGgwNxHbcdHHXogBDn4d5N5v9PEiu3q/p+5rql05KhCX2EJ8S6S9ONgXZMNx
+	 +HLekJdhKpmP3z0QpiNEILWwBGypsy3HzKQ/ccjU=
+Subject: FAILED: patch "[PATCH] xfrm: hold dev ref until after transport_finish NF_HOOK" failed to apply to 6.12-stable tree
+To: tpluszz77@gmail.com,fw@strlen.de,steffen.klassert@secunet.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Apr 2026 14:08:19 +0200
-Message-ID: <2026041319-perceive-bok-f424@gregkh>
+Date: Mon, 13 Apr 2026 14:09:50 +0200
+Message-ID: <2026041350-debunk-desktop-efbf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,16 +59,17 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236014-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236015-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,strlen.de,secunet.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -76,30 +77,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,amazon.co.uk:email,msgid.link:url,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4C8503EBB6F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,secunet.com:email,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 94C403EBC47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2619da73bb2f10d88f7e1087125c40144fdf0987
+git cherry-pick -x 1c428b03840094410c5fb6a5db30640486bbbfcb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041319-perceive-bok-f424@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041350-debunk-desktop-efbf@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,150 +112,145 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2619da73bb2f10d88f7e1087125c40144fdf0987 Mon Sep 17 00:00:00 2001
-From: David Woodhouse <dwmw@amazon.co.uk>
-Date: Thu, 5 Mar 2026 20:49:55 +0100
-Subject: [PATCH] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with
- VLAs
+From 1c428b03840094410c5fb6a5db30640486bbbfcb Mon Sep 17 00:00:00 2001
+From: Qi Tang <tpluszz77@gmail.com>
+Date: Thu, 2 Apr 2026 19:44:01 +0800
+Subject: [PATCH] xfrm: hold dev ref until after transport_finish NF_HOOK
 
-Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-flexible-array members") broke the userspace API for C++.
+After async crypto completes, xfrm_input_resume() calls dev_put()
+immediately on re-entry before the skb reaches transport_finish.
+The skb->dev pointer is then used inside NF_HOOK and its okfn,
+which can race with device teardown.
 
-These structures ending in VLAs are typically a *header*, which can be
-followed by an arbitrary number of entries. Userspace typically creates
-a larger structure with some non-zero number of entries, for example in
-QEMU's kvm_arch_get_supported_msr_feature():
+Remove the dev_put from the async resumption entry and instead
+drop the reference after the NF_HOOK call in transport_finish,
+using a saved device pointer since NF_HOOK may consume the skb.
+This covers NF_DROP, NF_QUEUE and NF_STOLEN paths that skip
+the okfn.
 
-    struct {
-        struct kvm_msrs info;
-        struct kvm_msr_entry entries[1];
-    } msr_data = {};
+For non-transport exits (decaps, gro, drop) and secondary
+async return points, release the reference inline when
+async is set.
 
-While that works in C, it fails in C++ with an error like:
- flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
-
-Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
-for C++ compilation.
-
-Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Fixes: acf568ee859f ("xfrm: Reinject transport-mode packets through tasklet")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
-[sean: tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 0d4538fa6c31..5f2b30d0405c 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -197,13 +197,13 @@ struct kvm_msrs {
- 	__u32 nmsrs; /* number of msrs in entries */
- 	__u32 pad;
+diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+index f28cfd88eaf5..c2eac844bcdb 100644
+--- a/net/ipv4/xfrm4_input.c
++++ b/net/ipv4/xfrm4_input.c
+@@ -50,6 +50,7 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+ {
+ 	struct xfrm_offload *xo = xfrm_offload(skb);
+ 	struct iphdr *iph = ip_hdr(skb);
++	struct net_device *dev = skb->dev;
  
--	struct kvm_msr_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
- };
+ 	iph->protocol = XFRM_MODE_SKB_CB(skb)->protocol;
  
- /* for KVM_GET_MSR_INDEX_LIST */
- struct kvm_msr_list {
- 	__u32 nmsrs; /* number of msrs in entries */
--	__u32 indices[];
-+	__DECLARE_FLEX_ARRAY(__u32, indices);
- };
+@@ -73,8 +74,10 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+ 	}
  
- /* Maximum size of any access bitmap in bytes */
-@@ -245,7 +245,7 @@ struct kvm_cpuid_entry {
- struct kvm_cpuid {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
- };
+ 	NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
+-		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
++		dev_net(dev), NULL, skb, dev, NULL,
+ 		xfrm4_rcv_encap_finish);
++	if (async)
++		dev_put(dev);
+ 	return 0;
+ }
  
- struct kvm_cpuid_entry2 {
-@@ -267,7 +267,7 @@ struct kvm_cpuid_entry2 {
- struct kvm_cpuid2 {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry2 entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
- };
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index 9005fc156a20..699a001ac166 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -43,6 +43,7 @@ static int xfrm6_transport_finish2(struct net *net, struct sock *sk,
+ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ {
+ 	struct xfrm_offload *xo = xfrm_offload(skb);
++	struct net_device *dev = skb->dev;
+ 	int nhlen = -skb_network_offset(skb);
  
- /* for KVM_GET_PIT and KVM_SET_PIT */
-@@ -398,7 +398,7 @@ struct kvm_xsave {
- 	 * the contents of CPUID leaf 0xD on the host.
- 	 */
- 	__u32 region[1024];
--	__u32 extra[];
-+	__DECLARE_FLEX_ARRAY(__u32, extra);
- };
+ 	skb_network_header(skb)[IP6CB(skb)->nhoff] =
+@@ -68,8 +69,10 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ 	}
  
- #define KVM_MAX_XCRS	16
-@@ -566,7 +566,7 @@ struct kvm_pmu_event_filter {
- 	__u32 fixed_counter_bitmap;
- 	__u32 flags;
- 	__u32 pad[4];
--	__u64 events[];
-+	__DECLARE_FLEX_ARRAY(__u64, events);
- };
+ 	NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
+-		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
++		dev_net(dev), NULL, skb, dev, NULL,
+ 		xfrm6_transport_finish2);
++	if (async)
++		dev_put(dev);
+ 	return 0;
+ }
  
- #define KVM_PMU_EVENT_ALLOW 0
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 80364d4dbebb..3f0d8d3c3daf 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -11,6 +11,7 @@
- #include <linux/const.h>
- #include <linux/types.h>
- #include <linux/compiler.h>
-+#include <linux/stddef.h>
- #include <linux/ioctl.h>
- #include <asm/kvm.h>
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index dc1312ed5a09..f65291eba1f6 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -506,7 +506,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		/* An encap_type of -1 indicates async resumption. */
+ 		if (encap_type == -1) {
+ 			async = 1;
+-			dev_put(skb->dev);
+ 			seq = XFRM_SKB_CB(skb)->seq.input.low;
+ 			spin_lock(&x->lock);
+ 			goto resume;
+@@ -659,8 +658,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			dev_hold(skb->dev);
  
-@@ -542,7 +543,7 @@ struct kvm_coalesced_mmio {
+ 			nexthdr = x->type->input(x, skb);
+-			if (nexthdr == -EINPROGRESS)
++			if (nexthdr == -EINPROGRESS) {
++				if (async)
++					dev_put(skb->dev);
+ 				return 0;
++			}
  
- struct kvm_coalesced_mmio_ring {
- 	__u32 first, last;
--	struct kvm_coalesced_mmio coalesced_mmio[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
- };
+ 			dev_put(skb->dev);
+ 			spin_lock(&x->lock);
+@@ -695,9 +697,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		XFRM_MODE_SKB_CB(skb)->protocol = nexthdr;
  
- #define KVM_COALESCED_MMIO_MAX \
-@@ -592,7 +593,7 @@ struct kvm_clear_dirty_log {
- /* for KVM_SET_SIGNAL_MASK */
- struct kvm_signal_mask {
- 	__u32 len;
--	__u8  sigset[];
-+	__DECLARE_FLEX_ARRAY(__u8, sigset);
- };
- 
- /* for KVM_TPR_ACCESS_REPORTING */
-@@ -1051,7 +1052,7 @@ struct kvm_irq_routing_entry {
- struct kvm_irq_routing {
- 	__u32 nr;
- 	__u32 flags;
--	struct kvm_irq_routing_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
- };
- 
- #define KVM_IRQFD_FLAG_DEASSIGN (1 << 0)
-@@ -1142,7 +1143,7 @@ struct kvm_dirty_tlb {
- 
- struct kvm_reg_list {
- 	__u64 n; /* number of regs */
--	__u64 reg[];
-+	__DECLARE_FLEX_ARRAY(__u64, reg);
- };
- 
- struct kvm_one_reg {
-@@ -1608,7 +1609,7 @@ struct kvm_stats_desc {
- #ifdef __KERNEL__
- 	char name[KVM_STATS_NAME_SIZE];
- #else
--	char name[];
-+	__DECLARE_FLEX_ARRAY(char, name);
- #endif
- };
- 
+ 		err = xfrm_inner_mode_input(x, skb);
+-		if (err == -EINPROGRESS)
++		if (err == -EINPROGRESS) {
++			if (async)
++				dev_put(skb->dev);
+ 			return 0;
+-		else if (err) {
++		} else if (err) {
+ 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
+ 			goto drop;
+ 		}
+@@ -734,6 +738,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			sp->olen = 0;
+ 		if (skb_valid_dst(skb))
+ 			skb_dst_drop(skb);
++		if (async)
++			dev_put(skb->dev);
+ 		gro_cells_receive(&gro_cells, skb);
+ 		return 0;
+ 	} else {
+@@ -753,6 +759,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 				sp->olen = 0;
+ 			if (skb_valid_dst(skb))
+ 				skb_dst_drop(skb);
++			if (async)
++				dev_put(skb->dev);
+ 			gro_cells_receive(&gro_cells, skb);
+ 			return err;
+ 		}
+@@ -763,6 +771,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ drop_unlock:
+ 	spin_unlock(&x->lock);
+ drop:
++	if (async)
++		dev_put(skb->dev);
+ 	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
+ 	kfree_skb(skb);
+ 	return 0;
 
 
