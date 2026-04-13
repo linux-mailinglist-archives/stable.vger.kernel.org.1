@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-236708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFE5GpQZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:04 +0200
+	id OKu2GhQe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E853EEFEE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E883EFC91
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A696E3024097
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6DD32303021D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E71C3090F5;
-	Mon, 13 Apr 2026 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A0A30EF6B;
+	Mon, 13 Apr 2026 16:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPKkkDcB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQfYc4A0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1201C2E11B9;
-	Mon, 13 Apr 2026 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11E93090F5;
+	Mon, 13 Apr 2026 16:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097592; cv=none; b=gS3AvQOVMWi7qtuKqVQaTH8unWqg19Ez4/56pm76qSYYUvuz2SWuhxKJDl1l2kMeGXPyxfpK8jQnfH3zvLekLywQkvTxuJx9QlqbAiZpHu58QPeZBozp+T0SM6k0eNps1AHRASpn3mT0mSFA7KHBviz2VUbP5b6uFlh5FSnff8A=
+	t=1776098686; cv=none; b=kkdSdH17HOABc0wQByIW9IGu8Kt6PFfjeZpWPPq6Dro/t9kSF0mCBx48m1h2nicy05DyP3olTRiZ3GNYMgNjHt+Zf+l7C1DmKxxtYEFLG8oxfdUVScDwWW2sR9sJoXFeVbgAVz+tC4MBg66DfIssxs8ByIVRSy6IFaT6Elokcfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097592; c=relaxed/simple;
-	bh=Na0XhSMZzUdwlhxDpnLvWa3H0DwUaMn/4OeY6rmPRUA=;
+	s=arc-20240116; t=1776098686; c=relaxed/simple;
+	bh=IYiLtqpa73tIwQdXhZCwqGrL0vvm6/C+qlJCyk89isk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBWZxEyJLqzkKJ/WH5PVc2fEDALg6ZKvUprYUttuMnO6QS3YFiVwXoDe+SZsb+WWVDpcJ49tddZONcPvtR2uDKFm1SKfUXNIHtLo65rRbWq4uxk532ghOjJAHKesvyCOwT5KR99LK76R06BETLiQ4NtghyQNpUy1Ogrz2myZggA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPKkkDcB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B65AC2BCAF;
-	Mon, 13 Apr 2026 16:26:31 +0000 (UTC)
+	 MIME-Version; b=BamL+IZHk2HXxGp4e7fabFuGERkGe1QdV+qMrPsnbcDMWuKa861YljRYUBz1cMjY+h+p9qq7jbMnwl5MPQ5ICXcUDjmGTt3NAhbwnhl+DRWfmIhWbbtTzTjXjssHeL5S4up7NeNBf4RE0ySaLOT3xEPDvyKd0Gc4n12VU3fu8RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQfYc4A0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB24C2BCAF;
+	Mon, 13 Apr 2026 16:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097592;
-	bh=Na0XhSMZzUdwlhxDpnLvWa3H0DwUaMn/4OeY6rmPRUA=;
+	s=korg; t=1776098686;
+	bh=IYiLtqpa73tIwQdXhZCwqGrL0vvm6/C+qlJCyk89isk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPKkkDcBuEmAcvG66n4vNO0OSr1uFUbFq0WCz5ItGyDKaE3YXJxjysZRSqtNTHvII
-	 VPPeQZ1AcL9TX29/7bgch5spZLztLcfyJlCsh7eLL+iwJ4WaqYL5vbbly3Si8+hluT
-	 QBWGKMxmbWwBeHZfc5BHTeF22wbcZidJp5tTBYa4=
+	b=HQfYc4A0x7EKZntP7GozhsLd5WvOJuIG+qTmzveqmq109ZWZcv5SWp+ukiog/owo5
+	 jAIPGIfA9DsPwN3jOrxsFzgYGZ0JPBkkvJPYawuxzF+Lgr5Wn37AaM9GTK9WNqYYYo
+	 Vj1rLPBDPGnU8k9hojJHilJBIXqqMv8Ew9ZTi9dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 164/570] net: mana: Ring doorbell at 4 CQ wraparounds
+	Guruprasad C P <gurucp2005@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 050/491] net: bridge: fix nd_tbl NULL dereference when IPv6 is disabled
 Date: Mon, 13 Apr 2026 17:54:55 +0200
-Message-ID: <20260413155836.593906334@linuxfoundation.org>
+Message-ID: <20260413155820.925077311@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +71,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,nvidia.com,blackwall.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237138-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236708-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 36E853EEFEE
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,blackwall.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: D1E883EFC91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit dabffd08545ffa1d7183bc45e387860984025291 upstream.
+[ Upstream commit e5e890630533bdc15b26a34bb8e7ef539bdf1322 ]
 
-MANA hardware requires at least one doorbell ring every 8 wraparounds
-of the CQ. The driver rings the doorbell as a form of flow control to
-inform hardware that CQEs have been consumed.
+When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
+initialized because inet6_init() exits before ndisc_init() is called
+which initializes it. Then, if neigh_suppress is enabled and an ICMPv6
+Neighbor Discovery packet reaches the bridge, br_do_suppress_nd() will
+dereference ipv6_stub->nd_tbl which is NULL, passing it to
+neigh_lookup(). This causes a kernel NULL pointer dereference.
 
-The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
-poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
-has fewer than 512 entries, a single poll call can process more than
-4 wraparounds without ringing the doorbell. The doorbell threshold
-check also uses ">" instead of ">=", delaying the ring by one extra
-CQE beyond 4 wraparounds. Combined, these issues can cause the driver
-to exceed the 8-wraparound hardware limit, leading to missed
-completions and stalled queues.
+ BUG: kernel NULL pointer dereference, address: 0000000000000268
+ Oops: 0000 [#1] PREEMPT SMP NOPTI
+ [...]
+ RIP: 0010:neigh_lookup+0x16/0xe0
+ [...]
+ Call Trace:
+  <IRQ>
+  ? neigh_lookup+0x16/0xe0
+  br_do_suppress_nd+0x160/0x290 [bridge]
+  br_handle_frame_finish+0x500/0x620 [bridge]
+  br_handle_frame+0x353/0x440 [bridge]
+  __netif_receive_skb_core.constprop.0+0x298/0x1110
+  __netif_receive_skb_one_core+0x3d/0xa0
+  process_backlog+0xa0/0x140
+  __napi_poll+0x2c/0x170
+  net_rx_action+0x2c4/0x3a0
+  handle_softirqs+0xd0/0x270
+  do_softirq+0x3f/0x60
 
-Fix this by capping the number of CQEs polled per call to 4 wraparounds
-of the CQ in both TX and RX paths. Also change the doorbell threshold
-from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
-reached.
+Fix this by replacing IS_ENABLED(IPV6) call with ipv6_mod_enabled() in
+the callers. This is in essence disabling NS/NA suppression when IPv6 is
+disabled.
 
-Cc: stable@vger.kernel.org
-Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260226192833.1050807-1-longli@microsoft.com
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Reported-by: Guruprasad C P <gurucp2005@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260304120357.9778-1-fmancera@suse.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ net/bridge/br_device.c | 2 +-
+ net/bridge/br_input.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -798,8 +798,14 @@ static void mana_poll_tx_cq(struct mana_
- 	ndev = txq->ndev;
- 	apc = netdev_priv(ndev);
- 
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
- 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
--				    CQE_POLLING_BUFFER);
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
- 
- 	if (comp_read < 1)
- 		return;
-@@ -1056,7 +1062,14 @@ static void mana_poll_rx_cq(struct mana_
- 	struct gdma_comp *comp = cq->gdma_comp_buf;
- 	int comp_read, i;
- 
--	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
-+	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
- 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
- 
- 	for (i = 0; i < comp_read; i++) {
-@@ -1090,11 +1103,11 @@ static int mana_cq_handler(void *context
- 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
- 		cq->work_done_since_doorbell = 0;
- 		napi_complete_done(&cq->napi, w);
--	} else if (cq->work_done_since_doorbell >
--		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
-+	} else if (cq->work_done_since_doorbell >=
-+		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
- 		/* MANA hardware requires at least one doorbell ring every 8
- 		 * wraparounds of CQ even if there is no need to arm the CQ.
--		 * This driver rings the doorbell as soon as we have exceeded
-+		 * This driver rings the doorbell as soon as it has processed
- 		 * 4 wraparounds.
- 		 */
- 		mana_gd_ring_cq(gdma_queue, 0);
+diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
+index 84e37108c6b5e..2c59e3f918ca2 100644
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -70,7 +70,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	     eth_hdr(skb)->h_proto == htons(ETH_P_RARP)) &&
+ 	    br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED)) {
+ 		br_do_proxy_suppress_arp(skb, br, vid, NULL);
+-	} else if (IS_ENABLED(CONFIG_IPV6) &&
++	} else if (ipv6_mod_enabled() &&
+ 		   skb->protocol == htons(ETH_P_IPV6) &&
+ 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
+ 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index f9d4b86e3186d..4d7e99a547784 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -124,7 +124,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 	    (skb->protocol == htons(ETH_P_ARP) ||
+ 	     skb->protocol == htons(ETH_P_RARP))) {
+ 		br_do_proxy_suppress_arp(skb, br, vid, p);
+-	} else if (IS_ENABLED(CONFIG_IPV6) &&
++	} else if (ipv6_mod_enabled() &&
+ 		   skb->protocol == htons(ETH_P_IPV6) &&
+ 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
+ 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
+-- 
+2.51.0
+
 
 
 
