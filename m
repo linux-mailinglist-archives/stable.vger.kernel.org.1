@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-237575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNHgNGUj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:57 +0200
+	id eCt/Mrgj3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA9E3F0DED
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DFE3F0EE9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B1E7A3078E38
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE6A73077353
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF6F32F765;
-	Mon, 13 Apr 2026 17:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A26302146;
+	Mon, 13 Apr 2026 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yv+blHOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mbkypDZ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77523161AB;
-	Mon, 13 Apr 2026 17:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235113016EE;
+	Mon, 13 Apr 2026 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099809; cv=none; b=dAf+ENJzW6QJ2pP6chwDoh9OgBA9PZc41tFYRfzFHO0eMpjlfF2fmbgrC6pJcmAH+YctmNhhs8z65IBgqNTNJdqgjKbUEA+1iAd38KITp6htFGY0aR+A5zkKa+YGjf/BbC//BGP8bu4bAS04yLhEyRna74QlryUq+/HCdZUga0Y=
+	t=1776099814; cv=none; b=Q0SgRiUBvcrnshA2IuUCCLL9b2fkrW+EVs0oX4Bei4HeEuQtXDRindTB5cT4nlj5dyk7Hx+LqmhyEAx6X45IU9NsC6DGXebXOsDZV4MjqOojhvtrGD3G6ci7R/GrCQf2zyT1vyeTMJtToY52yu2i8ps/NxG9bvKGuZWeCBBxhm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099809; c=relaxed/simple;
-	bh=OZldNB+5GPuMv0qPawko7KRhCW1Kpgfm7CPl/jXjWsY=;
+	s=arc-20240116; t=1776099814; c=relaxed/simple;
+	bh=5R3jnYUQ8/X1YOVc50VyaBWg5R6KrwiUGiHwex34Ht0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ef3wSxffpwBhXP1yvG/ij/FV/OlixGBt4EwVhyirwqpH+R86BUF2gQ3yw4jt9SJfoVdtKVhREQSX44GKXOa+IKpodV2ZvIodKWwABg89pGDn7OAb3h0k8evqr4Xu5F7b6tWijsEha+NjmLnaOOgjkl3AAuR4B3AhiSaCnmC7eY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yv+blHOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2FAC2BCAF;
-	Mon, 13 Apr 2026 17:03:28 +0000 (UTC)
+	 MIME-Version; b=dee60Nt6kzYwnTEHcmLUUtB2c0u12c8DZPlvtCY3N+A9twln1C+fLMLQq2R9usaLxuC6i0YIrfR83Dlst8yHCuL7GFecne0+9KdbdMSzggdK00xKFGyIGvJBCowTzXVub2fk0NURRd95XShjqJVDxpMiCSi8mctHmIDGC1HGqr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mbkypDZ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A995BC2BCAF;
+	Mon, 13 Apr 2026 17:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099808;
-	bh=OZldNB+5GPuMv0qPawko7KRhCW1Kpgfm7CPl/jXjWsY=;
+	s=korg; t=1776099814;
+	bh=5R3jnYUQ8/X1YOVc50VyaBWg5R6KrwiUGiHwex34Ht0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yv+blHOzzT7RfuYe9n3W8xKZ9mKBlD/Y5YWqN2LsGEemifBqUmGaLnRwdKO9vTLek
-	 sVjPgRBeZBy7ftziMpGNMXJOL99e1YhRZCFgbN6XlhwZ35MOH+vdZMmuj/ZY5MYG17
-	 3dfANADIFAKt1rvCWqcxK2JShAEqW9bSV+nO5rwY=
+	b=mbkypDZ0ktn282m7Ig71NmTc93RUgzorWTPCCMSgUUz3AZGM0+Ixka4ECKQYXznFF
+	 +9c5LqNpuJdQA3rUXbjAuEqpUZptiBp/tyBsNyYRrOMcZ8sI+O+jh+cjPk14h5AnTX
+	 5J5qtB8XDWzDxTjC727fqxAkNo9Lvuj6W0Ztjpo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 482/491] device property: Unify access to of_node
-Date: Mon, 13 Apr 2026 18:02:07 +0200
-Message-ID: <20260413155837.097914187@linuxfoundation.org>
+Subject: [PATCH 5.10 483/491] device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()
+Date: Mon, 13 Apr 2026 18:02:08 +0200
+Message-ID: <20260413155837.136539581@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -73,25 +74,26 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237577-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237575-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8FA9E3F0DED
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 65DFE3F0EE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,108 +101,56 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Daniel Scally <djrscally@gmail.com>
 
-[ Upstream commit fb38f314fbd173e2e9f9f0f2e720a5f4889562da ]
+[ Upstream commit b5b41ab6b0c1bb70fe37a0d193006c969e3b5909 ]
 
-Historically we have a few variants how we access dev->fwnode
-and dev->of_node. Some of the functions during development
-gained different versions of the getters. Unify access to of_node
-and as a side change slightly refactor ACPI specific branches.
+Sensor drivers often check for an endpoint to make sure that they're
+connected to a consuming device like a CIO2 during .probe(). Some of
+those endpoints might be in the form of software_nodes assigned as
+a secondary to the device's fwnode_handle. Account for this possibility
+in fwnode_graph_get_next_endpoint() to avoid having to do it in the
+sensor drivers themselves.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Daniel Scally <djrscally@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Stable-dep-of: 2692c614f8f0 ("device property: Allow secondary lookup in fwnode_get_next_child_node()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/property.c  |   29 +++++++++++++----------------
- include/linux/property.h |    2 +-
- 2 files changed, 14 insertions(+), 17 deletions(-)
+ drivers/base/property.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
 --- a/drivers/base/property.c
 +++ b/drivers/base/property.c
-@@ -759,13 +759,8 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_availa
- struct fwnode_handle *device_get_next_child_node(struct device *dev,
- 						 struct fwnode_handle *child)
+@@ -1033,7 +1033,26 @@ struct fwnode_handle *
+ fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
+ 			       struct fwnode_handle *prev)
  {
--	struct acpi_device *adev = ACPI_COMPANION(dev);
--	struct fwnode_handle *fwnode = NULL, *next;
--
--	if (dev->of_node)
--		fwnode = of_fwnode_handle(dev->of_node);
--	else if (adev)
--		fwnode = acpi_fwnode_handle(adev);
-+	const struct fwnode_handle *fwnode = dev_fwnode(dev);
-+	struct fwnode_handle *next;
- 
- 	/* Try to find a child in primary fwnode */
- 	next = fwnode_get_next_child_node(fwnode, child);
-@@ -868,28 +863,31 @@ EXPORT_SYMBOL_GPL(device_get_child_node_
- 
- bool device_dma_supported(struct device *dev)
- {
-+	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+-	return fwnode_call_ptr_op(fwnode, graph_get_next_endpoint, prev);
++	const struct fwnode_handle *parent;
++	struct fwnode_handle *ep;
 +
- 	/* For DT, this is always supported.
- 	 * For ACPI, this depends on CCA, which
- 	 * is determined by the acpi_dma_supported().
- 	 */
--	if (IS_ENABLED(CONFIG_OF) && dev->of_node)
-+	if (is_of_node(fwnode))
- 		return true;
- 
--	return acpi_dma_supported(ACPI_COMPANION(dev));
-+	return acpi_dma_supported(to_acpi_device_node(fwnode));
++	/*
++	 * If this function is in a loop and the previous iteration returned
++	 * an endpoint from fwnode->secondary, then we need to use the secondary
++	 * as parent rather than @fwnode.
++	 */
++	if (prev)
++		parent = fwnode_graph_get_port_parent(prev);
++	else
++		parent = fwnode;
++
++	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
++
++	if (IS_ERR_OR_NULL(ep) &&
++	    !IS_ERR_OR_NULL(parent) && !IS_ERR_OR_NULL(parent->secondary))
++		ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
++
++	return ep;
  }
- EXPORT_SYMBOL_GPL(device_dma_supported);
- 
- enum dev_dma_attr device_get_dma_attr(struct device *dev)
- {
-+	const struct fwnode_handle *fwnode = dev_fwnode(dev);
- 	enum dev_dma_attr attr = DEV_DMA_NOT_SUPPORTED;
- 
--	if (IS_ENABLED(CONFIG_OF) && dev->of_node) {
--		if (of_dma_is_coherent(dev->of_node))
-+	if (is_of_node(fwnode)) {
-+		if (of_dma_is_coherent(to_of_node(fwnode)))
- 			attr = DEV_DMA_COHERENT;
- 		else
- 			attr = DEV_DMA_NON_COHERENT;
- 	} else
--		attr = acpi_get_dma_attr(ACPI_COMPANION(dev));
-+		attr = acpi_get_dma_attr(to_acpi_device_node(fwnode));
- 
- 	return attr;
- }
-@@ -1007,14 +1005,13 @@ EXPORT_SYMBOL(device_get_mac_address);
-  * Returns Linux IRQ number on success. Other values are determined
-  * accordingly to acpi_/of_ irq_get() operation.
-  */
--int fwnode_irq_get(struct fwnode_handle *fwnode, unsigned int index)
-+int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
- {
--	struct device_node *of_node = to_of_node(fwnode);
- 	struct resource res;
- 	int ret;
- 
--	if (IS_ENABLED(CONFIG_OF) && of_node)
--		return of_irq_get(of_node, index);
-+	if (is_of_node(fwnode))
-+		return of_irq_get(to_of_node(fwnode), index);
- 
- 	ret = acpi_irq_get(ACPI_HANDLE_FWNODE(fwnode), index, &res);
- 	if (ret)
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -119,7 +119,7 @@ struct fwnode_handle *device_get_named_c
- struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
- void fwnode_handle_put(struct fwnode_handle *fwnode);
- 
--int fwnode_irq_get(struct fwnode_handle *fwnode, unsigned int index);
-+int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
- 
- unsigned int device_get_child_node_count(struct device *dev);
+ EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
  
 
 
