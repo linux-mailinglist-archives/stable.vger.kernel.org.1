@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-236170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236947-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJoRJ+gT3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:03:52 +0200
+	id YCRWDI4j3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236947-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB463EE47C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:03:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C7C3F0E59
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93405300C7EB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB2093032766
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543AE25DB12;
-	Mon, 13 Apr 2026 16:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9952EBB8C;
+	Mon, 13 Apr 2026 16:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xfnt9atO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sV6A8k/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C35271A94;
-	Mon, 13 Apr 2026 16:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0274B26CE32;
+	Mon, 13 Apr 2026 16:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096223; cv=none; b=EvFlU+FH9AusqSq6J1+skL/aqdZuA94MtzyhqrwZ1R4jedccl2AnCUoDneS0p3YMZQqqsGvLTLY2IwsutskbAPst3xwQ6Rr7kNwtqtlFGN2TNPvVnN7DycJuOvomZOfBpaJqMg7PuU04ZjtjltB4EVI/koX9rhzCyHQofUeS1MA=
+	t=1776098200; cv=none; b=oUj6+EBe2aQPO4/Z8vNhNfkFQPR8O4dg7nbFL9KnXSLd3TVFEIe/UZ69V0xYoeqbUC4Ynw1JrXk+rfxBdW6KYFCEva3lM5EY7zQhsnr+lLagyKfIU46Dxb4LFN3kmEtl6KFWkg8kVdnSeivllBd6TGjAUyPzgDuNJibDevWeluQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096223; c=relaxed/simple;
-	bh=9XlocKg4MdcCsMbGzTTrbjzYJvCusPeAPeVBfbgAYbU=;
+	s=arc-20240116; t=1776098200; c=relaxed/simple;
+	bh=BmZE4SpmsmK1lpRi7JijTMxssqkUs5/lMCpwISU+XfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFgEE3DwGUgRQ/D69MHOG1+mQ8jtwYq2qtqwgL0BE3ok08owIE6aTWfXpXQ+HyKXcdMV+mpZHBcNNYdyd8AB62Hn7juMf6F971nSMd/L9pSWXOvB+1KLf5f/HZ06BpQOvd0iVdSO98nebefLzwYDHj2ACl5Cs0hG0MRz7YBnw38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xfnt9atO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0ADC2BCB4;
-	Mon, 13 Apr 2026 16:03:42 +0000 (UTC)
+	 MIME-Version; b=rP13fbgbnuLLw3tRJN6RT6CzzKDLkhrDMM+hYoDvk6v02tyrXFsGvP3OQ0Sb4McD0UGt/flWFbtcrHq2Km7Roxbfi2TxlLAElbZroLhdws5jzgcgssyhMu6pUWMa+R9kND4TU8UMBircj+WPM2CH6Ujz3iDOXHTqh5Vjb0iCPmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sV6A8k/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BACC2BCAF;
+	Mon, 13 Apr 2026 16:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096222;
-	bh=9XlocKg4MdcCsMbGzTTrbjzYJvCusPeAPeVBfbgAYbU=;
+	s=korg; t=1776098199;
+	bh=BmZE4SpmsmK1lpRi7JijTMxssqkUs5/lMCpwISU+XfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xfnt9atOaObqZ/JfBkUt6ZwNIZgFX43lGWXUX03FDWebPLWPE5hfCxlSF2rEj2LjG
-	 03xnjY1gQ0FenStEJYZ2Y9C3dok5btFiZcncqQTQWkO83RFh1By9TF2BpRpKTAvizp
-	 58mfxyeBKfjNwwV+8dG4irhIfJmjJiAj/56R5HW0=
+	b=sV6A8k/8NrIz/ldtxHzB3XKw9aMXZjdyr7t1WOvJd2rAHhier/xiPQBqqlT9sFNki
+	 BXEBNi5VV+mWILXb3n4T7OYDBpVsm2tKAs4Vy5HmBuAykb7Orq0zSmi56kASOrf1mn
+	 cHN6JxwCt28Yk+cthr0T6r6uVRbLQW0ym6t/P1NE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 15/86] btrfs: remove pointless out labels from extent-tree.c
+Subject: [PATCH 5.15 431/570] net/mlx5: Avoid "No data available" when FW version queries fail
 Date: Mon, 13 Apr 2026 17:59:22 +0200
-Message-ID: <20260413155732.143600390@linuxfoundation.org>
+Message-ID: <20260413155846.616743213@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236947-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,140 +87,187 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,wdc.com:email]
-X-Rspamd-Queue-Id: 9BB463EE47C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 89C7C3F0E59
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit ea8f9210050136bdd14f5e32b04cd01c8bd5c0ca ]
+[ Upstream commit 10dc35f6a443d488f219d1a1e3fb8f8dac422070 ]
 
-Some functions (lookup_extent_data_ref(), __btrfs_mod_ref() and
-btrfs_free_tree_block()) have an 'out' label that does nothing but
-return, making it pointless. Simplify this by removing the label and
-returning instead of gotos plus setting the 'ret' variable.
+Avoid printing the misleading "kernel answers: No data available" devlink
+output when querying firmware or pending firmware version fails
+(e.g. MLX5 fw state errors / flash failures).
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 316fb1b3169e ("btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()")
+FW can fail on loading the pending flash image and get its version due
+to various reasons, examples:
+
+mlxfw: Firmware flash failed: key not applicable, err (7)
+mlx5_fw_image_pending: can't read pending fw version while fw state is 1
+
+and the resulting:
+$ devlink dev info
+kernel answers: No data available
+
+Instead, just report 0 or 0xfff.. versions in case of failure to indicate
+a problem, and let other information be shown.
+
+after the fix:
+$ devlink dev info
+pci/0000:00:06.0:
+  driver mlx5_core
+  serial_number xxx...
+  board.serial_number MT2225300179
+  versions:
+      fixed:
+        fw.psid MT_0000000436
+      running:
+        fw.version 22.41.0188
+        fw 22.41.0188
+      stored:
+        fw.version 255.255.65535
+        fw 255.255.65535
+
+Fixes: 9c86b07e3069 ("net/mlx5: Added fw version query command")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/devlink.c |  4 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fw.c  | 53 ++++++++++++-------
+ .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  4 +-
+ 3 files changed, 37 insertions(+), 24 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index bc0db6593f329..f2b1bc2107539 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -476,7 +476,7 @@ static noinline int lookup_extent_data_ref(struct btrfs_trans_handle *trans,
- 		btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
- 		if (key.objectid != bytenr ||
- 		    key.type != BTRFS_EXTENT_DATA_REF_KEY)
--			goto fail;
-+			return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 7d56a927081d0..e8a676b08e4b1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -54,9 +54,7 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+ 	if (err)
+ 		return err;
  
- 		ref = btrfs_item_ptr(leaf, path->slots[0],
- 				     struct btrfs_extent_data_ref);
-@@ -487,12 +487,11 @@ static noinline int lookup_extent_data_ref(struct btrfs_trans_handle *trans,
- 				btrfs_release_path(path);
- 				goto again;
- 			}
--			ret = 0;
--			break;
-+			return 0;
- 		}
- 		path->slots[0]++;
- 	}
--fail:
+-	err = mlx5_fw_version_query(dev, &running_fw, &stored_fw);
+-	if (err)
+-		return err;
++	mlx5_fw_version_query(dev, &running_fw, &stored_fw);
+ 
+ 	snprintf(version_str, sizeof(version_str), "%d.%d.%04d",
+ 		 mlx5_fw_ver_major(running_fw), mlx5_fw_ver_minor(running_fw),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw.c b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+index 016d26f809a59..31ef43f871308 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+@@ -776,48 +776,63 @@ mlx5_fw_image_pending(struct mlx5_core_dev *dev,
+ 	return 0;
+ }
+ 
+-int mlx5_fw_version_query(struct mlx5_core_dev *dev,
+-			  u32 *running_ver, u32 *pending_ver)
++void mlx5_fw_version_query(struct mlx5_core_dev *dev,
++			   u32 *running_ver, u32 *pending_ver)
+ {
+ 	u32 reg_mcqi_version[MLX5_ST_SZ_DW(mcqi_version)] = {};
+ 	bool pending_version_exists;
+ 	int component_index;
+ 	int err;
+ 
++	*running_ver = 0;
++	*pending_ver = 0;
 +
- 	return ret;
+ 	if (!MLX5_CAP_GEN(dev, mcam_reg) || !MLX5_CAP_MCAM_REG(dev, mcqi) ||
+ 	    !MLX5_CAP_MCAM_REG(dev, mcqs)) {
+ 		mlx5_core_warn(dev, "fw query isn't supported by the FW\n");
+-		return -EOPNOTSUPP;
++		return;
+ 	}
+ 
+ 	component_index = mlx5_get_boot_img_component_index(dev);
+-	if (component_index < 0)
+-		return component_index;
++	if (component_index < 0) {
++		mlx5_core_warn(dev, "fw query failed to find boot img component index, err %d\n",
++			       component_index);
++		return;
++	}
+ 
++	*running_ver = U32_MAX; /* indicate failure */
+ 	err = mlx5_reg_mcqi_version_query(dev, component_index,
+ 					  MCQI_FW_RUNNING_VERSION,
+ 					  reg_mcqi_version);
+-	if (err)
+-		return err;
+-
+-	*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
+-
++	if (!err)
++		*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
++					version);
++	else
++		mlx5_core_warn(dev, "failed to query running version, err %d\n",
++			       err);
++
++	*pending_ver = U32_MAX; /* indicate failure */
+ 	err = mlx5_fw_image_pending(dev, component_index, &pending_version_exists);
+-	if (err)
+-		return err;
++	if (err) {
++		mlx5_core_warn(dev, "failed to query pending image, err %d\n",
++			       err);
++		return;
++	}
+ 
+ 	if (!pending_version_exists) {
+ 		*pending_ver = 0;
+-		return 0;
++		return;
+ 	}
+ 
+ 	err = mlx5_reg_mcqi_version_query(dev, component_index,
+ 					  MCQI_FW_STORED_VERSION,
+ 					  reg_mcqi_version);
+-	if (err)
+-		return err;
+-
+-	*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
+-
+-	return 0;
++	if (!err)
++		*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
++					version);
++	else
++		mlx5_core_warn(dev, "failed to query pending version, err %d\n",
++			       err);
++
++	return;
  }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index 3f3ea8d268ce4..1c047c5e5fb02 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -206,8 +206,8 @@ void mlx5_dm_cleanup(struct mlx5_core_dev *dev);
  
-@@ -2474,7 +2473,7 @@ static int __btrfs_mod_ref(struct btrfs_trans_handle *trans,
- 	int i;
- 	int action;
- 	int level;
--	int ret = 0;
-+	int ret;
+ int mlx5_firmware_flash(struct mlx5_core_dev *dev, const struct firmware *fw,
+ 			struct netlink_ext_ack *extack);
+-int mlx5_fw_version_query(struct mlx5_core_dev *dev,
+-			  u32 *running_ver, u32 *stored_ver);
++void mlx5_fw_version_query(struct mlx5_core_dev *dev, u32 *running_ver,
++			   u32 *stored_ver);
  
- 	if (btrfs_is_testing(fs_info))
- 		return 0;
-@@ -2526,7 +2525,7 @@ static int __btrfs_mod_ref(struct btrfs_trans_handle *trans,
- 			else
- 				ret = btrfs_free_extent(trans, &ref);
- 			if (ret)
--				goto fail;
-+				return ret;
- 		} else {
- 			/* We don't know the owning_root, leave as 0. */
- 			ref.bytenr = btrfs_node_blockptr(buf, i);
-@@ -2539,12 +2538,10 @@ static int __btrfs_mod_ref(struct btrfs_trans_handle *trans,
- 			else
- 				ret = btrfs_free_extent(trans, &ref);
- 			if (ret)
--				goto fail;
-+				return ret;
- 		}
- 	}
- 	return 0;
--fail:
--	return ret;
- }
- 
- int btrfs_inc_ref(struct btrfs_trans_handle *trans, struct btrfs_root *root,
-@@ -3466,12 +3463,12 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
- 		return 0;
- 
- 	if (btrfs_header_generation(buf) != trans->transid)
--		goto out;
-+		return 0;
- 
- 	if (root_id != BTRFS_TREE_LOG_OBJECTID) {
- 		ret = check_ref_cleanup(trans, buf->start);
- 		if (!ret)
--			goto out;
-+			return 0;
- 	}
- 
- 	bg = btrfs_lookup_block_group(fs_info, buf->start);
-@@ -3479,7 +3476,7 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
- 	if (btrfs_header_flag(buf, BTRFS_HEADER_FLAG_WRITTEN)) {
- 		pin_down_extent(trans, bg, buf->start, buf->len, true);
- 		btrfs_put_block_group(bg);
--		goto out;
-+		return 0;
- 	}
- 
- 	/*
-@@ -3503,7 +3500,7 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
- 		     || btrfs_is_zoned(fs_info)) {
- 		pin_down_extent(trans, bg, buf->start, buf->len, true);
- 		btrfs_put_block_group(bg);
--		goto out;
-+		return 0;
- 	}
- 
- 	WARN_ON(test_bit(EXTENT_BUFFER_DIRTY, &buf->bflags));
-@@ -3513,7 +3510,6 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
- 	btrfs_put_block_group(bg);
- 	trace_btrfs_reserved_extent_free(fs_info, buf->start, buf->len);
- 
--out:
- 	return 0;
- }
- 
+ #ifdef CONFIG_MLX5_CORE_EN
+ int mlx5e_init(void);
 -- 
 2.53.0
 
