@@ -1,64 +1,89 @@
-Return-Path: <stable+bounces-237630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAkbL3Q53Wk3awkAu9opvQ
-	(envelope-from <stable+bounces-237630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:44:04 +0200
+	id OAnvFWU53Wk3awkAu9opvQ
+	(envelope-from <stable+bounces-237631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:43:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213C93F2344
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:44:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E763F2326
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 858493015463
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 50DDE3010221
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C880838F954;
-	Mon, 13 Apr 2026 18:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4AE38F64E;
+	Mon, 13 Apr 2026 18:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Mhxaednr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEvIjQ95"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF7A38F64A;
-	Mon, 13 Apr 2026 18:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7333D388E71
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 18:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776105806; cv=none; b=NqkJbqOPsVgotd2S9TUoQj8/daAI6ip+j4BpFbAUlA3oGKTSyTZ8i8liQob8iR5mZ76N1JubriuSsnoRVvwYi/3JYQUMzfPbec8bOD32gIGbo4Pq5LqIQfFnIHsuTPv+D5jzn10Gq4I5tkFdNSOpX1ENZ3vtSNpJSaxZpHiIjYA=
+	t=1776105823; cv=none; b=Lh8wHV2W0tafobDJ1+XZu1tlKlB5ETqIgMGR0x/DBl6rTCniHu353Pve/3pFhLMGeL4k4ajYi28QC5TQJhiZ9RYqExQ2Zi2k/4qOHaWA8Y3JJIRpCjU2c7ZlJP+u2WttlVGncuadJIbOUWKUyvaBRpu7g+zeAqr2Nf+3KLUwS7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776105806; c=relaxed/simple;
-	bh=zoV2k8MzCWNy21h2JF6nhQfGEX8w5EwkF91mKeelG2M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MCZHzA09IQOnYE8QwOb23Y0sj7eTNq/96BHQ/6SscrnysN1XBit/a6qqf8kTWgVykJCatylEKQWePZ5eVKfhjYRPnWS2MU25FTiHgJaZtu666NGHViSsn9b6QuDqSz1xW52C9ZeRoOWkjtPYL3p8XbxiMu1D18KCVCVG/shb544=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Mhxaednr; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=7+dnmsOeh6AHqg2BhNW2UdgF8EdFnZSC7APgeVGJlpg=; b=MhxaednrwdG+RPq61MKq1e/UmW
-	FV41IdAWLXwizrThta5K0oncE8BD/J8z4GvuPpbmGK9Pv1muKA+VQuUrbOtCQeEuihMNChHI4EW5H
-	1t5jGMSUGGYnkizBuCKlXETLVRH64DWCVwUpLX9/fHLxjNL6lGoC84kqnVa+0rfuTiutbkgFNSEkg
-	2coY2kgJbXER1qJKaP8XcWaXAKO0TIXw4TsLNN3/GqezimYRKZltRjSsDSEXBMnkP9IjPS28pal+F
-	KWd3s1SQGi7Pk635NRfHlmo1IeQPUeg5wIYiC5LfLPsyAugUytIVw62lhkFrknUjUeuodaoCHf7M0
-	TyVNN0ew==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCMFj-0000000ELgf-0Jru;
-	Mon, 13 Apr 2026 18:43:19 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Jens Axboe <axboe@kernel.dk>,
+	s=arc-20240116; t=1776105823; c=relaxed/simple;
+	bh=jwdcUNA2d70FnEkNepHRPW+EhyXibyW56hR2BjVE1O4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aQtqQqpvM5D34n8z1ZOWSnnTnzjtGzb1icHl2ZM9abFNqYkHVQL4XuIjxe1xnRignT3T62Idr72y/bna73YnD2PERWs9lPOvUaN3bhB7OrIW4F4Ra3AJ8z+4z509sd3naT/EwmpIYrAbjxy6E5dTTQ84YjdQNAoeglZc+7bq9Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEvIjQ95; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7dbc5ba0661so508140a34.3
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:43:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776105821; x=1776710621; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UIVbLPcvPCrf1/gTRE4+B7+RumJKZrg4gpt1ORMIP1g=;
+        b=EEvIjQ950M9Fvv3mkiBXgBnurGYNeImQdR7g2TgIhKDyKZG+6ysazttR8/IQ41dOjn
+         VQo93SpQEErivCXQsTRc8vYh585vnTmwI2xI6t/Av/q9/ZWpF8OT+xzXysWRrbQ0V3hp
+         e4VepS1/5GCUW/cKpJj0nsroTGtMgv6dYqNqTtL0PCNcQw/F+YqtXva0IwmCFnMi6yhS
+         gTo4vPpJ96m4RHwvvzHFYbkZt+deAe8EYljTLamYqos9YQ76Qy0fb4qAlxhH6Nd68PXr
+         c2OWn4M7F0r2NGIJKSVxbNq9LGN2rNzW1qdPy2MVEwmF1WrXs7h47sNjRPLnTPaD2CBr
+         ybUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776105821; x=1776710621;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UIVbLPcvPCrf1/gTRE4+B7+RumJKZrg4gpt1ORMIP1g=;
+        b=QoZACzppxeis2POMUEEIMBYu151sVepo4pjrdPwYnU1ILIiSYiaY06FmUd+YrptRSv
+         BJOnrWJrdv4RO4/BkFCtwcYg8UIWwlnZTdBcPjENkW9la7nH3cs/7PvCq00yrzSZAVyX
+         aeQmYMo3MFy3Sl0JCLlcBnSER2b0e35LUlCaGUjzIqWIkDQi4MR4+R6BPK0+CBhsGGE/
+         QEtSU5/MWvUEGCL+Eoyx/rXkYfSID38q0DO8n4huOgZ4wcl488xHjnIcjSOwy7AiSNlp
+         WCV31jeotgj325A+pCsU1Oz44ocpx71tLw2Nfx+kS83cMekDuc59impd5WyQrU5ODy+I
+         8s0w==
+X-Forwarded-Encrypted: i=1; AFNElJ9e87rotYlpV+yFN1L0/piazRPAcsYnq9MS1M4cLDJykppySYyDpF5yUsnwbF3rX+XUzFNQAgc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1W58W9IVG81iCUZwlSjoAwF0lH9pVoPIfTUwRuvoKCOzvVqEy
+	Vx4a3juHgLzz486IACUic3ABOcsvCyaGx/rNZYe7pQesLc/C2o+PV7qW
+X-Gm-Gg: AeBDievWfuEWBzDNkAi983/xTdVHH405u8iG67Yjw41xXYcD+vWI8AVBc+WVDsONt6P
+	CKueYayx1D4JltKD9gDSKRiTBZyjAr31TMcl8BnIsdfQ5+wZiy+yg524U12Y8O+EFRkI7Henrb1
+	M5PDwDciviBtEHX/SVmieri+JTOQETK/P5K6nrafM2/OOmTYJXH6upr8xKz1EkgojgNgskfPhNU
+	Irn5e8QQfpKQqppoREgszEepAkmTkTokDr3Q25O2uuTIHkOgm8wubMv7umJkYuG5BbpGW4MJAeh
+	TYwapAyxsB7XQj18gk5iNmeBsuCJJGeb8SiE6PEhb7PLTR3n+eEvXB073f1icYIkBnVt9EJaOx1
+	ZBv+am2wjfbEdJO1CAOBeWhaiD3GFD4jrMjR8LWMqmI3EY8uofeLH3nW0fzO1dUXuPwT+LscK6t
+	vuPe8Hwy+zu5BRaRG/8OJ1FMGdxrTnoOAYoy0OGHvU+gYVkw/vWxQ0g9A6Nqdt5YLQ58QcFHIOE
+	GoKqslBLeIAbXHCGoaX0hdj
+X-Received: by 2002:a05:6830:3109:b0:7d7:ce07:5118 with SMTP id 46e09a7af769-7dc2800d06cmr6516696a34.7.1776105821313;
+        Mon, 13 Apr 2026 11:43:41 -0700 (PDT)
+Received: from localhost ([136.49.184.116])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc269fd1b3sm8958176a34.27.2026.04.13.11.43.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 11:43:40 -0700 (PDT)
+From: Aaron Esau <aaron1esau@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: miriam.rachel.korenblit@intel.com,
 	stable@vger.kernel.org,
-	Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>
-Subject: [PATCH] mm: Call ->free_folio() directly in folio_unmap_invalidate()
-Date: Mon, 13 Apr 2026 19:43:11 +0100
-Message-ID: <20260413184314.3419945-1-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
+	Aaron Esau <aaron1esau@gmail.com>
+Subject: [PATCH] wifi: iwlwifi: mld: bail out from TX when firmware is dead
+Date: Mon, 13 Apr 2026 13:43:37 -0500
+Message-ID: <20260413184337.413259-1-aaron1esau@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,111 +91,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237630-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable,bigsleep-501448199];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_CC(0.00)[intel.com,vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237631-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:dkim,infradead.org:email,infradead.org:mid,kernel.dk:email]
-X-Rspamd-Queue-Id: 213C93F2344
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aaron1esau@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 57E763F2326
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-We can only call filemap_free_folio() if we have a reference to (or hold a
-lock on) the mapping.  Otherwise, we've already removed the folio from the
-mapping so it no longer pins the mapping and the mapping can be removed,
-causing a use-after-free when accessing mapping->a_ops.
+The drain loop in iwl_mld_tx_from_txq() keeps dequeuing and processing
+packets while stop_full is not set and mac80211 has buffered frames.
+When firmware crashes, STATUS_FW_ERROR may not be set before softirq TX
+paths enter this loop. Each iteration performs expensive GSO segmentation
+via iwl_tx_tso_segment() -> skb_gso_segment() while holding the netdev
+TX queue spinlock (HARD_TX_LOCK from __dev_queue_xmit), blocking all
+other CPUs attempting to transmit.
 
-Follow the same pattern as __remove_mapping() and load the free_folio
-function pointer before dropping the lock on the mapping.  That lets
-us make filemap_free_folio() static as this was the only caller outside
-filemap.c.
+The existing backpressure mechanism (stop_full, set via iwl_txq_stop()
+when the hardware ring crosses its high water mark) is insufficient:
+iwl_trans_pcie_tx() silently absorbs frames into its overflow_q and
+returns success even when the ring is full and firmware is not consuming
+descriptors. This delays the stop_full signal long enough for the loop
+to hold the TX lock for tens of seconds, triggering soft lockups across
+multiple CPUs that cascade into SLUB freelist corruption during the
+subsequent driver reprobe.
 
-Fixes: 4a9e23159fd3 (mm/truncate: add folio_unmap_invalidate() helper)
-Cc: Jens Axboe <axboe@kernel.dk>
+Add a test_bit(STATUS_FW_ERROR) check to the drain loop so that it
+exits promptly when firmware is no longer alive.
+
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
 Cc: stable@vger.kernel.org
-Reported-by: Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Aaron Esau <aaron1esau@gmail.com>
 ---
- mm/filemap.c  | 3 ++-
- mm/internal.h | 1 -
- mm/truncate.c | 6 +++++-
- 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 406cef06b684..5a4fecb24257 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -228,7 +228,8 @@ void __filemap_remove_folio(struct folio *folio, void *shadow)
- 	page_cache_delete(mapping, folio, shadow);
- }
- 
--void filemap_free_folio(struct address_space *mapping, struct folio *folio)
-+static void filemap_free_folio(const struct address_space *mapping,
-+		struct folio *folio)
- {
- 	void (*free_folio)(struct folio *);
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index cb0af847d7d9..546114d3ee44 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -540,7 +540,6 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
- 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
- unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
- 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
--void filemap_free_folio(struct address_space *mapping, struct folio *folio);
- int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
- bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
- 		loff_t end);
-diff --git a/mm/truncate.c b/mm/truncate.c
-index 12467c1bd711..8617a12cb169 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -622,6 +622,7 @@ static int folio_launder(struct address_space *mapping, struct folio *folio)
- int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
- 			   gfp_t gfp)
- {
-+	void (*free_folio)(struct folio *);
- 	int ret;
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -648,9 +649,12 @@ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
- 	xa_unlock_irq(&mapping->i_pages);
- 	if (mapping_shrinkable(mapping))
- 		inode_lru_list_add(mapping->host);
-+	free_folio = mapping->a_ops->free_folio;
- 	spin_unlock(&mapping->host->i_lock);
- 
--	filemap_free_folio(mapping, folio);
-+	if (free_folio)
-+		free_folio(folio);
-+	folio_put_refs(folio, folio_nr_pages(folio));
- 	return 1;
- failed:
- 	xa_unlock_irq(&mapping->i_pages);
+Found while investigating a complete system freeze on a Lenovo ThinkPad
+(Intel Core Ultra 7 155H, Intel Wi-Fi 7 BE200) running kernel 6.19.11.
+The firmware LMAC crashed (NMI_INTERRUPT_UNKNOWN, both LMACs halted at
+0xd0), the drain loop held HARD_TX_LOCK for 26+ seconds, 7 CPUs soft
+locked, and the subsequent reprobe corrupted SLUB freelist pointers
+(non-canonical address 0x54c991d5bf7e0cce in __kmalloc), killing Xorg,
+systemd --user, and requiring a hard power off.
+
+CachyOS/linux-cachyos#673 reports the same crash signature on BE200
+with kernel 6.18+, confirming the pattern. The documented workaround
+(ethtool -K <iface> tso off gso off) works because it eliminates the
+per-packet skb_gso_segment() cost, allowing the ring to fill and
+stop_full to trip before the watchdog fires.
+
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+index e3fb4fc4f..5e8a63e24 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+@@ -989,6 +989,8 @@ void iwl_mld_tx_from_txq(struct iwl_mld *mld, struct ieee80211_txq *txq)
+ 	rcu_read_lock();
+ 	do {
+ 		while (likely(!mld_txq->status.stop_full) &&
++		       !test_bit(STATUS_FW_ERROR,
++				 &mld->trans->status) &&
+ 		       (skb = ieee80211_tx_dequeue(mld->hw, txq)))
+ 			iwl_mld_tx_skb(mld, skb, txq);
+ 	} while (atomic_dec_return(&mld_txq->tx_request));
 -- 
-2.47.3
-
+2.49.0
 
