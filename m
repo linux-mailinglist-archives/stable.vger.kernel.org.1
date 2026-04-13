@@ -1,379 +1,200 @@
-Return-Path: <stable+bounces-236474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iParNKAc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:04 +0200
+	id WKvDGj8f3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E233EF814
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAE03F00E4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00DF53187FC1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 40A29307B11E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED152F8BC3;
-	Mon, 13 Apr 2026 16:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79F9280CFB;
+	Mon, 13 Apr 2026 16:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Yws9Bzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkHI13p9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6082727280A;
-	Mon, 13 Apr 2026 16:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2F124E4A1;
+	Mon, 13 Apr 2026 16:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096998; cv=none; b=gK+7rBLxkeYU7Ng6cfeO0mMDZt2To19lv1RN/oGIxQmR1q0KUbC6SRTUymVZ9rxrSC3ToeZW5VRR1DeG4n/l17V0XMLs9J60Ajd1xdM2eT6HjaEdpbVaYKKy8vYhC5qtf9bkhkJuJnbSAvXlTYIqVT3nwbxqLYhcU5a7YIRpbNo=
+	t=1776098385; cv=none; b=Q8qLZnDocWvg+NZOwiAobPVpgAFv3nSQRui7USmkm38vQPxYuf1c1ToNkIlkFrVbQ7MDf0ZryYHweyRwHyy96Znt2dR/84Pha4NOD/BcDgDnCG6JToqLwO7HQT70EkayZH/sNgqDO74GuIL1W/8x8lgMzJovN100Dxl2LmKZlXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096998; c=relaxed/simple;
-	bh=+3aKiJPHT2LnvWyQbK9bZCPcN/49zOWu8/PGcMlhe1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sCu6GVcv+PY/AV3q+uB+JbIfC3zk6H+auvIrEXGMAlPJ94+7tsI34HXCndU13DKmaxUNMjQquQ0YpfhuSFIDRCXHoNi+45B6gIRFDkC/PIX+WfkAog+vAg8g23brHS6IbwKZQeAsAyA1aHGmMh0ZveULlpopkJMFQwpAWn1QPeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Yws9Bzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C175FC2BCAF;
-	Mon, 13 Apr 2026 16:16:37 +0000 (UTC)
+	s=arc-20240116; t=1776098385; c=relaxed/simple;
+	bh=DJ2gLJiLLxnzf3etrub5EDXGPovbEVgYYwR8ndZrUj8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OSLvGnmZesqXrolLwEu9Q8n7FQw5dIF1nq+EddQ96ZUoXIpZvx2z5kaK77BINpTWvQU2W2N4YiaTAmeRTc+SMNyzQKIvnL5mu4ujSXiOHOMB05pS7LPyJPaWKqTLEZQ08DkrWFPJ2MhlHdQRhSXuAytarDxiO6HsGeTFbTBOxd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkHI13p9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20377C2BCAF;
+	Mon, 13 Apr 2026 16:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096998;
-	bh=+3aKiJPHT2LnvWyQbK9bZCPcN/49zOWu8/PGcMlhe1g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=2Yws9BzcyRAtxC9qMJi9eSk40SpcwQutTEcBv/wm5QbyCMADS6PWawappmvJEmpYH
-	 qB6wNjnnOyIhETgmu8Uj2bmfZ8wNzsr2SXlwtkB2Oge6q+fcbypl/r4jJ7Pw8UDbIE
-	 ICQdduohKxWhGcN24MScw/vD7czmeT5pClgdlAAg=
+	s=korg; t=1776098385;
+	bh=DJ2gLJiLLxnzf3etrub5EDXGPovbEVgYYwR8ndZrUj8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rkHI13p97kr2gRrdEC+5RdER/t57MyoaGIAM3TK/UziOo04RZ4XCBcB5QkifWZca7
+	 /ExO3HrwRS0bfmFaqIy+dOcQUboLD/ItHOHbccDNAPEFkLuEb0IfYTExOteymtu8UJ
+	 xXM0q6+mwo2DkyA42srXUYIQRq8/1fglqEuG9lKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 6.1 00/55] 6.1.169-rc1 review
+	Alexander Popov <alex.popov@linux.com>,
+	Breno Leitao <leitao@debian.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 503/570] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
 Date: Mon, 13 Apr 2026 18:00:34 +0200
-Message-ID: <20260413155724.820472494@linuxfoundation.org>
+Message-ID: <20260413155849.296398303@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.169-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.1.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.1.169-rc1
-X-KernelTest-Deadline: 2026-04-15T15:57+00:00
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-236474-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237021-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C6E233EF814
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 7EAE03F00E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is the start of the stable review cycle for the 6.1.169 release.
-There are 55 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.169-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.1.169-rc1
-
-Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-    Revert "PCI: Enable ACS after configuring IOMMU for OF platforms"
-
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix key/keyring checks in setsockopt(RXRPC_SECURITY_KEY/KEYRING)
-
-Luxiao Xu <rakukuip@gmail.com>
-    rxrpc: fix reference count leak in rxrpc_server_keyring()
-
-Tyllis Xu <livelycarpet87@gmail.com>
-    net: stmmac: fix integer underflow in chain mode
-
-Pengpeng Hou <pengpeng@iscas.ac.cn>
-    net: qualcomm: qca_uart: report the consumed byte on RX skb allocation failure
-
-Johan Hovold <johan@kernel.org>
-    mmc: vub300: fix NULL-deref on disconnect
-
-Michael Guralnik <michaelgur@nvidia.com>
-    net/mlx5: Update the list of the PCI supported devices
-
-Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-    drm/i915/gt: fix refcount underflow in intel_engine_park_heartbeat
-
-Haoze Xie <royenheart@gmail.com>
-    batman-adv: hold claim backbone gateways by reference
-
-David Carlier <devnexen@gmail.com>
-    net: altera-tse: fix skb leak on DMA mapping error in tse_start_xmit()
-
-Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-    net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    EDAC/mc: Fix error path ordering in edac_mc_alloc()
-
-Ruide Cao <caoruide123@gmail.com>
-    batman-adv: reject oversized global TT response buffers
-
-Pengpeng Hou <pengpeng@iscas.ac.cn>
-    nfc: pn533: allocate rx skb before consuming bytes
-
-Shawn Guo <shawnguo@kernel.org>
-    arm64: dts: hisilicon: hi3798cv200: Add missing dma-ranges
-
-Shawn Guo <shawnguo@kernel.org>
-    arm64: dts: hisilicon: poplar: Correct PCIe reset GPIO polarity
-
-Thomas Fourier <fourier.thomas@gmail.com>
-    wifi: brcmsmac: Fix dma_free_coherent() size
-
-Oleh Konko <security@1seal.org>
-    tipc: fix bc_ackers underflow on duplicate GRP_ACK_MSG
-
-Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-    xfrm: clear trailing padding in build_polexpire()
-
-Tuan Do <tuan@calif.io>
-    netfilter: nft_ct: fix use-after-free in timeout object destroy
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR
-
-Lin.Cao <lincao12@amd.com>
-    drm/scheduler: signal scheduled fence when kill job
-
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
-    Revert "mptcp: add needs_id for netlink appending addr"
-
-Andrea Mayer <andrea.mayer@uniroma2.it>
-    seg6: separate dst_cache for input and output paths in seg6 lwtunnel
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    net: rfkill: prevent unlimited numbers of rfkill events from being created
-
-Johannes Berg <johannes.berg@intel.com>
-    net: rfkill: reduce data->mtx scope in rfkill_fop_open
-
-Johannes Berg <johannes.berg@intel.com>
-    rfkill: sync before userspace visibility/changes
-
-Bo Liu <liubo03@inspur.com>
-    rfkill: Use sysfs_emit() to instead of sprintf()
-
-Michael Zimmermann <sigmaepsilon92@gmail.com>
-    usb: gadget: f_hid: move list and spinlock inits from bind to alloc
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    ACPI: EC: Evaluate _REG outside the EC scope more carefully
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    ACPICA: Add a depth argument to acpi_execute_reg_methods()
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    Revert "ACPI: EC: Evaluate orphan _REG under EC device"
-
-Kuen-Han Tsai <khtsai@google.com>
-    usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
-
-John Johansen <john.johansen@canonical.com>
-    apparmor: fix race between freeing data and fs accessing it
-
-John Johansen <john.johansen@canonical.com>
-    apparmor: fix race on rawdata dereference
-
-John Johansen <john.johansen@canonical.com>
-    apparmor: fix differential encoding verification
-
-John Johansen <john.johansen@canonical.com>
-    apparmor: fix unprivileged local user can do privileged policy management
-
-John Johansen <john.johansen@canonical.com>
-    apparmor: Fix double free of ns_name in aa_replace_profiles()
-
-Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-    apparmor: fix missing bounds check on DEFAULT table in verify_dfa()
-
-Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-    apparmor: fix side-effect bug in match_char() macro usage
-
-John Johansen <john.johansen@canonical.com>
-    apparmor: fix: limit the number of levels of policy namespaces
-
-Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-    apparmor: replace recursive profile removal with iterative approach
-
-Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-    apparmor: fix memory leak in verify_header
-
-Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-    apparmor: validate DFA start states are in bounds in unpack_pdb
-
-Ricardo Ribalda <ribalda@chromium.org>
-    media: uvcvideo: Use heuristic to find stream entity
-
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-    media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: mm: Rewrite TLB uniquification for the hidden bit feature
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: mm: Suppress TLB uniquification on EHINV hardware
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: Always record SEGBITS in cpu_data.vmbits
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: uinput - take event lock when submitting FF request "event"
-
-Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-    Input: uinput - fix circular locking dependency with ff-core
-
-Jiayuan Chen <jiayuan.chen@linux.dev>
-    mptcp: fix slab-use-after-free in __inet_lookup_established
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    xfrm_user: fix info leak in build_report()
-
-Johan Hovold <johan@kernel.org>
-    wifi: rt2x00usb: fix devres lifetime
-
-Eric Biggers <ebiggers@kernel.org>
-    lib/crypto: chacha: Zeroize permuted_state before it leaves scope
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- .../boot/dts/hisilicon/hi3798cv200-poplar.dts      |   2 +-
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi     |   1 +
- arch/mips/include/asm/cpu-features.h               |   1 -
- arch/mips/include/asm/cpu-info.h                   |   2 -
- arch/mips/include/asm/mipsregs.h                   |   2 +
- arch/mips/kernel/cpu-probe.c                       |  13 +-
- arch/mips/kernel/cpu-r3k-probe.c                   |   2 +
- arch/mips/mm/tlb-r4k.c                             | 285 +++++++++++++++++----
- drivers/acpi/acpica/acevents.h                     |   6 +-
- drivers/acpi/acpica/evregion.c                     |  12 +-
- drivers/acpi/acpica/evxfregn.c                     |  64 +----
- drivers/acpi/ec.c                                  |  14 +-
- drivers/acpi/internal.h                            |   1 +
- drivers/acpi/scan.c                                |   2 +
- drivers/edac/edac_mc.c                             |   6 +-
- drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c   |  26 +-
- drivers/gpu/drm/scheduler/sched_entity.c           |   1 +
- drivers/input/misc/uinput.c                        |  35 ++-
- drivers/media/usb/uvc/uvc_driver.c                 |  88 +++++--
- drivers/media/usb/uvc/uvcvideo.h                   |   2 +
- drivers/mmc/host/vub300.c                          |   2 +-
- drivers/net/ethernet/altera/altera_tse_main.c      |   1 +
- drivers/net/ethernet/mellanox/mlx5/core/main.c     |   1 +
- drivers/net/ethernet/qualcomm/qca_uart.c           |   2 +-
- drivers/net/ethernet/stmicro/stmmac/chain_mode.c   |  11 +-
- .../net/wireless/broadcom/brcm80211/brcmsmac/dma.c |   2 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c     |   2 +-
- drivers/nfc/pn533/uart.c                           |  11 +-
- drivers/pci/pci-driver.c                           |   8 -
- drivers/pci/pci.c                                  |  10 +-
- drivers/pci/pci.h                                  |   1 -
- drivers/usb/gadget/function/f_hid.c                |  11 +-
- drivers/usb/gadget/function/u_ether.c              |   8 +-
- include/acpi/acpixf.h                              |   5 +-
- include/net/netfilter/nf_conntrack_timeout.h       |   1 +
- lib/crypto/chacha.c                                |   4 +
- net/batman-adv/bridge_loop_avoidance.c             |  27 +-
- net/batman-adv/translation-table.c                 |   9 +-
- net/ipv6/seg6_iptunnel.c                           |  41 ++-
- net/mptcp/pm_netlink.c                             |  24 +-
- net/mptcp/protocol.c                               |   2 +
- net/mptcp/protocol.h                               |   1 +
- net/mptcp/subflow.c                                |  15 +-
- net/netfilter/nft_ct.c                             |   2 +-
- net/netfilter/nft_set_pipapo.c                     |  20 +-
- net/rfkill/core.c                                  |  84 ++++--
- net/rxrpc/af_rxrpc.c                               |   6 -
- net/rxrpc/key.c                                    |   2 +-
- net/rxrpc/server_key.c                             |   3 +
- net/tipc/group.c                                   |   6 +-
- net/tls/tls_sw.c                                   |  10 +
- net/xfrm/xfrm_user.c                               |   3 +
- security/apparmor/apparmorfs.c                     | 228 ++++++++++-------
- security/apparmor/include/label.h                  |  16 +-
- security/apparmor/include/lib.h                    |  12 +
- security/apparmor/include/match.h                  |   1 +
- security/apparmor/include/policy.h                 |  13 +-
- security/apparmor/include/policy_ns.h              |   2 +
- security/apparmor/include/policy_unpack.h          |  83 +++---
- security/apparmor/label.c                          |  12 +-
- security/apparmor/match.c                          |  58 +++--
- security/apparmor/policy.c                         |  82 +++++-
- security/apparmor/policy_ns.c                      |   2 +
- security/apparmor/policy_unpack.c                  |  74 ++++--
- 65 files changed, 989 insertions(+), 498 deletions(-)
+5.15-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Alexander Popov <alex.popov@linux.com>
+
+commit 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6 upstream.
+
+Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
+the virt_wifi net devices. However, unregistering a virt_wifi device in
+netdev_run_todo() can happen together with the device referenced by
+SET_NETDEV_DEV().
+
+It can result in use-after-free during the ethtool operations performed
+on a virt_wifi device that is currently being unregistered. Such a net
+device can have the `dev.parent` field pointing to the freed memory,
+but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
+
+Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
+
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
+ Read of size 2 at addr ffff88810cfc46f8 by task pm/606
+
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4d/0x70
+  print_report+0x170/0x4f3
+  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+  kasan_report+0xda/0x110
+  ? __pm_runtime_resume+0xe2/0xf0
+  ? __pm_runtime_resume+0xe2/0xf0
+  __pm_runtime_resume+0xe2/0xf0
+  ethnl_ops_begin+0x49/0x270
+  ethnl_set_features+0x23c/0xab0
+  ? __pfx_ethnl_set_features+0x10/0x10
+  ? kvm_sched_clock_read+0x11/0x20
+  ? local_clock_noinstr+0xf/0xf0
+  ? local_clock+0x10/0x30
+  ? kasan_save_track+0x25/0x60
+  ? __kasan_kmalloc+0x7f/0x90
+  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
+  genl_family_rcv_msg_doit+0x1e7/0x2c0
+  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
+  ? __pfx_cred_has_capability.isra.0+0x10/0x10
+  ? stack_trace_save+0x8e/0xc0
+  genl_rcv_msg+0x411/0x660
+  ? __pfx_genl_rcv_msg+0x10/0x10
+  ? __pfx_ethnl_set_features+0x10/0x10
+  netlink_rcv_skb+0x121/0x380
+  ? __pfx_genl_rcv_msg+0x10/0x10
+  ? __pfx_netlink_rcv_skb+0x10/0x10
+  ? __pfx_down_read+0x10/0x10
+  genl_rcv+0x23/0x30
+  netlink_unicast+0x60f/0x830
+  ? __pfx_netlink_unicast+0x10/0x10
+  ? __pfx___alloc_skb+0x10/0x10
+  netlink_sendmsg+0x6ea/0xbc0
+  ? __pfx_netlink_sendmsg+0x10/0x10
+  ? __futex_queue+0x10b/0x1f0
+  ____sys_sendmsg+0x7a2/0x950
+  ? copy_msghdr_from_user+0x26b/0x430
+  ? __pfx_____sys_sendmsg+0x10/0x10
+  ? __pfx_copy_msghdr_from_user+0x10/0x10
+  ___sys_sendmsg+0xf8/0x180
+  ? __pfx____sys_sendmsg+0x10/0x10
+  ? __pfx_futex_wait+0x10/0x10
+  ? fdget+0x2e4/0x4a0
+  __sys_sendmsg+0x11f/0x1c0
+  ? __pfx___sys_sendmsg+0x10/0x10
+  do_syscall_64+0xe2/0x570
+  ? exc_page_fault+0x66/0xb0
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  </TASK>
+
+This fix may be combined with another one in the ethtool subsystem:
+https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
+
+Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260324224607.374327-1-alex.popov@linux.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/wireless/virt_wifi.c |    1 -
+ 1 file changed, 1 deletion(-)
+
+--- a/drivers/net/wireless/virt_wifi.c
++++ b/drivers/net/wireless/virt_wifi.c
+@@ -553,7 +553,6 @@ static int virt_wifi_newlink(struct net
+ 	eth_hw_addr_inherit(dev, priv->lowerdev);
+ 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
+ 
+-	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
+ 	dev->ieee80211_ptr = kzalloc(sizeof(*dev->ieee80211_ptr), GFP_KERNEL);
+ 
+ 	if (!dev->ieee80211_ptr) {
 
 
 
