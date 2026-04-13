@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-237337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +I40OuYi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:50 +0200
+	id +EPPA/0h3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057873F0CBD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755713F09EF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5301C308F409
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BC8F309860E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8701631619A;
-	Mon, 13 Apr 2026 16:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218A9318ED6;
+	Mon, 13 Apr 2026 16:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rU0x18hM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqOvur6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C2B317152;
-	Mon, 13 Apr 2026 16:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDDD317152;
+	Mon, 13 Apr 2026 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099194; cv=none; b=lOEl3iC/y+cmRK2CansQ1MRnGAxrsrYwCoT8oG6RjGDoC3SLwIOJmVtAYoYpeffr6kmF9j0yVXqTH9fHfrb1hfF3qWVY3QoEPjvgpEsQc+0GpsPQAqVoXb1Kw61eSJLQbyaXysw/eLh2atCltpnhMlMvxu/AtcLcK9yYMVKkF8E=
+	t=1776099196; cv=none; b=m5Sm5bdo23SJ2xEvH2wuDU7QA3JGgPVN3SCjNlERdZ7R+br2EFdY04Fg00rdoa8Fmz9QfFqUWHelsrxX+96hwZNajavryFGr1kAcOTssobOhrVnlFY0Wep1YFBAEgoNPHU89h0Lv3kCbqWkf7ZuZMVLSK06uxWa+Cc8AelYZCsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099194; c=relaxed/simple;
-	bh=UntfPqHRcibJ3Na9iZKMes1xMFYrmDGsy1XqY99Aho8=;
+	s=arc-20240116; t=1776099196; c=relaxed/simple;
+	bh=wizM17vdKPEV55yfUZuIROH1EaGga+BhzmyHBY+Hs/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MZiwW0idT/vDMfZDFR5ZDPekosE1gw53lhzk/F68ZliR7j0j/sEkS7BFtoRw0zKg8iMEkm38rVRZD5Wu9yfLgz8tWh/5ki7BRcbvNs4nWQ3TXt7YxmFvm8xIMB9xCFp0ohFmj0MTw1qlYORkB0vtPnFNpof1QZ9e3Z6Eveuy2ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rU0x18hM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE89DC2BCAF;
-	Mon, 13 Apr 2026 16:53:13 +0000 (UTC)
+	 MIME-Version; b=l3GXY1R1vkmdM/iz5cc0oz6TTKyOLXhb7uDVG8rQnqzoS46mzDB1GwQ/mIOEq2kVE7IOiFEbBNhTWnLnTdJeK7ZwVAE954WeJ/P3uxav8d+sjQJbMG8MUAioTa02BgwErQFpajA3aDbVoEfGefwbqsBGbSqAjCloKksULErb+/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqOvur6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A4CC2BCAF;
+	Mon, 13 Apr 2026 16:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099194;
-	bh=UntfPqHRcibJ3Na9iZKMes1xMFYrmDGsy1XqY99Aho8=;
+	s=korg; t=1776099196;
+	bh=wizM17vdKPEV55yfUZuIROH1EaGga+BhzmyHBY+Hs/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rU0x18hMiMGCIsqZw1dnRwBmI7VXfe3Uhh2h8ntaWLgfiUic9GSYeQPVBXAkq4iyu
-	 XM/5ply/pxmx9lv/GCGm5zZHqb6GdMQDTR8fXn/sObAJYshhgH83cOPH/yf1+PO0Dk
-	 Siat70vc8167XUdJ1/OPQJN0RVuq11VFrtDuYo8E=
+	b=zqOvur6TVViCAwZ8oFIiSFOoe467OG8qthOupWpNIFUrBHTjyGYNRuedZyqm+6Jqq
+	 Gsv6/lj6vxM7zGxS4+wQtEWLZt4yz1RPcaFApa/qtPTzYEwnownKjwWJaGrFQ6QVDc
+	 hS1A6+pLfnCrfdr0rFz687lexYfEcNQHOKYp9Mpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 213/491] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
-Date: Mon, 13 Apr 2026 17:57:38 +0200
-Message-ID: <20260413155827.041158713@linuxfoundation.org>
+Subject: [PATCH 5.10 214/491] net: bcmgenet: increase WoL poll timeout
+Date: Mon, 13 Apr 2026 17:57:39 +0200
+Message-ID: <20260413155827.078216407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -65,36 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237337-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237338-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,vidocsecurity.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 057873F0CBD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 755713F09EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,41 +100,35 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
+[ Upstream commit 6cfc3bc02b977f2fba5f7268e6504d1931a774f7 ]
 
-In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
-the packet, then decrements it by 1 to skip the protocol discriminator
-byte before passing it to DecodeH323_UserInformation(). If the encoded
-length is 0, the decrement wraps to -1, which is then passed as a
-large value to the decoder, leading to an out-of-bounds read.
+Some systems require more than 5ms to get into WoL mode. Increase the
+timeout value to 50ms.
 
-Add a check to ensure len is positive after the decrement.
-
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: c51de7f3976b ("net: bcmgenet: add Wake-on-LAN support code")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260312191852.3904571-1-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index c972e9488e16f..7b1497ed97d26 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
- 				break;
- 			p++;
- 			len--;
-+			if (len <= 0)
-+				break;
- 			return DecodeH323_UserInformation(buf, p, len,
- 							  &q931->UUIE);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+index 35c12938cb348..ac402631576cc 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -102,7 +102,7 @@ static int bcmgenet_poll_wol_status(struct bcmgenet_priv *priv)
+ 	while (!(bcmgenet_rbuf_readl(priv, RBUF_STATUS)
+ 		& RBUF_STATUS_WOL)) {
+ 		retries++;
+-		if (retries > 5) {
++		if (retries > 50) {
+ 			netdev_crit(dev, "polling wol mode timeout\n");
+ 			return -ETIMEDOUT;
  		}
 -- 
 2.51.0
