@@ -1,59 +1,69 @@
-Return-Path: <stable+bounces-236161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFu9JkoU3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:30 +0200
+	id EH2KMy8S3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:56:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BB83EE4C0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B67D3EE3A3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFB65301455D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:58:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0392A308BA11
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EAC3AE6E6;
-	Mon, 13 Apr 2026 15:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E410286D5E;
+	Mon, 13 Apr 2026 15:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="D0LKuiDJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKRCHqa5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11618137750;
-	Mon, 13 Apr 2026 15:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C82B34AAE3
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 15:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776095904; cv=none; b=qyRzF9rWpECEceZQYRdfekw1gJjYFY+huCv2vjfYVpFI8gCBQU5aJclnrwNObiEcKNIazZAWzFThKuHqOyaNLs95NfBx+Qyd0+XoF47aMQK5L2RKYX11oQdmN1ao1aowkclYFn949nhsce5Cb4eLILnvx7iRtMgJbWh8OUUxHFA=
+	t=1776095428; cv=none; b=lWkyI7guPcdX69MHDdRTdTLbYoKeejU4PQR/q319Ds9C27vkzWRQqR2XGXyPdcELqjvap4iEVOQsyBpmqN8/AAwrJs5Cimr5pYUMufqJzE9AELyINqtczk5xJ52y6O3Gey6zgznTkNAQW03j8e0TQlM5I8eLABMxsNFfj3e/Iz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776095904; c=relaxed/simple;
-	bh=CAcnStAUkH7ssAYOB9XOeGnOJ+//22UgwQAFbMIWDnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kCAWa9IdFGJdU/LoYkn7xsYSgzijPXoWJcSkILOlKFThMBHDjxpldZTw3bWqPHGe0e3WnxCsXarSJ6DOzW6D1lVtNrZ50GV8cFKUsz6EiyXSJ98P6BO/vexRvrjYdzcf89h1A/c00i/njnuLcULcX9E72VjLFxPfw/JOvOO+6GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=D0LKuiDJ; arc=none smtp.client-ip=202.61.224.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6F8AE285FA9;
-	Mon, 13 Apr 2026 17:48:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
-	t=1776095342; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=AXbIFam313eUjm4s10Dqibfnk/5nAR5in+w11u4PpkE=;
-	b=D0LKuiDJelcaOzj684pRUC9U+bTsBs/pVyLOCYipR73QjDFg9Zwwg2nBNSAL+MU6cmlWOJ
-	ZNRdmECnPxZbfX9LIeVVSL/XfVCQC4BubH6BMvlvhD4RTjvfmYf2kafUDtALF/vj0SqQW5
-	0KWxD3GX0SpRD/45ImJNVHWZGOfUaljIJnKtrzp+nkA7of79576Ju1JM0UXmL2KMDxq98F
-	WgKD8HHC7J/sDYUs4AB18tACFFbUWZd0DLjH5BsDuZRQRVTssXQGibbvzV8j/Q7Cqb9Ls2
-	YBFYjhh78Hjq3lLw1Om7SGGstQJ30oF84G1KYHEqvHh0nu2Gxd6ayNzDCCEv3A==
-From: Eric Naim <dnaim@cachyos.org>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Eric Naim <dnaim@cachyos.org>,
-	stable@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ALSA: hda/realtek: Add quirk for Legion S7 15IMH
-Date: Mon, 13 Apr 2026 23:48:17 +0800
-Message-ID: <20260413154818.351597-1-dnaim@cachyos.org>
+	s=arc-20240116; t=1776095428; c=relaxed/simple;
+	bh=AwUXWiewaZAf+lwmiX6rI190tzA0UItU80mB3bPpnso=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DCjZUX89pMxBLEjXJduYMbXwnMhSOM5D7iMVb7QOcj7ZsDOFpsLR2dVPAfJsUCfXlIiAJa1JXVuClCguzEKom0djxySQFRj8TEjchw6Su8a2WS3DdBzSGf/pV/LSCRbScOBLP/FvpgLRguTqPoYBlAw593JCtW+HNzt86TDInIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKRCHqa5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E849C2BCAF;
+	Mon, 13 Apr 2026 15:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776095427;
+	bh=AwUXWiewaZAf+lwmiX6rI190tzA0UItU80mB3bPpnso=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hKRCHqa5z64QRdqvOEB1WZQYyEdON+HQinEtHRgJC51UeqYkPbsm9f6EK8mJwJxwX
+	 +obFffJryuYXLsbZ5qlKB7OTKlOg00Ugu+gqeQJsrNczqjcLZMy1wO6NUayk5S0R1H
+	 rMq6T8a86h9Nh4rvCFNsEBmTWA8L8nWLSlxgF+5Ixe9Tn+Kh1j6TUsL7zWdSQSsW9W
+	 RAq/X6tvrqjbhi6BUDPBmzQqU4MQsk77QB4Q6XAAs3/qgBiUL5Io0Q7c+7jRnyZ5GR
+	 i9oHec3GKo6dtbS2xfonELv/FHx3BpHc3bvKgULk2nQ2HuU68CGbQ6SqHnT90/zmy8
+	 XP9IU0bBfp+KQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
+Date: Mon, 13 Apr 2026 11:50:23 -0400
+Message-ID: <20260413155025.3145781-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041353-swimmer-skied-a346@gregkh>
+References: <2026041353-swimmer-skied-a346@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,59 +71,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[cachyos.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[cachyos.org:s=dkim];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236161-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[yandex.ru,syzkaller.appspotmail.com,linux.alibaba.com,gmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-236156-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dnaim@cachyos.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[cachyos.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,c16daba279a1161acfb0];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cachyos.org:dkim,cachyos.org:email,cachyos.org:mid]
-X-Rspamd-Queue-Id: 00BB83EE4C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2B67D3EE3A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Fix speaker output on the Lenovo Legion S7 15IMH05.
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Naim <dnaim@cachyos.org>
+[ Upstream commit a2b1c419ff72ec62ff5831684e30cd1d4f0b09ee ]
+
+In 'ocfs2_validate_inode_block()', add an extra check whether an inode
+with inline data (i.e.  self-contained) has no clusters, thus preventing
+an invalid inode from being passed to 'ocfs2_evict_inode()' and below.
+
+Link: https://lkml.kernel.org/r/20251023141650.417129-1-dmantipov@yandex.ru
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c16daba279a1161acfb0
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ocfs2/inode.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 45f9d6487388..ae74e1b69eb3 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7605,6 +7605,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	HDA_CODEC_QUIRK(0x17aa, 0x3802, "DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x3811, "Legion S7 15IMH05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
- 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
+diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
+index bc8f32fab964c..f42fa45ccd67d 100644
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1416,6 +1416,14 @@ int ocfs2_validate_inode_block(struct super_block *sb,
+ 		goto bail;
+ 	}
+ 
++	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
++	    le32_to_cpu(di->i_clusters)) {
++		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
++				 (unsigned long long)bh->b_blocknr,
++				 le32_to_cpu(di->i_clusters));
++		goto bail;
++	}
++
+ 	rc = 0;
+ 
+ bail:
 -- 
 2.53.0
 
