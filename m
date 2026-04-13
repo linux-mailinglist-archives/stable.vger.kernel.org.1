@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNfcM60Y3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:13 +0200
+	id gIs7Nt4Y3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C733EED03
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F2E3EEDAF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3C2C307A875
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A352A306073C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4EE275AFB;
-	Mon, 13 Apr 2026 16:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA392FD69A;
+	Mon, 13 Apr 2026 16:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4kYnR5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orXJ+eQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFA824DCF6;
-	Mon, 13 Apr 2026 16:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF8E29ACD7;
+	Mon, 13 Apr 2026 16:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096831; cv=none; b=VpYsrCLDZVOWBA7zQ3wVfx5NKazuAc3KJy0NZaRruDqvmB3680311HYWePPoECrAFG6za1NGPccycRThpCjx4mHDxYwQtDx1bX1Jm0SegZu5Pb50g3o1a24Vo5JHfXdx1dwjg5bzsxBVuat0dnfPSUqb3mATYPxZID/pvDoPj98=
+	t=1776096715; cv=none; b=QqbYgvZNUwU67rLlCt5aasaKuz2sFhy47A4NlrjCmo0dPvokuXFp3Dj6uptD6jFjw++3k9Sy1yVUaCyckciyU6CONjGe+gIq4eIUu9a1fuTNWbzoCCGka0viSPifhjs/LSZ3WfmqwPVekm5wGDerwz+0NIPWFib89cx40wYuBDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096831; c=relaxed/simple;
-	bh=bMmMH8MjwIhpBOra8PQJ52cYsRspTja1SiagqxUYiRo=;
+	s=arc-20240116; t=1776096715; c=relaxed/simple;
+	bh=fRnwI/9b1HM5um2MyfdaMxOavExNNmK1mI8PaQtluLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWLOU07+lTeJHFOaHYXNpSa3MHg1w/GKWiwSKVSFYRvrORuRi5CDfFmpP2ZveW/uw0tMDZthxfUCAZ/z9WykyY75wy9drBZevCMxjVntH5GAbZTh2J8Vsq/LC8tuh5PPCtghHK/CEZIOoI6FXnqJGbKOHeK9G31fhgnImB0EDa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4kYnR5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D2EC2BCAF;
-	Mon, 13 Apr 2026 16:13:50 +0000 (UTC)
+	 MIME-Version; b=b+/A8wa3Z9HdizlrTaN/KkYYZvZd8nl3sfyli+dRgh7EF0r6MSIimVDVuYl+tWN+2W8yrmaYpJf24Y8FKosI/Xb/Zk8DZQ8Qvv4z0rU58r35w9zDBW3K8cUzAYZQ5p7MZWBIYrWMBPnvh1dv5LcjGZm/h8YMl+cYZzsbtj7Ib0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orXJ+eQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96F7C2BCAF;
+	Mon, 13 Apr 2026 16:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096831;
-	bh=bMmMH8MjwIhpBOra8PQJ52cYsRspTja1SiagqxUYiRo=;
+	s=korg; t=1776096715;
+	bh=fRnwI/9b1HM5um2MyfdaMxOavExNNmK1mI8PaQtluLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4kYnR5GR5FFGjWqSuDL0ANus4jSRb/Psf+EPYoM/B/G1UlbCwQDAn9sIle8R6eyv
-	 QTu950cHx9leUuJpvZfs1mRklR65JdmxfOm3GhAI2X8KpYPITPpGbQcS/q43XgDZNh
-	 behOSy/abf0EA8gx3HcRQLvuCsmf3QBvltzc3cyg=
+	b=orXJ+eQJAvYu/ISYnbImSkAoVfZzmdQwPZ8uiBGm5HZDMWCFI9C9H4izKDGGOo3B3
+	 wqsdgsxPlO3q1UNVwMBZ/24WHaTQFbGSJBijuubAvHstJcGggEiZAsk0Y9PNEOfdDG
+	 wJyfGe5TXUhOZ0qYMTLQ1obszE0Z+sXtOU8PzgdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.6 01/50] lib/crypto: chacha: Zeroize permuted_state before it leaves scope
-Date: Mon, 13 Apr 2026 18:00:28 +0200
-Message-ID: <20260413155724.553161089@linuxfoundation.org>
+	Oleh Konko <security@1seal.org>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 34/70] tipc: fix bc_ackers underflow on duplicate GRP_ACK_MSG
+Date: Mon, 13 Apr 2026 18:00:29 +0200
+Message-ID: <20260413155729.458274334@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236364-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236409-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 63C733EED03
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[1seal.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,est.tech:email]
+X-Rspamd-Queue-Id: D2F2E3EEDAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Oleh Konko <security@1seal.org>
 
-commit e5046823f8fa3677341b541a25af2fcb99a5b1e0 upstream.
+commit 48a5fe38772b6f039522469ee6131a67838221a8 upstream.
 
-Since the ChaCha permutation is invertible, the local variable
-'permuted_state' is sufficient to compute the original 'state', and thus
-the key, even after the permutation has been done.
+The GRP_ACK_MSG handler in tipc_group_proto_rcv() currently decrements
+bc_ackers on every inbound group ACK, even when the same member has
+already acknowledged the current broadcast round.
 
-While the kernel is quite inconsistent about zeroizing secrets on the
-stack (and some prominent userspace crypto libraries don't bother at all
-since it's not guaranteed to work anyway), the kernel does try to do it
-as a best practice, especially in cases involving the RNG.
+Because bc_ackers is a u16, a duplicate ACK received after the last
+legitimate ACK wraps the counter to 65535. Once wrapped,
+tipc_group_bc_cong() keeps reporting congestion and later group
+broadcasts on the affected socket stay blocked until the group is
+recreated.
 
-Thus, explicitly zeroize 'permuted_state' before it goes out of scope.
+Fix this by ignoring duplicate or stale ACKs before touching bc_acked or
+bc_ackers. This makes repeated GRP_ACK_MSG handling idempotent and
+prevents the underflow path.
 
-Fixes: c08d0e647305 ("crypto: chacha20 - Add a generic ChaCha20 stream cipher implementation")
+Fixes: 2f487712b893 ("tipc: guarantee that group broadcast doesn't bypass group unicast")
 Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260326032920.39408-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Oleh Konko <security@1seal.org>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/41a4833f368641218e444fdcff822039.security@1seal.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/crypto/chacha.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/tipc/group.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/lib/crypto/chacha.c
-+++ b/lib/crypto/chacha.c
-@@ -86,6 +86,8 @@ void chacha_block_generic(u32 *state, u8
- 		put_unaligned_le32(x[i] + state[i], &stream[i * sizeof(u32)]);
+--- a/net/tipc/group.c
++++ b/net/tipc/group.c
+@@ -746,6 +746,7 @@ void tipc_group_proto_rcv(struct tipc_gr
+ 	u32 port = msg_origport(hdr);
+ 	struct tipc_member *m, *pm;
+ 	u16 remitted, in_flight;
++	u16 acked;
  
- 	state[12]++;
-+
-+	memzero_explicit(x, sizeof(x));
- }
- EXPORT_SYMBOL(chacha_block_generic);
- 
-@@ -110,5 +112,7 @@ void hchacha_block_generic(const u32 *st
- 
- 	memcpy(&stream[0], &x[0], 16);
- 	memcpy(&stream[4], &x[12], 16);
-+
-+	memzero_explicit(x, sizeof(x));
- }
- EXPORT_SYMBOL(hchacha_block_generic);
+ 	if (!grp)
+ 		return;
+@@ -798,7 +799,10 @@ void tipc_group_proto_rcv(struct tipc_gr
+ 	case GRP_ACK_MSG:
+ 		if (!m)
+ 			return;
+-		m->bc_acked = msg_grp_bc_acked(hdr);
++		acked = msg_grp_bc_acked(hdr);
++		if (less_eq(acked, m->bc_acked))
++			return;
++		m->bc_acked = acked;
+ 		if (--grp->bc_ackers)
+ 			return;
+ 		list_del_init(&m->small_win);
 
 
 
