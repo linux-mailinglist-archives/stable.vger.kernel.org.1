@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-237449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JeGOasi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:51 +0200
+	id IHmEDzIc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-237007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABF63F0C3E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78CF3EF736
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A19630CE68F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2F6783006171
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6834C330B3B;
-	Mon, 13 Apr 2026 16:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A256D2D8364;
+	Mon, 13 Apr 2026 16:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skLFmcAG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AllDHoV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD7E318ED2;
-	Mon, 13 Apr 2026 16:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6437924E4A1;
+	Mon, 13 Apr 2026 16:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099486; cv=none; b=gtGrgCQYpqX6Lo0RNq1csTLaHeAZFliOXd9DAADb1kC4T6fE6MVFf26VtMPTSlLS89OaxlS8IsuT/Wqcwr9hr1WPNujgRf5eTX1XJsGDkfVEWquU+mk4itcubEenYtyy/sxtOrO9tIjWNKygL5bd9llPANaYk4U2oNPskD/MLeU=
+	t=1776098349; cv=none; b=HzsS0O8BPivx5rPgCLl5ZVRJmEamA/R1NiD0AAW0/UYF/5FObmIpftnmcHEGsQzrUw+Qu4t7UteCNcpAxOPAyNElxnIZr5KyDIJjBs/tYaT/B14BWMBuDDmU3qslYWh+TlJBU9UgOoyYl/8kYmSviktYhCT3CIOK3ADYD7kzQc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099486; c=relaxed/simple;
-	bh=k3ejfFW8LPXEuCfD+Tx41ALHrK6BunfzUjbqtSCH2D0=;
+	s=arc-20240116; t=1776098349; c=relaxed/simple;
+	bh=k+QVXL1KjFCvARB3kwk0lP3ZZBQK0sQHKATkqTwQXmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGfhXU7MnkObK5AEo5J8ODiu59kXLR3edZdZvLh23lOhCfaFcc8nAQyMkH1LWvgKMtgUDUb2rR6Lo1Sfx9szigdV6GJPxkQ9L9VvXxNkj7xCJ7Edml6s58lV/pyY1Z61aIyJbm0PX3AwzI+7rd25TdT3163S/FrMMtj+0yvnYhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skLFmcAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FE7C2BCAF;
-	Mon, 13 Apr 2026 16:58:05 +0000 (UTC)
+	 MIME-Version; b=OFGzh0WCVo90l6293b0u0sbPm2X7LP7GhZIg6Vr1IcF2YuE2uj8yh3m4YMOxMz/PriwWFB8tAOJFbPknzFQhoBIsX/jee/h7/TuhqDT04xwbdIUgrgC3xDVbaDYEKRae6pxLubCsoeg9qVxOlOH6Z7xLwAYuuT4cAt96aMTc9Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AllDHoV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE83BC2BCAF;
+	Mon, 13 Apr 2026 16:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099486;
-	bh=k3ejfFW8LPXEuCfD+Tx41ALHrK6BunfzUjbqtSCH2D0=;
+	s=korg; t=1776098349;
+	bh=k+QVXL1KjFCvARB3kwk0lP3ZZBQK0sQHKATkqTwQXmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skLFmcAG2zYqZRsL4maV3w53t6AJm7BIOkeBHjwvstdJr+9HBBbVYyXelBuKSPtiW
-	 UFtreaZoVuFZ+jgTPnSrBJTQU7QYXPMZTR/15tbW+hrnO3S6NiOBzFsNPh+2QDnzWm
-	 AoXNccD8JDwuVADs85PR4qoCmDbgy0S+aKt5CxJA=
+	b=AllDHoV2edm779Afn0MMc5swZDQ+i1x4yw4iQzwjHsHQA7iFJLWAhzILfdr0qIXDw
+	 23VU5NKsCgDqaxTq5zHWlb3rTHW3JBUhmgEXO6ChnANwSCvTEin7s+2u3wbNwe0VGz
+	 azgbEVAMhQjYY/NO63ZeA3VMe+46qhk6kHQvDY/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	YunJe Shin <ioerts@kookmin.ac.kr>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	linux-nvme@lists.infradead.org,
+	Cengiz Can <cengiz.can@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 359/491] Revert "media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar"
+Subject: [PATCH 5.15 473/570] nvmet-tcp: fix use-before-check of sg in bounds validation
 Date: Mon, 13 Apr 2026 18:00:04 +0200
-Message-ID: <20260413155832.476674473@linuxfoundation.org>
+Message-ID: <20260413155848.182068742@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +71,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237449-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237007-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AABF63F0C3E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kookmin.ac.kr:email]
+X-Rspamd-Queue-Id: C78CF3EF736
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit b3d77a3fc71c084575d3df4ec6544b3fb6ce587d.
+From: Cengiz Can <cengiz.can@canonical.com>
 
+The stable backport of commit 52a0a9854934 ("nvmet-tcp: add bounds
+checks in nvmet_tcp_build_pdu_iovec") placed the bounds checks after
+the iov_len calculation:
+
+    while (length) {
+        u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+
+        if (!sg_remaining) {    /* too late: sg already dereferenced */
+
+In mainline, the checks come first because C99 allows mid-block variable
+declarations. The stable backport moved the declaration to the top of the
+loop to satisfy C89 declaration rules, but this ended up placing the
+sg->length dereference before the sg_remaining and sg->length guards.
+
+If sg_next() returns NULL at the end of the scatterlist, the next
+iteration dereferences a NULL pointer in the iov_len calculation before
+the sg_remaining check can prevent it.
+
+Fix this by moving the iov_len declaration to function scope and
+keeping the assignment after the bounds checks, matching the ordering
+in mainline.
+
+Fixes: 42afe8ed8ad2 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
+Cc: stable@vger.kernel.org
+Cc: YunJe Shin <ioerts@kookmin.ac.kr>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: linux-nvme@lists.infradead.org
+Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/nvme/target/tcp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index 08b3ac8ff1083..a4d060fb1babd 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2198,8 +2198,6 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1;
- 	u16 i = 1000;
--	if (msg[0].len < 3)
--		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 8f7984c53f3f2..c6cc1dfef92cf 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -312,7 +312,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ {
+ 	struct bio_vec *iov = cmd->iov;
+ 	struct scatterlist *sg;
+-	u32 length, offset, sg_offset;
++	u32 length, offset, sg_offset, iov_len;
+ 	unsigned int sg_remaining;
+ 	int nr_pages;
  
- 	while (n_overflow == 1 && i) {
-@@ -2219,8 +2217,6 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1, n_empty = 1;
- 	u16 i = 1000;
--	if (msg[0].len < 1 || msg[1].len < 2)
--		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
- 	u16 read_word;
+@@ -329,8 +329,6 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
  
+ 	while (length) {
+-		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+-
+ 		if (!sg_remaining) {
+ 			nvmet_tcp_fatal_error(cmd->queue);
+ 			return;
+@@ -340,6 +338,8 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 			return;
+ 		}
+ 
++		iov_len = min_t(u32, length, sg->length - sg_offset);
++
+ 		iov->bv_page = sg_page(sg);
+ 		iov->bv_len = iov_len;
+ 		iov->bv_offset = sg->offset + sg_offset;
 -- 
 2.53.0
 
