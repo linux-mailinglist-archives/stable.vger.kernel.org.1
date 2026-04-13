@@ -1,115 +1,153 @@
-Return-Path: <stable+bounces-236040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGx8Fpbf3GnrXgkAu9opvQ
-	(envelope-from <stable+bounces-236040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:20:38 +0200
+	id iH/cAnnl3GkZYAkAu9opvQ
+	(envelope-from <stable+bounces-236045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4AB3EBD47
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:20:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647533EC2A8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9DFA33008C0F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:20:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA4903012C69
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2BA3C3BF1;
-	Mon, 13 Apr 2026 12:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C613BE164;
+	Mon, 13 Apr 2026 12:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pa857xFT"
 X-Original-To: stable@vger.kernel.org
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4F43C3BF7
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391F73BBA17
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776082834; cv=none; b=SKL+eNk9Ml1fiJx+WY/SMwydr9FanEolZwY/IplZ2Dr3ARXSeMKLOZugCgvrdeXJizTLbdeP5llX3QDAo1x/h7VMVykRfa/3W5EiaD7d3FAy16abbBdCQ8hQtIPsyR1gjfPU56Us1JGBmAEHNYgCKFVraA9MsMuAI2KzkNZyeBw=
+	t=1776084142; cv=none; b=uq4pc4UEMqrPTpkK/tSM6xBSLdmV5FzSq7Wmtq8QzQPSjHJcCZfTKTfZ6D8pSI9tmE8M4J4s6bsSHlUyipFJedzHGpDNcWTv0A0tNLJIhsWBJrRorGfGCKSI9jybVce4+Y1nzse9nIG19nAca8THTN/OuWLSkTsIQwSkCtSrimM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776082834; c=relaxed/simple;
-	bh=2iYfG8SSgMFSOzqjG3JccT7ihW6908XRGg0ihdW5phw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=LAXpWBvulcosmUF2GalDL31sbuAPgXp26B5UO99dqk7nQSjaQXtgMw64CCgd0vASLePDCBZzl/cLeYXdA1QrRk9Yp47hPChSvhQ1JrWEhkZl6kXo5E299+2SwBj9ctvBTrQhyhbk0EjSh8DNjFnhymL1ufk3WurwT1v+ICS9wpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 9170E92009C; Mon, 13 Apr 2026 14:20:30 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 8BA1C92009B;
-	Mon, 13 Apr 2026 13:20:30 +0100 (BST)
-Date: Mon, 13 Apr 2026 13:20:30 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Sasha Levin <sashal@kernel.org>
-cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: FAILED: patch "MIPS: mm: Rewrite TLB uniquification for the
- hidden bit feature" failed to apply
-In-Reply-To: <20260412120103.mips-tlb-failed@kernel.org>
-Message-ID: <alpine.DEB.2.21.2604131308370.29980@angie.orcam.me.uk>
-References: <2026040730-expend-maimed-dc2a@gregkh> <20260412120103.mips-tlb-failed@kernel.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	s=arc-20240116; t=1776084142; c=relaxed/simple;
+	bh=ozlIAE1FTEKvu3WmVQnAo+VZxrVgz6kmxgoYW/nyfNw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k1Fljdz1Eucz0g1/oYaYzBhz2UgWZE5ieF9AUKkhTCibQL09uaSC0LB0wt1bG2N+sVaJjhC6b38auhr2uvr3/ozfRJIiVLY+tUFWRnU1bfQ9DG+NZjmGMItqiZdIGcG6AAmeiBfnwcqRkJfA9Oe8F/2KrwEul7etskS0MyU0xGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pa857xFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69312C2BCAF;
+	Mon, 13 Apr 2026 12:42:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776084141;
+	bh=ozlIAE1FTEKvu3WmVQnAo+VZxrVgz6kmxgoYW/nyfNw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Pa857xFThB4a5B/VaUZcfLj+LbaNjWdXsyRNV5pAen16FDjlliat2Xecs+dEQXvGy
+	 GYCwVEi0NaUmC9xK52hr/5vcleCA6WN8U5c/nnvpQUxe6dhHV+A6UxDpF6sxG+suDO
+	 nNHkvRIrgs1Gd0del+aLha6ou+jgQDrZmnB5oCoY=
+Subject: FAILED: patch "[PATCH] xfrm: clear trailing padding in build_polexpire()" failed to apply to 5.15-stable tree
+To: yasuakitorimaru@gmail.com,horms@kernel.org,leitao@debian.org,steffen.klassert@secunet.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Apr 2026 14:21:32 +0200
+Message-ID: <2026041331-wiring-revenge-aec2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[orcam.me.uk];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236040-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236045-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,debian.org,secunet.com];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[macro@orcam.me.uk,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,angie.orcam.me.uk:mid,angie:email]
-X-Rspamd-Queue-Id: 1A4AB3EBD47
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,secunet.com:email]
+X-Rspamd-Queue-Id: 647533EC2A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 13 Apr 2026, Sasha Levin wrote:
 
-> > FAILED: patch "MIPS: mm: Rewrite TLB uniquification for the hidden
-> > bit feature" failed to apply
-> 
-> This has been resolved for 6.19, 6.18, 6.12, 6.6, and 6.1. Maciej
-> submitted hand-crafted backport series and they have been queued.
-> 
-> The 5.15 and 5.10 series fail to build due to memblock_free() API
-> differences and need to be reworked.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
- Weird, those versions *booted* just fine with the backports here:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Linux version 5.15.202+ (macro@angie) (mips-linux-gnu-gcc-real (GCC) 13.2.0, GNU ld (GNU Binutils) 2.46.50.20260311) #5 SMP Wed Apr 8 02:35:17 BST 2026
-printk: bootconsole [early0] enabled
-CPU0 revision is: 01040102 (SiByte SB1)
-FPU revision is: 000f0102
-Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
-Board type: SiByte BCM91250A (SWARM)
-[...]
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 71a98248c63c535eaa4d4c22f099b68d902006d0
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041331-wiring-revenge-aec2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-and likewise:
+Possible dependencies:
 
-Linux version 5.10.252+ (macro@angie) (mips-linux-gnu-gcc-real (GCC) 13.2.0, GNU ld (GNU Binutils) 2.46.50.20260311) #6 SMP Wed Apr 8 02:52:08 BST 2026
-printk: bootconsole [early0] enabled
-[...]
 
-I'll figure out what's happened and repost.  Thank you for the guidelines.
 
-  Maciej
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 71a98248c63c535eaa4d4c22f099b68d902006d0 Mon Sep 17 00:00:00 2001
+From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+Date: Thu, 26 Mar 2026 14:58:00 +0900
+Subject: [PATCH] xfrm: clear trailing padding in build_polexpire()
+
+build_expire() clears the trailing padding bytes of struct
+xfrm_user_expire after setting the hard field via memset_after(),
+but the analogous function build_polexpire() does not do this for
+struct xfrm_user_polexpire.
+
+The padding bytes after the __u8 hard field are left
+uninitialized from the heap allocation, and are then sent to
+userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
+leaking kernel heap memory contents.
+
+Add the missing memset_after() call, matching build_expire().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 1656b487f833..5d59c11fc01e 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3960,6 +3960,8 @@ static int build_polexpire(struct sk_buff *skb, struct xfrm_policy *xp,
+ 		return err;
+ 	}
+ 	upe->hard = !!hard;
++	/* clear the padding bytes */
++	memset_after(upe, 0, hard);
+ 
+ 	nlmsg_end(skb, nlh);
+ 	return 0;
+
 
