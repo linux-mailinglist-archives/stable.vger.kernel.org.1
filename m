@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-236502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gN+aD44a3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:14 +0200
+	id CO9kJgAj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42F73EF2D6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEC03F0D0C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03F9230B2F18
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CDBCA3069158
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FBE30ACE6;
-	Mon, 13 Apr 2026 16:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A132333EB17;
+	Mon, 13 Apr 2026 17:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJLW7YpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o849Sa9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8490C27280A;
-	Mon, 13 Apr 2026 16:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CD733290F;
+	Mon, 13 Apr 2026 17:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097067; cv=none; b=QrRGicdsjttZRrbe35zEUZ2/hfrJ4KTZHASnmfRYNIDq9pH6hch5M02lDIDsUZaXB82yFHNSvRZLisQHfQvWHRngxfglEy27MJJIV9kIPSv14H/2CbMPXk7sk8kMN742YiDV/Jn2U8e5Vo24FKxZeL+le6svPfjNsvhu23ARQTM=
+	t=1776099689; cv=none; b=UUfZvMV/tAjS/+Vj+GyN9NYq12xlnlL3r8UIsvKWrQCjM3Ul6F51jZjpKrtIQIHn2awr/ohVUaNn4i02MLx0bimmGB5j9eKN/sLrET+nJXtBdRejOhn4FTgGt2QueN0vz4zESkHaU/c8Wq4i2dguJ+10qbMSn2mBtlZ6w9zzoXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097067; c=relaxed/simple;
-	bh=W3RVjr+71BuXv2Cp0RbxadLm7tF7BEAtDYe6nH3ikQc=;
+	s=arc-20240116; t=1776099689; c=relaxed/simple;
+	bh=ZgFs1mrujHw1Vz2Nbuzyy/X+GKLLVLbwZTyxgqRj8v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAzbbayYiTewE8MGOox2AR9+37wjkFUfXSbt+M95Lf3ajK8A1q8xqFof9xWTnKkvRWk2UZJO6/yS10yR2BfZiC+1L8TBJm1rGy2nalzMxdEDsmvr4LYj9k01MFhrEECKM03FiXgMPpRGSOOSeYBZSt5jTLkFFVtgg0K8h1V/xOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJLW7YpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1951EC2BCAF;
-	Mon, 13 Apr 2026 16:17:46 +0000 (UTC)
+	 MIME-Version; b=X2baBsfPP0Vvp+Wrangh8lmzCbH3xndGDDePiC/Ay2+c4dVavJOZwk35vuobfaJyF2ZFSaFjYSTNljWRhslAEAY2jYEkCLcgMngxaIP1/hbIGQN4Qxx6S5iJy2UjNChi8D5WVTpwhYg5coYEhNNay2YbTXr4Q4yjm1MZOxEc1mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o849Sa9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF06DC2BCAF;
+	Mon, 13 Apr 2026 17:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097067;
-	bh=W3RVjr+71BuXv2Cp0RbxadLm7tF7BEAtDYe6nH3ikQc=;
+	s=korg; t=1776099689;
+	bh=ZgFs1mrujHw1Vz2Nbuzyy/X+GKLLVLbwZTyxgqRj8v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJLW7YpINmLzZd8TugRSPC+x6LXaqy/Vq8CGHt8uiohKdATW+UcCTWl30X9fU2zdM
-	 7/PjdaLAUTsHyyN1X85QtwTfiEpuFdY/NqkMVtpvMugWCvMc6phn5P88tjB7rQsEhm
-	 VxqJ6LYPXUKmQ49EyfpEOQZWQehDxLW/IWu+diMU=
+	b=o849Sa9gvqNrRvwjzbfCusU3zD2YmaiRZSmWtiP9DBDDp0jhebAcKB2JXrwgcHC64
+	 VFlg43pETKL7s0SFxcf01sDfqKXIBOxz4HmCBje+omg295f4GtUq99KuOW0q408ne5
+	 fiEx3eAuE0r92QVR1CUDSI3Gc9qEtDb5nmjOwhjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.1 48/55] drm/i915/gt: fix refcount underflow in intel_engine_park_heartbeat
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 5.10 437/491] apparmor: fix unprivileged local user can do privileged policy management
 Date: Mon, 13 Apr 2026 18:01:22 +0200
-Message-ID: <20260413155726.620943222@linuxfoundation.org>
+Message-ID: <20260413155835.387881935@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236502-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237528-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,134 +87,207 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: B42F73EF2D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,canonical.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7DEC03F0D0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+From: John Johansen <john.johansen@canonical.com>
 
-commit 4c71fd099513bfa8acab529b626e1f0097b76061 upstream.
+commit 6601e13e82841879406bf9f369032656f441a425 upstream.
 
-A use-after-free / refcount underflow is possible when the heartbeat
-worker and intel_engine_park_heartbeat() race to release the same
-engine->heartbeat.systole request.
+Backport for api changes introduced in
+- 90c436a64a6e ("apparmor: pass cred through to audit info.")
+- 92de220a7f33 ("apparmor: update policy capable checks to use a label")
 
-The heartbeat worker reads engine->heartbeat.systole and calls
-i915_request_put() on it when the request is complete, but clears
-the pointer in a separate, non-atomic step. Concurrently, a request
-retirement on another CPU can drop the engine wakeref to zero, triggering
-__engine_park() -> intel_engine_park_heartbeat(). If the heartbeat
-timer is pending at that point, cancel_delayed_work() returns true and
-intel_engine_park_heartbeat() reads the stale non-NULL systole pointer
-and calls i915_request_put() on it again, causing a refcount underflow:
+An unprivileged local user can load, replace, and remove profiles by
+opening the apparmorfs interfaces, via a confused deputy attack, by
+passing the opened fd to a privileged process, and getting the
+privileged process to write to the interface.
 
-```
-<4> [487.221889] Workqueue: i915-unordered engine_retire [i915]
-<4> [487.222640] RIP: 0010:refcount_warn_saturate+0x68/0xb0
-...
-<4> [487.222707] Call Trace:
-<4> [487.222711]  <TASK>
-<4> [487.222716]  intel_engine_park_heartbeat.part.0+0x6f/0x80 [i915]
-<4> [487.223115]  intel_engine_park_heartbeat+0x25/0x40 [i915]
-<4> [487.223566]  __engine_park+0xb9/0x650 [i915]
-<4> [487.223973]  ____intel_wakeref_put_last+0x2e/0xb0 [i915]
-<4> [487.224408]  __intel_wakeref_put_last+0x72/0x90 [i915]
-<4> [487.224797]  intel_context_exit_engine+0x7c/0x80 [i915]
-<4> [487.225238]  intel_context_exit+0xf1/0x1b0 [i915]
-<4> [487.225695]  i915_request_retire.part.0+0x1b9/0x530 [i915]
-<4> [487.226178]  i915_request_retire+0x1c/0x40 [i915]
-<4> [487.226625]  engine_retire+0x122/0x180 [i915]
-<4> [487.227037]  process_one_work+0x239/0x760
-<4> [487.227060]  worker_thread+0x200/0x3f0
-<4> [487.227068]  ? __pfx_worker_thread+0x10/0x10
-<4> [487.227075]  kthread+0x10d/0x150
-<4> [487.227083]  ? __pfx_kthread+0x10/0x10
-<4> [487.227092]  ret_from_fork+0x3d4/0x480
-<4> [487.227099]  ? __pfx_kthread+0x10/0x10
-<4> [487.227107]  ret_from_fork_asm+0x1a/0x30
-<4> [487.227141]  </TASK>
-```
+This does require a privileged target that can be manipulated to do
+the write for the unprivileged process, but once such access is
+achieved full policy management is possible and all the possible
+implications that implies: removing confinement, DoS of system or
+target applications by denying all execution, by-passing the
+unprivileged user namespace restriction, to exploiting kernel bugs for
+a local privilege escalation.
 
-Fix this by replacing the non-atomic pointer read + separate clear with
-xchg() in both racing paths. xchg() is a single indivisible hardware
-instruction that atomically reads the old pointer and writes NULL. This
-guarantees only one of the two concurrent callers obtains the non-NULL
-pointer and performs the put, the other gets NULL and skips it.
+The policy management interface can not have its permissions simply
+changed from 0666 to 0600 because non-root processes need to be able
+to load policy to different policy namespaces.
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15880
-Fixes: 058179e72e09 ("drm/i915/gt: Replace hangcheck by heartbeats")
-Cc: <stable@vger.kernel.org> # v5.5+
-Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/d4c1c14255688dd07cc8044973c4f032a8d1559e.1775038106.git.sebastian.brzezinka@intel.com
-(cherry picked from commit 13238dc0ee4f9ab8dafa2cca7295736191ae2f42)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Instead ensure the task writing the interface has privileges that
+are a subset of the task that opened the interface. This is already
+done via policy for confined processes, but unconfined can delegate
+access to the opened fd, by-passing the usual policy check.
+
+Fixes: b7fd2c0340eac ("apparmor: add per policy ns .load, .replace, .remove interface files")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c |   26 +++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ security/apparmor/apparmorfs.c     |   19 +++++++++++-------
+ security/apparmor/include/policy.h |    5 ++--
+ security/apparmor/policy.c         |   39 +++++++++++++++++++++++++++++++++++--
+ 3 files changed, 52 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
-@@ -116,10 +116,12 @@ static void heartbeat(struct work_struct
- 	/* Just in case everything has gone horribly wrong, give it a kick */
- 	intel_engine_flush_submission(engine);
- 
--	rq = engine->heartbeat.systole;
--	if (rq && i915_request_completed(rq)) {
--		i915_request_put(rq);
--		engine->heartbeat.systole = NULL;
-+	rq = xchg(&engine->heartbeat.systole, NULL);
-+	if (rq) {
-+		if (i915_request_completed(rq))
-+			i915_request_put(rq);
-+		else
-+			engine->heartbeat.systole = rq;
- 	}
- 
- 	if (!intel_engine_pm_get_if_awake(engine))
-@@ -200,8 +202,11 @@ static void heartbeat(struct work_struct
- unlock:
- 	mutex_unlock(&ce->timeline->mutex);
- out:
--	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine))
--		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
-+	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine)) {
-+		rq = xchg(&engine->heartbeat.systole, NULL);
-+		if (rq)
-+			i915_request_put(rq);
-+	}
- 	intel_engine_pm_put(engine);
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -409,7 +409,8 @@ static struct aa_loaddata *aa_simple_wri
  }
  
-@@ -215,8 +220,13 @@ void intel_engine_unpark_heartbeat(struc
- 
- void intel_engine_park_heartbeat(struct intel_engine_cs *engine)
+ static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
+-			     loff_t *pos, struct aa_ns *ns)
++			     loff_t *pos, struct aa_ns *ns,
++			     const struct cred *ocred)
  {
--	if (cancel_delayed_work(&engine->heartbeat.work))
--		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
-+	if (cancel_delayed_work(&engine->heartbeat.work)) {
-+		struct i915_request *rq;
-+
-+		rq = xchg(&engine->heartbeat.systole, NULL);
-+		if (rq)
-+			i915_request_put(rq);
-+	}
+ 	struct aa_loaddata *data;
+ 	struct aa_label *label;
+@@ -420,7 +421,7 @@ static ssize_t policy_update(u32 mask, c
+ 	/* high level check about policy management - fine grained in
+ 	 * below after unpack
+ 	 */
+-	error = aa_may_manage_policy(label, ns, mask);
++	error = aa_may_manage_policy(current_cred(), label, ns, ocred, mask);
+ 	if (error)
+ 		goto end_section;
+ 
+@@ -441,7 +442,8 @@ static ssize_t profile_load(struct file
+ 			    loff_t *pos)
+ {
+ 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
+-	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns);
++	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns,
++				  f->f_cred);
+ 
+ 	aa_put_ns(ns);
+ 
+@@ -459,7 +461,7 @@ static ssize_t profile_replace(struct fi
+ {
+ 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
+ 	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
+-				  buf, size, pos, ns);
++				  buf, size, pos, ns, f->f_cred);
+ 	aa_put_ns(ns);
+ 
+ 	return error;
+@@ -483,7 +485,8 @@ static ssize_t profile_remove(struct fil
+ 	/* high level check about policy management - fine grained in
+ 	 * below after unpack
+ 	 */
+-	error = aa_may_manage_policy(label, ns, AA_MAY_REMOVE_POLICY);
++	error = aa_may_manage_policy(current_cred(), label, ns,
++				     f->f_cred, AA_MAY_REMOVE_POLICY);
+ 	if (error)
+ 		goto out;
+ 
+@@ -1796,7 +1799,8 @@ static int ns_mkdir_op(struct inode *dir
+ 	int error;
+ 
+ 	label = begin_current_label_crit_section();
+-	error = aa_may_manage_policy(label, NULL, AA_MAY_LOAD_POLICY);
++	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
++				     AA_MAY_LOAD_POLICY);
+ 	end_current_label_crit_section(label);
+ 	if (error)
+ 		return error;
+@@ -1845,7 +1849,8 @@ static int ns_rmdir_op(struct inode *dir
+ 	int error;
+ 
+ 	label = begin_current_label_crit_section();
+-	error = aa_may_manage_policy(label, NULL, AA_MAY_LOAD_POLICY);
++	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
++				     AA_MAY_LOAD_POLICY);
+ 	end_current_label_crit_section(label);
+ 	if (error)
+ 		return error;
+--- a/security/apparmor/include/policy.h
++++ b/security/apparmor/include/policy.h
+@@ -303,7 +303,8 @@ static inline int AUDIT_MODE(struct aa_p
+ 
+ bool policy_view_capable(struct aa_ns *ns);
+ bool policy_admin_capable(struct aa_ns *ns);
+-int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns,
+-			 u32 mask);
++int aa_may_manage_policy(const struct cred *subj_cred,
++			 struct aa_label *label, struct aa_ns *ns,
++			 const struct cred *ocred, u32 mask);
+ 
+ #endif /* __AA_POLICY_H */
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -695,14 +695,44 @@ bool policy_admin_capable(struct aa_ns *
+ 	return policy_view_capable(ns) && capable && !aa_g_lock_policy;
  }
  
- void intel_gt_unpark_heartbeats(struct intel_gt *gt)
++static bool is_subset_of_obj_privilege(const struct cred *cred,
++				       struct aa_label *label,
++				       const struct cred *ocred)
++{
++	if (cred == ocred)
++		return true;
++
++	if (!aa_label_is_subset(label, cred_label(ocred)))
++		return false;
++	/* don't allow crossing userns for now */
++	if (cred->user_ns != ocred->user_ns)
++		return false;
++	if (!cap_issubset(cred->cap_inheritable, ocred->cap_inheritable))
++		return false;
++	if (!cap_issubset(cred->cap_permitted, ocred->cap_permitted))
++		return false;
++	if (!cap_issubset(cred->cap_effective, ocred->cap_effective))
++		return false;
++	if (!cap_issubset(cred->cap_bset, ocred->cap_bset))
++		return false;
++	if (!cap_issubset(cred->cap_ambient, ocred->cap_ambient))
++		return false;
++	return true;
++}
++
++
+ /**
+  * aa_may_manage_policy - can the current task manage policy
++ * @subj_cred; subjects cred
+  * @label: label to check if it can manage policy
+- * @op: the policy manipulation operation being done
++ * @ns: namespace being managed by @label (may be NULL if @label's ns)
++ * @ocred: object cred if request is coming from an open object
++ * @mask: contains the policy manipulation operation being done
+  *
+  * Returns: 0 if the task is allowed to manipulate policy else error
+  */
+-int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns, u32 mask)
++int aa_may_manage_policy(const struct cred *subj_cred, struct aa_label *label,
++			 struct aa_ns *ns, const struct cred *ocred, u32 mask)
+ {
+ 	const char *op;
+ 
+@@ -718,6 +748,11 @@ int aa_may_manage_policy(struct aa_label
+ 		return audit_policy(label, op, NULL, NULL, "policy_locked",
+ 				    -EACCES);
+ 
++	if (ocred && !is_subset_of_obj_privilege(subj_cred, label, ocred))
++		return audit_policy(label, op, NULL, NULL,
++				    "not privileged for target profile",
++				    -EACCES);
++
+ 	if (!policy_admin_capable(ns))
+ 		return audit_policy(label, op, NULL, NULL, "not policy admin",
+ 				    -EACCES);
 
 
 
