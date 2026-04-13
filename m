@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mN5ZOe0c3WlUaAkAu9opvQ
-	(envelope-from <stable+bounces-236849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:21 +0200
+	id 8D9JLEsf3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD263EF8D4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727863F0150
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6669630333B1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E19C301D08A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C1C238D27;
-	Mon, 13 Apr 2026 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5201317152;
+	Mon, 13 Apr 2026 16:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvYAZt1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlMhg4a1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D4C2472B6;
-	Mon, 13 Apr 2026 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C823161BF;
+	Mon, 13 Apr 2026 16:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097950; cv=none; b=X0K6kEDhEKAvPNar0+tj19DW3qf0oeolK8f6E2H6LAAcRaVdzwTTNC2fseSlj/SFJYAFvJ/PY0wuSI1Vls7a03gS789ZvtdV5W0aBEdsyGSAB1GzSHvZQQ0EeJKsHCQqvRnBVnZDrcOXOS3aJyKnwh9BxfsXZDZULaTJkFJuTB8=
+	t=1776099047; cv=none; b=WsG0ZLeWkp8N2Iw77snFkKZiWlCmoKqJca4qMB4ryDsqB/f1AA2DWV3dabalpyTyUW8i9CXd/u5Mfvmd08IwhYqua61IZFV+tKKZAQ7TczsPDD4SaWRXT5Ra0zcpVPZd5kKC2vXVCkmYKDbftKEzIrRjD9KXkb7Bx7onzQcQu5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097950; c=relaxed/simple;
-	bh=k4nPay9f0VxCgvFIolFKgy7x9V5cRhuhcfa8kne3ltc=;
+	s=arc-20240116; t=1776099047; c=relaxed/simple;
+	bh=lZSiwHXuoeLICzl2whdjXADWDrPibZpvqsAI13fUoLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KTO8rst3FcICWjTrb8EI35/v4bJu+es3KbRgP8oUDgiHAyDXlE9o8yiHRxcjLHJ99oIUpMZoxMOJ6oCmRRo7CDrQDldLuXC9qoiNj+FM3tEMd/iY4NVvrgYNEy+VDw73Jh/UiJh4xl33Ctn0dvQevYqgFKwqdvIESswPXR/BePU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvYAZt1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A47CC2BCAF;
-	Mon, 13 Apr 2026 16:32:29 +0000 (UTC)
+	 MIME-Version; b=Q0dgY/UsHELzS+LmJ93MpZrzcjpo1e+E7CKg5FH2m2AJVsecy1u40CegCwLnDTilMVh7Djaa2Pz3tWhsk172OZE5vsV8lC9LTD3GlBAAZATs5Kn1apnf3kQ34pUmgWqdpy26RUFQvL4V2oPj5kJzNFatKZOfKVLe9uJZ/xZNonA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlMhg4a1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E63DC2BCAF;
+	Mon, 13 Apr 2026 16:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097950;
-	bh=k4nPay9f0VxCgvFIolFKgy7x9V5cRhuhcfa8kne3ltc=;
+	s=korg; t=1776099047;
+	bh=lZSiwHXuoeLICzl2whdjXADWDrPibZpvqsAI13fUoLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvYAZt1U+xAB/a1QZ/+0sYj8MoF+ghr17DylvpgsVyBQZo9n0LHLJEL5jgWDo85Hr
-	 gDxyWCCSXk5Mn+jI1XVT88OMijb12saGGOKyeLCzL81BBCobGYHonfV8wmLBhg3Ui3
-	 WtYRcqE88fOJgQ7MJBUwWcrlFe28r3daTa9v3Z/s=
+	b=PlMhg4a1GQkic6qgFYjYAc/fBj42pVOWoU3bdlOhe6k3qa3fxkbk7v0D+7ID17yrx
+	 jXnW5r80flubCk28u9QmPuN09xsioJirsf16Fika9qDmtbsvrscKCcR8LVlEu6w+Z2
+	 o3H0j2SIB2HYO5r46IO+xf///ZD8xam/sOpqAnxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	stable <stable@kernel.org>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/570] HID: magicmouse: avoid memory leak in magicmouse_report_fixup()
+Subject: [PATCH 5.10 190/491] usb: gadget: f_tcm: Fix NULL pointer dereferences in nexus handling
 Date: Mon, 13 Apr 2026 17:57:15 +0200
-Message-ID: <20260413155841.887511814@linuxfoundation.org>
+Message-ID: <20260413155826.181635886@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236849-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,synopsys.com];
+	TAGGED_FROM(0.00)[bounces-237279-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7CD263EF8D4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,synopsys.com:email]
+X-Rspamd-Queue-Id: 727863F0150
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Günther Noack <gnoack@google.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 91e8c6e601bdc1ccdf886479b6513c01c7e51c2c ]
+[ Upstream commit b9fde507355342a2d64225d582dc8b98ff5ecb19 ]
 
-The magicmouse_report_fixup() function was returning a
-newly kmemdup()-allocated buffer, but never freeing it.
+The `tpg->tpg_nexus` pointer in the USB Target driver is dynamically
+managed and tied to userspace configuration via ConfigFS. It can be
+NULL if the USB host sends requests before the nexus is fully
+established or immediately after it is dropped.
 
-The caller of report_fixup() does not take ownership of the returned
-pointer, but it *is* permitted to return a sub-portion of the input
-rdesc, whose lifetime is managed by the caller.
+Currently, functions like `bot_submit_command()` and the data
+transfer paths retrieve `tv_nexus = tpg->tpg_nexus` and immediately
+dereference `tv_nexus->tvn_se_sess` without any validation. If a
+malicious or misconfigured USB host sends a BOT (Bulk-Only Transport)
+command during this race window, it triggers a NULL pointer
+dereference, leading to a kernel panic (local DoS).
 
-Assisted-by: Gemini-CLI:Google Gemini 3
-Signed-off-by: Günther Noack <gnoack@google.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+This exposes an inconsistent API usage within the module, as peer
+functions like `usbg_submit_command()` and `bot_send_bad_response()`
+correctly implement a NULL check for `tv_nexus` before proceeding.
+
+Fix this by bringing consistency to the nexus handling. Add the
+missing `if (!tv_nexus)` checks to the vulnerable BOT command and
+request processing paths, aborting the command gracefully with an
+error instead of crashing the system.
+
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20260219023834.17976-1-jiashengjiangcool@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-magicmouse.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
-index df5809cd4b637..2eda56779b4c4 100644
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -934,9 +934,7 @@ static __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
- 		*rsize = *rsize - 1;
--		rdesc = kmemdup(rdesc + 1, *rsize, GFP_KERNEL);
--		if (!rdesc)
--			return NULL;
-+		rdesc = rdesc + 1;
- 
- 		rdesc[0] = 0x05;
- 		rdesc[1] = 0x01;
--- 
-2.51.0
-
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1032,6 +1032,13 @@ static void usbg_cmd_work(struct work_st
+ 	se_cmd = &cmd->se_cmd;
+ 	tpg = cmd->fu->tpg;
+ 	tv_nexus = tpg->tpg_nexus;
++	if (!tv_nexus) {
++		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
++
++		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
++		return;
++	}
++
+ 	dir = get_cmd_dir(cmd->cmd_buf);
+ 	if (dir < 0) {
+ 		transport_init_se_cmd(se_cmd,
+@@ -1162,6 +1169,13 @@ static void bot_cmd_work(struct work_str
+ 	se_cmd = &cmd->se_cmd;
+ 	tpg = cmd->fu->tpg;
+ 	tv_nexus = tpg->tpg_nexus;
++	if (!tv_nexus) {
++		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
++
++		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
++		return;
++	}
++
+ 	dir = get_cmd_dir(cmd->cmd_buf);
+ 	if (dir < 0) {
+ 		transport_init_se_cmd(se_cmd,
 
 
 
