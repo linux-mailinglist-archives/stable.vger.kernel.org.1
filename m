@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-237531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGmAIrIm3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:02 +0200
+	id OPtDJFgg3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBA93F1512
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C60B3F04E7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 164CB31A3608
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6A73D30ABA91
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909B633B6F8;
-	Mon, 13 Apr 2026 17:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B7830C371;
+	Mon, 13 Apr 2026 16:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeOm7YQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0py9Sy1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF54337BB5;
-	Mon, 13 Apr 2026 17:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7825230C359;
+	Mon, 13 Apr 2026 16:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099697; cv=none; b=aWZymvj0uRqXNdmSmCb4lcyPlQdp/BYsljP68xHYszzU6fq3LFiiWD5nLkfpO2jL4F/LOc0hLS4ZXcX/MlDbxrdwZpqlM8OlLTLi4F7abCAWN3uCd5UvfHwnvLG1wa6zc1yXkPNOfaz6gDEuy/VVurYmeP9S7jnoXiAN6vkdrtw=
+	t=1776098512; cv=none; b=iyZg5adZjP+Dq+v4jQ+YRqgDmc/prbEis+qGe8uFGAOFDp+JmzS2QWOKuHwBnwRtFONLdTJwmnlwmXXWdksrsYuoKJ18oJ8L/d9NzPwAkuwbPaNNKZ8GoifjxQdMQjSt1x0o6fhpsFLZlTlXCJne2/hNe8Qn0UXmFlSOF51fEc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099697; c=relaxed/simple;
-	bh=W3K2tlC6R8fukU8088kwaBDXzortdMkNT3kDPlIPyp4=;
+	s=arc-20240116; t=1776098512; c=relaxed/simple;
+	bh=SBH3+qTDJ29bVqGzyWQxp2AzGzd0udnyduJ9ZkEC4xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZJ7xCqY9UunsjnhwQlUk+Fjmn3SxVFZ9DuDfp4O2FDwh+YES4YKhM8HOD/IHO0iOV58ZYmu6/C29CsNDNZAtv/ZitWM+wSj2pHwtReL03eEEXmczOfiaxO3oROeSGcV3tq6GdcSNV73ptWYG7mvc8EhcZ1907f4vHCbTvhyWtzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeOm7YQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88A3C2BCAF;
-	Mon, 13 Apr 2026 17:01:36 +0000 (UTC)
+	 MIME-Version; b=iKqTJiznTkrg6/QR3HoAHKn204N6GGzRYG0B1BWYvy0uPYWWVHCKCN7yO6vWTJjpp5ibttPJGknHZIe+aHRkVkeGyhNFPAkrWWOKKwDzndMf5poSibuH5uYBT0P05gyBTQzPrAgV4qi/eXfmWZMEX5Ta6pemBRwrwsVPCQtTN78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0py9Sy1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBA1C2BCAF;
+	Mon, 13 Apr 2026 16:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099697;
-	bh=W3K2tlC6R8fukU8088kwaBDXzortdMkNT3kDPlIPyp4=;
+	s=korg; t=1776098512;
+	bh=SBH3+qTDJ29bVqGzyWQxp2AzGzd0udnyduJ9ZkEC4xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeOm7YQzlYNgW2GfJqD7/nV4txhUCnCJoR02M+70kWT3RpMsaQ3DKdD5CDnOqqBYK
-	 xtRFlZtlK6Vr7F/IH6b1vR9r3nhiax5yZfDT6djtuSYL0XBRBSQ7IDzEXFlhIxx16t
-	 gws5mg2pZG76jfKWT2nLydcUc/wXKlsk8tkilwsQ=
+	b=0py9Sy1Wu8fZ9j8B6JO5gLseSv4Qmllsi7enefzYppx/epSGoIKh4U/BsCeiQJlmp
+	 /tAbu8Iwnc9mINlfXmBklJIW2IRIp0HCjDil3EDDBxkDPwjiEXrwlq5dW/nwNPbmcY
+	 MIfWmK+T5AbgyLh+EGMwJmyWRPttKgCZJ//CCOmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	=?UTF-8?q?Maxime=20B=C3=A9lair?= <maxime.belair@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.10 439/491] apparmor: fix race on rawdata dereference
-Date: Mon, 13 Apr 2026 18:01:24 +0200
-Message-ID: <20260413155835.462525911@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 554/570] dmaengine: sh: rz-dmac: Protect the driver specific lists
+Date: Mon, 13 Apr 2026 18:01:25 +0200
+Message-ID: <20260413155851.215217511@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,477 +64,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237531-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237071-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0DBA93F1512
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,renesas.com:email]
+X-Rspamd-Queue-Id: 8C60B3F04E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-commit a0b7091c4de45a7325c8780e6934a894f92ac86b upstream.
+[ Upstream commit abb863e6213dc41a58ef8bb3289b7e77460dabf3 ]
 
-Backport for conflicts introdued by
-    d61c57fde819 ("apparmor: make export of raw binary profile to userspace optional")
-    which nests the conflicting code inside an if condition
+The driver lists (ld_free, ld_queue) are used in
+rz_dmac_free_chan_resources(), rz_dmac_terminate_all(),
+rz_dmac_issue_pending(), and rz_dmac_irq_handler_thread(), all under
+the virtual channel lock. Take the same lock in rz_dmac_prep_slave_sg()
+and rz_dmac_prep_dma_memcpy() as well to avoid concurrency issues, since
+these functions also check whether the lists are empty and update or
+remove list entries.
 
-There is a race condition that leads to a use-after-free situation:
-because the rawdata inodes are not refcounted, an attacker can start
-open()ing one of the rawdata files, and at the same time remove the
-last reference to this rawdata (by removing the corresponding profile,
-for example), which frees its struct aa_loaddata; as a result, when
-seq_rawdata_open() is reached, i_private is a dangling pointer and
-freed memory is accessed.
-
-The rawdata inodes weren't refcounted to avoid a circular refcount and
-were supposed to be held by the profile rawdata reference.  However
-during profile removal there is a window where the vfs and profile
-destruction race, resulting in the use after free.
-
-Fix this by moving to a double refcount scheme. Where the profile
-refcount on rawdata is used to break the circular dependency. Allowing
-for freeing of the rawdata once all inode references to the rawdata
-are put.
-
-Fixes: 5d5182cae401 ("apparmor: move to per loaddata files, instead of replicating in profiles")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Maxime Bélair <maxime.belair@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20260316133252.240348-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[ replaced scoped_guard(spinlock_irqsave) with explicit spin_lock_irqsave/spin_unlock_irqrestore calls ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/apparmorfs.c            |   36 +++++++++------
- security/apparmor/include/policy_unpack.h |   71 ++++++++++++++++++------------
- security/apparmor/policy.c                |   12 ++---
- security/apparmor/policy_unpack.c         |   32 +++++++++----
- 4 files changed, 94 insertions(+), 57 deletions(-)
+ drivers/dma/sh/rz-dmac.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -77,7 +77,7 @@ static void rawdata_f_data_free(struct r
- 	if (!private)
- 		return;
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -419,6 +419,7 @@ static int rz_dmac_alloc_chan_resources(
+ 		if (!desc)
+ 			break;
  
--	aa_put_loaddata(private->loaddata);
-+	aa_put_i_loaddata(private->loaddata);
- 	kvfree(private);
- }
++		/* No need to lock. This is called only for the 1st client. */
+ 		list_add_tail(&desc->node, &channel->ld_free);
+ 		channel->descs_allocated++;
+ 	}
+@@ -470,12 +471,17 @@ rz_dmac_prep_dma_memcpy(struct dma_chan
+ 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
+ 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+ 	struct rz_dmac_desc *desc;
++	unsigned long irqflags;
  
-@@ -401,7 +401,9 @@ static struct aa_loaddata *aa_simple_wri
+ 	dev_dbg(dmac->dev, "%s channel: %d src=0x%pad dst=0x%pad len=%zu\n",
+ 		__func__, channel->index, &src, &dest, len);
  
- 	data->size = copy_size;
- 	if (copy_from_user(data->data, userbuf, copy_size)) {
--		aa_put_loaddata(data);
-+		/* trigger free - don't need to put pcount */
-+		aa_put_i_loaddata(data);
+-	if (list_empty(&channel->ld_free))
++	spin_lock_irqsave(&channel->vc.lock, irqflags);
 +
- 		return ERR_PTR(-EFAULT);
- 	}
++	if (list_empty(&channel->ld_free)) {
++		spin_unlock_irqrestore(&channel->vc.lock, irqflags);
+ 		return NULL;
++	}
  
-@@ -429,7 +431,10 @@ static ssize_t policy_update(u32 mask, c
- 	error = PTR_ERR(data);
- 	if (!IS_ERR(data)) {
- 		error = aa_replace_profiles(ns, label, mask, data);
--		aa_put_loaddata(data);
-+		/* put pcount, which will put count and free if no
-+		 * profiles referencing it.
-+		 */
-+		aa_put_profile_loaddata(data);
- 	}
- end_section:
- 	end_current_label_crit_section(label);
-@@ -500,7 +505,7 @@ static ssize_t profile_remove(struct fil
- 	if (!IS_ERR(data)) {
- 		data->data[size] = 0;
- 		error = aa_remove_profiles(ns, label, data->data, size);
--		aa_put_loaddata(data);
-+		aa_put_profile_loaddata(data);
- 	}
-  out:
- 	end_current_label_crit_section(label);
-@@ -1225,18 +1230,17 @@ static const struct file_operations seq_
- static int seq_rawdata_open(struct inode *inode, struct file *file,
- 			    int (*show)(struct seq_file *, void *))
- {
--	struct aa_loaddata *data = __aa_get_loaddata(inode->i_private);
-+	struct aa_loaddata *data = aa_get_i_loaddata(inode->i_private);
- 	int error;
+ 	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
  
- 	if (!data)
--		/* lost race this ent is being reaped */
- 		return -ENOENT;
+@@ -486,6 +492,9 @@ rz_dmac_prep_dma_memcpy(struct dma_chan
+ 	desc->direction = DMA_MEM_TO_MEM;
  
- 	error = single_open(file, show, data);
- 	if (error) {
- 		AA_BUG(file->private_data &&
- 		       ((struct seq_file *)file->private_data)->private);
--		aa_put_loaddata(data);
-+		aa_put_i_loaddata(data);
- 	}
- 
- 	return error;
-@@ -1247,7 +1251,7 @@ static int seq_rawdata_release(struct in
- 	struct seq_file *seq = (struct seq_file *) file->private_data;
- 
- 	if (seq)
--		aa_put_loaddata(seq->private);
-+		aa_put_i_loaddata(seq->private);
- 
- 	return single_release(inode, file);
- }
-@@ -1366,9 +1370,8 @@ static int rawdata_open(struct inode *in
- 	if (!policy_view_capable(NULL))
- 		return -EACCES;
- 
--	loaddata = __aa_get_loaddata(inode->i_private);
-+	loaddata = aa_get_i_loaddata(inode->i_private);
- 	if (!loaddata)
--		/* lost race: this entry is being reaped */
- 		return -ENOENT;
- 
- 	private = rawdata_f_data_alloc(loaddata->size);
-@@ -1393,7 +1396,7 @@ fail_decompress:
- 	return error;
- 
- fail_private_alloc:
--	aa_put_loaddata(loaddata);
-+	aa_put_i_loaddata(loaddata);
- 	return error;
- }
- 
-@@ -1410,9 +1413,9 @@ static void remove_rawdata_dents(struct
- 
- 	for (i = 0; i < AAFS_LOADDATA_NDENTS; i++) {
- 		if (!IS_ERR_OR_NULL(rawdata->dents[i])) {
--			/* no refcounts on i_private */
- 			aafs_remove(rawdata->dents[i]);
- 			rawdata->dents[i] = NULL;
-+			aa_put_i_loaddata(rawdata);
- 		}
- 	}
- }
-@@ -1451,18 +1454,21 @@ int __aa_fs_create_rawdata(struct aa_ns
- 	if (IS_ERR(dir))
- 		/* ->name freed when rawdata freed */
- 		return PTR_ERR(dir);
-+	aa_get_i_loaddata(rawdata);
- 	rawdata->dents[AAFS_LOADDATA_DIR] = dir;
- 
- 	dent = aafs_create_file("abi", S_IFREG | 0444, dir, rawdata,
- 				      &seq_rawdata_abi_fops);
- 	if (IS_ERR(dent))
- 		goto fail;
-+	aa_get_i_loaddata(rawdata);
- 	rawdata->dents[AAFS_LOADDATA_ABI] = dent;
- 
- 	dent = aafs_create_file("revision", S_IFREG | 0444, dir, rawdata,
- 				      &seq_rawdata_revision_fops);
- 	if (IS_ERR(dent))
- 		goto fail;
-+	aa_get_i_loaddata(rawdata);
- 	rawdata->dents[AAFS_LOADDATA_REVISION] = dent;
- 
- 	if (aa_g_hash_policy) {
-@@ -1470,6 +1476,7 @@ int __aa_fs_create_rawdata(struct aa_ns
- 					      rawdata, &seq_rawdata_hash_fops);
- 		if (IS_ERR(dent))
- 			goto fail;
-+		aa_get_i_loaddata(rawdata);
- 		rawdata->dents[AAFS_LOADDATA_HASH] = dent;
- 	}
- 
-@@ -1478,24 +1485,25 @@ int __aa_fs_create_rawdata(struct aa_ns
- 				&seq_rawdata_compressed_size_fops);
- 	if (IS_ERR(dent))
- 		goto fail;
-+	aa_get_i_loaddata(rawdata);
- 	rawdata->dents[AAFS_LOADDATA_COMPRESSED_SIZE] = dent;
- 
- 	dent = aafs_create_file("raw_data", S_IFREG | 0444,
- 				      dir, rawdata, &rawdata_fops);
- 	if (IS_ERR(dent))
- 		goto fail;
-+	aa_get_i_loaddata(rawdata);
- 	rawdata->dents[AAFS_LOADDATA_DATA] = dent;
- 	d_inode(dent)->i_size = rawdata->size;
- 
- 	rawdata->ns = aa_get_ns(ns);
- 	list_add(&rawdata->list, &ns->rawdata_list);
--	/* no refcount on inode rawdata */
- 
- 	return 0;
- 
- fail:
- 	remove_rawdata_dents(rawdata);
--
-+	aa_put_i_loaddata(rawdata);
- 	return PTR_ERR(dent);
- }
- 
---- a/security/apparmor/include/policy_unpack.h
-+++ b/security/apparmor/include/policy_unpack.h
-@@ -46,17 +46,29 @@ enum {
- 	AAFS_LOADDATA_NDENTS		/* count of entries */
- };
- 
--/*
-- * struct aa_loaddata - buffer of policy raw_data set
-+/* struct aa_loaddata - buffer of policy raw_data set
-+ * @count: inode/filesystem refcount - use aa_get_i_loaddata()
-+ * @pcount: profile refcount - use aa_get_profile_loaddata()
-+ * @list: list the loaddata is on
-+ * @work: used to do a delayed cleanup
-+ * @dents: refs to dents created in aafs
-+ * @ns: the namespace this loaddata was loaded into
-+ * @name:
-+ * @size: the size of the data that was loaded
-+ * @compressed_size: the size of the data when it is compressed
-+ * @revision: unique revision count that this data was loaded as
-+ * @abi: the abi number the loaddata uses
-+ * @hash: a hash of the loaddata, used to help dedup data
-  *
-- * there is no loaddata ref for being on ns list, nor a ref from
-- * d_inode(@dentry) when grab a ref from these, @ns->lock must be held
-- * && __aa_get_loaddata() needs to be used, and the return value
-- * checked, if NULL the loaddata is already being reaped and should be
-- * considered dead.
-+ * There is no loaddata ref for being on ns->rawdata_list, so
-+ * @ns->lock must be held when walking the list. Dentries and
-+ * inode opens hold refs on @count; profiles hold refs on @pcount.
-+ * When the last @pcount drops, do_ploaddata_rmfs() removes the
-+ * fs entries and drops the associated @count ref.
-  */
- struct aa_loaddata {
- 	struct kref count;
-+	struct kref pcount;
- 	struct list_head list;
- 	struct work_struct work;
- 	struct dentry *dents[AAFS_LOADDATA_NDENTS];
-@@ -78,50 +90,53 @@ struct aa_loaddata {
- int aa_unpack(struct aa_loaddata *udata, struct list_head *lh, const char **ns);
- 
- /**
-- * __aa_get_loaddata - get a reference count to uncounted data reference
-+ * aa_get_loaddata - get a reference count from a counted data reference
-  * @data: reference to get a count on
-  *
-- * Returns: pointer to reference OR NULL if race is lost and reference is
-- *          being repeated.
-- * Requires: @data->ns->lock held, and the return code MUST be checked
-- *
-- * Use only from inode->i_private and @data->list found references
-+ * Returns: pointer to reference
-+ * Requires: @data to have a valid reference count on it. It is a bug
-+ *           if the race to reap can be encountered when it is used.
-  */
- static inline struct aa_loaddata *
--__aa_get_loaddata(struct aa_loaddata *data)
-+aa_get_i_loaddata(struct aa_loaddata *data)
- {
--	if (data && kref_get_unless_zero(&(data->count)))
--		return data;
- 
--	return NULL;
-+	if (data)
-+		kref_get(&(data->count));
-+	return data;
- }
- 
+ 	list_move_tail(channel->ld_free.next, &channel->ld_queue);
 +
- /**
-- * aa_get_loaddata - get a reference count from a counted data reference
-+ * aa_get_profile_loaddata - get a profile reference count on loaddata
-  * @data: reference to get a count on
-  *
-- * Returns: point to reference
-- * Requires: @data to have a valid reference count on it. It is a bug
-- *           if the race to reap can be encountered when it is used.
-+ * Returns: pointer to reference
-+ * Requires: @data to have a valid reference count on it.
-  */
- static inline struct aa_loaddata *
--aa_get_loaddata(struct aa_loaddata *data)
-+aa_get_profile_loaddata(struct aa_loaddata *data)
- {
--	struct aa_loaddata *tmp = __aa_get_loaddata(data);
--
--	AA_BUG(data && !tmp);
--
--	return tmp;
-+	if (data)
-+		kref_get(&(data->pcount));
-+	return data;
- }
- 
- void __aa_loaddata_update(struct aa_loaddata *data, long revision);
- bool aa_rawdata_eq(struct aa_loaddata *l, struct aa_loaddata *r);
- void aa_loaddata_kref(struct kref *kref);
-+void aa_ploaddata_kref(struct kref *kref);
- struct aa_loaddata *aa_loaddata_alloc(size_t size);
--static inline void aa_put_loaddata(struct aa_loaddata *data)
-+static inline void aa_put_i_loaddata(struct aa_loaddata *data)
- {
- 	if (data)
- 		kref_put(&data->count, aa_loaddata_kref);
- }
- 
-+static inline void aa_put_profile_loaddata(struct aa_loaddata *data)
-+{
-+	if (data)
-+		kref_put(&data->pcount, aa_ploaddata_kref);
-+}
++	spin_unlock_irqrestore(&channel->vc.lock, irqflags);
 +
- #endif /* __POLICY_INTERFACE_H */
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -265,7 +265,7 @@ void aa_free_profile(struct aa_profile *
- 	}
- 
- 	kfree_sensitive(profile->hash);
--	aa_put_loaddata(profile->rawdata);
-+	aa_put_profile_loaddata(profile->rawdata);
- 	aa_label_destroy(&profile->label);
- 
- 	kfree_sensitive(profile);
-@@ -925,7 +925,7 @@ ssize_t aa_replace_profiles(struct aa_ns
- 	LIST_HEAD(lh);
- 
- 	op = mask & AA_MAY_REPLACE_POLICY ? OP_PROF_REPL : OP_PROF_LOAD;
--	aa_get_loaddata(udata);
-+	aa_get_profile_loaddata(udata);
- 	/* released below */
- 	error = aa_unpack(udata, &lh, &ns_name);
- 	if (error)
-@@ -976,10 +976,10 @@ ssize_t aa_replace_profiles(struct aa_ns
- 		if (aa_rawdata_eq(rawdata_ent, udata)) {
- 			struct aa_loaddata *tmp;
- 
--			tmp = __aa_get_loaddata(rawdata_ent);
-+			tmp = aa_get_profile_loaddata(rawdata_ent);
- 			/* check we didn't fail the race */
- 			if (tmp) {
--				aa_put_loaddata(udata);
-+				aa_put_profile_loaddata(udata);
- 				udata = tmp;
- 				break;
- 			}
-@@ -989,7 +989,7 @@ ssize_t aa_replace_profiles(struct aa_ns
- 	list_for_each_entry(ent, &lh, list) {
- 		struct aa_policy *policy;
- 
--		ent->new->rawdata = aa_get_loaddata(udata);
-+		ent->new->rawdata = aa_get_profile_loaddata(udata);
- 		error = __lookup_replace(ns, ent->new->base.hname,
- 					 !(mask & AA_MAY_REPLACE_POLICY),
- 					 &ent->old, &info);
-@@ -1103,7 +1103,7 @@ ssize_t aa_replace_profiles(struct aa_ns
- 
- out:
- 	aa_put_ns(ns);
--	aa_put_loaddata(udata);
-+	aa_put_profile_loaddata(udata);
- 	kfree(ns_name);
- 
- 	if (error)
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -147,34 +147,47 @@ bool aa_rawdata_eq(struct aa_loaddata *l
- 	return memcmp(l->data, r->data, r->compressed_size ?: r->size) == 0;
+ 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
  }
  
-+static void do_loaddata_free(struct aa_loaddata *d)
-+{
-+	kfree_sensitive(d->hash);
-+	kfree_sensitive(d->name);
-+	kvfree(d->data);
-+	kfree_sensitive(d);
-+}
-+
-+void aa_loaddata_kref(struct kref *kref)
-+{
-+	struct aa_loaddata *d = container_of(kref, struct aa_loaddata, count);
-+
-+	do_loaddata_free(d);
-+}
-+
- /*
-  * need to take the ns mutex lock which is NOT safe most places that
-  * put_loaddata is called, so we have to delay freeing it
-  */
--static void do_loaddata_free(struct work_struct *work)
-+static void do_ploaddata_rmfs(struct work_struct *work)
- {
- 	struct aa_loaddata *d = container_of(work, struct aa_loaddata, work);
- 	struct aa_ns *ns = aa_get_ns(d->ns);
+@@ -498,17 +507,21 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
+ 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
+ 	struct rz_dmac_desc *desc;
+ 	struct scatterlist *sg;
++	unsigned long irqflags;
+ 	int dma_length = 0;
+ 	int i = 0;
  
- 	if (ns) {
- 		mutex_lock_nested(&ns->lock, ns->level);
-+		/* remove fs ref to loaddata */
- 		__aa_fs_remove_rawdata(d);
- 		mutex_unlock(&ns->lock);
- 		aa_put_ns(ns);
- 	}
--
--	kfree_sensitive(d->hash);
--	kfree_sensitive(d->name);
--	kvfree(d->data);
--	kfree_sensitive(d);
-+	/* called by dropping last pcount, so drop its associated icount */
-+	aa_put_i_loaddata(d);
+-	if (list_empty(&channel->ld_free))
++	spin_lock_irqsave(&channel->vc.lock, irqflags);
++
++	if (list_empty(&channel->ld_free)) {
++		spin_unlock_irqrestore(&channel->vc.lock, irqflags);
+ 		return NULL;
++	}
+ 
+ 	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
+ 
+-	for_each_sg(sgl, sg, sg_len, i) {
++	for_each_sg(sgl, sg, sg_len, i)
+ 		dma_length += sg_dma_len(sg);
+-	}
+ 
+ 	desc->type = RZ_DMAC_DESC_SLAVE_SG;
+ 	desc->sg = sgl;
+@@ -522,6 +535,9 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
+ 		desc->dest = channel->dst_per_address;
+ 
+ 	list_move_tail(channel->ld_free.next, &channel->ld_queue);
++
++	spin_unlock_irqrestore(&channel->vc.lock, irqflags);
++
+ 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
  }
  
--void aa_loaddata_kref(struct kref *kref)
-+void aa_ploaddata_kref(struct kref *kref)
- {
--	struct aa_loaddata *d = container_of(kref, struct aa_loaddata, count);
-+	struct aa_loaddata *d = container_of(kref, struct aa_loaddata, pcount);
- 
- 	if (d) {
--		INIT_WORK(&d->work, do_loaddata_free);
-+		INIT_WORK(&d->work, do_ploaddata_rmfs);
- 		schedule_work(&d->work);
- 	}
- }
-@@ -192,6 +205,7 @@ struct aa_loaddata *aa_loaddata_alloc(si
- 		return ERR_PTR(-ENOMEM);
- 	}
- 	kref_init(&d->count);
-+	kref_init(&d->pcount);
- 	INIT_LIST_HEAD(&d->list);
- 
- 	return d;
 
 
 
