@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-237569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237570-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OP5jKfYn3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:29:26 +0200
+	id iLpoLPcn3WmVaQkAu9opvQ
+	(envelope-from <stable+bounces-237570-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:29:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9463F1766
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:29:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA3C3F176D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97854322C901
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B792A32468F8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5423451DA;
-	Mon, 13 Apr 2026 17:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FB533D4E2;
+	Mon, 13 Apr 2026 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIKnIH2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjXQ33QJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5943633C1B4;
-	Mon, 13 Apr 2026 17:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE01E32570D;
+	Mon, 13 Apr 2026 17:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099793; cv=none; b=n76amgqrmY7tvEaDylpp0SV0qF+iiyTfF9YTAdLiQJbtzixIgkJPNQ55SXpW9AZFFgm7uj5X2RdX4eqQhojOlwwGdJwXGfnH4bkeST/r49IB51is4bBf58oe5Nf40T938KfaIEn6RRr3xhaby3HRWvHHt9+WwqlLUAOyDJUScFk=
+	t=1776099795; cv=none; b=UtEmmhvhfL3zfTfNPAiGSYD4GxM8rXpgemI4GCd7BH2hHryvQUUFImGpXgjcSl4L/6mldSevihNTQU/DHHUwyj2BX1RtGi9Qmxirx8jiMAZldFe8iwcdU+xo+o54Y9G9tKUjCpaIOoxqQ0tSWwCSLlqmMPirt4NLRXd3LQJl/6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099793; c=relaxed/simple;
-	bh=DteCC5AqQW6aeXpWkwqL/PAJHMxXFFyHUFFJgHmCFsA=;
+	s=arc-20240116; t=1776099795; c=relaxed/simple;
+	bh=Awx3KGxXSDX7vljcXKkc+WdqdZBi+k2F4aXscUD+Vwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSlteBEp2C1eCPycODEWXInpUlGQkbLr7Tkde3xKj9Ti031vVHXuTdT8cVhsmLiaYik9c18Afdreh38tNX/gdMW7k8qp4LnDQU4OID3ddnOG/M9TBYqfU3iB0yKo5YU+VavbotxmWZYDyD4V8vdb0uPhSJyNTREHonHKF+fC9eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIKnIH2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1846C2BCAF;
-	Mon, 13 Apr 2026 17:03:12 +0000 (UTC)
+	 MIME-Version; b=H8qbD1I4Oi8TvjcRDHIQC+roJjqio2JaHlkK5Jc1x/efYRz166pMgeE29KBBoDv8/KPA/ZSAbNSVCA7hVkRjc31AI1P+YF8CCPVJZ4haQyQCPj4Bhu/lqJiCgz9QScjYfGbhJ9DvDsmnvp8Is6qlS9sf3Iw19i2uhI64E29fswY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjXQ33QJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748ECC2BCAF;
+	Mon, 13 Apr 2026 17:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099793;
-	bh=DteCC5AqQW6aeXpWkwqL/PAJHMxXFFyHUFFJgHmCFsA=;
+	s=korg; t=1776099795;
+	bh=Awx3KGxXSDX7vljcXKkc+WdqdZBi+k2F4aXscUD+Vwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIKnIH2DrNg/+i8zqTFnwA0+w2Sdgi7lcyfnqf13P3YDSgsDHf1PYb39J74/MCUdU
-	 IDyNqq/twcR8sbIqsePPCFMES7G2eX8YODZ/cTufIFCTc2UhJ02QrC8xqlMife2V5c
-	 KPOwfOdpY7ZrIAmhwl+4OZ+btZIJAMYkCbjHpTVQ=
+	b=mjXQ33QJVKRbItlShVfmkCaXjrj15PgIJyzd9gag7fUFGrWnNdvj7n5u4KBgtvxvP
+	 AfsvZQ0rDv52UoOw/1PhCGulVk9Mem9CkNeDeCryP549fuh/uqV1+NSPXIsAa5KIp3
+	 3PaM644ccLofsUDf5CJiGHp9xQtRg5UhGKtg9D+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Penghe Geng <pgeng@nvidia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 476/491] mmc: core: Avoid bitfield RMW for claim/retune flags
-Date: Mon, 13 Apr 2026 18:02:01 +0200
-Message-ID: <20260413155836.870974206@linuxfoundation.org>
+	Jaskaran Singh <jsingh@cloudlinux.com>
+Subject: [PATCH 5.10 477/491] Revert "nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()"
+Date: Mon, 13 Apr 2026 18:02:02 +0200
+Message-ID: <20260413155836.909288084@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -69,30 +66,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237569-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237570-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 2C9463F1766
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,cloudlinux.com:email]
+X-Rspamd-Queue-Id: 1DA3C3F176D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,61 +97,40 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Penghe Geng <pgeng@nvidia.com>
+From: Jaskaran Singh <jsingh@cloudlinux.com>
 
-[ Upstream commit 901084c51a0a8fb42a3f37d2e9c62083c495f824 ]
+This reverts commit 3d78e8e01251da032a5f7cbc9728e4ab1a5a5464.
 
-Move claimed and retune control flags out of the bitfield word to
-avoid unrelated RMW side effects in asynchronous contexts.
+The backport of upstream commit 0a2c5495b6d1 was incorrectly applied.
+The cancel_work_sync() call for ->ioerr_work was added to
+nvme_fc_reset_ctrl_work() instead of nvme_fc_delete_ctrl().
 
-The host->claimed bit shared a word with retune flags. Writes to claimed
-in __mmc_claim_host() or retune_now in mmc_mq_queue_rq() can overwrite
-other bits when concurrent updates happen in other contexts, triggering
-spurious WARN_ON(!host->claimed). Convert claimed, can_retune,
-retune_now and retune_paused to bool to remove shared-word coupling.
+Revert this commit so the correct fix can be applied.
 
-Fixes: 6c0cedd1ef952 ("mmc: core: Introduce host claiming by context")
-Fixes: 1e8e55b67030c ("mmc: block: Add CQE support")
-Cc: stable@vger.kernel.org
-Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Penghe Geng <pgeng@nvidia.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jaskaran Singh <jsingh@cloudlinux.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mmc/host.h |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/nvme/host/fc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -400,14 +400,12 @@ struct mmc_host {
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3259,6 +3259,7 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
+ {
+ 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
  
- 	struct mmc_ios		ios;		/* current io bus settings */
++	cancel_work_sync(&ctrl->ioerr_work);
+ 	cancel_delayed_work_sync(&ctrl->connect_work);
+ 	/*
+ 	 * kill the association on the link side.  this will block
+@@ -3322,7 +3323,6 @@ nvme_fc_reset_ctrl_work(struct work_stru
  
-+	bool			claimed;	/* host exclusively claimed */
-+
- 	/* group bitfields together to minimize padding */
- 	unsigned int		use_spi_crc:1;
--	unsigned int		claimed:1;	/* host exclusively claimed */
- 	unsigned int		doing_init_tune:1; /* initial tuning in progress */
--	unsigned int		can_retune:1;	/* re-tuning can be used */
- 	unsigned int		doing_retune:1;	/* re-tuning in progress */
--	unsigned int		retune_now:1;	/* do re-tuning at next req */
--	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
- 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
- 	unsigned int		can_dma_map_merge:1; /* merging can be used */
- 	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
-@@ -415,6 +413,9 @@ struct mmc_host {
- 	int			rescan_disable;	/* disable card detection */
- 	int			rescan_entered;	/* used with nonremovable devices */
+ 	/* will block will waiting for io to terminate */
+ 	nvme_fc_delete_association(ctrl);
+-	cancel_work_sync(&ctrl->ioerr_work);
  
-+	bool			can_retune;	/* re-tuning can be used */
-+	bool			retune_now;	/* do re-tuning at next req */
-+	bool			retune_paused;	/* re-tuning is temporarily disabled */
- 	int			need_retune;	/* re-tuning is needed */
- 	int			hold_retune;	/* hold off re-tuning */
- 	unsigned int		retune_period;	/* re-tuning period in secs */
+ 	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING))
+ 		dev_err(ctrl->ctrl.device,
 
 
 
