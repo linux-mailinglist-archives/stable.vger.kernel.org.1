@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-236623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OP+PM8Ub3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:25 +0200
+	id EFuGBCEe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31073EF65A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C733EFCC6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3390A30FFA6E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC7CE322DAC9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DFE30E857;
-	Mon, 13 Apr 2026 16:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555B430B53F;
+	Mon, 13 Apr 2026 16:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEtBmYa5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZNKBEYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A370430BB9B;
-	Mon, 13 Apr 2026 16:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192D524DCF6;
+	Mon, 13 Apr 2026 16:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097383; cv=none; b=COF1yzsEfja2qcvudZ3fhDYTunLZ10nWuepYUd5wcjIg3r9L4msFRvO6hTo32WgC3URneDaR3umriW5zcIKja9umBEAm5YTYJ6SKExKipPzHzzwi6CVnxiNTWSgxZMmrNjTRL8KLrTBkFQgyZH/HZgaT4/sJkhny2ifimolVY8s=
+	t=1776097399; cv=none; b=hql9dMBs7XvDw+scAaCJDnWPyyClm+Muh5WxF8sU+/QBzWsHtXDFT7FKp1SKf/MZB2NuI0a27q+aGmhXp8Z5msyHA1fPIUgGvFqjH+IpbYFmtkJDsX6u8oypZoDvCSDT+cpUzg1dGsYa6eMpX8nA1Sxgf16ocdUq7jbBkl7b7Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097383; c=relaxed/simple;
-	bh=i7BVF51RpMxrl5ifK7h6gDLeLsCpPAK0QZe8MYggs7c=;
+	s=arc-20240116; t=1776097399; c=relaxed/simple;
+	bh=wTVCtFqaaRbiZB05naW6WEjXb7dzC3Uve0P40B73YTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InA7sN/naYj37NoiwQrtye7Suctz8wJQ4mPEHjr4+OHYwgFsPMDnvSYHaXWXFsVDARLitpEXvxYbkrICIm5bGB6mWVqfhbplcu7StnFTenUKwfzG/Clydtj8n8lthwKp7b8WY5TCQHGqBsdUioJV2helm0jxTgiT0k8mm3nTiHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEtBmYa5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39289C2BCAF;
-	Mon, 13 Apr 2026 16:23:03 +0000 (UTC)
+	 MIME-Version; b=edLIblvMxNM1ocix3UiLCWWhxT2h5FtoYAjzZOFBHb0eZ/QaVYLvMbIyQdjVaavjWdbip8vQiRVSedqKohIdMeCL/4K7B1N8xk9v3IboODzQbbSqt88pFdbYaSk/GlHjqdLNygIg05gfahPKC7vwW0G6BAchtUaGuxPKGFBHa2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZNKBEYB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A227BC2BCAF;
+	Mon, 13 Apr 2026 16:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097383;
-	bh=i7BVF51RpMxrl5ifK7h6gDLeLsCpPAK0QZe8MYggs7c=;
+	s=korg; t=1776097399;
+	bh=wTVCtFqaaRbiZB05naW6WEjXb7dzC3Uve0P40B73YTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEtBmYa58I0jqrPo8GEI/Ie8o5ZaSv2uv03mLp79p1NNsHhMEf+5qgu8K4laHV6Q7
-	 GV056bQzpXeTyoX0kN00XlvRt0v7/AynIHXG/pD8nE4crK1gI2xkYzYL4bBDs3+FpO
-	 us194Qsq6r4FmMWi76+Z8nouYmVgUsljgQ4pLIAc=
+	b=RZNKBEYBsgpapHvUepR3WOskHH9YtpTTTeYYjDhyMezlAfHDPmw5Ndg6gxDSfig51
+	 kkmBIGzRHjNEJ+odJP3Mg0epoI441oCCt5KquG/h1cLcVBvtqpM4FFsTDwrbwEqjB0
+	 PAF+Jql8tdReHBeohytBpARA8DPuet6q5y5c0O3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 088/570] net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop
-Date: Mon, 13 Apr 2026 17:53:39 +0200
-Message-ID: <20260413155833.741165571@linuxfoundation.org>
+	GangMin Kim <km.kim1503@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 089/570] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
+Date: Mon, 13 Apr 2026 17:53:40 +0200
+Message-ID: <20260413155833.778382194@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -73,29 +71,30 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236623-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236629-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,334190e097a98a1b81bb];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email,shopee.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: D31073EF65A
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mojatatu.com:email]
+X-Rspamd-Queue-Id: 66C733EFCC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,84 +102,90 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 21ec92774d1536f71bdc90b0e3d052eff99cf093 ]
+commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 upstream.
 
-When a standalone IPv6 nexthop object is created with a loopback device
-(e.g., "ip -6 nexthop add id 100 dev lo"), fib6_nh_init() misclassifies
-it as a reject route. This is because nexthop objects have no destination
-prefix (fc_dst=::), causing fib6_is_reject() to match any loopback
-nexthop. The reject path skips fib_nh_common_init(), leaving
-nhc_pcpu_rth_output unallocated. If an IPv4 route later references this
-nexthop, __mkroute_output() dereferences NULL nhc_pcpu_rth_output and
-panics.
+As Paolo said earlier [1]:
 
-Simplify the check in fib6_nh_init() to only match explicit reject
-routes (RTF_REJECT) instead of using fib6_is_reject(). The loopback
-promotion heuristic in fib6_is_reject() is handled separately by
-ip6_route_info_create_nh(). After this change, the three cases behave
-as follows:
+"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
+the current skb being held by the defragmentation engine. As reported by
+GangMin Kim, if such packet is that may cause a UaF when the defrag engine
+later on tries to tuch again such packet."
 
-1. Explicit reject route ("ip -6 route add unreachable 2001:db8::/64"):
-   RTF_REJECT is set, enters reject path, skips fib_nh_common_init().
-   No behavior change.
+act_ct was never meant to be used in the egress path, however some users
+are attaching it to egress today [2]. Attempting to reach a middle
+ground, we noticed that, while most qdiscs are not handling
+TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
+address the issue by only allowing act_ct to bind to clsact/ingress
+qdiscs and shared blocks. That way it's still possible to attach act_ct to
+egress (albeit only with clsact).
 
-2. Implicit loopback reject route ("ip -6 route add 2001:db8::/32 dev lo"):
-   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
-   called. ip6_route_info_create_nh() still promotes it to reject
-   afterward. nhc_pcpu_rth_output is allocated but unused, which is
-   harmless.
+[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
+[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
 
-3. Standalone nexthop object ("ip -6 nexthop add id 100 dev lo"):
-   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
-   called. nhc_pcpu_rth_output is properly allocated, fixing the crash
-   when IPv4 routes reference this nexthop.
-
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
-Reported-by: syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/698f8482.a70a0220.2c38d7.00ca.GAE@google.com/T/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260304113817.294966-2-jiayuan.chen@linux.dev
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
+CC: stable@vger.kernel.org
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ include/net/act_api.h |    1 +
+ net/sched/act_ct.c    |    6 ++++++
+ net/sched/cls_api.c   |    7 +++++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 05e2ea8b269df..52e8e77df69a1 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3519,7 +3519,6 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -65,6 +65,7 @@ struct tc_action {
+ #define TCA_ACT_FLAGS_BIND	(1U << (TCA_ACT_FLAGS_USER_BITS + 1))
+ #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
+ #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
++#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
+ 
+ /* Update lastuse only if needed, to avoid dirtying a cache line.
+  * We use a temp variable to avoid fetching jiffies twice.
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1273,6 +1273,12 @@ static int tcf_ct_init(struct net *net,
+ 		return -EINVAL;
+ 	}
+ 
++	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
++		return -EOPNOTSUPP;
++	}
++
+ 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
+ 	if (err < 0)
+ 		return err;
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -1934,6 +1934,11 @@ static void tfilter_put(struct tcf_proto
+ 		tp->ops->put(tp, fh);
+ }
+ 
++static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
++{
++	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
++}
++
+ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 			  struct netlink_ext_ack *extack)
  {
- 	struct net_device *dev = NULL;
- 	struct inet6_dev *idev = NULL;
--	int addr_type;
- 	int err;
- 
- 	fib6_nh->fib_nh_family = AF_INET6;
-@@ -3560,11 +3559,10 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 
- 	fib6_nh->fib_nh_weight = 1;
- 
--	/* We cannot add true routes via loopback here,
--	 * they would result in kernel looping; promote them to reject routes
-+	/* Reset the nexthop device to the loopback device in case of reject
-+	 * routes.
- 	 */
--	addr_type = ipv6_addr_type(&cfg->fc_dst);
--	if (fib6_is_reject(cfg->fc_flags, dev, addr_type)) {
-+	if (cfg->fc_flags & RTF_REJECT) {
- 		/* hold loopback dev/idev if we haven't done so. */
- 		if (dev != net->loopback_dev) {
- 			if (dev) {
--- 
-2.51.0
-
+@@ -2128,6 +2133,8 @@ replay:
+ 		flags |= TCA_ACT_FLAGS_REPLACE;
+ 	if (!rtnl_held)
+ 		flags |= TCA_ACT_FLAGS_NO_RTNL;
++	if (is_ingress_or_clsact(block, q))
++		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
+ 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
+ 			      flags, extack);
+ 	if (err == 0) {
 
 
 
