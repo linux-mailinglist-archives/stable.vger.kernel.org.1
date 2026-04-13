@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-236597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDYuJ1sd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236597-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:11 +0200
+	id wCvdIt8b3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7893EFA57
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0673EF6BC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDF1A319BF71
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A32AC3001046
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29F930EF68;
-	Mon, 13 Apr 2026 16:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A4B30FC23;
+	Mon, 13 Apr 2026 16:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2TQFaAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HD+6olFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F7330B50A;
-	Mon, 13 Apr 2026 16:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6874030B53F;
+	Mon, 13 Apr 2026 16:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097316; cv=none; b=AQavq36n3FdrNDwt/CGZ9jFCP9Wv17mf3g2R00QiuNSW8w5ukKy3Rf0NQ8NrwUv3xIPJ5okIcWm55r/G98qZjxxp8K8GP9ZnF4M3CfT6XbS3jt8CIc5+46r5YKjxPsX3sSoaMWI7qwDpag8GZ0xrMJ76tpwxNm8mX6iDjY0hIYA=
+	t=1776097319; cv=none; b=Vmna+a26d2EbCd/x835ssh8q1296yjTCJ/igWJWrDSpOI813w2U6aDdyD71IrdYwyoa4cjZTDOu31a8YW1QueP1ukUaHyyPZxmX1dSTyGhmo2UzDUxaqr2GbeIl6u9XBhxZfsxSafSAaLmz1pcFnusdzamTC61srZ6qskAyktEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097316; c=relaxed/simple;
-	bh=JU7mJvv9t4mVEeJJ1dxCCjvGpPKvhuRGBt5IY09Akc4=;
+	s=arc-20240116; t=1776097319; c=relaxed/simple;
+	bh=ifF5BmNi1pbFyMf/1b/wXDdm8wP5Nchvv6FlZB6vTK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toGxetR3NIhIIs1SRHP6tk5bpbX91wmClKekJ5+HwyFyU8+icy84YKJa/o614jKSoRfjAdWN4hnnLUQQ6bql2BUDQXr4ErmuXzcp+6CTYV5c1vHQSLQBKbba7s53+Rl6QeQeThw2BD9zWNbQvol8EdHmaktcqgMNU54OrALcD+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2TQFaAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DCBC2BCAF;
-	Mon, 13 Apr 2026 16:21:56 +0000 (UTC)
+	 MIME-Version; b=oy4ispoN6d9gPj/AsEhioNb7j62bxrbV9DsK7rTznH2GpIv0BLPj1D7VmYIb1DC2GtWu/JeDrt2731V6sUpptnIqrGCrzoKUWyYcp+cdQnIEu8O3MxTiNoaEyWK6s6na3IFYi803jG0g4aunwfYwzssMQafrjBxj2/1Ucj2A6w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HD+6olFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEFDC2BCB0;
+	Mon, 13 Apr 2026 16:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097316;
-	bh=JU7mJvv9t4mVEeJJ1dxCCjvGpPKvhuRGBt5IY09Akc4=;
+	s=korg; t=1776097319;
+	bh=ifF5BmNi1pbFyMf/1b/wXDdm8wP5Nchvv6FlZB6vTK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2TQFaAC0EAGxdcWsK13ZQWSxt9pciCszmgqoxs4pII4dA/ABRnMuefPqWSEwgTdr
-	 CgFBYLRZQdNJ/nfxw6AGUdGv9Ee0LqDaxaBC84sXqMuXYqBV2Z7O54Ge3GJ3Gs6LMp
-	 JOjqOJ5wbnKYkUr+AXuHIKHPIekDDUBGmDReXRyk=
+	b=HD+6olFvcFlkzUAbGuGuDy15eMIpTtJqLe1FaZXoBSVST7yy6ed1IxbF02CrgCFP2
+	 kXUgk+OxuwAUAMgwiZQ0vHlnOYVk5kei8QXi6JkjCEIpTd/58ik4m4+E4lu0Pk/7gT
+	 JzyEjaSyoDPYl5X2RmOhcQh5aWv0FOZjRquXXCQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.15 057/570] IB/mthca: Add missed mthca_unmap_user_db() for mthca_create_srq()
-Date: Mon, 13 Apr 2026 17:53:08 +0200
-Message-ID: <20260413155832.577338124@linuxfoundation.org>
+	Davide Caratti <dcaratti@redhat.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 058/570] net/sched: ets: fix divide by zero in the offload path
+Date: Mon, 13 Apr 2026 17:53:09 +0200
+Message-ID: <20260413155832.614877955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -67,30 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236598-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236597-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0D7893EFA57
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mojatatu.com:email]
+X-Rspamd-Queue-Id: 8F0673EF6BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,49 +100,115 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit 117942ca43e2e3c3d121faae530989931b7f67e1 upstream.
+commit e35626f610f3d2b7953ccddf6a77453da22b3a9e upstream.
 
-Fix a user triggerable leak on the system call failure path.
+Offloading ETS requires computing each class' WRR weight: this is done by
+averaging over the sums of quanta as 'q_sum' and 'q_psum'. Using unsigned
+int, the same integer size as the individual DRR quanta, can overflow and
+even cause division by zero, like it happened in the following splat:
+
+ Oops: divide error: 0000 [#1] SMP PTI
+ CPU: 13 UID: 0 PID: 487 Comm: tc Tainted: G            E       6.19.0-virtme #45 PREEMPT(full)
+ Tainted: [E]=UNSIGNED_MODULE
+ Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+ RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
+ Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
+ RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
+ RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
+ RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
+ R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
+ R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
+ FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  ets_qdisc_change+0x870/0xf40 [sch_ets]
+  qdisc_create+0x12b/0x540
+  tc_modify_qdisc+0x6d7/0xbd0
+  rtnetlink_rcv_msg+0x168/0x6b0
+  netlink_rcv_skb+0x5c/0x110
+  netlink_unicast+0x1d6/0x2b0
+  netlink_sendmsg+0x22e/0x470
+  ____sys_sendmsg+0x38a/0x3c0
+  ___sys_sendmsg+0x99/0xe0
+  __sys_sendmsg+0x8a/0xf0
+  do_syscall_64+0x111/0xf80
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7f440b81c77e
+ Code: 4d 89 d8 e8 d4 bc 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
+ RSP: 002b:00007fff951e4c10 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 0000000000481820 RCX: 00007f440b81c77e
+ RDX: 0000000000000000 RSI: 00007fff951e4cd0 RDI: 0000000000000003
+ RBP: 00007fff951e4c20 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff951f4fa8
+ R13: 00000000699ddede R14: 00007f440bb01000 R15: 0000000000486980
+  </TASK>
+ Modules linked in: sch_ets(E) netdevsim(E)
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
+ Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
+ RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
+ RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
+ RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
+ R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
+ R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
+ FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
+ Kernel panic - not syncing: Fatal exception
+ Kernel Offset: 0x30000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+ ---[ end Kernel panic - not syncing: Fatal exception ]---
+
+Fix this using 64-bit integers for 'q_sum' and 'q_psum'.
 
 Cc: stable@vger.kernel.org
-Fixes: ec34a922d243 ("[PATCH] IB/mthca: Add SRQ implementation")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://patch.msgid.link/2-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: d35eb52bd2ac ("net: sch_ets: Make the ETS qdisc offloadable")
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/28504887df314588c7255e9911769c36f751edee.1771964872.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mthca/mthca_provider.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/sched/sch_ets.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/infiniband/hw/mthca/mthca_provider.c
-+++ b/drivers/infiniband/hw/mthca/mthca_provider.c
-@@ -436,6 +436,8 @@ static int mthca_create_srq(struct ib_sr
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -115,12 +115,12 @@ static void ets_offload_change(struct Qd
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct tc_ets_qopt_offload qopt;
+ 	unsigned int w_psum_prev = 0;
+-	unsigned int q_psum = 0;
+-	unsigned int q_sum = 0;
+ 	unsigned int quantum;
+ 	unsigned int w_psum;
+ 	unsigned int weight;
+ 	unsigned int i;
++	u64 q_psum = 0;
++	u64 q_sum = 0;
  
- 	if (context && ib_copy_to_udata(udata, &srq->srqn, sizeof(__u32))) {
- 		mthca_free_srq(to_mdev(ibsrq->device), srq);
-+		mthca_unmap_user_db(to_mdev(ibsrq->device), &context->uar,
-+				    context->db_tab, ucmd.db_index);
- 		return -EFAULT;
- 	}
+ 	if (!tc_can_offload(dev) || !dev->netdev_ops->ndo_setup_tc)
+ 		return;
+@@ -138,8 +138,12 @@ static void ets_offload_change(struct Qd
  
-@@ -444,6 +446,7 @@ static int mthca_create_srq(struct ib_sr
- 
- static int mthca_destroy_srq(struct ib_srq *srq, struct ib_udata *udata)
- {
-+	mthca_free_srq(to_mdev(srq->device), to_msrq(srq));
- 	if (udata) {
- 		struct mthca_ucontext *context =
- 			rdma_udata_to_drv_context(
-@@ -454,8 +457,6 @@ static int mthca_destroy_srq(struct ib_s
- 		mthca_unmap_user_db(to_mdev(srq->device), &context->uar,
- 				    context->db_tab, to_msrq(srq)->db_index);
- 	}
--
--	mthca_free_srq(to_mdev(srq->device), to_msrq(srq));
- 	return 0;
- }
+ 	for (i = 0; i < q->nbands; i++) {
+ 		quantum = q->classes[i].quantum;
+-		q_psum += quantum;
+-		w_psum = quantum ? q_psum * 100 / q_sum : 0;
++		if (quantum) {
++			q_psum += quantum;
++			w_psum = div64_u64(q_psum * 100, q_sum);
++		} else {
++			w_psum = 0;
++		}
+ 		weight = w_psum - w_psum_prev;
+ 		w_psum_prev = w_psum;
  
 
 
