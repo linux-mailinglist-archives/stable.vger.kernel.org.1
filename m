@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-237318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cD6dBLof3WnYaAkAu9opvQ
-	(envelope-from <stable+bounces-237318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:18 +0200
+	id oNK+D3Mi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D442E3F02D4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA073F0B77
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06875303A184
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 203923120C4C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85688317148;
-	Mon, 13 Apr 2026 16:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B83282F0B;
+	Mon, 13 Apr 2026 16:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHaxOS4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMPD65aI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4970F317141;
-	Mon, 13 Apr 2026 16:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BC227BF6C;
+	Mon, 13 Apr 2026 16:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099145; cv=none; b=VsTYbEzkhjxUQIiMarT6s7oBf932vRU2VIxQLz6xk/k/5YHNC3SYb7EoQ8zkSJQ15tygbeCSdjoQ3oQvrqwus6jeU//jlgIXIePRKGCRTobrGnVqv/bl0rYuMYqGaKcl3hFfxQJlcO8F3DZyxEScFg/fKUEyBDbJKYlQOpGMgf4=
+	t=1776097924; cv=none; b=XPRHW7Bx9M9ADqK0kS1WCcYvec9qiu3VUCuhSS6RACC+FPtv15ZBugz5QnVI0YNGjKkIhmti1Os5dx9nymgokGkc3DxVUUGgXzA5DymUFtdrCuk0fKd5/hpC9v3fZMscNZJ+XrVInhyRswAtyZNE7LNYqXwlmiXY4sHDSK3gonE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099145; c=relaxed/simple;
-	bh=J9OTCl8RJQpWl3WuIYDNEwUFLHSC3FKZCcu/DzvSNw8=;
+	s=arc-20240116; t=1776097924; c=relaxed/simple;
+	bh=EDqms9xHizVYciZp7AUkFZXV3N8hXF9hjpwSzgt+NPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UklN64KD+zhaY/Ha3zDpu6dE/8tMtUbpH1Rkinridzj3iqluOuF/hvJrVwKXmnufAC42GBCXvFQMVF+AwHaKyoeT4L8hA89qfkB2wy1z91wuyiXNQNqZaexg7hXFzuOMlhiVJ+qO8dn4bClW2vQNam4Dcpy8IfJROQyyhXdgve0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHaxOS4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C9FC2BCB3;
-	Mon, 13 Apr 2026 16:52:24 +0000 (UTC)
+	 MIME-Version; b=TjkCRHl7m7F+i3WJH9OD9Zj1Tad5c6LaMeBk8/kXY+lXAtygfoHmKvMy/YoBVbMaOF36SzkTVN6k7thDkYrb6VSl3YFdwbarBzMcC7OEdzThFBc0RM0NyJ+0svufrPhOZm3ojvysg5g6ZOA0ecLfKHbZ5UMSDMAc7JcVNJOebD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMPD65aI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4152BC2BCAF;
+	Mon, 13 Apr 2026 16:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099145;
-	bh=J9OTCl8RJQpWl3WuIYDNEwUFLHSC3FKZCcu/DzvSNw8=;
+	s=korg; t=1776097924;
+	bh=EDqms9xHizVYciZp7AUkFZXV3N8hXF9hjpwSzgt+NPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHaxOS4bspAhtJ+6AMF5EFu1Su5V4wx1zJU4OIblzj5YmOwy8YoFEHdXYMSOIjt3R
-	 VnUbd1QYXiRiM4vHhyw+5cgjvBaiWr2cV0IpJytEiI0froLf13LeqYSMaHrbtMGFtD
-	 9qpG0NQOijc9rQONLs5h38ctvjnxu4hLbs+893jI=
+	b=PMPD65aIHXr/cGuXTOXlzL3iy9QCrdsKTNJinoBHJwTBQW1ruIVyR2piaFT71Zex3
+	 2+iHy2xSswwQRaw8JoqEgswhMpizuLvV6uFpZxEgIAIXc/NgjsrliJZw4Ziog0DoO/
+	 9zXhvGFiObIOgLPT8DRuOkclw2SNJDep3y0pmsT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 210/491] netfilter: nft_ct: drop pending enqueued packets on removal
-Date: Mon, 13 Apr 2026 17:57:35 +0200
-Message-ID: <20260413155826.930500875@linuxfoundation.org>
+Subject: [PATCH 5.15 325/570] openvswitch: validate MPLS set/set_masked payload length
+Date: Mon, 13 Apr 2026 17:57:36 +0200
+Message-ID: <20260413155842.671008762@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +73,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237318-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,ovn.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236839-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: D442E3F02D4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,ovn.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,outlook.com:email]
+X-Rspamd-Queue-Id: CFA073F0B77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit 36eae0956f659e48d5366d9b083d9417f3263ddc ]
+[ Upstream commit 546b68ac893595877ffbd7751e5c55fd1c43ede6 ]
 
-Packets sitting in nfqueue might hold a reference to:
+validate_set() accepted OVS_KEY_ATTR_MPLS as variable-sized payload for
+SET/SET_MASKED actions. In action handling, OVS expects fixed-size
+MPLS key data (struct ovs_key_mpls).
 
-- templates that specify the conntrack zone, because a percpu area is
-  used and module removal is possible.
-- conntrack timeout policies and helper, where object removal leave
-  a stale reference.
+Use the already normalized key_len (masked case included) and reject
+non-matching MPLS action key sizes.
 
-Since these objects can just go away, drop enqueued packets to avoid
-stale reference to them.
+Reject invalid MPLS action payload lengths early.
 
-If there is a need for finer grain removal, this logic can be revisited
-to make selective packet drop upon dependencies.
-
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260319080228.3423307-1-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/openvswitch/flow_netlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 0b194628818a5..e788d5d9e7aeb 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -23,6 +23,7 @@
- #include <net/netfilter/nf_conntrack_l4proto.h>
- #include <net/netfilter/nf_conntrack_expect.h>
- #include <net/netfilter/nf_conntrack_seqadj.h>
-+#include "nf_internals.h"
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index a7a9e4df3f600..1b2941e9c6d14 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2908,6 +2908,8 @@ static int validate_set(const struct nlattr *a,
+ 	case OVS_KEY_ATTR_MPLS:
+ 		if (!eth_p_mpls(eth_type))
+ 			return -EINVAL;
++		if (key_len != sizeof(struct ovs_key_mpls))
++			return -EINVAL;
+ 		break;
  
- struct nft_ct {
- 	enum nft_ct_keys	key:8;
-@@ -533,6 +534,7 @@ static void __nft_ct_set_destroy(const struct nft_ctx *ctx, struct nft_ct *priv)
- #endif
- #ifdef CONFIG_NF_CONNTRACK_ZONES
- 	case NFT_CT_ZONE:
-+		nf_queue_nf_hook_drop(ctx->net);
- 		mutex_lock(&nft_ct_pcpu_mutex);
- 		if (--nft_ct_pcpu_template_refcnt == 0)
- 			nft_ct_tmpl_put_pcpu();
-@@ -930,6 +932,7 @@ static void nft_ct_timeout_obj_destroy(const struct nft_ctx *ctx,
- 	struct nft_ct_timeout_obj *priv = nft_obj_data(obj);
- 	struct nf_ct_timeout *timeout = priv->timeout;
- 
-+	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
- 	kfree(priv->timeout);
-@@ -1062,6 +1065,7 @@ static void nft_ct_helper_obj_destroy(const struct nft_ctx *ctx,
- {
- 	struct nft_ct_helper_obj *priv = nft_obj_data(obj);
- 
-+	nf_queue_nf_hook_drop(ctx->net);
- 	if (priv->helper4)
- 		nf_conntrack_helper_put(priv->helper4);
- 	if (priv->helper6)
+ 	case OVS_KEY_ATTR_SCTP:
 -- 
 2.51.0
 
