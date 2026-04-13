@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-237042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPHnJ8ce3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:15 +0200
+	id eCEMACIn3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D15C3EFF13
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7AF3F15DA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3A14130B9776
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5280303C41C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7298E30C359;
-	Mon, 13 Apr 2026 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8545C3264D7;
+	Mon, 13 Apr 2026 16:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+xrp0dV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDvxh5LV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BCB314D0D;
-	Mon, 13 Apr 2026 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BDA31F9BC;
+	Mon, 13 Apr 2026 16:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098440; cv=none; b=YmXuprdaS/JBIUTfDJWHLdnDopso3L772QFlhsQya2hWBYbarIMOX+L0Lq3d5K6vZUlozIQkuSDSIzbs9txcFoPP5Synk6nf8KYkX5WjrGS517QLVD4ZAzxeqKNb2AKmuLbiBh67E7giz/mNIXW+Ez7SD2dF8r6GWuOo4zkKJp8=
+	t=1776099576; cv=none; b=ihfkdCLSqKa/pvE2YnjAVrFJwgmkX+BdkqgjVN+SP0Qo1GqlKj51PDMtVlSPN/EgA92ufG/0qG2stjJ6gHs/2E7o+qNxoa+X5nr5SikkKoDAqIwTXwYkzSiqzCOf2FFOlhTw8FQOr/v+uBg6nQxbnct3m0dGPjbGqnydBAiVk/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098440; c=relaxed/simple;
-	bh=uNOrSaUQ/2VUGQ3L3iQFAIGsxPp2oKgPqQ4NvXO9eYE=;
+	s=arc-20240116; t=1776099576; c=relaxed/simple;
+	bh=ZnIRNTrhp+lKHBIdGvIQHA3JYajQBaBNkSXqdBiOSKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEn/iVpB5Hi2Z6JXuD1D358DkHJATVTwNyo1LuZPOJias9YmeynY0Vz9OESrV/rvr2X2iyU21iQt20rUwMD9cQKdHRFtiErW8Q345x7vRAgRv/zFbkPynVn/kv1F+JwFI4Tk9EM/zczgx+BLIKY3M+NmY1qQ/NZdLJFt6371bi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+xrp0dV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C215DC2BCAF;
-	Mon, 13 Apr 2026 16:40:39 +0000 (UTC)
+	 MIME-Version; b=H4KSxfUVGnXx+ig+664s1gSpnnwwG3G4Fz18R69LqFcZ/Er5xw+10NlKLX91VK4pL8h5Wd+gHAQyyNaaJ0KKkal+bOUsUjl8lZMIk77MDgZNUauYXAby4cct2yEBQCBSG4SaX/1rNHSVHUWZ8BIWQ8v5ZakztdJ/hpi2z3dlTFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDvxh5LV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27DDC2BCAF;
+	Mon, 13 Apr 2026 16:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098440;
-	bh=uNOrSaUQ/2VUGQ3L3iQFAIGsxPp2oKgPqQ4NvXO9eYE=;
+	s=korg; t=1776099576;
+	bh=ZnIRNTrhp+lKHBIdGvIQHA3JYajQBaBNkSXqdBiOSKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+xrp0dVa/zrLdIGGU2RlWf0GRMNsJKED/gZStv4xRG3rd6mEFV66w//1w0aRYEHz
-	 8foDMoN/YCSpGhgRDUa116n4CRTzhMdZR5bLVvGpQLJVjFkLbjarts0x600x+bSC9k
-	 WH4mFTViAzqIlP2A1Dtj7DzBuCewCxh0XRc2ny1M=
+	b=FDvxh5LVdTVaSI/j3j+9I5TPmYCwo9Ox385wX5EwCYg5ZoEpoLhtMWiCseLDRQIjp
+	 h6Ua6uDo6XLiJ/p9gxibtSmJoiPGLyHlUSXDLYVNqS1h1A/7amDuVbwXbwN1J7T2Ab
+	 dEKnWFZl/48cxaEjUbbr9py6OEMWuHQMyVj6B96E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 508/570] mptcp: fix slab-use-after-free in __inet_lookup_established
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 394/491] phy: renesas: rcar-gen3-usb2: Assert PLL reset on PHY power off
 Date: Mon, 13 Apr 2026 18:00:39 +0200
-Message-ID: <20260413155849.482414843@linuxfoundation.org>
+Message-ID: <20260413155833.784846993@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,133 +70,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237485-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237042-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0D15C3EFF13
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6D7AF3F15DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 9b55b253907e7431210483519c5ad711a37dafa1 upstream.
+commit 9ce71e85b29eb63e48e294479742e670513f03a0 upstream.
 
-The ehash table lookups are lockless and rely on
-SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
-during RCU read-side critical sections. Both tcp_prot and
-tcpv6_prot have their slab caches created with this flag
-via proto_register().
+Assert PLL reset on PHY power off. This saves power.
 
-However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
-tcpv6_prot_override during inet_init() (fs_initcall, level 5),
-before inet6_init() (module_init/device_initcall, level 6) has
-called proto_register(&tcpv6_prot). At that point,
-tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
-remains NULL permanently.
+[claudiu.beznea: fixed conflict in rcar_gen3_phy_usb2_power_off() by
+ using spin_lock_irqsave()/spin_unlock_irqrestore() instead of
+ scoped_guard()]
 
-This causes MPTCP v6 subflow child sockets to be allocated via
-kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
-cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
-when these sockets are freed without SOCK_RCU_FREE (which is
-cleared for child sockets by design), the memory can be
-immediately reused. Concurrent ehash lookups under
-rcu_read_lock can then access freed memory, triggering a
-slab-use-after-free in __inet_lookup_established.
-
-Fix this by splitting the IPv6-specific initialization out of
-mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
-from mptcp_proto_v6_init() before protocol registration. This
-ensures tcpv6_prot_override.slab correctly inherits the
-SLAB_TYPESAFE_BY_RCU slab cache.
-
-Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
+Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260406031512.189159-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    2 ++
- net/mptcp/protocol.h |    1 +
- net/mptcp/subflow.c  |   15 +++++++++------
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3790,6 +3790,8 @@ int __init mptcp_proto_v6_init(void)
- {
- 	int err;
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 558c07512c05b..9fcbde094699d 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -516,8 +516,15 @@ static int rcar_gen3_phy_usb2_power_off(struct phy *p)
  
-+	mptcp_subflow_v6_init();
-+
- 	mptcp_v6_prot = mptcp_prot;
- 	strcpy(mptcp_v6_prot.name, "MPTCPv6");
- 	mptcp_v6_prot.slab = NULL;
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -646,6 +646,7 @@ static inline bool mptcp_has_another_sub
- void __init mptcp_proto_init(void);
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- int __init mptcp_proto_v6_init(void);
-+void __init mptcp_subflow_v6_init(void);
- #endif
+ 	spin_lock_irqsave(&channel->lock, flags);
+ 	rphy->powered = false;
+-	spin_unlock_irqrestore(&channel->lock, flags);
  
- struct sock *mptcp_sk_clone(const struct sock *sk,
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1859,7 +1859,15 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override.psock_update_sk_prot = NULL;
- #endif
++	if (rcar_gen3_are_all_rphys_power_off(channel)) {
++		u32 val = readl(channel->base + USB2_USBCTR);
++
++		val |= USB2_USBCTR_PLL_RST;
++		writel(val, channel->base + USB2_USBCTR);
++	}
++	spin_unlock_irqrestore(&channel->lock, flags);
++
+ 	if (channel->vbus)
+ 		ret = regulator_disable(channel->vbus);
  
-+	mptcp_diag_subflow_init(&subflow_ulp_ops);
-+
-+	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
-+		panic("MPTCP: failed to register subflows to ULP\n");
-+}
-+
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
-+void __init mptcp_subflow_v6_init(void)
-+{
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
- 	 * structures for v4 and v6 have the same size. It should not changed in
- 	 * the future but better to make sure to be warned if it is no longer
-@@ -1895,10 +1903,5 @@ void __init mptcp_subflow_init(void)
- 	/* Disable sockmap processing for subflows */
- 	tcpv6_prot_override.psock_update_sk_prot = NULL;
- #endif
--#endif
--
--	mptcp_diag_subflow_init(&subflow_ulp_ops);
--
--	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
--		panic("MPTCP: failed to register subflows to ULP\n");
- }
-+#endif
+-- 
+2.53.0
+
 
 
 
