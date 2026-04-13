@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-236516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAklCNYZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:10 +0200
+	id sBrDAywd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-237070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B883EF0ED
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF523EF9A3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17BFD3211E71
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:18:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3682F3024029
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0B32FE056;
-	Mon, 13 Apr 2026 16:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792F73115BC;
+	Mon, 13 Apr 2026 16:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvkX5iVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eI8Tp9zO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF624DCF6;
-	Mon, 13 Apr 2026 16:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9CD30BF68;
+	Mon, 13 Apr 2026 16:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097103; cv=none; b=RIPR/yWLt8PKN25nPzOAzObyoImOeOHnfP7spRkzsBI9maei1FCQukppE1Reh0qkT2PK5Ket7MMnGj8TQ3sy333eK59RXIXjOGz9WpjvcGq/EZi79uaOnCHhuzBh8MrQ03vePsGCO96ZiftSnAAWuKyhFltx+N0Iv7FRZaeMSxM=
+	t=1776098510; cv=none; b=tRigx10m+9Q9WBKgUIa160slo+3NwkDjGuUEhxXwqY/xIp00jg+4bKo8Rz8tLtybot6cHpjzVGFnQFVQG5fPZgbjThowSZHVOmVNUdCu1Qf5oGVKQMz2S3oCVhGw0NESaTP+++MWndg+8Yg5ptlyUo1KVntZ1eRqbTM85y9D2tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097103; c=relaxed/simple;
-	bh=OE7ZN7pU+YxSBJ12DM3t8nsLC5egA954stA+PhCqgT4=;
+	s=arc-20240116; t=1776098510; c=relaxed/simple;
+	bh=/1af8cy+fkvmv44hnUn5SOAOOYgflDZssBfznSvgAsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzfprH6h5/4mCnS/5bxtAfYeEpQnMZ4+P525HpjPzzYmWtlYz04P9BR9PMvmgRGkR+c3bFi+KT5bH5kCgUrgaS5NXYOUH8WzD7i8o/1CT8oUj7EdTBVRYOQrW7jHGmfiQ38ivdnDyPgK/PuIU1qlrePVQH30smbBTyN1LeDQ3yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvkX5iVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03551C2BCAF;
-	Mon, 13 Apr 2026 16:18:22 +0000 (UTC)
+	 MIME-Version; b=I5Ws+CzgX/TWrwEDhzaTw7FS8h44SF65xQGNC+A+Fy4PNIjBPxDhhynlXFlT24VuZYqp0+zUSpVeObBMPwvl3myim2hMdFcspis4/3fbzhOP7voR2NL4THXjEFQxOSWtDdOUJUmoTM5vbYSW+hdA9vkYtq1ngv8SFVMM8DqYA5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eI8Tp9zO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3DDC2BCAF;
+	Mon, 13 Apr 2026 16:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097103;
-	bh=OE7ZN7pU+YxSBJ12DM3t8nsLC5egA954stA+PhCqgT4=;
+	s=korg; t=1776098509;
+	bh=/1af8cy+fkvmv44hnUn5SOAOOYgflDZssBfznSvgAsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvkX5iVuBZOPJCc7Q3Oxnnlgij7d+lSLjhWfZ+dzadm73/e1qXMWeET0OG42AXsSP
-	 VWKYJl4Z9op6RgGYPuq/VX1sYSJsraDtA0Y2UKdm9R3Tv6mWpYJDebXpZYHgdjtfbJ
-	 3dy8mJcy6a5HT3CmCkS0l95NDXOWOOR/h6jWWXMI=
+	b=eI8Tp9zOyT+6vuwy7hXTATsUpP3MkAIQDA1SZVgtgt5DSDEigjJfcxN2UB0/n4z3x
+	 LOnzAHmOUQOwoP/lv1FXFuJPocy66Wbd/snaOCKm0+J6W+tQ1UZ3VX6P65YTaz84z5
+	 KxqzypE2ZAlY7n1DcpljoF5K91loHmAO5qoYHCyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 50/55] mmc: vub300: fix NULL-deref on disconnect
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 553/570] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
 Date: Mon, 13 Apr 2026 18:01:24 +0200
-Message-ID: <20260413155726.699181216@linuxfoundation.org>
+Message-ID: <20260413155851.176648116@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +70,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237070-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236516-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email]
-X-Rspamd-Queue-Id: A9B883EF0ED
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,renesas.com:email,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: BDF523EF9A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-commit dff34ef879c5e73298443956a8b391311ba78d57 upstream.
+[ Upstream commit 89a8567d84bde88cb7cdbbac2ab2299c4f991490 ]
 
-Make sure to deregister the controller before dropping the reference to
-the driver data on disconnect to avoid NULL-pointer dereferences or
-use-after-free.
+Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
+CHCTRL register. To avoid concurrency issues when configuring
+functionalities exposed by this registers, take the virtual channel lock.
+All other CHCTRL updates were already protected by the same lock.
 
-Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
-Cc: stable@vger.kernel.org # 3.0+
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
+accessing CHCTRL registers but this does not ensure race-free access.
+Remove the local IRQ disable/enable code as well.
+
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@vger.kernel.org
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[ replaced scoped_guard(spinlock_irqsave, ...) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/vub300.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/sh/rz-dmac.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/mmc/host/vub300.c
-+++ b/drivers/mmc/host/vub300.c
-@@ -2371,8 +2371,8 @@ static void vub300_disconnect(struct usb
- 			usb_set_intfdata(interface, NULL);
- 			/* prevent more I/O from starting */
- 			vub300->interface = NULL;
--			kref_put(&vub300->kref, vub300_delete);
- 			mmc_remove_host(mmc);
-+			kref_put(&vub300->kref, vub300_delete);
- 			pr_info("USB vub300 remote SDIO host controller[%d]"
- 				" now disconnected", ifnum);
- 			return;
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -283,13 +283,10 @@ static void rz_dmac_disable_hw(struct rz
+ {
+ 	struct dma_chan *chan = &channel->vc.chan;
+ 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+-	unsigned long flags;
+ 
+ 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
+ 
+-	local_irq_save(flags);
+ 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+-	local_irq_restore(flags);
+ }
+ 
+ static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
+@@ -536,8 +533,8 @@ static int rz_dmac_terminate_all(struct
+ 	unsigned int i;
+ 	LIST_HEAD(head);
+ 
+-	rz_dmac_disable_hw(channel);
+ 	spin_lock_irqsave(&channel->vc.lock, flags);
++	rz_dmac_disable_hw(channel);
+ 	for (i = 0; i < DMAC_NR_LMDESC; i++)
+ 		lmdesc[i].header = 0;
+ 
+@@ -646,13 +643,17 @@ static void rz_dmac_irq_handle_channel(s
+ {
+ 	struct dma_chan *chan = &channel->vc.chan;
+ 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
++	unsigned long flags;
+ 	u32 chstat, chctrl;
+ 
+ 	chstat = rz_dmac_ch_readl(channel, CHSTAT, 1);
+ 	if (chstat & CHSTAT_ER) {
+ 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
+ 			channel->index, chstat);
++
++		spin_lock_irqsave(&channel->vc.lock, flags);
+ 		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
++		spin_unlock_irqrestore(&channel->vc.lock, flags);
+ 		goto done;
+ 	}
+ 
 
 
 
