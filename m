@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-236500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIgKLeMc3WlUaAkAu9opvQ
-	(envelope-from <stable+bounces-236500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:11 +0200
+	id cIbqCjEf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAA13EF8B6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915113F00A6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EF83305A42B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03C1930E883B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0712309F1C;
-	Mon, 13 Apr 2026 16:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAAE30EF68;
+	Mon, 13 Apr 2026 16:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQEhayBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hN2hBfhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3D27280A;
-	Mon, 13 Apr 2026 16:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F921A680C;
+	Mon, 13 Apr 2026 16:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097062; cv=none; b=WOiM7tWIoyqQn0gYoAmBfG2iY/nKBwL9Ss5wGJpj4i9fJuA1UqeQCMONP3RTG2QlsqzWslrp8W+FlJqB9riqcZnks+dsl1Vsy3RUnqrJ4jG/+11uqBbVuxKJdh01zh54O2/TRccb4617h9v1tX0eQBETayFrZhFIwDN3ACLcJeI=
+	t=1776098571; cv=none; b=jW9nIWG2RlzcYqYcVRagp0+zle7wHi4HFaDJHt32WWhPhv6VU3sEc/6MqGpO9UYw6YJaT2bV0kN3IVOuhnCQNsxUkUXUY/rt3cVVZP2qNdXJ9UQhUnvz7BJYApatYoAuI9esD8tavWtpxuLpKbeiFQrOr+wJwE6GLXK1gm5AP+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097062; c=relaxed/simple;
-	bh=k+kvv0DGvdHeMpcVpHhfQcmaFJtlWInRzbXn+SIjXuU=;
+	s=arc-20240116; t=1776098571; c=relaxed/simple;
+	bh=ychZE3KjyXyh+V65GRzW41+spu6k8prJtRaCQ6L4Heo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIoFICEaFAzIYd2TDamhpw3crD0zdr+tAZZXYlqUXAgBxDOr6YrDOWQXhRBuhF5Jqzpg/RXf1zLnIMC3tO9r7/2b3DRFhU5zIMy1QBRQ+vUTXlBtl7v6508RU80IysuhVE2ydjISv9evwHNTCwhA3A/+/dfRoPAH6+N+Y8yqiX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQEhayBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB45CC2BCAF;
-	Mon, 13 Apr 2026 16:17:41 +0000 (UTC)
+	 MIME-Version; b=btBXyNFPEmyVOcfRiEXRpCcpd05XjGmoSa/cR3JHnORQF+OioUw6lGyIv18Zr0TUwneUnbAPsaozuo/EhBlz3mbjedpQ4XflTP5gHI2l4V5nrvQAbJ9696sJd225iMT4Le3ncoMPbd8ILuZO0LK99fhXVnEf89HRuoEuKrFtxbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hN2hBfhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA2BC2BCAF;
+	Mon, 13 Apr 2026 16:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097062;
-	bh=k+kvv0DGvdHeMpcVpHhfQcmaFJtlWInRzbXn+SIjXuU=;
+	s=korg; t=1776098571;
+	bh=ychZE3KjyXyh+V65GRzW41+spu6k8prJtRaCQ6L4Heo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQEhayBrrHK/+HNq4bQHccUBsGTsPwfZ3H9K6d/hGQczONFqu3fXXF4JNi9d/qmPd
-	 oOTPVB5ak+iowG/WXj49kTiXyUAaxgZEfLRevhV20Ce/9Hmofze4qIpejTohuDBfR+
-	 BlZ5DcEFQwD2rkXFVe8+dvxa49JZf14U3mk/6Cyc=
+	b=hN2hBfhRL6EcboVQxF9IantfL7cdzBx9X037svTZc0Ab0RJsX7gK8ztjaEs+DYzXs
+	 mpJegDthhAoowGJRY8t5nZ5368zzF08/FEAviGo9S31na+OW2aVky2v5s/pgZUyczd
+	 D6iYnIs8oQnpUfSbs5sgO/2qcoVJ3kQ7bU8gzD0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 46/55] net: altera-tse: fix skb leak on DMA mapping error in tse_start_xmit()
+	Li Chen <me@linux.beauty>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 549/570] ext4: publish jinode after initialization
 Date: Mon, 13 Apr 2026 18:01:20 +0200
-Message-ID: <20260413155726.549055629@linuxfoundation.org>
+Message-ID: <20260413155851.021296161@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +68,183 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236500-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237095-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 4CAA13EF8B6
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,suse.cz:email]
+X-Rspamd-Queue-Id: 915113F00A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Li Chen <me@linux.beauty>
 
-commit 6dede3967619b5944003227a5d09fdc21ed57d10 upstream.
+[ Upstream commit 1aec30021edd410b986c156f195f3d23959a9d11 ]
 
-When dma_map_single() fails in tse_start_xmit(), the function returns
-NETDEV_TX_OK without freeing the skb. Since NETDEV_TX_OK tells the
-stack the packet was consumed, the skb is never freed, leaking memory
-on every DMA mapping failure.
+ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+allowing a reader to observe a non-NULL jinode with i_vfs_inode
+still unset.
 
-Add dev_kfree_skb_any() before returning to properly free the skb.
+The fast commit flush path can then pass this jinode to
+jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+may crash.
 
-Fixes: bbd2190ce96d ("Altera TSE: Add main and header file for Altera Ethernet Driver")
+Below is the crash I observe:
+```
+BUG: unable to handle page fault for address: 000000010beb47f4
+PGD 110e51067 P4D 110e51067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+RIP: 0010:xas_find_marked+0x3d/0x2e0
+Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+<TASK>
+filemap_get_folios_tag+0x87/0x2a0
+__filemap_fdatawait_range+0x5f/0xd0
+? srso_alias_return_thunk+0x5/0xfbef5
+? __schedule+0x3e7/0x10c0
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? cap_safe_nice+0x37/0x70
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+filemap_fdatawait_range_keep_errors+0x12/0x40
+ext4_fc_commit+0x697/0x8b0
+? ext4_file_write_iter+0x64b/0x950
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? vfs_write+0x356/0x480
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+ext4_sync_file+0xf7/0x370
+do_fsync+0x3b/0x80
+? syscall_trace_enter+0x108/0x1d0
+__x64_sys_fdatasync+0x16/0x20
+do_syscall_64+0x62/0x2c0
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+...
+```
+
+Fix this by initializing the jbd2_inode first.
+Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+initialization. Readers use READ_ONCE() to fetch the pointer.
+
+Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260401211218.279185-1-devnexen@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li Chen <me@linux.beauty>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ adapted READ_ONCE(jinode) wrapping to split ext4_fc_submit_inode_data_all() and ext4_fc_wait_inode_data_all() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/altera/altera_tse_main.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/fast_commit.c |    4 ++--
+ fs/ext4/inode.c       |   15 +++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/altera/altera_tse_main.c
-+++ b/drivers/net/ethernet/altera/altera_tse_main.c
-@@ -572,6 +572,7 @@ static netdev_tx_t tse_start_xmit(struct
- 				  DMA_TO_DEVICE);
- 	if (dma_mapping_error(priv->device, dma_addr)) {
- 		netdev_err(priv->dev, "%s: DMA mapping error\n", __func__);
-+		dev_kfree_skb_any(skb);
- 		ret = NETDEV_TX_OK;
- 		goto out;
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -979,7 +979,7 @@ static int ext4_fc_submit_inode_data_all
+ 			finish_wait(&ei->i_fc_wait, &wait);
+ 		}
+ 		spin_unlock(&sbi->s_fc_lock);
+-		ret = jbd2_submit_inode_data(ei->jinode);
++		ret = jbd2_submit_inode_data(READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+@@ -1004,7 +1004,7 @@ static int ext4_fc_wait_inode_data_all(j
+ 			continue;
+ 		spin_unlock(&sbi->s_fc_lock);
+ 
+-		ret = jbd2_wait_inode_data(journal, pos->jinode);
++		ret = jbd2_wait_inode_data(journal, READ_ONCE(pos->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -122,6 +122,8 @@ void ext4_inode_csum_set(struct inode *i
+ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 					      loff_t new_size)
+ {
++	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
++
+ 	trace_ext4_begin_ordered_truncate(inode, new_size);
+ 	/*
+ 	 * If jinode is zero, then we never opened the file for
+@@ -129,10 +131,10 @@ static inline int ext4_begin_ordered_tru
+ 	 * jbd2_journal_begin_ordered_truncate() since there's no
+ 	 * outstanding writes we need to flush.
+ 	 */
+-	if (!EXT4_I(inode)->jinode)
++	if (!jinode)
+ 		return 0;
+ 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+-						   EXT4_I(inode)->jinode,
++						   jinode,
+ 						   new_size);
+ }
+ 
+@@ -4145,8 +4147,13 @@ int ext4_inode_attach_jinode(struct inod
+ 			spin_unlock(&inode->i_lock);
+ 			return -ENOMEM;
+ 		}
+-		ei->jinode = jinode;
+-		jbd2_journal_init_jbd_inode(ei->jinode, inode);
++		jbd2_journal_init_jbd_inode(jinode, inode);
++		/*
++		 * Publish ->jinode only after it is fully initialized so that
++		 * readers never observe a partially initialized jbd2_inode.
++		 */
++		smp_wmb();
++		WRITE_ONCE(ei->jinode, jinode);
+ 		jinode = NULL;
  	}
+ 	spin_unlock(&inode->i_lock);
 
 
 
