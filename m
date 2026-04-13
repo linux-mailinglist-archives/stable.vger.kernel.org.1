@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-236468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEgANVIa3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:14 +0200
+	id QPHnJ8ce3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545613EF22D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D15C3EFF13
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F0D83029602
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A14130B9776
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438A930C360;
-	Mon, 13 Apr 2026 16:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7298E30C359;
+	Mon, 13 Apr 2026 16:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7OMdAef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+xrp0dV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010C12FFFBE;
-	Mon, 13 Apr 2026 16:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BCB314D0D;
+	Mon, 13 Apr 2026 16:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096983; cv=none; b=bpB9mcjaRfzRMBFzETyl+aDcrpetWgouy2qRqJ8jYLriKC/6uJDIJIR7afDEDAPBNM/GhA3w7yYOliPxqLJ0ob2Zj0fKc4LvwRdSoTs17iEfgbPG2A0xnaxMSkIhsrrYSvQDyQ/S8OiVkuK9ge3yFiZ4WUKfHD/pj79v1169kh8=
+	t=1776098440; cv=none; b=YmXuprdaS/JBIUTfDJWHLdnDopso3L772QFlhsQya2hWBYbarIMOX+L0Lq3d5K6vZUlozIQkuSDSIzbs9txcFoPP5Synk6nf8KYkX5WjrGS517QLVD4ZAzxeqKNb2AKmuLbiBh67E7giz/mNIXW+Ez7SD2dF8r6GWuOo4zkKJp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096983; c=relaxed/simple;
-	bh=jexA9D5srWhjvKMhONGHDsBzmMDid8pjZvIIKKa0Ojk=;
+	s=arc-20240116; t=1776098440; c=relaxed/simple;
+	bh=uNOrSaUQ/2VUGQ3L3iQFAIGsxPp2oKgPqQ4NvXO9eYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+e/BJIg8s5BGY3U11unqo5AUKupjbaPLSeJ6h2C6ZS7nYYVP6IjJH142emJzhZOk00zXSOSJTkBFBdmYG9gKTb9EfPzhVLrI+3urHVvQ+qL6H42kymLLofxJ0tD/gFYN/jazj+14GNhn+99T87v7gM7x5mqpRQkRe748zYyILk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7OMdAef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812F5C2BCB6;
-	Mon, 13 Apr 2026 16:16:22 +0000 (UTC)
+	 MIME-Version; b=tEn/iVpB5Hi2Z6JXuD1D358DkHJATVTwNyo1LuZPOJias9YmeynY0Vz9OESrV/rvr2X2iyU21iQt20rUwMD9cQKdHRFtiErW8Q345x7vRAgRv/zFbkPynVn/kv1F+JwFI4Tk9EM/zczgx+BLIKY3M+NmY1qQ/NZdLJFt6371bi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+xrp0dV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C215DC2BCAF;
+	Mon, 13 Apr 2026 16:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096982;
-	bh=jexA9D5srWhjvKMhONGHDsBzmMDid8pjZvIIKKa0Ojk=;
+	s=korg; t=1776098440;
+	bh=uNOrSaUQ/2VUGQ3L3iQFAIGsxPp2oKgPqQ4NvXO9eYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7OMdAefWBocdj9mV70asMKVuICl01jvqls2Li5IPbi1Pp5/xr06ISv1RFxsnR6oe
-	 3J16X9sgFU2/AZCUrwp8RDWAwo/QpE1oHKOZz8BK573vPL147SZi7R0+6fwG1L7zsU
-	 VjmBHVTdhd+1DA6mufClT2j7AyiCMV+EceA/xkPc=
+	b=I+xrp0dVa/zrLdIGGU2RlWf0GRMNsJKED/gZStv4xRG3rd6mEFV66w//1w0aRYEHz
+	 8foDMoN/YCSpGhgRDUa116n4CRTzhMdZR5bLVvGpQLJVjFkLbjarts0x600x+bSC9k
+	 WH4mFTViAzqIlP2A1Dtj7DzBuCewCxh0XRc2ny1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 04/55] mptcp: fix slab-use-after-free in __inet_lookup_established
-Date: Mon, 13 Apr 2026 18:00:38 +0200
-Message-ID: <20260413155724.990918103@linuxfoundation.org>
+Subject: [PATCH 5.15 508/570] mptcp: fix slab-use-after-free in __inet_lookup_established
+Date: Mon, 13 Apr 2026 18:00:39 +0200
+Message-ID: <20260413155849.482414843@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236468-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237042-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,12 +90,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 545613EF22D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0D15C3EFF13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -146,7 +146,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -4264,6 +4264,8 @@ int __init mptcp_proto_v6_init(void)
+@@ -3790,6 +3790,8 @@ int __init mptcp_proto_v6_init(void)
  {
  	int err;
  
@@ -157,17 +157,17 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	mptcp_v6_prot.slab = NULL;
 --- a/net/mptcp/protocol.h
 +++ b/net/mptcp/protocol.h
-@@ -677,6 +677,7 @@ static inline void mptcp_subflow_tcp_fal
+@@ -646,6 +646,7 @@ static inline bool mptcp_has_another_sub
  void __init mptcp_proto_init(void);
  #if IS_ENABLED(CONFIG_MPTCP_IPV6)
  int __init mptcp_proto_v6_init(void);
 +void __init mptcp_subflow_v6_init(void);
  #endif
  
- struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ struct sock *mptcp_sk_clone(const struct sock *sk,
 --- a/net/mptcp/subflow.c
 +++ b/net/mptcp/subflow.c
-@@ -1993,7 +1993,15 @@ void __init mptcp_subflow_init(void)
+@@ -1859,7 +1859,15 @@ void __init mptcp_subflow_init(void)
  	tcp_prot_override.psock_update_sk_prot = NULL;
  #endif
  
@@ -183,7 +183,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
  	 * structures for v4 and v6 have the same size. It should not changed in
  	 * the future but better to make sure to be warned if it is no longer
-@@ -2032,10 +2040,5 @@ void __init mptcp_subflow_init(void)
+@@ -1895,10 +1903,5 @@ void __init mptcp_subflow_init(void)
  	/* Disable sockmap processing for subflows */
  	tcpv6_prot_override.psock_update_sk_prot = NULL;
  #endif
