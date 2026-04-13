@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-237356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237357-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO1eJDMg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:19 +0200
+	id eBPWOegh3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237357-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F613F0480
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1BD3F09BC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 992B6301FCF3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 06C8730684DF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7F531716A;
-	Mon, 13 Apr 2026 16:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1E531715D;
+	Mon, 13 Apr 2026 16:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxxowyRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0uvTbjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9008D317148;
-	Mon, 13 Apr 2026 16:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D59317148;
+	Mon, 13 Apr 2026 16:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099243; cv=none; b=TKVNLce+Pto3YWXQmFDCqyd3z81ea2eSS1VaCje9tx+VoJvd6n0RKywN3Lm55D97NPQbJqVlyrmVOlly75Jm9eijrLhTqglGPbW/Xr3+VBriVBL9H73u5tMLaewbQikSu2KwhNQBYvqx3I0jXSWKpnoxOJGP1UsjmHOgxrHA/BA=
+	t=1776099246; cv=none; b=dZiB69oF2LKcjOUTfDdQxY1jqiq7/aOw8v2ObHQjWqoVLuEEwLRsMSOLNI+qWZK4LOwuxKrju31zO/cJXxcoBFUoRxP2TUXVegxlQ542JPBAfWvgzhtU3Lp8e4GLfwgOm09rZFJD6cSmsEKC//qzEbHPpy2QbDoKfz1yN3S8HwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099243; c=relaxed/simple;
-	bh=GsvBPmIO0USDuPlg0Cs1VgoXIqAk6jdJLRub9c9P684=;
+	s=arc-20240116; t=1776099246; c=relaxed/simple;
+	bh=ZrWiu6zqmeJKtA7nQFj/vLnenivoxmNDlvQ1+Lx/E/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTmTV5VW68Exsuou9k5DTv1dt+pw2gVt4Ckr/hXLVranuJl0U+iUwaOhi9fd6ewlNRR6qPGRpoT1s3u1Y0dDKrlBPne6ct3Gf4TF1QlXgp5gU6xZL1y7fexuLWHjktnX0SHRsBxuFsoMCmR0ySZzrVo9JO3pot+YBcH0o+rjkH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxxowyRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0E5C2BCC7;
-	Mon, 13 Apr 2026 16:54:02 +0000 (UTC)
+	 MIME-Version; b=AtVrpfTDHXyx9+eQmOCOYg2iIheOxDe5Zaopw/KbW+CcllSrU3aFgFJAlwHs5nyKD8EV6xKyXl61sonk5udoNUiQQT3KoG1k6yXGUxWMeLEH3cpg+oFlEwHj7uadBpI52OBHayvLZPhXCUs2sU/tKzhyvSAAOUKykCHGpgCp/4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0uvTbjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A94C2BCAF;
+	Mon, 13 Apr 2026 16:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099243;
-	bh=GsvBPmIO0USDuPlg0Cs1VgoXIqAk6jdJLRub9c9P684=;
+	s=korg; t=1776099245;
+	bh=ZrWiu6zqmeJKtA7nQFj/vLnenivoxmNDlvQ1+Lx/E/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VxxowyRQiXv8QNa0yBIoIPXPSVt+/X8MbEIOZ6KXHTK7SGqsS7WQ2UqYSwZpPCr+e
-	 6b9bdaTCqjLIRWGyusxLZcit500vnRpxfslZ2cql8gidnXqaH21D6h7HEAqIAQ+8E3
-	 BIlRghPbvZ5G6/7aN8cznxK+Y3QB4G+hsDpb8VqI=
+	b=f0uvTbjMdklgq6q5PV+Ic9upiQ7w+kHc/aC7wsxXiBAHn+67qr1JYPs7Y4VDyKhgH
+	 MNcAEDUq9yBl8geda+W+iLqR6AA9E1wMc+SuVVsngc4nZCidcW/mCSWe+NXC2jI8QU
+	 ys1kBojjsCiOkxpkBSmZhXCNkyEtniDAIZxfPzcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 265/491] Bluetooth: L2CAP: Fix ERTM re-init and zero pdu_len infinite loop
-Date: Mon, 13 Apr 2026 17:58:30 +0200
-Message-ID: <20260413155828.972738070@linuxfoundation.org>
+Subject: [PATCH 5.10 266/491] Bluetooth: btusb: clamp SCO altsetting table indices
+Date: Mon, 13 Apr 2026 17:58:31 +0200
+Message-ID: <20260413155829.010052703@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -66,33 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237356-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237357-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 56F613F0480
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 6A1BD3F09BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,77 +99,47 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 25f420a0d4cfd61d3d23ec4b9c56d9f443d91377 ]
+[ Upstream commit 129fa608b6ad08b8ab7178eeb2ec272c993aaccc ]
 
-l2cap_config_req() processes CONFIG_REQ for channels in BT_CONNECTED
-state to support L2CAP reconfiguration (e.g. MTU changes). However,
-since both CONF_INPUT_DONE and CONF_OUTPUT_DONE are already set from
-the initial configuration, the reconfiguration path falls through to
-l2cap_ertm_init(), which re-initializes tx_q, srej_q, srej_list, and
-retrans_list without freeing the previous allocations and sets
-chan->sdu to NULL without freeing the existing skb. This leaks all
-previously allocated ERTM resources.
+btusb_work() maps the number of active SCO links to USB alternate
+settings through a three-entry lookup table when CVSD traffic uses
+transparent voice settings. The lookup currently indexes alts[] with
+data->sco_num - 1 without first constraining sco_num to the number of
+available table entries.
 
-Additionally, l2cap_parse_conf_req() does not validate the minimum
-value of remote_mps derived from the RFC max_pdu_size option. A zero
-value propagates to l2cap_segment_sdu() where pdu_len becomes zero,
-causing the while loop to never terminate since len is never
-decremented, exhausting all available memory.
+While the table only defines alternate settings for up to three SCO
+links, data->sco_num comes from hci_conn_num() and is used directly.
+Cap the lookup to the last table entry before indexing it so the
+driver keeps selecting the highest supported alternate setting without
+reading past alts[].
 
-Fix the double-init by skipping l2cap_ertm_init() and
-l2cap_chan_ready() when the channel is already in BT_CONNECTED state,
-while still allowing the reconfiguration parameters to be updated
-through l2cap_parse_conf_req(). Also add a pdu_len zero check in
-l2cap_segment_sdu() as a safeguard.
-
-Fixes: 96298f640104 ("Bluetooth: L2CAP: handle l2cap config request during open state")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Fixes: baac6276c0a9 ("Bluetooth: btusb: handle mSBC audio over USB Endpoints")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index bca96302e59e5..e7af7faf558e8 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -2543,6 +2543,9 @@ static int l2cap_segment_sdu(struct l2cap_chan *chan,
- 	/* Remote device may have requested smaller PDUs */
- 	pdu_len = min_t(size_t, pdu_len, chan->remote_mps);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 3010044f0810b..a27a6ab6c2b61 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1780,8 +1780,11 @@ static void btusb_work(struct work_struct *work)
+ 		if (data->air_mode == HCI_NOTIFY_ENABLE_SCO_CVSD) {
+ 			if (hdev->voice_setting & 0x0020) {
+ 				static const int alts[3] = { 2, 4, 5 };
++				unsigned int sco_idx;
  
-+	if (!pdu_len)
-+		return -EINVAL;
-+
- 	if (len <= pdu_len) {
- 		sar = L2CAP_SAR_UNSEGMENTED;
- 		sdu_len = 0;
-@@ -4526,14 +4529,16 @@ static inline int l2cap_config_req(struct l2cap_conn *conn,
- 	if (test_bit(CONF_INPUT_DONE, &chan->conf_state)) {
- 		set_default_fcs(chan);
- 
--		if (chan->mode == L2CAP_MODE_ERTM ||
--		    chan->mode == L2CAP_MODE_STREAMING)
--			err = l2cap_ertm_init(chan);
-+		if (chan->state != BT_CONNECTED) {
-+			if (chan->mode == L2CAP_MODE_ERTM ||
-+			    chan->mode == L2CAP_MODE_STREAMING)
-+				err = l2cap_ertm_init(chan);
- 
--		if (err < 0)
--			l2cap_send_disconn_req(chan, -err);
--		else
--			l2cap_chan_ready(chan);
-+			if (err < 0)
-+				l2cap_send_disconn_req(chan, -err);
-+			else
-+				l2cap_chan_ready(chan);
-+		}
- 
- 		goto unlock;
- 	}
+-				new_alts = alts[data->sco_num - 1];
++				sco_idx = min_t(unsigned int, data->sco_num - 1,
++						ARRAY_SIZE(alts) - 1);
++				new_alts = alts[sco_idx];
+ 			} else {
+ 				new_alts = data->sco_num;
+ 			}
 -- 
 2.51.0
 
