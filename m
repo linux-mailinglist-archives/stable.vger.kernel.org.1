@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-236488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH6uMLkc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:29 +0200
+	id 6Dd4MNUe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5633EF839
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA553EFF3B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D74C931A4AA5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5D023008291
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE9E2FFFBE;
-	Mon, 13 Apr 2026 16:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E3130C371;
+	Mon, 13 Apr 2026 16:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLQQ08N9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMOewk9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325542F6931;
-	Mon, 13 Apr 2026 16:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177A2280CFB;
+	Mon, 13 Apr 2026 16:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097034; cv=none; b=WpwKEL6qa/tMYjOubY1FhO+fntgIXAz7rpRTNe58/xwegDDbKHWFGf4ZBFgjwUSnbGBVMx12EMq9eWSaQYZmEKw/dFw5/9zKSfvNw8GEo7+HgJQH7icidfupdv39IhsUEaefe6T96EyT8UfZqabLsPeMU2yPsEp6Fw671O7su58=
+	t=1776098479; cv=none; b=KmF3D7zRKsJQsZ+KeZWltQR5O80qvLaZQAnRqhW6hoydYNtGMaT+nkh7qyxa9pVL6r5XnnY8Sy9VjaJjvn3tMLRW0iCJ49g5hZ4hL6mnymv+S72hOYSiJLiBqGSuXWsws6QkT2AsZ68VZYkwxFPKQpzrDnJ/PlMx760Pj1u0jls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097034; c=relaxed/simple;
-	bh=3R4K998UXToe316wpLCuGgFikZdtGLAP6N83xv3lx4o=;
+	s=arc-20240116; t=1776098479; c=relaxed/simple;
+	bh=E6V/BSPC67bYlXYi4NZ3+lv4WGG2sv5B7WP3msPHLPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVYg9q9+k3MGjOi19OymsZHbVAdgv+/NGweZZLsfpRe3o4dGUNn9ZHPEJkkfu7AOsqGENldlMzuYlS52BKHV4U/h2IP+dKEflPuj54Wea/oZUt7cEmDUFecAyqfW0wTMkFGLf8qZHHdOunyhXA75DPo+yEaZd2wvYYfecUyVJRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLQQ08N9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC118C2BCAF;
-	Mon, 13 Apr 2026 16:17:13 +0000 (UTC)
+	 MIME-Version; b=MdyiulFYlRZP5XNiH0Oab+iI8jPAzrSNNCqNxHfhTdTUH8mXPPlkI7WRQWec3yGtBdCjQ93gF/97Dj3dM0NwNGe2QRaEvf8eQaJpunJVDf5AJOc3HG0mkZyR6nVuQXAh3GA+M1RJKNdo/NVfr3xnmvPHHRPQLKe5x0lmn4f+zzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMOewk9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F354C2BCB6;
+	Mon, 13 Apr 2026 16:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097034;
-	bh=3R4K998UXToe316wpLCuGgFikZdtGLAP6N83xv3lx4o=;
+	s=korg; t=1776098478;
+	bh=E6V/BSPC67bYlXYi4NZ3+lv4WGG2sv5B7WP3msPHLPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLQQ08N9iTRizkMKBtQUSzQIcaQrY/vLVkUEyvADkqexKIcirBXW9kPdqmL5u7Rip
-	 C8S7uRftLiOpcICrgluUxgnta2BMj23V/H1SVJUG7fel1pluT0E9G+t6B3vtnZbu5R
-	 rG3ErHD7UymAffAqx9dc+qHiOcJxmw8quxW/vyPs=
+	b=HMOewk9YHClMI9Kmo1zcoIU/6VGpY9xy8cwixdiSssHGjZZKCegEgV6DLeLzHhtSg
+	 QwgbeUbDhwGW2FDVY+AnUSghGQB9XA1y8xqmW97YPj5xFMIP5dMBYhBw7jcLkDBo3X
+	 J9Mq/kh7/bNDE5ITXQitGo3sqKjKO57GJlTlMkhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuan Do <tuan@calif.io>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.1 36/55] netfilter: nft_ct: fix use-after-free in timeout object destroy
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 539/570] rxrpc: fix reference count leak in rxrpc_server_keyring()
 Date: Mon, 13 Apr 2026 18:01:10 +0200
-Message-ID: <20260413155726.185835282@linuxfoundation.org>
+Message-ID: <20260413155850.636135525@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +76,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237057-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236488-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,calif.io:email]
-X-Rspamd-Queue-Id: 1E5633EF839
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4EA553EFF3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuan Do <tuan@calif.io>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-commit f8dca15a1b190787bbd03285304b569631160eda upstream.
+commit f125846ee79fcae537a964ce66494e96fa54a6de upstream.
 
-nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
-immediately after nf_ct_untimeout(), without waiting for an RCU grace
-period. Concurrent packet processing on other CPUs may still hold
-RCU-protected references to the timeout object obtained via
-rcu_dereference() in nf_ct_timeout_data().
+This patch fixes a reference count leak in rxrpc_server_keyring()
+by checking if rx->securities is already set.
 
-Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
-freeing until after an RCU grace period, matching the approach already
-used in nfnetlink_cttimeout.c.
-
-KASAN report:
- BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
- Read of size 4 at addr ffff8881035fe19c by task exploit/80
-
- Call Trace:
-  nf_conntrack_tcp_packet+0x1381/0x29d0
-  nf_conntrack_in+0x612/0x8b0
-  nf_hook_slow+0x70/0x100
-  __ip_local_out+0x1b2/0x210
-  tcp_sendmsg_locked+0x722/0x1580
-  __sys_sendto+0x2d8/0x320
-
- Allocated by task 75:
-  nft_ct_timeout_obj_init+0xf6/0x290
-  nft_obj_init+0x107/0x1b0
-  nf_tables_newobj+0x680/0x9c0
-  nfnetlink_rcv_batch+0xc29/0xe00
-
- Freed by task 26:
-  nft_obj_destroy+0x3f/0xa0
-  nf_tables_trans_destroy_work+0x51c/0x5c0
-  process_one_work+0x2c4/0x5a0
-
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tuan Do <tuan@calif.io>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-15-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_conntrack_timeout.h |    1 +
- net/netfilter/nft_ct.c                       |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/rxrpc/server_key.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/net/netfilter/nf_conntrack_timeout.h
-+++ b/include/net/netfilter/nf_conntrack_timeout.h
-@@ -14,6 +14,7 @@
- struct nf_ct_timeout {
- 	__u16			l3num;
- 	const struct nf_conntrack_l4proto *l4proto;
-+	struct rcu_head		rcu;
- 	char			data[];
- };
+--- a/net/rxrpc/server_key.c
++++ b/net/rxrpc/server_key.c
+@@ -125,6 +125,9 @@ int rxrpc_server_keyring(struct rxrpc_so
  
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -985,7 +985,7 @@ static void nft_ct_timeout_obj_destroy(c
- 	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
--	kfree(priv->timeout);
-+	kfree_rcu(priv->timeout, rcu);
- }
+ 	_enter("");
  
- static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
++	if (rx->securities)
++		return -EINVAL;
++
+ 	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
+ 		return -EINVAL;
+ 
 
 
 
