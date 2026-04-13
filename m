@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-236874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qK1QNmAd3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:16 +0200
+	id uOUvAHUd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB653EFA6C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE6D3EFAB0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 42040305A10B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:33:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F349305FA35
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B00A28B4FA;
-	Mon, 13 Apr 2026 16:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4052D3A6A;
+	Mon, 13 Apr 2026 16:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssn1DhO+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljNGQ2qN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFD227466A;
-	Mon, 13 Apr 2026 16:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151B92D3220;
+	Mon, 13 Apr 2026 16:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098014; cv=none; b=DnsB/znEiHv7zGqujhBgVeZr0VNl1KyYKg369BULadpZHq/C6i9szLP5K6f28So2T7p9LRmSnvCvwro5IyiOp7N2N47PZX8YDfJyDv519Osxu04YEomaOEDbVmHBPeLcdTDlfX3n3Lxt6RbHQnnuMDY7ZkUdgxRSx65HcTBEkNM=
+	t=1776098033; cv=none; b=GcD9DdvqooRuU2t2EvNToABqCts57gzizaUU3oTJNwsJDhO9cF9GLzxE+6AnwxktC2Mg6gLXyudU0wHqBb2OT1L4TRn3ZDQGz9BT52sZQo+B09EW4rLWGTVSjUVR9pCaPfxj90sjdEDjbLga0bbkuZTWhbMWSGXy4XlCs2Kz0FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098014; c=relaxed/simple;
-	bh=UHtXWqbAep0UFM+I13OdIYllL8Mo7Dd9DKOc29i51GY=;
+	s=arc-20240116; t=1776098033; c=relaxed/simple;
+	bh=DhRZ2UY8qvmWtuX1ZFzxqPYhyblQ+zrh30HixV7e2CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIyW71NOBOek+DAikAf7eCsrg/4uluOKGoKfiwu38yquZn+IrbgB1MPEveHwHT/UuWVLqLDqbMU89PHOLBvygXihuNJUoqKdtDJ4BAUUPlGd4i9zSiiiqWtcyAh8YcyOLZSSYfVzmMich9Pbmchs+zYEuQdd48f2pUqxj9Z6IGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssn1DhO+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AEEC2BCB3;
-	Mon, 13 Apr 2026 16:33:34 +0000 (UTC)
+	 MIME-Version; b=Q5GmX/VwqUDAs2g0MiYRXmogHXPdoU9uFAJSDpf1n7QMuvbJzH+hi/usxrJ5513NW9bcCJSOqmCtrTfvOqyBKoXWkaex5Z/PwWeonDWrcUKZl9rIfnzaTePWuJWzzvJOb8xhipxWeN0xF6eYaTvfoQ2g13WWxS2Eg+Th9az2yOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljNGQ2qN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DBDC2BCAF;
+	Mon, 13 Apr 2026 16:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098014;
-	bh=UHtXWqbAep0UFM+I13OdIYllL8Mo7Dd9DKOc29i51GY=;
+	s=korg; t=1776098032;
+	bh=DhRZ2UY8qvmWtuX1ZFzxqPYhyblQ+zrh30HixV7e2CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ssn1DhO+9pIy2rfrNeAuGwOH0HAW+5zNfcSuBaHl3fV7hvUtv5n9+E63gixXq4Chj
-	 gTi7boQPbSSoZgKoLwsJo3ER848UrUADTIcg6SHs9EM4MUmtieQbDaDsnu/S7I9TYz
-	 Jt4Vmq4eozeacPi3WeKUXp31+5oH4ih/QSXQsJcQ=
+	b=ljNGQ2qNeO6+gykZ0YPO2ZBajgfuR5zjgdNoGfnHwYav1W9kmSa5BQcausb7Lcx+u
+	 CIoA6RPgl2r6+ItP7u0/axMqB+0OE9jnJZ/pXGZ5sO8UbTXg5AQT/BkyFtZrOZeL0g
+	 3mlfXMW0SUG63oyVGjz7ppT5Sedqm2eUekNzqmeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 333/570] Bluetooth: btusb: clamp SCO altsetting table indices
-Date: Mon, 13 Apr 2026 17:57:44 +0200
-Message-ID: <20260413155842.969063943@linuxfoundation.org>
+Subject: [PATCH 5.15 334/570] netfilter: nfnetlink_log: fix uninitialized padding leak in NFULA_PAYLOAD
+Date: Mon, 13 Apr 2026 17:57:45 +0200
+Message-ID: <20260413155843.006364685@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -68,30 +70,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236881-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236874-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,intel.com:email]
-X-Rspamd-Queue-Id: 4DB653EFA6C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 7CE6D3EFAB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,47 +102,55 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 129fa608b6ad08b8ab7178eeb2ec272c993aaccc ]
+[ Upstream commit 52025ebaa29f4eb4ed8bf92ce83a68f24ab7fdf7 ]
 
-btusb_work() maps the number of active SCO links to USB alternate
-settings through a three-entry lookup table when CVSD traffic uses
-transparent voice settings. The lookup currently indexes alts[] with
-data->sco_num - 1 without first constraining sco_num to the number of
-available table entries.
+__build_packet_message() manually constructs the NFULA_PAYLOAD netlink
+attribute using skb_put() and skb_copy_bits(), bypassing the standard
+nla_reserve()/nla_put() helpers. While nla_total_size(data_len) bytes
+are allocated (including NLA alignment padding), only data_len bytes
+of actual packet data are copied. The trailing nla_padlen(data_len)
+bytes (1-3 when data_len is not 4-byte aligned) are never initialized,
+leaking stale heap contents to userspace via the NFLOG netlink socket.
 
-While the table only defines alternate settings for up to three SCO
-links, data->sco_num comes from hci_conn_num() and is used directly.
-Cap the lookup to the last table entry before indexing it so the
-driver keeps selecting the highest supported alternate setting without
-reading past alts[].
+Replace the manual attribute construction with nla_reserve(), which
+handles the tailroom check, header setup, and padding zeroing via
+__nla_reserve(). The subsequent skb_copy_bits() fills in the payload
+data on top of the properly initialized attribute.
 
-Fixes: baac6276c0a9 ("Bluetooth: btusb: handle mSBC audio over USB Endpoints")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: df6fb868d611 ("[NETFILTER]: nfnetlink: convert to generic netlink attribute functions")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/netfilter/nfnetlink_log.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index a79fd106fad7a..12bcc07e2e502 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -1845,8 +1845,11 @@ static void btusb_work(struct work_struct *work)
- 		if (data->air_mode == HCI_NOTIFY_ENABLE_SCO_CVSD) {
- 			if (hdev->voice_setting & 0x0020) {
- 				static const int alts[3] = { 2, 4, 5 };
-+				unsigned int sco_idx;
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index 09fe6cf358ec7..6484d08223dbc 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -636,15 +636,11 @@ __build_packet_message(struct nfnl_log_net *log,
  
--				new_alts = alts[data->sco_num - 1];
-+				sco_idx = min_t(unsigned int, data->sco_num - 1,
-+						ARRAY_SIZE(alts) - 1);
-+				new_alts = alts[sco_idx];
- 			} else {
- 				new_alts = data->sco_num;
- 			}
+ 	if (data_len) {
+ 		struct nlattr *nla;
+-		int size = nla_attr_size(data_len);
+ 
+-		if (skb_tailroom(inst->skb) < nla_total_size(data_len))
++		nla = nla_reserve(inst->skb, NFULA_PAYLOAD, data_len);
++		if (!nla)
+ 			goto nla_put_failure;
+ 
+-		nla = skb_put(inst->skb, nla_total_size(data_len));
+-		nla->nla_type = NFULA_PAYLOAD;
+-		nla->nla_len = size;
+-
+ 		if (skb_copy_bits(skb, 0, nla_data(nla), data_len))
+ 			BUG();
+ 	}
 -- 
 2.51.0
 
