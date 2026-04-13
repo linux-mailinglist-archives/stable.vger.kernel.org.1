@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-237598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGRPF/wm3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:16 +0200
+	id yHINA+km3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DA13F15A2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84BFB3F1580
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 76D06305ED85
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:20:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 76E4630532C8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233F634BA49;
-	Mon, 13 Apr 2026 17:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513DC34C808;
+	Mon, 13 Apr 2026 17:20:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D452C34750F
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42F2346FAE
 	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 17:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776100835; cv=none; b=U5aq6eInl2KMLVE2+Oo4dw2GD1wF/n/g3ICMuKuzrga9uZwD3gcNe7sMjxlUkcvDfFSBwEsFmNQSR0JVPGUhoNs6i+W/Blyq2/EuWkhkgJZR94kPU5+ZM441sd4RDhaGjuNBp5wAooOOvNFPWX2IJMyVNuqtokPZkKMwkccGdLA=
+	t=1776100833; cv=none; b=ankrlX9LIPGKIXZ3e+1x05XSwY3YItirVQzSIPCRc5kMxqHgRNi7vQRGy56f1i3noi4ffyAThvSdS9yla11VYjqjvvdpDu2zEZLyKHzLW/AUsLMZZ78WDxzx81zD6vUQ5py7j40VJyPhVgsOAxdiAsJDBRgFOr1vJPA5Sm7X5NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776100835; c=relaxed/simple;
-	bh=y2LLoUfkjrnmerxRKhbOniSUHp19aZA0tcA6rgOpwEc=;
+	s=arc-20240116; t=1776100833; c=relaxed/simple;
+	bh=2sGH544BAzf9la+As3CNDlBUQjj9ooCOBgqpljnEdHQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eL5zJ95qKBiHqIGUFopBmtMDVYf+l34wxILc6y7gJV7WSkEzpcK1X1N9lUn5Nnc8DBj8racxPT2gLAx/VK6WR9tlz7oqFk5c21E7uyd3PvHdMIjw1ZbyFeI3ViId72CtVUz+zTh1rFPhFOTitSY7U6v40Vkwm5DcIxo1jEjDCqI=
+	 MIME-Version; b=ZA3i8cpS2sHlBKWzLsc2U+JvR7zKU6T6ZQnWdqWr3aoSDGSSbl3I5h7hnGD+klJvounwjsAGZjYf3MNEBVi72tnGNvb7rg0vwz1siOdQnFDDXbT+09eXktc0uT/q4va98TadaYGxs3zO9To42BlslQb01p0CqjXnCYKxWgZ6J+s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
 Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id B441E92009D; Mon, 13 Apr 2026 19:20:29 +0200 (CEST)
+	id CD6359200B4; Mon, 13 Apr 2026 19:20:29 +0200 (CEST)
 From: "Maciej W. Rozycki" <macro@orcam.me.uk>
 To: stable@vger.kernel.org
 Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15.y v2 3/5] MIPS: Always record SEGBITS in cpu_data.vmbits
-Date: Mon, 13 Apr 2026 18:20:02 +0100
-Message-Id: <20260413172004.31485-3-macro@orcam.me.uk>
+Subject: [PATCH 5.15.y v2 4/5] MIPS: mm: Suppress TLB uniquification on EHINV hardware
+Date: Mon, 13 Apr 2026 18:20:03 +0100
+Message-Id: <20260413172004.31485-4-macro@orcam.me.uk>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260413172004.31485-1-macro@orcam.me.uk>
 References: <20260413172004.31485-1-macro@orcam.me.uk>
@@ -61,122 +61,58 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	DMARC_NA(0.00)[orcam.me.uk];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237598-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237594-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[macro@orcam.me.uk,stable@vger.kernel.org];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.926];
+	NEURAL_HAM(-0.00)[-0.944];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,orcam.me.uk:email,orcam.me.uk:mid]
-X-Rspamd-Queue-Id: 06DA13F15A2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84BFB3F1580
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 8374c2cb83b95b3c92f129fd56527225c20a058c upstream.
+commit 74283cfe216392c7b776ebf6045b5b15ed9dffcd upstream.
 
-With a 32-bit kernel running on 64-bit MIPS hardware the hardcoded value
-of `cpu_vmbits' only records the size of compatibility useg and does not
-reflect the size of native xuseg or the complete range of values allowed
-in the VPN2 field of TLB entries.
+Hardware that supports the EHINV feature, mandatory for R6 ISA and FTLB
+implementation, lets software mark TLB entries invalid, which eliminates
+the need to ensure no duplicate matching entries are ever created.  This
+feature is already used by local_flush_tlb_all(), via the UNIQUE_ENTRYHI
+macro, making the preceding call to r4k_tlb_uniquify() superfluous.
 
-An upcoming change will need the actual VPN2 value range permitted even
-in 32-bit kernel configurations, so always include the `vmbits' member
-in `struct cpuinfo_mips' and probe for SEGBITS when running on 64-bit
-hardware and resorting to the currently hardcoded value of 31 on 32-bit
-processors.  No functional change for users of `cpu_vmbits'.
+The next change will also modify uniquification code such that it'll
+become incompatible with the FTLB and MMID features, as well as MIPSr6
+CPUs that do not implement 4KiB pages.
+
+Therefore prevent r4k_tlb_uniquify() from being used on EHINV hardware,
+as denoted by `cpu_has_tlbinv'.
 
 Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- arch/mips/include/asm/cpu-features.h |  1 -
- arch/mips/include/asm/cpu-info.h     |  2 --
- arch/mips/include/asm/mipsregs.h     |  2 ++
- arch/mips/kernel/cpu-probe.c         | 13 ++++++++-----
- arch/mips/kernel/cpu-r3k-probe.c     |  2 ++
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ arch/mips/mm/tlb-r4k.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index e69833213e79..c1baf1b06cce 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -484,7 +484,6 @@
- # endif
- # ifndef cpu_vmbits
- # define cpu_vmbits cpu_data[0].vmbits
--# define __NEED_VMBITS_PROBE
- # endif
- #endif
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index f782214d23d3..ae7436b860b5 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -630,7 +630,8 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
  
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index a600670d00e9..1aee44124f11 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -80,9 +80,7 @@ struct cpuinfo_mips {
- 	int			srsets; /* Shadow register sets */
- 	int			package;/* physical package number */
- 	unsigned int		globalnumber;
--#ifdef CONFIG_64BIT
- 	int			vmbits; /* Virtual memory size in bits */
--#endif
- 	void			*data;	/* Additional data */
- 	unsigned int		watch_reg_count;   /* Number that exist */
- 	unsigned int		watch_reg_use_cnt; /* Usable by ptrace */
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index acdf8c69220b..a1bb5f16d449 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1719,6 +1719,8 @@ do {									\
+ 	/* From this point on the ARC firmware is dead.	 */
+-	r4k_tlb_uniquify();
++	if (!cpu_has_tlbinv)
++		r4k_tlb_uniquify();
+ 	local_flush_tlb_all();
  
- #define read_c0_entryhi()	__read_ulong_c0_register($10, 0)
- #define write_c0_entryhi(val)	__write_ulong_c0_register($10, 0, val)
-+#define read_c0_entryhi_64()	__read_64bit_c0_register($10, 0)
-+#define write_c0_entryhi_64(val) __write_64bit_c0_register($10, 0, val)
- 
- #define read_c0_guestctl1()	__read_32bit_c0_register($10, 4)
- #define write_c0_guestctl1(val)	__write_32bit_c0_register($10, 4, val)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index f258c5f15f90..464258c6ab46 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -208,11 +208,14 @@ static inline void set_elf_base_platform(const char *plat)
- 
- static inline void cpu_probe_vmbits(struct cpuinfo_mips *c)
- {
--#ifdef __NEED_VMBITS_PROBE
--	write_c0_entryhi(0x3fffffffffffe000ULL);
--	back_to_back_c0_hazard();
--	c->vmbits = fls64(read_c0_entryhi() & 0x3fffffffffffe000ULL);
--#endif
-+	int vmbits = 31;
-+
-+	if (cpu_has_64bits) {
-+		write_c0_entryhi_64(0x3fffffffffffe000ULL);
-+		back_to_back_c0_hazard();
-+		vmbits = fls64(read_c0_entryhi_64() & 0x3fffffffffffe000ULL);
-+	}
-+	c->vmbits = vmbits;
- }
- 
- static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
-diff --git a/arch/mips/kernel/cpu-r3k-probe.c b/arch/mips/kernel/cpu-r3k-probe.c
-index af654771918c..3c9d5a2fd792 100644
---- a/arch/mips/kernel/cpu-r3k-probe.c
-+++ b/arch/mips/kernel/cpu-r3k-probe.c
-@@ -160,6 +160,8 @@ void cpu_probe(void)
- 	else
- 		cpu_set_nofpu_opts(c);
- 
-+	c->vmbits = 31;
-+
- 	reserve_exception_space(0, 0x400);
- }
- 
+ 	/* Did I tell you that ARC SUCKS?  */
 -- 
 2.20.1
 
