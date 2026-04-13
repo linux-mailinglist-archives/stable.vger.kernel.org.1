@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-236728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNGLIKwZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:28 +0200
+	id SCycHLog3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E8A3EF038
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F833F063D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8D82301ED87
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C47A2307ABAF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A993093CF;
-	Mon, 13 Apr 2026 16:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94E2315D53;
+	Mon, 13 Apr 2026 16:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R043QSV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Qn3d8Y4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E153726CE32;
-	Mon, 13 Apr 2026 16:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3E323E342;
+	Mon, 13 Apr 2026 16:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097641; cv=none; b=Z8nR82QfwjVxCxq3yBHRhlGznF5k3AYcLkyLQwU4RqNeuV0AAfE3Fw40ms+WiZCm1o9KCuGe52dxeB4RUh7ZDCw8UoQsxSIqbFBwjO6h2jHYNcb621no0plVSDRO1qDBNVFx/1xrVQTcXjTB6bWVUZMEflb041wCvzmzyOKn4Ig=
+	t=1776098825; cv=none; b=UGLNA3ZiRIKj9pehLPJAXMKwOHB6boxFbqHynRDgS5OaQzBCEXAF5ZvffmRUGrY00HxGKGPKYGSXI+ZgzAnDf+2lRR78aUyH8wWc4H+M2JMFYqQFJvtdPrmHrvdK9IL9bAXUbq0iiqQDPskX69elX2yy7BnAestm0PlC/80vsnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097641; c=relaxed/simple;
-	bh=fupDeiP3fy2UCToG6LE822mqZ+KhM9BVvLRBQHdj+28=;
+	s=arc-20240116; t=1776098825; c=relaxed/simple;
+	bh=u8bluIY8cGULGsv4BlrGBh/ofjeGq0pjy30uG3EX6Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGZGISpEFgtzJWODpsf8VtoCEtca9ICUJOFScHWxdWO8HlICFraaAPdw5MMDUQCjGythH9PsHhoQ/L7P2zFwR2z23u1K98rk2p3W+8rF5LKBC8l87vXTqF7wVyo6SzwF3Vv7V8bFWuv2vHzNC7zCCwKr0HWA5V6P/vtkrJu6I8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R043QSV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774E1C2BCAF;
-	Mon, 13 Apr 2026 16:27:20 +0000 (UTC)
+	 MIME-Version; b=cmpCTIrYxdlK1NANYwlLkPqJvpS4bKpemS2IA7muecdITCGLxNshykkk3WfNHO/Oa6xKdxIWECq8ZxYOYixLr5bsKpUD9Ql87jRljZtbqFv8D+EFoksDu69jSsLU9dUH6NNUo2NLaRABKUqJ5fVYQSf10jZX7dSxqoCrri03fTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Qn3d8Y4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21773C2BCAF;
+	Mon, 13 Apr 2026 16:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097640;
-	bh=fupDeiP3fy2UCToG6LE822mqZ+KhM9BVvLRBQHdj+28=;
+	s=korg; t=1776098825;
+	bh=u8bluIY8cGULGsv4BlrGBh/ofjeGq0pjy30uG3EX6Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R043QSV08K9VfbVqGotjQ7RklLrhXp+icH6LJwEiPdMfSCqZ1GVKPOHflgPG5d0x9
-	 kWmpvRi77hjftwv+sk5rXI9sNPIyXPtpLoO3yJFb1b360tEWhdLKVwePpsxF8eWwhC
-	 2ElXy0cLy/AQ0Tnhc6PYx2bADCPZipOU9XYMMH+M=
+	b=0Qn3d8Y4Cg9q9ph/YsjpCJLIjO4yo3A5zrwn5kkkN/9UXdv+SYvQGIV6QrJ04Xwtk
+	 BwDF63Jj5r16djSvyr97N1Rj4inTjicSDR0ugoDDD8hkyrQLNBTGXq8Q5D1yBmYZ9w
+	 xUpD1gdtfW0NA7Xryg0jLw686aHuMSIQdPlJ3x+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jane Chu <jane.chu@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 5.15 215/570] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-Date: Mon, 13 Apr 2026 17:55:46 +0200
-Message-ID: <20260413155838.509457242@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Fan Wu <fanwu01@zju.edu.cn>
+Subject: [PATCH 5.10 102/491] usb: renesas_usbhs: fix use-after-free in ISR during device removal
+Date: Mon, 13 Apr 2026 17:55:47 +0200
+Message-ID: <20260413155822.863183646@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -84,8 +78,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236728-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-237193-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -93,101 +87,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,suse.de:email,linux.dev:email,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 28E8A3EF038
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[harvard.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,zju.edu.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D4F833F063D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jane Chu <jane.chu@oracle.com>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit 14967a9c7d247841b0312c48dcf8cd29e55a4cc8 upstream.
+commit 3cbc242b88c607f55da3d0d0d336b49bf1e20412 upstream.
 
-commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
-count") introduced ->pt_share_count dedicated to hugetlb PMD share count
-tracking, but omitted fixing copy_hugetlb_page_range(), leaving the
-function relying on page_count() for tracking that no longer works.
+In usbhs_remove(), the driver frees resources (including the pipe array)
+while the interrupt handler (usbhs_interrupt) is still registered. If an
+interrupt fires after usbhs_pipe_remove() but before the driver is fully
+unbound, the ISR may access freed memory, causing a use-after-free.
 
-When lazy page table copy for hugetlb is disabled, that is, revert commit
-bcd51a3c679d ("hugetlb: lazy page table copies in fork()") fork()'ing with
-hugetlb PMD sharing quickly lockup -
+Fix this by calling devm_free_irq() before freeing resources. This ensures
+the interrupt handler is both disabled and synchronized (waits for any
+running ISR to complete) before usbhs_pipe_remove() is called.
 
-[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
-[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
-[  239.446631] Call Trace:
-[  239.446633]  <TASK>
-[  239.446636]  _raw_spin_lock+0x3f/0x60
-[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
-[  239.446645]  copy_page_range+0x22b/0x2c0
-[  239.446651]  dup_mmap+0x3e2/0x770
-[  239.446654]  dup_mm.constprop.0+0x5e/0x230
-[  239.446657]  copy_process+0xd17/0x1760
-[  239.446660]  kernel_clone+0xc0/0x3e0
-[  239.446661]  __do_sys_clone+0x65/0xa0
-[  239.446664]  do_syscall_64+0x82/0x930
-[  239.446668]  ? count_memcg_events+0xd2/0x190
-[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
-[  239.446676]  ? syscall_exit_work+0x118/0x150
-[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
-[  239.446681]  ? clear_bhb_loop+0x30/0x80
-[  239.446684]  ? clear_bhb_loop+0x30/0x80
-[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-There are two options to resolve the potential latent issue:
-  1. warn against PMD sharing in copy_hugetlb_page_range(),
-  2. fix it.
-This patch opts for the second option.
-While at it, simplify the comment, the details are not actually relevant
-anymore.
-
-Link: https://lkml.kernel.org/r/20250916004520.1604530-1-jane.chu@oracle.com
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ David: We don't have ptdesc and the wrappers, so work directly on the
-  page->pt_share_count. CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING is still
-  called CONFIG_ARCH_WANT_HUGE_PMD_SHARE. ]
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Cc: stable <stable@kernel.org>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260303073344.34577-1-fanwu01@zju.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4341,16 +4341,11 @@ int copy_hugetlb_page_range(struct mm_st
- 			break;
- 		}
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -804,6 +804,15 @@ static int usbhs_remove(struct platform_
  
--		/*
--		 * If the pagetables are shared don't copy or take references.
--		 *
--		 * dst_pte == src_pte is the common case of src/dest sharing.
--		 * However, src could have 'unshared' and dst shares with
--		 * another vma. So page_count of ptep page is checked instead
--		 * to reliably determine whether pte is shared.
--		 */
--		if (page_count(virt_to_page(dst_pte)) > 1)
-+#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
-+		/* If the pagetables are shared, there is nothing to do */
-+		if (atomic_read(&virt_to_page(dst_pte)->pt_share_count))
- 			continue;
-+#endif
- 
- 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
- 		src_ptl = huge_pte_lockptr(h, src, src_pte);
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+ 	reset_control_assert(priv->rsts);
++
++	/*
++	 * Explicitly free the IRQ to ensure the interrupt handler is
++	 * disabled and synchronized before freeing resources.
++	 * devm_free_irq() calls free_irq() which waits for any running
++	 * ISR to complete, preventing UAF.
++	 */
++	devm_free_irq(&pdev->dev, priv->irq, priv);
++
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
 
 
 
