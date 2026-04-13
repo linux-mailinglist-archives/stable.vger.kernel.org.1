@@ -1,59 +1,71 @@
-Return-Path: <stable+bounces-236357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDbwLF4Y3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:54 +0200
+	id QAkrMdgX3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1E33EEC21
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592773EEA5D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B14731FFA6D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 092E4311052B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCFB283FEF;
-	Mon, 13 Apr 2026 16:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C10283FEF;
+	Mon, 13 Apr 2026 16:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxDE0NkE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuY56dPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515C626CE32;
-	Mon, 13 Apr 2026 16:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49144277035;
+	Mon, 13 Apr 2026 16:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096697; cv=none; b=J7giglk7DRroat5kCkz3EdUbyCX7AWSb/kKb2SSFSLHeF8KhQoD3UwVLKCL5Kxrc7yBGE+mweQ1MwF7uDH3lzSVhBP1KwCC7xcGabN32KY0OVWvHeGv5MHR7HegRxIXrrDqlBWuqJFD+AgUJ4VGPSmWKojPlVCRCyq9mA0l+M/U=
+	t=1776096550; cv=none; b=Rjdt82nljCTnSEa3m1BDKzptF86KMO/q91G2jQ2AknJrBQOHJJsAn+w2JtZMIFAQnpGgOe4QXdu0fxOk+hhTvKHheROlcP81X3XAceUgB1zs5KKKACK/RTJEEPpR3pFBJFUyop2Vuwqq7X1WhYJWcpy58sQvsn+vJXKfSGK9U40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096697; c=relaxed/simple;
-	bh=ssNk2we/VRow1CJ72jjh+MosBIgSG9X4p8ODEmxIrGc=;
+	s=arc-20240116; t=1776096550; c=relaxed/simple;
+	bh=yF2j2R3+f0cwMrECt3XrByVARfcK4kzrXXhPP5776uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAE1w27EZXGPh32Bi7hbAXHPhX/K73oYUhzRrT9NOo0I5lNKQL3gdwQ/S0PsyZJrg3uO7+ONG81zZs+ww56uiuTnAMerAj91+ya0QHhHbl4MCblnoXTUEn3IHCPlsjhBQtAuWnh49/rOPKW7bZulXI6VPcZ3NyAZG8xWj1IvCnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxDE0NkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD757C2BCAF;
-	Mon, 13 Apr 2026 16:11:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CeoQmHv/xgJ1kfEc6BU4F9qP/YMQTkRRq5Dl6pr4Os5F0aGIq/Zm8FLho01CcCw+Ix62oWj2Au3UJD9hD3DMaW2WCLOqpoD0SYZjgxmftppEE4jvvlxVfZNJuisXPsKYpswU1LxhcDy+6zX1g/D2sriZGqaKDpvkhwM+NGVQnA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuY56dPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81654C2BCAF;
+	Mon, 13 Apr 2026 16:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096697;
-	bh=ssNk2we/VRow1CJ72jjh+MosBIgSG9X4p8ODEmxIrGc=;
+	s=korg; t=1776096550;
+	bh=yF2j2R3+f0cwMrECt3XrByVARfcK4kzrXXhPP5776uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxDE0NkEMns0J+kx6pMZcb5cCsT1VUV+kGPMlPqeKaZxLxtN5Gf5QvnrzH1JBLJ0m
-	 b3Tc/xkSxjIjP2qyHz/x6nonBbSenslT/qRPdFVq5IE9CNUcEfFnwmk86v8WDQSheV
-	 qSeO9fCUOv61iSNs9AH5sgBgSah10Wl3qpnxTWOM=
+	b=GuY56dPMgp2fxc+NwwLAE8b6uFtKOVjLW9bYM6m8Bvf8eKQ7Qv3aPAXc+sK7Kk+ll
+	 efFv4Vaxyso/3A0ZL+MgptLVz67LxGW1oUukuB+5FNiQiNGdeCNmZrC3iz57dohzxr
+	 tfGBtTG/vPXG5WFw20v9cb8f+5h+r5e4anA0ytpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiasong <lixiasong1@huawei.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 28/70] mptcp: fix soft lockup in mptcp_recvmsg()
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Yuanhe Shu <xiangzao@linux.alibaba.com>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 55/83] mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
 Date: Mon, 13 Apr 2026 18:00:23 +0200
-Message-ID: <20260413155729.239617101@linuxfoundation.org>
+Message-ID: <20260413155733.070383680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,159 +75,176 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236357-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236298-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EE1E33EEC21
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 592773EEA5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Xiasong <lixiasong1@huawei.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-commit 5dd8025a49c268ab6b94d978532af3ad341132a7 upstream.
+commit f58df566524ebcdfa394329c64f47e3c9257516e upstream.
 
-syzbot reported a soft lockup in mptcp_recvmsg() [0].
+When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
+encountered some very strange crash issues showing up as "Bad page state":
 
-When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
-removed from the sk_receive_queue. This causes sk_wait_data() to always
-find available data and never perform actual waiting, leading to a soft
-lockup.
+"
+[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
+[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
+[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
+[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
+[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
+[  734.496442] page dumped because: nonzero mapcount
+"
 
-Fix this by adding a 'last' parameter to track the last peeked skb.
-This allows sk_wait_data() to make informed waiting decisions and prevent
-infinite loops when MSG_PEEK is used.
+After analyzing this page’s state, it is hard to understand why the
+mapcount is not 0 while the refcount is 0, since this page is not where
+the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
+reproduce the crash as well and captured the first warning where the issue
+appears:
 
-[0]:
-watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
-Modules linked in:
-CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_wait_data+0x15/0x190
-Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
-RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
-RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
-R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
-R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
-FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
- inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
- sock_recvmsg+0x94/0xc0 net/socket.c:1100
- __sys_recvfrom+0xb2/0x130 net/socket.c:2256
- __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
- do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
-RIP: 0033:0x7f6e386a4a1d
-Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
-RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
-RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
-R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+"
+[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
+[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  734.469315] memcg:ffff000807a8ec00
+[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
+[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
+......
+[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
+const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
+(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+[  734.469390] ------------[ cut here ]------------
+[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
+CPU#90: stress-ng-mlock/9430
+[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
+[  734.469555]  set_pte_range+0xd8/0x2f8
+[  734.469566]  filemap_map_folio_range+0x190/0x400
+[  734.469579]  filemap_map_pages+0x348/0x638
+[  734.469583]  do_fault_around+0x140/0x198
+......
+[  734.469640]  el0t_64_sync+0x184/0x188
+"
 
-Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260330120335.659027-1-lixiasong1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, because commit bc68b0efa1bf ("mptcp: move the
-  whole rx path under msk socket lock protection") and commit
-  d88b2127b242 ("mptcp: add eat_recv_skb helper") (with some
-  dependences) are not in this version. These conflicts were in the
-  context, and not related to this fix. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
+nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
+tried to map beyond the large folio’s size.
+
+By adding more debug information, I found that 'nr_pages' had overflowed
+in filemap_map_pages(), causing set_pte_range() to establish mappings for
+a range exceeding the folio size, potentially corrupting fields of pages
+that do not belong to this folio (e.g., page->_mapcount).
+
+After above analysis, I think the possible race is as follows:
+
+CPU 0                                                  CPU 1
+filemap_map_pages()                                   ext4_setattr()
+   //get and lock folio with old inode->i_size
+   next_uptodate_folio()
+
+                                                          .......
+                                                          //shrink the inode->i_size
+                                                          i_size_write(inode, attr->ia_size);
+
+   //calculate the end_pgoff with the new inode->i_size
+   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+   end_pgoff = min(end_pgoff, file_end);
+
+   ......
+   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
+   end = folio_next_index(folio) - 1;
+   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+
+   ......
+   //map large folio
+   filemap_map_folio_range()
+                                                          ......
+                                                          //truncate folios
+                                                          truncate_pagecache(inode, inode->i_size);
+
+To fix this issue, move the 'end_pgoff' calculation before
+next_uptodate_folio(), so the retrieved folio stays consistent with the
+file end to avoid 'nr_pages' calculation overflow.  After this patch, the
+crash issue is gone.
+
+Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
+Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <dchinner@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   11 ++++++++---
+ mm/filemap.c |   11 ++++++++---
  1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1997,7 +1997,7 @@ static int __mptcp_recvmsg_mskq(struct m
- 				struct msghdr *msg,
- 				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
--				int *cmsg_flags)
-+				int *cmsg_flags, struct sk_buff **last)
- {
- 	struct sk_buff *skb, *tmp;
- 	int total_data_len = 0;
-@@ -2013,6 +2013,7 @@ static int __mptcp_recvmsg_mskq(struct m
- 			/* skip already peeked skbs */
- 			if (total_data_len + data_len <= copied_total) {
- 				total_data_len += data_len;
-+				*last = skb;
- 				continue;
- 			}
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3823,14 +3823,19 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 	unsigned int nr_pages = 0, folio_type;
+ 	unsigned short mmap_miss = 0, mmap_miss_saved;
  
-@@ -2053,6 +2054,8 @@ static int __mptcp_recvmsg_mskq(struct m
- 			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
- 			__skb_unlink(skb, &msk->receive_queue);
- 			__kfree_skb(skb);
-+		} else {
-+			*last = skb;
- 		}
++	/*
++	 * Recalculate end_pgoff based on file_end before calling
++	 * next_uptodate_folio() to avoid races with concurrent
++	 * truncation.
++	 */
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
++
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
  
- 		if (copied >= len)
-@@ -2274,10 +2277,12 @@ static int mptcp_recvmsg(struct sock *sk
- 		cmsg_flags = MPTCP_CMSG_INQ;
- 
- 	while (copied < len) {
-+		struct sk_buff *last = NULL;
- 		int err, bytes_read;
- 
- 		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags,
--						  copied, &tss, &cmsg_flags);
-+						  copied, &tss, &cmsg_flags,
-+						  &last);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
-@@ -2335,7 +2340,7 @@ static int mptcp_recvmsg(struct sock *sk
- 
- 		pr_debug("block timeout %ld\n", timeo);
- 		mptcp_cleanup_rbuf(msk, copied);
--		err = sk_wait_data(sk, &timeo, NULL);
-+		err = sk_wait_data(sk, &timeo, last);
- 		if (err < 0) {
- 			err = copied ? : err;
- 			goto out_err;
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	end_pgoff = min(end_pgoff, file_end);
+-
+ 	/*
+ 	 * Do not allow to map with PMD across i_size to preserve
+ 	 * SIGBUS semantics.
 
 
 
