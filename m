@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-237555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKyXG5Aj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:40 +0200
+	id mO58EFAj3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F5D3F0E6D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3783F0DB1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 928853070BE7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CFF483071A6C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBC9330649;
-	Mon, 13 Apr 2026 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3635346A13;
+	Mon, 13 Apr 2026 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0MvQbJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3BS8xfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127A6346766;
-	Mon, 13 Apr 2026 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7589346766;
+	Mon, 13 Apr 2026 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099757; cv=none; b=m/VLw6JeUYVPl4jKOMnguT2q4XpwHuUjXq26QrStS0b3NyKhzgkqvasSpjA1n0HEuIKO1wkkzGy6W7rHEsSuzKnhG8SZJGMqM6p4nNirJWloY8vmcgRTddYLtt7CrHZ+6+IYYUz/v4thRxCkJV74XTOL5SpvMJKrqlPqwxC0lBY=
+	t=1776099759; cv=none; b=HidvWBvq+VdnJUXYdvDCEAR7XBua50dY+GG5NPbRWuCVtsgiDTbu3H8TayHXZ7umAS1ZZ679HJBZBT8FSbFNgNEOmYzirPUAUyk7dFdbFA5AlXjmz862itXzlYisMQTGEzQIGBIgrbtpSOfWBfXbhJZorskaVWvxqxlDRvR6S7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099757; c=relaxed/simple;
-	bh=bpq5z7JpoD3Ch2GabFdNr7HUB7picwjc74zer4niBHg=;
+	s=arc-20240116; t=1776099759; c=relaxed/simple;
+	bh=+faGO44gGQh6fTGvyeTFjmWMiB4IkdV6+uGJ07BWOLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCbeszwuK8i0FuC19XpfYaukrh3+BkYib/VifSZm8n/6AXAtON6Nt5s68q6VKfgHvsDUZJz7GClfErHqn8P+uR9Lagu/Z3v/ozPsKH5NjfB800IXIOgd6nawh4T9SWsYiJ/jsFQc5/U0GCpyY5dsFHsKRKyq72o4KdPGhDJ+PRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0MvQbJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D74DC2BCAF;
-	Mon, 13 Apr 2026 17:02:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nh5iMg2eyldOd8TdjlpBVPacy3KF2vV/SrKdT28ZnzkCClh3RdGcwPjZieqIXgRlg1JZQHYrJtPuvQbQ2fOrEJkeOHoRqmJie2dynPaWKkaZW9iob2tbNSYGhxOw/XOM1JFmojIq5HDD9s9Y/je8iJPDJPOEbH/9zOLTOha2sdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3BS8xfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE09C2BCAF;
+	Mon, 13 Apr 2026 17:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099757;
-	bh=bpq5z7JpoD3Ch2GabFdNr7HUB7picwjc74zer4niBHg=;
+	s=korg; t=1776099759;
+	bh=+faGO44gGQh6fTGvyeTFjmWMiB4IkdV6+uGJ07BWOLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0MvQbJtrEmHAv3WV+LBGrHGgQ5uWTCsa2Ev4vg+Q2NGjGujB4IU/j/wWMQAHmykF
-	 ko9bzkj++jKvWs8AaSb+bX86nAc4EavKcPVgUz3KJelm8CuR+wXqmiTKz2wasO4KUa
-	 PZ3opasMfSZNRE5iw4gwe/VTryV+41CjwU8ZQS4E=
+	b=I3BS8xfD4w72Dtava1ScJy1kfgU11gqeiqGaE4l9Su6cvOjMtqiDwpbc0Wjoj71SI
+	 WZzSiwhHoSfK8jctl7EOC9Z9heR2iHkZOFZQBlxIqAbXF5CXa3cRdyIiGSoee9+1am
+	 EPA5gosphGGa+a68AgGzfuCH0DIGnc26r3Cb3Y/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jimmy Hu <hhhuuu@google.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 463/491] usb: gadget: uvc: fix NULL pointer dereference during unbind race
-Date: Mon, 13 Apr 2026 18:01:48 +0200
-Message-ID: <20260413155836.372233481@linuxfoundation.org>
+Subject: [PATCH 5.10 464/491] net: macb: Move devm_{free,request}_irq() out of spin lock area
+Date: Mon, 13 Apr 2026 18:01:49 +0200
+Message-ID: <20260413155836.409318464@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -64,35 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237555-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237556-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,harvard.edu:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 17F5D3F0E6D
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:email]
+X-Rspamd-Queue-Id: EF3783F0DB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,241 +101,144 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jimmy Hu <hhhuuu@google.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-[ Upstream commit eba2936bbe6b752a31725a9eb5c674ecbf21ee7d ]
+[ Upstream commit 317e49358ebbf6390fa439ef3c142f9239dd25fb ]
 
-Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
-shutdown") introduced two stages of synchronization waits totaling 1500ms
-in uvc_function_unbind() to prevent several types of kernel panics.
-However, this timing-based approach is insufficient during power
-management (PM) transitions.
+The devm_free_irq() and devm_request_irq() functions should not be
+executed in an atomic context.
 
-When the PM subsystem starts freezing user space processes, the
-wait_event_interruptible_timeout() is aborted early, which allows the
-unbind thread to proceed and nullify the gadget pointer
-(cdev->gadget = NULL):
+During device suspend, all userspace processes and most kernel threads
+are frozen. Additionally, we flush all tx/rx status, disable all macb
+interrupts, and halt rx operations. Therefore, it is safe to split the
+region protected by bp->lock into two independent sections, allowing
+devm_free_irq() and devm_request_irq() to run in a non-atomic context.
+This modification resolves the following lockdep warning:
+  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
+  preempt_count: 1, expected: 0
+  RCU nest depth: 1, expected: 0
+  7 locks held by rtcwake/501:
+   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
+   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
+   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
+   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
+   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
+   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
+   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
+  irq event stamp: 8682
+  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
+  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
+  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
+  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
+  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
+  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+  Call trace:
+   show_stack+0x24/0x38 (C)
+   __dump_stack+0x28/0x38
+   dump_stack_lvl+0x64/0x88
+   dump_stack+0x18/0x24
+   __might_resched+0x200/0x218
+   __might_sleep+0x38/0x98
+   __mutex_lock_common+0x7c/0x1378
+   mutex_lock_nested+0x38/0x50
+   free_irq+0x68/0x2b0
+   devm_irq_release+0x24/0x38
+   devres_release+0x40/0x80
+   devm_free_irq+0x48/0x88
+   macb_suspend+0x298/0x558
+   device_suspend+0x218/0x4f0
+   dpm_suspend+0x244/0x3a0
+   dpm_suspend_start+0x50/0x78
+   suspend_devices_and_enter+0xec/0x560
+   pm_suspend+0x194/0x290
+   state_store+0x110/0x158
+   kobj_attr_store+0x1c/0x30
+   sysfs_kf_write+0xa8/0xd0
+   kernfs_fop_write_iter+0x11c/0x1c8
+   vfs_write+0x248/0x368
+   ksys_write+0x7c/0xf8
+   __arm64_sys_write+0x28/0x40
+   invoke_syscall+0x4c/0xe8
+   el0_svc_common+0x98/0xf0
+   do_el0_svc+0x28/0x40
+   el0_svc+0x54/0x1e0
+   el0t_64_sync_handler+0x84/0x130
+   el0t_64_sync+0x198/0x1a0
 
-[  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
-[  814.178583][ T3173] PM: suspend entry (deep)
-[  814.192487][ T3173] Freezing user space processes
-[  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
-
-When the PM subsystem resumes or aborts the suspend and tasks are
-restarted, the V4L2 release path is executed and attempts to access the
-already nullified gadget pointer, triggering a kernel panic:
-
-[  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
-[  814.386727][ T3173] Restarting tasks ...
-[  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
-[  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
-[  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
-[  814.404078][ T4558] Call trace:
-[  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
-[  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
-[  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
-[  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
-[  814.404095][ T4558]  v4l2_release+0xcc/0x130
-
-Address the race condition and NULL pointer dereference by:
-
-1. State Synchronization (flag + mutex)
-Introduce a 'func_unbound' flag in struct uvc_device. This allows
-uvc_function_disconnect() to safely skip accessing the nullified
-cdev->gadget pointer. As suggested by Alan Stern, this flag is protected
-by a new mutex (uvc->lock) to ensure proper memory ordering and prevent
-instruction reordering or speculative loads. This mutex is also used to
-protect 'func_connected' for consistent state management.
-
-2. Explicit Synchronization (completion)
-Use a completion to synchronize uvc_function_unbind() with the
-uvc_vdev_release() callback. This prevents Use-After-Free (UAF) by
-ensuring struct uvc_device is freed after all video device resources
-are released.
-
-Fixes: b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly shutdown")
-Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
-Link: https://patch.msgid.link/20260320065427.1374555-1-hhhuuu@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ replaced guard()/scoped_guard() macros ]
+Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
+Cc: stable@vger.kernel.org
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted WoL register writes to use MACB_BIT(MAG) instead of tmp variable ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_uvc.c    |   46 ++++++++++++++++++++++++++++++---
- drivers/usb/gadget/function/uvc.h      |    3 ++
- drivers/usb/gadget/function/uvc_v4l2.c |   13 +++++++--
- 3 files changed, 56 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -393,6 +393,14 @@ uvc_function_disconnect(struct uvc_devic
- {
- 	int ret;
- 
-+	mutex_lock(&uvc->lock);
-+	if (uvc->func_unbound) {
-+		dev_dbg(&uvc->vdev.dev, "skipping function deactivate (unbound)\n");
-+		mutex_unlock(&uvc->lock);
-+		return;
-+	}
-+	mutex_unlock(&uvc->lock);
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -4734,6 +4734,8 @@ static int __maybe_unused macb_suspend(s
+ 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 				queue_writel(queue, ISR, -1);
+ 		}
++		spin_unlock_irqrestore(&bp->lock, flags);
 +
- 	if ((ret = usb_function_deactivate(&uvc->func)) < 0)
- 		uvcg_info(&uvc->func, "UVC disconnect failed with %d\n", ret);
- }
-@@ -411,6 +419,15 @@ static ssize_t function_name_show(struct
- 
- static DEVICE_ATTR_RO(function_name);
- 
-+static void uvc_vdev_release(struct video_device *vdev)
-+{
-+	struct uvc_device *uvc = video_get_drvdata(vdev);
-+
-+	/* Signal uvc_function_unbind() that the video device has been released */
-+	if (uvc->vdev_release_done)
-+		complete(uvc->vdev_release_done);
-+}
-+
- static int
- uvc_register_video(struct uvc_device *uvc)
- {
-@@ -421,7 +438,7 @@ uvc_register_video(struct uvc_device *uv
- 	uvc->vdev.v4l2_dev = &uvc->v4l2_dev;
- 	uvc->vdev.fops = &uvc_v4l2_fops;
- 	uvc->vdev.ioctl_ops = &uvc_v4l2_ioctl_ops;
--	uvc->vdev.release = video_device_release_empty;
-+	uvc->vdev.release = uvc_vdev_release;
- 	uvc->vdev.vfl_dir = VFL_DIR_TX;
- 	uvc->vdev.lock = &uvc->video.mutex;
- 	uvc->vdev.device_caps = V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_STREAMING;
-@@ -595,6 +612,9 @@ uvc_function_bind(struct usb_configurati
- 	int ret = -EINVAL;
- 
- 	uvcg_info(f, "%s()\n", __func__);
-+	mutex_lock(&uvc->lock);
-+	uvc->func_unbound = false;
-+	mutex_unlock(&uvc->lock);
- 
- 	opts = fi_to_f_uvc_opts(f->fi);
- 	/* Sanity check the streaming endpoint module parameters.
-@@ -887,18 +907,25 @@ static void uvc_free(struct usb_function
- static void uvc_function_unbind(struct usb_configuration *c,
- 				struct usb_function *f)
- {
-+	DECLARE_COMPLETION_ONSTACK(vdev_release_done);
- 	struct usb_composite_dev *cdev = c->cdev;
- 	struct uvc_device *uvc = to_uvc(f);
- 	long wait_ret = 1;
-+	bool connected;
- 
- 	uvcg_info(f, "%s()\n", __func__);
-+	mutex_lock(&uvc->lock);
-+	uvc->func_unbound = true;
-+	uvc->vdev_release_done = &vdev_release_done;
-+	connected = uvc->func_connected;
-+	mutex_unlock(&uvc->lock);
- 
- 	/* If we know we're connected via v4l2, then there should be a cleanup
- 	 * of the device from userspace either via UVC_EVENT_DISCONNECT or
- 	 * though the video device removal uevent. Allow some time for the
- 	 * application to close out before things get deleted.
- 	 */
--	if (uvc->func_connected) {
-+	if (connected) {
- 		uvcg_dbg(f, "waiting for clean disconnect\n");
- 		wait_ret = wait_event_interruptible_timeout(uvc->func_connected_queue,
- 				uvc->func_connected == false, msecs_to_jiffies(500));
-@@ -909,8 +936,13 @@ static void uvc_function_unbind(struct u
- 	video_unregister_device(&uvc->vdev);
- 	v4l2_device_unregister(&uvc->v4l2_dev);
- 
--	if (uvc->func_connected) {
--		/* Wait for the release to occur to ensure there are no longer any
-+	mutex_lock(&uvc->lock);
-+	connected = uvc->func_connected;
-+	mutex_unlock(&uvc->lock);
-+
-+	if (connected) {
-+		/*
-+		 * Wait for the release to occur to ensure there are no longer any
- 		 * pending operations that may cause panics when resources are cleaned
- 		 * up.
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
  		 */
-@@ -920,6 +952,10 @@ static void uvc_function_unbind(struct u
- 		uvcg_dbg(f, "done waiting for release with ret: %ld\n", wait_ret);
+@@ -4745,11 +4747,12 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+ 			gem_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		} else {
+ 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
+ 					       IRQF_SHARED, netdev->name, bp->queues);
+@@ -4757,13 +4760,13 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+ 			macb_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
+ 
+ 		enable_irq_wake(bp->queues[0].irq);
  	}
- 
-+	/* Wait for the video device to be released */
-+	wait_for_completion(&vdev_release_done);
-+	uvc->vdev_release_done = NULL;
+@@ -4825,6 +4828,8 @@ static int __maybe_unused macb_resume(st
+ 		queue_readl(bp->queues, ISR);
+ 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 			queue_writel(bp->queues, ISR, -1);
++		spin_unlock_irqrestore(&bp->lock, flags);
 +
- 	usb_ep_free_request(cdev->gadget->ep0, uvc->control_req);
- 	kfree(uvc->control_buf);
+ 		/* Replace interrupt handler on queue 0 */
+ 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+ 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
+@@ -4833,10 +4838,8 @@ static int __maybe_unused macb_resume(st
+ 			dev_err(dev,
+ 				"Unable to request IRQ %d (error %d)\n",
+ 				bp->queues[0].irq, err);
+-			spin_unlock_irqrestore(&bp->lock, flags);
+ 			return err;
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
  
-@@ -937,6 +973,8 @@ static struct usb_function *uvc_alloc(st
- 		return ERR_PTR(-ENOMEM);
- 
- 	mutex_init(&uvc->video.mutex);
-+	mutex_init(&uvc->lock);
-+	uvc->func_unbound = true;
- 	uvc->state = UVC_STATE_DISCONNECTED;
- 	init_waitqueue_head(&uvc->func_connected_queue);
- 	opts = fi_to_f_uvc_opts(fi);
---- a/drivers/usb/gadget/function/uvc.h
-+++ b/drivers/usb/gadget/function/uvc.h
-@@ -118,6 +118,9 @@ struct uvc_device {
- 	enum uvc_state state;
- 	struct usb_function func;
- 	struct uvc_video video;
-+	struct completion *vdev_release_done;
-+	struct mutex lock;	/* protects func_unbound and func_connected */
-+	bool func_unbound;
- 	bool func_connected;
- 	wait_queue_head_t func_connected_queue;
- 
---- a/drivers/usb/gadget/function/uvc_v4l2.c
-+++ b/drivers/usb/gadget/function/uvc_v4l2.c
-@@ -234,12 +234,18 @@ uvc_v4l2_subscribe_event(struct v4l2_fh
- 	if (sub->type < UVC_EVENT_FIRST || sub->type > UVC_EVENT_LAST)
- 		return -EINVAL;
- 
--	if (sub->type == UVC_EVENT_SETUP && uvc->func_connected)
-+	mutex_lock(&uvc->lock);
-+
-+	if (sub->type == UVC_EVENT_SETUP && uvc->func_connected) {
-+		mutex_unlock(&uvc->lock);
- 		return -EBUSY;
-+	}
- 
- 	ret = v4l2_event_subscribe(fh, sub, 2, NULL);
--	if (ret < 0)
-+	if (ret < 0) {
-+		mutex_unlock(&uvc->lock);
- 		return ret;
-+	}
- 
- 	if (sub->type == UVC_EVENT_SETUP) {
- 		uvc->func_connected = true;
-@@ -247,6 +253,7 @@ uvc_v4l2_subscribe_event(struct v4l2_fh
- 		uvc_function_connect(uvc);
- 	}
- 
-+	mutex_unlock(&uvc->lock);
- 	return 0;
- }
- 
-@@ -255,7 +262,9 @@ static void uvc_v4l2_disable(struct uvc_
- 	uvc_function_disconnect(uvc);
- 	uvcg_video_enable(&uvc->video, 0);
- 	uvcg_free_buffers(&uvc->video.queue);
-+	mutex_lock(&uvc->lock);
- 	uvc->func_connected = false;
-+	mutex_unlock(&uvc->lock);
- 	wake_up_interruptible(&uvc->func_connected_queue);
- }
+ 		disable_irq_wake(bp->queues[0].irq);
  
 
 
