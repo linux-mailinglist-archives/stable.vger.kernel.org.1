@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJYBF/wj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:28 +0200
+	id 8AQ4LY4X3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A7A3F0FB7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F1E3EE9E5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B54E03150575
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B87AA303234E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE7030BBAE;
-	Mon, 13 Apr 2026 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A992472A2;
+	Mon, 13 Apr 2026 16:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZq62qdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agwzy6kU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAAE280CFB;
-	Mon, 13 Apr 2026 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BC8273D77;
+	Mon, 13 Apr 2026 16:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098321; cv=none; b=g+ei4uhNQJ4qM2LRfv36LM8mku1YjomuLeg9us5X4sxUPR8xJU5l7MFvAZ59AVTL+yIkV/9pyAu+80tpZ+ZRxTPg/iJHSmigy5gUCGdu1w4P3WpqWSQjv/62r8MffrF6fxjlsyNS22KxijcQz5WYqX+3qx/TSSztiGTIm7Bpm+E=
+	t=1776096501; cv=none; b=EYalASrZ9v5k0PeWcDSMS6uhZWtD303Zpwo1EgAYgk+jf5fGuWw+2h0nGYYihZi+M9B2Hp3IydrB7UKxrIkjQdF5sjnYoERrGIcInaaKVHwljS8IcKBycusP4fAitodA5tX5phRbtPgRM0mKQybvApIrVbuf4Dfo1rd9tRbnTIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098321; c=relaxed/simple;
-	bh=xoujxEvXACQkQ+ieiCjuXiMf+FUuKOSycdvi2+PI+xI=;
+	s=arc-20240116; t=1776096501; c=relaxed/simple;
+	bh=+apvcWi0jOfKS+dLdt4zl6vW3n75idTK/ngrCGntbUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gsacu7OY87DgdlUkCM5oBGyxu5aBy3eAPtKl/oropyQXdi9Y7uf6EJariNrzTr+2YgmBntQhEKGQZnGwm4UQttfTzfI6+ozwYghfFo3BZ2/GgB6EHxCSr8fkZeQlvP9cXnzr5fLocWgGD46r85n8RpuSGVd8WtUqKD9hfRnoe28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZq62qdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA048C2BCAF;
-	Mon, 13 Apr 2026 16:38:40 +0000 (UTC)
+	 MIME-Version; b=g3RGBgm4WnIp4rEVTy0SlDC6bzp34Kw5DVp2hRM/OxQ7U54QxR+CmltGODL627+JN91xxwZJncPDvkDPNdGDALFcQVrN91b/Oz4lRt/Grhy3EmaSuOUqxLD1ebDYU5sBP9VD7YT/beGoiHiNoFftsqjwJiRoJVybQgOkXr5RQs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agwzy6kU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1962C2BCAF;
+	Mon, 13 Apr 2026 16:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098321;
-	bh=xoujxEvXACQkQ+ieiCjuXiMf+FUuKOSycdvi2+PI+xI=;
+	s=korg; t=1776096501;
+	bh=+apvcWi0jOfKS+dLdt4zl6vW3n75idTK/ngrCGntbUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZq62qdA/ec36aeRcVheSnGcf+ISAFG0Gr8O/I2CFEB3qdpjjAqcFEMRiyvaDuuQG
-	 AuStUxLYU58IqL3fa50tvyQ/9udD1ywuYUSQb075EPVWa6ocenK+8ijltyuFiBCxr6
-	 G+Zs7yN4QMtmxisVIPmKVRJvi/U8ZXOtkNV/ngLA=
+	b=agwzy6kUqLYk5z7GP+Ej/2wHdzBHBk+5DH0e650Ex68+QxHEEWukmeMfgP7JWFxhn
+	 WXGOz3ifVDMBr4MTk9itroJtk8dvZLDTStghXkGUD8gBBCAso+C8YOP528bS4rviQM
+	 rHv/NZfbneRVThYYvDs1gjM4Vn5eP3o2M4PfInXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yongchao Wu <yongchao.wu@autochips.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.15 472/570] usb: cdns3: gadget: fix state inconsistency on gadget init failure
+	Shawn Guo <shawnguo@kernel.org>,
+	Wei Xu <xuwei5@hisilicon.com>
+Subject: [PATCH 6.18 35/83] arm64: dts: hisilicon: hi3798cv200: Add missing dma-ranges
 Date: Mon, 13 Apr 2026 18:00:03 +0200
-Message-ID: <20260413155848.145250946@linuxfoundation.org>
+Message-ID: <20260413155732.330103267@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,84 +77,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236995-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236278-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,autochips.com:email]
-X-Rspamd-Queue-Id: B8A7A3F0FB7
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,hisilicon.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,8a22000:email]
+X-Rspamd-Queue-Id: D8F1E3EE9E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongchao Wu <yongchao.wu@autochips.com>
+From: Shawn Guo <shawnguo@kernel.org>
 
-commit c32f8748d70c8fc77676ad92ed76cede17bf2c48 upstream.
+commit 1af997cad473d505248df6d9577183bb91f69670 upstream.
 
-When cdns3_gadget_start() fails, the DRD hardware is left in gadget mode
-while software state remains INACTIVE, creating hardware/software state
-inconsistency.
+Reboot starts failing on Poplar since commit 8424ecdde7df ("arm64: mm:
+Set ZONE_DMA size based on devicetree's dma-ranges"), which effectively
+changes zone_dma_bits from 30 to 32 for arm64 platforms that do not
+properly define dma-ranges in device tree.  It's unclear how Poplar reboot
+gets broken by this change exactly, but a dma-ranges limiting zone_dma to
+the first 1 GB fixes the regression.
 
-When switching to host mode via sysfs:
-  echo host > /sys/class/usb_role/13180000.usb-role-switch/role
-
-The role state is not set to CDNS_ROLE_STATE_ACTIVE due to the error,
-so cdns_role_stop() skips cleanup because state is still INACTIVE.
-This violates the DRD controller design specification (Figure22),
-which requires returning to idle state before switching roles.
-
-This leads to a synchronous external abort in xhci_gen_setup() when
-setting up the host controller:
-
-[  516.440698] configfs-gadget 13180000.usb: failed to start g1: -19
-[  516.442035] cdns-usb3 13180000.usb: Failed to add gadget
-[  516.443278] cdns-usb3 13180000.usb: set role 2 has failed
-...
-[ 1301.375722] xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
-[ 1301.377716] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
-[ 1301.382485] pc : xhci_gen_setup+0xa4/0x408
-[ 1301.393391] backtrace:
-    ...
-    xhci_gen_setup+0xa4/0x408    <-- CRASH
-    xhci_plat_setup+0x44/0x58
-    usb_add_hcd+0x284/0x678
-    ...
-    cdns_role_set+0x9c/0xbc        <-- Role switch
-
-Fix by calling cdns_drd_gadget_off() in the error path to properly
-clean up the DRD gadget state.
-
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20260401001000.5761-1-yongchao.wu@autochips.com
+Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    1 +
+ arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -3427,6 +3427,7 @@ static int __cdns3_gadget_init(struct cd
- 	ret = cdns3_gadget_start(cdns);
- 	if (ret) {
- 		pm_runtime_put_sync(cdns->dev);
-+		cdns_drd_gadget_off(cdns);
- 		return ret;
- 	}
+--- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
++++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
+@@ -122,6 +122,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		ranges = <0x0 0x0 0xf0000000 0x10000000>;
++		dma-ranges = <0x0 0x0 0x0 0x40000000>;
  
+ 		crg: clock-reset-controller@8a22000 {
+ 			compatible = "hisilicon,hi3798cv200-crg", "syscon", "simple-mfd";
 
 
 
