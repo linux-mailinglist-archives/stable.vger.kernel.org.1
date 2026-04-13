@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHCsBXIX3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:58 +0200
+	id 8EMBKkEf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF733EE9AA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF543F0100
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DADA83053BDA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 429113093E26
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA52F2EBB8C;
-	Mon, 13 Apr 2026 16:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F7C30FC0F;
+	Mon, 13 Apr 2026 16:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dz/4lNj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9cXSRQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20052D877D;
-	Mon, 13 Apr 2026 16:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7602130C361;
+	Mon, 13 Apr 2026 16:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096491; cv=none; b=cNGEJZga1V1K9bQ+vheTptEIx0zlBAPfKZht5HtuXbJtsk6rEcE4fqnB4BCBSmCIGPIW8UOLYxL2wPtmYSoMz9NI/eFvdXILqQd2urH9J/08PwAmB/9vHG9jsR2r91vwaFTjDhG66IgVAO5GvsKhi1l56SJl1gjQoDn9UuLihfo=
+	t=1776098295; cv=none; b=GCsPTePGyuYNowmztkMZrsFazg7NLu9B46+FuVBdkeZOq/PKF8Ha1OzJpEh+KBFfNoA8bkLVSnfbaeD+eAlJQsBnKBHwq2xA7cf6oeXfeDr0Uy5r6G7sH/VO9mMcvfKF0UlTOITRdQmE7eareR3fY6f6wBGqNRhBUK5WNvpnduo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096491; c=relaxed/simple;
-	bh=RuBQXvgJeMlDttSRGmOuP+UI0Lqorklal6TD6J3M58k=;
+	s=arc-20240116; t=1776098295; c=relaxed/simple;
+	bh=dsV8zlMkXYFjvuelF6YZ+fwZCityvFvRthsnX9qq2PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOVSBX8S17WJJUO1pplz6lKlNFjcKwM+l7q+RJwL8kyeYcfF6pglHhwqfQkaywqwAOXsQLxx8XdJeJTAR4xfBCZwvRyLZ/2lfTa59yYCIB1X7UgsEEzW8kJ5MH5Fzfem6vtFkVBhyX4TKYIGUKtIJgeFnGnedUpy7CbihlhUpL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dz/4lNj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C1BC2BCAF;
-	Mon, 13 Apr 2026 16:08:10 +0000 (UTC)
+	 MIME-Version; b=q5xpWF0FvEpSaoy6XjuoabkdoeTN+3BlL0Ii10esJRonSpcqBR+sEZ/Fq9cgKSGTLhN6nxReD/8j/7UD0taHfubKxlJVQgImwy+4UAykcVWDYUkfUcQIL4mK8rOLq7BZEAvGVCW0hfCpCGBNi8zk33ZPMUVLcoJIeIr8Uj2CIuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9cXSRQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D739C2BCAF;
+	Mon, 13 Apr 2026 16:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096490;
-	bh=RuBQXvgJeMlDttSRGmOuP+UI0Lqorklal6TD6J3M58k=;
+	s=korg; t=1776098295;
+	bh=dsV8zlMkXYFjvuelF6YZ+fwZCityvFvRthsnX9qq2PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dz/4lNj9itqfAuYNw+yw+0W396iOpH4B72XQIyC9nTFtcBAh72cqcyV9zYBJcuEee
-	 VJ7vqrsM2rsNYRzCZBYYy8mCKMAaTAx6UgI3du42Zv6YhI/9bATcbd1f4Y9Srxv4eA
-	 XkY5r6DIGoxBs0/17o2xuPmbdo9dm2hDWXuFgLVU=
+	b=p9cXSRQlDuCJ+GCU5QkRi9mFbp0MgQxyEQzxGIDNyFzi0vuqsrrQzbcHl+rmIzuyG
+	 cSngEiBKT90eqFUKx85RK4cRokBao+rX7VHxM8fPBGXHU/TMTSyTSNHf2QbPiLJzr6
+	 Hwt3IUmqt5k2aB0YlG/N4SWPcz23HhHQVd8S25vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.18 31/83] Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
+	syzbot+9a3c54f52bd1edbd975f@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Heitor Alves de Siqueira <halves@igalia.com>
+Subject: [PATCH 5.15 468/570] usb: usbtmc: Flush anchored URBs in usbtmc_release
 Date: Mon, 13 Apr 2026 17:59:59 +0200
-Message-ID: <20260413155732.184504110@linuxfoundation.org>
+Message-ID: <20260413155847.996782228@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236985-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236274-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable,9a3c54f52bd1edbd975f];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[puri.sm:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9FF733EE9AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,syzkaller.appspot.com:url,igalia.com:email]
+X-Rspamd-Queue-Id: 2FF543F0100
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Heitor Alves de Siqueira <halves@igalia.com>
 
-commit 4cd46ea0eb4504f7f4fea92cb4601c5c9a3e545e upstream.
+commit 8a768552f7a8276fb9e01d49773d2094ace7c8f1 upstream.
 
-This reverts commit c24a9b698fb02cd0723fa8375abab07f94b97b10.
+When calling usbtmc_release, pending anchored URBs must be flushed or
+killed to prevent use-after-free errors (e.g. in the HCD giveback
+path). Call usbtmc_draw_down() to allow anchored URBs to be completed.
 
-It's been found that there's a significant per-unit variance in accepted
-supply voltages and the current set still makes some units unstable.
-
-Revert back to nominal values.
-
-Cc: stable@vger.kernel.org
-Fixes: c24a9b698fb0 ("arm64: dts: imx8mq-librem5: Set the DVS voltages lower")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 4f3c8d6eddc2 ("usb: usbtmc: Support Read Status Byte with SRQ per file")
+Reported-by: syzbot+9a3c54f52bd1edbd975f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9a3c54f52bd1edbd975f
+Cc: stable <stable@kernel.org>
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
+Link: https://patch.msgid.link/20260312-usbtmc-flush-release-v1-1-5755e9f4336f@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |    2 -
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi   |   22 +++++---------------
- 2 files changed, 7 insertions(+), 17 deletions(-)
+ drivers/usb/class/usbtmc.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-@@ -7,7 +7,7 @@
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -254,6 +254,9 @@ static int usbtmc_release(struct inode *
+ 	list_del(&file_data->file_elem);
  
- &a53_opp_table {
- 	opp-1000000000 {
--		opp-microvolt = <950000>;
-+		opp-microvolt = <1000000>;
- 	};
- };
+ 	spin_unlock_irq(&file_data->data->dev_lock);
++
++	/* flush anchored URBs */
++	usbtmc_draw_down(file_data);
+ 	mutex_unlock(&file_data->data->io_mutex);
  
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -844,8 +844,8 @@
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
- 				regulator-ramp-delay = <1250>;
--				rohm,dvs-run-voltage = <880000>;
--				rohm,dvs-idle-voltage = <820000>;
-+				rohm,dvs-run-voltage = <900000>;
-+				rohm,dvs-idle-voltage = <850000>;
- 				rohm,dvs-suspend-voltage = <810000>;
- 				regulator-always-on;
- 			};
-@@ -856,8 +856,8 @@
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
- 				regulator-ramp-delay = <1250>;
--				rohm,dvs-run-voltage = <950000>;
--				rohm,dvs-idle-voltage = <850000>;
-+				rohm,dvs-run-voltage = <1000000>;
-+				rohm,dvs-idle-voltage = <900000>;
- 				regulator-always-on;
- 			};
- 
-@@ -866,14 +866,14 @@
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
--				rohm,dvs-run-voltage = <850000>;
-+				rohm,dvs-run-voltage = <900000>;
- 			};
- 
- 			buck4_reg: BUCK4 {
- 				regulator-name = "buck4";
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
--				rohm,dvs-run-voltage = <930000>;
-+				rohm,dvs-run-voltage = <1000000>;
- 			};
- 
- 			buck5_reg: BUCK5 {
-@@ -1407,13 +1407,3 @@
- 	fsl,ext-reset-output;
- 	status = "okay";
- };
--
--&a53_opp_table {
--	opp-1000000000 {
--		opp-microvolt = <850000>;
--	};
--
--	opp-1500000000 {
--		opp-microvolt = <950000>;
--	};
--};
+ 	kref_put(&file_data->data->kref, usbtmc_delete);
 
 
 
