@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-236843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIu9LpEa3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:17 +0200
+	id qGFZBoEj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B63B3EF2E4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A853F0E2D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B12783015D00
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D637301A695
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B35127F4F5;
-	Mon, 13 Apr 2026 16:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82DC313298;
+	Mon, 13 Apr 2026 16:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exLy9Ido"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM+5AgyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F318323D297;
-	Mon, 13 Apr 2026 16:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DD7317152;
+	Mon, 13 Apr 2026 16:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097935; cv=none; b=KtsrhNtS0m+od30k7jRDqtp2W9vpbsv5P7gsrDyO61RsV32w1KbngqQf0MeTM1/5DxMyPP8X3UJiI22pz5/pV7vaCdkp5Eq8m6luqhJljyzXuMparJ5s3cXyD62QSiVTwcN8C3V4lccnHhZ41P1ET44REswmFdcRp0N40Tvt+KQ=
+	t=1776099199; cv=none; b=h6fn/62pYOtOd1vRnZy2aiunGAmLh1sZlCev2O46rEqacNTJfGFsK0idOh5EEfNDm5zF87nh+U3MR7lTu+xMBiBktziBT859oa6z3J2CbOI1mc1fbKFav+a0SEgjU4t6vDe905ak50HZF9Mk+QebosddesrElSPpQPs1Vy2X+eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097935; c=relaxed/simple;
-	bh=EaxKpVxTEmfwMtcRdYFfmWLHpT+nPVuu5hhp3+qwpDM=;
+	s=arc-20240116; t=1776099199; c=relaxed/simple;
+	bh=Gb6d2S1bFjGYsKfLmqHsVZbqkEYr3pwH75SKEb0aXIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mVO/4BgKe5yClxSnKHzfoWq/2Xp0TtUHiZVUw83UwKDWIRRgBZymUwETi1gII3DLXRX7YnUpom8TpvybNM9/UKrUbY3VPad9ieujhdQ6hkd7GJF68pvBnWb1eUNZKE9HmoGB7puuMLo4FAO06DzXZU3zb0FYX7tMwPAFSVZR8XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exLy9Ido; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF05C2BCAF;
-	Mon, 13 Apr 2026 16:32:14 +0000 (UTC)
+	 MIME-Version; b=Wxn1kqKTLZ7fjbh1/bi+kfXsgDYA6wK7sQ78JTabm5TFbGjZDng1tsw857kVBcUxV8h8DXYEjc5yPv523xooT/wcHf6dlHeCTG0PNBsr4jq7NWTUAGklcrLjuNpollBp5QplshdMAQMSsqQ4SUUBdp7vR+HdY2aUTfg2BQGwiDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM+5AgyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34B1C2BCAF;
+	Mon, 13 Apr 2026 16:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097934;
-	bh=EaxKpVxTEmfwMtcRdYFfmWLHpT+nPVuu5hhp3+qwpDM=;
+	s=korg; t=1776099199;
+	bh=Gb6d2S1bFjGYsKfLmqHsVZbqkEYr3pwH75SKEb0aXIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exLy9IdoUvldqb53LRPwSAx2jI2J3xfAwcuXtvX8FKN0aBI7Z3NavkY/HAQRQYKne
-	 HswAFOxQGsJtJZxJ9LZKPE2LblIAMy66tMXHCxTPbRtzriDokiOz+D8RpfVrEv6ftQ
-	 4LVh8GKknx+MWJ61iE/Ynfedgg1V4oPy/f/qoGOU=
+	b=DM+5AgySmP43ZsfQtoxT7nqMqzWkoQZmeuiRGTrrl2Uxp7AJZqHLnCYsdhHX3OYDp
+	 AtXWuPTRRVB1D6Eg0uacamn+2lhkv9VPmTnTCkDoUB0Gnr4jtHuPJP3C8ixRzU2O9R
+	 Txn7w3erRSaUud6e4Wm+3ocKTuGb0bg0KlZqCM/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 328/570] platform/olpc: olpc-xo175-ec: Fix overflow error message to print inlen
-Date: Mon, 13 Apr 2026 17:57:39 +0200
-Message-ID: <20260413155842.782069548@linuxfoundation.org>
+Subject: [PATCH 5.10 215/491] sched: idle: Consolidate the handling of two special cases
+Date: Mon, 13 Apr 2026 17:57:40 +0200
+Message-ID: <20260413155827.114692256@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +66,165 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236843-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237339-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,infradead.org:email,v3.sk:email]
-X-Rspamd-Queue-Id: 5B63B3EF2E4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,layalina.io:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 15A853F0E2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 2061f7b042f88d372cca79615f8425f3564c0b40 ]
+[ Upstream commit f4c31b07b136839e0fb3026f8a5b6543e3b14d2f ]
 
-The command length check validates inlen (> 5), but the error message
-incorrectly printed resp_len. Print inlen so the log reflects the
-actual command length.
+There are two special cases in the idle loop that are handled
+inconsistently even though they are analogous.
 
-Fixes: 0c3d931b3ab9e ("Platform: OLPC: Add XO-1.75 EC driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: Lubomir Rintel <lkundrak@v3.sk>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260310130138.700687-1-alok.a.tiwari@oracle.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+The first one is when a cpuidle driver is absent and the default CPU
+idle time power management implemented by the architecture code is used.
+In that case, the scheduler tick is stopped every time before invoking
+default_idle_call().
+
+The second one is when a cpuidle driver is present, but there is only
+one idle state in its table.  In that case, the scheduler tick is never
+stopped at all.
+
+Since each of these approaches has its drawbacks, reconcile them with
+the help of one simple heuristic.  Namely, stop the tick if the CPU has
+been woken up by it in the previous iteration of the idle loop, or let
+it tick otherwise.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Fixes: ed98c3491998 ("sched: idle: Do not stop the tick before cpuidle_idle_call()")
+[ rjw: Added Fixes tag, changelog edits ]
+Link: https://patch.msgid.link/4741364.LvFx2qVVIh@rafael.j.wysocki
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/olpc/olpc-xo175-ec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/idle.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/platform/olpc/olpc-xo175-ec.c b/drivers/platform/olpc/olpc-xo175-ec.c
-index 0d46706afd2da..d8a9a215a14cd 100644
---- a/drivers/platform/olpc/olpc-xo175-ec.c
-+++ b/drivers/platform/olpc/olpc-xo175-ec.c
-@@ -482,7 +482,7 @@ static int olpc_xo175_ec_cmd(u8 cmd, u8 *inbuf, size_t inlen, u8 *resp,
- 	dev_dbg(dev, "CMD %x, %zd bytes expected\n", cmd, resp_len);
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 8c38b4fe9ee72..50b18ba9ca9cd 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -158,6 +158,14 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	return cpuidle_enter(drv, dev, next_state);
+ }
  
- 	if (inlen > 5) {
--		dev_err(dev, "command len %zd too big!\n", resp_len);
-+		dev_err(dev, "command len %zd too big!\n", inlen);
- 		return -EOVERFLOW;
++static void idle_call_stop_or_retain_tick(bool stop_tick)
++{
++	if (stop_tick || tick_nohz_tick_stopped())
++		tick_nohz_idle_stop_tick();
++	else
++		tick_nohz_idle_retain_tick();
++}
++
+ /**
+  * cpuidle_idle_call - the main idle function
+  *
+@@ -167,7 +175,7 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+  * set, and it returns with polling set.  If it ever stops polling, it
+  * must clear the polling bit.
+  */
+-static void cpuidle_idle_call(void)
++static void cpuidle_idle_call(bool stop_tick)
+ {
+ 	struct cpuidle_device *dev = cpuidle_get_device();
+ 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
+@@ -189,7 +197,7 @@ static void cpuidle_idle_call(void)
+ 	 */
+ 
+ 	if (cpuidle_not_available(drv, dev)) {
+-		tick_nohz_idle_stop_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		default_idle_call();
+ 		goto exit_idle;
+@@ -224,17 +232,19 @@ static void cpuidle_idle_call(void)
+ 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
+ 		call_cpuidle(drv, dev, next_state);
+ 	} else if (drv->state_count > 1) {
+-		bool stop_tick = true;
++		/*
++		 * stop_tick is expected to be true by default by cpuidle
++		 * governors, which allows them to select idle states with
++		 * target residency above the tick period length.
++		 */
++		stop_tick = true;
+ 
+ 		/*
+ 		 * Ask the cpuidle framework to choose a convenient idle state.
+ 		 */
+ 		next_state = cpuidle_select(drv, dev, &stop_tick);
+ 
+-		if (stop_tick || tick_nohz_tick_stopped())
+-			tick_nohz_idle_stop_tick();
+-		else
+-			tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		entered_state = call_cpuidle(drv, dev, next_state);
+ 		/*
+@@ -242,7 +252,7 @@ static void cpuidle_idle_call(void)
+ 		 */
+ 		cpuidle_reflect(dev, entered_state);
+ 	} else {
+-		tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		/*
+ 		 * If there is only a single idle state (or none), there is
+@@ -270,6 +280,7 @@ static void cpuidle_idle_call(void)
+ static void do_idle(void)
+ {
+ 	int cpu = smp_processor_id();
++	bool got_tick = false;
+ 
+ 	/*
+ 	 * Check if we need to update blocked load
+@@ -312,8 +323,9 @@ static void do_idle(void)
+ 			tick_nohz_idle_restart_tick();
+ 			cpu_idle_poll();
+ 		} else {
+-			cpuidle_idle_call();
++			cpuidle_idle_call(got_tick);
+ 		}
++		got_tick = tick_nohz_idle_got_tick();
+ 		arch_cpu_idle_exit();
  	}
  
 -- 
