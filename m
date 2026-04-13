@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +F++DHMZ3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:31 +0200
+	id QHFVNRkf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A0C3EEF75
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12CA3F0030
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A1C69308DD7A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90AE33056643
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A9E3090F5;
-	Mon, 13 Apr 2026 16:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3941A30BF4E;
+	Mon, 13 Apr 2026 16:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wyg2Bo4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRY2sCHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F033090C5;
-	Mon, 13 Apr 2026 16:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF34280CFB;
+	Mon, 13 Apr 2026 16:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096692; cv=none; b=B6Y43iBooj1F+bb3vVpbfvuvU/jukw9Fm1ZXt+xrfDuRXUcwyUTgYgoACRrSQpS1wK5bekcO1nPTrZ1BFUyIrcTtzdYukuNAiAf/DJ9eKpIBKCxGRZ3NEBEtjRz0ZEiuG1tMBuTXm4nJ7JbK6WHukBCpTTEMBFT30m0JfXqfat8=
+	t=1776098352; cv=none; b=KgHcSUFdC9dn8tiXl0SmEkDuBWAYNyOWUpGY4yHhajhWwg0XbwalPcccE+pU4K2083ko8k/LxwtFir9A+98PjHZUwB6a3QIuvf6B6LOscq6eXvggi1n7HWgcwxXTnuKtdarrsNqdYSRBW0e4vu3wYQ8d7gDu/JfBZADqA/LwUz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096692; c=relaxed/simple;
-	bh=g0ZSTolLpLwARI/HqnyiGicWk/02+RE24paXekirkro=;
+	s=arc-20240116; t=1776098352; c=relaxed/simple;
+	bh=ZnPm3MgtwYMqhm/DJKYeCxFEg2DP9IcFgArQesjMJnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJOfdtlWs+j9XYVTU9bTWg5+WLZgBW+gkVxrjiEJpnJwdhxw3/HEo1Exxczknc63SddX8xMDK2MHDRk5Pw3Cv6kyZS5rJDniWfNEVFzVOLIBsAjcLfXp1TSSIBMAvLGfK+1+dUqGYJixzy8iFRAs4jjBkbvvWaaQ98jvvcV0tE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wyg2Bo4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE091C2BCB0;
-	Mon, 13 Apr 2026 16:11:31 +0000 (UTC)
+	 MIME-Version; b=RV7YyS4ZEMvPj3NIFfyeqSVX200BkK4cR6LToOHTzz9Aiz++pEHXjaEUZb8Al3BBeVq50OJKxaRvzBjtu1V7MfcHz/mQLeBxKG9eT/pCaUvy2WPNzulqDuOPpZFfbHiGm2YOunofd8mk18flUZXOLNHh5IRtr3udRVqlJEe8LAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRY2sCHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86499C2BCAF;
+	Mon, 13 Apr 2026 16:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096692;
-	bh=g0ZSTolLpLwARI/HqnyiGicWk/02+RE24paXekirkro=;
+	s=korg; t=1776098351;
+	bh=ZnPm3MgtwYMqhm/DJKYeCxFEg2DP9IcFgArQesjMJnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wyg2Bo4FIdSU1ZQ3ba/gp3FIj2K7IjGN0aPqM69mSw3olykwcW9Yvnnv5RTnjgYpB
-	 X9jEbdrlxKg2BM64shjuUy5H9XInGnhVfMMkGIaWQd4hZ9LHeZaU4/JimJ5xhOYsWq
-	 loK/7LLL+nhMMj1hB/bbecmw+bUcQ5hTX4Z0A9mM=
+	b=rRY2sCHPX1t/JXEv2LmeOH+OgMHN9ntdQQN1NUDZSreWimHnYj8jw/Rv9MsIigCvm
+	 COOOoCzANaYhAp/rqY7yZk3ob+uRPNm0DQOUMUT5szoX52W85jFi0r5Q/hBZJIVM/W
+	 IYv1yXGPPjjjGFeQyKQl13umIbgfYk57na19dWdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 26/70] Revert "mptcp: add needs_id for netlink appending addr"
-Date: Mon, 13 Apr 2026 18:00:21 +0200
-Message-ID: <20260413155729.164812636@linuxfoundation.org>
+	Sebastian Urban <surban@surban.net>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 491/570] usb: gadget: dummy_hcd: fix premature URB completion when ZLP follows partial transfer
+Date: Mon, 13 Apr 2026 18:00:22 +0200
+Message-ID: <20260413155848.852160701@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,138 +68,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236355-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237008-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ietf.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A0A0C3EEF75
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,harvard.edu:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,surban.net:email]
+X-Rspamd-Queue-Id: D12CA3F0030
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Sebastian Urban <surban@surban.net>
 
-[ Upstream commit 8e2760eaab778494fc1fa257031e0e1799647f46 ]
+commit f50200dd44125e445a6164e88c217472fa79cdbc upstream.
 
-This commit was originally adding the ability to add MPTCP endpoints
-with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
-net namespace level, is not supposed to handle endpoints with such ID,
-because this ID 0 is reserved to the initial subflow, as mentioned in
-the MPTCPv1 protocol [1], a per-connection setting.
+When a gadget request is only partially transferred in transfer()
+because the per-frame bandwidth budget is exhausted, the loop advances
+to the next queued request. If that next request is a zero-length
+packet (ZLP), len evaluates to zero and the code takes the
+unlikely(len == 0) path, which sets is_short = 1. This bypasses the
+bandwidth guard ("limit < ep->ep.maxpacket && limit < len") that
+lives in the else branch and would otherwise break out of the loop for
+non-zero requests. The is_short path then completes the URB before all
+data from the first request has been transferred.
 
-Note that 'ip mptcp endpoint add id 0' stops early with an error, but
-other tools might still request the in-kernel PM to create MPTCP
-endpoints with this restricted ID 0.
+Reproducer (bulk IN, high speed):
 
-In other words, it was wrong to call the mptcp_pm_has_addr_attr_id
-helper to check whether the address ID attribute is set: if it was set
-to 0, a new MPTCP endpoint would be created with ID 0, which is not
-expected, and might cause various issues later.
+  Device side (FunctionFS with Linux AIO):
+    1. Queue a 65024-byte write via io_submit (127 * 512, i.e. a
+       multiple of the HS bulk max packet size).
+    2. Immediately queue a zero-length write (ZLP) via io_submit.
 
-Fixes: 584f38942626 ("mptcp: add needs_id for netlink appending addr")
-Cc: stable@vger.kernel.org
-Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.2-9 [1]
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied changes to net/mptcp/pm_netlink.c instead of renamed net/mptcp/pm_kernel.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Host side:
+    3. Submit a 65536-byte bulk IN URB.
+
+  Expected: URB completes with actual_length = 65024.
+  Actual:   URB completes with actual_length = 53248, losing 11776
+            bytes that leak into subsequent URBs.
+
+At high speed the per-frame budget is 53248 bytes (512 * 13 * 8).
+The 65024-byte request exhausts this budget after 53248 bytes, leaving
+the request incomplete (req->req.actual < req->req.length). Neither
+the request nor the URB is finished, and rescan is 0, so the loop
+advances to the ZLP. For the ZLP, dev_len = 0, so len = min(12288, 0)
+= 0, taking the unlikely(len == 0) path and setting is_short = 1.
+The is_short handler then sets *status = 0, completing the URB with
+only 53248 of the expected 65024 bytes.
+
+Fix this by breaking out of the loop when the current request has
+remaining data (req->req.actual < req->req.length). The request
+resumes on the next timer tick, preserving correct data ordering.
+
+Signed-off-by: Sebastian Urban <surban@surban.net>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260315151045.1155850-1-surban@surban.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   24 +++++-------------------
- 1 file changed, 5 insertions(+), 19 deletions(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1076,7 +1076,7 @@ static void __mptcp_pm_release_addr_entr
- 
- static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
- 					     struct mptcp_pm_addr_entry *entry,
--					     bool needs_id, bool replace)
-+					     bool replace)
- {
- 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
- 	unsigned int addr_max;
-@@ -1135,7 +1135,7 @@ static int mptcp_pm_nl_append_new_local_
- 		}
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -1531,6 +1531,12 @@ top:
+ 		/* rescan to continue with any other queued i/o */
+ 		if (rescan)
+ 			goto top;
++
++		/* request not fully transferred; stop iterating to
++		 * preserve data ordering across queued requests.
++		 */
++		if (req->req.actual < req->req.length)
++			break;
  	}
- 
--	if (!entry->addr.id && needs_id) {
-+	if (!entry->addr.id) {
- find_next:
- 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
- 						    MPTCP_PM_MAX_ADDR_ID + 1,
-@@ -1146,7 +1146,7 @@ find_next:
- 		}
- 	}
- 
--	if (!entry->addr.id && needs_id)
-+	if (!entry->addr.id)
- 		goto out;
- 
- 	__set_bit(entry->addr.id, pernet->id_bitmap);
-@@ -1279,7 +1279,7 @@ int mptcp_pm_nl_get_local_id(struct mptc
- 	entry->ifindex = 0;
- 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
- 	entry->lsk = NULL;
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true, false);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, false);
- 	if (ret < 0)
- 		kfree(entry);
- 
-@@ -1498,18 +1498,6 @@ next:
- 	return 0;
+ 	return sent;
  }
- 
--static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
--				      struct genl_info *info)
--{
--	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
--
--	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
--					 mptcp_pm_address_nl_policy, info->extack) &&
--	    tb[MPTCP_PM_ADDR_ATTR_ID])
--		return true;
--	return false;
--}
--
- int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct nlattr *attr = info->attrs[MPTCP_PM_ENDPOINT_ADDR];
-@@ -1551,9 +1539,7 @@ int mptcp_pm_nl_add_addr_doit(struct sk_
- 			goto out_free;
- 		}
- 	}
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
--						!mptcp_pm_has_addr_attr_id(attr, info),
--						true);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
- 	if (ret < 0) {
- 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
- 		goto out_free;
 
 
 
