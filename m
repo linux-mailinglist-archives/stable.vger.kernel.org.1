@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFYHIUoY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:34 +0200
+	id oDB4NJUX3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B1B3EEBE0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8833EE9EC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 194BE3085E9E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F39203045FDB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C9D275AFB;
-	Mon, 13 Apr 2026 16:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B914B26A1CF;
+	Mon, 13 Apr 2026 16:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Puhk5oXj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV8bB+ZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367B72472A2;
-	Mon, 13 Apr 2026 16:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C25925332E;
+	Mon, 13 Apr 2026 16:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096674; cv=none; b=jJy15ICusX8JYKTcpSgWMp+RwD01ReID8Z1TzrgQxn6YeY+/hZsYQlX5ho1/lhHyLBHKle0LhyjrGo+C+8gIm8vMmvJVDlQegkP3pOyRcr0ViCbjpJie6bgeQe22ks8VI02/4g3om3ZlbHXCHabLl1Bxz1nFbscXASS1Z1JOrC8=
+	t=1776096506; cv=none; b=Ls45DVDvA3Sbw6B/MuWoCMvu1mfdlW/bryvPzO0bCyQ/sPvwLiA8xbR2XEQ3D3K5Jxx9Nh5o7ubBpvgViP4FZsYogty+vRBTQ8V8Sfs9CzRpcmdutk5IA7XNA82rJYfLpyqmnhldZkpIlD/OayIoaWhRDstzG3p0N0bDGlm/WZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096674; c=relaxed/simple;
-	bh=0ysUQPUu0C8QQ68eaA2YQBCIXqQ42653eWeYbDhMQ0g=;
+	s=arc-20240116; t=1776096506; c=relaxed/simple;
+	bh=VUCfXGotR8gRq17l8mszLnBbBhLK/pAwUwELVgP5YQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4j8WUxNNaJg6q0AwtkSRtjaDG2wrrTlxPmufQZvApIibIIeOEgJ6YkaWYFnIiR4aGkWjfmuqNfziKGk7OzhNJnjrpUxs5LVIBKtPRMiJQqSi1pSdwR7p3mLWGrENdeGXr59hdz0+TMzEr6qYjCnx/ktYBzbq9JaVp1/q1SrCMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Puhk5oXj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFFBC2BCAF;
-	Mon, 13 Apr 2026 16:11:13 +0000 (UTC)
+	 MIME-Version; b=k1WKDoda8uuSQOZpy0FmYFwyfv8TS3TlnVo09UmhiOy+JSqrl6hRt7KVh+hovF5N+N75m8STRl+uDTD7CW5be/0vCAgOgE3FA9oYAq8GC1X/HOZ1V91ttEfH/gLiRJh8bTV/wzbKxS9Py5P+GHPS3/zHEFZUAa1DNODJc6/0CzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV8bB+ZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52FFC2BCAF;
+	Mon, 13 Apr 2026 16:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096674;
-	bh=0ysUQPUu0C8QQ68eaA2YQBCIXqQ42653eWeYbDhMQ0g=;
+	s=korg; t=1776096506;
+	bh=VUCfXGotR8gRq17l8mszLnBbBhLK/pAwUwELVgP5YQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Puhk5oXjb1QMrcrDj75Ld3yWfvRbAeHumKngmlgm7gvHo6RGvP7r44zffc7k4liUV
-	 bDYvS+aK4nGfz+6mdiE9XUTFIobCJVYtiLBynOz/QmoZmqQJRfKIx4sPI38YoqSroT
-	 TRtArc2gnQj0/mGZpvx46NDE5f5tfLsAkJYPcVx4=
+	b=EV8bB+ZXcCA63SP1RSkCnQoang3lOZpscNnG5W2yEpLcBlmtOcWQisVkUSlddx1Ix
+	 qJB9rPCdcu8tQitLthozykrutkNOeWJcCPQ431l8ac1i+/N2TuiPUNHbjOK++iqH+r
+	 1GQUoVue7Es+s6D6i0R3r1eIsk1RPapcwWieqhZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 08/70] Input: uinput - fix circular locking dependency with ff-core
-Date: Mon, 13 Apr 2026 18:00:03 +0200
-Message-ID: <20260413155728.496020738@linuxfoundation.org>
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 36/83] nfc: pn533: allocate rx skb before consuming bytes
+Date: Mon, 13 Apr 2026 18:00:04 +0200
+Message-ID: <20260413155732.366542646@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,196 +63,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236348-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236280-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.976];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 28B1B3EEBE0
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: DE8833EE9EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit 4cda78d6f8bf2b700529f2fbccb994c3e826d7c2 upstream.
+commit c71ba669b570c7b3f86ec875be222ea11dacb352 upstream.
 
-A lockdep circular locking dependency warning can be triggered
-reproducibly when using a force-feedback gamepad with uinput (for
-example, playing ELDEN RING under Wine with a Flydigi Vader 5
-controller):
+pn532_receive_buf() reports the number of accepted bytes to the serdev
+core. The current code consumes bytes into recv_skb and may already hand
+a complete frame to pn533_recv_frame() before allocating a fresh receive
+buffer.
 
-  ff->mutex -> udev->mutex -> input_mutex -> dev->mutex -> ff->mutex
+If that alloc_skb() fails, the callback returns 0 even though it has
+already consumed bytes, and it leaves recv_skb as NULL for the next
+receive callback. That breaks the receive_buf() accounting contract and
+can also lead to a NULL dereference on the next skb_put_u8().
 
-The cycle is caused by four lock acquisition paths:
+Allocate the receive skb lazily before consuming the next byte instead.
+If allocation fails, return the number of bytes already accepted.
 
-1. ff upload: input_ff_upload() holds ff->mutex and calls
-   uinput_dev_upload_effect() -> uinput_request_submit() ->
-   uinput_request_send(), which acquires udev->mutex.
-
-2. device create: uinput_ioctl_handler() holds udev->mutex and calls
-   uinput_create_device() -> input_register_device(), which acquires
-   input_mutex.
-
-3. device register: input_register_device() holds input_mutex and
-   calls kbd_connect() -> input_register_handle(), which acquires
-   dev->mutex.
-
-4. evdev release: evdev_release() calls input_flush_device() under
-   dev->mutex, which calls input_ff_flush() acquiring ff->mutex.
-
-Fix this by introducing a new state_lock spinlock to protect
-udev->state and udev->dev access in uinput_request_send() instead of
-acquiring udev->mutex.  The function only needs to atomically check
-device state and queue an input event into the ring buffer via
-uinput_dev_event() -- both operations are safe under a spinlock
-(ktime_get_ts64() and wake_up_interruptible() do not sleep).  This
-breaks the ff->mutex -> udev->mutex link since a spinlock is a leaf in
-the lock ordering and cannot form cycles with mutexes.
-
-To keep state transitions visible to uinput_request_send(), protect
-writes to udev->state in uinput_create_device() and
-uinput_destroy_device() with the same state_lock spinlock.
-
-Additionally, move init_completion(&request->done) from
-uinput_request_send() to uinput_request_submit() before
-uinput_request_reserve_slot().  Once the slot is allocated,
-uinput_flush_requests() may call complete() on it at any time from
-the destroy path, so the completion must be initialised before the
-request becomes visible.
-
-Lock ordering after the fix:
-
-  ff->mutex -> state_lock (spinlock, leaf)
-  udev->mutex -> state_lock (spinlock, leaf)
-  udev->mutex -> input_mutex -> dev->mutex -> ff->mutex (no back-edge)
-
-Fixes: ff462551235d ("Input: uinput - switch to the new FF interface")
+Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/CABXGCsMoxag+kEwHhb7KqhuyxfmGGd0P=tHZyb1uKE0pLr8Hkg@mail.gmail.com/
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Link: https://patch.msgid.link/20260407075031.38351-1-mikhail.v.gavrilov@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/uinput.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ drivers/nfc/pn533/uart.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -57,6 +57,7 @@ struct uinput_device {
- 	struct input_dev	*dev;
- 	struct mutex		mutex;
- 	enum uinput_state	state;
-+	spinlock_t		state_lock;
- 	wait_queue_head_t	waitq;
- 	unsigned char		ready;
- 	unsigned char		head;
-@@ -146,19 +147,15 @@ static void uinput_request_release_slot(
- static int uinput_request_send(struct uinput_device *udev,
- 			       struct uinput_request *request)
- {
--	int retval;
-+	int retval = 0;
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -211,6 +211,13 @@ static size_t pn532_receive_buf(struct s
  
--	retval = mutex_lock_interruptible(&udev->mutex);
--	if (retval)
--		return retval;
-+	spin_lock(&udev->state_lock);
+ 	timer_delete(&dev->cmd_timeout);
+ 	for (i = 0; i < count; i++) {
++		if (!dev->recv_skb) {
++			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
++						  GFP_KERNEL);
++			if (!dev->recv_skb)
++				return i;
++		}
++
+ 		if (unlikely(!skb_tailroom(dev->recv_skb)))
+ 			skb_trim(dev->recv_skb, 0);
  
- 	if (udev->state != UIST_CREATED) {
- 		retval = -ENODEV;
- 		goto out;
+@@ -219,9 +226,7 @@ static size_t pn532_receive_buf(struct s
+ 			continue;
+ 
+ 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
+-		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
+-		if (!dev->recv_skb)
+-			return 0;
++		dev->recv_skb = NULL;
  	}
  
--	init_completion(&request->done);
--
- 	/*
- 	 * Tell our userspace application about this new request
- 	 * by queueing an input event.
-@@ -166,7 +163,7 @@ static int uinput_request_send(struct ui
- 	uinput_dev_event(udev->dev, EV_UINPUT, request->code, request->id);
- 
-  out:
--	mutex_unlock(&udev->mutex);
-+	spin_unlock(&udev->state_lock);
- 	return retval;
- }
- 
-@@ -175,6 +172,13 @@ static int uinput_request_submit(struct
- {
- 	int retval;
- 
-+	/*
-+	 * Initialize completion before allocating the request slot.
-+	 * Once the slot is allocated, uinput_flush_requests() may
-+	 * complete it at any time, so it must be initialized first.
-+	 */
-+	init_completion(&request->done);
-+
- 	retval = uinput_request_reserve_slot(udev, request);
- 	if (retval)
- 		return retval;
-@@ -289,7 +293,14 @@ static void uinput_destroy_device(struct
- 	struct input_dev *dev = udev->dev;
- 	enum uinput_state old_state = udev->state;
- 
-+	/*
-+	 * Update state under state_lock so that concurrent
-+	 * uinput_request_send() sees the state change before we
-+	 * flush pending requests and tear down the device.
-+	 */
-+	spin_lock(&udev->state_lock);
- 	udev->state = UIST_NEW_DEVICE;
-+	spin_unlock(&udev->state_lock);
- 
- 	if (dev) {
- 		name = dev->name;
-@@ -366,7 +377,9 @@ static int uinput_create_device(struct u
- 	if (error)
- 		goto fail2;
- 
-+	spin_lock(&udev->state_lock);
- 	udev->state = UIST_CREATED;
-+	spin_unlock(&udev->state_lock);
- 
- 	return 0;
- 
-@@ -384,6 +397,7 @@ static int uinput_open(struct inode *ino
- 		return -ENOMEM;
- 
- 	mutex_init(&newdev->mutex);
-+	spin_lock_init(&newdev->state_lock);
- 	spin_lock_init(&newdev->requests_lock);
- 	init_waitqueue_head(&newdev->requests_waitq);
- 	init_waitqueue_head(&newdev->waitq);
+ 	return i;
 
 
 
