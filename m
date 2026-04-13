@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-237505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDSNM4oi3WkYaQkAu9opvQ
-	(envelope-from <stable+bounces-237505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:18 +0200
+	id SH+GDDYZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B796B3F0BC5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280493EEEE0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4AAA4305CFD9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7D20A30957D9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DD83016EE;
-	Mon, 13 Apr 2026 17:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7D726E6F8;
+	Mon, 13 Apr 2026 16:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iM+vWDtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHLM73wM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157A331F9BC;
-	Mon, 13 Apr 2026 17:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8672472A2;
+	Mon, 13 Apr 2026 16:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099628; cv=none; b=jmmHv1wn+SFjebaslwFVF4zdlpXWibWaWG/CAhKackP2WgEx0gwO/nfqIkRmBLajciaN5kXqMAcW1mCm+7YuVfgadIekdxwaciVlLBHDqa0w9tLlR+oZmeom84WUZ2JI/CI61BJDTQ+IhtuKAa+FjUx9Aj4ZlgeQ2Fw4ocj7a2M=
+	t=1776096890; cv=none; b=dMivhLZxu70QasrfRQfpa4KsFO1cDF9qWxXeUgeyVXg1rtjb2VYI3UJsXtFtzPYdy9Qq5FpiMGZrEyKYot9O+4B2qFiLLHf1fUh+okiyChVOfX+1RXfMJMPbQC+lNweoascMPweOnWvORpNsuYyKGiL4mOBO8zhGQrEO/gOgRjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099628; c=relaxed/simple;
-	bh=zfsrvGoNZ71KM8U8BLrDRkQB7TH+4fCR/CH5JwiTezc=;
+	s=arc-20240116; t=1776096890; c=relaxed/simple;
+	bh=2WCJ1T+tzJmNiZXtKbELsUcYrRiO9IGIe7qEUXwhC9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=orjfJZokvDRgeDXQLFYuP41JP1JO1LS7UuXQVRSrPHx94jJjJ7+1Thjx8A7WdCp4k/EuPrsSf6dPS+gDwlZh8Sn7/YaiY3z0m56ULEtojd8ku7BoH9/UBQzTbVFFat3CL3vXxuKmfgDSZ5sChvBYAO2AQbZ7f3hBopQxo9+tqn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iM+vWDtB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A235CC2BCAF;
-	Mon, 13 Apr 2026 17:00:27 +0000 (UTC)
+	 MIME-Version; b=izYRU/MmdZGV+K7bGR1ILv7Y5iE5cOfVe8OJLOOsmyzirrK1gg8pCiZrnqB71WfZ+0lUnHbuUecAYUQ1UpvMmzVXCFYEpCcuyetumlQ91VuqbQvRtJDwVOwIf/poVo0FnlhFQP8CGroZXTfWKjqfObRVB3M34skiivDHrCeyK9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHLM73wM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FE6C2BCAF;
+	Mon, 13 Apr 2026 16:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099628;
-	bh=zfsrvGoNZ71KM8U8BLrDRkQB7TH+4fCR/CH5JwiTezc=;
+	s=korg; t=1776096890;
+	bh=2WCJ1T+tzJmNiZXtKbELsUcYrRiO9IGIe7qEUXwhC9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iM+vWDtBOLv2qtPtMQNsAVp+1ck2Go9OjKF7x2uaHSnSMeWaPICxkCO7wdcRrOiDT
-	 oa29NePoNbi0hLysVzQlVQgf1jCLoRXNSjuc/QRdI3Lgpdqk0yC/jUqmF1OSc5QuRM
-	 KK9P/GIhgpDuPRfXL8ghLgDqES6ct4Z7ZnEqJjIk=
+	b=dHLM73wMdm/8JC3fwRav4mDRFMHbyTTkWfd880poQ4+jr3h9OhDN/dVvbyuXT/MKd
+	 /Yz8aovndv1cjFQcnl7soAadcQCdJXkNzlYa7cn4QV0+0/iZSxdTukfHB4pqFnZGh5
+	 y7WE3BtoIcx4gMcAKI8gN4qd1SfeMSl0QtnoI/Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 386/491] iio: gyro: mpu3050: Fix out-of-sequence free_irq()
+	Johannes Berg <johannes@sipsolutions.net>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	stable <stable@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 04/50] net: rfkill: prevent unlimited numbers of rfkill events from being created
 Date: Mon, 13 Apr 2026 18:00:31 +0200
-Message-ID: <20260413155833.484238670@linuxfoundation.org>
+Message-ID: <20260413155724.668778166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,74 +72,147 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-237505-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,lzu.edu.cn,kernel.org,intel.com];
+	TAGGED_FROM(0.00)[bounces-236432-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: B796B3F0BC5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sipsolutions.net:email]
+X-Rspamd-Queue-Id: 280493EEEE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit d14116f6529fa085b1a1b1f224dc9604e4d2a29c upstream.
+commit ea245d78dec594372e27d8c79616baf49e98a4a1 upstream.
 
-The triggered buffer is initialized before the IRQ is requested. The
-removal path currently calls iio_triggered_buffer_cleanup() before
-free_irq(). This violates the expected LIFO.
+Userspace can create an unlimited number of rfkill events if the system
+is so configured, while not consuming them from the rfkill file
+descriptor, causing a potential out of memory situation.  Prevent this
+from bounding the number of pending rfkill events at a "large" number
+(i.e. 1000) to prevent abuses like this.
 
-Place free_irq() in the correct location relative to
-iio_triggered_buffer_cleanup().
-
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rfkill/core.c |   35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1287,9 +1287,9 @@ int mpu3050_common_remove(struct device
- 	pm_runtime_get_sync(dev);
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
--	iio_triggered_buffer_cleanup(indio_dev);
- 	if (mpu3050->irq)
- 		free_irq(mpu3050->irq, mpu3050->trig);
-+	iio_triggered_buffer_cleanup(indio_dev);
- 	mpu3050_power_down(mpu3050);
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -73,11 +73,14 @@ struct rfkill_int_event {
+ 	struct rfkill_event_ext	ev;
+ };
  
- 	return 0;
++/* Max rfkill events that can be "in-flight" for one data source */
++#define MAX_RFKILL_EVENT	1000
+ struct rfkill_data {
+ 	struct list_head	list;
+ 	struct list_head	events;
+ 	struct mutex		mtx;
+ 	wait_queue_head_t	read_wait;
++	u32			event_count;
+ 	bool			input_handler;
+ 	u8			max_size;
+ };
+@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_un
+ }
+ #endif /* CONFIG_RFKILL_LEDS */
+ 
+-static void rfkill_fill_event(struct rfkill_event_ext *ev,
+-			      struct rfkill *rfkill,
+-			      enum rfkill_operation op)
++static int rfkill_fill_event(struct rfkill_int_event *int_ev,
++			     struct rfkill *rfkill,
++			     struct rfkill_data *data,
++			     enum rfkill_operation op)
+ {
++	struct rfkill_event_ext *ev = &int_ev->ev;
+ 	unsigned long flags;
+ 
+ 	ev->idx = rfkill->idx;
+@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfk
+ 					RFKILL_BLOCK_SW_PREV));
+ 	ev->hard_block_reasons = rfkill->hard_block_reasons;
+ 	spin_unlock_irqrestore(&rfkill->lock, flags);
++
++	scoped_guard(mutex, &data->mtx) {
++		if (data->event_count++ > MAX_RFKILL_EVENT) {
++			data->event_count--;
++			return -ENOSPC;
++		}
++		list_add_tail(&int_ev->list, &data->events);
++	}
++	return 0;
+ }
+ 
+ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
+@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rf
+ 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
+ 		if (!ev)
+ 			continue;
+-		rfkill_fill_event(&ev->ev, rfkill, op);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, op)) {
++			kfree(ev);
++			continue;
++		}
+ 		wake_up_interruptible(&data->read_wait);
+ 	}
+ }
+@@ -1190,10 +1204,8 @@ static int rfkill_fop_open(struct inode
+ 		if (!ev)
+ 			goto free;
+ 		rfkill_sync(rfkill);
+-		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
++			kfree(ev);
+ 	}
+ 	list_add(&data->list, &rfkill_fds);
+ 	mutex_unlock(&rfkill_global_mutex);
+@@ -1263,6 +1275,7 @@ static ssize_t rfkill_fop_read(struct fi
+ 		ret = -EFAULT;
+ 
+ 	list_del(&ev->list);
++	data->event_count--;
+ 	kfree(ev);
+  out:
+ 	mutex_unlock(&data->mtx);
 
 
 
