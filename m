@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAxfEp8l3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:27 +0200
+	id uFsOMyEi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A383F12C9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470A83F0A62
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D54D730B9AD2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0AC131D08D1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBA1317148;
-	Mon, 13 Apr 2026 16:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F63623D297;
+	Mon, 13 Apr 2026 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0HUAdKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCzckTGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8713161BF;
-	Mon, 13 Apr 2026 16:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61947225A38;
+	Mon, 13 Apr 2026 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098944; cv=none; b=ameUEQ6AFfiHG9l532CblQ59xdVGVp78eHjMsNzsua6is4wcOQPgCMSJywTToKhWJ4BSCUv/DQ8k1+d56MUszPtDUKlDjSDGe9fltXrFYXJeg92DEh2VALM5Z1+aPtPUyO2OBdp8kNsNJOqIt8XN2ThKm0Zf1w+FLxpTpYNAZ3c=
+	t=1776097837; cv=none; b=iRLxeHB+3pDLiiTfveyOJuGR1T0p0sEsFfkmsYmkyus1Qn/uZUGG7wxqJrZIFsCj/ud+A9PC4Y4F7jAVLFpSlaUAKXslFzxpp5POL/+lEFJ1nVkYwWvpbK07Og3jS0/8LnW4SsZ27Od93ILv1dCia4/o0JEAQp3If250TC1hMig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098944; c=relaxed/simple;
-	bh=bHfKr70erzd/Z2pB+NQ9/Jc4UlRqhbtdH0qYSjh1+eQ=;
+	s=arc-20240116; t=1776097837; c=relaxed/simple;
+	bh=pzdGXXbJPp5/UHYeU6gopXz0GAKfe/TCR8zox8O8khU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iFPPSBH2ZP5CaxkjMLZNAP1SWGhYDjLfdeh/cJrLVX3x7LuAcD+M0tt4XGdFgC4wiC2dMcrEObiw1QGBlsEDVFYL/XpEm+WKeCqe3bIM4FQDkUsgy3z9QbscBtbvt4uSohSKQVTCz6AuV5ugwIin8QmJL4h9foyuCz4n0fJwIao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0HUAdKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C912EC2BCAF;
-	Mon, 13 Apr 2026 16:49:03 +0000 (UTC)
+	 MIME-Version; b=SzbraGOiIqKV2/BJerJM7vdlUxAB7H9QOvQpV5Mmzth6//aZwVaQQpJvPP/HD67SzCOLcxBsBPIFIcmHR1vmv7V0T2IBHrrkKW8hrk655Z+o81PuNOGp+aHphmXeqIIAiEz45XSz/iQ7afI/kQtnmlQmQpd/72/sMMl9VZa77+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCzckTGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5F8C2BCAF;
+	Mon, 13 Apr 2026 16:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098944;
-	bh=bHfKr70erzd/Z2pB+NQ9/Jc4UlRqhbtdH0qYSjh1+eQ=;
+	s=korg; t=1776097837;
+	bh=pzdGXXbJPp5/UHYeU6gopXz0GAKfe/TCR8zox8O8khU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0HUAdKb1nbRKFMHwrV9IvdSR4HTgeDiG+SGyFRCrHX9aiCBzvCjZ6QqdJreXWAlM
-	 6SS7pUDxgdOiYHbW1WtrwlvlcwKxtL+qU00cabtRUrgwvJ/bng0nCuF3wyaB+ZwhKu
-	 DfLhwd6iXdps4fSCWkNZ22HW89z3TkFa//klGBQ0=
+	b=eCzckTGPFoi1KJN4LkjzsXF24cLYFlWdtV8rd+iCadBSWBWXGjgMmdhNKh7cf9S26
+	 DzfOS2acwgNJbJDtKonxtQhSzdTzwvj+/CMDKipzp3OG6pqkPNfpdf4katsVyP6IWa
+	 V+Kvl2LrVhGjGeb0Wh4gVMSJPhnjzmrUZkvACfNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.10 150/491] serial: 8250: Add late synchronize_irq() to shutdown to handle DW UART BUSY
+	Dexuan Cui <decui@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 264/570] net: mana: Improve the HWC error handling
 Date: Mon, 13 Apr 2026 17:56:35 +0200
-Message-ID: <20260413155824.648462911@linuxfoundation.org>
+Message-ID: <20260413155840.371679769@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +64,255 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237239-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236804-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 96A383F12C9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email]
+X-Rspamd-Queue-Id: 470A83F0A62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-commit e0a368ae79531ff92105a2692f10d83052055856 upstream.
+[ Upstream commit 62ea8b77ed3b7086561765df0226ebc7bb442020 ]
 
-When DW UART is !uart_16550_compatible, it can indicate BUSY at any
-point (when under constant Rx pressure) unless a complex sequence of
-steps is performed. Any LCR write can run a foul with the condition
-that prevents writing LCR while the UART is BUSY, which triggers
-BUSY_DETECT interrupt that seems unmaskable using IER bits.
+Currently when the HWC creation fails, the error handling is flawed,
+e.g. if mana_hwc_create_channel() -> mana_hwc_establish_channel() fails,
+the resources acquired in mana_hwc_init_queues() is not released.
 
-Normal flow is that dw8250_handle_irq() handles BUSY_DETECT condition
-by reading USR register. This BUSY feature, however, breaks the
-assumptions made in serial8250_do_shutdown(), which runs
-synchronize_irq() after clearing IER and assumes no interrupts can
-occur after that point but then proceeds to update LCR, which on DW
-UART can trigger an interrupt.
+Enhance mana_hwc_destroy_channel() to do the proper cleanup work and
+call it accordingly.
 
-If serial8250_do_shutdown() releases the interrupt handler before the
-handler has run and processed the BUSY_DETECT condition by read the USR
-register, the IRQ is not deasserted resulting in interrupt storm that
-triggers "irq x: nobody cared" warning leading to disabling the IRQ.
-
-Add late synchronize_irq() into serial8250_do_shutdown() to ensure
-BUSY_DETECT from DW UART is handled before port's interrupt handler is
-released. Alternative would be to add DW UART specific shutdown
-function but it would mostly duplicate the generic code and the extra
-synchronize_irq() seems pretty harmless in serial8250_do_shutdown().
-
-Fixes: 7d4008ebb1c9 ("tty: add a DesignWare 8250 driver")
-Cc: stable <stable@kernel.org>
-Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260203171049.4353-7-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fa103fc8f569 ("net: mana: fix use-after-free in mana_hwc_destroy_channel() by reordering teardown")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ .../net/ethernet/microsoft/mana/gdma_main.c   |  4 --
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 71 ++++++++-----------
+ 2 files changed, 31 insertions(+), 44 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2485,6 +2485,12 @@ void serial8250_do_shutdown(struct uart_
- 	 * the IRQ chain.
- 	 */
- 	serial_port_in(port, UART_RX);
-+	/*
-+	 * LCR writes on DW UART can trigger late (unmaskable) IRQs.
-+	 * Handle them before releasing the handler.
-+	 */
-+	synchronize_irq(port->irq);
-+
- 	serial8250_rpm_put(up);
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 7864611f55a77..f3e90313a4487 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -1336,8 +1336,6 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
- 	up->ops->release_irq(up);
+ clean_up_gdma:
+ 	mana_hwc_destroy_channel(gc);
+-	vfree(gc->cq_table);
+-	gc->cq_table = NULL;
+ remove_irq:
+ 	mana_gd_remove_irqs(pdev);
+ unmap_bar:
+@@ -1360,8 +1358,6 @@ static void mana_gd_remove(struct pci_dev *pdev)
+ 	mana_remove(&gc->mana);
+ 
+ 	mana_hwc_destroy_channel(gc);
+-	vfree(gc->cq_table);
+-	gc->cq_table = NULL;
+ 
+ 	mana_gd_remove_irqs(pdev);
+ 
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index 508f83c29f325..8b027bf6ede90 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -315,9 +315,6 @@ static void mana_hwc_comp_event(void *ctx, struct gdma_queue *q_self)
+ 
+ static void mana_hwc_destroy_cq(struct gdma_context *gc, struct hwc_cq *hwc_cq)
+ {
+-	if (!hwc_cq)
+-		return;
+-
+ 	kfree(hwc_cq->comp_buf);
+ 
+ 	if (hwc_cq->gdma_cq)
+@@ -452,9 +449,6 @@ static void mana_hwc_dealloc_dma_buf(struct hw_channel_context *hwc,
+ static void mana_hwc_destroy_wq(struct hw_channel_context *hwc,
+ 				struct hwc_wq *hwc_wq)
+ {
+-	if (!hwc_wq)
+-		return;
+-
+ 	mana_hwc_dealloc_dma_buf(hwc, hwc_wq->msg_buf);
+ 
+ 	if (hwc_wq->gdma_wq)
+@@ -627,6 +621,7 @@ static int mana_hwc_establish_channel(struct gdma_context *gc, u16 *q_depth,
+ 	*max_req_msg_size = hwc->hwc_init_max_req_msg_size;
+ 	*max_resp_msg_size = hwc->hwc_init_max_resp_msg_size;
+ 
++	/* Both were set in mana_hwc_init_event_handler(). */
+ 	if (WARN_ON(cq->id >= gc->max_num_cqs))
+ 		return -EPROTO;
+ 
+@@ -642,9 +637,6 @@ static int mana_hwc_establish_channel(struct gdma_context *gc, u16 *q_depth,
+ static int mana_hwc_init_queues(struct hw_channel_context *hwc, u16 q_depth,
+ 				u32 max_req_msg_size, u32 max_resp_msg_size)
+ {
+-	struct hwc_wq *hwc_rxq = NULL;
+-	struct hwc_wq *hwc_txq = NULL;
+-	struct hwc_cq *hwc_cq = NULL;
+ 	int err;
+ 
+ 	err = mana_hwc_init_inflight_msg(hwc, q_depth);
+@@ -657,44 +649,32 @@ static int mana_hwc_init_queues(struct hw_channel_context *hwc, u16 q_depth,
+ 	err = mana_hwc_create_cq(hwc, q_depth * 2,
+ 				 mana_hwc_init_event_handler, hwc,
+ 				 mana_hwc_rx_event_handler, hwc,
+-				 mana_hwc_tx_event_handler, hwc, &hwc_cq);
++				 mana_hwc_tx_event_handler, hwc, &hwc->cq);
+ 	if (err) {
+ 		dev_err(hwc->dev, "Failed to create HWC CQ: %d\n", err);
+ 		goto out;
+ 	}
+-	hwc->cq = hwc_cq;
+ 
+ 	err = mana_hwc_create_wq(hwc, GDMA_RQ, q_depth, max_req_msg_size,
+-				 hwc_cq, &hwc_rxq);
++				 hwc->cq, &hwc->rxq);
+ 	if (err) {
+ 		dev_err(hwc->dev, "Failed to create HWC RQ: %d\n", err);
+ 		goto out;
+ 	}
+-	hwc->rxq = hwc_rxq;
+ 
+ 	err = mana_hwc_create_wq(hwc, GDMA_SQ, q_depth, max_resp_msg_size,
+-				 hwc_cq, &hwc_txq);
++				 hwc->cq, &hwc->txq);
+ 	if (err) {
+ 		dev_err(hwc->dev, "Failed to create HWC SQ: %d\n", err);
+ 		goto out;
+ 	}
+-	hwc->txq = hwc_txq;
+ 
+ 	hwc->num_inflight_msg = q_depth;
+ 	hwc->max_req_msg_size = max_req_msg_size;
+ 
+ 	return 0;
+ out:
+-	if (hwc_txq)
+-		mana_hwc_destroy_wq(hwc, hwc_txq);
+-
+-	if (hwc_rxq)
+-		mana_hwc_destroy_wq(hwc, hwc_rxq);
+-
+-	if (hwc_cq)
+-		mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc_cq);
+-
+-	mana_gd_free_res_map(&hwc->inflight_msg_res);
++	/* mana_hwc_create_channel() will do the cleanup.*/
+ 	return err;
+ }
+ 
+@@ -722,6 +702,9 @@ int mana_hwc_create_channel(struct gdma_context *gc)
+ 	gd->pdid = INVALID_PDID;
+ 	gd->doorbell = INVALID_DOORBELL;
+ 
++	/* mana_hwc_init_queues() only creates the required data structures,
++	 * and doesn't touch the HWC device.
++	 */
+ 	err = mana_hwc_init_queues(hwc, HW_CHANNEL_VF_BOOTSTRAP_QUEUE_DEPTH,
+ 				   HW_CHANNEL_MAX_REQUEST_SIZE,
+ 				   HW_CHANNEL_MAX_RESPONSE_SIZE);
+@@ -747,42 +730,50 @@ int mana_hwc_create_channel(struct gdma_context *gc)
+ 
+ 	return 0;
+ out:
+-	kfree(hwc);
++	mana_hwc_destroy_channel(gc);
+ 	return err;
+ }
+ 
+ void mana_hwc_destroy_channel(struct gdma_context *gc)
+ {
+ 	struct hw_channel_context *hwc = gc->hwc.driver_data;
+-	struct hwc_caller_ctx *ctx;
+ 
+-	mana_smc_teardown_hwc(&gc->shm_channel, false);
++	if (!hwc)
++		return;
++
++	/* gc->max_num_cqs is set in mana_hwc_init_event_handler(). If it's
++	 * non-zero, the HWC worked and we should tear down the HWC here.
++	 */
++	if (gc->max_num_cqs > 0) {
++		mana_smc_teardown_hwc(&gc->shm_channel, false);
++		gc->max_num_cqs = 0;
++	}
+ 
+-	ctx = hwc->caller_ctx;
+-	kfree(ctx);
++	kfree(hwc->caller_ctx);
+ 	hwc->caller_ctx = NULL;
+ 
+-	mana_hwc_destroy_wq(hwc, hwc->txq);
+-	hwc->txq = NULL;
++	if (hwc->txq)
++		mana_hwc_destroy_wq(hwc, hwc->txq);
+ 
+-	mana_hwc_destroy_wq(hwc, hwc->rxq);
+-	hwc->rxq = NULL;
++	if (hwc->rxq)
++		mana_hwc_destroy_wq(hwc, hwc->rxq);
+ 
+-	mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc->cq);
+-	hwc->cq = NULL;
++	if (hwc->cq)
++		mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc->cq);
+ 
+ 	mana_gd_free_res_map(&hwc->inflight_msg_res);
+ 
+ 	hwc->num_inflight_msg = 0;
+ 
+-	if (hwc->gdma_dev->pdid != INVALID_PDID) {
+-		hwc->gdma_dev->doorbell = INVALID_DOORBELL;
+-		hwc->gdma_dev->pdid = INVALID_PDID;
+-	}
++	hwc->gdma_dev->doorbell = INVALID_DOORBELL;
++	hwc->gdma_dev->pdid = INVALID_PDID;
+ 
+ 	kfree(hwc);
+ 	gc->hwc.driver_data = NULL;
+ 	gc->hwc.gdma_context = NULL;
++
++	vfree(gc->cq_table);
++	gc->cq_table = NULL;
+ }
+ 
+ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+-- 
+2.51.0
+
 
 
 
