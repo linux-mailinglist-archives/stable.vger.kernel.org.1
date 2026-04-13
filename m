@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDFlNAAk3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:32 +0200
+	id 2CRdLdwd3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD4B3F0FC6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3D23EFBFE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AAAD0309F046
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E8D19306F97E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D25E31716A;
-	Mon, 13 Apr 2026 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0642F90C5;
+	Mon, 13 Apr 2026 16:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO/x4/oJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKe+jU5/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1021E317141;
-	Mon, 13 Apr 2026 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2342D0C7E;
+	Mon, 13 Apr 2026 16:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099277; cv=none; b=JAOrqcI1XRqNs2XygdCx7+ngYz2amhAR8XB8N9iw473nsr/lr4sQMXakVGqTQojVTv13R2fqyv6lISDXX7B8ltWkMdQudgVTtIs44h6lkJEahL0dGFdVe2CmehUa/xtQnLNUvrUS19OW+GUQius7eSHJj8Cy06CUidKAPBIYjQw=
+	t=1776098097; cv=none; b=KhnSt49bamHm3bmKUGa11p/70QMleqPmOqucly6WlLHyvsCO0JJrimjmL6w4AKdmByHpYJhPfTPkChayXpxnov3o6DbZ3nThb0jIY1b44dc+r1oHo+TjForAjGAzLUpJ4GhD8vSasGs6F+gGI9u1Jm/sMW1XccLH0KuhfErkLtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099277; c=relaxed/simple;
-	bh=AFOjurQDnK1coCWkHIGdglJOSL8iUXcMYLBMIVjNnRk=;
+	s=arc-20240116; t=1776098097; c=relaxed/simple;
+	bh=UEjifrbcA+F5UtPi8cGIRuIHOzPC+D3G8vngpQUC4wI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRKcXSGeFnQr5RFnYADh20de5aFUxVEKaAnef3w/YZ02f4+U0uMpg5OWx7LZMJygn8Q696MtpQZj5MTwBUCXaqyiQNyd30i5QpVzmRfp5T7nqsowxFwqQCFMqOjpPxYZc137vK0KXnFstDDX4lF/hbW9EC3hE6CoauhECobJtBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO/x4/oJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8B9C2BCAF;
-	Mon, 13 Apr 2026 16:54:36 +0000 (UTC)
+	 MIME-Version; b=jkbfpC8r2n9W38AeS+LaA0oU9AGH7tPiiUNMuOUSEumBN1VEgSAO6+72KG9oZ3dbUfO0FtTx7/PVHH4igRPa/IRX7wm8YlRcbaqOblQDcDbblNqo1j8GW3FY/4ickKcAJV412BSEDb+K80w+lROc38Iw4iDdiz8+0uVpEZzq7Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKe+jU5/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79D4C2BCAF;
+	Mon, 13 Apr 2026 16:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099276;
-	bh=AFOjurQDnK1coCWkHIGdglJOSL8iUXcMYLBMIVjNnRk=;
+	s=korg; t=1776098097;
+	bh=UEjifrbcA+F5UtPi8cGIRuIHOzPC+D3G8vngpQUC4wI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BO/x4/oJYYz6wWrQygnzPilrMsNilj/ytKydD3YNFuZeVwj1mlVDsgVVpgo5bJSF6
-	 ZrqT6x2Mlv6wLSFCUozCzGj02YyID3lI7Sx5JZsBBRdxjhcbxEm56JB4p5grhJFppZ
-	 GE9diXRwWbn5bueoCV3QUbDg7pL3m3XAbymFskBw=
+	b=BKe+jU5/BUIZmZ03dkvu8Mdlycv6SWEl3zqLewlKWxRluApElMOMVYATqI++qd7yC
+	 5eNte67NU0PsZFiRkcnZ3IpnBx/OmaX96SX7owHwmYCIYsYUQvbOBLR4umpxznwHA0
+	 Jfj8RWNAD7Lnu9UNAgOCoQDOjNRwq3ynIFT/AnEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Valerio <pvalerio@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 277/491] net: macb: use the current queue number for stats
-Date: Mon, 13 Apr 2026 17:58:42 +0200
-Message-ID: <20260413155829.417338589@linuxfoundation.org>
+Subject: [PATCH 5.15 392/570] btrfs: fix lost error when running device stats on multiple devices fs
+Date: Mon, 13 Apr 2026 17:58:43 +0200
+Message-ID: <20260413155845.158112715@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +68,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237369-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236906-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tipi-net.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ACD4B3F0FC6
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email]
+X-Rspamd-Queue-Id: 5B3D23EFBFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Valerio <pvalerio@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 72d96e4e24bbefdcfbc68bdb9341a05d8f5cb6e5 ]
+[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
 
-There's a potential mismatch between the memory reserved for statistics
-and the amount of memory written.
+Whenever we get an error updating the device stats item for a device in
+btrfs_run_dev_stats() we allow the loop to go to the next device, and if
+updating the stats item for the next device succeeds, we end up losing
+the error we had from the previous device.
 
-gem_get_sset_count() correctly computes the number of stats based on the
-active queues, whereas gem_get_ethtool_stats() indiscriminately copies
-data using the maximum number of queues, and in the case the number of
-active queues is less than MACB_MAX_QUEUES, this results in a OOB write
-as observed in the KASAN splat.
+Fix this by breaking out of the loop once we get an error and make sure
+it's returned to the caller. Since we are in the transaction commit path
+(and in the critical section actually), returning the error will result
+in a transaction abort.
 
-==================================================================
-BUG: KASAN: vmalloc-out-of-bounds in gem_get_ethtool_stats+0x54/0x78
-  [macb]
-Write of size 760 at addr ffff80008080b000 by task ethtool/1027
-
-CPU: [...]
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: raspberrypi rpi/rpi, BIOS 2025.10 10/01/2025
-Call trace:
- show_stack+0x20/0x38 (C)
- dump_stack_lvl+0x80/0xf8
- print_report+0x384/0x5e0
- kasan_report+0xa0/0xf0
- kasan_check_range+0xe8/0x190
- __asan_memcpy+0x54/0x98
- gem_get_ethtool_stats+0x54/0x78 [macb
-   926c13f3af83b0c6fe64badb21ec87d5e93fcf65]
- dev_ethtool+0x1220/0x38c0
- dev_ioctl+0x4ac/0xca8
- sock_do_ioctl+0x170/0x1d8
- sock_ioctl+0x484/0x5d8
- __arm64_sys_ioctl+0x12c/0x1b8
- invoke_syscall+0xd4/0x258
- el0_svc_common.constprop.0+0xb4/0x240
- do_el0_svc+0x48/0x68
- el0_svc+0x40/0xf8
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1b0/0x1b8
-
-The buggy address belongs to a 1-page vmalloc region starting at
-  0xffff80008080b000 allocated at dev_ethtool+0x11f0/0x38c0
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000
-  index:0xffff00000a333000 pfn:0xa333
-flags: 0x7fffc000000000(node=0|zone=0|lastcpupid=0x1ffff)
-raw: 007fffc000000000 0000000000000000 dead000000000122 0000000000000000
-raw: ffff00000a333000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff80008080b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff80008080b100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff80008080b180: 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                                  ^
- ffff80008080b200: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- ffff80008080b280: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-==================================================================
-
-Fix it by making sure the copied size only considers the active number of
-queues.
-
-Fixes: 512286bbd4b7 ("net: macb: Added some queue statistics")
-Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260323191634.2185840-1-pvalerio@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/volumes.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index f49e4e0494db3..bdbb05a95519b 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2786,7 +2786,7 @@ static void gem_get_ethtool_stats(struct net_device *dev,
- 	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
--			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+			* (GEM_STATS_LEN + QUEUE_STATS_LEN * bp->num_queues));
- 	spin_unlock_irq(&bp->stats_lock);
- }
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 839ee01827b26..9ab226814cfde 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -8016,8 +8016,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
+ 		smp_rmb();
+ 
+ 		ret = update_dev_stat_item(trans, device);
+-		if (!ret)
+-			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
++		if (ret)
++			break;
++		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
  
 -- 
-2.51.0
+2.53.0
 
 
 
