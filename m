@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-237264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGu3NVIh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:06 +0200
+	id UJ1LOpUf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F59A3F0817
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57903F021E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD48A30A01B5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 38E1E302D9F3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C280317152;
-	Mon, 13 Apr 2026 16:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE67D317152;
+	Mon, 13 Apr 2026 16:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IO5rdOXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WscW2u3m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3161317141;
-	Mon, 13 Apr 2026 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F24F3168EE;
+	Mon, 13 Apr 2026 16:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099009; cv=none; b=KhX2yIVEHfBpri202usrG2WZhMWmH4Mzwf82QzOTnCGQnAYDBpWxWR4zcubVCq7Qwda/dZqe7k0HZeNje6a+dpcgewQWJhdwMeZAWOb6ZfUNpsoRXiUX8Pb23dS8yk+4Whl8lmKt6bL5kN1Zo5HsSj1W9AmgT+f0Jz0ukHwLhYE=
+	t=1776099114; cv=none; b=macTzG/7N9PI8gGsD0h6KdHwltJekJU57qVEEz7IwlFa+99zcU4lS0fWTcFeiqXe7Rlcx4GYUHnqICt5vFpbYWfx8tAKqsYv397OjNTcJ579cG6BCpxafhxQUE8FwzU66CPyR/lRjc199fJo4/pV5Ept+hGkTdialh6nRfFrlWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099009; c=relaxed/simple;
-	bh=5yBtRrCgKVvhDIh0ROX9Y14p/8oYGJU2DB85u6Okctc=;
+	s=arc-20240116; t=1776099114; c=relaxed/simple;
+	bh=Frjx+S5VS6WH/wvR9USOxQ/yN2Do7Rkh1eX7STKNwKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miNpGElGwglEEIA8wTHv1rh9brWz8ZSJ4CJFceSqpa1y42pwnRBjWJWXQKVkJuf21xUkkZMDQXc6B+kWuMfL4Y2ZWhlno++J3P97KEs/I/dHJiBHdjj11mLW7qDh7SXl0xxMlz2K16tigEZLNhNNpCI1oqYWUiXrS9JemjteZXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IO5rdOXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4C1C2BCAF;
-	Mon, 13 Apr 2026 16:50:08 +0000 (UTC)
+	 MIME-Version; b=crOS2yPbQUfo/+G5L6R/c6MnB+pUNdvZgDXtqGDSexi0gmL9Zni16C5ik/OTSTRdQKBa0SUGiRcoju5wzVX498rI6Mq9WsBJLgaKPf/12h/oC9j/+G9c9Ccq+LttuYmUldYaGiAM5BYiPvChtFSINPcrBuGGZr5mGTALTpniOLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WscW2u3m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055E5C2BCAF;
+	Mon, 13 Apr 2026 16:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099008;
-	bh=5yBtRrCgKVvhDIh0ROX9Y14p/8oYGJU2DB85u6Okctc=;
+	s=korg; t=1776099114;
+	bh=Frjx+S5VS6WH/wvR9USOxQ/yN2Do7Rkh1eX7STKNwKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IO5rdOXAoW+n9RqmuwRmS7UHZ4Jjzr3k/zQ27v/7KtR+GXQe+HqC1Hk7/ccduNHUR
-	 366V3HI56MdRVqif1mZK34XLW2OGjsmjgz5L968K4uu/E6GPnyRLATYlMlzklga4I/
-	 ciuJAWndX7e9ez1SJipxuoRKyY5PEduNDRoIug70=
+	b=WscW2u3mFOu8xDWybQXOWdhFpOhCCnMP5Er23OxvcKOvIECRE5Vs8oznPiU0FnZg8
+	 IGMGe+UUZyWrI3+Dh79Sq0EHkMXK4Cg0TjAlrn56vCutfzjWnBDCyBV89+JSmxkhh+
+	 y8r0mIIfJHvVD4YxVioe9kK955oe3b3UrDwi3KUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 173/491] iio: light: bh1780: fix PM runtime leak on error path
-Date: Mon, 13 Apr 2026 17:56:58 +0200
-Message-ID: <20260413155825.524617814@linuxfoundation.org>
+Subject: [PATCH 5.10 174/491] smb: client: fix atomic open with O_DIRECT & O_SYNC
+Date: Mon, 13 Apr 2026 17:56:59 +0200
+Message-ID: <20260413155825.564298981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237264-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237305-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +89,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,analog.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 7F59A3F0817
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,manguebit.org:email,suse.com:email,talpey.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D57903F021E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,42 +103,109 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit dd72e6c3cdea05cad24e99710939086f7a113fb5 ]
+[ Upstream commit 4a7d2729dc99437dbb880a64c47828c0d191b308 ]
 
-Move pm_runtime_put_autosuspend() before the error check to ensure
-the PM runtime reference count is always decremented after
-pm_runtime_get_sync(), regardless of whether the read operation
-succeeds or fails.
+When user application requests O_DIRECT|O_SYNC along with O_CREAT on
+open(2), CREATE_NO_BUFFER and CREATE_WRITE_THROUGH bits were missed in
+CREATE request when performing an atomic open, thus leading to
+potentially data integrity issues.
 
-Fixes: 1f0477f18306 ("iio: light: new driver for the ROHM BH1780")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ moved both pm_runtime_mark_last_busy() and pm_runtime_put_autosuspend() before the error check instead of just pm_runtime_put_autosuspend() ]
+Fix this by setting those missing bits in CREATE request when
+O_DIRECT|O_SYNC has been specified in cifs_do_create().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted file paths from fs/smb/client/ to fs/cifs/ ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/bh1780.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/cifs/cifsglob.h |   11 +++++++++++
+ fs/cifs/dir.c      |    1 +
+ fs/cifs/file.c     |   17 +++--------------
+ 3 files changed, 15 insertions(+), 14 deletions(-)
 
---- a/drivers/iio/light/bh1780.c
-+++ b/drivers/iio/light/bh1780.c
-@@ -109,10 +109,10 @@ static int bh1780_read_raw(struct iio_de
- 		case IIO_LIGHT:
- 			pm_runtime_get_sync(&bh1780->client->dev);
- 			value = bh1780_read_word(bh1780, BH1780_REG_DLOW);
--			if (value < 0)
--				return value;
- 			pm_runtime_mark_last_busy(&bh1780->client->dev);
- 			pm_runtime_put_autosuspend(&bh1780->client->dev);
-+			if (value < 0)
-+				return value;
- 			*val = value;
+--- a/fs/cifs/cifsglob.h
++++ b/fs/cifs/cifsglob.h
+@@ -26,6 +26,7 @@
+ #include <linux/mm.h>
+ #include <linux/mempool.h>
+ #include <linux/workqueue.h>
++#include <linux/fcntl.h>
+ #include "cifs_fs_sb.h"
+ #include "cifsacl.h"
+ #include <crypto/internal/hash.h>
+@@ -2124,4 +2125,14 @@ static inline bool cifs_ses_exiting(stru
+ 	return ret;
+ }
  
- 			return IIO_VAL_INT;
++static inline int cifs_open_create_options(unsigned int oflags, int opts)
++{
++	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
++	if (oflags & O_SYNC)
++		opts |= CREATE_WRITE_THROUGH;
++	if (oflags & O_DIRECT)
++		opts |= CREATE_NO_BUFFER;
++	return opts;
++}
++
+ #endif	/* _CIFS_GLOB_H */
+--- a/fs/cifs/dir.c
++++ b/fs/cifs/dir.c
+@@ -348,6 +348,7 @@ cifs_do_create(struct inode *inode, stru
+ 		goto out;
+ 	}
+ 
++	create_options |= cifs_open_create_options(oflags, create_options);
+ 	/*
+ 	 * if we're not using unix extensions, see if we need to set
+ 	 * ATTR_READONLY on the create call
+--- a/fs/cifs/file.c
++++ b/fs/cifs/file.c
+@@ -216,19 +216,13 @@ cifs_nt_open(char *full_path, struct ino
+  *********************************************************************/
+ 
+ 	disposition = cifs_get_disposition(f_flags);
+-
+ 	/* BB pass O_SYNC flag through on file attributes .. BB */
+ 
+ 	buf = kmalloc(sizeof(FILE_ALL_INFO), GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+-	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
+-	if (f_flags & O_SYNC)
+-		create_options |= CREATE_WRITE_THROUGH;
+-
+-	if (f_flags & O_DIRECT)
+-		create_options |= CREATE_NO_BUFFER;
++	create_options |= cifs_open_create_options(f_flags, create_options);
+ 
+ 	oparms.tcon = tcon;
+ 	oparms.cifs_sb = cifs_sb;
+@@ -750,13 +744,8 @@ cifs_reopen_file(struct cifsFileInfo *cf
+ 	}
+ 
+ 	desired_access = cifs_convert_flags(cfile->f_flags);
+-
+-	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
+-	if (cfile->f_flags & O_SYNC)
+-		create_options |= CREATE_WRITE_THROUGH;
+-
+-	if (cfile->f_flags & O_DIRECT)
+-		create_options |= CREATE_NO_BUFFER;
++	create_options |= cifs_open_create_options(cfile->f_flags,
++						   create_options);
+ 
+ 	if (server->ops->get_lease_key)
+ 		server->ops->get_lease_key(inode, &cfile->fid);
 
 
 
