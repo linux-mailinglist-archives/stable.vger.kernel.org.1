@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-236593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMNCB4Ad3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:48 +0200
+	id 2MRQCMMg3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-236635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A32C3EFAC7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 715183F0668
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF4553035D4C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:21:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A847321791D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B239C2E11B9;
-	Mon, 13 Apr 2026 16:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB491309DB5;
+	Mon, 13 Apr 2026 16:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="li/TcmpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baf/XGxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7400826CE32;
-	Mon, 13 Apr 2026 16:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F98E2FFFBE;
+	Mon, 13 Apr 2026 16:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097306; cv=none; b=eZ3sChVW9PPSQvItmAjC0q7pLx54a1q05MxK5GUSMpu5IfHLz0Glfg6i+SmHz5eXU1K1wRYK5AR3QsV2gBXmxEkABnct7Ng7a32Rpp+KeG8uMzE0i3OyrSQl0hcCEXDOejwvFTvGdMRLvUKaUhIdW+GH4RS2GMztnXmcE0uMiNI=
+	t=1776097414; cv=none; b=uMa4+J35cIV11WTDA3lzS9bvVhf7udHrMfyN79EYqOedjMUG412ub9UX/6ZYZ65dSK8Npg3KFGJmbQNkU+UWoyEom+azdFYtKpAAUh8694GiTatbRwisqfkBbfczsSDPUQqPlyJWhq3EdABlvtoI4nA5yPKMnxfY5n5Dj+FDIJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097306; c=relaxed/simple;
-	bh=oRmu83i1XT7e+25Al5YnjNlGCgC5y34zXvyYo2oTmcQ=;
+	s=arc-20240116; t=1776097414; c=relaxed/simple;
+	bh=WTZZTHkovjychB617eHCXpN2sHE+cSHQ/o/kOgwoHHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9u4AgRUYS0R7kSNyKoINOr6jJdhTZ8dprLgn86edFwgCKu83WxjH6uJDYKWmfC1Sm3/JvW0OqW1j66JdeaB/jwvBKzNq4U1rWqrXNXk4aHMzv/gacP5xj3PP96Zp3kBd08RSkD4BZp1/w6FJ4coHIRLIJznJ9cyAINNdKsr6nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=li/TcmpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38ADC2BCAF;
-	Mon, 13 Apr 2026 16:21:45 +0000 (UTC)
+	 MIME-Version; b=RbrdcAj0lPRiSeIoXNph/BYxC/DOK9JraVGhaAO9M/6o7iCMq30e6vLT3g8STMGCjk7YqZ5fvo/ctCdcZfwYPtlXEK7zZj4AJbT+AQWrxm9JfeJWG3smodhyZQ20AjL9ykPwr/pKNp1MN0Am3jOF+K7nUK37zy+R0MHxagPsHKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baf/XGxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C21C2BCAF;
+	Mon, 13 Apr 2026 16:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097306;
-	bh=oRmu83i1XT7e+25Al5YnjNlGCgC5y34zXvyYo2oTmcQ=;
+	s=korg; t=1776097414;
+	bh=WTZZTHkovjychB617eHCXpN2sHE+cSHQ/o/kOgwoHHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=li/TcmpTCP37BY4+BjepapPyWdnChKBhKSmFmNeKeN14XhTbBeXwT+OSpINZcmpCy
-	 Tvx0/qjTyGI4SWpRnl+u5qFfUMc6cE1fP04J5BiFQCuzFhvnPHXmOc/KSmda/WL2Zh
-	 4mxhy9t+QEoBnFsVjv/DMFQDuvAjb9dg/Sv3UIgg=
+	b=baf/XGxb5al27ao4f5EyWftp/U6369LCqjSNwjKTBeGMAGouQ+ABRv6zMGKFBh+dj
+	 RB+54tri+kV+Xad85voUGbItvSKzCFxiUn9UAIGsSmV2+EMLtP2C0VzJcDGpcSeDGO
+	 KiBzdafkovn0G6nsfNchRXZ2OPmisb3G+BQTzuxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <joe@dama.to>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/570] nfc: rawsock: cancel tx_work before socket teardown
-Date: Mon, 13 Apr 2026 17:53:35 +0200
-Message-ID: <20260413155833.590323107@linuxfoundation.org>
+Subject: [PATCH 5.15 085/570] net: stmmac: Fix error handling in VLAN add and delete paths
+Date: Mon, 13 Apr 2026 17:53:36 +0200
+Message-ID: <20260413155833.627836999@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236593-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236635-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dama.to:email]
-X-Rspamd-Queue-Id: 6A32C3EFAC7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 715183F0668
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,52 +99,75 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-[ Upstream commit d793458c45df2aed498d7f74145eab7ee22d25aa ]
+[ Upstream commit 35dfedce442c4060cfe5b98368bc9643fb995716 ]
 
-In rawsock_release(), cancel any pending tx_work and purge the write
-queue before orphaning the socket.  rawsock_tx_work runs on the system
-workqueue and calls nfc_data_exchange which dereferences the NCI
-device.  Without synchronization, tx_work can race with socket and
-device teardown when a process is killed (e.g. by SIGKILL), leading
-to use-after-free or leaked references.
+stmmac_vlan_rx_add_vid() updates active_vlans and the VLAN hash
+register before writing the HW filter entry. If the filter write
+fails, it leaves a stale VID in active_vlans and the hash register.
 
-Set SEND_SHUTDOWN first so that if tx_work is already running it will
-see the flag and skip transmitting, then use cancel_work_sync to wait
-for any in-progress execution to finish, and finally purge any
-remaining queued skbs.
+stmmac_vlan_rx_kill_vid() has the reverse problem: it clears
+active_vlans before removing the HW filter. On failure, the VID is
+gone from active_vlans but still present in the HW filter table.
 
-Fixes: 23b7869c0fd0 ("NFC: add the NFC socket raw protocol")
-Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260303162346.2071888-6-kuba@kernel.org
+To fix this, reorder the operations to update the hash table first,
+then attempt the HW filter operation. If the HW filter fails, roll
+back both the active_vlans bitmap and the hash table by calling
+stmmac_vlan_update() again.
+
+Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Link: https://patch.msgid.link/20260303145828.7845-2-ovidiu.panait.rb@renesas.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/rawsock.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c  | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
-index 0ca214ab5aeff..23d52b8d6363e 100644
---- a/net/nfc/rawsock.c
-+++ b/net/nfc/rawsock.c
-@@ -66,6 +66,17 @@ static int rawsock_release(struct socket *sock)
- 	if (sock->type == SOCK_RAW)
- 		nfc_sock_unlink(&raw_sk_list, sk);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index e056b512c1277..70e941650b425 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6281,9 +6281,13 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
  
-+	if (sk->sk_state == TCP_ESTABLISHED) {
-+		/* Prevent rawsock_tx_work from starting new transmits and
-+		 * wait for any in-progress work to finish.  This must happen
-+		 * before the socket is orphaned to avoid a race where
-+		 * rawsock_tx_work runs after the NCI device has been freed.
-+		 */
-+		sk->sk_shutdown |= SEND_SHUTDOWN;
-+		cancel_work_sync(&nfc_rawsock(sk)->tx_work);
-+		rawsock_write_queue_purge(sk);
-+	}
+ 	if (priv->hw->num_vlan) {
+ 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
+-		if (ret)
++		if (ret) {
++			clear_bit(vid, priv->active_vlans);
++			stmmac_vlan_update(priv, is_double);
+ 			goto err_pm_put;
++		}
+ 	}
 +
- 	sock_orphan(sk);
- 	sock_put(sk);
+ err_pm_put:
+ 	pm_runtime_put(priv->device);
+ 
+@@ -6306,15 +6310,21 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
+ 		is_double = true;
+ 
+ 	clear_bit(vid, priv->active_vlans);
++	ret = stmmac_vlan_update(priv, is_double);
++	if (ret) {
++		set_bit(vid, priv->active_vlans);
++		goto del_vlan_error;
++	}
+ 
+ 	if (priv->hw->num_vlan) {
+ 		ret = stmmac_del_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
+-		if (ret)
++		if (ret) {
++			set_bit(vid, priv->active_vlans);
++			stmmac_vlan_update(priv, is_double);
+ 			goto del_vlan_error;
++		}
+ 	}
+ 
+-	ret = stmmac_vlan_update(priv, is_double);
+-
+ del_vlan_error:
+ 	pm_runtime_put(priv->device);
  
 -- 
 2.51.0
