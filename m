@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-237043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJHECBgg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:52 +0200
+	id YE9dG8MZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8E23F0416
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83A73EF0B2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5F2CF308E0E1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D4D13129419
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0585330E857;
-	Mon, 13 Apr 2026 16:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3312B2F6931;
+	Mon, 13 Apr 2026 16:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubnsMSvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJ24WEeT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC3A30C361;
-	Mon, 13 Apr 2026 16:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB18427280A;
+	Mon, 13 Apr 2026 16:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098442; cv=none; b=CpCPCy9iyUawB2YR9xlNweVJKdDCj+5bqoMw5RTZKFyq50LO1vsixrGNksyHx+etlxpwTKfNzjpuMXHdc1CyoYXBOj7eX1HaZk5C9txQ4sh1Fd0o4oPDfByDQvMKqkMGIWdGwE1OnCE8Xa/ar4/W5LS1a7jpT971Dj9Mgu8LvGs=
+	t=1776097083; cv=none; b=idW2zFQBkUusbCxDBomDKwCzv2/bOPhM8+4Qw69Sj405H4g8zorIr0HzX8VqkGahR7Vn2UBY4sXAL8RmQ7Yh3l32G8lhw1Ci46rHPCHn3djRXtzP03bM13BM5HE9ZMesbEdqXduAJShPNE+qMGBtK+cy+ojDcCZXE2miq8BLm8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098442; c=relaxed/simple;
-	bh=ixil2JnuMNJN5l8aE9uMAyA85yu6rVuOG+0Ad8BXWmI=;
+	s=arc-20240116; t=1776097083; c=relaxed/simple;
+	bh=OoD258gZsdFYaZ5HE84fshcRv0YcUPSP5kmJXPrfZ7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKX3YWpKTORW2GIQKIn5LASK6d+JUJQdxcKTESrwvAtqtHh+Kye3sZj78eC2AD3oL8LTh4zs44NnepqzjQClqByqYPuweWqKohkDyyONrxWkWK3uRM5F++bDVCxeKLKzw2bdWljyNN1X2DZLUG+eN2UK9ugopfdIbZpqWyznSBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubnsMSvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542F7C2BCAF;
-	Mon, 13 Apr 2026 16:40:42 +0000 (UTC)
+	 MIME-Version; b=nAIIGV/ZreuvrlYMsJSMRQwmE4DElAu7zpkQYlpjITw/UDWk82Q+2K8cDyG0yoqnRgH34bx5R4FmkBEEb1QwI7ZAlcikLEx+J4a2YOQpmgoZceVDDtWN4M3iSr2KlCKE4RWWtyKXSsTytpTGzIvmeLX5hkyh9rfv8A0pEx/tecw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJ24WEeT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80052C2BCAF;
+	Mon, 13 Apr 2026 16:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098442;
-	bh=ixil2JnuMNJN5l8aE9uMAyA85yu6rVuOG+0Ad8BXWmI=;
+	s=korg; t=1776097082;
+	bh=OoD258gZsdFYaZ5HE84fshcRv0YcUPSP5kmJXPrfZ7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubnsMSvq0ZqzUeHDy0WHigCTfFB0WhH7hQTAF72Cr64xk17TwhInUpRA0cJYQXeKm
-	 7XjXZqubier8rL+1yWsZb9on9yUCrDpjDhXOFrAec7L5F1IjyxmJPtgv3jJs8zABl0
-	 pYlhxehR/PoLvESukG24lJlcV6T5x/iRQBPo2aeI=
+	b=qJ24WEeTPMmNUr84PGj86UNm6zsT1sRY+qHY9Vn4+pnWeD7vc0Ao9l8snLa8pHQ1u
+	 H8GKxP9NYVbVCAUHhGG3Ec4gK1mCH5kVwOzBgumjb8GCphyl3j7wL3SGX2MKhAelug
+	 jg3QLqXh6gwTcb1Tli5EBg5Ro3ZccfU+v77JhJCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuan Do <tuan@calif.io>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 5.15 526/570] netfilter: nft_ct: fix use-after-free in timeout object destroy
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 23/55] usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
 Date: Mon, 13 Apr 2026 18:00:57 +0200
-Message-ID: <20260413155850.153569376@linuxfoundation.org>
+Message-ID: <20260413155725.695082326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,95 +78,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237043-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236508-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,calif.io:email]
-X-Rspamd-Queue-Id: 1A8E23F0416
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: E83A73EF0B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuan Do <tuan@calif.io>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit f8dca15a1b190787bbd03285304b569631160eda upstream.
+[ Upstream commit e1eabb072c75681f78312c484ccfffb7430f206e ]
 
-nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
-immediately after nf_ct_untimeout(), without waiting for an RCU grace
-period. Concurrent packet processing on other CPUs may still hold
-RCU-protected references to the timeout object obtained via
-rcu_dereference() in nf_ct_timeout_data().
+A race condition between gether_disconnect() and eth_stop() leads to a
+NULL pointer dereference. Specifically, if eth_stop() is triggered
+concurrently while gether_disconnect() is tearing down the endpoints,
+eth_stop() attempts to access the cleared endpoint descriptor, causing
+the following NPE:
 
-Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
-freeing until after an RCU grace period, matching the approach already
-used in nfnetlink_cttimeout.c.
+  Unable to handle kernel NULL pointer dereference
+  Call trace:
+   __dwc3_gadget_ep_enable+0x60/0x788
+   dwc3_gadget_ep_enable+0x70/0xe4
+   usb_ep_enable+0x60/0x15c
+   eth_stop+0xb8/0x108
 
-KASAN report:
- BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
- Read of size 4 at addr ffff8881035fe19c by task exploit/80
+Because eth_stop() crashes while holding the dev->lock, the thread
+running gether_disconnect() fails to acquire the same lock and spins
+forever, resulting in a hardlockup:
 
- Call Trace:
-  nf_conntrack_tcp_packet+0x1381/0x29d0
-  nf_conntrack_in+0x612/0x8b0
-  nf_hook_slow+0x70/0x100
-  __ip_local_out+0x1b2/0x210
-  tcp_sendmsg_locked+0x722/0x1580
-  __sys_sendto+0x2d8/0x320
+  Core - Debugging Information for Hardlockup core(7)
+  Call trace:
+   queued_spin_lock_slowpath+0x94/0x488
+   _raw_spin_lock+0x64/0x6c
+   gether_disconnect+0x19c/0x1e8
+   ncm_set_alt+0x68/0x1a0
+   composite_setup+0x6a0/0xc50
 
- Allocated by task 75:
-  nft_ct_timeout_obj_init+0xf6/0x290
-  nft_obj_init+0x107/0x1b0
-  nf_tables_newobj+0x680/0x9c0
-  nfnetlink_rcv_batch+0xc29/0xe00
+The root cause is that the clearing of dev->port_usb in
+gether_disconnect() is delayed until the end of the function.
 
- Freed by task 26:
-  nft_obj_destroy+0x3f/0xa0
-  nf_tables_trans_destroy_work+0x51c/0x5c0
-  process_one_work+0x2c4/0x5a0
+Move the clearing of dev->port_usb to the very beginning of
+gether_disconnect() while holding dev->lock. This cuts off the link
+immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+safely bail out.
 
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tuan Do <tuan@calif.io>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_conntrack_timeout.h |    1 +
- net/netfilter/nft_ct.c                       |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_ether.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/net/netfilter/nf_conntrack_timeout.h
-+++ b/include/net/netfilter/nf_conntrack_timeout.h
-@@ -14,6 +14,7 @@
- struct nf_ct_timeout {
- 	__u16			l3num;
- 	const struct nf_conntrack_l4proto *l4proto;
-+	struct rcu_head		rcu;
- 	char			data[];
- };
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1175,6 +1175,10 @@ void gether_disconnect(struct gether *li
  
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -935,7 +935,7 @@ static void nft_ct_timeout_obj_destroy(c
- 	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
--	kfree(priv->timeout);
-+	kfree_rcu(priv->timeout, rcu);
+ 	DBG(dev, "%s\n", __func__);
+ 
++	spin_lock(&dev->lock);
++	dev->port_usb = NULL;
++	spin_unlock(&dev->lock);
++
+ 	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
+ 
+@@ -1212,10 +1216,6 @@ void gether_disconnect(struct gether *li
+ 	dev->header_len = 0;
+ 	dev->unwrap = NULL;
+ 	dev->wrap = NULL;
+-
+-	spin_lock(&dev->lock);
+-	dev->port_usb = NULL;
+-	spin_unlock(&dev->lock);
  }
+ EXPORT_SYMBOL_GPL(gether_disconnect);
  
- static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
 
 
 
