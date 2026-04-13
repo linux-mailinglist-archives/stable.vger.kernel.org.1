@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-236879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBJtJG4d3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:30 +0200
+	id mK92Mgwj3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392823EFA91
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 412B43F0D23
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12C5D305D700
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:33:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A1BD305F766
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E16292B2E;
-	Mon, 13 Apr 2026 16:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098B13195E4;
+	Mon, 13 Apr 2026 16:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEdTJri3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHlJTS/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48B12C11CA;
-	Mon, 13 Apr 2026 16:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0879318EC4;
+	Mon, 13 Apr 2026 16:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098027; cv=none; b=JSW9fLStXaCiXsV2TQm2QGkML/0CpYC2zDGKTn1I/ErugCN2leJ/JZtM/L3hfFGfQBTZmEBr7iUpH5FGgdXEdww7eiw1zi+NY+w/yCjawXpkbQcWt7DUKMZN1sjFC1bKsYtrDpJcvFY13Bh0pyJzD+cgSppcCsJciP6GG36aFCs=
+	t=1776099284; cv=none; b=PjRg4lDHhSfoXDQZJV/+4L5bI+y9UXwTrBwGpD8Nj3gOSxcCQ8UukjpR5WrgISZ4pWuX09F3YCKyev2t4JpsyKojrcz3yWFIDYNjuS1IOPvhqjrU6G9FbASJo8TfanmUXspD9T2lEsTfLp6PBmdwcnmpkPmxRuxKCsNLXcsg60k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098027; c=relaxed/simple;
-	bh=+xc0ZimHQjuXEKbodKAIiNY6eQruA27n3A7wgntB5Bg=;
+	s=arc-20240116; t=1776099284; c=relaxed/simple;
+	bh=IhFkLnd1FM8F4U7F7AZyixpzf5PENNgIpWdZHEd+uiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9kA6ehQynbUBu0IMXd4I1K0kb86+AZzOetB1q7D1bOnln+yq2waPF0rIedEy9xa5XQxrGqxoua0EpF1UQDAnyBZGtqQXXuYgle4U5iZiIslE+GSo7XKc92IMzzopb/Bp/9pI6PBvWafv/8D5O1obHu1pxL82kM6bcAoFI7kwYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEdTJri3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BACFC2BCAF;
-	Mon, 13 Apr 2026 16:33:47 +0000 (UTC)
+	 MIME-Version; b=Z9HjMpPFSaRkHCWOhlIaPhrrKxyeLdyYxtJrjtJrmR3yP3fwUcXvbMH3cSBJrwFwJ87PIHQRHniwDkUV8R6AxAtXxSftDvdJoPuGfIHI0R2HV90V4fSVoF+3u4ZTcUdvmtVS5UAv+tRJ5vbeGwgMEDMyuqh5IqrvUGY6J3Rj03E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHlJTS/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A5EC2BCAF;
+	Mon, 13 Apr 2026 16:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098027;
-	bh=+xc0ZimHQjuXEKbodKAIiNY6eQruA27n3A7wgntB5Bg=;
+	s=korg; t=1776099284;
+	bh=IhFkLnd1FM8F4U7F7AZyixpzf5PENNgIpWdZHEd+uiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEdTJri3JydoOE8NiPqStBZ0agQ1jLZRaDU2M2kyjXCBhKzk6GTBOnNa+RFj6JOjG
-	 E0AkyESPeJSvj/G7xioat/oX3RzntCVGd8+qliGjJl+ccqFbKLsI/rM94itYteB5SR
-	 kEtF3A3Ob6Y96Krf7oGPYfd0njEVnllaoNlV/yAY=
+	b=kHlJTS/IfnpYxOEKwQiutQF9vaMaYWAX4ZSxOP0D50+MzuPvwDMbTG5ye3JGH2Iz4
+	 eqGVcqTRTjtgcZbp13sLs2+M3ihPbUpiEAqSyoEZlq/C7G9Ekt7NeGmXopJvuVHSpX
+	 7yRei98K7+0I/YxERLgM4lOEgBJvcZTjWg9iMnDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Buerg <buermarc@googlemail.com>,
-	Joel Granados <joel.granados@kernel.org>,
+	syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 364/570] sysctl: fix uninitialized variable in proc_do_large_bitmap
+Subject: [PATCH 5.10 250/491] af_key: validate families in pfkey_send_migrate()
 Date: Mon, 13 Apr 2026 17:58:15 +0200
-Message-ID: <20260413155844.117370888@linuxfoundation.org>
+Message-ID: <20260413155828.415168506@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +66,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236879-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-237372-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 392823EFA91
+	TAGGED_RCPT(0.00)[stable,b518dfc8e021988fbd55];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,secunet.com:email]
+X-Rspamd-Queue-Id: 412B43F0D23
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Buerg <buermarc@googlemail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f63a9df7e3f9f842945d292a19d9938924f066f9 ]
+[ Upstream commit eb2d16a7d599dc9d4df391b5e660df9949963786 ]
 
-proc_do_large_bitmap() does not initialize variable c, which is expected
-to be set to a trailing character by proc_get_long().
+syzbot was able to trigger a crash in skb_put() [1]
 
-However, proc_get_long() only sets c when the input buffer contains a
-trailing character after the parsed value.
+Issue is that pfkey_send_migrate() does not check old/new families,
+and that set_ipsecrequest() @family argument was truncated,
+thus possibly overfilling the skb.
 
-If c is not initialized it may happen to contain a '-'. If this is the
-case proc_do_large_bitmap() expects to be able to parse a second part of
-the input buffer. If there is no second part an unjustified -EINVAL will
-be returned.
+Validate families early, do not wait set_ipsecrequest().
 
-Initialize c to 0 to prevent returning -EINVAL on valid input.
+[1]
 
-Fixes: 9f977fb7ae9d ("sysctl: add proc_do_large_bitmap")
-Signed-off-by: Marc Buerg <buermarc@googlemail.com>
-Reviewed-by: Joel Granados <joel.granados@kernel.org>
-Signed-off-by: Joel Granados <joel.granados@kernel.org>
+skbuff: skb_over_panic: text:ffffffff8a752120 len:392 put:16 head:ffff88802a4ad040 data:ffff88802a4ad040 tail:0x188 end:0x180 dev:<NULL>
+ kernel BUG at net/core/skbuff.c:214 !
+Call Trace:
+ <TASK>
+  skb_over_panic net/core/skbuff.c:219 [inline]
+  skb_put+0x159/0x210 net/core/skbuff.c:2655
+  skb_put_zero include/linux/skbuff.h:2788 [inline]
+  set_ipsecrequest net/key/af_key.c:3532 [inline]
+  pfkey_send_migrate+0x1270/0x2e50 net/key/af_key.c:3636
+  km_migrate+0x155/0x260 net/xfrm/xfrm_state.c:2848
+  xfrm_migrate+0x2140/0x2450 net/xfrm/xfrm_policy.c:4705
+  xfrm_do_migrate+0x8ff/0xaa0 net/xfrm/xfrm_user.c:3150
+
+Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
+Reported-by: syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69b5933c.050a0220.248e02.00f2.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sysctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/key/af_key.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index eaf9dd6a2f12f..ac16c3084c96c 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -1528,7 +1528,7 @@ int proc_do_large_bitmap(struct ctl_table *table, int write,
- 	unsigned long bitmap_len = table->maxlen;
- 	unsigned long *bitmap = *(unsigned long **) table->data;
- 	unsigned long *tmp_bitmap = NULL;
--	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c;
-+	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c = 0;
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index de4606d2eb643..95f7e363c2f6a 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3522,7 +3522,7 @@ static int set_sadb_kmaddress(struct sk_buff *skb, const struct xfrm_kmaddress *
  
- 	if (!bitmap || !bitmap_len || !left || (*ppos && !write)) {
- 		*lenp = 0;
+ static int set_ipsecrequest(struct sk_buff *skb,
+ 			    uint8_t proto, uint8_t mode, int level,
+-			    uint32_t reqid, uint8_t family,
++			    uint32_t reqid, sa_family_t family,
+ 			    const xfrm_address_t *src, const xfrm_address_t *dst)
+ {
+ 	struct sadb_x_ipsecrequest *rq;
+@@ -3587,12 +3587,17 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 
+ 	/* ipsecrequests */
+ 	for (i = 0, mp = m; i < num_bundles; i++, mp++) {
+-		/* old locator pair */
+-		size_pol += sizeof(struct sadb_x_ipsecrequest) +
+-			    pfkey_sockaddr_pair_size(mp->old_family);
+-		/* new locator pair */
+-		size_pol += sizeof(struct sadb_x_ipsecrequest) +
+-			    pfkey_sockaddr_pair_size(mp->new_family);
++		int pair_size;
++
++		pair_size = pfkey_sockaddr_pair_size(mp->old_family);
++		if (!pair_size)
++			return -EINVAL;
++		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
++
++		pair_size = pfkey_sockaddr_pair_size(mp->new_family);
++		if (!pair_size)
++			return -EINVAL;
++		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
+ 	}
+ 
+ 	size += sizeof(struct sadb_msg) + size_pol;
 -- 
-2.53.0
+2.51.0
 
 
 
