@@ -1,157 +1,137 @@
-Return-Path: <stable+bounces-235990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNAZGObR3GmcWQkAu9opvQ
-	(envelope-from <stable+bounces-235990-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:22:14 +0200
+	id UH3yJjrT3GmcWQkAu9opvQ
+	(envelope-from <stable+bounces-235992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:27:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9971D3EB352
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:22:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CF33EB49C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 13:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB7613008272
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 11:22:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CBECA302E840
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 11:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F1D3BD64E;
-	Mon, 13 Apr 2026 11:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27293C2785;
+	Mon, 13 Apr 2026 11:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ba49pVzo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bP73mLUY"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-y-111.mailbox.org (mout-y-111.mailbox.org [91.198.250.236])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093E730FF05;
-	Mon, 13 Apr 2026 11:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4C53C1987
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776079327; cv=none; b=Yqj8l0qqSD/hEYmMcvXoqqOxGso0JzzHTBvRtZuLFyGsnPqz7kkbU+e/H2Pv0HwqeBzCBYgzw+I/A+VVNn+T39ZKcQj7gG9w8T/w9ynorKmUgQMhZXU3OW4fXe1OKC5rzZESNPJNMuw6K59tzl2BQNFDCyDbaobC5u0DThlUQKM=
+	t=1776079441; cv=none; b=Qz6LHsUyAYSOkG1A1qUJdXGn/HIhxrQC4Qqi3OUpM6FcUm7anJiKT7ii7pIGxglOVwM+4eN8dYVkVVjwSy7d4HAVzbEKN+6n978Ne0awf4LIm5A/oeLumhsddo9K+fYZ6MySLVneahMyAeNjYVBbBGsyNkb8y7eu70xSBOUjliE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776079327; c=relaxed/simple;
-	bh=aD6WW45e+NRp9O5rCvJhTmH0sTsR1ClEPzUe3gzQylo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QNNTJT/TXDamv6DRW3ev2gpB9aTtMld97Ark3+8Yv5ugjmayaU6KgJgQtAA0D6vsSeY3eU/pE3Q9fQK1HGnn6iM+GnQZ0nCN4vdcA8jNWbbrwr/C0K/71tGDR+4zsHstMkSeeeWIagr5TrivTbRUCJR/sJyfzvgNxoPvDq8cET8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ba49pVzo; arc=none smtp.client-ip=91.198.250.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4fvQ3S5QYkz9yR3;
-	Mon, 13 Apr 2026 13:21:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1776079316;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ujTFig8ng/0GP5w6u02e5j7gKiyai90e+dKLtJdkFs=;
-	b=ba49pVzoT+DpLoet5qXdX9pNRN6h4LcmnxIpQ67+Y07iStql2BIbTgr24jgSLhC60nYbYT
-	+VCZomXUnIX7A+6QOhU8G9awgtVFQGZ4riMM5ZIYN6a3nREuDYA0JJhSnIW5Ww4p0Rn890
-	BrLDhFC6XwSd71XzSenjH3N2iOOVEzCRWw8G2QTQYK0Yt5QEj3rPrklKOeuwJLjJaQTJIs
-	Cuj3m+g/9b7hcxPZoAsG8qVytFmNLpsVCygUj7LKX2eWpLPW5gcO/eqaajNKAN4sGEHFM0
-	J3zRqxnuA2c7grmcgR7Fm+I1lbhiSIUW/4Qj5QzqA5PQKyX0wUF2rkUh064c3g==
-Message-ID: <22da778a-a622-46b9-be7c-948f9178e77e@mailbox.org>
-Date: Mon, 13 Apr 2026 19:21:43 +0800
+	s=arc-20240116; t=1776079441; c=relaxed/simple;
+	bh=iI/QH+BncmYUzNfTGdAuXn7COAG6QUx6ILaw2qbVcrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BSk/HQX7DKk1pWltGJfKI+SPvafo+iC8MaWJUM5bRxKmdpuzlq2cdbGpb56uci8r86eqe9Xno5BCgPBdSVv8MadjzbSjyIn4rmGiyaJ0p46jgHnTJDWQP2FY3RhBOFEEOaOUmsxN0d94v1h6JKT0F0mBN+lvipKIHW2mJLF3tp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bP73mLUY; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776079441; x=1807615441;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=iI/QH+BncmYUzNfTGdAuXn7COAG6QUx6ILaw2qbVcrA=;
+  b=bP73mLUYZ5HDO06DDhaGSurqcm5IyDNp5XO3ZlAYkSN6U2w1UE/c9A/H
+   ubJZhFlBBRpqkeWQk6dnubMt9JCh00c4J7rhmeAVL/S8Qh8ZCmwWw9vyb
+   DaEx7Wa7fr8oXupw1Y/vh0/NBdOAxAq+/oi80I6d73O+0hQIW3Tginw2P
+   XM17z9az4XCkCbU4YmWeuiTpU0DW7EFz/mEiM4sPNM1mpJviSaFblcKnp
+   bZCfanNlX4hfm5WnSBsrWjzsuezJA3OqisB5udIuX/+aKdUoyp/zZmn90
+   GYz5X1jHl5QWq7PsUOktOGzZzJKb5daofoALPC7Kb2tyFFk8UoH3FsvvL
+   Q==;
+X-CSE-ConnectionGUID: 8tjKISqQSLOyuuYO1191jQ==
+X-CSE-MsgGUID: aDAVK9ClTEuzXs+kWh6c3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="99656713"
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
+   d="scan'208";a="99656713"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 04:24:00 -0700
+X-CSE-ConnectionGUID: burOrOHLT1WSw4+oQ9230w==
+X-CSE-MsgGUID: NoJrNgoLQ66n91tb0o9kBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
+   d="scan'208";a="234681914"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.244.251])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 04:23:58 -0700
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915/psr: Init variable to avoid early exit from et alignment loop
+Date: Mon, 13 Apr 2026 14:23:45 +0300
+Message-ID: <20260413112345.88853-1-jouni.hogander@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 net] net: ax25: fix integer overflow in
- ax25_rx_fragment()
-To: David Laight <david.laight.linux@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, jreuter@yaina.de,
- linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260409025026.24575-1-mashiro.chen@mailbox.org>
- <20260412131751.0e90a053@kernel.org> <20260412220550.0f35f5ef@pumpkin>
-Content-Language: en-US
-From: Mashiro Chen <mashiro.chen@mailbox.org>
-In-Reply-To: <20260412220550.0f35f5ef@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 9888fca2716acfe2476
-X-MBO-RS-META: igou1zj3j1uosk8uu1wz6rf3fon9giwe
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235990-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235992-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mashiro.chen@mailbox.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jouni.hogander@intel.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:dkim,mailbox.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9971D3EB352
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid]
+X-Rspamd-Queue-Id: 11CF33EB49C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Jakub, Simon
+Uninitialized boolean variable may cause unwanted exit from et alignment
+loop. Fix this by initializing it as false.
 
-v3 has addressed the review comments on v2:
-1. Add pskb_may_pull(skb, 1) before dereferencing skb->data
-2. Remove the unnecessary (unsigned int) cast on fraglen
-3. Fix skb leak in overflow path that kfree_skb(skb) before return 1
-4. Reset ax25->fraglen = 0 after purge
+Fixes: 681e12440d8b ("drm/i915/psr: Repeat Selective Update area alignment")
+Cc: <stable@vger.kernel.org> # v6.9+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_psr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index b4ca5843d098..63c19958a9e3 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -3002,7 +3002,7 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
+ 		return ret;
+ 
+ 	do {
+-		bool cursor_in_su_area;
++		bool cursor_in_su_area = false;
+ 
+ 		/*
+ 		 * Adjust su area to cover cursor fully as necessary
+-- 
+2.43.0
 
-P.S.:
-the reassembly copy loop at ax25_in.c:75 uses 
-skb_copy_from_linear_data(skbo, dst, skbo->len), which is equivalent to 
-memcpy(skbo->data, dst, skbo->len).
-If a queued skbo contains non-linear data, which means data_len > 0, 
-this silently reads only the linear head and copies stale data for the 
-remainder.
-In practice, all AX.25 lower-layer drivers like mkiss and 6pack allocate 
-fully linear skbs via dev_alloc_skb(), so this is not currently 
-reachable, I think there should be a separated patch to fix this.
-
-73s,
-Mashiro Chen
-
-On 4/13/26 05:05, David Laight wrote:
-> On Sun, 12 Apr 2026 13:17:51 -0700
-> Jakub Kicinski <kuba@kernel.org> wrote:
->
->> On Thu,  9 Apr 2026 10:50:26 +0800 Mashiro Chen wrote:
->>> Fix mirrors the identical bug fixed in NET/ROM (nr_in.c): check for
->>> overflow before adding skb->len to fraglen, and abort fragment
->>> reassembly cleanly if the limit would be exceeded.
->> Same problem as reported by Simon on the netrom patch applies here.
->>
->> nit: I don't think you need to cast ax25->fraglen to unsigned int
->> in the comparison. since it's added with skb->len it should get
->> auto-prompted to unsigned int.
-> It wouldn't matter if that comparison were signed.
->
-> Or change the type of ax25->fraglen to be 32bits and do the
-> sanity check for overlong packets later in the code.
-> I had a quick look at the header and the structure hasn't
-> been size-optimised...
->
-> 	David
->
 
