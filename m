@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIqSK9oZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:14 +0200
+	id GPElNaIY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283C33EF108
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9673EECD0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49EFD303EEA3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 73CAD304E005
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCDB26ED41;
-	Mon, 13 Apr 2026 16:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4D5296BDC;
+	Mon, 13 Apr 2026 16:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvpfK6yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pP+3ujVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901F025A2C9;
-	Mon, 13 Apr 2026 16:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508DC24DCF6;
+	Mon, 13 Apr 2026 16:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096872; cv=none; b=M/O9zQ4b5VHZ9t85H37qX24kxUyDkmxU/Ny6W5WgAc/gRxJj/UzbOXxfoKihm7fJ+NJKQgOXCaoIAqLwQdvUHVwqRHBvyQWXKsbAKSnipnq6XD34mA7JXMuYEiBJkfOb6qRyC+57GqHbtDEferyJjz2tMZ4dDJa56S54F4UJqZM=
+	t=1776096643; cv=none; b=gxLLXcADEeSOqB+jAhAq1Z/70/EkqtPcVi0UhfslmIZsSBBPr9UtK+H9ElOqiYuVFM6ci3UHdqmT3cES4anQ1EY8BwfKne0G5+QDSePiIHwNSWa6cjzu/AfGj0k7t9Zr9BWXfkIu7AGAG4rEPzMNmiMc5NCMuHlF13cLTrR4jjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096872; c=relaxed/simple;
-	bh=3tWRSJGGxJsE6UO5NJNjHMiyZOITIoNZSinPxDC8J5g=;
+	s=arc-20240116; t=1776096643; c=relaxed/simple;
+	bh=tu6opv2WOhV6rWZv6WnOlg2CgXmhp5xNoL2rBI2K5Jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1tVhmSoICwkAnh6W29sIeHk7hIN+4q0uuQ/8LyYlF+4/fXDDH1M8pqEksLxBNeoR09XOGFsFm/ETiT9GRgdfMLGe0pExlVSpVlMLMvYQ0C3CzphRZjcxEi1BvSTMh2XkYGUMfeRgqjvPDqkrMWQ/T8NyxnI8FOVfymt7au69Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvpfK6yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D79AC2BCAF;
-	Mon, 13 Apr 2026 16:14:31 +0000 (UTC)
+	 MIME-Version; b=l0d59eY10IlPdKOSVZfq86kEA3pFXSBUMEwX5UPvjBbd8rwWlm88Y1g5LOsnSWYq8k3JtRXTZMkfgUbszSeYm5QTypKimuavrH/wosXIUXRpv/jvJUWerhqV7H4wcZBlAaw7PgsBkCN8jsG6/kIVNlF2hMGyS/ia3yT18LXULYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pP+3ujVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7BEC2BCB0;
+	Mon, 13 Apr 2026 16:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096872;
-	bh=3tWRSJGGxJsE6UO5NJNjHMiyZOITIoNZSinPxDC8J5g=;
+	s=korg; t=1776096643;
+	bh=tu6opv2WOhV6rWZv6WnOlg2CgXmhp5xNoL2rBI2K5Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvpfK6ylWvazTqaUqn/UXn6Zw3vxk/Gw2ughSC74cri7VMb4dTR4PZnYPmtp9UKDV
-	 fMAaSiK9mcuB80M1XRcnp8rfQfL3Bmos0wSwXRnlDN1B5zFp4cfUrc1doTMgev7y8s
-	 zLrAvQ1hGIOcXiZlp15CIRpu+uzYXR/PIrhkdqao=
+	b=pP+3ujVBM6Z4iFsdEO5jwdpi9iIWGvgBJp7kIE/22TUeNxRFzyXfjyazWdFdw5xkX
+	 yLpTh1jHMp6Rr5iPrHbPvw9kNX8rTDWRpbehx658eEbfRoaKKsG9L0iCaTPURAliu/
+	 XRR/7qVGLOzWFCn+jh7dPZMsH5VBANrrPSKO5q5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.6 24/50] Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
+	Antonius <antonius@bluedragonsec.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 83/83] net: skb: fix cross-cache free of KFENCE-allocated skb head
 Date: Mon, 13 Apr 2026 18:00:51 +0200
-Message-ID: <20260413155725.415624578@linuxfoundation.org>
+Message-ID: <20260413155734.087006692@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,124 +69,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236336-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236425-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[puri.sm:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 283C33EF108
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bluedragonsec.com:email,msgid.link:url,linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CE9673EECD0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 4cd46ea0eb4504f7f4fea92cb4601c5c9a3e545e upstream.
+commit 0f42e3f4fe2a58394e37241d02d9ca6ab7b7d516 upstream.
 
-This reverts commit c24a9b698fb02cd0723fa8375abab07f94b97b10.
+SKB_SMALL_HEAD_CACHE_SIZE is intentionally set to a non-power-of-2
+value (e.g. 704 on x86_64) to avoid collisions with generic kmalloc
+bucket sizes. This ensures that skb_kfree_head() can reliably use
+skb_end_offset to distinguish skb heads allocated from
+skb_small_head_cache vs. generic kmalloc caches.
 
-It's been found that there's a significant per-unit variance in accepted
-supply voltages and the current set still makes some units unstable.
+However, when KFENCE is enabled, kfence_ksize() returns the exact
+requested allocation size instead of the slab bucket size. If a caller
+(e.g. bpf_test_init) allocates skb head data via kzalloc() and the
+requested size happens to equal SKB_SMALL_HEAD_CACHE_SIZE, then
+slab_build_skb() -> ksize() returns that exact value. After subtracting
+skb_shared_info overhead, skb_end_offset ends up matching
+SKB_SMALL_HEAD_HEADROOM, causing skb_kfree_head() to incorrectly free
+the object to skb_small_head_cache instead of back to the original
+kmalloc cache, resulting in a slab cross-cache free:
 
-Revert back to nominal values.
+  kmem_cache_free(skbuff_small_head): Wrong slab cache. Expected
+  skbuff_small_head but got kmalloc-1k
 
-Cc: stable@vger.kernel.org
-Fixes: c24a9b698fb0 ("arm64: dts: imx8mq-librem5: Set the DVS voltages lower")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fix this by always calling kfree(head) in skb_kfree_head(). This keeps
+the free path generic and avoids allocator-specific misclassification
+for KFENCE objects.
+
+Fixes: bf9f1baa279f ("net: add dedicated kmem_cache for typical/small skb->head")
+Reported-by: Antonius <antonius@bluedragonsec.com>
+Closes: https://lore.kernel.org/netdev/CAK8a0jxC5L5N7hq-DT2_NhUyjBxrPocoiDazzsBk4TGgT1r4-A@mail.gmail.com/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260403014517.142550-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |    2 -
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi   |   22 +++++---------------
- 2 files changed, 7 insertions(+), 17 deletions(-)
+ net/core/skbuff.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-@@ -7,7 +7,7 @@
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1042,10 +1042,7 @@ static int skb_pp_frag_ref(struct sk_buf
  
- &a53_opp_table {
- 	opp-1000000000 {
--		opp-microvolt = <950000>;
-+		opp-microvolt = <1000000>;
- 	};
- };
+ static void skb_kfree_head(void *head, unsigned int end_offset)
+ {
+-	if (end_offset == SKB_SMALL_HEAD_HEADROOM)
+-		kmem_cache_free(net_hotdata.skb_small_head_cache, head);
+-	else
+-		kfree(head);
++	kfree(head);
+ }
  
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -847,8 +847,8 @@
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
- 				regulator-ramp-delay = <1250>;
--				rohm,dvs-run-voltage = <880000>;
--				rohm,dvs-idle-voltage = <820000>;
-+				rohm,dvs-run-voltage = <900000>;
-+				rohm,dvs-idle-voltage = <850000>;
- 				rohm,dvs-suspend-voltage = <810000>;
- 				regulator-always-on;
- 			};
-@@ -859,8 +859,8 @@
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
- 				regulator-ramp-delay = <1250>;
--				rohm,dvs-run-voltage = <950000>;
--				rohm,dvs-idle-voltage = <850000>;
-+				rohm,dvs-run-voltage = <1000000>;
-+				rohm,dvs-idle-voltage = <900000>;
- 				regulator-always-on;
- 			};
- 
-@@ -869,14 +869,14 @@
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
--				rohm,dvs-run-voltage = <850000>;
-+				rohm,dvs-run-voltage = <900000>;
- 			};
- 
- 			buck4_reg: BUCK4 {
- 				regulator-name = "buck4";
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
--				rohm,dvs-run-voltage = <930000>;
-+				rohm,dvs-run-voltage = <1000000>;
- 			};
- 
- 			buck5_reg: BUCK5 {
-@@ -1410,13 +1410,3 @@
- 	fsl,ext-reset-output;
- 	status = "okay";
- };
--
--&a53_opp_table {
--	opp-1000000000 {
--		opp-microvolt = <850000>;
--	};
--
--	opp-1500000000 {
--		opp-microvolt = <950000>;
--	};
--};
+ static void skb_free_head(struct sk_buff *skb)
 
 
 
