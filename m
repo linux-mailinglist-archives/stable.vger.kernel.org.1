@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKrMBfQZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:40 +0200
+	id 0LceBPUg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54533EF159
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDF33F06E3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1CA523013BA2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 631243014435
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6B830CD85;
-	Mon, 13 Apr 2026 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72FD313E10;
+	Mon, 13 Apr 2026 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEv+i95N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiH+Vx4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE8449620;
-	Mon, 13 Apr 2026 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABFF223DCE;
+	Mon, 13 Apr 2026 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097772; cv=none; b=KN41QJOisC+6WpqSLhT/5UnHAp1P6sDlrGdV2/emgY6MgIIE2Z4DYmiFO1AM3FWGfuvqKLEgtBPdznq/uCDbAH0cagwSu1NzCxWSyzHP382h8FdBgN3uZbMSV0cLvWoDmJnm13pIkKK1rbAuWF4jd5JbhELKX1VklaTpg/NQ504=
+	t=1776098866; cv=none; b=ZvS/MyUwnkN8Fs6XMZILMjbFIXRrnW73odoHtugbbiuy4Qtr87ieVMlphkN4YIFow2KHhRJchKDPWZfzPQcWsO78nOSnTgyEUiqrCo89Zu6dDuVg/1zwOt0hS1VVfBOSx6VZe6a2BoXYxcOcm4PpXzc1qtZV6CDrpDiUZRZDhQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097772; c=relaxed/simple;
-	bh=oEXrG7C3v+WLNQ3FUiV4aj299SXW3CaXdD5SQDGdHHk=;
+	s=arc-20240116; t=1776098866; c=relaxed/simple;
+	bh=ZzLWsPI95kF4W+hgneDvSUZxIZo2WpSc3O4mSn8YRj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCIxLGlRKC8MfL7bMNz+C4H3UP2e7wkdzwMnKop2/7oJtDZG/4epwwargh4CkFcq1SQvgaEFYwRIori5ii9o5cD94aQT11dydBcQHz0EiWwkXE9LHCVBalFSJdGaD18AfdpnhriTtjKgxhM3xrol+s3LUIYSNYM/Qhw3noqCEo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEv+i95N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB35C2BCAF;
-	Mon, 13 Apr 2026 16:29:31 +0000 (UTC)
+	 MIME-Version; b=G4l9K0dwBdGoWMMPug4k3d46LYN7lKDcvFi7Wt/2s1OZFtvDM0pZV2TOf0OkyP9o0qLKsxRD4Qkc4xYuAEj3SdRP+QM0nA2NtNazNabegqun6cagVAvHU+qlusxgr8vCNF5SSgmIkPEsOCTtBENfSOk1+E99+IzSjO1fl8vWPWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiH+Vx4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411A9C2BCAF;
+	Mon, 13 Apr 2026 16:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097772;
-	bh=oEXrG7C3v+WLNQ3FUiV4aj299SXW3CaXdD5SQDGdHHk=;
+	s=korg; t=1776098866;
+	bh=ZzLWsPI95kF4W+hgneDvSUZxIZo2WpSc3O4mSn8YRj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEv+i95N31gGlcv5H5qyA72oA6NPkN8zI2/cczOIw4ygJnNJ9syzJAzD61SzRPDKr
-	 ZXQQlcmLTD18xQkEmD6ztEUj32qBij6eDznfQYRH+Jrzyptnv1Ir1oMgNNavC48uHO
-	 qEjYTpXpXF33HaZKbfpFaqNWyT4jkxc7OZqsmT3U=
+	b=UiH+Vx4zBCv0NBhWg1lPP8D6EYjwBiCeZWPHQ+rFXoBSracVoR5JocGh8nSYVS7Uz
+	 VryNWzW6uDO0NuHtdyYdfgS2WracwNR7d0oW+RMWCc8qYNKeb+QOsulGAU+SLnvjlS
+	 ykqmVk1LxtVY0aKTQTHySrJa8GEFakjL8VzUcDhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 234/570] wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()
+	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 120/491] net: ncsi: fix skb leak in error paths
 Date: Mon, 13 Apr 2026 17:56:05 +0200
-Message-ID: <20260413155839.229276826@linuxfoundation.org>
+Message-ID: <20260413155823.534787336@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236779-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237209-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,71 +86,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: A54533EF159
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bytedance.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 7BDF33F06E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-[ Upstream commit 767d23ade706d5fa51c36168e92a9c5533c351a1 ]
+commit 5c3398a54266541610c8d0a7082e654e9ff3e259 upstream.
 
-There is a use-after-free error in cfg80211_shutdown_all_interfaces found
-by syzkaller:
+Early return paths in NCSI RX and AEN handlers fail to release
+the received skb, resulting in a memory leak.
 
-BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
-Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
-CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: events cfg80211_rfkill_block_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x116/0x1f0
- print_report+0xcd/0x630
- kasan_report+0xe0/0x110
- cfg80211_shutdown_all_interfaces+0x213/0x220
- cfg80211_rfkill_block_work+0x1e/0x30
- process_one_work+0x9cf/0x1b70
- worker_thread+0x6c8/0xf10
- kthread+0x3c5/0x780
- ret_from_fork+0x56d/0x700
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+Specifically, ncsi_aen_handler() returns on invalid AEN packets
+without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
+when failing to resolve the NCSI device, response handler, or
+request, leaving the skb unfreed.
 
-The problem arises due to the rfkill_block work is not cancelled when wiphy
-is being unregistered. In order to fix the issue cancel the corresponding
-work in wiphy_unregister().
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Link: https://patch.msgid.link/20260211082024.1967588-1-d.dulov@aladdin.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
+Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Link: https://patch.msgid.link/20260305060656.3357250-1-zhangjian.3032@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ncsi/ncsi-aen.c |    3 ++-
+ net/ncsi/ncsi-rsp.c |   16 ++++++++++++----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1104,6 +1104,7 @@ void wiphy_unregister(struct wiphy *wiph
- 	/* this has nothing to do now but make sure it's gone */
- 	cancel_work_sync(&rdev->wiphy_work);
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_pri
+ 	if (!nah) {
+ 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
+ 			    h->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto out;
+ 	}
  
-+	cancel_work_sync(&rdev->rfkill_block);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
- 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
+ 	ret = ncsi_validate_aen_pkt(h, nah->payload);
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -1146,8 +1146,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	/* Find the NCSI device */
+ 	nd = ncsi_find_dev(orig_dev);
+ 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+-	if (!ndp)
+-		return -ENODEV;
++	if (!ndp) {
++		ret = -ENODEV;
++		goto err_free_skb;
++	}
+ 
+ 	/* Check if it is AEN packet */
+ 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
+@@ -1169,7 +1171,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	if (!nrh) {
+ 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
+ 			   hdr->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto err_free_skb;
+ 	}
+ 
+ 	/* Associate with the request */
+@@ -1177,7 +1180,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	nr = &ndp->requests[hdr->id];
+ 	if (!nr->used) {
+ 		spin_unlock_irqrestore(&ndp->lock, flags);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_free_skb;
+ 	}
+ 
+ 	nr->rsp = skb;
+@@ -1231,4 +1235,8 @@ out_netlink:
+ out:
+ 	ncsi_free_request(nr);
+ 	return ret;
++
++err_free_skb:
++	kfree_skb(skb);
++	return ret;
+ }
 
 
 
