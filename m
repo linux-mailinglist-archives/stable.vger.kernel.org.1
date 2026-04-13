@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-236902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6P1dL0Qb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:16 +0200
+	id aOJDIc4d3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3AA3EF516
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122A83EFBBA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 64DA3301A0AD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 73CDB306E8F1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4C3307AC7;
-	Mon, 13 Apr 2026 16:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD172F362B;
+	Mon, 13 Apr 2026 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClA9KWPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZbCcBin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22112EBB8C;
-	Mon, 13 Apr 2026 16:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C929BD87;
+	Mon, 13 Apr 2026 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098086; cv=none; b=IEpUUogqpfeLsBIG1sA+uqEmggaUkv6FP6xaba9aH/p+xDO3ha1RVTEUgfIPrnsG1i/fGeJn6a1sVzVu2ZANHt/bg58xXkpTmnoZ4jf3YPmn3Wbkf41hnVpN5vsTMLf3/n8NrhzAGAUb4AaMsQxPW4oNEXTiNEQq8RIR4FPFI/E=
+	t=1776098089; cv=none; b=B6P8Goz3orUCKD+mt64SnQgbtFdVgqJ1zXEzo+nPmZHoLOGxG9rKpaazdulegAe7jAoP/EbW4P0AP9Yx3JMUeM5nYzYiHPGdaqp52y5OPRM5Kgx8p60b+D+EFbySi5acwnVjP9Tk2DKGBGRbiZN+CwNfPa8lxh2SMp8wtNMAWVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098086; c=relaxed/simple;
-	bh=aZNLZUdHZhpAmclKe9YOAO4mIgBeYJKygf57By6KpbI=;
+	s=arc-20240116; t=1776098089; c=relaxed/simple;
+	bh=eeUGvu1azIF9H7VVW8lkRdOtVi19DZRQA+EcB9qpe24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hb2hmt2hFRjsaCru7H+Cq5epXuf+ajW2Zo9SkzRBkj7G1tCYwaETE4IS70hDv7Br4CsK3hrJfNdh43GTUrH0ZGlGpVXxVEJ154JNPM/7w+KYLqrvDLcm/Bw57qURuEzUPtjTyKjLWt6YgwmpW2JE6P1YByUCj6NNygssGghni/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClA9KWPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B25C2BCAF;
-	Mon, 13 Apr 2026 16:34:46 +0000 (UTC)
+	 MIME-Version; b=rAXLW0lHfHbVeHiuXz1IRcv/y0Wu2iuYnzOr+/IMxQrm5GiK5ClgC1eqA6PV2YquMQsi1GlPZhkqzsLVDah0AM9FcUgyB0pjMG7Mf1LH1zUUOSntbpjNStqKy2W52P0JzHC2mfrboJh+54/9lcxPtPWWP08Wx/UMdJlrKpAzTHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZbCcBin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A22C2BCAF;
+	Mon, 13 Apr 2026 16:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098086;
-	bh=aZNLZUdHZhpAmclKe9YOAO4mIgBeYJKygf57By6KpbI=;
+	s=korg; t=1776098089;
+	bh=eeUGvu1azIF9H7VVW8lkRdOtVi19DZRQA+EcB9qpe24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClA9KWPRt0N/KpvgqTEvn0xmHgp6JOC58r1qI8yGOt1dF/fyxPjm84EyJGiDxajdy
-	 xYHchIcmboSuI9hXm6UuKgfW6jdAdZSxFg2lNn0uYf+umZ6pNq0hsSeWdWdZSJj0yf
-	 nSGkNtXWIn0bThxqpaoiyZGD116zMXrm6N/S9a2Q=
+	b=ZZbCcBinqYEWWqY8aCJhweqgEMHLJUGAJqG0NC0MbzxAOeUSZ7lHhbqBWKaDXTuGe
+	 /D2Y+8nc7ii5C9rNuFPBCpll7aaX4lmZN4S9KWNNNM4AKKAshvkXj9K70B4z5jfcf0
+	 v/YYX6QOfFnU6eyBFIi4g4nKFp4AusjVg6YH7Hq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Marek Vasut <marex@nabladev.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 388/570] dmaengine: xilinx: xilinx_dma: Fix dma_device directions
-Date: Mon, 13 Apr 2026 17:58:39 +0200
-Message-ID: <20260413155845.010073875@linuxfoundation.org>
+Subject: [PATCH 5.15 389/570] dmaengine: xilinx: xilinx_dma: Fix residue calculation for cyclic DMA
+Date: Mon, 13 Apr 2026 17:58:40 +0200
+Message-ID: <20260413155845.047642486@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236902-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236903-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nabladev.com:email]
-X-Rspamd-Queue-Id: 8E3AA3EF516
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 122A83EFBBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,34 +101,71 @@ X-Rspamd-Server: lfdr
 
 From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit e9cc95397bb7da13fe8a5b53a2f23cfaf9018ade ]
+[ Upstream commit f61d145999d61948a23cd436ebbfa4c3b9ab8987 ]
 
-Unlike chan->direction , struct dma_device .directions field is a
-bitfield. Turn chan->direction into a bitfield to make it compatible
-with struct dma_device .directions .
+The cyclic DMA calculation is currently entirely broken and reports
+residue only for the first segment. The problem is twofold.
 
-Fixes: 7e01511443c3 ("dmaengine: xilinx_dma: Set dma_device directions")
+First, when the first descriptor finishes, it is moved from active_list
+to done_list, but it is never returned back into the active_list. The
+xilinx_dma_tx_status() expects the descriptor to be in the active_list
+to report any meaningful residue information, which never happens after
+the first descriptor finishes. Fix this up in xilinx_dma_start_transfer()
+and if the descriptor is cyclic, lift it from done_list and place it back
+into active_list list.
+
+Second, the segment .status fields of the descriptor remain dirty. Once
+the DMA did one pass on the descriptor, the .status fields are populated
+with data by the DMA, but the .status fields are not cleared before reuse
+during the next cyclic DMA round. The xilinx_dma_get_residue() recognizes
+that as if the descriptor was complete and had 0 residue, which is bogus.
+Reinitialize the status field before placing the descriptor back into the
+active_list.
+
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
 Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316221728.160139-1-marex@nabladev.com
+Link: https://patch.msgid.link/20260316221943.160375-1-marex@nabladev.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/xilinx/xilinx_dma.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index ba5850ca39ddd..e2adc33631ca3 100644
+index e2adc33631ca3..948093a47d9f9 100644
 --- a/drivers/dma/xilinx/xilinx_dma.c
 +++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -2862,7 +2862,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 		return -EINVAL;
- 	}
+@@ -1513,8 +1513,29 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 	if (chan->err)
+ 		return;
  
--	xdev->common.directions |= chan->direction;
-+	xdev->common.directions |= BIT(chan->direction);
+-	if (list_empty(&chan->pending_list))
++	if (list_empty(&chan->pending_list)) {
++		if (chan->cyclic) {
++			struct xilinx_dma_tx_descriptor *desc;
++			struct list_head *entry;
++
++			desc = list_last_entry(&chan->done_list,
++					       struct xilinx_dma_tx_descriptor, node);
++			list_for_each(entry, &desc->segments) {
++				struct xilinx_axidma_tx_segment *axidma_seg;
++				struct xilinx_axidma_desc_hw *axidma_hw;
++				axidma_seg = list_entry(entry,
++							struct xilinx_axidma_tx_segment,
++							node);
++				axidma_hw = &axidma_seg->hw;
++				axidma_hw->status = 0;
++			}
++
++			list_splice_tail_init(&chan->done_list, &chan->active_list);
++			chan->desc_pendingcount = 0;
++			chan->idle = false;
++		}
+ 		return;
++	}
  
- 	/* Request the interrupt */
- 	chan->irq = irq_of_parse_and_map(node, chan->tdest);
+ 	if (!chan->idle)
+ 		return;
 -- 
 2.53.0
 
