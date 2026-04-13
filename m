@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNg/MrQh3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:44 +0200
+	id oB/pMwcf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2E63F0925
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE74E3EFFF0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F99F31AAD9E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C7D7730306F3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB7422A7F0;
-	Mon, 13 Apr 2026 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318B931619C;
+	Mon, 13 Apr 2026 16:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbn1FgAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlWYQChJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B150F2E11B9;
-	Mon, 13 Apr 2026 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78A6313E10;
+	Mon, 13 Apr 2026 16:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097720; cv=none; b=qYBK4pqgydaeVGIkNyoezCLVX+QaLiuUtU4R0RgQLC93RaF99jbGrO/Yjwyym5PEfY8OgO9KycUSWFLlagV/dY0gHXv3w7UjeDwOZ4nyUFJ72T3+rGBSArjWvR4jTe69pHUddk8OqhLPFG+pGNEUX62ipOOopQODol1bfYXTrBM=
+	t=1776098903; cv=none; b=B8w8DLW4nd8x3DbXvfRkNO9tid1sqXIPafqnMPFo8sBpQtbpbsTeppP4ThtlSi8bzrBEYhgaFfUz4bOqU7+Mv+k7Nr4bBimznpNotcmhL6knMgyfNnha1X64WXa1zzSSph8Zx+hZFWTA9UkS9wVbng6Z1lgQ3SUCYOkjj0WMb3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097720; c=relaxed/simple;
-	bh=zduDM88y5xX8A82YnK603bBFSeZuLoAYEWh/qWZi29A=;
+	s=arc-20240116; t=1776098903; c=relaxed/simple;
+	bh=4S2dP40umJEr1ZTydayeVEGla+9usL4eskcM9iA5C9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PccFJo+45kG0AIr3gH1gG2HBLHwPgQXT3SIKoSLVF2by650lxPqMVrs0rIW8keprT1SysGYnj75wbWRF/jnJMQigxpEQY4dkNFeUrY2FZdXU605ooAj0OHIr7UCwHm4LXlT4jwPnqjcOkVsc93HiXklmZ4vqmnwqBEcLXpBAQpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbn1FgAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485E1C2BCAF;
-	Mon, 13 Apr 2026 16:28:40 +0000 (UTC)
+	 MIME-Version; b=aGErelMQYGVnqsCIhjgtvLFaj9J4lXKFsoRfEYV9/mUlLiLOKkmE19ek7AfUNTGLHzzSawArTTLGTCIez5lgtlmo6ARCMpiLIzAhkOa+Oh1h3UxG769fi39EguheQwkaFLquDwsCh/DmoHApjOZzSzuBXgS0skcbhbPRhgbI+9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlWYQChJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D799C2BCAF;
+	Mon, 13 Apr 2026 16:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097720;
-	bh=zduDM88y5xX8A82YnK603bBFSeZuLoAYEWh/qWZi29A=;
+	s=korg; t=1776098902;
+	bh=4S2dP40umJEr1ZTydayeVEGla+9usL4eskcM9iA5C9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbn1FgAJrT4pY6Q75WyPtU0Pt7oYRPAGdDfSQAV5OQcVMF63FAW73lTN4aZDbBAvd
-	 XGLI/oWrnOgaIDBYXv/Oua6W5oB4LbaC6GW6CWQ8i/qkPAoidVameyBMDt5zvObFO+
-	 BA6cpDTR4Gm0ljjJyAsjdma+otici+kqbobIS68E=
+	b=nlWYQChJjA+Pcaa8ruN7WW9ZYsUdTFjHQ3h+2R+pq67g78WH5kAAkMG3jsh28yqAX
+	 4MCz4HSvns9n8Cakpo/y2VoqlrMm0x4mfuEAIKJU/aHn2Iagjfa24R89rOb3Of1N/B
+	 1nv8upMLQwPn5Hy0ip9fVM0OqEFHexSQg461mDsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 246/570] of: Add cleanup.h based auto release via __free(device_node) markings
-Date: Mon, 13 Apr 2026 17:56:17 +0200
-Message-ID: <20260413155839.683333155@linuxfoundation.org>
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 133/491] iio: gyro: mpu3050-i2c: fix pm_runtime error handling
+Date: Mon, 13 Apr 2026 17:56:18 +0200
+Message-ID: <20260413155824.020863583@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236759-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237223-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,83 +89,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5F2E63F0925
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,analog.com:email]
+X-Rspamd-Queue-Id: BE74E3EFFF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-[ Upstream commit 9448e55d032d99af8e23487f51a542d51b2f1a48 ]
+commit 91f950b4cbb1aa9ea4eb3999f1463e8044b717fb upstream.
 
-The recent addition of scope based cleanup support to the kernel
-provides a convenient tool to reduce the chances of leaking reference
-counts where of_node_put() should have been called in an error path.
+The return value of pm_runtime_get_sync() is not checked, and the
+function always returns success. This allows I2C mux operations to
+proceed even when the device fails to resume.
 
-This enables
-	struct device_node *child __free(device_node) = NULL;
+Use pm_runtime_resume_and_get() and propagate its return value to
+properly handle resume failures.
 
-	for_each_child_of_node(np, child) {
-		if (test)
-			return test;
-	}
-
-with no need for a manual call of of_node_put().
-A following patch will reduce the scope of the child variable to the
-for loop, to avoid an issues with ordering of autocleanup, and make it
-obvious when this assigned a non NULL value.
-
-In this simple example the gains are small but there are some very
-complex error handling cases buried in these loops that will be
-greatly simplified by enabling early returns with out the need
-for this manual of_node_put() call.
-
-Note that there are coccinelle checks in
-scripts/coccinelle/iterators/for_each_child.cocci to detect a failure
-to call of_node_put(). This new approach does not cause false positives.
-Longer term we may want to add scripting to check this new approach is
-done correctly with no double of_node_put() calls being introduced due
-to the auto cleanup. It may also be useful to script finding places
-this new approach is useful.
-
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20240225142714.286440-2-jic23@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 879c001afbac ("firmware: arm_scpi: Fix device_node reference leak in probe path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/of.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/gyro/mpu3050-i2c.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 29f657101f4f8..3c840c4879956 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -13,6 +13,7 @@
-  */
- #include <linux/types.h>
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/errno.h>
- #include <linux/kobject.h>
- #include <linux/mod_devicetable.h>
-@@ -128,6 +129,7 @@ static inline struct device_node *of_node_get(struct device_node *node)
- }
- static inline void of_node_put(struct device_node *node) { }
- #endif /* !CONFIG_OF_DYNAMIC */
-+DEFINE_FREE(device_node, struct device_node *, if (_T) of_node_put(_T))
+--- a/drivers/iio/gyro/mpu3050-i2c.c
++++ b/drivers/iio/gyro/mpu3050-i2c.c
+@@ -19,8 +19,7 @@ static int mpu3050_i2c_bypass_select(str
+ 	struct mpu3050 *mpu3050 = i2c_mux_priv(mux);
  
- /* Pointer for first entry in chain of all nodes. */
- extern struct device_node *of_root;
--- 
-2.51.0
-
+ 	/* Just power up the device, that is all that is needed */
+-	pm_runtime_get_sync(mpu3050->dev);
+-	return 0;
++	return pm_runtime_resume_and_get(mpu3050->dev);
+ }
+ 
+ static int mpu3050_i2c_bypass_deselect(struct i2c_mux_core *mux, u32 chan_id)
 
 
 
