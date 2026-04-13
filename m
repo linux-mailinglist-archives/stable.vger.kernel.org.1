@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAaWCfQc3WlUaAkAu9opvQ
-	(envelope-from <stable+bounces-236509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:28 +0200
+	id 2ASIBAQn3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A313EF8ED
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E873F15B5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CA0232292A6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:18:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4357D30223A8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C264427280A;
-	Mon, 13 Apr 2026 16:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16B434753F;
+	Mon, 13 Apr 2026 17:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp9IUvHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qG9J2xSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8468B24DCF6;
-	Mon, 13 Apr 2026 16:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3440346791;
+	Mon, 13 Apr 2026 17:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097085; cv=none; b=KKEx8mVhnJw+FwPIHXud18HQC9yyT5aiVVwF8/jTofg1vL75ajCd5Sl8qw0MbgASe+Umi8pI6G6xmmE2YHmjLkIKXPUWEs/6As2C9bFNfLyRjexpNOv2oYB4rXJz8/yn/xthhHb0fE8C9Ynjs2KnSrtgGYAurjdEss52cSp/Xjg=
+	t=1776099630; cv=none; b=acxEWKt/o1gNGXwyNbqI0XkzQ43bV5/9/kqM0zgZjAELckhR3htknFGOlepIIxLcLDBSAFMQuWwAs9WzvvtMUEPpld+PDSWuHl1E8szkWXXPRfh91xSNVbkAJWoqq7EXYkyvR92Vx7Yvw1Us8D1mofmdW11rK8Ep6vz1DM8cAX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097085; c=relaxed/simple;
-	bh=c91MCAdaUy2T4v0bCUgl/XYdAhMKoKrvNMPo2dQ8isE=;
+	s=arc-20240116; t=1776099630; c=relaxed/simple;
+	bh=BSyyrPyqvju6HGbMIMubw4O+Qg3WpCBK2oXO+u3wFsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fw+NJSexW+aQqGkyh1Cm6MEn3uhB6aVQChOgoQqD9EoSrV8czLrQhD+gM7Aml0e4DQcNSvDQnHI2igegBG7AHEh6rzCodhoVJ7oVyqd/T5Aa3CfXvKGV76rpbnKqimOyIofbgr/0oL1hULvAwLMTXrAxGxargg7M+ei3zCGbhfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp9IUvHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12839C2BCAF;
-	Mon, 13 Apr 2026 16:18:04 +0000 (UTC)
+	 MIME-Version; b=hOwKiAI9w/7pLY/dE8Y0tI2aS+jJNF9SRmd4V/+h+cV4vgyVH9gUYn0kQ+nX93qGCtwwr30q/L3Wp9gdhbxNdoBaBk2W7+4geVglrwUHwEuIJGMXewEakbW8d+o0oeZ+Qp/vA71gCggWq1+HUYtsIA23lwPxT9NKVpu63vgJ1Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qG9J2xSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386A2C2BCAF;
+	Mon, 13 Apr 2026 17:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097085;
-	bh=c91MCAdaUy2T4v0bCUgl/XYdAhMKoKrvNMPo2dQ8isE=;
+	s=korg; t=1776099630;
+	bh=BSyyrPyqvju6HGbMIMubw4O+Qg3WpCBK2oXO+u3wFsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zp9IUvHvxln4IFhNnrrc8mUPXgYnGppQ5xNhFQWp8aifle2i8R91vti/S+J5QG2kw
-	 q45GixC2gtqVbWzk65ESqe0qaxt5ju5ubeyqdkdyI7SR9Zdd/tZ0kBtU/l1yHFemQa
-	 sNwOzck0K2mqU2tbiEcabHN1dSeOGwxTOSmXQMfo=
+	b=qG9J2xShi8XoVCfPb9OYgN3pCck+VyjP2eJLQgMxNHGUYlSZHP2eTsUhkhq5aeqYD
+	 GcKnkaicpzb4Rwtl347jsz7onbmV2hj5mBeRvS7YHC0MKAuAZcJqWXtSK2EaKbzh4W
+	 K6BVINC2GxlKb+k11ioMCtqrhglr8Kg8ODotXQe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/55] Revert "ACPI: EC: Evaluate orphan _REG under EC device"
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.10 413/491] lib/crypto: chacha: Zeroize permuted_state before it leaves scope
 Date: Mon, 13 Apr 2026 18:00:58 +0200
-Message-ID: <20260413155725.732020581@linuxfoundation.org>
+Message-ID: <20260413155834.490745085@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236509-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237506-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,161 +86,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 98A313EF8ED
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 27E873F15B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 779bac9994452f6a894524f70c00cfb0cd4b6364 ]
+commit e5046823f8fa3677341b541a25af2fcb99a5b1e0 upstream.
 
-This reverts commit 0e6b6dedf168 ("Revert "ACPI: EC: Evaluate orphan
-_REG under EC device") because the problem addressed by it will be
-addressed differently in what follows.
+Since the ChaCha permutation is invertible, the local variable
+'permuted_state' is sufficient to compute the original 'state', and thus
+the key, even after the permutation has been done.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/3236716.5fSG56mABF@rjwysocki.net
-Stable-dep-of: 71bf41b8e913 ("ACPI: EC: Evaluate _REG outside the EC scope more carefully")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While the kernel is quite inconsistent about zeroizing secrets on the
+stack (and some prominent userspace crypto libraries don't bother at all
+since it's not guaranteed to work anyway), the kernel does try to do it
+as a best practice, especially in cases involving the RNG.
+
+Thus, explicitly zeroize 'permuted_state' before it goes out of scope.
+
+Fixes: c08d0e647305 ("crypto: chacha20 - Add a generic ChaCha20 stream cipher implementation")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260326032920.39408-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/acevents.h |    4 ---
- drivers/acpi/acpica/evregion.c |    6 +++-
- drivers/acpi/acpica/evxfregn.c |   54 -----------------------------------------
- drivers/acpi/ec.c              |    3 --
- include/acpi/acpixf.h          |    4 ---
- 5 files changed, 5 insertions(+), 66 deletions(-)
+ lib/crypto/chacha.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/acpi/acpica/acevents.h
-+++ b/drivers/acpi/acpica/acevents.h
-@@ -191,10 +191,6 @@ void
- acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
- 			    acpi_adr_space_type space_id, u32 function);
+--- a/lib/crypto/chacha.c
++++ b/lib/crypto/chacha.c
+@@ -86,6 +86,8 @@ void chacha_block_generic(u32 *state, u8
+ 		put_unaligned_le32(x[i] + state[i], &stream[i * sizeof(u32)]);
  
--void
--acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *node,
--				  acpi_adr_space_type space_id);
--
- acpi_status
- acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function);
- 
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -20,6 +20,10 @@ extern u8 acpi_gbl_default_address_space
- 
- /* Local prototypes */
- 
-+static void
-+acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
-+				  acpi_adr_space_type space_id);
+ 	state[12]++;
 +
- static acpi_status
- acpi_ev_reg_run(acpi_handle obj_handle,
- 		u32 level, void *context, void **return_value);
-@@ -807,7 +811,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
-  *
-  ******************************************************************************/
- 
--void
-+static void
- acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
- 				  acpi_adr_space_type space_id)
- {
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -304,57 +304,3 @@ acpi_execute_reg_methods(acpi_handle dev
++	memzero_explicit(x, sizeof(x));
  }
+ EXPORT_SYMBOL(chacha_block_generic);
  
- ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
--
--/*******************************************************************************
-- *
-- * FUNCTION:    acpi_execute_orphan_reg_method
-- *
-- * PARAMETERS:  device          - Handle for the device
-- *              space_id        - The address space ID
-- *
-- * RETURN:      Status
-- *
-- * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
-- *              device. This is a _REG method that has no corresponding region
-- *              within the device's scope.
-- *
-- ******************************************************************************/
--acpi_status
--acpi_execute_orphan_reg_method(acpi_handle device, acpi_adr_space_type space_id)
--{
--	struct acpi_namespace_node *node;
--	acpi_status status;
--
--	ACPI_FUNCTION_TRACE(acpi_execute_orphan_reg_method);
--
--	/* Parameter validation */
--
--	if (!device) {
--		return_ACPI_STATUS(AE_BAD_PARAMETER);
--	}
--
--	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
--	if (ACPI_FAILURE(status)) {
--		return_ACPI_STATUS(status);
--	}
--
--	/* Convert and validate the device handle */
--
--	node = acpi_ns_validate_handle(device);
--	if (node) {
--
--		/*
--		 * If an "orphan" _REG method is present in the device's scope
--		 * for the given address space ID, run it.
--		 */
--
--		acpi_ev_execute_orphan_reg_method(node, space_id);
--	} else {
--		status = AE_BAD_PARAMETER;
--	}
--
--	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
--	return_ACPI_STATUS(status);
--}
--
--ACPI_EXPORT_SYMBOL(acpi_execute_orphan_reg_method)
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1532,9 +1532,6 @@ static int ec_install_handlers(struct ac
+@@ -110,5 +112,7 @@ void hchacha_block_generic(const u32 *st
  
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
- 		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
--		if (scope_handle != ec->handle)
--			acpi_execute_orphan_reg_method(ec->handle, ACPI_ADR_SPACE_EC);
--
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
- 
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -669,10 +669,6 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 						     acpi_adr_space_type
- 						     space_id))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			    acpi_execute_orphan_reg_method(acpi_handle device,
--							   acpi_adr_space_type
--							   space_id))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_remove_address_space_handler(acpi_handle
- 							      device,
- 							      acpi_adr_space_type
+ 	memcpy(&stream[0], &x[0], 16);
+ 	memcpy(&stream[4], &x[12], 16);
++
++	memzero_explicit(x, sizeof(x));
+ }
+ EXPORT_SYMBOL(hchacha_block_generic);
 
 
 
