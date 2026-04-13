@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Nh7OrcW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:51 +0200
+	id gBToGUcW3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5543EE839
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D633E3EE774
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F28930E55BB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:09:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37DC330B329D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99846277035;
-	Mon, 13 Apr 2026 16:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43305299931;
+	Mon, 13 Apr 2026 16:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ty0A7+14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpGXrXd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE00272E6D;
-	Mon, 13 Apr 2026 16:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0678323EA94;
+	Mon, 13 Apr 2026 16:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096519; cv=none; b=KX5qshc4szsYrylm2sZ6inoCfFgRLcUyQxItxVIiHiKy3wgA4nnqKC4Rm0+f7/lyDpjnzPXdAYi9gL2RxbIjbF0ECE5JJDrPLSj3ptDIT44547aHfVo068pK003XTzaRVOTrOwSM1VmUhZ8r5Nyu9985ZD6uTJSxaradZpiOtis=
+	t=1776096339; cv=none; b=Dmm0AoWOKBFWQis4lEnVAqFZ+EenVRvDeLNFCeLJcgd0qjV/Vp/LGmz8vbjmuYXrYO+qH00RQJkCZaORybrb6xm9l4JbYJzuKiuDLX7wr/9aRQmMe3sZWVtf1vmEG8dxwre6MbHthkKKs9kOOqdnhaOxjXIfrudjUPM14bU6Vl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096519; c=relaxed/simple;
-	bh=dF3W+QNhFGudqXzcxjIVHxXbahYMG+tHod90LkXbdOQ=;
+	s=arc-20240116; t=1776096339; c=relaxed/simple;
+	bh=A2hy1uuajh0vsPeO4unk7+E1aBgjuG0eRjxbMiLK1gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANCg6S/V3wtKoVgyng0Awc+4uedoWEsEq5r7FjzpcvO91+NGkk+K3giZaleSHlyh7db5rbSNwGB0lbqFpwTAWqT7EuaECyCmVHy79Mu7n1hGjmPNERzVoP0J3fyD0xWfUpOoJcaBOAeKHoFKuK3MzAqFVnDJ6W4rCJAmrR00pA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ty0A7+14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FF9C2BCB0;
-	Mon, 13 Apr 2026 16:08:38 +0000 (UTC)
+	 MIME-Version; b=o7cRgvAicJTMH97W60PSfWcpwyXdffpSoEDoVjbZoIe/57foKfbR3NMI11mGEXX6jN8+zF4brC9TXOlhN3D3qk6LArPbH1OcORrdjSbtQ0UmmhzIZdSOZA7QYRVTUh0kZCaQezVHM7r89CAJdymju5uqLXnvtFhtlm9pZ7svjso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpGXrXd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8884CC2BCAF;
+	Mon, 13 Apr 2026 16:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096519;
-	bh=dF3W+QNhFGudqXzcxjIVHxXbahYMG+tHod90LkXbdOQ=;
+	s=korg; t=1776096338;
+	bh=A2hy1uuajh0vsPeO4unk7+E1aBgjuG0eRjxbMiLK1gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ty0A7+14wlw52irizgwy5zwJApU9bw4leE801ur9UGtmXy9I9W1iPtWOvY2F8W1Uh
-	 8NYg/qoI8Da5hyfAp8pSZwqEoHuf+PQgv2YpHG2027W4mTocuGNIqJL/aKIBf7Pvfm
-	 eqwC2EwTxouIl2gtJkAfWo3ujz2kd+Fi9FvBMQ2M=
+	b=EpGXrXd1XDpsn9tsb4BpQ7I9AQSYpr9IEwofItXnVTJAL4ja0tPLMlJOeVRrTKNZZ
+	 RftmF0I6qELFFx2+Hwb3JXJP+cN2BhWAQiTlzMZYhc3tFEcYvB3805zNhcaZVaBv4k
+	 FQwF3wFujmWeFiL3hUVKrH6CZtWvgjlcfueZcjOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 10/83] Input: uinput - take event lock when submitting FF request "event"
-Date: Mon, 13 Apr 2026 17:59:38 +0200
-Message-ID: <20260413155731.413256132@linuxfoundation.org>
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.19 32/86] Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
+Date: Mon, 13 Apr 2026 17:59:39 +0200
+Message-ID: <20260413155732.771576876@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236285-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236215-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.983];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8A5543EE839
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D633E3EE774
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-commit ff14dafde15c11403fac61367a34fea08926e9ee upstream.
+commit 4cd46ea0eb4504f7f4fea92cb4601c5c9a3e545e upstream.
 
-To avoid racing with FF playback events and corrupting device's event
-queue take event_lock spinlock when calling uinput_dev_event() when
-submitting a FF upload or erase "event".
+This reverts commit c24a9b698fb02cd0723fa8375abab07f94b97b10.
 
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Link: https://patch.msgid.link/adXkf6MWzlB8LA_s@google.com
+It's been found that there's a significant per-unit variance in accepted
+supply voltages and the current set still makes some units unstable.
+
+Revert back to nominal values.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: c24a9b698fb0 ("arm64: dts: imx8mq-librem5: Set the DVS voltages lower")
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/uinput.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |    2 -
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi   |   22 +++++---------------
+ 2 files changed, 7 insertions(+), 17 deletions(-)
 
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -25,8 +25,10 @@
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/fs.h>
-+#include <linux/lockdep.h>
- #include <linux/miscdevice.h>
- #include <linux/overflow.h>
-+#include <linux/spinlock.h>
- #include <linux/input/mt.h>
- #include "../input-compat.h"
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+@@ -7,7 +7,7 @@
  
-@@ -76,6 +78,8 @@ static int uinput_dev_event(struct input
- 	struct uinput_device	*udev = input_get_drvdata(dev);
- 	struct timespec64	ts;
+ &a53_opp_table {
+ 	opp-1000000000 {
+-		opp-microvolt = <950000>;
++		opp-microvolt = <1000000>;
+ 	};
+ };
  
-+	lockdep_assert_held(&dev->event_lock);
-+
- 	ktime_get_ts64(&ts);
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -844,8 +844,8 @@
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <880000>;
+-				rohm,dvs-idle-voltage = <820000>;
++				rohm,dvs-run-voltage = <900000>;
++				rohm,dvs-idle-voltage = <850000>;
+ 				rohm,dvs-suspend-voltage = <810000>;
+ 				regulator-always-on;
+ 			};
+@@ -856,8 +856,8 @@
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <950000>;
+-				rohm,dvs-idle-voltage = <850000>;
++				rohm,dvs-run-voltage = <1000000>;
++				rohm,dvs-idle-voltage = <900000>;
+ 				regulator-always-on;
+ 			};
  
- 	udev->buff[udev->head] = (struct input_event) {
-@@ -147,6 +151,7 @@ static void uinput_request_release_slot(
- static int uinput_request_send(struct uinput_device *udev,
- 			       struct uinput_request *request)
- {
-+	unsigned long flags;
- 	int retval = 0;
+@@ -866,14 +866,14 @@
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+-				rohm,dvs-run-voltage = <850000>;
++				rohm,dvs-run-voltage = <900000>;
+ 			};
  
- 	spin_lock(&udev->state_lock);
-@@ -160,7 +165,9 @@ static int uinput_request_send(struct ui
- 	 * Tell our userspace application about this new request
- 	 * by queueing an input event.
- 	 */
-+	spin_lock_irqsave(&udev->dev->event_lock, flags);
- 	uinput_dev_event(udev->dev, EV_UINPUT, request->code, request->id);
-+	spin_unlock_irqrestore(&udev->dev->event_lock, flags);
+ 			buck4_reg: BUCK4 {
+ 				regulator-name = "buck4";
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+-				rohm,dvs-run-voltage = <930000>;
++				rohm,dvs-run-voltage = <1000000>;
+ 			};
  
-  out:
- 	spin_unlock(&udev->state_lock);
+ 			buck5_reg: BUCK5 {
+@@ -1407,13 +1407,3 @@
+ 	fsl,ext-reset-output;
+ 	status = "okay";
+ };
+-
+-&a53_opp_table {
+-	opp-1000000000 {
+-		opp-microvolt = <850000>;
+-	};
+-
+-	opp-1500000000 {
+-		opp-microvolt = <950000>;
+-	};
+-};
 
 
 
