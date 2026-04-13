@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-236894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NCoHrgd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:44 +0200
+	id 6CulFDob3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30923EFB80
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F157C3EF4DC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B77D3078AE6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 916F430231EF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B660B2D5A19;
-	Mon, 13 Apr 2026 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520BE30DD1D;
+	Mon, 13 Apr 2026 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoeBIga3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bx9v5psV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CD9305064;
-	Mon, 13 Apr 2026 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155D72D0C7E;
+	Mon, 13 Apr 2026 16:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098066; cv=none; b=F4SbKg3MTWvEtWOtFqY5FkM+jQIyTysZ7YLwF8aiwln4vIwBfWV4ntybAiKSMS+CtZ3WZ3prXcyE8YbHqc4giCFFMIHKSc+GNyqWrHI/9wqxCMt2rKLH/RGgWIu8E7FfuMDW5PjYafB3fgNR2TQB1gW6/IadyWVhOEsc5rUjvCY=
+	t=1776098069; cv=none; b=K8c0gpu9oDSrPiR7KLeQ4a7pUMkn6zkdTxGZC9WsaNhyHxerJnRa4+7EpkzuExDo+mKA3ILPfuTwARd9jnl9uhLosV/IUgyRpVciMEnsim8pPXCa3mCfYFqd/n+HYFY8tHqIWwO0iDesfXWWjnJ/juFtxL+a2QKC+MMno3yXAQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098066; c=relaxed/simple;
-	bh=VhJ6smm/j11jlbRpTTfZQTf047oTrafyHezPY3I+7bw=;
+	s=arc-20240116; t=1776098069; c=relaxed/simple;
+	bh=oAdP3iW4n29ijjwD2d4f1LwdX/+uvPYGz54SZ1kbZJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anKc//VvaRxoO/IfGQxjshx8CvWR6+5U3RSfObrMhtzAGX0A8ZnrtNeU8oKp+F5oBXF1nD8QF6R4aW94+wCJWUF71bPeiR43VDSNXOVjeaBRIDY+/QHc+ck0ujmR5agTFSEc7uB93yu38TMtcHkMOPk9iNSHtVaJl2LofFn6qwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoeBIga3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DA3C2BCAF;
-	Mon, 13 Apr 2026 16:34:25 +0000 (UTC)
+	 MIME-Version; b=gowbzHtxE/wudlpC/JpY/HAzlwAourE2u8A4LTZgmFnd1gpcwbPlJhziUbwZp4JJIAVOIe3hcHsYtaeG+5DKGBX1333X9TDYPqUa0fpRG1JmS0kQlUJKL0HZ55W/SbuyBS6WAlxomGKsOvDmI4TII40nlvDKVUKFp38w7M6ea1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx9v5psV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683F1C2BCAF;
+	Mon, 13 Apr 2026 16:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098066;
-	bh=VhJ6smm/j11jlbRpTTfZQTf047oTrafyHezPY3I+7bw=;
+	s=korg; t=1776098068;
+	bh=oAdP3iW4n29ijjwD2d4f1LwdX/+uvPYGz54SZ1kbZJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YoeBIga3S1SI8sNPmWsefC3PGkzMkyB95+uZXHZ67XHHpYyjl43DStL0RuxG4yA5C
-	 oUxWwz1bwwfI3mQ3a5Lren3UWQQXDyHomYak+RtIAG8JaGoEF3y96GF0lS3AcfpuRn
-	 N0uQt/OxO9YY6CBr06P3KtLuG7YHR+6dmRy0GHXM=
+	b=bx9v5psVKBUpxV4t1KcrlgNg9XWtL8GPA1j2//Cl5wW9RupriF+Yv2nefACZqNkdZ
+	 W1suj63v3sDHirq6JC2OR7gP23OFwbEo210RDt5wIfXSi2ozmHjQynezHFExO0dMuq
+	 ooPYUPQCAPjH9sSky6AG+1n6H3mSgtvdYixorKD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
+	Ye Bin <yebin10@huawei.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
 	Zhang Yi <yi.zhang@huawei.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 5.15 381/570] ext4: make recently_deleted() properly work with lazy itable initialization
-Date: Mon, 13 Apr 2026 17:58:32 +0200
-Message-ID: <20260413155844.751817543@linuxfoundation.org>
+Subject: [PATCH 5.15 382/570] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
+Date: Mon, 13 Apr 2026 17:58:33 +0200
+Message-ID: <20260413155844.788659069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -65,34 +68,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236894-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-236895-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.cz:email,msgid.link:url]
-X-Rspamd-Queue-Id: E30923EFB80
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: F157C3EF4DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +105,93 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ye Bin <yebin10@huawei.com>
 
-commit bd060afa7cc3e0ad30afa9ecc544a78638498555 upstream.
+commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
 
-recently_deleted() checks whether inode has been used in the near past.
-However this can give false positive result when inode table is not
-initialized yet and we are in fact comparing to random garbage (or stale
-itable block of a filesystem before mkfs). Ultimately this results in
-uninitialized inodes being skipped during inode allocation and possibly
-they are never initialized and thus e2fsck complains.  Verify if the
-inode has been initialized before checking for dtime.
+There's issue as follows:
+...
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
 
-Signed-off-by: Jan Kara <jack@suse.cz>
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
+EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+
+EXT4-fs (mmcblk0p1): error count since last fsck: 1
+EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
+EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
+...
+
+According to the log analysis, blocks are always requested from the
+corrupted block group. This may happen as follows:
+ext4_mb_find_by_goal
+  ext4_mb_load_buddy
+   ext4_mb_load_buddy_gfp
+     ext4_mb_init_cache
+      ext4_read_block_bitmap_nowait
+      ext4_wait_block_bitmap
+       ext4_validate_block_bitmap
+        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
+         return -EFSCORRUPTED; // There's no logs.
+ if (err)
+  return err;  // Will return error
+ext4_lock_group(ac->ac_sb, group);
+  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
+   goto out;
+
+After commit 9008a58e5dce ("ext4: make the bitmap read routines return
+real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
+as corrupt on block bitmap error") is no real solution for allocating
+blocks from corrupted block groups. This is because if
+'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
+'ext4_mb_load_buddy()' may return an error. This means that the block
+allocation will fail.
+Therefore, check block group if corrupted when ext4_mb_load_buddy()
+returns error.
+
+Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
+Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-3-jack@suse.cz
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ialloc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/mballoc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -688,6 +688,12 @@ static int recently_deleted(struct super
- 	if (unlikely(!gdp))
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2280,8 +2280,12 @@ int ext4_mb_find_by_goal(struct ext4_all
  		return 0;
  
-+	/* Inode was never used in this filesystem? */
-+	if (ext4_has_group_desc_csum(sb) &&
-+	    (gdp->bg_flags & cpu_to_le16(EXT4_BG_INODE_UNINIT) ||
-+	     ino >= EXT4_INODES_PER_GROUP(sb) - ext4_itable_unused_count(sb, gdp)))
-+		return 0;
-+
- 	bh = sb_find_get_block(sb, ext4_inode_table(sb, gdp) +
- 		       (ino / inodes_per_block));
- 	if (!bh || !buffer_uptodate(bh))
+ 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
+-	if (err)
++	if (err) {
++		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
++		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
++			return 0;
+ 		return err;
++	}
+ 
+ 	ext4_lock_group(ac->ac_sb, group);
+ 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
 
 
 
