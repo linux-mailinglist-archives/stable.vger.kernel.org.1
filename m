@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCfdNd8g3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:11 +0200
+	id QCdQKmIe3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60EF3F06B6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE353EFDB0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D5C97301C32D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E68630DD4C4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3E21D5AD4;
-	Mon, 13 Apr 2026 16:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FC72FFFBE;
+	Mon, 13 Apr 2026 16:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TthNyfXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b71Bv887"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD422D8364;
-	Mon, 13 Apr 2026 16:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F084D49620;
+	Mon, 13 Apr 2026 16:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098629; cv=none; b=RhfDt/K1+m9GCQAtIqgHGa+UikFs+fgUsxt8MJW/rV9eO4W0eDGDwTMZPszDFqJgEwvzq8VdYYx0xN8CasccX6Rl4R3r40dBEflYaNAY0p/AAHiuwCXQ0gou/lFs3L5zeWbA22ENKNX/5LcWtjYVFXtWYBapdn5S7p4whjH/lxI=
+	t=1776097451; cv=none; b=Xj7s9zTi4XQH1RGNrc9oCnHt0ft2Cvs15V3gPGM0ahZwtWXK8DR9Z9KOWiMUKtJj0pheHoIOQ55YHNSm0KFmaKvkHQW0DoT0U2LVD/v+Ef3pXCfqN1w8Q9CjFXCp/nw8bE2NEMXwRi99RK2Cv80IYk1wKdzbo5AWxiznkJV+0dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098629; c=relaxed/simple;
-	bh=nA5q0HZmMh+h1u7J+Nxs2Q1t00KgKs4DUPEnP/UjH70=;
+	s=arc-20240116; t=1776097451; c=relaxed/simple;
+	bh=8AMa5L3gOBb0oFc5bGNnj4Dl7Nv/iIutkHJbpriqWUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pw8o3tWQzN+dpC0QEP2KxNPm10nIdr/0TzJRMbUlJce6VAA0nDyyFn8Hu2eFGpRrRjUb56NRFhnTq/QOaKYoy9B2UpmSKhKL/SJPi7B2wQyg9x9OurzDKzezyishuzu0Z3OqzUZ1DpvEBbE6qLMmVJ7VR/Tep6DzSnA33udfYGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TthNyfXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A192C2BCAF;
-	Mon, 13 Apr 2026 16:43:49 +0000 (UTC)
+	 MIME-Version; b=WSA2Yc8i3nzkh4ZWIfALeL/1Qt9Y4ifRUDlcKYEGCyDDfcJl59PoTi0IgqgG+y5ANF9AcF1mla2vtMNYIC/a4ZCVaTYpDzYnha5i8uyeHiiyozoFZawcLP3GXT4SkLjYJq8sGJnGTdRr7MqNH0+Iggihmfk3MBvJGcvguiXBn20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b71Bv887; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59578C2BCAF;
+	Mon, 13 Apr 2026 16:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098629;
-	bh=nA5q0HZmMh+h1u7J+Nxs2Q1t00KgKs4DUPEnP/UjH70=;
+	s=korg; t=1776097450;
+	bh=8AMa5L3gOBb0oFc5bGNnj4Dl7Nv/iIutkHJbpriqWUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TthNyfXtz0YGMYwdRokgawOHoaqqj3mSb3ePMBHxKeS6vEgAc4wiCU/8/tmBCSXQ3
-	 StJEGcFbMor0mt/+Ul9K/asi6U6+xJkj1KqsTjWqfxstcyuY1cjrYalkxNwNXMXnx1
-	 zr8aErB8gwj4GQG+kLYEkzIWWoyQPF0+1YtPXZyA=
+	b=b71Bv887+xN+RRKu25QTKICrkTNd0oN5Z1Sl7G9F3uxLDr62kCNo7BHp9qZxHMFUu
+	 jcTiDd0L4F9cCs3fjsVZH7v2vGJxwXCWCXAk/rHmz/e0zUivw6eqko19RB2MSfvcPc
+	 LhDPx5OKJlvZQpbpsz71chUUGpkOWYuLl+MGYhGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 5.10 027/491] x86/efi: defer freeing of boot services memory
+	syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 141/570] USB: usbtmc: Use usb_bulk_msg_killable() with user-specified timeouts
 Date: Mon, 13 Apr 2026 17:54:32 +0200
-Message-ID: <20260413155820.069013691@linuxfoundation.org>
+Message-ID: <20260413155835.725083626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,222 +63,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236650-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237116-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,25ba18e2c5040447585d];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,crashing.org:email]
-X-Rspamd-Queue-Id: E60EF3F06B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,harvard.edu:email]
+X-Rspamd-Queue-Id: 0DE353EFDB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit a4b0bf6a40f3c107c67a24fbc614510ef5719980 upstream.
+commit 7784caa413a89487dd14dd5c41db8753483b2acb upstream.
 
-efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
-and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+The usbtmc driver accepts timeout values specified by the user in an
+ioctl command, and uses these timeouts for some usb_bulk_msg() calls.
+Since the user can specify arbitrarily long timeouts and
+usb_bulk_msg() uses unkillable waits, call usb_bulk_msg_killable()
+instead to avoid the possibility of the user hanging a kernel thread
+indefinitely.
 
-There are two issue with that: memblock_free_late() should be used for
-memory allocated with memblock_alloc() while the memory reserved with
-memblock_reserve() should be freed with free_reserved_area().
-
-More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
-efi_free_boot_services() is called before deferred initialization of the
-memory map is complete.
-
-Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
-RAM on EC2 t3a.nano instances which only have 512MB or RAM.
-
-If the freed memory resides in the areas that memory map for them is
-still uninitialized, they won't be actually freed because
-memblock_free_late() calls memblock_free_pages() and the latter skips
-uninitialized pages.
-
-Using free_reserved_area() at this point is also problematic because
-__free_page() accesses the buddy of the freed page and that again might
-end up in uninitialized part of the memory map.
-
-Delaying the entire efi_free_boot_services() could be problematic
-because in addition to freeing boot services memory it updates
-efi.memmap without any synchronization and that's undesirable late in
-boot when there is concurrency.
-
-More robust approach is to only defer freeing of the EFI boot services
-memory.
-
-Split efi_free_boot_services() in two. First efi_unmap_boot_services()
-collects ranges that should be freed into an array then
-efi_free_boot_services() later frees them after deferred init is complete.
-
-Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
-Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reported-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/8e1c7ac5-e076-44b0-84b8-1b34b20f0ae1@suse.com/T/#t
+Tested-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/81c6fc24-0607-40f1-8c20-5270dab2fad5@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/efi.h          |    2 -
- arch/x86/platform/efi/efi.c         |    2 -
- arch/x86/platform/efi/quirks.c      |   55 ++++++++++++++++++++++++++++++++++--
- drivers/firmware/efi/mokvar-table.c |    2 -
- 4 files changed, 55 insertions(+), 6 deletions(-)
+ drivers/usb/class/usbtmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -151,7 +151,7 @@ extern int __init efi_reuse_config(u64 t
- extern void efi_delete_dummy_variable(void);
- extern void efi_switch_mm(struct mm_struct *mm);
- extern void efi_recover_from_page_fault(unsigned long phys_addr);
--extern void efi_free_boot_services(void);
-+extern void efi_unmap_boot_services(void);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -727,7 +727,7 @@ static int usbtmc488_ioctl_trigger(struc
+ 	buffer[1] = data->bTag;
+ 	buffer[2] = ~data->bTag;
  
- /* kexec external ABI */
- struct efi_setup_data {
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -831,7 +831,7 @@ static void __init __efi_enter_virtual_m
- 	}
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1347,7 +1347,7 @@ static int send_request_dev_dep_msg_in(s
+ 	buffer[11] = 0; /* Reserved */
  
- 	efi_check_for_embedded_firmwares();
--	efi_free_boot_services();
-+	efi_unmap_boot_services();
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1419,7 +1419,7 @@ static ssize_t usbtmc_read(struct file *
+ 	actual = 0;
  
- 	if (!efi_is_mixed())
- 		efi_native_runtime_setup();
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -333,7 +333,7 @@ void __init efi_reserve_boot_services(vo
- 
- 		/*
- 		 * Because the following memblock_reserve() is paired
--		 * with memblock_free_late() for this region in
-+		 * with free_reserved_area() for this region in
- 		 * efi_free_boot_services(), we must be extremely
- 		 * careful not to reserve, and subsequently free,
- 		 * critical regions of memory (like the kernel image) or
-@@ -396,17 +396,33 @@ static void __init efi_unmap_pages(efi_m
- 		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
- }
- 
--void __init efi_free_boot_services(void)
-+struct efi_freeable_range {
-+	u64 start;
-+	u64 end;
-+};
-+
-+static struct efi_freeable_range *ranges_to_free;
-+
-+void __init efi_unmap_boot_services(void)
- {
- 	struct efi_memory_map_data data = { 0 };
- 	efi_memory_desc_t *md;
- 	int num_entries = 0;
-+	int idx = 0;
-+	size_t sz;
- 	void *new, *new_md;
- 
- 	/* Keep all regions for /sys/kernel/debug/efi */
- 	if (efi_enabled(EFI_DBG))
- 		return;
- 
-+	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-+	ranges_to_free = kzalloc(sz, GFP_KERNEL);
-+	if (!ranges_to_free) {
-+		pr_err("Failed to allocate storage for freeable EFI regions\n");
-+		return;
-+	}
-+
- 	for_each_efi_memory_desc(md) {
- 		unsigned long long start = md->phys_addr;
- 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-@@ -451,7 +467,15 @@ void __init efi_free_boot_services(void)
- 			size -= rm_size;
- 		}
- 
--		memblock_free_late(start, size);
-+		/*
-+		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
-+		 * map are still not initialized and we can't reliably free
-+		 * memory here.
-+		 * Queue the ranges to free at a later point.
-+		 */
-+		ranges_to_free[idx].start = start;
-+		ranges_to_free[idx].end = start + size;
-+		idx++;
- 	}
- 
- 	if (!num_entries)
-@@ -492,6 +516,31 @@ void __init efi_free_boot_services(void)
- 	}
- }
- 
-+static int __init efi_free_boot_services(void)
-+{
-+	struct efi_freeable_range *range = ranges_to_free;
-+	unsigned long freed = 0;
-+
-+	if (!ranges_to_free)
-+		return 0;
-+
-+	while (range->start) {
-+		void *start = phys_to_virt(range->start);
-+		void *end = phys_to_virt(range->end);
-+
-+		free_reserved_area(start, end, -1, NULL);
-+		freed += (end - start);
-+		range++;
-+	}
-+	kfree(ranges_to_free);
-+
-+	if (freed)
-+		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
-+
-+	return 0;
-+}
-+arch_initcall(efi_free_boot_services);
-+
- /*
-  * A number of config table entries get remapped to virtual addresses
-  * after entering EFI virtual mode. However, the kexec kernel requires
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
-  * as an alternative to ordinary EFI variables, due to platform-dependent
-  * limitations. The memory occupied by this table is marked as reserved.
-  *
-- * This routine must be called before efi_free_boot_services() in order
-+ * This routine must be called before efi_unmap_boot_services() in order
-  * to guarantee that it can mark the table as reserved.
-  *
-  * Implicit inputs:
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_rcvbulkpipe(data->usb_dev,
+ 					      data->bulk_in),
+ 			      buffer, bufsize, &actual,
 
 
 
