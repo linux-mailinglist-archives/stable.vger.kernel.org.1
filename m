@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDNGImMi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:39 +0200
+	id 2D77Cykj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FC93F0B44
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317483F0D60
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E24613112872
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 671C03046EE6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE1C28A1E6;
-	Mon, 13 Apr 2026 16:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBDC317167;
+	Mon, 13 Apr 2026 16:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GW8+25Td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0o8c/zG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809B7238166;
-	Mon, 13 Apr 2026 16:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0035F31619A;
+	Mon, 13 Apr 2026 16:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097919; cv=none; b=lyZQSZIXZXSeyEPZ1SuPMRGmUfqmQVcDgr4pXO4z+eOo/Y7poJm5YOA+nTSK7VTDiopz3nIDpftGJsJ2oAITr4Pb43EVpFQ9/8+YfLXsGYGL3fxf5ICigai+Fxc0ZXjR+7XuVn3DsqSf8Y7NrDsoAygYwyAGeuio+jcdbrFrYi4=
+	t=1776099117; cv=none; b=Hct446GFWllAWhRnCh5BUgNe/G5BqnZbnjbV1bJ+pBiD6675zkPhPSmLB2msz8eVleW0thGcrz0KFNbthENnEuT/cuH/wdY+ljhDXTOcw1Kn2eWd0AsdRGX0qw1km0oS4H9Iy+Q4vsx3N6YA4uLvHXxfGdO9v3vaCWjUbTP4Ksc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097919; c=relaxed/simple;
-	bh=EOru201OkefxMvDnsjq6olybbuv+FIw0inzsN1V72No=;
+	s=arc-20240116; t=1776099117; c=relaxed/simple;
+	bh=4NqUI6nGGq97Z83989m5pHbqF7DcHKVmPQaElxTPUcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4C5F2sYrhOaPf0uwzxSNxzQRNClzAWxXTj7B7Ucba7qztJOdiI3aI/Hh+UEyCtVyjIzJSBBa+8DYRUrjC5XNjPahmqf0mB641qP4wCP/pjSod7OpBW2pjy8E/czh6QgBDXYmsIYhb9qK7MTYyPUea2+eYVC8nQtq2511WB0XBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GW8+25Td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FA5C2BCAF;
-	Mon, 13 Apr 2026 16:31:58 +0000 (UTC)
+	 MIME-Version; b=Xu5urSd26BARfbvFGxhy896K3V3+SaZ0JXrlQL6jz6rawU5nkQtA/g2DrjYb2ywypt8/ikxZXAGMVugO1CvyFfFXlBqfyHVAE5jwLytq1fCgdvQTAq0J9ePIAoJnzr/BvVdlJ6ADC9CSF/oGstFyEgLV3JgiD5LBfpKnw03smPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0o8c/zG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9EBC2BCB0;
+	Mon, 13 Apr 2026 16:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097919;
-	bh=EOru201OkefxMvDnsjq6olybbuv+FIw0inzsN1V72No=;
+	s=korg; t=1776099116;
+	bh=4NqUI6nGGq97Z83989m5pHbqF7DcHKVmPQaElxTPUcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GW8+25TdWjiKhMpLH9k3z6MCJFgu9RyDry/HYJ3BJjzCOQkeASrJK27txXh0YjxDa
-	 DbgvyGxI3hOhw2+1ihodD3LXcSgVkhH0hs0xWIFU8yvFHML1pWIdT34AmhbK8ZwB9U
-	 pvYimyzEEbHgQ2hm6LYS1BzIicha5l/1hRYkVPp4=
+	b=e0o8c/zGnsSM6PjXUZvsPSjX1Mg/VHCXB/A7jMdtiJ3eJSW/oR6I7DE5DL6jhjXpI
+	 6tAWTIokC3sUk0/UnrHZJJZsVJ2JgMtJMKABn7iHFXTXyb+R08XwJwLEtbeZLdDr+B
+	 QeQBrltZh44+x3d1DxwVfubZ6lLrJ7EqSx2uGn3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrii Melnychenko <a.melnychenko@vyos.io>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 323/570] nfc: nci: fix circular locking dependency in nci_close_device
+Subject: [PATCH 5.10 209/491] netfilter: nft_ct: add seqadj extension for natted connections
 Date: Mon, 13 Apr 2026 17:57:34 +0200
-Message-ID: <20260413155842.597301260@linuxfoundation.org>
+Message-ID: <20260413155826.893711488@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236837-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237306-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,83 +89,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,gehealthcare.com:email]
-X-Rspamd-Queue-Id: 24FC93F0B44
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vyos.io:email]
+X-Rspamd-Queue-Id: 317483F0D60
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Andrii Melnychenko <a.melnychenko@vyos.io>
 
-[ Upstream commit 4527025d440ce84bf56e75ce1df2e84cb8178616 ]
+[ Upstream commit 90918e3b6404c2a37837b8f11692471b4c512de2 ]
 
-nci_close_device() flushes rx_wq and tx_wq while holding req_lock.
-This causes a circular locking dependency because nci_rx_work()
-running on rx_wq can end up taking req_lock too:
+Sequence adjustment may be required for FTP traffic with PASV/EPSV modes.
+due to need to re-write packet payload (IP, port) on the ftp control
+connection. This can require changes to the TCP length and expected
+seq / ack_seq.
 
-  nci_rx_work -> nci_rx_data_packet -> nci_data_exchange_complete
-    -> __sk_destruct -> rawsock_destruct -> nfc_deactivate_target
-    -> nci_deactivate_target -> nci_request -> mutex_lock(&ndev->req_lock)
+The easiest way to reproduce this issue is with PASV mode.
+Example ruleset:
+table inet ftp_nat {
+        ct helper ftp_helper {
+                type "ftp" protocol tcp
+                l3proto inet
+        }
 
-Move the flush of rx_wq after req_lock has been released.
-This should safe (I think) because NCI_UP has already been cleared
-and the transport is closed, so the work will see it and return
--ENETDOWN.
+        chain prerouting {
+                type filter hook prerouting priority 0; policy accept;
+                tcp dport 21 ct state new ct helper set "ftp_helper"
+        }
+}
+table ip nat {
+        chain prerouting {
+                type nat hook prerouting priority -100; policy accept;
+                tcp dport 21 dnat ip prefix to ip daddr map {
+			192.168.100.1 : 192.168.13.2/32 }
+        }
 
-NIPA has been hitting this running the nci selftest with a debug
-kernel on roughly 4% of the runs.
+        chain postrouting {
+                type nat hook postrouting priority 100 ; policy accept;
+                tcp sport 21 snat ip prefix to ip saddr map {
+			192.168.13.2 : 192.168.100.1/32 }
+        }
+}
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reviewed-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317193334.988609-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note that the ftp helper gets assigned *after* the dnat setup.
+
+The inverse (nat after helper assign) is handled by an existing
+check in nf_nat_setup_info() and will not show the problem.
+
+Topoloy:
+
+ +-------------------+     +----------------------------------+
+ | FTP: 192.168.13.2 | <-> | NAT: 192.168.13.3, 192.168.100.1 |
+ +-------------------+     +----------------------------------+
+                                      |
+                         +-----------------------+
+                         | Client: 192.168.100.2 |
+                         +-----------------------+
+
+ftp nat changes do not work as expected in this case:
+Connected to 192.168.100.1.
+[..]
+ftp> epsv
+EPSV/EPRT on IPv4 off.
+ftp> ls
+227 Entering passive mode (192,168,100,1,209,129).
+421 Service not available, remote server has closed connection.
+
+Kernel logs:
+Missing nfct_seqadj_ext_add() setup call
+WARNING: CPU: 1 PID: 0 at net/netfilter/nf_conntrack_seqadj.c:41
+[..]
+ __nf_nat_mangle_tcp_packet+0x100/0x160 [nf_nat]
+ nf_nat_ftp+0x142/0x280 [nf_nat_ftp]
+ help+0x4d1/0x880 [nf_conntrack_ftp]
+ nf_confirm+0x122/0x2e0 [nf_conntrack]
+ nf_hook_slow+0x3c/0xb0
+ ..
+
+Fix this by adding the required extension when a conntrack helper is assigned
+to a connection that has a nat binding.
+
+Fixes: 1a64edf54f55 ("netfilter: nft_ct: add helper set support")
+Signed-off-by: Andrii Melnychenko <a.melnychenko@vyos.io>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: 36eae0956f65 ("netfilter: nft_ct: drop pending enqueued packets on removal")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/netfilter/nft_ct.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index ca9543be400c4..992bd13649cb4 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -574,8 +574,7 @@ static int nci_close_device(struct nci_dev *ndev)
- 	skb_queue_purge(&ndev->rx_q);
- 	skb_queue_purge(&ndev->tx_q);
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index f95f1dbc48dea..0b194628818a5 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -22,6 +22,7 @@
+ #include <net/netfilter/nf_conntrack_timeout.h>
+ #include <net/netfilter/nf_conntrack_l4proto.h>
+ #include <net/netfilter/nf_conntrack_expect.h>
++#include <net/netfilter/nf_conntrack_seqadj.h>
  
--	/* Flush RX and TX wq */
--	flush_workqueue(ndev->rx_wq);
-+	/* Flush TX wq, RX wq flush can't be under the lock */
- 	flush_workqueue(ndev->tx_wq);
- 
- 	/* Reset device */
-@@ -587,13 +586,13 @@ static int nci_close_device(struct nci_dev *ndev)
- 		      msecs_to_jiffies(NCI_RESET_TIMEOUT));
- 
- 	/* After this point our queues are empty
--	 * and no works are scheduled.
-+	 * rx work may be running but will see that NCI_UP was cleared
- 	 */
- 	ndev->ops->close(ndev);
- 
- 	clear_bit(NCI_INIT, &ndev->flags);
- 
--	/* Flush cmd wq */
-+	/* Flush cmd and tx wq */
- 	flush_workqueue(ndev->cmd_wq);
- 
- 	del_timer_sync(&ndev->cmd_timer);
-@@ -603,6 +602,9 @@ static int nci_close_device(struct nci_dev *ndev)
- 
- 	mutex_unlock(&ndev->req_lock);
- 
-+	/* rx_work may take req_lock via nci_deactivate_target */
-+	flush_workqueue(ndev->rx_wq);
+ struct nft_ct {
+ 	enum nft_ct_keys	key:8;
+@@ -1106,6 +1107,10 @@ static void nft_ct_helper_obj_eval(struct nft_object *obj,
+ 	if (help) {
+ 		rcu_assign_pointer(help->helper, to_assign);
+ 		set_bit(IPS_HELPER_BIT, &ct->status);
 +
- 	return 0;
++		if ((ct->status & IPS_NAT_MASK) && !nfct_seqadj(ct))
++			if (!nfct_seqadj_ext_add(ct))
++				regs->verdict.code = NF_DROP;
+ 	}
  }
  
 -- 
