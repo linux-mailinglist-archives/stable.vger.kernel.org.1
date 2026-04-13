@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-237525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIqZFb8m3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:15 +0200
+	id 4DW0CKAa3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AACB73F1520
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CED63EF30A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C587318F343
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91FB730ACEF4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA913346A1F;
-	Mon, 13 Apr 2026 17:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBE4309F09;
+	Mon, 13 Apr 2026 16:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRU7cAlx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6dO119x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4B2346A10;
-	Mon, 13 Apr 2026 17:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D671727280A;
+	Mon, 13 Apr 2026 16:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099681; cv=none; b=i5HMPfvAhAnMr7TrhZZ1dU0w8J6DE2tXwQl19scsQ9D/GY7ayxPYs37sQ8SXVdiGucqqsO+qMwlCSZzlZ1vlOI6Cxii/ROOp6nMuhrNdXM9/mqih1kO9l468XkAFFuv0dMJCbfVjl2rUjYAB0gvErQOjvoD7O6diPfTCoBbtvA4=
+	t=1776097059; cv=none; b=TWQOxpKW6dxv5gEdvD6/RPrAkgO/whLOg6/ci479Z3FeuOhL2i264WzzQbSsIgu7Gnsh/tyUI25GgyK37Xmitw1cpdmX2Jp6koPSvs5RahylQbgWFwwEYMA/rzsyk8iDxuVPpC/8UCa+QyjCp8NAJstmQKRsPHglhDutjZf+Xk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099681; c=relaxed/simple;
-	bh=wrIOtJg/cjK4+qTT03SQ40WnOHg0TYzafEAyNA93bRA=;
+	s=arc-20240116; t=1776097059; c=relaxed/simple;
+	bh=Lu8vlu+osOi8Hcj+P9ltH0gC+R2LCQ9rSSwLdbsBnJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=If6Egn7U3ocDOjLIfwIPSxa537EgUccHFMC+905cr84OyCYvgDs3EtNfCkvP8geItvXLMbcC0F8aNEwwvCOG5CuJsbf9soe1KWWOYtYqjGWBTIxGSniKqskUvfI5met3ntIvZasYvmHGuSeEHIRCH3cggUYvnfjzQkIWhRzTjvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRU7cAlx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4249DC2BCB3;
-	Mon, 13 Apr 2026 17:01:21 +0000 (UTC)
+	 MIME-Version; b=cjcQVeBPyIvhXToJwleE1gzytBuIVF/IfQEiOsiepEhxXHbEX2oNQTHWnBgbGjpxm/ZZ1/DwM5B0i3gwnMBn3ywygrkN44cXg+sZQJPp8RXBY6tIQAXoQTjpUymHuQIRsceM6e2YkxBxShkigs5mMPpe0UOYD9gCoT96m7H/Tjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6dO119x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC23C2BCAF;
+	Mon, 13 Apr 2026 16:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099681;
-	bh=wrIOtJg/cjK4+qTT03SQ40WnOHg0TYzafEAyNA93bRA=;
+	s=korg; t=1776097059;
+	bh=Lu8vlu+osOi8Hcj+P9ltH0gC+R2LCQ9rSSwLdbsBnJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRU7cAlxCU+D95hQ4pgOqF0fAVkrzkZKPANKC6CnwRvamwzIimxh6SZAYcmYI4xHs
-	 1ktA/ILUfPBPzfPwsUdKi7E8mtDiODRFqJrOTupFN2NHFeQ7DZozhCWKDnsOHfOKml
-	 igvcec7p9wnBg+GjTaprSDRmKGqcD33W333MGFwI=
+	b=e6dO119xQZRYLypeCF7jNpHneUSZZqA7da9e6H5kyps91X9Uhn+nWCFaKePfVZQmb
+	 3BkeXC6YxTRIjsBo0Mxgzg8Ke3BPfP0TzYXejyCAD0d54pSthoiHMHlPRTvaHp+MOc
+	 D+scaGy3E2nQ9FMD97mpI9Tkrt1gdWDNhuRZLM4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.10 434/491] apparmor: fix side-effect bug in match_char() macro usage
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 45/55] net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
 Date: Mon, 13 Apr 2026 18:01:19 +0200
-Message-ID: <20260413155835.276146833@linuxfoundation.org>
+Message-ID: <20260413155726.512839888@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,155 +68,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237525-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236499-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AACB73F1520
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,starlabs.sg:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6CED63EF30A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
 
-commit 8756b68edae37ff546c02091989a4ceab3f20abd upstream.
+commit a9b8b18364fffce4c451e6f6fd218fa4ab646705 upstream.
 
-The match_char() macro evaluates its character parameter multiple
-times when traversing differential encoding chains. When invoked
-with *str++, the string pointer advances on each iteration of the
-inner do-while loop, causing the DFA to check different characters
-at each iteration and therefore skip input characters.
-This results in out-of-bounds reads when the pointer advances past
-the input buffer boundary.
+The -EBUSY handling in tls_do_encryption(), introduced by commit
+859054147318 ("net: tls: handle backlogging of crypto requests"), has
+a use-after-free due to double cleanup of encrypt_pending and the
+scatterlist entry.
 
-[   94.984676] ==================================================================
-[   94.985301] BUG: KASAN: slab-out-of-bounds in aa_dfa_match+0x5ae/0x760
-[   94.985655] Read of size 1 at addr ffff888100342000 by task file/976
+When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
+the cryptd backlog and the async callback tls_encrypt_done() will be
+invoked upon completion. That callback unconditionally restores the
+scatterlist entry (sge->offset, sge->length) and decrements
+ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
+error, the synchronous error path in tls_do_encryption() performs the
+same cleanup again, double-decrementing encrypt_pending and
+double-restoring the scatterlist.
 
-[   94.986319] CPU: 7 UID: 1000 PID: 976 Comm: file Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
-[   94.986322] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   94.986329] Call Trace:
-[   94.986341]  <TASK>
-[   94.986347]  dump_stack_lvl+0x5e/0x80
-[   94.986374]  print_report+0xc8/0x270
-[   94.986384]  ? aa_dfa_match+0x5ae/0x760
-[   94.986388]  kasan_report+0x118/0x150
-[   94.986401]  ? aa_dfa_match+0x5ae/0x760
-[   94.986405]  aa_dfa_match+0x5ae/0x760
-[   94.986408]  __aa_path_perm+0x131/0x400
-[   94.986418]  aa_path_perm+0x219/0x2f0
-[   94.986424]  apparmor_file_open+0x345/0x570
-[   94.986431]  security_file_open+0x5c/0x140
-[   94.986442]  do_dentry_open+0x2f6/0x1120
-[   94.986450]  vfs_open+0x38/0x2b0
-[   94.986453]  ? may_open+0x1e2/0x2b0
-[   94.986466]  path_openat+0x231b/0x2b30
-[   94.986469]  ? __x64_sys_openat+0xf8/0x130
-[   94.986477]  do_file_open+0x19d/0x360
-[   94.986487]  do_sys_openat2+0x98/0x100
-[   94.986491]  __x64_sys_openat+0xf8/0x130
-[   94.986499]  do_syscall_64+0x8e/0x660
-[   94.986515]  ? count_memcg_events+0x15f/0x3c0
-[   94.986526]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986540]  ? handle_mm_fault+0x1639/0x1ef0
-[   94.986551]  ? vma_start_read+0xf0/0x320
-[   94.986558]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986561]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986563]  ? fpregs_assert_state_consistent+0x50/0xe0
-[   94.986572]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986574]  ? arch_exit_to_user_mode_prepare+0x9/0xb0
-[   94.986587]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986588]  ? irqentry_exit+0x3c/0x590
-[   94.986595]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   94.986597] RIP: 0033:0x7fda4a79c3ea
+The double-decrement corrupts the encrypt_pending sentinel (initialized
+to 1), making tls_encrypt_async_wait() permanently skip the wait for
+pending async callbacks. A subsequent sendmsg can then free the
+tls_rec via bpf_exec_tx_verdict() while a cryptd callback is still
+pending, resulting in a use-after-free when the callback fires on the
+freed record.
 
-Fix by extracting the character value before invoking match_char,
-ensuring single evaluation per outer loop.
+Fix this by skipping the synchronous cleanup when the -EBUSY async
+wait returns an error, since the callback has already handled
+encrypt_pending and sge restoration.
 
-Fixes: 074c1cd798cb ("apparmor: dfa move character match into a macro")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20260403013617.2838875-1-ramdhan@starlabs.sg
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/match.c |   30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ net/tls/tls_sw.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -452,13 +452,18 @@ unsigned int aa_dfa_match_len(struct aa_
- 	if (dfa->tables[YYTD_ID_EC]) {
- 		/* Equivalence class table defined */
- 		u8 *equiv = EQUIV_TABLE(dfa);
--		for (; len; len--)
--			match_char(state, def, base, next, check,
--				   equiv[(u8) *str++]);
-+		for (; len; len--) {
-+			u8 c = equiv[(u8) *str];
-+
-+			match_char(state, def, base, next, check, c);
-+			str++;
-+		}
- 	} else {
- 		/* default is direct to next state */
--		for (; len; len--)
--			match_char(state, def, base, next, check, (u8) *str++);
-+		for (; len; len--) {
-+			match_char(state, def, base, next, check, (u8) *str);
-+			str++;
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -585,6 +585,16 @@ static int tls_do_encryption(struct sock
+ 	if (rc == -EBUSY) {
+ 		rc = tls_encrypt_async_wait(ctx);
+ 		rc = rc ?: -EINPROGRESS;
++		/*
++		 * The async callback tls_encrypt_done() has already
++		 * decremented encrypt_pending and restored the sge on
++		 * both success and error. Skip the synchronous cleanup
++		 * below on error, just remove the record and return.
++		 */
++		if (rc != -EINPROGRESS) {
++			list_del(&rec->list);
++			return rc;
 +		}
  	}
- 
- 	return state;
-@@ -493,13 +498,18 @@ unsigned int aa_dfa_match(struct aa_dfa
- 		/* Equivalence class table defined */
- 		u8 *equiv = EQUIV_TABLE(dfa);
- 		/* default is direct to next state */
--		while (*str)
--			match_char(state, def, base, next, check,
--				   equiv[(u8) *str++]);
-+		while (*str) {
-+			u8 c = equiv[(u8) *str];
-+
-+			match_char(state, def, base, next, check, c);
-+			str++;
-+		}
- 	} else {
- 		/* default is direct to next state */
--		while (*str)
--			match_char(state, def, base, next, check, (u8) *str++);
-+		while (*str) {
-+			match_char(state, def, base, next, check, (u8) *str);
-+			str++;
-+		}
- 	}
- 
- 	return state;
+ 	if (!rc || rc != -EINPROGRESS) {
+ 		atomic_dec(&ctx->encrypt_pending);
 
 
 
