@@ -1,189 +1,161 @@
-Return-Path: <stable+bounces-237627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGiUBAM13Wl9agkAu9opvQ
-	(envelope-from <stable+bounces-237627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:25:07 +0200
+	id cEzKCrk13Wl9agkAu9opvQ
+	(envelope-from <stable+bounces-237628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:28:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5333F1F4A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:25:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2FC3F2028
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D50103012586
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 679063012202
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02FE364052;
-	Mon, 13 Apr 2026 18:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DAD361DC9;
+	Mon, 13 Apr 2026 18:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oerwcTa9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CQE0of57"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395E435F614
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 18:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E042F3603F7
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 18:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776104690; cv=none; b=k/FxylAA93C6ysej+fPfxIZBYM9jQkqRJmsZxLZvkRF6JOOlGWxuRP46VH+dgLUapwFofkWYDbWLY2fUeW/PGB8dCBggt0JTk5yIkMfh6HQ5DjUAPJgx1vpf2LU+NrsP0H+VW8uLzN4MpYKY7NCeecDba/OoEK1Hk16qLFMrtTk=
+	t=1776104862; cv=none; b=IWrh2kQ+oIVVwuASDlcg6Fwcgrxzb/n3KRHy6BxcPbjGiIoBrpAQYXHM8S70fPW4iMnrgPTkmfIRSLdkfOQ71S7wsUXfcCCUc4MfTCZkszE0zskBqDhVJsEEBjwcc3Tkc0CFUd9TGG796xe0VBr7KaM9agZRnvNwSVqZznPxjcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776104690; c=relaxed/simple;
-	bh=WX+GbDCQnemIbX75B+YiYyahJQmX7jQXWaQHRJtE22g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JbW/snanW6Qkw9S9qvdB0UwSnpCtpFyYCBxxXJC34Ow6KCdPXwSaeQa0HkVxzeo74ARcOntCDSediylDKKkEUhOGl3aU/58h/5xoWma2oKysCArDU2wHboF9LFTdFT99zh9/1mwIzilh2Bj+lGqPqSPH1vOnTHj1lJWstDmu+AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oerwcTa9; arc=none smtp.client-ip=209.85.219.51
+	s=arc-20240116; t=1776104862; c=relaxed/simple;
+	bh=+oz8fIDtYkeSS8yY1/lCiaI5mVmEJUTqZCRjjASOMb4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EmYVddAMkdP088AOMtJdTulKMcRdG5aQi/WeHTHsDJoVzMdAMvYvLcCY+3t1MYdRw8LxuiEjgLxCR8FiHl9sjFomPSqNYdY5RLH8x3sX9yxNj5tQZcd/oDKDnZFp64YkAcgLUASzZE/QxVrGJE9I/zeGnBsSW6uYUOKod3jf3c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CQE0of57; arc=none smtp.client-ip=74.125.82.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a093c784b0so59911746d6.3
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:24:49 -0700 (PDT)
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2dbb4ad19a5so191390eec.0
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:27:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776104688; x=1776709488; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pwuEhADy0804om/OdHEIRZ/J1D9Tqo21sy7eI3dqC5M=;
-        b=oerwcTa9ieG1OFUB7FyjG6puCmp+rUhPWSY2P9RJIR80DQy4olguP0QSFpzGjw3yEW
-         4s3l9w6/psQwdzXLeIZNv8On2mSK89g03NK5htrp7tqYPfVYEb6ntBGAsHFJyaJOrCXI
-         fSxwSqosGzTs+qbDrTb5MFqgYPNmCdIAz4lB1Va6Jzzrju7g/t5Hu5fCcNkNMGwNApa2
-         LsvviMh0nUduvQakttLcIviqYmBjkXwuJMnC+s57pr0qE6y1itXEuk7TPs55iFAyOQqT
-         ivKjBXK6eD3KO1pK/tUKiddiTgXsplHTX0iEU4OCDRM6011FkiSLw6kzts3d6XmYwKA8
-         hXEg==
+        d=gmail.com; s=20251104; t=1776104860; x=1776709660; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ewijMpByJIzA41dtCa8+aN+j1YdkA+hHaQFDF1cLATg=;
+        b=CQE0of57JvhFhGMxOi6ar6G+z3qX1iEiEwa6WNu6yPIDy38x/x73pPTWygSt9p0sqb
+         R6jeidb7AamEZRWM4/qvZifL362bTL2R2bKkgBFXEp32VJ/XgsIdI/UpGm7mYXPA8Kuv
+         rYAEpYQw4JX+c84UWhUjt5JvUPoYEreiz8vauCLRbLYUiF515/XQQ76VgqUG3zjmYqnz
+         ShCWwSfkAbSyjWaj7XYWE48vMZkJjdFX3Rko/gLAMmrEkx4aiu4q8wE7DalKcJONqFI+
+         gVFcJaZlCXRaQh5LvPNOfUmH3DB27a1PqYkZv9FIzab2Vcm7wuu5IuAX1Gdozg/g2LT3
+         0QcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776104688; x=1776709488;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pwuEhADy0804om/OdHEIRZ/J1D9Tqo21sy7eI3dqC5M=;
-        b=V+Pq0kVUOubwGsUGWJZJbXY8m3oOeuGdJAOsPntr/LJO1mjkdBtsvzG5dbSSLGX7rp
-         uEAIop1a4BZYRSYnxfuy9I8iyZzAeYUrulkkwUMycF/KlE9HJKY9CavdpZvWq3hpKiFq
-         nejyeRjQQz1d75lnYOVBac+frtUuqToM/KUYRkc8hL1ECdHP8hL6UV/AlL0M4VH4HdQ8
-         OcVSRkl992OcRT2hgEwfbQLWO8u7rnr8xNMaT8C9nSADVJu+8yVjYh6nzFuGIhBZuxPV
-         SaWFtz0mN/8I7lrc4t9uH0S05r/4QIxRySVkWyJh41uEQt3Rnb5QUajG8FT3leo9QFt5
-         rG5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/Q3NgQyBFShwD7fsetcng20ujhYH43dLQAPcN8v3ntxkXZ9lCdtENt1PlE6YN10XUgIhhsLo8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysTRfRbstKSqsiDgLCEmkGrFipV272u0zCfPiC5TDIkz702sRw
-	sOri4xHRB7wTOUuSi3kVJNii2X1ToLL3IlTDXMx4E9rTNsN7OITjeuLe
-X-Gm-Gg: AeBDievUTdKfwNNcpWmzweb90ydKtO3X547tT+Sh83dlaJ22JmAMa7v2CJcm9EA1Yhx
-	4P1kYb28hCPE8/zxpKCLSbK6pi6MOJkGPpsvURT2UhLLee+6nkL6Rx7COIuodNHixYyLCcn49HY
-	9ME0MxtgTzBGN9BLbKMmAb3CTr0lnb8KKgt1eWXBxhWFllg1RzyvKoi7JYfKoPmeZfZC7g+UnDS
-	uvBX7iyalRVfG7O/aQOO0F/N8grYrXqcQWWoHULB9yK71ST/G6IbkFlb8IAhjIZ9JhfjyQR5MMv
-	RdasjXU+jhJlFzyPWZGw8yyhZzJYjsI+FesZT77IEV9LVK+SOjXIyXkxVNi2jj2K5uWuR7ufmnO
-	WVCBAnFrSiOMrgr/AnwGGLuzw74VN2fwdLG7DtiqKjS1yts0zuOkshKkKyiwycw+mHUjqjfHCtX
-	yTILl9zddiEIqsNndMwW41OaPmQPZGumDZu6NpEBC019vjPvvq8Z/yPsZZ2b3cBNBmdZVKEapXW
-	hvJdymQhHqNWhMVadAu
-X-Received: by 2002:a05:6214:4c8f:b0:89c:6451:67ac with SMTP id 6a1803df08f44-8ac8617fc04mr206413246d6.12.1776104687285;
-        Mon, 13 Apr 2026 11:24:47 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84a47a0dsm103210326d6.22.2026.04.13.11.24.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 11:24:46 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: "Tony Nguyen" <anthony.l.nguyen@intel.com>,
-	"Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Bommarito <michael.bommarito@gmail.com>
-Subject: [PATCH net] ixgbevf: fix use-after-free in VEPA multicast source pruning
-Date: Mon, 13 Apr 2026 14:24:27 -0400
-Message-ID: <20260413182427.298513-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1776104860; x=1776709660;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ewijMpByJIzA41dtCa8+aN+j1YdkA+hHaQFDF1cLATg=;
+        b=XVEoW5B+zCbVtoqrxHfxOH7zR6Kav0gB0N0Qye6sgiBLSjUWfkGH74ZvPISkRiS0Ss
+         ziNksBL1RWIG+EAb/Fj5prQeMdDt3ybkdI/qkb7iYxXpTA3JqsmYqH8nRKGlUQXuvd1n
+         XrlSTksHXSJjtJJUXmzK5BH2NmkZZe8J4b9SO3zbd8GCisGh+vr8Ns2HcXUxtjnPbZKs
+         TDltR66UwEa32EYnUqd/+QtMHhQ1qRVVNkBTqU+IbGzpK6daXgXFlHsV2+wyeunXN+by
+         aiutYPK8mRpZu+cNiDul1s8omnzbP0HeEplYQbHZM1jHWoeGlo0IGjjJymCoAyNEuWdK
+         W4IQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/vyZCxsSrvBqaCw5YHzG99vK/iyLVl0CWd38tZgw73uC5j0TpAKtjnVNnVZBtlqZXrjZDZIys=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnsPCqUZ6tn6Vuq3kHNpV3sLKakGhcGxTSJh6udZrbrvlveW2a
+	i0E9A1iWUuCZrCkT/UR5/NF0s1U6EuDqEP+nxAddSSm/sgcb/xQ5mGV0
+X-Gm-Gg: AeBDiettP5I+IFoCupzNbJjR8ThcpzP86jzLuvZGlZF++iHhE5aFy2mG68OiE+loYUa
+	WdT6m8E7IpITzm10ouEaq2yp20IfN+PkOYbZxu2iLp1s/sF8Q/94ip7GlWtWVfOUdnXj9lBx99q
+	dPx+yVwe5W4CJmHUTJjGEZCmdNbLp02P1Iv923rNLGiSrD0lMr287PY3NF/9O7x/PvCsM9pFqrw
+	G7kSfFDjFROk9uHqYW8gG26cxU/UH4sw/Ygt0TgzAE4AoNcye13XaD6L+i5mv63TiBQD6YAcQU/
+	lLj+hrkfG8dO/jrmEZcEOe0vMQvrdl/tig8vIgU+4kd1OYLDFkw5JenTwmbW/tAlbM3D7WBND9+
+	xbgc3dgR6ARkIEGFh5SOoC+JPowKYgVGtkQi7faiQujhaY2f6rXD55KTxQ3mz3CZOj4J0TtXjyX
+	uCjlbjyLeVwSrlIc2bcerFr1SEnoRG+3784CElDD1bGQXna39GyZKd3kdcFhqv
+X-Received: by 2002:a05:7300:320a:b0:2c8:6361:ab2e with SMTP id 5a478bee46e88-2d5877a7b8fmr9654863eec.8.1776104859817;
+        Mon, 13 Apr 2026 11:27:39 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55faa556esm20830186eec.8.2026.04.13.11.27.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 11:27:39 -0700 (PDT)
+Message-ID: <4b5a9ec2-88b0-4b9e-b1cd-eb2d064af32e@gmail.com>
+Date: Mon, 13 Apr 2026 11:27:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/570] 5.15.203-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260413155830.386096114@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-237627-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-237628-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 0B5333F1F4A
+X-Rspamd-Queue-Id: 3C2FC3F2028
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
-own address (VEPA multicast workaround) by freeing the skb and
-continuing to the next descriptor:
+On 4/13/26 08:52, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.203 release.
+> There are 570 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.203-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-    dev_kfree_skb_irq(skb);
-    continue;
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-The skb pointer is declared outside the while loop and persists across
-iterations.  Because the continue skips the "skb = NULL" reset at the
-bottom of the loop, the next iteration enters the "else if (skb)" path
-and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
-skb_shinfo(skb)->nr_frags — a use-after-free in NAPI softirq context.
-
-The sibling driver iavf already handles this correctly by nulling the
-pointer before continuing.  Apply the same pattern here.
-
-I do not have ixgbevf hardware; the bug was found by static analysis
-(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
-corroboration with the highest score in the scan).  The UAF was confirmed
-under KASAN by loading a test module that reproduces the exact code
-pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
-
-  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
-  Read of size 8 at addr 000000006163ae78 by task insmod/30
-  freed 208-byte region [000000006163adc0, 000000006163ae90)
-
-QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
-driver does not include the VEPA source pruning path, so a full
-end-to-end reproduction with emulated hardware was not possible.
-
-Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index 42f89a179a3f..4ba3be961ab6 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -1221,6 +1221,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 		    ether_addr_equal(rx_ring->netdev->dev_addr,
- 				     eth_hdr(skb)->h_source)) {
- 			dev_kfree_skb_irq(skb);
-+			skb = NULL;
- 			continue;
- 		}
- 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.53.0
-
+Florian
 
