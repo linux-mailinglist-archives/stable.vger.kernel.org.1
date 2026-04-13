@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBeFLY4Z3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:58 +0200
+	id 8MXIIQQe3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-237134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E223EEFD8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4833EFC70
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C309F302F481
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A3459301D0AB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3373093CF;
-	Mon, 13 Apr 2026 16:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D03311C2D;
+	Mon, 13 Apr 2026 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3VrMGE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/aFSwAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E6C2E11B9;
-	Mon, 13 Apr 2026 16:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A70730F52B;
+	Mon, 13 Apr 2026 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097582; cv=none; b=Wyench36TgMX3KJiS3r3I1l3G43GolrDLjRDn7R1po9G6guQifCf4I0ByL6EkLTg69M/IMDFdVv1j+kqb6qywt4KiAhHVl/PzB9ZtfEo8j/7uxsFcbQmXseg/SUnVNoo9MFUNNYnmkUEuoVkKb5FkW+7YkUCLJoTdWsz1TxFugQ=
+	t=1776098676; cv=none; b=pfVJVaLu1+bJog0o0i4AXixhd2rjKFPGWqBG8hXwFa1YVD3RQIZAkgcCvr+C4JfDgsZaVkdE9gMDVFJfe5zcZ/ANhuHbjGZ1P4iZdZL/n40D79wqQPPR97R1WV6GFjHijWDm/ljHJQehhQ8pHqAIWUJ1aruX+4Bpo2IeIs2ujZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097582; c=relaxed/simple;
-	bh=CfK++BEyc9jbYy37IVdItVMQ3hXhNmdI9MHRg+E12wo=;
+	s=arc-20240116; t=1776098676; c=relaxed/simple;
+	bh=RYuiDmMg3E6lbfrLZPdQt0AgnbVGcXvolmrjL+A/MIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3GKQkW+r4QU/JxTPUTizwg3ZFSHgC2xyyeH4yqBNsCPNp7VWNzCKkq2APL7nXuRH16jjg/bSEZjZ3z86KxFCRjwFGl5/E/HMafSeMNPW1dx0HekpASTXRetqDy2BZse34Og/cHILi5rVSnmhcbdxofx564MqfGfBxXnuG7jRuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3VrMGE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6688CC2BCB3;
-	Mon, 13 Apr 2026 16:26:21 +0000 (UTC)
+	 MIME-Version; b=RP0iierHAAjFJGl30APPkx4ssz109JrDtnJurltYfH+znUj5ujaGkDsei9HKCIYMD+HqRwEAX3qLwOoUNtxpPYFxWRfFdy6ybIr0MQM215N6ObeLYEW1GA5/KWjJX+3bckaF2ZCRB/N6SCNzTCtQxP1L4shp0eqIXneKaanG138=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/aFSwAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB517C2BCB3;
+	Mon, 13 Apr 2026 16:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097581;
-	bh=CfK++BEyc9jbYy37IVdItVMQ3hXhNmdI9MHRg+E12wo=;
+	s=korg; t=1776098676;
+	bh=RYuiDmMg3E6lbfrLZPdQt0AgnbVGcXvolmrjL+A/MIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3VrMGE9owEHprbkISl4/1qLI81XsPLzc0Dwl9fXHQAlXaUTCxct99xcw/qshKjWW
-	 CxKIVBWxaTGMIKWgWvCcvoc/uPq1N4pfdJMc+reNNYORfWxUII9O5QH74c9kyV+Z8R
-	 uz5RFGVA4RpIJQ1+KfDYdF8Sd3V12CIuTAlKLIgc=
+	b=e/aFSwAY8bxetTW7U7c5mBNriIm9ySQo4HuYdEv/sLmAGYDZ50RpIaYkyiumLOz1x
+	 MeiLcwPHyli1gffvmIDNVsN1lhRXOBVeZHDDl3xE4cJWt6s2c5BYa3cGJ3EhsDbf8N
+	 F+u9/cpvDTuPz9Hbg4kGUwWMXAo2Won+xalER4Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Zenghui Yu <zenghui.yu@linux.dev>
-Subject: [PATCH 5.15 160/570] irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supports
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 046/491] net: nfc: nci: Fix zero-length proprietary notifications
 Date: Mon, 13 Apr 2026 17:54:51 +0200
-Message-ID: <20260413155836.444566231@linuxfoundation.org>
+Message-ID: <20260413155820.777159230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +68,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236704-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237134-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 58E223EEFD8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,gehealthcare.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 3D4833EFC70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-commit ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8 upstream.
+[ Upstream commit f7d92f11bd33a6eb49c7c812255ef4ab13681f0f ]
 
-The ITS driver blindly assumes that EventIDs are in abundant supply, to the
-point where it never checks how many the hardware actually supports.
+NCI NFC controllers may have proprietary OIDs with zero-length payload.
+One example is: drivers/nfc/nxp-nci/core.c, NXP_NCI_RF_TXLDO_ERROR_NTF.
 
-It turns out that some pretty esoteric integrations make it so that only a
-few bits are available, all the way down to a single bit.
+Allow a zero length payload in proprietary notifications *only*.
 
-Enforce the advertised limitation at the point of allocating the device
-structure, and hope that the endpoint driver can deal with such limitation.
+Before:
 
-Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configuration")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+-- >8 --
+kernel: nci: nci_recv_frame: len 3
+-- >8 --
+
+After:
+
+-- >8 --
+kernel: nci: nci_recv_frame: len 3
+kernel: nci: nci_ntf_packet: NCI RX: MT=ntf, PBF=0, GID=0x1, OID=0x23, plen=0
+kernel: nci: nci_ntf_packet: unknown ntf opcode 0x123
+kernel: nfc nfc0: NFC: RF transmitter couldn't start. Bad power and/or configuration?
+-- >8 --
+
+After fixing the hardware:
+
+-- >8 --
+kernel: nci: nci_recv_frame: len 27
+kernel: nci: nci_ntf_packet: NCI RX: MT=ntf, PBF=0, GID=0x1, OID=0x5, plen=24
+kernel: nci: nci_rf_intf_activated_ntf_packet: rf_discovery_id 1
+-- >8 --
+
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260302163238.140576-1-ian.ray@gehealthcare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c   |    4 ++++
- include/linux/irqchip/arm-gic-v3.h |    1 +
- 2 files changed, 5 insertions(+)
+ net/nfc/nci/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3397,6 +3397,7 @@ static struct its_device *its_create_dev
- 	int lpi_base;
- 	int nr_lpis;
- 	int nr_ites;
-+	int id_bits;
- 	int sz;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 3514686eb53f9..188677c322f4c 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1460,10 +1460,20 @@ static bool nci_valid_size(struct sk_buff *skb)
+ 	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
  
- 	if (!its_alloc_device_table(its, dev_id))
-@@ -3409,7 +3410,10 @@ static struct its_device *its_create_dev
- 	/*
- 	 * Even if the device wants a single LPI, the ITT must be
- 	 * sized as a power of two (and you need at least one bit...).
-+	 * Also honor the ITS's own EID limit.
- 	 */
-+	id_bits = FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
-+	nvecs = min_t(unsigned int, nvecs, BIT(id_bits));
- 	nr_ites = max(2, nvecs);
- 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
- 	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -392,6 +392,7 @@
- #define GITS_TYPER_VLPIS		(1UL << 1)
- #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
- #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
-+#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
- #define GITS_TYPER_IDBITS_SHIFT		8
- #define GITS_TYPER_DEVBITS_SHIFT	13
- #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
+ 	if (skb->len < hdr_size ||
+-	    !nci_plen(skb->data) ||
+ 	    skb->len < hdr_size + nci_plen(skb->data)) {
+ 		return false;
+ 	}
++
++	if (!nci_plen(skb->data)) {
++		/* Allow zero length in proprietary notifications (0x20 - 0x3F). */
++		if (nci_opcode_oid(nci_opcode(skb->data)) >= 0x20 &&
++		    nci_mt(skb->data) == NCI_MT_NTF_PKT)
++			return true;
++
++		/* Disallow zero length otherwise. */
++		return false;
++	}
++
+ 	return true;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
