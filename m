@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-237522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIPuKZon3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:27:54 +0200
+	id eA0xK5QZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FD73F16F4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D413EEFED
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 365AF317E078
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57C1330903DC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3709633F8BE;
-	Mon, 13 Apr 2026 17:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB02E2EBB8C;
+	Mon, 13 Apr 2026 16:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qT9yKOok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTbWnDwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAB533D4E2;
-	Mon, 13 Apr 2026 17:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E024DCF6;
+	Mon, 13 Apr 2026 16:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099674; cv=none; b=h9bgK8EjOyJXz2gwR2N1uBD6abfgGvk5k5df1ccpOxs4baL67yCn425Pvie7BP1tqX7nK4TYpH84rsx+g6bJZBqCKPfhTHdmy69HmfCwGGSrka2PWbaRqnAS7lKopfvh2dnx0EdyPTVemBxFIWqHVAQ75N+4OVTftn1QHycyziY=
+	t=1776097049; cv=none; b=a4LdX///peCclFkDDkVsHtbfFBRGr+gfUXm4Dt0rp0+lUrXCaf4bJV8hc/r0hSvIfj5Tz52h6+tGJyIizDIj/UnhXRF721BJ/VXGjJqI8Y/Qh7yYSYb8ZRdOpnD7GblxKVUSPrbXW7aeVwukaLzBORul1D2NEDv6SvRsPIGJkeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099674; c=relaxed/simple;
-	bh=g2FvUJV1ltWXKQcyERCAWMnI20BoJGiCE9nnp11rmyc=;
+	s=arc-20240116; t=1776097049; c=relaxed/simple;
+	bh=qXUA+bZcfcUCWdn/uHdwC1vtd+eKD7s8om9Q4iM7yM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9jDAphlNz5kxaBRnfg9VPgxHCLg8F4DdenWBOHfOCp6prb/lloF2B5ad62G6aBp/cEPfggLm/sK3ti3IymweAT++WXhK28LB3TJfwqWBw1cQwc4s3B2GgBDCWkCvp4VWN0BZ06fql8GOpeitu3dE7mKYe662AyzscSUZxYp+2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qT9yKOok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857B2C2BCAF;
-	Mon, 13 Apr 2026 17:01:13 +0000 (UTC)
+	 MIME-Version; b=QnZwCW4vGufwmkdmPUskZcB2jH/B1e2Y5wPh+hdkqzhiXSk7139nMwQFCiQQKJfNWlV4y/nkWiZDnoQEh7r69/jp6xrzpn3xu+v2Fs/2b/rUiLEq07RyFRwWfW05nFbOIV1lLDS4wyK1dmoZKmXGFW9e3e4Su4P1644je0/6Xn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTbWnDwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23217C2BCAF;
+	Mon, 13 Apr 2026 16:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099673;
-	bh=g2FvUJV1ltWXKQcyERCAWMnI20BoJGiCE9nnp11rmyc=;
+	s=korg; t=1776097049;
+	bh=qXUA+bZcfcUCWdn/uHdwC1vtd+eKD7s8om9Q4iM7yM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qT9yKOokreqc3qLyviXeucNtO68N+RciGi1gCmuVP5fuXFv2S1JUx8mnwKIKVUAJc
-	 mvj8+6/e557q/LUfDOOWmb4lwhb36LsDn3Wu1hPrDGD1i59CWJNTLnqAv0n2APKe3f
-	 HFudpjPsW8PtzpLKpkpf4jcjGFpM864uF5GxmcRo=
+	b=vTbWnDwMMj+3PExciGNYuDUZseJ+fjqQKiaVy+okGlyJuaXSxYYZvAtl08v2UU7dc
+	 vTX1OeBCSfh91d9Y7PzV98PgKYZF+B0wSIZLvYGEEgAgp0e7/qVin2BI4Jno6+qFSc
+	 fmbQS35VZAZFg9+PLrE1r5REYxSKwy5NyOQIfoUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.10 431/491] apparmor: fix memory leak in verify_header
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 42/55] nfc: pn533: allocate rx skb before consuming bytes
 Date: Mon, 13 Apr 2026 18:01:16 +0200
-Message-ID: <20260413155835.164732240@linuxfoundation.org>
+Message-ID: <20260413155726.403685721@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,67 +72,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237522-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236494-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 52FD73F16F4
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 36D413EEFED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit e38c55d9f834e5b848bfed0f5c586aaf45acb825 upstream.
+commit c71ba669b570c7b3f86ec875be222ea11dacb352 upstream.
 
-The function sets `*ns = NULL` on every call, leaking the namespace
-string allocated in previous iterations when multiple profiles are
-unpacked. This also breaks namespace consistency checking since *ns
-is always NULL when the comparison is made.
+pn532_receive_buf() reports the number of accepted bytes to the serdev
+core. The current code consumes bytes into recv_skb and may already hand
+a complete frame to pn533_recv_frame() before allocating a fresh receive
+buffer.
 
-Remove the incorrect assignment.
-The caller (aa_unpack) initializes *ns to NULL once before the loop,
-which is sufficient.
+If that alloc_skb() fails, the callback returns 0 even though it has
+already consumed bytes, and it leaves recv_skb as NULL for the next
+receive callback. That breaks the receive_buf() accounting contract and
+can also lead to a NULL dereference on the next skb_put_u8().
 
-Fixes: dd51c8485763 ("apparmor: provide base for multiple profiles to be replaced at once")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Allocate the receive skb lazily before consuming the next byte instead.
+If allocation fails, return the number of bytes already accepted.
+
+Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy_unpack.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/nfc/pn533/uart.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -976,7 +976,6 @@ static int verify_header(struct aa_ext *
- {
- 	int error = -EPROTONOSUPPORT;
- 	const char *name = NULL;
--	*ns = NULL;
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -211,6 +211,13 @@ static int pn532_receive_buf(struct serd
  
- 	/* get the interface version */
- 	if (!unpack_u32(e, &e->version, "version")) {
+ 	del_timer(&dev->cmd_timeout);
+ 	for (i = 0; i < count; i++) {
++		if (!dev->recv_skb) {
++			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
++						  GFP_KERNEL);
++			if (!dev->recv_skb)
++				return i;
++		}
++
+ 		if (unlikely(!skb_tailroom(dev->recv_skb)))
+ 			skb_trim(dev->recv_skb, 0);
+ 
+@@ -219,9 +226,7 @@ static int pn532_receive_buf(struct serd
+ 			continue;
+ 
+ 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
+-		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
+-		if (!dev->recv_skb)
+-			return 0;
++		dev->recv_skb = NULL;
+ 	}
+ 
+ 	return i;
 
 
 
