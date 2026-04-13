@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-237434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAfYAqIi3WkYaQkAu9opvQ
-	(envelope-from <stable+bounces-237434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:42 +0200
+	id KJoRJ+gT3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:03:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EB23F0C0C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB463EE47C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 669C03181ABF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93405300C7EB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7173375C3;
-	Mon, 13 Apr 2026 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543AE25DB12;
+	Mon, 13 Apr 2026 16:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iq73lOT9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xfnt9atO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F18D328255;
-	Mon, 13 Apr 2026 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C35271A94;
+	Mon, 13 Apr 2026 16:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099447; cv=none; b=mWFSfey2CFZcHzi1j6CjOYotYmXOj4G/z1ZhSu7aDV9EpjmRh/YVoAWe8TF7Qv9htMdd+0FUYBUGGG0Q1hG/c8f4iQJhhQAo+T3jZqOc1acCJhrBaaUkazXhQryGrswnsWc3eLgVE2Ygy6v67PkpwaH8QIpG1WsjEMRCIIQOauk=
+	t=1776096223; cv=none; b=EvFlU+FH9AusqSq6J1+skL/aqdZuA94MtzyhqrwZ1R4jedccl2AnCUoDneS0p3YMZQqqsGvLTLY2IwsutskbAPst3xwQ6Rr7kNwtqtlFGN2TNPvVnN7DycJuOvomZOfBpaJqMg7PuU04ZjtjltB4EVI/koX9rhzCyHQofUeS1MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099447; c=relaxed/simple;
-	bh=27rknvOs6r6Ei4ETSGt6AC2D0LqTfMmu8QGxEpoNEBI=;
+	s=arc-20240116; t=1776096223; c=relaxed/simple;
+	bh=9XlocKg4MdcCsMbGzTTrbjzYJvCusPeAPeVBfbgAYbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huQ/idsInCZxu8qQNoOnjgDiLUNTcoj5vhV2/P4qxWU8O0SwRIfBAMkenpw2hhBVCdS+CrrExb8H6odXzWXFctMhPc+NPhotdJ8SOGIFULJeuUU+zsrwlvoc2V0NQDr8fB9gG3VzwwnFSRA0BPiDI98R+3FrQfcwVDsysriOwqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iq73lOT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142AFC2BCAF;
-	Mon, 13 Apr 2026 16:57:26 +0000 (UTC)
+	 MIME-Version; b=eFgEE3DwGUgRQ/D69MHOG1+mQ8jtwYq2qtqwgL0BE3ok08owIE6aTWfXpXQ+HyKXcdMV+mpZHBcNNYdyd8AB62Hn7juMf6F971nSMd/L9pSWXOvB+1KLf5f/HZ06BpQOvd0iVdSO98nebefLzwYDHj2ACl5Cs0hG0MRz7YBnw38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xfnt9atO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0ADC2BCB4;
+	Mon, 13 Apr 2026 16:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099447;
-	bh=27rknvOs6r6Ei4ETSGt6AC2D0LqTfMmu8QGxEpoNEBI=;
+	s=korg; t=1776096222;
+	bh=9XlocKg4MdcCsMbGzTTrbjzYJvCusPeAPeVBfbgAYbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iq73lOT9HsZg/ad/p90RKxkvtkyBNA047lxEpzomFisd7ynxmxEC1MtAlXNekvwEU
-	 g2Z2pRs6rmrFLcQCSxZbn0mI4OiUjlqVSsrNR9BWTFuRi3cnLYK4Pp9gb/FkCCA9fC
-	 I4vwrSBj+ThUdF5SmAG+Th9M5drx0fWmaU0w4srU=
+	b=Xfnt9atOaObqZ/JfBkUt6ZwNIZgFX43lGWXUX03FDWebPLWPE5hfCxlSF2rEj2LjG
+	 03xnjY1gQ0FenStEJYZ2Y9C3dok5btFiZcncqQTQWkO83RFh1By9TF2BpRpKTAvizp
+	 58mfxyeBKfjNwwV+8dG4irhIfJmjJiAj/56R5HW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 5.10 316/491] futex: Clear stale exiting pointer in futex_lock_pi() retry path
-Date: Mon, 13 Apr 2026 17:59:21 +0200
-Message-ID: <20260413155830.868557573@linuxfoundation.org>
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 15/86] btrfs: remove pointless out labels from extent-tree.c
+Date: Mon, 13 Apr 2026 17:59:22 +0200
+Message-ID: <20260413155732.143600390@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,110 +69,160 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236170-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237434-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,stgolabs.net:email]
-X-Rspamd-Queue-Id: 70EB23F0C0C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,wdc.com:email]
+X-Rspamd-Queue-Id: 9BB463EE47C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 210d36d892de5195e6766c45519dfb1e65f3eb83 upstream.
+[ Upstream commit ea8f9210050136bdd14f5e32b04cd01c8bd5c0ca ]
 
-Fuzzying/stressing futexes triggered:
+Some functions (lookup_extent_data_ref(), __btrfs_mod_ref() and
+btrfs_free_tree_block()) have an 'out' label that does nothing but
+return, making it pointless. Simplify this by removing the label and
+returning instead of gotos plus setting the 'ret' variable.
 
-    WARNING: kernel/futex/core.c:825 at wait_for_owner_exiting+0x7a/0x80, CPU#11: futex_lock_pi_s/524
-
-When futex_lock_pi_atomic() sees the owner is exiting, it returns -EBUSY
-and stores a refcounted task pointer in 'exiting'.
-
-After wait_for_owner_exiting() consumes that reference, the local pointer
-is never reset to nil. Upon a retry, if futex_lock_pi_atomic() returns a
-different error, the bogus pointer is passed to wait_for_owner_exiting().
-
-  CPU0			     CPU1		       CPU2
-  futex_lock_pi(uaddr)
-  // acquires the PI futex
-  exit()
-    futex_cleanup_begin()
-      futex_state = EXITING;
-			     futex_lock_pi(uaddr)
-			       futex_lock_pi_atomic()
-				 attach_to_pi_owner()
-				   // observes EXITING
-				   *exiting = owner;  // takes ref
-				   return -EBUSY
-			       wait_for_owner_exiting(-EBUSY, owner)
-				 put_task_struct();   // drops ref
-			       // exiting still points to owner
-			       goto retry;
-			       futex_lock_pi_atomic()
-				 lock_pi_update_atomic()
-				   cmpxchg(uaddr)
-					*uaddr ^= WAITERS // whatever
-				   // value changed
-				 return -EAGAIN;
-			       wait_for_owner_exiting(-EAGAIN, exiting) // stale
-				 WARN_ON_ONCE(exiting)
-
-Fix this by resetting upon retry, essentially aligning it with requeue_pi.
-
-Fixes: 3ef240eaff36 ("futex: Prevent exit livelock")
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260326001759.4129680-1-dave@stgolabs.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 316fb1b3169e ("btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -2785,9 +2785,9 @@ static int futex_lock_pi(u32 __user *uad
- 			 ktime_t *time, int trylock)
- {
- 	struct hrtimer_sleeper timeout, *to;
--	struct task_struct *exiting = NULL;
- 	struct rt_mutex_waiter rt_waiter;
- 	struct futex_hash_bucket *hb;
-+	struct task_struct *exiting;
- 	struct futex_q q = futex_q_init;
- 	int res, ret;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index bc0db6593f329..f2b1bc2107539 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -476,7 +476,7 @@ static noinline int lookup_extent_data_ref(struct btrfs_trans_handle *trans,
+ 		btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
+ 		if (key.objectid != bytenr ||
+ 		    key.type != BTRFS_EXTENT_DATA_REF_KEY)
+-			goto fail;
++			return ret;
  
-@@ -2800,6 +2800,7 @@ static int futex_lock_pi(u32 __user *uad
- 	to = futex_setup_timer(time, &timeout, FLAGS_CLOCKRT, 0);
+ 		ref = btrfs_item_ptr(leaf, path->slots[0],
+ 				     struct btrfs_extent_data_ref);
+@@ -487,12 +487,11 @@ static noinline int lookup_extent_data_ref(struct btrfs_trans_handle *trans,
+ 				btrfs_release_path(path);
+ 				goto again;
+ 			}
+-			ret = 0;
+-			break;
++			return 0;
+ 		}
+ 		path->slots[0]++;
+ 	}
+-fail:
++
+ 	return ret;
+ }
  
- retry:
-+	exiting = NULL;
- 	ret = get_futex_key(uaddr, flags & FLAGS_SHARED, &q.key, FUTEX_WRITE);
- 	if (unlikely(ret != 0))
- 		goto out;
+@@ -2474,7 +2473,7 @@ static int __btrfs_mod_ref(struct btrfs_trans_handle *trans,
+ 	int i;
+ 	int action;
+ 	int level;
+-	int ret = 0;
++	int ret;
+ 
+ 	if (btrfs_is_testing(fs_info))
+ 		return 0;
+@@ -2526,7 +2525,7 @@ static int __btrfs_mod_ref(struct btrfs_trans_handle *trans,
+ 			else
+ 				ret = btrfs_free_extent(trans, &ref);
+ 			if (ret)
+-				goto fail;
++				return ret;
+ 		} else {
+ 			/* We don't know the owning_root, leave as 0. */
+ 			ref.bytenr = btrfs_node_blockptr(buf, i);
+@@ -2539,12 +2538,10 @@ static int __btrfs_mod_ref(struct btrfs_trans_handle *trans,
+ 			else
+ 				ret = btrfs_free_extent(trans, &ref);
+ 			if (ret)
+-				goto fail;
++				return ret;
+ 		}
+ 	}
+ 	return 0;
+-fail:
+-	return ret;
+ }
+ 
+ int btrfs_inc_ref(struct btrfs_trans_handle *trans, struct btrfs_root *root,
+@@ -3466,12 +3463,12 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
+ 		return 0;
+ 
+ 	if (btrfs_header_generation(buf) != trans->transid)
+-		goto out;
++		return 0;
+ 
+ 	if (root_id != BTRFS_TREE_LOG_OBJECTID) {
+ 		ret = check_ref_cleanup(trans, buf->start);
+ 		if (!ret)
+-			goto out;
++			return 0;
+ 	}
+ 
+ 	bg = btrfs_lookup_block_group(fs_info, buf->start);
+@@ -3479,7 +3476,7 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
+ 	if (btrfs_header_flag(buf, BTRFS_HEADER_FLAG_WRITTEN)) {
+ 		pin_down_extent(trans, bg, buf->start, buf->len, true);
+ 		btrfs_put_block_group(bg);
+-		goto out;
++		return 0;
+ 	}
+ 
+ 	/*
+@@ -3503,7 +3500,7 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
+ 		     || btrfs_is_zoned(fs_info)) {
+ 		pin_down_extent(trans, bg, buf->start, buf->len, true);
+ 		btrfs_put_block_group(bg);
+-		goto out;
++		return 0;
+ 	}
+ 
+ 	WARN_ON(test_bit(EXTENT_BUFFER_DIRTY, &buf->bflags));
+@@ -3513,7 +3510,6 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
+ 	btrfs_put_block_group(bg);
+ 	trace_btrfs_reserved_extent_free(fs_info, buf->start, buf->len);
+ 
+-out:
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
