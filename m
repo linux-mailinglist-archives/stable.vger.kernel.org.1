@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOJXJzUl3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:41 +0200
+	id wFidIVkg3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-236835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103883F11EB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D77CB3F04F6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7660E313634B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFD723117A98
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1983168EE;
-	Mon, 13 Apr 2026 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50CF279334;
+	Mon, 13 Apr 2026 16:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Utnzvsn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5V0cSEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5964313298;
-	Mon, 13 Apr 2026 16:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6819B233722;
+	Mon, 13 Apr 2026 16:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099093; cv=none; b=ZdN4VeooWtVTfKqvk4yxHEpRCZ08aDQgVRFi5kIR7Pfw+L2leEOHKrIyU0VqMYEDXiM0VSntA/rCemP+qmhL6700Nbdhde7E8PqMs7/lY2tW6cPnPbn9a+cO9i6mmR+a4CwGEqmpwlfDO4IdFbp84KR4UgwNbzaeQ4s58lXEjAY=
+	t=1776097914; cv=none; b=DPrp12V4uAnxzslIieDoS/VoLVReXRpkUKPMs72Ll6lV/OzBednHq1PNVwdgCabeomaWfB1Er/ZpfQ4EGv+r00Awa+1MeKgKggfeHGUDUT6UpYH5U1e4Gd0UfYxB6fhjJOxyoIaorb+de5gzrCBEPxL63Ir4T7Izqp0cGTgslUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099093; c=relaxed/simple;
-	bh=j5xIqKpmcDPkLjHiBCUHkHxzkGBG0IHBBhk30HkBX88=;
+	s=arc-20240116; t=1776097914; c=relaxed/simple;
+	bh=G22z8lREdYQGvoX8egt3+LUkd+0eCl6Ik4r/c6XLj00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eei10pskqowe+6MptGOJ9gFAomwM8EakikwyqeM67Z2ubeYSMZdeIv2KSkFZ6llA8T8Lkpag0a8mENufD9W2PLxPGnguhnCHFB0yfx0904RWnwbsF+nxOM9sbnre/mlQ8vbLDi2uiUq0XD3dexI47qJRZf++ZTA1jSo2b/KSAoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Utnzvsn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD48C2BCAF;
-	Mon, 13 Apr 2026 16:51:33 +0000 (UTC)
+	 MIME-Version; b=PWxsrW6XsuLljvC3zOgAVlcu1aSRuYs4Vm+0wtVerkZkhMFFcpDeTqbopCs9cWLWPd+N9mBmVWMNKYkgirnfZYyrikBVbqTbPbPSUSOvgHqKxFsnEat4Ms8G9UeMxljmDSxKm5TSDkrsw5W6VLLTs/9ByKjBrZnAneU0Ui0YoQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5V0cSEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18E3C2BCAF;
+	Mon, 13 Apr 2026 16:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099093;
-	bh=j5xIqKpmcDPkLjHiBCUHkHxzkGBG0IHBBhk30HkBX88=;
+	s=korg; t=1776097914;
+	bh=G22z8lREdYQGvoX8egt3+LUkd+0eCl6Ik4r/c6XLj00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Utnzvsn8/1Wn8pivV3t4NLegk79leQ0OtTrWrJvvGiJbme75BV+Rb1Ax1mcMl0g/b
-	 MvU0JcoHXiYYGc11kHZ4Bs7LaHbGqjE408UP4/6nrxktXD8+2WnW0QUfc/zTbz6M9l
-	 L8SdYw7ja9M0GViKukNOz3kzuOKYrh8e5yuhoWsQ=
+	b=k5V0cSEnHUrU7R95o12eX6xKsK2C3zCeyTlahzstwMrM/ULffGcPoeXNtZo1e0vAJ
+	 0gFY9vHr3AIqNJFlSim7fpm7Vjg7TlVVS+LUJA8DBNnr8D1yuiX5hWQA5sAca/o+/t
+	 duhBoX6wA3PcLa++WgmQve6hRUXYumTraduWGJHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Luca Leonardo Scorcia <l.scorcia@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 206/491] netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()
-Date: Mon, 13 Apr 2026 17:57:31 +0200
-Message-ID: <20260413155826.782209645@linuxfoundation.org>
+Subject: [PATCH 5.15 321/570] pinctrl: mediatek: common: Fix probe failure for devices without EINT
+Date: Mon, 13 Apr 2026 17:57:32 +0200
+Message-ID: <20260413155842.520700207@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,157 +65,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237297-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-236835-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 103883F11EB
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email]
+X-Rspamd-Queue-Id: D77CB3F04F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Luca Leonardo Scorcia <l.scorcia@gmail.com>
 
-[ Upstream commit 5cb81eeda909dbb2def209dd10636b51549a3f8a ]
+[ Upstream commit 8f9f64c8f90dca07d3b9f1d7ce5d34ccd246c9dd ]
 
-ctnetlink_dump_exp_ct() stores a conntrack pointer in cb->data for the
-netlink dump callback ctnetlink_exp_ct_dump_table(), but drops the
-conntrack reference immediately after netlink_dump_start().  When the
-dump spans multiple rounds, the second recvmsg() triggers the dump
-callback which dereferences the now-freed conntrack via nfct_help(ct),
-leading to a use-after-free on ct->ext.
+Some pinctrl devices like mt6397 or mt6392 don't support EINT at all, but
+the mtk_eint_init function is always called and returns -ENODEV, which
+then bubbles up and causes probe failure.
 
-The bug is that the netlink_dump_control has no .start or .done
-callbacks to manage the conntrack reference across dump rounds.  Other
-dump functions in the same file (e.g. ctnetlink_get_conntrack) properly
-use .start/.done callbacks for this purpose.
+To address this only call mtk_eint_init if EINT pins are present.
 
-Fix this by adding .start and .done callbacks that hold and release the
-conntrack reference for the duration of the dump, and move the
-nfct_help() call after the cb->args[0] early-return check in the dump
-callback to avoid dereferencing ct->ext unnecessarily.
+Tested on Xiaomi Mi Smart Clock x04g (mt6392).
 
- BUG: KASAN: slab-use-after-free in ctnetlink_exp_ct_dump_table+0x4f/0x2e0
- Read of size 8 at addr ffff88810597ebf0 by task ctnetlink_poc/133
-
- CPU: 1 UID: 0 PID: 133 Comm: ctnetlink_poc Not tainted 7.0.0-rc2+ #3 PREEMPTLAZY
- Call Trace:
-  <TASK>
-  ctnetlink_exp_ct_dump_table+0x4f/0x2e0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  ? aa_sk_perm+0x184/0x450
-  sock_recvmsg+0xde/0xf0
-
- Allocated by task 133:
-  kmem_cache_alloc_noprof+0x134/0x440
-  __nf_conntrack_alloc+0xa8/0x2b0
-  ctnetlink_create_conntrack+0xa1/0x900
-  ctnetlink_new_conntrack+0x3cf/0x7d0
-  nfnetlink_rcv_msg+0x48e/0x510
-  netlink_rcv_skb+0xc9/0x1f0
-  nfnetlink_rcv+0xdb/0x220
-  netlink_unicast+0x3ec/0x590
-  netlink_sendmsg+0x397/0x690
-  __sys_sendmsg+0xf4/0x180
-
- Freed by task 0:
-  slab_free_after_rcu_debug+0xad/0x1e0
-  rcu_core+0x5c3/0x9c0
-
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: e46df235b4e6 ("pinctrl: mediatek: refactor EINT related code for all MediaTek pinctrl can fit")
+Signed-off-by: Luca Leonardo Scorcia <l.scorcia@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ drivers/pinctrl/mediatek/pinctrl-mtk-common.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 98a4c41f6df19..9fe2c5b3523c5 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3197,7 +3197,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
--	struct nf_conn_help *help = nfct_help(ct);
-+	struct nf_conn_help *help;
- 	u_int8_t l3proto = nfmsg->nfgen_family;
- 	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_expect *exp;
-@@ -3205,6 +3205,10 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (cb->args[0])
- 		return 0;
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
+index 334cb85855a93..a3f1ff77e0646 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
+@@ -1110,9 +1110,12 @@ int mtk_pctrl_init(struct platform_device *pdev,
+ 		goto chip_error;
+ 	}
  
-+	help = nfct_help(ct);
-+	if (!help)
-+		return 0;
-+
- 	rcu_read_lock();
+-	ret = mtk_eint_init(pctl, pdev);
+-	if (ret)
+-		goto chip_error;
++	/* Only initialize EINT if we have EINT pins */
++	if (data->eint_hw.ap_num > 0) {
++		ret = mtk_eint_init(pctl, pdev);
++		if (ret)
++			goto chip_error;
++	}
  
- restart:
-@@ -3234,6 +3238,24 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
+ 	return 0;
  
-+static int ctnetlink_dump_exp_ct_start(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (!refcount_inc_not_zero(&ct->ct_general.use))
-+		return -ENOENT;
-+	return 0;
-+}
-+
-+static int ctnetlink_dump_exp_ct_done(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (ct)
-+		nf_ct_put(ct);
-+	return 0;
-+}
-+
- static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 				 struct sk_buff *skb,
- 				 const struct nlmsghdr *nlh,
-@@ -3249,6 +3271,8 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
-+		.start = ctnetlink_dump_exp_ct_start,
-+		.done = ctnetlink_dump_exp_ct_done,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
 -- 
 2.51.0
 
