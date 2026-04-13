@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LUNEPkg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:37 +0200
+	id aHrdJi8e3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013713F06F8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A683D3EFD15
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5D95A303EF1A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C03523033563
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34D53264F2;
-	Mon, 13 Apr 2026 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BEB307AC7;
+	Mon, 13 Apr 2026 16:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxoUtqCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjKrSRbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D7F3203B6;
-	Mon, 13 Apr 2026 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88E629BD87;
+	Mon, 13 Apr 2026 16:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099370; cv=none; b=u4xt2Pb0D1mF9CLTb76WZks4kUlDsVvU/9ec+OKhpVMwE3CFWn1XjsuKGicK27bt/rl2aybZdVpx1HdRbiJG+oWP+rjQshQTR5tvYO8jachsGI7e4T0fUZoRm2OiVIiQj+nvM7b+Dljt5/RLuMIohZVmi4NGXetj2ebR134xQ9Y=
+	t=1776098110; cv=none; b=FBjyebxvQHWpk8R1X5sr/3rZeGAeTkMZDhMucm+qegGseT0Ig1SDfLfkp+fnFgiMBUJgg6m0wQMav3S8zbxTAfgD01y7ruNQk2RblJCWAKbZ1VTLG18SIloUvu7WHU88XWlxrjRuS+lIg6iRT/YyM5fppOTOYsU+PEB4Avp3X2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099370; c=relaxed/simple;
-	bh=j0Y4V/iLMhYPSyBs3HrK8W02yt3GJoiN4Qnubz5OVi4=;
+	s=arc-20240116; t=1776098110; c=relaxed/simple;
+	bh=0MvQwENG2zDHnvol2j/hRsny6q4GQpiDJSdrq9DZ14o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2wAl1AMd3s2Fbc/e6dmBOA+RBRuru73kIQQhZP4yoxYRH6og6ZtWxGm50dQkMMb/yEXGyX5gipHBw5Sldo3iZxGc0ObrzWOfVXhQIVr6Rxs6bFRNG2ZLKZt/dWCQKzcw7pTIo/tSFa+xYu+VG9IsmDP9VH2GR2qeDvJWRKCL3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxoUtqCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F742C2BCAF;
-	Mon, 13 Apr 2026 16:56:09 +0000 (UTC)
+	 MIME-Version; b=nfu0fxY5XKKz+iDJ5Mtn18MiFaaLNBU09iMfkme9U/pA/n6SGD0nF0OEFOuYbrC1ueKnYRSDnRJE/yzy2GyeNCUQyQm4nZy6L8sJ5DMs9q2LvA6aKYoZJj4B8DpQ0hbeAatJoTa/Zf0Ofr+YHCvVFEKS8IrA+NwVIIfQ7NuCeuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjKrSRbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDB2C2BCB3;
+	Mon, 13 Apr 2026 16:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099370;
-	bh=j0Y4V/iLMhYPSyBs3HrK8W02yt3GJoiN4Qnubz5OVi4=;
+	s=korg; t=1776098109;
+	bh=0MvQwENG2zDHnvol2j/hRsny6q4GQpiDJSdrq9DZ14o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxoUtqCk1zaWic/3o5AYBR51RE3lGRclzzTYsZ4CM6f1wxJfA3b0mQT0xQuqqszzR
-	 vYSUV3/vwiz7fSNzoz4zpqFQMDZ26h1xqms0uDbg2YWDvOE+2ufyK5cmCNcAISy1WH
-	 m600Ihx78tdKnK541mk080vrMuSXBgCuy3fmReVs=
+	b=RjKrSRbUZTQVgWOaRpjwY7onYfrif38wDz4YIJuKRcZSsQXcc1cKBMiRBaXRxugtJ
+	 83XuzJ5IgXj9rI+bR7a4EEGUIvZa6TlO69AYBVXYOfWKo27xcs6zjSgBkc3IaXNTcF
+	 CBlzzpG8dGn5wFEBuAUnI7snp4U6VRskFC062aPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Lutomirski <luto@kernel.org>,
-	Borislav Petkov <bp@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 282/491] x86/fault: Improve kernel-executing-user-memory handling
+Subject: [PATCH 5.15 396/570] dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA
 Date: Mon, 13 Apr 2026 17:58:47 +0200
-Message-ID: <20260413155829.603695727@linuxfoundation.org>
+Message-ID: <20260413155845.307228069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237405-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236911-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,87 +89,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email]
-X-Rspamd-Queue-Id: 013713F06F8
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ideasonboard.com:email]
+X-Rspamd-Queue-Id: A683D3EFD15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Lutomirski <luto@kernel.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 03c81ea3331658f613bb2913d33764a4e0410cbd ]
+[ Upstream commit a17ce4bc6f4f9acf77ba416c36791a15602e53aa ]
 
-Right now, the case of the kernel trying to execute from user memory
-is treated more or less just like the kernel getting a page fault on a
-user access. In the failure path, it checks for erratum #93, tries to
-otherwise fix up the error, and then oopses.
+A single AXIDMA controller can have one or two channels. When it has two
+channels, the reset for both are tied together: resetting one channel
+resets the other as well. This creates a problem where resetting one
+channel will reset the registers for both channels, including clearing
+interrupt enable bits for the other channel, which can then lead  to
+timeouts as the driver is waiting for an interrupt which never comes.
 
-If it manages to jump to the user address space, with or without SMEP,
-it should not try to resolve the page fault. This is an error, pure and
-simple. Rearrange the code so that this case is caught early, check for
-erratum #93, and bail out.
+The driver currently has a probe-time work around for this: when a
+channel is created, the driver also resets and enables the
+interrupts. With two channels the reset for the second channel will
+clear the interrupt enables for the first one. The work around in the
+driver is just to manually enable the interrupts again in
+xilinx_dma_alloc_chan_resources().
 
- [ bp: Massage commit message. ]
+This workaround only addresses the probe-time issue. When channels are
+reset at runtime (e.g., in xilinx_dma_terminate_all() or during error
+recovery), there's no corresponding mechanism to restore the other
+channel's interrupt enables. This leads to one channel having its
+interrupts disabled while the driver expects them to work, causing
+timeouts and DMA failures.
 
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/ab8719c7afb8bd501c4eee0e36493150fbbe5f6a.1612924255.git.luto@kernel.org
-Stable-dep-of: 217c0a5c177a ("x86/efi: efi_unmap_boot_services: fix calculation of ranges_to_free size")
+A proper fix is a complicated matter, as we should not reset the other
+channel when it's operating normally. So, perhaps, there should be some
+kind of synchronization for a common reset, which is not trivial to
+implement. To add to the complexity, the driver also supports other DMA
+types, like VDMA, CDMA and MCDMA, which don't have a shared reset.
+
+However, when the two-channel AXIDMA is used in the (assumably) normal
+use case, providing DMA for a single memory-to-memory device, the common
+reset is a bit smaller issue: when something bad happens on one channel,
+or when one channel is terminated, the assumption is that we also want
+to terminate the other channel. And thus resetting both at the same time
+is "ok".
+
+With that line of thinking we can implement a bit better work around
+than just the current probe time work around: let's enable the
+AXIDMA interrupts at xilinx_dma_start_transfer() instead.
+This ensures interrupts are enabled whenever a transfer starts,
+regardless of any prior resets that may have cleared them.
+
+This approach is also more logical: enable interrupts only when needed
+for a transfer, rather than at resource allocation time, and, I think,
+all the other DMA types should also use this model, but I'm reluctant to
+do such changes as I cannot test them.
+
+The reset function still enables interrupts even though it's not needed
+for AXIDMA anymore, but it's common code for all DMA types (VDMA, CDMA,
+MCDMA), so leave it unchanged to avoid affecting other variants.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+Link: https://patch.msgid.link/20260311-xilinx-dma-fix-v2-1-a725abb66e3c@ideasonboard.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/fault.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 07983b6208f52..e06182127e1c8 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -433,6 +433,9 @@ static int is_errata93(struct pt_regs *regs, unsigned long address)
- 	    || boot_cpu_data.x86 != 0xf)
- 		return 0;
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index f1162f7c9a52c..7a596eaba4660 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -1190,14 +1190,6 @@ static int xilinx_dma_alloc_chan_resources(struct dma_chan *dchan)
  
-+	if (user_mode(regs))
-+		return 0;
-+
- 	if (address != regs->ip)
- 		return 0;
+ 	dma_cookie_init(dchan);
  
-@@ -697,9 +700,6 @@ no_context(struct pt_regs *regs, unsigned long error_code,
- 	if (is_prefetch(regs, error_code, address))
- 		return;
- 
--	if (is_errata93(regs, address))
--		return;
+-	if (chan->xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
+-		/* For AXI DMA resetting once channel will reset the
+-		 * other channel as well so enable the interrupts here.
+-		 */
+-		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+-			      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
+-	}
 -
- 	/*
- 	 * Buggy firmware could access regions which might page fault, try to
- 	 * recover from such faults.
-@@ -1162,6 +1162,21 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	tsk = current;
- 	mm = tsk->mm;
+ 	if ((chan->xdev->dma_config->dmatype == XDMA_TYPE_CDMA) && chan->has_sg)
+ 		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+ 			     XILINX_CDMA_CR_SGMODE);
+@@ -1565,6 +1557,7 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 			     head_desc->async_tx.phys);
+ 	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
+ 	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
++	reg |= XILINX_DMA_DMAXR_ALL_IRQ_MASK;
+ 	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
  
-+	if (unlikely((error_code & (X86_PF_USER | X86_PF_INSTR)) == X86_PF_INSTR)) {
-+		/*
-+		 * Whoops, this is kernel mode code trying to execute from
-+		 * user memory.  Unless this is AMD erratum #93, which
-+		 * corrupts RIP such that it looks like a user address,
-+		 * this is unrecoverable.  Don't even try to look up the
-+		 * VMA.
-+		 */
-+		if (is_errata93(regs, address))
-+			return;
-+
-+		bad_area_nosemaphore(regs, error_code, address);
-+		return;
-+	}
-+
- 	/* kprobes don't want to hook the spurious faults: */
- 	if (unlikely(kprobe_page_fault(regs, X86_TRAP_PF)))
- 		return;
+ 	xilinx_dma_start(chan);
 -- 
 2.53.0
 
