@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-236419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCGwOF0W3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:21 +0200
+	id MLzSHSAY3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FBB3EE7B9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCE03EEB68
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A141F300E008
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84BAD31995B9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C9125DB12;
-	Mon, 13 Apr 2026 16:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553D7280035;
+	Mon, 13 Apr 2026 16:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07dsxkUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt099mIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382B224E4AF;
-	Mon, 13 Apr 2026 16:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CD6225788;
+	Mon, 13 Apr 2026 16:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096857; cv=none; b=K07s5hlhpGavogiBxMZkm5MbGVZQUr+3j8bW+wU0yA2Ej6Q7tBrZ32bZpCnNkoDkqh20IGWB4pz2HoEaz+EAB/2KB2Z3OoXb4i7lOia56rMR23bvroFekol4nt+bADaLeoTJm/PBlognQEjHAluXX/g56mtgt2b2GnGAs8Tzijo=
+	t=1776096630; cv=none; b=cpJzjBvqVoOYIHNr05qkudgvooDJXH3nSsmCYJrxDn+7ScOzEe3ZvPpxSteD0VKwrknn9KDlanHARucgMfcA3XykiO1xVfUnAXD4gTFAoWg4KOBfi+vMtKjZXqbbpK3snvJGtCMXTjiGbxu2NpyG2layqXa0DALN5YXOZW2qbv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096857; c=relaxed/simple;
-	bh=0+IqQ8u038iP1pFk1+LrrZ/pLFnw8uLBoq+xu6romK0=;
+	s=arc-20240116; t=1776096630; c=relaxed/simple;
+	bh=F4TJEA/3ZlyV8gqh23JdrzpGaDW8Ddfd579WqB8bHAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVfCqw4OoWwp4kTJ+8jOLmWODSol/AIKACl7amoXhIJj/Z6IONDPfaf4BAht6KOgfNkNo+lpaOfItw0QDqQZEdVxBqaZCTFMUpLKROvMuSkiZe9uQsQAO2zs9Ur6DXkqXo6l1s1vQjwUzQvbezqIc244g0YSacqbq20ZQiRA72I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07dsxkUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F6CC2BCAF;
-	Mon, 13 Apr 2026 16:14:16 +0000 (UTC)
+	 MIME-Version; b=o5M8sQkTM2udxr5S9n9SC6wmsjNl5Eqi7X5iJFz0hTVTQvT0Yz7DtoZ9ZYroNS18JrhAkRVgG+oPzQ49Qmj45nuGooZIwe3vdtt4U7A1kzYM/LwSw3Mlx+6gY9nSMrK79B7Q8qkVKHsjHB8jlAuWwU8grMpDBx2yieIjDQHvYEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt099mIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A02C2BCAF;
+	Mon, 13 Apr 2026 16:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096857;
-	bh=0+IqQ8u038iP1pFk1+LrrZ/pLFnw8uLBoq+xu6romK0=;
+	s=korg; t=1776096630;
+	bh=F4TJEA/3ZlyV8gqh23JdrzpGaDW8Ddfd579WqB8bHAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07dsxkUK9I9Gi1wOVqT31HLvh2uf3BW1gLS0p6WuaZ4cAXKDGCcvU+uJDCBw3IVyf
-	 pdKvZQ/1WqZ2On1qmz8pzby9kEW+47CGIqH7ZUte7OMvsPQU6NMfZtJHlK/Tldwriz
-	 +MWWuMt5xXMagyl4ilUWBcwXA7+YXC0keHRtuU/0=
+	b=Qt099mINL4hO+4reSsW+NgJJaAHDB3jPlBQGVVk1M5RLcdrRR1Beu6wy4iKip0PEQ
+	 T5OYEyYnxiz6KZyYrkzwi78XWh+uhjrP+d3+1fhRp4uIscbiA5fg+gxCmAIPbEiaot
+	 tCG3VbUKuCss5xbvfWaWyYIPt5a+hIYB6DIdTatk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	regressions@leemhuis.info
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Thorsten Leemhuis <linux@leemhuis.info>
-Subject: [PATCH 6.6 19/50] Revert "drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug"
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 78/83] rxrpc: Fix integer overflow in rxgk_verify_response()
 Date: Mon, 13 Apr 2026 18:00:46 +0200
-Message-ID: <20260413155725.231862714@linuxfoundation.org>
+Message-ID: <20260413155733.906676015@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,212 +67,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236419-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236331-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[leemhuis.info:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,lankhorst.se:email,roeck-us.net:email,ffwll.ch:email]
-X-Rspamd-Queue-Id: 86FBB3EE7B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,auristor.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
+X-Rspamd-Queue-Id: DCCE03EEB68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+From: David Howells <dhowells@redhat.com>
 
-commit 45ebe43ea00d6b9f5b3e0db9c35b8ca2a96b7e70 upstream.
+commit 699e52180f4231c257821c037ed5c99d5eb0edb8 upstream.
 
-This reverts commit 6bee098b91417654703e17eb5c1822c6dfd0c01d.
+In rxgk_verify_response(), there's a potential integer overflow due to
+rounding up token_len before checking it, thereby allowing the length check to
+be bypassed.
 
-Den 2026-03-25 kl. 22:11, skrev Simona Vetter:
-> On Wed, Mar 25, 2026 at 10:26:40AM -0700, Guenter Roeck wrote:
->> Hi,
->>
->> On Fri, Mar 13, 2026 at 04:17:27PM +0100, Maarten Lankhorst wrote:
->>> When trying to do a rather aggressive test of igt's "xe_module_load
->>> --r reload" with a full desktop environment and game running I noticed
->>> a few OOPSes when dereferencing freed pointers, related to
->>> framebuffers and property blobs after the compositor exits.
->>>
->>> Solve this by guarding the freeing in drm_file with drm_dev_enter/exit,
->>> and immediately put the references from struct drm_file objects during
->>> drm_dev_unplug().
->>>
->>
->> With this patch in v6.18.20, I get the warning backtraces below.
->> The backtraces are gone with the patch reverted.
->
-> Yeah, this needs to be reverted, reasoning below. Maarten, can you please
-> take care of that and feed the revert through the usual channels? I don't
-> think it's critical enough that we need to fast-track this into drm.git
-> directly.
->
-> Quoting the patch here again:
->
->>  drivers/gpu/drm/drm_file.c| 5 ++++-
->>  drivers/gpu/drm/drm_mode_config.c | 9 ++++++---
->>  2 files changed, 10 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
->> index ec820686b3021..f52141f842a1f 100644
->> --- a/drivers/gpu/drm/drm_file.c
->> +++ b/drivers/gpu/drm/drm_file.c
->> @@ -233,6 +233,7 @@ static void drm_events_release(struct drm_file *file_priv)
->>  void drm_file_free(struct drm_file *file)
->>  {
->>  struct drm_device *dev;
->> +int idx;
->>
->>  if (!file)
->>  return;
->> @@ -249,9 +250,11 @@ void drm_file_free(struct drm_file *file)
->>
->>  drm_events_release(file);
->>
->> -if (drm_core_check_feature(dev, DRIVER_MODESET)) {
->> +if (drm_core_check_feature(dev, DRIVER_MODESET) &&
->> +drm_dev_enter(dev, &idx)) {
->
-> This is misplaced for two reasons:
->
-> - Even if we'd want to guarantee that we hold a drm_dev_enter/exit
->   reference during framebuffer teardown, we'd need to do this
->   _consistently over all callsites. Not ad-hoc in just one place that a
->   testcase hits. This also means kerneldoc updates of the relevant hooks
->   and at least a bunch of acks from other driver people to document the
->   consensus.
->
-> - More importantly, this is driver responsibilities in general unless we
->   have extremely good reasons to the contrary. Which means this must be
->   placed in xe.
->
->>  drm_fb_release(file);
->>  drm_property_destroy_user_blobs(dev, file);
->> +drm_dev_exit(idx);
->>  }
->>
->>  if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
->> diff --git a/drivers/gpu/drm/drm_mode_config.c b/drivers/gpu/drm/drm_mode_config.c
->> index 84ae8a23a3678..e349418978f79 100644
->> --- a/drivers/gpu/drm/drm_mode_config.c
->> +++ b/drivers/gpu/drm/drm_mode_config.c
->> @@ -583,10 +583,13 @@ void drm_mode_config_cleanup(struct drm_device *dev)
->>   */
->>  WARN_ON(!list_empty(&dev->mode_config.fb_list));
->>  list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
->> -struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
->> +if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
->> +struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
->
-> This is also wrong:
->
-> - Firstly, it's a completely independent bug, we do not smash two bugfixes
->   into one patch.
->
-> - Secondly, it's again a driver bug: drm_mode_cleanup must be called when
->   the last drm_device reference disappears (hence the existence of
->   drmm_mode_config_init), not when the driver gets unbound. The fact that
->   this shows up in a callchain from a devres cleanup means the intel
->   driver gets this wrong (like almost everyone else because historically
->   we didn't know better).
->
->   If we don't follow this rule, then we get races with this code here
->   running concurrently with drm_file fb cleanups, which just does not
->   work. Review pointed that out, but then shrugged it off with a confused
->   explanation:
->
->   https://lore.kernel.org/all/e61e64c796ccfb17ae673331a3df4b877bf42d82.camel@linux.intel.com/
->
->   Yes this also means a lot of the other drm_device teardown that drivers
->   do happens way too early. There is a massive can of worms here of a
->   magnitude that most likely is much, much bigger than what you can
->   backport to stable kernels. Hotunplug is _hard_.
+Fix this by checking the unrounded value against len too (len is limited as
+the response must fit in a single UDP packet).
 
-Back to the drawing board, and fixing it in the intel display driver
-instead.
-
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Fixes: 6bee098b9141 ("drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Link: https://patch.msgid.link/20260326082217.39941-2-dev@lankhorst.se
-[ Thorsten: adjust to the v6.6.y/v6.6.y backports of 6bee098b9141 ]
-Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-18-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_file.c        |    5 +----
- drivers/gpu/drm/drm_mode_config.c |    9 +++------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ net/rxrpc/rxgk.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_file.c
-+++ b/drivers/gpu/drm/drm_file.c
-@@ -243,7 +243,6 @@ static void drm_events_release(struct dr
- void drm_file_free(struct drm_file *file)
- {
- 	struct drm_device *dev;
--	int idx;
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -1209,7 +1209,8 @@ static int rxgk_verify_response(struct r
  
- 	if (!file)
- 		return;
-@@ -269,11 +268,9 @@ void drm_file_free(struct drm_file *file
+ 	token_offset	= offset;
+ 	token_len	= ntohl(rhdr.token_len);
+-	if (xdr_round_up(token_len) + sizeof(__be32) > len)
++	if (token_len > len ||
++	    xdr_round_up(token_len) + sizeof(__be32) > len)
+ 		goto short_packet;
  
- 	drm_events_release(file);
- 
--	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
--	    drm_dev_enter(dev, &idx)) {
-+	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
- 		drm_fb_release(file);
- 		drm_property_destroy_user_blobs(dev, file);
--		drm_dev_exit(idx);
- 	}
- 
- 	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
---- a/drivers/gpu/drm/drm_mode_config.c
-+++ b/drivers/gpu/drm/drm_mode_config.c
-@@ -546,13 +546,10 @@ void drm_mode_config_cleanup(struct drm_
- 	 */
- 	WARN_ON(!list_empty(&dev->mode_config.fb_list));
- 	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
--		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
--			struct drm_printer p = drm_debug_printer("[leaked fb]");
-+		struct drm_printer p = drm_debug_printer("[leaked fb]");
- 
--			drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
--			drm_framebuffer_print_info(&p, 1, fb);
--		}
--		list_del_init(&fb->filp_head);
-+		drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
-+		drm_framebuffer_print_info(&p, 1, fb);
- 		drm_framebuffer_free(&fb->base.refcount);
- 	}
- 
+ 	trace_rxrpc_rx_response(conn, sp->hdr.serial, 0, sp->hdr.cksum, token_len);
 
 
 
