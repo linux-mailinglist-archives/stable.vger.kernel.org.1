@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHaeBXwZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:40 +0200
+	id MCbODcAe3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F213EEF92
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8C63EFEF7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0EDBF301579E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 013F430231ED
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318242FFFA4;
-	Mon, 13 Apr 2026 16:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84377314D0D;
+	Mon, 13 Apr 2026 16:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPNYYwop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHmqRQU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90452E11B9;
-	Mon, 13 Apr 2026 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480BC23E342;
+	Mon, 13 Apr 2026 16:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097569; cv=none; b=lfvkprYZ0ETRHQ6uA1wtm5jSNjx6kKLWroxxoajE+uicoftPP9E0YmUUp9vVP86bP42VnemHy4pvQcKZLP06rtG6qkpRSFRYpBDHFKZ5u7wr7MrvXEOQghWNYnnJmUNNmYAae3pPujX9fbJ36jv3d6WGeVr1Ng58ujZRPqeACeg=
+	t=1776098815; cv=none; b=rW5RTZgcIthsaLild19FBXED87PDPtsMJ//cypwzNtMTxRd1oS2J4WJDATaPCZZqqkWOPdU5NR6gHMxZZhFn7AuObZUTxp0fMuPbgQhp035O+2UqLYUAmKyw3i+b8mrJdIKG4lXfzr8zuJci0xdbEmaLxNdcU7MYhYnrXPtRjNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097569; c=relaxed/simple;
-	bh=jdBPvSE2tzNwAlsAXKGFpyhmlM+DQ90wcjTKiDkRDbY=;
+	s=arc-20240116; t=1776098815; c=relaxed/simple;
+	bh=nJ7QoS90WipLbaqirFzE77SkGZIVrOb6M0FPkvyzBDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TuVfathlDDWftRIQJK8LNqfLmdS27h6fU9se9qLLE99ZTl4sMXMfJiDqXCYE6tL9H5WvRtoRZ4yPLw0DkXboSwbhKJw090faVdzILGB8nvUa07QjQrGL23Z6EsPGCTCavtcgvDsTLKqYoRLV/DqPQnVhQwuI4OlKJ1Lzv2Nj0F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPNYYwop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3CEC2BCAF;
-	Mon, 13 Apr 2026 16:26:08 +0000 (UTC)
+	 MIME-Version; b=Ix1BT3/oUn0pnT4W0IoVuTEF/uxgIWfgTHz1JTBvfw2TeDrubZ1rOfmo0tPX8mwYd+9pSjn3PMYZRoUczRSRK/FUmxHPm8iUMdXvWZtW1NKL1BAwdIayelqK8eS+lHXED1EthFMxM2zg8kDyvsY5h2OykRF91pqyOSeDONeMxMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHmqRQU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AADC2BCAF;
+	Mon, 13 Apr 2026 16:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097568;
-	bh=jdBPvSE2tzNwAlsAXKGFpyhmlM+DQ90wcjTKiDkRDbY=;
+	s=korg; t=1776098815;
+	bh=nJ7QoS90WipLbaqirFzE77SkGZIVrOb6M0FPkvyzBDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPNYYwopnPx0jX/bSpSkh/NZJaJTYHnzEbf/7SudsWFUz+OPp+wobYvkIy8U4Sf3o
-	 MJJgNg0FJtVxXuhlY6L+TatkL/HxfjF4TfhajRA+lsKmQuxwNGoRUm8MGY7dgM9Ape
-	 Zi2wjMUil1WASxd3DI+O8iU0um6gn+kdOUZ2WCis=
+	b=yHmqRQU4cjnh1SSQazrCFys3e4fp2ZsxSCMRt3InJG96i9X0iaw1eh/uFOlEhA0IQ
+	 yg5iLGieP3082a5haKYPmX0E9yANvJ2Lfvktgl3Ci1TR2NQ1QaL6e/JAPOYGO0qqGp
+	 T+0SxzoSoNQgEVhrW4RGQjLkkpIz4hSHdJRHMr80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Spencer <spencercw@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 186/570] iio: chemical: bme680: Fix measurement wait duration calculation
+	Matteo Cotifava <cotifavamatteo@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 072/491] ASoC: soc-core: flush delayed work before removing DAIs and widgets
 Date: Mon, 13 Apr 2026 17:55:17 +0200
-Message-ID: <20260413155837.426124125@linuxfoundation.org>
+Message-ID: <20260413155821.741739691@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236696-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
+	TAGGED_FROM(0.00)[bounces-237189-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: D7F213EEF92
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 0D8C63EFEF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Spencer <spencercw@gmail.com>
+From: matteo.cotifava <cotifavamatteo@gmail.com>
 
-commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
+[ Upstream commit 95bc5c225513fc3c4ce169563fb5e3929fbb938b ]
 
-This function refers to the Bosch BME680 API as the source of the
-calculation, but one of the constants does not match the Bosch
-implementation. This appears to be a simple transposition of two digits,
-resulting in a wait time that is too short. This can cause the following
-'device measurement cycle incomplete' check to occasionally fail, returning
-EBUSY to user space.
+When a sound card is unbound while a PCM stream is open, a
+use-after-free can occur in snd_soc_dapm_stream_event(), called from
+the close_delayed_work workqueue handler.
 
-Adjust the constant to match the Bosch implementation and resolve the EBUSY
-errors.
+During unbind, snd_soc_unbind_card() flushes delayed work and then
+calls soc_cleanup_card_resources(). Inside cleanup,
+snd_card_disconnect_sync() releases all PCM file descriptors, and
+the resulting PCM close path can call snd_soc_dapm_stream_stop()
+which schedules new delayed work with a pmdown_time timer delay.
+Since this happens after the flush in snd_soc_unbind_card(), the
+new work is not caught. soc_remove_link_components() then frees
+DAPM widgets before this work fires, leading to the use-after-free.
 
-Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
-Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
-Signed-off-by: Chris Spencer <spencercw@gmail.com>
-Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The existing flush in soc_free_pcm_runtime() also cannot help as it
+runs after soc_remove_link_components() has already freed the widgets.
+
+Add a flush in soc_cleanup_card_resources() after
+snd_card_disconnect_sync() (after which no new PCM closes can
+schedule further delayed work) and before soc_remove_link_dais()
+and soc_remove_link_components() (which tear down the structures the
+delayed work accesses).
+
+Fixes: e894efef9ac7 ("ASoC: core: add support to card rebind")
+Signed-off-by: Matteo Cotifava <cotifavamatteo@gmail.com>
+Link: https://patch.msgid.link/20260309215412.545628-3-cotifavamatteo@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -548,7 +548,7 @@ static int bme680_wait_for_eoc(struct bm
- 	 * + heater duration
- 	 */
- 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
--			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   data->oversampling_humid) * 1963) + (477 * 4) +
- 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
- 
- 	usleep_range(wait_eoc_us, wait_eoc_us + 100);
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 39d511c21796e..7ecbea296e917 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1938,6 +1938,9 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
+ 	for_each_card_rtds(card, rtd)
+ 		if (rtd->initialized)
+ 			snd_soc_link_exit(rtd);
++	/* flush delayed work before removing DAIs and DAPM widgets */
++	snd_soc_flush_all_delayed_work(card);
++
+ 	/* remove and free each DAI */
+ 	soc_remove_link_dais(card);
+ 	soc_remove_link_components(card);
+-- 
+2.51.0
+
 
 
 
