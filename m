@@ -1,92 +1,91 @@
-Return-Path: <stable+bounces-236116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ/7GtL/3Gk3YwkAu9opvQ
-	(envelope-from <stable+bounces-236116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:10 +0200
+	id +CWRIxsC3Wk3YwkAu9opvQ
+	(envelope-from <stable+bounces-236117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55B23ED5FA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C803ED826
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90D4F3025A42
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:37:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D953300EA8A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1683DF010;
-	Mon, 13 Apr 2026 14:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DCE3DEFFC;
+	Mon, 13 Apr 2026 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pkA26Dz2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="juwYBLn0"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F753C1981
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF853C5546
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776091018; cv=none; b=oO4RlMRAjPkOWVmJU15+h3VpXaUPCrmA1F/udiv+zXLRpgVkkI7MHE1I/DJ80EZnyFHVn/b6QpGbqZ93dyePAMAmAuBYwqo+5u6H0M11fbplIC2+WWZHBzXY4EBsmPoT3DAMr1a3GsZo+u0lJ1NAw5Q6K5u6iKYNdq36iVd0JMQ=
+	t=1776091228; cv=none; b=aUnGIKWNR5XZJQIe9ldsh+CSm0K8vVFKDDZVUUlTsjQgQg9aUu4FChi7Pp4gv7p3+wE5SoQXhWb+8q64eMZqDMuFGbvh3/dVv2pOKw220FcsQW+FYHui3X9Q/vQNXx62soJdXQo/N48kEFblRqKDWfxB3jDPQuIqXraZKxT6ZvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776091018; c=relaxed/simple;
-	bh=CQiPZwiXn4m65gWkVZkLBq+sWyMmqdp49enY7UbBcTI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=raKyp+3WNiUE2dBmRqj4DCI/iwikTLHAtVjjdarO9OVTtz1CwanU4fjOJLeqAa188sjrCoTxbikryVqL6ug+dyCbp5rB5C57ILYOxjckf29nBilv0846IuC4BNk3KVBk8cTPCkMsgil2fbQK6g6FBBqUAtb2Q7leoyzIeYb9lJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pkA26Dz2; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1776091228; c=relaxed/simple;
+	bh=Jw0XkZ7XWVBzbCd5mSi84uhH+sbZPXMd+k/pKIf64fY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nW9smg+EoyizR1tbN9hHz6/BduHkUE346tXupQoOMu6cM3wBdV+TjMAI6sPhMkXZhqFF732eE5NeAZVcox5/OPiCOUuHiM6vSN4PkPKUMc5QWXnfnhTWGSr9wjRM79PHQgEVeYfAL8d+V8lV046QhwxQVhfZjYvsrimIfbF3lrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=juwYBLn0; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-358e3cc5e7eso2420276a91.0
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:36:55 -0700 (PDT)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-354a18c48b5so4119152a91.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:40:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776091015; x=1776695815; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776091227; x=1776696027; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HZuCdLfTzqLBe0povKqAJGPUREmpR9XWI6MvS95wZIM=;
-        b=pkA26Dz2LkVUJUFhNcw6QvzUml0nmMYLe93yOINZbfo4ah8f8fJzZqLONoPmONP3Ql
-         oC5mXPTUm6idBGU4Xp+moUK0RJRn39zc7Ww0ANa6Bx4DocuNejXWawV1lAJXbvlRzABN
-         TQ8WAR5ygL6J72L1K7y+dzI11/EyOJ8VPkT1p6D/yQ4/HmSIrGEmD63O+C8KqXUrbKpu
-         NWTK/jcjXes9alHK4c1w6j3BbW9egysCYgMjR8cRsb2EfbqxbLhjGq5y7uWkJ/+v5Evf
-         ToUUKfEHIz1bzDw8NZELT2EZszN39p8Sp+9oOyhayeyHR9vmqOTa6Xxtsfmxy67duvzL
-         hHXg==
+        bh=n8HqkCsPnBTjXRg2oQ6IzHB28nfSYPnxw8XmrlaonnE=;
+        b=juwYBLn0Z5aUwHRa+2FkKoBLOlJBqWnUDKG8YfoObvoJQTKb9defbYcu8XNnnuByAH
+         6/r6UgLLetjpaT+XsH1F5T6GR6gj8iNbBI85fD3nYVqRNCYZcTT/yosp98LvCRP7hcPG
+         1xpfRye+hcqwbrsPjSH7D+s85eB9Jaz952E0LCPTTSkoCatrOtjwqsQp2qOY4Q32y2eL
+         gdx2uhALPFfcxtkGChjmV+FMSxRy5SxEz1IrsxtsqzHiSnqSfz9Dkk6QDnKumtwEjmTU
+         Th2LshJmzAgMNq02WwjdgPVuo8yTkVrFbi4X/xtIn9OMmRZ0VlFia4jUeg/jP9A+UXSe
+         Z2Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776091015; x=1776695815;
+        d=1e100.net; s=20251104; t=1776091227; x=1776696027;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HZuCdLfTzqLBe0povKqAJGPUREmpR9XWI6MvS95wZIM=;
-        b=c5fsuCsdA4lDXT2aLoEv8URe9X0CwSotQNzOr+m2CfyHdjTOoxQhhCPY+PgdYXhPEX
-         FeyEbcLZJ1HBXkQietCvv3p+0U24IDV8qEXegZxkia4jryzjiwb7YMN6DVzKbkCWTF0Z
-         PEPXVaO+rrKY8Q6nSJvf0kTOcmfnF2TEUrit4mQMOv5hy4vxDmwepWywzfESKGDHzJHZ
-         WCn3hCiZvrtjacGJVUUxxnnuSwcGKimtflirfK1i93OhnOnUCOhWGcnxNkEDHDnFK68S
-         zBRKbj6gJfYPvCjZBA8StKayegXJawpg0YzzRyyS75HQvxP4loCZgKLvwIUWWtJDUbfs
-         jLNw==
-X-Forwarded-Encrypted: i=1; AFNElJ8HiVqEL6sQeCwgHFmXBp5uWFPzFEFw+WxlXgqxEDYciKyy3ZJsbPPoAfssXSNqkZCeV0H4HJ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTgXZRnLP0tF5aeb1xsPk3eb/ZR9yYTl3/EPiUTTiGT8QueGR9
-	r3XEKnRPXAlNDrcas4b3be7FjSlh+zBqAZjmzqN2zoXVpYX0ieekHS2g
-X-Gm-Gg: AeBDievHNeTmcPMKmxxEH1eNZeBFZcydnmW7DrlQihIjMmv2K7ql4SpiysZE7a6d8iU
-	y0YbCcNEI24pEx5DyuOvNCtZjELPaVveIPbAyZo3TnFqwB3LE8EZbpcy5N1L5yAYSiyiosOhu8F
-	kKFHvbqiZ45PBg0HRVnKik8qT0dzT/5e4MEE7GKUhHUbd7t1UzWggh6qKnjAvKCT9bjFhrKmE6X
-	yRT6G2CYfKu17f+sG97yvM0CyzVBWMEprzHtfpX/8MK7gBvtXJ0iIl7B7iTlymhnv0PsHp70Z5m
-	eefL15jLlron0KKtW0xDyON47GwLUcWYMH0PQv3KcXlsS8AOoMwS8CDWGcPGEp7/cdSItGtcvAz
-	m4rYAUPswF2uTY1px7B68EDSmPAB1spL/RaQHKkul3xjuetwoyduI6rA6XMjTzXsJc8TNFf/WfX
-	GnwNqPwWG9ciSGwUZX/0imRkMS5UEyWJQ=
-X-Received: by 2002:a17:90b:3c85:b0:35d:a4c0:a0ac with SMTP id 98e67ed59e1d1-35e4278b922mr13246756a91.3.1776091015423;
-        Mon, 13 Apr 2026 07:36:55 -0700 (PDT)
+        bh=n8HqkCsPnBTjXRg2oQ6IzHB28nfSYPnxw8XmrlaonnE=;
+        b=iYkDvHTFzjHaJwEwdbwzQ5Bri0SAMWva3jboL8Cl81hZ8zGmA2FFW+7v1vP0aoSuFP
+         Hpt6dgTqyx82r/vBSBfJAR36ydvWEdjvNBUL5Z/qXpfkv3FX/RKMV6w11Wx0Am0tJsYL
+         dslGSsaic20T/jHa6Tt/Lf4qYSPS8DqejephBKkxMBqLG2irEO8n4yJ3IcKQ2mvL8CsT
+         rbuSnRg9po1GC7tt1TORhRTEoSnKJmxO2O7wux7miin2PeCwm2/qDr+Hf9bwQtskhnM0
+         CRyZBqK0a8wG2oJ9E37LMyVEFlkPQI7nDmcPRMGCDm2UyTdBLgKF2pTkCsXHyh38YphB
+         oUiA==
+X-Forwarded-Encrypted: i=1; AFNElJ+s7vHr2pOOEm7AOWWzE99U9o6T+ra08GM4JJFh14MY2VUwWPUiFBwIxTlnx7WYolqLgTTJyKk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmJEerRzVQPpASrDaNcrrGP/fmamrxs3ZqXADFphjxrzieX8S+
+	NdzM6ALyXaX1OdINzdUxZDNcI035b7xwWVlvmbXyjpYJgMrwyKmv4EsM
+X-Gm-Gg: AeBDievHEyrebrQ7Y7doVep8lnxb4+KFuezqYE1DDvMTyjI3di0tWbABqpeK+s3SWao
+	vt1I6S/y4xIRBM5UZ663ojv+UFR0ZrjfFVv80kUP0uKLu2kxaHL/oiJJnU4Ra8V+Y/UTG6XLWqg
+	qXjTJV6BW/64aVaASMudJRYfMLlqbnG4Eixqbl181uadeaGQ6pnBiKE6kckoDOIUJtSdGmGh6VB
+	YcWrUHs+5rzmnClsTO6DZRFK/TxFcZTZobbgliTon9xZf/kxZV6tRH388Aw4BAmeoM5zz+DuijO
+	fcBzEV+cDTEbOyAEKylSTsd5D52eF1o13ndtw2Bd75K5Zv099znvCzCS3xpyxud3/3BM1rfTDxA
+	6Ufat6WDVZJEd5U/5Pfkw+6P2QwQ1+hFUbqNA11xMpK8j1dTm5Yk/ZZ2sT9fLWIt+/3JjsdmB0D
+	0VRgcfTN3ciakQpsi80jqtp0vyytRxfA8=
+X-Received: by 2002:a17:90a:e7cc:b0:35b:e593:b1d7 with SMTP id 98e67ed59e1d1-35e4277fe50mr14632268a91.12.1776091226802;
+        Mon, 13 Apr 2026 07:40:26 -0700 (PDT)
 Received: from lgs.. ([2409:893d:1188:142d:6c67:74e8:5200:1f39])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e3512f41bsm15826120a91.9.2026.04.13.07.36.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e412233ddsm12701563a91.5.2026.04.13.07.40.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 07:36:54 -0700 (PDT)
+        Mon, 13 Apr 2026 07:40:25 -0700 (PDT)
 From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Emil Renner Berthing <kernel@esmil.dk>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	linux-clk@vger.kernel.org,
+To: "Vaibhaav Ram T.L" <vaibhaavram.tl@microchip.com>,
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-gpio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Guangshuo Li <lgs201920130244@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3] clk: starfive: jh7110: fix memory leak in jh7110_reset_controller_register() error path
-Date: Mon, 13 Apr 2026 22:36:43 +0800
-Message-ID: <20260413143643.3002454-1-lgs201920130244@gmail.com>
+Subject: [PATCH v2] misc: microchip: pci1xxxx: fix IRQ vector leak in gp_aux_bus_probe()
+Date: Mon, 13 Apr 2026 22:40:12 +0800
+Message-ID: <20260413144012.3009310-1-lgs201920130244@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -101,13 +100,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-236116-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236117-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -116,64 +115,72 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D55B23ED5FA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 34C803ED826
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-jh7110_reset_controller_register() allocates a jh71x0_reset_adev with
-kzalloc() and sets jh7110_reset_adev_release() as the release callback
-for its embedded auxiliary_device before calling auxiliary_device_init().
+gp_aux_bus_probe() allocates IRQ vectors with pci_alloc_irq_vectors()
+before initializing and adding the second auxiliary device.
 
-If auxiliary_device_init() fails, the function returns immediately
-without freeing the allocated rdev. The release callback is not
-available for this path, because it is only reached after a successful
-auxiliary_device_init(), for example when auxiliary_device_add() fails
-and auxiliary_device_uninit() is called.
+When pci_irq_vector(), auxiliary_device_init() or auxiliary_device_add()
+for the second auxiliary device fails, the function unwinds the auxiliary
+devices and ida allocations, but leaves the allocated IRQ vectors behind.
 
 The issue was identified by a static analysis tool I developed and
-confirmed by manual review. Free rdev explicitly when
-auxiliary_device_init() returns an error.
+confirmed by manual review. Add a dedicated error path to call
+pci_free_irq_vectors() after IRQ vectors have been allocated
+successfully.
 
-Fixes: edab7204afe5 ("clk: starfive: Add StarFive JH7110 system clock driver")
+Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
 Cc: stable@vger.kernel.org
 Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
-v3:
-  - clarify the changelog to describe the exact failure path
-  - note that the issue was identified by a static analysis tool
-    developed by me and confirmed by manual review
-  - apologize for sending the initial public posting as v2 by mistake
-
 v2:
-  - initial public posting; v1 was mistakenly skipped
+  - note that the issue was identified by my static analysis tool
+  - and confirmed by manual review
 
- drivers/clk/starfive/clk-starfive-jh7110-sys.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/starfive/clk-starfive-jh7110-sys.c b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-index 52833d4241c5..55cd0ccbdb84 100644
---- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-+++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-@@ -360,8 +360,10 @@ int jh7110_reset_controller_register(struct jh71x0_clk_priv *priv,
- 	adev->id = adev_id;
+diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+index 34c9be437432..5e1f99a35100 100644
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+@@ -93,14 +93,14 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
  
- 	ret = auxiliary_device_init(adev);
--	if (ret)
-+	if (ret) {
-+		kfree(rdev);
- 		return ret;
-+	}
+ 	retval = pci_irq_vector(pdev, 0);
+ 	if (retval < 0)
+-		goto err_aux_dev_init_1;
++		goto err_irq_vectors;
  
- 	ret = auxiliary_device_add(adev);
- 	if (ret) {
+ 	pdev->irq = retval;
+ 	aux_bus->aux_device_wrapper[1]->gp_aux_data.irq_num = pdev->irq;
+ 
+ 	retval = auxiliary_device_init(&aux_bus->aux_device_wrapper[1]->aux_dev);
+ 	if (retval < 0)
+-		goto err_aux_dev_init_1;
++		goto err_irq_vectors;
+ 
+ 	retval = auxiliary_device_add(&aux_bus->aux_device_wrapper[1]->aux_dev);
+ 	if (retval)
+@@ -113,6 +113,9 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+ 
+ err_aux_dev_add_1:
+ 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
++
++err_irq_vectors:
++	pci_free_irq_vectors(pdev);
+ 	goto err_aux_dev_add_0;
+ 
+ err_aux_dev_init_1:
 -- 
 2.43.0
 
