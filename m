@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-237530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIUZHqwn3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:12 +0200
+	id iPvrA5Uf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129C23F1703
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E6D3F0211
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07C8531A0625
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D18BD30D1A2B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C0E333429;
-	Mon, 13 Apr 2026 17:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F473128CC;
+	Mon, 13 Apr 2026 16:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16R/oUVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUPXZ6CR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C809830BF68;
-	Mon, 13 Apr 2026 17:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EE63115BC;
+	Mon, 13 Apr 2026 16:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099694; cv=none; b=jT+YbiMFGkt6b5X+0+32D1aTNiPyAGoiys/Blime02GBCiw1f2PbfezWEozb+hrA11rVl9yTO4OkZ1Qxp60REm4fIRaeBOrIYOLzS/s/HE5T/EcCM6e7dEuGVJ6MKMEKpjxi6AaM0Dw0QRuvp1yTjtnSnuGwkUJ7WB773qOQ2aQ=
+	t=1776098507; cv=none; b=dsYjRMkDmgIyVv13X+0x7ybHI9X+dyrQBFvGmNpUHmrDk/ji7gX3VL/8iC+rc3uFB2Mg4Pc2rkyjrinOD7nXUsJoymQQfm1nIqRdpyIOMYWxpR410pS6l8mDnS/z04G/LrpKkHu+3cbUPcKL9yN/8rgtvm3nFdjdz9M/fnvXKPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099694; c=relaxed/simple;
-	bh=UtO93CNcdeW4hJMo7h5egmIvcfiPSFLVd5PJ+kEwQjM=;
+	s=arc-20240116; t=1776098507; c=relaxed/simple;
+	bh=tdafQdRPnwAQUlk6UB+WCnkeLELmp8BPISq0RBp31b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJSOuXOWN3SJUeR97uaFKOLl1GT+kdzOJU3DyD2hg/KyCeyllpj69Q2lvv+ZJNAke32Y9xHccuqBiW0XfFK0oXJYfKmIJOs5YSEv588o8bHged11J4qagJ25bebk3uMlqBmdFefIhv2BNwqnduJvjzanw378z4mIvkXBGITB+Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16R/oUVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA7EC2BCAF;
-	Mon, 13 Apr 2026 17:01:34 +0000 (UTC)
+	 MIME-Version; b=TB5dJB2yzZRVhJoNNatn2nlobrFvhp5ppDOjANEPUq7PP+T7qDEZJ/sEmkvoDd6UkMAsXUDRyycOOJoLc2aITCj77DT+fm85Djq/S6BvCsjFnJhCIEg48MXCpf6iRzQ1SN3YD4DMMm8nUC4G8zHpjT5eY+dz4MERqoMN4E3z4p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUPXZ6CR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E894FC2BCB0;
+	Mon, 13 Apr 2026 16:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099694;
-	bh=UtO93CNcdeW4hJMo7h5egmIvcfiPSFLVd5PJ+kEwQjM=;
+	s=korg; t=1776098507;
+	bh=tdafQdRPnwAQUlk6UB+WCnkeLELmp8BPISq0RBp31b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16R/oUVmGpiZLU8vh6AdrnUxWEm8zXNKXj/pmtEWpVgPQ2mIfXhcc0cnsDbLBsql7
-	 QY3q77csfSh164V6lan0kCpKpF7eUUCvbbK4UYgRxxN2V/oX+FB0YYDGTYlUd57Qpg
-	 U3OInLhW/RuLIQSIe3HWzi36C+WLWE0aHNDbJx6Q=
+	b=PUPXZ6CRd7AtVfFz8r2nrUcCE6FXCzdD8gPZxQPJvXb0L49aAM45Gd1ZZhhtH2pkp
+	 AdJ2wjV7yDhVOribtVg1/taL6YkC4nQlLXGszp5KRdnpVxc9hqxoBPIf6PtMtmvNcm
+	 Tp5qkTk0ZQGO+UZrkE1+GdClI9KmEm0Dk7ZUSqR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.10 438/491] apparmor: fix differential encoding verification
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 552/570] xfs: save ailp before dropping the AIL lock in push callbacks
 Date: Mon, 13 Apr 2026 18:01:23 +0200
-Message-ID: <20260413155835.424945649@linuxfoundation.org>
+Message-ID: <20260413155851.137650243@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +67,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-237069-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237530-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 129C23F1703
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 70E6D3F0211
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-commit 39440b137546a3aa383cfdabc605fb73811b6093 upstream.
+[ Upstream commit 394d70b86fae9fe865e7e6d9540b7696f73aa9b6 ]
 
-Differential encoding allows loops to be created if it is abused. To
-prevent this the unpack should verify that a diff-encode chain
-terminates.
+In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
+is dropped to perform buffer IO. Once the cluster buffer no longer
+protects the log item from reclaim, the log item may be freed by
+background reclaim or the dquot shrinker. The subsequent spin_lock()
+call dereferences lip->li_ailp, which is a use-after-free.
 
-Unfortunately the differential encode verification had two bugs.
+Fix this by saving the ailp pointer in a local variable while the AIL
+lock is held and the log item is guaranteed to be valid.
 
-1. it conflated states that had gone through check and already been
-   marked, with states that were currently being checked and marked.
-   This means that loops in the current chain being verified are treated
-   as a chain that has already been verified.
-
-2. the order bailout on already checked states compared current chain
-   check iterators j,k instead of using the outer loop iterator i.
-   Meaning a step backwards in states in the current chain verification
-   was being mistaken for moving to an already verified state.
-
-Move to a double mark scheme where already verified states get a
-different mark, than the current chain being kept. This enables us
-to also drop the backwards verification check that was the cause of
-the second error as any already verified state is already marked.
-
-Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+Cc: stable@vger.kernel.org # v5.9
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/include/match.h |    1 +
- security/apparmor/match.c         |   23 +++++++++++++++++++----
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_dquot_item.c |    9 +++++++--
+ fs/xfs/xfs_inode_item.c |    9 +++++++--
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -190,6 +190,7 @@ static inline void aa_put_dfa(struct aa_
- #define MATCH_FLAG_DIFF_ENCODE 0x80000000
- #define MARK_DIFF_ENCODE 0x40000000
- #define MATCH_FLAG_OOB_TRANSITION 0x20000000
-+#define MARK_DIFF_ENCODE_VERIFIED 0x10000000
- #define MATCH_FLAGS_MASK 0xff000000
- #define MATCH_FLAGS_VALID (MATCH_FLAG_DIFF_ENCODE | MATCH_FLAG_OOB_TRANSITION)
- #define MATCH_FLAGS_INVALID (MATCH_FLAGS_MASK & ~MATCH_FLAGS_VALID)
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -246,16 +246,31 @@ static int verify_dfa(struct aa_dfa *dfa
- 		size_t j, k;
+--- a/fs/xfs/xfs_dquot_item.c
++++ b/fs/xfs/xfs_dquot_item.c
+@@ -124,6 +124,7 @@ xfs_qm_dquot_logitem_push(
+ {
+ 	struct xfs_dquot	*dqp = DQUOT_ITEM(lip)->qli_dquot;
+ 	struct xfs_buf		*bp = lip->li_buf;
++	struct xfs_ail		*ailp = lip->li_ailp;
+ 	uint			rval = XFS_ITEM_SUCCESS;
+ 	int			error;
  
- 		for (j = i;
--		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
--		     !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE);
-+		     ((BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
-+		      !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE_VERIFIED));
- 		     j = k) {
-+			if (BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE)
-+				/* loop in current chain */
-+				goto out;
- 			k = DEFAULT_TABLE(dfa)[j];
- 			if (j == k)
-+				/* self loop */
- 				goto out;
--			if (k < j)
--				break;		/* already verified */
- 			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE;
- 		}
-+		/* move mark to verified */
-+		for (j = i;
-+		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE);
-+		     j = k) {
-+			k = DEFAULT_TABLE(dfa)[j];
-+			if (j < i)
-+				/* jumps to state/chain that has been
-+				 * verified
-+				 */
-+				break;
-+			BASE_TABLE(dfa)[j] &= ~MARK_DIFF_ENCODE;
-+			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE_VERIFIED;
-+		}
+@@ -152,7 +153,7 @@ xfs_qm_dquot_logitem_push(
+ 		goto out_unlock;
  	}
- 	error = 0;
+ 
+-	spin_unlock(&lip->li_ailp->ail_lock);
++	spin_unlock(&ailp->ail_lock);
+ 
+ 	error = xfs_qm_dqflush(dqp, &bp);
+ 	if (!error) {
+@@ -162,7 +163,11 @@ xfs_qm_dquot_logitem_push(
+ 	} else if (error == -EAGAIN)
+ 		rval = XFS_ITEM_LOCKED;
+ 
+-	spin_lock(&lip->li_ailp->ail_lock);
++	/*
++	 * The buffer no longer protects the log item from reclaim, so
++	 * do not reference lip after this point.
++	 */
++	spin_lock(&ailp->ail_lock);
+ out_unlock:
+ 	xfs_dqunlock(dqp);
+ 	return rval;
+--- a/fs/xfs/xfs_inode_item.c
++++ b/fs/xfs/xfs_inode_item.c
+@@ -540,6 +540,7 @@ xfs_inode_item_push(
+ 	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
+ 	struct xfs_inode	*ip = iip->ili_inode;
+ 	struct xfs_buf		*bp = lip->li_buf;
++	struct xfs_ail		*ailp = lip->li_ailp;
+ 	uint			rval = XFS_ITEM_SUCCESS;
+ 	int			error;
+ 
+@@ -555,7 +556,7 @@ xfs_inode_item_push(
+ 	if (!xfs_buf_trylock(bp))
+ 		return XFS_ITEM_LOCKED;
+ 
+-	spin_unlock(&lip->li_ailp->ail_lock);
++	spin_unlock(&ailp->ail_lock);
+ 
+ 	/*
+ 	 * We need to hold a reference for flushing the cluster buffer as it may
+@@ -579,7 +580,11 @@ xfs_inode_item_push(
+ 		rval = XFS_ITEM_LOCKED;
+ 	}
+ 
+-	spin_lock(&lip->li_ailp->ail_lock);
++	/*
++	 * The buffer no longer protects the log item from reclaim, so
++	 * do not reference lip after this point.
++	 */
++	spin_lock(&ailp->ail_lock);
+ 	return rval;
+ }
  
 
 
