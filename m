@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-237049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEoEJNgc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-237049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:00 +0200
+	id yJ5NBXAc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3E73EF88B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903063EF799
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E6A2A301EDBA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55D92307AE53
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902FF30C371;
-	Mon, 13 Apr 2026 16:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2498E28505E;
+	Mon, 13 Apr 2026 16:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEtnd/Ol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxegeJ2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A6E307AC7;
-	Mon, 13 Apr 2026 16:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0DC24DCF6;
+	Mon, 13 Apr 2026 16:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098458; cv=none; b=Fe0K8RMu86JlXoHPiX18vfhFOCfDtsH69i8Cb5KTokU5By5YC96lwu4GvJ/B8mabcrGaS19F2RjIIHM6T6WvkD450XU8DXWwAYsCeSXkWpJ6Zx2Jv373Jdz2LK/ccaHNli8VKWDanKf+QBHdvZAC4NRfHn9BhkP8ICMIsjgVJ6o=
+	t=1776096949; cv=none; b=tQEDgW/DQavW59tzZzPiYEb/nsGK+4WKZibQZLXmoukDAEn3qpr6nvhTZpV2YVPB46u4Q2aQAPtxFWiJ2EwvelfFzNHOCE3I+8LkSIjz9/wtN8KtnfWamsHA4BPo64yNzcxSH7YoH5veb4cwkBKSgciyLZPIHeirOjuGFy5W8zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098458; c=relaxed/simple;
-	bh=g0BgrQdiyOk3Tan01fZDhb/tw0/ohiUFgMXkN4syd+U=;
+	s=arc-20240116; t=1776096949; c=relaxed/simple;
+	bh=lUOEWIt4c8yk73bH76GfOsDnUjsPZKk9ez+Kr/Ohv7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pinXkonbKANw/oD4wU3efUn19+CpErMRix3UGk41ur7QeRmF222Z3vJ2hK2w816Hnn3M6KPv+mij1RdOxlt7eVnzBoVcqg8j0r8lZXc6+maRFYIquBsvNCo3fGkWDfKC1yh2HQqhsFW1wJxhxBtezYPD2YrJl8kp+ZlYg1yYTUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEtnd/Ol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE480C2BCAF;
-	Mon, 13 Apr 2026 16:40:57 +0000 (UTC)
+	 MIME-Version; b=a8LRMMT8WtzjxGpk5WyyfKjQhNmqxNK6XXpUkaz8tRqP9q8UrO4cgz2LnIaqhQ0jj4jQUZxajWN89/54Egyw22+DOd1+dxqAkU7Sm/qHBw1XUJ4V4l6Ebn+N2jd1FjKxHFDDFHYHlhzuUrwf8GbBfKjrACPzMrcskEzlaNBqGEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxegeJ2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D62C2BCAF;
+	Mon, 13 Apr 2026 16:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098458;
-	bh=g0BgrQdiyOk3Tan01fZDhb/tw0/ohiUFgMXkN4syd+U=;
+	s=korg; t=1776096949;
+	bh=lUOEWIt4c8yk73bH76GfOsDnUjsPZKk9ez+Kr/Ohv7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MEtnd/Olp7YBEceLCuPyVvl5St3syiUDIiJa/RKrjAs4Qb2x7550+jH/8qbPVGN+U
-	 8WdpPocWKXjH17e0eFMFfiL5duNK0yY/0xf8B7as3ztlEtFv3zbzxA9r88uQS5zbdF
-	 bxHM4SgMe95ZoBE0wpLDIZFoRZSnDw/3HKPqRRlw=
+	b=xxegeJ2XVIl11Zwd4sF2Vq+39Q6350yOZdVwqEz28SOXXzW23xCILGmvz0Q4BNW1E
+	 TysTL0mUttgdMyA3fn2ZVa7CzS1q6J+2IElv8JrOY9GGYTXXfuKu96JwD01PNuPDxG
+	 4l8i+U3jmmXA8O3VAsSIXumvkHJTgaPz4wvXC/Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.15 532/570] batman-adv: reject oversized global TT response buffers
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 36/50] net/mlx5: Update the list of the PCI supported devices
 Date: Mon, 13 Apr 2026 18:01:03 +0200
-Message-ID: <20260413155850.375288579@linuxfoundation.org>
+Message-ID: <20260413155725.860067119@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +68,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237049-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236455-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[simonwunderlich.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3C3E73EF88B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 903063EF799
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-commit 3a359bf5c61d52e7f09754108309d637532164a6 upstream.
+commit a9d4f4f6e65e0bf9bbddedecc84d67249991979c upstream.
 
-batadv_tt_prepare_tvlv_global_data() builds the allocation length for a
-global TT response in 16-bit temporaries. When a remote originator
-advertises a large enough global TT, the TT payload length plus the VLAN
-header offset can exceed 65535 and wrap before kmalloc().
+Add the upcoming ConnectX-10 NVLink-C2C device ID to the table of
+supported PCI device IDs.
 
-The full-table response path still uses the original TT payload length when
-it fills tt_change, so the wrapped allocation is too small and
-batadv_tt_prepare_tvlv_global_data() writes past the end of the heap object
-before the later packet-size check runs.
-
-Fix this by rejecting TT responses whose TVLV value length cannot fit in
-the 16-bit TVLV payload length field.
-
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260403091756.139583-1-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -844,8 +844,8 @@ batadv_tt_prepare_tvlv_global_data(struc
- {
- 	u16 num_vlan = 0;
- 	u16 num_entries = 0;
--	u16 change_offset;
--	u16 tvlv_len;
-+	u16 tvlv_len = 0;
-+	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
- 	u8 *tt_change_ptr;
-@@ -863,6 +863,11 @@ batadv_tt_prepare_tvlv_global_data(struc
- 	if (*tt_len < 0)
- 		*tt_len = batadv_tt_len(num_entries);
- 
-+	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
-+		*tt_len = 0;
-+		goto out;
-+	}
-+
- 	tvlv_len = *tt_len;
- 	tvlv_len += change_offset;
- 
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -2208,6 +2208,7 @@ static const struct pci_device_id mlx5_c
+ 	{ PCI_VDEVICE(MELLANOX, 0x1023) },			/* ConnectX-8 */
+ 	{ PCI_VDEVICE(MELLANOX, 0x1025) },			/* ConnectX-9 */
+ 	{ PCI_VDEVICE(MELLANOX, 0x1027) },			/* ConnectX-10 */
++	{ PCI_VDEVICE(MELLANOX, 0x2101) },			/* ConnectX-10 NVLink-C2C */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d2) },			/* BlueField integrated ConnectX-5 network controller */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d3), MLX5_PCI_DEV_IS_VF},	/* BlueField integrated ConnectX-5 network controller VF */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d6) },			/* BlueField-2 integrated ConnectX-6 Dx network controller */
 
 
 
