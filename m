@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-236917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLvsLBEe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:13 +0200
+	id GM+pGVsi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AC03EFC87
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C833F0B28
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33C17307FA14
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA51930BC8FB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FF12F362B;
-	Mon, 13 Apr 2026 16:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4F531717E;
+	Mon, 13 Apr 2026 16:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhkIwaDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EM27bEOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F6C2D8364;
-	Mon, 13 Apr 2026 16:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C2C313298;
+	Mon, 13 Apr 2026 16:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098125; cv=none; b=PvTTwo427sZ8yZhDPrSHyejFFpQ2+8/YDq+r9+WUxSsoO4CdIk1GqVD9f6Ma+61UJWUid7MVgu2/+BetpYiQHsHbJE0zzBQFxehVLuqaOcL7MbJ2iK86jFkFlWMcZ5eCuu2xW7VJMi97jjJQInv12qHbZY325mrnVuqIq4lp3HY=
+	t=1776099220; cv=none; b=fqTD0rQ75IlMwc+TiM82BFa+2iPfMUIGnJtqCvlZEyhlbH5lm9XXwffNAksJPif7bQVhqfdgCNyTNmvgqyC91E501wTm0OIHg9VXJlfnZoik7+HkAMqh3j2VMgK9YHC/VOWaIdsS2mcHiBnZKpNQStCBgNiXnpHvWFvIkHDszkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098125; c=relaxed/simple;
-	bh=x+Hr0nys4A4qGS2u4Tme/cLu0huml+cUhM9HMRmJoh0=;
+	s=arc-20240116; t=1776099220; c=relaxed/simple;
+	bh=tezVz5e95tj0X6XmgvnfslmP925qosHCBzOtiPWkMRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLsV4Snnz1Jcwi/RVPEWhxDOdELBDZoggpe1WVZ1KBN3GY4j3kTVjoJOnzSglN8F9+hLpGmVmZTQTuFkE0MAkUca3MUcBWH6e0UqNivVE6iE6LndISo5l3K/RfH7acbZ7Wb6NZ9dS08/iVpkK6ic9U77RSx8Dh+t0PZ3EEdCV3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhkIwaDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF786C2BCAF;
-	Mon, 13 Apr 2026 16:35:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qinmzY6K+PFcbjIF1U5lHePOKzxztNTXuipmgbpvBINonoQt/wxgmArOVQq/z+nEAA7NIafuZaxymvNL0bsNx++D0upCN4l/mrrpjY6tIwBaa17r1RD7BBCMItrxZvNuKWfaXMK6DS6o8KIkNFfeiAjytlVz0kF5Hl+KnSgEt4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EM27bEOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE29C2BCAF;
+	Mon, 13 Apr 2026 16:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098125;
-	bh=x+Hr0nys4A4qGS2u4Tme/cLu0huml+cUhM9HMRmJoh0=;
+	s=korg; t=1776099219;
+	bh=tezVz5e95tj0X6XmgvnfslmP925qosHCBzOtiPWkMRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhkIwaDu8mYakTq5VyHvKXeODXsxFUsm9kYFsrOR+zNhBVqK69uVs8DifKRBwpQJ5
-	 GKcvrYx5Y3lRJcU/vDsaBZvKkNprS33v0DqAh0LLGU0TsUc6Xc3Bla093T5/RV6jLi
-	 ZdVKqw/n6gPMtOyXqZ0tuuorMnS/TpoGOuPkfsNk=
+	b=EM27bEOBBa3cvwHKKbEif40GaGtwAK9YVt0pzQy1TANjr09+r543OjTb9ctvXQ3oS
+	 ZUcxeEdjI7dyyMmBnIKVKczZ+8pAr5isATkXA7S1gfe/uiZjfw+OZz93pMsQc/h1Ir
+	 OdiDPfKNAaIyaTbRMH+xngbHvJH2exbKnxJatHZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 371/570] cpufreq: conservative: Reset requested_freq on limits change
+	Minxi Hou <mhou@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 257/491] net: openvswitch: Avoid releasing netdev before teardown completes
 Date: Mon, 13 Apr 2026 17:58:22 +0200
-Message-ID: <20260413155844.376072677@linuxfoundation.org>
+Message-ID: <20260413155828.673865646@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +64,162 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236917-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-237347-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,intel.com:email,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 22AC03EFC87
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: C9C833F0B28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-commit 6a28fb8cb28b9eb39a392e531d938a889eacafc5 upstream.
+[ Upstream commit 7c770dadfda5cbbde6aa3c4363ed513f1d212bf8 ]
 
-A recently reported issue highlighted that the cached requested_freq
-is not guaranteed to stay in sync with policy->cur. If the platform
-changes the actual CPU frequency after the governor sets one (e.g.
-due to platform-specific frequency scaling) and a re-sync occurs
-later, policy->cur may diverge from requested_freq.
+The patch cited in the Fixes tag below changed the teardown code for
+OVS ports to no longer unconditionally take the RTNL. After this change,
+the netdev_destroy() callback can proceed immediately to the call_rcu()
+invocation if the IFF_OVS_DATAPATH flag is already cleared on the
+netdev.
 
-This can lead to incorrect behavior in the conservative governor.
-For example, the governor may assume the CPU is already running at
-the maximum frequency and skip further increases even though there
-is still headroom.
+The ovs_netdev_detach_dev() function clears the flag before completing
+the unregistration, and if it gets preempted after clearing the flag (as
+can happen on an -rt kernel), netdev_destroy() can complete and the
+device can be freed before the unregistration completes. This leads to a
+splat like:
 
-Avoid this by resetting the cached requested_freq to policy->cur on
-detecting a change in policy limits.
+[  998.393867] Oops: general protection fault, probably for non-canonical address 0xff00000001000239: 0000 [#1] SMP PTI
+[  998.393877] CPU: 42 UID: 0 PID: 55177 Comm: ip Kdump: loaded Not tainted 6.12.0-211.1.1.el10_2.x86_64+rt #1 PREEMPT_RT
+[  998.393886] Hardware name: Dell Inc. PowerEdge R740/0JMK61, BIOS 2.24.0 03/27/2025
+[  998.393889] RIP: 0010:dev_set_promiscuity+0x8d/0xa0
+[  998.393901] Code: 00 00 75 d8 48 8b 53 08 48 83 ba b0 02 00 00 00 75 ca 48 83 c4 08 5b c3 cc cc cc cc 48 83 bf 48 09 00 00 00 75 91 48 8b 47 08 <48> 83 b8 b0 02 00 00 00 74 97 eb 81 0f 1f 80 00 00 00 00 90 90 90
+[  998.393906] RSP: 0018:ffffce5864a5f6a0 EFLAGS: 00010246
+[  998.393912] RAX: ff00000000ffff89 RBX: ffff894d0adf5a05 RCX: 0000000000000000
+[  998.393917] RDX: 0000000000000000 RSI: 00000000ffffffff RDI: ffff894d0adf5a05
+[  998.393921] RBP: ffff894d19252000 R08: ffff894d19252000 R09: 0000000000000000
+[  998.393924] R10: ffff894d19252000 R11: ffff894d192521b8 R12: 0000000000000006
+[  998.393927] R13: ffffce5864a5f738 R14: 00000000ffffffe2 R15: 0000000000000000
+[  998.393931] FS:  00007fad61971800(0000) GS:ffff894cc0140000(0000) knlGS:0000000000000000
+[  998.393936] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  998.393940] CR2: 000055df0a2a6e40 CR3: 000000011c7fe003 CR4: 00000000007726f0
+[  998.393944] PKRU: 55555554
+[  998.393946] Call Trace:
+[  998.393949]  <TASK>
+[  998.393952]  ? show_trace_log_lvl+0x1b0/0x2f0
+[  998.393961]  ? show_trace_log_lvl+0x1b0/0x2f0
+[  998.393975]  ? dp_device_event+0x41/0x80 [openvswitch]
+[  998.394009]  ? __die_body.cold+0x8/0x12
+[  998.394016]  ? die_addr+0x3c/0x60
+[  998.394027]  ? exc_general_protection+0x16d/0x390
+[  998.394042]  ? asm_exc_general_protection+0x26/0x30
+[  998.394058]  ? dev_set_promiscuity+0x8d/0xa0
+[  998.394066]  ? ovs_netdev_detach_dev+0x3a/0x80 [openvswitch]
+[  998.394092]  dp_device_event+0x41/0x80 [openvswitch]
+[  998.394102]  notifier_call_chain+0x5a/0xd0
+[  998.394106]  unregister_netdevice_many_notify+0x51b/0xa60
+[  998.394110]  rtnl_dellink+0x169/0x3e0
+[  998.394121]  ? rt_mutex_slowlock.constprop.0+0x95/0xd0
+[  998.394125]  rtnetlink_rcv_msg+0x142/0x3f0
+[  998.394128]  ? avc_has_perm_noaudit+0x69/0xf0
+[  998.394130]  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+[  998.394132]  netlink_rcv_skb+0x50/0x100
+[  998.394138]  netlink_unicast+0x292/0x3f0
+[  998.394141]  netlink_sendmsg+0x21b/0x470
+[  998.394145]  ____sys_sendmsg+0x39d/0x3d0
+[  998.394149]  ___sys_sendmsg+0x9a/0xe0
+[  998.394156]  __sys_sendmsg+0x7a/0xd0
+[  998.394160]  do_syscall_64+0x7f/0x170
+[  998.394162]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  998.394165] RIP: 0033:0x7fad61bf4724
+[  998.394188] Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d c5 e9 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+[  998.394189] RSP: 002b:00007ffd7e2f7cb8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[  998.394191] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007fad61bf4724
+[  998.394193] RDX: 0000000000000000 RSI: 00007ffd7e2f7d20 RDI: 0000000000000003
+[  998.394194] RBP: 00007ffd7e2f7d90 R08: 0000000000000010 R09: 000000000000003f
+[  998.394195] R10: 000055df11558010 R11: 0000000000000202 R12: 00007ffd7e2f8380
+[  998.394196] R13: 0000000069b233d7 R14: 000055df0a256040 R15: 0000000000000000
+[  998.394200]  </TASK>
 
-Reported-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Tested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://lore.kernel.org/all/20260210115458.3493646-1-zhenglifeng1@huawei.com/
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/d846a141a98ac0482f20560fcd7525c0f0ec2f30.1773999467.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this, reorder the operations in ovs_netdev_detach_dev() to only
+clear the flag after completing the other operations, and introduce an
+smp_wmb() to make the ordering requirement explicit. The smp_wmb() is
+paired with a full smp_mb() in netdev_destroy() to make sure the
+call_rcu() invocation does not happen before the unregister operations
+are visible.
+
+Reported-by: Minxi Hou <mhou@redhat.com>
+Tested-by: Minxi Hou <mhou@redhat.com>
+Fixes: 549822767630 ("net: openvswitch: Avoid needlessly taking the RTNL on vport destroy")
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20260318155554.1133405-1-toke@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq_conservative.c |   12 ++++++++++++
- drivers/cpufreq/cpufreq_governor.c     |    3 +++
- drivers/cpufreq/cpufreq_governor.h     |    1 +
- 3 files changed, 16 insertions(+)
+ net/openvswitch/vport-netdev.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/cpufreq/cpufreq_conservative.c
-+++ b/drivers/cpufreq/cpufreq_conservative.c
-@@ -311,6 +311,17 @@ static void cs_start(struct cpufreq_poli
- 	dbs_info->requested_freq = policy->cur;
+diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+index 72cf13bbf3dd3..70cc8854b8d53 100644
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -146,11 +146,15 @@ static void vport_netdev_free(struct rcu_head *rcu)
+ void ovs_netdev_detach_dev(struct vport *vport)
+ {
+ 	ASSERT_RTNL();
+-	vport->dev->priv_flags &= ~IFF_OVS_DATAPATH;
+ 	netdev_rx_handler_unregister(vport->dev);
+ 	netdev_upper_dev_unlink(vport->dev,
+ 				netdev_master_upper_dev_get(vport->dev));
+ 	dev_set_promiscuity(vport->dev, -1);
++
++	/* paired with smp_mb() in netdev_destroy() */
++	smp_wmb();
++
++	vport->dev->priv_flags &= ~IFF_OVS_DATAPATH;
  }
  
-+static void cs_limits(struct cpufreq_policy *policy)
-+{
-+	struct cs_policy_dbs_info *dbs_info = to_dbs_info(policy->governor_data);
+ static void netdev_destroy(struct vport *vport)
+@@ -169,6 +173,9 @@ static void netdev_destroy(struct vport *vport)
+ 		rtnl_unlock();
+ 	}
+ 
++	/* paired with smp_wmb() in ovs_netdev_detach_dev() */
++	smp_mb();
 +
-+	/*
-+	 * The limits have changed, so may have the current frequency. Reset
-+	 * requested_freq to avoid any unintended outcomes due to the mismatch.
-+	 */
-+	dbs_info->requested_freq = policy->cur;
-+}
-+
- static struct dbs_governor cs_governor = {
- 	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
- 	.kobj_type = { .default_attrs = cs_attributes },
-@@ -320,6 +331,7 @@ static struct dbs_governor cs_governor =
- 	.init = cs_init,
- 	.exit = cs_exit,
- 	.start = cs_start,
-+	.limits = cs_limits,
- };
+ 	call_rcu(&vport->rcu, vport_netdev_free);
+ }
  
- #define CPU_FREQ_GOV_CONSERVATIVE	(cs_governor.gov)
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -561,6 +561,7 @@ EXPORT_SYMBOL_GPL(cpufreq_dbs_governor_s
- 
- void cpufreq_dbs_governor_limits(struct cpufreq_policy *policy)
- {
-+	struct dbs_governor *gov = dbs_governor_of(policy);
- 	struct policy_dbs_info *policy_dbs;
- 
- 	/* Protect gov->gdbs_data against cpufreq_dbs_governor_exit() */
-@@ -572,6 +573,8 @@ void cpufreq_dbs_governor_limits(struct
- 	mutex_lock(&policy_dbs->update_mutex);
- 	cpufreq_policy_apply_limits(policy);
- 	gov_update_sample_delay(policy_dbs, 0);
-+	if (gov->limits)
-+		gov->limits(policy);
- 	mutex_unlock(&policy_dbs->update_mutex);
- 
- out:
---- a/drivers/cpufreq/cpufreq_governor.h
-+++ b/drivers/cpufreq/cpufreq_governor.h
-@@ -140,6 +140,7 @@ struct dbs_governor {
- 	int (*init)(struct dbs_data *dbs_data);
- 	void (*exit)(struct dbs_data *dbs_data);
- 	void (*start)(struct cpufreq_policy *policy);
-+	void (*limits)(struct cpufreq_policy *policy);
- };
- 
- static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy)
+-- 
+2.51.0
+
 
 
 
