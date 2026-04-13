@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAK8FdUg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:01 +0200
+	id ILVWFYIZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893D53F069B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBEB23EEFA7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33B8E307F55B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F25333019743
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239B3318EF4;
-	Mon, 13 Apr 2026 16:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAB530BBAE;
+	Mon, 13 Apr 2026 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adD0WTEv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bfx4MYJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0CD313298;
-	Mon, 13 Apr 2026 16:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E630B50F;
+	Mon, 13 Apr 2026 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098835; cv=none; b=qAOEM9/K/Npg+K+i+BzLTPIDKG86xP07Bt6/6aT2bwZS49GY9DPzL1DLZgkVcRAvrJ/X0coH91FmVBj5+pnOKhoG3WrQjBBO4HrYUzdP3xtfqBrEpVa1tAs4/dsPMQSR7/Hd+ruh9Q85sH7GdDFLoDvUDNq5QuKVbDNCoebVMF4=
+	t=1776097576; cv=none; b=iqRziEe0L7GcaC/8sH0V+c/k2+wAH98rmoxtN5dUQovnIMkNx5bqyWuqiIrcIVtJFvVCGX3N6tEVzTZ10e28LN9EUVfd1PwjCXhxOQQqzY40QarZd6///infCTutPGha4j9x/upbNd+OOmj8YpHIdLrRvqjntvTlakj9L3ddE1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098835; c=relaxed/simple;
-	bh=8vAHkTGCLJWRTIU4iMqwwJLPH1ek5DuSoNk0zrKtG0s=;
+	s=arc-20240116; t=1776097576; c=relaxed/simple;
+	bh=LvwynEWwVDJF9zM4SUtxayaoqm9qTRurCJBRy1XdB4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXYqoQSl0H4rszjew4uC7ALFt9dgpvMN3LPfKAvLo1b1m9Zz1v/BhCn48qU7QShioVvwHe73rFomt71bMGuoWt7f74/ujF1DJon5iiZsxGGJfHCn4Ilf26JFbI7fE1kRU4M9LFsBhovAjMcy9J2WsjahQrp2ry/hXGo86hpoWSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adD0WTEv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C70C2BCAF;
-	Mon, 13 Apr 2026 16:47:15 +0000 (UTC)
+	 MIME-Version; b=Fj75Tzl6seqvlgbcezZdt7uBns3hs65wVXwyK4xa5giZwpLIpw/UVMFrC6KsUjveZ+HAgSGKW7VLI1ItAg74kwCRv23u+Uo8HEfbiNSigZ9LlFN/xSwt/gBZLXVL25RcvHgHBWtPLp4My2a/UX18ryxxAYsOjjwt+gnXJEQlsgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bfx4MYJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34050C2BCB3;
+	Mon, 13 Apr 2026 16:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098835;
-	bh=8vAHkTGCLJWRTIU4iMqwwJLPH1ek5DuSoNk0zrKtG0s=;
+	s=korg; t=1776097576;
+	bh=LvwynEWwVDJF9zM4SUtxayaoqm9qTRurCJBRy1XdB4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adD0WTEvs6hIMoygTowpQeg59SZ3ySo2VRCi84+/8Uplx5hc9XKeF6BWzVJ6GISPl
-	 JM6Sv+5gV8ZXTYHntTp2+ubpBIixLQkUhUGpVMcs4J3OwJXbSc3swX9RpIGp6nmu8/
-	 hx9eRwP28dLh4l/WeSgMQjcbYq7RyFkxNIFYG38w=
+	b=Bfx4MYJGqwPe4e9pDZJqJW+HNy4o662Z0Ia/0BLaA4fj0MAvF5Tj6s7v6MRX1Qe5E
+	 HYHswXSjxcW4ktwzumbYc8oroFsR/uXogqfE8+cLMcnaiW1FWThy5jWiCjUYNNrT4u
+	 0ATeU3QzKOOc+LPac6U3tLNWCkNvKIBXKRR1KDP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/491] netfilter: nft_set_pipapo: fix stack out-of-bounds read in pipapo_drop()
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 189/570] iio: imu: inv_icm42600: fix odr switch to the same value
 Date: Mon, 13 Apr 2026 17:55:20 +0200
-Message-ID: <20260413155821.854486636@linuxfoundation.org>
+Message-ID: <20260413155837.539015639@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +65,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237197-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236701-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 893D53F069B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,tdk.com:email]
+X-Rspamd-Queue-Id: EBEB23EEFA7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit d6d8cd2db236a9dd13dbc2d05843b3445cc964b5 ]
+commit c9f3a593137d862d424130343e77d4b5260a4f5a upstream.
 
-pipapo_drop() passes rulemap[i + 1].n to pipapo_unmap() as the
-to_offset argument on every iteration, including the last one where
-i == m->field_count - 1. This reads one element past the end of the
-stack-allocated rulemap array (declared as rulemap[NFT_PIPAPO_MAX_FIELDS]
-with NFT_PIPAPO_MAX_FIELDS == 16).
+ODR switch is done in 2 steps when FIFO is on : change the ODR register
+value and acknowledge change when reading the FIFO ODR change flag.
+When we are switching to the same odr value, we end up waiting for a
+FIFO ODR flag that is never happening.
 
-Although pipapo_unmap() returns early when is_last is true without
-using the to_offset value, the argument is evaluated at the call site
-before the function body executes, making this a genuine out-of-bounds
-stack read confirmed by KASAN:
+Fix the issue by doing nothing and exiting properly when we are
+switching to the same ODR value.
 
-  BUG: KASAN: stack-out-of-bounds in pipapo_drop+0x50c/0x57c [nf_tables]
-  Read of size 4 at addr ffff8000810e71a4
-
-  This frame has 1 object:
-   [32, 160) 'rulemap'
-
-  The buggy address is at offset 164 -- exactly 4 bytes past the end
-  of the rulemap array.
-
-Pass 0 instead of rulemap[i + 1].n on the last iteration to avoid
-the out-of-bounds read.
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    2 ++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index a4fdd1587bb3b..07a8369a9f02f 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1539,6 +1539,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
- 	int i;
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -322,6 +322,8 @@ static int inv_icm42600_accel_write_odr(
+ 		return -EINVAL;
  
- 	nft_pipapo_for_each_field(f, i, m) {
-+		bool last = i == m->field_count - 1;
- 		int g;
+ 	conf.odr = inv_icm42600_accel_odr_conv[idx / 2];
++	if (conf.odr == st->conf.accel.odr)
++		return 0;
  
- 		for (g = 0; g < f->groups; g++) {
-@@ -1558,7 +1559,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
- 		}
+ 	pm_runtime_get_sync(dev);
+ 	mutex_lock(&st->lock);
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -334,6 +334,8 @@ static int inv_icm42600_gyro_write_odr(s
+ 		return -EINVAL;
  
- 		pipapo_unmap(f->mt, f->rules, rulemap[i].to, rulemap[i].n,
--			     rulemap[i + 1].n, i == m->field_count - 1);
-+			     last ? 0 : rulemap[i + 1].n, last);
- 		if (pipapo_resize(f, f->rules, f->rules - rulemap[i].n)) {
- 			/* We can ignore this, a failure to shrink tables down
- 			 * doesn't make tables invalid.
--- 
-2.51.0
-
+ 	conf.odr = inv_icm42600_gyro_odr_conv[idx / 2];
++	if (conf.odr == st->conf.gyro.odr)
++		return 0;
+ 
+ 	pm_runtime_get_sync(dev);
+ 	mutex_lock(&st->lock);
 
 
 
