@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-236794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PtlMO8f3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-236794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:11 +0200
+	id gAglJSIa3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D3A3F0396
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6743EF1B5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAE6930FA591
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 634873014B92
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC842874F8;
-	Mon, 13 Apr 2026 16:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D7E28B4FD;
+	Mon, 13 Apr 2026 16:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFXL8qO+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvoMuNBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6084BCA6F;
-	Mon, 13 Apr 2026 16:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0295CA6F;
+	Mon, 13 Apr 2026 16:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097811; cv=none; b=cx5wfU23ddJqpeH+sxW3jP+1/cohtmsy4EsM1ftUt3MIQJeaETj7gDy//ur4WonVG1ol1pTw0S6NbMqNVZ+BtxbAQa1aSk99aUS3n2Wr/8UDIkgDhFFY0YvC2haGaBv1iZf4rqzhALBX1z/pMzrVAhG0ainn9h+fyffL9q+VUqo=
+	t=1776097814; cv=none; b=lCSWAfRDQmXS4eNQ45nT0+D/sCu7sDWhaVU1HQrtWTQwBODvFT8swcWyULnn/8yDBjQkdIqnhUeG1RM15TJH+XKO0+o7kSWuSohiqm60gOLKHOK9HX1E0DY2+ozTVECMqZuH0oFOLYIl09QAakmKXAXW2sczUY8d9DaGr+Wjnzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097811; c=relaxed/simple;
-	bh=pvErh1mh1X8UoOz07BfsgtnQ8iHviwWr8k+anq0aVA8=;
+	s=arc-20240116; t=1776097814; c=relaxed/simple;
+	bh=d4EA6o6dEuQ8bstPecrEB+X2uK1+mS+Zdyt4IYL8sTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uO6DpMXPce77az660pciUTsFLTpS/zBmv4npsocEFTqS1m1wkG+ZHgEaLxADagQ9MKbNVcZhvdrVO+erc6hLP93e0A2tqRrPU/a2x9U6RKwTyDwerD8mIWOC9ZCUFTC2Cj2lGCkMbsSXhZQzUmQ0MuzAPLNCLdbwNvSSN31CKLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFXL8qO+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78E3C2BCAF;
-	Mon, 13 Apr 2026 16:30:10 +0000 (UTC)
+	 MIME-Version; b=J0Azuv92T/G686tDDpryGyN7s3EZo5ER0F0mHz69GPrcbPpK0TXf1nfUOfFU56W0YvHivnV7ckrwp+mupk6foSMfiV9uRbGDF8w/YJb+yD2vGeEnuz/2oHp6Qx9qCWB/B/OhNzrsbp5KTw27Xv6BhzsTghoo78XpsechMUY4vIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvoMuNBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE56C2BCAF;
+	Mon, 13 Apr 2026 16:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097811;
-	bh=pvErh1mh1X8UoOz07BfsgtnQ8iHviwWr8k+anq0aVA8=;
+	s=korg; t=1776097813;
+	bh=d4EA6o6dEuQ8bstPecrEB+X2uK1+mS+Zdyt4IYL8sTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFXL8qO+MXJ5gXx7EQQCRrgG4TDqz+yiEPXL0wdurawzIoSog802QIjHUTQTpeiSr
-	 PpNDwwmYU0+4nzRK7PVt09nrQ6YAWTJKOBQq/BJ5Xq0juwN/Wh9ILK0Zt4+zUh9PyM
-	 XBiVUgPYhJOIidNpIgJKjcuNsbtP6ZYHRKCYjdCk=
+	b=CvoMuNBN7BZFTDVupX4LFalo7JirTqoKjrfegJIiulbuqkookuTWGlHjsF7sTYim2
+	 Lzcm3AF5Ki+1z2OOfcKnUdehPJOgG97SxxHdDGudGQ7IZQ05hmfE+gB+cElLrXNWFi
+	 k1G2soYqzNF/URHqHANMe7WnqMUlyiOseqo16DQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Anas Iqbal <mohd.abd.6602@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 281/570] net: dsa: bcm_sf2: fix missing clk_disable_unprepare() in error paths
-Date: Mon, 13 Apr 2026 17:56:52 +0200
-Message-ID: <20260413155841.017448223@linuxfoundation.org>
+Subject: [PATCH 5.15 282/570] icmp: fix NULL pointer dereference in icmp_tag_validation()
+Date: Mon, 13 Apr 2026 17:56:53 +0200
+Message-ID: <20260413155841.054914564@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -66,36 +65,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236794-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236795-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 30D3A3F0396
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email]
+X-Rspamd-Queue-Id: 5C6743EF1B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,57 +101,66 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Anas Iqbal <mohd.abd.6602@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit b48731849609cbd8c53785a48976850b443153fd ]
+[ Upstream commit 614aefe56af8e13331e50220c936fc0689cf5675 ]
 
-Smatch reports:
-drivers/net/dsa/bcm_sf2.c:997 bcm_sf2_sw_resume() warn:
-'priv->clk' from clk_prepare_enable() not released on lines: 983,990.
+icmp_tag_validation() unconditionally dereferences the result of
+rcu_dereference(inet_protos[proto]) without checking for NULL.
+The inet_protos[] array is sparse -- only about 15 of 256 protocol
+numbers have registered handlers. When ip_no_pmtu_disc is set to 3
+(hardened PMTU mode) and the kernel receives an ICMP Fragmentation
+Needed error with a quoted inner IP header containing an unregistered
+protocol number, the NULL dereference causes a kernel panic in
+softirq context.
 
-The clock enabled by clk_prepare_enable() in bcm_sf2_sw_resume()
-is not released if bcm_sf2_sw_rst() or bcm_sf2_cfp_resume() fails.
+ Oops: general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+ RIP: 0010:icmp_unreach (net/ipv4/icmp.c:1085 net/ipv4/icmp.c:1143)
+ Call Trace:
+  <IRQ>
+  icmp_rcv (net/ipv4/icmp.c:1527)
+  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
+  ip_local_deliver_finish (net/ipv4/ip_input.c:242)
+  ip_local_deliver (net/ipv4/ip_input.c:262)
+  ip_rcv (net/ipv4/ip_input.c:573)
+  __netif_receive_skb_one_core (net/core/dev.c:6164)
+  process_backlog (net/core/dev.c:6628)
+  handle_softirqs (kernel/softirq.c:561)
+  </IRQ>
 
-Add the missing clk_disable_unprepare() calls in the error paths
-to properly release the clock resource.
+Add a NULL check before accessing icmp_strict_tag_validation. If the
+protocol has no registered handler, return false since it cannot
+perform strict tag validation.
 
-Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
-Link: https://patch.msgid.link/20260318084212.1287-1-mohd.abd.6602@gmail.com
+Fixes: 8ed1dc44d3e9 ("ipv4: introduce hardened ip_no_pmtu_disc mode")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260318130558.1050247-4-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/bcm_sf2.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv4/icmp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
-index f259b0add5b2e..6105f4d8faf06 100644
---- a/drivers/net/dsa/bcm_sf2.c
-+++ b/drivers/net/dsa/bcm_sf2.c
-@@ -962,15 +962,19 @@ static int bcm_sf2_sw_resume(struct dsa_switch *ds)
- 	ret = bcm_sf2_sw_rst(priv);
- 	if (ret) {
- 		pr_err("%s: failed to software reset switch\n", __func__);
-+		if (!priv->wol_ports_mask)
-+			clk_disable_unprepare(priv->clk);
- 		return ret;
- 	}
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 8a70e51654264..0215e2510670a 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -845,10 +845,12 @@ static void icmp_socket_deliver(struct sk_buff *skb, u32 info)
  
- 	bcm_sf2_crossbar_setup(priv);
+ static bool icmp_tag_validation(int proto)
+ {
++	const struct net_protocol *ipprot;
+ 	bool ok;
  
- 	ret = bcm_sf2_cfp_resume(ds);
--	if (ret)
-+	if (ret) {
-+		if (!priv->wol_ports_mask)
-+			clk_disable_unprepare(priv->clk);
- 		return ret;
--
-+	}
- 	if (priv->hw_params.num_gphy == 1)
- 		bcm_sf2_gphy_enable_set(ds, true);
- 
+ 	rcu_read_lock();
+-	ok = rcu_dereference(inet_protos[proto])->icmp_strict_tag_validation;
++	ipprot = rcu_dereference(inet_protos[proto]);
++	ok = ipprot ? ipprot->icmp_strict_tag_validation : false;
+ 	rcu_read_unlock();
+ 	return ok;
+ }
 -- 
 2.51.0
 
