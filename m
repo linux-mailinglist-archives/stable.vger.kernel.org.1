@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-236723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFk5GmEh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:21 +0200
+	id UEAGFH0g3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D6F3F0835
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD243F0573
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DAE731DAC07
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C07BE3051720
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DF1309F09;
-	Mon, 13 Apr 2026 16:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7B93161BF;
+	Mon, 13 Apr 2026 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqQ9qIPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RUX8QJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A09726CE32;
-	Mon, 13 Apr 2026 16:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D66314D0D;
+	Mon, 13 Apr 2026 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097628; cv=none; b=DTTRlHpxG4IEVOKQIBJccta5lN05gi9K6t9wuA+DuXWfmLBg3bS6S+wOisgGRqm78qJ/dHKJl5RgMInWeV9nNvdqY/RqcwrrLEc/f84GmU3BaFVw0Kmwd62wKssOrp8nWPFqBS7w/m5TQf2mQ+6BZBbVGgWhDJ6URjPKWc9qWCA=
+	t=1776098761; cv=none; b=pv0TdmS9qyzd5MqSZG265o/W9h1N5Y8XvuVc6zig1n1JK7wzO0CyXyiowEt7dtaDGOlbcT7RuygKV3nvvI8Cy4dlxOJZyHVToInrqqOgPtaj5pz2ROnWd8Qev+Z1P/MR/daqT0evVCvLtEE6YHu0WPiGOjarmr0Je3TaKqsVvek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097628; c=relaxed/simple;
-	bh=mATV3hUAfXBv+rznevgXzlurLtOCjPr4Gwg4ngidZug=;
+	s=arc-20240116; t=1776098761; c=relaxed/simple;
+	bh=XW+GRrhICwhQz3C2DnP3vpl7xajQ8c+R8nwHyYwrLBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxhF0GDYqnjAXhZj9FS09nS2Cwl7dra/pa4lLyMHRHNkyFXPT/yM+yOTElQLsa63kXhnLybb8tZYEVjEQsafmZvHWdB3vqG0CxOut3vpupvS3rFukepC0d5jGAWw636uLX1cB7O4QYRIwlptoBi9o1QnwU00SJuYSPfkNc03eo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqQ9qIPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55CEC2BCAF;
-	Mon, 13 Apr 2026 16:27:07 +0000 (UTC)
+	 MIME-Version; b=et1u77hMqqata511SKU03sUGKlSzBxMaFXGt5IJQtO78Ut4tfSWdxaGji4RT88oeg4yZLl5JKeYh4qCc4gYSdOocpXmocsaK4PsTKjqUL1+WcjOPdLg5EUBgww2iOS/JsTNotv9HiJNq0Wqa+CCxQJF/oLzNec3UJSlGqzKHWYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RUX8QJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D27C2BCB7;
+	Mon, 13 Apr 2026 16:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097628;
-	bh=mATV3hUAfXBv+rznevgXzlurLtOCjPr4Gwg4ngidZug=;
+	s=korg; t=1776098761;
+	bh=XW+GRrhICwhQz3C2DnP3vpl7xajQ8c+R8nwHyYwrLBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqQ9qIPzN+XL/Exp2PZqDgma9oz5XrsHsMXUZXev4WvATuAqT/KhhCS+y9VRvIT5H
-	 IJlGMU5E6FOJVN10rYPLtZYUPTVteANJw2C0Vvb/SQDzr9UQDZFMa3Nu3o+IiEl0Pp
-	 z2mecK2r6L12ulbDKk+1Fz6zUElDNhnOM3QOWjWA=
+	b=2RUX8QJB9TAZPA2U8fCLHRTdSrSxoLOv7l2Ga/peK3oGUjHnbxV2p9XQ7A9ETl9BC
+	 wvP7hAb/q4/6ZHemsKjZj4UYxRUROVAtqU18AUgktaY8Z/G9kGv4uLQDceGD8T/k13
+	 291ZMeIrz+fZx7M4HcSrFpmLb7PgU+FFiW97Yxvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 5.15 193/570] bpf: Forget ranges when refining tnum after JSET
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <dstsmallbird@foxmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 079/491] netfilter: xt_IDLETIMER: reject rev0 reuse of ALARM timer labels
 Date: Mon, 13 Apr 2026 17:55:24 +0200
-Message-ID: <20260413155837.689427623@linuxfoundation.org>
+Message-ID: <20260413155822.002836274@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,106 +67,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236723-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,linux.dev,kernel.org,suse.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,foxmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237167-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,c711ce17dd78e5d4fdcf];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email]
-X-Rspamd-Queue-Id: D5D6F3F0835
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,foxmail.com:email]
+X-Rspamd-Queue-Id: 4CD243F0573
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Yuan Tan <tanyuan98@outlook.com>
 
-commit 6279846b9b2532e1b04559ef8bd0dec049f29383 upstream.
+[ Upstream commit 329f0b9b48ee6ab59d1ab72fef55fe8c6463a6cf ]
 
-Syzbot reported a kernel warning due to a range invariant violation on
-the following BPF program.
+IDLETIMER revision 0 rules reuse existing timers by label and always call
+mod_timer() on timer->timer.
 
-  0: call bpf_get_netns_cookie
-  1: if r0 == 0 goto <exit>
-  2: if r0 & Oxffffffff goto <exit>
+If the label was created first by revision 1 with XT_IDLETIMER_ALARM,
+the object uses alarm timer semantics and timer->timer is never initialized.
+Reusing that object from revision 0 causes mod_timer() on an uninitialized
+timer_list, triggering debugobjects warnings and possible panic when
+panic_on_warn=1.
 
-The issue is on the path where we fall through both jumps.
+Fix this by rejecting revision 0 rule insertion when an existing timer with
+the same label is of ALARM type.
 
-That path is unreachable at runtime: after insn 1, we know r0 != 0, but
-with the sign extension on the jset, we would only fallthrough insn 2
-if r0 == 0. Unfortunately, is_branch_taken() isn't currently able to
-figure this out, so the verifier walks all branches. The verifier then
-refines the register bounds using the second condition and we end
-up with inconsistent bounds on this unreachable path:
-
-  1: if r0 == 0 goto <exit>
-    r0: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0xffffffffffffffff)
-  2: if r0 & 0xffffffff goto <exit>
-    r0 before reg_bounds_sync: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0)
-    r0 after reg_bounds_sync:  u64=[0x1, 0] var_off=(0, 0)
-
-Improving the range refinement for JSET to cover all cases is tricky. We
-also don't expect many users to rely on JSET given LLVM doesn't generate
-those instructions. So instead of improving the range refinement for
-JSETs, Eduard suggested we forget the ranges whenever we're narrowing
-tnums after a JSET. This patch implements that approach.
-
-Reported-by: syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com
-Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/9d4fd6432a095d281f815770608fdcd16028ce0b.1752171365.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ shung-hsi.yu: no detection or kernel warning for invariant violation before
-  6.8, but the same umin=1,umax=0 state can occur when jset is preceed by r0 < 1.
-  Changes were made to adapt to older range refinement logic before commit
-  67420501e868 ("bpf: generalize reg_set_min_max() to handle non-const register
-  comparisons"). ]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 68983a354a65 ("netfilter: xtables: Add snapshot of hardidletimer target")
+Co-developed-by: Yifan Wu <yifanwucs@gmail.com>
+Signed-off-by: Yifan Wu <yifanwucs@gmail.com>
+Co-developed-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <dstsmallbird@foxmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/netfilter/xt_IDLETIMER.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -8906,6 +8906,10 @@ static void reg_set_min_max(struct bpf_r
- 		}
- 		break;
- 	case BPF_JSET:
-+		/* Forget the ranges before narrowing tnums, to avoid invariant
-+		 * violations if we're on a dead branch.
-+		 */
-+		__mark_reg_unbounded(false_reg);
- 		if (is_jmp32) {
- 			false_32off = tnum_and(false_32off, tnum_const(~val32));
- 			if (is_power_of_2(val32))
+diff --git a/net/netfilter/xt_IDLETIMER.c b/net/netfilter/xt_IDLETIMER.c
+index 2f7cf5ecebf4f..d35ff0a2cad83 100644
+--- a/net/netfilter/xt_IDLETIMER.c
++++ b/net/netfilter/xt_IDLETIMER.c
+@@ -320,6 +320,12 @@ static int idletimer_tg_checkentry(const struct xt_tgchk_param *par)
+ 
+ 	info->timer = __idletimer_tg_find_by_label(info->label);
+ 	if (info->timer) {
++		if (info->timer->timer_type & XT_IDLETIMER_ALARM) {
++			pr_debug("Adding/Replacing rule with same label and different timer type is not allowed\n");
++			mutex_unlock(&list_mutex);
++			return -EINVAL;
++		}
++
+ 		info->timer->refcnt++;
+ 		mod_timer(&info->timer->timer,
+ 			  msecs_to_jiffies(info->timeout * 1000) + jiffies);
+-- 
+2.51.0
+
 
 
 
