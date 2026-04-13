@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-236393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLtFHK0Z3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:29 +0200
+	id +KhsKWQc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8FB3EF03F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DA13EF78B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 896C630A5ABE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBE84315523F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB2425A2C9;
-	Mon, 13 Apr 2026 16:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2482225A2C9;
+	Mon, 13 Apr 2026 16:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+6sBxiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcZ9HSdI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215BB24EA90;
-	Mon, 13 Apr 2026 16:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDDE5C9E;
+	Mon, 13 Apr 2026 16:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096790; cv=none; b=A8JnXxHh3QSaxjeZuBoiId02ccWFBRfJso7qALawexnT+fhKjbPwCboWpfsGZzF4lqv51uQHXWv9r1VtnbU9fODP1UtN2O22nChf7kz9KUEs+hNyefeW6u/STuXTw4+vTP9YI7Cn8SS/03g+01xUsTEmsekuVHoDmoh2Xzqtr9A=
+	t=1776096936; cv=none; b=VbFV4skpdcnr1evAYpX8DD5QBIpcC7vfkrUSuIXIyJ8A9Vke4omaMDUfWfzFk4+HKu9kSmBBm4lcKhmj9i/wC5sgVun6LtGjC6byC+4K5ayLaCT3MDEq61PABDix/R3fTCbXK0eVN0tMPLx5QBzzGLFV+iJdQpx8zb1XCgLxb+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096790; c=relaxed/simple;
-	bh=IncVa67EiUFF2Kx3AW+w0XxNXFgqNBjMp1tHk/FniXQ=;
+	s=arc-20240116; t=1776096936; c=relaxed/simple;
+	bh=pphS1h6dRLtR5T44SgYGcEXsIHIBEVYuc1vqnlH9XRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sikSh7ZzEuPhVHpFZdp4ohU8hJ+dvde4bHQD1oo0BmV4KtD/cl2jxefyxVgW3MyGnQE/8vV25cfI9b+6Le0ygt0dd/694sCxW9bzWTXuo7Lrxwms0q+bdWAoIB4WU/d1cwWikoBylXydWB2aIb/0G6Sb2SXaQ3XGsOaZTkGYeFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+6sBxiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840E9C2BCAF;
-	Mon, 13 Apr 2026 16:13:09 +0000 (UTC)
+	 MIME-Version; b=uLHY4qxx5CdTj3zNEKS9E6veXXBzr+Sdt8ToP5Aj5+ODhejxdXThgecrsMy0XIiHqDuOKtZUR4jmC/oIkN5/kQfSy0gdBQbFFdznDaOno25eR92J5/6+IGgSSz60Ew+GY4+Ri/90tn9st4u6ezGaSFtoNVkOs4N8lwX2V6fcB80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcZ9HSdI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0ABC2BCAF;
+	Mon, 13 Apr 2026 16:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096790;
-	bh=IncVa67EiUFF2Kx3AW+w0XxNXFgqNBjMp1tHk/FniXQ=;
+	s=korg; t=1776096936;
+	bh=pphS1h6dRLtR5T44SgYGcEXsIHIBEVYuc1vqnlH9XRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+6sBxiP7SPpqNc4O37QPw3eX6d8a7bkr3LZzKt8KqFgcRKjfpXSMN0esogJs6/r1
-	 PzsEZnLRvSf4N7QvoRAHG5xoYZwaYOpAOLQj88nveJLA5vBlqjXrtG0tu2wx6xaMbe
-	 nlwnJmyqdxDGHnhIb+Q7htkz0HyM5LMkeMhn5tgI=
+	b=kcZ9HSdI4deI1daheuH8xF1JCLN+1XuBK3hRYTInavQx+3Muv3S2YWxzRt5mREGqU
+	 zIGzbxq+iUt2qXp7skXoVtd9uZqwLVYjA9Irxhlc6da8FOREpDqsyjG3UFGCQ3lCaa
+	 Ldlp1n3dakHplmYMhC0WqHYDVmEA/XUkBSnsIBSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Douya Le <ldy3087146292@gmail.com>,
-	Yuan Tan <tanyuan98@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 64/70] rxrpc: Only put the call ref if one was acquired
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 32/50] net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
 Date: Mon, 13 Apr 2026 18:00:59 +0200
-Message-ID: <20260413155730.567437748@linuxfoundation.org>
+Message-ID: <20260413155725.714342034@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,88 +66,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236393-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236450-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,auristor.com:email,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,infradead.org:email]
-X-Rspamd-Queue-Id: DB8FB3EF03F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,queasysnail.net:email,starlabs.sg:email]
+X-Rspamd-Queue-Id: 01DA13EF78B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douya Le <ldy3087146292@gmail.com>
+From: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
 
-commit 6331f1b24a3e85465f6454e003a3e6c22005a5c5 upstream.
+commit a9b8b18364fffce4c451e6f6fd218fa4ab646705 upstream.
 
-rxrpc_input_packet_on_conn() can process a to-client packet after the
-current client call on the channel has already been torn down.  In that
-case chan->call is NULL, rxrpc_try_get_call() returns NULL and there is
-no reference to drop.
+The -EBUSY handling in tls_do_encryption(), introduced by commit
+859054147318 ("net: tls: handle backlogging of crypto requests"), has
+a use-after-free due to double cleanup of encrypt_pending and the
+scatterlist entry.
 
-The client-side implicit-end error path does not account for that and
-unconditionally calls rxrpc_put_call().  This turns a protocol error
-path into a kernel crash instead of rejecting the packet.
+When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
+the cryptd backlog and the async callback tls_encrypt_done() will be
+invoked upon completion. That callback unconditionally restores the
+scatterlist entry (sge->offset, sge->length) and decrements
+ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
+error, the synchronous error path in tls_do_encryption() performs the
+same cleanup again, double-decrementing encrypt_pending and
+double-restoring the scatterlist.
 
-Only drop the call reference if one was actually acquired.  Keep the
-existing protocol error handling unchanged.
+The double-decrement corrupts the encrypt_pending sentinel (initialized
+to 1), making tls_encrypt_async_wait() permanently skip the wait for
+pending async callbacks. A subsequent sendmsg can then free the
+tls_rec via bpf_exec_tx_verdict() while a cryptd callback is still
+pending, resulting in a use-after-free when the callback fires on the
+freed record.
 
-Fixes: 5e6ef4f1017c ("rxrpc: Make the I/O thread take over the call and local processor work")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Douya Le <ldy3087146292@gmail.com>
-Co-developed-by: Yuan Tan <tanyuan98@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-11-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by skipping the synchronous cleanup when the -EBUSY async
+wait returns an error, since the callback has already handled
+encrypt_pending and sge restoration.
+
+Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20260403013617.2838875-1-ramdhan@starlabs.sg
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/io_thread.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -400,7 +400,8 @@ static int rxrpc_input_packet_on_conn(st
- 
- 	if (sp->hdr.callNumber > chan->call_id) {
- 		if (rxrpc_to_client(sp)) {
--			rxrpc_put_call(call, rxrpc_call_put_input);
-+			if (call)
-+				rxrpc_put_call(call, rxrpc_call_put_input);
- 			return rxrpc_protocol_error(skb,
- 						    rxrpc_eproto_unexpected_implicit_end);
- 		}
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -584,6 +584,16 @@ static int tls_do_encryption(struct sock
+ 	if (rc == -EBUSY) {
+ 		rc = tls_encrypt_async_wait(ctx);
+ 		rc = rc ?: -EINPROGRESS;
++		/*
++		 * The async callback tls_encrypt_done() has already
++		 * decremented encrypt_pending and restored the sge on
++		 * both success and error. Skip the synchronous cleanup
++		 * below on error, just remove the record and return.
++		 */
++		if (rc != -EINPROGRESS) {
++			list_del(&rec->list);
++			return rc;
++		}
+ 	}
+ 	if (!rc || rc != -EINPROGRESS) {
+ 		atomic_dec(&ctx->encrypt_pending);
 
 
 
