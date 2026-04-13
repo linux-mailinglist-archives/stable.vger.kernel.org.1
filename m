@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-237560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOcmHtUl3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:21 +0200
+	id gDdLDHQm3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:23:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BA83F132F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77ED03F14A2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6DEE930365BD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFE3D321D284
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1BF32ABC0;
-	Mon, 13 Apr 2026 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF825336881;
+	Mon, 13 Apr 2026 17:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE5XYe5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQSyjbL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEEC33342C;
-	Mon, 13 Apr 2026 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FD83368B5;
+	Mon, 13 Apr 2026 17:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099770; cv=none; b=U7Kwib7CElUVGuKNjFafcJjtelGXvKpnpJWHuYiJvOCmF2RD00SnHOJGaadCIEGJH9dGgQF3FTxvwcFdLIHlmJDjOEzbZ8HFPJOiXcU0CKDbXsv4JutVWoza4ZdSrM2/KsINVoCaF+LEG8pu3zV09y+ACz62nnruzNGwS7fnZGA=
+	t=1776099772; cv=none; b=MQk9EYJ/uCRyLyeWstwZwDhGfGSg48hqZgMN+5AlHYzdw/kAJ78WrRQsigDqYDDHqPdpBGZApV07DvQhbYpQyJIQZZhQowcw9Bxt5gVOea9Q+W1trALHbiF43654KblYtnZuU65kVltX3o0HVGSXuEvcWPODXtQJfuHKCSWyv6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099770; c=relaxed/simple;
-	bh=WaQrnm1s6QKGwRlh56Bw2VMoTd91mqzbFJAJF/L6xlA=;
+	s=arc-20240116; t=1776099772; c=relaxed/simple;
+	bh=S+E3TiHvJrozirY1D8Exa8NA1AxJ/FRw/egB0qBO9w8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpqQi+u80WA/q+/9LBIPGcbOu2zG9bqJBwld9PY1FZGUYqmZtr0jvXyz43cJjk71TyWTt8o41Kbmc1btaUZwLQ4lmHezaKnm8cKbRgTxO6lXTaTutc0KIFG+hyPztSpIaPjE27Aqt/VW8O/6Zzypnv+BAxU+mv/aCHwgyTLjr7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE5XYe5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990B7C2BCAF;
-	Mon, 13 Apr 2026 17:02:49 +0000 (UTC)
+	 MIME-Version; b=QFNi0aWGs/gOV38vBb2BnPf7VbuI1o1ge+Hm0+MFS55ELe4JuPgtDHaaPUWVkH3EYV2Juhk4F3uHhUiPtvPTq2ay/Ed9p6vwrdtIx7Uuh8Ppboqj+jKo/rWrMBJwuvlCmhT9wo1hyr1P5m7vLlg5buhCfwcXsx2bKvTsG38qcs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQSyjbL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CEBC2BCAF;
+	Mon, 13 Apr 2026 17:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099769;
-	bh=WaQrnm1s6QKGwRlh56Bw2VMoTd91mqzbFJAJF/L6xlA=;
+	s=korg; t=1776099772;
+	bh=S+E3TiHvJrozirY1D8Exa8NA1AxJ/FRw/egB0qBO9w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fE5XYe5addAKWSeKLt3/Mw/FKfPJL3Pgu+ytGnzXinMXsU2SqFiKd4SbSZaUitUKR
-	 rdxAARnxDkQD6jwBxyVIeq9c9K3pRD31oEfPaHlhokfyMrRXh6EofDuUTgrAx1PFHH
-	 maQu+x0N20cIFc8IxcSmhS0nz0PlFC3W1MUkULjs=
+	b=kQSyjbL18CKqlVcbqE5Xs0HVpAadF+OJ6rDE+Pcs8JcuYzUfsRK135C96xOb4KF0g
+	 u9aNmIEFz/Z4Z5KJ3Jul331eELnchTw0hIyLOxIX0O3DDDOuniuDsGOt9cevZQ0OEz
+	 hc++9Ta6ehXTN/e/IDLOGlDKYMcPZLBpTbYsYN04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
-	Yuto Ohnuki <ytohnuki@amazon.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 468/491] xfs: stop reclaim before pushing AIL during unmount
-Date: Mon, 13 Apr 2026 18:01:53 +0200
-Message-ID: <20260413155836.562929550@linuxfoundation.org>
+Subject: [PATCH 5.10 469/491] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
+Date: Mon, 13 Apr 2026 18:01:54 +0200
+Message-ID: <20260413155836.601669574@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -66,35 +68,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237560-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237561-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 29BA83F132F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,iloc.bh:url]
+X-Rspamd-Queue-Id: 77ED03F14A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,60 +103,86 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Baokun Li <libaokun@linux.alibaba.com>
 
-[ Upstream commit 4f24a767e3d64a5f58c595b5c29b6063a201f1e3 ]
+[ Upstream commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 ]
 
-The unmount sequence in xfs_unmount_flush_inodes() pushed the AIL while
-background reclaim and inodegc are still running. This is broken
-independently of any use-after-free issues - background reclaim and
-inodegc should not be running while the AIL is being pushed during
-unmount, as inodegc can dirty and insert inodes into the AIL during the
-flush, and background reclaim can race to abort and free dirty inodes.
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
 
-Reorder xfs_unmount_flush_inodes() to stop inodegc and cancel background
-reclaim before pushing the AIL. Stop inodegc before cancelling
-m_reclaim_work because the inodegc worker can re-queue m_reclaim_work
-via xfs_inodegc_set_reclaimable.
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
 
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: stable@vger.kernel.org # v5.9
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ dropped xfs_inodegc_stop() call ]
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
+
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
+
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
+
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_mount.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/fast_commit.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/fs/xfs/xfs_mount.c
-+++ b/fs/xfs/xfs_mount.c
-@@ -652,8 +652,9 @@ xfs_check_summary_counts(
-  * have been retrying in the background.  This will prevent never-ending
-  * retries in AIL pushing from hanging the unmount.
-  *
-- * Finally, we can push the AIL to clean all the remaining dirty objects, then
-- * reclaim the remaining inodes that are still in memory at this point in time.
-+ * Stop inodegc and background reclaim before pushing the AIL so that they
-+ * are not running while the AIL is being flushed. Then push the AIL to
-+ * clean all the remaining dirty objects and reclaim the remaining inodes.
-  */
- static void
- xfs_unmount_flush_inodes(
-@@ -665,8 +666,8 @@ xfs_unmount_flush_inodes(
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1480,19 +1480,21 @@ static int ext4_fc_replay_inode(struct s
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
  
- 	mp->m_flags |= XFS_MOUNT_UNMOUNTING;
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		jbd_debug(1, "Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
+ 	}
  
--	xfs_ail_push_all_sync(mp->m_ail);
- 	cancel_delayed_work_sync(&mp->m_reclaim_work);
-+	xfs_ail_push_all_sync(mp->m_ail);
- 	xfs_reclaim_inodes(mp);
- 	xfs_health_unmount(mp);
+ 	/*
+@@ -1508,13 +1510,14 @@ static int ext4_fc_replay_inode(struct s
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev, GFP_KERNEL);
+ 
+-	return 0;
++	return ret;
  }
+ 
+ /*
 
 
 
