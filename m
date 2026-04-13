@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-237409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKxjEgIh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:46 +0200
+	id aBcnEzke3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AE13F0729
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473573EFD2E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1229A302018C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9158E3044C9B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0932C31F9BC;
-	Mon, 13 Apr 2026 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE3F2E7185;
+	Mon, 13 Apr 2026 16:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2KFe/qC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSegjYMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C145A3203B6;
-	Mon, 13 Apr 2026 16:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60F29BD87;
+	Mon, 13 Apr 2026 16:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099380; cv=none; b=IP36aBDagSdBRsFM4TDGN4sXbQgbnSZHDImcMESR66LCkP0ONrZU7vXq3FfE7ZIaxWummrzl0g8+V+Joe1V615M0r9ctIzm+arZYJ3IuYDohsHyvUv/qYHlWzZNoU6oi5wWeG0vsNPQJeiuVDh0ICb+YWQq+qOimYDsbWv7FdPs=
+	t=1776098120; cv=none; b=GEhu+/xqGGwPUaSSAsynX1TfyElzTLhUv5TJ0mrXhiL/AVv41OuymfLa9xgAIHZg32Xudg8JQcDp3hys8eO7aOMUkp3UJAu6GFK6VznrNua4QfZQlTwywNTj2IX6TGDz8Te/lZovpj/L2DaxUgGbBSvUG3WvLoDuNINKGoodxfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099380; c=relaxed/simple;
-	bh=wuSCxlnWdpaBQuvfG/Fji7SakW6YQJmfWuar5Xsbry4=;
+	s=arc-20240116; t=1776098120; c=relaxed/simple;
+	bh=DDib8WaRsWhj4tMEKU5b65sCVz8xAd+40fT4ngUeWG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OB9oqiZSvJWyOcUpYWwQ2g9t1eO6zs0R49bflVlvX6ea8Hny592+jM+3pMrFspkdQ/ItLGnvXW2ocUW5VQBRwV1/bAZkAGnvHKOus53dfyX0ES7vLKoY1umKWnx1ymonZVQv//LrD2nSiwc5xO5dMToYM3tH2dJJckGMJQH+47Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2KFe/qC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BF6C2BCAF;
-	Mon, 13 Apr 2026 16:56:20 +0000 (UTC)
+	 MIME-Version; b=srLaJpjXz5s+zTRFe0IvKnO6EmgGf13gIj/tu5/B48xMDaCH8miF37qzew4aGXhuyFAvf/eQOG9eCPjIHCVXR+sgZJbbfZKvYAvPL7hSQOCi2KIL0AwRQeb71K+s8s9n/51vdbrvh2v858Hnp/K9il4H0T+nLmvGukeUaPvn06o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSegjYMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D034DC2BCAF;
+	Mon, 13 Apr 2026 16:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099380;
-	bh=wuSCxlnWdpaBQuvfG/Fji7SakW6YQJmfWuar5Xsbry4=;
+	s=korg; t=1776098120;
+	bh=DDib8WaRsWhj4tMEKU5b65sCVz8xAd+40fT4ngUeWG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2KFe/qCaIZ2iEcPG0PKnYWvZ6AkRSOFSvvsYq/RT+eo/9xFG9dyNJQHkb1a/vtIf
-	 MnEGr91Eaq3IwQLRZ7Z98kUNdvJSyqvH2Cj7NUGE9vb1qoXi7fAi5dC/Tqzfopmb4e
-	 wijmmKeMbPe7AqgKD95dmi/UB1KyqYmECkUwomFg=
+	b=bSegjYMo0Ufj5tylGRK861KdmLiLLbOiJE39PI2vS4odOBhS2ue2tmhcQ2QyZb1PK
+	 Cvu+6zxbtJprVfQLv9ohIOFdyiY7xCseDDHFcdXu2VujwZq+Sf7RGUMY1C9b00lYrf
+	 IVWeqdJLeeRElRMTnzqvcQFzkg7e1pCe/iJrdkrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 286/491] ACPICA: include/acpi/acpixf.h: Fix indentation
+Subject: [PATCH 5.15 400/570] btrfs: dont take device_list_mutex when querying zone info
 Date: Mon, 13 Apr 2026 17:58:51 +0200
-Message-ID: <20260413155829.752049036@linuxfoundation.org>
+Message-ID: <20260413155845.454687245@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,205 +70,225 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236915-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237409-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 35AE13F0729
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 473573EFD2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 7a9d74e7e403cb2e60d4d00c05f2f3ab2a33d0c3 ]
+[ Upstream commit 77603ab10429fe713a03345553ca8dbbfb1d91c6 ]
 
-A bunch of the functions declared in include/acpi/acpixf.h have their
-name aligned a space after the '(' of e.g. the
-`ACPI_EXTERNAL_RETURN_STATUS(acpi_status` line above rather then being
-directly aligned after the '('.
+Shin'ichiro reported sporadic hangs when running generic/013 in our CI
+system. When enabling lockdep, there is a lockdep splat when calling
+btrfs_get_dev_zone_info_all_devices() in the mount path that can be
+triggered by i.e. generic/013:
 
-This breaks applying patches generated from the ACPICA upstream git,
-remove the extra space before the function-names and all the arguments
-to fix this.
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  7.0.0-rc1+ #355 Not tainted
+  ------------------------------------------------------
+  mount/1043 is trying to acquire lock:
+  ffff8881020b5470 (&vblk->vdev_mutex){+.+.}-{4:4}, at: virtblk_report_zones+0xda/0x430
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
+  but task is already holding lock:
+  ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
+
+  which lock already depends on the new lock.
+
+  the existing dependency chain (in reverse order) is:
+
+  -> #4 (&fs_devs->device_list_mutex){+.+.}-{4:4}:
+	 __mutex_lock+0xa3/0x1360
+	 btrfs_create_pending_block_groups+0x1f4/0x9d0
+	 __btrfs_end_transaction+0x3e/0x2e0
+	 btrfs_zoned_reserve_data_reloc_bg+0x2f8/0x390
+	 open_ctree+0x1934/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #3 (btrfs_trans_num_extwriters){++++}-{0:0}:
+	 join_transaction+0xc2/0x5c0
+	 start_transaction+0x17c/0xbc0
+	 btrfs_zoned_reserve_data_reloc_bg+0x2b4/0x390
+	 open_ctree+0x1934/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #2 (btrfs_trans_num_writers){++++}-{0:0}:
+	 lock_release+0x163/0x4b0
+	 __btrfs_end_transaction+0x1c7/0x2e0
+	 btrfs_dirty_inode+0x6f/0xd0
+	 touch_atime+0xe5/0x2c0
+	 btrfs_file_mmap_prepare+0x65/0x90
+	 __mmap_region+0x4b9/0xf00
+	 mmap_region+0xf7/0x120
+	 do_mmap+0x43d/0x610
+	 vm_mmap_pgoff+0xd6/0x190
+	 ksys_mmap_pgoff+0x7e/0xc0
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #1 (&mm->mmap_lock){++++}-{4:4}:
+	 __might_fault+0x68/0xa0
+	 _copy_to_user+0x22/0x70
+	 blkdev_copy_zone_to_user+0x22/0x40
+	 virtblk_report_zones+0x282/0x430
+	 blkdev_report_zones_ioctl+0xfd/0x130
+	 blkdev_ioctl+0x20f/0x2c0
+	 __x64_sys_ioctl+0x86/0xd0
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #0 (&vblk->vdev_mutex){+.+.}-{4:4}:
+	 __lock_acquire+0x1522/0x2680
+	 lock_acquire+0xd5/0x2f0
+	 __mutex_lock+0xa3/0x1360
+	 virtblk_report_zones+0xda/0x430
+	 blkdev_report_zones_cached+0x162/0x190
+	 btrfs_get_dev_zones+0xdc/0x2e0
+	 btrfs_get_dev_zone_info+0x219/0xe80
+	 btrfs_get_dev_zone_info_all_devices+0x62/0x90
+	 open_ctree+0x1200/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  other info that might help us debug this:
+
+  Chain exists of:
+    &vblk->vdev_mutex --> btrfs_trans_num_extwriters --> &fs_devs->device_list_mutex
+
+   Possible unsafe locking scenario:
+
+	 CPU0                    CPU1
+	 ----                    ----
+    lock(&fs_devs->device_list_mutex);
+				 lock(btrfs_trans_num_extwriters);
+				 lock(&fs_devs->device_list_mutex);
+    lock(&vblk->vdev_mutex);
+
+   *** DEADLOCK ***
+
+  3 locks held by mount/1043:
+   #0: ffff88811063e878 (&fc->uapi_mutex){+.+.}-{4:4}, at: __do_sys_fsconfig+0x2ae/0x680
+   #1: ffff88810cb9f0e8 (&type->s_umount_key#31/1){+.+.}-{4:4}, at: alloc_super+0xc0/0x3e0
+   #2: ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
+
+  stack backtrace:
+  CPU: 2 UID: 0 PID: 1043 Comm: mount Not tainted 7.0.0-rc1+ #355 PREEMPT(full)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/10/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5b/0x80
+   print_circular_bug.cold+0x18d/0x1d8
+   check_noncircular+0x10d/0x130
+   __lock_acquire+0x1522/0x2680
+   ? vmap_small_pages_range_noflush+0x3ef/0x820
+   lock_acquire+0xd5/0x2f0
+   ? virtblk_report_zones+0xda/0x430
+   ? lock_is_held_type+0xcd/0x130
+   __mutex_lock+0xa3/0x1360
+   ? virtblk_report_zones+0xda/0x430
+   ? virtblk_report_zones+0xda/0x430
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   ? virtblk_report_zones+0xda/0x430
+   virtblk_report_zones+0xda/0x430
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   blkdev_report_zones_cached+0x162/0x190
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   btrfs_get_dev_zones+0xdc/0x2e0
+   btrfs_get_dev_zone_info+0x219/0xe80
+   btrfs_get_dev_zone_info_all_devices+0x62/0x90
+   open_ctree+0x1200/0x23db
+   btrfs_get_tree.cold+0x105/0x26c
+   ? rcu_is_watching+0x18/0x50
+   vfs_get_tree+0x28/0xb0
+   __do_sys_fsconfig+0x324/0x680
+   do_syscall_64+0x92/0x4f0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f615e27a40e
+  RSP: 002b:00007fff11b18fb8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+  RAX: ffffffffffffffda RBX: 000055572e92ab10 RCX: 00007f615e27a40e
+  RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+  RBP: 00007fff11b19100 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 000055572e92bc40 R14: 00007f615e3faa60 R15: 000055572e92bd08
+   </TASK>
+
+Don't hold the device_list_mutex while calling into
+btrfs_get_dev_zone_info() in btrfs_get_dev_zone_info_all_devices() to
+mitigate the issue. This is safe, as no other thread can touch the device
+list at the moment of execution.
+
+Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/acpi/acpixf.h | 120 +++++++++++++++++++++---------------------
- 1 file changed, 60 insertions(+), 60 deletions(-)
+ fs/btrfs/zoned.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index be7de305a6220..f9a86e3329715 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -587,82 +587,82 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_install_initialization_handler
- 			    (acpi_init_handler handler, u32 function))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_sci_handler(acpi_sci_handler
--							  address,
--							  void *context))
--ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_remove_sci_handler(acpi_sci_handler
--							 address))
-+				acpi_install_sci_handler(acpi_sci_handler
-+							 address,
-+							 void *context))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_global_event_handler
--				 (acpi_gbl_event_handler handler,
--				  void *context))
-+				acpi_remove_sci_handler(acpi_sci_handler
-+							address))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_fixed_event_handler(u32
--								  acpi_event,
--								  acpi_event_handler
--								  handler,
--								  void
--								  *context))
-+				acpi_install_global_event_handler
-+				(acpi_gbl_event_handler handler,
-+				 void *context))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_remove_fixed_event_handler(u32 acpi_event,
-+				acpi_install_fixed_event_handler(u32
-+								 acpi_event,
- 								 acpi_event_handler
--								 handler))
--ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_gpe_handler(acpi_handle
--							  gpe_device,
--							  u32 gpe_number,
--							  u32 type,
--							  acpi_gpe_handler
--							  address,
--							  void *context))
-+								 handler,
-+								 void
-+								 *context))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_gpe_raw_handler(acpi_handle
--							      gpe_device,
--							      u32 gpe_number,
--							      u32 type,
--							      acpi_gpe_handler
--							      address,
--							      void *context))
-+				acpi_remove_fixed_event_handler(u32 acpi_event,
-+								acpi_event_handler
-+								handler))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_remove_gpe_handler(acpi_handle gpe_device,
-+				acpi_install_gpe_handler(acpi_handle
-+							 gpe_device,
- 							 u32 gpe_number,
-+							 u32 type,
- 							 acpi_gpe_handler
--							 address))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_notify_handler(acpi_handle device,
--							 u32 handler_type,
--							 acpi_notify_handler
--							 handler,
-+							 address,
- 							 void *context))
-+ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
-+				acpi_install_gpe_raw_handler(acpi_handle
-+							     gpe_device,
-+							     u32 gpe_number,
-+							     u32 type,
-+							     acpi_gpe_handler
-+							     address,
-+							     void *context))
-+ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
-+				acpi_remove_gpe_handler(acpi_handle gpe_device,
-+							u32 gpe_number,
-+							acpi_gpe_handler
-+							address))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_remove_notify_handler(acpi_handle device,
-+			    acpi_install_notify_handler(acpi_handle device,
- 							u32 handler_type,
- 							acpi_notify_handler
--							handler))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_address_space_handler(acpi_handle
--								device,
--								acpi_adr_space_type
--								space_id,
--								acpi_adr_space_handler
--								handler,
--								acpi_adr_space_setup
--								setup,
--								void *context))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_remove_address_space_handler(acpi_handle
-+							handler,
-+							void *context))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_remove_notify_handler(acpi_handle device,
-+						       u32 handler_type,
-+						       acpi_notify_handler
-+						       handler))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_install_address_space_handler(acpi_handle
- 							       device,
- 							       acpi_adr_space_type
- 							       space_id,
- 							       acpi_adr_space_handler
--							       handler))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_exception_handler
--			     (acpi_exception_handler handler))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_interface_handler
--			     (acpi_interface_handler handler))
-+							       handler,
-+							       acpi_adr_space_setup
-+							       setup,
-+							       void *context))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_remove_address_space_handler(acpi_handle
-+							      device,
-+							      acpi_adr_space_type
-+							      space_id,
-+							      acpi_adr_space_handler
-+							      handler))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_install_exception_handler
-+			    (acpi_exception_handler handler))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_install_interface_handler
-+			    (acpi_interface_handler handler))
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 8c858f31bdbc0..bff56f87b426a 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -313,7 +313,10 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
+ 	if (!btrfs_fs_incompat(fs_info, ZONED))
+ 		return 0;
  
- /*
-  * Global Lock interfaces
+-	mutex_lock(&fs_devices->device_list_mutex);
++	/*
++	 * No need to take the device_list mutex here, we're still in the mount
++	 * path and devices cannot be added to or removed from the list yet.
++	 */
+ 	list_for_each_entry(device, &fs_devices->devices, dev_list) {
+ 		/* We can skip reading of zone info for missing devices */
+ 		if (!device->bdev)
+@@ -323,7 +326,6 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
+ 		if (ret)
+ 			break;
+ 	}
+-	mutex_unlock(&fs_devices->device_list_mutex);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
