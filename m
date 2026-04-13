@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-236736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENdkIhkf3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:37 +0200
+	id sBlZLSkf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27983F0031
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DC03F0066
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D205E31C4C74
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0A61630486D7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE74230B50F;
-	Mon, 13 Apr 2026 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40565313E10;
+	Mon, 13 Apr 2026 16:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvYCbnjl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpSd5qJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906042E11B9;
-	Mon, 13 Apr 2026 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E3F223DCE;
+	Mon, 13 Apr 2026 16:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097661; cv=none; b=pr/BiJeU5ddEbVK3REdticAXlHcNbf6TMF04K7WPqQN6eJKTI2zKPsuLOrK0Jgj23qsOUpbq36lvmsgW9jSvVs3gssIaWUex/TvhgYCY7wywvZatHuLLqjALHDtznwOd8oEZPE9gnVCUijj+1Hzr+uQ7UEpYgyKaHhuhOUSjYok=
+	t=1776098921; cv=none; b=a2qaLv4Juf+Nsg18HfICXbT15Psfm1n2zYtHgd2xxjLsEx5+YAHovV8kbxCqDYWsitwoeEV13OgAyeysKRD9T3VJ3abOgQyOkNVm9GX/DD4qNk2ZxiXFVeMbKkiSawjwJBOZW2PmnYsvBBZCByGiRyFRQiACZP4Uv/4oabUVTAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097661; c=relaxed/simple;
-	bh=3ifonOA47QaQOrd3YBica6+dXfk+AGetyzYVHiWAXS0=;
+	s=arc-20240116; t=1776098921; c=relaxed/simple;
+	bh=kto1kre+xEdRRJgQ7IympDVQ9bN/U8KBoDATx6Sl8rM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JimxgwiW9EThczI7Xh7KAWrlLAKMeBZwK8nDjNAEwBS5VHhEbgfgrmEJlFZJfp066NDOfPQyVFmBzFMH4j4bSH7M83CQdqinD7mhtb2mjWqs5V1MBsERtoS5kl9tScDjKDa5z1SezE5HjGTfeewYBoF4//N4Z1Bz0wrCsnZedSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvYCbnjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B1DC2BCAF;
-	Mon, 13 Apr 2026 16:27:40 +0000 (UTC)
+	 MIME-Version; b=dk9//6uWFzDvYy08/xJtP8akP1wXCkdh4OLWllgoPsyesRBv+drnpdpUF9hGZkGEZq3wJ3PxyynB+SZz5LuxhNEBZ69NKztPxEW3GtMsC8zgSAUgo29neB/+Pl2Ui+di1A+Ljp7jowb2wyjWrkBAg9XISCkZWWjzV+3XjhDN2yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpSd5qJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5EFC2BCAF;
+	Mon, 13 Apr 2026 16:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097661;
-	bh=3ifonOA47QaQOrd3YBica6+dXfk+AGetyzYVHiWAXS0=;
+	s=korg; t=1776098920;
+	bh=kto1kre+xEdRRJgQ7IympDVQ9bN/U8KBoDATx6Sl8rM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvYCbnjlijunrG/uiJQaH2GnAzRgxG0TlDIQOJD0zOAXYsmp+Vg64mdsZP4Hr5pM3
-	 Ls7JI/NXKU0B+imjnAZwqrhpkiIGKDzZ3PztKC1FXLXIoISrenxR8t3mZuckHCyNRD
-	 W8b38I11VA/J2uhrQOjnpAHORqk76pd9QY3joscs=
+	b=IpSd5qJaxp+yxkhRvlJW8CkgDOWzRHN86Kg4Cp2xW8IOu2gcc6+N5+8SuSoJy/yZI
+	 5+QOXgoraHMJryxuWXkfyOcAWEuFd2SDJ2SQvxtpWfFAGdSxGY8nos5DDrSIpXXaCS
+	 rdyzCUZdNpfq6aSNxHht/NXs1qFzRHSxYQVtsZdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Garg <nktgrg@google.com>,
-	Jordan Rhee <jordanrhee@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 222/570] gve: defer interrupt enabling until NAPI registration
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 108/491] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
 Date: Mon, 13 Apr 2026 17:55:53 +0200
-Message-ID: <20260413155838.772859831@linuxfoundation.org>
+Message-ID: <20260413155823.085980263@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,125 +66,157 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237230-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236736-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: D27983F0031
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 59DC03F0066
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Garg <nktgrg@google.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit 3d970eda003441f66551a91fda16478ac0711617 upstream.
+commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
 
-Currently, interrupts are automatically enabled immediately upon
-request. This allows interrupt to fire before the associated NAPI
-context is fully initialized and cause failures like below:
+This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
+that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
+ceph_handle_auth_reply(), the value of the payload_len field of such a
+message is stored in a variable of type int. A value greater than
+INT_MAX leads to an integer overflow and is interpreted as a negative
+value. This leads to decrementing the pointer address by this value and
+subsequently accessing it because ceph_decode_need() only checks that
+the memory access does not exceed the end address of the allocation.
 
-[    0.946369] Call Trace:
-[    0.946369]  <IRQ>
-[    0.946369]  __napi_poll+0x2a/0x1e0
-[    0.946369]  net_rx_action+0x2f9/0x3f0
-[    0.946369]  handle_softirqs+0xd6/0x2c0
-[    0.946369]  ? handle_edge_irq+0xc1/0x1b0
-[    0.946369]  __irq_exit_rcu+0xc3/0xe0
-[    0.946369]  common_interrupt+0x81/0xa0
-[    0.946369]  </IRQ>
-[    0.946369]  <TASK>
-[    0.946369]  asm_common_interrupt+0x22/0x40
-[    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
+This patch fixes the issue by changing the data type of payload_len to
+u32. Additionally, the data type of result_msg_len is changed to u32,
+as it is also a variable holding a non-negative length.
 
-Use the `IRQF_NO_AUTOEN` flag when requesting interrupts to prevent auto
-enablement and explicitly enable the interrupt in NAPI initialization
-path (and disable it during NAPI teardown).
+Also, an additional layer of sanity checks is introduced, ensuring that
+directly after reading it from the message, payload_len and
+result_msg_len are not greater than the overall segment length.
 
-This ensures that interrupt lifecycle is strictly coupled with
-readiness of NAPI context.
+BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
+
+CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: ceph-msgr ceph_con_workfn [libceph]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ print_report+0xd1/0x620
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? kasan_complete_mode_report_info+0x72/0x210
+ kasan_report+0xe7/0x130
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ __asan_report_load_n_noabort+0xf/0x20
+ ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ mon_dispatch+0x973/0x23d0 [libceph]
+ ? apparmor_socket_recvmsg+0x6b/0xa0
+ ? __pfx_mon_dispatch+0x10/0x10 [libceph]
+ ? __kasan_check_write+0x14/0x30i
+ ? mutex_unlock+0x7f/0xd0
+ ? __pfx_mutex_unlock+0x10/0x10
+ ? __pfx_do_recvmsg+0x10/0x10 [libceph]
+ ceph_con_process_message+0x1f1/0x650 [libceph]
+ process_message+0x1e/0x450 [libceph]
+ ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
+ ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
+ ? save_fpregs_to_fpstate+0xb0/0x230
+ ? raw_spin_rq_unlock+0x17/0xa0
+ ? finish_task_switch.isra.0+0x13b/0x760
+ ? __switch_to+0x385/0xda0
+ ? __kasan_check_write+0x14/0x30
+ ? mutex_lock+0x8d/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ ceph_con_workfn+0x248/0x10c0 [libceph]
+ process_one_work+0x629/0xf80
+ ? __kasan_check_write+0x14/0x30
+ worker_thread+0x87f/0x1570
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? __pfx_try_to_wake_up+0x10/0x10
+ ? kasan_print_address_stack_frame+0x1f7/0x280
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x396/0x830
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ ? __pfx_kthread+0x10/0x10
+ ? __kasan_check_write+0x14/0x30
+ ? recalc_sigpending+0x180/0x210
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x3f7/0x610
+ ? __pfx_ret_from_fork+0x10/0x10
+ ? __switch_to+0x385/0xda0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+[ idryomov: replace if statements with ceph_decode_need() for
+  payload_len and result_msg_len ]
 
 Cc: stable@vger.kernel.org
-Fixes: 1dfc2e46117e ("gve: Refactor napi add and remove functions")
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Link: https://patch.msgid.link/20251219102945.2193617-1-hramamurthy@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ modified to re-introduce the irq member to struct gve_notify_block,
-  which was introuduced in commit 9a5e0776d11f ("gve: Avoid rescheduling
-  napi if on wrong cpu"). ]
-Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve.h      |    1 +
- drivers/net/ethernet/google/gve/gve_main.c |    5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ net/ceph/auth.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -441,6 +441,7 @@ struct gve_notify_block {
- 	struct gve_priv *priv;
- 	struct gve_tx_ring *tx; /* tx rings on this block */
- 	struct gve_rx_ring *rx; /* rx rings on this block */
-+	u32 irq;
- } ____cacheline_aligned;
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -185,9 +185,9 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	s32 result;
+ 	u64 global_id;
+ 	void *payload, *payload_end;
+-	int payload_len;
++	u32 payload_len;
+ 	char *result_msg;
+-	int result_msg_len;
++	u32 result_msg_len;
+ 	int ret = -EINVAL;
  
- /* Tracks allowed and current queue settings */
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -339,9 +339,10 @@ static int gve_alloc_notify_blocks(struc
- 		snprintf(block->name, sizeof(block->name), "%s-ntfy-block.%d",
- 			 name, i);
- 		block->priv = priv;
-+		block->irq = priv->msix_vectors[msix_idx].vector;
- 		err = request_irq(priv->msix_vectors[msix_idx].vector,
- 				  gve_is_gqi(priv) ? gve_intr : gve_intr_dqo,
--				  0, block->name, block);
-+				  IRQF_NO_AUTOEN, block->name, block);
- 		if (err) {
- 			dev_err(&priv->pdev->dev,
- 				"Failed to receive msix vector %d\n", i);
-@@ -502,6 +503,7 @@ static void gve_add_napi(struct gve_priv
- 
- 	netif_napi_add(priv->dev, &block->napi, gve_poll,
- 		       NAPI_POLL_WEIGHT);
-+	enable_irq(block->irq);
- }
- 
- static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
-@@ -509,6 +511,7 @@ static void gve_remove_napi(struct gve_p
- 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
- 
- 	netif_napi_del(&block->napi);
-+	disable_irq(block->irq);
- }
- 
- static int gve_register_qpls(struct gve_priv *priv)
+ 	mutex_lock(&ac->mutex);
+@@ -197,10 +197,12 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	result = ceph_decode_32(&p);
+ 	global_id = ceph_decode_64(&p);
+ 	payload_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, payload_len, bad);
+ 	payload = p;
+ 	p += payload_len;
+ 	ceph_decode_need(&p, end, sizeof(u32), bad);
+ 	result_msg_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, result_msg_len, bad);
+ 	result_msg = p;
+ 	p += result_msg_len;
+ 	if (p != end)
 
 
 
