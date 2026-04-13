@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0E8bOC4g3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:14 +0200
+	id UPm6Hn4f3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D02C3F046E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396F83F01CF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF79F3162CB9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09583302AA7C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58094238D27;
-	Mon, 13 Apr 2026 16:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E342313298;
+	Mon, 13 Apr 2026 16:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hog77H2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wM0t0CKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B042226D18;
-	Mon, 13 Apr 2026 16:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45DB3168EE;
+	Mon, 13 Apr 2026 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097886; cv=none; b=RKYsRiw/XcnuYTTbtm4zJZkxN04BZ2d73MjK+0lZaxjyoWQ/XGr4iDyB+CXgWenZF3eusi7TNN6SBDTv5Zf56x/MI/10Exw3cufMwoccBsEbS4I1tudfZc+uJOEE6buprYNarB7FqPs6TlclvXRCh3J613NUW4EzPdh8qpyok3Y=
+	t=1776099070; cv=none; b=bYlsRcNrqnN34S73rl8PF3d7W+5JtudzuqNGbpEHLQxn78HvwTuv2hQ2K92hHU5J8CkafB7PXvA/saJ8B64H5ZOyrByGIh7qxk6zzIPCa+w9nooshwdurp5lQo4rU7jtQI4ZgPhfZk71qGs+ChVfa65MCTplWICI/XrnBY+1Mt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097886; c=relaxed/simple;
-	bh=q1dObH+j+B0YmMFZMgYl+luDsHaRR02IXcsbFit5f/8=;
+	s=arc-20240116; t=1776099070; c=relaxed/simple;
+	bh=OzgWyYDhWUr0qPvziBS53mC42pdKG8hLVBxmg9I9I4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/T0DpafCYnAn6rKwVUw14adItE1yFXaOEa3bhBarA+RASMtTs96w7x/SlTbm1OM6inZE5toHwiR6WJneksVL8zjKRhIQwYGgDFcAWgdidprLtu4yT8AVROTFeuYIalso+MPKfCPn8bp3L1S2B2bEEMCu7GSpI4sE2w8s6Y0kig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hog77H2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56DAC2BCAF;
-	Mon, 13 Apr 2026 16:31:25 +0000 (UTC)
+	 MIME-Version; b=mVmDeYqO2Gj3Egw7RuOfrBWApMBKkK/KwecNsWW3tAOPcMxN1ZKT8jR3agS/iN9SBKVNopnfKsjrrEHQsAkyfZq6QtA5XMqRIP4CO6PGrB+CqH9EpLaHkkwtJbPiMxcowNjxOtHNZYJO7I8AFht+YWAr7r5+EWpYjkVmzgVD+Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wM0t0CKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40533C2BCAF;
+	Mon, 13 Apr 2026 16:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097886;
-	bh=q1dObH+j+B0YmMFZMgYl+luDsHaRR02IXcsbFit5f/8=;
+	s=korg; t=1776099070;
+	bh=OzgWyYDhWUr0qPvziBS53mC42pdKG8hLVBxmg9I9I4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hog77H2r3SKsze1pQQcbdmcSY3hRdzaQL15Hal4nTjR7ApRcfZInyrI2JMxGUcxvw
-	 tIrXpmenItdKZiudDSu0s0yXOf7aTC6AZ5JiR3NsY1BZnEzJ0dNB6aHm+QkGznbo4T
-	 jnuuiE1S0QW74U7AwiJLXAPlPalstp7BLk0yDQRc=
+	b=wM0t0CKcTY/QYGPWRTPzh/HD8sq99iRDMpxKKCh2jcUTTJa5dl2F+qYFhgsqdLXic
+	 JWOGnMjwKuG/sJa0h+zNJWmoUFyg1Az/5ZFtxTezrGM6MBt2+DIvfnVxux74C2xtCX
+	 omQxT3EZ+51HWLq99PXXq3vQWW+3VYh5Mav0Lnmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uzair Mughal <contact@uzair.is-a.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 311/570] ALSA: hda/realtek: Add headset jack quirk for Thinkpad X390
-Date: Mon, 13 Apr 2026 17:57:22 +0200
-Message-ID: <20260413155842.146810648@linuxfoundation.org>
+Subject: [PATCH 5.10 198/491] soc: fsl: qbman: fix race condition in qman_destroy_fq
+Date: Mon, 13 Apr 2026 17:57:23 +0200
+Message-ID: <20260413155826.486137864@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,72 +69,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237288-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236824-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D02C3F046E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 396F83F01CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uzair Mughal <contact@uzair.is-a.dev>
+From: Richard Genoud <richard.genoud@bootlin.com>
 
-[ Upstream commit 542127f6528ca7cc3cf61e1651d6ccb58495f953 ]
+[ Upstream commit 014077044e874e270ec480515edbc1cadb976cf2 ]
 
-The Lenovo ThinkPad X390 (ALC257 codec, subsystem ID 0x17aa2288)
-does not report headset button press events. Headphone insertion is
-detected (SW_HEADPHONE_INSERT), but pressing the inline microphone
-button on a headset produces no input events.
+When QMAN_FQ_FLAG_DYNAMIC_FQID is set, there's a race condition between
+fq_table[fq->idx] state and freeing/allocating from the pool and
+WARN_ON(fq_table[fq->idx]) in qman_create_fq() gets triggered.
 
-Add a SND_PCI_QUIRK entry that maps this subsystem ID to
-ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK, which enables
-headset jack button detection through alc_fixup_headset_jack()
-and ThinkPad ACPI integration. This is the same fixup used by
-similar ThinkPad models (P1 Gen 3, X1 Extreme Gen 3).
+Indeed, we can have:
+         Thread A                             Thread B
+    qman_destroy_fq()                    qman_create_fq()
+      qman_release_fqid()
+        qman_shutdown_fq()
+        gen_pool_free()
+           -- At this point, the fqid is available again --
+                                           qman_alloc_fqid()
+           -- so, we can get the just-freed fqid in thread B --
+                                           fq->fqid = fqid;
+                                           fq->idx = fqid * 2;
+                                           WARN_ON(fq_table[fq->idx]);
+                                           fq_table[fq->idx] = fq;
+     fq_table[fq->idx] = NULL;
 
-Signed-off-by: Uzair Mughal <contact@uzair.is-a.dev>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260307012906.20093-1-contact@uzair.is-a.dev
+And adding some logs between qman_release_fqid() and
+fq_table[fq->idx] = NULL makes the WARN_ON() trigger a lot more.
+
+To prevent that, ensure that fq_table[fq->idx] is set to NULL before
+gen_pool_free() is called by using smp_wmb().
+
+Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
+Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+Tested-by: CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>
+Link: https://lore.kernel.org/r/20251223072549.397625-1-richard.genoud@bootlin.com
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/fsl/qbman/qman.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 72d9ea5171bbd..38fda5dbd75ba 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9608,6 +9608,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x224c, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x224d, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x225d, "Thinkpad T480", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x17aa, 0x2288, "Thinkpad X390", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x2292, "Thinkpad X1 Carbon 7th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22be, "Thinkpad X1 Carbon 8th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22c1, "Thinkpad P1 Gen 3", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 7abc9b6a04ab6..0309ed2df0d71 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -1827,6 +1827,8 @@ EXPORT_SYMBOL(qman_create_fq);
+ 
+ void qman_destroy_fq(struct qman_fq *fq)
+ {
++	int leaked;
++
+ 	/*
+ 	 * We don't need to lock the FQ as it is a pre-condition that the FQ be
+ 	 * quiesced. Instead, run some checks.
+@@ -1834,11 +1836,29 @@ void qman_destroy_fq(struct qman_fq *fq)
+ 	switch (fq->state) {
+ 	case qman_fq_state_parked:
+ 	case qman_fq_state_oos:
+-		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID))
+-			qman_release_fqid(fq->fqid);
++		/*
++		 * There's a race condition here on releasing the fqid,
++		 * setting the fq_table to NULL, and freeing the fqid.
++		 * To prevent it, this order should be respected:
++		 */
++		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID)) {
++			leaked = qman_shutdown_fq(fq->fqid);
++			if (leaked)
++				pr_debug("FQID %d leaked\n", fq->fqid);
++		}
+ 
+ 		DPAA_ASSERT(fq_table[fq->idx]);
+ 		fq_table[fq->idx] = NULL;
++
++		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID) && !leaked) {
++			/*
++			 * fq_table[fq->idx] should be set to null before
++			 * freeing fq->fqid otherwise it could by allocated by
++			 * qman_alloc_fqid() while still being !NULL
++			 */
++			smp_wmb();
++			gen_pool_free(qm_fqalloc, fq->fqid | DPAA_GENALLOC_OFF, 1);
++		}
+ 		return;
+ 	default:
+ 		break;
 -- 
 2.51.0
 
