@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-236166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONmnN2QV3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:10:12 +0200
+	id 0ILzHUge3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F20E3EE624
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:10:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B583EFD76
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04D0B301B73F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83A7230377B7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708FC24DCF6;
-	Mon, 13 Apr 2026 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F6F30BBAE;
+	Mon, 13 Apr 2026 16:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWtLG9Lp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDYD/zma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2E824676D;
-	Mon, 13 Apr 2026 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A689429BD87;
+	Mon, 13 Apr 2026 16:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096215; cv=none; b=b24MMUdXE+coeOPdVx3eTbDCdLAj9jVW9LzCPaW1X8DkYHg2gklimtaqc7YXCif4LfSjD/aTZdsHbWF+pVn85sKf8fU7xpf9hOfpwKtOrJ0IyzArha6Szgl6fFUfPNAtugcnXLFpE94HGN8zYF8/B081s0hi/byx20GXTnIkBvU=
+	t=1776098189; cv=none; b=LGCZ8G3aAn3vD4XxoWdq2u9pWRkZw8yQe5tsNLlg5a9knYOoJq+H5dbSvvmFUY4l9xrBkc//Q54QP76APr8AS3yrBwV94inc4iu9yylw2bqmpfUTIW7CB1s+IPfdhTVRaeiuZR1dthN+mMlTBig4WTCEuYULNjuQWRm/QdJGe+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096215; c=relaxed/simple;
-	bh=ya/UzjqGPMaxaEWsJnc5ATvGQ1h3m1ImKNy/TisMoSU=;
+	s=arc-20240116; t=1776098189; c=relaxed/simple;
+	bh=CZAxHWH1KrRQwjx0ZWzin+5Ez0QR2tCDeeJe8PFbbA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ks84Th3fHwHYtFE7ZZObqoqDdA2hAE9xAJREBr3hfm84iAACypfKWpYXs+xleGY1iyHFBqb1a76xaukn+KxieKSOMNib4eYzCrwGUqyeTzPI5QUSN2dLneFW/tsJgCo4IwV5HdvXr0xg4NLVHL6Rf3M/IPk9AMSN8V2bOMaevLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWtLG9Lp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7C0C2BCAF;
-	Mon, 13 Apr 2026 16:03:34 +0000 (UTC)
+	 MIME-Version; b=JJARYKgx1L4vU6NdQ2oS8urvb5YuwijYOrJQuIVRSP8CqAdsnGefkzv201SV+qFOdUcN8UBkDqkvzr4TUj2DQeYfvy2BPHOpzrLaTRWuiBaxgsHtHQyUO59u1erfUJxLwB4H6UhN4IOxWGX3zbbp273IxCdH55snxHuGqTNYlmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDYD/zma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3E7C2BCB3;
+	Mon, 13 Apr 2026 16:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096214;
-	bh=ya/UzjqGPMaxaEWsJnc5ATvGQ1h3m1ImKNy/TisMoSU=;
+	s=korg; t=1776098189;
+	bh=CZAxHWH1KrRQwjx0ZWzin+5Ez0QR2tCDeeJe8PFbbA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWtLG9LpvJLIg7zKNbCkkyVSBe2o6DCvOoYQXxAl3sQ0wbpdyIPwf5hxOBVHuHXhM
-	 8YddHoC3tPQp0a7fglR/P2p2PlBzDB9hrUcvlKEuW6GqkoM1lSi9GTj4BBfXUahM3g
-	 gGquD6F2hiQ88txPjLFlL9rCvTkbknkeDK+1syE0=
+	b=QDYD/zma+mwHRxBVy5eTr77wNMmP+xZMFSRFANyyOlhktdQVl8a2T6WcJSgN86c+i
+	 j0uOXXA06ijCP8FNg4YynW1GVaHBBLDce/RUx34KlByxdaU/PlR3jtgpdlORDnWTWh
+	 wNfWNRV+TwAw8vd2+vZ1j/xQRLV8KNmAQ5+enBe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 12/86] MIPS: Always record SEGBITS in cpu_data.vmbits
+Subject: [PATCH 5.15 428/570] rds: ib: reject FRMR registration before IB connection is established
 Date: Mon, 13 Apr 2026 17:59:19 +0200
-Message-ID: <20260413155732.032036688@linuxfoundation.org>
+Message-ID: <20260413155846.504614684@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,139 +70,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236943-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236166-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,orcam.me.uk:email,franken.de:email]
-X-Rspamd-Queue-Id: 4F20E3EE624
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email]
+X-Rspamd-Queue-Id: 08B583EFD76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 8374c2cb83b95b3c92f129fd56527225c20a058c upstream.
+[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
 
-With a 32-bit kernel running on 64-bit MIPS hardware the hardcoded value
-of `cpu_vmbits' only records the size of compatibility useg and does not
-reflect the size of native xuseg or the complete range of values allowed
-in the VPN2 field of TLB entries.
+rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
+and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
+fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
+i_cm_id = NULL because the connection worker has not yet called
+rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
+RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
+the control message before any connection establishment, allowing
+rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
+kernel.
 
-An upcoming change will need the actual VPN2 value range permitted even
-in 32-bit kernel configurations, so always include the `vmbits' member
-in `struct cpuinfo_mips' and probe for SEGBITS when running on 64-bit
-hardware and resorting to the currently hardcoded value of 31 on 32-bit
-processors.  No functional change for users of `cpu_vmbits'.
+The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
+commit 9e630bcb7701), which does not catch this case since ic is allocated
+early and is always non-NULL once the connection object exists.
 
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+ RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
+ Call Trace:
+  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
+  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
+  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
+  rds_ib_get_mr (net/rds/ib_rdma.c:615)
+  __rds_rdma_map (net/rds/rdma.c:295)
+  rds_cmsg_rdma_map (net/rds/rdma.c:860)
+  rds_sendmsg (net/rds/send.c:1363)
+  ____sys_sendmsg
+  do_syscall_64
+
+Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
+non-NULL before proceeding with FRMR registration, mirroring the guard
+already present in rds_ib_post_inv(). Return -ENODEV when the connection
+is not ready, which the existing error handling in rds_cmsg_send() converts
+to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
+start the connection worker.
+
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/cpu-features.h |  1 -
- arch/mips/include/asm/cpu-info.h     |  2 --
- arch/mips/include/asm/mipsregs.h     |  2 ++
- arch/mips/kernel/cpu-probe.c         | 13 ++++++++-----
- arch/mips/kernel/cpu-r3k-probe.c     |  2 ++
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ net/rds/ib_rdma.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 404390bb87eaf..3f11e5218e6c6 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -484,7 +484,6 @@
- # endif
- # ifndef cpu_vmbits
- # define cpu_vmbits cpu_data[0].vmbits
--# define __NEED_VMBITS_PROBE
- # endif
- #endif
+diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
+index 8f070ee7e7426..30fca2169aa7a 100644
+--- a/net/rds/ib_rdma.c
++++ b/net/rds/ib_rdma.c
+@@ -608,8 +608,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
+ 		return ibmr;
+ 	}
  
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index fd60837ce50bc..211b578af6aa0 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -80,9 +80,7 @@ struct cpuinfo_mips {
- 	int			srsets; /* Shadow register sets */
- 	int			package;/* physical package number */
- 	unsigned int		globalnumber;
--#ifdef CONFIG_64BIT
- 	int			vmbits; /* Virtual memory size in bits */
--#endif
- 	void			*data;	/* Additional data */
- 	unsigned int		watch_reg_count;   /* Number that exist */
- 	unsigned int		watch_reg_use_cnt; /* Usable by ptrace */
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index f799c0d723dac..12a095dbf9e2a 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1871,6 +1871,8 @@ do {									\
- 
- #define read_c0_entryhi()	__read_ulong_c0_register($10, 0)
- #define write_c0_entryhi(val)	__write_ulong_c0_register($10, 0, val)
-+#define read_c0_entryhi_64()	__read_64bit_c0_register($10, 0)
-+#define write_c0_entryhi_64(val) __write_64bit_c0_register($10, 0, val)
- 
- #define read_c0_guestctl1()	__read_32bit_c0_register($10, 4)
- #define write_c0_guestctl1(val)	__write_32bit_c0_register($10, 4, val)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 1e49e05ac8b1c..489612ed9d498 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -210,11 +210,14 @@ static inline void set_elf_base_platform(const char *plat)
- 
- static inline void cpu_probe_vmbits(struct cpuinfo_mips *c)
- {
--#ifdef __NEED_VMBITS_PROBE
--	write_c0_entryhi(0x3fffffffffffe000ULL);
--	back_to_back_c0_hazard();
--	c->vmbits = fls64(read_c0_entryhi() & 0x3fffffffffffe000ULL);
--#endif
-+	int vmbits = 31;
-+
-+	if (cpu_has_64bits) {
-+		write_c0_entryhi_64(0x3fffffffffffe000ULL);
-+		back_to_back_c0_hazard();
-+		vmbits = fls64(read_c0_entryhi_64() & 0x3fffffffffffe000ULL);
+-	if (conn)
++	if (conn) {
+ 		ic = conn->c_transport_data;
++		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
++			ret = -ENODEV;
++			goto out;
++		}
 +	}
-+	c->vmbits = vmbits;
- }
  
- static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
-diff --git a/arch/mips/kernel/cpu-r3k-probe.c b/arch/mips/kernel/cpu-r3k-probe.c
-index 0c826f729f752..edcf04de0a6fb 100644
---- a/arch/mips/kernel/cpu-r3k-probe.c
-+++ b/arch/mips/kernel/cpu-r3k-probe.c
-@@ -137,6 +137,8 @@ void cpu_probe(void)
- 	else
- 		cpu_set_nofpu_opts(c);
- 
-+	c->vmbits = 31;
-+
- 	reserve_exception_space(0, 0x400);
- }
- 
+ 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
+ 		ret = -ENODEV;
 -- 
 2.53.0
 
