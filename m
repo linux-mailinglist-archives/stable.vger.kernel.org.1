@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-237031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFjaDKoe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:46 +0200
+	id yJahE5MY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8183EFE9D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A471B3EEC9D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1F4230A50C8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7912E30CCBFE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F7B30DEAC;
-	Mon, 13 Apr 2026 16:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB17282F2F;
+	Mon, 13 Apr 2026 16:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id+cFIfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKrH3WDc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D0430C361;
-	Mon, 13 Apr 2026 16:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F1727FB2E;
+	Mon, 13 Apr 2026 16:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098411; cv=none; b=JfmLxbE/60uBmcr1GtD1IO8DB1GkS3FkHhi2rKzGeNrYT6GVyakWcQ4rXm2LcHvo7ohBpzyFELlkPWERm+gH4wdRs6Tj5KxoSbUM+nat8Cw5zGYZjJ1dANxS4ekgInDEk+Op2yMlU/J9oot+8u3t+kEmZ3NKKhax6L3Rx69dkD4=
+	t=1776096741; cv=none; b=j8wf8EExgoaGwSPviY5OUfESBy6+a+YPf2lkTMssrSs0g8j5Sd0CQbxayFmKG4/4LJ66Y4/Q8FyODNZaRsK2LzIG9Ra8UrnlbpU+r341htW8tdkMtjyTNOg3v/rT92QQ1zUUo+wXM77N9avRlZyAms3CUunCvc1ssxBGSlKugDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098411; c=relaxed/simple;
-	bh=C6rpKQm7//mqWmdwLjaWc7jeo6RlA1mTJsmu43lKthA=;
+	s=arc-20240116; t=1776096741; c=relaxed/simple;
+	bh=h5fJUVOCSq+feRtQ5daRxw4zK8cEG7cCol/Fo2vCqi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFQmb5GZGKjmrLX+o9hxxFokihy7Xy57wQmqclOjip+FTKctpey1mTr2obqQ0ZaBLV6j0iz3xFQA2sFgsSSMdCczUcHoIdeDkvQxnafhp4kKfik1Eyp08OfP9bUTD921JPL7ojEVoFuhoylLunRjj/VHBx1wpj44sbuxAclI05w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Id+cFIfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466B2C2BCAF;
-	Mon, 13 Apr 2026 16:40:11 +0000 (UTC)
+	 MIME-Version; b=TwENMc89z5/vrRw7hk/vBe3Hw8jOYpQj34RtBkPP3isaJ4/3fFb0xfozANjbWTORdWY2I97tzEdGyQZtoGTMak/O701LVrbQR/gZnQcRGQNrPGuMcBkC9zQ83T4KFU2+F9u0E8ENEulZuObnEse8eBsCaZGxv9iOvQpMb2WHjRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKrH3WDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7ECC2BCAF;
+	Mon, 13 Apr 2026 16:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098411;
-	bh=C6rpKQm7//mqWmdwLjaWc7jeo6RlA1mTJsmu43lKthA=;
+	s=korg; t=1776096741;
+	bh=h5fJUVOCSq+feRtQ5daRxw4zK8cEG7cCol/Fo2vCqi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Id+cFIfxLNS6aelFFHa1wCcuNOes7tfQPJ6zY/nh1+TN3NVNvBYKbTM9V6Oi/0u2S
-	 buV9bxRvU9MiJBoUGeDYsumyvheogqe1oyqTt1Ftap3ky2Z3eZynj8cXRwBKBsL/Dt
-	 5VbO39BSgH77KUhP2Jep95E/dSzE8t6vubC+wFUo=
+	b=PKrH3WDcdx6cCtARqH71M7f/TjtfzyZI1n11nRRVkb0hs9lYcZE6L0BvyAKVWZYA5
+	 Vu8xthMYfz2jSD1/Jgl8ZQ4XpJSOqh4Uyc1NvqW3mnl8x1jPQZae1oKOGwREBCbQ0/
+	 dZsBJTB0/CHM+dxVamJ/e4yDZnZHhX6YnrSY/exI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@linux.win>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 5.15 507/570] xfrm_user: fix info leak in build_report()
+	Leo Lin <leo@depthfirst.com>
+Subject: [PATCH 6.12 43/70] X.509: Fix out-of-bounds access when parsing extensions
 Date: Mon, 13 Apr 2026 18:00:38 +0200
-Message-ID: <20260413155849.445117161@linuxfoundation.org>
+Message-ID: <20260413155729.786728090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237031-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236374-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,55 +86,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AE8183EFE9D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[depthfirst.com:email,wunner.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.win:email]
+X-Rspamd-Queue-Id: A471B3EEC9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit d10119968d0e1f2b669604baf2a8b5fdb72fa6b4 upstream.
+commit d702c3408213bb12bd570bb97204d8340d141c51 upstream.
 
-struct xfrm_user_report is a __u8 proto field followed by a struct
-xfrm_selector which means there is three "empty" bytes of padding, but
-the padding is never zeroed before copying to userspace.  Fix that up by
-zeroing the structure before setting individual member variables.
+Leo reports an out-of-bounds access when parsing a certificate with
+empty Basic Constraints or Key Usage extension because the first byte of
+the extension is read before checking its length.  Fix it.
 
-Cc: stable <stable@kernel.org>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+The bug can be triggered by an unprivileged user by submitting a
+specially crafted certificate to the kernel through the keyrings(7) API.
+Leo has demonstrated this with a proof-of-concept program responsibly
+disclosed off-list.
+
+Fixes: 30eae2b037af ("KEYS: X.509: Parse Basic Constraints for CA")
+Fixes: 567671281a75 ("KEYS: X.509: Parse Key Usage")
+Reported-by: Leo Lin <leo@depthfirst.com> # off-list
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Ignat Korchagin <ignat@linux.win>
+Cc: stable@vger.kernel.org # v6.4+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c |    1 +
- 1 file changed, 1 insertion(+)
+ crypto/asymmetric_keys/x509_cert_parser.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3544,6 +3544,7 @@ static int build_report(struct sk_buff *
- 		return -EMSGSIZE;
- 
- 	ur = nlmsg_data(nlh);
-+	memset(ur, 0, sizeof(*ur));
- 	ur->proto = proto;
- 	memcpy(&ur->sel, sel, sizeof(ur->sel));
- 
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -585,10 +585,10 @@ int x509_process_extension(void *context
+ 		 *   0x04 is where keyCertSign lands in this bit string
+ 		 *   0x80 is where digitalSignature lands in this bit string
+ 		 */
+-		if (v[0] != ASN1_BTS)
+-			return -EBADMSG;
+ 		if (vlen < 4)
+ 			return -EBADMSG;
++		if (v[0] != ASN1_BTS)
++			return -EBADMSG;
+ 		if (v[2] >= 8)
+ 			return -EBADMSG;
+ 		if (v[3] & 0x80)
+@@ -621,10 +621,10 @@ int x509_process_extension(void *context
+ 		 *	(Expect 0xFF if the CA is TRUE)
+ 		 * vlen should match the entire extension size
+ 		 */
+-		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
+-			return -EBADMSG;
+ 		if (vlen < 2)
+ 			return -EBADMSG;
++		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
++			return -EBADMSG;
+ 		if (v[1] != vlen - 2)
+ 			return -EBADMSG;
+ 		/* Empty SEQUENCE means CA:FALSE (default value omitted per DER) */
 
 
 
