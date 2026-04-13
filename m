@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEU2OUgk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:44 +0200
+	id 2BitINMb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9F93F1075
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5DC3EF699
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F13B3313F125
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D047530C34FD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3123090F5;
-	Mon, 13 Apr 2026 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74C2309DB5;
+	Mon, 13 Apr 2026 16:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz85atJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbiShMLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A13280CFB;
-	Mon, 13 Apr 2026 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8A8306B0A;
+	Mon, 13 Apr 2026 16:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098606; cv=none; b=spfg3MGiYYdB8ME7oAcaS564GEtFGzB5OCWrmb2ghkiSPV7AbPwuKc7Pa92Yw2ZfH6rQP4WpEsNkfcXPsud5dRDRBRt7oUNhnNgRXsAbGuKk74lkuOxK3baS07Y+QkaOtPg7ebCkVMNM7P+G6X5kfBMQbFu2zvZ9JYHU/FLDcLI=
+	t=1776097427; cv=none; b=nYUY/xnP1egceU0rRzSVfPPUboyOlU6P9XrVL9xOL1nu297eef/zBqzKBsirGAby3q222LJxjOMeG7WaFTQDRpnWqOU6SugypDwXlcsgbPW/a14dNj2SqsYzGbi23Vr9N2fgYsw2/QaDwaGncXRC13ZdzWdHw7n5iKRzflgt4qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098606; c=relaxed/simple;
-	bh=oQNeWZQPaxjR9lmCPByzCR5AWCDK+ZbhNeDz8hGa+08=;
+	s=arc-20240116; t=1776097427; c=relaxed/simple;
+	bh=iKbN5P+orpP6WXW7QC1LRMZB+URopdZ8DuBOkMB6HjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucjxmF1XMclsa6dvEbaV1Da+N8zcuGq5huDeO0+2eZ0WBpvMydii/QWtPiPFeGcqYmSHlUlKa7JtKISdil3tjZObsoQU9r3ZshZqzhvZMww7xmJKyAPmAgwHLSfc6SOKIw8nJQdYdsY4n0wsq3vXvOfOhx519BwtcdO5vkIheys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz85atJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2832CC2BCAF;
-	Mon, 13 Apr 2026 16:43:26 +0000 (UTC)
+	 MIME-Version; b=YTZ/BlojEZbff/BnSCPcVkv0Jx23UVQS0oNZo5dg/tvac0cihDSsIa/Uq9XAwunNVbGVcSOSV1N0LzGQ8pgyB7jqJmM3/y2L1ASB0AKStq46HlfvX8ltHP8yDASzErBaaxN0Qti7N2WXMN0MEKpFkF02m4H7YzNJaonPc0Yb1MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbiShMLU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18596C2BCAF;
+	Mon, 13 Apr 2026 16:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098606;
-	bh=oQNeWZQPaxjR9lmCPByzCR5AWCDK+ZbhNeDz8hGa+08=;
+	s=korg; t=1776097427;
+	bh=iKbN5P+orpP6WXW7QC1LRMZB+URopdZ8DuBOkMB6HjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iz85atJLKUT5YHKAF1wlm9AVkp4UGyfk5WsJ8UFPQ80XwehGUQOopTFGz1Mtj7dEJ
-	 4xzViKuP24UyG84X5uJuocuIrc1bA92fXq8HNa5Hg3Q0jpOF7kVC4ytFPArNvYQQrQ
-	 rEhGNNKs1juq0urMvR2m3maOGE2H8h89KmJis1KE=
+	b=KbiShMLUJ+0DNvK6I0895ZyM/MMj7QAYQCDIllUfOupJLmhCmK8ERp5wV2PzkQogJ
+	 0R/kh3GzGyLa6HOLvpPPLeG9Q9JL8E/MVDmTvOJ404Ft2uWaFWDxOu6sezz+cc4GlS
+	 Ml1CkQ/lEd2ctEKuMLNJynk/mKnelXsoG3bfhMNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ab12f0c08dd7ab8d057c@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 019/491] media: dvb-core: fix wrong reinitialization of ringbuffer on reopen
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 133/570] net: usb: lan78xx: skip LTM configuration for LAN7850
 Date: Mon, 13 Apr 2026 17:54:24 +0200
-Message-ID: <20260413155819.773734345@linuxfoundation.org>
+Message-ID: <20260413155835.426166711@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +63,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237107-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236641-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,ab12f0c08dd7ab8d057c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,kernel.dk:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 4B9F93F1075
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,pengutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9E5DC3EF699
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit bfbc0b5b32a8f28ce284add619bf226716a59bc0 upstream.
+commit d9cc0e440f0664f6f3e2c26e39ab9dd5f3badba7 upstream.
 
-dvb_dvr_open() calls dvb_ringbuffer_init() when a new reader opens the
-DVR device.  dvb_ringbuffer_init() calls init_waitqueue_head(), which
-reinitializes the waitqueue list head to empty.
+Do not configure Latency Tolerance Messaging (LTM) on USB 2.0 hardware.
 
-Since dmxdev->dvr_buffer.queue is a shared waitqueue (all opens of the
-same DVR device share it), this orphans any existing waitqueue entries
-from io_uring poll or epoll, leaving them with stale prev/next pointers
-while the list head is reset to {self, self}.
+The LAN7850 is a High-Speed (USB 2.0) only device and does not support
+SuperSpeed features like LTM. Currently, the driver unconditionally
+attempts to configure LTM registers during initialization. On the
+LAN7850, these registers do not exist, resulting in writes to invalid
+or undocumented memory space.
 
-The waitqueue and spinlock in dvr_buffer are already properly
-initialized once in dvb_dmxdev_init().  The open path only needs to
-reset the buffer data pointer, size, and read/write positions.
+This issue was identified during a port to the regmap API with strict
+register validation enabled. While no functional issues or crashes have
+been observed from these invalid writes, bypassing LTM initialization
+on the LAN7850 ensures the driver strictly adheres to the hardware's
+valid register map.
 
-Replace the dvb_ringbuffer_init() call in dvb_dvr_open() with direct
-assignment of data/size and a call to dvb_ringbuffer_reset(), which
-properly resets pread, pwrite, and error with correct memory ordering
-without touching the waitqueue or spinlock.
-
+Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
 Cc: stable@vger.kernel.org
-Fixes: 34731df288a5f ("V4L/DVB (3501): Dmxdev: use dvb_ringbuffer")
-Reported-by: syzbot+ab12f0c08dd7ab8d057c@syzkaller.appspotmail.com
-Tested-by: syzbot+ab12f0c08dd7ab8d057c@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/698a26d3.050a0220.3b3015.007d.GAE@google.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260305143429.530909-4-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dmxdev.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/dvb-core/dmxdev.c
-+++ b/drivers/media/dvb-core/dmxdev.c
-@@ -178,7 +178,9 @@ static int dvb_dvr_open(struct inode *in
- 			mutex_unlock(&dmxdev->mutex);
- 			return -ENOMEM;
- 		}
--		dvb_ringbuffer_init(&dmxdev->dvr_buffer, mem, DVR_BUFFER_SIZE);
-+		dmxdev->dvr_buffer.data = mem;
-+		dmxdev->dvr_buffer.size = DVR_BUFFER_SIZE;
-+		dvb_ringbuffer_reset(&dmxdev->dvr_buffer);
- 		if (dmxdev->may_do_mmap)
- 			dvb_vb2_init(&dmxdev->dvr_vb2_ctx, "dvr",
- 				     file->f_flags & O_NONBLOCK);
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2518,6 +2518,10 @@ static void lan78xx_init_ltm(struct lan7
+ 	u32 buf;
+ 	u32 regs[6] = { 0 };
+ 
++	/* LAN7850 is USB 2.0 and does not support LTM */
++	if (dev->chipid == ID_REV_CHIP_ID_7850_)
++		return;
++
+ 	ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
+ 	if (buf & USB_CFG1_LTM_ENABLE_) {
+ 		u8 temp[2];
 
 
 
