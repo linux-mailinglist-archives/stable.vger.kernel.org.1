@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-236302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yETlA/EY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:21 +0200
+	id 4HceNOIZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B713EEDE9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2CA3EF117
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D641F306EF42
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9626030951AE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B02B30C615;
-	Mon, 13 Apr 2026 16:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FDA3093B2;
+	Mon, 13 Apr 2026 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTPdyQq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Puq/e/iT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EC92D73B5;
-	Mon, 13 Apr 2026 16:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C09228CF4A;
+	Mon, 13 Apr 2026 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096558; cv=none; b=AW7ooAjPAWWsoZ65sm+ZEL+4meJsNVEuItUZDi6UC49bsUVfO1zCb5C/ldwBOJOEri+2PCfIJ5ruKpiGnjSPyiOgidsIC6uE/4RG2prheyzEYlMfST+WnCvJDvnWet5T5duND+c7bQ8iBrijISHA8R5WIBMpjSWC9n8lKMNdc+E=
+	t=1776096705; cv=none; b=F6HLqIvi5u7457K5zc1DmSO8aD6/+iCmSmEpWlFxZA0AnYi1MhHS2yb+74AP6iHbSOlr75BoR2l069h2nt0FzZxsfghZo5hdKai5msGZRpeH2IfWuYrDGFXmNPrygWxRDz10krMcJ3B7fzOLi9Rlu9mtjNdk1nPaK2qRbgLyv1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096558; c=relaxed/simple;
-	bh=vCo+4/jYpzy8EzcgZL6ywHE1cYRen3iwHPQwOgZjybY=;
+	s=arc-20240116; t=1776096705; c=relaxed/simple;
+	bh=FfLj/7tx+lQ01RyL8cbN00iUj+uQuMhSbA7qVyX05Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3dEBBpID74/IhfhsDX3COfEc1NGjhVsnNoMPu09e0RP3stkY7QTCg3Wm0hGot8+DfazKt6rL3MOK/V5eguttDSOxRFelvkAJEao0HG3WV4P2huDvQLLpH+5HY+sOtFGPfE21qkqk+MC61dRmbeEUl+ciLBfuM3O8DquJWGE1gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTPdyQq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A09FC2BCB0;
-	Mon, 13 Apr 2026 16:09:17 +0000 (UTC)
+	 MIME-Version; b=ewgoC0U6otzztzdy5IB7fkXMIPd47X23c+LJNpqjAa3xe99FC3D8ZONV9sE15qCW3JCM57ZnlqhkXwI9KPz0oFKe1mlTufiDzfuJRpVA5f/TGyaqMZwRUYM8tH+gvPE0eALIm0vE8QcoNVKJIy1zU7WBfRmrRU9q8HeRHk7R/GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Puq/e/iT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D0BC2BCB0;
+	Mon, 13 Apr 2026 16:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096557;
-	bh=vCo+4/jYpzy8EzcgZL6ywHE1cYRen3iwHPQwOgZjybY=;
+	s=korg; t=1776096704;
+	bh=FfLj/7tx+lQ01RyL8cbN00iUj+uQuMhSbA7qVyX05Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTPdyQq1tLevERCUzDKdLlXVzlsPbMT9OrPDDUe7+lni1QozQOUtwOCH7sU8TC+Br
-	 gnaKxUkHOajKOo9sDgdVdf7jHC+ZXpvNL/Lt1eFtE7REtFa3oSTLOko6A4sMJP/lWf
-	 TcyG+yJgoA706iaqrNTd7rKsieHLU17irvt2fS+o=
+	b=Puq/e/iTBgjtNtNGcp8ACgHBn53LW+UsqQcKX6fQ67DY0xgsKwiMARXh7nQHp6l96
+	 aPgzAovUOO74w+CKXrsnzNPo1AYRfSSO4cCyTdhS6DssX1mJiW40bsqC4mE2ovMNL0
+	 K5npwrI3bAgemhAI4S5QkZJpg4h7o2zPkrd2aHZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Li Li <boolli@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.18 58/83] idpf: set the payload size before calling the async handler
+	Tuan Do <tuan@calif.io>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.12 31/70] netfilter: nft_ct: fix use-after-free in timeout object destroy
 Date: Mon, 13 Apr 2026 18:00:26 +0200
-Message-ID: <20260413155733.179370639@linuxfoundation.org>
+Message-ID: <20260413155729.350704276@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,71 +67,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236302-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236360-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 92B713EEDE9
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[calif.io:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ED2CA3EF117
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Tuan Do <tuan@calif.io>
 
-commit 8e2a2420e267a515f6db56a6e9570b5cacd92919 upstream.
+commit f8dca15a1b190787bbd03285304b569631160eda upstream.
 
-Set the payload size before forwarding the reply to the async handler.
-Without this, xn->reply_sz will be 0 and idpf_mac_filter_async_handler()
-will never get past the size check.
+nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
+immediately after nf_ct_untimeout(), without waiting for an RCU grace
+period. Concurrent packet processing on other CPUs may still hold
+RCU-protected references to the timeout object obtained via
+rcu_dereference() in nf_ct_timeout_data().
 
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
+freeing until after an RCU grace period, matching the approach already
+used in nfnetlink_cttimeout.c.
+
+KASAN report:
+ BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
+ Read of size 4 at addr ffff8881035fe19c by task exploit/80
+
+ Call Trace:
+  nf_conntrack_tcp_packet+0x1381/0x29d0
+  nf_conntrack_in+0x612/0x8b0
+  nf_hook_slow+0x70/0x100
+  __ip_local_out+0x1b2/0x210
+  tcp_sendmsg_locked+0x722/0x1580
+  __sys_sendto+0x2d8/0x320
+
+ Allocated by task 75:
+  nft_ct_timeout_obj_init+0xf6/0x290
+  nft_obj_init+0x107/0x1b0
+  nf_tables_newobj+0x680/0x9c0
+  nfnetlink_rcv_batch+0xc29/0xe00
+
+ Freed by task 26:
+  nft_obj_destroy+0x3f/0xa0
+  nf_tables_trans_destroy_work+0x51c/0x5c0
+  process_one_work+0x2c4/0x5a0
+
+Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Li Li <boolli@google.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Tuan Do <tuan@calif.io>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/netfilter/nf_conntrack_timeout.h |    1 +
+ net/netfilter/nft_ct.c                       |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -612,6 +612,10 @@ idpf_vc_xn_forward_reply(struct idpf_ada
- 		err = -ENXIO;
- 		goto out_unlock;
- 	case IDPF_VC_XN_ASYNC:
-+		/* Set reply_sz from the actual payload so that async_handler
-+		 * can evaluate the response.
-+		 */
-+		xn->reply_sz = ctlq_msg->data_len;
- 		err = idpf_vc_xn_forward_async(adapter, xn, ctlq_msg);
- 		idpf_vc_xn_unlock(xn);
- 		return err;
+--- a/include/net/netfilter/nf_conntrack_timeout.h
++++ b/include/net/netfilter/nf_conntrack_timeout.h
+@@ -14,6 +14,7 @@
+ struct nf_ct_timeout {
+ 	__u16			l3num;
+ 	const struct nf_conntrack_l4proto *l4proto;
++	struct rcu_head		rcu;
+ 	char			data[];
+ };
+ 
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -1002,7 +1002,7 @@ static void nft_ct_timeout_obj_destroy(c
+ 	nf_queue_nf_hook_drop(ctx->net);
+ 	nf_ct_untimeout(ctx->net, timeout);
+ 	nf_ct_netns_put(ctx->net, ctx->family);
+-	kfree(priv->timeout);
++	kfree_rcu(priv->timeout, rcu);
+ }
+ 
+ static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
 
 
 
