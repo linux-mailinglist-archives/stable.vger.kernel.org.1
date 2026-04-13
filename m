@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-236073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CW+EOrm3GkZYAkAu9opvQ
-	(envelope-from <stable+bounces-236073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:51:54 +0200
+	id oGF6Gorn3GmUYAkAu9opvQ
+	(envelope-from <stable+bounces-236077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:54:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C853F3EC361
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:51:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15D73EC3D7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3CA0A300830F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:51:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4EEDC300C324
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D08F3C8722;
-	Mon, 13 Apr 2026 12:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268713C4579;
+	Mon, 13 Apr 2026 12:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLaeMJFx"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="xhG8zG9l"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE183C8734
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F823BFE33
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776084712; cv=none; b=KZMcBTEMUVEChI3AdY0r+Ozy7b12ZuHoWx8sdOE9o4CxVjZz0ez1+QRklkyMfCGfcHm2cHsbLMG4J1ojVXSqfFD1ru5sjbr2R0lDYKFis4xn4ADuyQ975ristMTQ2xHFtXzJ/HwwoMg+StmIIPbyw+jxoK1LbMBqvYajXo+/K8E=
+	t=1776084869; cv=none; b=qUafEO+/B697Zu451W79NXgRkGz2cnSyto+f3Z8Fw8Ts7Kh31eg7JbYHWB9Z7djWSFrMsHtAQviDCN6PLQQKMZERbrG7IzLWnq2xEFjAtok1icNSMJZJGGzX2JTwEKF4KN8lms8HYobmScN4s32hNWmdaXnEwMIPwRmvowDYliU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776084712; c=relaxed/simple;
-	bh=AmJGeUvJ5xik5A1YjEociSJ0TuwuZgWxQFA4mlrscqY=;
+	s=arc-20240116; t=1776084869; c=relaxed/simple;
+	bh=Bd3/cwc6yj/8WevNhy8FQGGaWmrvclV9Or0FvpV43bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNaslN/NvtJhI6qty1qyf9K7ouv+ZRRtmHLvYGu7lpxevRcVnZ0t6dUEPPNbw2TMsNnZhZx4fr+t/k/7iaTzOK15EEAJ9l9OHDc7hqcIUMBxY7cbOQz0cr2O21oyM/mSJBl4oBo+qMBxbTYSu05ftNwgEvhCemM68dUV/PNlzXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLaeMJFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A3FC2BCB4;
-	Mon, 13 Apr 2026 12:51:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776084712;
-	bh=AmJGeUvJ5xik5A1YjEociSJ0TuwuZgWxQFA4mlrscqY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLaeMJFxpJF/UiL8kch37OFwaV0uX88u8MaVTGAR7U/PkEjed5IsRmolOeOJatbSn
-	 9kXrxmiV1kzLHQ6bE8ZWNfRUtVJzA7cmf9wF3kdYtJg5KLTGUSbnsxT8ByfiOQ/bKI
-	 65w7+0L4V87XtBSRmPX4ehYLeM53QVBWEU1NN2q5/EZ8dYcOAd2pu20054NIIl/lYU
-	 7/oK+aobNYGqKThWm09gJGGW5Z6rGQdysHdUdKhj+spWlIq4QN4kUtISKO6LLFDUj4
-	 /AJXT4U+Dw7JtcqxNfy3COe6BAvMDDopHNhQgN1qVt+8bjxXMY6v0X4XHOeUlxA0Sd
-	 t860YogQmnb7Q==
-From: Sasha Levin <sashal@kernel.org>
+	 MIME-Version; b=kl9nIR/yn8NGZpZrO+VZIR9UE/FTwqr8b0ic700ZdYNJdanbSRwQze2oiiSrvYxXhf4PCg1HQ0e6oJcwh1iE4+dyaMRjENgOKhGHEsnLZoYBiLeKYTQ5fPO6wcvNUu01Ei7B64lXxbWzDF/FRPjAQ1ExSXoVkDqiW/9bPUw8w+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=xhG8zG9l; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: by dvalin.narfation.org (Postfix) id 6EAB71FE7B;
+	Mon, 13 Apr 2026 12:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1776084859;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8uqxWRUywfGgz7qE0QifNQS3U06VCHqxPJDDMvoC+XA=;
+	b=xhG8zG9l/ntbsUuWrStM20Jqzw+ujIp/Cgu95/VEfkaQg5IGIQi8s9CUs56lv5tDIB6FDV
+	ynsWmTT+NPHjZNDbQaoS/x9IZwm93W0a9Cb44uRoE/cgaeVPcLRZ1szP2YMzMjxZyHvy66
+	jUQy4UkyWjkgw5n5TQYa6phYVSrpPfY=
+From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
-Cc: David Woodhouse <dwmw@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y 2/2] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
-Date: Mon, 13 Apr 2026 08:51:49 -0400
-Message-ID: <20260413125149.2876836-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413125149.2876836-1-sashal@kernel.org>
-References: <2026041316-tribunal-pendant-dc80@gregkh>
- <20260413125149.2876836-1-sashal@kernel.org>
+Cc: Haoze Xie <royenheart@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.15.y] batman-adv: hold claim backbone gateways by reference
+Date: Mon, 13 Apr 2026 14:54:07 +0200
+Message-ID: <20260413125407.85603-1-sven@narfation.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026041331-darkness-relic-85a7@gregkh>
+References: <2026041331-darkness-relic-85a7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,182 +73,147 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236073-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-236077-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[narfation.org:+];
+	NEURAL_HAM(-0.00)[-0.994];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C853F3EC361
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lzu.edu.cn:email,simonwunderlich.de:email,narfation.org:dkim,narfation.org:email,narfation.org:mid]
+X-Rspamd-Queue-Id: F15D73EC3D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Haoze Xie <royenheart@gmail.com>
 
-[ Upstream commit 2619da73bb2f10d88f7e1087125c40144fdf0987 ]
+commit 82d8701b2c930d0e96b0dbc9115a218d791cb0d2 upstream.
 
-Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-flexible-array members") broke the userspace API for C++.
+batadv_bla_add_claim() can replace claim->backbone_gw and drop the old
+gateway's last reference while readers still follow the pointer.
 
-These structures ending in VLAs are typically a *header*, which can be
-followed by an arbitrary number of entries. Userspace typically creates
-a larger structure with some non-zero number of entries, for example in
-QEMU's kvm_arch_get_supported_msr_feature():
+The netlink claim dump path dereferences claim->backbone_gw->orig and
+takes claim->backbone_gw->crc_lock without pinning the underlying
+backbone gateway. batadv_bla_check_claim() still has the same naked
+pointer access pattern.
 
-    struct {
-        struct kvm_msrs info;
-        struct kvm_msr_entry entries[1];
-    } msr_data = {};
+Reuse batadv_bla_claim_get_backbone_gw() in both readers so they operate
+on a stable gateway reference until the read-side work is complete.
+This keeps the dump and claim-check paths aligned with the lifetime
+rules introduced for the other BLA claim readers.
 
-While that works in C, it fails in C++ with an error like:
- flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
-
-Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
-for C++ compilation.
-
-Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Fixes: 04f3f5bf1883 ("batman-adv: add B.A.T.M.A.N. Dump BLA claims via netlink")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
-[sean: tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- arch/x86/include/uapi/asm/kvm.h | 12 ++++++------
- include/uapi/linux/kvm.h        | 11 ++++++-----
- 2 files changed, 12 insertions(+), 11 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c | 27 +++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 774eb6989ef9e..d94b2471aa216 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -197,13 +197,13 @@ struct kvm_msrs {
- 	__u32 nmsrs; /* number of msrs in entries */
- 	__u32 pad;
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index 17687848daec5..fb9aaf82f7136 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -2131,6 +2131,7 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
+ 			    struct batadv_bla_claim *claim)
+ {
+ 	u8 *primary_addr = primary_if->net_dev->dev_addr;
++	struct batadv_bla_backbone_gw *backbone_gw;
+ 	u16 backbone_crc;
+ 	bool is_own;
+ 	void *hdr;
+@@ -2146,32 +2147,35 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
  
--	struct kvm_msr_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
- };
+ 	genl_dump_check_consistent(cb, hdr);
  
- /* for KVM_GET_MSR_INDEX_LIST */
- struct kvm_msr_list {
- 	__u32 nmsrs; /* number of msrs in entries */
--	__u32 indices[];
-+	__DECLARE_FLEX_ARRAY(__u32, indices);
- };
+-	is_own = batadv_compare_eth(claim->backbone_gw->orig,
+-				    primary_addr);
++	backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
  
- /* Maximum size of any access bitmap in bytes */
-@@ -245,7 +245,7 @@ struct kvm_cpuid_entry {
- struct kvm_cpuid {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
- };
+-	spin_lock_bh(&claim->backbone_gw->crc_lock);
+-	backbone_crc = claim->backbone_gw->crc;
+-	spin_unlock_bh(&claim->backbone_gw->crc_lock);
++	is_own = batadv_compare_eth(backbone_gw->orig, primary_addr);
++
++	spin_lock_bh(&backbone_gw->crc_lock);
++	backbone_crc = backbone_gw->crc;
++	spin_unlock_bh(&backbone_gw->crc_lock);
  
- struct kvm_cpuid_entry2 {
-@@ -267,7 +267,7 @@ struct kvm_cpuid_entry2 {
- struct kvm_cpuid2 {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry2 entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
- };
+ 	if (is_own)
+ 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
+ 			genlmsg_cancel(msg, hdr);
+-			goto out;
++			goto put_backbone_gw;
+ 		}
  
- /* for KVM_GET_PIT and KVM_SET_PIT */
-@@ -398,7 +398,7 @@ struct kvm_xsave {
- 	 * the contents of CPUID leaf 0xD on the host.
+ 	if (nla_put(msg, BATADV_ATTR_BLA_ADDRESS, ETH_ALEN, claim->addr) ||
+ 	    nla_put_u16(msg, BATADV_ATTR_BLA_VID, claim->vid) ||
+ 	    nla_put(msg, BATADV_ATTR_BLA_BACKBONE, ETH_ALEN,
+-		    claim->backbone_gw->orig) ||
++		    backbone_gw->orig) ||
+ 	    nla_put_u16(msg, BATADV_ATTR_BLA_CRC,
+ 			backbone_crc)) {
+ 		genlmsg_cancel(msg, hdr);
+-		goto out;
++		goto put_backbone_gw;
+ 	}
+ 
+ 	genlmsg_end(msg, hdr);
+ 	ret = 0;
+ 
++put_backbone_gw:
++	batadv_backbone_gw_put(backbone_gw);
+ out:
+ 	return ret;
+ }
+@@ -2467,6 +2471,7 @@ int batadv_bla_backbone_dump(struct sk_buff *msg, struct netlink_callback *cb)
+ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
+ 			    u8 *addr, unsigned short vid)
+ {
++	struct batadv_bla_backbone_gw *backbone_gw;
+ 	struct batadv_bla_claim search_claim;
+ 	struct batadv_bla_claim *claim = NULL;
+ 	struct batadv_hard_iface *primary_if = NULL;
+@@ -2489,9 +2494,13 @@ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
+ 	 * return false.
  	 */
- 	__u32 region[1024];
--	__u32 extra[];
-+	__DECLARE_FLEX_ARRAY(__u32, extra);
- };
- 
- #define KVM_MAX_XCRS	16
-@@ -565,7 +565,7 @@ struct kvm_pmu_event_filter {
- 	__u32 fixed_counter_bitmap;
- 	__u32 flags;
- 	__u32 pad[4];
--	__u64 events[];
-+	__DECLARE_FLEX_ARRAY(__u64, events);
- };
- 
- #define KVM_PMU_EVENT_ALLOW 0
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 76bd54848b112..bcc8532986171 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -11,6 +11,7 @@
- #include <linux/const.h>
- #include <linux/types.h>
- #include <linux/compiler.h>
-+#include <linux/stddef.h>
- #include <linux/ioctl.h>
- #include <asm/kvm.h>
- 
-@@ -532,7 +533,7 @@ struct kvm_coalesced_mmio {
- 
- struct kvm_coalesced_mmio_ring {
- 	__u32 first, last;
--	struct kvm_coalesced_mmio coalesced_mmio[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
- };
- 
- #define KVM_COALESCED_MMIO_MAX \
-@@ -582,7 +583,7 @@ struct kvm_clear_dirty_log {
- /* for KVM_SET_SIGNAL_MASK */
- struct kvm_signal_mask {
- 	__u32 len;
--	__u8  sigset[];
-+	__DECLARE_FLEX_ARRAY(__u8, sigset);
- };
- 
- /* for KVM_TPR_ACCESS_REPORTING */
-@@ -1040,7 +1041,7 @@ struct kvm_irq_routing_entry {
- struct kvm_irq_routing {
- 	__u32 nr;
- 	__u32 flags;
--	struct kvm_irq_routing_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
- };
- 
- #define KVM_IRQFD_FLAG_DEASSIGN (1 << 0)
-@@ -1131,7 +1132,7 @@ struct kvm_dirty_tlb {
- 
- struct kvm_reg_list {
- 	__u64 n; /* number of regs */
--	__u64 reg[];
-+	__DECLARE_FLEX_ARRAY(__u64, reg);
- };
- 
- struct kvm_one_reg {
-@@ -1586,7 +1587,7 @@ struct kvm_stats_desc {
- #ifdef __KERNEL__
- 	char name[KVM_STATS_NAME_SIZE];
- #else
--	char name[];
-+	__DECLARE_FLEX_ARRAY(char, name);
- #endif
- };
+ 	if (claim) {
+-		if (!batadv_compare_eth(claim->backbone_gw->orig,
++		backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
++
++		if (!batadv_compare_eth(backbone_gw->orig,
+ 					primary_if->net_dev->dev_addr))
+ 			ret = false;
++
++		batadv_backbone_gw_put(backbone_gw);
+ 		batadv_claim_put(claim);
+ 	}
  
 -- 
-2.53.0
+2.47.3
 
 
