@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEB5I+kV3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:25 +0200
+	id OHCsBXIX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BF53EE6BB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF733EE9AA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 90B8B3052930
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:06:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DADA83053BDA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4800C2DA757;
-	Mon, 13 Apr 2026 16:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA52F2EBB8C;
+	Mon, 13 Apr 2026 16:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eS3yvkwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dz/4lNj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B53B263C7F;
-	Mon, 13 Apr 2026 16:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20052D877D;
+	Mon, 13 Apr 2026 16:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096321; cv=none; b=VrgLT+Kddy9jkbgSMINJWAf2FiLBL5qS6R7K16HhwmYgTtA2vZscEwMuTzzOAQaCHRnn5sHACNpBunB1UN1F/gK/Yc0vu+U4kEzuaqSCeocUme8eN779gOLv9Au9i1g7EqBQBxRLRCZlyziI1UnhiNfcIp517PlkUClQGFNbX9k=
+	t=1776096491; cv=none; b=cNGEJZga1V1K9bQ+vheTptEIx0zlBAPfKZht5HtuXbJtsk6rEcE4fqnB4BCBSmCIGPIW8UOLYxL2wPtmYSoMz9NI/eFvdXILqQd2urH9J/08PwAmB/9vHG9jsR2r91vwaFTjDhG66IgVAO5GvsKhi1l56SJl1gjQoDn9UuLihfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096321; c=relaxed/simple;
-	bh=UFZCr7FqyiGvFIbqHSdkTylRZYkduKrDPr6IaIj7A5M=;
+	s=arc-20240116; t=1776096491; c=relaxed/simple;
+	bh=RuBQXvgJeMlDttSRGmOuP+UI0Lqorklal6TD6J3M58k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoqQov9CSUVUcg+pJjNgVdmOy2NrpZiD57Id9LtsOct1wezj/5uqeZ1Rz7Y35o3JLCu1nG/W8buwCSPARAXuQRholfJtuOO+eN+FYmLeDCHEr3f/bvEhbiVtPjkgyv3vK91Se2zubPrF5w06u7zuXpsE5eZaEnW635imygRwHK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eS3yvkwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D206C2BCF6;
-	Mon, 13 Apr 2026 16:05:20 +0000 (UTC)
+	 MIME-Version; b=GOVSBX8S17WJJUO1pplz6lKlNFjcKwM+l7q+RJwL8kyeYcfF6pglHhwqfQkaywqwAOXsQLxx8XdJeJTAR4xfBCZwvRyLZ/2lfTa59yYCIB1X7UgsEEzW8kJ5MH5Fzfem6vtFkVBhyX4TKYIGUKtIJgeFnGnedUpy7CbihlhUpL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dz/4lNj9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C1BC2BCAF;
+	Mon, 13 Apr 2026 16:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096320;
-	bh=UFZCr7FqyiGvFIbqHSdkTylRZYkduKrDPr6IaIj7A5M=;
+	s=korg; t=1776096490;
+	bh=RuBQXvgJeMlDttSRGmOuP+UI0Lqorklal6TD6J3M58k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eS3yvkwIJO8bRWrj6jOxtzAcHrjwqBv57Dxdlck7JOS1ngvPvr821zbh9dZJpMRio
-	 iMGppA/2m5yC7smuXJN7IYixHGyFpJoYjCyj28c68LypiC0g/U3F00Z5VD0b4U7LQe
-	 poWbmp/GIA6OFO/YWzua81y0marOuKvBEUwWeD7g=
+	b=dz/4lNj9itqfAuYNw+yw+0W396iOpH4B72XQIyC9nTFtcBAh72cqcyV9zYBJcuEee
+	 VJ7vqrsM2rsNYRzCZBYYy8mCKMAaTAx6UgI3du42Zv6YhI/9bATcbd1f4Y9Srxv4eA
+	 XkY5r6DIGoxBs0/17o2xuPmbdo9dm2hDWXuFgLVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 52/86] mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.18 31/83] Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
 Date: Mon, 13 Apr 2026 17:59:59 +0200
-Message-ID: <20260413155733.507293769@linuxfoundation.org>
+Message-ID: <20260413155732.184504110@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236208-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236274-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,55 +88,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 94BF53EE6BB
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[puri.sm:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9FF733EE9AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-commit 0199390a6b92fc21860e1b858abf525c7e73b956 upstream.
+commit 4cd46ea0eb4504f7f4fea92cb4601c5c9a3e545e upstream.
 
-damon_call() for repeat_call_control of DAMON_SYSFS could fail if somehow
-the kdamond is stopped before the damon_call().  It could happen, for
-example, when te damon context was made for monitroing of a virtual
-address processes, and the process is terminated immediately, before the
-damon_call() invocation.  In the case, the dyanmically allocated
-repeat_call_control is not deallocated and leaked.
+This reverts commit c24a9b698fb02cd0723fa8375abab07f94b97b10.
 
-Fix the leak by deallocating the repeat_call_control under the
-damon_call() failure.
+It's been found that there's a significant per-unit variance in accepted
+supply voltages and the current set still makes some units unstable.
 
-This issue is discovered by sashiko [1].
+Revert back to nominal values.
 
-Link: https://lkml.kernel.org/r/20260327003224.55752-1-sj@kernel.org
-Link: https://lore.kernel.org/20260320020630.962-1-sj@kernel.org [1]
-Fixes: 04a06b139ec0 ("mm/damon/sysfs: use dynamically allocated repeat mode damon_call_control")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: c24a9b698fb0 ("arm64: dts: imx8mq-librem5: Set the DVS voltages lower")
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |    2 -
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi   |   22 +++++---------------
+ 2 files changed, 7 insertions(+), 17 deletions(-)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1673,7 +1673,8 @@ static int damon_sysfs_turn_damon_on(str
- 	repeat_call_control->data = kdamond;
- 	repeat_call_control->repeat = true;
- 	repeat_call_control->dealloc_on_cancel = true;
--	damon_call(ctx, repeat_call_control);
-+	if (damon_call(ctx, repeat_call_control))
-+		kfree(repeat_call_control);
- 	return err;
- }
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+@@ -7,7 +7,7 @@
  
+ &a53_opp_table {
+ 	opp-1000000000 {
+-		opp-microvolt = <950000>;
++		opp-microvolt = <1000000>;
+ 	};
+ };
+ 
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -844,8 +844,8 @@
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <880000>;
+-				rohm,dvs-idle-voltage = <820000>;
++				rohm,dvs-run-voltage = <900000>;
++				rohm,dvs-idle-voltage = <850000>;
+ 				rohm,dvs-suspend-voltage = <810000>;
+ 				regulator-always-on;
+ 			};
+@@ -856,8 +856,8 @@
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <950000>;
+-				rohm,dvs-idle-voltage = <850000>;
++				rohm,dvs-run-voltage = <1000000>;
++				rohm,dvs-idle-voltage = <900000>;
+ 				regulator-always-on;
+ 			};
+ 
+@@ -866,14 +866,14 @@
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+-				rohm,dvs-run-voltage = <850000>;
++				rohm,dvs-run-voltage = <900000>;
+ 			};
+ 
+ 			buck4_reg: BUCK4 {
+ 				regulator-name = "buck4";
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+-				rohm,dvs-run-voltage = <930000>;
++				rohm,dvs-run-voltage = <1000000>;
+ 			};
+ 
+ 			buck5_reg: BUCK5 {
+@@ -1407,13 +1407,3 @@
+ 	fsl,ext-reset-output;
+ 	status = "okay";
+ };
+-
+-&a53_opp_table {
+-	opp-1000000000 {
+-		opp-microvolt = <850000>;
+-	};
+-
+-	opp-1500000000 {
+-		opp-microvolt = <950000>;
+-	};
+-};
 
 
 
