@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-236614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBcPCasY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:11 +0200
+	id wJdUIaUg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-236615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E463EECF3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB5C3F05ED
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 77456302BE7F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 956AD31BFCFF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA3930DED5;
-	Mon, 13 Apr 2026 16:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F0E30BBAE;
+	Mon, 13 Apr 2026 16:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Stj+LIys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvXLi71U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6110030BF70;
-	Mon, 13 Apr 2026 16:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E393128AB;
+	Mon, 13 Apr 2026 16:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097360; cv=none; b=OcSD3xe61TdUWqEwHjgfYyGrAsDkbjxO0H5fG1JeiohKlt2jKNMJZ0bTPNLzR6Ta98hPysiPx7SSS0aKhwmICotwwD/bhJfxmoYFYPHGEbHdtUu6oHVHaPG6CjQ2Jm4qoxgZbTTVHoR7elov+ahEI/WSyv38FX9ILLmAYu0Wvi4=
+	t=1776097363; cv=none; b=RgL/kdhNvKO1BFU7/4CjD0Xv2oYRntGwAUxClgeZs3Zz4VI4Adhvd3XaBh4ZNpc57oUYzSTnivZXvrLq/8y8NIkPXjlp0wv3X00VMwjm2mzlyxxT+Q6eJPm4SrhMbEHeUBUon5n2li0IKWjuWGm3uhbSw6jm10q8vqNL0aWIO5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097360; c=relaxed/simple;
-	bh=KYbZT2BEM/cIPnRFHtaFRWVeVTt0pqsjTUmFr3nwCqk=;
+	s=arc-20240116; t=1776097363; c=relaxed/simple;
+	bh=mPwKwRFSTyTD7mqZHr3tfZhSHPo3VIY9mUzX/l29e3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaI9L4aLEjIn9+evDkcc4kuoc6LGxpgqzHdxoJnm/ewzWkD6WlfNvkTOUo+a6MMO0WpmuU9I2doIEm7f8CijVpAaho3szV60b3nJvPUq8cfj1JqSae8FPvIZSoztPko5DGsFjB5SJ3CnCfsJMAfP3jiO+pfaHq2RY7LTZITJooA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Stj+LIys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4A4C2BCB3;
-	Mon, 13 Apr 2026 16:22:39 +0000 (UTC)
+	 MIME-Version; b=mLZH7Txj/zDmQ8Zjn+yGM3WmunkrozpUrBmzrljUAERJRsGe4E8uFLtUfIaLQtHCqZaKFMMmEi6umb6qFfgy53kTyF7yw8Qu8d3J1sFClr4lpL3yehbulnCGc4BtYRQnUMe7EJsfYyJckcl/7iQdjmGG7RqAU7GrxYiE5xPn2vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvXLi71U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86262C2BCB0;
+	Mon, 13 Apr 2026 16:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097360;
-	bh=KYbZT2BEM/cIPnRFHtaFRWVeVTt0pqsjTUmFr3nwCqk=;
+	s=korg; t=1776097362;
+	bh=mPwKwRFSTyTD7mqZHr3tfZhSHPo3VIY9mUzX/l29e3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Stj+LIystRo/zqlkcaE2P+TZKk92c/U5oRUc01ft4NA8+IM1qwPRbl6IQr7SQ4W6Z
-	 w1cZHNKq6jZIdyXrzm2rLDCWrAEjgGranJE0/tZv7+lawCQ5iDK1adD/J6DlgCbCcX
-	 Ynp//ZkQ0rk32HXlZxLb6HkhvQkiWe8jAHy/Cm4k=
+	b=dvXLi71UHI0LFe8SeocZhERlUgkhOAl8GtMRvuATYPHD+5kwgR05YV608PWhd9+ZY
+	 QFxq/HDfOUw2KeH3t3k115dnCZBc1K7TXoZzyzXwRntUZOqB1i7VH0qpq1lY4D70Ok
+	 6nYhBcqf/SC31ZiMWhuC8KzLb0IFQLXjKUo7zMKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Cotifava <cotifavamatteo@gmail.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/570] ASoC: soc-core: drop delayed_work_pending() check before flush
-Date: Mon, 13 Apr 2026 17:53:57 +0200
-Message-ID: <20260413155834.414289211@linuxfoundation.org>
+Subject: [PATCH 5.15 107/570] ASoC: soc-core: accept zero format at snd_soc_runtime_set_dai_fmt()
+Date: Mon, 13 Apr 2026 17:53:58 +0200
+Message-ID: <20260413155834.451376775@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -66,33 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236614-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236615-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 00E463EECF3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email]
+X-Rspamd-Queue-Id: 2FB5C3F05ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +99,66 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: matteo.cotifava <cotifavamatteo@gmail.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 3c99c9f0ed60582c1c9852b685d78d5d3a50de63 ]
+[ Upstream commit 7db07e37e13cfd46039d82aed91092185eac6565 ]
 
-The delayed_work_pending() check before flush_delayed_work() in
-soc_free_pcm_runtime() is unnecessary and racy. flush_delayed_work()
-is safe to call unconditionally - it is a no-op when no work is
-pending. Remove the check.
+Do nothing if format was zero at snd_soc_runtime_set_dai_fmt().
+soc-core.c can be more simple code by this patch.
 
-The original check was added by commit 9c9b65203492 ("ASoC: core:
-only flush inited work during free") but delayed_work_pending()
-followed by flush_delayed_work() has a time-of-check/time-of-use
-window where work can become pending between the two calls.
-
-Fixes: 9c9b65203492 ("ASoC: core: only flush inited work during free")
-Signed-off-by: Matteo Cotifava <cotifavamatteo@gmail.com>
-Link: https://patch.msgid.link/20260309215412.545628-2-cotifavamatteo@gmail.com
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/87ee8jt7d3.wl-kuninori.morimoto.gx@renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 95bc5c225513 ("ASoC: soc-core: flush delayed work before removing DAIs and widgets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/meson/meson-codec-glue.c |  3 ---
+ sound/soc/soc-core.c               | 11 ++++++-----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
+diff --git a/sound/soc/meson/meson-codec-glue.c b/sound/soc/meson/meson-codec-glue.c
+index d07270d17cee7..2870cfad813ac 100644
+--- a/sound/soc/meson/meson-codec-glue.c
++++ b/sound/soc/meson/meson-codec-glue.c
+@@ -113,9 +113,6 @@ int meson_codec_glue_output_startup(struct snd_pcm_substream *substream,
+ 	/* Replace link params with the input params */
+ 	rtd->dai_link->params = &in_data->params;
+ 
+-	if (!in_data->fmt)
+-		return 0;
+-
+ 	return snd_soc_runtime_set_dai_fmt(rtd, in_data->fmt);
+ }
+ EXPORT_SYMBOL_GPL(meson_codec_glue_output_startup);
 diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 854d8f62008ee..243c623598483 100644
+index 243c623598483..a00b944be9977 100644
 --- a/sound/soc/soc-core.c
 +++ b/sound/soc/soc-core.c
-@@ -400,8 +400,7 @@ static void soc_free_pcm_runtime(struct snd_soc_pcm_runtime *rtd)
+@@ -1244,6 +1244,9 @@ int snd_soc_runtime_set_dai_fmt(struct snd_soc_pcm_runtime *rtd,
+ 	unsigned int i;
+ 	int ret;
  
- 	list_del(&rtd->list);
++	if (!dai_fmt)
++		return 0;
++
+ 	for_each_rtd_codec_dais(rtd, i, codec_dai) {
+ 		ret = snd_soc_dai_set_fmt(codec_dai, dai_fmt);
+ 		if (ret != 0 && ret != -ENOTSUPP)
+@@ -1288,11 +1291,9 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
+ 		return ret;
  
--	if (delayed_work_pending(&rtd->delayed_work))
--		flush_delayed_work(&rtd->delayed_work);
-+	flush_delayed_work(&rtd->delayed_work);
- 	snd_soc_pcm_component_free(rtd);
+ 	snd_soc_runtime_get_dai_fmt(rtd);
+-	if (dai_link->dai_fmt) {
+-		ret = snd_soc_runtime_set_dai_fmt(rtd, dai_link->dai_fmt);
+-		if (ret)
+-			return ret;
+-	}
++	ret = snd_soc_runtime_set_dai_fmt(rtd, dai_link->dai_fmt);
++	if (ret)
++		return ret;
  
- 	/*
+ 	/* add DPCM sysfs entries */
+ 	soc_dpcm_debugfs_add(rtd);
 -- 
 2.51.0
 
