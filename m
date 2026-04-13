@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-236881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOUvAHUd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:37 +0200
+	id MFZUIO8l3WlkaQkAu9opvQ
+	(envelope-from <stable+bounces-237309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE6D3EFAB0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97863F136E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F349305FA35
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:33:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FA58323DD77
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4052D3A6A;
-	Mon, 13 Apr 2026 16:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE45A318BB3;
+	Mon, 13 Apr 2026 16:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljNGQ2qN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sh6iBWI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151B92D3220;
-	Mon, 13 Apr 2026 16:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2D8317173;
+	Mon, 13 Apr 2026 16:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098033; cv=none; b=GcD9DdvqooRuU2t2EvNToABqCts57gzizaUU3oTJNwsJDhO9cF9GLzxE+6AnwxktC2Mg6gLXyudU0wHqBb2OT1L4TRn3ZDQGz9BT52sZQo+B09EW4rLWGTVSjUVR9pCaPfxj90sjdEDjbLga0bbkuZTWhbMWSGXy4XlCs2Kz0FY=
+	t=1776099124; cv=none; b=IRc6COFG7B/LtCNr+eh/7xOpt4YluZBcftOjV7RbncTezq5JiJOMYwxrL8UxbguaHIF1f8jtcaeQUK9kXS+DZZmqUxdhAsPMgKG6hrepZyzKM8OxXdKu1D/wNXlwx/GGcJ5sZIuocEca1tiXDQPi18o5B3Up5A+rTunXw+gDjY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098033; c=relaxed/simple;
-	bh=DhRZ2UY8qvmWtuX1ZFzxqPYhyblQ+zrh30HixV7e2CE=;
+	s=arc-20240116; t=1776099124; c=relaxed/simple;
+	bh=uafwpXwazqcMjtQfZ0rXfZCblUThewDYN4YuPfM1zrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5GmX/VwqUDAs2g0MiYRXmogHXPdoU9uFAJSDpf1n7QMuvbJzH+hi/usxrJ5513NW9bcCJSOqmCtrTfvOqyBKoXWkaex5Z/PwWeonDWrcUKZl9rIfnzaTePWuJWzzvJOb8xhipxWeN0xF6eYaTvfoQ2g13WWxS2Eg+Th9az2yOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljNGQ2qN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DBDC2BCAF;
-	Mon, 13 Apr 2026 16:33:52 +0000 (UTC)
+	 MIME-Version; b=f056R1Siok0N5qLGmHgOF5vWjpCdfqoCMgVpp2G/YKhHx7cEBabEUf9WZ3jTG0YRozqrmYGENEz1NsjV8Q48/9fkaMYV+QopLzTjS1x6rWoGhxv41BhGI7UfI93+wGzXwy3dFeKd5EfBLcpDkOZBYKeE1OfDAthWmXnOeM6zTAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sh6iBWI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB4CC2BCB3;
+	Mon, 13 Apr 2026 16:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098032;
-	bh=DhRZ2UY8qvmWtuX1ZFzxqPYhyblQ+zrh30HixV7e2CE=;
+	s=korg; t=1776099124;
+	bh=uafwpXwazqcMjtQfZ0rXfZCblUThewDYN4YuPfM1zrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljNGQ2qNeO6+gykZ0YPO2ZBajgfuR5zjgdNoGfnHwYav1W9kmSa5BQcausb7Lcx+u
-	 CIoA6RPgl2r6+ItP7u0/axMqB+0OE9jnJZ/pXGZ5sO8UbTXg5AQT/BkyFtZrOZeL0g
-	 3mlfXMW0SUG63oyVGjz7ppT5Sedqm2eUekNzqmeE=
+	b=Sh6iBWI3vpnayKjpJL4JtiSPDTEXyimOahn82N+gvjptrWRHm6ANNLlIrq5G+P6jw
+	 OkBdMzn81qAhd0csn7qEjqu+BaHNcV1cbOL4U60HWGYB1V1aBByQDlLiIEMnJ5q8KD
+	 JEQr0EtvRPbv3ZCHG4Atlib4XsRhgA0dAzUH0qcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Peter Astrand <astrand@lysator.liu.se>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 334/570] netfilter: nfnetlink_log: fix uninitialized padding leak in NFULA_PAYLOAD
+Subject: [PATCH 5.10 220/491] wifi: wlcore: Return -ENOMEM instead of -EAGAIN if there is not enough headroom
 Date: Mon, 13 Apr 2026 17:57:45 +0200
-Message-ID: <20260413155843.006364685@linuxfoundation.org>
+Message-ID: <20260413155827.300664346@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +69,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236881-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237309-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 7CE6D3EFAB0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,liu.se:email]
+X-Rspamd-Queue-Id: C97863F136E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 52025ebaa29f4eb4ed8bf92ce83a68f24ab7fdf7 ]
+[ Upstream commit deb353d9bb009638b7762cae2d0b6e8fdbb41a69 ]
 
-__build_packet_message() manually constructs the NFULA_PAYLOAD netlink
-attribute using skb_put() and skb_copy_bits(), bypassing the standard
-nla_reserve()/nla_put() helpers. While nla_total_size(data_len) bytes
-are allocated (including NLA alignment padding), only data_len bytes
-of actual packet data are copied. The trailing nla_padlen(data_len)
-bytes (1-3 when data_len is not 4-byte aligned) are never initialized,
-leaking stale heap contents to userspace via the NFLOG netlink socket.
+Since upstream commit e75665dd0968 ("wifi: wlcore: ensure skb headroom
+before skb_push"), wl1271_tx_allocate() and with it
+wl1271_prepare_tx_frame() returns -EAGAIN if pskb_expand_head() fails.
+However, in wlcore_tx_work_locked(), a return value of -EAGAIN from
+wl1271_prepare_tx_frame() is interpreted as the aggregation buffer being
+full. This causes the code to flush the buffer, put the skb back at the
+head of the queue, and immediately retry the same skb in a tight while
+loop.
 
-Replace the manual attribute construction with nla_reserve(), which
-handles the tailroom check, header setup, and padding zeroing via
-__nla_reserve(). The subsequent skb_copy_bits() fills in the payload
-data on top of the properly initialized attribute.
+Because wlcore_tx_work_locked() holds wl->mutex, and the retry happens
+immediately with GFP_ATOMIC, this will result in an infinite loop and a
+CPU soft lockup. Return -ENOMEM instead so the packet is dropped and
+the loop terminates.
 
-Fixes: df6fb868d611 ("[NETFILTER]: nfnetlink: convert to generic netlink attribute functions")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The problem was found by an experimental code review agent based on
+gemini-3.1-pro while reviewing backports into v6.18.y.
+
+Assisted-by: Gemini:gemini-3.1-pro
+Fixes: e75665dd0968 ("wifi: wlcore: ensure skb headroom before skb_push")
+Cc: Peter Astrand <astrand@lysator.liu.se>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://patch.msgid.link/20260318064636.3065925-1-linux@roeck-us.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_log.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ti/wlcore/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index 09fe6cf358ec7..6484d08223dbc 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -636,15 +636,11 @@ __build_packet_message(struct nfnl_log_net *log,
+diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
+index e86cc3425e997..ac1411db8e5a8 100644
+--- a/drivers/net/wireless/ti/wlcore/tx.c
++++ b/drivers/net/wireless/ti/wlcore/tx.c
+@@ -213,7 +213,7 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 		if (skb_headroom(skb) < (total_len - skb->len) &&
+ 		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
+ 			wl1271_free_tx_id(wl, id);
+-			return -EAGAIN;
++			return -ENOMEM;
+ 		}
+ 		desc = skb_push(skb, total_len - skb->len);
  
- 	if (data_len) {
- 		struct nlattr *nla;
--		int size = nla_attr_size(data_len);
- 
--		if (skb_tailroom(inst->skb) < nla_total_size(data_len))
-+		nla = nla_reserve(inst->skb, NFULA_PAYLOAD, data_len);
-+		if (!nla)
- 			goto nla_put_failure;
- 
--		nla = skb_put(inst->skb, nla_total_size(data_len));
--		nla->nla_type = NFULA_PAYLOAD;
--		nla->nla_len = size;
--
- 		if (skb_copy_bits(skb, 0, nla_data(nla), data_len))
- 			BUG();
- 	}
 -- 
 2.51.0
 
