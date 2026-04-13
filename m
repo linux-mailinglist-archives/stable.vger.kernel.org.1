@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNMmJ58e3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:35 +0200
+	id +NsJBE0h3Wn4aAkAu9opvQ
+	(envelope-from <stable+bounces-236715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6608A3EFE63
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571533F07F3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B3616305BF8E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B20530F1698
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9ED43148A3;
-	Mon, 13 Apr 2026 16:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01EC26CE32;
+	Mon, 13 Apr 2026 16:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ8JLryR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc7ttohh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AB323E342;
-	Mon, 13 Apr 2026 16:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9058C306B0A;
+	Mon, 13 Apr 2026 16:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098789; cv=none; b=OnPZRDscG3LJ53InRJdrHey6Suysn8p6k42uUuIkPS/7tYqUT0JMxwZ2QXDo6+0zmc+E5FsCahQcNNbGA/Rzvyx528Y4Fu6sWrCj4//DRkJnfo+wfpar0Y/6I4+JRb2YJRm7VtIQ0vK7z0vPQ/ku+xt3gGisPEELQmuV2w3Dq1s=
+	t=1776097607; cv=none; b=lw0LsSpJorvWHHg2cUfGkdYIHbfKK/Xw7dedYKDEOGenk2olhprZC8YmTHiMmnzZl3+HAdpPqxaC5ITuDwua6Jd5FPYGsacNllN54eFQR+Hoap/UYIRemJLn2cLK0mf7PR2RpXlgRIpxmMI7i1fRM/oJBZtVph/xftK6m5XHwLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098789; c=relaxed/simple;
-	bh=areeWVfemIUJ1/1QQlukiTpTAiLDsiX8KyPuFmLI054=;
+	s=arc-20240116; t=1776097607; c=relaxed/simple;
+	bh=VlEUnKen1HMQC+pcre0yQD8Dy9QB1Rywk2cmJKMKziU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufVZt+7RdsBU0VMWa53eiEjQbggx5P+vJ+DR1oQAC6WkE/3rvt5jTSQ+hSeVgzhYlqKJCBoRSuoKe03/MDq2fkXZx/zA7TVqxKBgUup2AynN1HL7w7CYc4wITdHpTWsryRfVq/dTDXIWSjAmYgyNLVmCvOB8cOPqGxZpsY9gfAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ8JLryR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAA4C2BCB0;
-	Mon, 13 Apr 2026 16:46:28 +0000 (UTC)
+	 MIME-Version; b=Z77Ov2d6W0DKTcgcZAGbAc9pGSAyqi/BNL8HfyJZva1KdONXWK4w9OREDdq8khAtURZK7MRPOFAh5uDhB4gciZ/ImGQX4eEi6pTdmUZyW46Y7DPJEhf92swV+merTrI0KPzANXwT/sKN7uih0F1yjDn7P7x/H8aDiF19U/hORoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc7ttohh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279FFC2BCAF;
+	Mon, 13 Apr 2026 16:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098789;
-	bh=areeWVfemIUJ1/1QQlukiTpTAiLDsiX8KyPuFmLI054=;
+	s=korg; t=1776097607;
+	bh=VlEUnKen1HMQC+pcre0yQD8Dy9QB1Rywk2cmJKMKziU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJ8JLryRahrN6VHY+6hndviSmPE7ReoqQwMyDGwvdlz8lb2YKSxqxdOoXvErtWRXd
-	 dfzBe6HJGeY8Glz7WV8sKtjBwx3korbU/z82V6O/ZmhNcdbyw33bN9ein0Vt4ltKeM
-	 Ha/7RfW2Ordfx2aWpEYeJK3ohLFdUy156cNbaB4E=
+	b=Pc7ttohhXJWKTrDwwYFiQ+HP8xG2bEaHG33HGL9jl0tlwnCyzEC2dLV7Ge5H1ybFe
+	 BNZHQUJErAwP/x2J/JtDPMS+YYf7u4Nofhqcp9qWnbHnqdx+4IRF2/mbYD52smHpH8
+	 R6OTyTNqeHacYEatRFegAg/rU9BqVhkH7uPJrtJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingye Zhao <zhaoqingye@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 5.10 089/491] cgroup: fix race between task migration and iteration
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 203/570] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
 Date: Mon, 13 Apr 2026 17:55:34 +0200
-Message-ID: <20260413155822.377838845@linuxfoundation.org>
+Message-ID: <20260413155838.064070948@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +64,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237178-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236715-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,honor.com:email]
-X-Rspamd-Queue-Id: 6608A3EFE63
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,genesyslogic.com.tw:email]
+X-Rspamd-Queue-Id: 571533F07F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingye Zhao <zhaoqingye@honor.com>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
+commit 2b76e0cc7803e5ab561c875edaba7f6bbd87fbb0 upstream.
 
-When a task is migrated out of a css_set, cgroup_migrate_add_task()
-first moves it from cset->tasks to cset->mg_tasks via:
+The GL9750 SD host controller has intermittent data corruption during
+DMA write operations. The GM_BURST register's R_OSRC_Lmt field
+(bits 17:16), which limits outstanding DMA read requests from system
+memory, is not being cleared during initialization. The Windows driver
+sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
 
-    list_move_tail(&task->cg_list, &cset->mg_tasks);
+Clear R_OSRC_Lmt to match the Windows driver behavior. This eliminates
+write corruption verified with f3write/f3read tests while maintaining
+DMA performance.
 
-If a css_task_iter currently has it->task_pos pointing to this task,
-css_set_move_task() calls css_task_iter_skip() to keep the iterator
-valid. However, since the task has already been moved to ->mg_tasks,
-the iterator is advanced relative to the mg_tasks list instead of the
-original tasks list. As a result, remaining tasks on cset->tasks, as
-well as tasks queued on cset->mg_tasks, can be skipped by iteration.
-
-Fix this by calling css_set_skip_task_iters() before unlinking
-task->cg_list from cset->tasks. This advances all active iterators to
-the next task on cset->tasks, so iteration continues correctly even
-when a task is concurrently being migrated.
-
-This race is hard to hit in practice without instrumentation, but it
-can be reproduced by artificially slowing down cgroup_procs_show().
-For example, on an Android device a temporary
-/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
-into cgroup_procs_show(), and then:
-
-  1) Spawn three long-running tasks (PIDs 101, 102, 103).
-  2) Create a test cgroup and move the tasks into it.
-  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
-  4) In one shell, read cgroup.procs from the test cgroup.
-  5) Within the delay window, in another shell migrate PID 102 by
-     writing it to a different cgroup.procs file.
-
-Under this setup, cgroup.procs can intermittently show only PID 101
-while skipping PID 103. Once the migration completes, reading the
-file again shows all tasks as expected.
-
-Note that this change does not allow removing the existing
-css_set_skip_task_iters() call in css_set_move_task(). The new call
-in cgroup_migrate_add_task() only handles iterators that are racing
-with migration while the task is still on cset->tasks. Iterators may
-also start after the task has been moved to cset->mg_tasks. If we
-dropped css_set_skip_task_iters() from css_set_move_task(), such
-iterators could keep task_pos pointing to a migrating task, causing
-css_task_iter_advance() to malfunction on the destination css_set,
-up to and including crashes or infinite loops.
-
-The race window between migration and iteration is very small, and
-css_task_iter is not on a hot path. In the worst case, when an
-iterator is positioned on the first thread of the migrating process,
-cgroup_migrate_add_task() may have to skip multiple tasks via
-css_set_skip_task_iters(). However, this only happens when migration
-and iteration actually race, so the performance impact is negligible
-compared to the correctness fix provided here.
-
-Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic GL975x support")
+Closes: https://lore.kernel.org/linux-mmc/33d12807-5c72-41ce-8679-57aa11831fad@linux.dev/
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Reviewed-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/sdhci-pci-gli.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2413,6 +2413,7 @@ static void cgroup_migrate_add_task(stru
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -70,6 +70,9 @@
+ #define   GLI_9750_MISC_RX_INV_VALUE     GLI_9750_MISC_RX_INV_OFF
+ #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
  
- 	mgctx->tset.nr_tasks++;
++#define SDHCI_GLI_9750_GM_BURST_SIZE		  0x510
++#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT  GENMASK(17, 16)
++
+ #define SDHCI_GLI_9750_TUNING_CONTROL	          0x540
+ #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
+ #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
+@@ -188,10 +191,16 @@ static void gli_set_9750(struct sdhci_ho
+ 	u32 misc_value;
+ 	u32 parameter_value;
+ 	u32 control_value;
++	u32 burst_value;
+ 	u16 ctrl2;
  
-+	css_set_skip_task_iters(cset, task);
- 	list_move_tail(&task->cg_list, &cset->mg_tasks);
- 	if (list_empty(&cset->mg_node))
- 		list_add_tail(&cset->mg_node,
+ 	gl9750_wt_on(host);
+ 
++	/* clear R_OSRC_Lmt to avoid DMA write corruption */
++	burst_value = sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
++	burst_value &= ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
++	sdhci_writel(host, burst_value, SDHCI_GLI_9750_GM_BURST_SIZE);
++
+ 	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
+ 	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
+ 	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
 
 
 
