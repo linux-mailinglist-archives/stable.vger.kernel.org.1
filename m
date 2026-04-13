@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-237028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPTICm8f3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:03 +0200
+	id qOYnHA4X3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19D93F01A8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CAA3EE8DE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68F2C30A36A3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A36D30B70C3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253E22D5A19;
-	Mon, 13 Apr 2026 16:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EAC2773F7;
+	Mon, 13 Apr 2026 16:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqIC8E6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIrnZwCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1AC1D5AD4;
-	Mon, 13 Apr 2026 16:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1EF26E718;
+	Mon, 13 Apr 2026 16:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098403; cv=none; b=K9mFAfWgRSVhJiEsglNnJyOc28QMtjY9ba0lnRynZj5MQophhtsFGWPiVkHwyTmNJN2afBtYlVyBqThTleSfzAmLTckFZpixZ8Mw8iTl3Wh/0LEhu9XdwJ3l57IwbeBtaKL/OhZFYElJ1jXojEUikql1zGqIEozhnaNyeEIOmsQ=
+	t=1776096351; cv=none; b=oOls4VnCUBbePFVQqugrHsgSHgUQMS64WXGSHvgyEIpIC3jFlSGH4XR3hdtEX8IF4y14TJjMg1+EwvkVI6yw6FAauJvFItoMvSvQu31yGZfWHNwQaBuogO9PV8dZUJiFXM1SzpAhK8ETe1ArdL1dcJqGL8+O3pB8kfJQqEz5BXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098403; c=relaxed/simple;
-	bh=ngOFs/hB+ci0+ngNjrw3tieQCfUNxlvXp3xoVoub54g=;
+	s=arc-20240116; t=1776096351; c=relaxed/simple;
+	bh=8SrE+l6xom784F+6MAgxWz4Jbuh/AQnuj9IqD1ZTofc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcOiSoYgwMekYiyYrPn8TruLQ0vxC3/08DoqEWCd+ZIR++oxgqHaLqY8nJKF5bfQLOTsBAsUyRLE3km5kPAiQMlB90/VLt40yghfxjDWxLDQVHHOSu49ltdU6VKQVbDecLi/Df8uPpSrOq8iFA/+HeX3HxPYEZPPKo/HXZwmxmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqIC8E6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74434C2BCAF;
-	Mon, 13 Apr 2026 16:40:03 +0000 (UTC)
+	 MIME-Version; b=X1iu+DJwitJ+HnnSdFVUbe3VS2b8E9xwq3BJoKbcOhYXixlIySFNweD2MCY3/uUqTYjf315jDfjg5fYN0mZlRANpoMwgTPGon3D7q02fF+03yITnugViN8R6DiqxSyWqOAO6abY8/s8qx7N/YOFr/E1fECZjF2/NqBI/9TScmO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIrnZwCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A03C2BCAF;
+	Mon, 13 Apr 2026 16:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098403;
-	bh=ngOFs/hB+ci0+ngNjrw3tieQCfUNxlvXp3xoVoub54g=;
+	s=korg; t=1776096351;
+	bh=8SrE+l6xom784F+6MAgxWz4Jbuh/AQnuj9IqD1ZTofc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqIC8E6nkdH8qS4tD98xVHnIjmMJfQg0NuKLwTIcy46gT0QPBzYKN5/Hc5jVs/6GD
-	 XN3nWICDCDA7vvupMucEAcx97Fv66Y7WdmiewSYSfSd7j/V9i7UCRL8sEDNUsquCJV
-	 bcL2dgTTdPNoVJylJhc3c4BiPV1uogP7nH2gSgLo=
+	b=ZIrnZwCebLN1j+7Q99MupC8xmZU304Hnqq6r0aBgp0R3FphueB82cjUC8pLdpLS02
+	 FcDMBQ89e5Ab1dczTPv5tTBF0kHg/XFczJVwkO9H4gUAH6jfdxoa8HKuKwQnGtjl5o
+	 5dAS+oe8PCmUxf3bFimxmnFYggE6w5cPBsRcKGAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 479/570] cdc-acm: new quirk for EPSON HMD
+	David Carlier <devnexen@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.19 63/86] net: lan966x: fix page pool leak in error paths
 Date: Mon, 13 Apr 2026 18:00:10 +0200
-Message-ID: <20260413155848.404883099@linuxfoundation.org>
+Message-ID: <20260413155733.909664036@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +65,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236220-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237028-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: A19D93F01A8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E2CAA3EE8DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit f97e96c303d689708f7f713d8f3afcc31f1237e9 upstream.
+commit 076344a6ad9d1308faaed1402fdcfdda68b604ab upstream.
 
-This device has a union descriptor that is just garbage
-and needs a custom descriptor.
-In principle this could be done with a (conditionally
-activated) heuristic. That would match more devices
-without a need for defining a new quirk. However,
-this always carries the risk that the heuristics
-does the wrong thing and leads to more breakage.
-Defining the quirk and telling it exactly what to do
-is the safe and conservative approach.
+lan966x_fdma_rx_alloc() creates a page pool but does not destroy it if
+the subsequent fdma_alloc_coherent() call fails, leaking the pool.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260317084139.1461008-1-oneukum@suse.com
+Similarly, lan966x_fdma_init() frees the coherent DMA memory when
+lan966x_fdma_tx_alloc() fails but does not destroy the page pool that
+was successfully created by lan966x_fdma_rx_alloc(), leaking it.
+
+Add the missing page_pool_destroy() calls in both error paths.
+
+Fixes: 11871aba1974 ("net: lan96x: Use page_pool API")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260405055241.35767-3-devnexen@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    9 +++++++++
- drivers/usb/class/cdc-acm.h |    1 +
- 2 files changed, 10 insertions(+)
+ drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1205,6 +1205,12 @@ static int acm_probe(struct usb_interfac
- 		if (!data_interface || !control_interface)
- 			return -ENODEV;
- 		goto skip_normal_probe;
-+	} else if (quirks == NO_UNION_12) {
-+		data_interface = usb_ifnum_to_if(usb_dev, 2);
-+		control_interface = usb_ifnum_to_if(usb_dev, 1);
-+		if (!data_interface || !control_interface)
-+			 return -ENODEV;
-+		goto skip_normal_probe;
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+@@ -119,8 +119,10 @@ static int lan966x_fdma_rx_alloc(struct
+ 		return PTR_ERR(rx->page_pool);
+ 
+ 	err = fdma_alloc_coherent(lan966x->dev, fdma);
+-	if (err)
++	if (err) {
++		page_pool_destroy(rx->page_pool);
+ 		return err;
++	}
+ 
+ 	fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
+ 		       FDMA_DCB_STATUS_INTR);
+@@ -958,6 +960,7 @@ int lan966x_fdma_init(struct lan966x *la
+ 	err = lan966x_fdma_tx_alloc(&lan966x->tx);
+ 	if (err) {
+ 		fdma_free_coherent(lan966x->dev, &lan966x->rx.fdma);
++		page_pool_destroy(lan966x->rx.page_pool);
+ 		return err;
  	}
  
- 	/* normal probing*/
-@@ -1733,6 +1739,9 @@ static const struct usb_device_id acm_id
- 	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas R-Car E3 USB Download mode */
- 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
- 	},
-+	{ USB_DEVICE(0x04b8, 0x0d12),	/* EPSON HMD Com&Sens */
-+	.driver_info = NO_UNION_12,	/* union descriptor is garbage */
-+	},
- 	{ USB_DEVICE(0x0e8d, 0x0003), /* FIREFLY, MediaTek Inc; andrey.arapov@gmail.com */
- 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
- 	},
---- a/drivers/usb/class/cdc-acm.h
-+++ b/drivers/usb/class/cdc-acm.h
-@@ -142,3 +142,4 @@ struct acm {
- #define SEND_ZERO_PACKET		BIT(6)
- #define DISABLE_ECHO			BIT(7)
- #define MISSING_CAP_BRK			BIT(8)
-+#define NO_UNION_12			BIT(9)
 
 
 
