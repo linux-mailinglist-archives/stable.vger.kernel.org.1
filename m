@@ -1,200 +1,228 @@
-Return-Path: <stable+bounces-237539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6I2+G7wl3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:56 +0200
+	id AM2eG6Am3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:23:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8733F12FB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D96A3F14DC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF5043049E1B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25001301CE56
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C8C346E60;
-	Mon, 13 Apr 2026 17:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169D7318ED2;
+	Mon, 13 Apr 2026 17:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="nCIv8n2+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YDA1nKx4"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5469433EB1B;
-	Mon, 13 Apr 2026 17:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B4F32F765
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 17:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099717; cv=none; b=kPeP3iOjDjgyPb5DxVa4bieDh1oejCmuwMDVizEOeld2w5lPEXVhpwINex/z2wgCeG/uU6lLfN9e63wDexy8N2QxeUsnbYUaBiy9zmElnP9VHQV4FA4I4eibPiNpkIGxPHXLdRaD1wpJQr66M/dXVO0KbpYEMhheb5iB61+ZRO8=
+	t=1776101021; cv=none; b=J2TgQKgaB48kizPLEgPUV2rXMV9byBLCGNteaTHoFqGATKK6uZCUTYuE/Qnt+gBeqpTxU19j2IyZzOJcrCbC51ZtEUHo2LUU4lAzt6vKrL70ffh+eOps2pIIEOclYrC38bpayn/dqQ+diWAek0VSqDhf6TLPGFqaH9NYtUru59o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099717; c=relaxed/simple;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FNJnKln4saguB53RToyPAjTh5s3WpY1x8n3sR1zfn4K5puZpBORPjhTHBiq9vORUQaq4x7yj6EWJJapgqrEu8IfXECAEiQOWYQZvQfWUGLIa6PNdMwica+3NPsYxtoDNfXPSRe63lMWTfJNSLPSItZWgFZoW1VPQuAa8QQ9DLiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=nCIv8n2+; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1776099713; x=1776704513; i=rwarsow@gmx.de;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=nCIv8n2+pJnNZpUBRKRidj2cMqXBo69UkTy5qsu3Nji2zJQv9NAISxnh0LJsOY7Y
-	 5mz+1ovauozF06IY0c29KTftz2Eid3RGL8B5uD56qkaYdL4V24ffTUZTLd6T+76CB
-	 hAk0MvY7MK1Kp1WOrEOt6yiZVfLmsnDzSH7V0dJQjCw3UGFGGBESxGrne13JEgDRa
-	 ZL3NZbp6ylsUvdJ40BdIn3RnJmbV+oE/nH/t3jowAatuoBbDG68CZWc4aZWCvq6pY
-	 iH4KjG/haickgPIpAGpWzbtcZFodpLOiGuVwZKJ/nVYiAwJGvmik1aC6NTqeoKD14
-	 j4gwJFj8ggBB8ANjxQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N9MpY-1vP1qn1WZ2-010bz3; Mon, 13
- Apr 2026 19:01:53 +0200
-Message-ID: <613e0190-553d-48f9-9b65-c07c2de8e158@gmx.de>
-Date: Mon, 13 Apr 2026 19:01:51 +0200
+	s=arc-20240116; t=1776101021; c=relaxed/simple;
+	bh=DcUwx5ui8uO0V3gB963hdowc16MCpAu4QmOm9zaUVWo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nOZYOneH+wqvpaBi2FEFRpAIqmptP8p9ySj+TQC/r8wO0MHl0X7z0Jjy4B+AlcMB9lh4hGIGd2+CGhWpzLK4nSPa7op6SxzZ6VXCThH2VDVQBi98+RvL+AfiQXsCtsVPeHa2cd8+4+khYME+rmUYeYRfDBEd2Dlft6A58ExcD/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YDA1nKx4; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776101020; x=1807637020;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=DcUwx5ui8uO0V3gB963hdowc16MCpAu4QmOm9zaUVWo=;
+  b=YDA1nKx4/TsgKmIZYGRSQpOaCA6F2AxSqLq97KqNYiGA4ouVlHl1r+97
+   RhqPah56JcIr2rWcu993g0S1a5H7GczkIaGE4y5nm9ak6pd1tfXk+EDUX
+   P+q7JD9Jsr+Mm6b7bzLjgXRC+Y97gqsgEvzhj5txFLGxH6qU8LSBoPSpN
+   d8iTmebAH6UGKKYN1zIIVpXInFIjc4ebMHy9mOM+vjUFhzxtl03fWQ/4U
+   i1P/DnENcGVkoMw48+SMui2GEumpOqlXdpipu3MTD+PGI4MXAUSI4oAKq
+   pwF6yoLZMPoP4t3YYZwkggMsSjCzEjrudTS47g0Rk33+aGjT23OlVBtgV
+   A==;
+X-CSE-ConnectionGUID: HDbvkT6lT1CLWD2X2twUsg==
+X-CSE-MsgGUID: cfCEd5cvR0utSOoGYcboWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="88426831"
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
+   d="scan'208";a="88426831"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 10:23:40 -0700
+X-CSE-ConnectionGUID: 6sMKstqKQvW626LOIqc1UA==
+X-CSE-MsgGUID: QXqDwy0UQyqK30RMPyslqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
+   d="scan'208";a="231572066"
+Received: from coyote-pass-p6-34563.jf.intel.com ([10.166.80.105])
+  by fmviesa004.fm.intel.com with ESMTP; 13 Apr 2026 10:23:39 -0700
+From: Emil Tantilov <emil.s.tantilov@intel.com>
+To: stable@vger.kernel.org
+Cc: jacob.e.keller@intel.com,
+	madhu.chittim@intel.com,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ray Zhang <sgzhang@google.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12.y] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
+Date: Mon, 13 Apr 2026 10:07:50 -0700
+Message-Id: <20260413170750.59676-1-emil.s.tantilov@intel.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <2026041354-trowel-buggy-c7ca@gregkh>
+References: <2026041354-trowel-buggy-c7ca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 00/86] 6.19.13-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260413155731.568515178@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:jXoxNgslWe82j+k5mcePflOwbW2Etd0DfiitXLiB3V7ly8nSiqo
- u+/RRY03ib9iKcgF5dnwsR3TYKhRVHaRzA5rL5zBXIU5aKVaCjnQqWHBf/NV2oNhIxe4ayq
- cboxrCpAcjunJCUJ2uv22jhdOzwgkGHuuuKnOtk8JaAtBgIFqPbXlYXe075E2mS7aGFoZW0
- rytvIINGvzQszKyHcrj1Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:xqUphWNNOA4=;KXXWz5Fas7FbAaMjBx/UJc9CZh9
- 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
- cb8SB/tVcVO
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237539-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237605-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[emil.s.tantilov@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:email,gmx.de:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D8733F12FB
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0D96A3F14DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi
+Switch from using the completion's raw spinlock to a local lock in the
+idpf_vc_xn struct. The conversion is safe because complete/_all() are
+called outside the lock and there is no reason to share the completion
+lock in the current logic. This avoids invalid wait context reported by
+the kernel due to the async handler taking BH spinlock:
 
-no regressions here on x86_64 (Intel 11th Gen. CPU)
+[  805.726977] =============================
+[  805.726991] [ BUG: Invalid wait context ]
+[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
+[  805.727026] -----------------------------
+[  805.727038] kworker/u261:0/572 is trying to lock:
+[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727099] other info that might help us debug this:
+[  805.727111] context-{5:5}
+[  805.727119] 3 locks held by kworker/u261:0/572:
+[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
+[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
+[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
+[  805.727218] stack backtrace:
+...
+[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
+[  805.727247] Call Trace:
+[  805.727249]  <TASK>
+[  805.727251]  dump_stack_lvl+0x77/0xb0
+[  805.727259]  __lock_acquire+0xb3b/0x2290
+[  805.727268]  ? __irq_work_queue_local+0x59/0x130
+[  805.727275]  lock_acquire+0xc6/0x2f0
+[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727284]  ? _printk+0x5b/0x80
+[  805.727290]  _raw_spin_lock_bh+0x38/0x50
+[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
+[  805.727317]  process_one_work+0x226/0x730
+[  805.727322]  worker_thread+0x19e/0x340
+[  805.727325]  ? __pfx_worker_thread+0x10/0x10
+[  805.727328]  kthread+0xf4/0x130
+[  805.727333]  ? __pfx_kthread+0x10/0x10
+[  805.727336]  ret_from_fork+0x32c/0x410
+[  805.727345]  ? __pfx_kthread+0x10/0x10
+[  805.727347]  ret_from_fork_asm+0x1a/0x30
+[  805.727354]  </TASK>
 
-Thanks
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reported-by: Ray Zhang <sgzhang@google.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+(cherry picked from commit 591478118293c1bd628de330a99eb1eb2ef8d76b)
+---
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 3d80b53161a4..eeb4436ec2c9 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -59,6 +59,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
+  */
+ struct idpf_vc_xn {
+ 	struct completion completed;
++	spinlock_t lock;
+ 	enum idpf_vc_xn_state state;
+ 	size_t reply_sz;
+ 	struct kvec reply;
+@@ -312,26 +313,21 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
+ 	return err;
+ }
+ 
+-/* API for virtchnl "transaction" support ("xn" for short).
+- *
+- * We are reusing the completion lock to serialize the accesses to the
+- * transaction state for simplicity, but it could be its own separate synchro
+- * as well. For now, this API is only used from within a workqueue context;
+- * raw_spin_lock() is enough.
+- */
++/* API for virtchnl "transaction" support ("xn" for short). */
++
+ /**
+  * idpf_vc_xn_lock - Request exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_lock(xn)			\
+-	raw_spin_lock(&(xn)->completed.wait.lock)
++	spin_lock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_unlock(xn)		\
+-	raw_spin_unlock(&(xn)->completed.wait.lock)
++	spin_unlock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
+@@ -363,6 +359,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
+ 		xn->state = IDPF_VC_XN_IDLE;
+ 		xn->idx = i;
+ 		idpf_vc_xn_release_bufs(xn);
++		spin_lock_init(&xn->lock);
+ 		init_completion(&xn->completed);
+ 	}
+ 
+-- 
+2.37.3
+
 
