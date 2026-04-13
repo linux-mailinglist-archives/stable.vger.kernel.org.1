@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-236343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOfADXgb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:08 +0200
+	id oOmkKyQW3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B53F3EF591
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255FD3EE73E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93F0B31D46AD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D22B130A11DD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911E12C0F7F;
-	Mon, 13 Apr 2026 16:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD19D2D8378;
+	Mon, 13 Apr 2026 16:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCMo2wAU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMB+x11b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5396229DB64;
-	Mon, 13 Apr 2026 16:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6732D661C;
+	Mon, 13 Apr 2026 16:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096661; cv=none; b=CfDnAatakNyocdodg/CuCy6Or4ojBMGHH1QbF0wl3e/Njr0OwrOJ16W2MqcP4EYkYVtyDZTJsldDUM42T1rAxwcRUYUYzWB6/KQL++rk5e9xHDB0zVP6ajomQOkOrm1DdRloGS4sSPNc8V6d2zkXJSO0l3pOUNKhSGbc70caNik=
+	t=1776096318; cv=none; b=OuAWIt9n64dBDuZD2ICV3zGYpZPC3lehC6W6K1cfR5G5EmTH6yN2hPtKrwUJRtC256FOYhZVUEJThQ5iHFswcE8TKQYHGF/PhjVYCU9eS1Lmbi6Hs4CAy80qlbvatV/b6wFqWHogg3spEkVkNUQIUN2vd6h9op99L4CKlei8ssY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096661; c=relaxed/simple;
-	bh=gM95Y3le6svO3fZhKTRRu/fLtg6X3SjJaMoKEFGrOYE=;
+	s=arc-20240116; t=1776096318; c=relaxed/simple;
+	bh=plaky8ey9HhrhCD3mLcsl7MMqMyiRTUFH0lQzD7ruok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhsStUSvzYrdyQegTSvUx0NGsrMMnz8hfhVyi1JzhI6HOFciIhQWfdfVdfQuicwLQbt9vCUkbZkhAYF28274QPpAa29T+Brxa+K3JrA11AD5TOy4KXthXA7k8p05EoGrerT3zq82AizYa30Y8jG0TRONuSzU32g+MVB3v/fo5ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCMo2wAU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD41BC2BCAF;
-	Mon, 13 Apr 2026 16:11:00 +0000 (UTC)
+	 MIME-Version; b=m62jmNiop5UwWIig3iy7xiDPqSttEnJJdQDO9P1Zh0EX34z0GFM8QH5hEPlEVle0jafzttCZGNbKHSqsFWM2v5k+Vcg/nf6iBpXM9/BkoQCRaVVFjAnNAF3xG+txqgA8rTLbg8C+r3R8Xm19A6cFBwKNr4qxulwE4wYl8EIxtJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMB+x11b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15E7C2BCB0;
+	Mon, 13 Apr 2026 16:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096661;
-	bh=gM95Y3le6svO3fZhKTRRu/fLtg6X3SjJaMoKEFGrOYE=;
+	s=korg; t=1776096318;
+	bh=plaky8ey9HhrhCD3mLcsl7MMqMyiRTUFH0lQzD7ruok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCMo2wAUfi7Y2fshLjryXqtRS3z3eRJS2OHSobY8q6Pz1WJ0loxNtKCQ8m5AlTuM/
-	 Qhs+P/uNidiVc7WiNc6cLQ5p77UpNkl8Io1hG12laspUOO6mpEHfqkRiDX/OtBo1MJ
-	 EfECmlaMYwT/3+pC0kaCm8xda2PhTeOb8/rSM7E4=
+	b=xMB+x11beYVRJ3s8oPSacRLW4lbEDegtQa4p+VAupYlZhLA7k97bUt8LtqzlVLuRY
+	 Jc6VBpJf8NqcBu61rLFoIiKOJBtwUHD/BtrIQM++eMoqqbMsb7HWzVjuC14HFhkkdw
+	 u02UmU3c9kNqc0b0/lEgudcQ578suKv95KTlpArg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Thanki <vishalthanki@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 03/70] wifi: rt2x00usb: fix devres lifetime
+	Hao Li <hao.li@linux.dev>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 51/86] mm/memory_hotplug: maintain N_NORMAL_MEMORY during hotplug
 Date: Mon, 13 Apr 2026 17:59:58 +0200
-Message-ID: <20260413155728.309118514@linuxfoundation.org>
+Message-ID: <20260413155733.470910109@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +69,132 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,wp.pl,intel.com];
-	TAGGED_FROM(0.00)[bounces-236343-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236207-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,kernel.org,gmail.com,suse.de,suse.cz,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,wp.pl:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8B53F3EF591
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,linux.dev:email,suse.cz:email]
+X-Rspamd-Queue-Id: 255FD3EE73E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Hao Li <hao.li@linux.dev>
 
-commit 25369b22223d1c56e42a0cd4ac9137349d5a898e upstream.
+commit 2ecbe06abf9bfb2261cd6464a6bc3a3615625402 upstream.
 
-USB drivers bind to USB interfaces and any device managed resources
-should have their lifetime tied to the interface rather than parent USB
-device. This avoids issues like memory leaks when drivers are unbound
-without their devices being physically disconnected (e.g. on probe
-deferral or configuration changes).
+N_NORMAL_MEMORY is initialized from zone population at boot, but memory
+hotplug currently only updates N_MEMORY.  As a result, a node that gains
+normal memory via hotplug can remain invisible to users iterating over
+N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
+incorrectly marked as such.
 
-Fix the USB anchor lifetime so that it is released on driver unbind.
+The most visible effect is that
+/sys/devices/system/node/has_normal_memory does not report a node even
+after that node has gained normal memory via hotplug.
 
-Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Vishal Thanki <vishalthanki@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260327113219.1313748-1-johan@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Also, list_lru-based shrinkers can undercount objects on such a node
+and may skip reclaim on that node entirely, which can lead to a higher
+memory footprint than expected.
+
+Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
+offline_pages().  Set the bit when a node that currently lacks normal
+memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
+offlining removes the last present pages from zones <= ZONE_NORMAL.
+
+This restores the intended semantics without bringing back the old
+status_change_nid_normal notifier plumbing which was removed in
+8d2882a8edb8.
+
+Current users that benefit include list_lru, zswap, nfsd filecache,
+hugetlb_cgroup, and has_normal_memory sysfs reporting.
+
+Link: https://lkml.kernel.org/r/20260330035941.518186-1-hao.li@linux.dev
+Fixes: 8d2882a8edb8 ("mm,memory_hotplug: remove status_change_nid_normal and update documentation")
+Signed-off-by: Hao Li <hao.li@linux.dev>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memory_hotplug.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-@@ -830,7 +830,7 @@ int rt2x00usb_probe(struct usb_interface
- 	if (retval)
- 		goto exit_free_device;
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1209,6 +1209,13 @@ int online_pages(unsigned long pfn, unsi
  
--	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
-+	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
- 					sizeof(struct usb_anchor),
- 					GFP_KERNEL);
- 	if (!rt2x00dev->anchor) {
+ 	if (node_arg.nid >= 0)
+ 		node_set_state(nid, N_MEMORY);
++	/*
++	 * Check whether we are adding normal memory to the node for the first
++	 * time.
++	 */
++	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
++		node_set_state(nid, N_NORMAL_MEMORY);
++
+ 	if (need_zonelists_rebuild)
+ 		build_all_zonelists(NULL);
+ 
+@@ -1908,6 +1915,8 @@ int offline_pages(unsigned long start_pf
+ 	unsigned long flags;
+ 	char *reason;
+ 	int ret;
++	unsigned long normal_pages = 0;
++	enum zone_type zt;
+ 
+ 	/*
+ 	 * {on,off}lining is constrained to full memory sections (or more
+@@ -2056,6 +2065,17 @@ int offline_pages(unsigned long start_pf
+ 	init_per_zone_wmark_min();
+ 
+ 	/*
++	 * Check whether this operation removes the last normal memory from
++	 * the node. We do this before clearing N_MEMORY to avoid the possible
++	 * transient "!N_MEMORY && N_NORMAL_MEMORY" state.
++	 */
++	if (zone_idx(zone) <= ZONE_NORMAL) {
++		for (zt = 0; zt <= ZONE_NORMAL; zt++)
++			normal_pages += pgdat->node_zones[zt].present_pages;
++		if (!normal_pages)
++			node_clear_state(node, N_NORMAL_MEMORY);
++	}
++	/*
+ 	 * Make sure to mark the node as memory-less before rebuilding the zone
+ 	 * list. Otherwise this node would still appear in the fallback lists.
+ 	 */
 
 
 
