@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOJDIc4d3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:06 +0200
+	id 2DWTJwYk3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122A83EFBBA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7773F0FDD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 73CDB306E8F1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E55FC309DB4F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD172F362B;
-	Mon, 13 Apr 2026 16:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349FE31619A;
+	Mon, 13 Apr 2026 16:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZbCcBin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfwiwD0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C929BD87;
-	Mon, 13 Apr 2026 16:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB18B317141;
+	Mon, 13 Apr 2026 16:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098089; cv=none; b=B6P8Goz3orUCKD+mt64SnQgbtFdVgqJ1zXEzo+nPmZHoLOGxG9rKpaazdulegAe7jAoP/EbW4P0AP9Yx3JMUeM5nYzYiHPGdaqp52y5OPRM5Kgx8p60b+D+EFbySi5acwnVjP9Tk2DKGBGRbiZN+CwNfPa8lxh2SMp8wtNMAWVQ=
+	t=1776099272; cv=none; b=BOwuqBR698qkiA1gHDlamkysOgTg/jab6fbqWxewkGPM7R6EF2LrLM0oQHbLe0xRFb3mR0aqpgLBCPrRjL8ocXRHi/6OpI+554Bw5TRXcdMItf+CbPDCqyl+2iJTWNMECLxqn0ZQfSyB0ybjswcaRKPGgZBCj6GJfOkhgb/ZSpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098089; c=relaxed/simple;
-	bh=eeUGvu1azIF9H7VVW8lkRdOtVi19DZRQA+EcB9qpe24=;
+	s=arc-20240116; t=1776099272; c=relaxed/simple;
+	bh=8KC7FgG/GYKtbDeG3tCPleMoQk3LVhXAed12kMvbXTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAXLW0lHfHbVeHiuXz1IRcv/y0Wu2iuYnzOr+/IMxQrm5GiK5ClgC1eqA6PV2YquMQsi1GlPZhkqzsLVDah0AM9FcUgyB0pjMG7Mf1LH1zUUOSntbpjNStqKy2W52P0JzHC2mfrboJh+54/9lcxPtPWWP08Wx/UMdJlrKpAzTHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZbCcBin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A22C2BCAF;
-	Mon, 13 Apr 2026 16:34:48 +0000 (UTC)
+	 MIME-Version; b=HcxK1MRntNlLSKZCwmeXJ7qx3OJlvoqknOtOWU3FWZsV3Rbcoxh7+0Zt+3hgrMgJWqiy0CCJ8aoT9xO2TyIXs21Ywgexp2TtiOykz+8U6+t4xC5UArWFDpWko5ZMKrxwYzy1XsXjDwDhjec9FCE0rkV070A4bvjP0tLk/eug9R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfwiwD0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458EBC2BCC4;
+	Mon, 13 Apr 2026 16:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098089;
-	bh=eeUGvu1azIF9H7VVW8lkRdOtVi19DZRQA+EcB9qpe24=;
+	s=korg; t=1776099271;
+	bh=8KC7FgG/GYKtbDeG3tCPleMoQk3LVhXAed12kMvbXTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZbCcBinqYEWWqY8aCJhweqgEMHLJUGAJqG0NC0MbzxAOeUSZ7lHhbqBWKaDXTuGe
-	 /D2Y+8nc7ii5C9rNuFPBCpll7aaX4lmZN4S9KWNNNM4AKKAshvkXj9K70B4z5jfcf0
-	 v/YYX6QOfFnU6eyBFIi4g4nKFp4AusjVg6YH7Hq8=
+	b=gfwiwD0f/p7tAaulW/RXg7VogOAxxIrN6YX8+pBARgU4pvhxnUWzvK13rzkpaZHeq
+	 JUzrDcfeJtKd/V9fYbB7uAlnvKYN53LoMHL+G/7TruIsOFdxoI4NG4UhuGYud3pfop
+	 CbmJkT281II13UlvoD5ZyUf2Vjds8arAki3rSjkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 389/570] dmaengine: xilinx: xilinx_dma: Fix residue calculation for cyclic DMA
+Subject: [PATCH 5.10 275/491] netlink: allow be16 and be32 types in all uint policy checks
 Date: Mon, 13 Apr 2026 17:58:40 +0200
-Message-ID: <20260413155845.047642486@linuxfoundation.org>
+Message-ID: <20260413155829.342699502@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236903-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237367-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,87 +86,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 122A83EFBBA
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9F7773F0FDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit f61d145999d61948a23cd436ebbfa4c3b9ab8987 ]
+[ Upstream commit 5fac9b7c16c50c6c7699517f582b56e3743f453a ]
 
-The cyclic DMA calculation is currently entirely broken and reports
-residue only for the first segment. The problem is twofold.
+__NLA_IS_BEINT_TYPE(tp) isn't useful.  NLA_BE16/32 are identical to
+NLA_U16/32, the only difference is that it tells the netlink validation
+functions that byteorder conversion might be needed before comparing
+the value to the policy min/max ones.
 
-First, when the first descriptor finishes, it is moved from active_list
-to done_list, but it is never returned back into the active_list. The
-xilinx_dma_tx_status() expects the descriptor to be in the active_list
-to report any meaningful residue information, which never happens after
-the first descriptor finishes. Fix this up in xilinx_dma_start_transfer()
-and if the descriptor is cyclic, lift it from done_list and place it back
-into active_list list.
+After this change all policy macros that can be used with UINT types,
+such as NLA_POLICY_MASK() can also be used with NLA_BE16/32.
 
-Second, the segment .status fields of the descriptor remain dirty. Once
-the DMA did one pass on the descriptor, the .status fields are populated
-with data by the DMA, but the .status fields are not cleared before reuse
-during the next cyclic DMA round. The xilinx_dma_get_residue() recognizes
-that as if the descriptor was complete and had 0 residue, which is bogus.
-Reinitialize the status field before placing the descriptor back into the
-active_list.
+This will be used to validate nf_tables flag attributes which
+are in bigendian byte order.
 
-Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316221943.160375-1-marex@nabladev.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: 8f15b5071b45 ("netfilter: ctnetlink: use netlink policy range checks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ include/net/netlink.h | 10 +++-------
+ lib/nlattr.c          |  6 ++++++
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index e2adc33631ca3..948093a47d9f9 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -1513,8 +1513,29 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
- 	if (chan->err)
- 		return;
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index fed93bd3424ff..d3d088dc0ae80 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -374,12 +374,11 @@ struct nla_policy {
+ #define NLA_POLICY_BITFIELD32(valid) \
+ 	{ .type = NLA_BITFIELD32, .bitfield32_valid = valid }
  
--	if (list_empty(&chan->pending_list))
-+	if (list_empty(&chan->pending_list)) {
-+		if (chan->cyclic) {
-+			struct xilinx_dma_tx_descriptor *desc;
-+			struct list_head *entry;
-+
-+			desc = list_last_entry(&chan->done_list,
-+					       struct xilinx_dma_tx_descriptor, node);
-+			list_for_each(entry, &desc->segments) {
-+				struct xilinx_axidma_tx_segment *axidma_seg;
-+				struct xilinx_axidma_desc_hw *axidma_hw;
-+				axidma_seg = list_entry(entry,
-+							struct xilinx_axidma_tx_segment,
-+							node);
-+				axidma_hw = &axidma_seg->hw;
-+				axidma_hw->status = 0;
-+			}
-+
-+			list_splice_tail_init(&chan->done_list, &chan->active_list);
-+			chan->desc_pendingcount = 0;
-+			chan->idle = false;
-+		}
- 		return;
-+	}
+-#define __NLA_IS_UINT_TYPE(tp)						\
+-	(tp == NLA_U8 || tp == NLA_U16 || tp == NLA_U32 || tp == NLA_U64)
++#define __NLA_IS_UINT_TYPE(tp)					\
++	(tp == NLA_U8 || tp == NLA_U16 || tp == NLA_U32 ||	\
++	 tp == NLA_U64 || tp == NLA_BE16 || tp == NLA_BE32)
+ #define __NLA_IS_SINT_TYPE(tp)						\
+ 	(tp == NLA_S8 || tp == NLA_S16 || tp == NLA_S32 || tp == NLA_S64)
+-#define __NLA_IS_BEINT_TYPE(tp)						\
+-	(tp == NLA_BE16 || tp == NLA_BE32)
  
- 	if (!chan->idle)
- 		return;
+ #define __NLA_ENSURE(condition) BUILD_BUG_ON_ZERO(!(condition))
+ #define NLA_ENSURE_UINT_TYPE(tp)			\
+@@ -393,7 +392,6 @@ struct nla_policy {
+ #define NLA_ENSURE_INT_OR_BINARY_TYPE(tp)		\
+ 	(__NLA_ENSURE(__NLA_IS_UINT_TYPE(tp) ||		\
+ 		      __NLA_IS_SINT_TYPE(tp) ||		\
+-		      __NLA_IS_BEINT_TYPE(tp) ||	\
+ 		      tp == NLA_MSECS ||		\
+ 		      tp == NLA_BINARY) + tp)
+ #define NLA_ENSURE_NO_VALIDATION_PTR(tp)		\
+@@ -401,8 +399,6 @@ struct nla_policy {
+ 		      tp != NLA_REJECT &&		\
+ 		      tp != NLA_NESTED &&		\
+ 		      tp != NLA_NESTED_ARRAY) + tp)
+-#define NLA_ENSURE_BEINT_TYPE(tp)			\
+-	(__NLA_ENSURE(__NLA_IS_BEINT_TYPE(tp)) + tp)
+ 
+ #define NLA_POLICY_RANGE(tp, _min, _max) {		\
+ 	.type = NLA_ENSURE_INT_OR_BINARY_TYPE(tp),	\
+diff --git a/lib/nlattr.c b/lib/nlattr.c
+index 440beb1626be3..d88ba6feb8c3d 100644
+--- a/lib/nlattr.c
++++ b/lib/nlattr.c
+@@ -355,6 +355,12 @@ static int nla_validate_mask(const struct nla_policy *pt,
+ 	case NLA_U64:
+ 		value = nla_get_u64(nla);
+ 		break;
++	case NLA_BE16:
++		value = ntohs(nla_get_be16(nla));
++		break;
++	case NLA_BE32:
++		value = ntohl(nla_get_be32(nla));
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
 -- 
-2.53.0
+2.51.0
 
 
 
