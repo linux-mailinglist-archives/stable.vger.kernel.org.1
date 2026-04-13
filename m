@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-236182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236991-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLHmBjUU3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:09 +0200
+	id 2LuiBc8i3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-236991-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC023EE4A1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525223F0C90
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 716AE3023D85
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72A5B31D3890
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D63248880;
-	Mon, 13 Apr 2026 16:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADC830DD3C;
+	Mon, 13 Apr 2026 16:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/xEPft7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbzqdpeL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2851D6DB5;
-	Mon, 13 Apr 2026 16:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E306B30DEB5;
+	Mon, 13 Apr 2026 16:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096254; cv=none; b=MPkQwhN7yPupBgUqWmtdbATHJoIONpv4jTSToVskQdDiaRl+ejleAQTFB83RiORAKl2HiWTZCr10lpEFf3SQCoZ5SG8xa8/p1cRzmUmsPnGiN17r3G42U7eh+DueMOvc7sN7Q2kVfewrv7kqw4Z5OAoxA/9U5/7lkAjeC8mzFZA=
+	t=1776098311; cv=none; b=S16M4lf34tfUc1e6SNADq3/ArBqL4viFmQ41MaLPRNwiMh0BrcRBeXJ8YLPis89/gkLIgkV0i9+T336nEd6de/0ECb0APCRapzLvHO6hARAK4c6dox/tSbG87Z0EWIBi6WAOuv4C7n4RnrSPL3yrBChdfm1u35XB51bcpLp8sEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096254; c=relaxed/simple;
-	bh=+xTny0+pFFlgtaMY46yVNH9pOGvfTC20FB5jVagUZjw=;
+	s=arc-20240116; t=1776098311; c=relaxed/simple;
+	bh=4NZ9K7BeQhUTNEoiCj8nojtg7gsHLBbS/Q0+NiujwQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y8sNBGD4fKBC2lJLYKn6R8GwjaPxoVLE5RXCTePxInlPCc7XMz/Rh0RaAvxXf9hT05KF51CRP5zx9VXmsiJGgoHRKCDrsZmvF27z3I3e5dfr2L6FSOEQV4/Rb0HuYxdQ43S6FIpjSjmx6GO/b1XxuPbuw9P7QMVSXtR17mjt0aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/xEPft7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D87C2BCAF;
-	Mon, 13 Apr 2026 16:04:13 +0000 (UTC)
+	 MIME-Version; b=KOuQWroZrNEAB78S0TTRTW+yJy259oMIz8kD/t63iYoazKG/Dwh7fFKxF3oXZFc+m+efhUS+jPGL0HADiNszeXQNAc1faRoMDz8ZEoKtXADJBq0ffHmy6EE3go+wy4Kb5AQAPmrYxAU5aiQHbkKiAfKZfHt7+VxBg6dSLACkC2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbzqdpeL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA02C2BCAF;
+	Mon, 13 Apr 2026 16:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096253;
-	bh=+xTny0+pFFlgtaMY46yVNH9pOGvfTC20FB5jVagUZjw=;
+	s=korg; t=1776098310;
+	bh=4NZ9K7BeQhUTNEoiCj8nojtg7gsHLBbS/Q0+NiujwQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/xEPft7o2yzm0J+J+zqMTju/wy+RbDM9725JPuFo/ITw0MeI1cOnD6rZxBqELkGZ
-	 ZJN65yEs+yfkH6ZVLWVtfOm+Jm2+BsS8lVDm/HPZm6ybxkIz7CzsE9QhL+GU+gWNNk
-	 /fHBut0kOTr3347boh/LXNdcojU25OhV37/SpvI0=
+	b=DbzqdpeLlB4VoowRd1DFR0OPOb9iSmeC2WmwWAOm7URGJFFFiNZHYqQ+4sYwMgMuq
+	 Y74dH1k8WQDnmv2OUrNbMaf0k+sRJnmZrIYQ8OYAd4AxxIxBf2UF6HYAsjlu8gH5qR
+	 kZbhiyum7Wl1z4lIgLZ9O3LGc6gFbmS0xWBpAQA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.19 26/86] ASoC: SOF: Intel: hda: modify period size constraints for ACE4
-Date: Mon, 13 Apr 2026 17:59:33 +0200
-Message-ID: <20260413155732.550118111@linuxfoundation.org>
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 443/570] drm/ioc32: stop speculation on the drm_compat_ioctl path
+Date: Mon, 13 Apr 2026 17:59:34 +0200
+Message-ID: <20260413155847.066119422@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +66,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236182-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-236991-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8FC023EE4A1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ffwll.ch:email]
+X-Rspamd-Queue-Id: 525223F0C90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 0f71866057262d669ed6a21246eaac0ad6d04d4e upstream.
+commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
 
-Intel ACE4 based products set more strict constraints on HDA BDLE start
-address and length alignment. Add a constraint to align period size to
-128 bytes.
+The drm compat ioctl path takes a user controlled pointer, and then
+dereferences it into a table of function pointers, the signature method
+of spectre problems.  Fix this up by calling array_index_nospec() on the
+index to the function pointer list.
 
-The commit removes the "minimum as per HDA spec" comment. This comment
-was misleading as spec actually does allow a 2 byte BDLE length, and
-more importantly, period size also directly impacts how the BDLE start
-addresses are aligned, so it is not sufficient just to consider allowed
-buffer length.
-
-Fixes: d3df422f66e8 ("ASoC: SOF: Intel: add initial support for NVL-S")
-Cc: stable@vger.kernel.org
-Reported-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://patch.msgid.link/20260408084514.24325-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/intel/hda-pcm.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_ioc32.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
-index da6c1e7263cd..16a364072821 100644
---- a/sound/soc/sof/intel/hda-pcm.c
-+++ b/sound/soc/sof/intel/hda-pcm.c
-@@ -219,6 +219,7 @@ EXPORT_SYMBOL_NS(hda_dsp_pcm_pointer, "SND_SOC_SOF_INTEL_HDA_COMMON");
- int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
- 		     struct snd_pcm_substream *substream)
- {
-+	const struct sof_intel_dsp_desc *chip_info = get_chip_info(sdev->pdata);
- 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_pcm_runtime *runtime = substream->runtime;
- 	struct snd_soc_component *scomp = sdev->component;
-@@ -268,8 +269,17 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
- 		return -ENODEV;
- 	}
+--- a/drivers/gpu/drm/drm_ioc32.c
++++ b/drivers/gpu/drm/drm_ioc32.c
+@@ -28,6 +28,7 @@
+  * IN THE SOFTWARE.
+  */
+ #include <linux/compat.h>
++#include <linux/nospec.h>
+ #include <linux/ratelimit.h>
+ #include <linux/export.h>
  
--	/* minimum as per HDA spec */
--	snd_pcm_hw_constraint_step(substream->runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 4);
-+	/*
-+	 * Set period size constraint to ensure BDLE buffer length and
-+	 * start address alignment requirements are met. Align to 128
-+	 * bytes for newer Intel platforms, with older ones using 4 byte alignment.
-+	 */
-+	if (chip_info->hw_ip_version >= SOF_INTEL_ACE_4_0)
-+		snd_pcm_hw_constraint_step(substream->runtime, 0,
-+					   SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 128);
-+	else
-+		snd_pcm_hw_constraint_step(substream->runtime, 0,
-+					   SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 4);
+@@ -982,6 +983,7 @@ long drm_compat_ioctl(struct file *filp,
+ 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
+ 		return drm_ioctl(filp, cmd, arg);
  
- 	/* avoid circular buffer wrap in middle of period */
- 	snd_pcm_hw_constraint_integer(substream->runtime,
--- 
-2.53.0
-
++	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
+ 	fn = drm_compat_ioctls[nr].fn;
+ 	if (!fn)
+ 		return drm_ioctl(filp, cmd, arg);
 
 
 
