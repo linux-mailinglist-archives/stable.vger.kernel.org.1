@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-237305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJ1LOpUf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:41 +0200
+	id IOFNOAQg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-236801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57903F021E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367F93F03E1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 38E1E302D9F3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90CD9314F6C7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE67D317152;
-	Mon, 13 Apr 2026 16:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D1727F4F5;
+	Mon, 13 Apr 2026 16:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WscW2u3m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ed6vL2OK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F24F3168EE;
-	Mon, 13 Apr 2026 16:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9EBCA6F;
+	Mon, 13 Apr 2026 16:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099114; cv=none; b=macTzG/7N9PI8gGsD0h6KdHwltJekJU57qVEEz7IwlFa+99zcU4lS0fWTcFeiqXe7Rlcx4GYUHnqICt5vFpbYWfx8tAKqsYv397OjNTcJ579cG6BCpxafhxQUE8FwzU66CPyR/lRjc199fJo4/pV5Ept+hGkTdialh6nRfFrlWk=
+	t=1776097829; cv=none; b=Kz6xRJ61P3Bm5Shz7ZlNiFo9C+36ygyyfQa9gSqi8B9dri1m+y3s3sY3AcWXUkim6N+h89PwiIJLx2/r0A2qCS4bKl6opPvfRMCnEDHtf08vqJXVKDtVVNgvfXMJ3I5jjbCQNov2mbH2v5lp239e5Hxlefu+ShfK5LCm8uH3Jdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099114; c=relaxed/simple;
-	bh=Frjx+S5VS6WH/wvR9USOxQ/yN2Do7Rkh1eX7STKNwKE=;
+	s=arc-20240116; t=1776097829; c=relaxed/simple;
+	bh=XbIqK3xGur/FE2FEOjVP/PaO970we4D4CyERnEY+0b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=crOS2yPbQUfo/+G5L6R/c6MnB+pUNdvZgDXtqGDSexi0gmL9Zni16C5ik/OTSTRdQKBa0SUGiRcoju5wzVX498rI6Mq9WsBJLgaKPf/12h/oC9j/+G9c9Ccq+LttuYmUldYaGiAM5BYiPvChtFSINPcrBuGGZr5mGTALTpniOLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WscW2u3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055E5C2BCAF;
-	Mon, 13 Apr 2026 16:51:53 +0000 (UTC)
+	 MIME-Version; b=nrXtnL1M3xpp8/KulsD4/thFPHtpIqKW1QRLTcYF1p5EMeGxgLAUMtK3zpAwFRa40MdJ2vcJtgOfLBWRCMQ1kTA9/gpO1UroBx48wVPCkS142utvAfbHJhxQ5AY9Yd4COqp7N23T1eru8IvfYW+An4exT30jaYfpS7/WOG2B30U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ed6vL2OK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD9CC2BCAF;
+	Mon, 13 Apr 2026 16:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099114;
-	bh=Frjx+S5VS6WH/wvR9USOxQ/yN2Do7Rkh1eX7STKNwKE=;
+	s=korg; t=1776097829;
+	bh=XbIqK3xGur/FE2FEOjVP/PaO970we4D4CyERnEY+0b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WscW2u3mFOu8xDWybQXOWdhFpOhCCnMP5Er23OxvcKOvIECRE5Vs8oznPiU0FnZg8
-	 IGMGe+UUZyWrI3+Dh79Sq0EHkMXK4Cg0TjAlrn56vCutfzjWnBDCyBV89+JSmxkhh+
-	 y8r0mIIfJHvVD4YxVioe9kK955oe3b3UrDwi3KUA=
+	b=Ed6vL2OK7RK75Oz4lJlckTRsogJcUD6siNyizPVxPckM2McAmPAApsOh7NjRUjIOP
+	 OfbK35jg8No0Fs1611MNh/yGX7x7dMGsJ1psdkTKRBDBmVuHJrnLpWTlFksJmUi3vS
+	 iWCS9mYMGATg88hdIxz1bAvZB1A/0KljaN41nOAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/491] smb: client: fix atomic open with O_DIRECT & O_SYNC
+Subject: [PATCH 5.15 288/570] drm/i915/gt: Check set_default_submission() before deferencing
 Date: Mon, 13 Apr 2026 17:56:59 +0200
-Message-ID: <20260413155825.564298981@linuxfoundation.org>
+Message-ID: <20260413155841.279478330@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237305-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236801-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,123 +86,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,manguebit.org:email,suse.com:email,talpey.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D57903F021E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sony.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 367F93F03E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Rahul Bukte <rahul.bukte@sony.com>
 
-[ Upstream commit 4a7d2729dc99437dbb880a64c47828c0d191b308 ]
+[ Upstream commit 0162ab3220bac870e43e229e6e3024d1a21c3f26 ]
 
-When user application requests O_DIRECT|O_SYNC along with O_CREAT on
-open(2), CREATE_NO_BUFFER and CREATE_WRITE_THROUGH bits were missed in
-CREATE request when performing an atomic open, thus leading to
-potentially data integrity issues.
+When the i915 driver firmware binaries are not present, the
+set_default_submission pointer is not set. This pointer is
+dereferenced during suspend anyways.
 
-Fix this by setting those missing bits in CREATE request when
-O_DIRECT|O_SYNC has been specified in cifs_do_create().
+Add a check to make sure it is set before dereferencing.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted file paths from fs/smb/client/ to fs/cifs/ ]
+[   23.289926] PM: suspend entry (deep)
+[   23.293558] Filesystems sync: 0.000 seconds
+[   23.298010] Freezing user space processes
+[   23.302771] Freezing user space processes completed (elapsed 0.000 seconds)
+[   23.309766] OOM killer disabled.
+[   23.313027] Freezing remaining freezable tasks
+[   23.318540] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[   23.342038] serial 00:05: disabled
+[   23.345719] serial 00:02: disabled
+[   23.349342] serial 00:01: disabled
+[   23.353782] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[   23.358993] sd 1:0:0:0: [sdb] Synchronizing SCSI cache
+[   23.361635] ata1.00: Entering standby power mode
+[   23.368863] ata2.00: Entering standby power mode
+[   23.445187] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[   23.452194] #PF: supervisor instruction fetch in kernel mode
+[   23.457896] #PF: error_code(0x0010) - not-present page
+[   23.463065] PGD 0 P4D 0
+[   23.465640] Oops: Oops: 0010 [#1] SMP NOPTI
+[   23.469869] CPU: 8 UID: 0 PID: 211 Comm: kworker/u48:18 Tainted: G S      W           6.19.0-rc4-00020-gf0b9d8eb98df #10 PREEMPT(voluntary)
+[   23.482512] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+[   23.496511] Workqueue: async async_run_entry_fn
+[   23.501087] RIP: 0010:0x0
+[   23.503755] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+[   23.510324] RSP: 0018:ffffb4a60065fca8 EFLAGS: 00010246
+[   23.515592] RAX: 0000000000000000 RBX: ffff9f428290e000 RCX: 000000000000000f
+[   23.522765] RDX: 0000000000000000 RSI: 0000000000000282 RDI: ffff9f428290e000
+[   23.529937] RBP: ffff9f4282907070 R08: ffff9f4281130428 R09: 00000000ffffffff
+[   23.537111] R10: 0000000000000000 R11: 0000000000000001 R12: ffff9f42829070f8
+[   23.544284] R13: ffff9f4282906028 R14: ffff9f4282900000 R15: ffff9f4282906b68
+[   23.551457] FS:  0000000000000000(0000) GS:ffff9f466b2cf000(0000) knlGS:0000000000000000
+[   23.559588] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   23.565365] CR2: ffffffffffffffd6 CR3: 000000031c230001 CR4: 0000000000f70ef0
+[   23.572539] PKRU: 55555554
+[   23.575281] Call Trace:
+[   23.577770]  <TASK>
+[   23.579905]  intel_engines_reset_default_submission+0x42/0x60
+[   23.585695]  __intel_gt_unset_wedged+0x191/0x200
+[   23.590360]  intel_gt_unset_wedged+0x20/0x40
+[   23.594675]  gt_sanitize+0x15e/0x170
+[   23.598290]  i915_gem_suspend_late+0x6b/0x180
+[   23.602692]  i915_drm_suspend_late+0x35/0xf0
+[   23.607008]  ? __pfx_pci_pm_suspend_late+0x10/0x10
+[   23.611843]  dpm_run_callback+0x78/0x1c0
+[   23.615817]  device_suspend_late+0xde/0x2e0
+[   23.620037]  async_suspend_late+0x18/0x30
+[   23.624082]  async_run_entry_fn+0x25/0xa0
+[   23.628129]  process_one_work+0x15b/0x380
+[   23.632182]  worker_thread+0x2a5/0x3c0
+[   23.635973]  ? __pfx_worker_thread+0x10/0x10
+[   23.640279]  kthread+0xf6/0x1f0
+[   23.643464]  ? __pfx_kthread+0x10/0x10
+[   23.647263]  ? __pfx_kthread+0x10/0x10
+[   23.651045]  ret_from_fork+0x131/0x190
+[   23.654837]  ? __pfx_kthread+0x10/0x10
+[   23.658634]  ret_from_fork_asm+0x1a/0x30
+[   23.662597]  </TASK>
+[   23.664826] Modules linked in:
+[   23.667914] CR2: 0000000000000000
+[   23.671271] ------------[ cut here ]------------
+
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260203044839.1555147-1-suraj.kandpal@intel.com
+(cherry picked from commit daa199abc3d3d1740c9e3a2c3e9216ae5b447cad)
+Fixes: ff44ad51ebf8 ("drm/i915: Move engine->submit_request selection to a vfunc")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifsglob.h |   11 +++++++++++
- fs/cifs/dir.c      |    1 +
- fs/cifs/file.c     |   17 +++--------------
- 3 files changed, 15 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -26,6 +26,7 @@
- #include <linux/mm.h>
- #include <linux/mempool.h>
- #include <linux/workqueue.h>
-+#include <linux/fcntl.h>
- #include "cifs_fs_sb.h"
- #include "cifsacl.h"
- #include <crypto/internal/hash.h>
-@@ -2124,4 +2125,14 @@ static inline bool cifs_ses_exiting(stru
- 	return ret;
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+index 42cb3ad04d89a..e8e495694c182 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+@@ -1363,7 +1363,8 @@ void intel_engines_reset_default_submission(struct intel_gt *gt)
+ 		if (engine->sanitize)
+ 			engine->sanitize(engine);
+ 
+-		engine->set_default_submission(engine);
++		if (engine->set_default_submission)
++			engine->set_default_submission(engine);
+ 	}
  }
  
-+static inline int cifs_open_create_options(unsigned int oflags, int opts)
-+{
-+	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
-+	if (oflags & O_SYNC)
-+		opts |= CREATE_WRITE_THROUGH;
-+	if (oflags & O_DIRECT)
-+		opts |= CREATE_NO_BUFFER;
-+	return opts;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
---- a/fs/cifs/dir.c
-+++ b/fs/cifs/dir.c
-@@ -348,6 +348,7 @@ cifs_do_create(struct inode *inode, stru
- 		goto out;
- 	}
- 
-+	create_options |= cifs_open_create_options(oflags, create_options);
- 	/*
- 	 * if we're not using unix extensions, see if we need to set
- 	 * ATTR_READONLY on the create call
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -216,19 +216,13 @@ cifs_nt_open(char *full_path, struct ino
-  *********************************************************************/
- 
- 	disposition = cifs_get_disposition(f_flags);
--
- 	/* BB pass O_SYNC flag through on file attributes .. BB */
- 
- 	buf = kmalloc(sizeof(FILE_ALL_INFO), GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(f_flags, create_options);
- 
- 	oparms.tcon = tcon;
- 	oparms.cifs_sb = cifs_sb;
-@@ -750,13 +744,8 @@ cifs_reopen_file(struct cifsFileInfo *cf
- 	}
- 
- 	desired_access = cifs_convert_flags(cfile->f_flags);
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (cfile->f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (cfile->f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(cfile->f_flags,
-+						   create_options);
- 
- 	if (server->ops->get_lease_key)
- 		server->ops->get_lease_key(inode, &cfile->fid);
+-- 
+2.51.0
+
 
 
 
