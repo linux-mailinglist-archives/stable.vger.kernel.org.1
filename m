@@ -1,135 +1,176 @@
-Return-Path: <stable+bounces-236041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LqID2bg3GlkXwkAu9opvQ
-	(envelope-from <stable+bounces-236041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:24:06 +0200
+	id yO2DIGnn3GmUYAkAu9opvQ
+	(envelope-from <stable+bounces-236046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:54:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C333EBE40
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:24:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35883EC39B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDE2E302D0AD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:23:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB54530071CF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7833C4542;
-	Mon, 13 Apr 2026 12:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC093C8726;
+	Mon, 13 Apr 2026 12:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="jE8R4+iY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjk+mvat"
 X-Original-To: stable@vger.kernel.org
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF933C454B
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A253C8722
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776082987; cv=none; b=ljSHwk7WnQy5ih181zb1WBytxqXhOpjOHCMCMIcMvtRaDbe8h9u77jBbJKgel1slgilGLESy9c8fUqodVNpA0l64m1NXsXzrMAFV5CuicA1fxc8G2G6tmZK3E86M3HT1/NwGMm19yEcDxvtjjYuB6zJBzLsUL+8Bp+qnCMvEqRo=
+	t=1776084628; cv=none; b=VT5NSDqd83sTbquyd9dquDruAhyWAJLtaBViSzIMOFHnHPSqj/NOBi0rQ7NXHrIM3iZ0ZaNL1Qy4DlP3W18pd4Xn5KkdqeSzPQ5Wdk6/Z2ZvjxRAPmtHSFMP+hCZNXy80DegddB9og9wlYaJaFmfThA6xg30g2Vi4AeQHD0qsJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776082987; c=relaxed/simple;
-	bh=BBkzYw2zsCOt65g0/czwmFam61bS0fD+YbV9/bZ3PTc=;
-	h=In-Reply-To:Cc:Message-Id:To:Content-Type:Mime-Version:References:
-	 From:Subject:Date; b=gt63UV4u/o2MqqdW8lFN24wCSKpjPKqfXmJSaYPYxjcT2Oe/5h6/fe2RZ3zsbaZJ5KoF4p104+t4ScUKIi6yuHZb0rfhvVIOqS52jllKyROI9yTzKnGOLqKtbifn1BZW9Si7DAzCoUSHzFgbCFKEcYTKcfLO4PerNQj+9nw7D3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=jE8R4+iY; arc=none smtp.client-ip=209.127.230.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1776082981; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=BBkzYw2zsCOt65g0/czwmFam61bS0fD+YbV9/bZ3PTc=;
- b=jE8R4+iYADVxS7UvGT4SGVzHU136YhJtExmhVQInByWqxUfKy08yVE9/LajSXBG98uOT9F
- wnEVKXl8cul+u4nzck33Cv11ogqUP7Z9c3Ea8tcXVWpVE/ZkXa7dhdMCZy+zYKosEgOgvX
- 9PpT9jDZpOpdt4RK/ZyHl3nJZsne77E7P8DndrRq1W/KAtYYLsfyq2KGym0vyaX4J2eqOO
- Ww5ZQ1rADuDkuLS1uki4C2CHMVHgfRm9C3kO67OsBBvP4qyk86YyoYCXAz5v1hhwoQol5o
- mOze6xCBwe5HVelLVSDEX6oRHhWpF3YepEttOTMxgdS1hSeVRQHHdbPYaZj6rg==
-In-Reply-To: <20260413101759.6323fb68@pumpkin>
-X-Mailer: git-send-email 2.17.1
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	=?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	"Jinhui Guo" <guojinhui.liam@bytedance.com>, 
-	"Jason Wang" <jasowang@redhat.com>, "Jiri Pirko" <jiri@resnulli.us>, 
-	"Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, <linux-kernel@vger.kernel.org>, 
-	<stable@vger.kernel.org>, <virtualization@lists.linux.dev>
-Message-Id: <20260413122244.534-1-guojinhui.liam@bytedance.com>
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-To: "David Laight" <david.laight.linux@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1776084628; c=relaxed/simple;
+	bh=x7Y6wGbFhpIIVnmDfkhpXbovZrl+/N/d5T5XzDnetXQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=heSyTbVwN6CvjNByXNna24dM8dMK5OZtpk8vHTgf3ItSoz95yfGMvKDgw2O7uYHhaulXnTUJqIMwiZ0a2hiX/5tStydifyrM5UAUkP2JXQ+qFHz2tnJANm2fwmrLBDIj5j/Pjwo7zIQ3l64pgV45aZFaduVmYfLRwAuIEg6dCU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjk+mvat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AF5C2BCAF;
+	Mon, 13 Apr 2026 12:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776084628;
+	bh=x7Y6wGbFhpIIVnmDfkhpXbovZrl+/N/d5T5XzDnetXQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=wjk+mvat0P/1uZlcjrr+Ko5GZBGikZJBKJp09zWadCeln3r8GBEP4mhOIi4Dw6eqc
+	 sPZugnmwMRVa0sRvZSRYF3w8K3pNHOUjao4846wny9H5s5lLMfnGL0qNORjmoBhtGP
+	 OsHbv1z9jS6Rxzmp4dJon38NOVuEttpJjVCAVgPw=
+Subject: FAILED: patch "[PATCH] rxrpc: Fix key quota calculation for multitoken keys" failed to apply to 6.6-stable tree
+To: dhowells@redhat.com,horms@kernel.org,jaltman@auristor.com,kuba@kernel.org,marc.dionne@auristor.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Apr 2026 14:29:35 +0200
+Message-ID: <2026041335-rockslide-subduing-d935@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+269dce023+9f30b6+vger.kernel.org+guojinhui.liam@bytedance.com>
-References: <20260413101759.6323fb68@pumpkin>
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-Subject: Re: [PATCH] virtio_pci_modern: Use GFP_ATOMIC with spin_lock_irqsave held in virtqueue_exec_admin_cmd()
-Date: Mon, 13 Apr 2026 20:22:44 +0800
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236041-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-236046-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guojinhui.liam@bytedance.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bytedance.com:dkim,bytedance.com:mid]
-X-Rspamd-Queue-Id: B1C333EBE40
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,gregkh:email,linuxfoundation.org:dkim,msgid.link:url,auristor.com:email,infradead.org:email]
+X-Rspamd-Queue-Id: D35883EC39B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 13, 2026 at 10:17:59 +0100, David Laight wrote:
-> Or do the allocate before acquiring the lock (and free it not used
-> in the error path).
 
-Hi David,
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks for the suggestion.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Pre-allocating the memory outside the lock is indeed a good practice,
-but unfortunately it doesn't work in this specific virtqueue context.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x bdbfead6d38979475df0c2f4bad2b19394fe9bdc
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041335-rockslide-subduing-d935@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-The kmalloc() in question is not happening at the virtqueue_exec_admin_cmd()
-level. Instead, it is deeply embedded inside virtqueue_add_sgs()
-(specifically, in functions like alloc_indirect_split() or
-virtqueue_add_indirect_packed()) to allocate indirect descriptors when
-multiple SG elements are provided.
+Possible dependencies:
 
-As a caller, we have no mechanism to pre-allocate this indirect descriptor
-memory and pass it down to virtqueue_add_sgs(). Furthermore, virtqueue_add_sgs()
-needs to atomically check the queue's num_free status, allocate the indirect
-table if necessary, and update the queue pointers. All these operations
-must be protected by admin_vq->lock to prevent concurrent admin command
-submissions from corrupting the virtqueue state.
 
-Therefore, allocating before acquiring the lock isn't feasible here, and
-replacing GFP_KERNEL with GFP_ATOMIC (with a proper sleepable retry upon
-failure) seems to be the more viable fix.
 
-Does this make sense?
+thanks,
 
-Thanks,
-Jinhui
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From bdbfead6d38979475df0c2f4bad2b19394fe9bdc Mon Sep 17 00:00:00 2001
+From: David Howells <dhowells@redhat.com>
+Date: Wed, 8 Apr 2026 13:12:29 +0100
+Subject: [PATCH] rxrpc: Fix key quota calculation for multitoken keys
+
+In the rxrpc key preparsing, every token extracted sets the proposed quota
+value, but for multitoken keys, this will overwrite the previous proposed
+quota, losing it.
+
+Fix this by adding to the proposed quota instead.
+
+Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
+index 85078114b2dd..af403f0ccab5 100644
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -72,7 +72,7 @@ static int rxrpc_preparse_xdr_rxkad(struct key_preparsed_payload *prep,
+ 		return -EKEYREJECTED;
+ 
+ 	plen = sizeof(*token) + sizeof(*token->kad) + tktlen;
+-	prep->quotalen = datalen + plen;
++	prep->quotalen += datalen + plen;
+ 
+ 	plen -= sizeof(*token);
+ 	token = kzalloc_obj(*token);
+@@ -199,7 +199,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	}
+ 
+ 	plen = sizeof(*token) + sizeof(*token->rxgk) + tktlen + keylen;
+-	prep->quotalen = datalen + plen;
++	prep->quotalen += datalen + plen;
+ 
+ 	plen -= sizeof(*token);
+ 	token = kzalloc_obj(*token);
+@@ -460,6 +460,7 @@ static int rxrpc_preparse(struct key_preparsed_payload *prep)
+ 	memcpy(&kver, prep->data, sizeof(kver));
+ 	prep->data += sizeof(kver);
+ 	prep->datalen -= sizeof(kver);
++	prep->quotalen = 0;
+ 
+ 	_debug("KEY I/F VERSION: %u", kver);
+ 
+@@ -497,7 +498,7 @@ static int rxrpc_preparse(struct key_preparsed_payload *prep)
+ 		goto error;
+ 
+ 	plen = sizeof(*token->kad) + v1->ticket_length;
+-	prep->quotalen = plen + sizeof(*token);
++	prep->quotalen += plen + sizeof(*token);
+ 
+ 	ret = -ENOMEM;
+ 	token = kzalloc_obj(*token);
+
 
