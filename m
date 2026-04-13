@@ -1,154 +1,235 @@
-Return-Path: <stable+bounces-236321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBOcNe4X3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:02 +0200
+	id SIZLJ74Z3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691E13EEAE4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BED13EF08C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 355DA3032045
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B6DC30A537C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FBD280CFB;
-	Mon, 13 Apr 2026 16:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C02B2FFFA4;
+	Mon, 13 Apr 2026 16:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sJb8YmCG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vJJ0qtp0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZtYNZgEI"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF026ED41;
-	Mon, 13 Apr 2026 16:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE53C27280A
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 16:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096605; cv=none; b=p4Tmzl6UQzpG9K26X/eYIbMDJGnlu0yCjvzFAe8XLRLvdty32QET7ZBu4Xj5Y9GqyZTGIWxKJ9W5kEVovvm/W3UEbjTnXMCPsGXlygtjb2/jYI7xlyD9YAS2uqJn8Gz45YcTqzZcYauZfph00NiPr/09MTrtSelM9tVF/cdUz8I=
+	t=1776097054; cv=none; b=raWGbGjMMZLege6qw1fgpcqr7F1+u+X2OCiaOt9UFoAnNBcKo9YOfq8b2Qgt7Cr74Upup/OmBJ2mbnCi8cYlC7dCucMbFdDEvOZiuRd6r2yB16KWk0u08NkhllSaWbuBTdijgTZHhnJzK+zc/gd98iLhQkOcZk8zKF8zVofXP9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096605; c=relaxed/simple;
-	bh=MpNuHHmEW8u9lXAAmJWPvw1Qu4qAV+xdm0XIAO2nDqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IzVef2GFQ6wT2CjQxnX91UrJjmlC71NHZ+Jyey1MNZHK1dJy/bun5ApQ6hOG91nKI69uSAs/EtEsvnYvcqWPaiRr9lOFa0yEF8/+xg8IQFrs+4FazYz9m8JLm6LvvhtA/iYiAXElg9e1iFkJLMcxTPGdBqFPuXnkYHt2vF+dZD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sJb8YmCG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vJJ0qtp0; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 13 Apr 2026 18:10:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1776096602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MpNuHHmEW8u9lXAAmJWPvw1Qu4qAV+xdm0XIAO2nDqc=;
-	b=sJb8YmCGjpKzxzpPekzJP5qcI2ZWQ8/6bp5VAjNawZyK1AZFznaApWoFkOnF9uZegme8og
-	6KuNTsEYdDcW41mYX2WVKeVKY/SHGe2laYJt6PXwVZHXFELyj+zWYldOYqBwBwvJ2QYi/t
-	nE6c8kkAeMrrS1SQr3X2+X67b/e2b1KyXTu6UNPYB2p/EePPs8tTUYYkyo78uQXiQc1SXr
-	hH11Nentj5/9dyx2eiuxM4YpRmOm2Q1JO6IX6HQhS4yS59MSTDntVp6KQ0FQP1/x6OXmHo
-	pp7+UWSpd4JNNglqecHXvRkOZq8PBCNQ2yJwPvRHFc6mD1awIcpCxAjgskhVcQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1776096602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MpNuHHmEW8u9lXAAmJWPvw1Qu4qAV+xdm0XIAO2nDqc=;
-	b=vJJ0qtp0NdmsJTRjjT94hsq4mm06ij1NFxdxOqJAUNhVq6QJbfsksC64qc1EaNM5sXPMCy
-	bjkcYczR0RJjjGAg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Marek Vasut <marex@nabladev.com>, netdev@vger.kernel.org,
-	stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>, Paolo Abeni <pabeni@redhat.com>,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Yicong Hui <yiconghui@gmail.com>, linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [net,PATCH v2] net: ks8851: Reinstate disabling of BHs around
- IRQ handler
-Message-ID: <20260413161000.P_SLxmZl@linutronix.de>
-References: <20260408162535.98108-1-marex@nabladev.com>
- <20260412090141.21bf1534@kernel.org>
- <2558832d-c821-436d-898d-b708c5e0a228@nabladev.com>
- <20260412105125.48f0c58f@kernel.org>
- <20260413125744.TVKkZcEK@linutronix.de>
- <20260413084445.59fe28d6@kernel.org>
+	s=arc-20240116; t=1776097054; c=relaxed/simple;
+	bh=/Wy8EUFyEpeEAyYGqty2YpfolfGPZl8bC76hgMD2EBc=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nAaBka7mbNgnSj7jhpZjCDTF9Wjec0Jv+dncT3EoIyjxUr8qru+9RXrcj39fh4NAU4IVeFO5GNhlXHPWgpr++1bDFl1UmqfOd1JiMntQaZtdaXWEuRl7qlzZdWRJGGE2jk3NNrjcPXWQ/uCPjNweXyqNrUKkk+dHShLq4wChI+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZtYNZgEI; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35e4617924eso473630a91.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 09:17:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776097052; x=1776701852; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to:subject:cc
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KjcJ7ExbmXQll1fJ8sfhOKaomR2S+dBnysGQ5TsI/p4=;
+        b=ZtYNZgEIfbLWj/Z6HZH4tes2qv+QZynMjYOKMEBxUCy7BeOc0i0hB84oQEV8g9R0wx
+         AgEk/8I5Nd7l5IGtsOBg5Sqq2jtFz+rkue+zEdeDfGEz5OMpOdVPfUQgzpGKsaz9NPBT
+         pey2ABuJHh2cMuI9hQOLn9rgNHOdtpwWWYgO5E1sLzz9M4K347dVefSvnT0qMpI25djt
+         hANmr9xEyybVyj8lSwAHpNOlJibYawiHKmMecmE4R63v2B6z6Pe+FsIS0QMPBVvegs7r
+         rXHpv/bvNmgKz/MaKKCF21iOD68m5Xrv/01uT5OAPY4srGB3wDBKl0Sm0hjDPiLF+cd6
+         O2Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776097052; x=1776701852;
+        h=content-transfer-encoding:in-reply-to:from:references:to:subject:cc
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KjcJ7ExbmXQll1fJ8sfhOKaomR2S+dBnysGQ5TsI/p4=;
+        b=fSlNBx/IrgByG6okSxRxJYrr19BzMGWFGXb94yERUHod05z+0Lj8018CI3KD7Rc0ms
+         8xZ+3aDghHAddgneq4s9ZAYH2uZl3fX/CowwDTPIJ63kT+79kvrzZinRa0O91SwDIwWI
+         u9vAIp6lLeAzngLPC5Ztu/3AoKvtFy8y+Q3JndfCKYkqh7J+AQPXCT0epx0EbLYj9FS2
+         8V53pFqFJ+dhUYm+tdI6duTGRwNdQVdnzJyvyyNz1iB8ovNYYxOFHLDS3FRO0wyyUZKW
+         cydh85X+4vCp3MpXiL8U8sdx/5GVfr9doNzEI+0v1ZbBdFLtQIoh6W8xKFywzXrZxf3L
+         KHxA==
+X-Forwarded-Encrypted: i=1; AFNElJ9eNifSCYY9T5lzSqg51C9tguiZVu7a7ICF4iMQ670am4xBV+92NWxHcuF3h1/SflZLLQu6i98=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkaoAHXxO2NfsW9Dioi9GXtvu8ECZibXnJLaexHZpY27f9TqOe
+	8qLcmRj0JSF5HNmwy7Jymtni3Q8bt3ZUKrCfnB5Vgu1g7iOZqT9nG2yCgEzW6w==
+X-Gm-Gg: AeBDieuJFUuha6HJTZ70J5WGf9DoDBd1zcXXktvp4bUiKvoPCLPomyky6pevk8TuvNB
+	fT/opOfgvBZiB+xHxNeDMGl4mzuxYWjDY++bznG+a0XD1qByd2bD7dDjIV5Weu6sK5JuuwE1jJp
+	gxdPToJ41mJX6lkmblGVuJdQy3zhB62/cH997xuKqw8o/aY7dUfCb2dkX9Ee2mOeoOmok8+30Ll
+	xKcQ8XpCt0fvEmd+/atHyBVyLagfD2VyN0wEfaFtV9wF9jcod36VCgEWpu1NO5UQiCKx927ZVBJ
+	TU7/Rayj7BCNwRRHNzlle9NoGrKrG7VRygyNy1naT+ofRhItcfpdEjfY3U1iWfKIGBMAoID8qdQ
+	7z2Q0eZBMFU0VSTlGWansRQ4IUaJc9pyq8ROAO3zD1qe/548lMb9kd8gqU3aggAROGVZz84OQ3H
+	G8g+jcORr0CMteLJjj83xnKw6d+JQQARoPP7I/E16rG4zvyjbD5Ps=
+X-Received: by 2002:a17:90b:35cf:b0:35e:576c:7c1e with SMTP id 98e67ed59e1d1-35e576c7d9cmr4245897a91.4.1776097051938;
+        Mon, 13 Apr 2026 09:17:31 -0700 (PDT)
+Received: from [192.168.0.100] ([163.125.228.136])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e4131d3f2sm12560433a91.12.2026.04.13.09.17.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 09:17:31 -0700 (PDT)
+Message-ID: <86770cef-bf30-45f6-8d33-e7b74b3bb834@gmail.com>
+Date: Tue, 14 Apr 2026 00:17:19 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260413084445.59fe28d6@kernel.org>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+Cc: yangyccccc@gmail.com,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
+ Sanman Pradhan <psanman@juniper.net>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>, shenyang39@huawei.com,
+ prime.zeng@hisilicon.com
+Subject: Re: [PATCH 1/2] hwtracing: hisi_ptt: Propagate DMA reset timeout in
+ trace_start()
+To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260409010704.383882-1-sanman.pradhan@hpe.com>
+ <20260409010704.383882-2-sanman.pradhan@hpe.com>
+From: Yicong Yang <yangyccccc@gmail.com>
+In-Reply-To: <20260409010704.383882-2-sanman.pradhan@hpe.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236496-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,huawei.com,linux.intel.com,juniper.net,vger.kernel.org,hisilicon.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236321-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[nabladev.com,vger.kernel.org,davemloft.net,lunn.ch,google.com,tipi-net.de,redhat.com,raritan.com,gmail.com,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	FROM_NEQ_ENVFROM(0.00)[yangyccccc@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 691E13EEAE4
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2BED13EF08C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 2026-04-13 08:44:45 [-0700], Jakub Kicinski wrote:
-> On Mon, 13 Apr 2026 14:57:44 +0200 Sebastian Andrzej Siewior wrote:
-> > On 2026-04-12 10:51:25 [-0700], Jakub Kicinski wrote:
-> > > > Does the backtrace make the problem clearer, with the annotation ab=
-ove ? =20
-> > >=20
-> > > Sebastian, do you have any recommendation here? tl;dr is that the dri=
-ver does =20
-> > =E2=80=A6
-> >=20
-> > What about this:
->=20
-> Thanks for taking a look (according to you auto-reply immediately after
-> a vacation ;))
+On 2026/4/9 09:07, Pradhan, Sanman wrote:
+> From: Sanman Pradhan <psanman@juniper.net>
+>
+> hisi_ptt_wait_dma_reset_done() discards the return value of
+> readl_poll_timeout_atomic(). If the DMA engine does not complete its
+> reset within the timeout, hisi_ptt_trace_start() proceeds to start
+> tracing regardless.
+>
+> Return the poll result from hisi_ptt_wait_dma_reset_done() and
+> propagate it from hisi_ptt_trace_start(). Deassert the reset bit
+> before returning on timeout, preserving the existing reset cleanup
+> sequence. Move ctrl->started to the successful path so a failed start
+> does not leave the trace marked as active.
+>
+> Fixes: ff0de066b463 ("hwtracing: hisi_ptt: Add trace function support for HiSilicon PCIe Tune and Trace device")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+> ---
+>  drivers/hwtracing/ptt/hisi_ptt.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
+> index 94c371c491357..73b93df8504c4 100644
+> --- a/drivers/hwtracing/ptt/hisi_ptt.c
+> +++ b/drivers/hwtracing/ptt/hisi_ptt.c
+> @@ -171,13 +171,13 @@ static bool hisi_ptt_wait_trace_hw_idle(struct hisi_ptt *hisi_ptt)
+>  					  HISI_PTT_WAIT_TRACE_TIMEOUT_US);
+>  }
+>  
+> -static void hisi_ptt_wait_dma_reset_done(struct hisi_ptt *hisi_ptt)
+> +static int hisi_ptt_wait_dma_reset_done(struct hisi_ptt *hisi_ptt)
 
-;)
+the other status wait functions in this driver return a boolean, it's better to keep consistence.
 
-> TBH changing the driver feels like a workaround / invitation for a
-> whack-a-mole game. I'd prefer to fix the skb allocation.
+>  {
+>  	u32 val;
+>  
+> -	readl_poll_timeout_atomic(hisi_ptt->iobase + HISI_PTT_TRACE_WR_STS,
+> -				  val, !val, HISI_PTT_RESET_POLL_INTERVAL_US,
+> -				  HISI_PTT_RESET_TIMEOUT_US);
+> +	return readl_poll_timeout_atomic(hisi_ptt->iobase + HISI_PTT_TRACE_WR_STS,
+> +					 val, !val, HISI_PTT_RESET_POLL_INTERVAL_US,
+> +					 HISI_PTT_RESET_TIMEOUT_US);
+>  }
+>  
+>  static void hisi_ptt_trace_end(struct hisi_ptt *hisi_ptt)
+> @@ -194,6 +194,7 @@ static int hisi_ptt_trace_start(struct hisi_ptt *hisi_ptt)
+>  {
+>  	struct hisi_ptt_trace_ctrl *ctrl = &hisi_ptt->trace_ctrl;
+>  	u32 val;
+> +	int ret;
+>  	int i;
+>  
+>  	/* Check device idle before start trace */
+> @@ -202,19 +203,21 @@ static int hisi_ptt_trace_start(struct hisi_ptt *hisi_ptt)
+>  		return -EBUSY;
+>  	}
+>  
+> -	ctrl->started = true;
+> -
+>  	/* Reset the DMA before start tracing */
+>  	val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+>  	val |= HISI_PTT_TRACE_CTRL_RST;
+>  	writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+>  
+> -	hisi_ptt_wait_dma_reset_done(hisi_ptt);
+> +	ret = hisi_ptt_wait_dma_reset_done(hisi_ptt);
+>  
+> +	/* De-assert reset regardless of whether the wait timed out */
+>  	val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+>  	val &= ~HISI_PTT_TRACE_CTRL_RST;
+>  	writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+>  
+> +	if (ret)
+> +		return ret;
+> +
 
-The problem is that _irq() implicitly disables bh processing but this
-does not happen. Forcing this is possible but expensive.
-However, I did remove lock from bh_disable() on RT.
+could add some error log here for better debug. otherwise looks good to me.
 
-Marek: from which kernel version was this backtrace?
+the timeout wasn't checked since the hardware reset will be finished in the limited time normally,
+which is less than the HISI_PTT_RESET_TIMEOUT_US. It'll be better to add this check in case
+there's something wrong with the device.
 
-> Is there any way we can check if any locks which were _irq() on non-RT
-> are held?
+Thanks.
 
-lockdep has a list of locks which are acquired but it does not see if it
-is _irq() or not. It only records it was acquired.
+>  	/* Reset the index of current buffer */
+>  	hisi_ptt->trace_ctrl.buf_index = 0;
+>  
+> @@ -234,6 +237,8 @@ static int hisi_ptt_trace_start(struct hisi_ptt *hisi_ptt)
+>  	if (!hisi_ptt->trace_ctrl.is_port)
+>  		val |= HISI_PTT_TRACE_CTRL_FILTER_MODE;
+>  
+> +	ctrl->started = true;
+> +
+>  	/* Start the Trace */
+>  	val |= HISI_PTT_TRACE_CTRL_EN;
+>  	writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
 
-Sebastian
 
