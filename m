@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Aw/CYsY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:39 +0200
+	id SHVwCUIc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7AD3EEC78
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C9A3EF75A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D83C030CBB61
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C316430F0C4F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B01A2472A2;
-	Mon, 13 Apr 2026 16:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E7D2874F8;
+	Mon, 13 Apr 2026 16:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6pY9Aqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOfjC+QI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1831B24E4AF;
-	Mon, 13 Apr 2026 16:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557A6283CBF;
+	Mon, 13 Apr 2026 16:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096731; cv=none; b=RS7ToyqnSnU27qXqkA0UuKtgeN+eOMB7/EhUBFJCASEtzGdG8k5+kY409aIc1t2i5cvLJtPOHQTFUdLJwzz89hmN60fsfWN7W290ZiukL4S2AZLMHyKCiAitvAOo8VquL/Fg1g7hiYnMLYv6AGnigvlggY+opPPUQK53QFzsv5M=
+	t=1776096903; cv=none; b=h6I1A5H20GRKehTQt8XqSM1d4E8y3sboxP/dflAj5SxvJsPOZYonZ8fwHsvyfI510IszAuW/YJRxoZPJRGNY32hLAoidzonWNcflGT2A+p6ptS9s+dMPch68utkcTaNyBh4+WFOwIx6GDJofeGyS8gZMNNlUO5/HzkIa9xJS3Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096731; c=relaxed/simple;
-	bh=A6L2uBe7DcWg/NziCIN7B7R7afWvSL4cwYtLwnhLqMs=;
+	s=arc-20240116; t=1776096903; c=relaxed/simple;
+	bh=k1Rf+S1zJJjoPjH860UVrm2HgNkFPoAO00sc0+fp1+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6w4qP3rBq+h77w4+hZnClowuuOtCQbroErB2wdx3pHCPNd8sitwnOFbLlYqzQOt7chsZJNPzvbq6q9i5E/r76Cz4pQNGVEeRoz7+2+b8ZPlFD3JZi1qcpCDbgBusYjgKKSktWh9h0CeDE9g8ciY+9npAb7oUhM7ns4d3om6I2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6pY9Aqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65126C2BCAF;
-	Mon, 13 Apr 2026 16:12:10 +0000 (UTC)
+	 MIME-Version; b=cRVunEHnIL8J36eK0SJ2YX0KaW8kOeqw6iElbr/7UpahGB84qnF408ayJTUtgu4ulHQovtG9WD4E+f2+nOUzo8qihckvoIUQaj6+nNWYvfLIWToNafr68x3H8h3oL/aVlKWMdzNBm1UIPHNMxfazvOTjABCDRp+DiQuJPZlK2Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOfjC+QI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFA4C2BCAF;
+	Mon, 13 Apr 2026 16:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096730;
-	bh=A6L2uBe7DcWg/NziCIN7B7R7afWvSL4cwYtLwnhLqMs=;
+	s=korg; t=1776096903;
+	bh=k1Rf+S1zJJjoPjH860UVrm2HgNkFPoAO00sc0+fp1+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6pY9Aqhj2Kz0nG7eE9YWtwQDS9qk9eWYw5K2Y+zD7LEXX8h6Lnv3Do9vKQVI9024
-	 FpTfZoYkVR5h25rUawJ98ij7OQuhqq2h1iWKQQw1tOvS+Qm4ZYuoDka4UKgKd8erIN
-	 ZX8SH7byG6O4Rk3KEg4j9ZTJtN0W5W9gojKXhCi4=
+	b=SOfjC+QItiQj1/1MoXyiFlV2LDRbQT5MXK5YUombUOXdsRU5kHq3rI2yEBv2Cq5ed
+	 ocJ37mu6HqA015fyBfRYeINutuefWlfYcTy6f6vKLes9ZtGPjrzFRn81Mg9XCQn+je
+	 SU43k9uLXbl2rXa6e6xLMsmGkjsX7/kj2bScaEog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Wei Xu <xuwei5@hisilicon.com>
-Subject: [PATCH 6.12 40/70] arm64: dts: hisilicon: hi3798cv200: Add missing dma-ranges
-Date: Mon, 13 Apr 2026 18:00:35 +0200
-Message-ID: <20260413155729.676559359@linuxfoundation.org>
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 09/50] MIPS: mm: Suppress TLB uniquification on EHINV hardware
+Date: Mon, 13 Apr 2026 18:00:36 +0200
+Message-ID: <20260413155724.855813029@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,57 +78,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236370-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236437-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[8a22000:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hisilicon.com:email]
-X-Rspamd-Queue-Id: 9A7AD3EEC78
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,orcam.me.uk:email]
+X-Rspamd-Queue-Id: A8C9A3EF75A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Guo <shawnguo@kernel.org>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 1af997cad473d505248df6d9577183bb91f69670 upstream.
+commit 74283cfe216392c7b776ebf6045b5b15ed9dffcd upstream.
 
-Reboot starts failing on Poplar since commit 8424ecdde7df ("arm64: mm:
-Set ZONE_DMA size based on devicetree's dma-ranges"), which effectively
-changes zone_dma_bits from 30 to 32 for arm64 platforms that do not
-properly define dma-ranges in device tree.  It's unclear how Poplar reboot
-gets broken by this change exactly, but a dma-ranges limiting zone_dma to
-the first 1 GB fixes the regression.
+Hardware that supports the EHINV feature, mandatory for R6 ISA and FTLB
+implementation, lets software mark TLB entries invalid, which eliminates
+the need to ensure no duplicate matching entries are ever created.  This
+feature is already used by local_flush_tlb_all(), via the UNIQUE_ENTRYHI
+macro, making the preceding call to r4k_tlb_uniquify() superfluous.
 
-Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The next change will also modify uniquification code such that it'll
+become incompatible with the FTLB and MMID features, as well as MIPSr6
+CPUs that do not implement 4KiB pages.
+
+Therefore prevent r4k_tlb_uniquify() from being used on EHINV hardware,
+as denoted by `cpu_has_tlbinv'.
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/mm/tlb-r4k.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-@@ -122,6 +122,7 @@
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		ranges = <0x0 0x0 0xf0000000 0x10000000>;
-+		dma-ranges = <0x0 0x0 0x0 0x40000000>;
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 4d49ecf276103..18ae61b6f2b17 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -638,7 +638,8 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
  
- 		crg: clock-reset-controller@8a22000 {
- 			compatible = "hisilicon,hi3798cv200-crg", "syscon", "simple-mfd";
+ 	/* From this point on the ARC firmware is dead.	 */
+-	r4k_tlb_uniquify();
++	if (!cpu_has_tlbinv)
++		r4k_tlb_uniquify();
+ 	local_flush_tlb_all();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+-- 
+2.53.0
+
 
 
 
