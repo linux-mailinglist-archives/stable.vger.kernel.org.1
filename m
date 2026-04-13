@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-236787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMJRLRca3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:15 +0200
+	id yEmHFnwl3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:18:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A5B3EF19F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95E43F126D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E94523014FD8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4625317333E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090D630DED5;
-	Mon, 13 Apr 2026 16:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732413168EF;
+	Mon, 13 Apr 2026 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpl6jKCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUkqixk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC9830BBAE;
-	Mon, 13 Apr 2026 16:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367723161AB;
+	Mon, 13 Apr 2026 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097792; cv=none; b=YRyy9mcGSIVR4WuLFYTtumwEKV5/lEoG3dA4kt46MloWSLs1DbK6An3fXeUJJDIglXXzMxIgd0V9gtWyPXNFVdT0celK2okrRKP8nC94AzTBYXJwCM58iaEP3XrBs8aqVqYFqTHXRWUnE6KgH2LQPHETwGwykW0hOiECOgPQ7T0=
+	t=1776098975; cv=none; b=RvkGCWT7HScSjsbKr4mCGQlJq91QPRTIe93P2pjoBhsBUxvFkpcgShGiZrCAFCbM6wGmgLwahrWzwYiQ0QGv/t7+Je7+Cv8YE65YQGmlqC3rDFJOhJrXgNGUItSQxDXC/dIDD65TBvOihQpCmNQcpgso+gpnYSLSoH/K1PkcveE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097792; c=relaxed/simple;
-	bh=2BgpkBnULRjosV4jFKWyW2AOP9OSe4yqxfMfGumZhe4=;
+	s=arc-20240116; t=1776098975; c=relaxed/simple;
+	bh=PyeYQtwAZJaTc/BQrsHgtlW7XdSWVSKD25J8zILHCo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqMW7irlbjvZEE/TB3cFI4D7FnfDVJ1OAEgrERQTZ3b9C3FOsEDYg5J6Kvi1Q27UTa8I9w4PE1LsuTJrZCgnNUD2g/tfi4P8nrnbjU0LLhiG7T0HOiP8MpdB4r9YbQKokC+eWkRK0BK/Do4vIJaN44JUpOAxlJVMMiM0iHJLLN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vpl6jKCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5690CC2BCAF;
-	Mon, 13 Apr 2026 16:29:52 +0000 (UTC)
+	 MIME-Version; b=TbA6Zy5PCPx5m8lx9ACxyqS/iaQWibtfJ0Nnd+/opWDkE0HfyHiY9zJ7EkWgtA+7SAznev9JmLtZbZkDZz+qMCaICahF76v+q/5JPIC3C9ZMPv90FYqxzuajqyma4Vx7QzJu27R3ztCX2I9yHWIe+5BrIi6ISWPGIxaoCcLEXWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUkqixk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC397C2BCAF;
+	Mon, 13 Apr 2026 16:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097792;
-	bh=2BgpkBnULRjosV4jFKWyW2AOP9OSe4yqxfMfGumZhe4=;
+	s=korg; t=1776098975;
+	bh=PyeYQtwAZJaTc/BQrsHgtlW7XdSWVSKD25J8zILHCo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vpl6jKCUxcMVt93KfggelKtm9IfzbtQhB5aXxR/bj4/LUEw/r0RB/v6UYaZCxNMaa
-	 g4iI3CxqCRSxaUTQsSzq50rv2WGgQcRd78HgmWMiPgaKxdEgSHbHs7G0H86acvW7jT
-	 mzIWF5NkDmJCx+tfamYYUOmON0U7Uufr9gyo33zY=
+	b=HUkqixk3gN3dLA8iGeAQ/IdRxfBx0q4cS+wIgUwSmVUVvE3thzguoFrfhi52oy6qn
+	 /CHujnEGDwUoeraO6z1HPrB7gn5SwQEh4Vz040qAaRH+JSfSBkROXYxohdEN2pq8vU
+	 24hVLXTxXyfkmw8mjCcThg9v//9ddUmu6je7I2TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Igor Pylypiv <ipylypiv@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 275/570] ACPI: processor: Fix previous acpi_processor_errata_piix4() fix
+Subject: [PATCH 5.10 161/491] ata: libata-scsi: refactor ata_scsi_translate()
 Date: Mon, 13 Apr 2026 17:56:46 +0200
-Message-ID: <20260413155840.784801418@linuxfoundation.org>
+Message-ID: <20260413155825.063751787@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,106 +71,192 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237251-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236787-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 94A5B3EF19F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: A95E43F126D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit bf504b229cb8d534eccbaeaa23eba34c05131e25 ]
+[ Upstream commit bb3a8154b1a1dc2c86d037482c0a2cf9186829ed ]
 
-After commi f132e089fe89 ("ACPI: processor: Fix NULL-pointer dereference
-in acpi_processor_errata_piix4()"), device pointers may be dereferenced
-after dropping references to the device objects pointed to by them,
-which may cause a use-after-free to occur.
+Factor out of ata_scsi_translate() the code handling queued command
+deferral using the port qc_defer callback and issuing the queued
+command with ata_qc_issue() into the new function ata_scsi_qc_issue(),
+and simplify the goto used in ata_scsi_translate().
+While at it, also add a lockdep annotation to check that the port lock
+is held when ata_scsi_translate() is called.
 
-Moreover, debug messages about enabling the errata may be printed
-if the errata flags corresponding to them are unset.
+No functional changes.
 
-Address all of these issues by moving message printing to the points
-in the code where the errata flags are set.
-
-Fixes: f132e089fe89 ("ACPI: processor: Fix NULL-pointer dereference in acpi_processor_errata_piix4()")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/linux-acpi/938e2206-def5-4b7a-9b2c-d1fd37681d8a@roeck-us.net/
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/5975693.DvuYhMxLoT@rafael.j.wysocki
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+[ scsi_done(cmd) => cmd->scsi_done(cmd) + DPRINTK ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_processor.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/ata/libata-scsi.c |   83 +++++++++++++++++++++++++++-------------------
+ 1 file changed, 50 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 669398045c0fd..07acdaee6ce5c 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -96,6 +96,10 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
- 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
- 		if (ide_dev) {
- 			errata.piix4.bmisx = pci_resource_start(ide_dev, 4);
-+			if (errata.piix4.bmisx)
-+				dev_dbg(&ide_dev->dev,
-+					"Bus master activity detection (BM-IDE) erratum enabled\n");
-+
- 			pci_dev_put(ide_dev);
- 		}
- 
-@@ -114,20 +118,17 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
- 		if (isa_dev) {
- 			pci_read_config_byte(isa_dev, 0x76, &value1);
- 			pci_read_config_byte(isa_dev, 0x77, &value2);
--			if ((value1 & 0x80) || (value2 & 0x80))
-+			if ((value1 & 0x80) || (value2 & 0x80)) {
- 				errata.piix4.fdma = 1;
-+				dev_dbg(&isa_dev->dev,
-+					"Type-F DMA livelock erratum (C3 disabled)\n");
-+			}
- 			pci_dev_put(isa_dev);
- 		}
- 
- 		break;
- 	}
- 
--	if (ide_dev)
--		dev_dbg(&ide_dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
--
--	if (isa_dev)
--		dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
--
- 	return 0;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1668,6 +1668,42 @@ static void ata_scsi_qc_complete(struct
+ 	ata_qc_done(qc);
  }
  
--- 
-2.51.0
-
++static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
++{
++	int ret;
++
++	if (!ap->ops->qc_defer)
++		goto issue;
++
++	/* Check if the command needs to be deferred. */
++	ret = ap->ops->qc_defer(qc);
++	switch (ret) {
++	case 0:
++		break;
++	case ATA_DEFER_LINK:
++		ret = SCSI_MLQUEUE_DEVICE_BUSY;
++		break;
++	case ATA_DEFER_PORT:
++		ret = SCSI_MLQUEUE_HOST_BUSY;
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		ret = SCSI_MLQUEUE_HOST_BUSY;
++		break;
++	}
++
++	if (ret) {
++		/* Force a requeue of the command to defer its execution. */
++		ata_qc_free(qc);
++		return ret;
++	}
++
++issue:
++	ata_qc_issue(qc);
++
++	return 0;
++}
++
+ /**
+  *	ata_scsi_translate - Translate then issue SCSI command to ATA device
+  *	@dev: ATA device to which the command is addressed
+@@ -1691,69 +1727,50 @@ static void ata_scsi_qc_complete(struct
+  *	spin_lock_irqsave(host lock)
+  *
+  *	RETURNS:
+- *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY if the command
+- *	needs to be deferred.
++ *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY or SCSI_MLQUEUE_HOST_BUSY if the
++ *	command needs to be deferred.
+  */
+ static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
+ 			      ata_xlat_func_t xlat_func)
+ {
+ 	struct ata_port *ap = dev->link->ap;
+ 	struct ata_queued_cmd *qc;
+-	int rc;
+ 
++	lockdep_assert_held(ap->lock);
++
++	/*
++	 * ata_scsi_qc_new() calls scsi_done(cmd) in case of failure. So we
++	 * have nothing further to do when allocating a qc fails.
++	 */
+ 	qc = ata_scsi_qc_new(dev, cmd);
+ 	if (!qc)
+-		goto err_mem;
++		return 0;
+ 
+ 	/* data is present; dma-map it */
+ 	if (cmd->sc_data_direction == DMA_FROM_DEVICE ||
+ 	    cmd->sc_data_direction == DMA_TO_DEVICE) {
+ 		if (unlikely(scsi_bufflen(cmd) < 1)) {
+ 			ata_dev_warn(dev, "WARNING: zero len r/w req\n");
+-			goto err_did;
++			cmd->result = (DID_ERROR << 16);
++			goto done;
+ 		}
+ 
+ 		ata_sg_init(qc, scsi_sglist(cmd), scsi_sg_count(cmd));
+-
+ 		qc->dma_dir = cmd->sc_data_direction;
+ 	}
+ 
+ 	qc->complete_fn = ata_scsi_qc_complete;
+ 
+ 	if (xlat_func(qc))
+-		goto early_finish;
+-
+-	if (ap->ops->qc_defer) {
+-		if ((rc = ap->ops->qc_defer(qc)))
+-			goto defer;
+-	}
++		goto done;
+ 
+-	/* select device, send command to hardware */
+-	ata_qc_issue(qc);
+-
+-	return 0;
++	return ata_scsi_qc_issue(ap, qc);
+ 
+-early_finish:
++done:
+ 	ata_qc_free(qc);
+ 	cmd->scsi_done(cmd);
+ 	DPRINTK("EXIT - early finish (good or error)\n");
+ 	return 0;
+-
+-err_did:
+-	ata_qc_free(qc);
+-	cmd->result = (DID_ERROR << 16);
+-	cmd->scsi_done(cmd);
+-err_mem:
+-	DPRINTK("EXIT - internal\n");
+-	return 0;
+-
+-defer:
+-	ata_qc_free(qc);
+-	DPRINTK("EXIT - defer\n");
+-	if (rc == ATA_DEFER_LINK)
+-		return SCSI_MLQUEUE_DEVICE_BUSY;
+-	else
+-		return SCSI_MLQUEUE_HOST_BUSY;
+ }
+ 
+ struct ata_scsi_args {
 
 
 
