@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AZpCU4Z3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:54 +0200
+	id 4NV2ANoj3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A698A3EEF18
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 851623F0F69
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F39A3083F7E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B4B133075D2A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFB93016F5;
-	Mon, 13 Apr 2026 16:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44303314B9;
+	Mon, 13 Apr 2026 16:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGaJ/1Mq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EviCU0Qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBD72D949C;
-	Mon, 13 Apr 2026 16:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787A331E857;
+	Mon, 13 Apr 2026 16:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096651; cv=none; b=CjJs3D0wp0EvupIfWCZ8yW8itSO/oQ9vgb7/TyBCusvCQDCVu1ZyiutL/P4Td0lw1U3qePWSnX1SwwQAr9pCYlOUi0KYtuxvleab3ZqBP1P9Zyr4UUbjHrQf9s5RmeI/18EcGLFMBkXb4bm7YwF3y7YMGhsv2Yfcw9tuwQEQHgA=
+	t=1776099491; cv=none; b=in4Pmq2SCmCHGsLBIlPgbc9GmrnIfa9APHRHh7abJaj1mkMlEZul35hMTh/rcJcTUap0dblEtVT6lfj7jpeWWqwdpqmC0ry26hNqJkHmc+nDidLdW/bH9tDt/Mua0tODXPj++kcWAP7Mend2JJhjIbW9BEGPU59FhD0k/GExxv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096651; c=relaxed/simple;
-	bh=BJ/J9O2+/26eycMmYVKd4e9UfTYEgARlHM6ZgZYoh1o=;
+	s=arc-20240116; t=1776099491; c=relaxed/simple;
+	bh=VnkAMlmg8B9bbd8WPRggKI6pPpEortk3iPViNI0vCiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4rmiiFUy977aUr9PdWJkCQP+1ysAj3M2mD1h29lcb1lbbuX/SArI8rg9i5IPWN2e/qS/qzkE2/hzORlyJUFcP7fN/3DLqAPAlzyjMt/FrBf+K6Y3S3AIYIoJF+gY8HhytHCaftUfYanCddymqlRKnPpTfQmTNeq7JEu13mPRx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGaJ/1Mq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B590C2BCAF;
-	Mon, 13 Apr 2026 16:10:50 +0000 (UTC)
+	 MIME-Version; b=lliMyiCnoGaat609G8Ce6Kv19shufkHcalY7ZjMQs2E8f1o6zjNMa845jcmq1ULvueZgCZwrs9MKD0JprQA3UHeTdmkHTyby1r3VuvxMvd7EdZD7f5EiPSu9maY0yublL+Ve5qF7UcEzY/TFHsHFX1WZNGC8/1ou8O7Ydh3wV5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EviCU0Qe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E04C2BCAF;
+	Mon, 13 Apr 2026 16:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096650;
-	bh=BJ/J9O2+/26eycMmYVKd4e9UfTYEgARlHM6ZgZYoh1o=;
+	s=korg; t=1776099491;
+	bh=VnkAMlmg8B9bbd8WPRggKI6pPpEortk3iPViNI0vCiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGaJ/1MqrVKYeiXl3SviJ26l7bLt3yy1Vqeg9+9rId059+cDGy4co0HbL4NXSqErP
-	 zc1afKcnjyMaoJoPx5VUJPURoz50jmJHy/nChJRgjbYisCfLptLzmzco+h4daDs2ZC
-	 fZxtji8ImLcaQgMN54S3yeEa/Zl688OYzxAJHHLw=
+	b=EviCU0Qe8TeXyBq9wxvqAMMy+jme1sUFlYFG1MvX1XYuyUIvYFyxN1AbqzgUz7t0V
+	 o3oVnSi0xAR9DezjjJmumVGiXPCu72f7YPiaBknaGelcA9a7RRNQWInDIMuOkTl5kf
+	 N8ksJSxM+hSHc/BVZGQw7IMOnPwD3I1VtYq8/W8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 10/70] MIPS: Always record SEGBITS in cpu_data.vmbits
-Date: Mon, 13 Apr 2026 18:00:05 +0200
-Message-ID: <20260413155728.570965462@linuxfoundation.org>
+Subject: [PATCH 5.10 361/491] hwmon: (pxe1610) Check return value of page-select write in probe
+Date: Mon, 13 Apr 2026 18:00:06 +0200
+Message-ID: <20260413155832.551124500@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,129 +78,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236339-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237451-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,orcam.me.uk:email]
-X-Rspamd-Queue-Id: A698A3EEF18
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:email]
+X-Rspamd-Queue-Id: 851623F0F69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 8374c2cb83b95b3c92f129fd56527225c20a058c upstream.
+[ Upstream commit ccf70c41e562b29d1c05d1bbf53391785e09c6fb ]
 
-With a 32-bit kernel running on 64-bit MIPS hardware the hardcoded value
-of `cpu_vmbits' only records the size of compatibility useg and does not
-reflect the size of native xuseg or the complete range of values allowed
-in the VPN2 field of TLB entries.
+pxe1610_probe() writes PMBUS_PAGE to select page 0 but does not check
+the return value. If the write fails, subsequent register reads operate
+on an indeterminate page, leading to silent misconfiguration.
 
-An upcoming change will need the actual VPN2 value range permitted even
-in 32-bit kernel configurations, so always include the `vmbits' member
-in `struct cpuinfo_mips' and probe for SEGBITS when running on 64-bit
-hardware and resorting to the currently hardcoded value of 31 on 32-bit
-processors.  No functional change for users of `cpu_vmbits'.
+Check the return value and propagate the error using dev_err_probe(),
+which also handles -EPROBE_DEFER correctly without log spam.
 
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 344757bac526 ("hwmon: (pmbus) Add Infineon PXE1610 VR driver")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260329170925.34581-4-sanman.pradhan@hpe.com
+[groeck: Fix "Fixes" SHA]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/cpu-features.h |  1 -
- arch/mips/include/asm/cpu-info.h     |  2 --
- arch/mips/include/asm/mipsregs.h     |  2 ++
- arch/mips/kernel/cpu-probe.c         | 13 ++++++++-----
- arch/mips/kernel/cpu-r3k-probe.c     |  2 ++
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/hwmon/pmbus/pxe1610.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 404390bb87eaf..3f11e5218e6c6 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -484,7 +484,6 @@
- # endif
- # ifndef cpu_vmbits
- # define cpu_vmbits cpu_data[0].vmbits
--# define __NEED_VMBITS_PROBE
- # endif
- #endif
+diff --git a/drivers/hwmon/pmbus/pxe1610.c b/drivers/hwmon/pmbus/pxe1610.c
+index 212433eb6cc31..7794e5cf550fc 100644
+--- a/drivers/hwmon/pmbus/pxe1610.c
++++ b/drivers/hwmon/pmbus/pxe1610.c
+@@ -104,7 +104,10 @@ static int pxe1610_probe(struct i2c_client *client)
+ 	 * By default this device doesn't boot to page 0, so set page 0
+ 	 * to access all pmbus registers.
+ 	 */
+-	i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
++	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
++	if (ret < 0)
++		return dev_err_probe(&client->dev, ret,
++				     "Failed to set page 0\n");
  
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index a600670d00e97..1aee44124f118 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -80,9 +80,7 @@ struct cpuinfo_mips {
- 	int			srsets; /* Shadow register sets */
- 	int			package;/* physical package number */
- 	unsigned int		globalnumber;
--#ifdef CONFIG_64BIT
- 	int			vmbits; /* Virtual memory size in bits */
--#endif
- 	void			*data;	/* Additional data */
- 	unsigned int		watch_reg_count;   /* Number that exist */
- 	unsigned int		watch_reg_use_cnt; /* Usable by ptrace */
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 3c6ddc0c2c7ac..db8e02493eb89 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1871,6 +1871,8 @@ do {									\
- 
- #define read_c0_entryhi()	__read_ulong_c0_register($10, 0)
- #define write_c0_entryhi(val)	__write_ulong_c0_register($10, 0, val)
-+#define read_c0_entryhi_64()	__read_64bit_c0_register($10, 0)
-+#define write_c0_entryhi_64(val) __write_64bit_c0_register($10, 0, val)
- 
- #define read_c0_guestctl1()	__read_32bit_c0_register($10, 4)
- #define write_c0_guestctl1(val)	__write_32bit_c0_register($10, 4, val)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index af7412549e6ea..3220e68bd12e8 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -207,11 +207,14 @@ static inline void set_elf_base_platform(const char *plat)
- 
- static inline void cpu_probe_vmbits(struct cpuinfo_mips *c)
- {
--#ifdef __NEED_VMBITS_PROBE
--	write_c0_entryhi(0x3fffffffffffe000ULL);
--	back_to_back_c0_hazard();
--	c->vmbits = fls64(read_c0_entryhi() & 0x3fffffffffffe000ULL);
--#endif
-+	int vmbits = 31;
-+
-+	if (cpu_has_64bits) {
-+		write_c0_entryhi_64(0x3fffffffffffe000ULL);
-+		back_to_back_c0_hazard();
-+		vmbits = fls64(read_c0_entryhi_64() & 0x3fffffffffffe000ULL);
-+	}
-+	c->vmbits = vmbits;
- }
- 
- static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
-diff --git a/arch/mips/kernel/cpu-r3k-probe.c b/arch/mips/kernel/cpu-r3k-probe.c
-index 0c826f729f752..edcf04de0a6fb 100644
---- a/arch/mips/kernel/cpu-r3k-probe.c
-+++ b/arch/mips/kernel/cpu-r3k-probe.c
-@@ -137,6 +137,8 @@ void cpu_probe(void)
- 	else
- 		cpu_set_nofpu_opts(c);
- 
-+	c->vmbits = 31;
-+
- 	reserve_exception_space(0, 0x400);
- }
- 
+ 	/* Read Manufacturer id */
+ 	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
 -- 
 2.53.0
 
