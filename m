@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-236418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237491-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIyhKf4Y3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:34 +0200
+	id GJUqFDMn3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237491-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383143EEE06
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32773F1607
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69484312163B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BE733071C45
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D010826A1CF;
-	Mon, 13 Apr 2026 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C8931F9BC;
+	Mon, 13 Apr 2026 16:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWwcKIjT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVLWqa8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9369524E4AF;
-	Mon, 13 Apr 2026 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE8F3203B6;
+	Mon, 13 Apr 2026 16:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096854; cv=none; b=Spm1EoLO7B//Vu8SXZn+7Jo77GJH0r9uBbRHaYxAtuRN8SWZo4FoAUaLL661Oegh5jnEmgNTJVX7GVqX99Q7qCl0kZfXiKi3jBZHrC4AMbmcIEGnowgw7gjFWGiGhCCoi/LbNRc29g64ke8pyVd67RKfiinJYfrBOOk5zmSAFf0=
+	t=1776099591; cv=none; b=pmA+g/TG4g31JAg0VXSNovplFo395E5Vt1lZHOEfmowMCiucSuS3+mYApB9kuXwkkBo0Kam9CRWZRz5wf4Y7qJPTjxm8AUqGXoHlFJQkdUHzRsRco1IPgaD+VarGi42loANrHagjo0NSqzO78Ib9hi5YbylHL19BUhhdEccxNx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096854; c=relaxed/simple;
-	bh=JzXzjkEado495Cohowa0XtaNZCAb8cwCol92yZCCeEU=;
+	s=arc-20240116; t=1776099591; c=relaxed/simple;
+	bh=szl98twOPR8j4TYmfIXbRdk/ZaaeomSv1yasFVHk7HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ks2qY5KzowHAdognYiqBNoSuhrCHT+Cggf3BrHXDeDlRrZd1NOHjnZxtKx7GMkhhDihfsb0t2ylTzDuy7vgqNlq85RizYd8RaUP4DZqk1jqoDagDjz4i5AuHyjkXj73N3n5kr0t2u+S2awHMI3dXemeH5Svqczxn7PVRJcoTQP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWwcKIjT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AD2C2BCAF;
-	Mon, 13 Apr 2026 16:14:14 +0000 (UTC)
+	 MIME-Version; b=LR4uOi8tOag/R2WAYVjEHgS6YpSZl09bvr5v/isqDpnnInLbej6wsZu9JhR+JQ4AOvybhdd+F/TBsIZkZi0U4Q5iQwJq79U9vRiCF27gvmsee84zyCchlv90i6Pj7IUJKkFU2ImQiF5WOvUTCRnAsjbO1B21a8TQwntdAimtoXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVLWqa8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51119C2BCB3;
+	Mon, 13 Apr 2026 16:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096854;
-	bh=JzXzjkEado495Cohowa0XtaNZCAb8cwCol92yZCCeEU=;
+	s=korg; t=1776099591;
+	bh=szl98twOPR8j4TYmfIXbRdk/ZaaeomSv1yasFVHk7HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWwcKIjT9V+5H7NqnhXIqMP24acLZigapXR2r+jiPVbARScUyopMZBXftYtqUEC3+
-	 ahq3t3hXcLMDU1UU+Mk/5DdjahjMM69Qxbty3XF92Sm15yuaYNRyDHK6xNz+x47Myt
-	 QWZok+2m4BkBz2vOcjeNrul1sKvLjp5Gn6DAZt7Q=
+	b=AVLWqa8p3ov3FAMxH90jY1WNuHBRNfurUoEpddemwzhtY5V0AhqHnYBVZcgWzerDZ
+	 X1wFethBhnw4lMdtR2B9ilWuiDdP0cStSwuf3Vm4uPwtgbZZZx+UWKgoR/v3yRp29K
+	 ShH+WzITXluqYGvnk5UidzPqbEg/4awmUhpMQ9qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Mukul Sikka <mukul.sikka@broadcom.com>,
-	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 6.6 18/50] netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 400/491] comedi: me_daq: Fix potential overrun of firmware buffer
 Date: Mon, 13 Apr 2026 18:00:45 +0200
-Message-ID: <20260413155725.193597037@linuxfoundation.org>
+Message-ID: <20260413155834.008088197@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,96 +72,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236418-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237491-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,broadcom.com:email]
-X-Rspamd-Queue-Id: 383143EEE06
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C32773F1607
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 07ace0bbe03b3d8e85869af1dec5e4087b1d57b8 upstream
+commit cc797d4821c754c701d9714b58bea947e31dbbe0 upstream.
 
-pipapo relies on kmalloc(0) returning ZERO_SIZE_PTR (i.e., not NULL
-but pointer is invalid).
+`me2600_xilinx_download()` loads the firmware that was requested by
+`request_firmware()`.  It is possible for it to overrun the source
+buffer because it blindly trusts the file format.  It reads a data
+stream length from the first 4 bytes into variable `file_length` and
+reads the data stream contents of length `file_length` from offset 16
+onwards.  Although it checks that the supplied firmware is at least 16
+bytes long, it does not check that it is long enough to contain the data
+stream.
 
-Rework this to not call slab allocator when we'd request a 0-byte
-allocation.
+Add a test to ensure that the supplied firmware is long enough to
+contain the header and the data stream.  On failure, log an error and
+return `-EINVAL`.
 
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
-Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-[Keerthana: In older stable branches (v6.6 and earlier), the allocation logic in
-pipapo_clone() still relies on `src->rules` rather than `src->rules_alloc`
-(introduced in v6.9 via 9f439bd6ef4f). Consequently, the previously
-backported INT_MAX clamping check uses `src->rules`. This patch correctly
-moves that `src->rules > (INT_MAX / ...)` check inside the new
-`if (src->rules > 0)` block]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Fixes: 85acac61096f9 ("Staging: comedi: add me_daq driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260205140130.76697-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/staging/comedi/drivers/me_daq.c |   35 +++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -525,6 +525,8 @@ static struct nft_pipapo_elem *pipapo_ge
- 	int i;
+--- a/drivers/staging/comedi/drivers/me_daq.c
++++ b/drivers/staging/comedi/drivers/me_daq.c
+@@ -345,6 +345,25 @@ static int me2600_xilinx_download(struct
+ 	unsigned int file_length;
+ 	unsigned int i;
  
- 	m = priv->clone;
-+	if (m->bsize_max == 0)
-+		return ret;
- 
- 	res_map = kmalloc_array(m->bsize_max, sizeof(*res_map), GFP_ATOMIC);
- 	if (!res_map) {
-@@ -1394,14 +1396,20 @@ static struct nft_pipapo_match *pipapo_c
- 		       src->bsize * sizeof(*dst->lt) *
- 		       src->groups * NFT_PIPAPO_BUCKETS(src->bb));
- 
--		if (src->rules > (INT_MAX / sizeof(*src->mt)))
--			goto out_mt;
-+		if (src->rules > 0) {
-+			if (src->rules > (INT_MAX / sizeof(*src->mt)))
-+				goto out_mt;
++	/*
++	 * Format of the firmware
++	 * Build longs from the byte-wise coded header
++	 * Byte 1-3:   length of the array
++	 * Byte 4-7:   version
++	 * Byte 8-11:  date
++	 * Byte 12-15: reserved
++	 */
++	if (size >= 4) {
++		file_length = (((unsigned int)data[0] & 0xff) << 24) +
++			      (((unsigned int)data[1] & 0xff) << 16) +
++			      (((unsigned int)data[2] & 0xff) << 8) +
++			      ((unsigned int)data[3] & 0xff);
++	}
++	if (size < 16 || file_length > size - 16) {
++		dev_err(dev->class_dev, "Firmware length inconsistency\n");
++		return -EINVAL;
++	}
 +
-+			dst->mt = kvmalloc_array(src->rules, sizeof(*src->mt),
-+						 GFP_KERNEL);
-+			if (!dst->mt)
-+				goto out_mt;
+ 	/* disable irq's on PLX */
+ 	writel(0x00, devpriv->plx_regbase + PLX9052_INTCSR);
  
--		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL_ACCOUNT);
--		if (!dst->mt)
--			goto out_mt;
-+			memcpy(dst->mt, src->mt, src->rules * sizeof(*src->mt));
-+		} else {
-+			dst->mt = NULL;
-+		}
+@@ -359,22 +378,6 @@ static int me2600_xilinx_download(struct
+ 	sleep(1);
  
--		memcpy(dst->mt, src->mt, src->rules * sizeof(*src->mt));
- 		src++;
- 		dst++;
- 	}
+ 	/*
+-	 * Format of the firmware
+-	 * Build longs from the byte-wise coded header
+-	 * Byte 1-3:   length of the array
+-	 * Byte 4-7:   version
+-	 * Byte 8-11:  date
+-	 * Byte 12-15: reserved
+-	 */
+-	if (size < 16)
+-		return -EINVAL;
+-
+-	file_length = (((unsigned int)data[0] & 0xff) << 24) +
+-	    (((unsigned int)data[1] & 0xff) << 16) +
+-	    (((unsigned int)data[2] & 0xff) << 8) +
+-	    ((unsigned int)data[3] & 0xff);
+-
+-	/*
+ 	 * Loop for writing firmware byte by byte to xilinx
+ 	 * Firmware data start at offset 16
+ 	 */
 
 
 
