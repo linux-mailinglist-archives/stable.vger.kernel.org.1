@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-236275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JXqGIUX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:17 +0200
+	id KBuoAFYZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A61083EE9D6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AE43EEF2D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E4F65303FCE9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 965F4313AF2B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C432F547F;
-	Mon, 13 Apr 2026 16:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79C025332E;
+	Mon, 13 Apr 2026 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvthxEXP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcgGn6ri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE852BDC2F;
-	Mon, 13 Apr 2026 16:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEAC2472A2;
+	Mon, 13 Apr 2026 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096493; cv=none; b=VOnzA0D/eP7J+nlUWzUZBEwThnio1tjBWw7i7ElaPaEIjw37Zef1x4U+IcV/m9apobxcdWCCIsv2M3QYknX+pjlHll7dIuQ5tuMXgiY85zlODFmJkiZtuVisvNqAoV/eFNKnl8vt+4ci3cDSOiGILO7CjyIl7KRp4IBiWWfsxQc=
+	t=1776096666; cv=none; b=G72hdvpNTy2v6pufmooKrxsl38gDpXp0OnSs7qSWQ1cIEC9nUi3Zi06BJy70mtYZq0DdYGEWm0H3lNm/8u9Y2fuJgC8SLSqImdwnKdn7sqgF3pq3mNAEdyKMNlDOij3HHf+9cYuNnRvgWXANwXLrwhXYsRejPYfEFUabdZCM9/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096493; c=relaxed/simple;
-	bh=2g9zzKiU8cxKuea3E8KqtReZT1VEMHBwcUe+O74lhtY=;
+	s=arc-20240116; t=1776096666; c=relaxed/simple;
+	bh=aYQR2H9in7updI4JZvyMlL2srCiEU01pJ2Ia9SRuZW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iZeqVtxAqydwWqff3zNl/e9rWM910VM0DjaBhBmIyeyGO2D6VSYhSdfD6cMSy4ZVi7UZTlCIIEgqGubt6PsrV0UUaCSpvrNly1TlYs8oeo7e6vgCluXcRyTasAL/N+sUB6BF2QNIDAa0i3Qi7Xc2i8pYpCOE1FsKs53FMHr0awQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvthxEXP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FD5C2BCAF;
-	Mon, 13 Apr 2026 16:08:12 +0000 (UTC)
+	 MIME-Version; b=rvHqWMlXjACLIk92NjACfUCfw9KqpaWy/mVrbUNJLcjR+E9dZhfqV7lOcuMTMqcUQbqc/P5qlQvaiNZruq8BLgrw7Px7Zx9HdQxUQ14JO55LKSIWZP+W7rAU3yCj+Rc0YDK6x0ZVdZPsVwSnYXfPKkxZ74rO0R5iC4GoW/mrvdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DcgGn6ri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38E4C2BCAF;
+	Mon, 13 Apr 2026 16:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096493;
-	bh=2g9zzKiU8cxKuea3E8KqtReZT1VEMHBwcUe+O74lhtY=;
+	s=korg; t=1776096666;
+	bh=aYQR2H9in7updI4JZvyMlL2srCiEU01pJ2Ia9SRuZW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvthxEXPt+nIeelcx12qf469XqO77y+HK8S6nTiUkSUAPgIRq8HIQ42/3jLh418vX
-	 4vG0wkeiegirwQmbStYZylMIxFBBHOcnZLZM+ym3muuXqsSZrkMhNT5qKGgjl9WsbZ
-	 fYrQGFirX1MuJ5361RTVa6u1/Sw46vu27MuR1Z0c=
+	b=DcgGn6ri1ZIe0YpU2OjSng+LE64tZ1gHp3u18Ko8+Ek1iPhwYvpeeBS9JafAA6xs5
+	 55Iej7bEJEfStkkhIScH/R56nV84gw4Lsv4A6GuhU7WIkTbEUlkY6rLR4z16XOb15R
+	 9qCPdbh1JxfXGIoNj03+fv4xzt7Bz2s4XQEpYK6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.18 32/83] arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
+	Johannes Berg <johannes@sipsolutions.net>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	stable <stable@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 05/70] net: rfkill: prevent unlimited numbers of rfkill events from being created
 Date: Mon, 13 Apr 2026 18:00:00 +0200
-Message-ID: <20260413155732.221669224@linuxfoundation.org>
+Message-ID: <20260413155728.384162898@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +67,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236275-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,lzu.edu.cn,kernel.org,intel.com];
+	TAGGED_FROM(0.00)[bounces-236345-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[puri.sm:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A61083EE9D6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sipsolutions.net:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 75AE43EEF2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 511f76bf1dce5acf8907b65a7d1bc8f7e7c0d637 upstream.
+commit ea245d78dec594372e27d8c79616baf49e98a4a1 upstream.
 
-The minimal voltage of VDD_SOC sourced from BUCK1 is 0.81V, which
-is the currently set value. However, BD71837 only guarantees accuracy
-of ±0.01V, and this still doesn't factor other reasons for actual
-voltage to slightly drop in, resulting in the possibility of running
-out of the operational range.
+Userspace can create an unlimited number of rfkill events if the system
+is so configured, while not consuming them from the rfkill file
+descriptor, causing a potential out of memory situation.  Prevent this
+from bounding the number of pending rfkill events at a "large" number
+(i.e. 1000) to prevent abuses like this.
 
-Bump the voltage up to 0.85V, which should give enough headroom.
-
-Cc: stable@vger.kernel.org
-Fixes: 8f0216b006e5 ("arm64: dts: Add a device tree for the Librem 5 phone")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rfkill/core.c |   35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -846,7 +846,7 @@
- 				regulator-ramp-delay = <1250>;
- 				rohm,dvs-run-voltage = <900000>;
- 				rohm,dvs-idle-voltage = <850000>;
--				rohm,dvs-suspend-voltage = <810000>;
-+				rohm,dvs-suspend-voltage = <850000>;
- 				regulator-always-on;
- 			};
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -73,11 +73,14 @@ struct rfkill_int_event {
+ 	struct rfkill_event_ext	ev;
+ };
  
++/* Max rfkill events that can be "in-flight" for one data source */
++#define MAX_RFKILL_EVENT	1000
+ struct rfkill_data {
+ 	struct list_head	list;
+ 	struct list_head	events;
+ 	struct mutex		mtx;
+ 	wait_queue_head_t	read_wait;
++	u32			event_count;
+ 	bool			input_handler;
+ 	u8			max_size;
+ };
+@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_un
+ }
+ #endif /* CONFIG_RFKILL_LEDS */
+ 
+-static void rfkill_fill_event(struct rfkill_event_ext *ev,
+-			      struct rfkill *rfkill,
+-			      enum rfkill_operation op)
++static int rfkill_fill_event(struct rfkill_int_event *int_ev,
++			     struct rfkill *rfkill,
++			     struct rfkill_data *data,
++			     enum rfkill_operation op)
+ {
++	struct rfkill_event_ext *ev = &int_ev->ev;
+ 	unsigned long flags;
+ 
+ 	ev->idx = rfkill->idx;
+@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfk
+ 					RFKILL_BLOCK_SW_PREV));
+ 	ev->hard_block_reasons = rfkill->hard_block_reasons;
+ 	spin_unlock_irqrestore(&rfkill->lock, flags);
++
++	scoped_guard(mutex, &data->mtx) {
++		if (data->event_count++ > MAX_RFKILL_EVENT) {
++			data->event_count--;
++			return -ENOSPC;
++		}
++		list_add_tail(&int_ev->list, &data->events);
++	}
++	return 0;
+ }
+ 
+ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
+@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rf
+ 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
+ 		if (!ev)
+ 			continue;
+-		rfkill_fill_event(&ev->ev, rfkill, op);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, op)) {
++			kfree(ev);
++			continue;
++		}
+ 		wake_up_interruptible(&data->read_wait);
+ 	}
+ }
+@@ -1186,10 +1200,8 @@ static int rfkill_fop_open(struct inode
+ 		if (!ev)
+ 			goto free;
+ 		rfkill_sync(rfkill);
+-		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
++			kfree(ev);
+ 	}
+ 	list_add(&data->list, &rfkill_fds);
+ 	mutex_unlock(&rfkill_global_mutex);
+@@ -1259,6 +1271,7 @@ static ssize_t rfkill_fop_read(struct fi
+ 		ret = -EFAULT;
+ 
+ 	list_del(&ev->list);
++	data->event_count--;
+ 	kfree(ev);
+  out:
+ 	mutex_unlock(&data->mtx);
 
 
 
