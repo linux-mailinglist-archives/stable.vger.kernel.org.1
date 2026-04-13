@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKZ+BNwk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:12 +0200
+	id uOccEe4a3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049953F1148
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B99FA3EF3F3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CD13C30ED753
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05457311D047
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFA73382F3;
-	Mon, 13 Apr 2026 16:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E61288C30;
+	Mon, 13 Apr 2026 16:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9wrzj5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvNKoSFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BF73382C8;
-	Mon, 13 Apr 2026 16:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB2328CF5F;
+	Mon, 13 Apr 2026 16:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099458; cv=none; b=oU1d1emYGrxf47olxMP1FhoBQ/1rKxmCyyNbg/GIFTntGKXSODrvCapWTlDfZO2NDykm1qYF8Z1GDQ3kxDB98kONxTaRHAutKjV3IyMpRZ9NjMa5pWBeHbmYRAzYUKhOgwySLSANbnzydOnyYi3x5wVkCr7/mXzYIE9JV9Gzr7U=
+	t=1776096467; cv=none; b=fnT7n1IqW5shFyaludh6NnnZMSlq+F10toaTjoPFO2u1wbq8nnlkC+nYURlkX6liotLMbX56KEpYftWhex9yGRbzhcQrzCQp1fPm+1FbztmuvjTv+O9hkBoOaJMPDz7Z9uTAI503kv1abx9lfgIAK2DRPjA9xEeDldY9BHy0n/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099458; c=relaxed/simple;
-	bh=kzOfr1pdZYKGhlI6uBQD3ocG8kIvIfzgMqYsLoHaRxQ=;
+	s=arc-20240116; t=1776096467; c=relaxed/simple;
+	bh=/n1C6GT7xTPFVY+S3qW3VXCQ30EHxilKgmY5aYBveY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHULPP9PhLj0eGMrfeHJKfQdXAOyQ+XlHoil63opTH0/+np1GiwWtnxTA1DI378lhByfJpYFscHircZh2uSTlND31iXjcQFlspr3DjKc6a4le1Q+nWtUpwX4FvclWBDbtdpHfFpKTvHzLWD7rSPLkP6qGtNGnoLvIZbvbnPrwoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9wrzj5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CFEC2BCAF;
-	Mon, 13 Apr 2026 16:57:37 +0000 (UTC)
+	 MIME-Version; b=ELdm1ECqRInuyV3I/uyhHqwadFl6Joggh3mfL/SxI0mYyJHG0aLjN3kPPg9QdP5REINMEoPBC2QO8DQ8gIdTWkI3CyZ+GxwoZ9IOZkygL32QzsrHKmXl4WZqn4/usPb/dfOLNUtJWn/zJpWwZIAcu7KfGmyJmENgiDsaNL1tV38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvNKoSFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544DAC2BCAF;
+	Mon, 13 Apr 2026 16:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099457;
-	bh=kzOfr1pdZYKGhlI6uBQD3ocG8kIvIfzgMqYsLoHaRxQ=;
+	s=korg; t=1776096467;
+	bh=/n1C6GT7xTPFVY+S3qW3VXCQ30EHxilKgmY5aYBveY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9wrzj5GkvLbAonxdx+M+HRMSUKP07vL2axSnfJBbaKolHAIcODWqG1+00CzdK6Mi
-	 do1rHPLjnXqhYi3e21ryLZIpVhkW6RC/FNSmaUcKZesmGMA3ah9vPOQFnYTZnn/RjT
-	 FG66UdAT4xkBUl5OTXOiCAd/34NfRDRq9a4MlIsc=
+	b=FvNKoSFGOfkVbxKnzbhfErE6X9iXOvVsZ+dMhCWRFaabJ7hnUA1QM6zM/ECRCDuF0
+	 1qV/v8HhCg8wqfZb5tPJAGtt4zANiEVxOW8J3RYtaDxRRzrVqXHtIluRbL/f1DL3XP
+	 F/N/BlroRtHHJRTJdF2gZJho+8KemnJcNdEMFtCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 346/491] net: macb: fix clk handling on PCI glue driver removal
+	Nicolas Schier <nsc@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.18 23/83] modpost: Declare extra_warn with unused attribute
 Date: Mon, 13 Apr 2026 17:59:51 +0200
-Message-ID: <20260413155831.992068566@linuxfoundation.org>
+Message-ID: <20260413155731.887899772@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,149 +77,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237438-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236265-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qemu.org:url,ispras.ru:email]
-X-Rspamd-Queue-Id: 049953F1148
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: B99FA3EF3F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit ce8fe5287b87e24e225c342f3b0ec04f0b3680fe ]
+commit deb4605671cfae3b2803cfbbf4739e7245248398 upstream.
 
-platform_device_unregister() may still want to use the registered clks
-during runtime resume callback.
+A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+in clang under a new subwarning, -Wunused-but-set-global, points out an
+unused static global variable in scripts/mod/modpost.c:
 
-Note that there is a commit d82d5303c4c5 ("net: macb: fix use after free
-on rmmod") that addressed the similar problem of clk vs platform device
-unregistration but just moved the bug to another place.
+  scripts/mod/modpost.c:59:13: error: variable 'extra_warn' set but not used [-Werror,-Wunused-but-set-global]
+     59 | static bool extra_warn;
+        |             ^
 
-Save the pointers to clks into local variables for reuse after platform
-device is unregistered.
+This variable has been unused since commit 6c6c1fc09de3 ("modpost:
+require a MODULE_DESCRIPTION()") but that is expected, as there are
+currently no extra warnings at W=1 right now. Declare the variable with
+the unused attribute to make it clear to the compiler that this variable
+may be unused.
 
-BUG: KASAN: use-after-free in clk_prepare+0x5a/0x60
-Read of size 8 at addr ffff888104f85e00 by task modprobe/597
-
-CPU: 2 PID: 597 Comm: modprobe Not tainted 6.1.164+ #114
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8d/0xba
- print_report+0x17f/0x496
- kasan_report+0xd9/0x180
- clk_prepare+0x5a/0x60
- macb_runtime_resume+0x13d/0x410 [macb]
- pm_generic_runtime_resume+0x97/0xd0
- __rpm_callback+0xc8/0x4d0
- rpm_callback+0xf6/0x230
- rpm_resume+0xeeb/0x1a70
- __pm_runtime_resume+0xb4/0x170
- bus_remove_device+0x2e3/0x4b0
- device_del+0x5b3/0xdc0
- platform_device_del+0x4e/0x280
- platform_device_unregister+0x11/0x50
- pci_device_remove+0xae/0x210
- device_remove+0xcb/0x180
- device_release_driver_internal+0x529/0x770
- driver_detach+0xd4/0x1a0
- bus_remove_driver+0x135/0x260
- driver_unregister+0x72/0xb0
- pci_unregister_driver+0x26/0x220
- __do_sys_delete_module+0x32e/0x550
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- </TASK>
-
-Allocated by task 519:
- kasan_save_stack+0x2c/0x50
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x8e/0x90
- __clk_register+0x458/0x2890
- clk_hw_register+0x1a/0x60
- __clk_hw_register_fixed_rate+0x255/0x410
- clk_register_fixed_rate+0x3c/0xa0
- macb_probe+0x1d8/0x42e [macb_pci]
- local_pci_probe+0xd7/0x190
- pci_device_probe+0x252/0x600
- really_probe+0x255/0x7f0
- __driver_probe_device+0x1ee/0x330
- driver_probe_device+0x4c/0x1f0
- __driver_attach+0x1df/0x4e0
- bus_for_each_dev+0x15d/0x1f0
- bus_add_driver+0x486/0x5e0
- driver_register+0x23a/0x3d0
- do_one_initcall+0xfd/0x4d0
- do_init_module+0x18b/0x5a0
- load_module+0x5663/0x7950
- __do_sys_finit_module+0x101/0x180
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Freed by task 597:
- kasan_save_stack+0x2c/0x50
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x2a/0x50
- __kasan_slab_free+0x106/0x180
- __kmem_cache_free+0xbc/0x320
- clk_unregister+0x6de/0x8d0
- macb_remove+0x73/0xc0 [macb_pci]
- pci_device_remove+0xae/0x210
- device_remove+0xcb/0x180
- device_release_driver_internal+0x529/0x770
- driver_detach+0xd4/0x1a0
- bus_remove_driver+0x135/0x260
- driver_unregister+0x72/0xb0
- pci_unregister_driver+0x26/0x220
- __do_sys_delete_module+0x32e/0x550
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: d82d5303c4c5 ("net: macb: fix use after free on rmmod")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260330184542.626619-1-pchelkin@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6c6c1fc09de3 ("modpost: require a MODULE_DESCRIPTION()")
+Link: https://patch.msgid.link/20260325-modpost-extra_warn-unused-but-set-global-v1-1-2e84003b7e81@kernel.org
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_pci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ scripts/mod/modpost.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_pci.c b/drivers/net/ethernet/cadence/macb_pci.c
-index 3593b310c325d..9be050c5d83e0 100644
---- a/drivers/net/ethernet/cadence/macb_pci.c
-+++ b/drivers/net/ethernet/cadence/macb_pci.c
-@@ -110,10 +110,12 @@ static void macb_remove(struct pci_dev *pdev)
- {
- 	struct platform_device *plat_dev = pci_get_drvdata(pdev);
- 	struct macb_platform_data *plat_data = dev_get_platdata(&plat_dev->dev);
-+	struct clk *pclk = plat_data->pclk;
-+	struct clk *hclk = plat_data->hclk;
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -56,7 +56,7 @@ static bool allow_missing_ns_imports;
  
--	clk_unregister(plat_data->pclk);
--	clk_unregister(plat_data->hclk);
- 	platform_device_unregister(plat_dev);
-+	clk_unregister(pclk);
-+	clk_unregister(hclk);
- }
+ static bool error_occurred;
  
- static const struct pci_device_id dev_id_table[] = {
--- 
-2.53.0
-
+-static bool extra_warn;
++static bool extra_warn __attribute__((unused));
+ 
+ bool target_is_big_endian;
+ bool host_is_big_endian;
 
 
 
