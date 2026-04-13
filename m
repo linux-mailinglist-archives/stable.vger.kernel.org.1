@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEHCKxEe3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-237137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:13 +0200
+	id EHzLAjsh3Wn4aAkAu9opvQ
+	(envelope-from <stable+bounces-236707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CE23EFC88
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544A13F0798
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32441301FCE2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 065903293F2F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7B731328E;
-	Mon, 13 Apr 2026 16:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABBD24DCF6;
+	Mon, 13 Apr 2026 16:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT8PreDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVDnejV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037F430FC1E;
-	Mon, 13 Apr 2026 16:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8853090F5;
+	Mon, 13 Apr 2026 16:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098684; cv=none; b=hz+Sm/ku3+FcyQUpVn2Q3BR6V0tFrXmQzXuzPFVAhxpiLABjPHTdlulrzEv5lVZxSN1n6je2YEJ3IlUOjPmtqezROQP7Kx8hsoh2JBSvko45AZ8FYi0covEuk16oSjjIJKgzQ2SdxCDLTQGgvO8QHyI251EO+hF64qT5ByxmuRs=
+	t=1776097589; cv=none; b=rFkhQZ2slNkDSncbuBCANLhSQ5DtulgUnfQhLINF3Okr5D5TUDJm+c5J9BFjYyejMIa9Fcz1M0G9di6mf8DXzNauXgQ9Bc4sAhlPR/qpqsGxTkCPiGjj/DtS1Y61TcwQyGit6Bqm6QId8RsFFJBg7meqWKDHYsytW21v/uyQrr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098684; c=relaxed/simple;
-	bh=n8IOE5hVKAQW2eLZtK3k2QgzEKc1XaV5Aa3y7csNEm8=;
+	s=arc-20240116; t=1776097589; c=relaxed/simple;
+	bh=8v0vVHbzspQbDoEyGG2zzNZA5uLGzXNWwgopEFTtMAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxc1oqA/V0yCKYJLIMVzcMPnA0lz1XMKblZ7/wsR6I7rAIXLA2uyFGAdgkXHHfv8HxHbk/xJxW0InQBjaJdUKtQ8Dv5LT8GDrMi8gaDT1C54rVy30o3C9qhvNTrf5xeDYYESRvvWEp3da3jVmd8I5hh4SDI3d8IYv++zCKN8HxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT8PreDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CECAC2BCB0;
-	Mon, 13 Apr 2026 16:44:43 +0000 (UTC)
+	 MIME-Version; b=mbh9Xb+AYlF4g3TFEnopur3m+Ba7TB6i1T1py5RogHO99ttdacsNKYjEzklBYRj6mlhuEruUpYxbVh7E+yKymKo/N/5X1jBxim1ynvI5eoGw7wnWmSYRJ0ESCERwkYWNCMoYXJeUPByFe/fkLxNw3NNQ7Mkp3thdODUqAGkoHnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVDnejV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E6FC2BCAF;
+	Mon, 13 Apr 2026 16:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098683;
-	bh=n8IOE5hVKAQW2eLZtK3k2QgzEKc1XaV5Aa3y7csNEm8=;
+	s=korg; t=1776097589;
+	bh=8v0vVHbzspQbDoEyGG2zzNZA5uLGzXNWwgopEFTtMAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GT8PreDxLXSs0iuyTyCxX9N1FHGmhOIEVDO0R24uVMT1zvHCpPdeUYNulwimUF4CC
-	 kgJWIhdVTWgV3GSpNoI/jX9r0zpMO84dYckkx/Do9EYVfwmR7xa0+cGaj16vjG3yUK
-	 OXrCzIsXzBZ8WMdmoHQV2qgFtARUT+K0s6/Zg3+c=
+	b=XVDnejV8G+LkgekKPVos50XnTEwQWwzdBZPKmGZOFRr9lhwh8Qfwrx+COA/jsPoYs
+	 Y0SltM+Rn9bN7eTQErudz17a0ePC5pNfHpmGqo+ZTzoPt8AKByuN2AKtfty4rkonz3
+	 GKkoKOaZ/9L2uRjnf9dfnFVdC3ZD9mMUBVbnDR4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <joe@dama.to>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/491] nfc: rawsock: cancel tx_work before socket teardown
+	Ariel Silver <arielsilver77@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.15 163/570] media: dvb-net: fix OOB access in ULE extension header tables
 Date: Mon, 13 Apr 2026 17:54:54 +0200
-Message-ID: <20260413155820.888273984@linuxfoundation.org>
+Message-ID: <20260413155836.556954078@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237137-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236707-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.991];
+	TAGGED_RCPT(0.00)[stable,huawei];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,dama.to:email]
-X-Rspamd-Queue-Id: 75CE23EFC88
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 544A13F0798
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ariel Silver <arielsilver77@gmail.com>
 
-[ Upstream commit d793458c45df2aed498d7f74145eab7ee22d25aa ]
+commit 24d87712727a5017ad142d63940589a36cd25647 upstream.
 
-In rawsock_release(), cancel any pending tx_work and purge the write
-queue before orphaning the socket.  rawsock_tx_work runs on the system
-workqueue and calls nfc_data_exchange which dereferences the NCI
-device.  Without synchronization, tx_work can race with socket and
-device teardown when a process is killed (e.g. by SIGKILL), leading
-to use-after-free or leaked references.
+The ule_mandatory_ext_handlers[] and ule_optional_ext_handlers[] tables
+in handle_one_ule_extension() are declared with 255 elements (valid
+indices 0-254), but the index htype is derived from network-controlled
+data as (ule_sndu_type & 0x00FF), giving a range of 0-255. When
+htype equals 255, an out-of-bounds read occurs on the function pointer
+table, and the OOB value may be called as a function pointer.
 
-Set SEND_SHUTDOWN first so that if tx_work is already running it will
-see the flag and skip transmitting, then use cancel_work_sync to wait
-for any in-progress execution to finish, and finally purge any
-remaining queued skbs.
+Add a bounds check on htype against the array size before either table
+is accessed. Out-of-range values now cause the SNDU to be discarded.
 
-Fixes: 23b7869c0fd0 ("NFC: add the NFC socket raw protocol")
-Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260303162346.2071888-6-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Ariel Silver <arielsilver77@gmail.com>
+Signed-off-by: Ariel Silver <arielsilver77@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/rawsock.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/media/dvb-core/dvb_net.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
-index 5f1d438a0a23f..0e59706e4e8ab 100644
---- a/net/nfc/rawsock.c
-+++ b/net/nfc/rawsock.c
-@@ -66,6 +66,17 @@ static int rawsock_release(struct socket *sock)
- 	if (sock->type == SOCK_RAW)
- 		nfc_sock_unlink(&raw_sk_list, sk);
+--- a/drivers/media/dvb-core/dvb_net.c
++++ b/drivers/media/dvb-core/dvb_net.c
+@@ -228,6 +228,9 @@ static int handle_one_ule_extension( str
+ 	unsigned char hlen = (p->ule_sndu_type & 0x0700) >> 8;
+ 	unsigned char htype = p->ule_sndu_type & 0x00FF;
  
-+	if (sk->sk_state == TCP_ESTABLISHED) {
-+		/* Prevent rawsock_tx_work from starting new transmits and
-+		 * wait for any in-progress work to finish.  This must happen
-+		 * before the socket is orphaned to avoid a race where
-+		 * rawsock_tx_work runs after the NCI device has been freed.
-+		 */
-+		sk->sk_shutdown |= SEND_SHUTDOWN;
-+		cancel_work_sync(&nfc_rawsock(sk)->tx_work);
-+		rawsock_write_queue_purge(sk);
-+	}
++	if (htype >= ARRAY_SIZE(ule_mandatory_ext_handlers))
++		return -1;
 +
- 	sock_orphan(sk);
- 	sock_put(sk);
- 
--- 
-2.51.0
-
+ 	/* Discriminate mandatory and optional extension headers. */
+ 	if (hlen == 0) {
+ 		/* Mandatory extension header */
 
 
 
