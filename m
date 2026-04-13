@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHGAFNMb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:39 +0200
+	id UM8lOBIi3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEF63EF69A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C060C3F0A44
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2877430FC791
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C9EE3301FCEC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A18A28D8DA;
-	Mon, 13 Apr 2026 16:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F7D318ED2;
+	Mon, 13 Apr 2026 16:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFymEOua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NF9BQ5da"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8AC28CF4A;
-	Mon, 13 Apr 2026 16:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358623203B6;
+	Mon, 13 Apr 2026 16:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096772; cv=none; b=pP1hhMHsIHClCBiS5b4wF8c8Ryh9TYWsCgbsjrb1y1yn27jWTMq2YoHGIRCP4qS21vOi7mGjGYn+nC7Mh5+IeeSiw06vbOzKe1zkQGl8rgTE/nPCODilaxryArVD8ywmYee99YCeiFMyShJebXzaMiMIHi7ml3srcSHevFUpr4c=
+	t=1776099589; cv=none; b=Km2eJGNkylGQ0jBa4meSP5T4bBDEQ8Q+EdFn39RRb4RhXWPBpK3XaQBNPxUne8crPhHCuzWa9TPlwuz6QBa9dhBRSGZu90LdcMTaw9BPKjg7kH7PEeF9zVmDOKUlYn3V4g2Xz3g/nWwf3Ik8Xe5MYL8fmNv7NdpilRv+NWH+k8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096772; c=relaxed/simple;
-	bh=Gc86U/kZ2SEXUtgwACtDj8FU0W6e+L4RN5ArKNJi9LE=;
+	s=arc-20240116; t=1776099589; c=relaxed/simple;
+	bh=dRFSvkgHH4SWxDfEBngue5eE7FOH+5A+QSh3RtoCrRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M8KjDBKKFJqQmzwGVbrARbPvaWdI80UP2H0kG0S83nlMGxotQS6lCLo1A7qNjDqOK8FBEUXCV7MLQKGxr+gfwCZgPF7vAyiYkVUzJJP0OR0su7PMnIm9+9vjd3Ve7K9W7W0Y7sFsres+2xUmStpYsAEuNGI42sSYg62UjgejLoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFymEOua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8351C2BCAF;
-	Mon, 13 Apr 2026 16:12:51 +0000 (UTC)
+	 MIME-Version; b=Uhe/Qc5xwlFjCLC1buHa5AHpl3QBpBfCugPHU3Nxpy6VArOC+Eeb4XKtcpiv9MndY0UTayFceLANa0s4QoAxHvt8ewmzc0MlHxhu9fU+rOF3f8xsNVmMIdvHf9xHfX35c0K8qQ+vTJ8cA0ULnoTw63MIW5rT0qWCLH7J3V4+KSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NF9BQ5da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF950C2BCAF;
+	Mon, 13 Apr 2026 16:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096772;
-	bh=Gc86U/kZ2SEXUtgwACtDj8FU0W6e+L4RN5ArKNJi9LE=;
+	s=korg; t=1776099589;
+	bh=dRFSvkgHH4SWxDfEBngue5eE7FOH+5A+QSh3RtoCrRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFymEOuaEQpcVe3Z2cKeT6d2PDQrFavN1LeSLlmoF7u2BVmbLfCjRppIJ/tQnbMT9
-	 +OTbQxqCU8R+iMnEckDGFKKlTz5qbbedKiJ+XfKJ2enbl59xqkpc0zBE8xxFUBfHcj
-	 k14VVrsaum13vYgU9rKneZX6BnjrPJqhROjRmXZg=
+	b=NF9BQ5daDcDd0+jRieJy44JqoTJ0+cK1+w1UHz6z75Ia3vN6gPPPSgyLWh118BG9/
+	 cbvt5CNr8vYWKGKRmsTOCafILG58rTodlI2jxiPQAeA8ZFj/gPV6DJk5LQvxnkcgGp
+	 TJNMf7eRXsZfbTvygIJ5rI5U7xQL/VjHG9Q5zz2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.12 49/70] drm/i915/psr: Do not use pipe_src as borders for SU area
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 399/491] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
 Date: Mon, 13 Apr 2026 18:00:44 +0200
-Message-ID: <20260413155730.016357094@linuxfoundation.org>
+Message-ID: <20260413155833.970861124@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,191 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236386-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237490-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: CEEF63EF69A
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: C060C3F0A44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 75519f5df2a9b23f7bf305e12dc9a6e3e65c24b7 upstream.
+commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
 
-This far using crtc_state->pipe_src as borders for Selective Update area
-haven't caused visible problems as drm_rect_width(crtc_state->pipe_src) ==
-crtc_state->hw.adjusted_mode.crtc_hdisplay and
-drm_rect_height(crtc_state->pipe_src) ==
-crtc_state->hw.adjusted_mode.crtc_vdisplay when pipe scaling is not
-used. On the other hand using pipe scaling is forcing full frame updates and all the
-Selective Update area calculations are skipped. Now this improper usage of
-crtc_state->pipe_src is causing following warnings:
+If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
+returns an error, the COMEDI core will call the driver's "detach"
+handler function (`atmio16d_detach()`) to clean up.  This calls
+`reset_atmio16d()` unconditionally, but depending on where the error
+occurred in the attach handler, the device may not have been
+sufficiently initialized to call `reset_atmio16d()`.  It uses
+`dev->iobase` as the I/O port base address and `dev->private` as the
+pointer to the COMEDI device's private data structure.  `dev->iobase`
+may still be set to its initial value of 0, which would result in
+undesired writes to low I/O port addresses.  `dev->private` may still be
+`NULL`, which would result in null pointer dereferences.
 
-<4> [7771.978166] xe 0000:00:02.0: [drm] drm_WARN_ON_ONCE(su_lines % vdsc_cfg->slice_height)
+Fix `atmio16d_detach()` by checking that `dev->private` is valid
+(non-null) before calling `reset_atmio16d()`.  This implies that
+`dev->iobase` was set correctly since that is set up before
+`dev->private`.
 
-after WARN_ON_ONCE was added by commit:
-
-"drm/i915/dsc: Add helper for writing DSC Selective Update ET parameters"
-
-These warnings are seen when DSC and pipe scaling are enabled
-simultaneously. This is because on full frame update SU area is improperly
-set as pipe_src which is not aligned with DSC slice height.
-
-Fix these by creating local rectangle using
-crtc_state->hw.adjusted_mode.crtc_hdisplay and
-crtc_state->hw.adjusted_mode.crtc_vdisplay. Use this local rectangle as
-borders for SU area.
-
-Fixes: d6774b8c3c58 ("drm/i915: Ensure damage clip area is within pipe area")
-Cc: <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Link: https://patch.msgid.link/20260327114553.195285-1-jouni.hogander@intel.com
-(cherry picked from commit da0cdc1c329dd2ff09c41fbbe9fbd9c92c5d2c6e)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c |   30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ drivers/staging/comedi/drivers/ni_atmio16d.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -2375,9 +2375,9 @@ static u32 psr2_pipe_srcsz_early_tpt_cal
+--- a/drivers/staging/comedi/drivers/ni_atmio16d.c
++++ b/drivers/staging/comedi/drivers/ni_atmio16d.c
+@@ -699,7 +699,8 @@ static int atmio16d_attach(struct comedi
  
- static void clip_area_update(struct drm_rect *overlap_damage_area,
- 			     struct drm_rect *damage_area,
--			     struct drm_rect *pipe_src)
-+			     struct drm_rect *display_area)
+ static void atmio16d_detach(struct comedi_device *dev)
  {
--	if (!drm_rect_intersect(damage_area, pipe_src))
-+	if (!drm_rect_intersect(damage_area, display_area))
- 		return;
- 
- 	if (overlap_damage_area->y1 == -1) {
-@@ -2429,6 +2429,7 @@ static bool intel_psr2_sel_fetch_pipe_al
- static void
- intel_psr2_sel_fetch_et_alignment(struct intel_atomic_state *state,
- 				  struct intel_crtc *crtc,
-+				  struct drm_rect *display_area,
- 				  bool *cursor_in_su_area)
- {
- 	struct intel_crtc_state *crtc_state = intel_atomic_get_new_crtc_state(state, crtc);
-@@ -2456,7 +2457,7 @@ intel_psr2_sel_fetch_et_alignment(struct
- 			continue;
- 
- 		clip_area_update(&crtc_state->psr2_su_area, &new_plane_state->uapi.dst,
--				 &crtc_state->pipe_src);
-+				 display_area);
- 		*cursor_in_su_area = true;
- 	}
+-	reset_atmio16d(dev);
++	if (dev->private)
++		reset_atmio16d(dev);
+ 	comedi_legacy_detach(dev);
  }
-@@ -2504,6 +2505,12 @@ int intel_psr2_sel_fetch_update(struct i
- 	struct intel_crtc_state *crtc_state = intel_atomic_get_new_crtc_state(state, crtc);
- 	struct intel_plane_state *new_plane_state, *old_plane_state;
- 	struct intel_plane *plane;
-+	struct drm_rect display_area = {
-+		.x1 = 0,
-+		.y1 = 0,
-+		.x2 = crtc_state->hw.adjusted_mode.crtc_hdisplay,
-+		.y2 = crtc_state->hw.adjusted_mode.crtc_vdisplay,
-+	};
- 	bool full_update = false, su_area_changed;
- 	int i, ret;
  
-@@ -2517,7 +2524,7 @@ int intel_psr2_sel_fetch_update(struct i
- 
- 	crtc_state->psr2_su_area.x1 = 0;
- 	crtc_state->psr2_su_area.y1 = -1;
--	crtc_state->psr2_su_area.x2 = drm_rect_width(&crtc_state->pipe_src);
-+	crtc_state->psr2_su_area.x2 = drm_rect_width(&display_area);
- 	crtc_state->psr2_su_area.y2 = -1;
- 
- 	/*
-@@ -2555,14 +2562,14 @@ int intel_psr2_sel_fetch_update(struct i
- 				damaged_area.y1 = old_plane_state->uapi.dst.y1;
- 				damaged_area.y2 = old_plane_state->uapi.dst.y2;
- 				clip_area_update(&crtc_state->psr2_su_area, &damaged_area,
--						 &crtc_state->pipe_src);
-+						 &display_area);
- 			}
- 
- 			if (new_plane_state->uapi.visible) {
- 				damaged_area.y1 = new_plane_state->uapi.dst.y1;
- 				damaged_area.y2 = new_plane_state->uapi.dst.y2;
- 				clip_area_update(&crtc_state->psr2_su_area, &damaged_area,
--						 &crtc_state->pipe_src);
-+						 &display_area);
- 			}
- 			continue;
- 		} else if (new_plane_state->uapi.alpha != old_plane_state->uapi.alpha) {
-@@ -2570,7 +2577,7 @@ int intel_psr2_sel_fetch_update(struct i
- 			damaged_area.y1 = new_plane_state->uapi.dst.y1;
- 			damaged_area.y2 = new_plane_state->uapi.dst.y2;
- 			clip_area_update(&crtc_state->psr2_su_area, &damaged_area,
--					 &crtc_state->pipe_src);
-+					 &display_area);
- 			continue;
- 		}
- 
-@@ -2586,7 +2593,7 @@ int intel_psr2_sel_fetch_update(struct i
- 		damaged_area.x1 += new_plane_state->uapi.dst.x1 - src.x1;
- 		damaged_area.x2 += new_plane_state->uapi.dst.x1 - src.x1;
- 
--		clip_area_update(&crtc_state->psr2_su_area, &damaged_area, &crtc_state->pipe_src);
-+		clip_area_update(&crtc_state->psr2_su_area, &damaged_area, &display_area);
- 	}
- 
- 	/*
-@@ -2626,7 +2633,8 @@ int intel_psr2_sel_fetch_update(struct i
- 		 * cursor is added into affected planes even when
- 		 * cursor is not updated by itself.
- 		 */
--		intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
-+		intel_psr2_sel_fetch_et_alignment(state, crtc, &display_area,
-+						  &cursor_in_su_area);
- 
- 		su_area_changed = intel_psr2_sel_fetch_pipe_alignment(crtc_state);
- 
-@@ -2702,8 +2710,8 @@ int intel_psr2_sel_fetch_update(struct i
- 
- skip_sel_fetch_set_loop:
- 	if (full_update)
--		clip_area_update(&crtc_state->psr2_su_area, &crtc_state->pipe_src,
--				 &crtc_state->pipe_src);
-+		clip_area_update(&crtc_state->psr2_su_area, &display_area,
-+				 &display_area);
- 
- 	psr2_man_trk_ctl_calc(crtc_state, full_update);
- 	crtc_state->pipe_srcsz_early_tpt =
 
 
 
