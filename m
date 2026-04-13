@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-236577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMuFCM8a3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:19 +0200
+	id 8PyAKLAd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2953EF393
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9F53EFB70
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C339D30F4FB7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:21:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09781302335E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5082FFFA4;
-	Mon, 13 Apr 2026 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5A62F6931;
+	Mon, 13 Apr 2026 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZmI90qU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZFt8tqL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6682F6931;
-	Mon, 13 Apr 2026 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9301E26CE32;
+	Mon, 13 Apr 2026 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097265; cv=none; b=m2KiIBN0PBGf4NI4xaLtooxLG5zu2yQ886Q+m30DH0lI43SIeQjDlr19rkNBWhhkh5lmgyGVQcy7z/7bj+atMqm84tsatiKqXf6rzmx5re+VIQcyuiJ12OyQM12s/yUGPvyp/LFLfLQAcGaH55Ke803VXCxYVJIqUSTM8OWYOaQ=
+	t=1776097293; cv=none; b=TpaSrB8bmIwR9xR2s01Pxa4//EICqyfUx1dhcq+Ix0c6tUqj1v1vGipvPO/6RjKVGBfdmUCC37iM+4SG64n5AZdm1h+Y0kgGZYy3K4EaZSUOJOOmaQWULmiqs/1qB3Z629RIynRm4l96FDnGD4YOtc1am5S2iSLFTwsHlNmjj74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097265; c=relaxed/simple;
-	bh=etkuvXffcM+AiwRsjcRjC9Ta4ycky7YU2ET6kPPm31o=;
+	s=arc-20240116; t=1776097293; c=relaxed/simple;
+	bh=TubOCuLEOP3BaYvS5v6m39ZpFpU93hgIABIbB9RMNfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QCUwVuS5H/j0wgnes+7h2MsuDzx5PiD6zYXFo4Q3ZOpAWLU4R3icjXYw9NXnG7i6TOdtDUVTVQsXolpOZ2ypkK8ne1/gmZZQTpeEZNdxTmwfTcXL9gXuZabO7aivBxU330lYiv0Uwf+pgLMLTYy3dev5ouA/gECXsxkupOQQm2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZmI90qU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAD6C2BCAF;
-	Mon, 13 Apr 2026 16:21:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gZaqmqwGS2oVC3hn3h15LypDCLv9iem4BFTyH5NiAJevHkRc3dcDZgQ7ixnkGFj4fMjMHhU6Bn4RA19d7X6KWfQNnGmV039+U8/7sBLgs0cTaSWOcHuQtzvqkJp2CqbAtN5qRjoUzdW3J4jVeQV41Xac1SivL5ibG/8wO5jIB3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZFt8tqL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29478C2BCAF;
+	Mon, 13 Apr 2026 16:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097265;
-	bh=etkuvXffcM+AiwRsjcRjC9Ta4ycky7YU2ET6kPPm31o=;
+	s=korg; t=1776097293;
+	bh=TubOCuLEOP3BaYvS5v6m39ZpFpU93hgIABIbB9RMNfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZmI90qUW2nEP6Xk1/E8SVoQlzzxF4Oz4a4apbGlyCtdmulOth7HzvcbpPtaRBU/I
-	 018lmiiSn2BmLugubtgWwL+3l4VlF4YxLpkPIIvmLysiMsu8WDy86+btJ/kk98lCGI
-	 7B4MTMD6K5AqdFc2Io6fWfuXKx5VD9ydPhhdMBj4=
+	b=lZFt8tqLWAd3D7RXjZRVwOdMpjQQ2rmnyyYQpMh/0zwEGY0Omjs2Lq9aALiWR40U8
+	 OSke6cBOi6FXB3sliaHwk/P3s+xnQ2dFDXoNZRMw0GS93VBHltbw2zysOziCQZRn/e
+	 xchD//RyavWGDLClrquOZ49IJqT/ljM5tAa5YA08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
+	Olexa Bilaniuk <obilaniu@gmail.com>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 052/570] platform/x86: dell-wmi-sysman: Dont hex dump plaintext password data
-Date: Mon, 13 Apr 2026 17:53:03 +0200
-Message-ID: <20260413155832.390445348@linuxfoundation.org>
+Subject: [PATCH 5.15 053/570] platform/x86: dell-wmi: Add audio/mic mute key codes
+Date: Mon, 13 Apr 2026 17:53:04 +0200
+Message-ID: <20260413155832.428540487@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -67,30 +69,31 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236577-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux.intel.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236588-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 9C2953EF393
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0B9F53EFB70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,35 +101,40 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit d1a196e0a6dcddd03748468a0e9e3100790fc85c upstream.
+commit 26a7601471f62b95d56a81c3a8ccb551b5a6630f upstream.
 
-set_new_password() hex dumps the entire buffer, which contains plaintext
-password data, including current and new passwords. Remove the hex dump
-to avoid leaking credentials.
+Add audio/mic mute key codes found in Alienware m18 r1 AMD.
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20260303113050.58127-2-thorsten.blum@linux.dev
+Tested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+Suggested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Acked-by: Pali Rohár <pali@kernel.org>
+Link: https://patch.msgid.link/20260207-mute-keys-v2-1-c55e5471c9c1@gmail.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/passwordattr-interface.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/platform/x86/dell/dell-wmi-base.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/platform/x86/dell/dell-wmi-sysman/passwordattr-interface.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/passwordattr-interface.c
-@@ -93,7 +93,6 @@ int set_new_password(const char *passwor
- 	if (ret < 0)
- 		goto out;
+--- a/drivers/platform/x86/dell/dell-wmi-base.c
++++ b/drivers/platform/x86/dell/dell-wmi-base.c
+@@ -79,6 +79,12 @@ static const struct dmi_system_id dell_w
+ static const struct key_entry dell_wmi_keymap_type_0000[] = {
+ 	{ KE_IGNORE, 0x003a, { KEY_CAPSLOCK } },
  
--	print_hex_dump_bytes("set new password data: ", DUMP_PREFIX_NONE, buffer, buffer_size);
- 	ret = call_password_interface(wmi_priv.password_attr_wdev, buffer, buffer_size);
- 	/* on success copy the new password to current password */
- 	if (!ret)
++	/* Audio mute toggle */
++	{ KE_KEY,    0x0109, { KEY_MUTE } },
++
++	/* Mic mute toggle */
++	{ KE_KEY,    0x0150, { KEY_MICMUTE } },
++
+ 	/* Meta key lock */
+ 	{ KE_IGNORE, 0xe000, { KEY_RIGHTMETA } },
+ 
 
 
 
