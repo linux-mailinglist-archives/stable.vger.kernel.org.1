@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-236940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QH9yFIwe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236940-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:16 +0200
+	id 0EU2GB0W3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D643EFDF8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F8E3EE728
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 747F33068FB4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3949130D391A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C13B30BF68;
-	Mon, 13 Apr 2026 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BF6271443;
+	Mon, 13 Apr 2026 16:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCsnA0fN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SP8JzWsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EA73090F5;
-	Mon, 13 Apr 2026 16:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535B724DCF6;
+	Mon, 13 Apr 2026 16:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098182; cv=none; b=ayOSnuxQ8E8xbXpt4illRgE6MS/DnSYuPaHl9wpCoZfcwhQ/75FLs7V8xCMjjob7AjMcS+4Ly+lj5ugoyvrG/BlJeHx9s9fWxUv2zwELVu4uyyIUyefKi4uQIkgsiGmIloL21y3dllYsNNg3aDjlCwf6PGrYLvYYaJkbr0W4Z7c=
+	t=1776096277; cv=none; b=I5UFxN0S6KR6Qq8FYowVjWjp+Dzu/mFagigzud22igaem75FVED1FRQhH0tZrEpWjIQY+lNincfKZd200vSv8OQd7DlBun2W0nY+ZHWmVig2tiIUopoQrAczqBJ3wkDrrEK5gOXx7OeklWutgvI9bMStS98P/oV656p++Y/NL9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098182; c=relaxed/simple;
-	bh=6K4icBzoiVlBRJS48RdoulQQm1V0MP4Juz8PdNkmEQU=;
+	s=arc-20240116; t=1776096277; c=relaxed/simple;
+	bh=vkGmgRx9ZIctwGKk9vLJlSiwTrV/zVi+JVjukK63i3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVUy8TaRfEcLLoNvt+kLJL4pbZZgXk8h46TSS+CYUxqcm52/0XiHiBySn0TysWugtV2UFpoz8TP1WPoZv70bK7cDAQdPRMV2w7n8kJacLAS4blqyb15hsRijBzi8rx7F/5vl0K+zecipEtuA+sDJIxGhxr1iZZt3v/Er5ymOGyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCsnA0fN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A43DC2BCAF;
-	Mon, 13 Apr 2026 16:36:21 +0000 (UTC)
+	 MIME-Version; b=M1Dfr1okKQBU5T12GrBC/DCpE28XgUDeTid8eWt/2RtQXARiTMV+Ad2OMMhN2OfSZ1v+ZlC+Aj6j7XwnsxQunS5KENwhUbbzLZpTFJBUg6Lt5At3iNaqb7NFWkYhQ7aKGQ6EccsM5wy7c+5whOZ9bCkZEAYEIaPzBjNo17Tx83A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SP8JzWsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FF2C2BCAF;
+	Mon, 13 Apr 2026 16:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098181;
-	bh=6K4icBzoiVlBRJS48RdoulQQm1V0MP4Juz8PdNkmEQU=;
+	s=korg; t=1776096277;
+	bh=vkGmgRx9ZIctwGKk9vLJlSiwTrV/zVi+JVjukK63i3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCsnA0fNLMpyo/Nxsm1OtCDQ0xtdr3d7vZ1f8lUxI1QKCghHc1tbEAKD04Y0Vw+jf
-	 LRMvxEObQ+tuMK5kd01cCcmFI7Wq6WXb7PhGiqqD+Mj44K1ANuCtXU7Nnxlt4cwg1n
-	 WZ0sAhq7fFv/gvkhEl43rXOc58QOA+nSl1SNAXE0=
+	b=SP8JzWslMklITpo0SvHONF/IuQuzyjG7ETbx7nGGULKqbZY9k+GD+KZzMxK30Syzl
+	 YrU0W8A+O6U0JLRzwPXGlY+L4WA39mcBPyBMgVUNUIzX9+rl90qPHbU/ymo2BzhkFC
+	 5sPaM3nRxRLHKJXb9QjH+WCZDFtEBcQi85bZ4RwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 425/570] netfilter: x_tables: restrict xt_check_match/xt_check_target extensions for NFPROTO_ARP
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 09/86] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
 Date: Mon, 13 Apr 2026 17:59:16 +0200
-Message-ID: <20260413155846.392076088@linuxfoundation.org>
+Message-ID: <20260413155731.921610738@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +65,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236940-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-236191-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,6wind.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,asu.edu:email]
-X-Rspamd-Queue-Id: 43D643EFDF8
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,6wind.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B6F8E3EE728
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-[ Upstream commit 3d5d488f11776738deab9da336038add95d342d1 ]
+commit c3812651b522fe8437ebb7063b75ddb95b571643 upstream.
 
-Weiming Shi says:
+The seg6 lwtunnel uses a single dst_cache per encap route, shared
+between seg6_input_core() and seg6_output_core(). These two paths
+can perform the post-encap SID lookup in different routing contexts
+(e.g., ip rules matching on the ingress interface, or VRF table
+separation). Whichever path runs first populates the cache, and the
+other reuses it blindly, bypassing its own lookup.
 
-xt_match and xt_target structs registered with NFPROTO_UNSPEC can be
-loaded by any protocol family through nft_compat. When such a
-match/target sets .hooks to restrict which hooks it may run on, the
-bitmask uses NF_INET_* constants. This is only correct for families
-whose hook layout matches NF_INET_*: IPv4, IPv6, INET, and bridge
-all share the same five hooks (PRE_ROUTING ... POST_ROUTING).
+Fix this by splitting the cache into cache_input and cache_output,
+so each path maintains its own cached dst independently.
 
-ARP only has three hooks (IN=0, OUT=1, FORWARD=2) with different
-semantics. Because NF_ARP_OUT == 1 == NF_INET_LOCAL_IN, the .hooks
-validation silently passes for the wrong reasons, allowing matches to
-run on ARP chains where the hook assumptions (e.g. state->in being
-set on input hooks) do not hold. This leads to NULL pointer
-dereferences; xt_devgroup is one concrete example:
-
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000044: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000220-0x0000000000000227]
- RIP: 0010:devgroup_mt+0xff/0x350
- Call Trace:
-  <TASK>
-  nft_match_eval (net/netfilter/nft_compat.c:407)
-  nft_do_chain (net/netfilter/nf_tables_core.c:285)
-  nft_do_chain_arp (net/netfilter/nft_chain_filter.c:61)
-  nf_hook_slow (net/netfilter/core.c:623)
-  arp_xmit (net/ipv4/arp.c:666)
-  </TASK>
- Kernel panic - not syncing: Fatal exception in interrupt
-
-Fix it by restricting arptables to NFPROTO_ARP extensions only.
-Note that arptables-legacy only supports:
-
-- arpt_CLASSIFY
-- arpt_mangle
-- arpt_MARK
-
-that provide explicit NFPROTO_ARP match/target declarations.
-
-Fixes: 9291747f118d ("netfilter: xtables: add device group match")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260404004405.4057-2-andrea.mayer@uniroma2.it
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/x_tables.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ net/ipv6/seg6_iptunnel.c |   34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 6303ba7a62a2f..9c0ec0bbb5699 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -501,6 +501,17 @@ int xt_check_match(struct xt_mtchk_param *par,
- 				    par->match->table, par->table);
- 		return -EINVAL;
- 	}
-+
-+	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
-+	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
-+	 * support.
-+	 */
-+	if (par->family == NFPROTO_ARP &&
-+	    par->match->family != NFPROTO_ARP) {
-+		pr_info_ratelimited("%s_tables: %s match: not valid for this family\n",
-+				    xt_prefix[par->family], par->match->name);
-+		return -EINVAL;
-+	}
- 	if (par->match->hooks && (par->hook_mask & ~par->match->hooks) != 0) {
- 		char used[64], allow[64];
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct s
+ }
  
-@@ -1016,6 +1027,18 @@ int xt_check_target(struct xt_tgchk_param *par,
- 				    par->target->table, par->table);
- 		return -EINVAL;
- 	}
-+
-+	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
-+	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
-+	 * support.
-+	 */
-+	if (par->family == NFPROTO_ARP &&
-+	    par->target->family != NFPROTO_ARP) {
-+		pr_info_ratelimited("%s_tables: %s target: not valid for this family\n",
-+				    xt_prefix[par->family], par->target->name);
-+		return -EINVAL;
-+	}
-+
- 	if (par->target->hooks && (par->hook_mask & ~par->target->hooks) != 0) {
- 		char used[64], allow[64];
+ struct seg6_lwt {
+-	struct dst_cache cache;
++	struct dst_cache cache_input;
++	struct dst_cache cache_output;
+ 	struct seg6_iptunnel_encap tuninfo[];
+ };
  
--- 
-2.53.0
-
+@@ -488,7 +489,7 @@ static int seg6_input_core(struct net *n
+ 	slwt = seg6_lwt_lwtunnel(lwtst);
+ 
+ 	local_bh_disable();
+-	dst = dst_cache_get(&slwt->cache);
++	dst = dst_cache_get(&slwt->cache_input);
+ 	local_bh_enable();
+ 
+ 	err = seg6_do_srh(skb, dst);
+@@ -504,7 +505,7 @@ static int seg6_input_core(struct net *n
+ 		/* cache only if we don't create a dst reference loop */
+ 		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+-			dst_cache_set_ip6(&slwt->cache, dst,
++			dst_cache_set_ip6(&slwt->cache_input, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+ 			local_bh_enable();
+ 		}
+@@ -564,7 +565,7 @@ static int seg6_output_core(struct net *
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+ 	local_bh_disable();
+-	dst = dst_cache_get(&slwt->cache);
++	dst = dst_cache_get(&slwt->cache_output);
+ 	local_bh_enable();
+ 
+ 	err = seg6_do_srh(skb, dst);
+@@ -591,7 +592,7 @@ static int seg6_output_core(struct net *
+ 		/* cache only if we don't create a dst reference loop */
+ 		if (orig_dst->lwtstate != dst->lwtstate) {
+ 			local_bh_disable();
+-			dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
++			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
+ 			local_bh_enable();
+ 		}
+ 
+@@ -701,11 +702,13 @@ static int seg6_build_state(struct net *
+ 
+ 	slwt = seg6_lwt_lwtunnel(newts);
+ 
+-	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
+-	if (err) {
+-		kfree(newts);
+-		return err;
+-	}
++	err = dst_cache_init(&slwt->cache_input, GFP_ATOMIC);
++	if (err)
++		goto err_free_newts;
++
++	err = dst_cache_init(&slwt->cache_output, GFP_ATOMIC);
++	if (err)
++		goto err_destroy_input;
+ 
+ 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
+ 
+@@ -720,11 +723,20 @@ static int seg6_build_state(struct net *
+ 	*ts = newts;
+ 
+ 	return 0;
++
++err_destroy_input:
++	dst_cache_destroy(&slwt->cache_input);
++err_free_newts:
++	kfree(newts);
++	return err;
+ }
+ 
+ static void seg6_destroy_state(struct lwtunnel_state *lwt)
+ {
+-	dst_cache_destroy(&seg6_lwt_lwtunnel(lwt)->cache);
++	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwt);
++
++	dst_cache_destroy(&slwt->cache_input);
++	dst_cache_destroy(&slwt->cache_output);
+ }
+ 
+ static int seg6_fill_encap_info(struct sk_buff *skb,
 
 
 
