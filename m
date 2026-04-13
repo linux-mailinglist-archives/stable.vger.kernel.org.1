@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-236445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOGgIwMa3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:55 +0200
+	id mCv4IEIg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51AF3EF16E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AF53F04B3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 552663052413
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0C73F3057945
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C64A309DB5;
-	Mon, 13 Apr 2026 16:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532C91A680C;
+	Mon, 13 Apr 2026 16:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY6+iQx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFH4TFzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A1327280A;
-	Mon, 13 Apr 2026 16:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1411C30BF68;
+	Mon, 13 Apr 2026 16:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096923; cv=none; b=FvhkePdnRAGITMT9VIngClpLQCSlNzK4t72IRmXfH/mTmhgdYgUBZz1jJ/A7zpGajRPwp8dRPQDav5jDEbxL64CBS12co8E9pK+VMdLglLawdENfpeIsUhCUAelmHZbGQP+Cv3tYc1CKWBbSkdDPL+7f+S5nGXGPdMUq08zzPUU=
+	t=1776098502; cv=none; b=Wj3mxwm6O8DddEL5whJuyFEI2K1Aw6q5r3EexYMLxO4tGgVFIdT4jf3M/oHVPih2zcBk+rBedaz8JlWibhEUwLqZfxm/FCR0K+SdGn+aNIfsv1ZF+iH+bLoXmuI4NNJLUwbVwFIkoqjWMgAder0gICHL1v06zcfGXkwwEWLKARY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096923; c=relaxed/simple;
-	bh=TuoigOs+0z2n5917aZI5JZqh3NcQqDQMAgnEcLXp3j8=;
+	s=arc-20240116; t=1776098502; c=relaxed/simple;
+	bh=gutzhQ7G3iiAfJoxRZN9IlE4JWwbT+OB05duyavQTq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/J02q++In9JK+7ThHi1MTnYrRP3mJXkEDWB5ayZSGx52hH997i6WlrIQQjqrmbd0eNQ3vSaGJCQY5HdHMMO63tUwEr2YwzP2LNJziZkZy60ABeICWV6MsjMM6GNDoBl/S73XikX1sCDD9l4qugCJttX2pJGkYeOdTiFmbVyFXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY6+iQx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A25C2BCAF;
-	Mon, 13 Apr 2026 16:15:23 +0000 (UTC)
+	 MIME-Version; b=CGYTM0zHStB2L1WBYppEdlHvrQsUSw8Xjqp0UNFhjYfrCY8ujjDlOBacmkjgZY0pvc6m/tOvOFReJ6bfGbJVniflJGDRZoxVfIzrN9NRo3PwETCOhlRyzr3GnBfr/YOlsD497LaDpNNEY6yCc8Pg96KVwt/O+vE8n7TJSDDTsvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFH4TFzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E526C2BCAF;
+	Mon, 13 Apr 2026 16:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096923;
-	bh=TuoigOs+0z2n5917aZI5JZqh3NcQqDQMAgnEcLXp3j8=;
+	s=korg; t=1776098502;
+	bh=gutzhQ7G3iiAfJoxRZN9IlE4JWwbT+OB05duyavQTq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QY6+iQx6uP78DKEHHrBOVybDdyHe1VbwkVjwDCjzsU6Jw3SqhFVdtDYd6rHwBqGhX
-	 vMM/YTaeSp+t89rVR6GqJgq4rzN3KkQQuxQQskUNfSXBGWtDOdSx5zEVrS5DeJ+51D
-	 0877QJaCJl5NL+M/I3XQ1Yqc9TDPsa9ts0PQxwqE=
+	b=yFH4TFzc7esbzi5z9R6N9ih71Aenn05qOsdJzF3Dz9SfFE8rwrqTQpCOwdNkXeSUh
+	 glVq1NfjbaIJ5ush4SEuvY+HheOMmVXY8FvGYkbXI9TpdYFs06zDguc57mxB1aB8Z6
+	 WRq2kkAy5nOc/qP9o2eu4TUSnTWDn4TGw2ldYQ3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Douya Le <ldy3087146292@gmail.com>,
-	Yuan Tan <tanyuan98@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 45/50] rxrpc: Only put the call ref if one was acquired
-Date: Mon, 13 Apr 2026 18:01:12 +0200
-Message-ID: <20260413155726.192289562@linuxfoundation.org>
+	GuoHan Zhao <zhaoguohan@kylinos.cn>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.15 542/570] xen/privcmd: unregister xenstore notifier on module exit
+Date: Mon, 13 Apr 2026 18:01:13 +0200
+Message-ID: <20260413155850.749689425@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,88 +65,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236445-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237067-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,auristor.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lzu.edu.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: B51AF3EF16E
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email,kylinos.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74AF53F04B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douya Le <ldy3087146292@gmail.com>
+From: GuoHan Zhao <zhaoguohan@kylinos.cn>
 
-commit 6331f1b24a3e85465f6454e003a3e6c22005a5c5 upstream.
+commit cd7e1fef5a1ca1c4fcd232211962ac2395601636 upstream.
 
-rxrpc_input_packet_on_conn() can process a to-client packet after the
-current client call on the channel has already been torn down.  In that
-case chan->call is NULL, rxrpc_try_get_call() returns NULL and there is
-no reference to drop.
+Commit 453b8fb68f36 ("xen/privcmd: restrict usage in
+unprivileged domU") added a xenstore notifier to defer setting the
+restriction target until Xenstore is ready.
 
-The client-side implicit-end error path does not account for that and
-unconditionally calls rxrpc_put_call().  This turns a protocol error
-path into a kernel crash instead of rejecting the packet.
+XEN_PRIVCMD can be built as a module, but privcmd_exit() leaves that
+notifier behind. Balance the notifier lifecycle by unregistering it on
+module exit.
 
-Only drop the call reference if one was actually acquired.  Keep the
-existing protocol error handling unchanged.
+This is harmless even if xenstore was already ready at registration
+time and the notifier was never queued on the chain.
 
-Fixes: 5e6ef4f1017c ("rxrpc: Make the I/O thread take over the call and local processor work")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Douya Le <ldy3087146292@gmail.com>
-Co-developed-by: Yuan Tan <tanyuan98@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-11-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 453b8fb68f3641fe ("xen/privcmd: restrict usage in unprivileged domU")
+Signed-off-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20260325120246.252899-1-zhaoguohan@kylinos.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/io_thread.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/xen/privcmd.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -389,7 +389,8 @@ static int rxrpc_input_packet_on_conn(st
+--- a/drivers/xen/privcmd.c
++++ b/drivers/xen/privcmd.c
+@@ -1068,6 +1068,9 @@ static int __init privcmd_init(void)
  
- 	if (sp->hdr.callNumber > chan->call_id) {
- 		if (rxrpc_to_client(sp)) {
--			rxrpc_put_call(call, rxrpc_call_put_input);
-+			if (call)
-+				rxrpc_put_call(call, rxrpc_call_put_input);
- 			return rxrpc_protocol_error(skb,
- 						    rxrpc_eproto_unexpected_implicit_end);
- 		}
+ static void __exit privcmd_exit(void)
+ {
++	if (!xen_initial_domain())
++		unregister_xenstore_notifier(&xenstore_notifier);
++
+ 	misc_deregister(&privcmd_dev);
+ 	misc_deregister(&xen_privcmdbuf_dev);
+ }
 
 
 
