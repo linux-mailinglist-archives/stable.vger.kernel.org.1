@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-237064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAbfKece3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:47 +0200
+	id sMgjBI4a3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD043EFF7C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC68C3EF2D5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 24CF230CBBCE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CC2CC3025C0F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF66930DEAC;
-	Mon, 13 Apr 2026 16:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBBF29DB64;
+	Mon, 13 Apr 2026 16:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S0hpIox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhOQ0AUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7227424E4A1;
-	Mon, 13 Apr 2026 16:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5B526CE32;
+	Mon, 13 Apr 2026 16:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098494; cv=none; b=E9FT2r8ujo/cNSRpaeaTB0sbTAHGJFysrf6MqAkdOSysblgtHPoPN2aeYS4oF/6pik9AtGSwUJ3eEpRP+0wK3TNKDslNDSu4BEaq+lm79Suv9jg0wspZ9y/m4kqBjs4pX6AsvCnvcv/m9lVz23G8mcPhiRn/t2LQlYF7wXEXspc=
+	t=1776096967; cv=none; b=FGmbl0/f7sxBnLYToZtkNyHfR1IMUfi5IWCdYUhEJKbQ65IQ3r2r9XpklQqnOULOfM7SCVsdePeUtGgtrcc8r1+RZf9ADQAoMFALocSy+se+6N+Ci+XeMPnPCct0mwCHmnKVWtFDtiSk/B/1+ER2To9d4fb+fcameLKnvI7B3QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098494; c=relaxed/simple;
-	bh=Oqwl8CPCGIiNim+vhxSUIy7M7sOMOlkP4e6dlNKLs1k=;
+	s=arc-20240116; t=1776096967; c=relaxed/simple;
+	bh=x/pa0LXevOc+9K11UNUI4WWPUxdjgk7Zfhe4WXtD1IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IeRe4Dh38FSzBGnsjw2//EGVj/bpno2fdixAi2jUpeq/P1NpX8z1/C/nmLcncmlAYGb0RztEsrYEbgRHyB+Z6wzlws5Ty7NnzEY1ZiUngWb0FCj05PnHr3OiGOx6wgcW9aCMqyTf7BdlPgtBZ9KLbf9QLn6MTAWsp+nuxztjrcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S0hpIox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037F1C2BCAF;
-	Mon, 13 Apr 2026 16:41:33 +0000 (UTC)
+	 MIME-Version; b=nwDAA9g4GtswiAL1LKydyFIyGoN8XP7P+5OHZKiZgINclyvJVJ4JvghNaWML6a1Z/x0jzFwOq1bwSckQobQfrFJRojo3x8Q+EXehcLUG6EsUgOvfq8bc2NhL5sQ+xhrjoVfG/7wdK3c/+WcDSv0zdOAmIbm5g6iIwY1ZJj0UDu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhOQ0AUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253D4C2BCAF;
+	Mon, 13 Apr 2026 16:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098494;
-	bh=Oqwl8CPCGIiNim+vhxSUIy7M7sOMOlkP4e6dlNKLs1k=;
+	s=korg; t=1776096967;
+	bh=x/pa0LXevOc+9K11UNUI4WWPUxdjgk7Zfhe4WXtD1IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2S0hpIoxuMcKERbciKt+Qiy3y63J1rd+Kq0mK1qr0SYlMS1QQOkpQYO+H7SZtgupG
-	 1YBw99KYbnluoZmAP48KLMfziqeKVrWVTJaoMTVUT3ehCxmNQYmzrkEJrflxMCLwYc
-	 9/cBkDDpNqPyKJ6grTsnOtJ44O2+qPjv9zK/CVSU=
+	b=QhOQ0AUUOD5+YtEDENScAlGWCmJRsxqtFv2yPJ/etbrQCo/M9UB0Lu/cf39tSneR1
+	 c2Ete/dO3bO5ccfa+7/ptVwGV7qo9DMM64pIzDcgEChE/27sXKhdUwL4oHRQuzYvOI
+	 W6NCDcZu1j1y7eeHwH0475wxLvK41RLFmXQ112WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Robert Garcia <rob_garcia@163.com>,
+	Angel4005 <ooara1337@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 514/570] iio: adc: ad7923: Fix buffer overflow for tx_buf and ring_xfer
+Subject: [PATCH 6.1 11/55] media: uvcvideo: Use heuristic to find stream entity
 Date: Mon, 13 Apr 2026 18:00:45 +0200
-Message-ID: <20260413155849.702805105@linuxfoundation.org>
+Message-ID: <20260413155725.250398787@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,huawei.com,163.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237064-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236462-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,chromium.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,analog.com:email]
-X-Rspamd-Queue-Id: 2AD043EFF7C
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,chromium.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DC68C3EF2D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 3a4187ec454e19903fd15f6e1825a4b84e59a4cd ]
+[ Upstream commit 758dbc756aad429da11c569c0d067f7fd032bcf7 ]
 
-The AD7923 was updated to support devices with 8 channels, but the size
-of tx_buf and ring_xfer was not increased accordingly, leading to a
-potential buffer overflow in ad7923_update_scan_mode().
+Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
+descriptor where multiple entities share the same ID, this is invalid
+and makes it impossible to make a proper entity tree without heuristics.
 
-Fixes: 851644a60d20 ("iio: adc: ad7923: Add support for the ad7908/ad7918/ad7928")
+We have recently introduced a change in the way that we handle invalid
+entities that has caused a regression on broken devices.
+
+Implement a new heuristic to handle these devices properly.
+
+Reported-by: Angel4005 <ooara1337@gmail.com>
+Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HFTYnqH5+GJhd6cYsNLT=DaA@mail.gmail.com/
+Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Link: https://patch.msgid.link/20241029134637.2261336-1-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Context change fixed. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7923.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-index b8cc94b7dd80a..a8e59fd2dcf3c 100644
---- a/drivers/iio/adc/ad7923.c
-+++ b/drivers/iio/adc/ad7923.c
-@@ -47,7 +47,7 @@
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index f81bddd20bc09..a1c6ae97a2b93 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -164,13 +164,26 @@ static struct uvc_entity *uvc_entity_by_reference(struct uvc_device *dev,
  
- struct ad7923_state {
- 	struct spi_device		*spi;
--	struct spi_transfer		ring_xfer[5];
-+	struct spi_transfer		ring_xfer[9];
- 	struct spi_transfer		scan_single_xfer[2];
- 	struct spi_message		ring_msg;
- 	struct spi_message		scan_single_msg;
-@@ -63,7 +63,7 @@ struct ad7923_state {
- 	 * Length = 8 channels + 4 extra for 8 byte timestamp
- 	 */
- 	__be16				rx_buf[12] ____cacheline_aligned;
--	__be16				tx_buf[4];
-+	__be16				tx_buf[8];
- };
+ static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
+ {
+-	struct uvc_streaming *stream;
++	struct uvc_streaming *stream, *last_stream;
++	unsigned int count = 0;
  
- struct ad7923_chip_info {
+ 	list_for_each_entry(stream, &dev->streams, list) {
++		count += 1;
++		last_stream = stream;
+ 		if (stream->header.bTerminalLink == id)
+ 			return stream;
+ 	}
+ 
++	/*
++	 * If the streaming entity is referenced by an invalid ID, notify the
++	 * user and use heuristics to guess the correct entity.
++	 */
++	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
++		dev_warn(&dev->intf->dev,
++			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
++		return last_stream;
++	}
++
+ 	return NULL;
+ }
+ 
 -- 
 2.53.0
 
