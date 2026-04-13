@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-237189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCbODcAe3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:08 +0200
+	id sMvcLuEh3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8C63EFEF7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8DF3F09B5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 013F430231ED
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 84B6C3031EE5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84377314D0D;
-	Mon, 13 Apr 2026 16:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D17314D0D;
+	Mon, 13 Apr 2026 16:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHmqRQU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irrBp3ba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480BC23E342;
-	Mon, 13 Apr 2026 16:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B743A23E342;
+	Mon, 13 Apr 2026 16:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098815; cv=none; b=rW5RTZgcIthsaLild19FBXED87PDPtsMJ//cypwzNtMTxRd1oS2J4WJDATaPCZZqqkWOPdU5NR6gHMxZZhFn7AuObZUTxp0fMuPbgQhp035O+2UqLYUAmKyw3i+b8mrJdIKG4lXfzr8zuJci0xdbEmaLxNdcU7MYhYnrXPtRjNI=
+	t=1776098830; cv=none; b=gycUM8Izyo3Xbg+0urpFooev4YGhd/Q7AT9P4ZZqCDQoxsbqV2vGoE74k1d8GeA+0YSn1go3AS7/1wUsVc9NE4iSTuyympNKXCVA9fsuIto8QyCg95kGpm/fkN/HTqym6Y+TkciNPXI/9DUS13qjm2TfxRR2KqcFu/naz2Xa4y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098815; c=relaxed/simple;
-	bh=nJ7QoS90WipLbaqirFzE77SkGZIVrOb6M0FPkvyzBDM=;
+	s=arc-20240116; t=1776098830; c=relaxed/simple;
+	bh=tpcrtmCq64kgPu6QW5SyVSbUQptbHEzmTh+oUTIFtJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ix1BT3/oUn0pnT4W0IoVuTEF/uxgIWfgTHz1JTBvfw2TeDrubZ1rOfmo0tPX8mwYd+9pSjn3PMYZRoUczRSRK/FUmxHPm8iUMdXvWZtW1NKL1BAwdIayelqK8eS+lHXED1EthFMxM2zg8kDyvsY5h2OykRF91pqyOSeDONeMxMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHmqRQU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AADC2BCAF;
-	Mon, 13 Apr 2026 16:46:54 +0000 (UTC)
+	 MIME-Version; b=UpgeucOYYAiSEyb0UoGjiDvxVXD+r4cT8Rjxg/cUWNfnws5v+08cHBRXRIdCPhI/KbzW1hM4Ch2hUG6Ta+HEwXjpbwMZ1J1ogyw8IzhhzlDncHco5AeFN8fZsH72JTgONnwGbeXnXqK7UIOrFPCvXcnefpCLht4itTavUwHmmdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irrBp3ba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E43CC2BCAF;
+	Mon, 13 Apr 2026 16:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098815;
-	bh=nJ7QoS90WipLbaqirFzE77SkGZIVrOb6M0FPkvyzBDM=;
+	s=korg; t=1776098830;
+	bh=tpcrtmCq64kgPu6QW5SyVSbUQptbHEzmTh+oUTIFtJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yHmqRQU4cjnh1SSQazrCFys3e4fp2ZsxSCMRt3InJG96i9X0iaw1eh/uFOlEhA0IQ
-	 yg5iLGieP3082a5haKYPmX0E9yANvJ2Lfvktgl3Ci1TR2NQ1QaL6e/JAPOYGO0qqGp
-	 T+0SxzoSoNQgEVhrW4RGQjLkkpIz4hSHdJRHMr80=
+	b=irrBp3ba2zqPVY3TAeJq6K6eaqaD7l7HFzA4A8OLII0FHvcrP4X98JdLjmhoe7Vlt
+	 +KJh3uWOOkoCF/RPiErxBwlD4ozbgNzdq7aP7+Mnju6E94plre+tGBdRQHL1m0XiDl
+	 V+54IOLlW1mKoJ6c4N6EgzX+qaDMB4Ae2X9T9wZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Cotifava <cotifavamatteo@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Shuangpeng Bai <shuangpeng.kernel@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 072/491] ASoC: soc-core: flush delayed work before removing DAIs and widgets
-Date: Mon, 13 Apr 2026 17:55:17 +0200
-Message-ID: <20260413155821.741739691@linuxfoundation.org>
+Subject: [PATCH 5.10 073/491] serial: caif: hold tty->link reference in ldisc_open and ser_release
+Date: Mon, 13 Apr 2026 17:55:18 +0200
+Message-ID: <20260413155821.779274012@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -64,35 +65,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237189-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-237195-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 0D8C63EFEF7
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: AA8DF3F09B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,55 +102,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: matteo.cotifava <cotifavamatteo@gmail.com>
+From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
 
-[ Upstream commit 95bc5c225513fc3c4ce169563fb5e3929fbb938b ]
+[ Upstream commit 288598d80a068a0e9281de35bcb4ce495f189e2a ]
 
-When a sound card is unbound while a PCM stream is open, a
-use-after-free can occur in snd_soc_dapm_stream_event(), called from
-the close_delayed_work workqueue handler.
+A reproducer triggers a KASAN slab-use-after-free in pty_write_room()
+when caif_serial's TX path calls tty_write_room(). The faulting access
+is on tty->link->port.
 
-During unbind, snd_soc_unbind_card() flushes delayed work and then
-calls soc_cleanup_card_resources(). Inside cleanup,
-snd_card_disconnect_sync() releases all PCM file descriptors, and
-the resulting PCM close path can call snd_soc_dapm_stream_stop()
-which schedules new delayed work with a pmdown_time timer delay.
-Since this happens after the flush in snd_soc_unbind_card(), the
-new work is not caught. soc_remove_link_components() then frees
-DAPM widgets before this work fires, leading to the use-after-free.
+Hold an extra kref on tty->link for the lifetime of the caif_serial line
+discipline: get it in ldisc_open() and drop it in ser_release(), and
+also drop it on the ldisc_open() error path.
 
-The existing flush in soc_free_pcm_runtime() also cannot help as it
-runs after soc_remove_link_components() has already freed the widgets.
+With this change applied, the reproducer no longer triggers the UAF in
+my testing.
 
-Add a flush in soc_cleanup_card_resources() after
-snd_card_disconnect_sync() (after which no new PCM closes can
-schedule further delayed work) and before soc_remove_link_dais()
-and soc_remove_link_components() (which tear down the structures the
-delayed work accesses).
-
-Fixes: e894efef9ac7 ("ASoC: core: add support to card rebind")
-Signed-off-by: Matteo Cotifava <cotifavamatteo@gmail.com>
-Link: https://patch.msgid.link/20260309215412.545628-3-cotifavamatteo@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://gist.github.com/shuangpengbai/c898debad6bdf170a84be7e6b3d8707f
+Link: https://lore.kernel.org/netdev/20260301220525.1546355-1-shuangpeng.kernel@gmail.com
+Fixes: e31d5a05948e ("caif: tty's are kref objects so take a reference")
+Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260306034006.3395740-1-shuangpeng.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +++
+ drivers/net/caif/caif_serial.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 39d511c21796e..7ecbea296e917 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1938,6 +1938,9 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
- 	for_each_card_rtds(card, rtd)
- 		if (rtd->initialized)
- 			snd_soc_link_exit(rtd);
-+	/* flush delayed work before removing DAIs and DAPM widgets */
-+	snd_soc_flush_all_delayed_work(card);
-+
- 	/* remove and free each DAI */
- 	soc_remove_link_dais(card);
- 	soc_remove_link_components(card);
+diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
+index 1b6a696182f72..02aea5a4b8ca8 100644
+--- a/drivers/net/caif/caif_serial.c
++++ b/drivers/net/caif/caif_serial.c
+@@ -312,6 +312,7 @@ static void ser_release(struct work_struct *work)
+ 			dev_close(ser->dev);
+ 			unregister_netdevice(ser->dev);
+ 			debugfs_deinit(ser);
++			tty_kref_put(tty->link);
+ 			tty_kref_put(tty);
+ 		}
+ 		rtnl_unlock();
+@@ -346,6 +347,7 @@ static int ldisc_open(struct tty_struct *tty)
+ 
+ 	ser = netdev_priv(dev);
+ 	ser->tty = tty_kref_get(tty);
++	tty_kref_get(tty->link);
+ 	ser->dev = dev;
+ 	debugfs_init(ser, tty);
+ 	tty->receive_room = N_TTY_BUF_SIZE;
+@@ -354,6 +356,7 @@ static int ldisc_open(struct tty_struct *tty)
+ 	rtnl_lock();
+ 	result = register_netdevice(dev);
+ 	if (result) {
++		tty_kref_put(tty->link);
+ 		tty_kref_put(tty);
+ 		rtnl_unlock();
+ 		free_netdev(dev);
 -- 
 2.51.0
 
