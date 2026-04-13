@@ -1,196 +1,169 @@
-Return-Path: <stable+bounces-235950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJmCF96j3GkEUgkAu9opvQ
-	(envelope-from <stable+bounces-235950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:05:50 +0200
+	id OK/mBESk3GkEUgkAu9opvQ
+	(envelope-from <stable+bounces-235953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:07:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2433E8C62
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:05:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD323E8D18
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B26A300B112
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:58:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 365EA300752E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7FB39D6E8;
-	Mon, 13 Apr 2026 07:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769883A3E70;
+	Mon, 13 Apr 2026 08:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fJtlyuCw"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="YiF7gnnw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BC237C105
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776067118; cv=pass; b=P9/FYbG3Ctj+f0GWIxX/5A2iKbySctndwEZy8w9af/+2Z/zDqrnqzLZXgG+3P59cR+9rJpkMgepu2dcS6k93OM4lNiUiwVXNBpHMYTGOYEZTH244TW+bwnC3LN5viE0lhEsGOdBDAToTX2HsVdzbOgRp4diDVAwTlfE00HOlVqg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776067118; c=relaxed/simple;
-	bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X2JwOawoU/LLpOJrTcko9tbKIPIjAeT9Y4+Vj4G6Vy/aPIr4S0Q7A2rNZPX1n6dm2HHL3i3PRjfXLr6LrJ3qd0TzA+6s/73Wyo6YSm+xAtrgbJEcG7uzYwIUV7j/gFgbWEnaT8dw2tYXrvOEQxZ3Ex0/NYffgWcK3+IlglZ9dlU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fJtlyuCw; arc=pass smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-650221149e2so3814371d50.0
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 00:58:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776067116; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FSI0gcDMjgeW8zL4x6WlAG7w1eYrU7wo6w4MeUv4LdN1phM06dKSVNihbIHHF1ZGQo
-         1daX/U8lGoim3RKgYDRJJ1hBbmpMgN+WXTlIe40G/xKCLeXlf4azT7HGC8ivq8fNI3uJ
-         qXImT3mIuhpWWAF3x91KbXmEQv1zcAzIjZKbCutxfIITWG3Epj06DJI5w3/ir8bFAVPD
-         D0AHSeyOB5ymmGJrfuBjA5d9KwPEaUYe3p2VRjGP/DCUN0NNQtiQysn8KMJicK2fewJ8
-         //vjr7bLVuX63Xr/vj3PBioi82hUUVuo13L99M3P6KEWYgq6W9N/G/E0Wc+tsVF3Jc04
-         tOAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
-        fh=Q9kW8oF4I1iCVZzdvt9JXqNZxo5Hxwt4FL+BFuDEyC4=;
-        b=RvSCpt7Cxd1/14LQokwtU4JmUhE9D8xxPYgALUZ6GHPRQWdaih5YwY74kokA3VRjoh
-         ppGy6266sdgQERuig+ylNVQ7Cvk8KHrehtc0Z6B2ZlMSCXg+H+iXCnuy8JQ86UJvpX1/
-         hbgGJJC6ltzHrvS1Vm8ZHxvg0oeqLQo/0tGRfQxZHjwJh57uIZ+xnFGyK8eHe17uIxVC
-         qDX4FiGNs/nCfKk1Mi99KugzzeEY+i5V2attgaE07VZJCdO3MIum/v4zEMVMwcxVqIlY
-         WqIGlrHXsuDMolfrHQtVyBOB7OGik0IXCsN/l60UEMekFaIMJwVlP6seeJDgOUX34Zym
-         LmOA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776067116; x=1776671916; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
-        b=fJtlyuCwWx0MSLgj21qE5kLOBaP/bIcVdQtpz299tNutl3KVM3CJu3ZGvx3Bz2kPos
-         WTwYE24Pw475nOdXqyRQWW4PtS6q936RjafZAIuFZ95aJe1aXpcTObzJaopQSu4lg8T2
-         CV/LmkvHiZOT3sU6RQJ8TCWmjcbyLkEpvDC2UTXBFTdm4Qh6BqMoi1C7zj9vFFM2X/u8
-         Cs/23kPrW1qucbHmU7gmkc58rEfCAwH25DGotYQkgNkhAVJBVxtu17HEaQTsQ66OnnJr
-         LXit3//8tVjL8zwAZVdQF2SP2p5jlTqzYQDNnRk3GB8cEeJMmECx2310t7USjhnTeXQF
-         eC5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776067116; x=1776671916;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
-        b=hisd3Jg5shzFz1SwX2Y24J0yycUxJ/U0bBpxpMBSffXswkVTCR81hBTrfMtIc8S8AS
-         YmwaGWq6PW04o22jl76gtM155Xo1How4FT1KtfGTEXsmKQYdz5HuXHds3RZHnuUkrFml
-         UFRwUBPvBZKZd5tPas8T6JzwluP4VFA7zuxSTe5D0PXWkry8XAet0UncGqIjUUSBMOy1
-         QJA1ZFYtRB59v+vXopLPpSaTGvrqA6ov+M/b4CzsOrImudTjsNhoQ0m+IGzZ3/KUmVQT
-         j74XyGXBXHzSVfbM1l0hBdUxW52hYUKG9VT5wdt9KMilIH5cK2KADLS0qWD7ly1V7Ooj
-         6bCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8gTUNPmFU6JqhhWVAEfTmLyzd4XCvftAgC/7MEXIaVNYEtiOm+82YpTmliP34p1QGvmpv5E38=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJlhFiKODR6/Y6IYaKzgqCNd8DPJeVSSkQLJn8NoRMwgs8Wmjn
-	mLB74KWnbyIbccVlKMnWy4FETq0WFJRfxBlsRq1qEZQgK+zFUQ6bz/Z0gQb5fvfF0FRK3B6zC80
-	luKOR3azCriEg0TTmOA6MYGOfGZzKyDd5mQTY/ZC4XQ==
-X-Gm-Gg: AeBDiesLopgHniA+hEJUoIPUuFt0lLDC3zMRhXNXHqn16QQejCZ7VovmTwaHqy3+IbD
-	8lC6PEjK3XtjH7jJ7GEI2VFbT3frpgFHPOYC1pEBtbxxzXxr+Vj4RmT3vQT+8bwumFXvqj8rLue
-	iAuTm5b40oD8yJ2OeaoHxtJS8KV5BG8Qv3N2MWkR1r2A93H8yCazzZypblTEvXnCYK5LlA4rOxp
-	SWzprTZXeDXL7xvbGzfUcO1gL6wDWscQiBncFK8XqvyoWpAwz2mqRXVAa33Ae39zG4+XfbRSX5h
-	wmj5bFdNarIrD00ZjQ==
-X-Received: by 2002:a05:690e:e8c:b0:650:2ff9:d660 with SMTP id
- 956f58d0204a3-65198a7767amr12034664d50.1.1776067115857; Mon, 13 Apr 2026
- 00:58:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1902C39A06A
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 08:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776067638; cv=none; b=jx06Psc7c2MEEN9xedHn10DWwfUIy2g2i9GJYfPWTxnky+UIVqRP2kxMFqABCuzY7UPUH6S/BmofjnM4wXcHdcH+4b2+fcb1FzQAwvC3dLwxRO7lwUbvvN1kzJW0kxs/LHssvbGlzCq1SBmG9YC5zrs5NYrxL3jGvaGUWmH30Rk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776067638; c=relaxed/simple;
+	bh=LejCnxnvuVcA8k5XFW78fIGB7kn4dCmYvIYPy1OnQd8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EGJ9NSWw0hHg3fjC3FUheP2TVcWJIwZIGn9FMmwhAU0FAVb0QYe/YnkBmGKzMjp+bNZTYvoaKokKWFrF4BtvOkfxugqhnAc0d8MDQRzmb2zMvGqMGCBxJP5cmgSI5/qUto7nyL7lse3uQG7OBT79aEnBbtYnwhVZkvC+MI7ihWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=YiF7gnnw; arc=none smtp.client-ip=188.68.63.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4fvKYk34fhz67KB;
+	Mon, 13 Apr 2026 09:59:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1776067162;
+	bh=LejCnxnvuVcA8k5XFW78fIGB7kn4dCmYvIYPy1OnQd8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YiF7gnnwOaBS3LIH0gMZqDFPfFu4xTRIskTOfqdGPYQ89agnajSqWVeqqs8eTuCo4
+	 WvkFNzC1PG9N0zu+ugEvEXN7c+T+DLelmr5vHEQqV+7ojgNY5dsTWdlttkI6+19E4b
+	 6/7FHsIX18AThgKWQOR5GYB+P711WwKn/Z5ISwWE4S+3+yd1r2g4ut/NOGsq6+sHoW
+	 6a1b1MvJS+u1VSegaDjuXNJDO3xPSEJZgxoMhnO6o22dx4bowApYNGonZtJqH9FHuQ
+	 mq6Cch0TDgox1orQWDtiSh2fG2GKqFK38sZfQcupNwt8YYRezdAfUWYEBWzSJ8PGac
+	 OH8dN++in6oCQ==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4fvKYG00hMz4yW8;
+	Mon, 13 Apr 2026 09:58:58 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.898
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4fvKYD5DF5z8tdJ;
+	Mon, 13 Apr 2026 09:58:56 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 16478635EC;
+	Mon, 13 Apr 2026 09:58:55 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <9c667182-3a9e-4fa3-a568-1cb5b1b74106@leemhuis.info>
+Date: Mon, 13 Apr 2026 09:58:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260412161555.2568840-1-lgs201920130244@gmail.com> <adyd3Ud2Pl_KRl6_@hovoldconsulting.com>
-In-Reply-To: <adyd3Ud2Pl_KRl6_@hovoldconsulting.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Mon, 13 Apr 2026 15:58:27 +0800
-X-Gm-Features: AQROBzBa2pmk3obezMourkIfU8jvs5w0tQK3bUeHmsgO_W_ALcjIAu_XQYSC2cc
-Message-ID: <CANUHTR9PP4rOK2gdH2KYOcwW58qTJ57W--pqHuC4GJQzriXncQ@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
-To: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Marco Crivellari <marco.crivellari@suse.com>, Ben Hoff <hoff.benjamin.k@gmail.com>, 
-	Yuhao Jiang <danisjiang@gmail.com>, William Wu <william.wu@rock-chips.com>, 
-	Terry Junge <linuxhid@cosmicgizmosystems.com>, 
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>, John Keeping <john@keeping.me.uk>, Lee Jones <lee@kernel.org>, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: Warnings and errors in drm_mode_config_cleanup when booting
+ 6.19.10 and 7.0-rc5
+To: Greg KH <gregkh@linuxfoundation.org>, Matt Fagnani <matt.fagnani@bell.net>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+ Sasha Levin <sashal@kernel.org>
+References: <a8f058b3-ea2c-4af1-a19b-9ae2db46754c@bell.net>
+ <9652ce0b-bb4c-489d-9e32-89c5af5c8101@leemhuis.info>
+ <2026040259-glacial-reversal-9a75@gregkh>
+ <35ed8f9a-66c2-40c3-a545-da4af629014f@bell.net>
+ <2026040609-script-perpetual-16bb@gregkh>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <2026040609-script-perpetual-16bb@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <177606713563.3612511.1360759713173666767@mxe9fb.netcup.net>
+X-NC-CID: rWZXVsGMoy449/T/o1Pn7niXYiHQXQsBzfi/7AgSvrWrnJtBrZU=
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lwn.net:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235950-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[leemhuis.info];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235953-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,suse.com,gmail.com,rock-chips.com,cosmicgizmosystems.com,collabora.com,keeping.me.uk,kernel.org,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,bell.net];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: BE2433E8C62
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 9CD323E8D18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Johan,
+[CCing Sasha]
 
-Thanks for the review and for pointing that out.
+On 4/6/26 10:17, Greg KH wrote:
+> On Mon, Apr 06, 2026 at 03:54:39AM -0400, Matt Fagnani wrote:
+>> On 2026-04-02 08:12, Greg KH wrote:
+>>> On Sat, Mar 28, 2026 at 11:52:48AM +0100, Thorsten Leemhuis wrote:
+>>>> On 3/28/26 11:30, Matt Fagnani wrote:
+>>>>> I could try to bisect. The commit
+>>>>> e493c135980f90c20308d1a98f2e0d1223951e94 drm: Fix use-after-free on
+>>>>> framebuffers and property blobs when calling drm_dev_unplug was included
+>>>>> in 6.19.10 and changed drm_mode_config_cleanup https://git.kernel.org/
+>>>>> pub/scm/linux/kernel/git/stable/linux.git/commit/?
+>>>>> h=linux-6.19.y&id=e493c135980f90c20308d1a98f2e0d1223951e94
+>>>> Did a quick search. Turns out this is mainline commit 6bee098b914176
+>>>> ("drm: Fix use-after-free on framebuffers and property blobs when
+>>>> calling drm_dev_unplug") [...] is turns out that is in the
+>>>> process of getting reverted:
+>>>>
+>>>> See https://lore.kernel.org/all/20260326082217.39941-2-dev@lankhorst.se/
+>>>> or 45ebe43ea00d6b ("Revert "drm: Fix use-after-free on framebuffers and
+>>>> property blobs when calling drm_dev_unplug"") [next-20260327
+>>>> (pending-fixes)].
+>>>> Sasha and Greg: you might want to make sure to pick this up.
+>>> When it shows up in a Linus-released kernel, can someone remind us?
+>> 7.0-rc7 https://lwn.net/Articles/1066405/ had the patch Revert "drm: Fix
+>> use-after-free on framebuffers and property blobs when calling
+>> drm_dev_unplug" https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v7.0-rc7&id=45ebe43ea00d6b9f5b3e0db9c35b8ca2a96b7e70 Thanks.
+> 
+> Does not apply on 6.6.y or 6.1.y, so can someone provide a working
+> backport for those branches?
 
-You're right, the correct Fixes tag should be:
+Hmm, those two got manual backports Sasha did, so he might be in the
+best position to submit the reverts, too.
 
-Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
+But to save you two a few cycles I just prepared those reverts and will
+submit them in reply to this mail. Handle with care, as they are
+untested. Not really sure if this was a wise idea at all. In case of
+problems it might be the best if one of you could redo them from scratch
+in case you have scripts to handle situations like these.
 
-I'll send a v2 shortly with that fixed and include your Reviewed-by tag.
-
-Reviewed-by: Johan Hovold johan@kernel.org
-
-Thanks,
-Guangshuo
-
-Johan Hovold <johan@kernel.org> =E4=BA=8E2026=E5=B9=B44=E6=9C=8813=E6=97=A5=
-=E5=91=A8=E4=B8=80 15:40=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, Apr 13, 2026 at 12:15:55AM +0800, Guangshuo Li wrote:
-> > hidg_alloc() initializes hidg->dev with device_initialize() before
-> > calling dev_set_name(). If dev_set_name() fails, the function currently
-> > jumps to err_unlock and returns without calling put_device().
-> >
-> > This leaves the device reference unbalanced and prevents hidg_release()
-> > from being called. Calling put_device() here is also safe, since
-> > hidg_release() only frees resources owned by hidg.
->
-> Good catch.
->
-> > Route the dev_set_name() failure path through err_put_device so the
-> > device reference is dropped properly.
-> >
-> > Fixes: 944fe915d00d ("usb: gadget: f_hid: tidy error handling in hidg_a=
-lloc")
->
-> This isn't the commit that introduced the issue, though. This should be:
->
-> Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
->
-> With that fixed you can add my:
->
-> Reviewed-by: Johan Hovold <johan@kernel.org>
->
-> Johan
+Ciao. Thorsten
 
