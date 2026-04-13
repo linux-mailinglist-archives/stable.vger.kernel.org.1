@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IG+2ACYb3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:46 +0200
+	id 2FaGCbsk3WlSaQkAu9opvQ
+	(envelope-from <stable+bounces-237429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6312F3EF4B2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2541A3F1115
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7994431B5DDA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:09:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4E75430C47F5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858922C0F7F;
-	Mon, 13 Apr 2026 16:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BC33254A3;
+	Mon, 13 Apr 2026 16:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3v/KmAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtbQvNS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E0E2BE630;
-	Mon, 13 Apr 2026 16:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EAD318ED2;
+	Mon, 13 Apr 2026 16:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096532; cv=none; b=mtpQ9cQqMmoiJlFGLvPsZx+DKy6OvoII2SOVokyLUU2XbOzR/beXaPx8nsQ8sQLLQlFZ/MVUUovmSgYAogmtWA3lXPHSH7wphNgcJvLNiILaanjV1/ZSO8c73a1Ct2P0FCq/jyqQAXjiZROq7UOaG6sM4DF56CmEb5D0255qlAA=
+	t=1776099434; cv=none; b=VA5TK0XoIB6woKRXat2qCTo6wPV4uLcf6rjAqYKLEDY5HO1miOLBTZdx7dpSnDIWBZWLe9IaNx84NxKRhG2p0y0ztdGQCdty84vbYILPF2DqOz1IyOe5pu3wIKbBaMIkccr/1Ueh5R2CjDeZpxwfecDvb7KZpOUMT3JKZi6fZAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096532; c=relaxed/simple;
-	bh=KCLPmYW/6dIdl75gg2JJLSZWiN5kKk+fNCmmDyxCFOI=;
+	s=arc-20240116; t=1776099434; c=relaxed/simple;
+	bh=X4tMWpE/x7l4a5WxN8Pj0j36xixdbaGxThj+tyaOHVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLobW3y5EupLf/stcoBP0jJuonbFRTJ5tqKde/5R5kp5PzG4Kb8KNQDE5m9qrXZgpPL86Iv/mHLTrXOqXBIT50wrahiTpZpvzMRztXMb/Cu77wo6gLrOUPqHbbuWt1dHk6tVIJgerbxsLnC5bnmmXIUQte1/SaTAF0XdN1XSahM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3v/KmAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BD8C2BCB0;
-	Mon, 13 Apr 2026 16:08:51 +0000 (UTC)
+	 MIME-Version; b=Z8MHBPAjCmRk/Ly49Og2zyqX1sDyWi9nQrgKx1kkp82KfC9TDzzMoJY7/PJOMs6zzYAtNao739cVsI86c6P5J8nRbESU0EH6bL+OjIhx6ZIbiZc6yNr+Bz6Ax1pR/Ghn3wudIsOG8h9jYJyMOKYGSulc/zsZMRk3QaimMq6eByY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtbQvNS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEB5C2BCAF;
+	Mon, 13 Apr 2026 16:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096532;
-	bh=KCLPmYW/6dIdl75gg2JJLSZWiN5kKk+fNCmmDyxCFOI=;
+	s=korg; t=1776099434;
+	bh=X4tMWpE/x7l4a5WxN8Pj0j36xixdbaGxThj+tyaOHVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3v/KmAuWE6VdgDxmuYquJR3/21497+4Ss0Wan/NWVgPNXCK9uHG236pZ/CnKrEF/
-	 rp+5f6sTTwjruxQshLeegrj9zYNdGdZUsqyUx77KKvjSH7bvfTYh2HhFROfnT9gbC6
-	 8Igr4l6vViA43ddu2fyajxHSCCtVOtzx3zkaqqAI=
+	b=GtbQvNS8MBGFJ3ehjDHAGNmgbpJbubxoAEwoiCj0iIasVwxIKls9yw/N5eiq+ck/f
+	 VwDT/cbpCkM669iwNHrR63uY+jWpPFQ/mji8GSxrWoaaajBghplWBpo0zQ9GE+e0+h
+	 w4Muqi7Nig7ASUciWlRDLHWB7QGT0WnStvzbu3ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	robbieko <robbieko@synology.com>,
-	David Sterba <dsterba@suse.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 15/83] btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()
+Subject: [PATCH 5.10 338/491] netfilter: x_tables: ensure names are nul-terminated
 Date: Mon, 13 Apr 2026 17:59:43 +0200
-Message-ID: <20260413155731.595739295@linuxfoundation.org>
+Message-ID: <20260413155831.694623023@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,78 +68,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236291-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237429-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,synology.com:email,suse.com:email]
-X-Rspamd-Queue-Id: 6312F3EF4B2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,netfilter.org:email]
+X-Rspamd-Queue-Id: 2541A3F1115
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: robbieko <robbieko@synology.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 316fb1b3169efb081d2db910cbbfef445afa03b9 ]
+[ Upstream commit a958a4f90ddd7de0800b33ca9d7b886b7d40f74e ]
 
-After commit 1618aa3c2e01 ("btrfs: simplify return variables in
-lookup_extent_data_ref()"), the err and ret variables were merged into
-a single ret variable. However, when btrfs_next_leaf() returns 0
-(success), ret is overwritten from -ENOENT to 0. If the first key in
-the next leaf does not match (different objectid or type), the function
-returns 0 instead of -ENOENT, making the caller believe the lookup
-succeeded when it did not. This can lead to operations on the wrong
-extent tree item, potentially causing extent tree corruption.
+Reject names that lack a \0 character before feeding them
+to functions that expect c-strings.
 
-Fix this by returning -ENOENT directly when the key does not match,
-instead of relying on the ret variable.
+Fixes tag is the most recent commit that needs this change.
 
-Fixes: 1618aa3c2e01 ("btrfs: simplify return variables in lookup_extent_data_ref()")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: robbieko <robbieko@synology.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: c38c4597e4bf ("netfilter: implement xt_cgroup cgroup2 path match")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_cgroup.c  | 6 ++++++
+ net/netfilter/xt_rateest.c | 5 +++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index fa83a3d8286ca..863b45092a190 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -476,7 +476,7 @@ static noinline int lookup_extent_data_ref(struct btrfs_trans_handle *trans,
- 		btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
- 		if (key.objectid != bytenr ||
- 		    key.type != BTRFS_EXTENT_DATA_REF_KEY)
--			return ret;
-+			return -ENOENT;
+diff --git a/net/netfilter/xt_cgroup.c b/net/netfilter/xt_cgroup.c
+index c0f5e9a4f3c65..bfc98719684e2 100644
+--- a/net/netfilter/xt_cgroup.c
++++ b/net/netfilter/xt_cgroup.c
+@@ -53,6 +53,9 @@ static int cgroup_mt_check_v1(const struct xt_mtchk_param *par)
  
- 		ref = btrfs_item_ptr(leaf, path->slots[0],
- 				     struct btrfs_extent_data_ref);
+ 	info->priv = NULL;
+ 	if (info->has_path) {
++		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
++			return -ENAMETOOLONG;
++
+ 		cgrp = cgroup_get_from_path(info->path);
+ 		if (IS_ERR(cgrp)) {
+ 			pr_info_ratelimited("invalid path, errno=%ld\n",
+@@ -85,6 +88,9 @@ static int cgroup_mt_check_v2(const struct xt_mtchk_param *par)
+ 
+ 	info->priv = NULL;
+ 	if (info->has_path) {
++		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
++			return -ENAMETOOLONG;
++
+ 		cgrp = cgroup_get_from_path(info->path);
+ 		if (IS_ERR(cgrp)) {
+ 			pr_info_ratelimited("invalid path, errno=%ld\n",
+diff --git a/net/netfilter/xt_rateest.c b/net/netfilter/xt_rateest.c
+index 72324bd976af8..b1d736c15fcbe 100644
+--- a/net/netfilter/xt_rateest.c
++++ b/net/netfilter/xt_rateest.c
+@@ -91,6 +91,11 @@ static int xt_rateest_mt_checkentry(const struct xt_mtchk_param *par)
+ 		goto err1;
+ 	}
+ 
++	if (strnlen(info->name1, sizeof(info->name1)) >= sizeof(info->name1))
++		return -ENAMETOOLONG;
++	if (strnlen(info->name2, sizeof(info->name2)) >= sizeof(info->name2))
++		return -ENAMETOOLONG;
++
+ 	ret  = -ENOENT;
+ 	est1 = xt_rateest_lookup(par->net, info->name1);
+ 	if (!est1)
 -- 
 2.53.0
 
