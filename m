@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MXIIQQe3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-237134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:00 +0200
+	id EHpBIAQd3WlUaAkAu9opvQ
+	(envelope-from <stable+bounces-236705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4833EFC70
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1EC3EF913
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3459301D0AB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E217D30957C6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D03311C2D;
-	Mon, 13 Apr 2026 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA28730B50A;
+	Mon, 13 Apr 2026 16:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/aFSwAY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCqt7SsE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A70730F52B;
-	Mon, 13 Apr 2026 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAC12FFFA4;
+	Mon, 13 Apr 2026 16:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098676; cv=none; b=pfVJVaLu1+bJog0o0i4AXixhd2rjKFPGWqBG8hXwFa1YVD3RQIZAkgcCvr+C4JfDgsZaVkdE9gMDVFJfe5zcZ/ANhuHbjGZ1P4iZdZL/n40D79wqQPPR97R1WV6GFjHijWDm/ljHJQehhQ8pHqAIWUJ1aruX+4Bpo2IeIs2ujZ4=
+	t=1776097584; cv=none; b=kDcqX67mWv+7FfzMobBTv9IY0BCC/DA3RWS9k6H2NIXGM3hK2rIAGTP/SuWxkFjA0DddoPX6XTqe2BAtnClu5EXoue/CITS6y6hoduqs/NOunIhyOyZbiwtqfPrKXeMDPC3EN/KrMd6XmseMeVqpUQ+IsY1woOIFR37BGF9mSZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098676; c=relaxed/simple;
-	bh=RYuiDmMg3E6lbfrLZPdQt0AgnbVGcXvolmrjL+A/MIs=;
+	s=arc-20240116; t=1776097584; c=relaxed/simple;
+	bh=yjBlP+61ItWlirC+/vs6FTrVdRSjC+nnYtaJyzx2lKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RP0iierHAAjFJGl30APPkx4ssz109JrDtnJurltYfH+znUj5ujaGkDsei9HKCIYMD+HqRwEAX3qLwOoUNtxpPYFxWRfFdy6ybIr0MQM215N6ObeLYEW1GA5/KWjJX+3bckaF2ZCRB/N6SCNzTCtQxP1L4shp0eqIXneKaanG138=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/aFSwAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB517C2BCB3;
-	Mon, 13 Apr 2026 16:44:35 +0000 (UTC)
+	 MIME-Version; b=WmwMylqw6xqEPfwQ6ax9//SIiqx9MVJnV8PTO8jm2NoYqRPIouMgOR2puclT9ujA13JHRV9NhB6EW9KkB07aqpoJhMX/nBzYFEmRYpMA5ligYV7FZGzVSS9Sn1R33bz/KHMNr7y/qZRyhhk+8L3PMNM4FDwEFrEQehIYo6ZhImg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCqt7SsE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB61C2BCB3;
+	Mon, 13 Apr 2026 16:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098676;
-	bh=RYuiDmMg3E6lbfrLZPdQt0AgnbVGcXvolmrjL+A/MIs=;
+	s=korg; t=1776097584;
+	bh=yjBlP+61ItWlirC+/vs6FTrVdRSjC+nnYtaJyzx2lKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/aFSwAY8bxetTW7U7c5mBNriIm9ySQo4HuYdEv/sLmAGYDZ50RpIaYkyiumLOz1x
-	 MeiLcwPHyli1gffvmIDNVsN1lhRXOBVeZHDDl3xE4cJWt6s2c5BYa3cGJ3EhsDbf8N
-	 F+u9/cpvDTuPz9Hbg4kGUwWMXAo2Won+xalER4Ew=
+	b=tCqt7SsExOPtGmevB31866YbkW8NRrtxH0d5VrlulF4GiaO2vLVIYRgIXn7HrRrAd
+	 9E6z7Hnfvr2QQmDn6xuOLJnjOsUqLHpTecsvLxsEXTWCBC3131JxKfNMIQVCB2CgqA
+	 Ae6vLpaGSyJViUfSY5H8MZtyW4xmNEZkMHnMGa9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/491] net: nfc: nci: Fix zero-length proprietary notifications
-Date: Mon, 13 Apr 2026 17:54:51 +0200
-Message-ID: <20260413155820.777159230@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Luka Gejak <luka.gejak@linux.dev>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 5.15 161/570] staging: rtl8723bs: fix potential out-of-bounds read in rtw_restruct_wmm_ie
+Date: Mon, 13 Apr 2026 17:54:52 +0200
+Message-ID: <20260413155836.482088554@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237134-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236705-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,86 +89,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,gehealthcare.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 3D4833EFC70
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 6C1EC3EF913
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-[ Upstream commit f7d92f11bd33a6eb49c7c812255ef4ab13681f0f ]
+commit a75281626fc8fa6dc6c9cc314ee423e8bc45203b upstream.
 
-NCI NFC controllers may have proprietary OIDs with zero-length payload.
-One example is: drivers/nfc/nxp-nci/core.c, NXP_NCI_RF_TXLDO_ERROR_NTF.
+The current code checks 'i + 5 < in_len' at the end of the if statement.
+However, it accesses 'in_ie[i + 5]' before that check, which can lead
+to an out-of-bounds read. Move the length check to the beginning of the
+conditional to ensure the index is within bounds before accessing the
+array.
 
-Allow a zero length payload in proprietary notifications *only*.
-
-Before:
-
--- >8 --
-kernel: nci: nci_recv_frame: len 3
--- >8 --
-
-After:
-
--- >8 --
-kernel: nci: nci_recv_frame: len 3
-kernel: nci: nci_ntf_packet: NCI RX: MT=ntf, PBF=0, GID=0x1, OID=0x23, plen=0
-kernel: nci: nci_ntf_packet: unknown ntf opcode 0x123
-kernel: nfc nfc0: NFC: RF transmitter couldn't start. Bad power and/or configuration?
--- >8 --
-
-After fixing the hardware:
-
--- >8 --
-kernel: nci: nci_recv_frame: len 27
-kernel: nci: nci_ntf_packet: NCI RX: MT=ntf, PBF=0, GID=0x1, OID=0x5, plen=24
-kernel: nci: nci_rf_intf_activated_ntf_packet: rf_discovery_id 1
--- >8 --
-
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260302163238.140576-1-ian.ray@gehealthcare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20260224132647.11642-2-luka.gejak@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 3514686eb53f9..188677c322f4c 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1460,10 +1460,20 @@ static bool nci_valid_size(struct sk_buff *skb)
- 	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -2008,7 +2008,10 @@ int rtw_restruct_wmm_ie(struct adapter *
+ 	while (i < in_len) {
+ 		ielength = initial_out_len;
  
- 	if (skb->len < hdr_size ||
--	    !nci_plen(skb->data) ||
- 	    skb->len < hdr_size + nci_plen(skb->data)) {
- 		return false;
- 	}
-+
-+	if (!nci_plen(skb->data)) {
-+		/* Allow zero length in proprietary notifications (0x20 - 0x3F). */
-+		if (nci_opcode_oid(nci_opcode(skb->data)) >= 0x20 &&
-+		    nci_mt(skb->data) == NCI_MT_NTF_PKT)
-+			return true;
-+
-+		/* Disallow zero length otherwise. */
-+		return false;
-+	}
-+
- 	return true;
- }
- 
--- 
-2.51.0
-
+-		if (in_ie[i] == 0xDD && in_ie[i+2] == 0x00 && in_ie[i+3] == 0x50  && in_ie[i+4] == 0xF2 && in_ie[i+5] == 0x02 && i+5 < in_len) { /* WMM element ID and OUI */
++		if (i + 5 < in_len &&
++		    in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 &&
++		    in_ie[i + 3] == 0x50 && in_ie[i + 4] == 0xF2 &&
++		    in_ie[i + 5] == 0x02) {
+ 			for (j = i; j < i + 9; j++) {
+ 					out_ie[ielength] = in_ie[j];
+ 					ielength++;
 
 
 
