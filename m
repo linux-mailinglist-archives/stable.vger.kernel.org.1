@@ -1,234 +1,205 @@
-Return-Path: <stable+bounces-237634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PGICm473Wk3awkAu9opvQ
-	(envelope-from <stable+bounces-237634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:52:30 +0200
+	id 0JxmGH893WmqbAkAu9opvQ
+	(envelope-from <stable+bounces-237635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:01:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A623F243A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:52:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320EA3F25CD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D2A9130181A5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9565A3016B3B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B732390227;
-	Mon, 13 Apr 2026 18:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BB538D6A8;
+	Mon, 13 Apr 2026 18:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="khskZamD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJ5H7p7a"
 X-Original-To: stable@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010068.outbound.protection.outlook.com [52.101.201.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D3838F627;
-	Mon, 13 Apr 2026 18:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776106344; cv=fail; b=RHF/1sfaQYoLIy2M9CnfYxXCRf4yQjZvNQ3aEqkcLcKUH+thl6onqBBxLn9SwpUMBNuuw2rdkMUPR0Dy6FPNxNcxbHcaU7MR1Mngh9MSbyfcW/RJ1I0GTqZuLHth1g/bFtRkfQQDmDxr7AFlwBaxteFHxMvRyXkpbNyvANZWXJ8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776106344; c=relaxed/simple;
-	bh=jbhs6Hl546z6hQyryvJDGUy96VrIeUWnbsKY3XAP5dI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=h5APcSLHZNdFo7pXXY9uATdpwGpDNrXKSoaEJD+bceXvDF0m0IN4tJwpCHWIB4DvaLKuc7I3fFtLG3UiVRCw2AOhTtUGdy28Cq6NlOdODe4FuY6lgR1AZ58IlgJhgnf2PG2T+EdVrxnx9y2VHGEFKbPjt4k7ev/bEkF6Qz9t2eo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=khskZamD; arc=fail smtp.client-ip=52.101.201.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SHWzIzj3UaAws044JFyj5LacIxJi/kWBrb/q4AzaVUocETcWSCe6OGn2H8ERVl3F8s8vt+nXK4n5QjJyBOkDJfeNr9W8uCqCw/2rI6y1h1kkGq90b1+GdZ07OXRus9+uSVcoSeEsfiBIdp7JSwJ5sUMPTjnii0rq3czeC66TSx24F5jvXKI6tk6sXBKt6zAUhGxYJTco0ueH/dYkULCeYdQYy3J/+hDQ4F+ngVVmzLBjR0oySFX6nrjswfL5v7DjbVz6QbecNTe0etM3zoOgU2ivOsvnv+v8Q2G1+eDyWXZJW4nVAGZh9gsBrGJXYFoZpFsib55/6MD+WIze7aMssQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZArOloJ6ltmwCVBouCu3ViVQrY87dRwxEleN1p8XPnI=;
- b=Q7g4wvnyW4ytYbLzLsscINkx5VMAVbM+pDevfpxcAlHHgGiuT/4SBmy2FvsDJ/o4oDLkPfpaX6kmAtfDWYU7eWdz642avFeBIpDqua9TAna+5IS5XElD4WHtilgv5U3pJJgq3kSQFVEuI6IyPJRKIZIIK5Z2Q1F9J219XcOXNyVkwtmYyuJlb5WUrik828mpfocAZrBdoY8BWmh1mYJZOTDv35mgfv9pxmqD8ufzGMEwAyIQYZG3pOsBW9mqidma/Zen895o/XVtRIUjV2A24DBwHAtweCfYL+9nmpcX3yHJA4yA6ZNkYRtdlpeodsJrmkYlx7GjoAcvFKhm/cRfkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZArOloJ6ltmwCVBouCu3ViVQrY87dRwxEleN1p8XPnI=;
- b=khskZamDQ/JC2GgQprFUdHQd0Qo2dxrKF6yDsYZdtfpyUW5H/L6r2zsHBs5SRbiKcn6eoCgwaucm4d8xyKmxQ8jNS21lGbgsFX+zRrDAqs6M2+QDNUkgZEV9WMYDPKthvrf45CXL+kKZnhkAh9xeehkvbkThGTxj5YUlSTgjnyhZqtEvTcoq4a1oV6TkoeVM0LzSUoOr3/WHTBo1aHds9zHhnXEy+JBYswviA1Jtfj1pF4NidbXs5V/CJOast4D7EU72gEwctuDnh/uyqlCXCFv969NjaeevoCjeuke6U5SVhTB5oW97KLgm0NveZm6D1I/8hrPVtl0ZysP8g1vEng==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV5PR12MB9754.namprd12.prod.outlook.com (2603:10b6:408:305::12)
- by DS0PR12MB7654.namprd12.prod.outlook.com (2603:10b6:8:11d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Mon, 13 Apr
- 2026 18:52:15 +0000
-Received: from LV5PR12MB9754.namprd12.prod.outlook.com
- ([fe80::9667:3c95:27d2:73da]) by LV5PR12MB9754.namprd12.prod.outlook.com
- ([fe80::9667:3c95:27d2:73da%7]) with mapi id 15.20.9818.017; Mon, 13 Apr 2026
- 18:52:15 +0000
-Message-ID: <39e878af-7418-4538-9e1f-8b62de3d1e3f@nvidia.com>
-Date: Mon, 13 Apr 2026 19:52:08 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/491] 5.10.253-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, f.fainelli@gmail.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-References: <20260413155819.042779211@linuxfoundation.org>
-From: Jon Hunter <jonathanh@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PA7P264CA0169.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:36f::15) To DS2PR12MB9750.namprd12.prod.outlook.com
- (2603:10b6:8:2b0::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F4423EAB2
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 18:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776106742; cv=none; b=TqKeCB9ahvzExqE+uSR1g3W/6Z6rTS5Hm1KTTldo1c044tQh04Po6e0+ph4xPnLc92LLSLl9Cdb9yOeJUb7uoN0MG1EJrIM0qtlas38Nuvt6BgJD3CWfnSzKbJ0nPoEhYfMTrR+Tqb7IIvXahXdaZybngCPDcKujex+/aM6DoBk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776106742; c=relaxed/simple;
+	bh=vgsTuhAL0yt4riRA6FzdkvJU7XP8Chc7SlMycKfDpXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QGAM6NbdHAivgLBuuJXF5H8w6LQfMzJqtubSFT4uGF4EjrcmiMGNpnEPRTIDy96VkVYiEURyjW+KxmMkQWY1LWZ+PfhHtgQW2Va3QcfHT/XQbCtVgnxzHYG5iP2MVaW585HcA1hm7JAZ1niDwcAFZEg2ld9qJCDPncBWJSDFb0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJ5H7p7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9D7C2BCAF;
+	Mon, 13 Apr 2026 18:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776106742;
+	bh=vgsTuhAL0yt4riRA6FzdkvJU7XP8Chc7SlMycKfDpXA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LJ5H7p7aWIm91k/YL3+SbHGD/P3p+EuMSEHOrjLEVt1Wn+SZiNwY4sjsp6gqFjv0c
+	 WnpBtvL2qxML8fXGJo1sH2qACBXDwLJFV81w4aBFVyxtExVQrimWu0vNRU0ZPvBfgD
+	 I2x9t8qW3ogewBcghNfhqHcIPGopnakYeq+HJKPpVYYECjWqsBfNRJ0ZFTxxzUoXCp
+	 qAyVVZIQPWLeSB9xNKR4sqmwFKVJAhWCO7XtoOvFXJvxXkYIboGA6mKGmOhvxtolIb
+	 9zITKRyLPvjbNMetysme+JU08p0IBYWMd0F0g7Al2B+wQEELiVY0U1jVnsSFgYSZRN
+	 oNvZeg4W7SVFA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] drm/i915/psr: Do not use pipe_src as borders for SU area
+Date: Mon, 13 Apr 2026 14:59:00 -0400
+Message-ID: <20260413185900.3429717-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041314-laundry-reformer-de94@gregkh>
+References: <2026041314-laundry-reformer-de94@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV5PR12MB9754:EE_|DS0PR12MB7654:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ad649d9-4541-4810-f642-08de998dc775
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	3an+WBJBuk0Xz3IreBlZGkqDIPGlq9lSBpx7HkIXlotSztBg5DfwB5/cniuCHzyKX3pPEPq3fQrP8xNm/sDRDGBHJ00QOQH2n+H+a9/8m1kUrvX3vSvxN6O11xvIVAUIUyFeL6rB/j+5hm9jaYXduHLc5oDiWa09uTpb4eajIq96BPyLUAtQbN4AB1FM+83xGVaV/FNpG1iTo0ivoSgr0Dxfh01JluPsFL0rVctAutTn2aGmEfFVSZhKaYMjOu6S3hUs8uOd+BwN5OXDW0UaDmo8d1xjj+mnc9t2Wl1INPOGwr2ihtQAtsmgd7aJVKpAmCuRoTucPptyo+moXtQtKbqzxIK14K5HFs0vOIYMfsZHA9UmufkMRpVCYwBkpgMLYR4jlhsXFwX3MRg/s8SZxpjgAcpBfVMfoFKDnTwX9E3ZJRWkrq6q15dkcrU1OJAV/iGIxntMH/9EWeHhaJn0guhmFRdIOOIBU7PHUWEHXvmJUMfGZHEWTJKn3b1KRfQCS1HbfN3nagBuGxmtENwoINt6iKY6/n08l7KX+lEcpTsUrVVd1GIK+ELIclIjbLOdtU4m5BmEGLxIgu8nQ0fKMlgfssTQTsGwOoerh6+5zDvHNwidFGiVBTTbFqBK/MkzFc/2ifjGUfZU1OJzfczhno2H07ft++OCawsyghoHgPaTG0qlYD2tcaT1eGpFeyjByzaUJbTCAf6z2HlX6f/uDvIw3er4PUD31PDHFhrtwu8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV5PR12MB9754.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WTYvZi9yWXlGMi9UYThUZEhwUkZCK3NvYWhoSlFQODRnTTFDUWFha3FmM2Rh?=
- =?utf-8?B?eFBSR1VRUWFCc1M3d3ppM1l2UDRUMlFSWFZDSlBqd0ZMc29oOEpwbi9TWnAy?=
- =?utf-8?B?eE9nSnVxakpMZlVIemcwSXl1amtGdllXNmMvamh0eFUvWTZPZTQwMVZTMjNU?=
- =?utf-8?B?WG5rZFM4UmYxK2kwbzN2QmphQXE1bm1ZQUN4OEdXbHJid1FlbXliVlVwT1hs?=
- =?utf-8?B?MkliUEo2YWcxMFE0cFFEZ1pUK09McDVjdkhRU2VzeURTdU9zSXRPdDYxMkxZ?=
- =?utf-8?B?Q2VKb29GYVJwN01vTnI3TEN5eWxsVFhndmVsZWhzMDNSa0RtR04yMlM4WlRO?=
- =?utf-8?B?MGNKeUpYSFRlQ0hJWlF4LzR6ZndycmYzV0liTXlpakhmWnRkTTI4Q0ErSld2?=
- =?utf-8?B?YTNCc2paMGRjSjZveVJmWWVoOWpXVTArazhkamVUcVB4Yk03MW9DVVpZVnZV?=
- =?utf-8?B?NzZrTTFheWFqS2lwV3JxdElKbzdwNGZvdk9rOUtVS09vQ05RaTJDeCt1bVRj?=
- =?utf-8?B?QjZBOGFuY3c3c0M5S0tWQk4yMjl0dTYrUGh4RG4xNUZvbU12Z00xak1vbEgz?=
- =?utf-8?B?a3FsQjZPa3paOCt2cUdiUTZlNDdEVVpXRHpPemNMZm9ibjdzL3RzOWtqUCtP?=
- =?utf-8?B?UDhVNWJPMm94aW1KanZaVm9PazNBYWtYQjZQaEVrRWFGZVNxT3h2YXowUG42?=
- =?utf-8?B?aHN3eEVkRU8zUkc3OEtEZHlkOUpDM0pwcGVhYnpWSGRQZzRyWklNOTRSckpi?=
- =?utf-8?B?MWN6N3VTTVFWZTBteEIvdWF6OVRkTGFTMWNwY3pLclNFMyt1dlVXd0YyQ1Uz?=
- =?utf-8?B?M1N3TjlVL2dWbENTTngrcGhYRG93N3l1RE5zQmJJM0RHRTFyaHlyQ29mc0Rs?=
- =?utf-8?B?cjlLV09oSmlRbXVHYW1TMkVCem45SFJzcEQyd1B3cUNnNnh2TGcvZ3N1YTNL?=
- =?utf-8?B?VFZtTTJ4RkNuanhkNElNTGdxQlNzQWRXYnJabHdZYTZ3alVLTmc0Z3FQWXhW?=
- =?utf-8?B?OUZSU0k5TzBRNTZuaTZaU241bFVKNVNPQTVRR0x2eDVsZmpDTnZXenZhN1Bs?=
- =?utf-8?B?VkVGSXloYVpqVzV2TTJXYWJ0eU5BQk5QQ0ZQZzI0bk1xL0Y4VjdmT0lsMGFX?=
- =?utf-8?B?Z3dUMXI5T1J6bVl2cm5UeENzM0hmYm5aaWpSeGdTTFlDZ2FnTFFYbFMzUzJY?=
- =?utf-8?B?MjIvK1NSQlJmVXNTSkRTSEYzRjFUYyt3OEt2NjhuTVBya3pHZkM4NWY3TTFK?=
- =?utf-8?B?Skx2S1FrWHg1bjBGRGRTNGJ5L2ZHK0lXcU5UZ3o4ME1DNUVjT3RDKzNZRzB5?=
- =?utf-8?B?T3hSbjRoK3EvMk41b3JWYk9GTXFWakFlUnFDeTMwQS83WTZ3QXB6dncwZ3J6?=
- =?utf-8?B?TmlJUTM5UkFsRGhlWEpRTkZFLy9IZFluckVtWnl3YkNFb2lRYnN4cmNldEM4?=
- =?utf-8?B?WmtweGI5bUtBQVpSblpveWE2M3ZjaXZ2cGdTSmtSTzI0QXRMTVZBaEZoQ0F4?=
- =?utf-8?B?RVBOWmVFd1dHdlhkMFRJTzJxOThxRkV4OHQ0Wno3VnV6cDU5TyszNU55SC82?=
- =?utf-8?B?K2YzV0oyOENvMjhvTVZUTXRUd3BQdXRVa0xqQnhEcnlGVm8xcGhRNjRoSTlH?=
- =?utf-8?B?L0JsdHZsTTdHTkhCbmxNNy9McnY4K2V5K2pVMEZUTkV4V0t0YzVER2N0U25v?=
- =?utf-8?B?WS90VXVnM3ppYVQzOHVEMVpjRUJLRzNmOVM3KzhzMk5VaVZSMWdyd3VvVmR6?=
- =?utf-8?B?ZEdkRHNHejB0ODRvQ0pXeTgwWXA2emdtdTlHb2tMbW5uZnQvaVl2akVyMjBL?=
- =?utf-8?B?Y0lOVHMva2pMVWlUWDU0RkpJVU5GVm9VVExVN0xIUTJ1dFlGbGpnRC9IUWJo?=
- =?utf-8?B?QTJFL08rZkRZdjNmR3daNzg5OGE2Qk9oOUx2RFVRK2Mwb1hjLzJDUXFLZFVo?=
- =?utf-8?B?eVRKTjdvMXdQU3Q0THFJUnF1VEUxZnNOMi9icW54Zyt6VW9XOUUvQ3hHcm80?=
- =?utf-8?B?aWhhQWJ6UDVUbnVtWmtqMFBWZnovK1ZIY0VGY0hyWVBnNVZNaW5GLzB3WXhv?=
- =?utf-8?B?QjRQejRaOWJkbWlDcXR3Y21ad0FHRmF0SUtybFJWNUZNbmdERXVqVUp2V1RT?=
- =?utf-8?B?OGdtNkV0S2VYWTBxZUhUOSsyeFJXWlhoSnNWeHNUcWRJdjNXNlJrczBPYlhO?=
- =?utf-8?B?bkkxQ0F2NGt0cDlQWUVLaWthRWdFOGlSTHZVTis4bEQrVnFFRmwzdW14aThl?=
- =?utf-8?B?WU1hUitzRjVxNzJ5WUxXTGpJTDA0ZnVzOWhrUFlyV1FIVTFqbzIxVk55Y0k4?=
- =?utf-8?B?QWt6UnY0ekVJZXd2b0hFUWlQeTNBR2hPK2ZiK0NBcjFwS0xvNjlWUlJXOUkr?=
- =?utf-8?Q?P6/cdCjQ1yngpfccH8tEkUYrCtJD0eNcIJuF6UHtDVD9F?=
-X-MS-Exchange-AntiSpam-MessageData-1: iM5elphlIWBf5g==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ad649d9-4541-4810-f642-08de998dc775
-X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2026 18:52:15.7406
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rwzyQlzyMNMaTgamr3THk+FNt1xd3UtoDD6yjwzIIOip8tZiT7wXOugd/7gMW8p0dJGAYdReFSTUl7wYcOj7XQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7654
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237634-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-237635-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:mid,Nvidia.com:dkim]
-X-Rspamd-Queue-Id: B6A623F243A
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 320EA3F25CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg,
+From: Jouni Högander <jouni.hogander@intel.com>
 
-On 13/04/2026 16:54, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.253 release.
-> There are 491 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.253-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> -------------
-> Pseudo-Shortlog of commits:
+[ Upstream commit 75519f5df2a9b23f7bf305e12dc9a6e3e65c24b7 ]
 
-...
-  
-> Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
->      bus: omap-ocp2scp: Convert to platform remove callback returning void
+This far using crtc_state->pipe_src as borders for Selective Update area
+haven't caused visible problems as drm_rect_width(crtc_state->pipe_src) ==
+crtc_state->hw.adjusted_mode.crtc_hdisplay and
+drm_rect_height(crtc_state->pipe_src) ==
+crtc_state->hw.adjusted_mode.crtc_vdisplay when pipe scaling is not
+used. On the other hand using pipe scaling is forcing full frame updates and all the
+Selective Update area calculations are skipped. Now this improper usage of
+crtc_state->pipe_src is causing following warnings:
 
+<4> [7771.978166] xe 0000:00:02.0: [drm] drm_WARN_ON_ONCE(su_lines % vdsc_cfg->slice_height)
 
-I am seeing the following build error due to the above change on ARM platforms ...
+after WARN_ON_ONCE was added by commit:
 
-drivers/bus/omap-ocp2scp.c:95:10: error: 'struct platform_driver' has no member named 'remove_new'; did you mean 'remove'?
-    95 |         .remove_new     = omap_ocp2scp_remove,
-       |          ^~~~~~~~~~
-       |          remove
-drivers/bus/omap-ocp2scp.c:95:27: error: initialization of 'int (*)(struct platform_device *)' from incompatible pointer type 'void (*)(struct platform_device *)' [-Werror=incompatible-pointer-types]
-    95 |         .remove_new     = omap_ocp2scp_remove,
-       |                           ^~~~~~~~~~~~~~~~~~~
+"drm/i915/dsc: Add helper for writing DSC Selective Update ET parameters"
 
-Thanks
-Jon
+These warnings are seen when DSC and pipe scaling are enabled
+simultaneously. This is because on full frame update SU area is improperly
+set as pipe_src which is not aligned with DSC slice height.
 
+Fix these by creating local rectangle using
+crtc_state->hw.adjusted_mode.crtc_hdisplay and
+crtc_state->hw.adjusted_mode.crtc_vdisplay. Use this local rectangle as
+borders for SU area.
+
+Fixes: d6774b8c3c58 ("drm/i915: Ensure damage clip area is within pipe area")
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Link: https://patch.msgid.link/20260327114553.195285-1-jouni.hogander@intel.com
+(cherry picked from commit da0cdc1c329dd2ff09c41fbbe9fbd9c92c5d2c6e)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+[ omitted hunks for DSC selective update ET alignment infrastructure ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/i915/display/intel_psr.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index e2d7c0a6802aa..a465b19293108 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1686,9 +1686,9 @@ static void psr2_man_trk_ctl_calc(struct intel_crtc_state *crtc_state,
+ 
+ static void clip_area_update(struct drm_rect *overlap_damage_area,
+ 			     struct drm_rect *damage_area,
+-			     struct drm_rect *pipe_src)
++			     struct drm_rect *display_area)
+ {
+-	if (!drm_rect_intersect(damage_area, pipe_src))
++	if (!drm_rect_intersect(damage_area, display_area))
+ 		return;
+ 
+ 	if (overlap_damage_area->y1 == -1) {
+@@ -1761,6 +1761,12 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
+ 	struct drm_rect pipe_clip = { .x1 = 0, .y1 = -1, .x2 = INT_MAX, .y2 = -1 };
+ 	struct intel_plane_state *new_plane_state, *old_plane_state;
+ 	struct intel_plane *plane;
++	struct drm_rect display_area = {
++		.x1 = 0,
++		.y1 = 0,
++		.x2 = crtc_state->hw.adjusted_mode.crtc_hdisplay,
++		.y2 = crtc_state->hw.adjusted_mode.crtc_vdisplay,
++	};
+ 	bool full_update = false;
+ 	int i, ret;
+ 
+@@ -1807,14 +1813,14 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
+ 				damaged_area.y1 = old_plane_state->uapi.dst.y1;
+ 				damaged_area.y2 = old_plane_state->uapi.dst.y2;
+ 				clip_area_update(&pipe_clip, &damaged_area,
+-						 &crtc_state->pipe_src);
++						 &display_area);
+ 			}
+ 
+ 			if (new_plane_state->uapi.visible) {
+ 				damaged_area.y1 = new_plane_state->uapi.dst.y1;
+ 				damaged_area.y2 = new_plane_state->uapi.dst.y2;
+ 				clip_area_update(&pipe_clip, &damaged_area,
+-						 &crtc_state->pipe_src);
++						 &display_area);
+ 			}
+ 			continue;
+ 		} else if (new_plane_state->uapi.alpha != old_plane_state->uapi.alpha) {
+@@ -1822,7 +1828,7 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
+ 			damaged_area.y1 = new_plane_state->uapi.dst.y1;
+ 			damaged_area.y2 = new_plane_state->uapi.dst.y2;
+ 			clip_area_update(&pipe_clip, &damaged_area,
+-					 &crtc_state->pipe_src);
++					 &display_area);
+ 			continue;
+ 		}
+ 
+@@ -1838,7 +1844,7 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
+ 		damaged_area.x1 += new_plane_state->uapi.dst.x1 - src.x1;
+ 		damaged_area.x2 += new_plane_state->uapi.dst.x1 - src.x1;
+ 
+-		clip_area_update(&pipe_clip, &damaged_area, &crtc_state->pipe_src);
++		clip_area_update(&pipe_clip, &damaged_area, &display_area);
+ 	}
+ 
+ 	/*
 -- 
-nvpublic
+2.53.0
 
 
