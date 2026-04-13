@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHDSCEQi3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:08 +0200
+	id wJqYIIQh3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF58F3F0ACE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2F83F0875
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 374CB306BC69
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4D2030C4D27
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A0B238166;
-	Mon, 13 Apr 2026 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E4F317160;
+	Mon, 13 Apr 2026 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRTE+PnG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFltcBR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCD5225A38;
-	Mon, 13 Apr 2026 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A3931619A;
+	Mon, 13 Apr 2026 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097881; cv=none; b=trMpBQgogvTeGdyWj/6fhW7HHa1SFMI2a3I1KBfHx8EpifeuAlmni37V0hLMJ2kvlP2kdeBYIsZyLtIKl7WzNupI+BijHu0nR8Qx0Y4uLwLD9++a0FJWNZ25DXhZnRAG/QoJffUFrTCFgKYBhhhQ4kr79xcwsWLF2bmHs3TKx2I=
+	t=1776099065; cv=none; b=WGZP/cYJnCefO1jiFluVCT5ymbtr2d/Ov/JydtSr/RfhGwI7z3Y4WIpbho0kfw/tuVhqBNDEgq7Uw/gIoaD3pTImX0ZI0NX8sbqh6PoeKZLHhVzw/bG/gX7a9KwxFpkNuxM1iFrOkJe7FwJH0htBkZmDNnM7ifjtBjm8eH75iQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097881; c=relaxed/simple;
-	bh=BUIGF4i//ZngV6lgmUYGA27+fvjFROgmOkUV+o0V2ac=;
+	s=arc-20240116; t=1776099065; c=relaxed/simple;
+	bh=xtEJ5hODABsJ29DXxJeaMFdjjVK0S0D6e4i1Xo1h7Yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=diU6s204SckjeNALURdrNCbikZ/W4w2dfotZT2CMfl+tIBIGZCNE0OAp0WnJ4A473we73nUQKCSBZbA9r8wVrGowGNExT9UzO5OARnMEqrqtkfZBGu6oyvxe6esO3LIZYF1PAWJl7fWbQ3d1W2HyOqq56Bz00BBCyZFfWireDnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRTE+PnG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8573BC2BCAF;
-	Mon, 13 Apr 2026 16:31:20 +0000 (UTC)
+	 MIME-Version; b=l4w5plJlWxWEuL2zeMgWEoGm0DEpBhIP3EzW8YoW1gYStN1YgzlcXbQd4J0gRfdfMot+Yset4UiKm0w7sj1uFOAPTy+6s8fei+e6Nv3gnDRJR7mkAnt0xw3qUFiPXiEX2Q5vVn4K5UgOViUbUxuEm49PJllxTiKo58aFB/5Ylzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFltcBR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE45C2BCAF;
+	Mon, 13 Apr 2026 16:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097880;
-	bh=BUIGF4i//ZngV6lgmUYGA27+fvjFROgmOkUV+o0V2ac=;
+	s=korg; t=1776099065;
+	bh=xtEJ5hODABsJ29DXxJeaMFdjjVK0S0D6e4i1Xo1h7Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRTE+PnGZEnutajDP778TKRONbhEI8AhyMxEiXGgkxzCRroaSJzi2h5k0vwtN6WHf
-	 8VtkBP5azuqfcBj9ff/PDRtpIjxr3viLQBaSkhcuablJTu6IY9DGvnSUvyfFovWwRA
-	 zPYGIFC5ndJ3z4XuD7UgSKZQBaaUEmfkaGQLJpUc=
+	b=UFltcBR38nE5eUXV1Y3pgi7Bu6aOUqxZM+wxnMm/pKBHZAkZfhoukpsw+lkeb3bUe
+	 Ub6nP9W/SnXF6NPCkwxfSnGLnNcKz6rDHLv1qk31Txt1CFjOyIznueH8VerGJ/aT65
+	 X1oi9EWJcqpaeMnZ0v0KVX96mVIfjk04TaL8/n18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 309/570] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_put_bits()
-Date: Mon, 13 Apr 2026 17:57:20 +0200
-Message-ID: <20260413155842.073268995@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 196/491] net/tcp-md5: Fix MAC comparison to be constant-time
+Date: Mon, 13 Apr 2026 17:57:21 +0200
+Message-ID: <20260413155826.410096907@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236822-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237286-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,60 +88,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: AF58F3F0ACE
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: EB2F83F0875
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 54a86cf48eaa6d1ab5130d756b718775e81e1748 ]
+commit 46d0d6f50dab706637f4c18a470aac20a21900d3 upstream.
 
-ALSA controls should return 1 if the value in the control changed but the
-control put operation fsl_easrc_iec958_put_bits() unconditionally returns
-0, causing ALSA to not generate any change events. This is detected by
-mixer-test with large numbers of messages in the form:
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-    No event generated for Context 3 IEC958 CS5
-    Context 3 IEC958 CS5.0 orig 5224 read 5225, is_volatile 0
-
-Add a suitable check.
-
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-1-39d4c766918b@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
+Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20260302203409.13388-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_ipv4.c |    5 +++--
+ net/ipv6/tcp_ipv6.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 95ad4eeec4863..84ef6758cc003 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -52,10 +52,13 @@ static int fsl_easrc_iec958_put_bits(struct snd_kcontrol *kcontrol,
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
- 	unsigned int regval = ucontrol->value.integer.value[0];
-+	int ret;
-+
-+	ret = (easrc_priv->bps_iec958[mc->regbase] != regval);
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -78,6 +78,7 @@
+ #include <linux/inetdevice.h>
+ #include <linux/btf_ids.h>
  
- 	easrc_priv->bps_iec958[mc->regbase] = regval;
++#include <crypto/algapi.h>
+ #include <crypto/hash.h>
+ #include <linux/scatterlist.h>
  
--	return 0;
-+	return ret;
- }
+@@ -764,7 +765,7 @@ static void tcp_v4_send_reset(const stru
  
- static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
--- 
-2.51.0
-
+ 
+ 		genhash = tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
+-		if (genhash || memcmp(hash_location, newhash, 16) != 0)
++		if (genhash || crypto_memneq(hash_location, newhash, 16))
+ 			goto out;
+ 
+ 	}
+@@ -1451,7 +1452,7 @@ static bool tcp_v4_inbound_md5_hash(cons
+ 				      hash_expected,
+ 				      NULL, skb);
+ 
+-	if (genhash || memcmp(hash_location, newhash, 16) != 0) {
++	if (genhash || crypto_memneq(hash_location, newhash, 16)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
+ 		net_info_ratelimited("MD5 Hash failed for (%pI4, %d)->(%pI4, %d)%s L3 index %d\n",
+ 				     &iph->saddr, ntohs(th->source),
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -63,6 +63,7 @@
+ #include <linux/proc_fs.h>
+ #include <linux/seq_file.h>
+ 
++#include <crypto/algapi.h>
+ #include <crypto/hash.h>
+ #include <linux/scatterlist.h>
+ 
+@@ -810,7 +811,7 @@ static bool tcp_v6_inbound_md5_hash(cons
+ 				      hash_expected,
+ 				      NULL, skb);
+ 
+-	if (genhash || memcmp(hash_location, newhash, 16) != 0) {
++	if (genhash || crypto_memneq(hash_location, newhash, 16)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
+ 		net_info_ratelimited("MD5 Hash %s for [%pI6c]:%u->[%pI6c]:%u L3 index %d\n",
+ 				     genhash ? "failed" : "mismatch",
+@@ -1071,7 +1072,7 @@ static void tcp_v6_send_reset(const stru
+ 			goto out;
+ 
+ 		genhash = tcp_v6_md5_hash_skb(newhash, key, NULL, skb);
+-		if (genhash || memcmp(hash_location, newhash, 16) != 0)
++		if (genhash || crypto_memneq(hash_location, newhash, 16))
+ 			goto out;
+ 	}
+ #endif
 
 
 
