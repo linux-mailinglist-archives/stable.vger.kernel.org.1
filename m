@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKZQLAgl3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:56 +0200
+	id ILLoHNkb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134E33F1189
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573EE3EF6A8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 993C7303746C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A7D7307DA3F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEF13128CC;
-	Mon, 13 Apr 2026 16:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E79309F09;
+	Mon, 13 Apr 2026 16:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiV68lHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGApuekX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3EA2BEC3F;
-	Mon, 13 Apr 2026 16:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF7F2FFFA4;
+	Mon, 13 Apr 2026 16:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098679; cv=none; b=NCCVZR1rSmetks8MdG4tOA2ucZcV3Dk9ANuQc+Snm9F+9FeWsopqFEcI1hl2o7k2dLR4GjWGh8IHN+Sd1DauGETCHbJz0SdQemYUWCcN45z1xeF0k2fp3cSfql5BmjBx7fmnMCBIEGlVpvachPOWca8tZ8cXVv+W/EHn1uedBHs=
+	t=1776097587; cv=none; b=cJ10bJ5fS4tXDrxqIkdEasf9BZCqiC7z9TNSXDoun6LLEroD4YYmdBwEGHTMtoONTUmhIFSQ3tx41v1DBao1UW2xmGvc1htMtFzo72wdaK6tGRGHFJefuFkKZmS7p5MIAeM6VY6/9WdvR0qmcRF/mkduumbySVLegnKxOLmOKcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098679; c=relaxed/simple;
-	bh=9IPG6/EeMsdkXFZOxD7NV2VV4IzELnKflTzYI0Wa2zM=;
+	s=arc-20240116; t=1776097587; c=relaxed/simple;
+	bh=t81HDDCeR6iTZO3dVDFW8gcT89TLZewVlZdIfGC+HP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuyYAPtR9M2qlrZcvYWQhKKCYJkQVqpBlKNG/fO30UJGePDlwIPnqluvpzlVI/TlVTgBGLIlQDdIwrqFWXgWSrKEXPek88mw/7EUV4oSy5POYsiRwtEy/0M/1HIlcuvEY6nnYEcwkzt5ypF6+iytlyxow2oW1Xbf2y5PK+I7Wl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiV68lHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BE2C2BCAF;
-	Mon, 13 Apr 2026 16:44:38 +0000 (UTC)
+	 MIME-Version; b=OCBazp8PkV9s3zTuVdEf7DpTfASjgpu8slUfDU1x2ot/LfCR+VIh2CaGlXyzc7nmZanDVoGR+DuJ/V89hsNA+grX4y5GT0qx5OQ4ri8w2nRPI/99dk5hvRtqWRZAm57vKIJ14UuSgm/ny6bqPL89XaIHwaCip5v2vwjZ4CCAsLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGApuekX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F23C2BCAF;
+	Mon, 13 Apr 2026 16:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098678;
-	bh=9IPG6/EeMsdkXFZOxD7NV2VV4IzELnKflTzYI0Wa2zM=;
+	s=korg; t=1776097586;
+	bh=t81HDDCeR6iTZO3dVDFW8gcT89TLZewVlZdIfGC+HP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiV68lHxADqRy2WAMh9EabWU1EsI1G66EWq5ko27egIIIDPmifzssvT+pqYVjLQ4Y
-	 cOBqreCk2FWibVW8NhRgz+SSZSSbuIBu1/JA57djdun1ZLaTPwWfSey2gpGejXbExm
-	 I8Bh8C11JGOFR1xnk2b6D+SL418Nu2BGY1qn9Cbw=
+	b=sGApuekXnJSmEmqJR9sxJ7xnFJA9WUVYGsCviNbw6iblX+AZSIMhNS1eZG/kZRVux
+	 EemsVdrsh4gjdnJgERjYr3mTM1eP29A9kGwRLhH8qEDM3SJvZzvAbm+jokO/Q4rL0/
+	 5yUoC1RtNDYNS3xobjvSZeEghnCYnaXuoIf3BBDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <joe@dama.to>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/491] nfc: nci: free skb on nci_transceive early error paths
-Date: Mon, 13 Apr 2026 17:54:52 +0200
-Message-ID: <20260413155820.813817016@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Navaneeth K <knavaneeth786@gmail.com>
+Subject: [PATCH 5.15 162/570] staging: rtl8723bs: properly validate the data in rtw_get_ie_ex()
+Date: Mon, 13 Apr 2026 17:54:53 +0200
+Message-ID: <20260413155836.519917723@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +65,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236706-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237135-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,dama.to:email]
-X-Rspamd-Queue-Id: 134E33F1189
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 573EE3EF6A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 7bd4b0c4779f978a6528c9b7937d2ca18e936e2c ]
+commit f0109b9d3e1e455429279d602f6276e34689750a upstream.
 
-nci_transceive() takes ownership of the skb passed by the caller,
-but the -EPROTO, -EINVAL, and -EBUSY error paths return without
-freeing it.
+Just like in commit 154828bf9559 ("staging: rtl8723bs: fix out-of-bounds
+read in rtw_get_ie() parser"), we don't trust the data in the frame so
+we should check the length better before acting on it
 
-Due to issues clearing NCI_DATA_EXCHANGE fixed by subsequent changes
-the nci/nci_dev selftest hits the error path occasionally in NIPA,
-and kmemleak detects leaks:
-
-unreferenced object 0xff11000015ce6a40 (size 640):
-  comm "nci_dev", pid 3954, jiffies 4295441246
-  hex dump (first 32 bytes):
-    6b 6b 6b 6b 00 a4 00 0c 02 e1 03 6b 6b 6b 6b 6b  kkkk.......kkkkk
-    6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-  backtrace (crc 7c40cc2a):
-    kmem_cache_alloc_node_noprof+0x492/0x630
-    __alloc_skb+0x11e/0x5f0
-    alloc_skb_with_frags+0xc6/0x8f0
-    sock_alloc_send_pskb+0x326/0x3f0
-    nfc_alloc_send_skb+0x94/0x1d0
-    rawsock_sendmsg+0x162/0x4c0
-    do_syscall_64+0x117/0xfc0
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260303162346.2071888-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Tested-by: Navaneeth K <knavaneeth786@gmail.com>
+Reviewed-by: Navaneeth K <knavaneeth786@gmail.com>
+Link: https://patch.msgid.link/2026022336-arrange-footwork-6e54@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 188677c322f4c..873c9073e4111 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1014,18 +1014,23 @@ static int nci_transceive(struct nfc_dev *nfc_dev, struct nfc_target *target,
- 	struct nci_conn_info    *conn_info;
+--- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
++++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
+@@ -187,21 +187,25 @@ u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len
  
- 	conn_info = ndev->rf_conn_info;
--	if (!conn_info)
-+	if (!conn_info) {
-+		kfree_skb(skb);
- 		return -EPROTO;
-+	}
+ 	cnt = 0;
  
- 	pr_debug("target_idx %d, len %d\n", target->idx, skb->len);
+-	while (cnt < in_len) {
++	while (cnt + 2 <= in_len) {
++		u8 ie_len = in_ie[cnt + 1];
++
++		if (cnt + 2 + ie_len > in_len)
++			break;
++
+ 		if (eid == in_ie[cnt]
+-			&& (!oui || !memcmp(&in_ie[cnt+2], oui, oui_len))) {
++			&& (!oui || (ie_len >= oui_len && !memcmp(&in_ie[cnt + 2], oui, oui_len)))) {
+ 			target_ie = &in_ie[cnt];
  
- 	if (!ndev->target_active_prot) {
- 		pr_err("unable to exchange data, no active target\n");
-+		kfree_skb(skb);
- 		return -EINVAL;
+ 			if (ie)
+-				memcpy(ie, &in_ie[cnt], in_ie[cnt+1]+2);
++				memcpy(ie, &in_ie[cnt], ie_len + 2);
+ 
+ 			if (ielen)
+-				*ielen = in_ie[cnt+1]+2;
++				*ielen = ie_len + 2;
+ 
+ 			break;
+-		} else {
+-			cnt += in_ie[cnt+1]+2; /* goto next */
+ 		}
++		cnt += ie_len + 2; /* goto next */
  	}
  
--	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags))
-+	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags)) {
-+		kfree_skb(skb);
- 		return -EBUSY;
-+	}
- 
- 	/* store cb and context to be used on receiving data */
- 	conn_info->data_exchange_cb = cb;
--- 
-2.51.0
-
+ 	return target_ie;
 
 
 
