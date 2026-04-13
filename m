@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-237533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLW+FgMj3WkoaQkAu9opvQ
-	(envelope-from <stable+bounces-237533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:19 +0200
+	id iNRwI80Z3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C35F3F0D15
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394413EF0D0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8036E30985BE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F4A13130D6C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0266E3016EE;
-	Mon, 13 Apr 2026 17:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718212F8BC3;
+	Mon, 13 Apr 2026 16:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAhTpe4S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Byw4wgOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98D63385AA;
-	Mon, 13 Apr 2026 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3514427280A;
+	Mon, 13 Apr 2026 16:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099702; cv=none; b=GrwTtnkkW1BKQWhfe0d++SnrePPzBC8U7tZlSlcV6Qt51gioi2AuSxha7zPYSAe5nEcr24QYlXsVBH0fU9A4bIMSS2NM70Fz8Weij3k6w+dETlRMkbC0pmf6McZPxKhpuRAHZEgVBcsd+vtvE4/rQOjrYFFpAiZ3uE8Kl3dliw4=
+	t=1776097093; cv=none; b=JlKMfmm13FO6tuLEIJZtjjHUSwUgfwH+GVGqavZ4whhyAwh1TQmy6O7PYvGO0qLMKye/oRkdNEAiPMroblrHX7msAy57vzn6pbz2dZSpwUBSCQCWsFPTSjbMbxcWGSTqVQOzAICkBW9l6PFhF4fXIdTiWPWvqhXnFokTr/ybvtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099702; c=relaxed/simple;
-	bh=iG8anjoZ8am5e/N8UnoWpP8kjHLm9lqR9FeHLCnP4Mo=;
+	s=arc-20240116; t=1776097093; c=relaxed/simple;
+	bh=OWz8n3+Xw2D1KkhkvU/NoldDscgYMpx9nIXQYMIPVcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YL4gYwiaSfGfHXSIu9U+pOWMnJfo3ZXvXDPMc5QNcMrqPcKB2Hh+yvujBuDp70L8o4uf1n1Kn480OIB9UL3EY53hAKtkat76RYrg+x366y7rO44OR0oVs9dvBXQKuGjRGUVC/myN/jxnNlVtsK95Js8m4psXKs+Yy3gonhjkwLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAhTpe4S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC94C2BCAF;
-	Mon, 13 Apr 2026 17:01:41 +0000 (UTC)
+	 MIME-Version; b=sa00dKu8t0sPc04h4gRN+5B/WIh5NBK0+JVFcaYjUO/3gEyG7f0ZtPxkoOInuPUUqt1FYMNq0df0fkrXBMU9r1Kio8Au6RwU6TzSxeaPTFMQ2AcjpbSQQ+Owiyg7EcCo2W2jtr9RvTKG/+mgtoQgUtH/6OpTdPjn+ue8R6yHYFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Byw4wgOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA0DC2BCAF;
+	Mon, 13 Apr 2026 16:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099702;
-	bh=iG8anjoZ8am5e/N8UnoWpP8kjHLm9lqR9FeHLCnP4Mo=;
+	s=korg; t=1776097093;
+	bh=OWz8n3+Xw2D1KkhkvU/NoldDscgYMpx9nIXQYMIPVcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BAhTpe4S5pKmxitctf73+kq/qUCsGCK7IMV4gSMVXUeIraPrrjz8cqX4HIYx+npx5
-	 nfMfL58iud/MVHsPw2B/DM8g85SEMAHJ4bTSfxfO+Uj8/A66cI9PzwltwTSF29DSmP
-	 Pyfrt+9UPznCgEd6IfQK7iUem2Rxapt2PnGbBuGw=
+	b=Byw4wgOt8S/o3rjQtzqD15X+5ebrsMNbMGmC6KGT6UJX2qlexkzW05Bx0a3Yl10st
+	 Hq8yhzXdPJgwY/8kdOjmNa2zlU5WbqRKpO6vh0n/pMN7KJ2GeDametzpwPbXRgGW3N
+	 10Ne8y9te36vq3/Lk6sB6ipnjNuhajozMKPSi6a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuan Do <tuan@calif.io>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 5.10 441/491] netfilter: nft_ct: fix use-after-free in timeout object destroy
+	Tyllis Xu <LivelyCarpet87@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 52/55] net: stmmac: fix integer underflow in chain mode
 Date: Mon, 13 Apr 2026 18:01:26 +0200
-Message-ID: <20260413155835.538236570@linuxfoundation.org>
+Message-ID: <20260413155726.774211191@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +65,115 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236512-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237533-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[calif.io:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0C35F3F0D15
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 394413EF0D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuan Do <tuan@calif.io>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit f8dca15a1b190787bbd03285304b569631160eda upstream.
+commit 51f4e090b9f87b40c21b6daadb5c06e6c0a07b67 upstream.
 
-nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
-immediately after nf_ct_untimeout(), without waiting for an RCU grace
-period. Concurrent packet processing on other CPUs may still hold
-RCU-protected references to the timeout object obtained via
-rcu_dereference() in nf_ct_timeout_data().
+The jumbo_frm() chain-mode implementation unconditionally computes
 
-Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
-freeing until after an RCU grace period, matching the approach already
-used in nfnetlink_cttimeout.c.
+    len = nopaged_len - bmax;
 
-KASAN report:
- BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
- Read of size 4 at addr ffff8881035fe19c by task exploit/80
+where nopaged_len = skb_headlen(skb) (linear bytes only) and bmax is
+BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
+decides to invoke jumbo_frm() based on skb->len (total length including
+page fragments):
 
- Call Trace:
-  nf_conntrack_tcp_packet+0x1381/0x29d0
-  nf_conntrack_in+0x612/0x8b0
-  nf_hook_slow+0x70/0x100
-  __ip_local_out+0x1b2/0x210
-  tcp_sendmsg_locked+0x722/0x1580
-  __sys_sendto+0x2d8/0x320
+    is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
 
- Allocated by task 75:
-  nft_ct_timeout_obj_init+0xf6/0x290
-  nft_obj_init+0x107/0x1b0
-  nf_tables_newobj+0x680/0x9c0
-  nfnetlink_rcv_batch+0xc29/0xe00
+When a packet has a small linear portion (nopaged_len <= bmax) but a
+large total length due to page fragments (skb->len > bmax), the
+subtraction wraps as an unsigned integer, producing a huge len value
+(~0xFFFFxxxx).  This causes the while (len != 0) loop to execute
+hundreds of thousands of iterations, passing skb->data + bmax * i
+pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
+SoCs (the typical deployment for stmmac), this maps arbitrary kernel
+memory to the DMA engine, constituting a kernel memory disclosure and
+potential memory corruption from hardware.
 
- Freed by task 26:
-  nft_obj_destroy+0x3f/0xa0
-  nf_tables_trans_destroy_work+0x51c/0x5c0
-  process_one_work+0x2c4/0x5a0
+Fix this by introducing a buf_len local variable clamped to
+min(nopaged_len, bmax).  Computing len = nopaged_len - buf_len is then
+always safe: it is zero when the linear portion fits within a single
+descriptor, causing the while (len != 0) loop to be skipped naturally,
+and the fragment loop in stmmac_xmit() handles page fragments afterward.
 
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
+Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tuan Do <tuan@calif.io>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260401044708.1386919-1-LivelyCarpet87@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_conntrack_timeout.h |    1 +
- net/netfilter/nft_ct.c                       |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/include/net/netfilter/nf_conntrack_timeout.h
-+++ b/include/net/netfilter/nf_conntrack_timeout.h
-@@ -14,6 +14,7 @@
- struct nf_ct_timeout {
- 	__u16			l3num;
- 	const struct nf_conntrack_l4proto *l4proto;
-+	struct rcu_head		rcu;
- 	char			data[];
- };
+--- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+@@ -20,7 +20,7 @@ static int jumbo_frm(struct stmmac_tx_qu
+ 	unsigned int nopaged_len = skb_headlen(skb);
+ 	struct stmmac_priv *priv = tx_q->priv_data;
+ 	unsigned int entry = tx_q->cur_tx;
+-	unsigned int bmax, des2;
++	unsigned int bmax, buf_len, des2;
+ 	unsigned int i = 1, len;
+ 	struct dma_desc *desc;
  
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -935,7 +935,7 @@ static void nft_ct_timeout_obj_destroy(c
- 	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
--	kfree(priv->timeout);
-+	kfree_rcu(priv->timeout, rcu);
- }
+@@ -31,17 +31,18 @@ static int jumbo_frm(struct stmmac_tx_qu
+ 	else
+ 		bmax = BUF_SIZE_2KiB;
  
- static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
+-	len = nopaged_len - bmax;
++	buf_len = min_t(unsigned int, nopaged_len, bmax);
++	len = nopaged_len - buf_len;
+ 
+ 	des2 = dma_map_single(priv->device, skb->data,
+-			      bmax, DMA_TO_DEVICE);
++			      buf_len, DMA_TO_DEVICE);
+ 	desc->des2 = cpu_to_le32(des2);
+ 	if (dma_mapping_error(priv->device, des2))
+ 		return -1;
+ 	tx_q->tx_skbuff_dma[entry].buf = des2;
+-	tx_q->tx_skbuff_dma[entry].len = bmax;
++	tx_q->tx_skbuff_dma[entry].len = buf_len;
+ 	/* do not close the descriptor and do not set own bit */
+-	stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum, STMMAC_CHAIN_MODE,
++	stmmac_prepare_tx_desc(priv, desc, 1, buf_len, csum, STMMAC_CHAIN_MODE,
+ 			0, false, skb->len);
+ 
+ 	while (len != 0) {
 
 
 
