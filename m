@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-236456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDK1CnMc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:19 +0200
+	id lEQNKe8i3WkoaQkAu9opvQ
+	(envelope-from <stable+bounces-237518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E933EF7AB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CB73F0CE2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 876933140119
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AD37C3065905
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655802EBB8C;
-	Mon, 13 Apr 2026 16:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E21734C124;
+	Mon, 13 Apr 2026 17:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AL9V4DrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Az2WcVRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A641DDC37;
-	Mon, 13 Apr 2026 16:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C060E339870;
+	Mon, 13 Apr 2026 17:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096952; cv=none; b=i0hlrpiN9tGIAJyuJJ5w6u6MVLlKSfJQshGv2LwVs2JS7vyBI+AH1KgxnwveY3jU6sM593e/VvmBmocaORUD7LlEqeC8YPXiDVmguIhz6Q9ZhknQ3O/yJWuZjo93ABdF7VAcZMLRdFCfseJ+Q8QChePvqBA/TYuiJ9UAUlKJw2c=
+	t=1776099663; cv=none; b=HapSC8umT0YRpaiRgW/ON99ZSraw6AArwBkusdt/aZJApzeHeXt2sUCKedbBUFLISCH0NZHxP3bOt4GI3d9xrs/Mia00FH4NfZ+Vxj5AjPBktzF/xPqnTcxeyYd7Pgs0bYifscsi1Dq4kYrh5M9dAbGdY++KDzE5Nhmx3jYxwG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096952; c=relaxed/simple;
-	bh=tLn0TIz1Hqppa0qu+IwvI86laZtacGczwQPWr+KVSZQ=;
+	s=arc-20240116; t=1776099663; c=relaxed/simple;
+	bh=Yy04eHer1TbiydPM2qrOOrBR5lusNukqvSi88DTjSHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtbyt2EQ6rE76LiCWih6/Rq00cwHy5UFyplQG8qtyW77wjiS8g6qazeOfNZw1/k5/jXP+sL5+7tSkskXEHNm9oVkY8lg2sg/7tUtlLe/ytQd56puKf8wLVqM9M+gLSBObH4mt5OAPKJ5tZ+EVXw1bXbGB8cjjB57mL5vGW0Rbv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AL9V4DrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19CAC2BCAF;
-	Mon, 13 Apr 2026 16:15:51 +0000 (UTC)
+	 MIME-Version; b=LNNBqbXs29E7AQdwN6gfZr2JxreJq21QX0bQ9hXxehu6fByh+F34JzLGh5KbWD63gnzWPvik4PNS9jUyGkp7YjOPoP+bOwbZHVqoB6FPmipmqru3L1yp2UTHEPYLHLsTLnj8iWUltITCw20JnI60Idx97AiaBM9DAPm45Jwieng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Az2WcVRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C76C2BCB0;
+	Mon, 13 Apr 2026 17:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096952;
-	bh=tLn0TIz1Hqppa0qu+IwvI86laZtacGczwQPWr+KVSZQ=;
+	s=korg; t=1776099663;
+	bh=Yy04eHer1TbiydPM2qrOOrBR5lusNukqvSi88DTjSHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AL9V4DrFoctFMnsbYR7MH12iAuGf4ZYEeLm9s8QMhCnd14ShpEHvPOFJ+HfXgxDUE
-	 PS2MDE81kENWeELC2XVU3gcobBNiCER1cERdtOodqbeBrDOh4VdjbH5UYKRXe1yRrw
-	 Bi8Hm11fWU6zwygdEUWXun8LW80MhK1CTZjTNqaE=
+	b=Az2WcVRhC8W1g2y8Qj1zt6fna7zc7DSglqcE0OpgAC7SQp89tvHZZTqzMLuHYynue
+	 FHZ+zYxEDZ3MH0HsAMm8Y+te3MEg9lKtzoV9HaMI7VQZN9vdML37GRBHdwrXxY4dey
+	 ZGhVBSMFvxzDBhK3p4Tvv3bC+pv3RHkRhUQnSWwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 37/50] pmdomain: imx8mp-blk-ctrl: Keep the NOC_HDCP clock enabled
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 419/491] mm/hugetlb: make detecting shared pte more reliable
 Date: Mon, 13 Apr 2026 18:01:04 +0200
-Message-ID: <20260413155725.897871260@linuxfoundation.org>
+Message-ID: <20260413155834.712660018@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +68,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236456-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237518-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,oracle.com,bytedance.com,linux-foundation.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.986];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: 93E933EF7AB
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,linux-foundation.org:email,bytedance.com:email]
+X-Rspamd-Queue-Id: 58CB73F0CE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-commit e91d5f94acf68618ea3ad9c92ac28614e791ae7d upstream.
+If the pagetables are shared, we shouldn't copy or take references.  Since
+src could have unshared and dst shares with another vma, huge_pte_none()
+is thus used to determine whether dst_pte is shared.  But this check isn't
+reliable.  A shared pte could have pte none in pagetable in fact.  The
+page count of ptep page should be checked here in order to reliably
+determine whether pte is shared.
 
-Keep the NOC_HDCP clock always enabled to fix the potential hang
-caused by the NoC ADB400 port power down handshake.
-
-Fixes: 77b0ddb42add ("soc: imx: add i.MX8MP HDMI blk ctrl HDCP/HRV_MWR")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[lukas.bulwahn@gmail.com: remove unused local variable dst_entry in copy_hugetlb_page_range()]
+  Link: https://lkml.kernel.org/r/20220822082525.26071-1-lukas.bulwahn@gmail.com
+Link: https://lkml.kernel.org/r/20220816130553.31406-7-linmiaohe@huawei.com
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 3aa4ed8040e1535d95c03cef8b52cf11bf0d8546)
+[ David: We don't have 4eae4efa2c29 ("hugetlb: do early cow when page
+  pinned on src mm", so there are some contextual conflicts. ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ mm/hugetlb.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -352,9 +352,6 @@ static void imx8mp_hdmi_blk_ctrl_power_o
- 		regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(12));
- 		regmap_clear_bits(bc->regmap, HDMI_TX_CONTROL0, BIT(3));
- 		break;
--	case IMX8MP_HDMIBLK_PD_HDCP:
--		regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(11));
--		break;
- 	case IMX8MP_HDMIBLK_PD_HRV:
- 		regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(3) | BIT(4) | BIT(5));
- 		regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(15));
-@@ -408,9 +405,6 @@ static void imx8mp_hdmi_blk_ctrl_power_o
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(7));
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(22) | BIT(24));
- 		break;
--	case IMX8MP_HDMIBLK_PD_HDCP:
--		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(11));
--		break;
- 	case IMX8MP_HDMIBLK_PD_HRV:
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(15));
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(3) | BIT(4) | BIT(5));
-@@ -439,7 +433,7 @@ static int imx8mp_hdmi_power_notifier(st
- 	regmap_write(bc->regmap, HDMI_RTX_CLK_CTL0, 0x0);
- 	regmap_write(bc->regmap, HDMI_RTX_CLK_CTL1, 0x0);
- 	regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL0,
--			BIT(0) | BIT(1) | BIT(10));
-+			BIT(0) | BIT(1) | BIT(10) | BIT(11));
- 	regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(0));
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 99a71943c1f69..a2cab8f2190f8 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3827,7 +3827,7 @@ static bool is_hugetlb_entry_hwpoisoned(pte_t pte)
+ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 			    struct vm_area_struct *vma)
+ {
+-	pte_t *src_pte, *dst_pte, entry, dst_entry;
++	pte_t *src_pte, *dst_pte, entry;
+ 	struct page *ptepage;
+ 	unsigned long addr;
+ 	int cow;
+@@ -3867,27 +3867,22 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
  
- 	/*
+ 		/*
+ 		 * If the pagetables are shared don't copy or take references.
+-		 * dst_pte == src_pte is the common case of src/dest sharing.
+ 		 *
++		 * dst_pte == src_pte is the common case of src/dest sharing.
+ 		 * However, src could have 'unshared' and dst shares with
+-		 * another vma.  If dst_pte !none, this implies sharing.
+-		 * Check here before taking page table lock, and once again
+-		 * after taking the lock below.
++		 * another vma. So page_count of ptep page is checked instead
++		 * to reliably determine whether pte is shared.
+ 		 */
+-		dst_entry = huge_ptep_get(dst_pte);
+-		if ((dst_pte == src_pte) || !huge_pte_none(dst_entry))
++		if (page_count(virt_to_page(dst_pte)) > 1)
+ 			continue;
+ 
+ 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
+ 		src_ptl = huge_pte_lockptr(h, src, src_pte);
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 		entry = huge_ptep_get(src_pte);
+-		dst_entry = huge_ptep_get(dst_pte);
+-		if (huge_pte_none(entry) || !huge_pte_none(dst_entry)) {
++		if (huge_pte_none(entry)) {
+ 			/*
+-			 * Skip if src entry none.  Also, skip in the
+-			 * unlikely case dst entry !none as this implies
+-			 * sharing with another vma.
++			 * Skip if src entry none.
+ 			 */
+ 			;
+ 		} else if (unlikely(is_hugetlb_entry_migration(entry) ||
+-- 
+2.53.0
+
 
 
 
