@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gH8fO/0d3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:53 +0200
+	id IPmXK9gc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C121B3EFC55
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D29713EF889
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A0E763023853
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D33873032FDA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F41B314B66;
-	Mon, 13 Apr 2026 16:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7501F3093B2;
+	Mon, 13 Apr 2026 16:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tqm5rScO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgCi33pt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3DA3128CC;
-	Mon, 13 Apr 2026 16:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CFA24DCF6;
+	Mon, 13 Apr 2026 16:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098671; cv=none; b=Wsk0Dfv1Y6TImU7iM4FoQG4vA0vvdyunB5ufRkxNJsr9Dgqa6XuZ4HNjpukvrbZzwgKEfdbIt0PDcdnklh/1GIlRnPWZ/NZNvtrj3lXKmaR8bnWIMPD2pfz2Z1fQMg2KkH071b3DkPPEB4lZ77Hw2mTZuPI3C8MX5DAgVrQCN5s=
+	t=1776097538; cv=none; b=kN4i9w+GbMr6n6F5nI/+2Ckhv6Up6YR3t6fel98uo5Tm9FTeN2sXi0OAOswv1lWT3jJlrDw7zdSbTf2A4eL1pt9tbllemCowQJOGuNpx5ypTZ6fkWwGrZpbscmfpPuAMjcIXFuHJGBMqgYJVyoZVdXmCCx2HjqV+z4PfxfZ7GG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098671; c=relaxed/simple;
-	bh=KGfOcqkMUGURVt1K5F/2B9k98naZQtaYecQuiqgjKgs=;
+	s=arc-20240116; t=1776097538; c=relaxed/simple;
+	bh=QpR0Q3kibLprz9XlSjVkh4aLV0W1IJYRxhAnTKKkjpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOgQoIPrzwptk5Xc96MJA6AZMHzb0hyIZMqA5wRKWM/2sf5ev3r9xbdhL8l44DzVh/wR0Ae7mrNAogEsm0tgeoS6yIQ6508aCHBOV1muzfeAw+WKGwxIzFo7fVTj70NxI2yrK8Aq6dKxMIuqhXQs5lhfqsOIO65SvF0MRojMcbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tqm5rScO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D77C2BCAF;
-	Mon, 13 Apr 2026 16:44:30 +0000 (UTC)
+	 MIME-Version; b=XxlK8E43O2dVJPgULEv0boF3XNuo7ctgFGA3Vh6y02GWLnXhbVQ5Fm59sY7gbqRUOHFXI0aimLVx7UHc3hgxjF1dN+5yZ1C5bYl2QAglrUhCmCpKyI+v+74SspKA/rhuQaFE9cL3pWhigRx8QF2dBcoDRNue7ogC1IgCjKXfvds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgCi33pt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C035BC2BCB3;
+	Mon, 13 Apr 2026 16:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098671;
-	bh=KGfOcqkMUGURVt1K5F/2B9k98naZQtaYecQuiqgjKgs=;
+	s=korg; t=1776097538;
+	bh=QpR0Q3kibLprz9XlSjVkh4aLV0W1IJYRxhAnTKKkjpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tqm5rScOoKZTWMxfGmHL/JlsWud9ivq6IYU2INKZFAvp2LTWnuyXivzQJXcWKNJue
-	 p9UqyrqpxntNHil029OEhnP1bsf3lxquqMdXZFQFwx+uGdYmekQ/WCT47/w+pV+sTv
-	 /JYTJzpe5urRdY3GyLgc3uFNGCs5I6328gTaWad8=
+	b=wgCi33pthZQtZJc6Aq2CNimLGf6L1v3YrBM3Zlqq4WXCmQxHLUbygEumgJ5o3ooEZ
+	 2/hWhbkfH/Q72ZMn36pA3lsZAywNhcvXGAeo+H2c6F1CDMqjneffjLOkhCBV+0QsoC
+	 XdE1qW+PG0ZPaOP2s//adPuHAmTE44NgJ/I7W/dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/491] ipv6: fix NULL pointer deref in ip6_rt_get_dev_rcu()
+Subject: [PATCH 5.15 158/570] time/jiffies: Mark jiffies_64_to_clock_t() notrace
 Date: Mon, 13 Apr 2026 17:54:49 +0200
-Message-ID: <20260413155820.702649202@linuxfoundation.org>
+Message-ID: <20260413155836.370935549@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237132-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236684-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,62 +89,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C121B3EFC55
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D29713EF889
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 2ffb4f5c2ccb2fa1c049dd11899aee7967deef5a ]
+[ Upstream commit 755a648e78f12574482d4698d877375793867fa1 ]
 
-l3mdev_master_dev_rcu() can return NULL when the slave device is being
-un-slaved from a VRF. All other callers deal with this, but we lost
-the fallback to loopback in ip6_rt_pcpu_alloc() -> ip6_rt_get_dev_rcu()
-with commit 4832c30d5458 ("net: ipv6: put host and anycast routes on
-device with address").
+The trace_clock_jiffies() function that handles the "uptime" clock for
+tracing calls jiffies_64_to_clock_t(). This causes the function tracer to
+constantly recurse when the tracing clock is set to "uptime". Mark it
+notrace to prevent unnecessary recursion when using the "uptime" clock.
 
-  KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
-  RIP: 0010:ip6_rt_pcpu_alloc (net/ipv6/route.c:1418)
-  Call Trace:
-   ip6_pol_route (net/ipv6/route.c:2318)
-   fib6_rule_lookup (net/ipv6/fib6_rules.c:115)
-   ip6_route_output_flags (net/ipv6/route.c:2607)
-   vrf_process_v6_outbound (drivers/net/vrf.c:437)
-
-I was tempted to rework the un-slaving code to clear the flag first
-and insert synchronize_rcu() before we remove the upper. But looks like
-the explicit fallback to loopback_dev is an established pattern.
-And I guess avoiding the synchronize_rcu() is nice, too.
-
-Fixes: 4832c30d5458 ("net: ipv6: put host and anycast routes on device with address")
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260301194548.927324-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 58d4e21e50ff3 ("tracing: Fix wraparound problems in "uptime" trace clock")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260306212403.72270bb2@robin
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/time/time.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index b47f89600c2f8..ac24f8b624e34 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1013,7 +1013,8 @@ static struct net_device *ip6_rt_get_dev_rcu(const struct fib6_result *res)
- 		 */
- 		if (netif_is_l3_slave(dev) &&
- 		    !rt6_need_strict(&res->f6i->fib6_dst.addr))
--			dev = l3mdev_master_dev_rcu(dev);
-+			dev = l3mdev_master_dev_rcu(dev) ? :
-+			      dev_net(dev)->loopback_dev;
- 		else if (!netif_is_l3_master(dev))
- 			dev = dev_net(dev)->loopback_dev;
- 		/* last case is netif_is_l3_master(dev) is true in which
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index 50390158e9d97..df582f24f0d7b 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -702,7 +702,7 @@ EXPORT_SYMBOL(clock_t_to_jiffies);
+  *
+  * Return: jiffies_64 value converted to 64-bit "clock_t" (CLOCKS_PER_SEC)
+  */
+-u64 jiffies_64_to_clock_t(u64 x)
++notrace u64 jiffies_64_to_clock_t(u64 x)
+ {
+ #if (TICK_NSEC % (NSEC_PER_SEC / USER_HZ)) == 0
+ # if HZ < USER_HZ
 -- 
 2.51.0
 
