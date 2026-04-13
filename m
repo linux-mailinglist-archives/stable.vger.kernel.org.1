@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-237450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPTrHbAh3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:40 +0200
+	id 6Pl2JE8c3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-237018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F6F3F0911
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 300183EF768
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4F2A30428DB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8A4273004D04
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DB9318ED2;
-	Mon, 13 Apr 2026 16:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DCD30BBAE;
+	Mon, 13 Apr 2026 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnmppFFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHlRS0od"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53663290A1;
-	Mon, 13 Apr 2026 16:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4C624E4A1;
+	Mon, 13 Apr 2026 16:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099488; cv=none; b=g0pvG83qu39d7Kt4gp8Z1CAQp7xfHAPowxjschojZR4GacIsJendZ7YWNJ/KwYoSg2zzcn+XzvAIf9rguUp3PeucXErzX4X3AqPpTjf9enGoWghnq1/rlkMAS1Q2lNV0f0/CipOdOzA0nVTAdmHCpiBAnIiB5DIiwwTaep8cltI=
+	t=1776098377; cv=none; b=danZfkEuc/O6/jWaCKCKiZ59toUEhsnBbcuT3zwc/CAic2zbcyd3fWuK/5GvmUEdcH1grrWOqf82qtXdfPtNv8VqbysZ0EloyFHNqxDPoG3UayxxA7qJF6wyBoBIU+/defHgnENAAdY3aKamZot3JFp+umLuq+3CjUMeXG9ZYMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099488; c=relaxed/simple;
-	bh=gu8evSFoR1VoRKFUOW4UEbwj4ZvGSUCsKk6SGC73HzE=;
+	s=arc-20240116; t=1776098377; c=relaxed/simple;
+	bh=TdXGnA4kEGiUdUZAwqUxQGViaYQhhknGe6LBc2o8u3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LbXhl2xkuCvfGFCDHSBWTv40guz8surgaClsT/A8gCRr8JG24ciWmYRz8MxB5asDC4SAAUpbfsd+AjfDaoipkii1FbvLqSXYJ/ml1HPAPwy2TePvQQRsh1qzp6PQrlecxdcarN+ccQCtrDSwI5aLafLLofzgJVa+gB/TRKx2tn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnmppFFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C28DC2BCAF;
-	Mon, 13 Apr 2026 16:58:08 +0000 (UTC)
+	 MIME-Version; b=peYvKPwD/7jXlT5g5dwAKj6PDEz8qUVypKSRLhIOlg42uLAyvfHUAUmrRethdoGN3Ltl0yJ+913SNZ9L6Qs9OTfhb7NnmayPH5x8F8LrB7Kz3HWI7axp/RPAk5OMZoxrZIYP93mGuzAwibh1/mXj/Sqs7EJqOi/OPasC5qbzUXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHlRS0od; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66642C2BCAF;
+	Mon, 13 Apr 2026 16:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099488;
-	bh=gu8evSFoR1VoRKFUOW4UEbwj4ZvGSUCsKk6SGC73HzE=;
+	s=korg; t=1776098377;
+	bh=TdXGnA4kEGiUdUZAwqUxQGViaYQhhknGe6LBc2o8u3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnmppFFIuyz0wsVr5row8St+80dRz42zCFWnL44qLFBnsZbMB7HxW7eEH19318Efy
-	 CpirLRABqdWa43mmd+YcAtRpHI88WYoEkB+noS+kZKkRno5US4RbSFu+62ed8ZAfZr
-	 PxHy/13L1uoW76naJ7vFs/gsmIDZk0hyOyTv9a9M=
+	b=CHlRS0odd57koPsjRXID9WkGcWw4O4AAxXxCCIH7zIr1Lasr0iMhirRZ/1/oBBiyS
+	 dhYePLSlBZ/5gfvqsyh9KEBSMDM4IYGoMEj4C+r/4LeCVKVaaijkkiRpRTBFrQebat
+	 mbyj3tBE4ZzUPMBtd3AkQXU2+jzknbw4R3jAccBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 360/491] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
+Subject: [PATCH 5.15 474/570] phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
 Date: Mon, 13 Apr 2026 18:00:05 +0200
-Message-ID: <20260413155832.513860406@linuxfoundation.org>
+Message-ID: <20260413155848.219066068@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +66,164 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237450-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237018-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.985];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 30F6F3F0911
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 300183EF768
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
+commit 54c4c58713aaff76c2422ff5750e557ab3b100d7 upstream.
 
-In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash.
+It has been observed on the Renesas RZ/G3S SoC that unbinding and binding
+the PHY driver leads to role autodetection failures. This issue occurs when
+PHY 3 is the first initialized PHY. PHY 3 does not have an interrupt
+associated with the USB2_INT_ENABLE register (as
+rcar_gen3_int_enable[3] = 0). As a result, rcar_gen3_init_otg() is called
+to initialize OTG without enabling PHY interrupts.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+To resolve this, add rcar_gen3_is_any_otg_rphy_initialized() and call it in
+role_store(), role_show(), and rcar_gen3_init_otg(). At the same time,
+rcar_gen3_init_otg() is only called when initialization for a PHY with
+interrupt bits is in progress. As a result, the
+struct rcar_gen3_phy::otg_initialized is no longer needed.
 
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+[claudiu.beznea: declare the i iterrator from
+ rcar_gen3_is_any_otg_rphy_initialized() outside of for loop]
+
+Fixes: 549b6b55b005 ("phy: renesas: rcar-gen3-usb2: enable/disable independent irqs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 32 +++++++++++-------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index a4d060fb1babd..18b48a3984291 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2198,7 +2198,11 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1;
- 	u16 i = 1000;
--	u16 serpar_num = msg[0].buf[0];
-+	u16 serpar_num;
-+
-+	if (msg[0].len < 3)
-+		return -EOPNOTSUPP;
-+	serpar_num = msg[0].buf[0];
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 670514d44fe3f..8c03b683ba1c9 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -103,7 +103,6 @@ struct rcar_gen3_phy {
+ 	struct rcar_gen3_chan *ch;
+ 	u32 int_enable_bits;
+ 	bool initialized;
+-	bool otg_initialized;
+ 	bool powered;
+ };
  
- 	while (n_overflow == 1 && i) {
- 		n_overflow = (dib7000p_read_word(state, 1984) >> 1) & 0x1;
-@@ -2217,9 +2221,13 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1, n_empty = 1;
- 	u16 i = 1000;
--	u16 serpar_num = msg[0].buf[0];
-+	u16 serpar_num;
- 	u16 read_word;
+@@ -311,16 +310,16 @@ static bool rcar_gen3_is_any_rphy_initialized(struct rcar_gen3_chan *ch)
+ 	return false;
+ }
  
-+	if (msg[0].len < 1 || msg[1].len < 2)
-+		return -EOPNOTSUPP;
-+	serpar_num = msg[0].buf[0];
+-static bool rcar_gen3_needs_init_otg(struct rcar_gen3_chan *ch)
++static bool rcar_gen3_is_any_otg_rphy_initialized(struct rcar_gen3_chan *ch)
+ {
+-	int i;
++	enum rcar_gen3_phy_index i;
+ 
+-	for (i = 0; i < NUM_OF_PHYS; i++) {
+-		if (ch->rphys[i].otg_initialized)
+-			return false;
++	for (i = PHY_INDEX_BOTH_HC; i <= PHY_INDEX_EHCI; i++) {
++		if (ch->rphys[i].initialized)
++			return true;
+ 	}
+ 
+-	return true;
++	return false;
+ }
+ 
+ static bool rcar_gen3_are_all_rphys_power_off(struct rcar_gen3_chan *ch)
+@@ -342,7 +341,7 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
+ 	bool is_b_device;
+ 	enum phy_mode cur_mode, new_mode;
+ 
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
+ 
+ 	if (sysfs_streq(buf, "host"))
+@@ -380,7 +379,7 @@ static ssize_t role_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
+ 
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
+ 
+ 	return sprintf(buf, "%s\n", rcar_gen3_is_host(ch) ? "host" :
+@@ -393,6 +392,9 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
+ 	void __iomem *usb2_base = ch->base;
+ 	u32 val;
+ 
++	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
++		return;
 +
- 	while (n_overflow == 1 && i) {
- 		n_overflow = (dib7000p_read_word(state, 1984) >> 1) & 0x1;
- 		i--;
+ 	/* Should not use functions of read-modify-write a register */
+ 	val = readl(usb2_base + USB2_LINECTRL1);
+ 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
+@@ -459,12 +461,9 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
+ 		writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
+ 	}
+ 
+-	/* Initialize otg part */
+-	if (channel->is_otg_channel) {
+-		if (rcar_gen3_needs_init_otg(channel))
+-			rcar_gen3_init_otg(channel);
+-		rphy->otg_initialized = true;
+-	}
++	/* Initialize otg part (only if we initialize a PHY with IRQs). */
++	if (rphy->int_enable_bits)
++		rcar_gen3_init_otg(channel);
+ 
+ 	rphy->initialized = true;
+ 
+@@ -480,9 +479,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
+ 
+ 	rphy->initialized = false;
+ 
+-	if (channel->is_otg_channel)
+-		rphy->otg_initialized = false;
+-
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+ 	val &= ~rphy->int_enable_bits;
+ 	if (!rcar_gen3_is_any_rphy_initialized(channel))
 -- 
 2.53.0
 
