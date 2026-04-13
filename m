@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-237470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6P2HKO4h3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:42 +0200
+	id GDNdKm4b3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3507C3F09CB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078363EF589
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C1EE30201A2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 981F2304AAF1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4653D330B22;
-	Mon, 13 Apr 2026 16:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817F63016EE;
+	Mon, 13 Apr 2026 16:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/sXQOy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbfxoZV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090723264D7;
-	Mon, 13 Apr 2026 16:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457232FDC27;
+	Mon, 13 Apr 2026 16:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099538; cv=none; b=BykYIi56yeVZDwkD0pNL6a1TYjHZpu0YCPm089HGp6SPi3/S0qA9M57ycDQBb48sJTy/ddEG1kRjofj5e4KRtwK50HETNWV4UdsTJjIX3CpJZe994K5Fqzhjx3hycpB6bKktJCol7PR2w0on0oLHkZXYrNXT1hCGTda7SgCqj/0=
+	t=1776096648; cv=none; b=EgwVuH4NI+9lcvYZa/EYCm3Rhem4mRaY1AcHFuakVBY+evq7gFogM6fiRq/MMrhIr2N+codDp9iTTahHKHO7pc6WGAuCNrDEUhpR09hkffTSg/6+Q+hkRutdH/htAsteCzznmRYf7PXi4ncPYNA9juDQXVASTdXFFG1jDYseP4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099538; c=relaxed/simple;
-	bh=Zge050bSmU4geplVTuBwvmTYtjcGGZHTiKD9MiMdUGg=;
+	s=arc-20240116; t=1776096648; c=relaxed/simple;
+	bh=Z92jHjVXC9CiqcWagkLZw0B2DhtLZ31Wyr89T9BRxF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRWRq7JMhZSUrjZO0VHX13k/9Q/2MBrCbbn/u+8WCBGyDB9Jr9fRaRfwMGBksW+CQAzbReUop/hACkjlyrHEUbRH/MOy+qNlNYSplYZiI4HiEo/v6SD/ADv3utkouvk0rgTl6OqitQkmYZfVqbwQZiwAnaoZTFBbAku04gAXN6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/sXQOy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D82BC2BCAF;
-	Mon, 13 Apr 2026 16:58:57 +0000 (UTC)
+	 MIME-Version; b=hl8Y+sNqtzYWrhKX6gjqygPHcoGBpllBEgjuZ7g0/ITkb/r/lyFkX8ndP788i0hUDthdj8Bd1VFwa7R4nxudnFW7qvXECELqyLWgLR3IDkxeTCnul8xYRwzmEWMTvBCQV7ie/aZ5xzwdz5JR8istpevgjtk0JT6JCysr5aXW4VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbfxoZV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9C7C2BCAF;
+	Mon, 13 Apr 2026 16:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099537;
-	bh=Zge050bSmU4geplVTuBwvmTYtjcGGZHTiKD9MiMdUGg=;
+	s=korg; t=1776096648;
+	bh=Z92jHjVXC9CiqcWagkLZw0B2DhtLZ31Wyr89T9BRxF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/sXQOy0B2CcA5NKF/CfoJjCx5rs7VQm2jf6XAyCIpl7qEnG54xtJ5xN5oF27hj6H
-	 2/h/AaU1LWgrRFXzFaUOYQdK+96NS3bFT5NHWwoKU8vHr6/y6EVwJMDzfeUADXrIJt
-	 YrVTzeHrRjgHpfBQJfdbRAqTcXGvHWKh1G+PchEY=
+	b=hbfxoZV8vUrBI7rCEGWDbkl70pRujABLwAZf/SLn0w63OV4z/XkMQZq17ptOrdNWJ
+	 PSQ3NIs63/ndSc+EkqsrtMkKnCB2KuM4wbsYo3soDN8dvko7IcDj7qrchh7F0d+r1h
+	 kjvv8oE5I8Sey+hDixYLcRVhxYiidiODyVh5H1To=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 351/491] net/sched: cls_fw: fix NULL pointer dereference on shared blocks
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.12 01/70] lib/crypto: chacha: Zeroize permuted_state before it leaves scope
 Date: Mon, 13 Apr 2026 17:59:56 +0200
-Message-ID: <20260413155832.180799668@linuxfoundation.org>
+Message-ID: <20260413155728.238602820@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,98 +67,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237470-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-236338-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,mojatatu.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3507C3F09CB
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 078363EF589
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit faeea8bbf6e958bf3c00cb08263109661975987c ]
+commit e5046823f8fa3677341b541a25af2fcb99a5b1e0 upstream.
 
-The old-method path in fw_classify() calls tcf_block_q() and
-dereferences q->handle.  Shared blocks leave block->q NULL, causing a
-NULL deref when an empty cls_fw filter is attached to a shared block
-and a packet with a nonzero major skb mark is classified.
+Since the ChaCha permutation is invertible, the local variable
+'permuted_state' is sufficient to compute the original 'state', and thus
+the key, even after the permutation has been done.
 
-Reject the configuration in fw_change() when the old method (no
-TCA_OPTIONS) is used on a shared block, since fw_classify()'s
-old-method path needs block->q which is NULL for shared blocks.
+While the kernel is quite inconsistent about zeroizing secrets on the
+stack (and some prominent userspace crypto libraries don't bother at all
+since it's not guaranteed to work anyway), the kernel does try to do it
+as a best practice, especially in cases involving the RNG.
 
-The fixed null-ptr-deref calling stack:
- KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
- RIP: 0010:fw_classify (net/sched/cls_fw.c:81)
- Call Trace:
-  tcf_classify (./include/net/tc_wrapper.h:197 net/sched/cls_api.c:1764 net/sched/cls_api.c:1860)
-  tc_run (net/core/dev.c:4401)
-  __dev_queue_xmit (net/core/dev.c:4535 net/core/dev.c:4790)
+Thus, explicitly zeroize 'permuted_state' before it goes out of scope.
 
-Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260331050217.504278-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c08d0e647305 ("crypto: chacha20 - Add a generic ChaCha20 stream cipher implementation")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260326032920.39408-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_fw.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ lib/crypto/chacha.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index 08c41f1976c47..23cf4f7111174 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -246,8 +246,18 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
- 	struct nlattr *tb[TCA_FW_MAX + 1];
- 	int err;
+--- a/lib/crypto/chacha.c
++++ b/lib/crypto/chacha.c
+@@ -86,6 +86,8 @@ void chacha_block_generic(u32 *state, u8
+ 		put_unaligned_le32(x[i] + state[i], &stream[i * sizeof(u32)]);
  
--	if (!opt)
--		return handle ? -EINVAL : 0; /* Succeed if it is old method. */
-+	if (!opt) {
-+		if (handle)
-+			return -EINVAL;
+ 	state[12]++;
 +
-+		if (tcf_block_shared(tp->chain->block)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Must specify mark when attaching fw filter to block");
-+			return -EINVAL;
-+		}
-+
-+		return 0; /* Succeed if it is old method. */
-+	}
++	memzero_explicit(x, sizeof(x));
+ }
+ EXPORT_SYMBOL(chacha_block_generic);
  
- 	err = nla_parse_nested_deprecated(tb, TCA_FW_MAX, opt, fw_policy,
- 					  NULL);
--- 
-2.53.0
-
+@@ -110,5 +112,7 @@ void hchacha_block_generic(const u32 *st
+ 
+ 	memcpy(&stream[0], &x[0], 16);
+ 	memcpy(&stream[4], &x[12], 16);
++
++	memzero_explicit(x, sizeof(x));
+ }
+ EXPORT_SYMBOL(hchacha_block_generic);
 
 
 
