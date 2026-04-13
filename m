@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-236317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AzLN+gX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:56 +0200
+	id MFmAI7cY3Wn3ZwkAu9opvQ
+	(envelope-from <stable+bounces-236413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2BD3EEAC5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263623EED2D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDEB53197989
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5796F30372FA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E641A2DC32C;
-	Mon, 13 Apr 2026 16:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087812773DE;
+	Mon, 13 Apr 2026 16:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3aFNJG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yy+dmXeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F7B2C08AC;
-	Mon, 13 Apr 2026 16:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C012E274FE3;
+	Mon, 13 Apr 2026 16:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096596; cv=none; b=npQ+o7kfZRxN/TdZzHW+8dYWso8uFrVHb50/KHCWtTnUiVrY5zlboH6zoZZPQaXlTF4zMIioZeiYIvLLsPYqim7EfxmJ7T75tEgsWDFAa2iGeR1WRucev31OmM1q6m5IseTGKTvpRBbmxW8+SfJunQDS/CkIEDNTMF6alrtR1us=
+	t=1776096841; cv=none; b=on78DQhidKeIIbMU2wJkEdShIrqlvdngoRlxWu1OArcklYNTN2JwnQsOVaMynaMyak1O9Z9c4zGKnxQakmuk0WRddvNfLSttDGxO8O1N5wY9QxRRm2iq+h2LSXQ86GtoAFvdPaR047biMoVNtW/ZYLXToUjUAtB8HvWUwjtwklM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096596; c=relaxed/simple;
-	bh=NFzRyR9OlPdSfUyy+WPMFd2PllmoTAOuEo1RKS/UepM=;
+	s=arc-20240116; t=1776096841; c=relaxed/simple;
+	bh=pZiwilJF1rWmkxZKIHnUHyXoOGg9HHk2+NZ44eQc69k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3trm8lgdFgD67LrWYxqyKP9qc2MtiCGhMBlMuA3/23d4m/ajILXC7mAP1d+xO+DdpKZvTD2GgU1fBMeTm/mZQXAwayubsgT+eq6mm6cAcJeQsSem2nMTLTeGGQjEDjw5tRydTbq3qkJ04E06UIKFhsClSQhuF9wvRp8Xg70zlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3aFNJG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080AEC2BCAF;
-	Mon, 13 Apr 2026 16:09:56 +0000 (UTC)
+	 MIME-Version; b=NA57Pl+ZZveXTRJU/1Fzogk/xj0QLNjE2CNciR8IEupCuHAn8Dwqz5S6bp/0eYBHLvYPQqNgR/gu1b8KZeiBslWj7rsyRYSVk4uGyYM5XjDwVHMevdsUQUJ9SmJ1MkcmB2DXRbnfXDK1qOp5RKnE6PjxvRVrqNUCpmF59vcKNso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yy+dmXeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541F6C2BCB6;
+	Mon, 13 Apr 2026 16:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096596;
-	bh=NFzRyR9OlPdSfUyy+WPMFd2PllmoTAOuEo1RKS/UepM=;
+	s=korg; t=1776096841;
+	bh=pZiwilJF1rWmkxZKIHnUHyXoOGg9HHk2+NZ44eQc69k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A3aFNJG36IbAOTuWd4Omd1oWHchmJr1W6kDuwtiDXHjejUxMXLK5uTx1Lnvw6zJEX
-	 9DQtLFImIpgIF7nXEjLc82+RjTUFzBAGZOahrgiWPrfnvE8EoG+hru9vft3dh6s5sZ
-	 NNg4RILAH/H6oPQPkmsm+f7Q0iqBuEEHPXZZ9zC8=
+	b=yy+dmXeM1OWfwY03kEIHzt6kOsrE5Ti464zX/7Yq5Fc6CU/9lYgRh6gUQd2Y+dAsb
+	 1A/xbo9bQJwff+RPtlx3l4R7CxkUafd7dzPb0FLAzaRB6GfAw77EarK3W3N7piTaO7
+	 22MzWdZCMkq2GcfZRjvW0o6gLslE/TDufVX2yWhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Douya Le <ldy3087146292@gmail.com>,
-	Yuan Tan <tanyuan98@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 71/83] rxrpc: Only put the call ref if one was acquired
-Date: Mon, 13 Apr 2026 18:00:39 +0200
-Message-ID: <20260413155733.653271623@linuxfoundation.org>
+	Srujana Challa <schalla@marvell.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 13/50] virtio_net: clamp rss_max_key_size to NETDEV_RSS_KEY_LEN
+Date: Mon, 13 Apr 2026 18:00:40 +0200
+Message-ID: <20260413155725.004505927@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,88 +67,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236317-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236413-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,auristor.com:email]
-X-Rspamd-Queue-Id: 5B2BD3EEAC5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email]
+X-Rspamd-Queue-Id: 263623EED2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douya Le <ldy3087146292@gmail.com>
+From: Srujana Challa <schalla@marvell.com>
 
-commit 6331f1b24a3e85465f6454e003a3e6c22005a5c5 upstream.
+[ Upstream commit b4e5f04c58a29c499faa85d12952ca9a4faf1cb9 ]
 
-rxrpc_input_packet_on_conn() can process a to-client packet after the
-current client call on the channel has already been torn down.  In that
-case chan->call is NULL, rxrpc_try_get_call() returns NULL and there is
-no reference to drop.
+rss_max_key_size in the virtio spec is the maximum key size supported by
+the device, not a mandatory size the driver must use. Also the value 40
+is a spec minimum, not a spec maximum.
 
-The client-side implicit-end error path does not account for that and
-unconditionally calls rxrpc_put_call().  This turns a protocol error
-path into a kernel crash instead of rejecting the packet.
+The current code rejects RSS and can fail probe when the device reports a
+larger rss_max_key_size than the driver buffer limit. Instead, clamp the
+effective key length to min(device rss_max_key_size, NETDEV_RSS_KEY_LEN)
+and keep RSS enabled.
 
-Only drop the call reference if one was actually acquired.  Keep the
-existing protocol error handling unchanged.
+This keeps probe working on devices that advertise larger maximum key sizes
+while respecting the netdev RSS key buffer size limit.
 
-Fixes: 5e6ef4f1017c ("rxrpc: Make the I/O thread take over the call and local processor work")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Douya Le <ldy3087146292@gmail.com>
-Co-developed-by: Yuan Tan <tanyuan98@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-11-dhowells@redhat.com
+Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20260326142344.1171317-1-schalla@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ changed clamp target from NETDEV_RSS_KEY_LEN to VIRTIO_NET_RSS_MAX_KEY_SIZE ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/io_thread.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -419,7 +419,8 @@ static int rxrpc_input_packet_on_conn(st
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -4465,6 +4465,7 @@ static int virtnet_probe(struct virtio_d
+ 	struct virtnet_info *vi;
+ 	u16 max_queue_pairs;
+ 	int mtu = 0;
++	u16 key_sz;
  
- 	if (sp->hdr.callNumber > chan->call_id) {
- 		if (rxrpc_to_client(sp)) {
--			rxrpc_put_call(call, rxrpc_call_put_input);
-+			if (call)
-+				rxrpc_put_call(call, rxrpc_call_put_input);
- 			return rxrpc_protocol_error(skb,
- 						    rxrpc_eproto_unexpected_implicit_end);
- 		}
+ 	/* Find if host supports multiqueue/rss virtio_net device */
+ 	max_queue_pairs = 1;
+@@ -4589,14 +4590,13 @@ static int virtnet_probe(struct virtio_d
+ 	}
+ 
+ 	if (vi->has_rss || vi->has_rss_hash_report) {
+-		vi->rss_key_size =
+-			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+-		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
+-			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
+-				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
+-			err = -EINVAL;
+-			goto free;
+-		}
++		key_sz = virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
++
++		vi->rss_key_size = min_t(u16, key_sz, VIRTIO_NET_RSS_MAX_KEY_SIZE);
++		if (key_sz > vi->rss_key_size)
++			dev_warn(&vdev->dev,
++				 "rss_max_key_size=%u exceeds driver limit %u, clamping\n",
++				 key_sz, vi->rss_key_size);
+ 
+ 		vi->rss_hash_types_supported =
+ 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
 
 
 
