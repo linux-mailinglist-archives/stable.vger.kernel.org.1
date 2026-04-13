@@ -1,203 +1,173 @@
-Return-Path: <stable+bounces-235966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKMoCJ6v3GnfVAkAu9opvQ
-	(envelope-from <stable+bounces-235966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:55:58 +0200
+	id 0IS4C3+u3GnfVAkAu9opvQ
+	(envelope-from <stable+bounces-235962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:51:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E393E9661
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:55:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE803E95D8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 453803010B64
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:55:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B821A3020EE1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74813AE1BD;
-	Mon, 13 Apr 2026 08:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E2E3AD53F;
+	Mon, 13 Apr 2026 08:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="SGx3k+5B";
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="orBkzjje"
+	dkim=permerror (0-bit key) header.d=csmantle.top header.i=@csmantle.top header.b="59OnR8mh";
+	dkim=pass (3072-bit key) header.d=csmantle.top header.i=@csmantle.top header.b="ZimjZvxp"
 X-Original-To: stable@vger.kernel.org
-Received: from mailhub11-fb.kaspersky-labs.com (mailhub11-fb.kaspersky-labs.com [81.19.104.124])
+Received: from mail.srv.csmantle.top (mail.srv.csmantle.top [77.93.157.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB903AE6FA
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 08:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.104.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06203ACF18;
+	Mon, 13 Apr 2026 08:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.93.157.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776070488; cv=none; b=gdefLCbpImZ5U0MzRkQVzuouBoMyUm5OECzrcV9e4jsBypBn8MK66HPElJAt0o8wFVgz2vz+z8u+9cF/DeneWDx5xt4Oi1dLZQZ1BSn6tghhuAqqTCKvH7VuVT/59TDaDpi7Dv7bZ5JpnsZ3s6RxMPdtDJy7gXd48AUWu2bDcFo=
+	t=1776070185; cv=none; b=n4L2gJwvtfjeX0WPMNIGYmninAovSnEJYVzUGDS+VrWWyQu3bKfRvSBz0/sc75Srkhsyyuu0P8t5jTjkskxBwetslZSpppUt0icsYcZoQbajybOyG3UguslR+BI88sPv3z3tkaJrzAbOrfFKEF9DDURBFlLUQdDLnTXYDu39Adg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776070488; c=relaxed/simple;
-	bh=WzzuVQiM3vQq7Pu3MA9rG3D8KIzEfGSPLkZjzsLkU5o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C26N+Q401T2BBuE640u9D3gPSi+6kvbp9D1GLAaZer4sfttIyZsaxoQwIdLEFC8/zhdE0hlC483hJj9sz9OY67Bw/4O8Td/KyOgeNNzigEhK5uVQDb2PKhP7fRrq/kW/i1k561o8I1QBJkPUKkYsjDZCp8l4dDfpgdYO13dLiUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=SGx3k+5B; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=orBkzjje; arc=none smtp.client-ip=81.19.104.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1776070165;
-	bh=K+knYpaQC63S6yxb+K9P2BEcXIw8nVZezjjBAu4p/T8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=SGx3k+5BYPDxEvIQJqGUPD1zA4afE/yt+RpVviPrVqOl801Px/4GX3LCEl8wCH8kI
-	 Q/A7Esr9IoQHts2HqLQTnsm4uX4b50YZyzXCPrGh15LCn5yp3N7L6G9R+RG9RUHJjN
-	 bifEd+keo+PSfHNLwMbNbp9DANS52nDWzsApKWvSWukdsKfQ9dBtQXjHgNptbs+Ogi
-	 nnXMuTehDNMXGH/SUIBhApMubAXpMoCT9ZHGvNcvRDX/B0uE6hMR5PjDQDGpRKsdM3
-	 ZwDz/O0vsrlcU1AAN8aYt4MbAFwveme9EGS7pDUI49TofDEuTgx7YY0jh6FyzOxPWQ
-	 OZcAMnvBw4T8g==
-Received: from mailhub11-fb.kaspersky-labs.com (localhost [127.0.0.1])
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTP id 4322BE8198C
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:25 +0300 (MSK)
-Received: from mx9.kaspersky-labs.com (mx9.kaspersky-labs.com [195.122.169.44])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "mx9.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTPS id 1B770E81359
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:25 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1776070157;
-	bh=K+knYpaQC63S6yxb+K9P2BEcXIw8nVZezjjBAu4p/T8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=orBkzjjeb3Wk4MjxQPUt6sYM6uO4FMulv31qvC0bze8Q+8NTEDFnuidPVc3jpLkKg
-	 7CGFEFdPRvLZDZp7JWdjpEcjc7zaxry5eonfn9g7SJ4rgv+DoEjMtzlIUMivJQjNi/
-	 x/D4VIm0Q11SzZLhRy8I04gyV/Ajdeux0i0CV2K5onf1F2R2Qp44F9+bZHbauTsokn
-	 f+VCs3A07comtN4zu9RHUJ/VHaRkkmEVf1I9yrqpTg2UxyaMJPCtGyZTvS5/dHWPii
-	 csn0O9KVGedaCjPwf9SDgUZDpXAoNZnDzQWWQJGWImRUCf6jmAiFpmDkGMNSSt8Aw8
-	 XfRQyAvUTtB2A==
-Received: from relay9.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay9.kaspersky-labs.com (Postfix) with ESMTP id 027BE8A063E
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:17 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub9.kaspersky-labs.com (Postfix) with ESMTPS id C926C8A0581
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:16 +0300 (MSK)
-Received: from chesnokov.avp.ru (10.16.105.7) by HQMAILSRV2.avp.ru
- (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 13 Apr
- 2026 11:49:15 +0300
-From: <Alexander.Chesnokov@kaspersky.com>
-To: <Alexander.Chesnokov@kaspersky.com>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH] net: dsa: sja1105: fix division by zero in sja1105_tas_set_runtime_params()
-Date: Mon, 13 Apr 2026 11:49:08 +0300
-Message-ID: <20260413084908.32745-1-Alexander.Chesnokov@kaspersky.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1776070185; c=relaxed/simple;
+	bh=bdMEH6BffjYxwN/uwZveM6rAFybUgLDXqVkJob6/B/E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F8Sm0nTnhlVTi1wkcb3x8AUK1pxS6QzKYAO9N6DOUvkaOFUaMGcbCx3KYDZKvYvInmBgcVN5hAvWpgIOfMBN6WU1juXi1B2envEuLjJVV90DojwHgjmp9TZj2M3NVlWalkfaoh0J491ZnPVReZP7IYAbUWq+9FclSnEyTuWe1qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csmantle.top; spf=pass smtp.mailfrom=csmantle.top; dkim=permerror (0-bit key) header.d=csmantle.top header.i=@csmantle.top header.b=59OnR8mh; dkim=pass (3072-bit key) header.d=csmantle.top header.i=@csmantle.top header.b=ZimjZvxp; arc=none smtp.client-ip=77.93.157.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csmantle.top
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csmantle.top
+DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=csmantle.top; s=self-ed25519; h=BIMI-Selector:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:In-Reply-To:
+	References:BIMI-Selector; bh=6OrlQu4O57XEr1X3XLOvXNQM3/Z2iT8i6M9UMgn5zyc=;
+	t=1776070183; x=1776674983; b=59OnR8mhatYWey7D+KYQTQsB8vvpeAdPwqYms0ooeuu32Lc
+	wV63Jw7Z82GFtqKxUPyS0Xu6tpPjLrOVZJyuyBg==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=csmantle.top; s=self-rsa3072; h=BIMI-Selector:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:In-Reply-To:
+	References:BIMI-Selector; bh=6OrlQu4O57XEr1X3XLOvXNQM3/Z2iT8i6M9UMgn5zyc=;
+	t=1776070183; x=1776674983; b=ZimjZvxph+fbSdCj3U8j264HQ2GU+KfMq1j0vmnuvpUleg2
+	aYh3gALBIGqjqzXpRGMB3qP+bWTP/gSktdfixrqh2amHJJmJ3OwnbYghdaN3rdGl/L3WSgbqBObjh
+	98XnI2Q2Fr7Ey0Os9QcUuk/Bzw4eH8Zt9npzK/mkj3kddgs59M/xBjEkheXXwLR0rJl5MvqnylzvV
+	JxD9moZaasCA2GsNZL3U9C3TMU1EjuNy2Ifc3TCRl7XvmzfumHTSZEGsoZCbKHxZj6wviuV6XTX/i
+	DZ5E5ZJcL1bVqn8LY2bQasjdnblBXoRIeugM0y9MIzNb+oPW5vuoLBAuECZw4LfqvXNiIGTS6Xv0L
+	/CjKwhXo5vWXfSeSfZrDmjpdHeeWFxuhy/EziePczxG+6401mW1kU98yXEsumuzYS0MVuews3q/nU
+	F9Yb83CwUpFrN8KUqdvPjqejkSyjrWQPjVbYqmuIFxofmmqpiJgTuQxuXc17elZgOWcsldacDyjnI
+	Mys;
+Received: from [47.76.78.191] (helo=[172.16.23.20])
+	by mail.srv.csmantle.top with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <rong.bao@csmantle.top>)
+	id 1wCCz7-00000000cn8-1TS6;
+	Mon, 13 Apr 2026 16:49:33 +0800
+Message-ID: <0160f8e5-56f5-4024-8e4f-a72c4ab19f97@csmantle.top>
+Date: Mon, 13 Apr 2026 16:49:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] perf annotate: Use jump__delete when freeing LoongArch
+ jumps
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, stable@vger.kernel.org,
+ WANG Rui <wangrui@loongson.cn>, WANG Xuerui <kernel@xen0n.name>,
+ loongarch@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260412062828.1734637-1-rong.bao@csmantle.top>
+ <CAAhV-H4NHEo_JnnDYkWAYdTwiNuyVGNYymyOLL89ZxQVrqRjuA@mail.gmail.com>
+Content-Language: en-US
+From: Rong Bao <rong.bao@csmantle.top>
+In-Reply-To: <CAAhV-H4NHEo_JnnDYkWAYdTwiNuyVGNYymyOLL89ZxQVrqRjuA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
- (10.64.57.52)
-X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 04/13/2026 08:35:29
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 202220 [Apr 13 2026]
-X-KSE-AntiSpam-Info: Version: 6.1.1.22
-X-KSE-AntiSpam-Info: Envelope from: Alexander.Chesnokov@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 98 0.3.98
- ca9d2f3beca9ca2a85e178af9d8e97d5fa2c38a3
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_black_eng_exceptions}
-X-KSE-AntiSpam-Info: kaspersky.com:7.1.1,5.0.1;chesnokov.avp.ru:7.1.1,5.0.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/13/2026 08:38:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 4/13/2026 6:00:00 AM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/04/13 06:49:00 #28394185
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Rcpt-Check: Accepted by authentication
+X-42: Don't panic! 
+BIMI-Selector: v=BIMI1; s=me
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kaspersky.com,reject];
-	R_DKIM_ALLOW(-0.20)[kaspersky.com:s=mail202505];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[csmantle.top,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[csmantle.top:s=self-ed25519,csmantle.top:s=self-rsa3072];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kaspersky.com:+];
-	TAGGED_FROM(0.00)[bounces-235966-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-235962-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DKIM_TRACE(0.00)[csmantle.top:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Alexander.Chesnokov@kaspersky.com,stable@vger.kernel.org];
-	FROM_NO_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rong.bao@csmantle.top,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url,kaspersky.com:dkim,kaspersky.com:email,kaspersky.com:mid];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: D5E393E9661
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,csmantle.top:dkim,csmantle.top:email,csmantle.top:mid]
+X-Rspamd-Queue-Id: 9BE803E95D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
+Hi Huacai,
 
-If taprio offload is configured such that none of the ports' base_time
-is less than S64_MAX (the initial value of earliest_base_time), then
-its_cycle_time remains zero and is passed to future_base_time() as
-cycle_time, causing division by zero in div_s64().
+On 2026-04-13 16:33, Huacai Chen wrote:
+> Hi, Rong,
+> 
+> On Sun, Apr 12, 2026 at 2:28 PM Rong Bao <rong.bao@csmantle.top> wrote:
+>> [...]
+>> This patch adds the missing free() specialization in loongarch_jump_ops,
+>> which prevents disasm_line__free() from invoking the default cleanup
+>> function.
+>>
+>> Fixes: 4ca0d340ce206 ("perf annotate: Fix instruction association and parsing for LoongArch")
+> The original code works well, you are really fixing fb7fd2a14a503b9a
+> ("perf annotate: Move raw_comment and raw_func_start fields out of
+> 'struct ins_operands'").
 
-Add a check for its_cycle_time being zero before calling
-future_base_time() and return -EINVAL.
+Thanks, I'll fix the reference in v2.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> And LTS branches (6.12, 6.18) need different fixes because the code
+> has been restructed.
 
-Fixes: 86db36a347b4 ("net: dsa: sja1105: Implement state machine for TAS with PTP clock source")
-Cc: stable@vger.kernel.org
+I locally have a version based on the linux-6.19.y branch. Would you 
+mind providing me some pointers to the standard approach to submitting 
+this rebased version? I'm new to the process.
+>> [...]
+>> diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
+>> index a6e478caf61a9..6b7fef3bbc42f 100644
+>> --- a/tools/perf/util/disasm.h
+>> +++ b/tools/perf/util/disasm.h
+>> @@ -158,6 +158,7 @@ int call__scnprintf(const struct ins *ins, char *bf, size_t size,
+>>                      struct ins_operands *ops, int max_ins_name);
+>>   int jump__scnprintf(const struct ins *ins, char *bf, size_t size,
+>>                      struct ins_operands *ops, int max_ins_name);
+>> +void jump__delete(struct ins_operands *ops);
+> Don't put it among ***_scnprintf(), put it before ins__raw_scnprintf()
+> or after mov__scnprintf(), and add a blank line.
 
-Signed-off-by: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
----
- drivers/net/dsa/sja1105/sja1105_tas.c | 3 +++
- 1 file changed, 3 insertions(+)
+Sure. This will be fixed in v2.
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_tas.c b/drivers/net/dsa/sja1105/sja1105_tas.c
-index e6153848a950..ce4b544a2b9c 100644
---- a/drivers/net/dsa/sja1105/sja1105_tas.c
-+++ b/drivers/net/dsa/sja1105/sja1105_tas.c
-@@ -62,6 +62,9 @@ static int sja1105_tas_set_runtime_params(struct sja1105_private *priv)
- 	if (!tas_data->enabled)
- 		return 0;
- 
-+	if (!its_cycle_time)
-+		return -EINVAL;
-+
- 	/* Roll the earliest base time over until it is in a comparable
- 	 * time base with the latest, then compare their deltas.
- 	 * We want to enforce that all ports' base times are within
+> 
+> Huacai
+> 
+>> [...]
+
 -- 
-2.43.0
-
+Regards,
+Rong Bao
 
