@@ -1,204 +1,330 @@
-Return-Path: <stable+bounces-237635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JxmGH893WmqbAkAu9opvQ
-	(envelope-from <stable+bounces-237635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:01:19 +0200
+	id IKx9Lgc93WmqbAkAu9opvQ
+	(envelope-from <stable+bounces-237636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:59:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320EA3F25CD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:01:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF2B3F253B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9565A3016B3B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C4F43018626
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BB538D6A8;
-	Mon, 13 Apr 2026 18:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8621390995;
+	Mon, 13 Apr 2026 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJ5H7p7a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0QhKUCM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F4423EAB2
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 18:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD3C23EAB2
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776106742; cv=none; b=TqKeCB9ahvzExqE+uSR1g3W/6Z6rTS5Hm1KTTldo1c044tQh04Po6e0+ph4xPnLc92LLSLl9Cdb9yOeJUb7uoN0MG1EJrIM0qtlas38Nuvt6BgJD3CWfnSzKbJ0nPoEhYfMTrR+Tqb7IIvXahXdaZybngCPDcKujex+/aM6DoBk=
+	t=1776106749; cv=none; b=S0VWb0kNxFnkcAYE+I3tKr/lWpCGDBSbBomr/4/Ahqk4D5P5hGJuTE/J8a2Y0g/9K2GVE4LivwvxHxxIpadvBKe8534KRA/SmITNyBdRevsaBYvdFqtvMnB1A8CE9Y4DC9ZqghQwfaI1/IZP6F/dha5JXxDj4KJR4ZD0Z/CZYm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776106742; c=relaxed/simple;
-	bh=vgsTuhAL0yt4riRA6FzdkvJU7XP8Chc7SlMycKfDpXA=;
+	s=arc-20240116; t=1776106749; c=relaxed/simple;
+	bh=9EtOELKQd3hjsa6kWchiRAxxnGqnV/lt0I2ai9VgBZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QGAM6NbdHAivgLBuuJXF5H8w6LQfMzJqtubSFT4uGF4EjrcmiMGNpnEPRTIDy96VkVYiEURyjW+KxmMkQWY1LWZ+PfhHtgQW2Va3QcfHT/XQbCtVgnxzHYG5iP2MVaW585HcA1hm7JAZ1niDwcAFZEg2ld9qJCDPncBWJSDFb0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJ5H7p7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9D7C2BCAF;
-	Mon, 13 Apr 2026 18:59:01 +0000 (UTC)
+	 MIME-Version; b=ryO0un1dsPrsbH8ufRaC2UejDufr8xb3Q5HgHId8gc0IM++I+X6uPCzC7rDkBXZqH7eedBl5c1WGOx71PFnHYvB22AXXGbVEdoLzFo8Lmf7ubDNYwNv7Y1gv/57IBAIBUGee1GJRXeGvXfcXquNaaSSBEIuYmdwf4uwVcdibiUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0QhKUCM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602B4C2BCAF;
+	Mon, 13 Apr 2026 18:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776106742;
-	bh=vgsTuhAL0yt4riRA6FzdkvJU7XP8Chc7SlMycKfDpXA=;
+	s=k20201202; t=1776106749;
+	bh=9EtOELKQd3hjsa6kWchiRAxxnGqnV/lt0I2ai9VgBZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJ5H7p7aWIm91k/YL3+SbHGD/P3p+EuMSEHOrjLEVt1Wn+SZiNwY4sjsp6gqFjv0c
-	 WnpBtvL2qxML8fXGJo1sH2qACBXDwLJFV81w4aBFVyxtExVQrimWu0vNRU0ZPvBfgD
-	 I2x9t8qW3ogewBcghNfhqHcIPGopnakYeq+HJKPpVYYECjWqsBfNRJ0ZFTxxzUoXCp
-	 qAyVVZIQPWLeSB9xNKR4sqmwFKVJAhWCO7XtoOvFXJvxXkYIboGA6mKGmOhvxtolIb
-	 9zITKRyLPvjbNMetysme+JU08p0IBYWMd0F0g7Al2B+wQEELiVY0U1jVnsSFgYSZRN
-	 oNvZeg4W7SVFA==
+	b=O0QhKUCMfhS0kAqXwC3EQmpBR+wxVZKfc670daf/zeJDNFLrqgwIzzPxcYHdCL82r
+	 93CjtMfhp2J8oyyoJ9Mh/kLDVKlhLVWukmTYZhesB9c1MW0yS7jzfw4QHgyt04GHGh
+	 7Nn2oyyQzCmISkTEFEn+iWCTgmYnJsE+302+shS+n0iVNd8He5eDb3RvCIiMY4V9s6
+	 XrzqXRPdURJKeeT0MtpApRBQGGmqchlp0w8hgfBzbXeJavfW8hpsps6y50t+yCdz7E
+	 02eufDp3fEVC6K6hJunGwSIUESONSINZXwMscOwTp8TezbvJBabotEdRrd8GOQ2oO6
+	 xgdM4/fhfJxwA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+Cc: Milena Olech <milena.olech@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm/i915/psr: Do not use pipe_src as borders for SU area
-Date: Mon, 13 Apr 2026 14:59:00 -0400
-Message-ID: <20260413185900.3429717-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] idpf: move virtchnl structures to the header file
+Date: Mon, 13 Apr 2026 14:59:05 -0400
+Message-ID: <20260413185906.3429937-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041314-laundry-reformer-de94@gregkh>
-References: <2026041314-laundry-reformer-de94@gregkh>
+In-Reply-To: <2026041354-trowel-buggy-c7ca@gregkh>
+References: <2026041354-trowel-buggy-c7ca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237635-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237636-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 320EA3F25CD
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 5FF2B3F253B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Milena Olech <milena.olech@intel.com>
 
-[ Upstream commit 75519f5df2a9b23f7bf305e12dc9a6e3e65c24b7 ]
+[ Upstream commit c5d0607f424e4091c879688383ac4754739a1669 ]
 
-This far using crtc_state->pipe_src as borders for Selective Update area
-haven't caused visible problems as drm_rect_width(crtc_state->pipe_src) ==
-crtc_state->hw.adjusted_mode.crtc_hdisplay and
-drm_rect_height(crtc_state->pipe_src) ==
-crtc_state->hw.adjusted_mode.crtc_vdisplay when pipe scaling is not
-used. On the other hand using pipe scaling is forcing full frame updates and all the
-Selective Update area calculations are skipped. Now this improper usage of
-crtc_state->pipe_src is causing following warnings:
+Move virtchnl structures to the header file to expose them for the PTP
+virtchnl file.
 
-<4> [7771.978166] xe 0000:00:02.0: [drm] drm_WARN_ON_ONCE(su_lines % vdsc_cfg->slice_height)
-
-after WARN_ON_ONCE was added by commit:
-
-"drm/i915/dsc: Add helper for writing DSC Selective Update ET parameters"
-
-These warnings are seen when DSC and pipe scaling are enabled
-simultaneously. This is because on full frame update SU area is improperly
-set as pipe_src which is not aligned with DSC slice height.
-
-Fix these by creating local rectangle using
-crtc_state->hw.adjusted_mode.crtc_hdisplay and
-crtc_state->hw.adjusted_mode.crtc_vdisplay. Use this local rectangle as
-borders for SU area.
-
-Fixes: d6774b8c3c58 ("drm/i915: Ensure damage clip area is within pipe area")
-Cc: <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Link: https://patch.msgid.link/20260327114553.195285-1-jouni.hogander@intel.com
-(cherry picked from commit da0cdc1c329dd2ff09c41fbbe9fbd9c92c5d2c6e)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-[ omitted hunks for DSC selective update ET alignment infrastructure ]
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+Tested-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 591478118293 ("idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 86 +------------------
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   | 84 ++++++++++++++++++
+ 2 files changed, 86 insertions(+), 84 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index e2d7c0a6802aa..a465b19293108 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1686,9 +1686,9 @@ static void psr2_man_trk_ctl_calc(struct intel_crtc_state *crtc_state,
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 3d80b53161a4c..946aca7a07681 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -6,88 +6,6 @@
+ #include "idpf.h"
+ #include "idpf_virtchnl.h"
  
- static void clip_area_update(struct drm_rect *overlap_damage_area,
- 			     struct drm_rect *damage_area,
--			     struct drm_rect *pipe_src)
-+			     struct drm_rect *display_area)
+-#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
+-#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
+-#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
+-#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
+-#define IDPF_VC_XN_RING_LEN		U8_MAX
+-
+-/**
+- * enum idpf_vc_xn_state - Virtchnl transaction status
+- * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
+- * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
+- * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received,
+- *				  buffer updated
+- * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
+- *				 was an error, buffer not updated
+- * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
+- * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
+- *		      return context; a callback may be provided to handle
+- *		      return
+- */
+-enum idpf_vc_xn_state {
+-	IDPF_VC_XN_IDLE = 1,
+-	IDPF_VC_XN_WAITING,
+-	IDPF_VC_XN_COMPLETED_SUCCESS,
+-	IDPF_VC_XN_COMPLETED_FAILED,
+-	IDPF_VC_XN_SHUTDOWN,
+-	IDPF_VC_XN_ASYNC,
+-};
+-
+-struct idpf_vc_xn;
+-/* Callback for asynchronous messages */
+-typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
+-			    const struct idpf_ctlq_msg *);
+-
+-/**
+- * struct idpf_vc_xn - Data structure representing virtchnl transactions
+- * @completed: virtchnl event loop uses that to signal when a reply is
+- *	       available, uses kernel completion API
+- * @state: virtchnl event loop stores the data below, protected by the
+- *	   completion's lock.
+- * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
+- *	      truncated on its way to the receiver thread according to
+- *	      reply_buf.iov_len.
+- * @reply: Reference to the buffer(s) where the reply data should be written
+- *	   to. May be 0-length (then NULL address permitted) if the reply data
+- *	   should be ignored.
+- * @async_handler: if sent asynchronously, a callback can be provided to handle
+- *		   the reply when it's received
+- * @vc_op: corresponding opcode sent with this transaction
+- * @idx: index used as retrieval on reply receive, used for cookie
+- * @salt: changed every message to make unique, used for cookie
+- */
+-struct idpf_vc_xn {
+-	struct completion completed;
+-	enum idpf_vc_xn_state state;
+-	size_t reply_sz;
+-	struct kvec reply;
+-	async_vc_cb async_handler;
+-	u32 vc_op;
+-	u8 idx;
+-	u8 salt;
+-};
+-
+-/**
+- * struct idpf_vc_xn_params - Parameters for executing transaction
+- * @send_buf: kvec for send buffer
+- * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
+- * @timeout_ms: timeout to wait for reply
+- * @async: send message asynchronously, will not wait on completion
+- * @async_handler: If sent asynchronously, optional callback handler. The user
+- *		   must be careful when using async handlers as the memory for
+- *		   the recv_buf _cannot_ be on stack if this is async.
+- * @vc_op: virtchnl op to send
+- */
+-struct idpf_vc_xn_params {
+-	struct kvec send_buf;
+-	struct kvec recv_buf;
+-	int timeout_ms;
+-	bool async;
+-	async_vc_cb async_handler;
+-	u32 vc_op;
+-};
+-
+ /**
+  * struct idpf_vc_xn_manager - Manager for tracking transactions
+  * @ring: backing and lookup for transactions
+@@ -449,8 +367,8 @@ static void idpf_vc_xn_push_free(struct idpf_vc_xn_manager *vcxn_mngr,
+  * >= @recv_buf.iov_len, but we never overflow @@recv_buf_iov_base). < 0 for
+  * error.
+  */
+-static ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
+-			       const struct idpf_vc_xn_params *params)
++ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
++			const struct idpf_vc_xn_params *params)
  {
--	if (!drm_rect_intersect(damage_area, pipe_src))
-+	if (!drm_rect_intersect(damage_area, display_area))
- 		return;
+ 	const struct kvec *send_buf = &params->send_buf;
+ 	struct idpf_vc_xn *xn;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index 23271cf0a2160..77578206badab 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -4,6 +4,88 @@
+ #ifndef _IDPF_VIRTCHNL_H_
+ #define _IDPF_VIRTCHNL_H_
  
- 	if (overlap_damage_area->y1 == -1) {
-@@ -1761,6 +1761,12 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
- 	struct drm_rect pipe_clip = { .x1 = 0, .y1 = -1, .x2 = INT_MAX, .y2 = -1 };
- 	struct intel_plane_state *new_plane_state, *old_plane_state;
- 	struct intel_plane *plane;
-+	struct drm_rect display_area = {
-+		.x1 = 0,
-+		.y1 = 0,
-+		.x2 = crtc_state->hw.adjusted_mode.crtc_hdisplay,
-+		.y2 = crtc_state->hw.adjusted_mode.crtc_vdisplay,
-+	};
- 	bool full_update = false;
- 	int i, ret;
++#define IDPF_VC_XN_MIN_TIMEOUT_MSEC	2000
++#define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
++#define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
++#define IDPF_VC_XN_SALT_M		GENMASK(15, 8)
++#define IDPF_VC_XN_RING_LEN		U8_MAX
++
++/**
++ * enum idpf_vc_xn_state - Virtchnl transaction status
++ * @IDPF_VC_XN_IDLE: not expecting a reply, ready to be used
++ * @IDPF_VC_XN_WAITING: expecting a reply, not yet received
++ * @IDPF_VC_XN_COMPLETED_SUCCESS: a reply was expected and received, buffer
++ *				  updated
++ * @IDPF_VC_XN_COMPLETED_FAILED: a reply was expected and received, but there
++ *				 was an error, buffer not updated
++ * @IDPF_VC_XN_SHUTDOWN: transaction object cannot be used, VC torn down
++ * @IDPF_VC_XN_ASYNC: transaction sent asynchronously and doesn't have the
++ *		      return context; a callback may be provided to handle
++ *		      return
++ */
++enum idpf_vc_xn_state {
++	IDPF_VC_XN_IDLE = 1,
++	IDPF_VC_XN_WAITING,
++	IDPF_VC_XN_COMPLETED_SUCCESS,
++	IDPF_VC_XN_COMPLETED_FAILED,
++	IDPF_VC_XN_SHUTDOWN,
++	IDPF_VC_XN_ASYNC,
++};
++
++struct idpf_vc_xn;
++/* Callback for asynchronous messages */
++typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
++			    const struct idpf_ctlq_msg *);
++
++/**
++ * struct idpf_vc_xn - Data structure representing virtchnl transactions
++ * @completed: virtchnl event loop uses that to signal when a reply is
++ *	       available, uses kernel completion API
++ * @state: virtchnl event loop stores the data below, protected by the
++ *	   completion's lock.
++ * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
++ *	      truncated on its way to the receiver thread according to
++ *	      reply_buf.iov_len.
++ * @reply: Reference to the buffer(s) where the reply data should be written
++ *	   to. May be 0-length (then NULL address permitted) if the reply data
++ *	   should be ignored.
++ * @async_handler: if sent asynchronously, a callback can be provided to handle
++ *		   the reply when it's received
++ * @vc_op: corresponding opcode sent with this transaction
++ * @idx: index used as retrieval on reply receive, used for cookie
++ * @salt: changed every message to make unique, used for cookie
++ */
++struct idpf_vc_xn {
++	struct completion completed;
++	enum idpf_vc_xn_state state;
++	size_t reply_sz;
++	struct kvec reply;
++	async_vc_cb async_handler;
++	u32 vc_op;
++	u8 idx;
++	u8 salt;
++};
++
++/**
++ * struct idpf_vc_xn_params - Parameters for executing transaction
++ * @send_buf: kvec for send buffer
++ * @recv_buf: kvec for recv buffer, may be NULL, must then have zero length
++ * @timeout_ms: timeout to wait for reply
++ * @async: send message asynchronously, will not wait on completion
++ * @async_handler: If sent asynchronously, optional callback handler. The user
++ *		   must be careful when using async handlers as the memory for
++ *		   the recv_buf _cannot_ be on stack if this is async.
++ * @vc_op: virtchnl op to send
++ */
++struct idpf_vc_xn_params {
++	struct kvec send_buf;
++	struct kvec recv_buf;
++	int timeout_ms;
++	bool async;
++	async_vc_cb async_handler;
++	u32 vc_op;
++};
++
+ struct idpf_adapter;
+ struct idpf_netdev_priv;
+ struct idpf_vec_regs;
+@@ -11,6 +93,8 @@ struct idpf_vport;
+ struct idpf_vport_max_q;
+ struct idpf_vport_user_config_data;
  
-@@ -1807,14 +1813,14 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
- 				damaged_area.y1 = old_plane_state->uapi.dst.y1;
- 				damaged_area.y2 = old_plane_state->uapi.dst.y2;
- 				clip_area_update(&pipe_clip, &damaged_area,
--						 &crtc_state->pipe_src);
-+						 &display_area);
- 			}
- 
- 			if (new_plane_state->uapi.visible) {
- 				damaged_area.y1 = new_plane_state->uapi.dst.y1;
- 				damaged_area.y2 = new_plane_state->uapi.dst.y2;
- 				clip_area_update(&pipe_clip, &damaged_area,
--						 &crtc_state->pipe_src);
-+						 &display_area);
- 			}
- 			continue;
- 		} else if (new_plane_state->uapi.alpha != old_plane_state->uapi.alpha) {
-@@ -1822,7 +1828,7 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
- 			damaged_area.y1 = new_plane_state->uapi.dst.y1;
- 			damaged_area.y2 = new_plane_state->uapi.dst.y2;
- 			clip_area_update(&pipe_clip, &damaged_area,
--					 &crtc_state->pipe_src);
-+					 &display_area);
- 			continue;
- 		}
- 
-@@ -1838,7 +1844,7 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
- 		damaged_area.x1 += new_plane_state->uapi.dst.x1 - src.x1;
- 		damaged_area.x2 += new_plane_state->uapi.dst.x1 - src.x1;
- 
--		clip_area_update(&pipe_clip, &damaged_area, &crtc_state->pipe_src);
-+		clip_area_update(&pipe_clip, &damaged_area, &display_area);
- 	}
- 
- 	/*
++ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
++			const struct idpf_vc_xn_params *params);
+ int idpf_init_dflt_mbx(struct idpf_adapter *adapter);
+ void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter);
+ int idpf_vc_core_init(struct idpf_adapter *adapter);
 -- 
 2.53.0
 
