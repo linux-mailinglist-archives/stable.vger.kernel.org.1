@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-235900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEcNO0Bx3GnAQwkAu9opvQ
-	(envelope-from <stable+bounces-235900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 06:29:52 +0200
+	id sOKVEz9x3GnAQwkAu9opvQ
+	(envelope-from <stable+bounces-235901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 06:29:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E0B3E749A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 06:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 231233E7493
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 06:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 557633064658
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 04:20:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A59813064944
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 04:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4C2383C92;
-	Mon, 13 Apr 2026 04:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FAC38F954;
+	Mon, 13 Apr 2026 04:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WaOqUHnS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GwCxuBkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C698538422B
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 04:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A7137CD55
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 04:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776053643; cv=none; b=QvifkVVRj79T6vc4osycyDRjGVb9Y1f6TiF0IMlu1qAsKmtKYXMZaQdhOsTTgE90bLeoJWoMzjZk1ZqOy3a8eOx6ACAXtwQezL4oAt483l/jVCVXTAP6umNwusXuuis586bXPzL3Li77V3B8HPy483/RMQeCBLe4AEDNBhh4VGc=
+	t=1776053646; cv=none; b=pxRr9KriYEFau9nqL+AsTOyIfQMjpwp2sQDvgvR5ekEGIVf08M+wPsP5E/I12dDxDy9mdfOmNLzOf/Lh6ZVn0rEduBQ0Qy01xp2EyRmfrAJtBdjtYeZLyf2dtYVjLynKRGxzKme2mnvJoJcRjF1pGx0tbvh0ThSd4uY8pNiXSd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776053643; c=relaxed/simple;
-	bh=COMaV1wT6Smb/1qjrLRmQfINNavpFaqp5YitixtMGZU=;
+	s=arc-20240116; t=1776053646; c=relaxed/simple;
+	bh=Q2zzcdXfJ7s/dJiTtkE2b0mUlMNItsUXKCp+GBK8Jhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5vTkNwzBcWVuTWsW0a/r7lT3YYNEhkZKP6VfuhFjedRqiELJZDha48yP3RDRvkAdE978X2rY2lJL+nSkVLv33Le8U5Tk6y3/2z2NR2S0NJJzDd3OXeJWqN8/n82UMgz1YgEOVYsjzXbPJoJ5IvF15Nfi0aJ9GvRChGPQyQ9vH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WaOqUHnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0560FC2BCB1;
-	Mon, 13 Apr 2026 04:14:02 +0000 (UTC)
+	 MIME-Version; b=FIMrDmOddBAIVmxcvX07KH2eHsyomm+PhxgLf/o/1nb1P9MMBPvcV75X+2Yl03UmBVRW1XjhqkVoA3o/3ca1uHHXMIHAh8HanWtkftcLFeNyFNOPJR3WCiB6H8ud6SCfhqOT0yxX8EAbp0YiN2G4v9vnz2RRo2LpiY+cp9ZUamE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GwCxuBkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCE3C4AF09;
+	Mon, 13 Apr 2026 04:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776053643;
-	bh=COMaV1wT6Smb/1qjrLRmQfINNavpFaqp5YitixtMGZU=;
+	s=k20201202; t=1776053645;
+	bh=Q2zzcdXfJ7s/dJiTtkE2b0mUlMNItsUXKCp+GBK8Jhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WaOqUHnSeQZ/POU0J0YGFIWAghrcrylXFTpDy1oWcFP5fFIw4U0Y6Jj7u3XCFy64w
-	 jOyXak+lOyJvIZ8pkEAjbO9qU9akZ6X8jhYLKPaVYGa9PLDRm3mjuN6jNwxi4hT0Cc
-	 9CtOHuRZ4C+z9efIzhJVYGxHz+bvG0xJSJiVKd8dDclz7Yo7HrM+QOGaVlB+nM1Ugg
-	 EauuCtKsJAfIviSIQzr7+J/uhpy2W+qr6g0qrGmy4+vnKjMesXX2j3xk+D4RGDLxAs
-	 Eu2XaZcwvNejeVmVok6Goj64xPSkdPYmZQpBNAc18L+iBCI4TfzKEyEF7p/xewqEMF
-	 C3guImxUNbYOA==
+	b=GwCxuBkWPH+xobRgJ5wQ/CsIJRdAQCH4X5QLeyjk+Ww6nbLy5DGr1DNWn6bqUeQsZ
+	 p4WyNMI8e93uLvPja74qaPgZx4zqw4ykFPW63hPOHn4l/awbT5VvIJrKM5ktVtdA6a
+	 xAc+SaPhv8Nm3xVnzoJ3AwlZ30lQ5qzTHlPVWWF0eSFNvEp2B759WE9VzhRwq1uvbf
+	 e1XC2+lDvI2gsTl5FhWEfK+ZQKQp0eGQAIyzUPpK1B1wRWGu3/bRY6gDIYpSDR96VY
+	 lgIsGnBqS3hUXu5ni1N7tBfUWkAerelJXaBGBXUIdYOUlarnZWDRbaXqkpf+2fOL6g
+	 tRQPVBHP48MpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: Robert Garcia <rob_garcia@163.com>
 Cc: Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH 5.15.y] gpiolib: cdev: fix uninitialised kfifo
-Date: Mon, 13 Apr 2026 00:14:01 -0400
-Message-ID: <20260412120103.gpiolib-kfifo-5.15@kernel.org>
+	Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH 5.15.y] iio: adc: ad7923: Fix buffer overflow for tx_buf and ring_xfer
+Date: Mon, 13 Apr 2026 00:14:03 -0400
+Message-ID: <20260412120103.iio-ad7923-5.15@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260409072214.164971-1-rob_garcia@163.com>
-References: <20260409072214.164971-1-rob_garcia@163.com>
+In-Reply-To: <20260409065147.136824-1-rob_garcia@163.com>
+References: <20260409065147.136824-1-rob_garcia@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,31 +71,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235900-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,bgdev.pl];
-	FREEMAIL_TO(0.00)[163.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-235901-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[163.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.993];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C4E0B3E749A
+X-Rspamd-Queue-Id: 231233E7493
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> [PATCH 5.15.y] gpiolib: cdev: fix uninitialised kfifo
+> [PATCH 5.15.y] iio: adc: ad7923: Fix buffer overflow for tx_buf
+> and ring_xfer
 
 Queued for 5.15, thanks.
 
