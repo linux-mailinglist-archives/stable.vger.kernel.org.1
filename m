@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OLSIpkh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:17 +0200
+	id qNdhMt4a3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23ED73F08CE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760923EF3D6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AD48C305036F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 927D7309B0A9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43764337BA4;
-	Mon, 13 Apr 2026 16:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF413282F1B;
+	Mon, 13 Apr 2026 16:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvQ3w5/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVnEw5+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06335328255;
-	Mon, 13 Apr 2026 16:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A310E27BF6C;
+	Mon, 13 Apr 2026 16:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099453; cv=none; b=ERVE+38b+Izbs5kEU0PP/ZRmMws6usHUAuutwY01VTuYx0wjfDpNfJotOLQgb3wXmKTEqILaBtPQXWPVvc2PqIpr4CdqkIE646IJtf4DznrkDAB7DLWx6xqCPgwMFs0z4mM3Zbkkw7ifp/vxOS/UMkRoUM5t3sU093kWhuhAwYY=
+	t=1776096462; cv=none; b=ffY3yCK8w0bu8Pn7BkaYlNVAYymLAH95rvJ4STbc07GkwPFyCz+9TTXi2mVWbOky4NCzMjEp8qZxI3mjJItvGgeR2AIR2ADjNE3eWKEuBxCxC17Ny3mtsL+MePSGc/DCi3OoeJLJkykZhToUOM/EySBTNmWTHf1qfw85O+bvZhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099453; c=relaxed/simple;
-	bh=dtULmERuCE3An5+Fg1e6cxY27HfzA7+0zIlmh66NZc4=;
+	s=arc-20240116; t=1776096462; c=relaxed/simple;
+	bh=qeeM9TvMdxIWGmRxto4zHXXiGHVqHaf3qBr9XGVY3ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhC06FaAI+euPHgaW0ighDQawV3AtMwmtD9p9QoeYKin4dmrcXSzPhcdfU3xzw3TCxekppOaJwYSo8bwSJMCwP1PRr8r/F9MSRSA6ltAQ8pb+c43I6bdsabtoVuLlWUWpNHqq76NCGKeJemnctCv5SRMXR7VsnDICQObeBnr2KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvQ3w5/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F547C2BCAF;
-	Mon, 13 Apr 2026 16:57:32 +0000 (UTC)
+	 MIME-Version; b=vErvRfBn+VxnXvpLO0Oa2m4uwbZczsyX5xOOhTQT1sG03+rrZGZZXENQkN8fveQB5ffV2l9SY0/OxvhVqg6/7d77KjSAO6dTwNV9vNVZVlQ2aaFSwyt6agAv+klfgBAbMtPe1XUeuwIIKc7bjHZFlrTGtddtrVpxMG8uFOTuO4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVnEw5+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385FAC2BCAF;
+	Mon, 13 Apr 2026 16:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099452;
-	bh=dtULmERuCE3An5+Fg1e6cxY27HfzA7+0zIlmh66NZc4=;
+	s=korg; t=1776096462;
+	bh=qeeM9TvMdxIWGmRxto4zHXXiGHVqHaf3qBr9XGVY3ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZvQ3w5/zzzooPQ5WNqi6o1ghihElYQQX+8FZyIwgmKFNiOwA96esmaym+0BBd6tNu
-	 YWSEvOaciMDDaEaKj6Gr0VxwEwI8XQjnNTZc8vce75pkuiZQ2wvlL8qsCj59AbXwvA
-	 q34QtXag5VZymf8TQ8naID31Io/mNQAcWa2YwioA=
+	b=vVnEw5+D0qCfaItoEo0MEqs1yz3S0Pkpd/Y7wf6aj7KSXWhbQ8GmsKgmmfHpsqP5o
+	 epcRe2pzIfLdtLVB1DRyMMCA7k193pv9pcbR4V1DGn+wcTV7NXnvOaHbjPtklVOgnM
+	 uWcllX1aZFj3wDK+OfOqDNDHv8RGl/QgGx0N7GJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 344/491] Bluetooth: MGMT: validate LTK enc_size on load
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Drew Fustini <fustini@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 21/83] firmware: thead: Fix buffer overflow and use standard endian macros
 Date: Mon, 13 Apr 2026 17:59:49 +0200
-Message-ID: <20260413155831.917261071@linuxfoundation.org>
+Message-ID: <20260413155731.815286683@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +67,178 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237436-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236263-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 23ED73F08CE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: 760923EF3D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Michal Wilczynski <m.wilczynski@samsung.com>
 
-[ Upstream commit b8dbe9648d69059cfe3a28917bfbf7e61efd7f15 ]
+commit 88c4bd90725557796c15878b7cb70066e9e6b5ab upstream.
 
-Load Long Term Keys stores the user-provided enc_size and later uses
-it to size fixed-size stack operations when replying to LE LTK
-requests. An enc_size larger than the 16-byte key buffer can therefore
-overflow the reply stack buffer.
+Addresses two issues in the TH1520 AON firmware protocol driver:
 
-Reject oversized enc_size values while validating the management LTK
-record so invalid keys never reach the stored key state.
+1. Fix a potential buffer overflow where the code used unsafe pointer
+   arithmetic to access the 'mode' field through the 'resource' pointer
+   with an offset. This was flagged by Smatch static checker as:
+   "buffer overflow 'data' 2 <= 3"
 
-Fixes: 346af67b8d11 ("Bluetooth: Add MGMT handlers for dealing with SMP LTK's")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2. Replace custom RPC_SET_BE* and RPC_GET_BE* macros with standard
+   kernel endianness conversion macros (cpu_to_be16, etc.) for better
+   portability and maintainability.
+
+The functionality was re-tested with the GPU power-up sequence,
+confirming the GPU powers up correctly and the driver probes
+successfully.
+
+[   12.702370] powervr ffef400000.gpu: [drm] loaded firmware
+powervr/rogue_36.52.104.182_v1.fw
+[   12.711043] powervr ffef400000.gpu: [drm] FW version v1.0 (build
+6645434 OS)
+[   12.719787] [drm] Initialized powervr 1.0.0 for ffef400000.gpu on
+minor 0
+
+Fixes: e4b3cbd840e5 ("firmware: thead: Add AON firmware protocol driver")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/17a0ccce-060b-4b9d-a3c4-8d5d5823b1c9@stanley.mountain/
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Drew Fustini <fustini@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/thead,th1520-aon.c             |    7 --
+ include/linux/firmware/thead/thead,th1520-aon.h |   74 ------------------------
+ 2 files changed, 3 insertions(+), 78 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index fda0bd990dcb7..b768abbf2b121 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -5948,6 +5948,9 @@ static bool ltk_is_valid(struct mgmt_ltk_info *key)
- 	if (key->initiator != 0x00 && key->initiator != 0x01)
- 		return false;
+--- a/drivers/firmware/thead,th1520-aon.c
++++ b/drivers/firmware/thead,th1520-aon.c
+@@ -170,10 +170,9 @@ int th1520_aon_power_update(struct th152
+ 	hdr->func = TH1520_AON_PM_FUNC_SET_RESOURCE_POWER_MODE;
+ 	hdr->size = TH1520_AON_RPC_MSG_NUM;
  
-+	if (key->enc_size > sizeof(key->val))
-+		return false;
-+
- 	switch (key->addr.type) {
- 	case BDADDR_LE_PUBLIC:
- 		return true;
--- 
-2.53.0
-
+-	RPC_SET_BE16(&msg.resource, 0, rsrc);
+-	RPC_SET_BE16(&msg.resource, 2,
+-		     (power_on ? TH1520_AON_PM_PW_MODE_ON :
+-				 TH1520_AON_PM_PW_MODE_OFF));
++	msg.resource = cpu_to_be16(rsrc);
++	msg.mode = cpu_to_be16(power_on ? TH1520_AON_PM_PW_MODE_ON :
++					  TH1520_AON_PM_PW_MODE_OFF);
+ 
+ 	ret = th1520_aon_call_rpc(aon_chan, &msg);
+ 	if (ret)
+--- a/include/linux/firmware/thead/thead,th1520-aon.h
++++ b/include/linux/firmware/thead/thead,th1520-aon.h
+@@ -97,80 +97,6 @@ struct th1520_aon_rpc_ack_common {
+ #define RPC_GET_SVC_FLAG_ACK_TYPE(MESG) (((MESG)->svc & 0x40) >> 6)
+ #define RPC_SET_SVC_FLAG_ACK_TYPE(MESG, ACK) ((MESG)->svc |= (ACK) << 6)
+ 
+-#define RPC_SET_BE64(MESG, OFFSET, SET_DATA)                                \
+-	do {                                                                \
+-		u8 *data = (u8 *)(MESG);                                    \
+-		u64 _offset = (OFFSET);                                     \
+-		u64 _set_data = (SET_DATA);                                 \
+-		data[_offset + 7] = _set_data & 0xFF;                       \
+-		data[_offset + 6] = (_set_data & 0xFF00) >> 8;              \
+-		data[_offset + 5] = (_set_data & 0xFF0000) >> 16;           \
+-		data[_offset + 4] = (_set_data & 0xFF000000) >> 24;         \
+-		data[_offset + 3] = (_set_data & 0xFF00000000) >> 32;       \
+-		data[_offset + 2] = (_set_data & 0xFF0000000000) >> 40;     \
+-		data[_offset + 1] = (_set_data & 0xFF000000000000) >> 48;   \
+-		data[_offset + 0] = (_set_data & 0xFF00000000000000) >> 56; \
+-	} while (0)
+-
+-#define RPC_SET_BE32(MESG, OFFSET, SET_DATA)			    \
+-	do {							    \
+-		u8 *data = (u8 *)(MESG);			    \
+-		u64 _offset = (OFFSET);				    \
+-		u64 _set_data = (SET_DATA);			    \
+-		data[_offset + 3] = (_set_data) & 0xFF;		    \
+-		data[_offset + 2] = (_set_data & 0xFF00) >> 8;	    \
+-		data[_offset + 1] = (_set_data & 0xFF0000) >> 16;   \
+-		data[_offset + 0] = (_set_data & 0xFF000000) >> 24; \
+-	} while (0)
+-
+-#define RPC_SET_BE16(MESG, OFFSET, SET_DATA)		       \
+-	do {						       \
+-		u8 *data = (u8 *)(MESG);		       \
+-		u64 _offset = (OFFSET);			       \
+-		u64 _set_data = (SET_DATA);		       \
+-		data[_offset + 1] = (_set_data) & 0xFF;	       \
+-		data[_offset + 0] = (_set_data & 0xFF00) >> 8; \
+-	} while (0)
+-
+-#define RPC_SET_U8(MESG, OFFSET, SET_DATA)	  \
+-	do {					  \
+-		u8 *data = (u8 *)(MESG);	  \
+-		data[OFFSET] = (SET_DATA) & 0xFF; \
+-	} while (0)
+-
+-#define RPC_GET_BE64(MESG, OFFSET, PTR)                                      \
+-	do {                                                                 \
+-		u8 *data = (u8 *)(MESG);                                     \
+-		u64 _offset = (OFFSET);                                      \
+-		*(u32 *)(PTR) =                                              \
+-			(data[_offset + 7] | data[_offset + 6] << 8 |        \
+-			 data[_offset + 5] << 16 | data[_offset + 4] << 24 | \
+-			 data[_offset + 3] << 32 | data[_offset + 2] << 40 | \
+-			 data[_offset + 1] << 48 | data[_offset + 0] << 56); \
+-	} while (0)
+-
+-#define RPC_GET_BE32(MESG, OFFSET, PTR)                                      \
+-	do {                                                                 \
+-		u8 *data = (u8 *)(MESG);                                     \
+-		u64 _offset = (OFFSET);                                      \
+-		*(u32 *)(PTR) =                                              \
+-			(data[_offset + 3] | data[_offset + 2] << 8 |        \
+-			 data[_offset + 1] << 16 | data[_offset + 0] << 24); \
+-	} while (0)
+-
+-#define RPC_GET_BE16(MESG, OFFSET, PTR)                                       \
+-	do {                                                                  \
+-		u8 *data = (u8 *)(MESG);                                      \
+-		u64 _offset = (OFFSET);                                       \
+-		*(u16 *)(PTR) = (data[_offset + 1] | data[_offset + 0] << 8); \
+-	} while (0)
+-
+-#define RPC_GET_U8(MESG, OFFSET, PTR)          \
+-	do {                                   \
+-		u8 *data = (u8 *)(MESG);       \
+-		*(u8 *)(PTR) = (data[OFFSET]); \
+-	} while (0)
+-
+ /*
+  * Defines for SC PM Power Mode
+  */
 
 
 
