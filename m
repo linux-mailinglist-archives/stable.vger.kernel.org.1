@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-237494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEB9HuQm3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:52 +0200
+	id eIIcDIwZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E0D3F1572
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38903EEFBC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 19A333010902
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 92BC33096222
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD31E3328FD;
-	Mon, 13 Apr 2026 16:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4FE301471;
+	Mon, 13 Apr 2026 16:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAIlwsGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nwBCapd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B1F330B01;
-	Mon, 13 Apr 2026 16:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58762F8BC3;
+	Mon, 13 Apr 2026 16:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099599; cv=none; b=opGJ4wOXgQPl3L2InyEXcU0Yr3D4CjKawXBbTj40fe8vs/XLexBOaGvvSKVuOpwPrRcNPr5nYI/GmBeSKHLa+KwIGv9ybf5Xo6ZyiK5GNFK+oNYrUHvn2UZmxqpBw+WgheLBHF43bZ0H/wR0QgYw7qGqjZqNpzDh5dKNkx00NDk=
+	t=1776096717; cv=none; b=qPX+Y15ipBCCm1ixW48arb3aL+EhkyZ7TrHtORT+vBq5RXAiCqpFB5T6isZx48SHaS8uDXdEEzEvIwE09OD9aTHdS+msaaDvhGPwp4x7OVQbwh7PjgNj/4P18n+jxylAe/cZCzgTJwwtId4zOAqIE/rIUpFod8NIvIY3yNNug30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099599; c=relaxed/simple;
-	bh=7dhFDNb866NW0IqUmXCPi0VDlO0QoZIqJfJujCxYe6w=;
+	s=arc-20240116; t=1776096717; c=relaxed/simple;
+	bh=/th11HdEXUYQKBddLuBYqfxEGlUz7ZCs4i4k8yYTFtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NApg1RsgKDHjNdJniboJlu8rBK1LIku2nAK5jtFri3hVhsnwRyfN5ekCNauj4soos74fAqYBgQtQyx2SluQYQsvRY7gqk4COm5tG8kOJYayjshO34lg5Awvavt/zJTmvsXr6j3xoU6mPaRtc2askX+afDlYR/Xal7vey6mO0sG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAIlwsGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05148C2BCB3;
-	Mon, 13 Apr 2026 16:59:58 +0000 (UTC)
+	 MIME-Version; b=dz3u8uSg/Gprw38kc/RcKR2ScI0uzdjEhxcO6COQ8m7aU36O+gq4Bz5Ih2BXQABgbL2zIXe/awYC2uFZit+C+t9DOZ1s7YneNEVg91Jy8i3ZybiPNE/KioXbZf9KMiNHiWZWiCQPQocjQrS0JOpexav6vOuQwV9k76ldm1bXzD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nwBCapd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0FAC2BCAF;
+	Mon, 13 Apr 2026 16:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099599;
-	bh=7dhFDNb866NW0IqUmXCPi0VDlO0QoZIqJfJujCxYe6w=;
+	s=korg; t=1776096717;
+	bh=/th11HdEXUYQKBddLuBYqfxEGlUz7ZCs4i4k8yYTFtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAIlwsGMwoDUZOzeI85vcU3xq2pymLypVcJGsS5h9mk/jU4derWhSpi8OVVMQQ1Xf
-	 ZlmuLdtNjXrkdZlIuaWdq58egL0fd8QZCnPqURu3KBCw1dTKr/7uPiMzhUgIXgf+k9
-	 mULqjgv415yeQ/PZUjRctrgkgDSq8iZgZAws2tcQ=
+	b=1nwBCapdRwI9sPw5F8gdhjHoJQBmglB5dKXFRvuZyzQjfTRAj/C4xdkbvBftnOmoq
+	 gSMJdyOjyb/UOJWrzX7CSD3zhJ5GVoa3Lw0rOYqWFustQRWZt3V5XveTliCdsNFo48
+	 fyxuz1sKM3yk8iZKq/UOHvCbjyatNrRS3xMdI5TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 385/491] iio: gyro: mpu3050: Move iio_device_register() to correct location
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 35/70] wifi: brcmsmac: Fix dma_free_coherent() size
 Date: Mon, 13 Apr 2026 18:00:30 +0200
-Message-ID: <20260413155833.446738709@linuxfoundation.org>
+Message-ID: <20260413155729.494233746@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,116 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-237494-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 73E0D3F1572
+	TAGGED_FROM(0.00)[bounces-236365-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.983];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: C38903EEFBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 4c05799449108fb0e0a6bd30e65fffc71e60db4d upstream.
+commit 12cd7632757a54ce586e36040210b1a738a0fc53 upstream.
 
-iio_device_register() should be at the end of the probe function to
-prevent race conditions.
+dma_alloc_consistent() may change the size to align it. The new size is
+saved in alloced.
 
-Place iio_device_register() at the end of the probe function and place
-iio_device_unregister() accordingly.
+Change the free size to match the allocation size.
 
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260218130741.46566-3-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1234,12 +1234,6 @@ int mpu3050_common_probe(struct device *
- 		goto err_power_down;
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+@@ -483,7 +483,7 @@ static void *dma_ringalloc(struct dma_in
+ 	if (((desc_strtaddr + size - 1) & boundary) != (desc_strtaddr
+ 							& boundary)) {
+ 		*alignbits = dma_align_sizetobits(size);
+-		dma_free_coherent(di->dmadev, size, va, *descpa);
++		dma_free_coherent(di->dmadev, *alloced, va, *descpa);
+ 		va = dma_alloc_consistent(di, size, *alignbits,
+ 			alloced, descpa);
  	}
- 
--	ret = iio_device_register(indio_dev);
--	if (ret) {
--		dev_err(dev, "device register failed\n");
--		goto err_cleanup_buffer;
--	}
--
- 	dev_set_drvdata(dev, indio_dev);
- 
- 	/* Check if we have an assigned IRQ to use as trigger */
-@@ -1262,9 +1256,20 @@ int mpu3050_common_probe(struct device *
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_put(dev);
- 
-+	ret = iio_device_register(indio_dev);
-+	if (ret) {
-+		dev_err(dev, "device register failed\n");
-+		goto err_iio_device_register;
-+	}
-+
- 	return 0;
- 
--err_cleanup_buffer:
-+err_iio_device_register:
-+	pm_runtime_get_sync(dev);
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_disable(dev);
-+	if (irq)
-+		free_irq(mpu3050->irq, mpu3050->trig);
- 	iio_triggered_buffer_cleanup(indio_dev);
- err_power_down:
- 	mpu3050_power_down(mpu3050);
-@@ -1278,13 +1283,13 @@ int mpu3050_common_remove(struct device
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
- 
-+	iio_device_unregister(indio_dev);
- 	pm_runtime_get_sync(dev);
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
- 	iio_triggered_buffer_cleanup(indio_dev);
- 	if (mpu3050->irq)
- 		free_irq(mpu3050->irq, mpu3050->trig);
--	iio_device_unregister(indio_dev);
- 	mpu3050_power_down(mpu3050);
- 
- 	return 0;
 
 
 
