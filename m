@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UA25Auod3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:34 +0200
+	id AAtYMxEm3WlkaQkAu9opvQ
+	(envelope-from <stable+bounces-237399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8DD3EFC16
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFC13F13D8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 111EB3072063
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0ED6E3051529
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACDB2E54D1;
-	Mon, 13 Apr 2026 16:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553523254A3;
+	Mon, 13 Apr 2026 16:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXlaDsc6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQB4rv+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E882280CFB;
-	Mon, 13 Apr 2026 16:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173E6320393;
+	Mon, 13 Apr 2026 16:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098105; cv=none; b=R3fqIdiPe37tcNKDrNbqgUQzVbzzIVH6MN7DboDv/AqTZvMQHkPd/hPsiWO+7myYAscCZnLfumkZC0Lagh743JvCsKJd0uYkQpx3dtvkcAv+C6xtvIPlDTAOWdwOaKksrWHeX6bAvT4UM6GnXArxVQ2vK2h0ael2bWACmnnPsHM=
+	t=1776099355; cv=none; b=qUhKJgIkIZNJ+760OTBsKq8iJ/PusMqmThzaSeXPrFhhas8moBumfVzcQEc8YqXo7gno1tW4/nCUL8afjeV/wcp3TzWJGp7upYK3h1eQOMFw3UO7vokexzN9F1GCcSt5rYn/Q1aBzuJyxsJc4kcPi62myVwEduXdAVbFs78MYPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098105; c=relaxed/simple;
-	bh=SIYZnvMGBy/gycH4Bx0/1Tzi4vP0cIVTcGJRKNGFk/E=;
+	s=arc-20240116; t=1776099355; c=relaxed/simple;
+	bh=qElh2kgtvW/xoDbqDnFzGOGDlz/d/vwHOdgkUbOZjW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjaKiNcmoCgfMYtku1Gc1oYDL5q7hdwnicgoXI/BtctxoDFFrI4BrOJXUfL7ua2bVAAuk2uiC/9mVJYmdG+hbTIs2SC4j9rapMiFJ2OZgOYKXvgiUvYcBcf6o2Je832CMZmk+ZfTArKoOiGYkUHi7nuMJVwmZHFAxayygyo+EK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXlaDsc6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FE0C2BCAF;
-	Mon, 13 Apr 2026 16:35:04 +0000 (UTC)
+	 MIME-Version; b=oj9GrR5s5zIQ0DTUEyRgbOz68guASkQJ4P5GR+lscyLULoEpMJvbbsfHpEZk/JIIorrenVnUqnxVGkixTTcD+lB/xL2tB1u4/7Hvl6nQqjRr8lJbldgiCWFVgYJhKJc/v1/jiVYulPYnF0meFEZcoHVawQPcji1e3l/MYOoAoK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQB4rv+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3001C2BCAF;
+	Mon, 13 Apr 2026 16:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098104;
-	bh=SIYZnvMGBy/gycH4Bx0/1Tzi4vP0cIVTcGJRKNGFk/E=;
+	s=korg; t=1776099355;
+	bh=qElh2kgtvW/xoDbqDnFzGOGDlz/d/vwHOdgkUbOZjW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXlaDsc6jMI7ON1/ua8ewAc8A7GhUedBO6zcvjgr1b+H/M+eJ3VQnYIbL6jyA0U9o
-	 r8n0GLEwNTvDw3dSvooqtIBuOzS+5LN1X3ZxFynzY6t1u+jUeTujLpUxnvv/Oufkyk
-	 JOpwjQskAYyD4TcyLGGV8mLEAlxRghZgCN/EB4W0=
+	b=IQB4rv+bjRkAoT8TMcOuTFT/SqnADe8grwKBOAXurFHMPqfUmPJ8EPVEoVb7oPeet
+	 mc2nEBNWAydpKYgRvLq3EoU1gxqS/xk6s28pw420waSAD5/7wRPQrdeybaqaZYI6eI
+	 pnWOiZTimk+icwh8fbed5PuhJX+8+vSpyZWniLQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 395/570] dmaengine: xilinx_dma: Program interrupt delay timeout
+Subject: [PATCH 5.10 281/491] x86/fault: Fold mm_fault_error() into do_user_addr_fault()
 Date: Mon, 13 Apr 2026 17:58:46 +0200
-Message-ID: <20260413155845.270474192@linuxfoundation.org>
+Message-ID: <20260413155829.565868556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236909-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237399-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,105 +89,238 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: 9D8DD3EFC16
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ECFC13F13D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Andy Lutomirski <luto@kernel.org>
 
-[ Upstream commit 84b798fedf3fa8f0ab0c096593ba817abc454fe5 ]
+[ Upstream commit ec352711ceba890ea3a0c182c2d49c86c1a5e30e ]
 
-Program IRQDelay for AXI DMA. The interrupt timeout mechanism causes
-the DMA engine to generate an interrupt after the delay time period
-has expired. It enables dmaengine to respond in real-time even though
-interrupt coalescing is configured. It also remove the placeholder
-for delay interrupt and merge it with frame completion interrupt.
-Since by default interrupt delay timeout is disabled this feature
-addition has no functional impact on VDMA, MCDMA and CDMA IP's.
+mm_fault_error() is logically just the end of do_user_addr_fault().
+Combine the functions.  This makes the code easier to read.
 
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/1691387509-2113129-8-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: a17ce4bc6f4f ("dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA")
+Most of the churn here is from renaming hw_error_code to error_code in
+do_user_addr_fault().
+
+This makes no difference at all to the generated code (objdump -dr) as
+compared to changing noinline to __always_inline in the definition of
+mm_fault_error().
+
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/dedc4d9c9b047e51ce38b991bd23971a28af4e7b.1612924255.git.luto@kernel.org
+Stable-dep-of: 217c0a5c177a ("x86/efi: efi_unmap_boot_services: fix calculation of ranges_to_free size")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ arch/x86/mm/fault.c | 97 +++++++++++++++++++++------------------------
+ 1 file changed, 45 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 00971b867ade2..f1162f7c9a52c 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -174,8 +174,10 @@
- #define XILINX_DMA_MAX_TRANS_LEN_MAX	23
- #define XILINX_DMA_V2_MAX_TRANS_LEN_MAX	26
- #define XILINX_DMA_CR_COALESCE_MAX	GENMASK(23, 16)
-+#define XILINX_DMA_CR_DELAY_MAX		GENMASK(31, 24)
- #define XILINX_DMA_CR_CYCLIC_BD_EN_MASK	BIT(4)
- #define XILINX_DMA_CR_COALESCE_SHIFT	16
-+#define XILINX_DMA_CR_DELAY_SHIFT	24
- #define XILINX_DMA_BD_SOP		BIT(27)
- #define XILINX_DMA_BD_EOP		BIT(26)
- #define XILINX_DMA_COALESCE_MAX		255
-@@ -411,6 +413,7 @@ struct xilinx_dma_tx_descriptor {
-  * @stop_transfer: Differentiate b/w DMA IP's quiesce
-  * @tdest: TDEST value for mcdma
-  * @has_vflip: S2MM vertical flip
-+ * @irq_delay: Interrupt delay timeout
-  */
- struct xilinx_dma_chan {
- 	struct xilinx_dma_device *xdev;
-@@ -449,6 +452,7 @@ struct xilinx_dma_chan {
- 	int (*stop_transfer)(struct xilinx_dma_chan *chan);
- 	u16 tdest;
- 	bool has_vflip;
-+	u8 irq_delay;
- };
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 98a5924d98b72..07983b6208f52 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -925,40 +925,6 @@ do_sigbus(struct pt_regs *regs, unsigned long error_code, unsigned long address,
+ 	force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)address);
+ }
  
- /**
-@@ -1559,6 +1563,9 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
- 	if (chan->has_sg)
- 		xilinx_write(chan, XILINX_DMA_REG_CURDESC,
- 			     head_desc->async_tx.phys);
-+	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
-+	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
-+	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
- 
- 	xilinx_dma_start(chan);
- 
-@@ -1886,15 +1893,8 @@ static irqreturn_t xilinx_dma_irq_handler(int irq, void *data)
- 		}
- 	}
- 
--	if (status & XILINX_DMA_DMASR_DLY_CNT_IRQ) {
--		/*
--		 * Device takes too long to do the transfer when user requires
--		 * responsiveness.
--		 */
--		dev_dbg(chan->dev, "Inter-packet latency too long\n");
+-static noinline void
+-mm_fault_error(struct pt_regs *regs, unsigned long error_code,
+-	       unsigned long address, vm_fault_t fault)
+-{
+-	if (fatal_signal_pending(current) && !(error_code & X86_PF_USER)) {
+-		no_context(regs, error_code, address, 0, 0);
+-		return;
 -	}
 -
--	if (status & XILINX_DMA_DMASR_FRM_CNT_IRQ) {
-+	if (status & (XILINX_DMA_DMASR_FRM_CNT_IRQ |
-+		      XILINX_DMA_DMASR_DLY_CNT_IRQ)) {
- 		spin_lock(&chan->lock);
- 		xilinx_dma_complete_descriptor(chan);
- 		chan->idle = true;
-@@ -2818,6 +2818,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 	/* Retrieve the channel properties from the device tree */
- 	has_dre = of_property_read_bool(node, "xlnx,include-dre");
+-	if (fault & VM_FAULT_OOM) {
+-		/* Kernel mode? Handle exceptions or die: */
+-		if (!(error_code & X86_PF_USER)) {
+-			no_context(regs, error_code, address,
+-				   SIGSEGV, SEGV_MAPERR);
+-			return;
+-		}
+-
+-		/*
+-		 * We ran out of memory, call the OOM killer, and return the
+-		 * userspace (which will retry the fault, or kill us if we got
+-		 * oom-killed):
+-		 */
+-		pagefault_out_of_memory();
+-	} else {
+-		if (fault & (VM_FAULT_SIGBUS|VM_FAULT_HWPOISON|
+-			     VM_FAULT_HWPOISON_LARGE))
+-			do_sigbus(regs, error_code, address, fault);
+-		else if (fault & VM_FAULT_SIGSEGV)
+-			bad_area_nosemaphore(regs, error_code, address);
+-		else
+-			BUG();
+-	}
+-}
+-
+ static int spurious_kernel_fault_check(unsigned long error_code, pte_t *pte)
+ {
+ 	if ((error_code & X86_PF_WRITE) && !pte_write(*pte))
+@@ -1184,7 +1150,7 @@ NOKPROBE_SYMBOL(do_kern_addr_fault);
+ /* Handle faults in the user portion of the address space */
+ static inline
+ void do_user_addr_fault(struct pt_regs *regs,
+-			unsigned long hw_error_code,
++			unsigned long error_code,
+ 			unsigned long address)
+ {
+ 	struct vm_area_struct *vma;
+@@ -1204,8 +1170,8 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * Reserved bits are never expected to be set on
+ 	 * entries in the user portion of the page tables.
+ 	 */
+-	if (unlikely(hw_error_code & X86_PF_RSVD))
+-		pgtable_bad(regs, hw_error_code, address);
++	if (unlikely(error_code & X86_PF_RSVD))
++		pgtable_bad(regs, error_code, address);
  
-+	of_property_read_u8(node, "xlnx,irq-delay", &chan->irq_delay);
+ 	/*
+ 	 * If SMAP is on, check for invalid kernel (supervisor) access to user
+@@ -1215,10 +1181,10 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * enforcement appears to be consistent with the USER bit.
+ 	 */
+ 	if (unlikely(cpu_feature_enabled(X86_FEATURE_SMAP) &&
+-		     !(hw_error_code & X86_PF_USER) &&
++		     !(error_code & X86_PF_USER) &&
+ 		     !(regs->flags & X86_EFLAGS_AC)))
+ 	{
+-		bad_area_nosemaphore(regs, hw_error_code, address);
++		bad_area_nosemaphore(regs, error_code, address);
+ 		return;
+ 	}
+ 
+@@ -1227,7 +1193,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * in a region with pagefaults disabled then we must not take the fault
+ 	 */
+ 	if (unlikely(faulthandler_disabled() || !mm)) {
+-		bad_area_nosemaphore(regs, hw_error_code, address);
++		bad_area_nosemaphore(regs, error_code, address);
+ 		return;
+ 	}
+ 
+@@ -1248,9 +1214,9 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+ 
+-	if (hw_error_code & X86_PF_WRITE)
++	if (error_code & X86_PF_WRITE)
+ 		flags |= FAULT_FLAG_WRITE;
+-	if (hw_error_code & X86_PF_INSTR)
++	if (error_code & X86_PF_INSTR)
+ 		flags |= FAULT_FLAG_INSTRUCTION;
+ 
+ #ifdef CONFIG_X86_64
+@@ -1266,7 +1232,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * to consider the PF_PK bit.
+ 	 */
+ 	if (is_vsyscall_vaddr(address)) {
+-		if (emulate_vsyscall(hw_error_code, regs, address))
++		if (emulate_vsyscall(error_code, regs, address))
+ 			return;
+ 	}
+ #endif
+@@ -1289,7 +1255,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 			 * Fault from code in kernel from
+ 			 * which we do not expect faults.
+ 			 */
+-			bad_area_nosemaphore(regs, hw_error_code, address);
++			bad_area_nosemaphore(regs, error_code, address);
+ 			return;
+ 		}
+ retry:
+@@ -1305,17 +1271,17 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 
+ 	vma = find_vma(mm, address);
+ 	if (unlikely(!vma)) {
+-		bad_area(regs, hw_error_code, address);
++		bad_area(regs, error_code, address);
+ 		return;
+ 	}
+ 	if (likely(vma->vm_start <= address))
+ 		goto good_area;
+ 	if (unlikely(!(vma->vm_flags & VM_GROWSDOWN))) {
+-		bad_area(regs, hw_error_code, address);
++		bad_area(regs, error_code, address);
+ 		return;
+ 	}
+ 	if (unlikely(expand_stack(vma, address))) {
+-		bad_area(regs, hw_error_code, address);
++		bad_area(regs, error_code, address);
+ 		return;
+ 	}
+ 
+@@ -1324,8 +1290,8 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * we can handle it..
+ 	 */
+ good_area:
+-	if (unlikely(access_error(hw_error_code, vma))) {
+-		bad_area_access_error(regs, hw_error_code, address, vma);
++	if (unlikely(access_error(error_code, vma))) {
++		bad_area_access_error(regs, error_code, address, vma);
+ 		return;
+ 	}
+ 
+@@ -1347,7 +1313,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	/* Quick path to respond to signals */
+ 	if (fault_signal_pending(fault, regs)) {
+ 		if (!user_mode(regs))
+-			no_context(regs, hw_error_code, address, SIGBUS,
++			no_context(regs, error_code, address, SIGBUS,
+ 				   BUS_ADRERR);
+ 		return;
+ 	}
+@@ -1364,11 +1330,38 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	}
+ 
+ 	mmap_read_unlock(mm);
+-	if (unlikely(fault & VM_FAULT_ERROR)) {
+-		mm_fault_error(regs, hw_error_code, address, fault);
++	if (likely(!(fault & VM_FAULT_ERROR)))
++		return;
 +
- 	chan->genlock = of_property_read_bool(node, "xlnx,genlock-mode");
++	if (fatal_signal_pending(current) && !(error_code & X86_PF_USER)) {
++		no_context(regs, error_code, address, 0, 0);
+ 		return;
+ 	}
  
- 	err = of_property_read_u32(node, "xlnx,datawidth", &value);
++	if (fault & VM_FAULT_OOM) {
++		/* Kernel mode? Handle exceptions or die: */
++		if (!(error_code & X86_PF_USER)) {
++			no_context(regs, error_code, address,
++				   SIGSEGV, SEGV_MAPERR);
++			return;
++		}
++
++		/*
++		 * We ran out of memory, call the OOM killer, and return the
++		 * userspace (which will retry the fault, or kill us if we got
++		 * oom-killed):
++		 */
++		pagefault_out_of_memory();
++	} else {
++		if (fault & (VM_FAULT_SIGBUS|VM_FAULT_HWPOISON|
++			     VM_FAULT_HWPOISON_LARGE))
++			do_sigbus(regs, error_code, address, fault);
++		else if (fault & VM_FAULT_SIGSEGV)
++			bad_area_nosemaphore(regs, error_code, address);
++		else
++			BUG();
++	}
++
+ 	check_v8086_mode(regs, address, tsk);
+ }
+ NOKPROBE_SYMBOL(do_user_addr_fault);
 -- 
 2.53.0
 
