@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-236774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBLYFYUf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-236774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:25 +0200
+	id QPQIGMMi3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0B93F01DD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAB63F0C6C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74F6630D0ADB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 414B5306206A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808CC30C360;
-	Mon, 13 Apr 2026 16:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B734317148;
+	Mon, 13 Apr 2026 16:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D23hUWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHp0JdCX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443A0306B0A;
-	Mon, 13 Apr 2026 16:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A32313298;
+	Mon, 13 Apr 2026 16:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097759; cv=none; b=jEw9nEhUYfTmyWxlquPdztnGJu3Nd1a/e9gckHUgy6+Xnf32C30xDkHwQPeU7Gmkk9778v+XZNe/z+GCZwpsdwINtm+QvC5QBjm0+MHS+oFgZDWV2mipXrW20/MAo4UzMKb+pDpsf9ucsbXSKcPAlIfswsacSgkpUGI3I1dzqoI=
+	t=1776099021; cv=none; b=OUgz70RQp0XVUMcepJ7Q5fqejgNlFqKYtHfghBuAwyD2XB0XEnSLQA1PbaGacQtOKh7lsEwUh1iQHqviGs4aMTRX5+kfyZevh4ZI+rSofgsMyqGKCbD0blp5s4hEStutNGEU1Yb8lH/IXpqnC9UjZ3s9WF2blyFTRI/ehFx/ruA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097759; c=relaxed/simple;
-	bh=jPu781NXK+M+rsVW+ALTVZLHPohaw5gSIHd2YsyfOVo=;
+	s=arc-20240116; t=1776099021; c=relaxed/simple;
+	bh=eeXQc0Xs36KsCJ+myTKNyOqBo/VeeTDRDchysJQqh8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gx12TfZqnKG3dF+fzzSdSOxs020pTYqZ0sHuIgjDHxZhnGZmS94wed41fxhWQGu39O02sLU3qPq4MeRe5cukElFwpQHPmfdaT6eAZj0rQYkS+kZ4oVc8EJMIzcmntJsRACUitzM5loQ6eH5K93h4C0pnuI6OZhhx0HjZsVjx69Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D23hUWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF539C2BCAF;
-	Mon, 13 Apr 2026 16:29:18 +0000 (UTC)
+	 MIME-Version; b=WYZZkPtnp7FyA0o4nfbIfE4sCMI02GtmP0eljQEpDB2JxhH4E/QKcbK6t11uxJM1T8zglSQx7QYGGA8DBEleMf0ubpGiPuNPRES/M0MdP1G0E+5YbLJc//FozoNkVaUd0qS907PpFH4Wyroy4W6zgVNlWpUorCCXZKn0IcFvzbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHp0JdCX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B3FC2BCAF;
+	Mon, 13 Apr 2026 16:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097759;
-	bh=jPu781NXK+M+rsVW+ALTVZLHPohaw5gSIHd2YsyfOVo=;
+	s=korg; t=1776099021;
+	bh=eeXQc0Xs36KsCJ+myTKNyOqBo/VeeTDRDchysJQqh8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1D23hUWx5FA1v0rtEhjI2aHDj25fL7UIL7fY7ArQOPBg6sdqa0YhaCSBliwyA2vCQ
-	 ammrm000TRYBjiGbtFcSTjedE8uVS76VYhT40K0hKvTmhEl9KOjA81nGqLJNtV347b
-	 CFpyxBDA5LafF1o1LB6uGs3F59ogSrpBYI9go0BA=
+	b=YHp0JdCXUU7ov/qmfa8I8YRye+9i5bSJECq1vxJswczP2WfwJS1Eb9r0epXziQARu
+	 n9EVj/hqxujb8IugZpBc0QBw/QEtvNLICt4Xl06PZo4Ve7lNLCdtG1xmgF8hQjOkxt
+	 Summz74i7hUq8AFoful5y/Xhyn5MMdepLDL2nkLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 260/570] netfilter: xt_CT: drop pending enqueued packets on template removal
-Date: Mon, 13 Apr 2026 17:56:31 +0200
-Message-ID: <20260413155840.217308568@linuxfoundation.org>
+	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.10 147/491] iommu/vt-d: Fix intel iommu iotlb sync hardlockup and retry
+Date: Mon, 13 Apr 2026 17:56:32 +0200
+Message-ID: <20260413155824.537570895@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +70,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236774-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237269-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB0B93F01DD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5AAB63F0C6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-[ Upstream commit f62a218a946b19bb59abdd5361da85fa4606b96b ]
+commit fe89277c9ceb0d6af0aa665bcf24a41d8b1b79cd upstream.
 
-Templates refer to objects that can go away while packets are sitting in
-nfqueue refer to:
+During the qi_check_fault process after an IOMMU ITE event, requests at
+odd-numbered positions in the queue are set to QI_ABORT, only satisfying
+single-request submissions. However, qi_submit_sync now supports multiple
+simultaneous submissions, and can't guarantee that the wait_desc will be
+at an odd-numbered position. Therefore, if an item times out, IOMMU can't
+re-initiate the request, resulting in an infinite polling wait.
 
-- helper, this can be an issue on module removal.
-- timeout policy, nfnetlink_cttimeout might remove it.
+This modifies the process by setting the status of all requests already
+fetched by IOMMU and recorded as QI_IN_USE status (including wait_desc
+requests) to QI_ABORT, thus enabling multiple requests to be resubmitted.
 
-The use of templates with zone and event cache filter are safe, since
-this just copies values.
-
-Flush these enqueued packets in case the template rule gets removed.
-
-Fixes: 24de58f46516 ("netfilter: xt_CT: allow to attach timeout policy + glue code")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per qi_submit_sync()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Link: https://lore.kernel.org/r/20260306101516.3885775-1-guanghuifeng@linux.alibaba.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per  qi_submit_sync()")
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_CT.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iommu/intel/dmar.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/netfilter/xt_CT.c b/net/netfilter/xt_CT.c
-index 5d19cb059b197..3dd02482b437b 100644
---- a/net/netfilter/xt_CT.c
-+++ b/net/netfilter/xt_CT.c
-@@ -16,6 +16,7 @@
- #include <net/netfilter/nf_conntrack_ecache.h>
- #include <net/netfilter/nf_conntrack_timeout.h>
- #include <net/netfilter/nf_conntrack_zones.h>
-+#include "nf_internals.h"
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1243,7 +1243,6 @@ static int qi_check_fault(struct intel_i
+ 	if (fault & DMA_FSTS_ITE) {
+ 		head = readl(iommu->reg + DMAR_IQH_REG);
+ 		head = ((head >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
+-		head |= 1;
+ 		tail = readl(iommu->reg + DMAR_IQT_REG);
+ 		tail = ((tail >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
  
- static inline int xt_ct_target(struct sk_buff *skb, struct nf_conn *ct)
- {
-@@ -269,6 +270,9 @@ static void xt_ct_tg_destroy(const struct xt_tgdtor_param *par,
- 	struct nf_conn_help *help;
+@@ -1252,7 +1251,7 @@ static int qi_check_fault(struct intel_i
+ 		do {
+ 			if (qi->desc_status[head] == QI_IN_USE)
+ 				qi->desc_status[head] = QI_ABORT;
+-			head = (head - 2 + QI_LENGTH) % QI_LENGTH;
++			head = (head - 1 + QI_LENGTH) % QI_LENGTH;
+ 		} while (head != tail);
  
- 	if (ct) {
-+		if (info->helper[0] || info->timeout[0])
-+			nf_queue_nf_hook_drop(par->net);
-+
- 		help = nfct_help(ct);
- 		if (help)
- 			nf_conntrack_helper_put(help->helper);
--- 
-2.51.0
-
+ 		if (qi->desc_status[wait_index] == QI_ABORT)
 
 
 
