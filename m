@@ -1,91 +1,61 @@
-Return-Path: <stable+bounces-236106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ERdFSj73GnXYgkAu9opvQ
-	(envelope-from <stable+bounces-236106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:18:16 +0200
+	id iFMeFTr83Gk3YwkAu9opvQ
+	(envelope-from <stable+bounces-236108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22C93ED373
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:18:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09D53ED451
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 25002300B9CD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:18:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 690593013BBB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C923D6CB5;
-	Mon, 13 Apr 2026 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018683DC4AD;
+	Mon, 13 Apr 2026 14:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WWkJp4jQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0KZvq19"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54EA3D9DCD
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BE13DBD62
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776089893; cv=none; b=c+ZKtHDSMkt4SlnZPyDDcI71jb+f9zYzlcwbQppUWDZ5/kZp7Kn86uM7TYCqmxfsEeMnO+E9GTqIkgdMZC3PgtBC+XGnazxlJ6T2tPu5Wr5ILTC8u/sjnDd9iuqy9J826mDdl4kLz3nbdJT+oSKzA9H5J6YUux9IApd79oAoLYg=
+	t=1776090060; cv=none; b=Jo2Ffp75eD7mlBAhUF11ZKhZdFrr3naJYZvauhA6et6LuzvQpjDyoUPazouBwVeeaUVOS3NascQAmGEpne7WKdkgfw4bwlnwABMxbBZQMi/+kfrrEx4HVzzDHMeaAmhls48qOAQjXjXGE+xdYhvbLDzYCLlqe+BdYreIayZBiL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776089893; c=relaxed/simple;
-	bh=52DKUzSfxH+6to29E7Q2NvM2A03f/yaUTaPX88jYODY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G92FDhq+kVL3p7Bg+aP3b6FgK0FhZvvoEmdV+zTGCFwixfGWZrMV49E8NPuKKGEcdivlmEcWMGUcaqgRj+QxdCrr+hHrDCSzDodbEnAmCx8UckSVBPs54hBVc5XcYcRo/8cOHrfJA2M6q3aFtFbGyt4XLFyAd88b9/UkzkUYelo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WWkJp4jQ; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82a655cfab5so3791721b3a.1
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:18:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776089891; x=1776694691; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MfCfEoCQ1xm5a/h4AZyKBHqio5jzH+2E+QVtjsmZ74I=;
-        b=WWkJp4jQSPraWUxImI3DQxRZZvH5Ll/waxg5q30om+fk2RR+qVSGqqANLLcPXZ4pCd
-         wmfFPw7qqi1J42IeXz71VlekiEU0h97v02gEqjaB1z3OxlH/GNzITnkzJBM/ocCsaPhf
-         +YN6q7Wpvcqw/ZEITXtD6VCdBB4y8M7i046QYdff5Ewu41hsdGKm3SqkDobWizNLJMTU
-         6TyT+Cl6U1jZ7Ko9FcIntsTPSTRr8ykVlBTaKanWc2o/sxBBmJjjpKSOj73FNdlUlN0h
-         /GFYCzPLmtLgI46Ywf0S6gmO0/P6eUyw/9qOtbS5VwzB1tGUczdCfIhM4+VdrEL8OqpZ
-         zF2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776089891; x=1776694691;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MfCfEoCQ1xm5a/h4AZyKBHqio5jzH+2E+QVtjsmZ74I=;
-        b=G7OPcGaYhOrnHS4s1l4lghGYfrXbouoPmMKS7MWc+aAlOMRqiwHTAKspMJdZVIkCAm
-         CQbaZo7F0NFyGqbT0NcGMwMkFW+AeXAo5dOZ+wCy34UH/b2pHwH7DkENmXOCQdxnRZF3
-         TnoJ+hIBW/ROHPKWPc4o5y0fqc9Y6vk+Fwq3yMFA4KqSoxUMZJLzYmFshPDyLLbixY6r
-         by41wUBOaDrgfDf5MUzj5k/Fo9yGD976G/glAckp3FE1znYoP1wEiBsP6a7eAD1+q0xN
-         +zL7RcHSpLNeCWFkST7yUinQxQrwndw+v3WpGwqgt3xxWcN4ruKcvQ6Ay+NDNQM0QSSO
-         iUEQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/5qwER3ZjPWIzCP8dQ3VIGhad12we1ykZPB+k6fdxZmh+FO6/P9/HVRaXw2xp1HLiEbhbaVBc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJpDmDmapAX/Jm2R1GkZqp90RAksm9yuZngxbzDK97eD0vK+6F
-	UZPAaXrQ/SuhVQ37jWg8H8GCP2gdS3ImaOcQbfW22JcFhCrOh0mt4nzn
-X-Gm-Gg: AeBDiet2v1x2aKl6D3D9J9R37h43ds6w+tV5P1yGHf1tJ5pFLt3DG38quc/Kx4Wue9n
-	SOmO/LcGZOguhL/1nKtQi3cKkokT2ycEbUORAG0RSTKxuwF0OvlGeOL2PxcD3zvI++K95wasg0E
-	vJfavkP0JTALC1lBmzgkXSWtvyGiMhLJAGuALxN1wm1XqY6LvGwyO4kLEUqem44K+rnkNZQLN/H
-	H/UC1pPwC4bfwNm6HjpONf5RmzWqjU5yFwYwIJPidmLIA3rXMY4AjZvI3rJNCzWHwfpaBbr05Qk
-	nb8BjNxyAb11oZd87QAsUDumD7NEmYOLa+B90TiRrwqmTF14QwpMYUu5Zo3nOXGEY+kQWu7r7pe
-	YAHxC6xnCbPxD8r9zqmri05n2F07rswm+YHbeHaxXqICFM/PMIZNROrgFoRp2TEPobcto6yKq7X
-	uqSYAhPEC9QkW62MipBGfjV5uaT8F4cEI=
-X-Received: by 2002:a05:6a00:a116:b0:82c:e0d7:2682 with SMTP id d2e1a72fcca58-82f0c2a72dcmr15538886b3a.25.1776089891310;
-        Mon, 13 Apr 2026 07:18:11 -0700 (PDT)
-Received: from lgs.. ([2409:893d:1188:142d:6c67:74e8:5200:1f39])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c377318sm10978531b3a.26.2026.04.13.07.18.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 07:18:10 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Song Liu <song@kernel.org>,
-	Yu Kuai <yukuai@fnnas.com>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	linux-raid@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] md: fix kobject reference leak in md_import_device()
-Date: Mon, 13 Apr 2026 22:17:59 +0800
-Message-ID: <20260413141759.2970973-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1776090060; c=relaxed/simple;
+	bh=O5fu+IZe+fAiQFuKYeq44QfA7N8sgg8Vmho9KVGRYyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=P9qeBq6kuFRJrvEb8SeD5b2XOX7kt+pDwHjwvPBxa8IoUAW2SeCyABZ0K8h7lf3hrbCFaxTvoNloDOz3ReJDtBXpnqXxgkt0qw4+RLtl48Oo1TYqsWdEu5ZAnByfWzPdscaxPeQpJlx5CwuqcA3eWKn3xfToTsXxVJLltkEG4yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0KZvq19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41471C2BCAF;
+	Mon, 13 Apr 2026 14:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776090059;
+	bh=O5fu+IZe+fAiQFuKYeq44QfA7N8sgg8Vmho9KVGRYyE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=o0KZvq19xcTHXqMjzeEj3smqjvnucmol8hDNI08xZnk3SEmJNA34abl8Swlx8aOUm
+	 rdeJSeF9LHWdlgXJNnd0SUo4v949oiMNxG0rjrDQK7sLt0NA7nL0G6O/PL/WdjO1rX
+	 K/PlU2JYMgYGyGIpr9ePgmVzqSk3WFXTHr0gCpdWjYoQFJ9Ciby+Y1O5Jq3flUqNcm
+	 rCyHg8dz6Ovjn96DUYIRRP73G3ZMCG44UTH+Cdj/Gx7GSSYGJ4HbrTgpZjyxu7iy5F
+	 SEeju1bNw4KTQW51ketNtqMEK59792G91eDENpmzXOIjOci4mHA+Ix3q9h3OW1rIAk
+	 TWLA0vK7927OQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/4] arm64: dts: imx8mq-librem5: Set the DVS voltages lower
+Date: Mon, 13 Apr 2026 10:20:54 -0400
+Message-ID: <20260413142057.2909222-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041309-growing-ground-4131@gregkh>
+References: <2026041309-growing-ground-4131@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,77 +64,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-236106-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236108-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F22C93ED373
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[i.mx:url,puri.sm:email]
+X-Rspamd-Queue-Id: D09D53ED451
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-md_import_device() initializes rdev->kobj with kobject_init() before
-checking the device size and loading the superblock.
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-When one of the later checks fails, the error path still frees rdev
-directly with kfree(). This bypasses the kobject release path and leaves
-the kobject reference unbalanced.
+[ Upstream commit c24a9b698fb02cd0723fa8375abab07f94b97b10 ]
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
+They're still in the operating range according to i.MX 8M Quad
+datasheet. There's some headroom added over minimal values to
+account for voltage drop.
 
-After kobject_init(), release rdev through kobject_put() instead of
-kfree().
+Operational ranges (min - typ - max [selected]):
+ - VDD_SOC (BUCK1): 0.81 - 0.9 - 0.99 [0.88]
+ - VDD_ARM (BUCK2): 0.81 - 0.9 - 1.05 [0.84] (1000MHz)
+                    0.90 - 1.0 - 1.05 [0.93] (1500MHz)
+ - VDD_GPU (BUCK3): 0.81 - 0.9 - 1.05 [0.85] (800MHz)
+                    0.90 - 1.0 - 1.05 [ -- ] (1000MHz)
+ - VDD_VPU (BUCK4): 0.81 - 0.9 - 1.05 [ -- ] (550/500/588MHz)
+                    0.90 - 1.0 - 1.05 [0.93] (660/600/800MHz)
 
-Fixes: f9cb074bff8e ("Kobject: rename kobject_init_ng() to kobject_init()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Idle power consumption doesn't appear to be influenced much,
+but a simple load test (`cat /dev/urandom | pigz - > /dev/null`
+combined with running Animatch) seems to show about 0.3W of
+difference.
+
+Care is advised, as there may be differences between each
+units in how low can they be undervolted - in my experience,
+reaching that point usually makes the phone fail to boot.
+In my case, it appears that my Birch phone can go down the most.
+
+This is a somewhat conservative set of values that I've seen
+working well on all my devices; I haven't tried very hard to
+optimize it, so more experiments are welcome.
+
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: 511f76bf1dce ("arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v2:
-  - note that the issue was identified by my static analysis tool
-  - and confirmed by manual review
+ .../boot/dts/freescale/imx8mq-librem5-r3.dts  |  2 +-
+ .../boot/dts/freescale/imx8mq-librem5.dtsi    | 22 ++++++++++++++-----
+ 2 files changed, 17 insertions(+), 7 deletions(-)
 
- drivers/md/md.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 6d73f6e196a9..4ce7512dc834 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -3871,6 +3871,9 @@ static struct md_rdev *md_import_device(dev_t newdev, int super_format, int supe
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+index cd3c3edd48fa3..425f4ef7cb2dd 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+@@ -12,7 +12,7 @@ / {
  
- out_blkdev_put:
- 	fput(rdev->bdev_file);
-+	md_rdev_clear(rdev);
-+	kobject_put(&rdev->kobj);
-+	return ERR_PTR(err);
- out_clear_rdev:
- 	md_rdev_clear(rdev);
- out_free_rdev:
+ &a53_opp_table {
+ 	opp-1000000000 {
+-		opp-microvolt = <1000000>;
++		opp-microvolt = <950000>;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+index c86cd20d4e709..8e4ec54ce3adc 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -704,8 +704,8 @@ buck1_reg: BUCK1 {
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <900000>;
+-				rohm,dvs-idle-voltage = <850000>;
++				rohm,dvs-run-voltage = <880000>;
++				rohm,dvs-idle-voltage = <820000>;
+ 				rohm,dvs-suspend-voltage = <800000>;
+ 				regulator-always-on;
+ 			};
+@@ -716,8 +716,8 @@ buck2_reg: BUCK2 {
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <1000000>;
+-				rohm,dvs-idle-voltage = <900000>;
++				rohm,dvs-run-voltage = <950000>;
++				rohm,dvs-idle-voltage = <850000>;
+ 				regulator-always-on;
+ 			};
+ 
+@@ -726,14 +726,14 @@ buck3_reg: BUCK3 {
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+-				rohm,dvs-run-voltage = <900000>;
++				rohm,dvs-run-voltage = <850000>;
+ 			};
+ 
+ 			buck4_reg: BUCK4 {
+ 				regulator-name = "buck4";
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+-				rohm,dvs-run-voltage = <1000000>;
++				rohm,dvs-run-voltage = <930000>;
+ 			};
+ 
+ 			buck5_reg: BUCK5 {
+@@ -1214,3 +1214,13 @@ &wdog1 {
+ 	fsl,ext-reset-output;
+ 	status = "okay";
+ };
++
++&a53_opp_table {
++	opp-1000000000 {
++		opp-microvolt = <850000>;
++	};
++
++	opp-1500000000 {
++		opp-microvolt = <950000>;
++	};
++};
 -- 
-2.43.0
+2.53.0
 
 
