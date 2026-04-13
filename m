@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-236199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEbVIEUV3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:09:41 +0200
+	id CA9tCN8e3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C643EE5F2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:09:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8023EFF49
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3ACAD3038A3C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:05:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5864E3069EDF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AE8282F2F;
-	Mon, 13 Apr 2026 16:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF6E3148A3;
+	Mon, 13 Apr 2026 16:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qY46S/6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPPlQQoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A071B282F1C;
-	Mon, 13 Apr 2026 16:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8C730C361;
+	Mon, 13 Apr 2026 16:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096297; cv=none; b=TOgcs9ZR+yw4D9AA9SDdXZj/Ltt2kT0Dysp1KBClPjeYlmkGLNIdU4Ssdw2kdBw8d8qPVpr9KVnPNMHfIL+rOOGA6gZFu/fC49rDvTrBv1fH2L7MW/a61uCve/8EyG51/lljUHyob30Pd15FgS1YJG5ZT0YfrvHF1s/8XYb1hF8=
+	t=1776098272; cv=none; b=qXacECj9C1/L/+IyPgMlpPwAUPbPtJWR+W28EgPCbkxGyqf6Et3jcRm1AMbv8OYnu4/oS7/8JzPYvzz8u2E0nQe97xQtqXvOKPWElUowTD/yeQI0U4x7n5ZIiy05gGObhVxMYYwMF5dairBC9y+LuvWrebrwTc968RgWN3r4oao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096297; c=relaxed/simple;
-	bh=V37Q5DMlOo9avUG9a92mTh4Ux3+dcSgHvk+UgfG1C7Q=;
+	s=arc-20240116; t=1776098272; c=relaxed/simple;
+	bh=e/crhs7Z8/RzLHgeA/J/9KH1LmHdK92x8T7k6drX6TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4vMvkhu+gMXohtQ3cAQY+mXV7uhPng3lhYFOCZaCvYGrMvK3zMxiv2199Ly3ssSc6vnaXBYoUpWNUbnnIQhqrnOwD88InjOyLUmKjtzTRnc25b/yUAStF4FBMIdoQj9wvj29FSkletbCdCGFG1GhEp0fGKQQbmblfoiwvqDN3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qY46S/6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DF0C2BCB0;
-	Mon, 13 Apr 2026 16:04:57 +0000 (UTC)
+	 MIME-Version; b=f6oWOLuaE4sQ3e0nfY0sT92ZpIPapN5tL2Pw+rMOgm0COy4mPp7LCNn/v93eI6tjQOH7GFGe1+XFDXk7kjZIAXuXTX+uI9SW0B41k0MpbATxJ6urbB0y6/+ScjcxsFmn/KZnC2yv0uYEPNev+7no8Fght0gaiJ6HCNqUEfThEyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPPlQQoO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADA3C2BCB3;
+	Mon, 13 Apr 2026 16:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096297;
-	bh=V37Q5DMlOo9avUG9a92mTh4Ux3+dcSgHvk+UgfG1C7Q=;
+	s=korg; t=1776098272;
+	bh=e/crhs7Z8/RzLHgeA/J/9KH1LmHdK92x8T7k6drX6TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qY46S/6GRcCTbs9FCb7v6EaFBQg48VCjWHhgqaMLWOaolYOjGNIeqrt8+4EYXmjxS
-	 KPb/BnwzA5OhzOF3Vx5q4vffiRxm/twJlJIMK90Apr6FfKReKFMPFFEDbVZp3V+7XJ
-	 aKQLtHPizM3/grr4zr+TXHGP9WgPDuJ967mJX2cs=
+	b=WPPlQQoOUktlP36yXY6mt2+GLbPJjZO+l4g5EVWMV9/4n9YVnU15pZOFmf4iwaM/K
+	 POQd7iCZSUCZUuPi9BgEBeOafMPkzKmmUIqY8ZU8Z6axpay49asmnhBvdLD2mBaucB
+	 J5XBhhaQ2tf00oyuafz6Q4zjN6zBtD2BhmJQDUe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Haoze Xie <royenheart@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.19 44/86] batman-adv: hold claim backbone gateways by reference
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 460/570] iio: light: vcnl4035: fix scan buffer on big-endian
 Date: Mon, 13 Apr 2026 17:59:51 +0200
-Message-ID: <20260413155733.210789040@linuxfoundation.org>
+Message-ID: <20260413155847.702386476@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,149 +68,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
-	TAGGED_FROM(0.00)[bounces-236199-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-236976-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lzu.edu.cn:email,narfation.org:email]
-X-Rspamd-Queue-Id: 58C643EE5F2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1E8023EFF49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoze Xie <royenheart@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 82d8701b2c930d0e96b0dbc9115a218d791cb0d2 upstream.
+commit fdc7aa54a5d44c05880a4aad7cfb41aacfd16d7b upstream.
 
-batadv_bla_add_claim() can replace claim->backbone_gw and drop the old
-gateway's last reference while readers still follow the pointer.
+Rework vcnl4035_trigger_consumer_handler() so that we are not passing
+what should be a u16 value as an int * to regmap_read(). This won't
+work on bit endian systems.
 
-The netlink claim dump path dereferences claim->backbone_gw->orig and
-takes claim->backbone_gw->crc_lock without pinning the underlying
-backbone gateway. batadv_bla_check_claim() still has the same naked
-pointer access pattern.
+Instead, add a new unsigned int variable to pass to regmap_read(). Then
+copy that value into the buffer struct.
 
-Reuse batadv_bla_claim_get_backbone_gw() in both readers so they operate
-on a stable gateway reference until the read-side work is complete.
-This keeps the dump and claim-check paths aligned with the lifetime
-rules introduced for the other BLA claim readers.
+The buffer array is replaced with a struct since there is only one value
+being read. This allows us to use the correct u16 data type and has a
+side-effect of simplifying the alignment specification.
 
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Fixes: 04f3f5bf1883 ("batman-adv: add B.A.T.M.A.N. Dump BLA claims via netlink")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Also fix the endianness of the scan format from little-endian to CPU
+endianness. Since we are using regmap to read the value, it will be
+CPU-endian.
+
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/iio/light/vcnl4035.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -2130,6 +2130,7 @@ batadv_bla_claim_dump_entry(struct sk_bu
- 			    struct batadv_bla_claim *claim)
- {
- 	const u8 *primary_addr = primary_if->net_dev->dev_addr;
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	u16 backbone_crc;
- 	bool is_own;
- 	void *hdr;
-@@ -2145,32 +2146,35 @@ batadv_bla_claim_dump_entry(struct sk_bu
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -105,17 +105,23 @@ static irqreturn_t vcnl4035_trigger_cons
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct vcnl4035_data *data = iio_priv(indio_dev);
+ 	/* Ensure naturally aligned timestamp */
+-	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)]  __aligned(8) = { };
++	struct {
++		u16 als_data;
++		aligned_s64 timestamp;
++	} buffer = { };
++	unsigned int val;
+ 	int ret;
  
- 	genl_dump_check_consistent(cb, hdr);
- 
--	is_own = batadv_compare_eth(claim->backbone_gw->orig,
--				    primary_addr);
-+	backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
-+
-+	is_own = batadv_compare_eth(backbone_gw->orig, primary_addr);
- 
--	spin_lock_bh(&claim->backbone_gw->crc_lock);
--	backbone_crc = claim->backbone_gw->crc;
--	spin_unlock_bh(&claim->backbone_gw->crc_lock);
-+	spin_lock_bh(&backbone_gw->crc_lock);
-+	backbone_crc = backbone_gw->crc;
-+	spin_unlock_bh(&backbone_gw->crc_lock);
- 
- 	if (is_own)
- 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
- 			genlmsg_cancel(msg, hdr);
--			goto out;
-+			goto put_backbone_gw;
- 		}
- 
- 	if (nla_put(msg, BATADV_ATTR_BLA_ADDRESS, ETH_ALEN, claim->addr) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_VID, claim->vid) ||
- 	    nla_put(msg, BATADV_ATTR_BLA_BACKBONE, ETH_ALEN,
--		    claim->backbone_gw->orig) ||
-+		    backbone_gw->orig) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_CRC,
- 			backbone_crc)) {
- 		genlmsg_cancel(msg, hdr);
--		goto out;
-+		goto put_backbone_gw;
+-	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, (int *)buffer);
++	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, &val);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev,
+ 			"Trigger consumer can't read from sensor.\n");
+ 		goto fail_read;
  	}
- 
- 	genlmsg_end(msg, hdr);
- 	ret = 0;
- 
-+put_backbone_gw:
-+	batadv_backbone_gw_put(backbone_gw);
- out:
- 	return ret;
- }
-@@ -2448,6 +2452,7 @@ out:
- bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
- 			    u8 *addr, unsigned short vid)
- {
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	struct batadv_bla_claim search_claim;
- 	struct batadv_bla_claim *claim = NULL;
- 	struct batadv_hard_iface *primary_if = NULL;
-@@ -2470,9 +2475,13 @@ bool batadv_bla_check_claim(struct batad
- 	 * return false.
- 	 */
- 	if (claim) {
--		if (!batadv_compare_eth(claim->backbone_gw->orig,
-+		backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+-					iio_get_time_ns(indio_dev));
 +
-+		if (!batadv_compare_eth(backbone_gw->orig,
- 					primary_if->net_dev->dev_addr))
- 			ret = false;
-+
-+		batadv_backbone_gw_put(backbone_gw);
- 		batadv_claim_put(claim);
- 	}
++	buffer.als_data = val;
++	iio_push_to_buffers_with_timestamp(indio_dev, &buffer,
++					   iio_get_time_ns(indio_dev));
  
+ fail_read:
+ 	iio_trigger_notify_done(indio_dev->trig);
+@@ -378,7 +384,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ 	{
+@@ -392,7 +398,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ };
 
 
 
