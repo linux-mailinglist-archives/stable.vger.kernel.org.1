@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-237393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFEUOvsl3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:59 +0200
+	id CHebNVEV3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:09:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54193F139A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EA13EE601
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 861823050444
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C3973004F4E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59353264CA;
-	Mon, 13 Apr 2026 16:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BBF24DCF6;
+	Mon, 13 Apr 2026 16:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqNLI9Ia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+yGKvuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993263161BF;
-	Mon, 13 Apr 2026 16:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB3023D7E3;
+	Mon, 13 Apr 2026 16:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099339; cv=none; b=TfgFk1G9S58GIXm2wIufxpKN99lUENsr5Di1/MotfnOPLz2DLQVS856Y6q0Wsm6lZED5Ihznm4HVznvzFHpa+4HzKw+VxkSS3FkDXbFjnEctJTEA8/jU90+OcCqX2DJ8QTJLOhrMi8/AWc5p/wXSSJX6vYYBZjy110d+rVcxGKw=
+	t=1776096207; cv=none; b=HJlX6Dnl5wOVTGgoIqQpF42Ck81HItKyW9k2xID/KJbQsnpjk8nTZZg2LX0eLwDCay1GXlb9snWHw2FoFKG+VYZrxpBcpUjDasPpBfzjS84/mMd34a7otR6+DuKETyuk3qnzlmUUhb1CU34ExWdeO7ZursjRP7vXziCYoNpeXsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099339; c=relaxed/simple;
-	bh=HX1lAn0vVTiXbva4NIfPh9Lpi0rEtLWR1JRNmv5uq7Q=;
+	s=arc-20240116; t=1776096207; c=relaxed/simple;
+	bh=if8d9mHzBf1qnWxzQpXllAs7aWwjW7bj+3jYB44F0kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBopaBsbibF+qk8dR2o8mV9muvTEImWCOd5q2ufzySZouFDwVG4ucdfolgCHUwNS4AOG2frZnhXdoAmH8GfQ/Y4QRr0emctN45V9jYWzf2nWhkT/OyOZM/MW3snfPdBQAV03DpR5yDKqoV7OtN2M+1RDN0EmQq7agK7I4UOrrGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqNLI9Ia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF68C2BCAF;
-	Mon, 13 Apr 2026 16:55:39 +0000 (UTC)
+	 MIME-Version; b=GdiNTdYIfvYzZmGjZ7F2SiJq2SV0RvHF+Hs8XzUCOzlXtEBpoKXxDR1tb+H6UpfSQf0+RUIYwmECgur6AF7G9dFTKc+9wjOQtGx2mZYaJra+Va0++M+GWQSFmVejRRUeuh/NHhz1XByNqod3i8Y6Tr1CtqdjFHqZnD6S9ocPK34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+yGKvuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5071C2BCAF;
+	Mon, 13 Apr 2026 16:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099339;
-	bh=HX1lAn0vVTiXbva4NIfPh9Lpi0rEtLWR1JRNmv5uq7Q=;
+	s=korg; t=1776096207;
+	bh=if8d9mHzBf1qnWxzQpXllAs7aWwjW7bj+3jYB44F0kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqNLI9IatARSqoRisyX8/ddumHUgfNZ9Er0OSgVCRfzvgXNPKKnqMRKVLW72NCEKn
-	 c0szDC6Q5IZ1pm5UUDbWOmFP6+PeXW5Ci4bLstxCPvOWHwxEGP/+ZsoN0GQJHSmkVa
-	 MTEAoYtDTD8Ag8L6cV0QR6dw0btxGs6Pqa/Q/K/I=
+	b=u+yGKvuoK+hrRyCc28LjL3H5Y+TPmZ5ATb81OEyZZ4Y6Onq5QHKN7husbJroY5TrB
+	 opxQ8zXvvtfTWC9ncDYxQVMmowUTPVQsa5QyQ97GNDKSNF7LFlsp6wO4AT2aw3e+q1
+	 WkDIMN+wKMwqjxXZVwtKhdiF8CgUy7m7TzVdbpyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	stable <stable@kernel.org>,
-	Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 5.10 302/491] scsi: ses: Handle positive SCSI error from ses_recv_diag()
-Date: Mon, 13 Apr 2026 17:59:07 +0200
-Message-ID: <20260413155830.349408916@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH 6.19 01/86] usb: typec: ucsi: skip connector validation before init
+Date: Mon, 13 Apr 2026 17:59:08 +0200
+Message-ID: <20260413155731.626357420@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +63,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237393-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236163-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.de:email,oracle.com:email,hansenpartnership.com:email]
-X-Rspamd-Queue-Id: E54193F139A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: 08EA13EE601
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
 
-commit 7a9f448d44127217fabc4065c5ba070d4e0b5d37 upstream.
+commit 5a1140404cbf7ba40137dfb1fb96893aa9a67d68 upstream.
 
-ses_recv_diag() can return a positive value, which also means that an
-error happened, so do not only test for negative values.
+Notifications can arrive before ucsi_init() has populated
+ucsi->cap.num_connectors via GET_CAPABILITY. At that point
+num_connectors is still 0, causing all valid connector numbers to be
+incorrectly rejected as bogus.
 
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://patch.msgid.link/2026022301-bony-overstock-a07f@gregkh
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Skip the bounds check when num_connectors is 0 (not yet initialized).
+Pre-init notifications are already handled safely by the early-event
+guard in ucsi_connector_change().
+
+Reported-by: Takashi Iwai <tiwai@suse.de>
+Fixes: d2d8c17ac01a ("usb: typec: ucsi: validate connector number in ucsi_notify_common()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+Tested-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260407063958.863-1-nathan.c.rebello@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ses.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/ses.c
-+++ b/drivers/scsi/ses.c
-@@ -184,7 +184,7 @@ static unsigned char *ses_get_page2_desc
- 	unsigned char *type_ptr = ses_dev->page1_types;
- 	unsigned char *desc_ptr = ses_dev->page2 + 8;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -43,7 +43,8 @@ void ucsi_notify_common(struct ucsi *ucs
+ 		return;
  
--	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len) < 0)
-+	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len))
- 		return NULL;
- 
- 	for (i = 0; i < ses_dev->page1_num_types; i++, type_ptr += 4) {
+ 	if (UCSI_CCI_CONNECTOR(cci)) {
+-		if (UCSI_CCI_CONNECTOR(cci) <= ucsi->cap.num_connectors)
++		if (!ucsi->cap.num_connectors ||
++		    UCSI_CCI_CONNECTOR(cci) <= ucsi->cap.num_connectors)
+ 			ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
+ 		else
+ 			dev_err(ucsi->dev, "bogus connector number in CCI: %lu\n",
 
 
 
