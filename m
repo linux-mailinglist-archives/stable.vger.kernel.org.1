@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePeUFDkg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:25 +0200
+	id +6pjMhEh3Wn5aAkAu9opvQ
+	(envelope-from <stable+bounces-236685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81333F0491
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D063F074C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07DDE3042405
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A52E4328FE83
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C405D3148B4;
-	Mon, 13 Apr 2026 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401A930B508;
+	Mon, 13 Apr 2026 16:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNjBVloT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxadQttD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868CC313535;
-	Mon, 13 Apr 2026 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0252E2E11B9;
+	Mon, 13 Apr 2026 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098717; cv=none; b=dpIQ9qh+/pW5mydwlUbqiwG3VJLF/Ut0jHxytqlwrUgo6wCXjpCzL8ly2mJ3lBCTf6vho+ofN0aJJ9ZA0w9gEOWwLOpp74kichB/M/qmy5YO9cblZtEeXAz5OpJJEumRAtzR1ltUsKOizgACzznEk+8lTe5GkiZl+IjwAIms7fQ=
+	t=1776097541; cv=none; b=Dl1eDQPCLJeb/qh5XryOm2CL8PyHLQr0YghoFbJZOjLNFOvbGg4OhNaZ9ODCK0+2Pi6f73tg2BG0ahplPnoHQKuDxeN+ufQFJIRu6u5NGuxyr4pBf2Bgm3BRRk8G8PZva/3Galg0uiMNzXTsNg7KjOxcEF4rxRfzMi/vzXV4CWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098717; c=relaxed/simple;
-	bh=I1oMgeVAGmG+cyEh3AQe8D9einXMqyOrxGioUh92gvw=;
+	s=arc-20240116; t=1776097541; c=relaxed/simple;
+	bh=KpEf4MZR/3yvNHDNguCDoSwQXN35290e7jg9rdzSFOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3BUVDV+frym7JtPVvkIqcXxIkAIFHGROTl2sOTVCnz2MDgEvf3uazpokk5yVd6AI0tnvjmgffQ6B17r/QL75lzh64FvF3fSUWC91YysSt8j55Eo0jwNcGJ8JWyh4Nd53CQcq27JYVcVeDuch4R7blr6yo+8PCDHfMdcfw8IAPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNjBVloT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9C9C2BCAF;
-	Mon, 13 Apr 2026 16:45:16 +0000 (UTC)
+	 MIME-Version; b=ESFQ9lf1usYQH/ZqSXulyRCpI1X54H13amqYx4kJN5hcLTs1hU3m4hmbfpfb3oFmOSjt2kWZd3FvjzS3hfBlAz1w/mNJ6Aj6mRCHlnrN/LSEmayKBUy2uNl00NsLwMRYxWa+CgQw5ubLFZrbaBINOuNfWg2G6+pwpBVmkd/u9uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxadQttD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52603C2BCB0;
+	Mon, 13 Apr 2026 16:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098717;
-	bh=I1oMgeVAGmG+cyEh3AQe8D9einXMqyOrxGioUh92gvw=;
+	s=korg; t=1776097540;
+	bh=KpEf4MZR/3yvNHDNguCDoSwQXN35290e7jg9rdzSFOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNjBVloT9tOFbMVOK5FZSvPI4g/080D96+/e4Ajss/8D00UHphZEwOPbSuwfuXdJ5
-	 zbiFTg9KHu1NDPyChSQ0WSsLlGUb3+VO8L1cqykMDjqw7Ln7Ox8KIUkk5+hynuPgUn
-	 bRHk4Vgqg+4GgKnfc+MtXTqTrRyJVsiwC4ImgFpg=
+	b=gxadQttD/i/eWwNkovWMprxonWOOCzk8V21cQosnA48J/QxesWNmef2VeH3sJE0qt
+	 k8KgyVJRB+a99SI5xT2Qiq73iv6c/USWKFtjuvmn2K4GPO7TtWrevueBPkzFOec1XB
+	 xsYlDxuqP2YhgVFwGLIwbiZxgGyuQrsk1uGtWUMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/491] bonding: handle BOND_LINK_FAIL, BOND_LINK_BACK as valid link states
-Date: Mon, 13 Apr 2026 17:55:06 +0200
-Message-ID: <20260413155821.332654595@linuxfoundation.org>
+	Josh Law <objecting@objecting.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 5.15 176/570] lib/bootconfig: fix off-by-one in xbc_verify_tree() unclosed brace error
+Date: Mon, 13 Apr 2026 17:55:07 +0200
+Message-ID: <20260413155837.050067189@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237150-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236685-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: C81333F0491
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,objecting.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 41D063F074C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Josh Law <objecting@objecting.org>
 
-[ Upstream commit 3348be7978f450ede0c308a4e8416ac716cf1015 ]
+commit 39ebc8d7f561e1b64eca87353ef9b18e2825e591 upstream.
 
-Before the fixed commit, we check slave->new_link during commit
-state, which values are only BOND_LINK_{NOCHANGE, UP, DOWN}. After
-the commit, we start using slave->link_new_state, which state also could
-be BOND_LINK_{FAIL, BACK}.
+__xbc_open_brace() pushes entries with post-increment
+(open_brace[brace_index++]), so brace_index always points one past
+the last valid entry.  xbc_verify_tree() reads open_brace[brace_index]
+to report which brace is unclosed, but this is one past the last
+pushed entry and contains stale/zero data, causing the error message
+to reference the wrong node.
 
-For example, when we set updelay/downdelay, after a failover,
-the slave->link_new_state could be set to BOND_LINK_{FAIL, BACK} in
-bond_miimon_inspect(). And later in bond_miimon_commit(), it will treat
-it as invalid and print an error, which would cause confusion for users.
+Use open_brace[brace_index - 1] to correctly identify the unclosed
+brace.  brace_index is known to be > 0 here since we are inside the
+if (brace_index) guard.
 
-[  106.440254] bond0: (slave veth2): link status down for interface, disabling it in 200 ms
-[  106.440265] bond0: (slave veth2): invalid new link 1 on slave
-[  106.648276] bond0: (slave veth2): link status definitely down, disabling slave
-[  107.480271] bond0: (slave veth2): link status up, enabling it in 200 ms
-[  107.480288] bond0: (slave veth2): invalid new link 3 on slave
-[  107.688302] bond0: (slave veth2): link status definitely up, 10000 Mbps full duplex
+Link: https://lore.kernel.org/all/20260312191143.28719-2-objecting@objecting.org/
 
-Let's handle BOND_LINK_{FAIL, BACK} as valid link states.
-
-Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20260304-b4-bond_updelay-v1-2-f72eb2e454d0@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ead1e19ad905 ("lib/bootconfig: Fix a bug of breaking existing tree nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ lib/bootconfig.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 87e23796680b3..812e1792c232e 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2592,8 +2592,14 @@ static void bond_miimon_commit(struct bonding *bond)
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -725,7 +725,7 @@ static int __init xbc_verify_tree(void)
  
- 			continue;
- 
-+		case BOND_LINK_FAIL:
-+		case BOND_LINK_BACK:
-+			slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
-+				  slave->link_new_state);
-+			continue;
-+
- 		default:
--			slave_err(bond->dev, slave->dev, "invalid new link %d on slave\n",
-+			slave_err(bond->dev, slave->dev, "invalid link_new_state %d on slave\n",
- 				  slave->link_new_state);
- 			bond_propose_link_state(slave, BOND_LINK_NOCHANGE);
- 
--- 
-2.51.0
-
+ 	/* Brace closing */
+ 	if (brace_index) {
+-		n = &xbc_nodes[open_brace[brace_index]];
++		n = &xbc_nodes[open_brace[brace_index - 1]];
+ 		return xbc_parse_error("Brace is not closed",
+ 					xbc_node_get_data(n));
+ 	}
 
 
 
