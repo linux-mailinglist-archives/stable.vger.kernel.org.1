@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eI5ULD4h3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:46 +0200
+	id UBLYFYUf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9569F3F07A7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0B93F01DD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 61AD730A3682
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74F6630D0ADB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760EC31714F;
-	Mon, 13 Apr 2026 16:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808CC30C360;
+	Mon, 13 Apr 2026 16:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnumTe56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D23hUWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AE93168EE;
-	Mon, 13 Apr 2026 16:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443A0306B0A;
+	Mon, 13 Apr 2026 16:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099019; cv=none; b=ke9oyqBNwKqjGH7+AP5pq6eR0ssrL3HRp1plra+w94mKmfckqfU4JPldFrs/q2k24d9UTCC2lYuAUdympmz/JIqQ6HlNryKHyexlGbJ9BQJEEMqGaEKSEAPB4GiWGXlYS13IesfGW06jj4saoxEwGgTKyEDfUUirRzMVYbFn9vg=
+	t=1776097759; cv=none; b=jEw9nEhUYfTmyWxlquPdztnGJu3Nd1a/e9gckHUgy6+Xnf32C30xDkHwQPeU7Gmkk9778v+XZNe/z+GCZwpsdwINtm+QvC5QBjm0+MHS+oFgZDWV2mipXrW20/MAo4UzMKb+pDpsf9ucsbXSKcPAlIfswsacSgkpUGI3I1dzqoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099019; c=relaxed/simple;
-	bh=njE6ZKdmwRz9nxt73l8IXdFuQIz03Dfp2VGMp6zsH78=;
+	s=arc-20240116; t=1776097759; c=relaxed/simple;
+	bh=jPu781NXK+M+rsVW+ALTVZLHPohaw5gSIHd2YsyfOVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKvD0dlAk1yOqedmWtFl9TnIV3Ml5A+dJRaJBdXu37beZTFRwPi3xZCHM8gf3e2HmKOjgIzKDeXGgqAporR52ix1b98ApsnLconMz3YIHMb31G7YbDLQVS26ZGZIzB+CVlf5Hwepybf+aMlkjWo3Y5ma/gEp3lsSKUkutJJ7hII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnumTe56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0863C2BCAF;
-	Mon, 13 Apr 2026 16:50:18 +0000 (UTC)
+	 MIME-Version; b=Gx12TfZqnKG3dF+fzzSdSOxs020pTYqZ0sHuIgjDHxZhnGZmS94wed41fxhWQGu39O02sLU3qPq4MeRe5cukElFwpQHPmfdaT6eAZj0rQYkS+kZ4oVc8EJMIzcmntJsRACUitzM5loQ6eH5K93h4C0pnuI6OZhhx0HjZsVjx69Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D23hUWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF539C2BCAF;
+	Mon, 13 Apr 2026 16:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099019;
-	bh=njE6ZKdmwRz9nxt73l8IXdFuQIz03Dfp2VGMp6zsH78=;
+	s=korg; t=1776097759;
+	bh=jPu781NXK+M+rsVW+ALTVZLHPohaw5gSIHd2YsyfOVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FnumTe56mZDIkXyZxRRyKtnJ1VhaLNZz6MHTkxVc45KRNivgH+c7eeNsouAx2ZM/0
-	 vBJS2rGrgQWgPgIff1HeRf/rVZinykEjDkk9wnqHel55+xlRvUw0reVT6vgJ7Ztu5a
-	 gAF/8NLeu7d+U5suVhnbhnp8ziRXa0d39yTkGbWE=
+	b=1D23hUWx5FA1v0rtEhjI2aHDj25fL7UIL7fY7ArQOPBg6sdqa0YhaCSBliwyA2vCQ
+	 ammrm000TRYBjiGbtFcSTjedE8uVS76VYhT40K0hKvTmhEl9KOjA81nGqLJNtV347b
+	 CFpyxBDA5LafF1o1LB6uGs3F59ogSrpBYI9go0BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 146/491] mtd: rawnand: cadence: Fix error check for dma_alloc_coherent() in cadence_nand_init()
+	Yiming Qian <yimingqian591@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 260/570] netfilter: xt_CT: drop pending enqueued packets on template removal
 Date: Mon, 13 Apr 2026 17:56:31 +0200
-Message-ID: <20260413155824.500482320@linuxfoundation.org>
+Message-ID: <20260413155840.217308568@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,66 +69,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236774-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237268-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: 9569F3F07A7
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CB0B93F01DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 0410e1a4c545c769c59c6eda897ad5d574d0c865 upstream.
+[ Upstream commit f62a218a946b19bb59abdd5361da85fa4606b96b ]
 
-Fix wrong variable used for error checking after dma_alloc_coherent()
-call. The function checks cdns_ctrl->dma_cdma_desc instead of
-cdns_ctrl->cdma_desc, which could lead to incorrect error handling.
+Templates refer to objects that can go away while packets are sitting in
+nfqueue refer to:
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- helper, this can be an issue on module removal.
+- timeout policy, nfnetlink_cttimeout might remove it.
+
+The use of templates with zone and event cache filter are safe, since
+this just copies values.
+
+Flush these enqueued packets in case the template rule gets removed.
+
+Fixes: 24de58f46516 ("netfilter: xt_CT: allow to attach timeout policy + glue code")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_CT.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2840,7 +2840,7 @@ static int cadence_nand_init(struct cdns
- 						  sizeof(*cdns_ctrl->cdma_desc),
- 						  &cdns_ctrl->dma_cdma_desc,
- 						  GFP_KERNEL);
--	if (!cdns_ctrl->dma_cdma_desc)
-+	if (!cdns_ctrl->cdma_desc)
- 		return -ENOMEM;
+diff --git a/net/netfilter/xt_CT.c b/net/netfilter/xt_CT.c
+index 5d19cb059b197..3dd02482b437b 100644
+--- a/net/netfilter/xt_CT.c
++++ b/net/netfilter/xt_CT.c
+@@ -16,6 +16,7 @@
+ #include <net/netfilter/nf_conntrack_ecache.h>
+ #include <net/netfilter/nf_conntrack_timeout.h>
+ #include <net/netfilter/nf_conntrack_zones.h>
++#include "nf_internals.h"
  
- 	cdns_ctrl->buf_size = SZ_16K;
+ static inline int xt_ct_target(struct sk_buff *skb, struct nf_conn *ct)
+ {
+@@ -269,6 +270,9 @@ static void xt_ct_tg_destroy(const struct xt_tgdtor_param *par,
+ 	struct nf_conn_help *help;
+ 
+ 	if (ct) {
++		if (info->helper[0] || info->timeout[0])
++			nf_queue_nf_hook_drop(par->net);
++
+ 		help = nfct_help(ct);
+ 		if (help)
+ 			nf_conntrack_helper_put(help->helper);
+-- 
+2.51.0
+
 
 
 
