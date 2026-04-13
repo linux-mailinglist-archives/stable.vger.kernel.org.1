@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICC+LpQf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-236777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:40 +0200
+	id cM64Ot8g3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F073F0210
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DDB3F06B8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62D9C31335D0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24A903083F7A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4954030C371;
-	Mon, 13 Apr 2026 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C298C314A8E;
+	Mon, 13 Apr 2026 16:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tw2sn5Xs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbOZDxmk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5DE26CE32;
-	Mon, 13 Apr 2026 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A6A223DCE;
+	Mon, 13 Apr 2026 16:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097767; cv=none; b=pOXYxspSaIBzmW1U542+jJ+q3By6BlCu28BP9bgbnaWBXL3+5DlHgCXDmKUA0Xse9GumbhLgemN2MyaWNukmGMNsSvG58dits9U52GxQcF8cvpTSilsmvX7nODyA6fIvTqyJuleArYU0NLaZJnH1cti8pC5Hh0lYQM8BmKERYbM=
+	t=1776098861; cv=none; b=b4Pjf2KeUUjLQs42OmpFTHZ1rF6mampgJMW1Q29IVjcA+emUiVqcRwXe2mmz+cBwT5yhpv43gRqmCP0fYkxV3K8bE3kvcUznxef/qk/Vq/7OjY/ImyNN8krCj1VRqHvZx5fWn0fEdusTUAqmGq7nPLwmXuk77oBNk2UELjOStmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097767; c=relaxed/simple;
-	bh=0wQEu5BE5XsDbsSV+RDaFyd0VeRYEt5s1+eiKKtrf74=;
+	s=arc-20240116; t=1776098861; c=relaxed/simple;
+	bh=Lh2+5xvXMXkAsXTIlJYPnk7XdPsbqh+1ijConrvHC54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naRLj+jMfS/ZtqYhLQ26DX3w2VYbdjsFCXO86BcQJIukCaf9ykvJO7Kyg4XyQGVIMe6arpM9WNCDbsN698E3W9cpWuJhdmKgjZKF8gEfN5aQKfB5J2f0vEcvSp7w9rBTqupN/UvotR3M8CpdRZvopZ59FD/GPfsV41ZKugV4I9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tw2sn5Xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95774C2BCAF;
-	Mon, 13 Apr 2026 16:29:26 +0000 (UTC)
+	 MIME-Version; b=l17WTXZQx0ZJ58gKdAbPuyd7qdNWk9wuvWESjayHiUvwH85iZEmTe13U+xyo9HeP/oSBcbIJhsHyGGEtCf/shmM0akJJzL1O6vjNqaoEwGUOWCV+3E7H76Sgc8KCcoBLsp6Z2ohklxiQ4rKUWaK25r5IhImyPKc0zKOFyqeErqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbOZDxmk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDDCC2BCAF;
+	Mon, 13 Apr 2026 16:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097766;
-	bh=0wQEu5BE5XsDbsSV+RDaFyd0VeRYEt5s1+eiKKtrf74=;
+	s=korg; t=1776098861;
+	bh=Lh2+5xvXMXkAsXTIlJYPnk7XdPsbqh+1ijConrvHC54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tw2sn5XsZ6p31yTgNnkjsKTRsqNQCELUK3tCjdtDdunx/QUgNRl3cCQnlmaQEa6Rp
-	 6Tfvnj8RdfnvxiRpCibP8F4VGw6jymdSPSwg8YdbxPyep5dMN5FFcQ/CpTnihqem/P
-	 hMB/YvkqzLh7+fzAAoz1tBF3N4mAdwnsdpWG7LOk=
+	b=DbOZDxmkkjem2PAyYyzBsZO4DuBhabJcww4J63LqXJVE3nG7YvKABZ0nXQEiQHhPo
+	 LKYMHdBTs2baSAhKH/Vf5OhGjwJXbgxIjf41QTa8dyr0vjLyiYKDIXkFqjNMl+kh09
+	 qjHZHwuZ7mrCU2U/n/1wFkkd7wKuNMKtulktpiEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Hodges <git@danielhodges.dev>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 232/570] wifi: libertas: fix use-after-free in lbs_free_adapter()
+	Lyude Paul <lyude@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.10 118/491] nouveau/dpcd: return EBUSY for aux xfer if the device is asleep
 Date: Mon, 13 Apr 2026 17:56:03 +0200
-Message-ID: <20260413155839.151942407@linuxfoundation.org>
+Message-ID: <20260413155823.459331765@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236777-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237207-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,67 +89,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 09F073F0210
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74DDB3F06B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Hodges <git@danielhodges.dev>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 03cc8f90d0537fcd4985c3319b4fafbf2e3fb1f0 ]
+commit 8f3c6f08ababad2e3bdd239728cf66a9949446b4 upstream.
 
-The lbs_free_adapter() function uses timer_delete() (non-synchronous)
-for both command_timer and tx_lockup_timer before the structure is
-freed. This is incorrect because timer_delete() does not wait for
-any running timer callback to complete.
+If we have runtime suspended, and userspace wants to use /dev/drm_dp_*
+then just tell it the device is busy instead of crashing in the GSP
+code.
 
-If a timer callback is executing when lbs_free_adapter() is called,
-the callback will access freed memory since lbs_cfg_free() frees the
-containing structure immediately after lbs_free_adapter() returns.
+WARNING: CPU: 2 PID: 565741 at drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c:164 r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
+CPU: 2 UID: 0 PID: 565741 Comm: fwupd Not tainted 6.18.10-200.fc43.x86_64 #1 PREEMPT(lazy)
+Hardware name: LENOVO 20QTS0PQ00/20QTS0PQ00, BIOS N2OET65W (1.52 ) 08/05/2024
+RIP: 0010:r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
 
-Both timer callbacks (lbs_cmd_timeout_handler and lbs_tx_lockup_handler)
-access priv->driver_lock, priv->cur_cmd, priv->dev, and other fields,
-which would all be use-after-free violations.
+This is a simple fix to get backported. We should probably engineer a
+proper power domain solution to wake up devices and keep them awake
+while fw updates are happening.
 
-Use timer_delete_sync() instead to ensure any running timer callback
-has completed before returning.
-
-This bug was introduced in commit 8f641d93c38a ("libertas: detect TX
-lockups and reset hardware") where del_timer() was used instead of
-del_timer_sync() in the cleanup path. The command_timer has had the
-same issue since the driver was first written.
-
-Fixes: 8f641d93c38a ("libertas: detect TX lockups and reset hardware")
-Fixes: 954ee164f4f4 ("[PATCH] libertas: reorganize and simplify init sequence")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-Link: https://patch.msgid.link/20260206195356.15647-1-git@danielhodges.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ del_timer() => timer_delete_sync() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8894f4919bc4 ("drm/nouveau: register a drm_dp_aux channel for each dp connector")
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20260224031750.791621-1-airlied@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/libertas/main.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/marvell/libertas/main.c
-+++ b/drivers/net/wireless/marvell/libertas/main.c
-@@ -882,8 +882,8 @@ static void lbs_free_adapter(struct lbs_
- {
- 	lbs_free_cmd_buffer(priv);
- 	kfifo_free(&priv->event_fifo);
--	del_timer(&priv->command_timer);
--	del_timer(&priv->tx_lockup_timer);
-+	timer_delete_sync(&priv->command_timer);
-+	timer_delete_sync(&priv->tx_lockup_timer);
- 	del_timer(&priv->auto_deepsleep_timer);
- }
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -1176,6 +1176,9 @@ nouveau_connector_aux_xfer(struct drm_dp
+ 	u8 size = msg->size;
+ 	int ret;
  
++	if (pm_runtime_suspended(nv_connector->base.dev->dev))
++		return -EBUSY;
++
+ 	nv_encoder = find_encoder(&nv_connector->base, DCB_OUTPUT_DP);
+ 	if (!nv_encoder || !(aux = nv_encoder->aux))
+ 		return -ENODEV;
 
 
 
