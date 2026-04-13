@@ -1,167 +1,168 @@
-Return-Path: <stable+bounces-235982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uParGKy73GliVwkAu9opvQ
-	(envelope-from <stable+bounces-235982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 11:47:24 +0200
+	id Oxr4KM+/3Gn5VwkAu9opvQ
+	(envelope-from <stable+bounces-235983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:05:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6ACB3EA023
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 11:47:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052333EA2B9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD2CA30138B2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:47:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75194305D5E8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7823B2FE4;
-	Mon, 13 Apr 2026 09:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857B6346E56;
+	Mon, 13 Apr 2026 10:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ZD4W9kNu"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="WsxgqwXQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2296D36404A;
-	Mon, 13 Apr 2026 09:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB6626A1C4
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 10:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776073641; cv=none; b=ubAMoRnZUng7jUIMeP29lbydPwT3mTxaV3ixF2fNZs993Q9RSQNMq+JxKelVPZa3AyUiRfyiRlfcw4F/YErc1ULNYiZo64cT8lQIknDXZISrxYu8GL7YipVy52SImsfq2bszuRCfR9ndMhQ84AMAJx/N9KwLo8/mfZpYNpuVXrU=
+	t=1776074437; cv=none; b=e5wuRSG8/K62Hm6LHpeJzLxkbRzAYeWSj1igpxaKdanNS8obxlJVO75ZgxCBZC+WLKU85vs24Jwlc/pmO6kGFjglmBflrfosqDaepqX0Dca8nlQnM/bYh7F+NL4bK+EyVsC+Qf5s2lH1WJ3eIgyvh9QVEuhqmGyqQ/Hpkntblks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776073641; c=relaxed/simple;
-	bh=4aOb6ThLDBQYCx+aG1KLR6zwtxTjCP+veRl36Kco2eo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lfjXlWYQ+BikFZkOfl6BeV+QBib94NliXn+mqHV6ev20hUKuTHSimBOg3tyulA0qs1vDi/Z9ItRRoQSUaMpCKGMXry5pMlqBW6nUoGkhSnKLIKn6IzS3c5q6t10kJiOxy1Fw8HYYhrGvf/fp9cRU8FCxjyhbc5QF6FOQAB5HzKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ZD4W9kNu; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 867C860177;
-	Mon, 13 Apr 2026 11:47:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1776073636;
-	bh=pqKjOvCMf0uhkn7M/yAMIhfsnybJGiM7MI7A8LqwbwY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZD4W9kNuzSdcIhn28usvUu5YdOueHnKtT3fEDGoIfaHMZwbPm9RmncOhgTg3mMwkn
-	 xoxo9PKfnyhIpnrz6ue9dnhVTiqFk6VnHFqq+tnpOWcWW1mYsY9B9uQF/x8bTH/JOk
-	 piNxO7BoKj/F9UcmWDXAwzCMPTtkeJvmtrDtYEc4axDdOOKKR9CiJirNzwomNwxf1H
-	 xCMiXqo3o2cR87kj1Wh8vaXB/XaNoaB50zFinbjstYoxmltTz7PYEvO1yoZS62wpXO
-	 RD6/DLUlwH+1SGbsi2vCxOJzl9PEQ0Zx58UEzSBSje/4M4YnwtjRStsK0zok2E9kO4
-	 Cly0m/iILmytw==
-Date: Mon, 13 Apr 2026 11:47:13 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Li hongliang <1468888505@139.com>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, fw@strlen.de,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kadlec@netfilter.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	kaber@trash.net, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH 6.12.y] netfilter: conntrack: add missing netlink policy
- validations
-Message-ID: <ady7oZdDQ5OfQILP@chamomile>
-References: <20260413073105.2990210-1-1468888505@139.com>
+	s=arc-20240116; t=1776074437; c=relaxed/simple;
+	bh=sWKe8HP0sJXd7QJHbXK3WGN04TBury/ZKJX233KBMoE=;
+	h=Cc:Date:Mime-Version:To:Message-Id:References:In-Reply-To:From:
+	 Content-Type:Subject; b=LGRiaqg3mAaZIXK1YfZyKwHFLcIZ9LCQU3Rdb2j/2ZI5NZ6jaz3hY5Go+GpBD7T7muwsZx1R3gYgLAq1e8pjw3lMdA+ytvSqOkzpN5ruIf8ElSLG8vd/k0EHIG38yFusPrsi78XKG2hCLX2n8u8W8oIIs5sKEaeGkd6AKjIcXJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=WsxgqwXQ; arc=none smtp.client-ip=209.127.230.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1776074428; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=wXZHMvOtArXocx/kVEUqHny6lc21xP+IWbJSc6coTew=;
+ b=WsxgqwXQIM/n9h/qLGIKmFZ6dejNsGjIsLiUNiozddvBoyM/JcruqqJgEkTforlEEaszDp
+ pY1fNcO9YpdSb87fbGdaWG43LEf+qrvTDIysqcbbk0qQXSFIUup94LNqlXZudbdqZZUiLN
+ mvqxnAOyf5mNPteLVH7iGAgmxcAWITXHo0c2qyNkqcz/yNEk2HaTmkVFfmT7X2eaUeoTWb
+ e+z7NqlHrvl6++WQ4ChJ/BH2w26IQCRIi+u7JlyrsfhkEBsQ9g75UjtO/JC9vGCBS2BCUT
+ RZbakSIFDCIswYZDI+dSjSJcnjtxMxwhQUKu2clHUh1HcV3JPe0diF9oPkBY7g==
+Cc: =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	"Jinhui Guo" <guojinhui.liam@bytedance.com>, 
+	"Jason Wang" <jasowang@redhat.com>, "Jiri Pirko" <jiri@resnulli.us>, 
+	"Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, <linux-kernel@vger.kernel.org>, 
+	<stable@vger.kernel.org>, <virtualization@lists.linux.dev>
+Date: Mon, 13 Apr 2026 18:00:13 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260413073105.2990210-1-1468888505@139.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Mime-Version: 1.0
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+Content-Transfer-Encoding: 7bit
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: git-send-email 2.17.1
+Message-Id: <20260413100013.32399-1-guojinhui.liam@bytedance.com>
+References: <20260413034046-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260413034046-mutt-send-email-mst@kernel.org>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+X-Lms-Return-Path: <lba+269dcbeba+e9affb+vger.kernel.org+guojinhui.liam@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] virtio_pci_modern: Use GFP_ATOMIC with spin_lock_irqsave held in virtqueue_exec_admin_cmd()
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[netfilter.org:s=2025];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[netfilter.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235983-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235982-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[netfilter.org:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pablo@netfilter.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,strlen.de,lists.linux.dev,netfilter.org,davemloft.net,google.com,kernel.org,redhat.com,trash.net,gmail.com];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:email]
-X-Rspamd-Queue-Id: C6ACB3EA023
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guojinhui.liam@bytedance.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:dkim,bytedance.com:mid]
+X-Rspamd-Queue-Id: 052333EA2B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Why only 6.12?
+On Mon, Apr 13, 2026 at 03:45:20 -0400, "Michael S. Tsirkin" wrote:
+> GFP_ATOMIC allocations can and will fail. If using them, one must
+> retry, not just propagate failures.
+> Or just switch admin_vq->lock to a mutex?
 
-On Mon, Apr 13, 2026 at 03:31:05PM +0800, Li hongliang wrote:
-> From: Florian Westphal <fw@strlen.de>
-> 
-> [ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
-> 
-> Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
-> 
-> These attributes are used by the kernel without any validation.
-> Extend the netlink policies accordingly.
-> 
-> Quoting the reporter:
->   nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
->   value directly to ct->proto.sctp.state without checking that it is
->   within the valid range. [..]
-> 
->   and: ... with exp->dir = 100, the access at
->   ct->master->tuplehash[100] reads 5600 bytes past the start of a
->   320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
->   UBSAN.
-> 
-> Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-> Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
-> Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-> Signed-off-by: Florian Westphal <fw@strlen.de>
-> Signed-off-by: Li hongliang <1468888505@139.com>
-> ---
->  net/netfilter/nf_conntrack_netlink.c    | 2 +-
->  net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
->  2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-> index 323e147fe282..f51cdfba68fb 100644
-> --- a/net/netfilter/nf_conntrack_netlink.c
-> +++ b/net/netfilter/nf_conntrack_netlink.c
-> @@ -3460,7 +3460,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
->  
->  #if IS_ENABLED(CONFIG_NF_NAT)
->  static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
-> -	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
-> +	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
->  	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
->  };
->  #endif
-> diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-> index 4cc97f971264..fabb2c1ca00a 100644
-> --- a/net/netfilter/nf_conntrack_proto_sctp.c
-> +++ b/net/netfilter/nf_conntrack_proto_sctp.c
-> @@ -587,7 +587,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
->  }
->  
->  static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
-> -	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
-> +	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
-> +							 SCTP_CONNTRACK_HEARTBEAT_SENT),
->  	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
->  	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
->  };
-> -- 
-> 2.34.1
-> 
-> 
+Hi Michael,
+
+Thank you for the review.
+
+Regarding the suggestion to switch admin_vq->lock to a mutex:
+
+The virtqueue callback vp_modern_avq_done() holds admin_vq->lock and
+runs in an interrupt handler context, making it impractical to replace
+the spinlock with a mutex directly.
+
+I considered deferring the completion to a workqueue so we could safely
+use a mutex, but since this is a bug fix destined for stable@vger.kernel.org,
+doing so would introduce significant code churn (e.g., handling INIT_WORK,
+cancel_work_sync during cleanup, etc.) and increase the risk for backports.
+
+Therefore, using GFP_ATOMIC with the existing spinlock seems to be the most
+minimal and safest approach for a fix.
+
+However, just replacing GFP_KERNEL with GFP_ATOMIC isn't entirely safe
+because of how virtqueue_add_sgs() handles allocation failures. If kmalloc()
+fails under memory pressure with GFP_ATOMIC, the function falls back to using
+direct descriptors. If there are not enough free direct descriptors, it
+ultimately returns -ENOSPC.
+
+In the current code, -ENOSPC is handled with a busy loop:
+
+if (ret == -ENOSPC) {
+	spin_unlock_irqrestore(&admin_vq->lock, flags);
+	cpu_relax();
+	goto again;
+}
+
+If the -ENOSPC is actually caused by a GFP_ATOMIC allocation failure under
+memory pressure, this cpu_relax() loop will never yield the CPU to memory
+reclaim mechanisms (like kswapd), potentially leading to a soft lockup.
+
+To properly handle both actual queue-full conditions and GFP_ATOMIC failures,
+I propose replacing cpu_relax() with a sleep (e.g., usleep_range(10, 100)).
+This allows memory reclaim to run while we wait.
+
+I plan to send out a v2 patch with this modification:
+
+--- a/drivers/virtio/virtio_pci_modern.c
++++ b/drivers/virtio/virtio_pci_modern.c
+@@ -101,11 +101,11 @@ static int virtqueue_exec_admin_cmd(struct virtio_pci_admin_vq *admin_vq,
+                return -EIO;
+
+        spin_lock_irqsave(&admin_vq->lock, flags);
+-       ret = virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_KERNEL);
++       ret = virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_ATOMIC);
+        if (ret < 0) {
+                if (ret == -ENOSPC) {
+                        spin_unlock_irqrestore(&admin_vq->lock, flags);
+-                       cpu_relax();
++                       usleep_range(10, 100);
+                        goto again;
+                }
+                goto unlock_err;
+
+Does this approach align with your expectations for the fix?
+
+Thanks,
+Jinhui
 
