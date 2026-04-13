@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GSTC0Qf3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:20 +0200
+	id ON0kKoka3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B873F0117
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5169C3EF2CD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D839430201B6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AAF51300E2AB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5B731619A;
-	Mon, 13 Apr 2026 16:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777F227FD4F;
+	Mon, 13 Apr 2026 16:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4r8JW1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQbzCIfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A82D3161BF;
-	Mon, 13 Apr 2026 16:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B75B2472B6;
+	Mon, 13 Apr 2026 16:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099032; cv=none; b=CL+9+Tj/nW9Kv+mceXAMk12W5xw4BRVaM8MXuNtfaUwghW5V1BpA58aJEu5Xqf6vdmgxRLBQMQ87gKkWbsK5PNWuE035sup/4vxA90swNBnQLOL00VkoQil+dnCzwmS2a3azprxWEgecOkt1FCuSoDj4ZOXr5fl+5PrJ8L8r7lk=
+	t=1776097927; cv=none; b=Q1X01FqZc7hRyNTKihsVqq8gtgim+eAoW9B106Sx35chUKji+QnZPeawlDjLa4uIyZTs/mffrJCrfC94pYxbgc+DSLPuJNiTUQYbfhCfrgC99r8Iaj37uZ0XObZblpMCoknWNIllkMRLtqwQDi1bmH7AjDdnt04s4/uqn+QBPA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099032; c=relaxed/simple;
-	bh=juPsD51gu8aLjZx8Kvy/T11tSEtX1k5vncYxnMnX2mk=;
+	s=arc-20240116; t=1776097927; c=relaxed/simple;
+	bh=qeKZBoHuWdo80oECOXDMrN/4a7TQo+2w7JtWdz6x7ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNirZIgTbLBtRPq89kd0WERa2YzS45+pkO7GoUkI8vXPtzqoYxCnn3Kwmh34+64fAh4m5uFWc8Sh/RFKZu3n/HlrYPJLXKBiqaD9FxA7olSuzU3F4AuqhtaKvazDiKG2TfTRE/qKIVHdLAY5+ZL6uXonWfypXb2NHdLOQYboTeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4r8JW1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914B1C2BCAF;
-	Mon, 13 Apr 2026 16:50:31 +0000 (UTC)
+	 MIME-Version; b=lPf+0Z9qAcdovxByDtj+Sp5HTnVK1N7zP3/VnJKdyl26y6xL94Q2/Dzh55GmQxgxXCxD7c4C9nsPEna0vVt6C8YAizW0DGj+RCoFlwq6SY5v2iq3m7BIV/yyiGx71kvFEhpkZyt8fmniJCmKOLqkGl13BiNUehhoHQHE6aHg83s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQbzCIfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63DDC2BCAF;
+	Mon, 13 Apr 2026 16:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099031;
-	bh=juPsD51gu8aLjZx8Kvy/T11tSEtX1k5vncYxnMnX2mk=;
+	s=korg; t=1776097927;
+	bh=qeKZBoHuWdo80oECOXDMrN/4a7TQo+2w7JtWdz6x7ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4r8JW1iUQV4Tk+8JVk3NpxLYlE7O7VdeY1BKrB+WZwpKQtKMR94hwc4CUsATMOjt
-	 YbPOwLw5holG3bRo22pEgNqxqKOxquftz6yOHanWq9RQBjDTGgPBfco10ygyTzAYmr
-	 82YWpA4ejtHuXSeFNlZir7tK+/I7Ob3e2oHb4C/Y=
+	b=FQbzCIfeuTQ4KkRN2cXiYpvRvqCtUuJRsRLKOvPNdjUSsfP2qrSzepz3UMEtK1V/U
+	 Cj7t6pgGt7Unl+tPnLtVQuINJEzRztmwNjIGjVpKrMXgornxNJfxxB4bicgYD+NhmF
+	 1ERE7ZZd+XqVDZznohrmS928f1pFhdjpP1euvmRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Nicholas Carlini <npc@anthropic.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 184/491] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
-Date: Mon, 13 Apr 2026 17:57:09 +0200
-Message-ID: <20260413155825.951641665@linuxfoundation.org>
+Subject: [PATCH 5.15 299/570] nvme-pci: cap queue creation to used queues
+Date: Mon, 13 Apr 2026 17:57:10 +0200
+Message-ID: <20260413155841.702597166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237273-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236840-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,109 +86,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,anthropic.com:email]
-X-Rspamd-Queue-Id: D8B873F0117
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,samsung.com:email]
+X-Rspamd-Queue-Id: 5169C3EF2CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 5133b61aaf437e5f25b1b396b14242a6bb0508e2 ]
+[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
 
-The NFSv4.0 replay cache uses a fixed 112-byte inline buffer
-(rp_ibuf[NFSD4_REPLAY_ISIZE]) to store encoded operation responses.
-This size was calculated based on OPEN responses and does not account
-for LOCK denied responses, which include the conflicting lock owner as
-a variable-length field up to 1024 bytes (NFS4_OPAQUE_LIMIT).
+If the user reduces the special queue count at runtime and resets the
+controller, we need to reduce the number of queues and interrupts
+requested accordingly rather than start with the pre-allocated queue
+count.
 
-When a LOCK operation is denied due to a conflict with an existing lock
-that has a large owner, nfsd4_encode_operation() copies the full encoded
-response into the undersized replay buffer via read_bytes_from_xdr_buf()
-with no bounds check. This results in a slab-out-of-bounds write of up
-to 944 bytes past the end of the buffer, corrupting adjacent heap memory.
-
-This can be triggered remotely by an unauthenticated attacker with two
-cooperating NFSv4.0 clients: one sets a lock with a large owner string,
-then the other requests a conflicting lock to provoke the denial.
-
-We could fix this by increasing NFSD4_REPLAY_ISIZE to allow for a full
-opaque, but that would increase the size of every stateowner, when most
-lockowners are not that large.
-
-Instead, fix this by checking the encoded response length against
-NFSD4_REPLAY_ISIZE before copying into the replay buffer. If the
-response is too large, set rp_buflen to 0 to skip caching the replay
-payload. The status is still cached, and the client already received the
-correct response on the original request.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Nicholas Carlini <npc@anthropic.com>
-Tested-by: Nicholas Carlini <npc@anthropic.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ replaced `op_status_offset + XDR_UNIT` with existing `post_err_offset` variable ]
+Tested-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    9 +++++++--
- fs/nfsd/state.h   |   17 ++++++++++++-----
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/nvme/host/pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5438,9 +5438,14 @@ nfsd4_encode_operation(struct nfsd4_comp
- 		int len = xdr->buf->len - post_err_offset;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 04cccbb05372a..c4a33e9d2c717 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2306,7 +2306,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
+ 	dev->nr_write_queues = write_queues;
+ 	dev->nr_poll_queues = poll_queues;
  
- 		so->so_replay.rp_status = op->status;
--		so->so_replay.rp_buflen = len;
--		read_bytes_from_xdr_buf(xdr->buf, post_err_offset,
-+		if (len <= NFSD4_REPLAY_ISIZE) {
-+			so->so_replay.rp_buflen = len;
-+			read_bytes_from_xdr_buf(xdr->buf,
-+						post_err_offset,
- 						so->so_replay.rp_buf, len);
-+		} else {
-+			so->so_replay.rp_buflen = 0;
-+		}
- 	}
- status:
- 	*p = op->status;
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -430,11 +430,18 @@ struct nfs4_client_reclaim {
- 	struct xdr_netobj	cr_princhash;
- };
- 
--/* A reasonable value for REPLAY_ISIZE was estimated as follows:  
-- * The OPEN response, typically the largest, requires 
-- *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + 
-- *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + 
-- *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes 
-+/*
-+ * REPLAY_ISIZE is sized for an OPEN response with delegation:
-+ *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +
-+ *   8(verifier) + 4(deleg. type) + 8(deleg. stateid) +
-+ *   4(deleg. recall flag) + 20(deleg. space limit) +
-+ *   ~32(deleg. ace) = 112 bytes
-+ *
-+ * Some responses can exceed this. A LOCK denial includes the conflicting
-+ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
-+ * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
-+ * saved. Enlarging this constant increases the size of every
-+ * nfs4_stateowner.
-  */
- 
- #define NFSD4_REPLAY_ISIZE       112 
+-	nr_io_queues = dev->nr_allocated_queues - 1;
++	/*
++	 * The initial number of allocated queue slots may be too large if the
++	 * user reduced the special queue parameters. Cap the value to the
++	 * number we need for this round.
++	 */
++	nr_io_queues = min(nvme_max_io_queues(dev),
++			   dev->nr_allocated_queues - 1);
+ 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
+ 	if (result < 0)
+ 		return result;
+-- 
+2.51.0
+
 
 
 
