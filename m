@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-236668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHHRJaQe3WmSaAkAu9opvQ:T2
-	(envelope-from <stable+bounces-236668-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:40 +0200
+	id yOSaEvYg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-236669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F53E3EFE75
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7503F06EA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECB603286CD8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCBD33287620
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A773090F5;
-	Mon, 13 Apr 2026 16:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E90306B0A;
+	Mon, 13 Apr 2026 16:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgckuaFy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeP3m/Ry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564CA2FE056;
-	Mon, 13 Apr 2026 16:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EB527280A;
+	Mon, 13 Apr 2026 16:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097497; cv=none; b=Q0o4fo7h4pbmoujYlTqgITTO2GHJ9izoP8tXklcn1596VKvuMGwCSn9AeWqPSsnk5u8i3vRA0dKHqo4HbsvudNtXhosH4uOPbsziTohLV8apJlmC5sry2V3XNJpEssLrzTJhDGqeygqJP3BfHnIwW8/bz3j4GmDqMmQGWOvBDqw=
+	t=1776097499; cv=none; b=bauq7e9OU/JGHBGbWTmJUuspiEfL+Doae91h/s1crXQRunU3lUJsy8/PNsHxX8JUTG7hZC5r6Bb41E5Z1d4dETaz+R0N11/lzCIAXeI0D/cgMumIs7dfQmGbvIG4i7ZgK21894vF3KtvzCNUdOLVivtBZbfxU4DfuPMaNivuROE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097497; c=relaxed/simple;
-	bh=byshTumN3VAZty13dbfoa9Skz8S/JIz40EFjizIhz1o=;
+	s=arc-20240116; t=1776097499; c=relaxed/simple;
+	bh=sfv0x3KIbZcjjIOkatBRrADXwSqWl8iCQhO0xiILxv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mdwx7tNarAientOPlq4iALGECQ++GZcCsrRsbW0A8+l50CGze1u3yJMn3lGUxMyCvBH1MmovQ0xLY0y1dBJxAPxJLxkrbnjLviBAl0mHP0xP5pb7/AijmIHY8j0+d5l+vN9/X6T0ctlMCAM/UGJ5texRM24ovskJjatakq0UHiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgckuaFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DDEC2BCAF;
-	Mon, 13 Apr 2026 16:24:56 +0000 (UTC)
+	 MIME-Version; b=ujcwezjNE8Hkdb/f2ZUB7cd/KsP5jCJo651sFWM+fBrt+wxDLp2MRFbSBK+2KwNbqREyB5CqBwa2JlAJc3TMmrqmAWvduRtKb7xKxSiCYsiCy9cxRSF2DEQuuM79zCwuuIF1k/dcwfO5b0Xvin3pXZoKjtzQN8GDMEjLFdvHzkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeP3m/Ry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FB8C2BCAF;
+	Mon, 13 Apr 2026 16:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097497;
-	bh=byshTumN3VAZty13dbfoa9Skz8S/JIz40EFjizIhz1o=;
+	s=korg; t=1776097499;
+	bh=sfv0x3KIbZcjjIOkatBRrADXwSqWl8iCQhO0xiILxv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgckuaFyZykfa7FrvYjCcdQudgt+idgZfbtt4ef3tSsjCncAPiMWFrIiwCGAeIZ3e
-	 bwZMQXk1610jb9/HBEQZ4atKsYeN4Ldcf3My6Y7FtP7LOPy4alfPqv0q3Pni/fqR7k
-	 O4gJRREN6AXr+XqqC9Fodq7GymaPxX0wTJDdyVNE=
+	b=ZeP3m/RyJwcvqe3JIHUUSYpqrvGDSImiVH88eMu0OLVU6X2dx3Xzni4tCgcvzq0oZ
+	 cjxahbtTe5XRfxCJFlubRrC/jx9nWrXqYgLysWjL/VWo1NfziB/OG6bpoN4UQUl+dk
+	 l2svr4aD2GshEawPRtfME0WMb4kmQmjYgFo+u6BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/570] ASoC: detect empty DMI strings
-Date: Mon, 13 Apr 2026 17:54:17 +0200
-Message-ID: <20260413155835.163178470@linuxfoundation.org>
+Subject: [PATCH 5.15 127/570] octeontx2-af: devlink: fix NIX RAS reporter recovery condition
+Date: Mon, 13 Apr 2026 17:54:18 +0200
+Message-ID: <20260413155835.200063535@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236668-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236669-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: 4F53E3EFE75
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AC7503F06EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,45 +99,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit a9683730e8b1d632674f81844ed03ddfbe4821c0 ]
+[ Upstream commit dc26ca99b835e21e76a58b1463b84adb0ca34f58 ]
 
-Some bootloaders like recent versions of U-Boot may install some DMI
-properties with empty values rather than not populate them. This manages
-to make its way through the validator and cleanup resulting in a rogue
-hyphen being appended to the card longname.
+The NIX RAS health reporter recovery routine checks nix_af_rvu_int to
+decide whether to re-enable NIX_AF_RAS interrupts. This is the RVU
+interrupt status field and is unrelated to RAS events, so the recovery
+flow may incorrectly skip re-enabling NIX_AF_RAS interrupts.
 
-Fixes: 4e01e5dbba96 ("ASoC: improve the DMI long card code in asoc-core")
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Link: https://patch.msgid.link/20260306174707.283071-2-casey.connolly@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Check nix_af_rvu_ras instead before writing NIX_AF_RAS_ENA_W1S.
+
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20260310184824.1183651-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index e406c896a511a..af8554e96035f 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1665,12 +1665,15 @@ static void cleanup_dmi_name(char *name)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index c5e3ef6b41a87..c3da400e87eba 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -578,7 +578,7 @@ static int rvu_hw_nix_ras_recover(struct devlink_health_reporter *reporter,
+ 	if (blkaddr < 0)
+ 		return blkaddr;
  
- /*
-  * Check if a DMI field is valid, i.e. not containing any string
-- * in the black list.
-+ * in the black list and not the empty string.
-  */
- static int is_dmi_valid(const char *field)
- {
- 	int i = 0;
+-	if (nix_event_ctx->nix_af_rvu_int)
++	if (nix_event_ctx->nix_af_rvu_ras)
+ 		rvu_write64(rvu, blkaddr, NIX_AF_RAS_ENA_W1S, ~0ULL);
  
-+	if (!field[0])
-+		return 0;
-+
- 	while (dmi_blacklist[i]) {
- 		if (strstr(field, dmi_blacklist[i]))
- 			return 0;
+ 	return 0;
 -- 
 2.51.0
 
