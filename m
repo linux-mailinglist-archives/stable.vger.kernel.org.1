@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PvhLuEi3WkYaQkAu9opvQ
-	(envelope-from <stable+bounces-237330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:45 +0200
+	id iPYwCokd3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2AB3F0CB6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4F23EFAE9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 449FB308A7A0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3BEF73014299
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FE13191CA;
-	Mon, 13 Apr 2026 16:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3B727F4F5;
+	Mon, 13 Apr 2026 16:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MZg1jNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cho4GA5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B69317152;
-	Mon, 13 Apr 2026 16:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28301A275;
+	Mon, 13 Apr 2026 16:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099176; cv=none; b=KA8Ge+m33gUWxszaro/xcjuJWPKx8L1cEeDhrqZc+vjiC4rRZBQlOTHN1ZdSyggMi6L2ZZZQkxS7TeBW2+FDMe7gndo6mJdpI1nt5HjNhPVGYEbP41il2y9yhv6E+mcGPTHV9rFXklYF08tdJUFG7D4rYKoBEmSLeftdD8TmiKw=
+	t=1776097997; cv=none; b=CM82iolbPpqhSeu0AcYhJL4GpYJ7gAEIvgahKQvqHFE6KNl1QTHdzadOtRjSdU7rBLJZFwT8LYIq1WdLqwo4sG6O7ZvJ/EjPlvZracbf4D1v/GnBTfbexc48li7QDnfK2SwtPqz0r8dyLWgyM883HI2L2CK79zINV11xX2uALv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099176; c=relaxed/simple;
-	bh=jEZkPXThmJDMW3nFjghRza/E576oUWCsHzXIF54YZCs=;
+	s=arc-20240116; t=1776097997; c=relaxed/simple;
+	bh=PzhQdIPkLsvcBPvtkCjgEwaOIE14PjpbWYoULMPahUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DApP+U4kpIdgeGhbMqC5Pj2W85HEACjEbDeFFFD5eN/33Bgzw+BzdTomaupK9QMltF7pT9RU7gqAYUBoWyNAGvxKCrcn1pG605BqPWR57Tmampordeu/jhjSFurYsuVz3BJDM4G/MBL2pR9Yq12KUJ3b8egg2IBFPDb9ssy939U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MZg1jNf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDE6C2BCB7;
-	Mon, 13 Apr 2026 16:52:55 +0000 (UTC)
+	 MIME-Version; b=jteqT+2rLHMD0JAx38aYcngMHVYrc8xFR+g+sOfAU0O0qqEvzY02Sw4ddzIT2nskcZDeBtl3rz9T5dh/F9hWndiMi1D3McqG1iVc57yA/kYWWjlH41WTfFKy6Z5gzcB42T6tuHKze1Ajqc8PQtuqDiEW4RMuKll66ePwC5m2fuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cho4GA5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D218C2BCAF;
+	Mon, 13 Apr 2026 16:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099176;
-	bh=jEZkPXThmJDMW3nFjghRza/E576oUWCsHzXIF54YZCs=;
+	s=korg; t=1776097996;
+	bh=PzhQdIPkLsvcBPvtkCjgEwaOIE14PjpbWYoULMPahUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2MZg1jNfHnOqNxLr9yCE7uVIQEKX74/VEb2H6rZ7uWvbCh9UZLwUJVSlT2BgOnxJR
-	 z9cY0onTdMRf/vf3WUI4UTk5w7V67k9PSomPIxOkp2hPmpN+MCFpQKmdhGxy7JVKPK
-	 z2KRTEOh6sXfDQnI4nOzjPj5S2RBG8CCiuuYgdb0=
+	b=Cho4GA5hVrrsefaE92vI1aoEykdtfVcBxFW/0yKFwtjoXQuo+GfPmSxGZyw6Rpf07
+	 qlw3oOuxHMMKMnvhNxoLBcH6RobQigRK4SjFVx+QDAlb8UuX6CNCdrHv2I52buW84a
+	 vs2ZSQi4FI5DAGj+z+BVloKoW2VS3RGR14a2e2bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Yihang Li <liyihang9@huawei.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 238/491] HID: asus: avoid memory leak in asus_report_fixup()
-Date: Mon, 13 Apr 2026 17:58:03 +0200
-Message-ID: <20260413155827.967917253@linuxfoundation.org>
+Subject: [PATCH 5.15 353/570] scsi: scsi_transport_sas: Fix the maximum channel scanning issue
+Date: Mon, 13 Apr 2026 17:58:04 +0200
+Message-ID: <20260413155843.709697094@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237330-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236867-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BC2AB3F0CB6
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 9A4F23EFAE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Günther Noack <gnoack@google.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 2bad24c17742fc88973d6aea526ce1353f5334a3 ]
+[ Upstream commit d71afa9deb4d413232ba16d693f7d43b321931b4 ]
 
-The asus_report_fixup() function was returning a newly allocated
-kmemdup()-allocated buffer, but never freeing it.  Switch to
-devm_kzalloc() to ensure the memory is managed and freed automatically
-when the device is removed.
+After commit 37c4e72b0651 ("scsi: Fix sas_user_scan() to handle wildcard
+and multi-channel scans"), if the device supports multiple channels (0 to
+shost->max_channel), user_scan() invokes updated sas_user_scan() to perform
+the scan behavior for a specific transfer.  However, when the user
+specifies shost->max_channel, it will return -EINVAL, which is not
+expected.
 
-The caller of report_fixup() does not take ownership of the returned
-pointer, but it is permitted to return a pointer whose lifetime is at
-least that of the input buffer.
+Fix and support specifying the scan shost->max_channel for scanning.
 
-Also fix a harmless out-of-bounds read by copying only the original
-descriptor size.
-
-Assisted-by: Gemini-CLI:Google Gemini 3
-Signed-off-by: Günther Noack <gnoack@google.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 37c4e72b0651 ("scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://patch.msgid.link/20260317063147.2182562-1-liyihang9@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_transport_sas.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 2f82946fb36a2..9d425f81d6224 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1116,14 +1116,21 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		 */
- 		if (*rsize == rsize_orig &&
- 			rdesc[offs] == 0x09 && rdesc[offs + 1] == 0x76) {
--			*rsize = rsize_orig + 1;
--			rdesc = kmemdup(rdesc, *rsize, GFP_KERNEL);
--			if (!rdesc)
--				return NULL;
-+			__u8 *new_rdesc;
-+
-+			new_rdesc = devm_kzalloc(&hdev->dev, rsize_orig + 1,
-+						 GFP_KERNEL);
-+			if (!new_rdesc)
-+				return rdesc;
+diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
+index 87c5ed56e47bd..ecb2e8aed93bb 100644
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -1732,7 +1732,7 @@ static int sas_user_scan(struct Scsi_Host *shost, uint channel,
+ 		break;
  
- 			hid_info(hdev, "Fixing up %s keyb report descriptor\n",
- 				drvdata->quirks & QUIRK_T100CHI ?
- 				"T100CHI" : "T90CHI");
-+
-+			memcpy(new_rdesc, rdesc, rsize_orig);
-+			*rsize = rsize_orig + 1;
-+			rdesc = new_rdesc;
-+
- 			memmove(rdesc + offs + 4, rdesc + offs + 2, 12);
- 			rdesc[offs] = 0x19;
- 			rdesc[offs + 1] = 0x00;
+ 	default:
+-		if (channel < shost->max_channel) {
++		if (channel <= shost->max_channel) {
+ 			res = scsi_scan_host_selected(shost, channel, id, lun,
+ 						      SCSI_SCAN_MANUAL);
+ 		} else {
 -- 
-2.51.0
+2.53.0
 
 
 
