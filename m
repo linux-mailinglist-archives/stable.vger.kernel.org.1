@@ -1,207 +1,165 @@
-Return-Path: <stable+bounces-237649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JTVCJJR3WkFcQkAu9opvQ
-	(envelope-from <stable+bounces-237649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:26:58 +0200
+	id AFy6FkhS3WkFcQkAu9opvQ
+	(envelope-from <stable+bounces-237650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:30:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFEE3F3151
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:26:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC65C3F31B4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4F973021E97
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:24:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 429AB300F780
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EE839446B;
-	Mon, 13 Apr 2026 20:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291CB394790;
+	Mon, 13 Apr 2026 20:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrR7S2ik"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pPgkWkUK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AA9393DC1
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 20:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBDC3909A6
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 20:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776111881; cv=none; b=HUH8gSuoNLwWi3O6MwOmw7n7PvskShA4tNZ/NdSv/zcTbrA0N/t4TiGwGcYTRZpeOK6lowZ91QghiMM8YoNpMmW6Vpc2PlxwLGJCXNgpCvk7BNbdB5kFKR6PEXga/s3V/67BY7Pima61JT55p4PkcDZbx/JvQ84El8PT34lEMcU=
+	t=1776112195; cv=none; b=r7b8nqovqJuvWCqhM9LuU0+9uvAlGexU4UubZpkM3xVleh6yawz84tJiGnt9h7LLIgTto/imaRDNU+s9GN5AUiP2aR/A45Z3GhSih4KVQgiRVuaRvUBU32C8UneSDPLSg5KpCRP2krdSP9DwZMZyH8igUCEGhc+nWyWwJ9THWR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776111881; c=relaxed/simple;
-	bh=r035kg2j5tap0sXoLHNh8z+DMzv3pfkJNjVz0DQOCNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RyOr16tWHFjuuRKDyPznbbAm6pgQB240W/qw5i9lrxe+ZmG9mTDft0eQQDGhTSq5ZVMzI2FJxZd6kZqm7ZGk/spsm6RxoWfXeWwa0Mf7vBTzyMgFBkdHSQcF2Kfc+/vdQtqJroFUfDVGID8fYMstiSZCGVcmhLkjBYnM5nHV82U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrR7S2ik; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1776112195; c=relaxed/simple;
+	bh=JPVaL4c5/9h9h4/5l7XJiy0RobptP8/C1TcDRP2ZUOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P6U6XsWvge6ul/ZImpWu1QTEXWupvy5m4x0gNaUBTxPPRRaMU0lXMSdiWXxIe0QA7ZYP6a+NCJYipyORFPKO5ItJMY75r6tB+DXHScOYLm7Smf71o1OXXBQ/jXGZaH83Z9XDkQhep8riiknBz+VFLh0fqM03maj3764Y85KTY0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pPgkWkUK; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso58982355e9.2
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 13:24:39 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-670f6ae9c7dso2930408a12.2
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 13:29:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776111878; x=1776716678; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e+Q7hBnkIm57QECCVy2ANNrMAu0aGQ9vQGD+qze2OxU=;
-        b=IrR7S2ikOIlFA4P1IcTIsOdMb7lDHUPEN+r7tc0VPjp5SIzRUhJ9blk3xXoTkm0oqr
-         3aTjY5wv6ouqALgxjxqjLyH9PJ9f9KJ8SxqKVLtBmMjGBh6HGrsKmtoZfMFxSL3ZHfQG
-         8wpSPBznm9rxe+QbFFMZftpaSEZN2swhLHStaTs84CFbr5NLwncDl/JWZ9dPuizsbRVs
-         0xvyHjRxkpxHHHeSwmTXe3x/vXxetXXhTtOFgRPcgsgMaeiHywM9cTtT4tKBBKGTVHzT
-         IK67kEuPe+B6BHRqJq84SV1HMbRlsKrRAViBpoFccbXkzwnMbkYoAbViBBBHx9ywnCqZ
-         7p9A==
+        d=gmail.com; s=20251104; t=1776112192; x=1776716992; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J76QkE9NJQFuHh61XUi+3w9vtC/liTP6j3ZjmrLLecE=;
+        b=pPgkWkUKTz7pz2laU9xQ7roHBEMAVFy/2ceHimJEcPBjQ/4BtSVvA5WzwEeCSVQ16O
+         ZHd+SDShIe1CHHdI4v109c+i9hIKO3Ih9Xwjkvh9jXc0IgJtfcNcwXiME8W+Fp8vGgm1
+         YJ/Q3X5tRddk0kONObnW2Y5woWTmE6/f7gih67gw0HuGxoj2UtdBIy1Xa1orqsemY6Jc
+         WVaQgUlJu9P//WMcaOhLkV/m7t4w6ercI4BG/fM1DClaqIbLTHyunylnPQAE+xCSOaRp
+         4JUhiqeCBxA5pXE82I5LCenvlnBJygd695u2Mmmz+o4TZKx+S1MFEbBj4BHuTtfRP6Gs
+         w+VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776111878; x=1776716678;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=e+Q7hBnkIm57QECCVy2ANNrMAu0aGQ9vQGD+qze2OxU=;
-        b=aqH5omeNGjrwWlxg7PjNg4rze5k91pHLwXbQy2830jP/zio+R3V3e6TG2G+jQIfbVH
-         MFsr3kKPtJWVMjoBk5ue+iK4ec9Fs9vidr7oHkuJ0Fo9bb80MHBTE3NXrTBZ3aAZTmO4
-         60+gzC5kBpYVc712NBFX0S5foLxo5B9Zt2XChaaF3YluAUyxjMKCFVIGIVNARrA+OYuc
-         zM58IHdU4JqjnMsU2eHLppYg8RIZlTGVpveX943z0lj30jC6fJpG/ufbYHbcWte2lQkp
-         glAmbuecSHKpsDa2eY5jVYtyrOJQYNRB5xZCUrYxtya7+SxWMlxgc4lAiL/+E1WUYEEl
-         2gYw==
-X-Forwarded-Encrypted: i=1; AFNElJ8rTGANiVh5Hpk1qecOnM0ZmQ2qNzsSF2JuSZlFJNks/fFw1owScJSGbPzwU9bTKNEX+pl4wkY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDb8HmhZiWxS5kn0G2iB4Mg4vjnx9S7p5uw/f0wWi2OhffF6Z6
-	+L/8pEC3ygAFD/zwfe/rJ4WDMkkxvp3tzpCvaBNdRmq0IIG28DMQsuBT
-X-Gm-Gg: AeBDiev9XPQ0lf6vATos+5P4NqFBdOqWntRvxvforRmN3aLG4IZQZhs7HOd4rQHcoFV
-	EXmBjEZKPlhQYlJ8UttsJW6+5TCWMg4Gu7iEy0BW2RbZKkOBEhPp0AonbaqdXZOLqHLBK4U3z2Y
-	yejOYQ7Arwx83VNnrcYWF0bCsADZnnGhT6OeDwxpbi4UdBfF/NV9upeAkqUfXM+lk1hYFA4yf8R
-	DY0ZN7xtfj2wmnJSRCiMgk3CMbxn899DlGaB+gpDhNTau4g+pTtRI7rUL+nQFTUCPh1ZhTLbnoM
-	730aNjUblrurV5zX7Unk0D/4HTXdkSPqenU8EnWK7DhaDcbmE2+4NPDx1Bti3XYuCR0VOoi572Z
-	doLgkyGKxymwC2Obrkw5fWgz6GcH50vHzI0bQM3zwexmngnvy5HojbqUJqx60XS4neU80Q1aHbK
-	ShdEaVmqaYAJ/8GY5c28bctQENGmWHqJ83yDHoePG9ex3m8Q==
-X-Received: by 2002:a05:600c:3b24:b0:488:c078:bfda with SMTP id 5b1f17b1804b1-488d688d2a1mr202847345e9.26.1776111878178;
-        Mon, 13 Apr 2026 13:24:38 -0700 (PDT)
-Received: from foxbook (bfi125.neoplus.adsl.tpnet.pl. [83.28.46.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67e685csm159780385e9.6.2026.04.13.13.24.36
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 13 Apr 2026 13:24:37 -0700 (PDT)
-Date: Mon, 13 Apr 2026 22:24:32 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Jeffrey Hein <jp@jphein.com>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Ricardo Ribalda
- <ribalda@chromium.org>, Alan Stern <stern@rowland.harvard.edu>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
- fragile firmware
-Message-ID: <20260413222432.3f15151c.michal.pecio@gmail.com>
-In-Reply-To: <CAD5VvzCEV_XbHc_Gby7mFPBSgSebqKDKJf3VC8HNRrD+xWaTJg@mail.gmail.com>
-References: <20260331003806.212565-1-jp@jphein.com>
-	<20260331003806.212565-3-jp@jphein.com>
-	<CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
-	<20260409100247.7cfb62d1.michal.pecio@gmail.com>
-	<20260409221749.5e6bccab.michal.pecio@gmail.com>
-	<c4275422-a9b4-4519-95f9-1163a7912709@linux.intel.com>
-	<CAD5VvzCEV_XbHc_Gby7mFPBSgSebqKDKJf3VC8HNRrD+xWaTJg@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1776112192; x=1776716992;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J76QkE9NJQFuHh61XUi+3w9vtC/liTP6j3ZjmrLLecE=;
+        b=EhNHxFh+XJpAiARXUeBiilwWxSwhrk71opqZ2NRoKUi8WWomFMgVkXoqopig8Ywpq6
+         HJxrhSOhphM5PMZoPxBnaPbF0LzqbcTY7+OPO9BaOy4KK37C/b9QRBCekJEcyGlArAtN
+         rb1ou16JG/krgHyWm8Xsf5leWXW0loV5KY32MTNwFJOBpOCYDr9nvZKNKRJAHMXFy7Zp
+         3ZYbZWUvpTjgEMimUJv6U+KaGH4Y4CsJMeiG0o7iRnRcOJ4SX2yV4vrpv40duU+FsFT3
+         DLL4q1liWQN9xtmnYlB17jk99rYfwalsddMcEaNH1jb8S2R9ySoRQKX3GYMjKzjsqjzh
+         GOhQ==
+X-Forwarded-Encrypted: i=1; AFNElJ87uNDBedD+u5tUrSMceyfqLSMJs28Kg0jD2iMcVxYP4IgpnxMoWvvh8QiKPb5MISlGx1iMDKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKMskDKoR+Sw/s3fmIEi5hwnAQInat9abonLTI4jNF0813UY5E
+	jJp3FR3RuxiaKn53oc07k0SqGGO8s6cUtsgDygZG7WDtR75WdNIa/CUu
+X-Gm-Gg: AeBDietDZC+xmaIF48VM/eLp4PQEIoIaT9TeIkIf7QxrH2vt8WFvz7oq60QtBwM6u5a
+	JwssaHgDZZFdipJp6oNQX0CCRKEBDDfuc7C5/uRHj1f/dprEvGn7cTsUuQpPwSNhsqWjPjvELIt
+	OZfHCWvjLrALhr1SkABvmvn67P8w+8nDx0vUPdcZiwYg8xDwQuPcmlLE1aWf68smnz71P85xqAJ
+	G3FIpWnAwVsxWROdW7IPJ4b75P2xaXrlj8jQSkaghSryODlMwT5NIC/0v1+zUYjqYN+yuSQbThc
+	azQQB7aU7CAQOTS+8M6ErZyjyOhNciB9bMyrCVQNBtLnII9wYw0hfr3X+n16d2La1MYSFdZkU+e
+	y2nX/kO/mBxkZCdu2agNRpgnBz/x+RFWSnvwO343QbGXSbcBBquxMZLnvqkYwIeR/jArmrd4JPB
+	QMdX55jrGKdUH7+9LTnhyZ6usRwk8lGCzyHTqDkFHLIFDp0p2OPLTODU9KwWmO7OjndZTx059xU
+	WgjyVZpDbFVBiJ4QoSTyFxjxI7C5F2ZyYefR8T0yNnGvxm4FvZ4KrM/2EoR84Wki+nDzYJpDT2i
+	AFesEQ==
+X-Received: by 2002:a17:907:6b8e:b0:b94:1d92:7eb with SMTP id a640c23a62f3a-b9d7279302bmr734143466b.18.1776112191780;
+        Mon, 13 Apr 2026 13:29:51 -0700 (PDT)
+Received: from ahossu.residents.sin.openfiber.nl ([88.202.160.248])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6e5c582fsm353034166b.31.2026.04.13.13.29.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 13:29:51 -0700 (PDT)
+From: Alexandru Hossu <hossu.alexandru@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	dan.carpenter@linaro.org,
+	hansg@kernel.org,
+	stable@vger.kernel.org,
+	Alexandru Hossu <hossu.alexandru@gmail.com>
+Subject: [PATCH] staging: rtl8723bs: fix heap overflow in OnAuthClient shared key path
+Date: Mon, 13 Apr 2026 22:28:24 +0200
+Message-ID: <20260413202824.740653-1-hossu.alexandru@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237649-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-237650-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linaro.org,kernel.org,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7DFEE3F3151
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CC65C3F31B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 10 Apr 2026 16:06:43 -0700, Jeffrey Hein wrote:
-> Test 2: Michal's xhci patch ONLY (clean isolation)
-> ====================================================
-> Active: ONLY Michal's xhci patch. No usbcore.quirks cmdline, stock
-> uvcvideo (DKMS module disabled), LPM and autosuspend at defaults.
-> 
-> Result: HC survived.
-> 
-> Video call ran successfully.
+rtw_get_ie() returns the raw IE length from the received frame, which
+can be up to 255. This length is used directly in memcpy() into
+chg_txt[128] with no bounds check, allowing a heap overflow of up to
+127 bytes when a rogue AP sends an Auth seq=2 frame with a Challenge
+Text IE longer than 128 bytes.
 
-Something weird when video was being disabled:
+IEEE 802.11 mandates the Challenge Text element carries exactly 128
+bytes of challenge data. Reject any element whose length field does not
+match sizeof(pmlmeinfo->chg_txt) (128).
 
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e42200, comp_code 13 after 13
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e42230, comp_code 13 after 13
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Cancel URB 0000000052d839d8, dev 3.1, ep 0x81, starting at offset 0x272e42f00
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: // Ding dong!
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Stopped on Transfer TRB for slot 36 ep 2
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Removing canceled TD starting at 0x272e42f00 (dma) in stream 0 URB 0000000052d839d8
-[...]
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: xhci_giveback_invalidated_tds: Giveback cancelled URB 0000000052d839d8 TD
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Cancel URB 00000000d8d84b58, dev 3.1, ep 0x81, starting at offset 0x260549210
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: // Ding dong!
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Transfer error for slot 36 ep 2 on endpoint
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Stopped on Transfer TRB for slot 36 ep 2
-[...]
-[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: drop ep 0x81, slot id 36, new drop flags = 0x8, new add flags = 0x0
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
+---
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Video started again, seemed to work for a while:
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+index 5f00fe282d1b..90f27665667a 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+@@ -891,7 +891,7 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
+ 			p = rtw_get_ie(pframe + WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_, WLAN_EID_CHALLENGE, (int *)&len,
+ 				pkt_len - WLAN_HDR_A3_LEN - _AUTH_IE_OFFSET_);
+ 
+-			if (!p)
++			if (!p || len != sizeof(pmlmeinfo->chg_txt))
+ 				goto authclnt_fail;
+ 
+ 			memcpy(pmlmeinfo->chg_txt, p + 2, len);
+-- 
+2.53.0
 
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: add ep 0x81, slot id 36, new drop flags = 0x0, new add flags = 0x8
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: xhci_check_bandwidth called for udev 00000000e40f0c43
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: // Ding dong!
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Successful Endpoint Configure command
-[Fri Apr 10 15:44:47 2026] usb 2-3.1: Hub-initiated U1 disabled due to long timeout 16800us
-[Fri Apr 10 15:44:47 2026] usb 2-3.1: Hub-initiated U1 disabled due to long timeout 132us
-[Fri Apr 10 15:44:47 2026] usb 2-3.1: Hub-initiated U1 disabled due to long timeout 1050us
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Set up evaluate context for LPM MEL change.
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: // Ding dong!
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Successful evaluate context command
-[Fri Apr 10 15:44:47 2026] usb 2-3.1: Disable U2, ESIT shorter than exit latency
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000260549020, comp_code 13 after 13
-[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000260549050, comp_code 13 after 13
-
-Until it broke, not sure what caused this. No EP5IN unlinks here.
-
-[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e42690, comp_code 13 after 13
-[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e426d0, comp_code 13 after 13
-[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: No Ping response error for slot 36 ep 2, Skip one Isoc TD
-[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: No Ping response error for slot 36 ep 2, Skip one Isoc TD
-[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: No Ping response error for slot 36 ep 2, Skip one Isoc TD
-
-Then EP5IN also fails and is soft-retried, but it doesn't help.
-Control requests get EPROTO or ETIMEDOUT as usual.
-
-[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Transfer error for slot 36 ep 10 on endpoint
-[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Soft-reset ep 10, slot 36
-
-Looks like the device is dead indeed, or the HC broke down and
-can't communiate with it.
 
