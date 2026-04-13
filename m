@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-236313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YN0EGH4Z3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:42 +0200
+	id QEdRItwm3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679EB3EEF99
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52B73F156B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57ED93049DF8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6C8530ED95A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8836B2C031E;
-	Mon, 13 Apr 2026 16:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6198D346A1E;
+	Mon, 13 Apr 2026 17:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIW9Rr+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn7hCBCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA1E279334;
-	Mon, 13 Apr 2026 16:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C56346A1C;
+	Mon, 13 Apr 2026 17:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096586; cv=none; b=pNwQ5DBekn1TQx2Iz5sE/G9xwo5bs1kYv1u4KOje3KQjrXQkRcreiA0ZD+MsRZS8bcpDinLbDnsK9qN1KwKSyxS4k+HiacLJMgYGGUlUETO6DT2DyArkp09bFgTU9/66d9IS8PNJrNDFnklAHokTyVXyH60yOM4y5gvHBX6U4bQ=
+	t=1776099656; cv=none; b=Y6BlaTme6hDrLxvCsay2+tlCQrFFpH6KT0z82EPsdC9gGWR4gWONTlgRYIcP7oeEqEt3kDXEH/rrFz+tZReOp53SpWbyWFjCpKGFPnszNOEvqbRYnp4PtHk/YHv+7JiM8LGvgS8Ljdy2cdNr43msWVS57N/CNKscGNFBO+Cf6Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096586; c=relaxed/simple;
-	bh=yiuEocXdkx/xGaPZsqd9PXP1mIbbFgBxZz2F1GZ6VZ0=;
+	s=arc-20240116; t=1776099656; c=relaxed/simple;
+	bh=9lUl/o9+2qfKJdlEmG1mj7kcO8gj3pWHTvxbR5wshl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YzvviC/yRyTLN8D50kn0Xg+FY3EQ64/HGLhTeVVSfpOiZ6ijhRnvZp9WMAKUe4ThR8xDnGgHCCp9p7dopn9He6qw/QuSoZr06/GUY4zY+4v1+ARfbGWeLQ4C4VW1x3urfw6k5xW4aGvsGlEyT4xDDM6aBYyaoX1bb7varUzAGo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIW9Rr+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AD5C2BCAF;
-	Mon, 13 Apr 2026 16:09:45 +0000 (UTC)
+	 MIME-Version; b=NhVrWWQ8B9mIdrnk07NuATsqTBujkOCehXhsN7dMsyI7rNFVUi4DxQe4wohi72duMBGRs43x7lMZdUFETKnmdUVEKASt1zkdipUL8IosuXm4F1EXV/UgNg5vHcq6b8LaG0e7xXVriYJZdxiD2PSrlHgqHhDqnAWMESZ4rhgRxMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn7hCBCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A418C2BCB6;
+	Mon, 13 Apr 2026 17:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096586;
-	bh=yiuEocXdkx/xGaPZsqd9PXP1mIbbFgBxZz2F1GZ6VZ0=;
+	s=korg; t=1776099656;
+	bh=9lUl/o9+2qfKJdlEmG1mj7kcO8gj3pWHTvxbR5wshl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIW9Rr+d/pdAA+xfZUdMUyUL45fnMfJqSbs/YjcISeaAvv9Vv/ArhSLl9L7EL+Emz
-	 B5Hk/AY+8zWkcrLua9G7x39Y2i2G/VfeA0VRWHhlPG/cT9BZXZNbHcfO/0XEy9NFEd
-	 CsWyHXzUpsE2k3PfXBrfU+RtPg3rEUhYnQN4ipxQ=
+	b=mn7hCBCabHKGN5L+b3ifMaEP47I/Q9EWD00AlC8lDKsrc4/MWqcEY3g9ZGFRbPl8B
+	 ISNxz1HB3ZtivdZSJp2r0gqnpwMj3zVT3FKec0RD3kFeICQawn9Tl/a95VwQYKjBVq
+	 fgiCU5L/IoHq0/Ln8wxqhHlRhCB9YY6/5bk4jWWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	David Howells <dhowells@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 68/83] rxrpc: Fix rack timer warning to report unexpected mode
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 391/491] phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
 Date: Mon, 13 Apr 2026 18:00:36 +0200
-Message-ID: <20260413155733.545213279@linuxfoundation.org>
+Message-ID: <20260413155833.673119691@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236313-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237515-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,56 +87,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,auristor.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 679EB3EEF99
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D52B73F156B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 65b3ffe0972ed023acc3981a0f7e1ae5d0208bd3 upstream.
+commit 54c4c58713aaff76c2422ff5750e557ab3b100d7 upstream.
 
-rxrpc_rack_timer_expired() clears call->rack_timer_mode to OFF before
-the switch. The default case warning therefore always prints OFF and
-doesn't identify the unexpected timer mode.
+It has been observed on the Renesas RZ/G3S SoC that unbinding and binding
+the PHY driver leads to role autodetection failures. This issue occurs when
+PHY 3 is the first initialized PHY. PHY 3 does not have an interrupt
+associated with the USB2_INT_ENABLE register (as
+rcar_gen3_int_enable[3] = 0). As a result, rcar_gen3_init_otg() is called
+to initialize OTG without enabling PHY interrupts.
 
-Log the saved mode value instead so the warning reports the actual
-unexpected rack timer mode.
+To resolve this, add rcar_gen3_is_any_otg_rphy_initialized() and call it in
+role_store(), role_show(), and rcar_gen3_init_otg(). At the same time,
+rcar_gen3_init_otg() is only called when initialization for a PHY with
+interrupt bits is in progress. As a result, the
+struct rcar_gen3_phy::otg_initialized is no longer needed.
 
-Fixes: 7c482665931b ("rxrpc: Implement RACK/TLP to deal with transmission stalls [RFC8985]")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-8-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[claudiu.beznea: declare the i iterrator from
+ rcar_gen3_is_any_otg_rphy_initialized() outside of for loop]
+
+Fixes: 549b6b55b005 ("phy: renesas: rcar-gen3-usb2: enable/disable independent irqs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/input_rack.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 32 +++++++++++-------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
---- a/net/rxrpc/input_rack.c
-+++ b/net/rxrpc/input_rack.c
-@@ -413,6 +413,6 @@ void rxrpc_rack_timer_expired(struct rxr
- 		break;
- 	//case RXRPC_CALL_RACKTIMER_ZEROWIN:
- 	default:
--		pr_warn("Unexpected rack timer %u", call->rack_timer_mode);
-+		pr_warn("Unexpected rack timer %u", mode);
- 	}
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index ea01a121b8fc5..646a5140b30e1 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -98,7 +98,6 @@ struct rcar_gen3_phy {
+ 	struct rcar_gen3_chan *ch;
+ 	u32 int_enable_bits;
+ 	bool initialized;
+-	bool otg_initialized;
+ 	bool powered;
+ };
+ 
+@@ -288,16 +287,16 @@ static bool rcar_gen3_is_any_rphy_initialized(struct rcar_gen3_chan *ch)
+ 	return false;
  }
+ 
+-static bool rcar_gen3_needs_init_otg(struct rcar_gen3_chan *ch)
++static bool rcar_gen3_is_any_otg_rphy_initialized(struct rcar_gen3_chan *ch)
+ {
+-	int i;
++	enum rcar_gen3_phy_index i;
+ 
+-	for (i = 0; i < NUM_OF_PHYS; i++) {
+-		if (ch->rphys[i].otg_initialized)
+-			return false;
++	for (i = PHY_INDEX_BOTH_HC; i <= PHY_INDEX_EHCI; i++) {
++		if (ch->rphys[i].initialized)
++			return true;
+ 	}
+ 
+-	return true;
++	return false;
+ }
+ 
+ static bool rcar_gen3_are_all_rphys_power_off(struct rcar_gen3_chan *ch)
+@@ -319,7 +318,7 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
+ 	bool is_b_device;
+ 	enum phy_mode cur_mode, new_mode;
+ 
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
+ 
+ 	if (sysfs_streq(buf, "host"))
+@@ -357,7 +356,7 @@ static ssize_t role_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
+ 
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
+ 
+ 	return sprintf(buf, "%s\n", rcar_gen3_is_host(ch) ? "host" :
+@@ -370,6 +369,9 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
+ 	void __iomem *usb2_base = ch->base;
+ 	u32 val;
+ 
++	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
++		return;
++
+ 	/* Should not use functions of read-modify-write a register */
+ 	val = readl(usb2_base + USB2_LINECTRL1);
+ 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
+@@ -435,12 +437,9 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
+ 		writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
+ 	}
+ 
+-	/* Initialize otg part */
+-	if (channel->is_otg_channel) {
+-		if (rcar_gen3_needs_init_otg(channel))
+-			rcar_gen3_init_otg(channel);
+-		rphy->otg_initialized = true;
+-	}
++	/* Initialize otg part (only if we initialize a PHY with IRQs). */
++	if (rphy->int_enable_bits)
++		rcar_gen3_init_otg(channel);
+ 
+ 	rphy->initialized = true;
+ 
+@@ -456,9 +455,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
+ 
+ 	rphy->initialized = false;
+ 
+-	if (channel->is_otg_channel)
+-		rphy->otg_initialized = false;
+-
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+ 	val &= ~rphy->int_enable_bits;
+ 	if (!rcar_gen3_is_any_rphy_initialized(channel))
+-- 
+2.53.0
+
 
 
 
