@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-237039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNUZCXgf3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:12 +0200
+	id QM3dALsY3Wn3ZwkAu9opvQ
+	(envelope-from <stable+bounces-236388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988CA3F01AF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB5B3EED3B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B5B730ABAAE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55F3030B6E30
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05F424E4A1;
-	Mon, 13 Apr 2026 16:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0742777FC;
+	Mon, 13 Apr 2026 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikgl1LOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gv7H7BJq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832423090F5;
-	Mon, 13 Apr 2026 16:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5293925A2C9;
+	Mon, 13 Apr 2026 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098432; cv=none; b=RIUvMg+3Su1nCbsugtlo5ZF0Vdr4lYf/iOITm5WAtMriHhI/DEM31Wztv4wT8H4CQ8bwXKKqccwUxeKUEDqjiUG6H5YfNWiPxYJDrOZUR5kSSScoSsvZzUBUdeDiKVBhlsWzkS0PmbXA/SqZ3e2qJC0657yAKSAZYFZOrhZb/z0=
+	t=1776096777; cv=none; b=C1pMJOoIvo4EIr4ZyFygkGliIm102k28EWKotTNkVILfaTB0BoBYpXCMGSofD++GUKNOoUoM90Z+R7WmDAH/OGFI66QWKoyfD/0ePLNcbevmVv2MNSjoLURiP5PjbdnoJlrL+rnHEHv+wPWqMl8mUtTW92qI9VdsWkC7kV6uPL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098432; c=relaxed/simple;
-	bh=sK/+/sYuJGfdlcasZykDLjM0dftFvOz6hTCFsOKPiCc=;
+	s=arc-20240116; t=1776096777; c=relaxed/simple;
+	bh=kuIwFWruPchGJ8ob4bdNBD9vG6JutNfH18K3ufcecn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+UViGYuw62k/mZzKxLG5n2HidtgAeeMgVe5Y0nvBm3//u+iI5pJ7goFs3wsQ1md+AmLBMgWR6MvTZ/IIPDWcidTuFjsUeoa3RfEeQl7idNt5TiXfKvpwo44LCXOfSRaEqA065PL9Q9QvklXaJWc/lQd1wQoBwl3+oSaOhocLvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikgl1LOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12182C2BCAF;
-	Mon, 13 Apr 2026 16:40:31 +0000 (UTC)
+	 MIME-Version; b=hO//XE3cJET2hLhN9fsXI8kRHoq5J3WaXkPB2uLN6oVg0IphWXMcwinplhVDwP1gGjilsEU/95+w7AAfPQPg/8jGoFYGAX+H6raWt3QgrRaP8CVvts62btLrsb2wcJpBOMz/JosEAoeXcDIoVquBJHH04It1y6t3bKUml+EbnPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gv7H7BJq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC2EC2BCAF;
+	Mon, 13 Apr 2026 16:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098432;
-	bh=sK/+/sYuJGfdlcasZykDLjM0dftFvOz6hTCFsOKPiCc=;
+	s=korg; t=1776096777;
+	bh=kuIwFWruPchGJ8ob4bdNBD9vG6JutNfH18K3ufcecn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikgl1LOra7KO3tVhRFYkwlZiRADnRnW46e3/+ombTcpPWzZKU+5MgXgLcL0XQvsJk
-	 f+/60GB1Vakaj3/Ltb5QNfgz7na0oh2/DFtw0NP18uFTyQDAM91T7Y6ADphbVoPful
-	 uwemxCRwnU+fTsGhwbRx2bRwZdmy7hCyIooxt6Fk=
+	b=gv7H7BJqaaVniOTNIlmqIFIACq8KMMyGbTXd5Dk3jnwhi5wiTUOD3t9pSO5v1QY9H
+	 miKp3Cyb4j/SkZ5onqjlogp852jgbLF+o5v8/Ff/4z6HFxYCiSg7GKsemob9w0y7L3
+	 gUB39SiETHQKU6vaDliLHbhzJc22s18dxomMeIdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.15 523/570] apparmor: fix differential encoding verification
+	David Carlier <devnexen@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 59/70] net: lan966x: fix page pool leak in error paths
 Date: Mon, 13 Apr 2026 18:00:54 +0200
-Message-ID: <20260413155850.039970976@linuxfoundation.org>
+Message-ID: <20260413155730.385851570@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,123 +65,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236388-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237039-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualys.com:email]
-X-Rspamd-Queue-Id: 988CA3F01AF
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9DB5B3EED3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 39440b137546a3aa383cfdabc605fb73811b6093 upstream.
+commit 076344a6ad9d1308faaed1402fdcfdda68b604ab upstream.
 
-Differential encoding allows loops to be created if it is abused. To
-prevent this the unpack should verify that a diff-encode chain
-terminates.
+lan966x_fdma_rx_alloc() creates a page pool but does not destroy it if
+the subsequent fdma_alloc_coherent() call fails, leaking the pool.
 
-Unfortunately the differential encode verification had two bugs.
+Similarly, lan966x_fdma_init() frees the coherent DMA memory when
+lan966x_fdma_tx_alloc() fails but does not destroy the page pool that
+was successfully created by lan966x_fdma_rx_alloc(), leaking it.
 
-1. it conflated states that had gone through check and already been
-   marked, with states that were currently being checked and marked.
-   This means that loops in the current chain being verified are treated
-   as a chain that has already been verified.
+Add the missing page_pool_destroy() calls in both error paths.
 
-2. the order bailout on already checked states compared current chain
-   check iterators j,k instead of using the outer loop iterator i.
-   Meaning a step backwards in states in the current chain verification
-   was being mistaken for moving to an already verified state.
-
-Move to a double mark scheme where already verified states get a
-different mark, than the current chain being kept. This enables us
-to also drop the backwards verification check that was the cause of
-the second error as any already verified state is already marked.
-
-Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 11871aba1974 ("net: lan96x: Use page_pool API")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260405055241.35767-3-devnexen@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/include/match.h |    1 +
- security/apparmor/match.c         |   23 +++++++++++++++++++----
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -190,6 +190,7 @@ static inline void aa_put_dfa(struct aa_
- #define MATCH_FLAG_DIFF_ENCODE 0x80000000
- #define MARK_DIFF_ENCODE 0x40000000
- #define MATCH_FLAG_OOB_TRANSITION 0x20000000
-+#define MARK_DIFF_ENCODE_VERIFIED 0x10000000
- #define MATCH_FLAGS_MASK 0xff000000
- #define MATCH_FLAGS_VALID (MATCH_FLAG_DIFF_ENCODE | MATCH_FLAG_OOB_TRANSITION)
- #define MATCH_FLAGS_INVALID (MATCH_FLAGS_MASK & ~MATCH_FLAGS_VALID)
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -246,16 +246,31 @@ static int verify_dfa(struct aa_dfa *dfa
- 		size_t j, k;
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+@@ -119,8 +119,10 @@ static int lan966x_fdma_rx_alloc(struct
+ 		return PTR_ERR(rx->page_pool);
  
- 		for (j = i;
--		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
--		     !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE);
-+		     ((BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
-+		      !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE_VERIFIED));
- 		     j = k) {
-+			if (BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE)
-+				/* loop in current chain */
-+				goto out;
- 			k = DEFAULT_TABLE(dfa)[j];
- 			if (j == k)
-+				/* self loop */
- 				goto out;
--			if (k < j)
--				break;		/* already verified */
- 			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE;
- 		}
-+		/* move mark to verified */
-+		for (j = i;
-+		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE);
-+		     j = k) {
-+			k = DEFAULT_TABLE(dfa)[j];
-+			if (j < i)
-+				/* jumps to state/chain that has been
-+				 * verified
-+				 */
-+				break;
-+			BASE_TABLE(dfa)[j] &= ~MARK_DIFF_ENCODE;
-+			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE_VERIFIED;
-+		}
+ 	err = fdma_alloc_coherent(lan966x->dev, fdma);
+-	if (err)
++	if (err) {
++		page_pool_destroy(rx->page_pool);
+ 		return err;
++	}
+ 
+ 	fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
+ 		       FDMA_DCB_STATUS_INTR);
+@@ -958,6 +960,7 @@ int lan966x_fdma_init(struct lan966x *la
+ 	err = lan966x_fdma_tx_alloc(&lan966x->tx);
+ 	if (err) {
+ 		fdma_free_coherent(lan966x->dev, &lan966x->rx.fdma);
++		page_pool_destroy(lan966x->rx.page_pool);
+ 		return err;
  	}
- 	error = 0;
  
 
 
