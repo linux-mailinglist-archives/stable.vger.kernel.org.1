@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-236812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NKTNCAg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:00 +0200
+	id UKELDXMi3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED263F0439
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3943F0B76
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90392312039B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0BABE300C389
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6535927F4F5;
-	Mon, 13 Apr 2026 16:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA31D3168EE;
+	Mon, 13 Apr 2026 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwFZ4ZCw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12UP2ZVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243D127BF6C;
-	Mon, 13 Apr 2026 16:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEB1313298;
+	Mon, 13 Apr 2026 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097855; cv=none; b=a/XbDREzrKq3QSKKsy7gd3fAYG0Yz+VxwJ+RWJX4+LEFnL2YthwqIKfEL0HkhCH/BrJL0HYFjOHC8CMG4NLvqSZy2DT/TXj+T2nouP8uWYoxlYJ/Gh1TNN/xJAcY9Cjo15N38UaBFfL/xIG6lYhjR/stAzVdRjvswLdbHcXEy/Y=
+	t=1776098949; cv=none; b=NfTiH+qhb6fiGBP97UqmTyw/OBfHP5OJXAiTezYBKuep7qJhsUPjEn6jR2k5QNs+E3ePnw6JRmSs3hIFkmlPUBioJdACTbF8IlhSQUZqElk5NYY+L86hHUl//FIKbiVsEmLciaZ64aSpEYWQ10YOTFjGJOcVFGxzbkNCArD5B+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097855; c=relaxed/simple;
-	bh=x7/nNEarUjg13vFI8dXHb1kx08GjtZv7lNVbTxKYDvE=;
+	s=arc-20240116; t=1776098949; c=relaxed/simple;
+	bh=oNaBZQvRkSZR6KENNNWyxYphx7ZdiG6fwK8lK/yUL9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RELCpcY086/9EDJMW+c/ROXQysQ40jHRs68gybqKr01SRX+twp71GCCo8ygqFI9qTOuTykwTMUGE66mvyOKa5JYose8MOIm6H7R5HK6pBz5835uqMi+0ZicCP3UPChDE3b9NTeJzKrT2LBaUm+n7fRr46Y2nod4vTAi2ckh/0f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwFZ4ZCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE0AC2BCAF;
-	Mon, 13 Apr 2026 16:30:54 +0000 (UTC)
+	 MIME-Version; b=Pe9U7GJdu1Y6v/0CKmu2LVJueJgdYtmcpb6iLbXD9IiFsLJ1d6fjX7jtTYJuDiIKBf2QaU2fb1JQ7U1olbaNPVHtkIvmDgmNlzViaRZQLO3h5WZT31TYcy5zCBQiFSdb7pW8dK0cxk4QTmLZWKPhR+Irnq9ZJLxpmWG3grR80UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12UP2ZVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05618C2BCAF;
+	Mon, 13 Apr 2026 16:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097855;
-	bh=x7/nNEarUjg13vFI8dXHb1kx08GjtZv7lNVbTxKYDvE=;
+	s=korg; t=1776098949;
+	bh=oNaBZQvRkSZR6KENNNWyxYphx7ZdiG6fwK8lK/yUL9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwFZ4ZCwajlPbDY2ZOu7VR4+alljkeTlbm4Dj7/0yM8tA8Cb7DXTiAbu69jgXlJ2q
-	 y64T6TyBV9BImWIubiTxHzIMr/oSGQRGw+aoDhgIBvIrM0Osd9D3Zy24CYxsiENsV/
-	 9HLNm2bTscbMATwXjteF8ybQflBqmIkPC3DiVlg4=
+	b=12UP2ZVONqo51BjaFKs0JY9SswRqxa26E9DHite0txqEFlyyBETTlRXuipZeg0vL2
+	 dLPAgwhxMAhwQuxxPsyq7K/p+W+iVd6iLFjCrMoS35rgc+OpwvyHmkdEikgXDfj65V
+	 LFjtsNlmfgCt6DohQHSEyglO7q4NgLu5CQ8jY8qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Francois Romieu <romieu@fr.zoreil.com>,
+	Breno Leitao <leitao@debian.org>,
 	Frederic Weisbecker <frederic@kernel.org>,
-	Qais Yousef <qyousef@layalina.io>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 266/570] sched: idle: Consolidate the handling of two special cases
+	Eric Dumazet <edumazet@google.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>
+Subject: [PATCH 5.10 152/491] net: Handle napi_schedule() calls from non-interrupt
 Date: Mon, 13 Apr 2026 17:56:37 +0200
-Message-ID: <20260413155840.445639150@linuxfoundation.org>
+Message-ID: <20260413155824.722803639@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236812-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237241-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,148 +89,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,layalina.io:email]
-X-Rspamd-Queue-Id: 2ED263F0439
+	DBL_BLOCKED_OPENRESOLVER(0.00)[siemens.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,zoreil.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mpg.de:email]
+X-Rspamd-Queue-Id: 3A3943F0B76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit f4c31b07b136839e0fb3026f8a5b6543e3b14d2f ]
+commit 77e45145e3039a0fb212556ab3f8c87f54771757 upstream.
 
-There are two special cases in the idle loop that are handled
-inconsistently even though they are analogous.
+napi_schedule() is expected to be called either:
 
-The first one is when a cpuidle driver is absent and the default CPU
-idle time power management implemented by the architecture code is used.
-In that case, the scheduler tick is stopped every time before invoking
-default_idle_call().
+* From an interrupt, where raised softirqs are handled on IRQ exit
 
-The second one is when a cpuidle driver is present, but there is only
-one idle state in its table.  In that case, the scheduler tick is never
-stopped at all.
+* From a softirq disabled section, where raised softirqs are handled on
+  the next call to local_bh_enable().
 
-Since each of these approaches has its drawbacks, reconcile them with
-the help of one simple heuristic.  Namely, stop the tick if the CPU has
-been woken up by it in the previous iteration of the idle loop, or let
-it tick otherwise.
+* From a softirq handler, where raised softirqs are handled on the next
+  round in do_softirq(), or further deferred to a dedicated kthread.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Fixes: ed98c3491998 ("sched: idle: Do not stop the tick before cpuidle_idle_call()")
-[ rjw: Added Fixes tag, changelog edits ]
-Link: https://patch.msgid.link/4741364.LvFx2qVVIh@rafael.j.wysocki
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Other bare tasks context may end up ignoring the raised NET_RX vector
+until the next random softirq handling opportunity, which may not
+happen before a while if the CPU goes idle afterwards with the tick
+stopped.
+
+Such "misuses" have been detected on several places thanks to messages
+of the kind:
+
+	"NOHZ tick-stop error: local softirq work is pending, handler #08!!!"
+
+For example:
+
+       __raise_softirq_irqoff
+        __napi_schedule
+        rtl8152_runtime_resume.isra.0
+        rtl8152_resume
+        usb_resume_interface.isra.0
+        usb_resume_both
+        __rpm_callback
+        rpm_callback
+        rpm_resume
+        __pm_runtime_resume
+        usb_autoresume_device
+        usb_remote_wakeup
+        hub_event
+        process_one_work
+        worker_thread
+        kthread
+        ret_from_fork
+        ret_from_fork_asm
+
+And also:
+
+* drivers/net/usb/r8152.c::rtl_work_func_t
+* drivers/net/netdevsim/netdev.c::nsim_start_xmit
+
+There is a long history of issues of this kind:
+
+	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
+	330068589389 ("idpf: disable local BH when scheduling napi for marker packets")
+	e3d5d70cb483 ("net: lan78xx: fix "softirq work is pending" error")
+	e55c27ed9ccf ("mt76: mt7615: add missing bh-disable around rx napi schedule")
+	c0182aa98570 ("mt76: mt7915: add missing bh-disable around tx napi enable/schedule")
+	970be1dff26d ("mt76: disable BH around napi_schedule() calls")
+	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
+	30bfec4fec59 ("can: rx-offload: can_rx_offload_threaded_irq_finish(): add new  function to be called from threaded interrupt")
+	e63052a5dd3c ("mlx5e: add add missing BH locking around napi_schdule()")
+	83a0c6e58901 ("i40e: Invoke softirqs after napi_reschedule")
+	bd4ce941c8d5 ("mlx4: Invoke softirqs after napi_reschedule")
+	8cf699ec849f ("mlx4: do not call napi_schedule() without care")
+	ec13ee80145c ("virtio_net: invoke softirqs after __napi_schedule")
+
+This shows that relying on the caller to arrange a proper context for
+the softirqs to be handled while calling napi_schedule() is very fragile
+and error prone. Also fixing them can also prove challenging if the
+caller may be called from different kinds of contexts.
+
+Therefore fix this from napi_schedule() itself with waking up ksoftirqd
+when softirqs are raised from task contexts.
+
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Francois Romieu <romieu@fr.zoreil.com>
+Closes: https://lore.kernel.org/lkml/354a2690-9bbf-4ccb-8769-fa94707a9340@molgen.mpg.de/
+Cc: Breno Leitao <leitao@debian.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250223221708.27130-1-frederic@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/idle.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ net/core/dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 407835d23eacf..f1c58e2fc3b5c 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -158,6 +158,14 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 	return cpuidle_enter(drv, dev, next_state);
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4318,7 +4318,7 @@ static inline void ____napi_schedule(str
+ 				     struct napi_struct *napi)
+ {
+ 	list_add_tail(&napi->poll_list, &sd->poll_list);
+-	__raise_softirq_irqoff(NET_RX_SOFTIRQ);
++	raise_softirq_irqoff(NET_RX_SOFTIRQ);
  }
  
-+static void idle_call_stop_or_retain_tick(bool stop_tick)
-+{
-+	if (stop_tick || tick_nohz_tick_stopped())
-+		tick_nohz_idle_stop_tick();
-+	else
-+		tick_nohz_idle_retain_tick();
-+}
-+
- /**
-  * cpuidle_idle_call - the main idle function
-  *
-@@ -167,7 +175,7 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
-  * set, and it returns with polling set.  If it ever stops polling, it
-  * must clear the polling bit.
-  */
--static void cpuidle_idle_call(void)
-+static void cpuidle_idle_call(bool stop_tick)
- {
- 	struct cpuidle_device *dev = cpuidle_get_device();
- 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
-@@ -189,7 +197,7 @@ static void cpuidle_idle_call(void)
- 	 */
- 
- 	if (cpuidle_not_available(drv, dev)) {
--		tick_nohz_idle_stop_tick();
-+		idle_call_stop_or_retain_tick(stop_tick);
- 
- 		default_idle_call();
- 		goto exit_idle;
-@@ -224,17 +232,19 @@ static void cpuidle_idle_call(void)
- 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
- 		call_cpuidle(drv, dev, next_state);
- 	} else if (drv->state_count > 1) {
--		bool stop_tick = true;
-+		/*
-+		 * stop_tick is expected to be true by default by cpuidle
-+		 * governors, which allows them to select idle states with
-+		 * target residency above the tick period length.
-+		 */
-+		stop_tick = true;
- 
- 		/*
- 		 * Ask the cpuidle framework to choose a convenient idle state.
- 		 */
- 		next_state = cpuidle_select(drv, dev, &stop_tick);
- 
--		if (stop_tick || tick_nohz_tick_stopped())
--			tick_nohz_idle_stop_tick();
--		else
--			tick_nohz_idle_retain_tick();
-+		idle_call_stop_or_retain_tick(stop_tick);
- 
- 		entered_state = call_cpuidle(drv, dev, next_state);
- 		/*
-@@ -242,7 +252,7 @@ static void cpuidle_idle_call(void)
- 		 */
- 		cpuidle_reflect(dev, entered_state);
- 	} else {
--		tick_nohz_idle_retain_tick();
-+		idle_call_stop_or_retain_tick(stop_tick);
- 
- 		/*
- 		 * If there is only a single idle state (or none), there is
-@@ -270,6 +280,7 @@ static void cpuidle_idle_call(void)
- static void do_idle(void)
- {
- 	int cpu = smp_processor_id();
-+	bool got_tick = false;
- 
- 	/*
- 	 * Check if we need to update blocked load
-@@ -312,8 +323,9 @@ static void do_idle(void)
- 			tick_nohz_idle_restart_tick();
- 			cpu_idle_poll();
- 		} else {
--			cpuidle_idle_call();
-+			cpuidle_idle_call(got_tick);
- 		}
-+		got_tick = tick_nohz_idle_got_tick();
- 		arch_cpu_idle_exit();
- 	}
- 
--- 
-2.51.0
-
+ #ifdef CONFIG_RPS
 
 
 
