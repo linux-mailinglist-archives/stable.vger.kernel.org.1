@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-236783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mF2WKMgf3WnbaAkAu9opvQ
-	(envelope-from <stable+bounces-236783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:32 +0200
+	id qJBANrMl3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7E03F02F4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E0C3F12E6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 471F130E392F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58B9E30DD0A0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C7C313E34;
-	Mon, 13 Apr 2026 16:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE99231691A;
+	Mon, 13 Apr 2026 16:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8Q+/2Zh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebyqyEnG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFFF30C361;
-	Mon, 13 Apr 2026 16:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A166A314D0D;
+	Mon, 13 Apr 2026 16:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097782; cv=none; b=V/OvczT+4oV6mNodGBtAgXBCQmHzQCezJql4jpnKv3L9d8UCpBg58YOzQUqEpS/lP5GJK6QQxbpGpdboPRIyP4nuZgwlErA0jeYxCeax+v+DLMf93RdbfJxppNP3pF7Ob0HPa8k1fdV5ZKORpxDDb8oPVTW96YVttkXdGUHv9pI=
+	t=1776098962; cv=none; b=teyNeo8XGMRj4CB2t0QWVnVka2AsXHEWarq1jCTOwzj+bgQ6p7f/5N0YIsmhAXllaeqR9+jstXNGYSHx5AoGQBmMLgvgmKm2IN3VkLewr+W59puXCAF3STTErURDpBGwQN2honLVeSw6sxJUQQbKsrbU8R/Ovt6CFysFfNnAtdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097782; c=relaxed/simple;
-	bh=GojYHFXf+10jVT6NMzFifPUxj3bcS99DYdcOLwd0sOY=;
+	s=arc-20240116; t=1776098962; c=relaxed/simple;
+	bh=XlujQD2xouDRaYo5OOtqTXvzKojDzPt+APt8Ye2xFvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=As2eDOwkaAhr4/oprkvYn/XLyQJTOffkM/fp2J7DzN9eiuWZxXg1Ai0/Zg5gWtxa6fRSWCzmaZlzvkaQC8cROywdrdWxoZ/JLBVlvr3fIySJAoqUOduP3MChXBc6pFeRwM4ue1GpKBkltakGEA8mAzOGfZ1nfvOitz028yHvXvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8Q+/2Zh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234FBC2BCB3;
-	Mon, 13 Apr 2026 16:29:41 +0000 (UTC)
+	 MIME-Version; b=oVmvSMgkzpB+tUeAmNIiYFQhmwsTNp+K5NOncznzSh1zHaNEw+vFVuxNMMBj/YER6aTHoGYe2+/efr2FE2K2byA5KOt9l+QpkbcZXHXjGOkDTBEucT06XT/XxxTKtShjfeKvr6s09XLRRwEghbuvkfManAq0nUeI7sZn+ULqSUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebyqyEnG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E2DC2BCAF;
+	Mon, 13 Apr 2026 16:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097782;
-	bh=GojYHFXf+10jVT6NMzFifPUxj3bcS99DYdcOLwd0sOY=;
+	s=korg; t=1776098962;
+	bh=XlujQD2xouDRaYo5OOtqTXvzKojDzPt+APt8Ye2xFvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8Q+/2ZhIwQSZMC81Cd2WEpAKYW3IdhJdqXKUSl7mbPlMVEQtILPARC1+aq8h+PH0
-	 +4eepwSZuJDxj/iss6CFO21nFZ2mQA29yUhYPsXVRW1oLChqHuRkTViI76iZM34LBd
-	 a1ZmzQs5/e6ScPxh64mnDW6tCMYiG6JllWlseH8M=
+	b=ebyqyEnGhJrPDihdwbca6xme+B/DiVBWa4e6DeV3dSstZZM7b9omfulmCXCzFF9FS
+	 I7XKuIyqV2YnwOsJAppv7n0mQQaNLWgukbvj02Q0W7R7OkikfuJQwwap68g3Y/XPKW
+	 mLdw3wvka/xO18r2HfXx3gQp4Ro+ro2lGjWZYpC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/570] net: usb: aqc111: Do not perform PM inside suspend callback
+Subject: [PATCH 5.10 157/491] ext4: dont set EXT4_GET_BLOCKS_CONVERT when splitting before submitting I/O
 Date: Mon, 13 Apr 2026 17:56:42 +0200
-Message-ID: <20260413155840.634481451@linuxfoundation.org>
+Message-ID: <20260413155824.910326529@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +67,132 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236783-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.983];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,48dc1e8dfc92faf1124c];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237246-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_SPAM(0.00)[0.234];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: EF7E03F02F4
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 36E0C3F12E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikola Z. Ivanov <zlatistiv@gmail.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 069c8f5aebe4d5224cf62acc7d4b3486091c658a ]
+[ Upstream commit feaf2a80e78f89ee8a3464126077ba8683b62791 ]
 
-syzbot reports "task hung in rpm_resume"
+When allocating blocks during within-EOF DIO and writeback with
+dioread_nolock enabled, EXT4_GET_BLOCKS_PRE_IO was set to split an
+existing large unwritten extent. However, EXT4_GET_BLOCKS_CONVERT was
+set when calling ext4_split_convert_extents(), which may potentially
+result in stale data issues.
 
-This is caused by aqc111_suspend calling
-the PM variant of its write_cmd routine.
+Assume we have an unwritten extent, and then DIO writes the second half.
 
-The simplified call trace looks like this:
+   [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
+   [UUUUUUUUUUUUUUUU] extent status tree
+            |<-   ->| ----> dio write this range
 
-rpm_suspend()
-  usb_suspend_both() - here udev->dev.power.runtime_status == RPM_SUSPENDING
-    aqc111_suspend() - called for the usb device interface
-      aqc111_write32_cmd()
-        usb_autopm_get_interface()
-          pm_runtime_resume_and_get()
-            rpm_resume() - here we call rpm_resume() on our parent
-              rpm_resume() - Here we wait for a status change that will never happen.
+First, ext4_iomap_alloc() call ext4_map_blocks() with
+EXT4_GET_BLOCKS_PRE_IO, EXT4_GET_BLOCKS_UNWRIT_EXT and
+EXT4_GET_BLOCKS_CREATE flags set. ext4_map_blocks() find this extent and
+call ext4_split_convert_extents() with EXT4_GET_BLOCKS_CONVERT and the
+above flags set.
 
-At this point we block another task which holds
-rtnl_lock and locks up the whole networking stack.
+Then, ext4_split_convert_extents() calls ext4_split_extent() with
+EXT4_EXT_MAY_ZEROOUT, EXT4_EXT_MARK_UNWRIT2 and EXT4_EXT_DATA_VALID2
+flags set, and it calls ext4_split_extent_at() to split the second half
+with EXT4_EXT_DATA_VALID2, EXT4_EXT_MARK_UNWRIT1, EXT4_EXT_MAY_ZEROOUT
+and EXT4_EXT_MARK_UNWRIT2 flags set. However, ext4_split_extent_at()
+failed to insert extent since a temporary lack -ENOSPC. It zeroes out
+the first half but convert the entire on-disk extent to written since
+the EXT4_EXT_DATA_VALID2 flag set, but left the second half as unwritten
+in the extent status tree.
 
-Fix this by replacing the write_cmd calls with their _nopm variants
+   [0000000000SSSSSS]  data                S: stale data, 0: zeroed
+   [WWWWWWWWWWWWWWWW]  on-disk extent      W: written extent
+   [WWWWWWWWWWUUUUUU]  extent status tree
 
-Reported-by: syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=48dc1e8dfc92faf1124c
-Fixes: e58ba4544c77 ("net: usb: aqc111: Add support for wake on LAN by MAGIC packet")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Link: https://patch.msgid.link/20260313141643.1181386-1-zlatistiv@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Finally, if the DIO failed to write data to the disk, the stale data in
+the second half will be exposed once the cached extent entry is gone.
+
+Fix this issue by not passing EXT4_GET_BLOCKS_CONVERT when splitting
+an unwritten extent before submitting I/O, and make
+ext4_split_convert_extents() to zero out the entire extent range
+to zero for this case, and also mark the extent in the extent status
+tree for consistency.
+
+Fixes: b8a8684502a0 ("ext4: Introduce FALLOC_FL_ZERO_RANGE flag for fallocate")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Cc: stable@kernel.org
+Message-ID: <20251129103247.686136-4-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ different function signatures ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/aqc111.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/ext4/extents.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 00aba7e1d0b95..81093c4fb8194 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1400,14 +1400,14 @@ static int aqc111_suspend(struct usb_interface *intf, pm_message_t message)
- 		aqc111_write16_cmd_nopm(dev, AQ_ACCESS_MAC,
- 					SFR_MEDIUM_STATUS_MODE, 2, &reg16);
- 
--		aqc111_write_cmd(dev, AQ_WOL_CFG, 0, 0,
--				 WOL_CFG_SIZE, &wol_cfg);
--		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
--				   &aqc111_data->phy_cfg);
-+		aqc111_write_cmd_nopm(dev, AQ_WOL_CFG, 0, 0,
-+				      WOL_CFG_SIZE, &wol_cfg);
-+		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
-+					&aqc111_data->phy_cfg);
- 	} else {
- 		aqc111_data->phy_cfg |= AQ_LOW_POWER;
--		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
--				   &aqc111_data->phy_cfg);
-+		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
-+					&aqc111_data->phy_cfg);
- 
- 		/* Disable RX path */
- 		aqc111_read16_cmd_nopm(dev, AQ_ACCESS_MAC,
--- 
-2.51.0
-
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3705,11 +3705,15 @@ static int ext4_split_convert_extents(ha
+ 	/* Convert to unwritten */
+ 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
+ 		split_flag |= EXT4_EXT_DATA_VALID1;
+-	/* Convert to initialized */
+-	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
++	/* Split the existing unwritten extent */
++	} else if (flags & (EXT4_GET_BLOCKS_UNWRIT_EXT |
++			    EXT4_GET_BLOCKS_CONVERT)) {
+ 		split_flag |= ee_block + ee_len <= eof_block ?
+ 			      EXT4_EXT_MAY_ZEROOUT : 0;
+-		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
++		split_flag |= EXT4_EXT_MARK_UNWRIT2;
++		/* Convert to initialized */
++		if (flags & EXT4_GET_BLOCKS_CONVERT)
++			split_flag |= EXT4_EXT_DATA_VALID2;
+ 	}
+ 	flags |= EXT4_GET_BLOCKS_PRE_IO;
+ 	return ext4_split_extent(handle, inode, ppath, map, split_flag, flags);
+@@ -3874,7 +3878,7 @@ ext4_ext_handle_unwritten_extents(handle
+ 	/* get_block() before submitting IO, split the extent */
+ 	if (flags & EXT4_GET_BLOCKS_PRE_IO) {
+ 		ret = ext4_split_convert_extents(handle, inode, map, ppath,
+-					 flags | EXT4_GET_BLOCKS_CONVERT);
++					 flags);
+ 		if (ret < 0) {
+ 			err = ret;
+ 			goto out2;
 
 
 
