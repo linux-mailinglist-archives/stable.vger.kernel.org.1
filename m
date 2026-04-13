@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGPlDd4V3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:14 +0200
+	id sKXoNJMj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1003EE69D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702B83F0E7B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95128306034D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79460304D5D6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6343E24DCF6;
-	Mon, 13 Apr 2026 16:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6250B2D5A19;
+	Mon, 13 Apr 2026 16:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBLXAkIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbDni+TZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262691D6DB5;
-	Mon, 13 Apr 2026 16:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2303626CE32;
+	Mon, 13 Apr 2026 16:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096228; cv=none; b=KwlmCPilCsQyOTO4erfYgWsBJQq4+g2YzBTIBtEmBCz5yG34By8l9m7t3zOH8U/2Kf1n8RkfJUs3nbPPMXCZNAEu9ULtTxcJDa8Nylc74Av6FkLD1UpxiBn3Vxqocmpn0/kkn9647oV4g17kbopYyt2d736QHM4ujYJjKHSjcy0=
+	t=1776098205; cv=none; b=p0sklGVgrKSg/yCwwGKITqsybCbjuvZ+aASJZcnCpg+SFolncpiMNFf/2JOkS1jdQgr8PtvALJV2PLagpzLAIwR3oZfZcngwv4I1AfyK5OTpDcFyC7kZzsuhA5pi9LDszoncRf5kex2iLG/YvxtXNE8ITAPtRZYEt4aCHJDNrCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096228; c=relaxed/simple;
-	bh=Fsf1Kb4zTZiDJ7lZYR5uXeHOug8n9fDv9iFpI2hBGNs=;
+	s=arc-20240116; t=1776098205; c=relaxed/simple;
+	bh=5+KEYrj0zA5CKmcJGDDdRo/GsInHDphUqiWvyAP71NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmrjWCdhiiBvBSMNirh8VD0AZAQQQYXgGakibgNhXjwSEx47Tjm3FhAQ5m7SyWekuFuNVPJLIc/vl5paqYWcoMPUL154uMfKj6rrdq/dh6bPUHMMsOdutw+Ov1ZFLsyTjHWI+CyGL+xxYEZnwQCnILIngwdJk2+o4e273iAHYfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBLXAkIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87628C2BCAF;
-	Mon, 13 Apr 2026 16:03:47 +0000 (UTC)
+	 MIME-Version; b=OYQxRxuCdgaQu4fq8A20/C/GwxuYMoZZlOUzRBSS4Hi+oS2h7Y2RAaJsKzMCMsa07zcALsqIie25k3XYVVqeKkVnArtdkNYDd4UaKNIhXaol0dLtrefVDvJtHTkjfjI/AQg2SOeySXpFgl2ctpUj7VwYV9aJsMfnfjJBptlzh1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbDni+TZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4A5C2BCAF;
+	Mon, 13 Apr 2026 16:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096227;
-	bh=Fsf1Kb4zTZiDJ7lZYR5uXeHOug8n9fDv9iFpI2hBGNs=;
+	s=korg; t=1776098205;
+	bh=5+KEYrj0zA5CKmcJGDDdRo/GsInHDphUqiWvyAP71NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JBLXAkILFtdTBRLAlfKiRz/lmsIK/8XDhd9eebKK/zEPjOt4uNTFsnviHCLKkBBJd
-	 eBONejT2XHGyQGKCkte3IlrGx1p+mgMgBcqXhI7f86OMycc8YOipbBGrxZVsKOik82
-	 tia0soRsua/pWDggyagOsPSIF2Q0fsI2cVFxnTLg=
+	b=kbDni+TZey8B0Ynlghd4zzkTmpG9KjnENIOAdUI2YDviblzqdpK97oRmfE7e0hqH9
+	 qcncqM1VgeLy90LijQs8B6mSCjz0wum4fEJeKqsjKtx/+tM3Yz+yT/zw4NztAbB2y4
+	 J2r5cRJDTHlcnXXhHv/7kPKGM2Sxkl28FS+/RAVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.19 17/86] i2c: imx: zero-initialize dma_slave_config for eDMA
+	Yiming Qian <yimingqian591@gmail.com>,
+	Martin Schiller <ms@dev.tdt.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 433/570] net/x25: Fix overflow when accumulating packets
 Date: Mon, 13 Apr 2026 17:59:24 +0200
-Message-ID: <20260413155732.222848327@linuxfoundation.org>
+Message-ID: <20260413155846.694122551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,64 +74,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dev.tdt.de,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236949-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236172-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9F1003EE69D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tdt.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 702B83F0E7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Pighin <anthony.pighin@nokia.com>
+From: Martin Schiller <ms@dev.tdt.de>
 
-commit 39ed7d89b973329cc5c764b65ba6302b17b1907e upstream.
+[ Upstream commit a1822cb524e89b4cd2cf0b82e484a2335496a6d9 ]
 
-commit 66d88e16f204 ("dmaengine: fsl-edma: read/write multiple registers
-in cyclic transactions") causes fsl_edma_fill_tcd() to read
-dst_port_window_size and src_port_window_size when building transfer
-control descriptors.
+Add a check to ensure that `x25_sock.fraglen` does not overflow.
 
-Initialize the structure so unset fields are explicitly zero.
+The `fraglen` also needs to be resetted when purging `fragment_queue` in
+`x25_clear_queues()`.
 
-Fixes: 66d88e16f204 ("dmaengine: fsl-edma: read/write multiple registers in cyclic transactions")
-Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
-Cc: <stable@vger.kernel.org> # v6.14+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260331182632.888110-1-anthony.pighin@nokia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Link: https://patch.msgid.link/20260331-x25_fraglen-v4-2-3e69f18464b4@dev.tdt.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-imx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/x25/x25_in.c   | 4 ++++
+ net/x25/x25_subr.c | 1 +
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -401,7 +401,7 @@ static void i2c_imx_reset_regs(struct im
- static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx, dma_addr_t phy_addr)
- {
- 	struct imx_i2c_dma *dma;
--	struct dma_slave_config dma_sconfig;
-+	struct dma_slave_config dma_sconfig = {};
- 	struct device *dev = i2c_imx->adapter.dev.parent;
- 	int ret;
+diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
+index 77ad186507f64..956e056803079 100644
+--- a/net/x25/x25_in.c
++++ b/net/x25/x25_in.c
+@@ -34,6 +34,10 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
+ 	struct sk_buff *skbo, *skbn = skb;
+ 	struct x25_sock *x25 = x25_sk(sk);
  
++	/* make sure we don't overflow */
++	if (x25->fraglen + skb->len > USHRT_MAX)
++		return 1;
++
+ 	if (more) {
+ 		x25->fraglen += skb->len;
+ 		skb_queue_tail(&x25->fragment_queue, skb);
+diff --git a/net/x25/x25_subr.c b/net/x25/x25_subr.c
+index 0285aaa1e93c1..159708d9ad20c 100644
+--- a/net/x25/x25_subr.c
++++ b/net/x25/x25_subr.c
+@@ -40,6 +40,7 @@ void x25_clear_queues(struct sock *sk)
+ 	skb_queue_purge(&x25->interrupt_in_queue);
+ 	skb_queue_purge(&x25->interrupt_out_queue);
+ 	skb_queue_purge(&x25->fragment_queue);
++	x25->fraglen = 0;
+ }
+ 
+ 
+-- 
+2.53.0
+
 
 
 
