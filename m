@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMh/Nssa3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:15 +0200
+	id cLHmBjUU3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B85C3EF384
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC023EE4A1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AB8B3095657
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 716AE3023D85
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4978624E4AF;
-	Mon, 13 Apr 2026 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D63248880;
+	Mon, 13 Apr 2026 16:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihT+JYys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/xEPft7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8BE24DCF6;
-	Mon, 13 Apr 2026 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2851D6DB5;
+	Mon, 13 Apr 2026 16:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096442; cv=none; b=mnG3t2IV+WO8VLjwTgz7L59Q2mj6rbP+jiYFWBFPzyP9f5oMV/Mh2+6pxPscNvO4ekYLBbOMRBo47s0sYuHIjFKKoLEX3X0MQaaZA+NYiqwIJvQCfJirIeaQoFvg6895J2JUWUm+1NYMIUbNcj94+IcfNeLTWCEUf66DpZCBGr0=
+	t=1776096254; cv=none; b=MPkQwhN7yPupBgUqWmtdbATHJoIONpv4jTSToVskQdDiaRl+ejleAQTFB83RiORAKl2HiWTZCr10lpEFf3SQCoZ5SG8xa8/p1cRzmUmsPnGiN17r3G42U7eh+DueMOvc7sN7Q2kVfewrv7kqw4Z5OAoxA/9U5/7lkAjeC8mzFZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096442; c=relaxed/simple;
-	bh=6B4P40mrJjrR9JJq2mW1lrwsWSrwpCN6v7LxDunk/Sc=;
+	s=arc-20240116; t=1776096254; c=relaxed/simple;
+	bh=+xTny0+pFFlgtaMY46yVNH9pOGvfTC20FB5jVagUZjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpfU8OZzKW/ryFKtZ72PBa0WdDIHLNE6RlGyM5UKp3nZu9iW0DkhgSSs6v94XBdPJ4dYfe0V0dU+4Y5Hf3UkI9ZiZ+tDX64zizncG63zZVJ2j1w1+ZpHMPc9n8TY0ZH7lvpmSQVXN0XzCXN+R/j5cLw4G3djUs6CCuQ8lgYmXiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihT+JYys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975A6C2BCAF;
-	Mon, 13 Apr 2026 16:07:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y8sNBGD4fKBC2lJLYKn6R8GwjaPxoVLE5RXCTePxInlPCc7XMz/Rh0RaAvxXf9hT05KF51CRP5zx9VXmsiJGgoHRKCDrsZmvF27z3I3e5dfr2L6FSOEQV4/Rb0HuYxdQ43S6FIpjSjmx6GO/b1XxuPbuw9P7QMVSXtR17mjt0aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/xEPft7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D87C2BCAF;
+	Mon, 13 Apr 2026 16:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096441;
-	bh=6B4P40mrJjrR9JJq2mW1lrwsWSrwpCN6v7LxDunk/Sc=;
+	s=korg; t=1776096253;
+	bh=+xTny0+pFFlgtaMY46yVNH9pOGvfTC20FB5jVagUZjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihT+JYysPlev3OrtvfGjRho3sk/DibeLKXVlMMsLVKygSievQRe2XluxPRAA9fmaY
-	 5PA5KTR83Nmgjm935vH7LcLH5+9IArrrREWKfjkJ6cfXYXhJKjJUe24VFBRRvSgSnh
-	 q6tYhSE7NQWTSsFWtUV9Y7lmYJVpAKeoguMP16rE=
+	b=W/xEPft7o2yzm0J+J+zqMTju/wy+RbDM9725JPuFo/ITw0MeI1cOnD6rZxBqELkGZ
+	 ZJN65yEs+yfkH6ZVLWVtfOm+Jm2+BsS8lVDm/HPZm6ybxkIz7CzsE9QhL+GU+gWNNk
+	 /fHBut0kOTr3347boh/LXNdcojU25OhV37/SpvI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcin Krycki <m.krycki@gmail.com>,
-	Theodoros Orfanidis <teoulas@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 05/83] Revert "ALSA: hda/realtek: Add quirk for Gigabyte Technology to fix headphone"
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.19 26/86] ASoC: SOF: Intel: hda: modify period size constraints for ACE4
 Date: Mon, 13 Apr 2026 17:59:33 +0200
-Message-ID: <20260413155731.227064734@linuxfoundation.org>
+Message-ID: <20260413155732.550118111@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236255-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236182-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.979];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: 6B85C3EF384
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8FC023EE4A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-commit 8508e9118649f13f7b857e9e10147b241db615d7 upstream.
+commit 0f71866057262d669ed6a21246eaac0ad6d04d4e upstream.
 
-This reverts commit 56fbbe096a89ff4b52af78a21a4afd9d94bdcc80.
+Intel ACE4 based products set more strict constraints on HDA BDLE start
+address and length alignment. Add a constraint to align period size to
+128 bytes.
 
-It caused regressions on other Gigabyte models, and looking at the
-bugzilla entry again, the suggested change appears rather dubious, as
-incorrectly setting the front mic pin as the headphone.
+The commit removes the "minimum as per HDA spec" comment. This comment
+was misleading as spec actually does allow a 2 byte BDLE length, and
+more importantly, period size also directly impacts how the BDLE start
+addresses are aligned, so it is not sufficient just to consider allowed
+buffer length.
 
-Fixes: 56fbbe096a89 ("ALSA: hda/realtek: Add quirk for Gigabyte Technology to fix headphone")
-Cc: <stable@vger.kernel.org>
-Reported-by: Marcin Krycki <m.krycki@gmail.com>
-Reported-by: Theodoros Orfanidis <teoulas@gmail.com>
-Closes: https://lore.kernel.org/CAEfRphPU_ABuVFzaHhspxgp2WAqi7kKNGo4yOOt0zeVFPSj8+Q@mail.gmail.com
-Link: https://patch.msgid.link/20260407123333.171130-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: d3df422f66e8 ("ASoC: SOF: Intel: add initial support for NVL-S")
+Cc: stable@vger.kernel.org
+Reported-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Link: https://patch.msgid.link/20260408084514.24325-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc662.c |    9 ---------
- 1 file changed, 9 deletions(-)
+ sound/soc/sof/intel/hda-pcm.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/sound/hda/codecs/realtek/alc662.c
-+++ b/sound/hda/codecs/realtek/alc662.c
-@@ -313,7 +313,6 @@ enum {
- 	ALC897_FIXUP_HEADSET_MIC_PIN2,
- 	ALC897_FIXUP_UNIS_H3C_X500S,
- 	ALC897_FIXUP_HEADSET_MIC_PIN3,
--	ALC897_FIXUP_H610M_HP_PIN,
- };
+diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
+index da6c1e7263cd..16a364072821 100644
+--- a/sound/soc/sof/intel/hda-pcm.c
++++ b/sound/soc/sof/intel/hda-pcm.c
+@@ -219,6 +219,7 @@ EXPORT_SYMBOL_NS(hda_dsp_pcm_pointer, "SND_SOC_SOF_INTEL_HDA_COMMON");
+ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 		     struct snd_pcm_substream *substream)
+ {
++	const struct sof_intel_dsp_desc *chip_info = get_chip_info(sdev->pdata);
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+ 	struct snd_soc_component *scomp = sdev->component;
+@@ -268,8 +269,17 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 		return -ENODEV;
+ 	}
  
- static const struct hda_fixup alc662_fixups[] = {
-@@ -767,13 +766,6 @@ static const struct hda_fixup alc662_fix
- 			{ }
- 		},
- 	},
--	[ALC897_FIXUP_H610M_HP_PIN] = {
--		.type = HDA_FIXUP_PINS,
--		.v.pins = (const struct hda_pintbl[]) {
--			{ 0x19, 0x0321403f }, /* HP out */
--			{ }
--		},
--	},
- };
+-	/* minimum as per HDA spec */
+-	snd_pcm_hw_constraint_step(substream->runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 4);
++	/*
++	 * Set period size constraint to ensure BDLE buffer length and
++	 * start address alignment requirements are met. Align to 128
++	 * bytes for newer Intel platforms, with older ones using 4 byte alignment.
++	 */
++	if (chip_info->hw_ip_version >= SOF_INTEL_ACE_4_0)
++		snd_pcm_hw_constraint_step(substream->runtime, 0,
++					   SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 128);
++	else
++		snd_pcm_hw_constraint_step(substream->runtime, 0,
++					   SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 4);
  
- static const struct hda_quirk alc662_fixup_tbl[] = {
-@@ -823,7 +815,6 @@ static const struct hda_quirk alc662_fix
- 	SND_PCI_QUIRK(0x1043, 0x8469, "ASUS mobo", ALC662_FIXUP_NO_JACK_DETECT),
- 	SND_PCI_QUIRK(0x105b, 0x0cd6, "Foxconn", ALC662_FIXUP_ASUS_MODE2),
- 	SND_PCI_QUIRK(0x144d, 0xc051, "Samsung R720", ALC662_FIXUP_IDEAPAD),
--	SND_PCI_QUIRK(0x1458, 0xa194, "H610M H V2 DDR4", ALC897_FIXUP_H610M_HP_PIN),
- 	SND_PCI_QUIRK(0x14cd, 0x5003, "USI", ALC662_FIXUP_USI_HEADSET_MODE),
- 	SND_PCI_QUIRK(0x17aa, 0x1036, "Lenovo P520", ALC662_FIXUP_LENOVO_MULTI_CODECS),
- 	SND_PCI_QUIRK(0x17aa, 0x1057, "Lenovo P360", ALC897_FIXUP_HEADSET_MIC_PIN),
+ 	/* avoid circular buffer wrap in middle of period */
+ 	snd_pcm_hw_constraint_integer(substream->runtime,
+-- 
+2.53.0
+
 
 
 
