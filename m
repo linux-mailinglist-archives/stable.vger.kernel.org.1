@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNyrLm8a3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:43 +0200
+	id 6KsBEKsf3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16B73EF286
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1893F027B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 486A63026913
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5FB43303AF21
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97EA25A2C9;
-	Mon, 13 Apr 2026 16:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A82310651;
+	Mon, 13 Apr 2026 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crMSOle+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGe2+FLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9D21DDC37;
-	Mon, 13 Apr 2026 16:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1494C30BF68;
+	Mon, 13 Apr 2026 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096939; cv=none; b=ghUBjfuOdY5aRmER1eZlFI/hEdqzPmNSXfBsqSbhBMsgZpXsO0yoDRHUB0gtuDhJGSFY5GofM2JnqEy/IhhV3gqe7kO51SnEM8B+y7UH4DE9uvPWwZdpchE0vYTg5P1Z3HsK0Qo3tLWdlg8x9gFBktc5wUM7l9BeHiOV1s5qFXY=
+	t=1776098564; cv=none; b=LADMjmZDvti0w1eTNBzZc8hls2UvjcadwzOL3XWtJ8b58m/FRYvpeI+XILDC/OBtkQrRUu5F41NEusGFiX6RqifdxyXHibHjYfqZfyTnfTxGEVsbHKkrhZvEawBvJroo76Zbfy+8LtyuDeIMqEeL1owdkmFQx972uJnIG9DyLyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096939; c=relaxed/simple;
-	bh=9jZQq1S33XNhHmQKuRpP0taHcOZFhMo6NbkHv6zwLb0=;
+	s=arc-20240116; t=1776098564; c=relaxed/simple;
+	bh=jBZpZSDQ1k4VA21pVm9ermQisv9Lqrue+1cRn22y+2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGLt9Z+nBj4m6SKHCm+asmK27gh6y8KqzJCkLi7dhkBGQMQ/lNuombUfeXjA6YzEPgSKnru/gxil4n0X4qHeTEsU4gnu1YJTMtBFfBs14VUqmfztbqEUnj6l84q69TgyK+wcd2E2TOAsJJNsdgkgYtGOT6QQwgwr+/OPpSHG/Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crMSOle+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D511FC2BCAF;
-	Mon, 13 Apr 2026 16:15:38 +0000 (UTC)
+	 MIME-Version; b=qcrrBIdm+a/ckkRcIjJIG8tr2A/QjSTybNhDSkei0wdeTGWBgbmv0xZ7cgHCaFKif7XbX4BxJi4hpyF27YOXFTn0RovYvRADhelmkmLpLIrdI9XD97nbKOpJUpeHmviwb4XS/kW2FvCQb4M5oVag+ngpfAgXXoG2gxMvOMMM9ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGe2+FLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D03C2BCAF;
+	Mon, 13 Apr 2026 16:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096939;
-	bh=9jZQq1S33XNhHmQKuRpP0taHcOZFhMo6NbkHv6zwLb0=;
+	s=korg; t=1776098563;
+	bh=jBZpZSDQ1k4VA21pVm9ermQisv9Lqrue+1cRn22y+2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crMSOle+PLE0EIIcf8DvMEwsAoJ8A5Y2jl8yqA5JA7kK/8bHMsZhhMwi1Ky36f4FZ
-	 7Tjqm5fbwNTYgI+V48Lyb8O1PrRTNeCLzijf7CMPpT1QpfIWOxVkEZTICCHhK+cyjw
-	 /h5mXOjDjpvzc4a6wJbZQIjt/6H+R/Sb+M2qIbiQ=
+	b=JGe2+FLCEuPDTjCQ18LMQAG8pzekxcNbOII/S5MQvJfj0sdVM2m9LU0xyp0eK7SZt
+	 6NGSBwjckNm/MOR4QlZnhhIFku9FPWubu+Ek2u9DbptCdeqrM7tjaPROOL4M/dZahq
+	 IGwpPcnJWTVk0WLLE4+6iSfGZTrOgS4/TqMh2dwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hancock <john@kernel.doghat.io>,
-	bjorn.forsman@gmail.com,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Subject: [PATCH 6.6 50/50] Revert "PCI: Enable ACS after configuring IOMMU for OF platforms"
+	Michael Zimmermann <sigmaepsilon92@gmail.com>,
+	stable <stable@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 546/570] usb: gadget: f_hid: move list and spinlock inits from bind to alloc
 Date: Mon, 13 Apr 2026 18:01:17 +0200
-Message-ID: <20260413155726.378592989@linuxfoundation.org>
+Message-ID: <20260413155850.900334918@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237092-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236451-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.doghat.io,gmail.com,oss.qualcomm.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C16B73EF286
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DC1893F027B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Michael Zimmermann <sigmaepsilon92@gmail.com>
 
-This reverts commit ec494c0260bf57a6fa3aa43a91daf7a774f8bd97 which is
-commit c41e2fb67e26b04d919257875fa954aa5f6e392e upstream.
+[ Upstream commit 4e0a88254ad59f6c53a34bf5fa241884ec09e8b2 ]
 
-The original commit attempted to enable ACS in pci_dma_configure() prior
-to IOMMU group assignment in iommu_init_device() to fix the ACS enablement
-issue for OF platforms. But that assumption doesn't hold true for kernel
-versions prior to v6.15, because on these older kernels,
-pci_dma_configure() is called *after* iommu_init_device(). So the IOMMU
-groups are already created before the ACS gets enabled. This causes the
-devices that should have been split into separate groups by ACS, getting
-merged into one group, thereby breaking the IOMMU isolation as reported on
-the AMD machines.
+There was an issue when you did the following:
+- setup and bind an hid gadget
+- open /dev/hidg0
+- use the resulting fd in EPOLL_CTL_ADD
+- unbind the UDC
+- bind the UDC
+- use the fd in EPOLL_CTL_DEL
 
-So revert the offending commit to restore the IOMMU group assignment on
-those affected machines. It should be noted that ACS has never really
-worked on kernel versions prior to v6.15, so the revert doesn't make any
-difference for OF platforms.
+When CONFIG_DEBUG_LIST was enabled, a list_del corruption was reported
+within remove_wait_queue (via ep_remove_wait_queue). After some
+debugging I found out that the queues, which f_hid registers via
+poll_wait were the problem. These were initialized using
+init_waitqueue_head inside hidg_bind. So effectively, the bind function
+re-initialized the queues while there were still items in them.
 
-Reported-by: John Hancock <john@kernel.doghat.io>
-Reported-by: bjorn.forsman@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221234
-Fixes: b20b659c2c6a ("PCI: Enable ACS after configuring IOMMU for OF platforms")
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>
-Link: https://lore.kernel.org/regressions/2c30f181-ffc6-4d63-a64e-763cf4528f48@leemhuis.info
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+The solution is to move the initialization from hidg_bind to hidg_alloc
+to extend their lifetimes to the lifetime of the function instance.
+
+Additionally, I found many other possibly problematic init calls in the
+bind function, which I moved as well.
+
+Signed-off-by: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260331184844.2388761-1-sigmaepsilon92@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-driver.c |    8 --------
- drivers/pci/pci.c        |   10 +++++++++-
- drivers/pci/pci.h        |    1 -
- 3 files changed, 9 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/function/f_hid.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -1668,14 +1668,6 @@ static int pci_dma_configure(struct devi
- 		ret = acpi_dma_configure(dev, acpi_get_dma_attr(adev));
- 	}
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -996,13 +996,8 @@ static int hidg_bind(struct usb_configur
+ 	if (status)
+ 		goto fail;
  
--	/*
--	 * Attempt to enable ACS regardless of capability because some Root
--	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
--	 * the standard ACS capability but still support ACS via those
--	 * quirks.
--	 */
--	pci_enable_acs(to_pci_dev(dev));
--
- 	pci_put_host_bridge_device(bridge);
+-	spin_lock_init(&hidg->write_spinlock);
+ 	hidg->write_pending = 1;
+ 	hidg->req = NULL;
+-	spin_lock_init(&hidg->read_spinlock);
+-	init_waitqueue_head(&hidg->write_queue);
+-	init_waitqueue_head(&hidg->read_queue);
+-	INIT_LIST_HEAD(&hidg->completed_out_req);
  
- 	if (!ret && !driver->driver_managed_dma) {
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1046,7 +1046,7 @@ static void pci_std_enable_acs(struct pc
-  * pci_enable_acs - enable ACS if hardware support it
-  * @dev: the PCI device
-  */
--void pci_enable_acs(struct pci_dev *dev)
-+static void pci_enable_acs(struct pci_dev *dev)
- {
- 	if (!pci_acs_enable)
- 		goto disable_acs_redir;
-@@ -3823,6 +3823,14 @@ bool pci_acs_path_enabled(struct pci_dev
- void pci_acs_init(struct pci_dev *dev)
- {
- 	dev->acs_cap = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS);
+ 	/* create char device */
+ 	cdev_init(&hidg->cdev, &f_hidg_fops);
+@@ -1272,6 +1267,12 @@ static struct usb_function *hidg_alloc(s
+ 	mutex_lock(&opts->lock);
+ 	++opts->refcnt;
+ 
++	spin_lock_init(&hidg->write_spinlock);
++	spin_lock_init(&hidg->read_spinlock);
++	init_waitqueue_head(&hidg->write_queue);
++	init_waitqueue_head(&hidg->read_queue);
++	INIT_LIST_HEAD(&hidg->completed_out_req);
 +
-+	/*
-+	 * Attempt to enable ACS regardless of capability because some Root
-+	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
-+	 * the standard ACS capability but still support ACS via those
-+	 * quirks.
-+	 */
-+	pci_enable_acs(dev);
- }
- 
- /**
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -557,7 +557,6 @@ static inline resource_size_t pci_resour
- }
- 
- void pci_acs_init(struct pci_dev *dev);
--void pci_enable_acs(struct pci_dev *dev);
- #ifdef CONFIG_PCI_QUIRKS
- int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
- int pci_dev_specific_enable_acs(struct pci_dev *dev);
+ 	device_initialize(&hidg->dev);
+ 	hidg->dev.release = hidg_release;
+ 	hidg->dev.class = hidg_class;
 
 
 
