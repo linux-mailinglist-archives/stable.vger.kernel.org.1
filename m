@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MCSMPoe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:06 +0200
+	id +F1fDjod3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650943EFFB8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D563EF9DB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE4D1302803E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B73A9301AA9F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DCC3164BB;
-	Mon, 13 Apr 2026 16:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811C7309F09;
+	Mon, 13 Apr 2026 16:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tk7HcX5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGeI6ygI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7F6314D26;
-	Mon, 13 Apr 2026 16:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C6049620;
+	Mon, 13 Apr 2026 16:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098871; cv=none; b=qe1La3Oo1u3YyskvhszLqPgRotFfclYIx2Dstc8Q9MqspSBbvyEtLaAoNbO4VSUG32iX1j+6llGIvCwBO/UGrA287jknBtYFrYNHX2z+TbgMXOat9fCd0v5JxwEusR2LjPfgsapMQNR1us9LqDhmfIeqYh9RMpdeQj04588Q9L0=
+	t=1776097692; cv=none; b=jGYDjiH6yir9LjCjEc0ScgGANaKCr+0gLkZJXGFLpwiOHqDIStMUGq7vflx5AptG8Mp77l+i0La4vKK3sI/jhuxZhW29CEgVa8errgC91uTDqleDnQ80VbOllS6VQ7qPd998cyygETMt5mEecjZM/kmv0amG4L+JbEXcm2wz3F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098871; c=relaxed/simple;
-	bh=9xdBdicqwp5ZB5uZ2KkzHAkhjf87jrsFISIX6V8UCVo=;
+	s=arc-20240116; t=1776097692; c=relaxed/simple;
+	bh=J33gXQPORFGTIUsW0ZdrSFDjXZ41ZK309FpEFm7fmjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k0rfBo9t/aKvb3eDvS8+mLKwjLY38ISM787DUb0Dw0bWOCkDLskrYisCq5JZSaPwyvQrWljjOgfycm29XelodXLIT1stIAZiyRHTyd9m2oxZZhx4tUX+FhaxxaJGAKHepC1GKVrU/nrZKM+U64+/ZaSwnkwalVNEsQxTa0VOvgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tk7HcX5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AF8C2BCAF;
-	Mon, 13 Apr 2026 16:47:51 +0000 (UTC)
+	 MIME-Version; b=K4pPxsASwZAstk9AStg5mzv+W9BZl7rFx0SzvT75cLw4ksVS0leAHBeSmko6LebiooRd/4tWTNMaQ+Sm58rM3C2zNttAD3kdtKhqWk0jqDrAI3YfXUdvR4T4WYUFIIUOkcI9pnGUYwrqF6ZFk3ItP1iGTSXiHc/awATAVph2giw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGeI6ygI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF858C2BCB0;
+	Mon, 13 Apr 2026 16:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098871;
-	bh=9xdBdicqwp5ZB5uZ2KkzHAkhjf87jrsFISIX6V8UCVo=;
+	s=korg; t=1776097692;
+	bh=J33gXQPORFGTIUsW0ZdrSFDjXZ41ZK309FpEFm7fmjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tk7HcX5pFTl12y3cxXM0U1NXBg+cBo554haSdku5LfCGkexgxJwPfek1Kuvy1vKP9
-	 VNye/PqsRd+FyLrM03ILfT1UNWljaZ59W6N7KRTYZpIigiUp1Qy0dZcXctGkyfacXg
-	 HHjvbAqe1uY/OSRxefnG9ROW1PjssELUYaiMpsMw=
+	b=TGeI6ygIQ7hl0fGWo6KG41q1+LUgu1chONHquSY3g/EyxQt6zW/97l8GCjVDhRkeI
+	 5AOW8sjgX9uM1dLfkc2GeXb5sKyLkwEw9ErxhUuE7CdSqz9AefHymP0fJW6tGpm9Q3
+	 oW54RRJr1pPgER+4iLts5GLjOz0cFFY9cijFBNVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alysa Liu <Alysa.Liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 122/491] drm/amdgpu: Fix use-after-free race in VM acquire
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 236/570] smb: client: Dont log plaintext credentials in cifs_set_cifscreds
 Date: Mon, 13 Apr 2026 17:56:07 +0200
-Message-ID: <20260413155823.608892695@linuxfoundation.org>
+Message-ID: <20260413155839.306375666@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +69,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236748-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237211-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 650943EFFB8
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: 24D563EF9DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alysa Liu <Alysa.Liu@amd.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 2c1030f2e84885cc58bffef6af67d5b9d2e7098f upstream.
+[ Upstream commit 2f37dc436d4e61ff7ae0b0353cf91b8c10396e4d ]
 
-Replace non-atomic vm->process_info assignment with cmpxchg()
-to prevent race when parent/child processes sharing a drm_file
-both try to acquire the same VM after fork().
+When debug logging is enabled, cifs_set_cifscreds() logs the key
+payload and exposes the plaintext username and password. Remove the
+debug log to avoid exposing credentials.
 
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alysa Liu <Alysa.Liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c7c573275ec20db05be769288a3e3bb2250ec618)
+Fixes: 8a8798a5ff90 ("cifs: fetch credentials out of keyring for non-krb5 auth multiuser mounts")
 Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/cifs/connect.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -932,7 +932,10 @@ static int init_kfd_vm(struct amdgpu_vm
- 		*ef = dma_fence_get(&info->eviction_fence->base);
- 	}
- 
--	vm->process_info = *process_info;
-+	if (cmpxchg(&vm->process_info, NULL, *process_info) != NULL) {
-+		ret = -EINVAL;
-+		goto already_acquired;
-+	}
- 
- 	/* Validate page directory and attach eviction fence */
- 	ret = amdgpu_bo_reserve(vm->root.base.bo, true);
-@@ -969,6 +972,7 @@ validate_pd_fail:
- 	amdgpu_bo_unreserve(vm->root.base.bo);
- reserve_pd_fail:
- 	vm->process_info = NULL;
-+already_acquired:
- 	if (info) {
- 		/* Two fence references: one in info and one in *ef */
- 		dma_fence_put(&info->eviction_fence->base);
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -1874,7 +1874,6 @@ cifs_set_cifscreds(struct smb3_fs_contex
+ 	/* find first : in payload */
+ 	payload = upayload->data;
+ 	delim = strnchr(payload, upayload->datalen, ':');
+-	cifs_dbg(FYI, "payload=%s\n", payload);
+ 	if (!delim) {
+ 		cifs_dbg(FYI, "Unable to find ':' in payload (datalen=%d)\n",
+ 			 upayload->datalen);
 
 
 
