@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DBdGrAh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:40 +0200
+	id EGyjFzMi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EEC3F0910
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523FA3F0A8E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A489311FC2B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 81A37305C1BF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883F326CE32;
-	Mon, 13 Apr 2026 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C129A31619A;
+	Mon, 13 Apr 2026 16:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJRhVWiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oO+fFU5m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5772E11B9;
-	Mon, 13 Apr 2026 16:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85982223DCE;
+	Mon, 13 Apr 2026 16:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097713; cv=none; b=UmlpKwLWXKrZlPMuSCe+1jsHzrusjUn/PK76CmGw1gQWq9RbO5X2RRbtTS5SrBYZ8rKue8DWyD6Dt8I6bHAb+PL9PQ487RoBBPezeyjOtiXUfr1Eaz1mBM4Lkc467I6cibgtM+YEang0bAcGKq/4RgUbPwu50W1dPZo3qzcyUjU=
+	t=1776098897; cv=none; b=YG1JsAHA6axN2OIIXY7jPNz09ucTxVwGofuPfjASdFE749JZSo2ON0UjgFi33pKoCP5y8livEtZZIW7f9Ti3l4tXWeM+rvl1EeqS8gzAuQXfJOky2hrwRV0N9MAehAd5UMMjz4HiZiiJwA28p/WwBiR8hVWZXitc+QUhbmsfVU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097713; c=relaxed/simple;
-	bh=hzkMwpIpzk6iUNOyw4oqesDWlVczYhUFl652S1XaBP8=;
+	s=arc-20240116; t=1776098897; c=relaxed/simple;
+	bh=f/S5vZ+1AHFL1VjpK+PZXO1hnrdaUSazPl/zny4GbVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tc51eE61zBnaU556DziCssjCFZ7rqNwiltfcLd6IHxjIE6VhlG4ixplbsPJj9GhWgH93tnAfZ2lzw4XA1qf58r0/+m8k/IBzuD/pnL7tfeX/adgM7gH+m9OwnBZB7skluRBsTTlu4FfbWHzf/ESgRt5iTDrvl8KcBG3aSM4vaVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJRhVWiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3E8C2BCAF;
-	Mon, 13 Apr 2026 16:28:32 +0000 (UTC)
+	 MIME-Version; b=afGWC8tOz7OJYt/BxRmqZpylLlFGXIxV9kQ6wH1sjjyxAhyKpxr7goUmxiAJl6lyZG4yqbwf8x4GOKjqbXoFUgdT38KvGN7q7FQrTZnY6mil/88txSHmZLL/NrwTUcrE9gXALOl1pKoiXRu847Yn/0rNDbCebBeFTunAs8KPeP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oO+fFU5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEBAC2BCAF;
+	Mon, 13 Apr 2026 16:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097712;
-	bh=hzkMwpIpzk6iUNOyw4oqesDWlVczYhUFl652S1XaBP8=;
+	s=korg; t=1776098897;
+	bh=f/S5vZ+1AHFL1VjpK+PZXO1hnrdaUSazPl/zny4GbVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJRhVWiqPsLbGwLLRSAkRLAQ+jrQ8aD+cUZOPBKZd+CsNwIA9s0wzl4mZ6OoLrwne
-	 Xaa/79CzCGrZ2FO+ZXvu97rzhPbOClHX2jJOFGbkg/tTtjymDYDNNXjaVhoUdKGoP6
-	 0hnBxVAyFLvUkCVwi8DT6tDi5XvMVhczB6gh/c84=
+	b=oO+fFU5mbGOT6s5LlSpOvcDdp1zpeefKIUP+mRMlVaGTqn0TUD0XqMO4PRdHFxk7R
+	 OS/OtiNp4I9bpM3yyHnqMpDEL4fKxeYh0QDDbyMt6YXa4CqAVFN8kzF1YqOuOHHE6/
+	 DKh9URftYffIpccB3DGbfZFLd4AYFnnS12fXlkGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 244/570] wifi: mac80211: Fix static_branch_dec() underflow for aql_disable.
-Date: Mon, 13 Apr 2026 17:56:15 +0200
-Message-ID: <20260413155839.610310759@linuxfoundation.org>
+	Chris Spencer <spencercw@gmail.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 131/491] iio: chemical: bme680: Fix measurement wait duration calculation
+Date: Mon, 13 Apr 2026 17:56:16 +0200
+Message-ID: <20260413155823.946704262@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,149 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237221-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236756-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,feb9ce36a95341bb47a4];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: C0EEC3F0910
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 523FA3F0A8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Chris Spencer <spencercw@gmail.com>
 
-[ Upstream commit b94ae8e0d5fe1bdbbfdc3854ff6ce98f6876a828 ]
+commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
 
-syzbot reported static_branch_dec() underflow in aql_enable_write(). [0]
+This function refers to the Bosch BME680 API as the source of the
+calculation, but one of the constants does not match the Bosch
+implementation. This appears to be a simple transposition of two digits,
+resulting in a wait time that is too short. This can cause the following
+'device measurement cycle incomplete' check to occasionally fail, returning
+EBUSY to user space.
 
-The problem is that aql_enable_write() does not serialise concurrent
-write()s to the debugfs.
+Adjust the constant to match the Bosch implementation and resolve the EBUSY
+errors.
 
-aql_enable_write() checks static_key_false(&aql_disable.key) and
-later calls static_branch_inc() or static_branch_dec(), but the
-state may change between the two calls.
-
-aql_disable does not need to track inc/dec.
-
-Let's use static_branch_enable() and static_branch_disable().
-
-[0]:
-val == 0
-WARNING: kernel/jump_label.c:311 at __static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311, CPU#0: syz.1.3155/20288
-Modules linked in:
-CPU: 0 UID: 0 PID: 20288 Comm: syz.1.3155 Tainted: G     U       L      syzkaller #0 PREEMPT(full)
-Tainted: [U]=USER, [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
-RIP: 0010:__static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311
-Code: f2 c9 ff 5b 5d c3 cc cc cc cc e8 54 f2 c9 ff 48 89 df e8 ac f9 ff ff eb ad e8 45 f2 c9 ff 90 0f 0b 90 eb a2 e8 3a f2 c9 ff 90 <0f> 0b 90 eb 97 48 89 df e8 5c 4b 33 00 e9 36 ff ff ff 0f 1f 80 00
-RSP: 0018:ffffc9000b9f7c10 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffffff9b3e5d40 RCX: ffffffff823c57b4
-RDX: ffff8880285a0000 RSI: ffffffff823c5846 RDI: ffff8880285a0000
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000000a
-R13: 1ffff9200173ef88 R14: 0000000000000001 R15: ffffc9000b9f7e98
-FS:  00007f530dd726c0(0000) GS:ffff8881245e3000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000001140 CR3: 000000007cc4a000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __static_key_slow_dec_cpuslocked kernel/jump_label.c:297 [inline]
- __static_key_slow_dec kernel/jump_label.c:321 [inline]
- static_key_slow_dec+0x7c/0xc0 kernel/jump_label.c:336
- aql_enable_write+0x2b2/0x310 net/mac80211/debugfs.c:343
- short_proxy_write+0x133/0x1a0 fs/debugfs/file.c:383
- vfs_write+0x2aa/0x1070 fs/read_write.c:684
- ksys_pwrite64 fs/read_write.c:793 [inline]
- __do_sys_pwrite64 fs/read_write.c:801 [inline]
- __se_sys_pwrite64 fs/read_write.c:798 [inline]
- __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:798
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xc9/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f530cf9aeb9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f530dd72028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
-RAX: ffffffffffffffda RBX: 00007f530d215fa0 RCX: 00007f530cf9aeb9
-RDX: 0000000000000003 RSI: 0000000000000000 RDI: 0000000000000010
-RBP: 00007f530d008c1f R08: 0000000000000000 R09: 0000000000000000
-R10: 4200000000000005 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f530d216038 R14: 00007f530d215fa0 R15: 00007ffde89fb978
- </TASK>
-
-Fixes: e908435e402a ("mac80211: introduce aql_enable node in debugfs")
-Reported-by: syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69a8979e.a70a0220.b118c.0025.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260306072405.3649474-1-kuniyu@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
+Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
+Signed-off-by: Chris Spencer <spencercw@gmail.com>
+Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/debugfs.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/iio/chemical/bme680_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 8dbfe325ee66f..4bf59033c516b 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -296,7 +296,6 @@ static ssize_t aql_enable_read(struct file *file, char __user *user_buf,
- static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 				size_t count, loff_t *ppos)
- {
--	bool aql_disabled = static_key_false(&aql_disable.key);
- 	char buf[3];
- 	size_t len;
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -548,7 +548,7 @@ static int bme680_wait_for_eoc(struct bm
+ 	 * + heater duration
+ 	 */
+ 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
+-			   data->oversampling_humid) * 1936) + (477 * 4) +
++			   data->oversampling_humid) * 1963) + (477 * 4) +
+ 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
  
-@@ -311,15 +310,12 @@ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 	if (len > 0 && buf[len - 1] == '\n')
- 		buf[len - 1] = 0;
- 
--	if (buf[0] == '0' && buf[1] == '\0') {
--		if (!aql_disabled)
--			static_branch_inc(&aql_disable);
--	} else if (buf[0] == '1' && buf[1] == '\0') {
--		if (aql_disabled)
--			static_branch_dec(&aql_disable);
--	} else {
-+	if (buf[0] == '0' && buf[1] == '\0')
-+		static_branch_enable(&aql_disable);
-+	else if (buf[0] == '1' && buf[1] == '\0')
-+		static_branch_disable(&aql_disable);
-+	else
- 		return -EINVAL;
--	}
- 
- 	return count;
- }
--- 
-2.51.0
-
+ 	usleep_range(wait_eoc_us, wait_eoc_us + 100);
 
 
 
