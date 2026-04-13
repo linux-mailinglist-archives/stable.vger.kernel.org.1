@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-236486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBGcILEa3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:49 +0200
+	id 8KsDC+wb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8813C3EF349
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995C43EF6CA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 580D5302906E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFD8C30EA574
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5513C2F362B;
-	Mon, 13 Apr 2026 16:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096CE26F293;
+	Mon, 13 Apr 2026 16:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQLgpdJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HirwbYQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167BE2EBB8C;
-	Mon, 13 Apr 2026 16:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14BE24DCF6;
+	Mon, 13 Apr 2026 16:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097029; cv=none; b=fK4yzstFLuMa0z1V+QMCcw0yj84MmIv+PJqjY2dZQWbZHoh9LfkiTyjdTQpLWz+Cyppu4ef6Hd5b1onye5oKfPUpmD3WL6jNMUiIJEvHVmvvHiaufJj/NU7SUIolSvV9JceeooZus9SUdtojCme+oTFpRRHLBjKXae5j7m8Xxb0=
+	t=1776096823; cv=none; b=BGPjjSQlfkNHsZknLab0NKjcvBy7NSyLgN9mX7zw6VF/IASPBQFgh7/qN+aQRWoyWHUshCz6VGn6Mqy1pumXjHqJAtdxB+A1fcaHT3s4gFiR2+sSFEgFKWnKpLpBM62mRlrRM+TVMUSdNvbHiG7fTYQFgYD4zUewwuLMKIXilvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097029; c=relaxed/simple;
-	bh=PJ+GLTeXrDgfC+hA8eejxqqi1oqqxUN8OIKR1FdKRrY=;
+	s=arc-20240116; t=1776096823; c=relaxed/simple;
+	bh=WO1OivKVqpiLsYI4zspRVJPUBqg0Qn9oQlbXS5AnV2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5Fp+HP2O6OMoebDUUoUb5Slp+D+1y+qmblZLodNbn6pkLHIoJB/fdKw3ipMMLTlZxByh7qPpEMRLgVPwf53b5aN24LNRUBzVpD4QGHJN23Ual21RNEn3/JxSEDB5qSsw6KOM+eO4D4mZjE7CMdk1pUGfKI2qJ5oP+Zrej54qrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQLgpdJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6C8C2BCB3;
-	Mon, 13 Apr 2026 16:17:08 +0000 (UTC)
+	 MIME-Version; b=u3ANsuT5DpiBw2LlU7XSrGLIp1hoS2PPKtJdb1f977yeENydjOMjcrWMMZ7YxrRcvMlM7U3CV8srhOKcmaBr1Znt9AXUSV8lNGhONaO7wg8u1wyT73ldCAT7DKCY4B1o8oEIUTQi+wEGmUeaqFr/e+DBM3P3cmMFGFADy2tCPis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HirwbYQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568AAC2BCAF;
+	Mon, 13 Apr 2026 16:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097029;
-	bh=PJ+GLTeXrDgfC+hA8eejxqqi1oqqxUN8OIKR1FdKRrY=;
+	s=korg; t=1776096823;
+	bh=WO1OivKVqpiLsYI4zspRVJPUBqg0Qn9oQlbXS5AnV2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQLgpdJcy4P0Og9mj/2bmJC8epE5dasSXYsivOKqgz5h6VESkt818I87hxDKzQkWw
-	 T3xhPVDGQKucPZqsJ1315o88zzzhePrgHx5tC8X9ixN/HbAPAk3oqVY8URQzQeC4gC
-	 cUIWRoDjw09u1PSN8FRWsakv6sQLRrsIxfk/MeF0=
+	b=HirwbYQmTEEL4Cmyx6Ncsfoi8tB3v1yTOciYYJHT0ixN01Ul5imEKJJH/SWhLvsgg
+	 c8z0o4Bi7c3z1tEQopMNs1rK7ylb1ZJn8rTwSIlGM6N7Gvt0cCtryVCm+tb8h718w8
+	 aihj5f216kbMVWGhEN0qW8V2LcIsd+zPambi0LXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.1 17/55] apparmor: fix missing bounds check on DEFAULT table in verify_dfa()
+	Ray Zhang <sgzhang@google.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 56/70] idpf: improve locking around idpf_vc_xn_push_free()
 Date: Mon, 13 Apr 2026 18:00:51 +0200
-Message-ID: <20260413155725.471345946@linuxfoundation.org>
+Message-ID: <20260413155730.276824852@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236486-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236406-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,106 +88,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualys.com:email,canonical.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8813C3EF349
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linutronix.de:email]
+X-Rspamd-Queue-Id: 995C43EF6CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-commit d352873bbefa7eb39995239d0b44ccdf8aaa79a4 upstream.
+commit d086fae65006368618104ba4c57779440eab2217 upstream.
 
-The verify_dfa() function only checks DEFAULT_TABLE bounds when the state
-is not differentially encoded.
+Protect the set_bit() operation for the free_xn bitmask in
+idpf_vc_xn_push_free(), to make the locking consistent with rest of the
+code and avoid potential races in that logic.
 
-When the verification loop traverses the differential encoding chain,
-it reads k = DEFAULT_TABLE[j] and uses k as an array index without
-validation. A malformed DFA with DEFAULT_TABLE[j] >= state_count,
-therefore, causes both out-of-bounds reads and writes.
-
-[   57.179855] ==================================================================
-[   57.180549] BUG: KASAN: slab-out-of-bounds in verify_dfa+0x59a/0x660
-[   57.180904] Read of size 4 at addr ffff888100eadec4 by task su/993
-
-[   57.181554] CPU: 1 UID: 0 PID: 993 Comm: su Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
-[   57.181558] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   57.181563] Call Trace:
-[   57.181572]  <TASK>
-[   57.181577]  dump_stack_lvl+0x5e/0x80
-[   57.181596]  print_report+0xc8/0x270
-[   57.181605]  ? verify_dfa+0x59a/0x660
-[   57.181608]  kasan_report+0x118/0x150
-[   57.181620]  ? verify_dfa+0x59a/0x660
-[   57.181623]  verify_dfa+0x59a/0x660
-[   57.181627]  aa_dfa_unpack+0x1610/0x1740
-[   57.181629]  ? __kmalloc_cache_noprof+0x1d0/0x470
-[   57.181640]  unpack_pdb+0x86d/0x46b0
-[   57.181647]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181653]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181656]  ? aa_unpack_nameX+0x1a8/0x300
-[   57.181659]  aa_unpack+0x20b0/0x4c30
-[   57.181662]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181664]  ? stack_depot_save_flags+0x33/0x700
-[   57.181681]  ? kasan_save_track+0x4f/0x80
-[   57.181683]  ? kasan_save_track+0x3e/0x80
-[   57.181686]  ? __kasan_kmalloc+0x93/0xb0
-[   57.181688]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181693]  ? aa_simple_write_to_buffer+0x54/0x130
-[   57.181697]  ? policy_update+0x154/0x330
-[   57.181704]  aa_replace_profiles+0x15a/0x1dd0
-[   57.181707]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181710]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181712]  ? aa_loaddata_alloc+0x77/0x140
-[   57.181715]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181717]  ? _copy_from_user+0x2a/0x70
-[   57.181730]  policy_update+0x17a/0x330
-[   57.181733]  profile_replace+0x153/0x1a0
-[   57.181735]  ? rw_verify_area+0x93/0x2d0
-[   57.181740]  vfs_write+0x235/0xab0
-[   57.181745]  ksys_write+0xb0/0x170
-[   57.181748]  do_syscall_64+0x8e/0x660
-[   57.181762]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   57.181765] RIP: 0033:0x7f6192792eb2
-
-Remove the MATCH_FLAG_DIFF_ENCODE condition to validate all DEFAULT_TABLE
-entries unconditionally.
-
-Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org
+Reported-by: Ray Zhang <sgzhang@google.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/match.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -204,9 +204,10 @@ static int verify_dfa(struct aa_dfa *dfa
- 	if (state_count == 0)
- 		goto out;
- 	for (i = 0; i < state_count; i++) {
--		if (!(BASE_TABLE(dfa)[i] & MATCH_FLAG_DIFF_ENCODE) &&
--		    (DEFAULT_TABLE(dfa)[i] >= state_count))
-+		if (DEFAULT_TABLE(dfa)[i] >= state_count) {
-+			pr_err("AppArmor DFA default state out of bounds");
- 			goto out;
-+		}
- 		if (BASE_TABLE(dfa)[i] & MATCH_FLAGS_INVALID) {
- 			pr_err("AppArmor DFA state with invalid match flags");
- 			goto out;
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -431,7 +431,9 @@ static void idpf_vc_xn_push_free(struct
+ 				 struct idpf_vc_xn *xn)
+ {
+ 	idpf_vc_xn_release_bufs(xn);
++	spin_lock_bh(&vcxn_mngr->xn_bm_lock);
+ 	set_bit(xn->idx, vcxn_mngr->free_xn_bm);
++	spin_unlock_bh(&vcxn_mngr->xn_bm_lock);
+ }
+ 
+ /**
 
 
 
