@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OeBLCYe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:34 +0200
+	id 2JSeJuEc3WlUaAkAu9opvQ
+	(envelope-from <stable+bounces-236688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FFD33EFCF0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3BBF3EF8A8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B209300B19E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F23E3094EA0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB29314A6B;
-	Mon, 13 Apr 2026 16:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EBC309F09;
+	Mon, 13 Apr 2026 16:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+tUywbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4JRv05Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9059523E342;
-	Mon, 13 Apr 2026 16:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749472E11B9;
+	Mon, 13 Apr 2026 16:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098730; cv=none; b=VPrexa+q+86BZ82p+2nPAEDOUQQYXTlNeUedMeSVhA26ZeLRoj6d7Nabry/bEhEt1xBJ3ez3jBmvYWGEFzIsrt7zGoRegUXxo+GbEbamP86+sT8CgnMa8bWu2/tSGnDYVT56TfUo44rrvKEysWiDQ1jP+UUhFDeBUCfMYw+Y+94=
+	t=1776097548; cv=none; b=VPdW4Bo183HVwCqfTGikmmxRwc8oWW/aZ73XPt61eiqvaIXDfnRSjDmpWmRHy6T63WK0F9U/sD9ug6SXA6tTy0SICJVaGWMmxUyrswtwW1ctVh+/wFi96eux6bBqB+gmmO8x2MvRuDekNfK4p33yzCHzkBfwdNJyZpU8YxEQ3Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098730; c=relaxed/simple;
-	bh=IuUDVXnY1L+7L82Ozrsx+BM472O0V3LQb8cc0VIIk50=;
+	s=arc-20240116; t=1776097548; c=relaxed/simple;
+	bh=mbwFRQWgIwqG2VU86OladrMKdLJ/UL16oaST9ztwHI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d53ADgZ5ngcof2FKSsB+8VLOWzuUAgQ+x8rk4dxfkl/w0TDoUF32FycO53f991r5OJ9n+SRD2RfHzHDwWY++G+wi12Pium6q6Dk1dkTu1lMp61k8yzFv4qy4HYwaiMHRsGeU7p8b0PtzkgQchyaHkTlE3fWsquVGzmMP2yv6Ltk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+tUywbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E7AC2BCB0;
-	Mon, 13 Apr 2026 16:45:29 +0000 (UTC)
+	 MIME-Version; b=EKPfuVB6a9iU7JeOtMutNp5oiYA2qhZUYwqMm+CP7TbChMc2HIRPG26dpi65kqvktDBQeR7UUjDaGfCxq4zJwTNXYv1P9j2nprFgyUIe93BlLFlMzuPnOBuRHmHYnwdlrTfiu7jx0NzoafhhI+jnMUPMAGIAjdEe6MRvYoM7uRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4JRv05Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0207CC2BCAF;
+	Mon, 13 Apr 2026 16:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098730;
-	bh=IuUDVXnY1L+7L82Ozrsx+BM472O0V3LQb8cc0VIIk50=;
+	s=korg; t=1776097548;
+	bh=mbwFRQWgIwqG2VU86OladrMKdLJ/UL16oaST9ztwHI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+tUywbA+krSDIwfLhZqAW0KG+hRx4ihOUXMkfDmZ88SG9MNEh52JHv8WvsNSTxVo
-	 khBwKrBwxyDgcsUwyNlyi5Wbhrty3qm74cM28K0syBB0ng0QPnCIfWojndvS3j70/G
-	 EXlXUTLk+H7tw6TuRAJR44AHI0j6xt9eBMkn2Zk8=
+	b=g4JRv05Y7Luk6l7fEJG8NZ+hN8B+UotE8gvNtNe73PQrVUSkNUho5SLmHhtHkg/24
+	 HI0Q4ulqy6KwpxbLv7NS0tysZfeAaPTxxZrpcG/g5AtcAopN7lVJtSl/739b3Lwau+
+	 iNc9213f7jhm9Khu6F/xTZ7W+VRXzJY7K9s12fTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/491] ASoC: topology: use inclusive language for bclk and fsync
+	Josh Law <objecting@objecting.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 5.15 179/570] lib/bootconfig: fix snprintf truncation check in xbc_node_compose_key_after()
 Date: Mon, 13 Apr 2026 17:55:10 +0200
-Message-ID: <20260413155821.481125623@linuxfoundation.org>
+Message-ID: <20260413155837.162071869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237155-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236688-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,195 +86,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7FFD33EFCF0
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,objecting.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B3BBF3EF8A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Josh Law <objecting@objecting.org>
 
-[ Upstream commit f026c123001bcc15b78311495cec79a8b73c3cf2 ]
+commit 1120a36bb1e9b9e22de75ecb4ef0b998f73a97f1 upstream.
 
-Mirror suggested changes in alsa-lib.
+snprintf() returns the number of characters that would have been
+written excluding the NUL terminator.  Output is truncated when the
+return value is >= the buffer size, not just > the buffer size.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20201112163100.5081-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 95bc5c225513 ("ASoC: soc-core: flush delayed work before removing DAIs and widgets")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When ret == size, the current code takes the non-truncated path,
+advancing buf by ret and reducing size to 0.  This is wrong because
+the output was actually truncated (the last character was replaced by
+NUL).  Fix by using >= so the truncation path is taken correctly.
+
+Link: https://lore.kernel.org/all/20260312191143.28719-4-objecting@objecting.org/
+
+Fixes: 76db5a27a827 ("bootconfig: Add Extra Boot Config support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josh Law <objecting@objecting.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/soc-dai.h   | 32 ++++++++++++++++++++------------
- include/uapi/sound/asoc.h | 22 ++++++++++++++--------
- sound/soc/soc-topology.c  | 24 ++++++++++++------------
- sound/soc/sof/topology.c  |  6 +++---
- 4 files changed, 49 insertions(+), 35 deletions(-)
+ lib/bootconfig.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/sound/soc-dai.h b/include/sound/soc-dai.h
-index fe86172e86020..580d1e6b935e6 100644
---- a/include/sound/soc-dai.h
-+++ b/include/sound/soc-dai.h
-@@ -72,21 +72,29 @@ struct snd_compr_stream;
- #define SND_SOC_DAIFMT_IB_IF		(4 << 8) /* invert BCLK + FRM */
- 
- /*
-- * DAI hardware clock masters.
-+ * DAI hardware clock providers/consumers
-  *
-  * This is wrt the codec, the inverse is true for the interface
-- * i.e. if the codec is clk and FRM master then the interface is
-- * clk and frame secondary.
-+ * i.e. if the codec is clk and FRM provider then the interface is
-+ * clk and frame consumer.
-  */
--#define SND_SOC_DAIFMT_CBM_CFM		(1 << 12) /* codec clk & FRM master */
--#define SND_SOC_DAIFMT_CBS_CFM		(2 << 12) /* codec clk secondary & FRM master */
--#define SND_SOC_DAIFMT_CBM_CFS		(3 << 12) /* codec clk master & frame secondary */
--#define SND_SOC_DAIFMT_CBS_CFS		(4 << 12) /* codec clk & FRM secondary */
--
--#define SND_SOC_DAIFMT_FORMAT_MASK	0x000f
--#define SND_SOC_DAIFMT_CLOCK_MASK	0x00f0
--#define SND_SOC_DAIFMT_INV_MASK		0x0f00
--#define SND_SOC_DAIFMT_MASTER_MASK	0xf000
-+#define SND_SOC_DAIFMT_CBP_CFP		(1 << 12) /* codec clk provider & frame provider */
-+#define SND_SOC_DAIFMT_CBC_CFP		(2 << 12) /* codec clk consumer & frame provider */
-+#define SND_SOC_DAIFMT_CBP_CFC		(3 << 12) /* codec clk provider & frame consumer */
-+#define SND_SOC_DAIFMT_CBC_CFC		(4 << 12) /* codec clk consumer & frame follower */
-+
-+/* previous definitions kept for backwards-compatibility, do not use in new contributions */
-+#define SND_SOC_DAIFMT_CBM_CFM		SND_SOC_DAIFMT_CBP_CFP
-+#define SND_SOC_DAIFMT_CBS_CFM		SND_SOC_DAIFMT_CBC_CFP
-+#define SND_SOC_DAIFMT_CBM_CFS		SND_SOC_DAIFMT_CBP_CFC
-+#define SND_SOC_DAIFMT_CBS_CFS		SND_SOC_DAIFMT_CBC_CFC
-+
-+#define SND_SOC_DAIFMT_FORMAT_MASK		0x000f
-+#define SND_SOC_DAIFMT_CLOCK_MASK		0x00f0
-+#define SND_SOC_DAIFMT_INV_MASK			0x0f00
-+#define SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK	0xf000
-+
-+#define SND_SOC_DAIFMT_MASTER_MASK	SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK
- 
- /*
-  * Master Clock Directions
-diff --git a/include/uapi/sound/asoc.h b/include/uapi/sound/asoc.h
-index a74ca232f1fc1..da61398b1f8f3 100644
---- a/include/uapi/sound/asoc.h
-+++ b/include/uapi/sound/asoc.h
-@@ -170,16 +170,22 @@
- #define SND_SOC_TPLG_LNK_FLGBIT_VOICE_WAKEUP            (1 << 3)
- 
- /* DAI topology BCLK parameter
-- * For the backwards capability, by default codec is bclk master
-+ * For the backwards capability, by default codec is bclk provider
-  */
--#define SND_SOC_TPLG_BCLK_CM         0 /* codec is bclk master */
--#define SND_SOC_TPLG_BCLK_CS         1 /* codec is bclk slave */
-+#define SND_SOC_TPLG_BCLK_CP         0 /* codec is bclk provider */
-+#define SND_SOC_TPLG_BCLK_CC         1 /* codec is bclk consumer */
-+/* keep previous definitions for compatibility */
-+#define SND_SOC_TPLG_BCLK_CM         SND_SOC_TPLG_BCLK_CP
-+#define SND_SOC_TPLG_BCLK_CS         SND_SOC_TPLG_BCLK_CC
- 
- /* DAI topology FSYNC parameter
-- * For the backwards capability, by default codec is fsync master
-+ * For the backwards capability, by default codec is fsync provider
-  */
--#define SND_SOC_TPLG_FSYNC_CM         0 /* codec is fsync master */
--#define SND_SOC_TPLG_FSYNC_CS         1 /* codec is fsync slave */
-+#define SND_SOC_TPLG_FSYNC_CP         0 /* codec is fsync provider */
-+#define SND_SOC_TPLG_FSYNC_CC         1 /* codec is fsync consumer */
-+/* keep previous definitions for compatibility */
-+#define SND_SOC_TPLG_FSYNC_CM         SND_SOC_TPLG_FSYNC_CP
-+#define SND_SOC_TPLG_FSYNC_CS         SND_SOC_TPLG_FSYNC_CC
- 
- /*
-  * Block Header.
-@@ -336,8 +342,8 @@ struct snd_soc_tplg_hw_config {
- 	__u8 clock_gated;	/* SND_SOC_TPLG_DAI_CLK_GATE_ value */
- 	__u8 invert_bclk;	/* 1 for inverted BCLK, 0 for normal */
- 	__u8 invert_fsync;	/* 1 for inverted frame clock, 0 for normal */
--	__u8 bclk_master;	/* SND_SOC_TPLG_BCLK_ value */
--	__u8 fsync_master;	/* SND_SOC_TPLG_FSYNC_ value */
-+	__u8 bclk_provider;	/* SND_SOC_TPLG_BCLK_ value */
-+	__u8 fsync_provider;	/* SND_SOC_TPLG_FSYNC_ value */
- 	__u8 mclk_direction;    /* SND_SOC_TPLG_MCLK_ value */
- 	__le16 reserved;	/* for 32bit alignment */
- 	__le32 mclk_rate;	/* MCLK or SYSCLK freqency in Hz */
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index aa57f796e9dd3..b9ef95c99c6ee 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -2173,7 +2173,7 @@ static void set_link_hw_format(struct snd_soc_dai_link *link,
- 			struct snd_soc_tplg_link_config *cfg)
- {
- 	struct snd_soc_tplg_hw_config *hw_config;
--	unsigned char bclk_master, fsync_master;
-+	unsigned char bclk_provider, fsync_provider;
- 	unsigned char invert_bclk, invert_fsync;
- 	int i;
- 
-@@ -2213,18 +2213,18 @@ static void set_link_hw_format(struct snd_soc_dai_link *link,
- 			link->dai_fmt |= SND_SOC_DAIFMT_IB_IF;
- 
- 		/* clock masters */
--		bclk_master = (hw_config->bclk_master ==
--			       SND_SOC_TPLG_BCLK_CM);
--		fsync_master = (hw_config->fsync_master ==
--				SND_SOC_TPLG_FSYNC_CM);
--		if (bclk_master && fsync_master)
--			link->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
--		else if (!bclk_master && fsync_master)
--			link->dai_fmt |= SND_SOC_DAIFMT_CBS_CFM;
--		else if (bclk_master && !fsync_master)
--			link->dai_fmt |= SND_SOC_DAIFMT_CBM_CFS;
-+		bclk_provider = (hw_config->bclk_provider ==
-+			       SND_SOC_TPLG_BCLK_CP);
-+		fsync_provider = (hw_config->fsync_provider ==
-+				SND_SOC_TPLG_FSYNC_CP);
-+		if (bclk_provider && fsync_provider)
-+			link->dai_fmt |= SND_SOC_DAIFMT_CBP_CFP;
-+		else if (!bclk_provider && fsync_provider)
-+			link->dai_fmt |= SND_SOC_DAIFMT_CBC_CFP;
-+		else if (bclk_provider && !fsync_provider)
-+			link->dai_fmt |= SND_SOC_DAIFMT_CBP_CFC;
- 		else
--			link->dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
-+			link->dai_fmt |= SND_SOC_DAIFMT_CBC_CFC;
- 	}
- }
- 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index b6327c30c2b5a..e3aa9fa0f112f 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -2786,15 +2786,15 @@ static void sof_dai_set_format(struct snd_soc_tplg_hw_config *hw_config,
- 			       struct sof_ipc_dai_config *config)
- {
- 	/* clock directions wrt codec */
--	if (hw_config->bclk_master == SND_SOC_TPLG_BCLK_CM) {
-+	if (hw_config->bclk_provider == SND_SOC_TPLG_BCLK_CM) {
- 		/* codec is bclk master */
--		if (hw_config->fsync_master == SND_SOC_TPLG_FSYNC_CM)
-+		if (hw_config->fsync_provider == SND_SOC_TPLG_FSYNC_CM)
- 			config->format |= SOF_DAI_FMT_CBM_CFM;
- 		else
- 			config->format |= SOF_DAI_FMT_CBM_CFS;
- 	} else {
- 		/* codec is bclk slave */
--		if (hw_config->fsync_master == SND_SOC_TPLG_FSYNC_CM)
-+		if (hw_config->fsync_provider == SND_SOC_TPLG_FSYNC_CM)
- 			config->format |= SOF_DAI_FMT_CBS_CFM;
- 		else
- 			config->format |= SOF_DAI_FMT_CBS_CFS;
--- 
-2.51.0
-
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -250,7 +250,7 @@ int __init xbc_node_compose_key_after(st
+ 			       depth ? "." : "");
+ 		if (ret < 0)
+ 			return ret;
+-		if (ret > size) {
++		if (ret >= size) {
+ 			size = 0;
+ 		} else {
+ 			size -= ret;
 
 
 
