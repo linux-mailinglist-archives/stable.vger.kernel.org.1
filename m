@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEdRItwm3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:44 +0200
+	id 6NlwGD0g3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52B73F156B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AF13F049E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6C8530ED95A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C984F30A333C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6198D346A1E;
-	Mon, 13 Apr 2026 17:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CEA30F545;
+	Mon, 13 Apr 2026 16:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn7hCBCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/mslR4w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C56346A1C;
-	Mon, 13 Apr 2026 17:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ECB1A680C;
+	Mon, 13 Apr 2026 16:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099656; cv=none; b=Y6BlaTme6hDrLxvCsay2+tlCQrFFpH6KT0z82EPsdC9gGWR4gWONTlgRYIcP7oeEqEt3kDXEH/rrFz+tZReOp53SpWbyWFjCpKGFPnszNOEvqbRYnp4PtHk/YHv+7JiM8LGvgS8Ljdy2cdNr43msWVS57N/CNKscGNFBO+Cf6Ac=
+	t=1776098499; cv=none; b=XozBW0/Jk9/zKqv11pGpgbtejg4h2rw22FeluPBr9tFsg3LX5ynwnSM7CMdnzTfsFuF2kb+rm0IWb8+BxRSfASXk4NFozkH2nTMfvkmSAyyvB4BjqeWCcn3oxzA5YBQeq3qKCYd/pUCxM6fhFsEmDFJInEpTyXugHlEUH1tZitw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099656; c=relaxed/simple;
-	bh=9lUl/o9+2qfKJdlEmG1mj7kcO8gj3pWHTvxbR5wshl8=;
+	s=arc-20240116; t=1776098499; c=relaxed/simple;
+	bh=zBbF8Xq4b6KwQlT2Xqo6AA4MJC32aPqdPIkCFfM2fDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhVrWWQ8B9mIdrnk07NuATsqTBujkOCehXhsN7dMsyI7rNFVUi4DxQe4wohi72duMBGRs43x7lMZdUFETKnmdUVEKASt1zkdipUL8IosuXm4F1EXV/UgNg5vHcq6b8LaG0e7xXVriYJZdxiD2PSrlHgqHhDqnAWMESZ4rhgRxMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn7hCBCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A418C2BCB6;
-	Mon, 13 Apr 2026 17:00:55 +0000 (UTC)
+	 MIME-Version; b=qZG8j1khOmFSgaLpssBDlOauQFF8AD1EsRhviyrfW5i3BtJKqcFrb48n9noKNaiUct5jUS9TVsNPHnnG/CKRGaI6YhuCLt9t2k5mHIyyUC/NypoFJlUCQx7U9wUlswnHE6oSmVXHGwjVScRgIuwwn+oRTUK8xhsCNsf6k7IKHGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/mslR4w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C11FC2BCB6;
+	Mon, 13 Apr 2026 16:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099656;
-	bh=9lUl/o9+2qfKJdlEmG1mj7kcO8gj3pWHTvxbR5wshl8=;
+	s=korg; t=1776098499;
+	bh=zBbF8Xq4b6KwQlT2Xqo6AA4MJC32aPqdPIkCFfM2fDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mn7hCBCabHKGN5L+b3ifMaEP47I/Q9EWD00AlC8lDKsrc4/MWqcEY3g9ZGFRbPl8B
-	 ISNxz1HB3ZtivdZSJp2r0gqnpwMj3zVT3FKec0RD3kFeICQawn9Tl/a95VwQYKjBVq
-	 fgiCU5L/IoHq0/Ln8wxqhHlRhCB9YY6/5bk4jWWQ=
+	b=J/mslR4wcBFTNgePBEYgXYe8+HJVl+eSEplpa8AQibs1wuQ0KZSRyY0yQWh18IefJ
+	 adEigZoq6Vti+YfCKOUhlfA5xb+usvdXBf0Jhn3BIfAfczhSEfGmNRJp+84oyvP3kq
+	 SHsRPrUWVQBhWiJ0PuzL74o+bocsLiRoi77lIXiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 391/491] phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
-Date: Mon, 13 Apr 2026 18:00:36 +0200
-Message-ID: <20260413155833.673119691@linuxfoundation.org>
+	Vishal Thanki <vishalthanki@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 506/570] wifi: rt2x00usb: fix devres lifetime
+Date: Mon, 13 Apr 2026 18:00:37 +0200
+Message-ID: <20260413155849.406892323@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,163 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,wp.pl,intel.com];
+	TAGGED_FROM(0.00)[bounces-237066-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237515-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D52B73F156B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,wp.pl:email]
+X-Rspamd-Queue-Id: 59AF13F049E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 54c4c58713aaff76c2422ff5750e557ab3b100d7 upstream.
+commit 25369b22223d1c56e42a0cd4ac9137349d5a898e upstream.
 
-It has been observed on the Renesas RZ/G3S SoC that unbinding and binding
-the PHY driver leads to role autodetection failures. This issue occurs when
-PHY 3 is the first initialized PHY. PHY 3 does not have an interrupt
-associated with the USB2_INT_ENABLE register (as
-rcar_gen3_int_enable[3] = 0). As a result, rcar_gen3_init_otg() is called
-to initialize OTG without enabling PHY interrupts.
+USB drivers bind to USB interfaces and any device managed resources
+should have their lifetime tied to the interface rather than parent USB
+device. This avoids issues like memory leaks when drivers are unbound
+without their devices being physically disconnected (e.g. on probe
+deferral or configuration changes).
 
-To resolve this, add rcar_gen3_is_any_otg_rphy_initialized() and call it in
-role_store(), role_show(), and rcar_gen3_init_otg(). At the same time,
-rcar_gen3_init_otg() is only called when initialization for a PHY with
-interrupt bits is in progress. As a result, the
-struct rcar_gen3_phy::otg_initialized is no longer needed.
+Fix the USB anchor lifetime so that it is released on driver unbind.
 
-[claudiu.beznea: declare the i iterrator from
- rcar_gen3_is_any_otg_rphy_initialized() outside of for loop]
-
-Fixes: 549b6b55b005 ("phy: renesas: rcar-gen3-usb2: enable/disable independent irqs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Vishal Thanki <vishalthanki@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260327113219.1313748-1-johan@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 32 +++++++++++-------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index ea01a121b8fc5..646a5140b30e1 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -98,7 +98,6 @@ struct rcar_gen3_phy {
- 	struct rcar_gen3_chan *ch;
- 	u32 int_enable_bits;
- 	bool initialized;
--	bool otg_initialized;
- 	bool powered;
- };
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -830,7 +830,7 @@ int rt2x00usb_probe(struct usb_interface
+ 	if (retval)
+ 		goto exit_free_device;
  
-@@ -288,16 +287,16 @@ static bool rcar_gen3_is_any_rphy_initialized(struct rcar_gen3_chan *ch)
- 	return false;
- }
- 
--static bool rcar_gen3_needs_init_otg(struct rcar_gen3_chan *ch)
-+static bool rcar_gen3_is_any_otg_rphy_initialized(struct rcar_gen3_chan *ch)
- {
--	int i;
-+	enum rcar_gen3_phy_index i;
- 
--	for (i = 0; i < NUM_OF_PHYS; i++) {
--		if (ch->rphys[i].otg_initialized)
--			return false;
-+	for (i = PHY_INDEX_BOTH_HC; i <= PHY_INDEX_EHCI; i++) {
-+		if (ch->rphys[i].initialized)
-+			return true;
- 	}
- 
--	return true;
-+	return false;
- }
- 
- static bool rcar_gen3_are_all_rphys_power_off(struct rcar_gen3_chan *ch)
-@@ -319,7 +318,7 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
- 	bool is_b_device;
- 	enum phy_mode cur_mode, new_mode;
- 
--	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
-+	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
- 
- 	if (sysfs_streq(buf, "host"))
-@@ -357,7 +356,7 @@ static ssize_t role_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
- 
--	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
-+	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
- 
- 	return sprintf(buf, "%s\n", rcar_gen3_is_host(ch) ? "host" :
-@@ -370,6 +369,9 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
- 	void __iomem *usb2_base = ch->base;
- 	u32 val;
- 
-+	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
-+		return;
-+
- 	/* Should not use functions of read-modify-write a register */
- 	val = readl(usb2_base + USB2_LINECTRL1);
- 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
-@@ -435,12 +437,9 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
- 		writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
- 	}
- 
--	/* Initialize otg part */
--	if (channel->is_otg_channel) {
--		if (rcar_gen3_needs_init_otg(channel))
--			rcar_gen3_init_otg(channel);
--		rphy->otg_initialized = true;
--	}
-+	/* Initialize otg part (only if we initialize a PHY with IRQs). */
-+	if (rphy->int_enable_bits)
-+		rcar_gen3_init_otg(channel);
- 
- 	rphy->initialized = true;
- 
-@@ -456,9 +455,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
- 
- 	rphy->initialized = false;
- 
--	if (channel->is_otg_channel)
--		rphy->otg_initialized = false;
--
- 	val = readl(usb2_base + USB2_INT_ENABLE);
- 	val &= ~rphy->int_enable_bits;
- 	if (!rcar_gen3_is_any_rphy_initialized(channel))
--- 
-2.53.0
-
+-	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
++	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+ 					sizeof(struct usb_anchor),
+ 					GFP_KERNEL);
+ 	if (!rt2x00dev->anchor) {
 
 
 
