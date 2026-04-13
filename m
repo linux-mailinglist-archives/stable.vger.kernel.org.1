@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNTtA64V3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:11:26 +0200
+	id 0Jb3ANoa3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9850F3EE684
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:11:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E8A3EF3C0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9621A307C2EB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:05:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4140C30CF117
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3A02F6918;
-	Mon, 13 Apr 2026 16:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5544D2737F9;
+	Mon, 13 Apr 2026 16:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThTrZoq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQXYNe7P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443B82F0680;
-	Mon, 13 Apr 2026 16:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1764C2727E2;
+	Mon, 13 Apr 2026 16:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096290; cv=none; b=SzFhnwcVVzRDYpQjnl5NNC9srwDOH7nbeX9qTJphkP7HwGv9e0PTx/xKhQMLJVfIAV2bZ9pqbdr6oAi2RPW9VBMZ0atvlYr8IMeO/gCEwRjNgP7WRNuHn93dwZ7eT8kIBFMQ25cIck+kV/QF2T5Q8VMX8Ku9aoJ9j7PF9lGvo00=
+	t=1776096460; cv=none; b=TOOj4f49azIgN599Ex+Yl/lj+bWloMVUV8viSoJe7hQ4bm0nPq4gPLP60/p8FMEQv+Jd6aQfzgoimQzak66L97Gfhd1NzANVq4ij24XK0Mw9LfwaRMRd+0zYcDyux8Y8kMKvKW/yEFylBKdq0uP4cgXdqh0xdM+rx8Fzm/2I3/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096290; c=relaxed/simple;
-	bh=cYE7M6e/17KK78AKQQepd8g6Jo/r0W5ZYa/b3Df5Trg=;
+	s=arc-20240116; t=1776096460; c=relaxed/simple;
+	bh=Xs7vFqRcXaXefp6Lr4Se0rfRq768QxWjnRnbdVqYHDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1P4GUIO2Bi4H3aPxKy5BFdVnNS/U7l1ioK1841vEz2JDHgDKoIuyVpq13B3lui0TebvF72ojLMwjhVRnxa5Hy9jOa5tS0ZW9tWfSec5MULwCmnuQIsun7Z2FIYpORXtPQkqnb1ZjW+g7GTdTQbMDKmYSnciUqCF9Pzxdo4CdIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThTrZoq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A32C4AF0C;
-	Mon, 13 Apr 2026 16:04:49 +0000 (UTC)
+	 MIME-Version; b=JVYRtDANPuqLFZcOojrXl10WijjK934rg7urda6NiKBRmwj/fEK1LQWlp2GiZSmj7f0LMCka1SKXTSaE8mTbt9cQURo5Y4kqh2OLFHvgjSTDzN3KdTVtJ5TiI9Z8a2NxqGCxfLSEAE75qffcTrTPlo7I5SY23jpqTIPPgk7KNv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQXYNe7P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3531C2BCB4;
+	Mon, 13 Apr 2026 16:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096289;
-	bh=cYE7M6e/17KK78AKQQepd8g6Jo/r0W5ZYa/b3Df5Trg=;
+	s=korg; t=1776096460;
+	bh=Xs7vFqRcXaXefp6Lr4Se0rfRq768QxWjnRnbdVqYHDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThTrZoq1Mc0SePqQZ68DUsUy/bweIKQs4Q9XsuvQy6U2yKzM5U3n4KDPyR8wCSVjY
-	 byo3ai6OMxMYSsox7a7I3U8Ijp+YgAsAxl3BdqgjgaftW0GrpFAnI0uJrXhiVuxB+q
-	 Tc4bGsecdsJZJQsS3XHp1/56LYhMf1h8/NE1q2JY=
+	b=VQXYNe7PjdvefSTsh4/i0s/ZtFYhvL1Tk42AZ8GRip82bQwfedAPd3ciaKJv0zIrH
+	 pQ4bZOBGYxXs6l4SyrRqIFr1F2TdO8ifATFjyaf0B27ZpuLfFaMiROZ+GxsBeXn3MQ
+	 5pnhWxOT+60aCIdkxukMlhRgBqFOPkx6I0lHnmxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.19 41/86] EDAC/mc: Fix error path ordering in edac_mc_alloc()
+	Tuan Do <tuan@calif.io>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.18 20/83] netfilter: nft_ct: fix use-after-free in timeout object destroy
 Date: Mon, 13 Apr 2026 17:59:48 +0200
-Message-ID: <20260413155733.102016100@linuxfoundation.org>
+Message-ID: <20260413155731.779438510@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,88 +77,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236196-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236262-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 9850F3EE684
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[calif.io:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
+X-Rspamd-Queue-Id: 75E8A3EF3C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Tuan Do <tuan@calif.io>
 
-commit 51520e03e70d6c73e33ee7cbe0319767d05764fe upstream.
+commit f8dca15a1b190787bbd03285304b569631160eda upstream.
 
-When the mci->pvt_info allocation in edac_mc_alloc() fails, the error path
-will call put_device() which will end up calling the device's release
-function.
+nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
+immediately after nf_ct_untimeout(), without waiting for an RCU grace
+period. Concurrent packet processing on other CPUs may still hold
+RCU-protected references to the timeout object obtained via
+rcu_dereference() in nf_ct_timeout_data().
 
-However, the init ordering is wrong such that device_initialize() happens
-*after* the failed allocation and thus the device itself and the release
-function pointer are not initialized yet when they're called:
+Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
+freeing until after an RCU grace period, matching the approach already
+used in nfnetlink_cttimeout.c.
 
-  MCE: In-kernel MCE decoding enabled.
-  ------------[ cut here ]------------
-  kobject: '(null)': is not initialized, yet kobject_put() is being called.
-  WARNING: lib/kobject.c:734 at kobject_put, CPU#22: systemd-udevd
-  CPU: 22 UID: 0 PID: 538 Comm: systemd-udevd Not tainted 7.0.0-rc1+ #2 PREEMPT(full)
-  RIP: 0010:kobject_put
-  Call Trace:
-   <TASK>
-   edac_mc_alloc+0xbe/0xe0 [edac_core]
-   amd64_edac_init+0x7a4/0xff0 [amd64_edac]
-   ? __pfx_amd64_edac_init+0x10/0x10 [amd64_edac]
-   do_one_initcall
-   ...
+KASAN report:
+ BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
+ Read of size 4 at addr ffff8881035fe19c by task exploit/80
 
-Reorder the calling sequence so that the device is initialized and thus the
-release function pointer is properly set before it can be used.
+ Call Trace:
+  nf_conntrack_tcp_packet+0x1381/0x29d0
+  nf_conntrack_in+0x612/0x8b0
+  nf_hook_slow+0x70/0x100
+  __ip_local_out+0x1b2/0x210
+  tcp_sendmsg_locked+0x722/0x1580
+  __sys_sendto+0x2d8/0x320
 
-This was found by Claude while reviewing another EDAC patch.
+ Allocated by task 75:
+  nft_ct_timeout_obj_init+0xf6/0x290
+  nft_obj_init+0x107/0x1b0
+  nf_tables_newobj+0x680/0x9c0
+  nfnetlink_rcv_batch+0xc29/0xe00
 
-Fixes: 0bbb265f7089 ("EDAC/mc: Get rid of silly one-shot struct allocation in edac_mc_alloc()")
-Reported-by: Claude Code:claude-opus-4.5
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260331121623.4871-1-bp@kernel.org
+ Freed by task 26:
+  nft_obj_destroy+0x3f/0xa0
+  nf_tables_trans_destroy_work+0x51c/0x5c0
+  process_one_work+0x2c4/0x5a0
+
+Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tuan Do <tuan@calif.io>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/edac_mc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/netfilter/nf_conntrack_timeout.h |    1 +
+ net/netfilter/nft_ct.c                       |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/edac_mc.c
-+++ b/drivers/edac/edac_mc.c
-@@ -370,13 +370,13 @@ struct mem_ctl_info *edac_mc_alloc(unsig
- 	if (!mci->layers)
- 		goto error;
+--- a/include/net/netfilter/nf_conntrack_timeout.h
++++ b/include/net/netfilter/nf_conntrack_timeout.h
+@@ -14,6 +14,7 @@
+ struct nf_ct_timeout {
+ 	__u16			l3num;
+ 	const struct nf_conntrack_l4proto *l4proto;
++	struct rcu_head		rcu;
+ 	char			data[];
+ };
  
-+	mci->dev.release = mci_release;
-+	device_initialize(&mci->dev);
-+
- 	mci->pvt_info = kzalloc(sz_pvt, GFP_KERNEL);
- 	if (!mci->pvt_info)
- 		goto error;
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -1021,7 +1021,7 @@ static void nft_ct_timeout_obj_destroy(c
+ 	nf_queue_nf_hook_drop(ctx->net);
+ 	nf_ct_untimeout(ctx->net, timeout);
+ 	nf_ct_netns_put(ctx->net, ctx->family);
+-	kfree(priv->timeout);
++	kfree_rcu(priv->timeout, rcu);
+ }
  
--	mci->dev.release = mci_release;
--	device_initialize(&mci->dev);
--
- 	/* setup index and various internal pointers */
- 	mci->mc_idx = mc_num;
- 	mci->tot_dimms = tot_dimms;
+ static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
 
 
 
