@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gL1BAyki3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:41 +0200
+	id gM1/FCQk3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590BC3F0A71
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A43683F101D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2417231C834E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C623318F37A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E5226ED41;
-	Mon, 13 Apr 2026 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1563C317148;
+	Mon, 13 Apr 2026 16:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRHINaWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdvimBQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4B2225A38;
-	Mon, 13 Apr 2026 16:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE11C313298;
+	Mon, 13 Apr 2026 16:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097844; cv=none; b=i/XFgk2Ve6964sEHTkoioGiNT8UTBGa9eoYJ+vNuAGkhGy61/+/1adZ/0Yvb4hJdDqBLLgS2sBqFVYQ+msNu4Ejg/xRcAlPQ1rm/2LBP7nAMqyJiOyVybJySunEGelwNA0B+89HWYPxi/4eQuJ/Z9Iek5Mq8YlDe5WE8NpSwrxY=
+	t=1776099101; cv=none; b=tIM00VX6fhL9a1GgPNa+3XS6cAWGrAeiABzdeveBuCMM83cK6+M8cCDqsxMxKenx9haJtP8nDt9LzXDII9ZrHyE2x6e3JE6Cr/uLnOwqTKDVn+4tIyEz61IHBvS0Hl9KDNrDJGAl6seBE5MX0FiY07Aelp+Wl23W/6QEbWEMyfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097844; c=relaxed/simple;
-	bh=9JnvaYUuMEZMSzLLCwmBNJf2BSOeBNjejbVOdE7lMRI=;
+	s=arc-20240116; t=1776099101; c=relaxed/simple;
+	bh=X2oHp2ePKIMxne7IMsxfF9+jANnyWKgPSS+hXbO1Sr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERzEEjRQvQV995hfWvxoX06RB56V6oef6Du3Bnu3LbLHko/jhuqj6FJ7BX6Tr/l/VoBio/rsPUOOCvpnwmrgOHwyVepic5VVfs71JRFnWXKwqrYrhSI8B2VQuMaV5TjaZfS5tXl2wrDMnXlFHQKPE308B0A+94+/mDnJO0trO7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRHINaWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623A3C2BCAF;
-	Mon, 13 Apr 2026 16:30:44 +0000 (UTC)
+	 MIME-Version; b=gGUIRA+qFrbHUG7uhREYVOtfKqLH8ioujRHLCIhByzPrOxvigPqn8HdSrTuscB/9fioGDKCkc6eWe3jxI0oNL2jYQdVF+VSXM47X4LmKdGwnVzGsjkhdZW+uJcJ07nD2IwjvLEvuWHk49QtyTP876/fU5/BGxFsN8GIlut+N+64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdvimBQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE25C2BCAF;
+	Mon, 13 Apr 2026 16:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097844;
-	bh=9JnvaYUuMEZMSzLLCwmBNJf2BSOeBNjejbVOdE7lMRI=;
+	s=korg; t=1776099101;
+	bh=X2oHp2ePKIMxne7IMsxfF9+jANnyWKgPSS+hXbO1Sr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRHINaWNJ6CDERD4ACrmzsAghcVKE8JVfilp9Fp60K2fldEm04AhWrSmiT2HwwgK+
-	 LZBgoq/RQFqU5JWS8FGi84sgpCCEK6bO3/OpbNMRSTZI49AOFCfP6M3MCyo5QK67IZ
-	 V4wTnQeqCi3LaiOjHx+6zFAqwOSiNPTTzyUZL0gM=
+	b=bdvimBQJRSOOBRUFMKiAiq43nLD8icGpDae2SlvkZY5S8PnTVN8YXRhqbt/fr9/qT
+	 u4bh075ORAsb06zfjTAOKixqkm1NJF3GKEhiBFW0RMuf/YW2AsFC69MUjOW8ssOta9
+	 SedZ4Ysm8yTULcV67OkRQty2wPSQcFer7m4kBmmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Teddy Astie <teddy.astie@vates.tech>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 293/570] xen/privcmd: restrict usage in unprivileged domU
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 179/491] crypto: atmel-sha204a - Fix OOM ->tfm_count leak
 Date: Mon, 13 Apr 2026 17:57:04 +0200
-Message-ID: <20260413155841.477896821@linuxfoundation.org>
+Message-ID: <20260413155825.756284054@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236807-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237300-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,169 +87,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email,vates.tech:email]
-X-Rspamd-Queue-Id: 590BC3F0A71
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A43683F101D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 453b8fb68f3641fea970db88b7d9a153ed2a37e8 upstream.
+[ Upstream commit d240b079a37e90af03fd7dfec94930eb6c83936e ]
 
-The Xen privcmd driver allows to issue arbitrary hypercalls from
-user space processes. This is normally no problem, as access is
-usually limited to root and the hypervisor will deny any hypercalls
-affecting other domains.
+If memory allocation fails, decrement ->tfm_count to avoid blocking
+future reads.
 
-In case the guest is booted using secure boot, however, the privcmd
-driver would be enabling a root user process to modify e.g. kernel
-memory contents, thus breaking the secure boot feature.
-
-The only known case where an unprivileged domU is really needing to
-use the privcmd driver is the case when it is acting as the device
-model for another guest. In this case all hypercalls issued via the
-privcmd driver will target that other guest.
-
-Fortunately the privcmd driver can already be locked down to allow
-only hypercalls targeting a specific domain, but this mode can be
-activated from user land only today.
-
-The target domain can be obtained from Xenstore, so when not running
-in dom0 restrict the privcmd driver to that target domain from the
-beginning, resolving the potential problem of breaking secure boot.
-
-This is XSA-482
-
-Reported-by: Teddy Astie <teddy.astie@vates.tech>
-Fixes: 1c5de1939c20 ("xen: add privcmd driver")
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: da001fb651b0 ("crypto: atmel-i2c - add support for SHA204A random number generator")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/privcmd.c |   60 +++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 57 insertions(+), 3 deletions(-)
+ drivers/crypto/atmel-sha204a.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -10,6 +10,7 @@
- #define pr_fmt(fmt) "xen:" KBUILD_MODNAME ": " fmt
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -52,9 +52,10 @@ static int atmel_sha204a_rng_read_nonblo
+ 		rng->priv = 0;
+ 	} else {
+ 		work_data = kmalloc(sizeof(*work_data), GFP_ATOMIC);
+-		if (!work_data)
++		if (!work_data) {
++			atomic_dec(&i2c_priv->tfm_count);
+ 			return -ENOMEM;
+-
++		}
+ 		work_data->ctx = i2c_priv;
+ 		work_data->client = i2c_priv->client;
  
- #include <linux/kernel.h>
-+#include <linux/kstrtox.h>
- #include <linux/module.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-@@ -24,6 +25,8 @@
- #include <linux/seq_file.h>
- #include <linux/miscdevice.h>
- #include <linux/moduleparam.h>
-+#include <linux/notifier.h>
-+#include <linux/wait.h>
- 
- #include <asm/xen/hypervisor.h>
- #include <asm/xen/hypercall.h>
-@@ -37,6 +40,7 @@
- #include <xen/page.h>
- #include <xen/xen-ops.h>
- #include <xen/balloon.h>
-+#include <xen/xenbus.h>
- 
- #include "privcmd.h"
- 
-@@ -59,6 +63,11 @@ struct privcmd_data {
- 	domid_t domid;
- };
- 
-+/* DOMID_INVALID implies no restriction */
-+static domid_t target_domain = DOMID_INVALID;
-+static bool restrict_wait;
-+static DECLARE_WAIT_QUEUE_HEAD(restrict_wait_wq);
-+
- static int privcmd_vma_range_is_mapped(
-                struct vm_area_struct *vma,
-                unsigned long addr,
-@@ -877,13 +886,16 @@ static long privcmd_ioctl(struct file *f
- 
- static int privcmd_open(struct inode *ino, struct file *file)
- {
--	struct privcmd_data *data = kzalloc(sizeof(*data), GFP_KERNEL);
-+	struct privcmd_data *data;
-+
-+	if (wait_event_interruptible(restrict_wait_wq, !restrict_wait) < 0)
-+		return -EINTR;
- 
-+	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
- 
--	/* DOMID_INVALID implies no restriction */
--	data->domid = DOMID_INVALID;
-+	data->domid = target_domain;
- 
- 	file->private_data = data;
- 	return 0;
-@@ -976,6 +988,45 @@ static struct miscdevice privcmd_dev = {
- 	.fops = &xen_privcmd_fops,
- };
- 
-+static int init_restrict(struct notifier_block *notifier,
-+			 unsigned long event,
-+			 void *data)
-+{
-+	char *target;
-+	unsigned int domid;
-+
-+	/* Default to an guaranteed unused domain-id. */
-+	target_domain = DOMID_IDLE;
-+
-+	target = xenbus_read(XBT_NIL, "target", "", NULL);
-+	if (IS_ERR(target) || kstrtouint(target, 10, &domid)) {
-+		pr_err("No target domain found, blocking all hypercalls\n");
-+		goto out;
-+	}
-+
-+	target_domain = domid;
-+
-+ out:
-+	if (!IS_ERR(target))
-+		kfree(target);
-+
-+	restrict_wait = false;
-+	wake_up_all(&restrict_wait_wq);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block xenstore_notifier = {
-+	.notifier_call = init_restrict,
-+};
-+
-+static void __init restrict_driver(void)
-+{
-+	restrict_wait = true;
-+
-+	register_xenstore_notifier(&xenstore_notifier);
-+}
-+
- static int __init privcmd_init(void)
- {
- 	int err;
-@@ -983,6 +1034,9 @@ static int __init privcmd_init(void)
- 	if (!xen_domain())
- 		return -ENODEV;
- 
-+	if (!xen_initial_domain())
-+		restrict_driver();
-+
- 	err = misc_register(&privcmd_dev);
- 	if (err != 0) {
- 		pr_err("Could not register Xen privcmd device\n");
 
 
 
