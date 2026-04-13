@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-236237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ElrFmQW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:28 +0200
+	id 0FV7E9MZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87333EE7CE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0013EF0DE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49132303B5FA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 00ED7303A3F4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39478271443;
-	Mon, 13 Apr 2026 16:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0409B26ED41;
+	Mon, 13 Apr 2026 16:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhiKTNTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p77ifI49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F106425332E;
-	Mon, 13 Apr 2026 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEC524DCF6;
+	Mon, 13 Apr 2026 16:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096396; cv=none; b=FkLj4ifyxYQyOEKcxA6EoxHZXUP1G5rq+XNAs6/iJnP5O8darBysSHIrcIcnOFSvntQIK4TJ2SIHD24ljOPkidwC0fxXnmbGCA7Crc0NypUPjPKK6YIZw/jBwcd3utN8P0P3Q51IWxuLYnprE5liF/CFKA0aEPAJV2Y+Mp0MV0A=
+	t=1776096859; cv=none; b=fK/28ktTjzXWQBu2pHySyse//luStPSbzxW6y5qkVMDyWq155BSCwc5R4AD9CHf10MhBzNf5982WkxqF/K5ShWSx4Ho8ZQwAQsF3cQpGvToFb1Re6whCRgmanFHINSQ3H6eJ3HhgQi8HiJn4Ggz9d1QaxxwWhTXlTHFupID4S/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096396; c=relaxed/simple;
-	bh=r3giP86m/T+JpKKl9Uu/nylHpi+5KoRv7jKa/6Wav3k=;
+	s=arc-20240116; t=1776096859; c=relaxed/simple;
+	bh=1GZXdns+sbbYqH7Z+gblL9nB4nv9D1XcjzKl2TxMS3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AVKxtSh7+yIrLY5Dp5PPx3/Runfkg2Hkc8C6DaQqFym6ebZgIcJly5IF+Tl5lxZ6tGu4C8FGI0MBpB85tpEy9UsDA20jAdpemkrU0fqOxnS6JJbx1Nj2N/dfrPFEkRpuoEP/DEhxPwlF1zaoIGQPA9IVSyo5KtkqL4ztY6a37AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhiKTNTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F776C2BCAF;
-	Mon, 13 Apr 2026 16:06:35 +0000 (UTC)
+	 MIME-Version; b=SGCnjwGys8KMYgyRLDzQxr2nNo0zWU0/9gGq/JjROPbrWv7FyHIWrjROrS2gXu12mAZysyUZPo+2Ca07QIW1tlGHdJynASIs1M+DKKHmCZzvmRrCHZcN7sPWU8FO+Zeaxx+wwQm0RJqulMzh595uyoCedTt2TCCmJfICFHC+RVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p77ifI49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52449C2BCAF;
+	Mon, 13 Apr 2026 16:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096395;
-	bh=r3giP86m/T+JpKKl9Uu/nylHpi+5KoRv7jKa/6Wav3k=;
+	s=korg; t=1776096859;
+	bh=1GZXdns+sbbYqH7Z+gblL9nB4nv9D1XcjzKl2TxMS3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhiKTNTvVab9gUD4xrVDllt5ktXlnJjBPusPrlZeV/kDwjOtiRqs3nxso1MIXE20w
-	 qOdjf3+cGQKDwCwSJHpXI+MqQ1zcRVRC4l//kNqd9ltTtkJphXQD4+h8wMHmBlr60t
-	 1jnW/9CXMZMHcQGbZCbuB0rq/9ZEyIRgMoq13tnY=
+	b=p77ifI49rBwLQ2/qV3CwR0bDCC1HXqKwmB/ERc4zaP7KEJ7cBxM1cXf5SCV4xkPC2
+	 q/mEjPM/JXx0j4wngBRj3/thXZzvJkAlMaFdQnbhxyBo/GFQJhJUZqrq2Rd9n1lC6z
+	 RelksNPS4i1s6p7OM94C7YaqsYI0VnVNAuK1y3Cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 82/86] rxrpc: Fix leak of rxgk context in rxgk_verify_response()
+	Vishal Thanki <vishalthanki@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 02/50] wifi: rt2x00usb: fix devres lifetime
 Date: Mon, 13 Apr 2026 18:00:29 +0200
-Message-ID: <20260413155734.598192289@linuxfoundation.org>
+Message-ID: <20260413155724.591922964@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,76 +74,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,wp.pl,intel.com];
+	TAGGED_FROM(0.00)[bounces-236420-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236237-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,auristor.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D87333EE7CE
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wp.pl:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CA0013EF0DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 7e1876caa8363056f58a21d3b31b82c2daf7e608 upstream.
+commit 25369b22223d1c56e42a0cd4ac9137349d5a898e upstream.
 
-Fix rxgk_verify_response() to clean up the rxgk context it creates.
+USB drivers bind to USB interfaces and any device managed resources
+should have their lifetime tied to the interface rather than parent USB
+device. This avoids issues like memory leaks when drivers are unbound
+without their devices being physically disconnected (e.g. on probe
+deferral or configuration changes).
 
-Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
-Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-19-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix the USB anchor lifetime so that it is released on driver unbind.
+
+Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Vishal Thanki <vishalthanki@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260327113219.1313748-1-johan@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxgk.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -1270,16 +1270,18 @@ static int rxgk_verify_response(struct r
- 	if (ret < 0) {
- 		rxrpc_abort_conn(conn, skb, RXGK_SEALEDINCON, ret,
- 				 rxgk_abort_resp_auth_dec);
--		goto out;
-+		goto out_gk;
- 	}
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -830,7 +830,7 @@ int rt2x00usb_probe(struct usb_interface
+ 	if (retval)
+ 		goto exit_free_device;
  
- 	ret = rxgk_verify_authenticator(conn, krb5, skb, auth_offset, auth_len);
- 	if (ret < 0)
--		goto out;
-+		goto out_gk;
- 
- 	conn->key = key;
- 	key = NULL;
- 	ret = 0;
-+out_gk:
-+	rxgk_put(gk);
- out:
- 	key_put(key);
- 	_leave(" = %d", ret);
+-	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
++	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+ 					sizeof(struct usb_anchor),
+ 					GFP_KERNEL);
+ 	if (!rt2x00dev->anchor) {
 
 
 
