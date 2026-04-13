@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-236406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KsDC+wb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:04 +0200
+	id EMiNJo8c3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-237037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995C43EF6CA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367EB3EF7F7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFD8C30EA574
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 119BE301E70F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096CE26F293;
-	Mon, 13 Apr 2026 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966861A680C;
+	Mon, 13 Apr 2026 16:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HirwbYQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xG953eFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14BE24DCF6;
-	Mon, 13 Apr 2026 16:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BED307AC7;
+	Mon, 13 Apr 2026 16:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096823; cv=none; b=BGPjjSQlfkNHsZknLab0NKjcvBy7NSyLgN9mX7zw6VF/IASPBQFgh7/qN+aQRWoyWHUshCz6VGn6Mqy1pumXjHqJAtdxB+A1fcaHT3s4gFiR2+sSFEgFKWnKpLpBM62mRlrRM+TVMUSdNvbHiG7fTYQFgYD4zUewwuLMKIXilvI=
+	t=1776098427; cv=none; b=cbgCbWgGaWA2ccFpgJ3XVML6vpqKMbOm22Je/Ve1P/OcQo2iyZl6l5I/KVDJmx2LGOOirlAnYJe0cQmLuSK7iAhWflzxO95H1Kc5KMMGPgqSNlDap/hASBG4VDqfKGbA/lst31xBYpTMBPkFazWSxfxUQ/fS0KTpwr4ETOXRdNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096823; c=relaxed/simple;
-	bh=WO1OivKVqpiLsYI4zspRVJPUBqg0Qn9oQlbXS5AnV2E=;
+	s=arc-20240116; t=1776098427; c=relaxed/simple;
+	bh=yPq4z1PtD9YAdUbYmmPt6ui+V3AK73p5oEmHPkSpCbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3ANsuT5DpiBw2LlU7XSrGLIp1hoS2PPKtJdb1f977yeENydjOMjcrWMMZ7YxrRcvMlM7U3CV8srhOKcmaBr1Znt9AXUSV8lNGhONaO7wg8u1wyT73ldCAT7DKCY4B1o8oEIUTQi+wEGmUeaqFr/e+DBM3P3cmMFGFADy2tCPis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HirwbYQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568AAC2BCAF;
-	Mon, 13 Apr 2026 16:13:43 +0000 (UTC)
+	 MIME-Version; b=ZtaTlp9FAJnVR+ZqaCI8qFOTeVbTjnxjrVAS9IpNJeDh19OsF5gbxa0kRDndKUXdCcKHiASbZWcT7q/oLaiI8cPt8PCzWiTkczweQNWTmOyYPTwiPdf0RmQSuC07l3iQDhBvvdTY01qZduSnieryYXuFH/75IqTQAazgp/ysdcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xG953eFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51C9C2BCAF;
+	Mon, 13 Apr 2026 16:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096823;
-	bh=WO1OivKVqpiLsYI4zspRVJPUBqg0Qn9oQlbXS5AnV2E=;
+	s=korg; t=1776098427;
+	bh=yPq4z1PtD9YAdUbYmmPt6ui+V3AK73p5oEmHPkSpCbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HirwbYQmTEEL4Cmyx6Ncsfoi8tB3v1yTOciYYJHT0ixN01Ul5imEKJJH/SWhLvsgg
-	 c8z0o4Bi7c3z1tEQopMNs1rK7ylb1ZJn8rTwSIlGM6N7Gvt0cCtryVCm+tb8h718w8
-	 aihj5f216kbMVWGhEN0qW8V2LcIsd+zPambi0LXY=
+	b=xG953eFJLefzFftcOUv8NOez2gzwSLtCirzX6MVaEBY/BYjew1cFFk4Cv+FynvI/a
+	 EFzaMNVnUw8YFlw2joea6Euos/XuuDOheDyx5bYzpWvgJ/ht0q8mU00IhD42r/iNwg
+	 uq2a6SxRzp3Fvp037jyRjMKAR896VB6UHsFAOJ6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ray Zhang <sgzhang@google.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.12 56/70] idpf: improve locking around idpf_vc_xn_push_free()
-Date: Mon, 13 Apr 2026 18:00:51 +0200
-Message-ID: <20260413155730.276824852@linuxfoundation.org>
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 5.15 521/570] apparmor: Fix double free of ns_name in aa_replace_profiles()
+Date: Mon, 13 Apr 2026 18:00:52 +0200
+Message-ID: <20260413155849.964854463@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236406-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237037-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,53 +87,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linutronix.de:email]
-X-Rspamd-Queue-Id: 995C43EF6CA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,canonical.com:email]
+X-Rspamd-Queue-Id: 367EB3EF7F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: John Johansen <john.johansen@canonical.com>
 
-commit d086fae65006368618104ba4c57779440eab2217 upstream.
+commit 5df0c44e8f5f619d3beb871207aded7c78414502 upstream.
 
-Protect the set_bit() operation for the free_xn bitmask in
-idpf_vc_xn_push_free(), to make the locking consistent with rest of the
-code and avoid potential races in that logic.
+if ns_name is NULL after
+1071         error = aa_unpack(udata, &lh, &ns_name);
 
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
-Cc: stable@vger.kernel.org
-Reported-by: Ray Zhang <sgzhang@google.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+and if ent->ns_name contains an ns_name in
+1089                 } else if (ent->ns_name) {
+
+then ns_name is assigned the ent->ns_name
+1095                         ns_name = ent->ns_name;
+
+however ent->ns_name is freed at
+1262                 aa_load_ent_free(ent);
+
+and then again when freeing ns_name at
+1270         kfree(ns_name);
+
+Fix this by NULLing out ent->ns_name after it is transferred to ns_name
+
+Fixes: 145a0ef21c8e9 ("apparmor: fix blob compression when ns is forced on a policy load
+")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    2 ++
- 1 file changed, 2 insertions(+)
+ security/apparmor/policy.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -431,7 +431,9 @@ static void idpf_vc_xn_push_free(struct
- 				 struct idpf_vc_xn *xn)
- {
- 	idpf_vc_xn_release_bufs(xn);
-+	spin_lock_bh(&vcxn_mngr->xn_bm_lock);
- 	set_bit(xn->idx, vcxn_mngr->free_xn_bm);
-+	spin_unlock_bh(&vcxn_mngr->xn_bm_lock);
- }
- 
- /**
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -917,6 +917,7 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 				goto fail;
+ 			}
+ 			ns_name = ent->ns_name;
++			ent->ns_name = NULL;
+ 		} else
+ 			count++;
+ 	}
 
 
 
