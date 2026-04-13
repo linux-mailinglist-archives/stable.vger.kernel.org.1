@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-236499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DW0CKAa3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:32 +0200
+	id iCUUEf8i3WkoaQkAu9opvQ
+	(envelope-from <stable+bounces-237526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CED63EF30A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D953F0D05
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 91FB730ACEF4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6639E3069348
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBE4309F09;
-	Mon, 13 Apr 2026 16:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA59346FA0;
+	Mon, 13 Apr 2026 17:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6dO119x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHm6+kXg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D671727280A;
-	Mon, 13 Apr 2026 16:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B87346E7B;
+	Mon, 13 Apr 2026 17:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097059; cv=none; b=TWQOxpKW6dxv5gEdvD6/RPrAkgO/whLOg6/ci479Z3FeuOhL2i264WzzQbSsIgu7Gnsh/tyUI25GgyK37Xmitw1cpdmX2Jp6koPSvs5RahylQbgWFwwEYMA/rzsyk8iDxuVPpC/8UCa+QyjCp8NAJstmQKRsPHglhDutjZf+Xk4=
+	t=1776099684; cv=none; b=icQ9V1sZJ7MIQOjoiimkJLfLZnTLi/6mVLGKWpn7H4q/n7xWgzrzIqO53vOaPXdlPb49i9ns9MgRnoCk3YYAaezupYdkDeSLxem/LDWYgm4GvyJCYiP1zFX5cg99zU2ZKJ0Jb9dBZLT61pjvmguTmU6Am4chzbRPoldOsjqwn/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097059; c=relaxed/simple;
-	bh=Lu8vlu+osOi8Hcj+P9ltH0gC+R2LCQ9rSSwLdbsBnJ4=;
+	s=arc-20240116; t=1776099684; c=relaxed/simple;
+	bh=40diKpSCrj8J2O04uXfAEzpKPyEG/GTI2UcU8kG3AAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjcQVeBPyIvhXToJwleE1gzytBuIVF/IfQEiOsiepEhxXHbEX2oNQTHWnBgbGjpxm/ZZ1/DwM5B0i3gwnMBn3ywygrkN44cXg+sZQJPp8RXBY6tIQAXoQTjpUymHuQIRsceM6e2YkxBxShkigs5mMPpe0UOYD9gCoT96m7H/Tjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6dO119x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC23C2BCAF;
-	Mon, 13 Apr 2026 16:17:39 +0000 (UTC)
+	 MIME-Version; b=OIyT7n2O9xRhEt73Jg6yHDuvc9027xc1jYazoTXu3/hdXr3c10n2w1cj1l4Jt5RoPkRPcHglAEaYVEq5sWWMxswQdtZYj6V1ZKOrRl9tb0h1bInUsfqtpjCDTmxIVvj6CChVzJoQFpGiCiqNK1nP2pxUu1naIcIAhVCxqRslV1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHm6+kXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA79C2BCAF;
+	Mon, 13 Apr 2026 17:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097059;
-	bh=Lu8vlu+osOi8Hcj+P9ltH0gC+R2LCQ9rSSwLdbsBnJ4=;
+	s=korg; t=1776099684;
+	bh=40diKpSCrj8J2O04uXfAEzpKPyEG/GTI2UcU8kG3AAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6dO119xQZRYLypeCF7jNpHneUSZZqA7da9e6H5kyps91X9Uhn+nWCFaKePfVZQmb
-	 3BkeXC6YxTRIjsBo0Mxgzg8Ke3BPfP0TzYXejyCAD0d54pSthoiHMHlPRTvaHp+MOc
-	 D+scaGy3E2nQ9FMD97mpI9Tkrt1gdWDNhuRZLM4U=
+	b=rHm6+kXgPzg8S5/kE5/6meozYwwxwC5hbOmWQeahVT/Scujuck6uYZf8fGYfuKGFb
+	 Z/oROahM8ZJQqDHSpUe2A2gDbFQ9FMrgn301vjXyngv4d155FqMYl5fTVnlQOCREDB
+	 OJzMfxedeOrBbRS+zz8fWuG2ilTBkXTMOshIj03Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 45/55] net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
-Date: Mon, 13 Apr 2026 18:01:19 +0200
-Message-ID: <20260413155726.512839888@linuxfoundation.org>
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 5.10 435/491] apparmor: fix missing bounds check on DEFAULT table in verify_dfa()
+Date: Mon, 13 Apr 2026 18:01:20 +0200
+Message-ID: <20260413155835.313154328@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +71,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237526-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236499-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,starlabs.sg:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6CED63EF30A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,canonical.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D3D953F0D05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
 
-commit a9b8b18364fffce4c451e6f6fd218fa4ab646705 upstream.
+commit d352873bbefa7eb39995239d0b44ccdf8aaa79a4 upstream.
 
-The -EBUSY handling in tls_do_encryption(), introduced by commit
-859054147318 ("net: tls: handle backlogging of crypto requests"), has
-a use-after-free due to double cleanup of encrypt_pending and the
-scatterlist entry.
+The verify_dfa() function only checks DEFAULT_TABLE bounds when the state
+is not differentially encoded.
 
-When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
-the cryptd backlog and the async callback tls_encrypt_done() will be
-invoked upon completion. That callback unconditionally restores the
-scatterlist entry (sge->offset, sge->length) and decrements
-ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
-error, the synchronous error path in tls_do_encryption() performs the
-same cleanup again, double-decrementing encrypt_pending and
-double-restoring the scatterlist.
+When the verification loop traverses the differential encoding chain,
+it reads k = DEFAULT_TABLE[j] and uses k as an array index without
+validation. A malformed DFA with DEFAULT_TABLE[j] >= state_count,
+therefore, causes both out-of-bounds reads and writes.
 
-The double-decrement corrupts the encrypt_pending sentinel (initialized
-to 1), making tls_encrypt_async_wait() permanently skip the wait for
-pending async callbacks. A subsequent sendmsg can then free the
-tls_rec via bpf_exec_tx_verdict() while a cryptd callback is still
-pending, resulting in a use-after-free when the callback fires on the
-freed record.
+[   57.179855] ==================================================================
+[   57.180549] BUG: KASAN: slab-out-of-bounds in verify_dfa+0x59a/0x660
+[   57.180904] Read of size 4 at addr ffff888100eadec4 by task su/993
 
-Fix this by skipping the synchronous cleanup when the -EBUSY async
-wait returns an error, since the callback has already handled
-encrypt_pending and sge restoration.
+[   57.181554] CPU: 1 UID: 0 PID: 993 Comm: su Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
+[   57.181558] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   57.181563] Call Trace:
+[   57.181572]  <TASK>
+[   57.181577]  dump_stack_lvl+0x5e/0x80
+[   57.181596]  print_report+0xc8/0x270
+[   57.181605]  ? verify_dfa+0x59a/0x660
+[   57.181608]  kasan_report+0x118/0x150
+[   57.181620]  ? verify_dfa+0x59a/0x660
+[   57.181623]  verify_dfa+0x59a/0x660
+[   57.181627]  aa_dfa_unpack+0x1610/0x1740
+[   57.181629]  ? __kmalloc_cache_noprof+0x1d0/0x470
+[   57.181640]  unpack_pdb+0x86d/0x46b0
+[   57.181647]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   57.181653]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   57.181656]  ? aa_unpack_nameX+0x1a8/0x300
+[   57.181659]  aa_unpack+0x20b0/0x4c30
+[   57.181662]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   57.181664]  ? stack_depot_save_flags+0x33/0x700
+[   57.181681]  ? kasan_save_track+0x4f/0x80
+[   57.181683]  ? kasan_save_track+0x3e/0x80
+[   57.181686]  ? __kasan_kmalloc+0x93/0xb0
+[   57.181688]  ? __kvmalloc_node_noprof+0x44a/0x780
+[   57.181693]  ? aa_simple_write_to_buffer+0x54/0x130
+[   57.181697]  ? policy_update+0x154/0x330
+[   57.181704]  aa_replace_profiles+0x15a/0x1dd0
+[   57.181707]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   57.181710]  ? __kvmalloc_node_noprof+0x44a/0x780
+[   57.181712]  ? aa_loaddata_alloc+0x77/0x140
+[   57.181715]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   57.181717]  ? _copy_from_user+0x2a/0x70
+[   57.181730]  policy_update+0x17a/0x330
+[   57.181733]  profile_replace+0x153/0x1a0
+[   57.181735]  ? rw_verify_area+0x93/0x2d0
+[   57.181740]  vfs_write+0x235/0xab0
+[   57.181745]  ksys_write+0xb0/0x170
+[   57.181748]  do_syscall_64+0x8e/0x660
+[   57.181762]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   57.181765] RIP: 0033:0x7f6192792eb2
 
-Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260403013617.2838875-1-ramdhan@starlabs.sg
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Remove the MATCH_FLAG_DIFF_ENCODE condition to validate all DEFAULT_TABLE
+entries unconditionally.
+
+Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ security/apparmor/match.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -585,6 +585,16 @@ static int tls_do_encryption(struct sock
- 	if (rc == -EBUSY) {
- 		rc = tls_encrypt_async_wait(ctx);
- 		rc = rc ?: -EINPROGRESS;
-+		/*
-+		 * The async callback tls_encrypt_done() has already
-+		 * decremented encrypt_pending and restored the sge on
-+		 * both success and error. Skip the synchronous cleanup
-+		 * below on error, just remove the record and return.
-+		 */
-+		if (rc != -EINPROGRESS) {
-+			list_del(&rec->list);
-+			return rc;
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -204,9 +204,10 @@ static int verify_dfa(struct aa_dfa *dfa
+ 	if (state_count == 0)
+ 		goto out;
+ 	for (i = 0; i < state_count; i++) {
+-		if (!(BASE_TABLE(dfa)[i] & MATCH_FLAG_DIFF_ENCODE) &&
+-		    (DEFAULT_TABLE(dfa)[i] >= state_count))
++		if (DEFAULT_TABLE(dfa)[i] >= state_count) {
++			pr_err("AppArmor DFA default state out of bounds");
+ 			goto out;
 +		}
- 	}
- 	if (!rc || rc != -EINPROGRESS) {
- 		atomic_dec(&ctx->encrypt_pending);
+ 		if (BASE_TABLE(dfa)[i] & MATCH_FLAGS_INVALID) {
+ 			pr_err("AppArmor DFA state with invalid match flags");
+ 			goto out;
 
 
 
