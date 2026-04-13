@@ -1,93 +1,59 @@
-Return-Path: <stable+bounces-236155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NoqAqMR3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:54:11 +0200
+	id wFu9JkoU3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B133EE363
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BB83EE4C0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58D36302A2E1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:47:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFB65301455D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2649C3DFC86;
-	Mon, 13 Apr 2026 15:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EAC3AE6E6;
+	Mon, 13 Apr 2026 15:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BK48yKlM"
+	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="D0LKuiDJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038303B583D
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 15:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11618137750;
+	Mon, 13 Apr 2026 15:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776095268; cv=none; b=Ftt6aML8ytJ95Mvs7BzGyMDWmI4nFa9oyp2Yj1Gz4MaOwos2qIc5Wz38Rm1lufdi/pM9vJhBoIc/NAE5hsbEzDRt8FvSF8rVhcNW/ZgDponchcOzu/08Uxu5k5qVUcjYsDdtxdDZsUth1PClc8N9XY7CAWki0/jJ8w0eka1YrRQ=
+	t=1776095904; cv=none; b=qyRzF9rWpECEceZQYRdfekw1gJjYFY+huCv2vjfYVpFI8gCBQU5aJclnrwNObiEcKNIazZAWzFThKuHqOyaNLs95NfBx+Qyd0+XoF47aMQK5L2RKYX11oQdmN1ao1aowkclYFn949nhsce5Cb4eLILnvx7iRtMgJbWh8OUUxHFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776095268; c=relaxed/simple;
-	bh=m32e0BfF2n/Y3VoUao/TEjPR9SWy1+CRfNSxFuYq/LY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HGsJBXiyWjyPZ8/NzwbjEiI79/chxCmMhJ/5cDw3oaoqnLZv72UEcJ5qKpoo32D0n2geUejPSw+9Cdeju4VwWDB9G+tDFsVUO8cRotLz+wW8c5LvE3QbdwrX0HF+tLhNJpGxsNZgE2T4Hpj9g5kHzYxSJtdT8wblZQesmIauYoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BK48yKlM; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35fbca04006so461440a91.1
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 08:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776095265; x=1776700065; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1OPjx6EVJFqbaOhHASpBQer7/3sJPyccCGPM9+uBgBU=;
-        b=BK48yKlM0iqpj1otkrYBi9qjUboIGTW9LAW0oNIyMLjfYB8e+6nYVVZilA2T5hFAXP
-         Il3vSl8TyU2FPt5CXDHcoiZje7iSAJBm8zLK8O3MRjVopl9VA3S+ZTzZR+9wJnNW6WE4
-         +MNI5GCKve7rzZzzBx6+8z3N7d+QEmNepkFgwq5/vxFo3kn3wy1o4B+XvsffdcTO901n
-         /UDR4jVuO1IG1O6MqL9taEiMcLt0mi2hsZLKGKMhEEXDNVqotw0eqU2sjyVdhy3ZXZW+
-         SSTzj40F1xk7eZHeSDZhxyct1+4DyiV4mNdayyttCwxwdZrfy/Qxd6nMieVvjdLxcX1k
-         sKSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776095265; x=1776700065;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1OPjx6EVJFqbaOhHASpBQer7/3sJPyccCGPM9+uBgBU=;
-        b=HZnlScy2lf0e0ivJNUYmK5tqj7MoZaF8pgWwWmvuTX2hgDK4GPqjfWkebZGeMUfFNZ
-         uSPxxL7GY7qY6roj4KKxSsBuBrB5rxCgA8AOqaWCJOkbcQKluWcFwElxSQBQxqyKg0IE
-         uBV+puGCPrLkbwKJu/qbDXXVanotmZKwOgqGrIuoqvgfIaE5a9KFh2YInNrwLGeb8frx
-         YvH8oatGXVUMHI8W39/pVBGJcT6OELUObYbFnpZHhd26ZWla82Q4zbxbHfSEODd8/j+o
-         jSyNfBI2Mo12atBj5YEBLSe4uRR+WzJPGJeHiYMleoSIhBDtW60ykcHV5g1NW9L612KX
-         8flA==
-X-Forwarded-Encrypted: i=1; AFNElJ9HSYwOCGIpofKrvF9ajdYs43CCTCK/EA708XYb3X7EAEyTuJaqRFoy8kFrSdQY0YPLbylmOME=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRXj2FivvQko7R8fKTeccJt06d72RmHTc8B5uV9BzKhTUMwKaY
-	W/wjjrUQCBtEi23mVg+dqNGYl9nYNdF7xOVsLZ6XBh7CresC1FlhV0lPoq3aLIsNJl8=
-X-Gm-Gg: AeBDiesLrz+cAlwLuzhvn3Yt/DLJmv/0pX00tfCyaVfS8lk2sC6t4McX0Ig6FsvH4bi
-	P3e8oviblwp7S+cH1pTZsowkU/pHTKYxN7ORf9ITQyhhxiE6hnac1EG2TLNWnSdunbwlu4CbXJ8
-	A9xx3iTdUwZFMjwfJz/s2S7ZbR011eKcTOFpCgL5pallVUm6i8//7hp5YJ6I1ESfrfxqRQp6X8Y
-	rj+z6YUAA1afE96i3ahSU8QUOIX5RZGh42rqT+U5Ut4+jZjqfJ7vnVuzBSncGgO2VmQbiGXulOC
-	gxjv3X6p+WYz5opPIBhZsFf7cElhbkvXF/gV+jpWuAzk0XYsAaNLZo6d8BbOjwPVxwy1RKH8LWW
-	XWLGXl0lufHMmcSyXi5sj/tZD4/rRPpfqyhShF2tTfSyNgE2v260Clunrmh770QhQfxLnoxX4JY
-	hxqOH+q+aOwaL4YNf99DrSvWVf3BZOmC0=
-X-Received: by 2002:a17:90b:3c48:b0:35b:e690:c5ad with SMTP id 98e67ed59e1d1-35e42849e8cmr14289796a91.25.1776095265313;
-        Mon, 13 Apr 2026 08:47:45 -0700 (PDT)
-Received: from lgs.. ([2409:893d:1188:142d:edd0:8593:d07a:ab64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7921a20100sm10228887a12.29.2026.04.13.08.47.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 08:47:44 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Linus Walleij <linusw@kernel.org>,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1776095904; c=relaxed/simple;
+	bh=CAcnStAUkH7ssAYOB9XOeGnOJ+//22UgwQAFbMIWDnM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kCAWa9IdFGJdU/LoYkn7xsYSgzijPXoWJcSkILOlKFThMBHDjxpldZTw3bWqPHGe0e3WnxCsXarSJ6DOzW6D1lVtNrZ50GV8cFKUsz6EiyXSJ98P6BO/vexRvrjYdzcf89h1A/c00i/njnuLcULcX9E72VjLFxPfw/JOvOO+6GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=D0LKuiDJ; arc=none smtp.client-ip=202.61.224.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6F8AE285FA9;
+	Mon, 13 Apr 2026 17:48:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
+	t=1776095342; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=AXbIFam313eUjm4s10Dqibfnk/5nAR5in+w11u4PpkE=;
+	b=D0LKuiDJelcaOzj684pRUC9U+bTsBs/pVyLOCYipR73QjDFg9Zwwg2nBNSAL+MU6cmlWOJ
+	ZNRdmECnPxZbfX9LIeVVSL/XfVCQC4BubH6BMvlvhD4RTjvfmYf2kafUDtALF/vj0SqQW5
+	0KWxD3GX0SpRD/45ImJNVHWZGOfUaljIJnKtrzp+nkA7of79576Ju1JM0UXmL2KMDxq98F
+	WgKD8HHC7J/sDYUs4AB18tACFFbUWZd0DLjH5BsDuZRQRVTssXQGibbvzV8j/Q7Cqb9Ls2
+	YBFYjhh78Hjq3lLw1Om7SGGstQJ30oF84G1KYHEqvHh0nu2Gxd6ayNzDCCEv3A==
+From: Eric Naim <dnaim@cachyos.org>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: Eric Naim <dnaim@cachyos.org>,
+	stable@vger.kernel.org,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] watchdog: ixp4xx: fix reference leak on platform_device_register() failure
-Date: Mon, 13 Apr 2026 23:47:27 +0800
-Message-ID: <20260413154727.3051321-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH] ALSA: hda/realtek: Add quirk for Legion S7 15IMH
+Date: Mon, 13 Apr 2026 23:48:17 +0800
+Message-ID: <20260413154818.351597-1-dnaim@cachyos.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,79 +61,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[cachyos.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[cachyos.org:s=dkim];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-236155-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236161-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[dnaim@cachyos.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[cachyos.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 81B133EE363
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cachyos.org:dkim,cachyos.org:email,cachyos.org:mid]
+X-Rspamd-Queue-Id: 00BB83EE4C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ixp4xx_timer_probe() directly returns the result of
-platform_device_register(&ixp4xx_watchdog_device). When registration
-fails, the embedded struct device in ixp4xx_watchdog_device has already
-been initialized by device_initialize(), but the failure path does not
-drop the device reference, leading to a reference leak.
+Fix speaker output on the Lenovo Legion S7 15IMH05.
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review. Fix this by calling platform_device_put()
-when platform_device_register() fails.
-
-Fixes: 21a0a29d16c67 ("watchdog: ixp4xx: Rewrite driver to use core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Eric Naim <dnaim@cachyos.org>
 ---
- drivers/clocksource/timer-ixp4xx.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clocksource/timer-ixp4xx.c b/drivers/clocksource/timer-ixp4xx.c
-index 720ed70a2964..924dbd58c4da 100644
---- a/drivers/clocksource/timer-ixp4xx.c
-+++ b/drivers/clocksource/timer-ixp4xx.c
-@@ -239,11 +239,16 @@ static struct platform_device ixp4xx_watchdog_device = {
- static int ixp4xx_timer_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-+	int ret;
- 
- 	/* Pass the base address as platform data and nothing else */
- 	ixp4xx_watchdog_device.dev.platform_data = local_ixp4xx_timer->base;
- 	ixp4xx_watchdog_device.dev.parent = dev;
--	return platform_device_register(&ixp4xx_watchdog_device);
-+	ret = platform_device_register(&ixp4xx_watchdog_device);
-+	if (ret)
-+		platform_device_put(&ixp4xx_watchdog_device);
-+
-+	return ret;
- }
- 
- static const struct of_device_id ixp4xx_timer_dt_id[] = {
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 45f9d6487388..ae74e1b69eb3 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7605,6 +7605,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	HDA_CODEC_QUIRK(0x17aa, 0x3802, "DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x3811, "Legion S7 15IMH05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
+ 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
 -- 
-2.43.0
+2.53.0
 
 
