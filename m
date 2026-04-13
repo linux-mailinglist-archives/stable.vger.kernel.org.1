@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-236719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH/iCh4d3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:10 +0200
+	id uHmCCqUZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B23E3EF97D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC5D3EF01A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0366230973BB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EFC63011C92
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C0C30BF4E;
-	Mon, 13 Apr 2026 16:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999B730B50F;
+	Mon, 13 Apr 2026 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNIIoQ7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQ5D2fk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7A526CE32;
-	Mon, 13 Apr 2026 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B48306B0A;
+	Mon, 13 Apr 2026 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097617; cv=none; b=ZrslGjwe4T7lAs1XWmmMfEjz2DBDBxqTt1JcIuRDc+UyPULDia+lPr6QtHKO1RBtFsd17pxbK4zjdSLpyx+38f81ul0M8w0jMpMLLPBZ37FWdqnx1VfkSLYsOHAXgin6IxhWFDxShkPoAHb/dfamKhowN6zRGAQonEi8hit1JEQ=
+	t=1776097620; cv=none; b=Hf3JuDlKvoUCQXa5f72YU4N/RSvqZ4BlOaNeToarfzI2BRWHz5ESEg6dCTXgH99iKEmxNdHwGVRNteVTofsOW6E0qYS4vtIuoQmhYdotumduN5lV1NxcV2+vDAHItxkzomyDKUQZpsyQ2/qf4J0CaA6QPaTmWC0aY0P8auQawVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097617; c=relaxed/simple;
-	bh=4t2ZDn/OVlYIEmF1VPwg3jKjK0z0fHrqocOWM2yxKUM=;
+	s=arc-20240116; t=1776097620; c=relaxed/simple;
+	bh=AGZKWoMo4S0diwJRezMRYp2a4fxZ362lan7VtOSlORQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JD/zM5dHj13H4/86HyHjvTRpszgh51t3z5tab8SluLpJgaEs+8LOSKQWoJjuWm5TzHfTfxaShJ09JOEWHbsDMcPK8ZGIIVZcAQmuDE3RTeTddjBu4fOPFgh/dWQuRneXO0PJVeMUTTRgfvUvyH6CV1eQluro8NH4Gy2GfKZu6ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNIIoQ7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3D0C2BCAF;
-	Mon, 13 Apr 2026 16:26:57 +0000 (UTC)
+	 MIME-Version; b=WgpLMwwPvc7sJdydJ18VJNRWQ8IVWnzvFnJUhrP34h3Q+kvpMMnN3xZlDbK9b1+xJiCrksluJybTrqJQQDXoxz+3Y3krj39L1/N9xpx1xEbGItFSt2B2tlEPUHYqjXpKWVOv26EEzp73SKp6tRoLvqTltGOxdqrv360k9bUSVnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQ5D2fk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E23C2BCAF;
+	Mon, 13 Apr 2026 16:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097617;
-	bh=4t2ZDn/OVlYIEmF1VPwg3jKjK0z0fHrqocOWM2yxKUM=;
+	s=korg; t=1776097620;
+	bh=AGZKWoMo4S0diwJRezMRYp2a4fxZ362lan7VtOSlORQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNIIoQ7F5E/39rzjQslIa4f1vmZhLZclNIMIlFCkp29PPJEMVgK77wHUl4KRKyhqL
-	 QbbatSRcz3vDgOomZGUmS3mw8KKh+iEi4tn+SfZWbYv0ICIeHYkmtlj/8TGjngNeOL
-	 y8ZYF1HkNNY7tVkdpdYMUFcoMTyI+R+uy3fvHOsA=
+	b=qQ5D2fk3uPx3VQ2LY5/v8Q+D1fG4Cqx8prELBhmyh9w/I5y8S2jA9UHgFdBd6BH+L
+	 UUhH1+raOpxpInaTsZboFiw2i2XIX0jVEYb3f3oHJHcf1DZaUVJWL+569L8oPuwPR5
+	 KXwHSOOXSONemFJwgMe75XQ7Y89VCplEWudk5iEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Finn Thain <fthain@linux-m68k.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 207/570] mtd: Avoid boot crash in RedBoot partition table parser
-Date: Mon, 13 Apr 2026 17:55:38 +0200
-Message-ID: <20260413155838.211646962@linuxfoundation.org>
+	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.15 208/570] iommu/vt-d: Fix intel iommu iotlb sync hardlockup and retry
+Date: Mon, 13 Apr 2026 17:55:39 +0200
+Message-ID: <20260413155838.249849069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236719-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236720-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +87,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,linux-m68k.org:email]
-X-Rspamd-Queue-Id: 1B23E3EF97D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9FC5D3EF01A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,57 +101,55 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-commit 8e2f8020270af7777d49c2e7132260983e4fc566 upstream.
+commit fe89277c9ceb0d6af0aa665bcf24a41d8b1b79cd upstream.
 
-Given CONFIG_FORTIFY_SOURCE=y and a recent compiler,
-commit 439a1bcac648 ("fortify: Use __builtin_dynamic_object_size() when
-available") produces the warning below and an oops.
+During the qi_check_fault process after an IOMMU ITE event, requests at
+odd-numbered positions in the queue are set to QI_ABORT, only satisfying
+single-request submissions. However, qi_submit_sync now supports multiple
+simultaneous submissions, and can't guarantee that the wait_desc will be
+at an odd-numbered position. Therefore, if an item times out, IOMMU can't
+re-initiate the request, resulting in an infinite polling wait.
 
-    Searching for RedBoot partition table in 50000000.flash at offset 0x7e0000
-    ------------[ cut here ]------------
-    WARNING: lib/string_helpers.c:1035 at 0xc029e04c, CPU#0: swapper/0/1
-    memcmp: detected buffer overflow: 15 byte read of buffer size 14
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.19.0 #1 NONE
+This modifies the process by setting the status of all requests already
+fetched by IOMMU and recorded as QI_IN_USE status (including wait_desc
+requests) to QI_ABORT, thus enabling multiple requests to be resubmitted.
 
-As Kees said, "'names' is pointing to the final 'namelen' many bytes
-of the allocation ... 'namelen' could be basically any length at all.
-This fortify warning looks legit to me -- this code used to be reading
-beyond the end of the allocation."
-
-Since the size of the dynamic allocation is calculated with strlen()
-we can use strcmp() instead of memcmp() and remain within bounds.
-
-Cc: Kees Cook <kees@kernel.org>
+Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per qi_submit_sync()")
 Cc: stable@vger.kernel.org
-Cc: linux-hardening@vger.kernel.org
-Link: https://lore.kernel.org/all/202602151911.AD092DFFCD@keescook/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Link: https://lore.kernel.org/r/20260306101516.3885775-1-guanghuifeng@linux.alibaba.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per  qi_submit_sync()")
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/parsers/redboot.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/intel/dmar.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -270,9 +270,9 @@ nogood:
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1305,7 +1305,6 @@ static int qi_check_fault(struct intel_i
+ 	if (fault & DMA_FSTS_ITE) {
+ 		head = readl(iommu->reg + DMAR_IQH_REG);
+ 		head = ((head >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
+-		head |= 1;
+ 		tail = readl(iommu->reg + DMAR_IQT_REG);
+ 		tail = ((tail >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
  
- 		strcpy(names, fl->img->name);
- #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
--		if (!memcmp(names, "RedBoot", 8) ||
--		    !memcmp(names, "RedBoot config", 15) ||
--		    !memcmp(names, "FIS directory", 14)) {
-+		if (!strcmp(names, "RedBoot") ||
-+		    !strcmp(names, "RedBoot config") ||
-+		    !strcmp(names, "FIS directory")) {
- 			parts[i].mask_flags = MTD_WRITEABLE;
- 		}
- #endif
+@@ -1315,7 +1314,7 @@ static int qi_check_fault(struct intel_i
+ 		do {
+ 			if (qi->desc_status[head] == QI_IN_USE)
+ 				qi->desc_status[head] = QI_ABORT;
+-			head = (head - 2 + QI_LENGTH) % QI_LENGTH;
++			head = (head - 1 + QI_LENGTH) % QI_LENGTH;
+ 		} while (head != tail);
+ 
+ 		if (qi->desc_status[wait_index] == QI_ABORT)
 
 
 
