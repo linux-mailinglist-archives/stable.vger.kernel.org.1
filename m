@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNG+Iywf3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:56 +0200
+	id qKvJFLEf3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086323F0081
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86413F029F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6842430ED9E2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BA9B3068DFF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581EF2E11B9;
-	Mon, 13 Apr 2026 16:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4473A31619A;
+	Mon, 13 Apr 2026 16:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPieGnqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzHI/cAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1CA26CE32;
-	Mon, 13 Apr 2026 16:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0674C23E342;
+	Mon, 13 Apr 2026 16:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097682; cv=none; b=nStbEnT2mMwAF/ciyfCHGDvRraUnb7WtZJ+E7+iNlpf/MKJms2J2FtR5QiiYgG/N2NgT71sYVeaew8kQOGixL3XC1lauwimJZIBdb1WgRNJMUeLbV5Eqv+5/Udm0UwYqkAaJxs7CuB3HojJzKIN+gFLpc8brW6EMKXSjfIbuhdg=
+	t=1776098777; cv=none; b=WwrU3ZwyQn22OYwA7pbxog9VX98O8HsfXjnGp7CT+S2bDdFjnDhVQ1WBho6hHbCmteppUyD0wLedSzAtOzPAwVQWZWvNUJ3seh/5U1jjYf2IZ1ITFVnVMW62mdv4/Qb+hdryBXqPMlU77Fw/oSyMIbQDOKRexrBLxhUIipc7WWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097682; c=relaxed/simple;
-	bh=NloKGyW5w1RcqXerE1A2v2PgSYEs5r5QTOE+7XzRe6A=;
+	s=arc-20240116; t=1776098777; c=relaxed/simple;
+	bh=+32/NHL/Hs/S7OSCUX8XQJyiAPRoev1Ms/TxaNTFma8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5T0sXz7Hkltg88DKa29PoP7h4owGDOtnDFd3DH1zTZu9vYRmsCnCtjjSg6N7ObXh8J5g9zXUtsCJei/iz3G4V0QAJPi3a7HdikzYdM+lgrYMh0JuPKBrxE+zD/4OFsQ8HTVbYv/AIwLuTvNr+1oY1IgtHWB5Bz8bC7GLS0gUeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPieGnqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A520FC2BCAF;
-	Mon, 13 Apr 2026 16:28:01 +0000 (UTC)
+	 MIME-Version; b=KZmMyEDBlGTUFV24bZYIPMxtx/zGgYKF4XV0nHMp51peiXuozrj/k4whFcO/+FcNV4g8+8wr/VkLs1G/aDoGp49HhZeXK6hJXiTgM0d1xeDF0q6BzgEDxO0u96Ue6sxz23JrSCtrEWWd8TSZsXQW5mitIw5ED8bKfXNQHNeCQp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzHI/cAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A086C2BCAF;
+	Mon, 13 Apr 2026 16:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097682;
-	bh=NloKGyW5w1RcqXerE1A2v2PgSYEs5r5QTOE+7XzRe6A=;
+	s=korg; t=1776098776;
+	bh=+32/NHL/Hs/S7OSCUX8XQJyiAPRoev1Ms/TxaNTFma8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MPieGnqLB4tb4Kj9uIr4NzKErGHIFRCJLqi2SWsFZnGFyYKY8E2MBwhHLPKgCB7XX
-	 LzBzdtO3ajWWsAq2oS+M4qdduqQ/mPLFosCbgXJcJVTX2f4MUD2+1nnoZchxYYOShp
-	 YOWcfS9htwBsUaS+lfGcsdPzs9grF53JLQTXpimE=
+	b=lzHI/cARHDMoZ65nmGsAc5c8ZkGqCNh+0dg4UKbCzMuL0qgo6ICaoC2yg/AYWqKkY
+	 QuWHQS2hbNT5AfbHLxV9p9xod+VxUubSYOIr0mmVk1qh4hev7SeD9xFvDgRhWvvvlM
+	 gQg0JWa5CharSOb7IQFFE7ExKPKoR6CdTGCSVnok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 199/570] NFC: nxp-nci: allow GPIOs to sleep
+	Matt Vollrath <tactii@gmail.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 085/491] e1000/e1000e: Fix leak in DMA error cleanup
 Date: Mon, 13 Apr 2026 17:55:30 +0200
-Message-ID: <20260413155837.913004965@linuxfoundation.org>
+Message-ID: <20260413155822.226231287@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237173-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236744-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,gehealthcare.com:email]
-X-Rspamd-Queue-Id: 086323F0081
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D86413F029F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Matt Vollrath <tactii@gmail.com>
 
-commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
+[ Upstream commit e94eaef11142b01f77bf8ba4d0b59720b7858109 ]
 
-Allow the firmware and enable GPIOs to sleep.
+If an error is encountered while mapping TX buffers, the driver should
+unmap any buffers already mapped for that skb.
 
-This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
-connected to I2C GPIO expanders.
+Because count is incremented after a successful mapping, it will always
+match the correct number of unmappings needed when dma_error is reached.
+Decrementing count before the while loop in dma_error causes an
+off-by-one error. If any mapping was successful before an unsuccessful
+mapping, exactly one DMA mapping would leak.
 
--- >8 --
-kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
--- >8 --
+In these commits, a faulty while condition caused an infinite loop in
+dma_error:
+Commit 03b1320dfcee ("e1000e: remove use of skb_dma_map from e1000e
+driver")
+Commit 602c0554d7b0 ("e1000: remove use of skb_dma_map from e1000 driver")
 
-Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Commit c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of
+unsigned in *_tx_map()") fixed the infinite loop, but introduced the
+off-by-one error.
+
+This issue may still exist in the igbvf driver, but I did not address it
+in this patch.
+
+Fixes: c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of unsigned in *_tx_map()")
+Assisted-by: Claude:claude-4.6-opus
+Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/nxp-nci/i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/e1000/e1000_main.c | 2 --
+ drivers/net/ethernet/intel/e1000e/netdev.c    | 2 --
+ 2 files changed, 4 deletions(-)
 
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
- {
- 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
+index 0b75029029132..d7e7c619a98e2 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -2951,8 +2951,6 @@ static int e1000_tx_map(struct e1000_adapter *adapter,
+ dma_error:
+ 	dev_err(&pdev->dev, "TX DMA map failed\n");
+ 	buffer_info->dma = 0;
+-	if (count)
+-		count--;
  
--	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
--	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
- 	usleep_range(10000, 15000);
+ 	while (count--) {
+ 		if (i == 0)
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index b700663a634d2..902ada6a3b06c 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -5633,8 +5633,6 @@ static int e1000_tx_map(struct e1000_ring *tx_ring, struct sk_buff *skb,
+ dma_error:
+ 	dev_err(&pdev->dev, "Tx DMA map failed\n");
+ 	buffer_info->dma = 0;
+-	if (count)
+-		count--;
  
- 	if (mode == NXP_NCI_MODE_COLD)
+ 	while (count--) {
+ 		if (i == 0)
+-- 
+2.51.0
+
 
 
 
