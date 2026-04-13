@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-236311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJOEHm4Y3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:10 +0200
+	id YSIhFIoY3Wn3ZwkAu9opvQ
+	(envelope-from <stable+bounces-236369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8411E3EEC2F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2E03EEC69
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 849AF3049DE4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C792E3213E5D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936AB305E1F;
-	Mon, 13 Apr 2026 16:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FF527281E;
+	Mon, 13 Apr 2026 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMMiSZmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTVu4KTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565652DEA6B;
-	Mon, 13 Apr 2026 16:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4778024E4AF;
+	Mon, 13 Apr 2026 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096581; cv=none; b=Qh5/rx8d4D1z7OcLilXZaAag+1vR5IUdjp5Pn60SbplgsywrWraVOh9YFgptqz85nN2iuZTHj4WptN5GWUOTbtqPbOprW9RlNKjelIyKwrAiGO5TIo95FsfSdK1tHHAeFTrvaP2daae4aNywKex903DdtmYIV2sFo/h/Gt/chv4=
+	t=1776096728; cv=none; b=m++bIget4HMITFVAirKkucXB8Ur2Aaqb/1oKTGlPcb+wJWqX0nKt7uD2IUE6q1UC5W3TsM4S9hHq8019YGmLDffJAagVLvwhZGGzKyRMuZQiiSRDMyaH/P/dOxstQgCb+FKP4yjy/sd0mH7El780gTjyY4YCUExNoIFf7J//Uig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096581; c=relaxed/simple;
-	bh=oxKZEX0OgjFnyKhE9B997rs+QfayqzJ/w4bIybw9M6s=;
+	s=arc-20240116; t=1776096728; c=relaxed/simple;
+	bh=Wkt39H278s1q/7UTX1FyW4bYlYegBjQKEQG8GnsYCOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAjXu7PcjhzG0C/pUOFMtCZQ6VF7BI2lIYkHmd6OQuEe1ZOP/MjdmZKBRftl5nvjcpka0KRXSO8Yg0DDo1GaVR6me7//n/EY6Jlc4P8szmUqHsE6SBuDr7eizON2gN4SnqWmBNqHW11V/3JXOLZkeidQ2/ypUa0V4B99o4PM+eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMMiSZmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEC7C2BCAF;
-	Mon, 13 Apr 2026 16:09:40 +0000 (UTC)
+	 MIME-Version; b=PKfiswzz28DguH7EKcTcVeiER4Q2mDPVGjk8REXrpVhfHHEYLFsxZWyvGV8YfSO32rf+ZRl44I8bPV2lWsa+Bookk33zXe93TGAOga3asVNeTAAFS4ZCHGJJVoRwq85tXgvfrc/BFERwWqY1H92u4w09M296HHgRuGVNMj4fUo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTVu4KTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1717C2BCAF;
+	Mon, 13 Apr 2026 16:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096581;
-	bh=oxKZEX0OgjFnyKhE9B997rs+QfayqzJ/w4bIybw9M6s=;
+	s=korg; t=1776096728;
+	bh=Wkt39H278s1q/7UTX1FyW4bYlYegBjQKEQG8GnsYCOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMMiSZmWjqNbnfsPZy4WbfszwrPRqFqyYJfZ+3ZnmlpWpJMSPL21M00+QnDHRh7ms
-	 GmqPP5W+okC1g2lT5i1nODNZ0AzG58ap+vSU24mOZBeWgjmFyUy/3KzWhX8JqSljfD
-	 neup0CooT3LMMZ+sB4ThiiABdjTZ0FXHrP/HSQOk=
+	b=rTVu4KTc+ZNNrEN9WaMwGLIpkmHrqion/WLFm3mQChk6KXym6a2QB9bfmsnNf2od3
+	 +wa4q+M8Y/d8PlixGzZAYmkY+1rmdh6zRH9vZDXi6f7NojgsMER5H7Fzua/jOwYNGM
+	 wCKl0CsUiOxKVe5C7qU6htksbV4M4LvuZnDm8eYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleh Konko <security@1seal.org>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 66/83] rxrpc: Fix RxGK token loading to check bounds
+	Shawn Guo <shawnguo@kernel.org>,
+	Wei Xu <xuwei5@hisilicon.com>
+Subject: [PATCH 6.12 39/70] arm64: dts: hisilicon: poplar: Correct PCIe reset GPIO polarity
 Date: Mon, 13 Apr 2026 18:00:34 +0200
-Message-ID: <20260413155733.470618621@linuxfoundation.org>
+Message-ID: <20260413155729.639364686@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,164 +67,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236311-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236369-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,msgid.link:url,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,1seal.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8411E3EEC2F
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hisilicon.com:email]
+X-Rspamd-Queue-Id: 8B2E03EEC69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleh Konko <security@1seal.org>
+From: Shawn Guo <shawnguo@kernel.org>
 
-commit d179a868dd755b0cfcf7582e00943d702b9943b8 upstream.
+commit c1f2b0f2b5e37b2c27540a175aea2755a3799433 upstream.
 
-rxrpc_preparse_xdr_yfs_rxgk() reads the raw key length and ticket length
-from the XDR token as u32 values and passes each through round_up(x, 4)
-before using the rounded value for validation and allocation.  When the raw
-length is >= 0xfffffffd, round_up() wraps to 0, so the bounds check and
-kzalloc both use 0 while the subsequent memcpy still copies the original
-~4 GiB value, producing a heap buffer overflow reachable from an
-unprivileged add_key() call.
+The PCIe reset GPIO on Poplar is actually active low.  The active high
+worked before because kernel driver didn't respect the setting from DT.
+This is changed since commit 1d26a55fbeb9 ("PCI: histb: Switch to using
+gpiod API"), and thus PCIe on Poplar got brken since then.
 
-Fix this by:
+Fix the problem by correcting the polarity.
 
- (1) Rejecting raw key lengths above AFSTOKEN_GK_KEY_MAX and raw ticket
-     lengths above AFSTOKEN_GK_TOKEN_MAX before rounding, consistent with
-     the caps that the RxKAD path already enforces via AFSTOKEN_RK_TIX_MAX.
-
- (2) Sizing the flexible-array allocation from the validated raw key
-     length via struct_size_t() instead of the rounded value.
-
- (3) Caching the raw lengths so that the later field assignments and
-     memcpy calls do not re-read from the token, eliminating a class of
-     TOCTOU re-parse.
-
-The control path (valid token with lengths within bounds) is unaffected.
-
-Fixes: 0ca100ff4df6 ("rxrpc: Add YFS RxGK (GSSAPI) security class")
-Signed-off-by: Oleh Konko <security@1seal.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-6-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 32fa01761bd9 ("arm64: dts: hi3798cv200: enable PCIe support for poplar board")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/key.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
-index 26d4336a4a02..77237a82be3b 100644
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -13,6 +13,7 @@
- #include <crypto/skcipher.h>
- #include <linux/module.h>
- #include <linux/net.h>
-+#include <linux/overflow.h>
- #include <linux/skbuff.h>
- #include <linux/key-type.h>
- #include <linux/ctype.h>
-@@ -171,7 +172,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
- 	size_t plen;
- 	const __be32 *ticket, *key;
- 	s64 tmp;
--	u32 tktlen, keylen;
-+	size_t raw_keylen, raw_tktlen, keylen, tktlen;
+--- a/arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts
++++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dts
+@@ -179,7 +179,7 @@
+ };
  
- 	_enter(",{%x,%x,%x,%x},%x",
- 	       ntohl(xdr[0]), ntohl(xdr[1]), ntohl(xdr[2]), ntohl(xdr[3]),
-@@ -181,18 +182,22 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
- 		goto reject;
- 
- 	key = xdr + (6 * 2 + 1);
--	keylen = ntohl(key[-1]);
--	_debug("keylen: %x", keylen);
--	keylen = round_up(keylen, 4);
-+	raw_keylen = ntohl(key[-1]);
-+	_debug("keylen: %zx", raw_keylen);
-+	if (raw_keylen > AFSTOKEN_GK_KEY_MAX)
-+		goto reject;
-+	keylen = round_up(raw_keylen, 4);
- 	if ((6 * 2 + 2) * 4 + keylen > toklen)
- 		goto reject;
- 
- 	ticket = xdr + (6 * 2 + 1 + (keylen / 4) + 1);
--	tktlen = ntohl(ticket[-1]);
--	_debug("tktlen: %x", tktlen);
--	tktlen = round_up(tktlen, 4);
-+	raw_tktlen = ntohl(ticket[-1]);
-+	_debug("tktlen: %zx", raw_tktlen);
-+	if (raw_tktlen > AFSTOKEN_GK_TOKEN_MAX)
-+		goto reject;
-+	tktlen = round_up(raw_tktlen, 4);
- 	if ((6 * 2 + 2) * 4 + keylen + tktlen != toklen) {
--		kleave(" = -EKEYREJECTED [%x!=%x, %x,%x]",
-+		kleave(" = -EKEYREJECTED [%zx!=%x, %zx,%zx]",
- 		       (6 * 2 + 2) * 4 + keylen + tktlen, toklen,
- 		       keylen, tktlen);
- 		goto reject;
-@@ -206,7 +211,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
- 	if (!token)
- 		goto nomem;
- 
--	token->rxgk = kzalloc(sizeof(*token->rxgk) + keylen, GFP_KERNEL);
-+	token->rxgk = kzalloc(struct_size_t(struct rxgk_key, _key, raw_keylen), GFP_KERNEL);
- 	if (!token->rxgk)
- 		goto nomem_token;
- 
-@@ -221,9 +226,9 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
- 	token->rxgk->enctype	= tmp = xdr_dec64(xdr + 5 * 2);
- 	if (tmp < 0 || tmp > UINT_MAX)
- 		goto reject_token;
--	token->rxgk->key.len	= ntohl(key[-1]);
-+	token->rxgk->key.len	= raw_keylen;
- 	token->rxgk->key.data	= token->rxgk->_key;
--	token->rxgk->ticket.len = ntohl(ticket[-1]);
-+	token->rxgk->ticket.len = raw_tktlen;
- 
- 	if (token->rxgk->endtime != 0) {
- 		expiry = rxrpc_s64_to_time64(token->rxgk->endtime);
-@@ -236,8 +241,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
- 	memcpy(token->rxgk->key.data, key, token->rxgk->key.len);
- 
- 	/* Pad the ticket so that we can use it directly in XDR */
--	token->rxgk->ticket.data = kzalloc(round_up(token->rxgk->ticket.len, 4),
--					   GFP_KERNEL);
-+	token->rxgk->ticket.data = kzalloc(tktlen, GFP_KERNEL);
- 	if (!token->rxgk->ticket.data)
- 		goto nomem_yrxgk;
- 	memcpy(token->rxgk->ticket.data, ticket, token->rxgk->ticket.len);
--- 
-2.53.0
-
+ &pcie {
+-	reset-gpios = <&gpio4 4 GPIO_ACTIVE_HIGH>;
++	reset-gpios = <&gpio4 4 GPIO_ACTIVE_LOW>;
+ 	vpcie-supply = <&reg_pcie>;
+ 	status = "okay";
+ };
 
 
 
