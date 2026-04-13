@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOoWHQMc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:27 +0200
+	id 0IeJMisn3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A8C3EF6EE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3306E3F15F0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2261C3109531
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CB2D3053745
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC7E26F293;
-	Mon, 13 Apr 2026 16:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0913264F2;
+	Mon, 13 Apr 2026 16:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyZs+CJx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3dtAQc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E644D26A1CF;
-	Mon, 13 Apr 2026 16:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7CB31F9BC;
+	Mon, 13 Apr 2026 16:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096847; cv=none; b=FccpPSB5I6zDUdoETLMAb7KPox4R3TEnS2FHqrkRrHYlgzc88A+ZCy/+WK5BNcfcms/FsT/YdK7fyd4qFu8+ISmJ+LJ6MFlImPb7B4FAnnVSIH1MZpW/i4T4OLbleDWJIvSb1vyJuIDwMCKG0lQ+JvzanmOO1JYqrhCPlIMfAVk=
+	t=1776099584; cv=none; b=iDAk7bTLRY3t6Ni8w/rdV48xeq6Q7efYmkNQzaM4msKh1SNuLk8KFWgJ63PxtW00uASZ5hjUtjZpn1ehjfLJwCcmQa6WLCDqrbsnwtPxZ0MNygisZQ/nDo1+hGYwOh4U4HPWr9moA2+/X01bMJhe0JxBdHIzYfhFwqEBq3Hw1zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096847; c=relaxed/simple;
-	bh=1wvlKMfs0Mtm8n5AoktiFJFTgv62L150FVGxvhhT3pw=;
+	s=arc-20240116; t=1776099584; c=relaxed/simple;
+	bh=MN25Bl1AuVXiBla16EbE40rG6xl+En/YbHwRHnPZmlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j48iTnI1FNouFMsK1Ps+yG9t2WevP2fMEyCVsqE5CZ5jJvwlJcLsyTKcm3nUAaFRgCuq7NAc7eVx7ghlhlGVJ7KFU92+qwvoE7xzDc8GeY0X9CYPSZRh8X16uqlzLj08Et/awRdc3cVULvHhWuaNF1nGOe90H8b3joe3qSlWiiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyZs+CJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771A5C2BCB0;
-	Mon, 13 Apr 2026 16:14:06 +0000 (UTC)
+	 MIME-Version; b=sZ+bkoCvOjWbGQeEIXe0jlk+OuypVQ/SVQhYBNNc3t/2mCCwebMTlgJhDi+cZGy4pI9quza0W15v0vHKQoUdnLynrDfrXS/2aKuAW+7LNSGkg2hyx+YHGdTDbxIW8E6WsHw0L3gJ11pnoLjmFOn+sohTxBKFLKpnbj1FyUjC4so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3dtAQc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EF0C2BCAF;
+	Mon, 13 Apr 2026 16:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096846;
-	bh=1wvlKMfs0Mtm8n5AoktiFJFTgv62L150FVGxvhhT3pw=;
+	s=korg; t=1776099584;
+	bh=MN25Bl1AuVXiBla16EbE40rG6xl+En/YbHwRHnPZmlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyZs+CJxuteGkyH91UlumRk+6JtvUIDoTXMhG7FLJk02wQMd9tj2juunZVY+YzXcU
-	 Zib84y5RE8Otgdch+neCZrNczmJfGOcJcYPv4GYtnxu0/ZN7D06oTGcbD4krw8DtVa
-	 Yc5lMc5DhujaotxIkmFRODGsvG90cFiWN4imYfWA=
+	b=P3dtAQc4I6M17LWrnHxhkN9iFYprEaiS19wRBeWDpcUQqO+R3LIMxIbrgRs+KFlRU
+	 np9bWYD5Kf7zPBBGrCf9hSCbWvd/1UokVp5ymzPyeSYH4GfcpHChdfYXBkyzxptL+W
+	 tXg1K0PjgsnRMPXclMazZwObE/L8xyCVE5R6pPD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Zimmermann <sigmaepsilon92@gmail.com>,
+	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
 	stable <stable@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/50] usb: gadget: f_hid: move list and spinlock inits from bind to alloc
+	Ian Abbott <abbotti@mev.co.uk>,
+	Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: [PATCH 5.10 397/491] comedi: dt2815: add hardware detection to prevent crash
 Date: Mon, 13 Apr 2026 18:00:42 +0200
-Message-ID: <20260413155725.080678853@linuxfoundation.org>
+Message-ID: <20260413155833.896128037@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +65,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236415-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-237488-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 04A8C3EF6EE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 3306E3F15F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Zimmermann <sigmaepsilon92@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 4e0a88254ad59f6c53a34bf5fa241884ec09e8b2 ]
+commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
 
-There was an issue when you did the following:
-- setup and bind an hid gadget
-- open /dev/hidg0
-- use the resulting fd in EPOLL_CTL_ADD
-- unbind the UDC
-- bind the UDC
-- use the fd in EPOLL_CTL_DEL
+The dt2815 driver crashes when attached to I/O ports without actual
+hardware present. This occurs because syzkaller or users can attach
+the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
 
-When CONFIG_DEBUG_LIST was enabled, a list_del corruption was reported
-within remove_wait_queue (via ep_remove_wait_queue). After some
-debugging I found out that the queues, which f_hid registers via
-poll_wait were the problem. These were initialized using
-init_waitqueue_head inside hidg_bind. So effectively, the bind function
-re-initialized the queues while there were still items in them.
+When no hardware exists at the specified port, inb() operations return
+0xff (floating bus), but outb() operations can trigger page faults due
+to undefined behavior, especially under race conditions:
 
-The solution is to move the initialization from hidg_bind to hidg_alloc
-to extend their lifetimes to the lifetime of the function instance.
+  BUG: unable to handle page fault for address: 000000007fffff90
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  RIP: 0010:dt2815_attach+0x6e0/0x1110
 
-Additionally, I found many other possibly problematic init calls in the
-bind function, which I moved as well.
+Add hardware detection by reading the status register before attempting
+any write operations. If the read returns 0xff, assume no hardware is
+present and fail the attach with -ENODEV. This prevents crashes from
+outb() operations on non-existent hardware.
 
-Signed-off-by: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
 Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260331184844.2388761-1-sigmaepsilon92@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
+Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
+Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_hid.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/staging/comedi/drivers/dt2815.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1000,13 +1000,8 @@ static int hidg_bind(struct usb_configur
- 	if (status)
- 		goto fail;
+--- a/drivers/staging/comedi/drivers/dt2815.c
++++ b/drivers/staging/comedi/drivers/dt2815.c
+@@ -176,6 +176,18 @@ static int dt2815_attach(struct comedi_d
+ 		    ? current_range_type : voltage_range_type;
+ 	}
  
--	spin_lock_init(&hidg->write_spinlock);
- 	hidg->write_pending = 1;
- 	hidg->req = NULL;
--	spin_lock_init(&hidg->read_spinlock);
--	init_waitqueue_head(&hidg->write_queue);
--	init_waitqueue_head(&hidg->read_queue);
--	INIT_LIST_HEAD(&hidg->completed_out_req);
- 
- 	/* create char device */
- 	cdev_init(&hidg->cdev, &f_hidg_fops);
-@@ -1275,6 +1270,12 @@ static struct usb_function *hidg_alloc(s
- 
- 	mutex_lock(&opts->lock);
- 
-+	spin_lock_init(&hidg->write_spinlock);
-+	spin_lock_init(&hidg->read_spinlock);
-+	init_waitqueue_head(&hidg->write_queue);
-+	init_waitqueue_head(&hidg->read_queue);
-+	INIT_LIST_HEAD(&hidg->completed_out_req);
++	/*
++	 * Check if hardware is present before attempting any I/O operations.
++	 * Reading 0xff from status register typically indicates no hardware
++	 * on the bus (floating bus reads as all 1s).
++	 */
++	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
++		dev_err(dev->class_dev,
++			"No hardware detected at I/O base 0x%lx\n",
++			dev->iobase);
++		return -ENODEV;
++	}
 +
- 	device_initialize(&hidg->dev);
- 	hidg->dev.release = hidg_release;
- 	hidg->dev.class = &hidg_class;
+ 	/* Init the 2815 */
+ 	outb(0x00, dev->iobase + DT2815_STATUS);
+ 	for (i = 0; i < 100; i++) {
 
 
 
