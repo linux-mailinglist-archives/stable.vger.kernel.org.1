@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Hy5Kfsi3WkYaQkAu9opvQ
-	(envelope-from <stable+bounces-236973-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:11 +0200
+	id QE7JNNMk3WlSaQkAu9opvQ
+	(envelope-from <stable+bounces-237435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DC33F0CFE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C83F3F1141
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAE8C311830B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8642830ABEB8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A781B280CFB;
-	Mon, 13 Apr 2026 16:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF2D337BB5;
+	Mon, 13 Apr 2026 16:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnVhRXn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUoRsMuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFB1307AC7;
-	Mon, 13 Apr 2026 16:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE4E328255;
+	Mon, 13 Apr 2026 16:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098264; cv=none; b=aWNYpo7voAKCsu50mrWWG5goIlZsioS9hiwniTelKMUx3hEVSwJuTKLFrMGGXup8ivaASVCp/P7DUDX9UrR9NPD6QgFSc/BtxGBhog9PsUSPQVgFsA7DkULNQgpYeDIDZNUUJ9ECao4Y4UkxKBHMwwNV9DD76HOvFlkyTbQhQxM=
+	t=1776099450; cv=none; b=KWlCVqFOcdZGVLn+9YLel9ytNO2+n9iR5M6MZIXexix2YHgRf9v7T5ZAi1Zb+7UqnCKh+Ue9kpJ3CpwSTQsmu/W87pXkAEP2f3p3oh2i/wlA3dM8Jn6xbCWIPprx1ujDWQiiUfJkXjjtyYu4kXVZXbRAPALSHSusNHeTvrF160s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098264; c=relaxed/simple;
-	bh=kUOqr+py7jsvSIUfEZLUFlm4qJQAJvvSUH9e5N17k48=;
+	s=arc-20240116; t=1776099450; c=relaxed/simple;
+	bh=AGP4TF8R+gJdvf82m4S7QxZ5fTDIVQ/vCeLvcDeJGmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INB1UjgbdTM0dAeVolZicG9RsF36y7YY6E3W01kfxSGV4ddBniBpqfA2p1gZc8S+a/t2ORlj1mUJIBEelzZv7OP0OXC9SSTbwZBufWSnR4LrnkRuT4TDBtAvFsWVhKb2DnTAZSH7I0FPvC4vK3ff1Z4yBo1T5Ka/sRlQXR5Rvlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnVhRXn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DB8C2BCAF;
-	Mon, 13 Apr 2026 16:37:43 +0000 (UTC)
+	 MIME-Version; b=eUFOXSerHubqgLDERXEKiTK//ta+uGRr6bSjBN4sX2+Nlf+7A9kNZr5KMC/lPUGFdmO5YEU7ZLlmf1xQ5CUqeGAYkAjroQNjUKQL/L2hs/vqBTnnvkVblreXfAHpEymPedmpYQaPzLxvpkWWpav36VWtFzT2o1X8lRWqsTmMQvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUoRsMuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DD4C2BCAF;
+	Mon, 13 Apr 2026 16:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098264;
-	bh=kUOqr+py7jsvSIUfEZLUFlm4qJQAJvvSUH9e5N17k48=;
+	s=korg; t=1776099450;
+	bh=AGP4TF8R+gJdvf82m4S7QxZ5fTDIVQ/vCeLvcDeJGmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnVhRXn6FZRWkO6gTEBW4ZHdNuoO6g7XdfnXownTdDgiAyvy7kqi0qi9LDptv15c6
-	 iXalV+/C9MIWVoYQMEkIxb6GUFh6QPJ1PcG0wNOGK3+q2fF1Q8yPUshsSgkXIzoiep
-	 RXhSeFt3Lq1GQg7IwD4SX6u1burWL1r9Jvb/UZw0=
+	b=QUoRsMuCSdBu+scRe6J0rqViXDD3vgKkxQGwyQmG4PdAHLqqCGRvSWMEymxuG1X54
+	 cvaM3hcie1koohQ26Cbw8MbBRl8yS35QhvwEnvFgXGUU5mBcdU3N6VGvy+nWteCgqO
+	 sAPMCrBOz+3cMIVB+jSPJuorxtOKusse+2iJ3F8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 457/570] Input: i8042 - add TUXEDO InfinityBook Max 16 Gen10 AMD to i8042 quirk table
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 343/491] netfilter: nf_tables: reject immediate NF_QUEUE verdict
 Date: Mon, 13 Apr 2026 17:59:48 +0200
-Message-ID: <20260413155847.589349403@linuxfoundation.org>
+Message-ID: <20260413155831.880603463@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236973-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedo.de,tuxedocomputers.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237435-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.990];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 00DC33F0CFE
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1C83F3F1141
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 5839419cffc7788a356428d321e3ec18055c0286 upstream.
+[ Upstream commit da107398cbd4bbdb6bffecb2ce86d5c9384f4cec ]
 
-The device occasionally wakes up from suspend with missing input on the
-internal keyboard and the following suspend attempt results in an instant
-wake-up. The quirks fix both issues for this device.
+nft_queue is always used from userspace nftables to deliver the NF_QUEUE
+verdict. Immediately emitting an NF_QUEUE verdict is never used by the
+userspace nft tools, so reject immediate NF_QUEUE verdicts.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260223142054.50310-1-wse@tuxedocomputers.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The arp family does not provide queue support, but such an immediate
+verdict is still reachable. Globally reject NF_QUEUE immediate verdicts
+to address this issue.
+
+Fixes: f342de4e2f33 ("netfilter: nf_tables: reject QUEUE/DROP verdict parameters")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/netfilter/nf_tables_api.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1181,6 +1181,13 @@ static const struct dmi_system_id i8042_
- 	},
- 	{
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "X6KK45xU_X6SP45xU"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
-+	{
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 189997bcaeef5..15486d3051f6b 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9362,8 +9362,6 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+ 	switch (data->verdict.code) {
+ 	case NF_ACCEPT:
+ 	case NF_DROP:
+-	case NF_QUEUE:
+-		break;
+ 	case NFT_CONTINUE:
+ 	case NFT_BREAK:
+ 	case NFT_RETURN:
+@@ -9398,6 +9396,11 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+ 
+ 		data->verdict.chain = chain;
+ 		break;
++	case NF_QUEUE:
++		/* The nft_queue expression is used for this purpose, an
++		 * immediate NF_QUEUE verdict should not ever be seen here.
++		 */
++		fallthrough;
+ 	default:
+ 		return -EINVAL;
+ 	}
+-- 
+2.53.0
+
 
 
 
