@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-237025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPR3GjEf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:01 +0200
+	id KETHElAX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E053F00A7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A059B3EE959
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 80FE9307CCAC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0AFD530AF000
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22510307AC7;
-	Mon, 13 Apr 2026 16:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624C82877E5;
+	Mon, 13 Apr 2026 16:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5UToBYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07SxybLp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA56C1A680C;
-	Mon, 13 Apr 2026 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25542283FEF;
+	Mon, 13 Apr 2026 16:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098395; cv=none; b=fuygbhsPzgBifybCIJJlZnGu/iNPjG8CX9FIHoeeoIFX3lk5A39ABw0BhWOcTylIWdyCNefrdGRpgnMybwdriISUMZdUzxr4sxlXZvhqkO7N0M7lJaaUWRr4KeZ0uzupjpG8yfd3JQqhfs/NB/ZvbydQWOtEWhUxUM2C8rvx1PY=
+	t=1776096514; cv=none; b=NezzPx42WgJCryKb2LIH3iIKKUdtSQaEgqmwwzAqELZjSKfTFrRTj+n21IUCCtEGn2GJDGfU+NUbpK6RbLA21yT8yG/eZ/Vkx63N/ROOvqpMY2LNuge9kv3O+ctTqJqMRFF7k/DH242/xIg2IBn+UBRhqwDxEy/R293l7qRd2I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098395; c=relaxed/simple;
-	bh=3wmPN0kjo7XJ33wVBBG9BTnKRx07FAK0bj7irJGw/fg=;
+	s=arc-20240116; t=1776096514; c=relaxed/simple;
+	bh=5DP4SCV8POB8lQnsyKpZ6CP/nb6gEVAQggftfi8sFS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YrV6a80RfvZF/DX1vLPDQJbufGHRTusvOiJfvxxyM6b4nmpVekfC48Hl7qCW1txKBNtmVHrI1FMiYXLmxiA0AjEm0oX185XcYl76E7N2FarqxHfycQtgtHVeH0LbOhrsbpC3ZhFgBGTtvHyLu5LMBDxtaUM0KycIw7Z1V5kRtFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5UToBYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0E8C2BCAF;
-	Mon, 13 Apr 2026 16:39:55 +0000 (UTC)
+	 MIME-Version; b=A656EmJ1Uny/3XUB2UbFAIaCM99DP28WipidUsnbh0jPczUOjpocQqKJPsdPdSSYtKpy3jgTpw+5yBK/s+PMPEu92iTZ/dSnC+K+oU8+Hw4xwpRvKhkm+cAAgXnXpk337fGlCETR303hWz++pbVmtAzkcUFj42K7XH9kcCxii7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07SxybLp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7FAC2BCAF;
+	Mon, 13 Apr 2026 16:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098395;
-	bh=3wmPN0kjo7XJ33wVBBG9BTnKRx07FAK0bj7irJGw/fg=;
+	s=korg; t=1776096513;
+	bh=5DP4SCV8POB8lQnsyKpZ6CP/nb6gEVAQggftfi8sFS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5UToBYEV5eIH9LgW28kf+Yj43r8L6ozBec3vXY3WDYXFCEaHla+6DCufqoV4CXXd
-	 S/wr+HGOWC1icedVWMGVnyxevhEG2xMznRBq0I4iXDcPN1j9z9OabNMx2y+kF4Z9tT
-	 DLQvVTY7K34aImnfu1Q34bhxbhwHlP+rgSwh6jcw=
+	b=07SxybLp3/wOFvSBO/UmGHTsDfDecff5v412WBaS56+y3WDjqqwtZ2UTrjx4zu306
+	 hfvw+oEG2X4iGjZK3hH37H2RaKZLxLpQM0YDtgnONRUvK0M3ARm9bIZRqUBfZI4Z4B
+	 ybMb7491owCBZHvKId76utfM5VUPDpDf8jJJpBGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 476/570] phy: renesas: rcar-gen3-usb2: Lock around hardware registers and driver data
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.18 39/83] EDAC/mc: Fix error path ordering in edac_mc_alloc()
 Date: Mon, 13 Apr 2026 18:00:07 +0200
-Message-ID: <20260413155848.293672664@linuxfoundation.org>
+Message-ID: <20260413155732.475013028@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,244 +68,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237025-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236283-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 91E053F00A7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alien8.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: A059B3EE959
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 55a387ebb9219cbe4edfa8ba9996ccb0e7ad4932 upstream.
+commit 51520e03e70d6c73e33ee7cbe0319767d05764fe upstream.
 
-The phy-rcar-gen3-usb2 driver exposes four individual PHYs that are
-requested and configured by PHY users. The struct phy_ops APIs access the
-same set of registers to configure all PHYs. Additionally, PHY settings can
-be modified through sysfs or an IRQ handler. While some struct phy_ops APIs
-are protected by a driver-wide mutex, others rely on individual
-PHY-specific mutexes.
+When the mci->pvt_info allocation in edac_mc_alloc() fails, the error path
+will call put_device() which will end up calling the device's release
+function.
 
-This approach can lead to various issues, including:
-1/ the IRQ handler may interrupt PHY settings in progress, racing with
-   hardware configuration protected by a mutex lock
-2/ due to msleep(20) in rcar_gen3_init_otg(), while a configuration thread
-   suspends to wait for the delay, another thread may try to configure
-   another PHY (with phy_init() + phy_power_on()); re-running the
-   phy_init() goes to the exact same configuration code, re-running the
-   same hardware configuration on the same set of registers (and bits)
-   which might impact the result of the msleep for the 1st configuring
-   thread
-3/ sysfs can configure the hardware (though role_store()) and it can
-   still race with the phy_init()/phy_power_on() APIs calling into the
-   drivers struct phy_ops
+However, the init ordering is wrong such that device_initialize() happens
+*after* the failed allocation and thus the device itself and the release
+function pointer are not initialized yet when they're called:
 
-To address these issues, add a spinlock to protect hardware register access
-and driver private data structures (e.g., calls to
-rcar_gen3_is_any_rphy_initialized()). Checking driver-specific data remains
-necessary as all PHY instances share common settings. With this change,
-the existing mutex protection is removed and the cleanup.h helpers are
-used.
+  MCE: In-kernel MCE decoding enabled.
+  ------------[ cut here ]------------
+  kobject: '(null)': is not initialized, yet kobject_put() is being called.
+  WARNING: lib/kobject.c:734 at kobject_put, CPU#22: systemd-udevd
+  CPU: 22 UID: 0 PID: 538 Comm: systemd-udevd Not tainted 7.0.0-rc1+ #2 PREEMPT(full)
+  RIP: 0010:kobject_put
+  Call Trace:
+   <TASK>
+   edac_mc_alloc+0xbe/0xe0 [edac_core]
+   amd64_edac_init+0x7a4/0xff0 [amd64_edac]
+   ? __pfx_amd64_edac_init+0x10/0x10 [amd64_edac]
+   do_one_initcall
+   ...
 
-While at it, to keep the code simpler, do not skip
-regulator_enable()/regulator_disable() APIs in
-rcar_gen3_phy_usb2_power_on()/rcar_gen3_phy_usb2_power_off() as the
-regulators enable/disable operations are reference counted anyway.
+Reorder the calling sequence so that the device is initialized and thus the
+release function pointer is properly set before it can be used.
 
-[claudiu.beznea:
- - in rcar_gen3_phy_usb2_irq() and rcar_gen3_phy_usb2_power_off() replaced
-   scoped_guard() with spin_lock()/spin_unlock(), since scoped_guard() is
-   not available in v5.15
- - in rcar_gen3_phy_usb2_power_on() used spin_lock_irqsave()/
-   spin_unlock_irqrestore() instead of guard() to avoid compilation warning
-   "ISO C90 forbids mixed declarations and code"]
+This was found by Claude while reviewing another EDAC patch.
 
-Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0bbb265f7089 ("EDAC/mc: Get rid of silly one-shot struct allocation in edac_mc_alloc()")
+Reported-by: Claude Code:claude-opus-4.5
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20260331121623.4871-1-bp@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 42 +++++++++++++++---------
- 1 file changed, 26 insertions(+), 16 deletions(-)
+ drivers/edac/edac_mc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index d873c49500cdd..0626e00ccea7e 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -9,6 +9,7 @@
-  * Copyright (C) 2014 Cogent Embedded, Inc.
-  */
+--- a/drivers/edac/edac_mc.c
++++ b/drivers/edac/edac_mc.c
+@@ -370,13 +370,13 @@ struct mem_ctl_info *edac_mc_alloc(unsig
+ 	if (!mci->layers)
+ 		goto error;
  
-+#include <linux/cleanup.h>
- #include <linux/extcon-provider.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-@@ -113,7 +114,7 @@ struct rcar_gen3_chan {
- 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
- 	struct regulator *vbus;
- 	struct work_struct work;
--	struct mutex lock;	/* protects rphys[...].powered */
-+	spinlock_t lock;	/* protects access to hardware and driver data structure. */
- 	enum usb_dr_mode dr_mode;
- 	u32 obint_enable_bits;
- 	bool extcon_host;
-@@ -340,6 +341,8 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
- 	bool is_b_device;
- 	enum phy_mode cur_mode, new_mode;
- 
-+	guard(spinlock_irqsave)(&ch->lock);
++	mci->dev.release = mci_release;
++	device_initialize(&mci->dev);
 +
- 	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
+ 	mci->pvt_info = kzalloc(sz_pvt, GFP_KERNEL);
+ 	if (!mci->pvt_info)
+ 		goto error;
  
-@@ -407,7 +410,7 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
- 		val = readl(usb2_base + USB2_ADPCTRL);
- 		writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
- 	}
--	msleep(20);
-+	mdelay(20);
- 
- 	writel(0xffffffff, usb2_base + USB2_OBINTSTA);
- 	writel(ch->obint_enable_bits, usb2_base + USB2_OBINTEN);
-@@ -428,6 +431,8 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
- 	if (pm_runtime_suspended(dev))
- 		goto rpm_put;
- 
-+	spin_lock(&ch->lock);
-+
- 	status = readl(usb2_base + USB2_OBINTSTA);
- 	if (status & ch->obint_enable_bits) {
- 		dev_vdbg(dev, "%s: %08x\n", __func__, status);
-@@ -436,6 +441,8 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
- 		ret = IRQ_HANDLED;
- 	}
- 
-+	spin_unlock(&ch->lock);
-+
- rpm_put:
- 	pm_runtime_put_noidle(dev);
- 	return ret;
-@@ -448,6 +455,8 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
- 	void __iomem *usb2_base = channel->base;
- 	u32 val;
- 
-+	guard(spinlock_irqsave)(&channel->lock);
-+
- 	/* Initialize USB2 part */
- 	val = readl(usb2_base + USB2_INT_ENABLE);
- 	val |= USB2_INT_ENABLE_UCOM_INTEN | rphy->int_enable_bits;
-@@ -474,6 +483,8 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
- 	void __iomem *usb2_base = channel->base;
- 	u32 val;
- 
-+	guard(spinlock_irqsave)(&channel->lock);
-+
- 	rphy->initialized = false;
- 
- 	val = readl(usb2_base + USB2_INT_ENABLE);
-@@ -490,19 +501,21 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
- 	struct rcar_gen3_phy *rphy = phy_get_drvdata(p);
- 	struct rcar_gen3_chan *channel = rphy->ch;
- 	void __iomem *usb2_base = channel->base;
-+	unsigned long flags;
- 	u32 val;
- 	int ret = 0;
- 
--	mutex_lock(&channel->lock);
--	if (!rcar_gen3_are_all_rphys_power_off(channel))
--		goto out;
+-	mci->dev.release = mci_release;
+-	device_initialize(&mci->dev);
 -
- 	if (channel->vbus) {
- 		ret = regulator_enable(channel->vbus);
- 		if (ret)
--			goto out;
-+			return ret;
- 	}
- 
-+	spin_lock_irqsave(&channel->lock, flags);
-+
-+	if (!rcar_gen3_are_all_rphys_power_off(channel))
-+		goto out;
-+
- 	val = readl(usb2_base + USB2_USBCTR);
- 	val |= USB2_USBCTR_PLL_RST;
- 	writel(val, usb2_base + USB2_USBCTR);
-@@ -512,7 +525,8 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
- out:
- 	/* The powered flag should be set for any other phys anyway */
- 	rphy->powered = true;
--	mutex_unlock(&channel->lock);
-+
-+	spin_unlock_irqrestore(&channel->lock, flags);
- 
- 	return 0;
- }
-@@ -521,20 +535,16 @@ static int rcar_gen3_phy_usb2_power_off(struct phy *p)
- {
- 	struct rcar_gen3_phy *rphy = phy_get_drvdata(p);
- 	struct rcar_gen3_chan *channel = rphy->ch;
-+	unsigned long flags;
- 	int ret = 0;
- 
--	mutex_lock(&channel->lock);
-+	spin_lock_irqsave(&channel->lock, flags);
- 	rphy->powered = false;
--
--	if (!rcar_gen3_are_all_rphys_power_off(channel))
--		goto out;
-+	spin_unlock_irqrestore(&channel->lock, flags);
- 
- 	if (channel->vbus)
- 		ret = regulator_disable(channel->vbus);
- 
--out:
--	mutex_unlock(&channel->lock);
--
- 	return ret;
- }
- 
-@@ -697,7 +707,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	if (phy_data->no_adp_ctrl)
- 		channel->obint_enable_bits = USB2_OBINT_IDCHG_EN;
- 
--	mutex_init(&channel->lock);
-+	spin_lock_init(&channel->lock);
- 	for (i = 0; i < NUM_OF_PHYS; i++) {
- 		channel->rphys[i].phy = devm_phy_create(dev, NULL,
- 							phy_data->phy_usb2_ops);
--- 
-2.53.0
-
+ 	/* setup index and various internal pointers */
+ 	mci->mc_idx = mc_num;
+ 	mci->tot_dimms = tot_dimms;
 
 
 
