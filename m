@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-237225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDNaLAsf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:23 +0200
+	id YLTSHbsh3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCBE3F0005
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0623F093A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B02B30314B4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70B5932A2FBC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5715931619C;
-	Mon, 13 Apr 2026 16:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9073090F5;
+	Mon, 13 Apr 2026 16:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzw9stdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0Hfm4pq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BE531328E;
-	Mon, 13 Apr 2026 16:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D613526CE32;
+	Mon, 13 Apr 2026 16:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098908; cv=none; b=shAZN62empRMh4QChuoQpmCIVAChKYxIWueHvjuaXpJERGqTus3bxa62o/UyNYT+78XIL2sQEKqZwtDf73n1Cy+6z5WDFdYIYBvnbKgH/Td905bkGOwflvijKF+G2QP9x4jvZUgknCRxlhkUvRXnuztEiCzHrqK+md+ZwCACC8U=
+	t=1776097725; cv=none; b=licmRu70kO6kQZWIV5V/wxsS47RIg+zJOKNjPMQSSeKDqKA2kmsiCNV8qqhGb1I+8FbMEehoPbyxZDhSmTb2eniiKo4VzkHYTTPAvzB1+fthqi2qcMmsdHHiyrDk0O61dPFZ/L53Pi5+XNnnBiQm5yGVNbkTVYV892n2R3uZZPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098908; c=relaxed/simple;
-	bh=23SQOBCrQB7j8U9IJED3fOmV0hGKwLxh9gpI9RkzFPs=;
+	s=arc-20240116; t=1776097725; c=relaxed/simple;
+	bh=EsY2ZFFHSlII4bsGGHY4m16q+bIVqXr0qgWGQuM50yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZL82k7GgAO3GeGijW5+EIuPi8vv4B2xqk0FxuRFXMQ9IJ/vvv24QungJRLnykXNNf1sc33ytvoz/BxiaktCcntMKY4bnNyDWvgBvTpublRTUiWRY3YAERRnCNjihXd/OrCGqvYw0aCKd+Buat7L+thiXQz5e3wm7qe0lygECqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzw9stdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DA2C2BCAF;
-	Mon, 13 Apr 2026 16:48:27 +0000 (UTC)
+	 MIME-Version; b=HK8eNXrS6GgLzVV2qeGLSmAAqkXZaTQh9AzyUwgJNGqT2sjFTP16Hj7rxkUKPVjZ4IJ6a7wxZkBZkJE6mCeqxf7y61V0miF0paeUVzVQWfD4o9s2Xiutcvw0IIx81693QUi/gcN+HRHnaY71k0okdCAZmcQO/aGYnsbeNblzUEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0Hfm4pq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE5CC2BCAF;
+	Mon, 13 Apr 2026 16:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098908;
-	bh=23SQOBCrQB7j8U9IJED3fOmV0hGKwLxh9gpI9RkzFPs=;
+	s=korg; t=1776097725;
+	bh=EsY2ZFFHSlII4bsGGHY4m16q+bIVqXr0qgWGQuM50yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzw9stdgOG39a9OFWn95vflTfUV0Txu589L/P/J1QJTzm9aoMHZEg4YVIjZbNWgRW
-	 sniLSmeBEo4YKuVJ13NpXTmTNSY5XEvrunSy3jK5cIAVt6fSnvUU5NlH0j0QYvb8L/
-	 6hiLs3Oy+LvzwIKWpbCO6E4mNmcn7RIs1jFB6JPA=
+	b=d0Hfm4pqHtBNExsgHYsn6lAlRbQjtVEPpU2LOnbu3Basj7ogSKvLBpookv7HM1qwg
+	 EYkxUBNQv+3WI8zmRBWL20cwy6WyeL6djXoTuw5pC8jDtpqqxIC+57p/63h0Ii3ifv
+	 G1O1BN5vQoiWg/ZmsQh5S74f7l/uYydv4ZnSocRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 134/491] iio: imu: inv_icm42600: fix odr switch to the same value
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 248/570] Bluetooth: LE L2CAP: Disconnect if received packets SDU exceeds IMTU
 Date: Mon, 13 Apr 2026 17:56:19 +0200
-Message-ID: <20260413155824.057611929@linuxfoundation.org>
+Message-ID: <20260413155839.757292176@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237225-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236761-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,62 +87,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4BCBE3F0005
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arri.de:email]
+X-Rspamd-Queue-Id: EB0623F093A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit c9f3a593137d862d424130343e77d4b5260a4f5a upstream.
+[ Upstream commit e1d9a66889867c232657a9b6f25d451d7c3ab96f ]
 
-ODR switch is done in 2 steps when FIFO is on : change the ODR register
-value and acknowledge change when reading the FIFO ODR change flag.
-When we are switching to the same odr value, we end up waiting for a
-FIFO ODR flag that is never happening.
+Core 6.0, Vol 3, Part A, 3.4.3:
+"If the SDU length field value exceeds the receiver's MTU, the receiver
+shall disconnect the channel..."
 
-Fix the issue by doing nothing and exiting properly when we are
-switching to the same ODR value.
+This fixes L2CAP/LE/CFC/BV-26-C (running together with 'l2test -r -P
+0x0027 -V le_public -I 100').
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    2 ++
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    2 ++
- 2 files changed, 4 insertions(+)
+ net/bluetooth/l2cap_core.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -322,6 +322,8 @@ static int inv_icm42600_accel_write_odr(
- 		return -EINVAL;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 740b5468f6dc8..601a4d9e4cdde 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7629,8 +7629,10 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		return -ENOBUFS;
+ 	}
  
- 	conf.odr = inv_icm42600_accel_odr_conv[idx / 2];
-+	if (conf.odr == st->conf.accel.odr)
-+		return 0;
+-	if (chan->imtu < skb->len) {
+-		BT_ERR("Too big LE L2CAP PDU");
++	if (skb->len > chan->imtu) {
++		BT_ERR("Too big LE L2CAP PDU: len %u > %u", skb->len,
++		       chan->imtu);
++		l2cap_send_disconn_req(chan, ECONNRESET);
+ 		return -ENOBUFS;
+ 	}
  
- 	pm_runtime_get_sync(dev);
- 	mutex_lock(&st->lock);
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -334,6 +334,8 @@ static int inv_icm42600_gyro_write_odr(s
- 		return -EINVAL;
+@@ -7655,7 +7657,9 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		       sdu_len, skb->len, chan->imtu);
  
- 	conf.odr = inv_icm42600_gyro_odr_conv[idx / 2];
-+	if (conf.odr == st->conf.gyro.odr)
-+		return 0;
- 
- 	pm_runtime_get_sync(dev);
- 	mutex_lock(&st->lock);
+ 		if (sdu_len > chan->imtu) {
+-			BT_ERR("Too big LE L2CAP SDU length received");
++			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
++			       skb->len, sdu_len);
++			l2cap_send_disconn_req(chan, ECONNRESET);
+ 			err = -EMSGSIZE;
+ 			goto failed;
+ 		}
+-- 
+2.51.0
+
 
 
 
