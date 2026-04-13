@@ -1,88 +1,99 @@
-Return-Path: <stable+bounces-237661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HowG5Rd3WmadAkAu9opvQ
-	(envelope-from <stable+bounces-237661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 23:18:12 +0200
+	id EAKLF7td3WmadAkAu9opvQ
+	(envelope-from <stable+bounces-237662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 23:18:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE19F3F37B6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 23:18:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE71C3F37D5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 23:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88CCE3029E72
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:13:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E0A3304741E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C948340DFA7;
-	Mon, 13 Apr 2026 21:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C96C35B62F;
+	Mon, 13 Apr 2026 21:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AMjQH1go"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rCYSQfTj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F2A1514F8
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 21:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04B83921DF
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 21:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776114780; cv=none; b=HVEPX+8TIMvmNep14vMxSdf0yvo3lJUCG+X+k9obPlfh35pnT+vN0WhwfGMFpfjdCPVpBJyFPul9r6lvKLakGJXXY49cp2KOdCJGnjvdEvBUkWCjyC9axny+OaLYBQNJwMpfS2GP1/WhdnUt6yeIltuTuGQ/Yi1VnmLmY0bTbLw=
+	t=1776114972; cv=none; b=dOAwKPzpZJpRbxljuRWysfS7qjY/I+IiW0ZrKuxfsQYKNncBA9IMkCV5ZrbQ1VMcCyL00Q3OwxpGITRV/MMpswi6VJIkR2ncbZIIqiox0uucyW31O5//d7RhbtpQcXzzC3xL/n1auWxtP9wXrE8nWxeankUk72gx7JboLiX9Gow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776114780; c=relaxed/simple;
-	bh=zhwHBvxowx/CDbJvKJKLuT1kONQfkrgCboxl/nz+Drg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CRgZcHcnnbfNSt70PyBPGsW90GbxXHJ5g7Y/RxHoZXBVSKWx/MosoB4hZ5+ms3EQnFJ0PEF5ye/wy3zpSgr1ULnp1lsJq6IBiURmUu1PYexS62RzqvLQ20HazevQHgljVEfD+Kr6mDW+I0TXH3Oh5QqfDnlPPGt4xBYS/1Ihkzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AMjQH1go; arc=none smtp.client-ip=209.85.160.177
+	s=arc-20240116; t=1776114972; c=relaxed/simple;
+	bh=AFiehBHJJDtpZCChKbiQwpG4u9g76gs9xkq5Ctyl29Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SSNNNofTznPOb34Nrww/sRb3rZqpYUpc078ouWDDzeAUqy17wgoCBkr8YA4D55GsIlEZe49Q9QFSXpzoaNnDLDwWRPcJ+1xU03Vp1zyBCFWDdvCCoXjwNcxDi38AZaxDsOdgDXvRyxWxMNSglDT9bsgy8dsI6QeFFojA+n6h+Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rCYSQfTj; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50baafd6c4aso51614941cf.1
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:12:59 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f0884bcfaso2753107b3a.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:16:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776114778; x=1776719578; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776114970; x=1776719770; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wRm3QQarp6KprRAVENXxH9rbQ7MVgBtYRP8MX65QUmA=;
-        b=AMjQH1goATY7LUP4WqBcAx7uObXy2Qi9B5Xhj+atCj0wOPzTi5rqvLaDmhr+7Puguk
-         SEQ/THvmInMF2hH2AHJnngTTNh5N8Qrhj4GqpHqCf8W92E5udlHoSe94GDtj/+YkIJBY
-         EblrsazoKIY/KCQL3NwrMKr0dwdDpaS2mLOKz+uJCfRe/6/wMuFAQXGB60HYpMjYJ1Xs
-         s37v8jdO44MH/uHIZ0KcYNjDTtZ0cJ2MIXqv833v3dva47YP96NBCaXtE0ojcH1KkrHv
-         0JK40uZ7a9/i0sb5Skupc2kOyLeoFIiNrcgQYE3Kr3OhWayOGy+uQ5Mlpb8Q/MNYDKyt
-         X61A==
+        bh=J6XYsoy0hgti9UjRylPOMBsVgDXd9AkuOGfbur3GU+c=;
+        b=rCYSQfTjHK/iS2sINpKTL4VV2bJ7qLAPsgOiUKy00wWRQrigLU+1Uxrx08vz2R0J+h
+         GPGjhkvvXX211/Ok4r4IeGUWcATJuIaZcAcdKnh7ynbosXWS1q1NaKA4thh70JzsfJHD
+         ARFnN9U+0P5WUlYVS/169rffHzZlvvP+3qtOFHWuz6jPI/8p+QxKN9539MOrwYOQvO3S
+         IZoWtZbwWW/euNSkC3NAuS4Wc8M0ZJqNcmCydKg8KGCfW5MmEuvDFSlEeFq+xcKqykGG
+         eWsYgkMm5pVhtdPb3y/LzA8f+wHcDz+tsoKYQ+NHernjwU3274l5+EfOVtJKtiXV39VH
+         nS5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776114778; x=1776719578;
+        d=1e100.net; s=20251104; t=1776114970; x=1776719770;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wRm3QQarp6KprRAVENXxH9rbQ7MVgBtYRP8MX65QUmA=;
-        b=b5xqoeVia8ALWIrGStSxwq22pyXj8as9vSHG7CGP5lW+6YW3j+X3UoUi2KRNTUn4zx
-         +mKKNz+byXeWhFuYkNfe9YD/rvfuXdX71E1tzDdLFadrj5P/kGyOZ5ORypsrHezrc/MT
-         1uGcKwpNkD3CUNJAGzDbAAn6wlP1pj7HH1ntpSCtg4gWnUpLk20DnhzSDA/sLeAxkXqr
-         HT9nz9MKVjx2V7rlNEalKPXc1jeNYlenfAijVd//vUsRvwXjrwcT5OoffCiVO5bTRwk1
-         vZxTLSjobCR88rruMEEVS31STGbExg0Qpz00Ny6T+5Nn57IaqqjRaADdViEdXj5SY9Vn
-         q1QA==
-X-Forwarded-Encrypted: i=1; AFNElJ9J4XaTFJMRJb1CCmx3N5+ibGFLcGzGhZdX8o2u1+0lv9uENUyyK3mBkYvia1KiGlbrt3etZ8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxt7thkQMmB91aJTb5yF/Fkx8LMTQPepuIutitQsMyXM9NQSHQS
-	Sffnf5mjsB/Yv9nBHpsZ7ByDrqFGTA8yMoEUR9/I5ujgS3s/d6iQ6qRVuCo1SQ==
-X-Gm-Gg: AeBDieuReyEAQwOVnsIWAk0bJ3cyRk/E/vGarrtGNu1bc2w6DT7lRgoVRS2URSgTNQa
-	qsBlFbsUsXJLfu/I40/j9XohtjZyJsz4W7DjepHMOcdmZE018xIimPYqQxepmYcy2Sb/Fj1AJ4d
-	3qH95LEOsXpb8VQA0ilIgLA54BTc7spQsnKAxWSCeQibSsQFuUp5LNWs4TzMN+FLpexWMAUNgJe
-	EEGvQ+Vjc4gkHeIYswAZuLcOoQLMszs7qM4WJKWiPPtmNwMKb3SIoKWn7lNm0bs6V2kKHJsqcO6
-	5IqQETmsXKzty0RnnDPI06YM1nrxOu2zRrBKcIzdVK7OYpoMHiK3jO6lxf/E8eAEfOInggHtfay
-	WvzNPFUJGPCB9ophMJVcLToB8zyfkAw96AcHMTvzmpmfVZjv18bgS+DZnmi26YR79Mk0un0T4R5
-	RJ8pn4e+7OFLLLxyXke1yBMK/e20ItcziwYV9Wiiklv1ck1ruvVW/xw72E12H2++zRj5CLP79+Y
-	b6/9erYrEdbKYkF7HsE1MscyRYUAt8=
-X-Received: by 2002:ac8:5d13:0:b0:50b:4726:f152 with SMTP id d75a77b69052e-50dd5b346demr220545431cf.8.1776114777966;
-        Mon, 13 Apr 2026 14:12:57 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50dd539b3f3sm95998551cf.2.2026.04.13.14.12.57
+        bh=J6XYsoy0hgti9UjRylPOMBsVgDXd9AkuOGfbur3GU+c=;
+        b=X4q9AD6eawF8i28FP8patrZnQDMfRSz/zFFwa/2C1Dg62yeQLp27vKScT9mkFbe4wA
+         uuszZVEq+9QBswORzYLlvDHOkue41nslL3ruBXb21y5Bhm+jwStdddoBHri9qP7oaA76
+         IE2JgUWSSVRaPnEv9F2CtnB5uD1HjLD1/MHpwnnUeluEgieASAPYJ9gpHONq4P8QWgd/
+         nJmQBjBL2mM1Cd4obRxjCDOp5ykAMyUGRQknCA4ByfMsyHoT4t52tmwrqj59DDvLQ3hM
+         +gonuFNfiw3CjaPj7cXZHoDniQEFDhR8d+mPrFJJj89hGM17mmyc/i7/myhIalmARVDm
+         vxuA==
+X-Forwarded-Encrypted: i=1; AFNElJ9gX6o7BlLpmYfDTVWKK/g3UBZjy/H/nSo8HowvevFaDQWdzgkNHCGG+KQ5I1n25U+kAIGrc4g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yycf+abMLavsYrxuXjJR4axQlPFs1mxPs6ZI7DJu/vb3oHwhDqH
+	9fdjTCl1EHXM+yG3I5lqhfceB4DVWUyvx2YyVZDLwJJwqi2a9tiZKYGv
+X-Gm-Gg: AeBDievLozJvEXcA/RR7lxdU6HRlG+iglMYoIkei4m2WUMKuNwz5Lf9lWdmUczltgo2
+	lJdRr89oCL0Ls5aQJE1t1x//Q+oxkIsuc5ZFMPgDuq6wmzVXJbFEM9aUBGzxbX5cZLtkhOB8gSV
+	s2WgYpmfnW/d048rG3UYE9Y7BHLwv2yf7WPR7YpbfEEhhIOsVpmbJ3vUKBJ8cXJI7gDim/dQs9S
+	oJi0eYA8GkvXIdLNTNhz4S68C2f+6jVTCI2ratDVazEXBx2WAzzQSI0gW0ZPCAljSjd0d365Q6i
+	aPWp2J8Bw9oWdozARKTmuDhi4rXvVe5GEs6Sy7cCYjpwhwqU2pSsAKsvZNz7Rssy3ZGyA0aPwC/
+	UBvPIkAtpTfMQgspt+1C7O7B2mCGm2DXuYGFAWotVFzzsvw9ETR0FvAGnz9kf3EDynVNiRzYMBD
+	x0wqu9um9O70IWaL1gRzrfdk+LnfH6EKOtYbxjy25S+zyU
+X-Received: by 2002:a05:6a00:278d:b0:82f:250b:9f1b with SMTP id d2e1a72fcca58-82f250ba2bcmr8529329b3a.23.1776114970028;
+        Mon, 13 Apr 2026 14:16:10 -0700 (PDT)
+Received: from tech-Alienware-m15-R6.. ([122.171.18.84])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c30ee32sm12822124b3a.7.2026.04.13.14.16.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 14:12:57 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Jan Kara <jack@suse.com>
-Cc: linux-fsdevel@vger.kernel.org,
+        Mon, 13 Apr 2026 14:16:09 -0700 (PDT)
+From: Sunny Patel <nueralspacetech@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sunny Patel <nueralspacetech@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] udf: reject descriptors with oversized CRC length
-Date: Mon, 13 Apr 2026 17:12:40 -0400
-Message-ID: <20260413211240.853662-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+Subject: [PATCH] mm/migrate_device: fix double unlock
+Date: Tue, 14 Apr 2026 02:45:49 +0530
+Message-ID: <20260413211559.20969-1-nueralspacetech@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,98 +101,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237661-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_THREE(0.00)[3];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,kvack.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-237662-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nueralspacetech@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.995];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BE19F3F37B6
+X-Rspamd-Queue-Id: BE71C3F37D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-udf_read_tagged() skips CRC verification when descCRCLength +
-sizeof(struct tag) exceeds the block size.  A crafted UDF image can
-set descCRCLength to an oversized value to bypass CRC validation
-entirely; the descriptor is then accepted based solely on the 8-bit
-tag checksum, which is trivially recomputable.
+migrate_vma_collect_huge_pmd() calls spin_unlock(ptl) after
+softleaf_entry_wait_on_locked(), which already releases the ptl.
 
-Reject such descriptors instead of silently accepting them.  A
-legitimate single-block descriptor should never have a CRC length that
-exceeds the block.
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+
+Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
 ---
-Found during a filesystem security audit.  The CRC validation
-condition in udf_read_tagged() uses OR logic: the first arm
-(descCRCLength too large) short-circuits the second arm (CRC
-comparison), so an oversized descCRCLength causes the function to
-return the buffer head without verifying the CRC.  The descriptor
-is accepted based solely on the 8-bit tag checksum.
+ mm/migrate_device.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-A crafted UDF image with descCRCLength set to blocksize (e.g. 2048
-on a 2048-byte-block filesystem, vs the 2032 limit) in both the
-main and reserve Volume Descriptor Sequences mounts successfully
-with corrupted descriptor bodies.
-
-Reproduced on UML (ARCH=um, KASAN-enabled v7.0-rc7) with a
-mkudffs-generated 20 MiB image, both LVD copies patched to
-descCRCLength=2040, CRC left stale, body byte flipped, tag
-checksum recomputed.  Mount succeeds (MOUNT=0) with the corrupt
-LVD accepted.  With this patch applied, mount fails with EINVAL
-and the new "CRC length ... exceeds block size" error is logged.
-
-Reproducer details and UML console logs available on request.
-
- fs/udf/misc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/fs/udf/misc.c b/fs/udf/misc.c
-index 0788593b6a1d..6928e378fbbd 100644
---- a/fs/udf/misc.c
-+++ b/fs/udf/misc.c
-@@ -230,8 +230,12 @@ struct buffer_head *udf_read_tagged(struct super_block *sb, uint32_t block,
- 	}
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 8079676c8f1f..7eb2f87ea39d 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -177,7 +177,6 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
  
- 	/* Verify the descriptor CRC */
--	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize ||
--	    le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
-+	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize) {
-+		udf_err(sb, "block %u: CRC length %u exceeds block size\n",
-+			block, le16_to_cpu(tag_p->descCRCLength));
-+		goto error_out;
-+	}
-+	if (le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
- 					bh->b_data + sizeof(struct tag),
- 					le16_to_cpu(tag_p->descCRCLength)))
- 		return bh;
+ 		if (softleaf_is_migration(entry)) {
+ 			softleaf_entry_wait_on_locked(entry, ptl);
+-			spin_unlock(ptl);
+ 			return -EAGAIN;
+ 		}
+ 
 -- 
-2.53.0
+2.43.0
 
 
