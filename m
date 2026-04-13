@@ -1,69 +1,58 @@
-Return-Path: <stable+bounces-236394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCSwJ58Y3Wn3ZwkAu9opvQ
-	(envelope-from <stable+bounces-236394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:59 +0200
+	id uM/FNMMi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187ED3EECC2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835DC3F0C78
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CAF2C30A8488
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 260C4308FBBD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E756A279DAF;
-	Mon, 13 Apr 2026 16:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4B5333745;
+	Mon, 13 Apr 2026 17:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtVVd797"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8SohRZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6D02727E2;
-	Mon, 13 Apr 2026 16:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1F423C8C7;
+	Mon, 13 Apr 2026 17:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096792; cv=none; b=c2Xt5EO8oEQqrgSswUVkcKokjimeXEmn1KIKUT55Q9L43GCdZ8h018fNmCu/hea6AhT27Yzv3EduXKH7aOjN9CmNVIjaBIASmRt/uj277qZ3eMO6cAcCyGpEZupMmvP9h5sxvVVo2XbYcpmBnhZqHl+Wid/G6KP2PhEJDcAhV1Y=
+	t=1776099640; cv=none; b=keVZm0PCFVrXPqKdp++Ay7PoN5a2LBZtSbJi9uRNKDO6PdCR/8hrJpPoLbyUbGLq44s+r/YQ8rz3TzlNBcDALw9DAkAUHGkY3UaNezseNAkeysz0jfxH0JEzDOJGQ9GTV3HznlHW2GZbx7SHTcm4Pr/Z+yUiK9y5Xgkumbc0j/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096792; c=relaxed/simple;
-	bh=7M9I2h8ODuGUKGF8+Qot9RL8RDIkfhHZWbflrlU2t/g=;
+	s=arc-20240116; t=1776099640; c=relaxed/simple;
+	bh=MBX4Pl3UWVuVOJ7jbUk+rFBjlDZdAjFbPwrbtpjbBSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNQ1sYgnN0clB8AYeTVGEe1WpOaEfTHA4G0jQt2ciAI0waUp+Ld07cZauDLTKFxFrPDbSXbtNaImkkyC/mN3836spSOnilofS2uO54SAyQurz1KFKdqbxc/s0x4zB+TCsJ7G01rLgc6VifzoL+t1g1jbL8mYj4zSHUFTQrryII0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtVVd797; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17276C2BCB4;
-	Mon, 13 Apr 2026 16:13:12 +0000 (UTC)
+	 MIME-Version; b=MG0UsDnA+NjwrkRmXrA9767ilVaKHWBIDzjovOjQjZDj5bbX3KdA7zOlvOQzZ2AZjP3L/X7ANplUcH3FUTPRtOuIG2VHxPvAKNlGbQ+UoMXVYBO69bl/VwG1d6w9gXlhpyqDNayeBu8btu2sQzAceYNztd3I149a7rsiAjshUXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8SohRZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257D8C2BCAF;
+	Mon, 13 Apr 2026 17:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096792;
-	bh=7M9I2h8ODuGUKGF8+Qot9RL8RDIkfhHZWbflrlU2t/g=;
+	s=korg; t=1776099640;
+	bh=MBX4Pl3UWVuVOJ7jbUk+rFBjlDZdAjFbPwrbtpjbBSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtVVd797vkGJ6ZgHPlmd4rirx4shCeNoyFZrTlYp+OEvJygeDwv94YFP31A2vDLOa
-	 iJC7Zkl0WUEMrKQMdcHbKOCju43Exw+hCV0ECyNK7x8TnsaLwwCJyjFbArk/pCX5m2
-	 RDtrQZ8Lkipome6pTIvFizTszOHH7L2dev46wnm0=
+	b=F8SohRZrjCopRDWqxsVg5oQKmNRKBOWySiluDbuMviIKdotgR8E92Y5K21W3YYsbH
+	 Jmw7FWzFHiK13XGbXSjeL/oU5Ez/FXzC71WyfB3z0jfGAX+Efgq9+AaBDTmdgMWxEk
+	 iB2n9kW3adfIPh612Cku4TILOyg/MxGbIdj5Imgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Yuqi Xu <xuyuqiabc@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 65/70] rxrpc: reject undecryptable rxkad response tickets
-Date: Mon, 13 Apr 2026 18:01:00 +0200
-Message-ID: <20260413155730.604497433@linuxfoundation.org>
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 416/491] Input: uinput - fix circular locking dependency with ff-core
+Date: Mon, 13 Apr 2026 18:01:01 +0200
+Message-ID: <20260413155834.602208628@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,101 +63,196 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236394-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237509-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.979];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lzu.edu.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: 187ED3EECC2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 835DC3F0C78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyuqiabc@gmail.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
-commit fe4447cd95623b1cfacc15f280aab73a6d7340b2 upstream.
+commit 4cda78d6f8bf2b700529f2fbccb994c3e826d7c2 upstream.
 
-rxkad_decrypt_ticket() decrypts the RXKAD response ticket and then
-parses the buffer as plaintext without checking whether
-crypto_skcipher_decrypt() succeeded.
+A lockdep circular locking dependency warning can be triggered
+reproducibly when using a force-feedback gamepad with uinput (for
+example, playing ELDEN RING under Wine with a Flydigi Vader 5
+controller):
 
-A malformed RESPONSE can therefore use a non-block-aligned ticket
-length, make the decrypt operation fail, and still drive the ticket
-parser with attacker-controlled bytes.
+  ff->mutex -> udev->mutex -> input_mutex -> dev->mutex -> ff->mutex
 
-Check the decrypt result and abort the connection with RXKADBADTICKET
-when ticket decryption fails.
+The cycle is caused by four lock acquisition paths:
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-12-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+1. ff upload: input_ff_upload() holds ff->mutex and calls
+   uinput_dev_upload_effect() -> uinput_request_submit() ->
+   uinput_request_send(), which acquires udev->mutex.
+
+2. device create: uinput_ioctl_handler() holds udev->mutex and calls
+   uinput_create_device() -> input_register_device(), which acquires
+   input_mutex.
+
+3. device register: input_register_device() holds input_mutex and
+   calls kbd_connect() -> input_register_handle(), which acquires
+   dev->mutex.
+
+4. evdev release: evdev_release() calls input_flush_device() under
+   dev->mutex, which calls input_ff_flush() acquiring ff->mutex.
+
+Fix this by introducing a new state_lock spinlock to protect
+udev->state and udev->dev access in uinput_request_send() instead of
+acquiring udev->mutex.  The function only needs to atomically check
+device state and queue an input event into the ring buffer via
+uinput_dev_event() -- both operations are safe under a spinlock
+(ktime_get_ts64() and wake_up_interruptible() do not sleep).  This
+breaks the ff->mutex -> udev->mutex link since a spinlock is a leaf in
+the lock ordering and cannot form cycles with mutexes.
+
+To keep state transitions visible to uinput_request_send(), protect
+writes to udev->state in uinput_create_device() and
+uinput_destroy_device() with the same state_lock spinlock.
+
+Additionally, move init_completion(&request->done) from
+uinput_request_send() to uinput_request_submit() before
+uinput_request_reserve_slot().  Once the slot is allocated,
+uinput_flush_requests() may call complete() on it at any time from
+the destroy path, so the completion must be initialised before the
+request becomes visible.
+
+Lock ordering after the fix:
+
+  ff->mutex -> state_lock (spinlock, leaf)
+  udev->mutex -> state_lock (spinlock, leaf)
+  udev->mutex -> input_mutex -> dev->mutex -> ff->mutex (no back-edge)
+
+Fixes: ff462551235d ("Input: uinput - switch to the new FF interface")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/CABXGCsMoxag+kEwHhb7KqhuyxfmGGd0P=tHZyb1uKE0pLr8Hkg@mail.gmail.com/
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Link: https://patch.msgid.link/20260407075031.38351-1-mikhail.v.gavrilov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxkad.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/input/misc/uinput.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -870,6 +870,7 @@ static int rxkad_decrypt_ticket(struct r
- 	struct in_addr addr;
- 	unsigned int life;
- 	time64_t issue, now;
-+	int ret;
- 	bool little_endian;
- 	u8 *p, *q, *name, *end;
+--- a/drivers/input/misc/uinput.c
++++ b/drivers/input/misc/uinput.c
+@@ -56,6 +56,7 @@ struct uinput_device {
+ 	struct input_dev	*dev;
+ 	struct mutex		mutex;
+ 	enum uinput_state	state;
++	spinlock_t		state_lock;
+ 	wait_queue_head_t	waitq;
+ 	unsigned char		ready;
+ 	unsigned char		head;
+@@ -145,19 +146,15 @@ static void uinput_request_release_slot(
+ static int uinput_request_send(struct uinput_device *udev,
+ 			       struct uinput_request *request)
+ {
+-	int retval;
++	int retval = 0;
  
-@@ -889,8 +890,11 @@ static int rxkad_decrypt_ticket(struct r
- 	sg_init_one(&sg[0], ticket, ticket_len);
- 	skcipher_request_set_callback(req, 0, NULL, NULL);
- 	skcipher_request_set_crypt(req, sg, sg, ticket_len, iv.x);
--	crypto_skcipher_decrypt(req);
-+	ret = crypto_skcipher_decrypt(req);
- 	skcipher_request_free(req);
-+	if (ret < 0)
-+		return rxrpc_abort_conn(conn, skb, RXKADBADTICKET, -EPROTO,
-+					rxkad_abort_resp_tkt_short);
+-	retval = mutex_lock_interruptible(&udev->mutex);
+-	if (retval)
+-		return retval;
++	spin_lock(&udev->state_lock);
  
- 	p = ticket;
- 	end = p + ticket_len;
+ 	if (udev->state != UIST_CREATED) {
+ 		retval = -ENODEV;
+ 		goto out;
+ 	}
+ 
+-	init_completion(&request->done);
+-
+ 	/*
+ 	 * Tell our userspace application about this new request
+ 	 * by queueing an input event.
+@@ -165,7 +162,7 @@ static int uinput_request_send(struct ui
+ 	uinput_dev_event(udev->dev, EV_UINPUT, request->code, request->id);
+ 
+  out:
+-	mutex_unlock(&udev->mutex);
++	spin_unlock(&udev->state_lock);
+ 	return retval;
+ }
+ 
+@@ -174,6 +171,13 @@ static int uinput_request_submit(struct
+ {
+ 	int retval;
+ 
++	/*
++	 * Initialize completion before allocating the request slot.
++	 * Once the slot is allocated, uinput_flush_requests() may
++	 * complete it at any time, so it must be initialized first.
++	 */
++	init_completion(&request->done);
++
+ 	retval = uinput_request_reserve_slot(udev, request);
+ 	if (retval)
+ 		return retval;
+@@ -288,7 +292,14 @@ static void uinput_destroy_device(struct
+ 	struct input_dev *dev = udev->dev;
+ 	enum uinput_state old_state = udev->state;
+ 
++	/*
++	 * Update state under state_lock so that concurrent
++	 * uinput_request_send() sees the state change before we
++	 * flush pending requests and tear down the device.
++	 */
++	spin_lock(&udev->state_lock);
+ 	udev->state = UIST_NEW_DEVICE;
++	spin_unlock(&udev->state_lock);
+ 
+ 	if (dev) {
+ 		name = dev->name;
+@@ -365,7 +376,9 @@ static int uinput_create_device(struct u
+ 	if (error)
+ 		goto fail2;
+ 
++	spin_lock(&udev->state_lock);
+ 	udev->state = UIST_CREATED;
++	spin_unlock(&udev->state_lock);
+ 
+ 	return 0;
+ 
+@@ -383,6 +396,7 @@ static int uinput_open(struct inode *ino
+ 		return -ENOMEM;
+ 
+ 	mutex_init(&newdev->mutex);
++	spin_lock_init(&newdev->state_lock);
+ 	spin_lock_init(&newdev->requests_lock);
+ 	init_waitqueue_head(&newdev->requests_waitq);
+ 	init_waitqueue_head(&newdev->waitq);
 
 
 
