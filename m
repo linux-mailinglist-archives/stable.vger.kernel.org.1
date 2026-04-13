@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-237315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FQmErYf3WnbaAkAu9opvQ
-	(envelope-from <stable+bounces-237315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:14 +0200
+	id oKeHCAEm3WlkaQkAu9opvQ
+	(envelope-from <stable+bounces-237316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2717F3F02BE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:54:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C373F13A1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DFBBB3038C44
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99563324A127
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6317331714F;
-	Mon, 13 Apr 2026 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A97319860;
+	Mon, 13 Apr 2026 16:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLkARpnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCCxYjKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2535B317167;
-	Mon, 13 Apr 2026 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA6931715D;
+	Mon, 13 Apr 2026 16:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099140; cv=none; b=g6CnWnzacZ8H9aCR6gxcV9G7rm5FEtBjesK6mXG5SaEEl1U/vmxI7YIkDuP/omixDoBSaJbzeD4WalfVj6qwx3g+LbrL5ZHuIePalb+AxptK22DQcZnihS8y5h03sXmVrIm+sWXt4gwJMO73zPZ5adQU+Z5arGlxRth+DgaH3YE=
+	t=1776099142; cv=none; b=s6d/ZHKqKUOum6Gt7OeXqks+HvbGFMZDyeeRNLn59NeFoPaA1emNIzlReBfigNU8b7wB/AxVpkTATgcaNRzNvetQjvy/GnklXpYq/oxDONifr72b6TkQSe1aUevxZZJPFbiHK0slo8CDGZP19ge6vru4Xz81v/TYAnskuY4h1eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099140; c=relaxed/simple;
-	bh=Xmwc0oVn1H00kMbhdXj8enA0m7W4Y4hAV9oOGlYbupI=;
+	s=arc-20240116; t=1776099142; c=relaxed/simple;
+	bh=pimFCI53UhMi8llsYpIN7FcTr8LhAk7jLfFxVaW2oAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzJLStQbZMzjaIbt1X9Qy3OmTLA2qKCJ+YKK5hL7cnbCx5mH1cZ6YjsE+IjIeFU7JGSNra/Y1UHqC+H2OKOnx2KrVv43iVxOH2d/7tbM2tv8/NQm2mjmMaHc8sEAQ9mtMUfSKFpy2mOrk3xMlfnGpkCyLX4xqMEIrp4wmOMky3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLkARpnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE96C2BCAF;
-	Mon, 13 Apr 2026 16:52:19 +0000 (UTC)
+	 MIME-Version; b=AOeX1sSeHQUWINg1Ln+w5dlBUJRBv7suGD3Q+M3wMBzIaGqtIrj6OrhcxORQFiNiTdMTzP2v1kAwaPRbJIvEdcQPCzDSz40gX3yDjDTL5eIk4WGmtuVuZx54csPQfE+FA+vtH8BVZRi3DYCxup0N4OQ8fXTck1v0vfDoDcmNX6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCCxYjKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43808C2BCAF;
+	Mon, 13 Apr 2026 16:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099140;
-	bh=Xmwc0oVn1H00kMbhdXj8enA0m7W4Y4hAV9oOGlYbupI=;
+	s=korg; t=1776099142;
+	bh=pimFCI53UhMi8llsYpIN7FcTr8LhAk7jLfFxVaW2oAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLkARpnmJdOc4tN7zC+K+hdP5Iu43fUZbea1xhwf2JjDL7TPO07IkgifC2ywxazCv
-	 cAr66SYicbxel7KPQTgyjfVLV2r1oArd9g3RSMmkbzbHMjTm8HszryrwKzWn2BPCAj
-	 cSLlkdud8BuQRf9L10ulHN5iGCXS5zQZckb3RC8w=
+	b=lCCxYjKRMspjGlJIkBGCAE8UZK3HGIFyDxPcc1YMJ8bJF0nJeCV650cofUOK6WHRK
+	 qFARVTo6hC0+b4oRnning2DhZUdFL7s90+K8c1CU2nYOkO06GOLAES8cZM7T6seeTp
+	 pfCzjp5iB3H983j2hL4sM5M6TcQXvLmTLSlwPmJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 226/491] icmp: fix NULL pointer dereference in icmp_tag_validation()
-Date: Mon, 13 Apr 2026 17:57:51 +0200
-Message-ID: <20260413155827.521072138@linuxfoundation.org>
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 227/491] hwmon: (pmbus/isl68137) Fix unchecked return value and use sysfs_emit()
+Date: Mon, 13 Apr 2026 17:57:52 +0200
+Message-ID: <20260413155827.558774039@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -69,31 +67,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237315-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-237316-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: 2717F3F02BE
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 81C373F13A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,69 +98,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 614aefe56af8e13331e50220c936fc0689cf5675 ]
+commit 86259558e422b250aa6aa57163a6d759074573f5 upstream.
 
-icmp_tag_validation() unconditionally dereferences the result of
-rcu_dereference(inet_protos[proto]) without checking for NULL.
-The inet_protos[] array is sparse -- only about 15 of 256 protocol
-numbers have registered handlers. When ip_no_pmtu_disc is set to 3
-(hardened PMTU mode) and the kernel receives an ICMP Fragmentation
-Needed error with a quoted inner IP header containing an unregistered
-protocol number, the NULL dereference causes a kernel panic in
-softirq context.
+isl68137_avs_enable_show_page() uses the return value of
+pmbus_read_byte_data() without checking for errors. If the I2C transaction
+fails, a negative error code is passed through bitwise operations,
+producing incorrect output.
 
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- RIP: 0010:icmp_unreach (net/ipv4/icmp.c:1085 net/ipv4/icmp.c:1143)
- Call Trace:
-  <IRQ>
-  icmp_rcv (net/ipv4/icmp.c:1527)
-  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
-  ip_local_deliver_finish (net/ipv4/ip_input.c:242)
-  ip_local_deliver (net/ipv4/ip_input.c:262)
-  ip_rcv (net/ipv4/ip_input.c:573)
-  __netif_receive_skb_one_core (net/core/dev.c:6164)
-  process_backlog (net/core/dev.c:6628)
-  handle_softirqs (kernel/softirq.c:561)
-  </IRQ>
+Add an error check to propagate the return value if it is negative.
+Additionally, modernize the callback by replacing sprintf()
+with sysfs_emit().
 
-Add a NULL check before accessing icmp_strict_tag_validation. If the
-protocol has no registered handler, return false since it cannot
-perform strict tag validation.
-
-Fixes: 8ed1dc44d3e9 ("ipv4: introduce hardened ip_no_pmtu_disc mode")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260318130558.1050247-4-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260318193952.47908-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/icmp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwmon/pmbus/isl68137.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index efeeed4f0517e..3c74fecce2382 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -844,10 +844,12 @@ static void icmp_socket_deliver(struct sk_buff *skb, u32 info)
- 
- static bool icmp_tag_validation(int proto)
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -80,8 +80,11 @@ static ssize_t isl68137_avs_enable_show_
  {
-+	const struct net_protocol *ipprot;
- 	bool ok;
+ 	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
  
- 	rcu_read_lock();
--	ok = rcu_dereference(inet_protos[proto])->icmp_strict_tag_validation;
-+	ipprot = rcu_dereference(inet_protos[proto]);
-+	ok = ipprot ? ipprot->icmp_strict_tag_validation : false;
- 	rcu_read_unlock();
- 	return ok;
+-	return sprintf(buf, "%d\n",
+-		       (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS ? 1 : 0);
++	if (val < 0)
++		return val;
++
++	return sysfs_emit(buf, "%d\n",
++			   (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS);
  }
--- 
-2.51.0
-
+ 
+ static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
 
 
 
