@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-236943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ILzHUge3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236943-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:08 +0200
+	id yE1hOHUj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B583EFD76
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C493F0E09
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 83A7230377B7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1573730FA810
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F6F30BBAE;
-	Mon, 13 Apr 2026 16:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA276325490;
+	Mon, 13 Apr 2026 16:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDYD/zma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCmRCjiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A689429BD87;
-	Mon, 13 Apr 2026 16:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFB131E84D;
+	Mon, 13 Apr 2026 16:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098189; cv=none; b=LGCZ8G3aAn3vD4XxoWdq2u9pWRkZw8yQe5tsNLlg5a9knYOoJq+H5dbSvvmFUY4l9xrBkc//Q54QP76APr8AS3yrBwV94inc4iu9yylw2bqmpfUTIW7CB1s+IPfdhTVRaeiuZR1dthN+mMlTBig4WTCEuYULNjuQWRm/QdJGe+w=
+	t=1776099388; cv=none; b=T63SBni4mTEtmYV4OGFwkbFFa2d/s60UDm1PD3vgwutarygdUKohR4M0FvCg3hxJDu3c7sp9Nbh8n1ZzCEU8x6uihJOIxkA4LHVrqZyqQg/UGvkYVK2fz6SzTBNvJxK+7Bc9qFCFToTiSQYYK081/dyrkamtl6ZEREkKt8C3mFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098189; c=relaxed/simple;
-	bh=CZAxHWH1KrRQwjx0ZWzin+5Ez0QR2tCDeeJe8PFbbA8=;
+	s=arc-20240116; t=1776099388; c=relaxed/simple;
+	bh=l6whB6YRhUMci8KbULsQdaoJETQeIzDscEt89snSCu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJARYKgx1L4vU6NdQ2oS8urvb5YuwijYOrJQuIVRSP8CqAdsnGefkzv201SV+qFOdUcN8UBkDqkvzr4TUj2DQeYfvy2BPHOpzrLaTRWuiBaxgsHtHQyUO59u1erfUJxLwB4H6UhN4IOxWGX3zbbp273IxCdH55snxHuGqTNYlmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDYD/zma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3E7C2BCB3;
-	Mon, 13 Apr 2026 16:36:29 +0000 (UTC)
+	 MIME-Version; b=b16BPr3+9B2KCp3mkEV2hB2hbLyncli2La0kgUDXPHidsd0dlRV4ucfQ9/eawn2mqsPlM+bA3SzUb4bgR/NV01vka1lB2ZjDjyKRcGsi3nLZxOGyFoL+d/bP7qB/QE0jea+EfEp5o9BVZaHZgXbt32J2br0muq/AJ498qS0+U7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCmRCjiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A49C2BCB3;
+	Mon, 13 Apr 2026 16:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098189;
-	bh=CZAxHWH1KrRQwjx0ZWzin+5Ez0QR2tCDeeJe8PFbbA8=;
+	s=korg; t=1776099388;
+	bh=l6whB6YRhUMci8KbULsQdaoJETQeIzDscEt89snSCu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDYD/zma+mwHRxBVy5eTr77wNMmP+xZMFSRFANyyOlhktdQVl8a2T6WcJSgN86c+i
-	 j0uOXXA06ijCP8FNg4YynW1GVaHBBLDce/RUx34KlByxdaU/PlR3jtgpdlORDnWTWh
-	 wNfWNRV+TwAw8vd2+vZ1j/xQRLV8KNmAQ5+enBe4=
+	b=BCmRCjiP0DvUEVXwnUF8NkuMtCbXEOYHfNM7btxCVk9ZRsZG+/pmsEwh14LOH6wC3
+	 pYzGzC5bOsWrl+wLz8pWP+luAMyAKNTdCyVI5P8s6jwA8eoLjwmTbtIFa8oHcg90/N
+	 AYD28q0TlXB69dR4Ah2d4k7gSUe+mGHFG/KsAbNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 428/570] rds: ib: reject FRMR registration before IB connection is established
+Subject: [PATCH 5.10 314/491] dmaengine: xilinx_dma: Program interrupt delay timeout
 Date: Mon, 13 Apr 2026 17:59:19 +0200
-Message-ID: <20260413155846.504614684@linuxfoundation.org>
+Message-ID: <20260413155830.794864541@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,101 +73,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236943-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-237412-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: 08B583EFD76
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 54C493F0E09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
+[ Upstream commit 84b798fedf3fa8f0ab0c096593ba817abc454fe5 ]
 
-rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
-and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
-fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
-i_cm_id = NULL because the connection worker has not yet called
-rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
-RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
-the control message before any connection establishment, allowing
-rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
-kernel.
+Program IRQDelay for AXI DMA. The interrupt timeout mechanism causes
+the DMA engine to generate an interrupt after the delay time period
+has expired. It enables dmaengine to respond in real-time even though
+interrupt coalescing is configured. It also remove the placeholder
+for delay interrupt and merge it with frame completion interrupt.
+Since by default interrupt delay timeout is disabled this feature
+addition has no functional impact on VDMA, MCDMA and CDMA IP's.
 
-The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
-commit 9e630bcb7701), which does not catch this case since ic is allocated
-early and is always non-NULL once the connection object exists.
-
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
- Call Trace:
-  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
-  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
-  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
-  rds_ib_get_mr (net/rds/ib_rdma.c:615)
-  __rds_rdma_map (net/rds/rdma.c:295)
-  rds_cmsg_rdma_map (net/rds/rdma.c:860)
-  rds_sendmsg (net/rds/send.c:1363)
-  ____sys_sendmsg
-  do_syscall_64
-
-Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
-non-NULL before proceeding with FRMR registration, mirroring the guard
-already present in rds_ib_post_inv(). Return -ENODEV when the connection
-is not ready, which the existing error handling in rds_cmsg_send() converts
-to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
-start the connection worker.
-
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/1691387509-2113129-8-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: a17ce4bc6f4f ("dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/ib_rdma.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/dma/xilinx/xilinx_dma.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
-index 8f070ee7e7426..30fca2169aa7a 100644
---- a/net/rds/ib_rdma.c
-+++ b/net/rds/ib_rdma.c
-@@ -608,8 +608,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
- 		return ibmr;
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index a89a150be3284..7b3c47e442c15 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -174,8 +174,10 @@
+ #define XILINX_DMA_MAX_TRANS_LEN_MAX	23
+ #define XILINX_DMA_V2_MAX_TRANS_LEN_MAX	26
+ #define XILINX_DMA_CR_COALESCE_MAX	GENMASK(23, 16)
++#define XILINX_DMA_CR_DELAY_MAX		GENMASK(31, 24)
+ #define XILINX_DMA_CR_CYCLIC_BD_EN_MASK	BIT(4)
+ #define XILINX_DMA_CR_COALESCE_SHIFT	16
++#define XILINX_DMA_CR_DELAY_SHIFT	24
+ #define XILINX_DMA_BD_SOP		BIT(27)
+ #define XILINX_DMA_BD_EOP		BIT(26)
+ #define XILINX_DMA_COALESCE_MAX		255
+@@ -411,6 +413,7 @@ struct xilinx_dma_tx_descriptor {
+  * @stop_transfer: Differentiate b/w DMA IP's quiesce
+  * @tdest: TDEST value for mcdma
+  * @has_vflip: S2MM vertical flip
++ * @irq_delay: Interrupt delay timeout
+  */
+ struct xilinx_dma_chan {
+ 	struct xilinx_dma_device *xdev;
+@@ -449,6 +452,7 @@ struct xilinx_dma_chan {
+ 	int (*stop_transfer)(struct xilinx_dma_chan *chan);
+ 	u16 tdest;
+ 	bool has_vflip;
++	u8 irq_delay;
+ };
+ 
+ /**
+@@ -1560,6 +1564,9 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 	if (chan->has_sg)
+ 		xilinx_write(chan, XILINX_DMA_REG_CURDESC,
+ 			     head_desc->async_tx.phys);
++	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
++	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
++	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
+ 
+ 	xilinx_dma_start(chan);
+ 
+@@ -1876,15 +1883,8 @@ static irqreturn_t xilinx_dma_irq_handler(int irq, void *data)
+ 		}
  	}
  
--	if (conn)
-+	if (conn) {
- 		ic = conn->c_transport_data;
-+		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
-+			ret = -ENODEV;
-+			goto out;
-+		}
-+	}
+-	if (status & XILINX_DMA_DMASR_DLY_CNT_IRQ) {
+-		/*
+-		 * Device takes too long to do the transfer when user requires
+-		 * responsiveness.
+-		 */
+-		dev_dbg(chan->dev, "Inter-packet latency too long\n");
+-	}
+-
+-	if (status & XILINX_DMA_DMASR_FRM_CNT_IRQ) {
++	if (status & (XILINX_DMA_DMASR_FRM_CNT_IRQ |
++		      XILINX_DMA_DMASR_DLY_CNT_IRQ)) {
+ 		spin_lock(&chan->lock);
+ 		xilinx_dma_complete_descriptor(chan);
+ 		chan->idle = true;
+@@ -2801,6 +2801,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
+ 	/* Retrieve the channel properties from the device tree */
+ 	has_dre = of_property_read_bool(node, "xlnx,include-dre");
  
- 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
- 		ret = -ENODEV;
++	of_property_read_u8(node, "xlnx,irq-delay", &chan->irq_delay);
++
+ 	chan->genlock = of_property_read_bool(node, "xlnx,genlock-mode");
+ 
+ 	err = of_property_read_u32(node, "xlnx,datawidth", &value);
 -- 
 2.53.0
 
