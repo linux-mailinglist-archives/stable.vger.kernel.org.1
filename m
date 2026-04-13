@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFBcCvod3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-237131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:50 +0200
+	id yIEvMX4e3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8183EFC3E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E093EFDE2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C772A302241A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E11DD32737BE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B08310784;
-	Mon, 13 Apr 2026 16:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B5730BB9B;
+	Mon, 13 Apr 2026 16:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eI8HfZlc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRvDapsm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D7A30FC1E;
-	Mon, 13 Apr 2026 16:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D40309F1C;
+	Mon, 13 Apr 2026 16:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098668; cv=none; b=l7Ab9XmGau2ysXWV7Z5z0f7iUMlHX1GCEnoaM9acGr67Mzb8XfbCOsKqijlvPhuRTmZAJPLDBG/uZWiDlXn8s6/B5YLUwL0KHpE1to2GvtAdjz7EtQp9XspV3yohvA3rAHxINr2EB83rBDtIpvXVzbb6krKq+GYS9hCwjaA2Q2A=
+	t=1776097471; cv=none; b=n17yAhuSg+Ui1//xfnWya6NtirfWq4IrHjDIEPU/O3BXutdJy0qaj11NL3M0X/7TLcmn2FKXc1uG4o1ma1qQZ1Jg60ntdC0zwNqambFwHrPexOzugKqymIaDkmiEOzIziFktlwRI7BKn25QbJlce/HJkQeYH26mCVn0ROCjcjfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098668; c=relaxed/simple;
-	bh=9ExaZQOAF35l11WKBGpkHcJIl2TCtJS9672ZwWJVQMU=;
+	s=arc-20240116; t=1776097471; c=relaxed/simple;
+	bh=m2IOVs2cMLw4UP4GM6ybtRy0tjMrZW7fIoiVzf+vqYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YkEMMgFUt3evqAXfVsLVZ1KfhMV1U5/qi/cg+7uPP8d45sCoKxg9Rac7SohLYUN3KiUMz2Usfe+xc8GcT/dGp4Q+yb4sfnFuZ1OTEVR7FpSFOWM03vTLWR4cK5b46npCWuC4LNPfyCY1U/97ykmgTgGcEjP6N3CLLdqC4BpDT4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eI8HfZlc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBC8C2BCAF;
-	Mon, 13 Apr 2026 16:44:27 +0000 (UTC)
+	 MIME-Version; b=ui3A6+cg3bzbATgVgvTM9CvEkl/RJZoiyivJ+VNfxtV7txatoFqc+mEJgxZySJpQDofFXZdr8sa3y7GFC2riveCilK5ryWrmpT1bdR0uCYKZt3ogL2+bdzFVK90BnYBJ+3x4X/2adScNO8pYMyT5b66nKCWvW8XhYrX+V4Za9fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRvDapsm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA14C2BCB0;
+	Mon, 13 Apr 2026 16:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098668;
-	bh=9ExaZQOAF35l11WKBGpkHcJIl2TCtJS9672ZwWJVQMU=;
+	s=korg; t=1776097471;
+	bh=m2IOVs2cMLw4UP4GM6ybtRy0tjMrZW7fIoiVzf+vqYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eI8HfZlcg6qBswrA+rwMWEkN8Gwn70ip8xPvWiE66RNcbrID8wL/KZco6DHd7kTUL
-	 1KGziLWbkZSyOXv+u9RqTiawqt20PtiLIiLt5Fkn/UmYqpfwjXhCkvgj5MtcWNo2TR
-	 urvnIeP2bQOPp3DhEGd37jWf2kZCqGp/OYyMq9L4=
+	b=iRvDapsm9sAvaaDKfpZzeOkwn0rz6OyQWQUK63RKKQ8714bMRERov2+qDEJJ6Fgjy
+	 zNWXZtS/zG+JWJZz8mVZ0vB8+5BJMxPK/+azsDHPrirr5iaVlH95NJ0WbugB85cfU6
+	 sSy+HVAG7xGSsfo0Q2k4sarxHEAozF5aGSdtcs/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Teh <jonathan.teh@outlook.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 035/491] platform/x86: thinkpad_acpi: Fix errors reading battery thresholds
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Penghe Geng <pgeng@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 149/570] mmc: core: Avoid bitfield RMW for claim/retune flags
 Date: Mon, 13 Apr 2026 17:54:40 +0200
-Message-ID: <20260413155820.367561397@linuxfoundation.org>
+Message-ID: <20260413155836.032130628@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,squebb.ca,linux.intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237131-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236658-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,outlook.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,squebb.ca:email]
-X-Rspamd-Queue-Id: AD8183EFC3E
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,linaro.org:email]
+X-Rspamd-Queue-Id: 44E093EFDE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Teh <jonathan.teh@outlook.com>
+From: Penghe Geng <pgeng@nvidia.com>
 
-[ Upstream commit 53e977b1d50c46f2c4ec3865cd13a822f58ad3cd ]
+commit 901084c51a0a8fb42a3f37d2e9c62083c495f824 upstream.
 
-Check whether the battery supports the relevant charge threshold before
-reading the value to silence these errors:
+Move claimed and retune control flags out of the bitfield word to
+avoid unrelated RMW side effects in asynchronous contexts.
 
-thinkpad_acpi: acpi_evalf(BCTG, dd, ...) failed: AE_NOT_FOUND
-ACPI: \_SB_.PCI0.LPC_.EC__.HKEY: BCTG: evaluate failed
-thinkpad_acpi: acpi_evalf(BCSG, dd, ...) failed: AE_NOT_FOUND
-ACPI: \_SB_.PCI0.LPC_.EC__.HKEY: BCSG: evaluate failed
+The host->claimed bit shared a word with retune flags. Writes to claimed
+in __mmc_claim_host() or retune_now in mmc_mq_queue_rq() can overwrite
+other bits when concurrent updates happen in other contexts, triggering
+spurious WARN_ON(!host->claimed). Convert claimed, can_retune,
+retune_now and retune_paused to bool to remove shared-word coupling.
 
-when reading the charge thresholds via sysfs on platforms that do not
-support them such as the ThinkPad T400.
-
-Fixes: 2801b9683f74 ("thinkpad_acpi: Add support for battery thresholds")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=202619
-Signed-off-by: Jonathan Teh <jonathan.teh@outlook.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://patch.msgid.link/MI0P293MB01967B206E1CA6F337EBFB12926CA@MI0P293MB0196.ITAP293.PROD.OUTLOOK.COM
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6c0cedd1ef952 ("mmc: core: Introduce host claiming by context")
+Fixes: 1e8e55b67030c ("mmc: block: Add CQE support")
+Cc: stable@vger.kernel.org
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Penghe Geng <pgeng@nvidia.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/mmc/host.h |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index d18b6ddba9829..1dbf19fe85599 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -9412,14 +9412,16 @@ static int tpacpi_battery_get(int what, int battery, int *ret)
- {
- 	switch (what) {
- 	case THRESHOLD_START:
--		if ACPI_FAILURE(tpacpi_battery_acpi_eval(GET_START, ret, battery))
-+		if (!battery_info.batteries[battery].start_support ||
-+		    ACPI_FAILURE(tpacpi_battery_acpi_eval(GET_START, ret, battery)))
- 			return -ENODEV;
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -418,14 +418,12 @@ struct mmc_host {
  
- 		/* The value is in the low 8 bits of the response */
- 		*ret = *ret & 0xFF;
- 		return 0;
- 	case THRESHOLD_STOP:
--		if ACPI_FAILURE(tpacpi_battery_acpi_eval(GET_STOP, ret, battery))
-+		if (!battery_info.batteries[battery].stop_support ||
-+		    ACPI_FAILURE(tpacpi_battery_acpi_eval(GET_STOP, ret, battery)))
- 			return -ENODEV;
- 		/* Value is in lower 8 bits */
- 		*ret = *ret & 0xFF;
--- 
-2.51.0
-
+ 	struct mmc_ios		ios;		/* current io bus settings */
+ 
++	bool			claimed;	/* host exclusively claimed */
++
+ 	/* group bitfields together to minimize padding */
+ 	unsigned int		use_spi_crc:1;
+-	unsigned int		claimed:1;	/* host exclusively claimed */
+ 	unsigned int		doing_init_tune:1; /* initial tuning in progress */
+-	unsigned int		can_retune:1;	/* re-tuning can be used */
+ 	unsigned int		doing_retune:1;	/* re-tuning in progress */
+-	unsigned int		retune_now:1;	/* do re-tuning at next req */
+-	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
+ 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
+ 	unsigned int		can_dma_map_merge:1; /* merging can be used */
+ 	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+@@ -433,6 +431,9 @@ struct mmc_host {
+ 	int			rescan_disable;	/* disable card detection */
+ 	int			rescan_entered;	/* used with nonremovable devices */
+ 
++	bool			can_retune;	/* re-tuning can be used */
++	bool			retune_now;	/* do re-tuning at next req */
++	bool			retune_paused;	/* re-tuning is temporarily disabled */
+ 	int			need_retune;	/* re-tuning is needed */
+ 	int			hold_retune;	/* hold off re-tuning */
+ 	unsigned int		retune_period;	/* re-tuning period in secs */
 
 
 
