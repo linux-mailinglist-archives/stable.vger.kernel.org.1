@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMgzNfgl3WlkaQkAu9opvQ
-	(envelope-from <stable+bounces-237312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:56 +0200
+	id sHx1MPkd3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7986A3F1393
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50D93EFC3D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E44A324246A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 634B6302FF90
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D12318EC1;
-	Mon, 13 Apr 2026 16:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C8D2D2483;
+	Mon, 13 Apr 2026 16:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjDeB9b1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaGIq0sS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A4F317167;
-	Mon, 13 Apr 2026 16:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488042D5A19;
+	Mon, 13 Apr 2026 16:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099132; cv=none; b=ddPWu/tHEH0UxyoYRnmzE7KcVtIjYxucTxBirwxpzDmaYTIZIJ6Yp6JpcshaTwy6fi8BFUjiwo3V8bbIWZ1rLo0x5KPxoYa1gFIeweOzPKuoqkkiUkTuBcaaFj/3qX115matbetn0HJViaZpEg6czZ1XchR2KKmnzk/r7kvcylU=
+	t=1776098043; cv=none; b=omsMCP8EFL+Gx+4z9OZ5wfOqWiRscq5g+kB1eagMMwrUJk4i+00stKhvpAHooX1rWrq4sVKBKiR6xawTz/F+N76zrRzd3/gLKSbd6cJSpVCKiGvpcFSKVvHtjMQ5HwQ6ICEsBIIvbUJMm3sDRcVr53lcOm4ftwzwd3GK6nXyntU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099132; c=relaxed/simple;
-	bh=Z5c8+mya5YrvqeIs5J7qoAYyghXfotUh8tJUPlvph9U=;
+	s=arc-20240116; t=1776098043; c=relaxed/simple;
+	bh=PcuEFqVC5nzhBidBan6+z0Wm0aIt1BK5F0k9FYhQs0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8rNBkI5Z3gVWR8q1R3GwLUShlZIahnG55aHYJytuU/ngJJpqUmvyfler3YCnxQxEofn1wyuPzgnKQzPfRsIpSL+e7SatMeygI5lbftsmWgft8TG3Fv22TgJJuUt/AQyyOq/wT3EYmKg5upvHVl5SVTWpTBSjAC1p79BMnFZ8IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjDeB9b1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F180C2BCAF;
-	Mon, 13 Apr 2026 16:52:11 +0000 (UTC)
+	 MIME-Version; b=XB9UGQ+WZB4zz7fVZbmB7T9HgI44TGm7v7mDbQGMV9r8tb0t6Q1xILv8Wt3F57gAk0rTFZIW8G5x3/YmfblRUHmBEbTZ2/hCUFxmg6dVj7FoJMLTS9DVhErzCucstp+IKJB0uGuj2Vl1S/kO1kW+95+GkmrtCPvme3HtMo2OTfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaGIq0sS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DBFC2BCAF;
+	Mon, 13 Apr 2026 16:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099132;
-	bh=Z5c8+mya5YrvqeIs5J7qoAYyghXfotUh8tJUPlvph9U=;
+	s=korg; t=1776098043;
+	bh=PcuEFqVC5nzhBidBan6+z0Wm0aIt1BK5F0k9FYhQs0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjDeB9b1GP5iwLjmOdyU/Lrcus7XNxjv53l0tiLM/eBOOlW/cUuopikTGgAzcjyxC
-	 yQZxQ4XauMUvxQPFP8Q+bgAd+52c+19/+nE9FxqMXujNrsMszeF5wuQdN2TYOE1Otj
-	 KjZKfVZTehyypWxM2aVPjIi1cy8gyFjKVBQ237Pk=
+	b=MaGIq0sSVyihiWsGx9n4gbbXSyOiAXsJIrcem0jKhx0rF6Qyr6AcE+FYAFj8Bvpj5
+	 qugtHLJ3+TPV2dhe9/ZrXSZ8hiW5ANjQdirA7CbKzAQCv1fthUxdbRwAuOa6p8Ur6g
+	 jqLZLZejLqu2B48LIraYWdH724G99z/q2740qRvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/491] net: bonding: fix NULL deref in bond_debug_rlb_hash_show
-Date: Mon, 13 Apr 2026 17:57:48 +0200
-Message-ID: <20260413155827.411503023@linuxfoundation.org>
+Subject: [PATCH 5.15 338/570] netlink: introduce NLA_POLICY_MAX_BE
+Date: Mon, 13 Apr 2026 17:57:49 +0200
+Message-ID: <20260413155843.155932457@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,117 +68,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237312-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-236885-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: 7986A3F1393
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C50D93EFC3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 605b52497bf89b3b154674deb135da98f916e390 ]
+[ Upstream commit 08724ef69907214ce622344fe4945412e38368f0 ]
 
-rlb_clear_slave intentionally keeps RLB hash-table entries on
-the rx_hashtbl_used_head list with slave set to NULL when no
-replacement slave is available. However, bond_debug_rlb_hash_show
-visites client_info->slave without checking if it's NULL.
+netlink allows to specify allowed ranges for integer types.
+Unfortunately, nfnetlink passes integers in big endian, so the existing
+NLA_POLICY_MAX() cannot be used.
 
-Other used-list iterators in bond_alb.c already handle this NULL-slave
-state safely:
+At the moment, nfnetlink users, such as nf_tables, need to resort to
+programmatic checking via helpers such as nft_parse_u32_check().
 
-- rlb_update_client returns early on !client_info->slave
-- rlb_req_update_slave_clients, rlb_clear_slave, and rlb_rebalance
-compare slave values before visiting
-- lb_req_update_subnet_clients continues if slave is NULL
+This is both cumbersome and error prone.  This adds NLA_POLICY_MAX_BE
+which adds range check support for BE16, BE32 and BE64 integers.
 
-The following NULL deref crash can be trigger in
-bond_debug_rlb_hash_show:
-
-[    1.289791] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[    1.292058] RIP: 0010:bond_debug_rlb_hash_show (drivers/net/bonding/bond_debugfs.c:41)
-[    1.293101] RSP: 0018:ffffc900004a7d00 EFLAGS: 00010286
-[    1.293333] RAX: 0000000000000000 RBX: ffff888102b48200 RCX: ffff888102b48204
-[    1.293631] RDX: ffff888102b48200 RSI: ffffffff839daad5 RDI: ffff888102815078
-[    1.293924] RBP: ffff888102815078 R08: ffff888102b4820e R09: 0000000000000000
-[    1.294267] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888100f929c0
-[    1.294564] R13: ffff888100f92a00 R14: 0000000000000001 R15: ffffc900004a7ed8
-[    1.294864] FS:  0000000001395380(0000) GS:ffff888196e75000(0000) knlGS:0000000000000000
-[    1.295239] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.295480] CR2: 0000000000000000 CR3: 0000000102adc004 CR4: 0000000000772ef0
-[    1.295897] Call Trace:
-[    1.296134]  seq_read_iter (fs/seq_file.c:231)
-[    1.296341]  seq_read (fs/seq_file.c:164)
-[    1.296493]  full_proxy_read (fs/debugfs/file.c:378 (discriminator 1))
-[    1.296658]  vfs_read (fs/read_write.c:572)
-[    1.296981]  ksys_read (fs/read_write.c:717)
-[    1.297132]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-[    1.297325]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Add a NULL check and print "(none)" for entries with no assigned slave.
-
-Fixes: caafa84251b88 ("bonding: add the debugfs interface to see RLB hash table")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260317005034.1888794-1-xmei5@asu.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 8f15b5071b45 ("netfilter: ctnetlink: use netlink policy range checks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_debugfs.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ include/net/netlink.h |  9 +++++++++
+ lib/nlattr.c          | 31 +++++++++++++++++++++++++++----
+ 2 files changed, 36 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_debugfs.c b/drivers/net/bonding/bond_debugfs.c
-index 8b6cf2bf9025a..bb31f986ae592 100644
---- a/drivers/net/bonding/bond_debugfs.c
-+++ b/drivers/net/bonding/bond_debugfs.c
-@@ -34,11 +34,17 @@ static int bond_debug_rlb_hash_show(struct seq_file *m, void *v)
- 	for (; hash_index != RLB_NULL_INDEX;
- 	     hash_index = client_info->used_next) {
- 		client_info = &(bond_info->rx_hashtbl[hash_index]);
--		seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
--			&client_info->ip_src,
--			&client_info->ip_dst,
--			&client_info->mac_dst,
--			client_info->slave->dev->name);
-+		if (client_info->slave)
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst,
-+				   client_info->slave->dev->name);
-+		else
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM (none)\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst);
- 	}
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index 7a2a9d3144ba6..6eb4593983319 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -325,6 +325,7 @@ struct nla_policy {
+ 		struct netlink_range_validation_signed *range_signed;
+ 		struct {
+ 			s16 min, max;
++			u8 network_byte_order:1;
+ 		};
+ 		int (*validate)(const struct nlattr *attr,
+ 				struct netlink_ext_ack *extack);
+@@ -418,6 +419,14 @@ struct nla_policy {
+ 	.type = NLA_ENSURE_INT_OR_BINARY_TYPE(tp),	\
+ 	.validation_type = NLA_VALIDATE_MAX,		\
+ 	.max = _max,					\
++	.network_byte_order = 0,			\
++}
++
++#define NLA_POLICY_MAX_BE(tp, _max) {			\
++	.type = NLA_ENSURE_UINT_TYPE(tp),		\
++	.validation_type = NLA_VALIDATE_MAX,		\
++	.max = _max,					\
++	.network_byte_order = 1,			\
+ }
  
- 	spin_unlock_bh(&bond->mode_lock);
+ #define NLA_POLICY_MASK(tp, _mask) {			\
+diff --git a/lib/nlattr.c b/lib/nlattr.c
+index 73635bdb00620..a0c80fbf71895 100644
+--- a/lib/nlattr.c
++++ b/lib/nlattr.c
+@@ -160,6 +160,31 @@ void nla_get_range_unsigned(const struct nla_policy *pt,
+ 	}
+ }
+ 
++static u64 nla_get_attr_bo(const struct nla_policy *pt,
++			   const struct nlattr *nla)
++{
++	switch (pt->type) {
++	case NLA_U16:
++		if (pt->network_byte_order)
++			return ntohs(nla_get_be16(nla));
++
++		return nla_get_u16(nla);
++	case NLA_U32:
++		if (pt->network_byte_order)
++			return ntohl(nla_get_be32(nla));
++
++		return nla_get_u32(nla);
++	case NLA_U64:
++		if (pt->network_byte_order)
++			return be64_to_cpu(nla_get_be64(nla));
++
++		return nla_get_u64(nla);
++	}
++
++	WARN_ON_ONCE(1);
++	return 0;
++}
++
+ static int nla_validate_range_unsigned(const struct nla_policy *pt,
+ 				       const struct nlattr *nla,
+ 				       struct netlink_ext_ack *extack,
+@@ -173,12 +198,10 @@ static int nla_validate_range_unsigned(const struct nla_policy *pt,
+ 		value = nla_get_u8(nla);
+ 		break;
+ 	case NLA_U16:
+-		value = nla_get_u16(nla);
+-		break;
+ 	case NLA_U32:
+-		value = nla_get_u32(nla);
+-		break;
+ 	case NLA_U64:
++		value = nla_get_attr_bo(pt, nla);
++		break;
+ 	case NLA_MSECS:
+ 		value = nla_get_u64(nla);
+ 		break;
 -- 
 2.51.0
 
