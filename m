@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-237451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NV2ANoj3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:54 +0200
+	id WE/FOFgf3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851623F0F69
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDB33F0175
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4B133075D2A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 99147307C4FD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44303314B9;
-	Mon, 13 Apr 2026 16:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89849280CFB;
+	Mon, 13 Apr 2026 16:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EviCU0Qe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKdWk+JM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787A331E857;
-	Mon, 13 Apr 2026 16:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7D41A680C;
+	Mon, 13 Apr 2026 16:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099491; cv=none; b=in4Pmq2SCmCHGsLBIlPgbc9GmrnIfa9APHRHh7abJaj1mkMlEZul35hMTh/rcJcTUap0dblEtVT6lfj7jpeWWqwdpqmC0ry26hNqJkHmc+nDidLdW/bH9tDt/Mua0tODXPj++kcWAP7Mend2JJhjIbW9BEGPU59FhD0k/GExxv8=
+	t=1776098393; cv=none; b=DIineL77m8LwfvjeGVM74uaq1qSkqC2UnimFMqBP2OCthouDnEruxwOKgfkLh9piCHDYVTyUJu7SQAOpzkG3WfY5ZOVcpjY7/OUXHiy2gInmJSZRJ5sk6bARMPD5kLtEX4TpPS8yvAvqQPUq4nWtjKzo7Wk8WayyC5Qfzu8ooUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099491; c=relaxed/simple;
-	bh=VnkAMlmg8B9bbd8WPRggKI6pPpEortk3iPViNI0vCiI=;
+	s=arc-20240116; t=1776098393; c=relaxed/simple;
+	bh=I15yQkZ+UrUa1laVaNzaUbqqy8F0wIhMmzVFPDuvNJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lliMyiCnoGaat609G8Ce6Kv19shufkHcalY7ZjMQs2E8f1o6zjNMa845jcmq1ULvueZgCZwrs9MKD0JprQA3UHeTdmkHTyby1r3VuvxMvd7EdZD7f5EiPSu9maY0yublL+Ve5qF7UcEzY/TFHsHFX1WZNGC8/1ou8O7Ydh3wV5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EviCU0Qe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E04C2BCAF;
-	Mon, 13 Apr 2026 16:58:10 +0000 (UTC)
+	 MIME-Version; b=rh5+vTUicbi9pejHD31TMM+jT0inBh59LeRu/bytrjSQ+y9whwu5ShJZH9TFanDvjSWIM+jpy4n7g4tK0dLPMber1Dx1Tzw0vhDxTK28FUl1bDaxxWslaomlJDXOZjMhtq6iewtuZ5FWVEXxH+1CMJk0ftBNCoo0sGAM6pw7tX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKdWk+JM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EF6C2BCAF;
+	Mon, 13 Apr 2026 16:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099491;
-	bh=VnkAMlmg8B9bbd8WPRggKI6pPpEortk3iPViNI0vCiI=;
+	s=korg; t=1776098393;
+	bh=I15yQkZ+UrUa1laVaNzaUbqqy8F0wIhMmzVFPDuvNJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EviCU0Qe8TeXyBq9wxvqAMMy+jme1sUFlYFG1MvX1XYuyUIvYFyxN1AbqzgUz7t0V
-	 o3oVnSi0xAR9DezjjJmumVGiXPCu72f7YPiaBknaGelcA9a7RRNQWInDIMuOkTl5kf
-	 N8ksJSxM+hSHc/BVZGQw7IMOnPwD3I1VtYq8/W8I=
+	b=lKdWk+JMOlJ2iIaGsFzGU7rTtF4cnZYkgoXXbEx6KUJ33vSaP8B4j+h5D5RsR31nE
+	 mpmlHM/9yGG743RVx5r9s9aQ1u7bh5OW+93v3ou2smttiSpBrjlT8ft4UcRrrcM69w
+	 QgDeZ6UdPe5OOLDonPSDoUh0wH/Suo5UnlG/312w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 361/491] hwmon: (pxe1610) Check return value of page-select write in probe
+Subject: [PATCH 5.15 475/570] phy: renesas: rcar-gen3-usb2: Move IRQ request in probe
 Date: Mon, 13 Apr 2026 18:00:06 +0200
-Message-ID: <20260413155832.551124500@linuxfoundation.org>
+Message-ID: <20260413155848.256750799@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +70,177 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237024-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237451-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:email]
-X-Rspamd-Queue-Id: 851623F0F69
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DBDB33F0175
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit ccf70c41e562b29d1c05d1bbf53391785e09c6fb ]
+commit de76809f60cc938d3580bbbd5b04b7d12af6ce3a upstream.
 
-pxe1610_probe() writes PMBUS_PAGE to select page 0 but does not check
-the return value. If the write fails, subsequent register reads operate
-on an indeterminate page, leading to silent misconfiguration.
+Commit 08b0ad375ca6 ("phy: renesas: rcar-gen3-usb2: move IRQ registration
+to init") moved the IRQ request operation from probe to
+struct phy_ops::phy_init API to avoid triggering interrupts (which lead to
+register accesses) while the PHY clocks (enabled through runtime PM APIs)
+are not active. If this happens, it results in a synchronous abort.
 
-Check the return value and propagate the error using dev_err_probe(),
-which also handles -EPROBE_DEFER correctly without log spam.
+One way to reproduce this issue is by enabling CONFIG_DEBUG_SHIRQ, which
+calls free_irq() on driver removal.
 
-Fixes: 344757bac526 ("hwmon: (pmbus) Add Infineon PXE1610 VR driver")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260329170925.34581-4-sanman.pradhan@hpe.com
-[groeck: Fix "Fixes" SHA]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Move the IRQ request and free operations back to probe, and take the
+runtime PM state into account in IRQ handler. This commit is preparatory
+for the subsequent fixes in this series.
+
+[claudiu.beznea: fixed conflict in probe b/w IRQ request probe and
+ platform_set_drvdata() by keeping platform_set_drvdata() code before
+ IRQ request code]
+
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pxe1610.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 46 +++++++++++++-----------
+ 1 file changed, 26 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pxe1610.c b/drivers/hwmon/pmbus/pxe1610.c
-index 212433eb6cc31..7794e5cf550fc 100644
---- a/drivers/hwmon/pmbus/pxe1610.c
-+++ b/drivers/hwmon/pmbus/pxe1610.c
-@@ -104,7 +104,10 @@ static int pxe1610_probe(struct i2c_client *client)
- 	 * By default this device doesn't boot to page 0, so set page 0
- 	 * to access all pmbus registers.
- 	 */
--	i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Failed to set page 0\n");
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 8c03b683ba1c9..d873c49500cdd 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -115,7 +115,6 @@ struct rcar_gen3_chan {
+ 	struct work_struct work;
+ 	struct mutex lock;	/* protects rphys[...].powered */
+ 	enum usb_dr_mode dr_mode;
+-	int irq;
+ 	u32 obint_enable_bits;
+ 	bool extcon_host;
+ 	bool is_otg_channel;
+@@ -420,16 +419,25 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
+ {
+ 	struct rcar_gen3_chan *ch = _ch;
+ 	void __iomem *usb2_base = ch->base;
+-	u32 status = readl(usb2_base + USB2_OBINTSTA);
++	struct device *dev = ch->dev;
+ 	irqreturn_t ret = IRQ_NONE;
++	u32 status;
  
- 	/* Read Manufacturer id */
- 	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
++	pm_runtime_get_noresume(dev);
++
++	if (pm_runtime_suspended(dev))
++		goto rpm_put;
++
++	status = readl(usb2_base + USB2_OBINTSTA);
+ 	if (status & ch->obint_enable_bits) {
+-		dev_vdbg(ch->dev, "%s: %08x\n", __func__, status);
++		dev_vdbg(dev, "%s: %08x\n", __func__, status);
+ 		writel(ch->obint_enable_bits, usb2_base + USB2_OBINTSTA);
+ 		rcar_gen3_device_recognition(ch);
+ 		ret = IRQ_HANDLED;
+ 	}
+ 
++rpm_put:
++	pm_runtime_put_noidle(dev);
+ 	return ret;
+ }
+ 
+@@ -439,17 +447,6 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
+ 	struct rcar_gen3_chan *channel = rphy->ch;
+ 	void __iomem *usb2_base = channel->base;
+ 	u32 val;
+-	int ret;
+-
+-	if (!rcar_gen3_is_any_rphy_initialized(channel) && channel->irq >= 0) {
+-		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
+-		ret = request_irq(channel->irq, rcar_gen3_phy_usb2_irq,
+-				  IRQF_SHARED, dev_name(channel->dev), channel);
+-		if (ret < 0) {
+-			dev_err(channel->dev, "No irq handler (%d)\n", channel->irq);
+-			return ret;
+-		}
+-	}
+ 
+ 	/* Initialize USB2 part */
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+@@ -485,9 +482,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
+ 		val &= ~USB2_INT_ENABLE_UCOM_INTEN;
+ 	writel(val, usb2_base + USB2_INT_ENABLE);
+ 
+-	if (channel->irq >= 0 && !rcar_gen3_is_any_rphy_initialized(channel))
+-		free_irq(channel->irq, channel);
+-
+ 	return 0;
+ }
+ 
+@@ -654,7 +648,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct rcar_gen3_chan *channel;
+ 	struct phy_provider *provider;
+-	int ret = 0, i;
++	int ret = 0, i, irq;
+ 
+ 	if (!dev->of_node) {
+ 		dev_err(dev, "This driver needs device tree\n");
+@@ -670,8 +664,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 		return PTR_ERR(channel->base);
+ 
+ 	channel->obint_enable_bits = USB2_OBINT_BITS;
+-	/* get irq number here and request_irq for OTG in phy_init */
+-	channel->irq = platform_get_irq_optional(pdev, 0);
+ 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
+ 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
+ 		channel->is_otg_channel = true;
+@@ -731,6 +723,20 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, channel);
+ 	channel->dev = dev;
+ 
++	irq = platform_get_irq_optional(pdev, 0);
++	if (irq < 0 && irq != -ENXIO) {
++		ret = irq;
++		goto error;
++	} else if (irq > 0) {
++		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
++		ret = devm_request_irq(dev, irq, rcar_gen3_phy_usb2_irq,
++				       IRQF_SHARED, dev_name(dev), channel);
++		if (ret < 0) {
++			dev_err(dev, "Failed to request irq (%d)\n", irq);
++			goto error;
++		}
++	}
++
+ 	provider = devm_of_phy_provider_register(dev, rcar_gen3_phy_usb2_xlate);
+ 	if (IS_ERR(provider)) {
+ 		dev_err(dev, "Failed to register PHY provider\n");
 -- 
 2.53.0
 
