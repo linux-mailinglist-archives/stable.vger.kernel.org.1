@@ -1,228 +1,185 @@
-Return-Path: <stable+bounces-237605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM2eG6Am3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:23:44 +0200
+	id KIZFEaso3WmVaQkAu9opvQ
+	(envelope-from <stable+bounces-237593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:32:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D96A3F14DC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:23:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 956CC3F1842
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 25001301CE56
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:23:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BED7F3077554
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169D7318ED2;
-	Mon, 13 Apr 2026 17:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B5133C536;
+	Mon, 13 Apr 2026 17:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YDA1nKx4"
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="D7f9NjGi"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B4F32F765
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 17:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776101021; cv=none; b=J2TgQKgaB48kizPLEgPUV2rXMV9byBLCGNteaTHoFqGATKK6uZCUTYuE/Qnt+gBeqpTxU19j2IyZzOJcrCbC51ZtEUHo2LUU4lAzt6vKrL70ffh+eOps2pIIEOclYrC38bpayn/dqQ+diWAek0VSqDhf6TLPGFqaH9NYtUru59o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776101021; c=relaxed/simple;
-	bh=DcUwx5ui8uO0V3gB963hdowc16MCpAu4QmOm9zaUVWo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nOZYOneH+wqvpaBi2FEFRpAIqmptP8p9ySj+TQC/r8wO0MHl0X7z0Jjy4B+AlcMB9lh4hGIGd2+CGhWpzLK4nSPa7op6SxzZ6VXCThH2VDVQBi98+RvL+AfiQXsCtsVPeHa2cd8+4+khYME+rmUYeYRfDBEd2Dlft6A58ExcD/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YDA1nKx4; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776101020; x=1807637020;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DcUwx5ui8uO0V3gB963hdowc16MCpAu4QmOm9zaUVWo=;
-  b=YDA1nKx4/TsgKmIZYGRSQpOaCA6F2AxSqLq97KqNYiGA4ouVlHl1r+97
-   RhqPah56JcIr2rWcu993g0S1a5H7GczkIaGE4y5nm9ak6pd1tfXk+EDUX
-   P+q7JD9Jsr+Mm6b7bzLjgXRC+Y97gqsgEvzhj5txFLGxH6qU8LSBoPSpN
-   d8iTmebAH6UGKKYN1zIIVpXInFIjc4ebMHy9mOM+vjUFhzxtl03fWQ/4U
-   i1P/DnENcGVkoMw48+SMui2GEumpOqlXdpipu3MTD+PGI4MXAUSI4oAKq
-   pwF6yoLZMPoP4t3YYZwkggMsSjCzEjrudTS47g0Rk33+aGjT23OlVBtgV
-   A==;
-X-CSE-ConnectionGUID: HDbvkT6lT1CLWD2X2twUsg==
-X-CSE-MsgGUID: cfCEd5cvR0utSOoGYcboWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="88426831"
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
-   d="scan'208";a="88426831"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 10:23:40 -0700
-X-CSE-ConnectionGUID: 6sMKstqKQvW626LOIqc1UA==
-X-CSE-MsgGUID: QXqDwy0UQyqK30RMPyslqg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
-   d="scan'208";a="231572066"
-Received: from coyote-pass-p6-34563.jf.intel.com ([10.166.80.105])
-  by fmviesa004.fm.intel.com with ESMTP; 13 Apr 2026 10:23:39 -0700
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-To: stable@vger.kernel.org
-Cc: jacob.e.keller@intel.com,
-	madhu.chittim@intel.com,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Ray Zhang <sgzhang@google.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.12.y] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
-Date: Mon, 13 Apr 2026 10:07:50 -0700
-Message-Id: <20260413170750.59676-1-emil.s.tantilov@intel.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <2026041354-trowel-buggy-c7ca@gregkh>
-References: <2026041354-trowel-buggy-c7ca@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBF733D6D5
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 17:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776100503; cv=pass; b=S3rGQoDfoHOQ+yPBvRYoEOdePnmy+8gsDGPwXlRB6JJHHTB3rUhqay/JWOLiQUJF6v6SitdqGeVmNkjExAgGrvb0qai+MmWKzBUPQCrL2gLWwYLBaJ+evmyCVfVmyCKtnSpaHcSeLGt/WtBgrO9WgJfLnF+49LZf0R6wx3ikKrA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776100503; c=relaxed/simple;
+	bh=mJqI8FaBpCq6Q8my/gjI9enGPGsVFf6sqA8FvAAq50g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QpWgKyXhH7k0Ont9flAJABcq0W1Ur38g132WmIvgOOgnRXCGosLdPiRcvyYYc+twLsvoM2Ttx2he2nCnVdWQe+gXZ18obkQWBgL3CTVmZn38c34EBwch976KZpghh+51SIPMakBpQNZrf2lFZ6uhmnorXVRja6RjdmU5Alw6Cmo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=D7f9NjGi; arc=pass smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79a7109f568so53783027b3.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 10:15:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776100501; cv=none;
+        d=google.com; s=arc-20240605;
+        b=c0U8qojvpZveLukd3hXPw1/ngV7UkjEttmxTBUa6F02ZGFsdVZAmRPhyyndAeapbjB
+         6P2pBAy0p5ybeQT+5KbF8drHwlSpF/3JrsnJNM00mAkHK92ixf8+wSo4aVbVC8hdAb4+
+         6dowmLAInmC3zdGW5LoxfzXZo1LyBd76mtCkPWdik7DVKwEx6xAR7HiaJESkIH0LyZwk
+         pSb+XIC8FcNcgjbXDOLdJuO5xhCjzU6/APcJyXU8uOk7paiT9mNXfutjkjJBPe0/4NMw
+         JfzigxoLerCjNVROaKdNp4xXwBLNogCCUSCnCcb7zOZNj3SdfEOGUaQvahL8VtMtzBOQ
+         /uUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5BELIkiCypTZxDmr5+xtV7esxMT0E1Vw9Qw7kOi8Vz8=;
+        fh=meWhzy6sojhbFGTagKWwSJrodauZCAHSzCiWVx83hUI=;
+        b=jFdi7dvoVq8Vf3Rj0vHNzaggmx7vEF6ubnPfRtICuwbGRadwxO5IKMDT02fCZgvnE9
+         Hbc74yTdmRjfz+fDyhsSJrBP35ILxfCTsP4gs3vLN7SwNsetxLvycieE/EwBa30Af16o
+         GWUTOs511i7SODop6DNHTpruyeYyWzxvOa5i55+K7sgl+qkZBCz26KkOA6jSoKCd2pwC
+         AwTq0ckQpjDVigyppecBN27eDVKgFJW5S92uaxfwYxzeu3G+dBQk3DgrHba/tx7NwWhE
+         ni7zczwrHf6f+RYbACvk/UoR7qMKXaJ9vT7GKV702a7e/SJhd/94nQCOt0b35RKtp9JX
+         TdRA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1776100501; x=1776705301; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5BELIkiCypTZxDmr5+xtV7esxMT0E1Vw9Qw7kOi8Vz8=;
+        b=D7f9NjGieDy5SxeXdDWOcffur98GS3jDLsbu6GuQrM2FuI/zsXNObDaRANDLDArabK
+         KGt9DSMC21rPkSmKWooYg8QfvcIaksC70VUDrJCmULf0UOESDoFUzABiOGZpeKaxNffW
+         kdbH0coQmpUbZuTXAsRXFoxtaBhQCmrklNWcI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776100501; x=1776705301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5BELIkiCypTZxDmr5+xtV7esxMT0E1Vw9Qw7kOi8Vz8=;
+        b=qYRxyNbN/44+UojzSkA+d6bX8wn0by5ETV0SQhLikdr84sFcYPwbaS1/HJbDGu6FUa
+         V6M4yoxeJ08XEvs53GneIeILi8MxX0hUSIJkIVSEYProEWYwY7s636NGx6DLQVKHK/83
+         8aqSWLFr3FMaNLYmWFRuyXdMzvRE+JPvV8yNZAUOMU5LGVSTyPTMj/AC9wa8J3X9sfDv
+         7myCbi3DSqj9uylsGFx5SB/FpbLeGiuf6qVukyvSylL/5a23VirffZzcx+9kJBDJB7bs
+         q/URm+KtkWO6fIRY2ze6WlEOjzTy2x/jSkgE+J7Pkb4vH1q1iaOVxH1Wo7JaAzavFQGe
+         SOMA==
+X-Forwarded-Encrypted: i=1; AFNElJ9pOPPY054U81fZQBTcBLdlr2vOYgH5lkj1lJo4mfwC5T1OIxTx6XeRitwSg63GCU1Uq4UOqoY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtL0PO2e41tgXZvckNYvBJ/x68K0Zjm5aKcpjxyebjDlp9T6tF
+	8iNhy/tuu5TcufQs9bdoyKPrMoCe1T+mbpt1AftWbgvdAhBb4wJruu0n8y/PFSBfVmYZWNh615V
+	Li0F1vZBwcKHJz+X0SuHZx5+USfZ1Km8LMlPgJdsNgg==
+X-Gm-Gg: AeBDietKgkUJ+auaaGqqXc6MyGcmRB27RJCKO5i06KWc4SSupZrL5gpl+WGpZgLva/Q
+	msaL+lN+JRI07CPufds/Qpk0A6WtUFWuOfFvhe4JD13F96m0Ff466ZP+1y4G3UlZtZgLMPDJNnp
+	z88uEIzho/FvSHmpf/WrOo2Z27CWd1QHOLVUlCsDOm9qKpgQOJ3GhtgVs0yEZD4ZehnKSD0XMQF
+	DkqXH3pwGA1BWHyzbBTxFyKmoFrTQBI79k7A571zQjPqbhkWeziE0813qebgVN45RY8oFTLdxSH
+	Sslw1tNIKKbPk1MmyjBHm5pGjQ2rcfr4EDxMuQngA5l/HBzdobZgZfoyW7At1X0AQkmnBkb1t5T
+	XEBz4Wc98bRdXo92qIjpMOpBB3C9Ame0R6GQdmQ1hHxwFV1p0IfvCl3vyu+PSzV4=
+X-Received: by 2002:a05:690c:6d84:b0:7b3:3a49:73b with SMTP id
+ 00721157ae682-7b33a492a9bmr44979817b3.25.1776100501093; Mon, 13 Apr 2026
+ 10:15:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+References: <CAAJpGJSR4r_ds1JOjmkqHtsBPyxu8GntoeW08Sk5RNQPmgi+tg@mail.gmail.com>
+ <20260411130354.GG3694781@ziepe.ca>
+In-Reply-To: <20260411130354.GG3694781@ziepe.ca>
+From: Sina Hassani <sina@openai.com>
+Date: Mon, 13 Apr 2026 10:14:50 -0700
+X-Gm-Features: AQROBzDB9pPQWsjdy6qpC4ePls9wmfXy8CWLdDAZ17Sw34wtz0EFUiM2ReyPXW0
+Message-ID: <CAAJpGJTE5MLh7w+uq1LExwLBJWNLMqhhLRFQb867X_CoqtV5Sw@mail.gmail.com>
+Subject: Re: [PATCH v4] Fixes a race in iopt_unmap_iova_range
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: kevin.tian@intel.com, joro@8bytes.org, will@kernel.org, 
+	robin.murphy@arm.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Aaron Wisner <awiz@openai.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[openai.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[openai.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237605-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237593-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[emil.s.tantilov@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[openai.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[sina@openai.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0D96A3F14DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,ziepe.ca:email,openai.com:dkim,openai.com:email]
+X-Rspamd-Queue-Id: 956CC3F1842
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Switch from using the completion's raw spinlock to a local lock in the
-idpf_vc_xn struct. The conversion is safe because complete/_all() are
-called outside the lock and there is no reason to share the completion
-lock in the current logic. This avoids invalid wait context reported by
-the kernel due to the async handler taking BH spinlock:
+Thanks Jason.
 
-[  805.726977] =============================
-[  805.726991] [ BUG: Invalid wait context ]
-[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
-[  805.727026] -----------------------------
-[  805.727038] kworker/u261:0/572 is trying to lock:
-[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727099] other info that might help us debug this:
-[  805.727111] context-{5:5}
-[  805.727119] 3 locks held by kworker/u261:0/572:
-[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
-[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
-[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
-[  805.727218] stack backtrace:
-...
-[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
-[  805.727247] Call Trace:
-[  805.727249]  <TASK>
-[  805.727251]  dump_stack_lvl+0x77/0xb0
-[  805.727259]  __lock_acquire+0xb3b/0x2290
-[  805.727268]  ? __irq_work_queue_local+0x59/0x130
-[  805.727275]  lock_acquire+0xc6/0x2f0
-[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727284]  ? _printk+0x5b/0x80
-[  805.727290]  _raw_spin_lock_bh+0x38/0x50
-[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
-[  805.727317]  process_one_work+0x226/0x730
-[  805.727322]  worker_thread+0x19e/0x340
-[  805.727325]  ? __pfx_worker_thread+0x10/0x10
-[  805.727328]  kthread+0xf4/0x130
-[  805.727333]  ? __pfx_kthread+0x10/0x10
-[  805.727336]  ret_from_fork+0x32c/0x410
-[  805.727345]  ? __pfx_kthread+0x10/0x10
-[  805.727347]  ret_from_fork_asm+0x1a/0x30
-[  805.727354]  </TASK>
-
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
-Cc: stable@vger.kernel.org
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reported-by: Ray Zhang <sgzhang@google.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-(cherry picked from commit 591478118293c1bd628de330a99eb1eb2ef8d76b)
----
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 3d80b53161a4..eeb4436ec2c9 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -59,6 +59,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
-  */
- struct idpf_vc_xn {
- 	struct completion completed;
-+	spinlock_t lock;
- 	enum idpf_vc_xn_state state;
- 	size_t reply_sz;
- 	struct kvec reply;
-@@ -312,26 +313,21 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
- 	return err;
- }
- 
--/* API for virtchnl "transaction" support ("xn" for short).
-- *
-- * We are reusing the completion lock to serialize the accesses to the
-- * transaction state for simplicity, but it could be its own separate synchro
-- * as well. For now, this API is only used from within a workqueue context;
-- * raw_spin_lock() is enough.
-- */
-+/* API for virtchnl "transaction" support ("xn" for short). */
-+
- /**
-  * idpf_vc_xn_lock - Request exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_lock(xn)			\
--	raw_spin_lock(&(xn)->completed.wait.lock)
-+	spin_lock(&(xn)->lock)
- 
- /**
-  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_unlock(xn)		\
--	raw_spin_unlock(&(xn)->completed.wait.lock)
-+	spin_unlock(&(xn)->lock)
- 
- /**
-  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
-@@ -363,6 +359,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
- 		xn->state = IDPF_VC_XN_IDLE;
- 		xn->idx = i;
- 		idpf_vc_xn_release_bufs(xn);
-+		spin_lock_init(&xn->lock);
- 		init_completion(&xn->completed);
- 	}
- 
--- 
-2.37.3
-
+On Sat, Apr 11, 2026 at 6:03=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
+e:
+>
+> On Fri, Apr 10, 2026 at 11:32:44AM -0700, Sina Hassani wrote:
+> > Bug: iopt_unmap_iova_range releases the lock on iova_rwsem inside the l=
+oop
+> > body when getting to the more expensive unmap operations. This is fine =
+on
+> > its own except the loop condition is based on the first area that match=
+es
+> > the unmap address range. If a concurrent call to map picks an area that=
+ was
+> > unmapped in the previous iterations, this loop will try to mistakenly u=
+nmap
+> > them.
+> >
+> > How to reproduce: I was able to reproduce this by having one userspace
+> > thread mapping buffers and passing them to another thread that unmaps
+> > them. The problem easily shows up as ebusy errors if you use single pag=
+e
+> > mappings.
+> >
+> > The fix: A simple fix that I implemented here is to advance the start
+> > pointer after we unmap an area. That way we are only looking at the
+> > IOVA range that is mapped and hence guaranteed to not have any overlaps
+> > in each iteration.
+> >
+> > Test: I tested this against the repro mentioned above and it works fine=
+.
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sina Hassani <sina@openai.com>
+> > ---
+> >  drivers/iommu/iommufd/io_pagetable.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+>
+> The patch is corrupted but I fixed it up by hand and applied it
+>
+> Thanks,
+> Jason
 
