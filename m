@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-236956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LNzOWEj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:53 +0200
+	id MAWUIkok3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A39D3F0DE5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE443F107D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8D78309F3EF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BF39E301E578
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D8A2D8364;
-	Mon, 13 Apr 2026 16:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0733161BF;
+	Mon, 13 Apr 2026 16:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InYuCtf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGiaHxEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE1C26B971;
-	Mon, 13 Apr 2026 16:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0F7327C1D;
+	Mon, 13 Apr 2026 16:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098223; cv=none; b=B4CnAxie9Uv1Kb2jA1+YNTcQWF06Ytz2Tak44rJwNnFyb7MOzBCl5ROug8P8hbFnd0ehomMbq+X1OB04GmldnaGqiBTLD3A6z8RK2s/Jb1MN5Xl8DMOhlEaqAJOZpOKah/BddCyLEAI18jmwzZcVDVCHJ+6uhqHE1+FDxgNrRiA=
+	t=1776099319; cv=none; b=DCD4nSlDanwTZcwvp/NK6/DV0nLXKtB6bozpmY5bqgFdpxraldEdJH79YjppYdQU0F8zXprJ8H4hW1tn0xO7YOwsONRiULJfpgkdQMg08O5EkM/boeU4oZ1yuw7GN+TnBe6D75Dm0tLXmCF0UsMvLNSlUKGW/qttGA8pN71FZLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098223; c=relaxed/simple;
-	bh=mM6B2GUbaKDXtFs12YyZ/Cu/LkU6nIFwEM/vpUBNBi4=;
+	s=arc-20240116; t=1776099319; c=relaxed/simple;
+	bh=EIpapzGe7G3BaZxIYLLGCCpnHItrlhadzNsEWASwLHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJGQ9jt0NSe4dMfGG4/aOsP5fXU1zYI6vpmstf24K2F7dDGFTd7htd/l761ivQmazN26lkJ0FPH1fNK9DRkMrLqv/HCMxMpqScAymcEfomvfIrO6Tz/xM9xq/IzAJ2VipaTDq1ByyQ+KhUqaZdUZaMN8ooywqqQuQu7TX0R5HMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InYuCtf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E0AC2BCAF;
-	Mon, 13 Apr 2026 16:37:02 +0000 (UTC)
+	 MIME-Version; b=Kcq5V+NLaI/ou3+4O4EysxVHrBB23ZzgXKg79DjVh2b3G4CtJc9ipzfmWEBDce4hMy/QOb9Eak6WPFYoTLJWnKwW4mlsyiBw4w9WrzzFW813Khc0G7vUVMo1K/lZg/YZSvNDh1JBS9k1Q9mhNdqMv+z/m3E7xHyZjTOyv2h+dBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGiaHxEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890B1C2BCB8;
+	Mon, 13 Apr 2026 16:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098223;
-	bh=mM6B2GUbaKDXtFs12YyZ/Cu/LkU6nIFwEM/vpUBNBi4=;
+	s=korg; t=1776099318;
+	bh=EIpapzGe7G3BaZxIYLLGCCpnHItrlhadzNsEWASwLHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InYuCtf+KS8e9Iz+BpfwV1JDLE6z+75WbWfjone8Wpx482upFI1XyGjxoSWAhF7DI
-	 asKjFoLEnWmd9j+s4WcJ2sSbyRT+V+A5DHbZdexqx6+7nP9RUjgnSIM80bDfqjNHdT
-	 UEbJjv7nppJ+rlfbUB5bIPG8ffJNOBXWXmCkzwWA=
+	b=AGiaHxEd3EWOR21sHzKnmRuATTsJGdELHgepSFRUTpn629J5W5DvqBlf3lB9flaXJ
+	 k3axrQcRLEAGoGfXMzvUEMnFcPsAyJ/5T4ZQ5S8S9u+EGlKzeo+p35iMwH9dyiNMS/
+	 Qs38v2cPmp1/Va6J05Gq3UbqliOlyCEP0lN/nyDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 409/570] ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach()
+	stable@kernel.org,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 5.10 295/491] s390/barrier: Make array_index_mask_nospec() __always_inline
 Date: Mon, 13 Apr 2026 17:59:00 +0200
-Message-ID: <20260413155845.789293751@linuxfoundation.org>
+Message-ID: <20260413155830.088738391@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,101 +68,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,google.com,hotmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236956-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-237385-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,sashiko.dev:url]
-X-Rspamd-Queue-Id: 6A39D3F0DE5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8CE443F107D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-[ Upstream commit 86ab3e55673a7a49a841838776f1ab18d23a67b5 ]
+commit c5c0a268b38adffbb2e70e6957017537ff54c157 upstream.
 
-Sashiko AI-review observed:
+Mark array_index_mask_nospec() as __always_inline to guarantee the
+mitigation is emitted inline regardless of compiler inlining decisions.
 
-  In ip6_err_gen_icmpv6_unreach(), the skb is an outer IPv4 ICMP error packet
-  where its cb contains an IPv4 inet_skb_parm. When skb is cloned into skb2
-  and passed to icmp6_send(), it uses IP6CB(skb2).
-
-  IP6CB interprets the IPv4 inet_skb_parm as an inet6_skb_parm. The cipso
-  offset in inet_skb_parm.opt directly overlaps with dsthao in inet6_skb_parm
-  at offset 18.
-
-  If an attacker sends a forged ICMPv4 error with a CIPSO IP option, dsthao
-  would be a non-zero offset. Inside icmp6_send(), mip6_addr_swap() is called
-  and uses ipv6_find_tlv(skb, opt->dsthao, IPV6_TLV_HAO).
-
-  This would scan the inner, attacker-controlled IPv6 packet starting at that
-  offset, potentially returning a fake TLV without checking if the remaining
-  packet length can hold the full 18-byte struct ipv6_destopt_hao.
-
-  Could mip6_addr_swap() then perform a 16-byte swap that extends past the end
-  of the packet data into skb_shared_info?
-
-  Should the cb array also be cleared in ip6_err_gen_icmpv6_unreach() and
-  ip6ip6_err() to prevent this?
-
-This patch implements the first suggestion.
-
-I am not sure if ip6ip6_err() needs to be changed.
-A separate patch would be better anyway.
-
-Fixes: ca15a078bd90 ("sit: generate icmpv6 error when receiving icmpv4 error")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Closes: https://sashiko.dev/#/patchset/20260326155138.2429480-1-edumazet%40google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Oskar Kjos <oskar.kjos@hotmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326202608.2976021-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2dd833389cc ("s390: add optimized array_index_mask_nospec")
+Cc: stable@kernel.org
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/icmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/s390/include/asm/barrier.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 8601c76f3cc93..6f053874de741 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -674,6 +674,9 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
- 	if (!skb2)
- 		return 1;
+--- a/arch/s390/include/asm/barrier.h
++++ b/arch/s390/include/asm/barrier.h
+@@ -56,8 +56,8 @@ do {									\
+  * @size: number of elements in array
+  */
+ #define array_index_mask_nospec array_index_mask_nospec
+-static inline unsigned long array_index_mask_nospec(unsigned long index,
+-						    unsigned long size)
++static __always_inline unsigned long array_index_mask_nospec(unsigned long index,
++							     unsigned long size)
+ {
+ 	unsigned long mask;
  
-+	/* Remove debris left by IPv4 stack. */
-+	memset(IP6CB(skb2), 0, sizeof(*IP6CB(skb2)));
-+
- 	skb_dst_drop(skb2);
- 	skb_pull(skb2, nhs);
- 	skb_reset_network_header(skb2);
--- 
-2.53.0
-
 
 
 
