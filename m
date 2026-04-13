@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IuML7sb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:15 +0200
+	id yOK3Kdsj3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6D03EF631
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A483F0F70
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4432330270BD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 73386309F045
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8A5307AC7;
-	Mon, 13 Apr 2026 16:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A59E327BEC;
+	Mon, 13 Apr 2026 16:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w24iMlaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdPwGoDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6F929BD87;
-	Mon, 13 Apr 2026 16:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E115B3264CA;
+	Mon, 13 Apr 2026 16:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098184; cv=none; b=H1WFIGBr2EUQ377wlfDgFK8yrzY34QuG6q6rohyNF/M6+BN2P5XgeP+JpgqzhY7NTzs1Qhc3tAuOA3H88qyIxBHHpYwzyJ3lpY1axX8tNT5ongbT0SJ+daaxvRKYO6czZP1Baoo2cSQKqtNtFRZvv/V846usvLxbSdAI/TKgObg=
+	t=1776099368; cv=none; b=XlxEOQ2Xhol9YfQQNInqITzFmam3m0z0klAyQhCJUHS5Lin75uXy9J6rToaY617BAgs60Ew8EeWKk/btRqau6L6/kZFcVR9Rst9xqF+Eo/PU+Azht08dJKa87YnvXFhBN3U6ZvH/yf1+JgOD9feD6Av9DDSVAufiGcI/IY67320=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098184; c=relaxed/simple;
-	bh=UkC3Q6YY3lIgGy5cPLik3YR5iaKl7lYdJSQrJ5rvRUU=;
+	s=arc-20240116; t=1776099368; c=relaxed/simple;
+	bh=305UQ1hAdei7bs41zKhp5ZmHL3znHUpHeuKsFA06cZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+FlQjydhKacqOO+EWUdZxJxc78te6dO3MJkxYxl3EWsBY9DdHb9fFEpzSTEBVebbEgDaPbMKKRfTBZMSixkfV7R721JGvWM8ow7cqyW20LvBoWBS1xe+UBrg2cOTyr6h7dk5TO+ppJXWdLfxmRKYwsgCTCw+8nFuDaVpFYrIa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w24iMlaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1390EC2BCAF;
-	Mon, 13 Apr 2026 16:36:23 +0000 (UTC)
+	 MIME-Version; b=q/Y3R3is6jTcCjmzz+m1gOkVA7f+B59Mg4nPVo/CdyM05b9lJCcQQia4kwyfJIywJR0gYj0DunaNy5SDfGOQqYz2c4f3Bp6pMyV+XWo+sh+zUXj6sQ30GkrGBwRNSinXKRnM9B7peXcRG1qEp1LflUXCyMmmOV0mBfLJ/YiHXsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdPwGoDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77012C2BCAF;
+	Mon, 13 Apr 2026 16:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098184;
-	bh=UkC3Q6YY3lIgGy5cPLik3YR5iaKl7lYdJSQrJ5rvRUU=;
+	s=korg; t=1776099367;
+	bh=305UQ1hAdei7bs41zKhp5ZmHL3znHUpHeuKsFA06cZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w24iMlaW+9ZkIQjTY7t7pMiLmkEc+Vv6FJkb7yw2S/Dg+/ITTLJlhzdDAU7TvE1OM
-	 TbgaZC11R5yleWnUnoh5iAzcgp/htl8mKWfQ1/Oo89uzhVmZppTePR8nBrUGgZOz1/
-	 qyAJHZdOiH+Jp2JeLfiHwy7k/tyHjqP0eHNgEAwA=
+	b=DdPwGoDFzihdssGcBhd9oUBCqQR0e8yoR3qwuKIYVWjq8FA79C6DVvS1qPSbTXvBc
+	 IsbQbmfUUfgT/shKYFf+osUCAG3la2t1eg5zArwY92yU+s3mU48PxkMBGzlDkflJ0Q
+	 RNAIBHbp0IwzQcNmzF/b1QlyRqYED7KXtgZ5JbGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 426/570] netfilter: nf_tables: reject immediate NF_QUEUE verdict
+Subject: [PATCH 5.10 312/491] btrfs: fix super block offset in error message in btrfs_validate_super()
 Date: Mon, 13 Apr 2026 17:59:17 +0200
-Message-ID: <20260413155846.429179243@linuxfoundation.org>
+Message-ID: <20260413155830.721312228@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237404-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236941-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AB6D03EF631
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,harmstone.com:email]
+X-Rspamd-Queue-Id: C9A483F0F70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Mark Harmstone <mark@harmstone.com>
 
-[ Upstream commit da107398cbd4bbdb6bffecb2ce86d5c9384f4cec ]
+[ Upstream commit b52fe51f724385b3ed81e37e510a4a33107e8161 ]
 
-nft_queue is always used from userspace nftables to deliver the NF_QUEUE
-verdict. Immediately emitting an NF_QUEUE verdict is never used by the
-userspace nft tools, so reject immediate NF_QUEUE verdicts.
+Fix the superblock offset mismatch error message in
+btrfs_validate_super(): we changed it so that it considers all the
+superblocks, but the message still assumes we're only looking at the
+first one.
 
-The arp family does not provide queue support, but such an immediate
-verdict is still reachable. Globally reject NF_QUEUE immediate verdicts
-to address this issue.
+The change from %u to %llu is because we're changing from a constant to
+a u64.
 
-Fixes: f342de4e2f33 ("netfilter: nf_tables: reject QUEUE/DROP verdict parameters")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 069ec957c35e ("btrfs: Refactor btrfs_check_super_valid")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/btrfs/disk-io.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3c845d6a340fb..53d7dd39a95bc 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10232,8 +10232,6 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
- 	switch (data->verdict.code) {
- 	case NF_ACCEPT:
- 	case NF_DROP:
--	case NF_QUEUE:
--		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -10268,6 +10266,11 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 29f0ba4adfbce..7a2b91f6cf14e 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2548,8 +2548,8 @@ static int validate_super(struct btrfs_fs_info *fs_info,
  
- 		data->verdict.chain = chain;
- 		break;
-+	case NF_QUEUE:
-+		/* The nft_queue expression is used for this purpose, an
-+		 * immediate NF_QUEUE verdict should not ever be seen here.
-+		 */
-+		fallthrough;
- 	default:
- 		return -EINVAL;
+ 	if (mirror_num >= 0 &&
+ 	    btrfs_super_bytenr(sb) != btrfs_sb_offset(mirror_num)) {
+-		btrfs_err(fs_info, "super offset mismatch %llu != %u",
+-			  btrfs_super_bytenr(sb), BTRFS_SUPER_INFO_OFFSET);
++		btrfs_err(fs_info, "super offset mismatch %llu != %llu",
++			  btrfs_super_bytenr(sb), btrfs_sb_offset(mirror_num));
+ 		ret = -EINVAL;
  	}
+ 
 -- 
 2.53.0
 
