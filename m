@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-236893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCLTDsEd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:53 +0200
+	id gLAcDeIj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5243EFB9C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1F13F0F77
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 18E323069BC8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 60572309AE20
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002E4307AC7;
-	Mon, 13 Apr 2026 16:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6FA317152;
+	Mon, 13 Apr 2026 16:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKIizvMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyn8orRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82D82D0C7E;
-	Mon, 13 Apr 2026 16:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7F83161BF;
+	Mon, 13 Apr 2026 16:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098063; cv=none; b=eEMaSndbdQdH0iOjBrDc/tHLzVX6uaV9bT5ivIjIZX2hgYHgYPUmly5wSX6eME2NsKZj8MdpnwGA5m5ugZQsoDC6zX7NoyQqbITibmReHo4BV4oMfAkZOUo1PV+5QpbSxEmrbX7RIAoJ3yJV1k2MNTlHi6SwZPVrtQyFR81BsyM=
+	t=1776099248; cv=none; b=O6Wph+QzJ+NRt06B+znSFL4yqyMKgMpHz3cTyol3T34mJe7PFMWMr2pJmfV+3HyCb7KTyF9GrXZsWt8XyvcM5RICtn7QLJg3/yelb9kgqOfRzjErxz+r4RePqwOVnw0q6tLcTz+0BmwVl3aIzMG6aJcS2MPC6sQ2u1lVvKyWgUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098063; c=relaxed/simple;
-	bh=1pjf20jBqRQDjBeIQiN//fYLEVt0h5tGH2liWDUFSzU=;
+	s=arc-20240116; t=1776099248; c=relaxed/simple;
+	bh=dKV7OrXXeuQ9VvKAeIGZEJeZkSKwN7VmymMmwcQNrvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgkA1HaeavjX1up5di+H2IaQl5FhHZ34ac5UFE876GMjKhnxWErvMcKRceuNgem9XVroaZemELZpMpuVlmmW1t4RdQgamJPZ5bf2Od18XaQ02n7t+rGn3SEUgw4QgDaRvxPRvgM9DoSfVrTNPeSNq1fuXwyHcDHUmRt12GmoxVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKIizvMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E929C2BCAF;
-	Mon, 13 Apr 2026 16:34:23 +0000 (UTC)
+	 MIME-Version; b=BJmhB45ccUfJCDGKRI6X5lSr06RZBZTe7roeEWBS68JWmE4pqpiMom99fPbTdqtD/l/4oSYqq105lP4WOYP92wY7xuMTjs/2nAc1SZLmJT4BfgIvPrd/KZsVS0XrusQ9MHQ6EKrFnnVAEgE813foN3sPVlrI18+5eI4TAg5Vc7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyn8orRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162B5C2BCAF;
+	Mon, 13 Apr 2026 16:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098063;
-	bh=1pjf20jBqRQDjBeIQiN//fYLEVt0h5tGH2liWDUFSzU=;
+	s=korg; t=1776099248;
+	bh=dKV7OrXXeuQ9VvKAeIGZEJeZkSKwN7VmymMmwcQNrvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKIizvMjqHyqFH9eI2V7zV5rPN/FrnqqMDubnzKPpMDsr2YcfxPQ59rZ/WxG+I1SE
-	 gyo7UXp1zWMnEUPez8S3BG6fphRAkZybmHMi9fc0WHqsM/ucesz5M2id1eCTC5OExd
-	 qUwuRTrn+UzbBX5I1fmgc9mb98eo0pp/M4luyPj4=
+	b=Dyn8orRyzjKgrkLF61aoejDI5wcdcBEoYkkUEaJ5g5jtJ2SkOfW5XtyuHfxp6ndzU
+	 CnKzcGtCf9pH3mLqUV4EENvw0V8RMXrNt+AgmO2lJ+mSsZ8ce0zGzBloJsALrJy/ZU
+	 MvWOGBs6WS6ysV5/6YXjYKnsaIQm85WEC4vVBBHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 380/570] ext4: convert inline data to extents when truncate exceeds inline size
-Date: Mon, 13 Apr 2026 17:58:31 +0200
-Message-ID: <20260413155844.714375720@linuxfoundation.org>
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 267/491] netfilter: nfnetlink_log: fix uninitialized padding leak in NFULA_PAYLOAD
+Date: Mon, 13 Apr 2026 17:58:32 +0200
+Message-ID: <20260413155829.047639824@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +66,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236893-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237358-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7de5fe447862fc37576f];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 9E5243EFB9C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2F1F13F0F77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit ed9356a30e59c7cc3198e7fc46cfedf3767b9b17 upstream.
+[ Upstream commit 52025ebaa29f4eb4ed8bf92ce83a68f24ab7fdf7 ]
 
-Add a check in ext4_setattr() to convert files from inline data storage
-to extent-based storage when truncate() grows the file size beyond the
-inline capacity. This prevents the filesystem from entering an
-inconsistent state where the inline data flag is set but the file size
-exceeds what can be stored inline.
+__build_packet_message() manually constructs the NFULA_PAYLOAD netlink
+attribute using skb_put() and skb_copy_bits(), bypassing the standard
+nla_reserve()/nla_put() helpers. While nla_total_size(data_len) bytes
+are allocated (including NLA alignment padding), only data_len bytes
+of actual packet data are copied. The trailing nla_padlen(data_len)
+bytes (1-3 when data_len is not 4-byte aligned) are never initialized,
+leaking stale heap contents to userspace via the NFLOG netlink socket.
 
-Without this fix, the following sequence causes a kernel BUG_ON():
+Replace the manual attribute construction with nla_reserve(), which
+handles the tailroom check, header setup, and padding zeroing via
+__nla_reserve(). The subsequent skb_copy_bits() fills in the payload
+data on top of the properly initialized attribute.
 
-1. Mount filesystem with inode that has inline flag set and small size
-2. truncate(file, 50MB) - grows size but inline flag remains set
-3. sendfile() attempts to write data
-4. ext4_write_inline_data() hits BUG_ON(write_size > inline_capacity)
-
-The crash occurs because ext4_write_inline_data() expects inline storage
-to accommodate the write, but the actual inline capacity (~60 bytes for
-i_block + ~96 bytes for xattrs) is far smaller than the file size and
-write request.
-
-The fix checks if the new size from setattr exceeds the inode's actual
-inline capacity (EXT4_I(inode)->i_inline_size) and converts the file to
-extent-based storage before proceeding with the size change.
-
-This addresses the root cause by ensuring the inline data flag and file
-size remain consistent during truncate operations.
-
-Reported-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7de5fe447862fc37576f
-Tested-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260207043607.1175976-1-kartikey406@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: df6fb868d611 ("[NETFILTER]: nfnetlink: convert to generic netlink attribute functions")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/netfilter/nfnetlink_log.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5507,6 +5507,18 @@ int ext4_setattr(struct user_namespace *
- 		if (IS_I_VERSION(inode) && attr->ia_size != inode->i_size)
- 			inode_inc_iversion(inode);
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index 80c09070ea9fa..3a71ba47224c4 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -632,15 +632,11 @@ __build_packet_message(struct nfnl_log_net *log,
  
-+		/*
-+		 * If file has inline data but new size exceeds inline capacity,
-+		 * convert to extent-based storage first to prevent inconsistent
-+		 * state (inline flag set but size exceeds inline capacity).
-+		 */
-+		if (ext4_has_inline_data(inode) &&
-+		    attr->ia_size > EXT4_I(inode)->i_inline_size) {
-+			error = ext4_convert_inline_data(inode);
-+			if (error)
-+				goto err_out;
-+		}
-+
- 		if (shrink) {
- 			if (ext4_should_order_data(inode)) {
- 				error = ext4_begin_ordered_truncate(inode,
+ 	if (data_len) {
+ 		struct nlattr *nla;
+-		int size = nla_attr_size(data_len);
+ 
+-		if (skb_tailroom(inst->skb) < nla_total_size(data_len))
++		nla = nla_reserve(inst->skb, NFULA_PAYLOAD, data_len);
++		if (!nla)
+ 			goto nla_put_failure;
+ 
+-		nla = skb_put(inst->skb, nla_total_size(data_len));
+-		nla->nla_type = NFULA_PAYLOAD;
+-		nla->nla_len = size;
+-
+ 		if (skb_copy_bits(skb, 0, nla_data(nla), data_len))
+ 			BUG();
+ 	}
+-- 
+2.51.0
+
 
 
 
