@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JLPAowl3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:08 +0200
+	id GDojMJAb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BD43F129B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBC73EF5C0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 796F0302630F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC10C300C988
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2B3314D0D;
-	Mon, 13 Apr 2026 16:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44C026CE32;
+	Mon, 13 Apr 2026 16:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQnyl7Sj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRtlmkrq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539FC223DCE;
-	Mon, 13 Apr 2026 16:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B1730C34A;
+	Mon, 13 Apr 2026 16:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098931; cv=none; b=mh8hD/7AeDqerWPXwUnWH/JeJVJ20k7Rf2H1XyBMCZTxb3qx1B3g85rjpnlAIv5uP6d5VGnOjqrQbXpb4+2tlsycf6FDIY4zS105KyAnN5kSR7mQi5Tmt0RFJ+MGgVZQoFOb5iQFMNraLTY+5wdhgtmgs8cF6L77dYDs29ynaQg=
+	t=1776097777; cv=none; b=kyX+ad0RN69MytrfHzv7YoBZnOuF8J/8TEs/ege6oTFZQX1Ma8QEctOCF5n16ushtGIayycv+ikII0qlM685vHivYb3E2zxsSDfdytC4IMpEuKE8tlOixpbQXTiOyBO0uza9qG/tugGWY0ySyE+ulokqMcCy84sbKS+VarjrWE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098931; c=relaxed/simple;
-	bh=EiqXuay+0OzcjgDTmzIqe9tdcDqLJOb7hSXZdxtAiM0=;
+	s=arc-20240116; t=1776097777; c=relaxed/simple;
+	bh=JBpSQ2hDccfHd8wa6KcVFYEWnNPYTjIL8UFkS6vFC/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAA3tThvEYpUS2alH6hDqKuSkLX42figablX/xGIDJfr3qMsMu5TELKEUd22WNZofLOjVad3WdwKH2qvyhzvr/gBSDPZ/7QPGMbbrY77rbzlaKF1yaEXblhuxtiRZs8BMEJ9UGbAzLdHH0GuMlTTG7KnypPNBfI/yx0DOCHlhq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQnyl7Sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7279C2BCAF;
-	Mon, 13 Apr 2026 16:48:50 +0000 (UTC)
+	 MIME-Version; b=mG/M4hTYDnQKxGb8XCtlT59bLLLPcwmrliUP9bcRSufhG4DSJ5IZhQ5oQ7IhITVNjPJsF3q7n4iVvLaCS+8I54PquztTad4W/QjM5OIO3F9stwlBQzsx69J3W+URt3QKNLw1quaGFk6gVklqPECiYg9bLuDgEWFPEks6LRjknOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRtlmkrq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9B4C2BCAF;
+	Mon, 13 Apr 2026 16:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098931;
-	bh=EiqXuay+0OzcjgDTmzIqe9tdcDqLJOb7hSXZdxtAiM0=;
+	s=korg; t=1776097777;
+	bh=JBpSQ2hDccfHd8wa6KcVFYEWnNPYTjIL8UFkS6vFC/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQnyl7SjaS0guMY8SZYsqhKytrK/gbAoVRI/V3GG0bEoeClQzlLNUXg1D3txv8YnN
-	 U4f+LAaUB5LbZh8PFh9JCGMS7yos0yD/QtgMNOWCXX95nGG4zFIbSNQSChc3hU2440
-	 zqGxD+U2NMd3kqONZP/4iO1b4fJj2uVCyBjSdHFg=
+	b=FRtlmkrqSEivPQN1emEm25vqFrKUSr4u5lilhFr3Avqyo4+1heh+fQWZA2rsSjvNq
+	 gD+RjXLvYCFxn8fcXAcZNhnCVqBDUODMT4fQgxqLLcRwtUYGtIecLnbko7vZiGs9gb
+	 eVX33CHUGh1EsV57JbtkU+u9CYVzG5aV+BIkedSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Zenghui Yu <zenghui.yu@linux.dev>
-Subject: [PATCH 5.10 112/491] irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supports
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 226/570] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error paths
 Date: Mon, 13 Apr 2026 17:55:57 +0200
-Message-ID: <20260413155823.234708240@linuxfoundation.org>
+Message-ID: <20260413155838.920506215@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237234-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236781-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,77 +86,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,arm.com:email]
-X-Rspamd-Queue-Id: 69BD43F129B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3DBC73EF5C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8 upstream.
+[ Upstream commit a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8 ]
 
-The ITS driver blindly assumes that EventIDs are in abundant supply, to the
-point where it never checks how many the hardware actually supports.
+There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
+called in order to balance what the corresponding successful call to
+ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
+put the taken references.  Otherwise there might be potential deadlocks
+and unbalanced locks which are caught like:
 
-It turns out that some pretty esoteric integrations make it so that only a
-few bits are available, all the way down to a single bit.
+BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
+     last function: handle_ksmbd_work
+2 locks held by kworker/5:21/7596:
+ #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
+ #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
+CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+Workqueue: ksmbd-io handle_ksmbd_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x44/0x5b
+ process_one_work.cold+0x57/0x5c
+ worker_thread+0x82/0x600
+ kthread+0x153/0x190
+ ret_from_fork+0x22/0x30
+ </TASK>
 
-Enforce the advertised limitation at the point of allocating the device
-structure, and hope that the endpoint driver can deal with such limitation.
+Found by Linux Verification Center (linuxtesting.org).
 
-Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configuration")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
+Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ ksmbd_vfs_kern_path_end_removing() call -> ksmbd_vfs_kern_path_unlock() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c   |    4 ++++
- include/linux/irqchip/arm-gic-v3.h |    1 +
- 2 files changed, 5 insertions(+)
+ fs/ksmbd/smb2pdu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3382,6 +3382,7 @@ static struct its_device *its_create_dev
- 	int lpi_base;
- 	int nr_lpis;
- 	int nr_ites;
-+	int id_bits;
- 	int sz;
- 
- 	if (!its_alloc_device_table(its, dev_id))
-@@ -3394,7 +3395,10 @@ static struct its_device *its_create_dev
- 	/*
- 	 * Even if the device wants a single LPI, the ITT must be
- 	 * sized as a power of two (and you need at least one bit...).
-+	 * Also honor the ITS's own EID limit.
- 	 */
-+	id_bits = FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
-+	nvecs = min_t(unsigned int, nvecs, BIT(id_bits));
- 	nr_ites = max(2, nvecs);
- 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
- 	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -392,6 +392,7 @@
- #define GITS_TYPER_VLPIS		(1UL << 1)
- #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
- #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
-+#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
- #define GITS_TYPER_IDBITS_SHIFT		8
- #define GITS_TYPER_DEVBITS_SHIFT	13
- #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -5652,14 +5652,14 @@ static int smb2_create_link(struct ksmbd
+ 				rc = -EINVAL;
+ 				ksmbd_debug(SMB, "cannot delete %s\n",
+ 					    link_name);
+-				goto out;
+ 			}
+ 		} else {
+ 			rc = -EEXIST;
+ 			ksmbd_debug(SMB, "link already exists\n");
+-			goto out;
+ 		}
+ 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
++		if (rc)
++			goto out;
+ 	}
+ 	rc = ksmbd_vfs_link(work, target_name, link_name);
+ 	if (rc)
 
 
 
