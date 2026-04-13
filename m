@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOqOGxsa3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:19 +0200
+	id ABDNDnEh3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8CD3EF1A7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961813F0851
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4E003014FD6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 965B530471FD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4E327466A;
-	Mon, 13 Apr 2026 16:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410133168EE;
+	Mon, 13 Apr 2026 16:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNNswdpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khkFkCrG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CB29D27A;
-	Mon, 13 Apr 2026 16:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04219313298;
+	Mon, 13 Apr 2026 16:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097801; cv=none; b=oR8jCZp9bOkwLcBdjg44OJlLNEWBSLJTFBbQZBvbwVZEvFR89BgDmflFk5k4eFBbvHctPrC86CNsfNDECkozq/ZMDAOKvC7MjSrZ+5QoQ3T5XhfjBlAP+LsncCyAY1GKV4SzX4Z2Ro+Y4lwV9g5z6R5BTfdfnjN4D4zbcN5aVxo=
+	t=1776098983; cv=none; b=Vl5oEpaHWsg1QZhVn+JTG/xErw1yrxlQHUBK/AzyqedZc+n2YnGkyX0AssSwrOnmSUzL67rcRejz782z0yRyeqJ3hoBXvSF7x41nw/dbai4bDGzI+cBeR7c4sC6kCjIlB8ed9lQYvK7QvXDNYAtopd0SbjDaBdeFW34klROJrR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097801; c=relaxed/simple;
-	bh=LHMfk8YXuWT/bKKi+M/EoiKh/GutFrUWGi2Ei/9a3pU=;
+	s=arc-20240116; t=1776098983; c=relaxed/simple;
+	bh=1EC87uYLW1YIcAsw94SWl81h2e8cORqJ22+j92TcTd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZY0kw6zrNW2bHxpYfCUraU+3VTkAILM3KPcRET90vLpoP9zARSS+OQ+cbJqcqWQZBWZWF0RmKD0ADq4uVF0rm+mZOnDLM749K7eGDBmf7/GwtgJugjHriI1btBTBlX1wZDJnH5UuqH3yK79WjHb6nTTsLN6PeRz+z/r2PWfsBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNNswdpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12597C2BCAF;
-	Mon, 13 Apr 2026 16:29:59 +0000 (UTC)
+	 MIME-Version; b=QCy1/mcogorBfIHU+ygHdHUyGDaG0wotj2T6+OpVYrlMiYIAM7ED7rRlW6Ljo7g2P9cFOAXueKh1WTaqtuw470HGt43ZUrvsNPreumG/YwD263dpD86L2jveDElK4ofjUl0dvhwvfsuNwTdyCLiqfpAJ7kJVAkERt5/7a5Q0PqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khkFkCrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F177C2BCAF;
+	Mon, 13 Apr 2026 16:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097800;
-	bh=LHMfk8YXuWT/bKKi+M/EoiKh/GutFrUWGi2Ei/9a3pU=;
+	s=korg; t=1776098982;
+	bh=1EC87uYLW1YIcAsw94SWl81h2e8cORqJ22+j92TcTd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNNswdpnQJSqh64UYQBTzyBXgnUZ5Lidy3Bbw5m7n9wC2o3XZe7u1hFOdCoIlHm/Y
-	 dOqMySK7WW1ztyvf2PaQohQ5aQ3EeAd3mDEdjS/QyOYb1neVebsOd8pAHIVvZbT4Sf
-	 4LNECGRTOTRzmOOLpXY7ivPN+lDaeUkNh/3xcreA=
+	b=khkFkCrGnBf7XMb+s3mu/gC8A6oS+HpyuWP7ef93ImcgMXY8oSqnEm22nD37sPMTn
+	 +Dht3cwrA7TNXpq7zc2tqJeMu9yiB9y+6DUZ7eEfZdDpe/o7BWp7oYBuBM+I0Wk2CZ
+	 VvqYVfQzgTWPN3HIvLHmoJxu/PbOqZASR+SfvBcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 278/570] net: bonding: fix NULL deref in bond_debug_rlb_hash_show
+Subject: [PATCH 5.10 164/491] wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()
 Date: Mon, 13 Apr 2026 17:56:49 +0200
-Message-ID: <20260413155840.895698175@linuxfoundation.org>
+Message-ID: <20260413155825.178972796@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +68,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236790-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-237254-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: 4A8CD3EF1A7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,aladdin.ru:email,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 961813F0851
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 605b52497bf89b3b154674deb135da98f916e390 ]
+[ Upstream commit 767d23ade706d5fa51c36168e92a9c5533c351a1 ]
 
-rlb_clear_slave intentionally keeps RLB hash-table entries on
-the rx_hashtbl_used_head list with slave set to NULL when no
-replacement slave is available. However, bond_debug_rlb_hash_show
-visites client_info->slave without checking if it's NULL.
+There is a use-after-free error in cfg80211_shutdown_all_interfaces found
+by syzkaller:
 
-Other used-list iterators in bond_alb.c already handle this NULL-slave
-state safely:
+BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
+Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
+CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: events cfg80211_rfkill_block_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x116/0x1f0
+ print_report+0xcd/0x630
+ kasan_report+0xe0/0x110
+ cfg80211_shutdown_all_interfaces+0x213/0x220
+ cfg80211_rfkill_block_work+0x1e/0x30
+ process_one_work+0x9cf/0x1b70
+ worker_thread+0x6c8/0xf10
+ kthread+0x3c5/0x780
+ ret_from_fork+0x56d/0x700
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-- rlb_update_client returns early on !client_info->slave
-- rlb_req_update_slave_clients, rlb_clear_slave, and rlb_rebalance
-compare slave values before visiting
-- lb_req_update_subnet_clients continues if slave is NULL
+The problem arises due to the rfkill_block work is not cancelled when wiphy
+is being unregistered. In order to fix the issue cancel the corresponding
+work in wiphy_unregister().
 
-The following NULL deref crash can be trigger in
-bond_debug_rlb_hash_show:
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-[    1.289791] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[    1.292058] RIP: 0010:bond_debug_rlb_hash_show (drivers/net/bonding/bond_debugfs.c:41)
-[    1.293101] RSP: 0018:ffffc900004a7d00 EFLAGS: 00010286
-[    1.293333] RAX: 0000000000000000 RBX: ffff888102b48200 RCX: ffff888102b48204
-[    1.293631] RDX: ffff888102b48200 RSI: ffffffff839daad5 RDI: ffff888102815078
-[    1.293924] RBP: ffff888102815078 R08: ffff888102b4820e R09: 0000000000000000
-[    1.294267] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888100f929c0
-[    1.294564] R13: ffff888100f92a00 R14: 0000000000000001 R15: ffffc900004a7ed8
-[    1.294864] FS:  0000000001395380(0000) GS:ffff888196e75000(0000) knlGS:0000000000000000
-[    1.295239] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.295480] CR2: 0000000000000000 CR3: 0000000102adc004 CR4: 0000000000772ef0
-[    1.295897] Call Trace:
-[    1.296134]  seq_read_iter (fs/seq_file.c:231)
-[    1.296341]  seq_read (fs/seq_file.c:164)
-[    1.296493]  full_proxy_read (fs/debugfs/file.c:378 (discriminator 1))
-[    1.296658]  vfs_read (fs/read_write.c:572)
-[    1.296981]  ksys_read (fs/read_write.c:717)
-[    1.297132]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-[    1.297325]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Add a NULL check and print "(none)" for entries with no assigned slave.
-
-Fixes: caafa84251b88 ("bonding: add the debugfs interface to see RLB hash table")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260317005034.1888794-1-xmei5@asu.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20260211082024.1967588-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_debugfs.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ net/wireless/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/bonding/bond_debugfs.c b/drivers/net/bonding/bond_debugfs.c
-index 5940945266489..624bf1f745266 100644
---- a/drivers/net/bonding/bond_debugfs.c
-+++ b/drivers/net/bonding/bond_debugfs.c
-@@ -34,11 +34,17 @@ static int bond_debug_rlb_hash_show(struct seq_file *m, void *v)
- 	for (; hash_index != RLB_NULL_INDEX;
- 	     hash_index = client_info->used_next) {
- 		client_info = &(bond_info->rx_hashtbl[hash_index]);
--		seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
--			&client_info->ip_src,
--			&client_info->ip_dst,
--			&client_info->mac_dst,
--			client_info->slave->dev->name);
-+		if (client_info->slave)
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst,
-+				   client_info->slave->dev->name);
-+		else
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM (none)\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst);
- 	}
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1046,6 +1046,7 @@ void wiphy_unregister(struct wiphy *wiph
+ 	rtnl_unlock();
  
- 	spin_unlock_bh(&bond->mode_lock);
--- 
-2.51.0
-
+ 	flush_work(&rdev->scan_done_wk);
++	cancel_work_sync(&rdev->rfkill_block);
+ 	cancel_work_sync(&rdev->conn_work);
+ 	flush_work(&rdev->event_work);
+ 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
 
 
 
