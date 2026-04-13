@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-237271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHjGDpAh3Wn4aAkAu9opvQ
-	(envelope-from <stable+bounces-237271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:08 +0200
+	id GFiiGpgl3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A683F08A0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B443F12C0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D948430A5A7B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C73F5306443A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3783D31619A;
-	Mon, 13 Apr 2026 16:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB2931619A;
+	Mon, 13 Apr 2026 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBaiFprj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fX3g70G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4233168EE;
-	Mon, 13 Apr 2026 16:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119723164BB;
+	Mon, 13 Apr 2026 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099027; cv=none; b=TX5UENfPWpd3BIXxE3mW27UPV5+QsJ2i+mc6Jx46WM+dSSP5+HIMSex+Sy3a3T6gLFNxLbVnJY07MQXaZoBFN2EfHGJPG4fhvdI3sblvwxZBzGyNNcCm6Brc4MtVG3E6rWV47UrSIBUNtYVxZU8CzD/Fl4wZcWI9FC+2dbs3UFc=
+	t=1776098939; cv=none; b=eBZZo07m3lXVM131HXLYkGK1yKCS2Y4aaFnmaSM3pPaHZVGtX27f1C1axmllxhjhvsRgnQkA/qmP8AqUVzc5wmDXzxSM4CXHvYTUB7/bRvo0j5tgGShOf51unXMVYFNyfPy4dtbfJQgdSiNgvcFo+031/WdqPM2IqxNylQ55DVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099027; c=relaxed/simple;
-	bh=l0dZRPgkZ03uFSNYX1Xg5SKGwZCqp2bMc19abROrKTw=;
+	s=arc-20240116; t=1776098939; c=relaxed/simple;
+	bh=qa27mWJRGBgCKTxaRqKncRLXCeitxf1QUjldlvVOnww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFBVAW6h9/GrNVQm2b4OSUqjLTjIDdVLZFwDDZ0NBEKXqMz9u2V3IdRSxA8mEPQSUJFSwB7Q2/p273/EMxlQ7rI8egCHbfpXD/LfMiUboZpsUYYuSVDy3Tw7T0D71BuTz1ld1ElSxCceCiVdaqZk0GnjW0mODK4alsy36FcPbUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBaiFprj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9FDC2BCAF;
-	Mon, 13 Apr 2026 16:50:26 +0000 (UTC)
+	 MIME-Version; b=mB9fKvpc43GD8T4xZ6yKNrX46eBdLzBclj6lnjYT3yByDe+Ti6iRbUcP+AZ+kDUcnA9UhUauCmMA03+H0DvfOQG6tA2PtN7EVy20DKR5t1gINrBv88YixtjPxsMj7l0zhmzRfvpLa8nPgAjrppvLNnbeo0zaQP8HSk2BeVkbmKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fX3g70G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DA5C2BCAF;
+	Mon, 13 Apr 2026 16:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099026;
-	bh=l0dZRPgkZ03uFSNYX1Xg5SKGwZCqp2bMc19abROrKTw=;
+	s=korg; t=1776098938;
+	bh=qa27mWJRGBgCKTxaRqKncRLXCeitxf1QUjldlvVOnww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBaiFprjz8g12jxAyzdYQnqHQDUNJ+ozUIO2QUqcl/pFwkE+gtuTJbojEHMK4JuFo
-	 UioR6js+bXd6fHI8Ib177y1VRpF/7KGcnw6vKlNgbqlLjVKGkw7yb9+//Uth1ru9aW
-	 OPl5TmIeiLcrmNV31fVY3cEi/0PvU9s/MtGe2GhE=
+	b=2fX3g70G8Qtgjg6zazOZtOO0dXAQtlqXKk49KHFgXI2VNNPNrE/eRrzDfi5wHuGP5
+	 BJ1uAhuceTq5+1e6HJ+B27EAmeglgt1WZxkZS7gmbKwsaYmmXMNk/N2Y2ShioI2dCP
+	 WbF/SMFI++yIvV51GXrp7WPRk5X5/YOrDV/lQXro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dingisoul <dingiso.kernel@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH 5.10 139/491] nvdimm/bus: Fix potential use after free in asynchronous initialization
-Date: Mon, 13 Apr 2026 17:56:24 +0200
-Message-ID: <20260413155824.243546320@linuxfoundation.org>
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 140/491] NFC: nxp-nci: allow GPIOs to sleep
+Date: Mon, 13 Apr 2026 17:56:25 +0200
+Message-ID: <20260413155824.280258517@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -64,36 +63,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237271-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237237-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: D0A683F08A0
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,gehealthcare.com:email]
+X-Rspamd-Queue-Id: 05B443F12C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,56 +98,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ira Weiny <ira.weiny@intel.com>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-commit a8aec14230322ed8f1e8042b6d656c1631d41163 upstream.
+commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
 
-Dingisoul with KASAN reports a use after free if device_add() fails in
-nd_async_device_register().
+Allow the firmware and enable GPIOs to sleep.
 
-Commit b6eae0f61db2 ("libnvdimm: Hold reference on parent while
-scheduling async init") correctly added a reference on the parent device
-to be held until asynchronous initialization was complete.  However, if
-device_add() results in an allocation failure the ref count of the
-device drops to 0 prior to the parent pointer being accessed.  Thus
-resulting in use after free.
+This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
+connected to I2C GPIO expanders.
 
-The bug bot AI correctly identified the fix.  Save a reference to the
-parent pointer to be used to drop the parent reference regardless of the
-outcome of device_add().
+-- >8 --
+kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
+-- >8 --
 
-Reported-by: Dingisoul <dingiso.kernel@gmail.com>
-Closes: http://lore.kernel.org/8855544b-be9e-4153-aa55-0bc328b13733@gmail.com
-Fixes: b6eae0f61db2 ("libnvdimm: Hold reference on parent while scheduling async init")
+Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
 Cc: stable@vger.kernel.org
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20260306-fix-uaf-async-init-v1-1-a28fd7526723@intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvdimm/bus.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/nfc/nxp-nci/i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/nvdimm/bus.c
-+++ b/drivers/nvdimm/bus.c
-@@ -502,14 +502,15 @@ EXPORT_SYMBOL_GPL(nd_synchronize);
- static void nd_async_device_register(void *d, async_cookie_t cookie)
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
  {
- 	struct device *dev = d;
-+	struct device *parent = dev->parent;
+ 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
  
- 	if (device_add(dev) != 0) {
- 		dev_err(dev, "%s: failed\n", __func__);
- 		put_device(dev);
- 	}
- 	put_device(dev);
--	if (dev->parent)
--		put_device(dev->parent);
-+	if (parent)
-+		put_device(parent);
- }
+-	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
+-	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
+ 	usleep_range(10000, 15000);
  
- static void nd_async_device_unregister(void *d, async_cookie_t cookie)
+ 	if (mode == NXP_NCI_MODE_COLD)
 
 
 
