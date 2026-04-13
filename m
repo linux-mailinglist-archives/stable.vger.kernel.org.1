@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-237380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHB3LHcg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:27 +0200
+	id AICKHYwj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3703F0563
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C86D13F0E4A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 74EE3304466D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 899D0302F71A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605D531F9BC;
-	Mon, 13 Apr 2026 16:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA17030DEB5;
+	Mon, 13 Apr 2026 16:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADqkj5lg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCHsh3Ob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234DA3246ED;
-	Mon, 13 Apr 2026 16:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0AB2EBB8C;
+	Mon, 13 Apr 2026 16:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099306; cv=none; b=CFJtDkNKPHsOgj07Z6C+kcETbdiLFapGLGII7dfRGFzuPh5xkQVwiM6e+O2EAhJDogl9M8a6c8Ig0R5JyZRUo8Cr+XP4kIHKX7/zsbcWRosaz/694yEpEL6FbOd1fpNnspT4CmQuUI7HmdLT+BlRPMoEG9f0QjifQ40xFOO7WcA=
+	t=1776098197; cv=none; b=ctp12sUD3qIxfwjAm6606zIyaxb7k3saUNeJ6BJSiy9Otb4zx4KtyUBc8S4gr8E9avvVAI9dAMhQB3HpYzUQwsRK5TtohAVpKoBJpacY8wL1G6CyC4gjsH0JOqvR8OHDhRrD5Af3uSoSMgJsD7GEvaNZ+lzoLgEOyknqQ0RVapo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099306; c=relaxed/simple;
-	bh=xYt0oe+18KmCxxOkgX32qz03by+figpHknCSRMuch6Y=;
+	s=arc-20240116; t=1776098197; c=relaxed/simple;
+	bh=XJhOZqO3aZMyfRyBr31HgDaNLqc0os+2I6GIxOUvlYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJrGEL0nXOvyiH3Gd25hz+jNecv37GYcbgT3/6CEaU+Y1jZtPZ1rJPC3dEjHklJrzJxY7CZmMiSeWovDj6wrM3syy7OsStsy6mbSctlAACMasaF6enqkDY4uuD2cEXYyyN+HNb6G+Y2Wv71ehCwXcc7tetPbo3g8W5bEsGuAf5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADqkj5lg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB956C2BCB3;
-	Mon, 13 Apr 2026 16:55:05 +0000 (UTC)
+	 MIME-Version; b=SQZSQmuT3KjKCy8IMHcOnp4Ii7BkFoG+chxn1iAOq/vDFY9UxfV84hJxPqsFa+1rsBANtX8iElDOYxEZrApjc4e4cGwHK62sxZRz7Qt7v4dXNAycROeT69KD8lepcI0kYpzZ6jc9riiMlqA8S0n9CxSmp1gWkH5aiyvL1jTv82Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCHsh3Ob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C8DC2BCAF;
+	Mon, 13 Apr 2026 16:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099306;
-	bh=xYt0oe+18KmCxxOkgX32qz03by+figpHknCSRMuch6Y=;
+	s=korg; t=1776098197;
+	bh=XJhOZqO3aZMyfRyBr31HgDaNLqc0os+2I6GIxOUvlYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADqkj5lgHaLc8EBbHkmGy6HVvVVtwnBh+BVsoZZwjxvykYA7eQfwM5UK8j671lH85
-	 T1q87Uke4liNkK4A9lq6yrFpwujFaE2aNu2aAB2gzkooZCchXS8xeoAa0lIE5zkRg/
-	 krvAnfOv6+sq0Uy27OHw97fNtujffJZgE13yN7hs=
+	b=tCHsh3Ob33iroF+T9TA3mltyT9vc/r3q0criyaLaX/HgJUS0UKuXGxFjrGIXCs8AN
+	 kOJNSrhESSJRn+VZHQ5owEQm/AydUvHtWGS1Xdku0ozzMBVyRpn7QCQjVuZpGC7zOS
+	 LT5glG9AmV0U69/O2HhlFp3CYy3alTfg4hRLB3Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	webcaptcha <webcapcha@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 290/491] ACPI: EC: Install address space handler at the namespace root
+Subject: [PATCH 5.15 404/570] dt-bindings: auxdisplay: ht16k33: Use unevaluatedProperties to fix common property warning
 Date: Mon, 13 Apr 2026 17:58:55 +0200
-Message-ID: <20260413155829.901289649@linuxfoundation.org>
+Message-ID: <20260413155845.603707308@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,162 +69,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,intel.com,redhat.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237380-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236946-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,uefi.org:url]
-X-Rspamd-Queue-Id: 4F3703F0563
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,0.0.0.70:email]
+X-Rspamd-Queue-Id: C86D13F0E4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 60fa6ae6e6d09e377fce6f8d9b6f6a4d88769f63 ]
+[ Upstream commit 398c0c8bbc8f5a9d2f43863275a427a9d3720b6f ]
 
-It is reported that _DSM evaluation fails in ucsi_acpi_dsm() on Lenovo
-IdeaPad Pro 5 due to a missing address space handler for the EC address
-space:
+Change additionalProperties to unevaluatedProperties because it refs to
+/schemas/input/matrix-keymap.yaml.
 
- ACPI Error: No handler for Region [ECSI] (000000007b8176ee) [EmbeddedControl] (20230628/evregion-130)
+Fix below CHECK_DTBS warnings:
+arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
+        from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
 
-This happens because if there is no ECDT, the EC driver only registers
-the EC address space handler for operation regions defined in the EC
-device scope of the ACPI namespace while the operation region being
-accessed by the _DSM in question is located beyond that scope.
-
-To address this, modify the ACPI EC driver to install the EC address
-space handler at the root of the ACPI namespace for the first EC that
-can be found regardless of whether or not an ECDT is present.
-
-Note that this change is consistent with some examples in the ACPI
-specification in which EC operation regions located outside the EC
-device scope are used (for example, see Section 9.17.15 in ACPI 6.5),
-so the current behavior of the EC driver is arguably questionable.
-
-Reported-by: webcaptcha <webcapcha@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218789
-Link: https://uefi.org/specs/ACPI/6.5/09_ACPI_Defined_Devices_and_Device_Specific_Objects.html#example-asl-code
-Link: https://lore.kernel.org/linux-acpi/Zi+0whTvDbAdveHq@kuha.fi.intel.com
-Suggested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
+Fixes: f12b457c6b25c ("dt-bindings: auxdisplay: ht16k33: Convert to json-schema")
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c       | 25 ++++++++++++++++---------
- drivers/acpi/internal.h |  1 -
- 2 files changed, 16 insertions(+), 10 deletions(-)
+ .../devicetree/bindings/auxdisplay/holtek,ht16k33.yaml          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 10f7e3ef58791..1d7e7e47ea0e4 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1514,13 +1514,14 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
- static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
- 			       bool call_reg)
- {
-+	acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
- 	acpi_status status;
+diff --git a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
+index 64ffff4600260..3ee00bcfcf827 100644
+--- a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
++++ b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
+@@ -46,7 +46,7 @@ required:
+   - reg
+   - refresh-rate-hz
  
- 	acpi_ec_start(ec, false);
+-additionalProperties: false
++unevaluatedProperties: false
  
- 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
- 		acpi_ec_enter_noirq(ec);
--		status = acpi_install_address_space_handler_no_reg(ec->handle,
-+		status = acpi_install_address_space_handler_no_reg(scope_handle,
- 								   ACPI_ADR_SPACE_EC,
- 								   &acpi_ec_space_handler,
- 								   NULL, ec);
-@@ -1529,11 +1530,10 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
- 			return -ENODEV;
- 		}
- 		set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
--		ec->address_space_handler_holder = ec->handle;
- 	}
- 
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
--		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
-+		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
- 
-@@ -1585,10 +1585,13 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
- 
- static void ec_remove_handlers(struct acpi_ec *ec)
- {
-+	acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
-+
- 	if (test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
- 		if (ACPI_FAILURE(acpi_remove_address_space_handler(
--					ec->address_space_handler_holder,
--					ACPI_ADR_SPACE_EC, &acpi_ec_space_handler)))
-+						scope_handle,
-+						ACPI_ADR_SPACE_EC,
-+						&acpi_ec_space_handler)))
- 			pr_err("failed to remove space handler\n");
- 		clear_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
- 	}
-@@ -1627,14 +1630,18 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
- {
- 	int ret;
- 
--	ret = ec_install_handlers(ec, device, call_reg);
--	if (ret)
--		return ret;
--
- 	/* First EC capable of handling transactions */
- 	if (!first_ec)
- 		first_ec = ec;
- 
-+	ret = ec_install_handlers(ec, device, call_reg);
-+	if (ret) {
-+		if (ec == first_ec)
-+			first_ec = NULL;
-+
-+		return ret;
-+	}
-+
- 	pr_info("EC_CMD/EC_SC=0x%lx, EC_DATA=0x%lx\n", ec->command_addr,
- 		ec->data_addr);
- 
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 4edf591f8a3a5..f6c929787c9e6 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -169,7 +169,6 @@ static inline void acpi_early_processor_osc(void) {}
-    -------------------------------------------------------------------------- */
- struct acpi_ec {
- 	acpi_handle handle;
--	acpi_handle address_space_handler_holder;
- 	int gpe;
- 	int irq;
- 	unsigned long command_addr;
+ examples:
+   - |
 -- 
 2.53.0
 
