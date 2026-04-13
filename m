@@ -1,161 +1,212 @@
-Return-Path: <stable+bounces-236035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFzVEyLg3GnrXgkAu9opvQ
-	(envelope-from <stable+bounces-236035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:22:58 +0200
+	id QLwjHCbg3GnrXgkAu9opvQ
+	(envelope-from <stable+bounces-236036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:23:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C393EBDBF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:22:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0512A3EBDCF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1E6630465DA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:16:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 617E93010394
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08CA3BD224;
-	Mon, 13 Apr 2026 12:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7886D3C345A;
+	Mon, 13 Apr 2026 12:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqZkFWZi"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hsqhWQAQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B524A3161BA
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2956F317164
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776082604; cv=none; b=Jt1TYRNoWn05yLPq47u0gMDb1fNVAjO7YwLsgEbkS9RBZvLuAofnP0/GfcHytm4NKewhbjEJyV2SQExKHFY888GTceMXwax5f50gl3c1lHfqfCfHMCDPi1mkvSO+GEaR6ddkMm1TDWoC91aQYcGZQKNABHCgUWV9fxDPSfi+CJQ=
+	t=1776082628; cv=none; b=ce/ByHgw+i461w2QTlZ9SeK4oRy0UtoplF4njMUNYRItJ0sNAe4vdrcBMn4CmzPX1fVBMuV2vmOSLhp8RNGyyNF2Q7APa/jSSVg0H/FOOX+EAJ7gGTNmqZdjKlrb+0A7ajyDiof4t+R579ZR4OSQJU8mUrFaxEdcCtat9gIOirY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776082604; c=relaxed/simple;
-	bh=sj9y8c1GZQGUhltebdFQ33anq1eWsKCJo/c2djAFQR4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C08taKPb60cHu5bYvp8mcRII7RZakzWGtnIIVilzYCl9r1S2ALnE+C0VGxcu9EujzkRU5S90Snn+VaqfFXo2fFS1B5sYQbW/YgyLlrDfxpLxYTJEo9b4o9z7onJSs2Akelvfme3+NEKpcdDYuuLvZTvmviUwLXElOF1+Gq7xfoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqZkFWZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491EDC116C6;
-	Mon, 13 Apr 2026 12:16:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776082604;
-	bh=sj9y8c1GZQGUhltebdFQ33anq1eWsKCJo/c2djAFQR4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=PqZkFWZiJ6e2r8I1zxDWA5aX81dWA37AbD35hyC3lZoJSce9wFaD8wiZ+SAbZZfti
-	 yvpT0WK3PFeY9KZJ0BKmvL6uegSdsoMDFOs8jiD8O5mrkcYwmXWA4hjE9OhEcMHQKp
-	 gxkH+zdLTUIf01gUyVZ3r0qgAlldTv7IU+FD+4s0=
-Subject: FAILED: patch "[PATCH] pmdomain: imx8mp-blk-ctrl: Keep the NOC_HDCP clock enabled" failed to apply to 6.1-stable tree
-To: ping.bai@nxp.com,ulf.hansson@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Apr 2026 14:16:42 +0200
-Message-ID: <2026041342-shadow-unkempt-252a@gregkh>
+	s=arc-20240116; t=1776082628; c=relaxed/simple;
+	bh=MvmsiL3OcfHAmqh31yd3dRKxQb3Gg9koFex+fCr8ds8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VAHN8JUUiQb/GHp2snTlyTXRSJRuyKb4rB0SK57ajooR8jpn/gR0QsGs8DxrFN5afdiGjELTi9E/Ypwj3desJv10CEIGvno/VF8/bwKT3bxa6y4nTgsu7mQKgC80/4xNhp3fLO/4NOixMgplSww3flmN6T8hX2Bz4+8XaQyMpSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hsqhWQAQ; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CavEkmXd46xtJx5plsPhPBjURFnfHS+K4jcXHDUemD0=; b=hsqhWQAQTTdKBsD7I7idbse6Y0
+	jt7mXRFcJrZ4hdztH3D89PZeK8z5Tpska/a5Axid0CZ44ixcoL40StFhOMELRrwi3zEjHDi8MIe2z
+	SWZ2AsOOr6FVvVdP97aIxdCy+rAzlVFZIa96SQoDrafa4ilgyT09yh44pzUYBf2pwdJhowX3O0pBR
+	pXjgHD/+Cl4dcZbZzyia7fHiXBnCEv/tVH1l/Cf1sICEuRMWxjxjTCinkPFOotunYYMiC8FlK77Gs
+	5UYcbo+YcjdvL89hEiapr8hoUoQBWOztR/jz7N79i4iRYq32uhWI23uhDTha3mUBUM+YFKyme3wqt
+	7J8ChtWg==;
+Received: from gwsc.sc.usp.br ([143.107.225.16] helo=[172.24.27.208])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1wCGDs-00FOZI-1K; Mon, 13 Apr 2026 14:17:00 +0200
+Message-ID: <80158c8c-a270-498b-b947-bc3276359d4b@igalia.com>
+Date: Mon, 13 Apr 2026 09:16:54 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/v3d: Limit ioctl extension chain depth to prevent
+ infinite loop
+To: Ashutosh Desai <ashutoshdesai993@gmail.com>,
+ dri-devel@lists.freedesktop.org
+Cc: itoral@igalia.com, stable@vger.kernel.org
+References: <cbcb794f-0d82-40b4-a9a5-6aca99e8c434@igalia.com>
+ <20260413055230.3349114-1-ashutoshdesai993@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Autocrypt: addr=mcanal@igalia.com; keydata=
+ xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
+ /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
+ gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
+ SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
+ G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
+ AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
+ dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
+ P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
+ O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
+ GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
+ 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
+ FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
+ TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
+ Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
+ 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
+ LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
+ T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
+ wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
+ zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
+ it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
+ Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
+ uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
+ raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
+In-Reply-To: <20260413055230.3349114-1-ashutoshdesai993@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236035-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236036-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,gregkh:email]
-X-Rspamd-Queue-Id: 67C393EBDBF
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.911];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,igalia.com:mid]
+X-Rspamd-Queue-Id: 0512A3EBDCF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Ashutosh,
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 4/13/26 02:52, Ashutosh Desai wrote:
+> v3d_get_extensions() walks a userspace-provided singly-linked list of
+> ioctl extensions without any bound on the chain length.  A local user
+> can craft a self-referential extension (ext->next == &ext) with zero
+> in_sync_count and out_sync_count, which bypasses the existing duplicate-
+> extension guard:
+> 
+>      if (se->in_sync_count || se->out_sync_count)
+>              return -EINVAL;
+> 
+> The guard never fires because v3d_get_multisync_post_deps() returns
+> immediately when count is zero, leaving both fields at zero on every
+> iteration. The result is an infinite loop in kernel context, blocking
+> the calling thread and pegging a CPU core indefinitely.
+> 
+> Both i915 (stackdepth = 512) and xe (MAX_USER_EXTENSIONS = 16) impose
+> an explicit depth limit on the same pattern.  Apply the same defence to
 
-To reproduce the conflict and resubmit, you may use the following commands:
+s/defence/defense
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x e91d5f94acf68618ea3ad9c92ac28614e791ae7d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041342-shadow-unkempt-252a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> V3D by introducing V3D_MAX_EXTENSIONS and capping the walk at 7, which
+> matches the number of currently defined V3D extension types.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+> ---
+>   drivers/gpu/drm/v3d/v3d_submit.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
+> index 18f2bf1fe89f..8951909198c2 100644
+> --- a/drivers/gpu/drm/v3d/v3d_submit.c
+> +++ b/drivers/gpu/drm/v3d/v3d_submit.c
+> @@ -11,6 +11,8 @@
+>   #include "v3d_regs.h"
+>   #include "v3d_trace.h"
+>   
+> +#define V3D_MAX_EXTENSIONS 7
 
-Possible dependencies:
+I'm sorry for my previous mistake. I was re-thinking it right now and
+actually, at the moment, a job can have 2 extensions at max, as a CPU
+job cannot have more than one CPU job extension (check
+v3d_validate_cpu_job()).
 
+v3d_validate_cpu_job() already guarantees that a CPU job can only have a
+single CPU job extension. So, we are safe on that side. Now, we need to
+harden the multisync side.
 
+How about checking if (!multisync.in_sync_count &&
+!multisync.out_sync_count)? After all, it doesn't make any sense to have
+an empty multisync.
 
-thanks,
+I believe this is better strategy than using a hard-coded max.
 
-greg k-h
+Best regards,
+- Maíra
 
------------------- original commit in Linus's tree ------------------
-
-From e91d5f94acf68618ea3ad9c92ac28614e791ae7d Mon Sep 17 00:00:00 2001
-From: Jacky Bai <ping.bai@nxp.com>
-Date: Fri, 20 Mar 2026 16:43:46 +0800
-Subject: [PATCH] pmdomain: imx8mp-blk-ctrl: Keep the NOC_HDCP clock enabled
-
-Keep the NOC_HDCP clock always enabled to fix the potential hang
-caused by the NoC ADB400 port power down handshake.
-
-Fixes: 77b0ddb42add ("soc: imx: add i.MX8MP HDMI blk ctrl HDCP/HRV_MWR")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-index 8fc79f9723f0..3f5b9499d30a 100644
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -352,9 +352,6 @@ static void imx8mp_hdmi_blk_ctrl_power_on(struct imx8mp_blk_ctrl *bc,
- 		regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(12));
- 		regmap_clear_bits(bc->regmap, HDMI_TX_CONTROL0, BIT(3));
- 		break;
--	case IMX8MP_HDMIBLK_PD_HDCP:
--		regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(11));
--		break;
- 	case IMX8MP_HDMIBLK_PD_HRV:
- 		regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(3) | BIT(4) | BIT(5));
- 		regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(15));
-@@ -408,9 +405,6 @@ static void imx8mp_hdmi_blk_ctrl_power_off(struct imx8mp_blk_ctrl *bc,
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(7));
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(22) | BIT(24));
- 		break;
--	case IMX8MP_HDMIBLK_PD_HDCP:
--		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL0, BIT(11));
--		break;
- 	case IMX8MP_HDMIBLK_PD_HRV:
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(15));
- 		regmap_clear_bits(bc->regmap, HDMI_RTX_CLK_CTL1, BIT(3) | BIT(4) | BIT(5));
-@@ -439,7 +433,7 @@ static int imx8mp_hdmi_power_notifier(struct notifier_block *nb,
- 	regmap_write(bc->regmap, HDMI_RTX_CLK_CTL0, 0x0);
- 	regmap_write(bc->regmap, HDMI_RTX_CLK_CTL1, 0x0);
- 	regmap_set_bits(bc->regmap, HDMI_RTX_CLK_CTL0,
--			BIT(0) | BIT(1) | BIT(10));
-+			BIT(0) | BIT(1) | BIT(10) | BIT(11));
- 	regmap_set_bits(bc->regmap, HDMI_RTX_RESET_CTL0, BIT(0));
- 
- 	/*
+> +
+>   /* Takes the reservation lock on all the BOs being referenced, so that
+>    * we can attach fences and update the reservations after pushing the job
+>    * to the queue.
+> @@ -802,12 +804,18 @@ v3d_get_extensions(struct drm_file *file_priv,
+>   	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
+>   	struct v3d_dev *v3d = v3d_priv->v3d;
+>   	struct drm_v3d_extension __user *user_ext;
+> +	unsigned int ext_count = 0;
+>   	int ret;
+>   
+>   	user_ext = u64_to_user_ptr(ext_handles);
+>   	while (user_ext) {
+>   		struct drm_v3d_extension ext;
+>   
+> +		if (ext_count++ >= V3D_MAX_EXTENSIONS) {
+> +			drm_dbg(&v3d->drm, "Too many V3D ioctl extensions\n");
+> +			return -E2BIG;
+> +		}
+> +
+>   		if (copy_from_user(&ext, user_ext, sizeof(ext))) {
+>   			drm_dbg(&v3d->drm, "Failed to copy submit extension\n");
+>   			return -EFAULT;
 
 
