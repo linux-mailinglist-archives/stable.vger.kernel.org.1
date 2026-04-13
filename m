@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDtVL3Yj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:14 +0200
+	id MN+IF3kg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371633F0E10
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F048B3F056A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C8BF305E8EE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A4813028826
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B38A280CFB;
-	Mon, 13 Apr 2026 16:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9FF3203B6;
+	Mon, 13 Apr 2026 16:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEh290H6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nH8Y/qQ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B931D5AD4;
-	Mon, 13 Apr 2026 16:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BD83290A1;
+	Mon, 13 Apr 2026 16:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098212; cv=none; b=iizpokAvLYD5jBm/huVGbrzizDNEC+7ZKSBbCIDjH9b5RoMYN/qq2ytwnt8LUEoagqzU2bctQY/IMbz+uMaGfVl8AHznKNeqbf9EyG3TJqW8Zgwa/Mzo/psmjQchIna0UdDIqCQ2ej9KsLClOw99+t8wUr8fbFH9ZSob7Efdh/w=
+	t=1776099309; cv=none; b=nGZvdJ85SMIZrMmsP6OPSnhm98RWLVKm14qGfPagrn82V/Wgen3dq5SE7SsHG7VNKohE3H0vrICAGhRBymrQsryw3I+5a+jYsHMPNeFktnOfoi3a4Rm04BKaZpUpn/3sxttmQBaCSZD634i4d6IJy3/ubrEyCfpS6UbKgBQ7wAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098212; c=relaxed/simple;
-	bh=6kAjUKiMFTSODBFwZJket+lBZkZd6hdF0o9iWKYxWF4=;
+	s=arc-20240116; t=1776099309; c=relaxed/simple;
+	bh=FoSOcDAxmxQHBJh79W1RM3yMWOMvfLvIg0QvsE3vaoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJcWcIfSjHhVFEo+vRYT6Y/KuK8iYj/4djHbO7K93fqy/pOeT9xySbTmuHi7d1k9moS2BKm5wNkIb2HuUkXankZhEmYtevt2iB/xQW1hZE2PkVgELh2enIcDiNcnhIyWvOrOQL7Jca+kInHnZcazCb+YYVNETIJ0+3NlkIV/rKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEh290H6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A588C2BCAF;
-	Mon, 13 Apr 2026 16:36:52 +0000 (UTC)
+	 MIME-Version; b=TNkJ8SA3KWXGAINMmMHLgLToCXqQm9jH6R+uBLzL2Sft1GbMsMZtmOn9Dr7ejgpVj0Va7W5QcKCq0am2IMPmfjpJY0EoBEFszKe1nYaLZZnst+XrevgbXUeoeYELWH82pwWRRZzMSsuYnAA4Gmd5m2p1iyFbZifjUh7NMSq2GE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nH8Y/qQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417EFC2BCAF;
+	Mon, 13 Apr 2026 16:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098212;
-	bh=6kAjUKiMFTSODBFwZJket+lBZkZd6hdF0o9iWKYxWF4=;
+	s=korg; t=1776099308;
+	bh=FoSOcDAxmxQHBJh79W1RM3yMWOMvfLvIg0QvsE3vaoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEh290H6pkVgGLkSt4dDZ8a0c3KaioTI+VnxxTIk6wlfubH5s4p+LVScWvw8cRZDf
-	 xIBMduAC7noU4xvrP1KBxezR+kBo9X2+AeN+fsSqJs4x4k9/A4W+NxM0iaEpzyLNW7
-	 j6WDkktWXr/NkJWQ2j95pcb5vJJFXBvjCmRQnGX8=
+	b=nH8Y/qQ9O0XY1Kx+3BFYiLtZjgBvb4u/Qwyw4CBfKg8ifJ+xOm8rjMJyMRmv4VATn
+	 ZMBcXIo7/t6y8CP4OxsSw2Nf7MkiJqbOQ1FcAGdv/4WqlJdBLotYQ30LCGOK+wwKg2
+	 SXJoY2n9cKKzIdb3PWcvN6aAL7O5cK7cLOP+1D3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 405/570] crypto: af-alg - fix NULL pointer dereference in scatterwalk
+Subject: [PATCH 5.10 291/491] ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()
 Date: Mon, 13 Apr 2026 17:58:56 +0200
-Message-ID: <20260413155845.639993339@linuxfoundation.org>
+Message-ID: <20260413155829.938827721@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +69,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237381-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236952-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,doyensec.com:email]
-X-Rspamd-Queue-Id: 371633F0E10
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email]
+X-Rspamd-Queue-Id: F048B3F056A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 62397b493e14107ae82d8b80938f293d95425bcb ]
+[ Upstream commit f6484cadbcaf26b5844b51bd7307a663dda48ef6 ]
 
-The AF_ALG interface fails to unmark the end of a Scatter/Gather List (SGL)
-when chaining a new af_alg_tsgl structure. If a sendmsg() fills an SGL
-exactly to MAX_SGL_ENTS, the last entry is marked as the end. A subsequent
-sendmsg() allocates a new SGL and chains it, but fails to clear the end
-marker on the previous SGL's last data entry.
+When ec_install_handlers() returns -EPROBE_DEFER on reduced-hardware
+platforms, it has already started the EC and installed the address
+space handler with the struct acpi_ec pointer as handler context.
+However, acpi_ec_setup() propagates the error without any cleanup.
 
-This causes the crypto scatterwalk to hit a premature end, returning NULL
-on sg_next() and leading to a kernel panic during dereference.
+The caller acpi_ec_add() then frees the struct acpi_ec for non-boot
+instances, leaving a dangling handler context in ACPICA.
 
-Fix this by explicitly unmarking the end of the previous SGL when
-performing sg_chain() in af_alg_alloc_tsgl().
+Any subsequent AML evaluation that accesses an EC OpRegion field
+dispatches into acpi_ec_space_handler() with the freed pointer,
+causing a use-after-free:
 
-Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+ BUG: KASAN: slab-use-after-free in mutex_lock (kernel/locking/mutex.c:289)
+ Write of size 8 at addr ffff88800721de38 by task init/1
+ Call Trace:
+  <TASK>
+  mutex_lock (kernel/locking/mutex.c:289)
+  acpi_ec_space_handler (drivers/acpi/ec.c:1362)
+  acpi_ev_address_space_dispatch (drivers/acpi/acpica/evregion.c:293)
+  acpi_ex_access_region (drivers/acpi/acpica/exfldio.c:246)
+  acpi_ex_field_datum_io (drivers/acpi/acpica/exfldio.c:509)
+  acpi_ex_extract_from_field (drivers/acpi/acpica/exfldio.c:700)
+  acpi_ex_read_data_from_field (drivers/acpi/acpica/exfield.c:327)
+  acpi_ex_resolve_node_to_value (drivers/acpi/acpica/exresolv.c:392)
+  </TASK>
+
+ Allocated by task 1:
+  acpi_ec_alloc (drivers/acpi/ec.c:1424)
+  acpi_ec_add (drivers/acpi/ec.c:1692)
+
+ Freed by task 1:
+  kfree (mm/slub.c:6876)
+  acpi_ec_add (drivers/acpi/ec.c:1751)
+
+The bug triggers on reduced-hardware EC platforms (ec->gpe < 0)
+when the GPIO IRQ provider defers probing. Once the stale handler
+exists, any unprivileged sysfs read that causes AML to touch an
+EC OpRegion (battery, thermal, backlight) exercises the dangling
+pointer.
+
+Fix this by calling ec_remove_handlers() in the error path of
+acpi_ec_setup() before clearing first_ec. ec_remove_handlers()
+checks each EC_FLAGS_* bit before acting, so it is safe to call
+regardless of how far ec_install_handlers() progressed:
+
+  -ENODEV  (handler not installed): only calls acpi_ec_stop()
+  -EPROBE_DEFER (handler installed): removes handler, stops EC
+
+Fixes: 03e9a0e05739 ("ACPI: EC: Consolidate event handler installation code")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260324165458.1337233-2-bestswngs@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/ec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 658d5c3c88b7b..631ee6a220d5b 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -515,8 +515,10 @@ static int af_alg_alloc_tsgl(struct sock *sk)
- 		sg_init_table(sgl->sg, MAX_SGL_ENTS + 1);
- 		sgl->cur = 0;
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 1d7e7e47ea0e4..aaf0add0dc081 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1636,6 +1636,8 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
  
--		if (sg)
-+		if (sg) {
-+			sg_unmark_end(sg + MAX_SGL_ENTS - 1);
- 			sg_chain(sg, MAX_SGL_ENTS + 1, sgl->sg);
-+		}
+ 	ret = ec_install_handlers(ec, device, call_reg);
+ 	if (ret) {
++		ec_remove_handlers(ec);
++
+ 		if (ec == first_ec)
+ 			first_ec = NULL;
  
- 		list_add_tail(&sgl->list, &ctx->tsgl_list);
- 	}
 -- 
 2.53.0
 
