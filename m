@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIT3DbwZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:44 +0200
+	id KOrhEMUi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369203EF07E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E313F0C80
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 856AF302717F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD9C831C2CA1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CA027BF6C;
-	Mon, 13 Apr 2026 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C0030BF4E;
+	Mon, 13 Apr 2026 16:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v222XXri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahnEB7r2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095992737E0;
-	Mon, 13 Apr 2026 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97376280CFB;
+	Mon, 13 Apr 2026 16:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096669; cv=none; b=mZePNp2NEyB3NZTcMhrHHSc+uexXJsvjkXTLtl0E4IN3XKtUwjyK3J8q8P42zJ+qWR0R4KssYgQR68GIEUu1Z0+106BXX93o4RFqQcMXNFXwpks6P01EO+UJvFxV6kkcEx7oIZ+R6LDffCDwM9TItZyrB5q0lfbSts12iznqwvM=
+	t=1776098300; cv=none; b=mpsvb6cBZDf0O3tP0RSA8wCUSGL1TCgpnK7lEzQkcluQ6BIPNujcr9Ru4lsZFc4H+qJMuw018kxYGnnhoBKX5EOyJuaNPfnkb45oD2YctPNbaOuCc81fMoKDVsnA5hasL5SyegHVyH2Tsc2zSUOqDOVK8y2gh+nZwp8rFH0MD4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096669; c=relaxed/simple;
-	bh=vYIIdchzg0sFgSgiyeTXhnt2FiJ9aLnrUrrTi/9kNSM=;
+	s=arc-20240116; t=1776098300; c=relaxed/simple;
+	bh=Iu1NwpXC8RtxxdV3WR0Jis31ERl6xcqfqg8l8/OpkYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKyalFaDm6oAsPQcRuSiwJRTPQi8VD7PZUoGBmVZgSyjqVATkE14IudtdE9my7Pu67/Yxa0p8nvBF+po6UCU+7SaaDniYvuE6GDhye9zdnKwCZsgG5jUmP5tghCXIHu1C9ChOw7+zRpkG1CWHoE32w05rTFA3U3Gk8m/QTAdRqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v222XXri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5D5C2BCAF;
-	Mon, 13 Apr 2026 16:11:08 +0000 (UTC)
+	 MIME-Version; b=OLjn3ZjNkazV/F/f88w+S9yELKyqLmL0SEipMTH3Lc0w7195+c8i3w4rxpc8UZHLUls7TJf+X3FSYvzv379LDhJFvPYfdhHr9p19KHXsxUB8YyFhrsV2loiQgZcmt8lOny49aVMF1/VLUYmQNFt9X6/qtXLA5PmeyrQuFDsfUF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahnEB7r2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E497C2BCAF;
+	Mon, 13 Apr 2026 16:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096668;
-	bh=vYIIdchzg0sFgSgiyeTXhnt2FiJ9aLnrUrrTi/9kNSM=;
+	s=korg; t=1776098300;
+	bh=Iu1NwpXC8RtxxdV3WR0Jis31ERl6xcqfqg8l8/OpkYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v222XXriitm/jZkFzAvLlFwS+dTrYQZ+EbGKTN87QBWYln8IjVYdNxrW9LBBLbm71
-	 PxmW5DAceC+AeIDTBv15W7mbyTv3vuEFjR1AaM0XTkzC2RJP2ppfVXNNhnrTxpBkCw
-	 EZGsCK/JlQwjy+1B7gu0b4/cFlZjj8UtARLrSr1k=
+	b=ahnEB7r2Az3PhyjFYnLe4zMlqGo7WKY1L5EewKfa4SEZn1ppDXp16TARDTpD29d23
+	 kS3KdKO6ZEgBvhz0kbgh5sLfMGAvOi1/dHpfWaep3SmAVId4P/a1Pey0zUeOF8hfpD
+	 k+y5bGOfhgnYb+p7cJr2ZA+4TGXhkVL+NCl9fDjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 06/70] mptcp: fix slab-use-after-free in __inet_lookup_established
+	stable <stable@kernel.org>,
+	Juno Choi <juno.choi@lge.com>
+Subject: [PATCH 5.15 470/570] usb: dwc2: gadget: Fix spin_lock/unlock mismatch in dwc2_hsotg_udc_stop()
 Date: Mon, 13 Apr 2026 18:00:01 +0200
-Message-ID: <20260413155728.423533288@linuxfoundation.org>
+Message-ID: <20260413155848.071581383@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,123 +77,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236346-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236987-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email,mptcp_v6_prot.name:url]
-X-Rspamd-Queue-Id: 369203EF07E
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lge.com:email]
+X-Rspamd-Queue-Id: B6E313F0C80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Juno Choi <juno.choi@lge.com>
 
-commit 9b55b253907e7431210483519c5ad711a37dafa1 upstream.
+commit 9bb4b5ed7f8c4f95cc556bdf042b0ba2fa13557a upstream.
 
-The ehash table lookups are lockless and rely on
-SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
-during RCU read-side critical sections. Both tcp_prot and
-tcpv6_prot have their slab caches created with this flag
-via proto_register().
+dwc2_gadget_exit_clock_gating() internally calls call_gadget() macro,
+which expects hsotg->lock to be held since it does spin_unlock/spin_lock
+around the gadget driver callback invocation.
 
-However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
-tcpv6_prot_override during inet_init() (fs_initcall, level 5),
-before inet6_init() (module_init/device_initcall, level 6) has
-called proto_register(&tcpv6_prot). At that point,
-tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
-remains NULL permanently.
+However, dwc2_hsotg_udc_stop() calls dwc2_gadget_exit_clock_gating()
+without holding the lock. This leads to:
+ - spin_unlock on a lock that is not held (undefined behavior)
+ - The lock remaining held after dwc2_gadget_exit_clock_gating() returns,
+   causing a deadlock when spin_lock_irqsave() is called later in the
+   same function.
 
-This causes MPTCP v6 subflow child sockets to be allocated via
-kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
-cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
-when these sockets are freed without SOCK_RCU_FREE (which is
-cleared for child sockets by design), the memory can be
-immediately reused. Concurrent ehash lookups under
-rcu_read_lock can then access freed memory, triggering a
-slab-use-after-free in __inet_lookup_established.
+Fix this by acquiring hsotg->lock before calling
+dwc2_gadget_exit_clock_gating() and releasing it afterwards, which
+satisfies the locking requirement of the call_gadget() macro.
 
-Fix this by splitting the IPv6-specific initialization out of
-mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
-from mptcp_proto_v6_init() before protocol registration. This
-ensures tcpv6_prot_override.slab correctly inherits the
-SLAB_TYPESAFE_BY_RCU slab cache.
-
-Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260406031512.189159-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: af076a41f8a2 ("usb: dwc2: also exit clock_gating when stopping udc while suspended")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Juno Choi <juno.choi@lge.com>
+Link: https://patch.msgid.link/20260324014910.2798425-1-juno.choi@lge.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    2 ++
- net/mptcp/protocol.h |    1 +
- net/mptcp/subflow.c  |   15 +++++++++------
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/usb/dwc2/gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -4338,6 +4338,8 @@ int __init mptcp_proto_v6_init(void)
- {
- 	int err;
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -4605,7 +4605,9 @@ static int dwc2_hsotg_udc_stop(struct us
+ 	/* Exit clock gating when driver is stopped. */
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+ 	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
++		spin_lock_irqsave(&hsotg->lock, flags);
+ 		dwc2_gadget_exit_clock_gating(hsotg, 0);
++		spin_unlock_irqrestore(&hsotg->lock, flags);
+ 	}
  
-+	mptcp_subflow_v6_init();
-+
- 	mptcp_v6_prot = mptcp_prot;
- 	strscpy(mptcp_v6_prot.name, "MPTCPv6", sizeof(mptcp_v6_prot.name));
- 	mptcp_v6_prot.slab = NULL;
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -821,6 +821,7 @@ static inline void mptcp_subflow_tcp_fal
- void __init mptcp_proto_init(void);
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- int __init mptcp_proto_v6_init(void);
-+void __init mptcp_subflow_v6_init(void);
- #endif
- 
- struct sock *mptcp_sk_clone_init(const struct sock *sk,
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -2147,7 +2147,15 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override.psock_update_sk_prot = NULL;
- #endif
- 
-+	mptcp_diag_subflow_init(&subflow_ulp_ops);
-+
-+	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
-+		panic("MPTCP: failed to register subflows to ULP\n");
-+}
-+
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
-+void __init mptcp_subflow_v6_init(void)
-+{
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
- 	 * structures for v4 and v6 have the same size. It should not changed in
- 	 * the future but better to make sure to be warned if it is no longer
-@@ -2186,10 +2194,5 @@ void __init mptcp_subflow_init(void)
- 	/* Disable sockmap processing for subflows */
- 	tcpv6_prot_override.psock_update_sk_prot = NULL;
- #endif
--#endif
--
--	mptcp_diag_subflow_init(&subflow_ulp_ops);
--
--	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
--		panic("MPTCP: failed to register subflows to ULP\n");
- }
-+#endif
+ 	/* all endpoints should be shutdown */
 
 
 
