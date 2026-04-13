@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-236363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236236-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJfrMIoZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:54 +0200
+	id 2Hr9CbQa3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236236-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BEF3EEFB5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0963EF35A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 862803094F0F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C0B931C52D6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16B82FC893;
-	Mon, 13 Apr 2026 16:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41112877E5;
+	Mon, 13 Apr 2026 16:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKWatwJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDL6IqHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57AD2D97B5;
-	Mon, 13 Apr 2026 16:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E1625332E;
+	Mon, 13 Apr 2026 16:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096712; cv=none; b=GIGTWnqwVe3MVHqlXNEZwdpmK/qx1DVVtq3+MSq0W7M4pS6GuXzJkZP/U4Ggw5agjsXWGgIdgmodYEnJUiPS70oEqoNX6TQJzxgBykIvDqVzX5RUE36lJK2uOLXHstzvilz3iPqZqwsVJMQy9XM+XdyDh8GoTduBWxgfoEO/i+g=
+	t=1776096393; cv=none; b=Yq6m23zUf29/8uRUV5HfXLKbOyuE2T47VSdUjD/rOTEvCzkg6+yYzf2rgP8vAVCrTv8nzliQfFOWasUdX6NIVVw0gd+rjALvYJOnYMiQpD8ZmnCqyJI9Q0+5eNc+pRSZqoxqt/RKd5HBafZkZbe5sSNuSDDQFO2GJEcmmP47tFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096712; c=relaxed/simple;
-	bh=RUyWKhxPmjpFD3Q5qDRqbSjO3VnFpgz5VbrIeFez/Hg=;
+	s=arc-20240116; t=1776096393; c=relaxed/simple;
+	bh=Z8fgruLQ7AiexRUlVxkgarPVYb9y52brBQjrwU2jb+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUlHPrpifzn5/6sXJaTod3ZLdMUwC2hEpirIU1cn0toxb7qS77/Hqni/u6cohP+IJ0xBWBAtLGCsCd4kpehGbRglXqGjocqguyOz2ugzWmFP1N9qoKr5eg/kXA0C7XEq5REmLa2beHFEQflXOhViFynSYiNU2HzlgG0VFZ+CQRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKWatwJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D35FC2BCAF;
-	Mon, 13 Apr 2026 16:11:52 +0000 (UTC)
+	 MIME-Version; b=UsAP1tbOFyHmlLoXQDPDHEdBrRKByiDxu0e0GCFhnfQ/8qTAq0AFxKKZqcBJhWXifoxR0+f8kc1iw3zdv9LbS3QvSghZ6VQsqJxZ/DHLxmJtLottnhvNuHGdyRSi1Kokmdi+f9bsWu4FCDVfbHGfDc8Y5onrnT38Co+XXedxnSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDL6IqHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB641C2BCAF;
+	Mon, 13 Apr 2026 16:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096712;
-	bh=RUyWKhxPmjpFD3Q5qDRqbSjO3VnFpgz5VbrIeFez/Hg=;
+	s=korg; t=1776096393;
+	bh=Z8fgruLQ7AiexRUlVxkgarPVYb9y52brBQjrwU2jb+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKWatwJbmlCE0kjxlAcsyQEVUNH/WQ4thR+Vyoz30ikmDf2DNN2hMVvBZl53VrYRs
-	 oOTI7cV8AnF+Q1BT3wXmH/5iM0EKJM5g6lr7Hv6yYObzd0un9Xowr+GU0T8d8fYqX4
-	 9gpBgLHsJfzoqEM3PI/b5rn5PRV0aJLWpNWHetCw=
+	b=YDL6IqHd3Q9pC95GLvh6/iDb/NN/YCAaacZp+O+HQ1kWslin8WACR5SD+NCSTyCuc
+	 LmS/2e1m+l8JKGs00bIkPc4VcLrAiduDpcwG/OD8cb6MKoGStTV5VIhEMy7KgMNdQe
+	 CI2IAe5tcAtrfQXICJlw3uzFw8lQra2PF3AOD1GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
 	Simon Horman <horms@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.12 33/70] xfrm: clear trailing padding in build_polexpire()
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 81/86] rxrpc: Fix integer overflow in rxgk_verify_response()
 Date: Mon, 13 Apr 2026 18:00:28 +0200
-Message-ID: <20260413155729.421636357@linuxfoundation.org>
+Message-ID: <20260413155734.561688890@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +72,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,debian.org,secunet.com];
-	TAGGED_FROM(0.00)[bounces-236363-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236236-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,secunet.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 62BEF3EEFB5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,auristor.com:email]
+X-Rspamd-Queue-Id: AA0963EF35A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 71a98248c63c535eaa4d4c22f099b68d902006d0 upstream.
+commit 699e52180f4231c257821c037ed5c99d5eb0edb8 upstream.
 
-build_expire() clears the trailing padding bytes of struct
-xfrm_user_expire after setting the hard field via memset_after(),
-but the analogous function build_polexpire() does not do this for
-struct xfrm_user_polexpire.
+In rxgk_verify_response(), there's a potential integer overflow due to
+rounding up token_len before checking it, thereby allowing the length check to
+be bypassed.
 
-The padding bytes after the __u8 hard field are left
-uninitialized from the heap allocation, and are then sent to
-userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
-leaking kernel heap memory contents.
+Fix this by checking the unrounded value against len too (len is limited as
+the response must fit in a single UDP packet).
 
-Add the missing memset_after() call, matching build_expire().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-18-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/rxrpc/rxgk.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3849,6 +3849,8 @@ static int build_polexpire(struct sk_buf
- 		return err;
- 	}
- 	upe->hard = !!hard;
-+	/* clear the padding bytes */
-+	memset_after(upe, 0, hard);
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -1209,7 +1209,8 @@ static int rxgk_verify_response(struct r
  
- 	nlmsg_end(skb, nlh);
- 	return 0;
+ 	token_offset	= offset;
+ 	token_len	= ntohl(rhdr.token_len);
+-	if (xdr_round_up(token_len) + sizeof(__be32) > len)
++	if (token_len > len ||
++	    xdr_round_up(token_len) + sizeof(__be32) > len)
+ 		goto short_packet;
+ 
+ 	trace_rxrpc_rx_response(conn, sp->hdr.serial, 0, sp->hdr.cksum, token_len);
 
 
 
