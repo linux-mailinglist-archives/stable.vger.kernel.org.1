@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJ3QAVIZ3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:58 +0200
+	id +KdpLeUc3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-237054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074A73EEF26
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E7133EF8C5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A649F309B4A0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC52D30285C4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AF73016EE;
-	Mon, 13 Apr 2026 16:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1F030F545;
+	Mon, 13 Apr 2026 16:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5hL6cRT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4I13Vx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378152BE65F;
-	Mon, 13 Apr 2026 16:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E35F2D5A19;
+	Mon, 13 Apr 2026 16:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096911; cv=none; b=jw2YnoaDQfuVcEEx5yeyRohhV1wZTgGTpmgVmbPceZwdA/WRasju9ONAm0plb2PY53zPKjDHymAYPo24wue69Y8pqcVLC10B7QlME33e07iamKPEmIuh6jCbkS1z0DY752TCkN9JBQMV/8GLS67M82j2lsNjgMzRvDFxgLPd0KQ=
+	t=1776098471; cv=none; b=kF5j2ix7ru3rTsePPMyffwxpi/t4RfXgdGsvfM/UtiC/OarM/prTz5qBpGfRr1ZoZ5dvksWgoB7Z2xSmcmToXttglkxRyjRuvQf/Qk2QOs+k+kgOHS6B9bousfU8AeMUZWlT15iUbdeefoxSl/6wphdBE32cgrnF7ImO3NZgsTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096911; c=relaxed/simple;
-	bh=hSmCX0BxtM7XcRGCoLX51p6IxtpwsTigsCR58bhsozQ=;
+	s=arc-20240116; t=1776098471; c=relaxed/simple;
+	bh=xU6YvmcNlx3keWOHpEnwyQj+Mcyr3DcSh20ghIiz8Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OStMe/6SsrVP7zcb8vuUrNDWw3BK1NFD+Os/DUAQ4/4Gj0VOElJpmcn6y24EwDBFJCQAd3WF/sQpuU34ehlkNGp3WsjFIxvaC/s/HC9AltFx98fUkiLb8zrvCFILbIgTkq6If9vwwOnsiUB4sDN2cZqun3KFbQDXZSqgylwBIyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5hL6cRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951ADC2BCAF;
-	Mon, 13 Apr 2026 16:15:10 +0000 (UTC)
+	 MIME-Version; b=SYJ3Wnk0l+hquRGBiPCAkVSEKGDi16aQfHFq4nK6/tEi7V2NgVsoHoqm7SKUQOhjZCjDxgrGQKw9SzZVhf/rTfjvgRrwyfPPHt+zquNpnN4ONM9wJPRxudtCjvnbDh1RhyfjUmJV2kxlcjNT0OD32tPwpEcNcQ/0Jf3S//b7NOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4I13Vx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D6BC2BCAF;
+	Mon, 13 Apr 2026 16:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096910;
-	bh=hSmCX0BxtM7XcRGCoLX51p6IxtpwsTigsCR58bhsozQ=;
+	s=korg; t=1776098471;
+	bh=xU6YvmcNlx3keWOHpEnwyQj+Mcyr3DcSh20ghIiz8Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5hL6cRTBsQM6NNlDybGDHmp2g4D4TUi5IYAhXX7HdTq42hfntF9Vy3u5eT31fnCf
-	 AnIfZ8ntfYYU148AWPVxHFY5OSHz/QPyDnMF1TAVfGIex79dtbROg8QNgFZhNJ+x9g
-	 iwecvS8NnfxY/YPVA7BI2rZ9gcLWFypPoLzu3aZ8=
+	b=F4I13Vx7wcBQkqnAdsVlXxqbnZ00vNrKxWrj8HA5AjJnmKgunvQKpgWuIpE8nOiPp
+	 dixklUTBsAbCDNvQHVU5kw7P2k8+DvUMNQ6wzvRMgcw4fIRcV0d9VPo+dwV7XAhXs2
+	 7gKD1hd0vG1RkZL80uC7mLikDs3w6yvsQULSy6ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tyllis Xu <LivelyCarpet87@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 40/50] net: stmmac: fix integer underflow in chain mode
+	Johan Hovold <johan@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 536/570] mmc: vub300: fix NULL-deref on disconnect
 Date: Mon, 13 Apr 2026 18:01:07 +0200
-Message-ID: <20260413155726.009988449@linuxfoundation.org>
+Message-ID: <20260413155850.524010526@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +65,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236440-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237054-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 074A73EEF26
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5E7133EF8C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyllis Xu <livelycarpet87@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 51f4e090b9f87b40c21b6daadb5c06e6c0a07b67 upstream.
+commit dff34ef879c5e73298443956a8b391311ba78d57 upstream.
 
-The jumbo_frm() chain-mode implementation unconditionally computes
+Make sure to deregister the controller before dropping the reference to
+the driver data on disconnect to avoid NULL-pointer dereferences or
+use-after-free.
 
-    len = nopaged_len - bmax;
-
-where nopaged_len = skb_headlen(skb) (linear bytes only) and bmax is
-BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
-decides to invoke jumbo_frm() based on skb->len (total length including
-page fragments):
-
-    is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
-
-When a packet has a small linear portion (nopaged_len <= bmax) but a
-large total length due to page fragments (skb->len > bmax), the
-subtraction wraps as an unsigned integer, producing a huge len value
-(~0xFFFFxxxx).  This causes the while (len != 0) loop to execute
-hundreds of thousands of iterations, passing skb->data + bmax * i
-pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
-SoCs (the typical deployment for stmmac), this maps arbitrary kernel
-memory to the DMA engine, constituting a kernel memory disclosure and
-potential memory corruption from hardware.
-
-Fix this by introducing a buf_len local variable clamped to
-min(nopaged_len, bmax).  Computing len = nopaged_len - buf_len is then
-always safe: it is zero when the linear portion fits within a single
-descriptor, causing the while (len != 0) loop to be skipped naturally,
-and the fragment loop in stmmac_xmit() handles page fragments afterward.
-
-Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-Link: https://patch.msgid.link/20260401044708.1386919-1-LivelyCarpet87@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+Cc: stable@vger.kernel.org # 3.0+
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/chain_mode.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/mmc/host/vub300.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-@@ -20,7 +20,7 @@ static int jumbo_frm(struct stmmac_tx_qu
- 	unsigned int nopaged_len = skb_headlen(skb);
- 	struct stmmac_priv *priv = tx_q->priv_data;
- 	unsigned int entry = tx_q->cur_tx;
--	unsigned int bmax, des2;
-+	unsigned int bmax, buf_len, des2;
- 	unsigned int i = 1, len;
- 	struct dma_desc *desc;
- 
-@@ -31,17 +31,18 @@ static int jumbo_frm(struct stmmac_tx_qu
- 	else
- 		bmax = BUF_SIZE_2KiB;
- 
--	len = nopaged_len - bmax;
-+	buf_len = min_t(unsigned int, nopaged_len, bmax);
-+	len = nopaged_len - buf_len;
- 
- 	des2 = dma_map_single(priv->device, skb->data,
--			      bmax, DMA_TO_DEVICE);
-+			      buf_len, DMA_TO_DEVICE);
- 	desc->des2 = cpu_to_le32(des2);
- 	if (dma_mapping_error(priv->device, des2))
- 		return -1;
- 	tx_q->tx_skbuff_dma[entry].buf = des2;
--	tx_q->tx_skbuff_dma[entry].len = bmax;
-+	tx_q->tx_skbuff_dma[entry].len = buf_len;
- 	/* do not close the descriptor and do not set own bit */
--	stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum, STMMAC_CHAIN_MODE,
-+	stmmac_prepare_tx_desc(priv, desc, 1, buf_len, csum, STMMAC_CHAIN_MODE,
- 			0, false, skb->len);
- 
- 	while (len != 0) {
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2371,8 +2371,8 @@ static void vub300_disconnect(struct usb
+ 			usb_set_intfdata(interface, NULL);
+ 			/* prevent more I/O from starting */
+ 			vub300->interface = NULL;
+-			kref_put(&vub300->kref, vub300_delete);
+ 			mmc_remove_host(mmc);
++			kref_put(&vub300->kref, vub300_delete);
+ 			pr_info("USB vub300 remote SDIO host controller[%d]"
+ 				" now disconnected", ifnum);
+ 			return;
 
 
 
