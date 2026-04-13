@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-237057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Dd4MNUe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:29 +0200
+	id WInsIkgj3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA553EFF3B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235363F0D8D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5D023008291
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D7A5E30AC855
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E3130C371;
-	Mon, 13 Apr 2026 16:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAB233372A;
+	Mon, 13 Apr 2026 17:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMOewk9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXk6SOSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177A2280CFB;
-	Mon, 13 Apr 2026 16:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E3533B6F8;
+	Mon, 13 Apr 2026 17:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098479; cv=none; b=KmF3D7zRKsJQsZ+KeZWltQR5O80qvLaZQAnRqhW6hoydYNtGMaT+nkh7qyxa9pVL6r5XnnY8Sy9VjaJjvn3tMLRW0iCJ49g5hZ4hL6mnymv+S72hOYSiJLiBqGSuXWsws6QkT2AsZ68VZYkwxFPKQpzrDnJ/PlMx760Pj1u0jls=
+	t=1776099744; cv=none; b=SFkgo1xJIbnp3UR+7klGvarRx56DG8Dp1tJLS4GrItnT2y6bIyzVMaw31qPhn7r/TNVgH37N1PAe+PYMNltr9/62BT9tpOv54hcPlcuFB5j2WxpFb37j60H/+bkB+c0n3tUvhGuFF6aYciINiUaWcaK3GmyNDnCLGVv6aJvR0C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098479; c=relaxed/simple;
-	bh=E6V/BSPC67bYlXYi4NZ3+lv4WGG2sv5B7WP3msPHLPY=;
+	s=arc-20240116; t=1776099744; c=relaxed/simple;
+	bh=oFeih//C+WbFnyNWdGvBtOiYJsRUUG825Rp53DsmG2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MdyiulFYlRZP5XNiH0Oab+iI8jPAzrSNNCqNxHfhTdTUH8mXPPlkI7WRQWec3yGtBdCjQ93gF/97Dj3dM0NwNGe2QRaEvf8eQaJpunJVDf5AJOc3HG0mkZyR6nVuQXAh3GA+M1RJKNdo/NVfr3xnmvPHHRPQLKe5x0lmn4f+zzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMOewk9Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F354C2BCB6;
-	Mon, 13 Apr 2026 16:41:18 +0000 (UTC)
+	 MIME-Version; b=kj0yMwwDqwAVCoFWSElCX9Zxq42wKmrnGDwzciHvMUbF5p+iv2igUunLbjGE3fWd6k479TQsX0+cH8JUcs9Mf6sLe7DQ/FY/wiSSkgS/i/KcsYl3j/SM8EeUjtQRJsnJLDA/NfgjrtqaQnzGemfHyt056Pnav0G5fioEB2dGIQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXk6SOSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B3DC2BCAF;
+	Mon, 13 Apr 2026 17:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098478;
-	bh=E6V/BSPC67bYlXYi4NZ3+lv4WGG2sv5B7WP3msPHLPY=;
+	s=korg; t=1776099744;
+	bh=oFeih//C+WbFnyNWdGvBtOiYJsRUUG825Rp53DsmG2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMOewk9YHClMI9Kmo1zcoIU/6VGpY9xy8cwixdiSssHGjZZKCegEgV6DLeLzHhtSg
-	 QwgbeUbDhwGW2FDVY+AnUSghGQB9XA1y8xqmW97YPj5xFMIP5dMBYhBw7jcLkDBo3X
-	 J9Mq/kh7/bNDE5ITXQitGo3sqKjKO57GJlTlMkhc=
+	b=eXk6SOSmGVMLd58OHZ6btpeCEf0dvLuQSXXXsxZ9tFMKWofBXC6Wb0nVBZxTiiKCQ
+	 Bh7Eopus60CQU3S+Pe7oE/L4b2ec2vJ+x8aHISCrvafBcyjwupAyRX48/JMCtL6d8P
+	 DKtxifSzzYouuBqc6mFbzZNsvzn9oBcnmnQDZ14c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 539/570] rxrpc: fix reference count leak in rxrpc_server_keyring()
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 425/491] media: uvcvideo: Move guid to entity
 Date: Mon, 13 Apr 2026 18:01:10 +0200
-Message-ID: <20260413155850.636135525@linuxfoundation.org>
+Message-ID: <20260413155834.938796533@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,82 +65,197 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237057-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-237550-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4EA553EFF3B
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: 235363F0D8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luxiao Xu <rakukuip@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit f125846ee79fcae537a964ce66494e96fa54a6de upstream.
+[ Upstream commit 351509c604dcb065305a165d7552058c2cbc447d ]
 
-This patch fixes a reference count leak in rxrpc_server_keyring()
-by checking if rx->securities is already set.
+Instead of having multiple copies of the entity guid on the code, move
+it to the entity structure.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-15-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/server_key.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/usb/uvc/uvc_ctrl.c   | 30 ++++--------------------------
+ drivers/media/usb/uvc/uvc_driver.c | 25 +++++++++++++++++++++++--
+ drivers/media/usb/uvc/uvcvideo.h   |  2 +-
+ 3 files changed, 28 insertions(+), 29 deletions(-)
 
---- a/net/rxrpc/server_key.c
-+++ b/net/rxrpc/server_key.c
-@@ -125,6 +125,9 @@ int rxrpc_server_keyring(struct rxrpc_so
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 4f67ba3a7c028..698bf5bb896ec 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -827,31 +827,10 @@ static void uvc_set_le_value(struct uvc_control_mapping *mapping,
+  * Terminal and unit management
+  */
  
- 	_enter("");
+-static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
+-static const u8 uvc_camera_guid[16] = UVC_GUID_UVC_CAMERA;
+-static const u8 uvc_media_transport_input_guid[16] =
+-	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
+-
+ static int uvc_entity_match_guid(const struct uvc_entity *entity,
+-	const u8 guid[16])
++				 const u8 guid[16])
+ {
+-	switch (UVC_ENTITY_TYPE(entity)) {
+-	case UVC_ITT_CAMERA:
+-		return memcmp(uvc_camera_guid, guid, 16) == 0;
+-
+-	case UVC_ITT_MEDIA_TRANSPORT_INPUT:
+-		return memcmp(uvc_media_transport_input_guid, guid, 16) == 0;
+-
+-	case UVC_VC_PROCESSING_UNIT:
+-		return memcmp(uvc_processing_guid, guid, 16) == 0;
+-
+-	case UVC_VC_EXTENSION_UNIT:
+-		return memcmp(entity->extension.guidExtensionCode,
+-			      guid, 16) == 0;
+-
+-	default:
+-		return 0;
+-	}
++	return memcmp(entity->guid, guid, sizeof(entity->guid)) == 0;
+ }
  
-+	if (rx->securities)
-+		return -EINVAL;
+ /* ------------------------------------------------------------------------
+@@ -1882,8 +1861,7 @@ static int uvc_ctrl_fill_xu_info(struct uvc_device *dev,
+ 	if (data == NULL)
+ 		return -ENOMEM;
+ 
+-	memcpy(info->entity, ctrl->entity->extension.guidExtensionCode,
+-	       sizeof(info->entity));
++	memcpy(info->entity, ctrl->entity->guid, sizeof(info->entity));
+ 	info->index = ctrl->index;
+ 	info->selector = ctrl->index + 1;
+ 
+@@ -1989,7 +1967,7 @@ int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
+ 
+ 	if (!found) {
+ 		uvc_trace(UVC_TRACE_CONTROL, "Control %pUl/%u not found.\n",
+-			entity->extension.guidExtensionCode, xqry->selector);
++			entity->guid, xqry->selector);
+ 		return -ENOENT;
+ 	}
+ 
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 419fbdbb7a3b8..15202269194ad 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1032,6 +1032,11 @@ static int uvc_parse_streaming(struct uvc_device *dev,
+ 	return ret;
+ }
+ 
++static const u8 uvc_camera_guid[16] = UVC_GUID_UVC_CAMERA;
++static const u8 uvc_media_transport_input_guid[16] =
++	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
++static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
 +
- 	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
- 		return -EINVAL;
+ static struct uvc_entity *uvc_alloc_entity(u16 type, u8 id,
+ 		unsigned int num_pads, unsigned int extra_size)
+ {
+@@ -1054,6 +1059,22 @@ static struct uvc_entity *uvc_alloc_entity(u16 type, u8 id,
+ 	entity->id = id;
+ 	entity->type = type;
  
++	/*
++	 * Set the GUID for standard entity types. For extension units, the GUID
++	 * is initialized by the caller.
++	 */
++	switch (type) {
++	case UVC_ITT_CAMERA:
++		memcpy(entity->guid, uvc_camera_guid, 16);
++		break;
++	case UVC_ITT_MEDIA_TRANSPORT_INPUT:
++		memcpy(entity->guid, uvc_media_transport_input_guid, 16);
++		break;
++	case UVC_VC_PROCESSING_UNIT:
++		memcpy(entity->guid, uvc_processing_guid, 16);
++		break;
++	}
++
+ 	entity->num_links = 0;
+ 	entity->num_pads = num_pads;
+ 	entity->pads = ((void *)(entity + 1)) + extra_size;
+@@ -1125,7 +1146,7 @@ static int uvc_parse_vendor_control(struct uvc_device *dev,
+ 		if (unit == NULL)
+ 			return -ENOMEM;
+ 
+-		memcpy(unit->extension.guidExtensionCode, &buffer[4], 16);
++		memcpy(unit->guid, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
+ 		memcpy(unit->baSourceID, &buffer[22], p);
+ 		unit->extension.bControlSize = buffer[22+p];
+@@ -1376,7 +1397,7 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 		if (unit == NULL)
+ 			return -ENOMEM;
+ 
+-		memcpy(unit->extension.guidExtensionCode, &buffer[4], 16);
++		memcpy(unit->guid, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
+ 		memcpy(unit->baSourceID, &buffer[22], p);
+ 		unit->extension.bControlSize = buffer[22+p];
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 60a8749c97a9d..656ab4d9356c2 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -305,6 +305,7 @@ struct uvc_entity {
+ 	u8 id;
+ 	u16 type;
+ 	char name[64];
++	u8 guid[16];
+ 
+ 	/* Media controller-related fields. */
+ 	struct video_device *vdev;
+@@ -343,7 +344,6 @@ struct uvc_entity {
+ 		} selector;
+ 
+ 		struct {
+-			u8  guidExtensionCode[16];
+ 			u8  bNumControls;
+ 			u8  bControlSize;
+ 			u8  *bmControls;
+-- 
+2.53.0
+
 
 
 
