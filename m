@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JnOJsAo3WmVaQkAu9opvQ
-	(envelope-from <stable+bounces-237608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:32:48 +0200
+	id 2O35A90Y3Wn3ZwkAu9opvQ
+	(envelope-from <stable+bounces-236624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086553F1866
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:32:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C614C3EEDA2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9F5E30048D1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:32:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1415301DA4B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3257433D6DD;
-	Mon, 13 Apr 2026 17:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B433C30BBAE;
+	Mon, 13 Apr 2026 16:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1apQ495a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPAiqxlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA077282F1D;
-	Mon, 13 Apr 2026 17:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FF124DCF6;
+	Mon, 13 Apr 2026 16:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776101562; cv=none; b=FWyoUKw42XL2BbIFG236eHfL4g4RFW4L5KuwLe7jVIFqP6qPEDvVVJfpu+Wy/jOsGub63ozqpeF5E0ENxOdIXYi155VMP7DR3F2hMP9DKL8gO/8x8gaP+NqyuAkQcLxJax3ka+BwCH4aDht6K4eRMrM1joH39M1EP6f/9c2hvZk=
+	t=1776097386; cv=none; b=IVVfCoT4JHL/RT4AoFcIQfgv/Ad19hBBVpvLrLdENhmjOeyKVvawZCK5JVgVnVxGx1RAQFRlkFj/MOgCW1FSjSLWSznFFxhmvHyzr7bepK4XtYzIitZ4DIl3iJ0s/Jcbx5ZNRsZLAfjups7j/o8uY+AHWP729bUoy3FRie5rj1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776101562; c=relaxed/simple;
-	bh=n4ior9BW2QS6Bj3hB453qqOzgH687Hlkeuuk+QyZl4k=;
+	s=arc-20240116; t=1776097386; c=relaxed/simple;
+	bh=NHTpzRwzAlrmLz1N1fuTUp+MUsOfZNxxe4UI8px6R3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jBz5RymVEKOkYPwLnBXAmF58575RG1vCoLT/xJOxMEB03emhk66oXfGY2A1LCWn2OD5mtQyBkfrUq04uLTB0T6m/0gCN23B0kJ/MKt1Z8CgZ9G/jd2uWWk+yF4mDVU55jpkpKFFHbmYe4KXxXt4ACYLczaSfWrsZ96n4DS+HO7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1apQ495a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413F8C2BCAF;
-	Mon, 13 Apr 2026 17:32:41 +0000 (UTC)
+	 MIME-Version; b=qYM/eUNu7WoDIYbPBZEtEcXbYIY8mfr2F8R0bq5r6vIE5txfjI0OyysC/eLltgMs+RvmDYw5x1NG+Kwmdtko6E9B05ndpJhV4V9S5aHC6je3Sgx+YRkMsSGibWFpCR2OLdaXLq4aX3soYXa+DO2m4cdQ2hxwY8kn/KyIumnTQ5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPAiqxlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC04C2BCAF;
+	Mon, 13 Apr 2026 16:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776101561;
-	bh=n4ior9BW2QS6Bj3hB453qqOzgH687Hlkeuuk+QyZl4k=;
+	s=korg; t=1776097386;
+	bh=NHTpzRwzAlrmLz1N1fuTUp+MUsOfZNxxe4UI8px6R3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1apQ495a5/f3uQWP/NMBPF1ImeyTWzBtbTm73GON7Tru+JSK5cneMRl/s11RsASaO
-	 pZu1n3t+1Mon1FuQEi3a5mwxC2JTv2WE1mpS/Lurg0Ftg3jasrTjdwtaUh48EtAD4k
-	 rcUSd6LYSruGJvqn0yQlbKXz0RhWPsI/0ZwO8VLw=
+	b=dPAiqxlxy7kouJXuNWgSwWjL2q/RyXF7myoTDDRGN/w7IvLmTyESdD1HqZ3cGCFr1
+	 kMzxlFzA2/+25pyYE3lkjsqwfV7kU4QIdOaINGMDNo76i4TnIfOgBkHlliPRMaP6l1
+	 vaRzwd9GIFMH4KTkCC9CnU1ZEe3qaXDGoH2bPCMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: [PATCH 5.10 001/491] ARM: clean up the memset64() C wrapper
+	David Dull <monderasdor@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 115/570] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
 Date: Mon, 13 Apr 2026 17:54:06 +0200
-Message-ID: <20260413155819.104054583@linuxfoundation.org>
+Message-ID: <20260413155834.751474752@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237608-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236624-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,decadent.org.uk:email]
-X-Rspamd-Queue-Id: 086553F1866
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,strlen.de:email]
+X-Rspamd-Queue-Id: C614C3EEDA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit b52343d1cb47bb27ca32a3f4952cc2fd3cd165bf ]
+[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
 
-The current logic to split the 64-bit argument into its 32-bit halves is
-byte-order specific and a bit clunky.  Use a union instead which is
-easier to read and works in all cases.
+nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
+entry from the queue data structures, taking ownership of the entry.
+For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
+attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
+present but NFQA_VLAN_TCI missing), the function returns immediately
+without freeing the dequeued entry or its sk_buff.
 
-GCC still generates the same machine code.
+This leaks the nf_queue_entry, its associated sk_buff, and all held
+references (net_device refcounts, struct net refcount).  Repeated
+triggering exhausts kernel memory.
 
-While at it, rename the arguments of the __memset64() prototype to
-actually reflect their semantics.
+Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
+on the error path, consistent with other error handling in this file.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Reported-by: Ben Hutchings <ben@decadent.org.uk> # for -stable
-Link: https://lore.kernel.org/all/1a11526ae3d8664f705b541b8d6ea57b847b49a8.camel@decadent.org.uk/
-Suggested-by: https://lore.kernel.org/all/aZonkWMwpbFhzDJq@casper.infradead.org/ # for -stable
-Link: https://lore.kernel.org/all/aZonkWMwpbFhzDJq@casper.infradead.org/
+Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
+Reviewed-by: David Dull <monderasdor@gmail.com>
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/string.h | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/netfilter/nfnetlink_queue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/string.h b/arch/arm/include/asm/string.h
-index b5ad23acb303a..369781ec55112 100644
---- a/arch/arm/include/asm/string.h
-+++ b/arch/arm/include/asm/string.h
-@@ -33,13 +33,17 @@ static inline void *memset32(uint32_t *p, uint32_t v, __kernel_size_t n)
- }
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index d5f5b93a99a08..3925fcb7a222c 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -1250,8 +1250,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
  
- #define __HAVE_ARCH_MEMSET64
--extern void *__memset64(uint64_t *, uint32_t low, __kernel_size_t, uint32_t hi);
-+extern void *__memset64(uint64_t *, uint32_t first, __kernel_size_t, uint32_t second);
- static inline void *memset64(uint64_t *p, uint64_t v, __kernel_size_t n)
- {
--	if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
--		return __memset64(p, v, n * 8, v >> 32);
--	else
--		return __memset64(p, v >> 32, n * 8, v);
-+	union {
-+		uint64_t val;
-+		struct {
-+			uint32_t first, second;
-+		};
-+	} word = { .val = v };
-+
-+	return __memset64(p, word.first, n * 8, word.second);
- }
+ 	if (entry->state.pf == PF_BRIDGE) {
+ 		err = nfqa_parse_bridge(entry, nfqa);
+-		if (err < 0)
++		if (err < 0) {
++			nfqnl_reinject(entry, NF_DROP);
+ 			return err;
++		}
+ 	}
  
- #endif
+ 	if (nfqa[NFQA_PAYLOAD]) {
 -- 
 2.51.0
 
