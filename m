@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDMZJw4m3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:18 +0200
+	id ILdOORwd3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE863F13C9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B40F3EF976
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BD743256B2C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B19C63041491
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7DA31717E;
-	Mon, 13 Apr 2026 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A56C225A38;
+	Mon, 13 Apr 2026 16:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d99knWpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkT7NtDU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33831313298;
-	Mon, 13 Apr 2026 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E87238D27;
+	Mon, 13 Apr 2026 16:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099153; cv=none; b=csyK3n1LM07NA/boM0x9pPeeKTGSDpd9/qvK12joSoyqWiSAWhnLCpVd3+HdPsBVhVlXsrnz82rdi3gzldwqAHyAx0CRnBQzhMwfqowNf1OvYmjWqr0V/EvzrPr/6A6zrRZg6p0bM7oLSXEzmNwl25qoF8wfGbYDvxcLW311UXs=
+	t=1776097973; cv=none; b=Vz/vj/lFaJd9ZdhUta3mqjCYKueYK3DdDQGfbc7MI/mXMbIiqlT0gwzzcLvys+ixrqveZz8FWiKGcYU+hFzQMnoiwDOxf50mJe49wySvRY6WdRZOh0JsIDiVZkjS9pB4m6T7PMnr+Ov1YaQQ7nJYGksH0fRD6MnynB2zw+3esOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099153; c=relaxed/simple;
-	bh=A3amAmm3RjVlKoQrrLPf6jeBy3CulXm0hKKG2ygq38Q=;
+	s=arc-20240116; t=1776097973; c=relaxed/simple;
+	bh=ox5f6537GHrXpXWAleqzpMknFfzro5WCbhaYkvN2cXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRJ2gpd8xm3Hnie0NVtLELC2dbE2MOh5/2L3LbVJODXrnm+Zn79hnAMitUtRS+p1LR+p1NT3yVKSsejTfZ7g1PmrC64IOS2/84EFGlFJ4B3v0UPnDsqhi/hkmvwJsLRSD9h05jArSruUO98qz9HHH2QRdNZ2dkuvJCTWVdyFEt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d99knWpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50C4C2BCAF;
-	Mon, 13 Apr 2026 16:52:32 +0000 (UTC)
+	 MIME-Version; b=KqKzsh7guF01ebeDr5pAtvndJdhmaLIgtSUsQIzTkDEY472FwHfY9LbdD46sNv5Z+KEQjjU5U8eGuSEGVIBWoiZZk+vc2NS+xeF1F37XWP8TmSndaBQE37wniiH+TKdEfMrWcrFFmB6RO+WPaGBnC1qCL8xhgH3o1gmtO2qlXt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkT7NtDU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58295C2BCAF;
+	Mon, 13 Apr 2026 16:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099153;
-	bh=A3amAmm3RjVlKoQrrLPf6jeBy3CulXm0hKKG2ygq38Q=;
+	s=korg; t=1776097973;
+	bh=ox5f6537GHrXpXWAleqzpMknFfzro5WCbhaYkvN2cXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d99knWpfhg5bSpMwHey7F44Lprn98cVzIBSYXYgYL8c5TbGz6jbJgck+MBZBafVjT
-	 A0CayE3wQvasqWDqcAxAPOBFajX/DdsIy0H3g51Rd6GIDCm127kkDFUITrM2yTL/i4
-	 0xGErdgaO7m/os4eiru7DA7Vj+a03ZAJ24GpRvAM=
+	b=lkT7NtDU4Fb3Xl65sKI4yBH/Arycyb2IIt3hE4vhCJgtKFqHODENXMk5IWht5ks+R
+	 09QjZJH2LcJk+blpJbCSkletRyZI247epSaOuW9d/jnMKS59JdPtpObIMXmQTZJyIS
+	 PWPdLT/IzlZJ1WrTCn1RzEsjFBMUqkuFq5yj/v3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kdasu.kdev@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 230/491] mtd: rawnand: brcmnand: read/write oob during EDU transfer
-Date: Mon, 13 Apr 2026 17:57:55 +0200
-Message-ID: <20260413155827.670342452@linuxfoundation.org>
+Subject: [PATCH 5.15 345/570] regmap: Synchronize cache for the page selector
+Date: Mon, 13 Apr 2026 17:57:56 +0200
+Message-ID: <20260413155843.413844470@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,202 +65,147 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237321-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236858-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email]
-X-Rspamd-Queue-Id: EDE863F13C9
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7B40F3EF976
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kdasu.kdev@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a071912636cc3420f54e2a6312c1625ac763cf03 ]
+[ Upstream commit 09e70e4f119ff650d24c96161fd2f62ac7e424b0 ]
 
-Added support to read/write oob during EDU transfers.
+If the selector register is represented in each page, its value
+according to the debugfs is stale because it gets synchronized
+only after the real page switch happens. Hence the regmap cache
+initialisation from the HW inherits outdated data in the selector
+register.
 
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20210311170909.9031-1-kdasu.kdev@gmail.com
-Stable-dep-of: da9ba4dcc01e ("mtd: rawnand: brcmnand: skip DMA during panic write")
+Synchronize cache for the page selector just in time.
+
+Before (offset followed by hexdump, the first byte is selector):
+
+    // Real registers
+    18: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
+    ...
+    // Virtual (per port)
+    40: 05 ff 00 00 e0 e0 00 00 00 00 00 1f
+    50: 00 ff 00 00 e0 e0 00 00 00 00 00 1f
+    60: 01 ff 00 00 ff ff 00 00 00 00 00 00
+    70: 02 ff 00 00 cf f3 00 00 00 00 00 0c
+    80: 03 ff 00 00 00 00 00 00 00 00 00 ff
+    90: 04 ff 00 00 ff 0f 00 00 f0 00 00 00
+
+After:
+
+    // Real registers
+    18: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
+    ...
+    // Virtual (per port)
+    40: 00 ff 00 00 e0 e0 00 00 00 00 00 1f
+    50: 01 ff 00 00 e0 e0 00 00 00 00 00 1f
+    60: 02 ff 00 00 ff ff 00 00 00 00 00 00
+    70: 03 ff 00 00 cf f3 00 00 00 00 00 0c
+    80: 04 ff 00 00 00 00 00 00 00 00 00 ff
+    90: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
+
+Fixes: 6863ca622759 ("regmap: Add support for register indirect addressing.")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260302184753.2693803-1-andriy.shevchenko@linux.intel.com
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 59 +++++++++++++++++++++---
- 1 file changed, 52 insertions(+), 7 deletions(-)
+ drivers/base/regmap/regmap.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index cb35090510470..a101df3b19f70 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -245,6 +245,9 @@ struct brcmnand_controller {
- 	u32                     edu_ext_addr;
- 	u32                     edu_cmd;
- 	u32                     edu_config;
-+	int			sas; /* spare area size, per flash cache */
-+	int			sector_size_1k;
-+	u8			*oob;
- 
- 	/* flash_dma reg */
- 	const u16		*flash_dma_offsets;
-@@ -252,7 +255,7 @@ struct brcmnand_controller {
- 	dma_addr_t		dma_pa;
- 
- 	int (*dma_trans)(struct brcmnand_host *host, u64 addr, u32 *buf,
--			 u32 len, u8 dma_cmd);
-+			 u8 *oob, u32 len, u8 dma_cmd);
- 
- 	/* in-memory cache of the FLASH_CACHE, used only for some commands */
- 	u8			flash_cache[FC_BYTES];
-@@ -1527,6 +1530,23 @@ static irqreturn_t brcmnand_edu_irq(int irq, void *data)
- 		edu_writel(ctrl, EDU_EXT_ADDR, ctrl->edu_ext_addr);
- 		edu_readl(ctrl, EDU_EXT_ADDR);
- 
-+		if (ctrl->oob) {
-+			if (ctrl->edu_cmd == EDU_CMD_READ) {
-+				ctrl->oob += read_oob_from_regs(ctrl,
-+							ctrl->edu_count + 1,
-+							ctrl->oob, ctrl->sas,
-+							ctrl->sector_size_1k);
-+			} else {
-+				brcmnand_write_reg(ctrl, BRCMNAND_CMD_ADDRESS,
-+						   ctrl->edu_ext_addr);
-+				brcmnand_read_reg(ctrl, BRCMNAND_CMD_ADDRESS);
-+				ctrl->oob += write_oob_to_regs(ctrl,
-+							       ctrl->edu_count,
-+							       ctrl->oob, ctrl->sas,
-+							       ctrl->sector_size_1k);
-+			}
-+		}
-+
- 		mb(); /* flush previous writes */
- 		edu_writel(ctrl, EDU_CMD, ctrl->edu_cmd);
- 		edu_readl(ctrl, EDU_CMD);
-@@ -1908,9 +1928,10 @@ static void brcmnand_write_buf(struct nand_chip *chip, const uint8_t *buf,
-  *  Kick EDU engine
-  */
- static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
--			      u32 len, u8 cmd)
-+			      u8 *oob, u32 len, u8 cmd)
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index e1380b08685f4..b1cae7db6318a 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1629,6 +1629,7 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
+ 			       unsigned int val_num)
  {
- 	struct brcmnand_controller *ctrl = host->ctrl;
-+	struct brcmnand_cfg *cfg = &host->hwcfg;
- 	unsigned long timeo = msecs_to_jiffies(200);
- 	int ret = 0;
- 	int dir = (cmd == CMD_PAGE_READ ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
-@@ -1918,6 +1939,9 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
- 	unsigned int trans = len >> FC_SHIFT;
- 	dma_addr_t pa;
+ 	void *orig_work_buf;
++	unsigned int selector_reg;
+ 	unsigned int win_offset;
+ 	unsigned int win_page;
+ 	bool page_chg;
+@@ -1647,10 +1648,31 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
+ 			return -EINVAL;
+ 	}
  
-+	dev_dbg(ctrl->dev, "EDU %s %p:%p\n", ((edu_cmd == EDU_CMD_READ) ?
-+					      "read" : "write"), buf, oob);
+-	/* It is possible to have selector register inside data window.
+-	   In that case, selector register is located on every page and
+-	   it needs no page switching, when accessed alone. */
++	/*
++	 * Calculate the address of the selector register in the corresponding
++	 * data window if it is located on every page.
++	 */
++	page_chg = in_range(range->selector_reg, range->window_start, range->window_len);
++	if (page_chg)
++		selector_reg = range->range_min + win_page * range->window_len +
++			       range->selector_reg - range->window_start;
 +
- 	pa = dma_map_single(ctrl->dev, buf, len, dir);
- 	if (dma_mapping_error(ctrl->dev, pa)) {
- 		dev_err(ctrl->dev, "unable to map buffer for EDU DMA\n");
-@@ -1929,6 +1953,8 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
- 	ctrl->edu_ext_addr = addr;
- 	ctrl->edu_cmd = edu_cmd;
- 	ctrl->edu_count = trans;
-+	ctrl->sas = cfg->spare_area_size;
-+	ctrl->oob = oob;
++	/*
++	 * It is possible to have selector register inside data window.
++	 * In that case, selector register is located on every page and it
++	 * needs no page switching, when accessed alone.
++	 *
++	 * Nevertheless we should synchronize the cache values for it.
++	 * This can't be properly achieved if the selector register is
++	 * the first and the only one to be read inside the data window.
++	 * That's why we update it in that case as well.
++	 *
++	 * However, we specifically avoid updating it for the default page,
++	 * when it's overlapped with the real data window, to prevent from
++	 * infinite looping.
++	 */
+ 	if (val_num > 1 ||
++	    (page_chg && selector_reg != range->selector_reg) ||
+ 	    range->window_start + win_offset != range->selector_reg) {
+ 		/* Use separate work_buf during page switching */
+ 		orig_work_buf = map->work_buf;
+@@ -1659,7 +1681,7 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
+ 		ret = _regmap_update_bits(map, range->selector_reg,
+ 					  range->selector_mask,
+ 					  win_page << range->selector_shift,
+-					  &page_chg, false);
++					  NULL, false);
  
- 	edu_writel(ctrl, EDU_DRAM_ADDR, (u32)ctrl->edu_dram_addr);
- 	edu_readl(ctrl,  EDU_DRAM_ADDR);
-@@ -1937,6 +1963,16 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
- 	edu_writel(ctrl, EDU_LENGTH, FC_BYTES);
- 	edu_readl(ctrl, EDU_LENGTH);
+ 		map->work_buf = orig_work_buf;
  
-+	if (ctrl->oob && (ctrl->edu_cmd == EDU_CMD_WRITE)) {
-+		brcmnand_write_reg(ctrl, BRCMNAND_CMD_ADDRESS,
-+				   ctrl->edu_ext_addr);
-+		brcmnand_read_reg(ctrl, BRCMNAND_CMD_ADDRESS);
-+		ctrl->oob += write_oob_to_regs(ctrl,
-+					       1,
-+					       ctrl->oob, ctrl->sas,
-+					       ctrl->sector_size_1k);
-+	}
-+
- 	/* Start edu engine */
- 	mb(); /* flush previous writes */
- 	edu_writel(ctrl, EDU_CMD, ctrl->edu_cmd);
-@@ -1951,6 +1987,14 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
- 
- 	dma_unmap_single(ctrl->dev, pa, len, dir);
- 
-+	/* read last subpage oob */
-+	if (ctrl->oob && (ctrl->edu_cmd == EDU_CMD_READ)) {
-+		ctrl->oob += read_oob_from_regs(ctrl,
-+						1,
-+						ctrl->oob, ctrl->sas,
-+						ctrl->sector_size_1k);
-+	}
-+
- 	/* for program page check NAND status */
- 	if (((brcmnand_read_reg(ctrl, BRCMNAND_INTFC_STATUS) &
- 	      INTFC_FLASH_STATUS) & NAND_STATUS_FAIL) &&
-@@ -2060,7 +2104,7 @@ static void brcmnand_dma_run(struct brcmnand_host *host, dma_addr_t desc)
- }
- 
- static int brcmnand_dma_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
--			      u32 len, u8 dma_cmd)
-+			      u8 *oob, u32 len, u8 dma_cmd)
- {
- 	struct brcmnand_controller *ctrl = host->ctrl;
- 	dma_addr_t buf_pa;
-@@ -2205,8 +2249,9 @@ static int brcmnand_read(struct mtd_info *mtd, struct nand_chip *chip,
- try_dmaread:
- 	brcmnand_clear_ecc_addr(ctrl);
- 
--	if (ctrl->dma_trans && !oob && flash_dma_buf_ok(buf)) {
--		err = ctrl->dma_trans(host, addr, buf,
-+	if (ctrl->dma_trans && (has_edu(ctrl) || !oob) &&
-+	    flash_dma_buf_ok(buf)) {
-+		err = ctrl->dma_trans(host, addr, buf, oob,
- 				      trans * FC_BYTES,
- 				      CMD_PAGE_READ);
- 
-@@ -2354,8 +2399,8 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
- 	for (i = 0; i < ctrl->max_oob; i += 4)
- 		oob_reg_write(ctrl, i, 0xffffffff);
- 
--	if (use_dma(ctrl) && !oob && flash_dma_buf_ok(buf)) {
--		if (ctrl->dma_trans(host, addr, (u32 *)buf, mtd->writesize,
-+	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
-+		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
- 				    CMD_PROGRAM_PAGE))
- 
- 			ret = -EIO;
 -- 
-2.51.0
+2.53.0
 
 
 
