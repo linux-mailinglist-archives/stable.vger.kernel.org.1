@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-237545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237546-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIJZMc0n3WmVaQkAu9opvQ
-	(envelope-from <stable+bounces-237545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:45 +0200
+	id kDvvA88n3WmVaQkAu9opvQ
+	(envelope-from <stable+bounces-237546-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514E63F1739
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B653F1741
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3B69318E1A9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0268311FD9D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF9F333429;
-	Mon, 13 Apr 2026 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B793368B5;
+	Mon, 13 Apr 2026 17:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xY/c6sB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJnVxcXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D9D32ABC0;
-	Mon, 13 Apr 2026 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FA232ABC0;
+	Mon, 13 Apr 2026 17:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099731; cv=none; b=roZQ1yijwss2OE9GeJ1BkPl2+lqROrzKrFD77XrinnK4uE17wHs6jSiBvKmGFpk87RWXE3xR3OvsgMT7qazLPGD7ixGc6Oz+/V10wEtwelXzwNXvq9dg/Z94oA+IZnrIEpBFWeRw6/6euz8p3llTJa8f72FFa2+XHfyyBd/76iU=
+	t=1776099733; cv=none; b=FmlH6WG1/srT+1k8sA4zNg8GMLUhFL4qiJiyD9pU9XLLevApd9bSUkbZCiEcfz33u2qYxfNvposXkbV7wfeFId6oxrbdLrdRehmxDjn87fdf53RW1jt9pk8eCEl9T1DyOpl5kitlzIob2/QB89fnGSrW3L49Rbl8y9Wrw0RCjsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099731; c=relaxed/simple;
-	bh=5g18jgowgC6T00fqUmbAYOeB8qR8oiuhGoJMsFoDrIA=;
+	s=arc-20240116; t=1776099733; c=relaxed/simple;
+	bh=OQt2TxnjaFhJKnyXvOlM1+1Gmga7O2nFuLQGUy/gSGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swrZnYFMu2GP+I1YFLlTKZ2WD6hv1QlknXiZLqswl4MyilQI0tRcLW83y0SxuWQMGRcjmDHFZe7NA36DJZoXLMR+Bfm6TJ8VercTlbYMNB/kWMqWYZxydLnwTyjxszrJ60ie2WSR0oa4uRLe40ntgT8ok8dazecnFOGwIz5/p/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xY/c6sB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84331C2BCAF;
-	Mon, 13 Apr 2026 17:02:10 +0000 (UTC)
+	 MIME-Version; b=CaR66TMtuM+dyYJ7OCNLb2T8o2KnHI4gRC27nao38jzHau6R2ESRXLItLfbQT2VKybHmN+I2G/ayXXrgoPDIppBnrGzojHdFXYtJpJJqpR4EK+vm7wBIkq8oL54ccfrsOSmtIwxyk2/dg3T3bairjBc66S4NtXOLxUT7VSaafBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJnVxcXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E153C2BCAF;
+	Mon, 13 Apr 2026 17:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099731;
-	bh=5g18jgowgC6T00fqUmbAYOeB8qR8oiuhGoJMsFoDrIA=;
+	s=korg; t=1776099733;
+	bh=OQt2TxnjaFhJKnyXvOlM1+1Gmga7O2nFuLQGUy/gSGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xY/c6sB4IVJ6LThlGgP6RHUY/gmQmsaq4VJRgcmHkFgMvyfBGcMneZzIwLgow7DcJ
-	 j8zxYgrNEkdKY+/+NbP6ngJmDeGZ1rYyw7Vsv/fZySwy8JUaBTVIVX7cFQTN4juDg+
-	 E22wSXKKL5EiOQy2KTBL5WZwD23XwVLHSa0C3R6w=
+	b=RJnVxcXp9aj6kX87wSSV/bI2dmQirWluffYb7DZuNH5RN6kWxoulmERO+XoKup3u4
+	 I9/pHSt5d5GciUb7jWU0YH0uWP+15zI4BuHj5wMRgWtkqhcs7fnpOF0RvcABBXOqbO
+	 w3YmVbul37uknWO6hDDjDCuBEVJOrVp+IKCJXe1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tyllis Xu <LivelyCarpet87@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 451/491] net: stmmac: fix integer underflow in chain mode
-Date: Mon, 13 Apr 2026 18:01:36 +0200
-Message-ID: <20260413155835.921102312@linuxfoundation.org>
+Subject: [PATCH 5.10 452/491] rxrpc: Fix key/keyring checks in setsockopt(RXRPC_SECURITY_KEY/KEYRING)
+Date: Mon, 13 Apr 2026 18:01:37 +0200
+Message-ID: <20260413155835.958077507@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -72,26 +79,26 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237545-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237546-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,auristor.com,allelesecurity.com,gmail.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 514E63F1739
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,allelesecurity.com:email]
+X-Rspamd-Queue-Id: 60B653F1741
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,81 +106,88 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Tyllis Xu <livelycarpet87@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 51f4e090b9f87b40c21b6daadb5c06e6c0a07b67 upstream.
+commit 2afd86ccbb2082a3c4258aea8c07e5bb6267bc2f upstream.
 
-The jumbo_frm() chain-mode implementation unconditionally computes
+An AF_RXRPC socket can be both client and server at the same time.  When
+sending new calls (ie. it's acting as a client), it uses rx->key to set the
+security, and when accepting incoming calls (ie. it's acting as a server),
+it uses rx->securities.
 
-    len = nopaged_len - bmax;
+setsockopt(RXRPC_SECURITY_KEY) sets rx->key to point to an rxrpc-type key
+and setsockopt(RXRPC_SECURITY_KEYRING) sets rx->securities to point to a
+keyring of rxrpc_s-type keys.
 
-where nopaged_len = skb_headlen(skb) (linear bytes only) and bmax is
-BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
-decides to invoke jumbo_frm() based on skb->len (total length including
-page fragments):
+Now, it should be possible to use both rx->key and rx->securities on the
+same socket - but for userspace AF_RXRPC sockets rxrpc_setsockopt()
+prevents that.
 
-    is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
+Fix this by:
 
-When a packet has a small linear portion (nopaged_len <= bmax) but a
-large total length due to page fragments (skb->len > bmax), the
-subtraction wraps as an unsigned integer, producing a huge len value
-(~0xFFFFxxxx).  This causes the while (len != 0) loop to execute
-hundreds of thousands of iterations, passing skb->data + bmax * i
-pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
-SoCs (the typical deployment for stmmac), this maps arbitrary kernel
-memory to the DMA engine, constituting a kernel memory disclosure and
-potential memory corruption from hardware.
+ (1) Remove the incorrect check rxrpc_setsockopt(RXRPC_SECURITY_KEYRING)
+     makes on rx->key.
 
-Fix this by introducing a buf_len local variable clamped to
-min(nopaged_len, bmax).  Computing len = nopaged_len - buf_len is then
-always safe: it is zero when the linear portion fits within a single
-descriptor, causing the while (len != 0) loop to be skipped naturally,
-and the fragment loop in stmmac_xmit() handles page fragments afterward.
+ (2) Move the check that rxrpc_setsockopt(RXRPC_SECURITY_KEY) makes on
+     rx->key down into rxrpc_request_key().
 
-Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-Link: https://patch.msgid.link/20260401044708.1386919-1-LivelyCarpet87@gmail.com
+ (3) Remove rxrpc_request_key()'s check on rx->securities.
+
+This (in combination with a previous patch) pushes the checks down into the
+functions that set those pointers and removes the cross-checks that prevent
+both key and keyring being set.
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Luxiao Xu <rakukuip@gmail.com>
+cc: Yuan Tan <yuantan098@gmail.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-16-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/chain_mode.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/rxrpc/af_rxrpc.c |    6 ------
+ net/rxrpc/key.c      |    2 +-
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-@@ -20,7 +20,7 @@ static int jumbo_frm(void *p, struct sk_
- 	unsigned int nopaged_len = skb_headlen(skb);
- 	struct stmmac_priv *priv = tx_q->priv_data;
- 	unsigned int entry = tx_q->cur_tx;
--	unsigned int bmax, des2;
-+	unsigned int bmax, buf_len, des2;
- 	unsigned int i = 1, len;
- 	struct dma_desc *desc;
+--- a/net/rxrpc/af_rxrpc.c
++++ b/net/rxrpc/af_rxrpc.c
+@@ -614,9 +614,6 @@ static int rxrpc_setsockopt(struct socke
+ 			goto success;
  
-@@ -31,17 +31,18 @@ static int jumbo_frm(void *p, struct sk_
- 	else
- 		bmax = BUF_SIZE_2KiB;
+ 		case RXRPC_SECURITY_KEY:
+-			ret = -EINVAL;
+-			if (rx->key)
+-				goto error;
+ 			ret = -EISCONN;
+ 			if (rx->sk.sk_state != RXRPC_UNBOUND)
+ 				goto error;
+@@ -624,9 +621,6 @@ static int rxrpc_setsockopt(struct socke
+ 			goto error;
  
--	len = nopaged_len - bmax;
-+	buf_len = min_t(unsigned int, nopaged_len, bmax);
-+	len = nopaged_len - buf_len;
+ 		case RXRPC_SECURITY_KEYRING:
+-			ret = -EINVAL;
+-			if (rx->key)
+-				goto error;
+ 			ret = -EISCONN;
+ 			if (rx->sk.sk_state != RXRPC_UNBOUND)
+ 				goto error;
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -903,7 +903,7 @@ int rxrpc_request_key(struct rxrpc_sock
  
- 	des2 = dma_map_single(priv->device, skb->data,
--			      bmax, DMA_TO_DEVICE);
-+			      buf_len, DMA_TO_DEVICE);
- 	desc->des2 = cpu_to_le32(des2);
- 	if (dma_mapping_error(priv->device, des2))
- 		return -1;
- 	tx_q->tx_skbuff_dma[entry].buf = des2;
--	tx_q->tx_skbuff_dma[entry].len = bmax;
-+	tx_q->tx_skbuff_dma[entry].len = buf_len;
- 	/* do not close the descriptor and do not set own bit */
--	stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum, STMMAC_CHAIN_MODE,
-+	stmmac_prepare_tx_desc(priv, desc, 1, buf_len, csum, STMMAC_CHAIN_MODE,
- 			0, false, skb->len);
+ 	_enter("");
  
- 	while (len != 0) {
+-	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->securities)
++	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->key)
+ 		return -EINVAL;
+ 
+ 	description = memdup_sockptr_nul(optval, optlen);
 
 
 
