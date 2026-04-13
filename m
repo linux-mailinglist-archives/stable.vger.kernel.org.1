@@ -1,190 +1,224 @@
-Return-Path: <stable+bounces-237651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIUPG3lT3WkFcQkAu9opvQ
-	(envelope-from <stable+bounces-237651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:35:05 +0200
+	id OEP+A+hU3WkFcQkAu9opvQ
+	(envelope-from <stable+bounces-237652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:41:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23AA3F3209
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA5D3F32B7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DF5A3023503
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:33:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07B90303AA8E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2509C347BA5;
-	Mon, 13 Apr 2026 20:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlRkrghO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0E1392802;
+	Mon, 13 Apr 2026 20:36:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B011DFF7
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 20:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371A41D7E5C;
+	Mon, 13 Apr 2026 20:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776112419; cv=none; b=KZL5NFVNZof2Na4y4nbiuQBEorx3U+PoInJz+YOVPNeAOaOA/TLNXQAhe/674/0QGval9SRkColgsWCEmqwhMxCBMbbsCb8LtgHggxKzTBjQ8nSb8iQJjknS7Fq0shRPJXXeTWcuQqMzXDVri2hiWIb1o8EJsO0Mo5P9eqABbeU=
+	t=1776112612; cv=none; b=UiXvzNVgXByD3t/h3do37Q0oc5Gu1Sw6WT8G3z81sBuZ83ay1To5cj4TK0F6zcFeKsf6a+qtvq1pJQtKPF9eExXsWaWRNHVmlPd4OeUgkvwYH/iKBbUUGbdU03tQGyOtAIEDDFH6z7u7E9NFTUZqhvsGCvYQk+m55TEvEN5QQT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776112419; c=relaxed/simple;
-	bh=wCqaI7WVpGD8I/LJUMoulVK455m9fusXv6dkUgKAC9M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ee4GHX7IOJnA8p3upi/KEVoXiLJBNf1nE6prF/wOBUen4iH5TcWHozOOzZ46Vwe67BN3rfBWCBNn1MgEnWbOAg/FndJm+Y2erN5+MT6J9trBoWMUaxoe1l6lc2LfIP6esXAzHtABuKMWiKlEYch8cBGfNqa0wIc8UZt8Pb5vnag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlRkrghO; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43d43e09de5so2853756f8f.1
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 13:33:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776112417; x=1776717217; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bPkPEzfI7VUAH2K97iljvYM+ya7M355aVFHm/wT39nw=;
-        b=DlRkrghO8S9EA5bIcigTBdgRXUPpW0eGzEROQZ8ZeSLBbazSMwVzLxjm77mE8zNQCs
-         Jr/TKc3uQhgqcFR6AeF7IUlzPm1tRINyJe34do4WxDVqvfidvTScpL2m+BNpOdokfwPk
-         AmvpoXKtgwPFyG5AMcAVVj/1XV84rjbhjPXdErYKMdkDFc27WKIEwckKvhgQFq77Y37C
-         +zgQZprMLWcxlUhPG3YErmvGMGLvEaMonNGm681Aad6X5wLsZyK0QREdka/aZa4hgoRF
-         /mNicJvhqjnk3bFKYYRVvjL+Jwl0V2/WUVzcr++Cd7fiT7844I2nMF7rymoGNVqYcTE1
-         dbtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776112417; x=1776717217;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bPkPEzfI7VUAH2K97iljvYM+ya7M355aVFHm/wT39nw=;
-        b=hvap6JleXL0IUsMRKt/si7de2n+eCT0TyACJkMyyKcA4G2k73HawaM6+CcomXdk7UN
-         mGKUVVPyAHQpGIDpRYFDgsLHiYc6x8FIbvi6TiK8p6cdAAEe1S8ZHtLrmAu3DViema3i
-         NNMJyiuqDIwcjkw3daCX/RkRZNYXX+drnwulbMRYnYt0b3Wom7ClbeHIKXsYBw0N7dg+
-         q6pgPMdJUfJDCeMOz0+ezvMphd8or+zdkAMkMptRNpvpYP+bi0uZdur1r6DNm4YtEnyp
-         cdIf+IoN/CB4H2JK1MsUZQo3Dfzug0sJB9iYtPtosugaKLK06ngpIf19PQ2lkeRyrj4q
-         09TA==
-X-Forwarded-Encrypted: i=1; AFNElJ/6XWn9y3sNi0b5X+G7wFBdoYsdLcJ78Wg8+zBkdDbo7a1inGxnECINNYWRJcCDJ6ycZuuwO/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM+cd2IqzuK6aXClwM8rUzdjv+tNWkKDoXqTLxAXV8IPVIpnrF
-	oHWdUBeak86hPRB8MG3J87yXY8506dkQqPddJgwcvJ/sAAfU73acXCrq
-X-Gm-Gg: AeBDieuxynAc2PkDOtwF8p+D7cYgl/hNL+GBmomtNosSooNmBUyjNJMh/DUfXlYkY4R
-	JjzQY2ESybED5yJXB+FrTZvAvUw73F6F9uxtx07y+4bGgRahNxZDELshcre6R9bfg1oqu78Rdqi
-	YQxMR/ZFU9aAE8eL4lJBLij20XWmvJaCU+N9q421dtjr4846YmZgFCLJNvfWhVDhOnoYXu/9cPj
-	Uh09Xzwrvyn32govama7+uea1OB1tZkJhhFOCEKfLkIJXLk4OuEfeLqkM7hdCZydE+Mq+ANZMUa
-	tA1teWHCS3wntgd2bXzS1mHZ+HflS1VZ5RKF1C6exLhDgCmofjEly8t1qD4WMGwzkQQ4wc/xNNY
-	zzMQGmQp5bFjtGbaIIzB0Fy9YiobyJSt7pYHhLcNPcBCrZZwjT1s426wMsAvMUOIz2DAGMb4v2A
-	K4jsNH8sYh+tfmYFk2Av9uhANGCShJqabMEP6QaHYVx+oW5yUaWRWyWJ0FyvgMEWK3
-X-Received: by 2002:a5d:5d83:0:b0:43d:30af:a173 with SMTP id ffacd0b85a97d-43d64259b7emr21409425f8f.5.1776112416875;
-        Mon, 13 Apr 2026 13:33:36 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e5062fsm34336337f8f.31.2026.04.13.13.33.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 13:33:36 -0700 (PDT)
-Date: Mon, 13 Apr 2026 21:33:35 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Cc: linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- sathya.prakash@broadcom.com, chandrakanth.patil@broadcom.com,
- dlemoal@kernel.org, stable@vger.kernel.org, Mira Limbeck
- <m.limbeck@proxmox.com>, Keith Busch <kbusch@kernel.org>
-Subject: Re: [PATCH v3] mpt3sas: Limit NVMe request size to 2 MiB
-Message-ID: <20260413213335.4010d8f2@pumpkin>
-In-Reply-To: <20260413180003.76489-1-ranjan.kumar@broadcom.com>
-References: <20260413180003.76489-1-ranjan.kumar@broadcom.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1776112612; c=relaxed/simple;
+	bh=7igEk5LlGaHvAIFJjUzN60iNrULKtkSkCfkWpZvv9Fk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dF2bpwLMvd5NV417pt5lwmxql+9cmUwNptvHDrVyoeIQf0hv3SUf4MQzhJXD6LAbvs5jIV6Ut1VvlNeJYLjAwF8MzEFBbtp5CuuA2hveM9+jxuxKDGxePXxO8SDuStEdj6wym5qiCpmxgqlh8JolcM2KCXOFOTu7txEgXGOZhzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wCO1Y-004mwT-2j;
+	Mon, 13 Apr 2026 20:36:47 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wCO1W-00000002fvn-0t0F;
+	Mon, 13 Apr 2026 22:36:46 +0200
+Message-ID: <d23195793d7f1cec4c8ea1b1a5e29fb6051211ef.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 419/491] mm/hugetlb: make detecting shared pte more
+ reliable
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Miaohe Lin <linmiaohe@huawei.com>, Lukas
+ Bulwahn	 <lukas.bulwahn@gmail.com>, Mike Kravetz <mike.kravetz@oracle.com>,
+ Muchun Song	 <songmuchun@bytedance.com>, Andrew Morton
+ <akpm@linux-foundation.org>,  "David Hildenbrand (Arm)"	
+ <david@kernel.org>, Sasha Levin <sashal@kernel.org>
+Date: Mon, 13 Apr 2026 22:36:40 +0200
+In-Reply-To: <20260413155834.712660018@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
+	 <20260413155834.712660018@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-kVxSadBaUdsS41IkQu67"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-2.06 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237651-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,huawei.com,gmail.com,oracle.com,bytedance.com,linux-foundation.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237652-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	DMARC_NA(0.00)[decadent.org.uk];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email,proxmox.com:email]
-X-Rspamd-Queue-Id: C23AA3F3209
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linux-foundation.org:email,bytedance.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 6BA5D3F32B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 13 Apr 2026 23:30:03 +0530
-Ranjan Kumar <ranjan.kumar@broadcom.com> wrote:
 
-> The HBA firmware reports NVMe MDTS values based on the underlying drive
-> capability. However, due to the 4K PRP page size and a limit of
-> 512 entries, the driver supports a maximum I/O transfer size of 2 MiB.
-> 
-> Limit max_hw_sectors to the smaller of the reported MDTS and the
-> 2 MiB driver limit to prevent issuing oversized I/O that may lead
-> to a kernel oops.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP")
-> Reported-by: Mira Limbeck <m.limbeck@proxmox.com>
-> Closes: https://lore.kernel.org/r/291f78bf-4b4a-40dd-867d-053b36c564b3@proxmox.com
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9b8b84879d4a
-> Suggested-by: Keith Busch <kbusch@kernel.org>
-> Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+--=-kVxSadBaUdsS41IkQu67
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2026-04-13 at 18:01 +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Miaohe Lin <linmiaohe@huawei.com>
+
+Missing "commit 3aa4ed8040e1535d95c03cef8b52cf11bf0d8546 upstream."
+
+Ben.
+
+> If the pagetables are shared, we shouldn't copy or take references.  Sinc=
+e
+> src could have unshared and dst shares with another vma, huge_pte_none()
+> is thus used to determine whether dst_pte is shared.  But this check isn'=
+t
+> reliable.  A shared pte could have pte none in pagetable in fact.  The
+> page count of ptep page should be checked here in order to reliably
+> determine whether pte is shared.
+>=20
+> [lukas.bulwahn@gmail.com: remove unused local variable dst_entry in copy_=
+hugetlb_page_range()]
+>   Link: https://lkml.kernel.org/r/20220822082525.26071-1-lukas.bulwahn@gm=
+ail.com
+> Link: https://lkml.kernel.org/r/20220816130553.31406-7-linmiaohe@huawei.c=
+om
+> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+> Cc: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit 3aa4ed8040e1535d95c03cef8b52cf11bf0d8546)
+> [ David: We don't have 4eae4efa2c29 ("hugetlb: do early cow when page
+>   pinned on src mm", so there are some contextual conflicts. ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  drivers/scsi/mpt3sas/mpt3sas_scsih.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> index 6ff788557294..44dd439e6f17 100644
-> --- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> +++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> @@ -2738,8 +2738,20 @@ scsih_sdev_configure(struct scsi_device *sdev, struct queue_limits *lim)
->  				pcie_device->enclosure_level,
->  				pcie_device->connector_name);
->  
-> +		/*
-> +		 * The HBA firmware passes the NVMe drive's MDTS
-> +		 * (Maximum Data Transfer Size) up to the driver. However,
-> +		 * the driver hardcodes a 4K page size for the PRP list,
-                                             ^ buffer ? 
-> +		 * accommodating at most 512 entries. This strictly limits
-> +		 * the maximum supported NVMe I/O transfer to 2 MiB.
+>  mm/hugetlb.c | 19 +++++++------------
+>  1 file changed, 7 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 99a71943c1f69..a2cab8f2190f8 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -3827,7 +3827,7 @@ static bool is_hugetlb_entry_hwpoisoned(pte_t pte)
+>  int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src=
+,
+>  			    struct vm_area_struct *vma)
+>  {
+> -	pte_t *src_pte, *dst_pte, entry, dst_entry;
+> +	pte_t *src_pte, *dst_pte, entry;
+>  	struct page *ptepage;
+>  	unsigned long addr;
+>  	int cow;
+> @@ -3867,27 +3867,22 @@ int copy_hugetlb_page_range(struct mm_struct *dst=
+, struct mm_struct *src,
+> =20
+>  		/*
+>  		 * If the pagetables are shared don't copy or take references.
+> -		 * dst_pte =3D=3D src_pte is the common case of src/dest sharing.
+>  		 *
+> +		 * dst_pte =3D=3D src_pte is the common case of src/dest sharing.
+>  		 * However, src could have 'unshared' and dst shares with
+> -		 * another vma.  If dst_pte !none, this implies sharing.
+> -		 * Check here before taking page table lock, and once again
+> -		 * after taking the lock below.
+> +		 * another vma. So page_count of ptep page is checked instead
+> +		 * to reliably determine whether pte is shared.
+>  		 */
+> -		dst_entry =3D huge_ptep_get(dst_pte);
+> -		if ((dst_pte =3D=3D src_pte) || !huge_pte_none(dst_entry))
+> +		if (page_count(virt_to_page(dst_pte)) > 1)
+>  			continue;
+> =20
+>  		dst_ptl =3D huge_pte_lock(h, dst, dst_pte);
+>  		src_ptl =3D huge_pte_lockptr(h, src, src_pte);
+>  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+>  		entry =3D huge_ptep_get(src_pte);
+> -		dst_entry =3D huge_ptep_get(dst_pte);
+> -		if (huge_pte_none(entry) || !huge_pte_none(dst_entry)) {
+> +		if (huge_pte_none(entry)) {
+>  			/*
+> -			 * Skip if src entry none.  Also, skip in the
+> -			 * unlikely case dst entry !none as this implies
+> -			 * sharing with another vma.
+> +			 * Skip if src entry none.
+>  			 */
+>  			;
+>  		} else if (unlikely(is_hugetlb_entry_migration(entry) ||
 
-Doesn't that make max_fw_entries 4096/8.
-Assuming 4096 byte sectors the longest transfer is then 4096/8*4096.
-So none of this has anything to to with SECTOR_SHIFT.
+--=20
+Ben Hutchings
+When in doubt, use brute force. - Ken Thompson
 
-> +		 *
-> +		 * Cap max_hw_sectors to the smaller of the drive's reported
-> +		 * MDTS or the 2 MiB driver limit to prevent kernel oopses.
-> +		 */
-> +		lim->max_hw_sectors = SZ_2M >> SECTOR_SHIFT;
->  		if (pcie_device->nvme_mdts)
-> -			lim->max_hw_sectors = pcie_device->nvme_mdts / 512;
-> +			lim->max_hw_sectors = min_t(u32, lim->max_hw_sectors,
-> +					pcie_device->nvme_mdts >> SECTOR_SHIFT);
+--=-kVxSadBaUdsS41IkQu67
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-Why min_t() ?
+-----BEGIN PGP SIGNATURE-----
 
-David
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmndU9gACgkQ57/I7JWG
+EQlogw//b7pJ4gSJapYq5tv/C7l//byOD0CtEBJsy5B0NmMnfwhiiIXXX2ULeB0C
+xWuJCLnWpvDJL4zRHB/3l6HxYfeuzQ2S/hrtrvxKL1jLSABcKBnZ52q8SVhcYKmZ
+Mdjg/MduBWo3G4in/8rw2SktuhCkoyWvBq5gVsGDgbPPu8k1u4jTL2gzJ8CjFf0D
+LLpggR2z348DhNbi1JUEESAhutQLLjMp64viZAkkvNZTQimg/7dMmRVrPGK5peKQ
+/xlU71zEOxzliIh5hRsyVnpRusu7iuWnjvUmA+ALUP8AuotLbanPxsI0j8wPruBw
+qURfvo9PC2fMHhWc3TXTFJ5Yd3supuefxXuipE6WYmAkLxWiIQPm3qUTaqb0SOjc
+Q9IP5hg5uyqZnOWOSHX8mvtXV16R2fIKPWtQ6/XxkBdJYm6oGiKvq7o1v92eW0cm
+0qFJ7XExts4vPnUcKRw3S6MKtiO1ze4kkfBJjtf0p/1u5t3i2qt0FsYpBQyc+wJ6
+PSxbXIn4cSvjHIc7yGWXHYodXlt91c0oML73bA/Kebn5fGzCpQZy3bMdRYqrewwd
+XBh+7UxXg4ysIiPpqz47EAlmVS8VwHiYtKTmPhU8Pesaix9dk7/YFbu18IP2EzPz
+ONxfKaek5he5Cep8Ubnr1/IC24J8H4KMqefW0wdnjbGEeSYscHo=
+=KQ13
+-----END PGP SIGNATURE-----
 
->  
->  		pcie_device_put(pcie_device);
->  		spin_unlock_irqrestore(&ioc->pcie_device_lock, flags);
-
+--=-kVxSadBaUdsS41IkQu67--
 
