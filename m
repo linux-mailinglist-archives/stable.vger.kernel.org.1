@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-237340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EItrHAkg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:37 +0200
+	id gI/0Hgkb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD683F03F0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EC23EF458
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5ADAB3058303
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7BC873013B92
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE843161BF;
-	Mon, 13 Apr 2026 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AB02EBB8C;
+	Mon, 13 Apr 2026 16:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h34zIU20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0PcXNLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA98317148;
-	Mon, 13 Apr 2026 16:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A5C2D0C7E;
+	Mon, 13 Apr 2026 16:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099202; cv=none; b=D8MAARvEBc0u3WigwSD6/uoLGnU8wWiqCBdMpY79AiRVW20j2RM9Q4QQk8YFPn28wLSQFtbLocAd+aVVG2QsbklODphY4jDKx5UbYVib0zzYyEVmG5nwfeBhv9eWWzzUgn6kiUDZhpbOKKehUUSRJqG6yFcts3C9PhOl1VahSFc=
+	t=1776098048; cv=none; b=DYjNuXELYi+6UR4DnPhloeRz0Buv+OIADHVCBh2EC0qOjwV8saDuFHBkVO1aopxmPYTSaKbztavdRa/KeQxk8qHLrRIC7zfrzUkQqsZ2SAcY+ifNH/PZiD9qhbb7oXGcCoebjq2qrBNmAlxMzRXzWgIoLPGpOZ/FnH7uhYM74II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099202; c=relaxed/simple;
-	bh=J/OkTts33DvbsTcupAQcTuVIwQMUC6/LZfncyEyLKCs=;
+	s=arc-20240116; t=1776098048; c=relaxed/simple;
+	bh=ORECXZWhrKB+s3OPOACK92WNpC8xh0VMmlFLQQ0L2rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNLnqDFcVZwy517iqVwtTlMycQ9EZW7UemoYDtDBVETLAIBqL8c1+f0TVv9IUh7yIMGl2TGtDrJ4HvuF4fQYJgLbwWpPLIZbIoMiKlXp8UwaEDugRC542HrJniEUSIBHnEI1G4hjTXoujm5lQrLs324f3UciRE8Cpe0931Lc8R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h34zIU20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FACC2BCAF;
-	Mon, 13 Apr 2026 16:53:21 +0000 (UTC)
+	 MIME-Version; b=uvFhoXiVrStr4586DXa+NFehkZ7WqfXGATaV0xOespgzP/3xUtxB7R78r84PFrtvgCZfoFB4mlxHkVP5efgP/4tRa4FmWZs0ztOv7Ql+d3qWErMEGJA/pZdOvjG1aGcZHv7kmyQLoeRQ+0tziwY4HKW3LGBKRZyjoZBBnW7h9ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0PcXNLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC86DC2BCAF;
+	Mon, 13 Apr 2026 16:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099201;
-	bh=J/OkTts33DvbsTcupAQcTuVIwQMUC6/LZfncyEyLKCs=;
+	s=korg; t=1776098048;
+	bh=ORECXZWhrKB+s3OPOACK92WNpC8xh0VMmlFLQQ0L2rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h34zIU20risWu2rJhVkpJy8DG08ec73+OCBMl2utzPSYHngIP4GkkKQDEDzC8RG8c
-	 iDjBpbecta64ksA//aOv9Lg/+7Oc7Kaz42uZcNLhL8kIISXsIItSxct9/0y9FzzZKD
-	 M1RFUWZwcl5XTNmp7qzt87a5bhQJiiz1yNjY5EaQ=
+	b=S0PcXNLXsVoDQ4Avrh+6yQ8eoTxnUHdso2yfrpivqnlA4kQk0uD9y7EOykfMxSAcf
+	 HCfFCfClH6ZnnpGrHvbKsoHg6wGlUKZ7mS3pYehEmU+fttBBdE9hxtjK0Ybn2M40BX
+	 1qDpgAUOlXpjRnQbMqC9db2NFTmkaEZM5YNBsVb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 216/491] PM: runtime: Fix a race condition related to device removal
+Subject: [PATCH 5.15 330/570] net: enetc: fix the output issue of ethtool --show-ring
 Date: Mon, 13 Apr 2026 17:57:41 +0200
-Message-ID: <20260413155827.152005750@linuxfoundation.org>
+Message-ID: <20260413155842.856864604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,159 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237340-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6c905ab800f20cf4086c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236887-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,acm.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0FD683F03F0
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: 37EC23EF458
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 29ab768277617452d88c0607c9299cdc63b6e9ff ]
+[ Upstream commit 70b439bf06f6a12e491f827fa81a9887a11501f9 ]
 
-The following code in pm_runtime_work() may dereference the dev->parent
-pointer after the parent device has been freed:
+Currently, enetc_get_ringparam() only provides rx_pending and tx_pending,
+but 'ethtool --show-ring' no longer displays these fields. Because the
+ringparam retrieval path has moved to the new netlink interface, where
+rings_fill_reply() emits the *x_pending only if the *x_max_pending values
+are non-zero. So rx_max_pending and tx_max_pending to are added to
+enetc_get_ringparam() to fix the issue.
 
-	/* Maybe the parent is now able to suspend. */
-	if (parent && !parent->power.ignore_children) {
-		spin_unlock(&dev->power.lock);
+Note that the maximum tx/rx ring size of hardware is 64K, but we haven't
+added set_ringparam() to make the ring size configurable. To avoid users
+mistakenly believing that the ring size can be increased, so set
+the *x_max_pending to priv->*x_bd_count.
 
-		spin_lock(&parent->power.lock);
-		rpm_idle(parent, RPM_ASYNC);
-		spin_unlock(&parent->power.lock);
-
-		spin_lock(&dev->power.lock);
-	}
-
-Fix this by inserting a flush_work() call in pm_runtime_remove().
-
-Without this patch blktest block/001 triggers the following complaint
-sporadically:
-
-BUG: KASAN: slab-use-after-free in lock_acquire+0x70/0x160
-Read of size 1 at addr ffff88812bef7198 by task kworker/u553:1/3081
-Workqueue: pm pm_runtime_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x61/0x80
- print_address_description.constprop.0+0x8b/0x310
- print_report+0xfd/0x1d7
- kasan_report+0xd8/0x1d0
- __kasan_check_byte+0x42/0x60
- lock_acquire.part.0+0x38/0x230
- lock_acquire+0x70/0x160
- _raw_spin_lock+0x36/0x50
- rpm_suspend+0xc6a/0xfe0
- rpm_idle+0x578/0x770
- pm_runtime_work+0xee/0x120
- process_one_work+0xde3/0x1410
- worker_thread+0x5eb/0xfe0
- kthread+0x37b/0x480
- ret_from_fork+0x6cb/0x920
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-Allocated by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_alloc_info+0x3d/0x50
- __kasan_kmalloc+0xa0/0xb0
- __kmalloc_noprof+0x311/0x990
- scsi_alloc_target+0x122/0xb60 [scsi_mod]
- __scsi_scan_target+0x101/0x460 [scsi_mod]
- scsi_scan_channel+0x179/0x1c0 [scsi_mod]
- scsi_scan_host_selected+0x259/0x2d0 [scsi_mod]
- store_scan+0x2d2/0x390 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
- do_syscall_64+0xee/0xfc0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Freed by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_free_info+0x3f/0x50
- __kasan_slab_free+0x67/0x80
- kfree+0x225/0x6c0
- scsi_target_dev_release+0x3d/0x60 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_dev_release+0xacf/0x12c0 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_put+0x7f/0xc0 [scsi_mod]
- sdev_store_delete+0xa5/0x120 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
-
-Reported-by: Ming Lei <ming.lei@redhat.com>
-Closes: https://lore.kernel.org/all/ZxdNvLNI8QaOfD2d@fedora/
-Reported-by: syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c13942.050a0220.2ff435.000b.GAE@google.com/
-Fixes: 5e928f77a09a ("PM: Introduce core framework for run-time PM of I/O devices (rev. 17)")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260312182720.2776083-1-bvanassche@acm.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: e4a1717b677c ("ethtool: provide ring sizes with RINGS_GET request")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20260320094222.706339-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index d15d033be2c97..ec14c3089e329 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1776,6 +1776,7 @@ void pm_runtime_reinit(struct device *dev)
- void pm_runtime_remove(struct device *dev)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+index d62c188c87480..89234613ef806 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+@@ -566,6 +566,8 @@ static void enetc_get_ringparam(struct net_device *ndev,
  {
- 	__pm_runtime_disable(dev, false);
-+	flush_work(&dev->power.work);
- 	pm_runtime_reinit(dev);
- }
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+ 
++	ring->rx_max_pending = priv->rx_bd_count;
++	ring->tx_max_pending = priv->tx_bd_count;
+ 	ring->rx_pending = priv->rx_bd_count;
+ 	ring->tx_pending = priv->tx_bd_count;
  
 -- 
 2.51.0
