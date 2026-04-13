@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eONmONch3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:19 +0200
+	id WF1TGqMi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F173F097C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8373F0C18
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B26731BDCCC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B9F71303721A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCB930C361;
-	Mon, 13 Apr 2026 16:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1337131691A;
+	Mon, 13 Apr 2026 16:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUPBiRbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGmlZvqj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D462D30F545;
-	Mon, 13 Apr 2026 16:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1CE313298;
+	Mon, 13 Apr 2026 16:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097743; cv=none; b=qqL4Uii08+R6elPJupgbLFEh7uwEtzCIb3lgfVmK52zI6Smj0qZyuY0gZj0e3HhzjRYHnoH2/1iRAMA+fLkkMSHUhP6pgB8SaPB8pFZVyQv9rSpj1ZUkqqSNFM8Bfi+syH3VnG9INH1MnDuuMsARcnorJugJ8OlicBAn3MwCnY8=
+	t=1776098995; cv=none; b=XXsqb3Td1Jw9zCDyh3ZQCMLN/QuKhsXimmq8eAjwkxCGRH3pZixBVgpaCAtvnb8p1JDlxkeui24TUs8eu8lMv60STrJJj6rpv3mJWp/IrB7FNdCaR1ksE+bhP0+BwQWWKiuXgwuRBmpwEpcRLMHZn3g4Ts88SqzptihAI8YP0U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097743; c=relaxed/simple;
-	bh=fmbkBtzvUkGnD6iVElFi1IJrzSOjhfnHxScK/D/8250=;
+	s=arc-20240116; t=1776098995; c=relaxed/simple;
+	bh=XUP5n2eM+snzg4RfOIa+PWeRqOZ79DmLmx09YKRtDBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8ksBuwRn6Za2L6C68/Dh9VQ7EoNVpsTPy8NrPeDqjoZx/U4jIA6YoD7VQ/CWgjiZvnaD0dFh+innPmfQkFDXH4ilX5eGp8BdY20JniBx96svBIzqrSRHuyFqcbB8nxMilK3HXMPeTIDs7PDftpzkN/aDTdcOnRfs4GxsL8OySE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUPBiRbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFDEC2BCAF;
-	Mon, 13 Apr 2026 16:29:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S2DyoGtbGHDFUH1m5nrb5cnd0qg2dfbeC9ZYmJ8Y/DCubDv/TprJPcHHMRWHe0EvUkmXND1F6KDDcHUy4XTiHEkBZvc1QSd7Ne+21e/3RMPuMbQfYAHmI0XqLuNWKk2kYkA7nRBGfcFCCQkjbRa5gFdSohTMZRSGWjFpHbvDptc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGmlZvqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E7FC2BCAF;
+	Mon, 13 Apr 2026 16:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097743;
-	bh=fmbkBtzvUkGnD6iVElFi1IJrzSOjhfnHxScK/D/8250=;
+	s=korg; t=1776098995;
+	bh=XUP5n2eM+snzg4RfOIa+PWeRqOZ79DmLmx09YKRtDBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUPBiRbWkaCncAK6t+gMPReYGDUZ+53eUzmuRLuHOJCX8P6Nq7vqGnTDCyLKvwr4X
-	 R4Cvm6yf1zmauVpZxYWbYJ0kx+2GXsVkp6Tt576HBdj9Iec86AzM2gaCmQdi6t+bbA
-	 FbbMUL8V/WqnBV94vRW9S54RWoXAWYJybeWSgMdE=
+	b=CGmlZvqj6ldXKJOEawgKBIduC1tC6JRSbVHquBNdluP+ptMIoanoK/MqZ9W02qGsS
+	 kE+zE0XZ8RqivPH/NKZ70isXetUaZRA38V4jMi9YeKNznnqtrD2jF+UAGKrcbiR+/v
+	 cOMnuX6LxrKw9G1DOyN6IGj3tB0tC98crudmVMyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 255/570] netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()
-Date: Mon, 13 Apr 2026 17:56:26 +0200
-Message-ID: <20260413155840.022318445@linuxfoundation.org>
+	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 142/491] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
+Date: Mon, 13 Apr 2026 17:56:27 +0200
+Message-ID: <20260413155824.353369944@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236768-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237259-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: 40F173F097C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[johannes-moeller.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5B8373F0C18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Lukas Johannes Möller <research@johannes-moeller.dev>
 
-[ Upstream commit 5cb81eeda909dbb2def209dd10636b51549a3f8a ]
+commit 15145675690cab2de1056e7ed68e59cbd0452529 upstream.
 
-ctnetlink_dump_exp_ct() stores a conntrack pointer in cb->data for the
-netlink dump callback ctnetlink_exp_ct_dump_table(), but drops the
-conntrack reference immediately after netlink_dump_start().  When the
-dump spans multiple rounds, the second recvmsg() triggers the dump
-callback which dereferences the now-freed conntrack via nfct_help(ct),
-leading to a use-after-free on ct->ext.
+l2cap_ecred_reconf_rsp() casts the incoming data to struct
+l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
+result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
+with result at offset 0).
 
-The bug is that the netlink_dump_control has no .start or .done
-callbacks to manage the conntrack reference across dump rounds.  Other
-dump functions in the same file (e.g. ctnetlink_get_conntrack) properly
-use .start/.done callbacks for this purpose.
+This causes two problems:
 
-Fix this by adding .start and .done callbacks that hold and release the
-conntrack reference for the duration of the dump, and move the
-nfct_help() call after the cb->args[0] early-return check in the dump
-callback to avoid dereferencing ct->ext unnecessarily.
+ - The sizeof(*rsp) length check requires 8 bytes instead of the
+   correct 2, so valid L2CAP_ECRED_RECONF_RSP packets are rejected
+   with -EPROTO.
 
- BUG: KASAN: slab-use-after-free in ctnetlink_exp_ct_dump_table+0x4f/0x2e0
- Read of size 8 at addr ffff88810597ebf0 by task ctnetlink_poc/133
+ - rsp->result reads from offset 6 instead of offset 0, returning
+   wrong data when the packet is large enough to pass the check.
 
- CPU: 1 UID: 0 PID: 133 Comm: ctnetlink_poc Not tainted 7.0.0-rc2+ #3 PREEMPTLAZY
- Call Trace:
-  <TASK>
-  ctnetlink_exp_ct_dump_table+0x4f/0x2e0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  ? aa_sk_perm+0x184/0x450
-  sock_recvmsg+0xde/0xf0
+Fix by using the correct type.  Also pass the already byte-swapped
+result variable to BT_DBG instead of the raw __le16 field.
 
- Allocated by task 133:
-  kmem_cache_alloc_noprof+0x134/0x440
-  __nf_conntrack_alloc+0xa8/0x2b0
-  ctnetlink_create_conntrack+0xa1/0x900
-  ctnetlink_new_conntrack+0x3cf/0x7d0
-  nfnetlink_rcv_msg+0x48e/0x510
-  netlink_rcv_skb+0xc9/0x1f0
-  nfnetlink_rcv+0xdb/0x220
-  netlink_unicast+0x3ec/0x590
-  netlink_sendmsg+0x397/0x690
-  __sys_sendmsg+0xf4/0x180
-
- Freed by task 0:
-  slab_free_after_rcu_debug+0xad/0x1e0
-  rcu_core+0x5c3/0x9c0
-
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index ba8d2c854fa89..055bff0a04da9 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3220,7 +3220,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6407,7 +6407,7 @@ static inline int l2cap_ecred_reconf_rsp
+ 					 u8 *data)
  {
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
--	struct nf_conn_help *help = nfct_help(ct);
-+	struct nf_conn_help *help;
- 	u_int8_t l3proto = nfmsg->nfgen_family;
- 	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_expect *exp;
-@@ -3228,6 +3228,10 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (cb->args[0])
+ 	struct l2cap_chan *chan, *tmp;
+-	struct l2cap_ecred_conn_rsp *rsp = (void *) data;
++	struct l2cap_ecred_reconf_rsp *rsp = (void *)data;
+ 	u16 result;
+ 
+ 	if (cmd_len < sizeof(*rsp))
+@@ -6415,7 +6415,7 @@ static inline int l2cap_ecred_reconf_rsp
+ 
+ 	result = __le16_to_cpu(rsp->result);
+ 
+-	BT_DBG("result 0x%4.4x", rsp->result);
++	BT_DBG("result 0x%4.4x", result);
+ 
+ 	if (!result)
  		return 0;
- 
-+	help = nfct_help(ct);
-+	if (!help)
-+		return 0;
-+
- 	rcu_read_lock();
- 
- restart:
-@@ -3257,6 +3261,24 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
- 
-+static int ctnetlink_dump_exp_ct_start(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (!refcount_inc_not_zero(&ct->ct_general.use))
-+		return -ENOENT;
-+	return 0;
-+}
-+
-+static int ctnetlink_dump_exp_ct_done(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (ct)
-+		nf_ct_put(ct);
-+	return 0;
-+}
-+
- static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 				 struct sk_buff *skb,
- 				 const struct nlmsghdr *nlh,
-@@ -3272,6 +3294,8 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
-+		.start = ctnetlink_dump_exp_ct_start,
-+		.done = ctnetlink_dump_exp_ct_done,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
--- 
-2.51.0
-
 
 
 
