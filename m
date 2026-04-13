@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IeJMisn3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:03 +0200
+	id sGbyAIca3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3306E3F15F0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4774F3EF2C6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CB2D3053745
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2E4A3026D34
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0913264F2;
-	Mon, 13 Apr 2026 16:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A0D2FFFA4;
+	Mon, 13 Apr 2026 16:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3dtAQc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND8uEXKF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7CB31F9BC;
-	Mon, 13 Apr 2026 16:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8CC24DCF6;
+	Mon, 13 Apr 2026 16:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099584; cv=none; b=iDAk7bTLRY3t6Ni8w/rdV48xeq6Q7efYmkNQzaM4msKh1SNuLk8KFWgJ63PxtW00uASZ5hjUtjZpn1ehjfLJwCcmQa6WLCDqrbsnwtPxZ0MNygisZQ/nDo1+hGYwOh4U4HPWr9moA2+/X01bMJhe0JxBdHIzYfhFwqEBq3Hw1zA=
+	t=1776096993; cv=none; b=lvRs791oOVM+1pK5J2CJjpE0t8HCCX82pZqfaB6bOOpfIErmXCaJ07c7raRe1Eu5nPffwUgWWR5D12oNBHN0T/G5VcLflycIqZOPXo/ucutJfSwzRKxsZgdthESVXyPl7Nd6ElVnO1YRFPiJ2kBVkA5zwfYRkZBIXYnZwx/NTDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099584; c=relaxed/simple;
-	bh=MN25Bl1AuVXiBla16EbE40rG6xl+En/YbHwRHnPZmlI=;
+	s=arc-20240116; t=1776096993; c=relaxed/simple;
+	bh=/PMoO0SYHdJYqwy1MjPg4GWu47ITimf+cXk2383U/lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZ+bkoCvOjWbGQeEIXe0jlk+OuypVQ/SVQhYBNNc3t/2mCCwebMTlgJhDi+cZGy4pI9quza0W15v0vHKQoUdnLynrDfrXS/2aKuAW+7LNSGkg2hyx+YHGdTDbxIW8E6WsHw0L3gJ11pnoLjmFOn+sohTxBKFLKpnbj1FyUjC4so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3dtAQc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EF0C2BCAF;
-	Mon, 13 Apr 2026 16:59:43 +0000 (UTC)
+	 MIME-Version; b=uj6vw877TsJOc1H8CfuA7/3ac5Vk50l3a4Ui2gYt/ZqFI0AAhb6z5Vgx9PtAvxamt5yYImkEhmURlqosgjNqfLZS/irmEbdik9gYMDtuaMTK1A2WmSgg9TQ1+P5pfbF7L+cpopfTT0Qh35118XrLgnC1Kf0Qq9tgJFnUfznzhmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ND8uEXKF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C7AC2BCAF;
+	Mon, 13 Apr 2026 16:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099584;
-	bh=MN25Bl1AuVXiBla16EbE40rG6xl+En/YbHwRHnPZmlI=;
+	s=korg; t=1776096993;
+	bh=/PMoO0SYHdJYqwy1MjPg4GWu47ITimf+cXk2383U/lQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3dtAQc4I6M17LWrnHxhkN9iFYprEaiS19wRBeWDpcUQqO+R3LIMxIbrgRs+KFlRU
-	 np9bWYD5Kf7zPBBGrCf9hSCbWvd/1UokVp5ymzPyeSYH4GfcpHChdfYXBkyzxptL+W
-	 tXg1K0PjgsnRMPXclMazZwObE/L8xyCVE5R6pPD8=
+	b=ND8uEXKFjFmsanYt3DQt2/ho742/Q3KPNNt8B8xZ/NcYy8aU5GAiwKwvraBOivx+B
+	 fKefBGY3fy9dr7VHpC6bkCWKwa0n/ROy8lVqeJM2Ls8yPdeOlEh9N8sfqIUTQWJ0hY
+	 vWWaBtY5hay0AWT54h3QS8VMOTyL9D9QRN1ufycE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: [PATCH 5.10 397/491] comedi: dt2815: add hardware detection to prevent crash
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 08/55] MIPS: mm: Suppress TLB uniquification on EHINV hardware
 Date: Mon, 13 Apr 2026 18:00:42 +0200
-Message-ID: <20260413155833.896128037@linuxfoundation.org>
+Message-ID: <20260413155725.134292983@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +64,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237488-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236472-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 3306E3F15F0
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,orcam.me.uk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4774F3EF2C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
+commit 74283cfe216392c7b776ebf6045b5b15ed9dffcd upstream.
 
-The dt2815 driver crashes when attached to I/O ports without actual
-hardware present. This occurs because syzkaller or users can attach
-the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
+Hardware that supports the EHINV feature, mandatory for R6 ISA and FTLB
+implementation, lets software mark TLB entries invalid, which eliminates
+the need to ensure no duplicate matching entries are ever created.  This
+feature is already used by local_flush_tlb_all(), via the UNIQUE_ENTRYHI
+macro, making the preceding call to r4k_tlb_uniquify() superfluous.
 
-When no hardware exists at the specified port, inb() operations return
-0xff (floating bus), but outb() operations can trigger page faults due
-to undefined behavior, especially under race conditions:
+The next change will also modify uniquification code such that it'll
+become incompatible with the FTLB and MMID features, as well as MIPSr6
+CPUs that do not implement 4KiB pages.
 
-  BUG: unable to handle page fault for address: 000000007fffff90
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  RIP: 0010:dt2815_attach+0x6e0/0x1110
+Therefore prevent r4k_tlb_uniquify() from being used on EHINV hardware,
+as denoted by `cpu_has_tlbinv'.
 
-Add hardware detection by reading the status register before attempting
-any write operations. If the read returns 0xff, assume no hardware is
-present and fail the attach with -ENODEV. This prevents crashes from
-outb() operations on non-existent hardware.
-
-Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
-Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
-Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/comedi/drivers/dt2815.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/mips/mm/tlb-r4k.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/comedi/drivers/dt2815.c
-+++ b/drivers/staging/comedi/drivers/dt2815.c
-@@ -176,6 +176,18 @@ static int dt2815_attach(struct comedi_d
- 		    ? current_range_type : voltage_range_type;
- 	}
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index d9631f3b6460d..3669895a85bf2 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -630,7 +630,8 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
  
-+	/*
-+	 * Check if hardware is present before attempting any I/O operations.
-+	 * Reading 0xff from status register typically indicates no hardware
-+	 * on the bus (floating bus reads as all 1s).
-+	 */
-+	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
-+		dev_err(dev->class_dev,
-+			"No hardware detected at I/O base 0x%lx\n",
-+			dev->iobase);
-+		return -ENODEV;
-+	}
-+
- 	/* Init the 2815 */
- 	outb(0x00, dev->iobase + DT2815_STATUS);
- 	for (i = 0; i < 100; i++) {
+ 	/* From this point on the ARC firmware is dead.	 */
+-	r4k_tlb_uniquify();
++	if (!cpu_has_tlbinv)
++		r4k_tlb_uniquify();
+ 	local_flush_tlb_all();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+-- 
+2.53.0
+
 
 
 
