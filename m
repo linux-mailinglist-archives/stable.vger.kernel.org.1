@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-236804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFsOMyEi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:33 +0200
+	id SFAlGtgb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470A83F0A62
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72693EF6A7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0AC131D08D1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0915930461AD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F63623D297;
-	Mon, 13 Apr 2026 16:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C631227466A;
+	Mon, 13 Apr 2026 16:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCzckTGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/m7Lw5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61947225A38;
-	Mon, 13 Apr 2026 16:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89776233722;
+	Mon, 13 Apr 2026 16:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097837; cv=none; b=iRLxeHB+3pDLiiTfveyOJuGR1T0p0sEsFfkmsYmkyus1Qn/uZUGG7wxqJrZIFsCj/ud+A9PC4Y4F7jAVLFpSlaUAKXslFzxpp5POL/+lEFJ1nVkYwWvpbK07Og3jS0/8LnW4SsZ27Od93ILv1dCia4/o0JEAQp3If250TC1hMig=
+	t=1776097852; cv=none; b=aNYr5/g32cocmx68Hn7h76QJEo4t2pR/aybIuhaM7engISEc5Tmx9ZeLRQ1nqkUSgvA27k8JOyjnRhHHgsyj2sSTuLA0V9V6VNT5ZNvwEHS8VhnjGiLEJMOwyE8Y1r7NoUIWybrZ+mZjGULkdD/zrzNUQ2ZG2epEaESA0mFuCoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097837; c=relaxed/simple;
-	bh=pzdGXXbJPp5/UHYeU6gopXz0GAKfe/TCR8zox8O8khU=;
+	s=arc-20240116; t=1776097852; c=relaxed/simple;
+	bh=mvZ98WqxV4N8LYcSvmnHMXZss3vYUjuko+VU380GZnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzbraGOiIqKV2/BJerJM7vdlUxAB7H9QOvQpV5Mmzth6//aZwVaQQpJvPP/HD67SzCOLcxBsBPIFIcmHR1vmv7V0T2IBHrrkKW8hrk655Z+o81PuNOGp+aHphmXeqIIAiEz45XSz/iQ7afI/kQtnmlQmQpd/72/sMMl9VZa77+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCzckTGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5F8C2BCAF;
-	Mon, 13 Apr 2026 16:30:36 +0000 (UTC)
+	 MIME-Version; b=oZCGjWp91uLHNcfJciI3cl9BNT3aq9kRtpqs9KrVQfrOKxE6iqk0KwIIedE6A7Z698tbft6/Al78nJ79b5ukXDaxUt+3QNua47K4w/ytbgcVWBxGHY1GGiUFz14SsiiouiNBA2hv5fJ7iUw3NcEDECX064zp5H+ddRCUHUJH32I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/m7Lw5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7EEC2BCAF;
+	Mon, 13 Apr 2026 16:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097837;
-	bh=pzdGXXbJPp5/UHYeU6gopXz0GAKfe/TCR8zox8O8khU=;
+	s=korg; t=1776097852;
+	bh=mvZ98WqxV4N8LYcSvmnHMXZss3vYUjuko+VU380GZnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCzckTGPFoi1KJN4LkjzsXF24cLYFlWdtV8rd+iCadBSWBWXGjgMmdhNKh7cf9S26
-	 DzfOS2acwgNJbJDtKonxtQhSzdTzwvj+/CMDKipzp3OG6pqkPNfpdf4katsVyP6IWa
-	 V+Kvl2LrVhGjGeb0Wh4gVMSJPhnjzmrUZkvACfNk=
+	b=d/m7Lw5PJ6kNFWXkIuAYoCOaQ/ePAlzSahzbOxEh420fvMK51nd8O65mYpR778XY1
+	 cOUoZvrUj71VBEHd2/1BF1EYzK5rr2AxnosTdZdVGDmEluyZPlwUROGPemU8bhyyzN
+	 8nyslJO6mDInXc269EDE90hqFgHyUVGl1vE3VcX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
 	Haiyang Zhang <haiyangz@microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 264/570] net: mana: Improve the HWC error handling
-Date: Mon, 13 Apr 2026 17:56:35 +0200
-Message-ID: <20260413155840.371679769@linuxfoundation.org>
+Subject: [PATCH 5.15 265/570] net: mana: fix use-after-free in mana_hwc_destroy_channel() by reordering teardown
+Date: Mon, 13 Apr 2026 17:56:36 +0200
+Message-ID: <20260413155840.408980272@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236804-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236811-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +87,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email]
-X-Rspamd-Queue-Id: 470A83F0A62
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C72693EF6A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,216 +101,64 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
 
-[ Upstream commit 62ea8b77ed3b7086561765df0226ebc7bb442020 ]
+[ Upstream commit fa103fc8f56954a60699a29215cb713448a39e87 ]
 
-Currently when the HWC creation fails, the error handling is flawed,
-e.g. if mana_hwc_create_channel() -> mana_hwc_establish_channel() fails,
-the resources acquired in mana_hwc_init_queues() is not released.
+A potential race condition exists in mana_hwc_destroy_channel() where
+hwc->caller_ctx is freed before the HWC's Completion Queue (CQ) and
+Event Queue (EQ) are destroyed. This allows an in-flight CQ interrupt
+handler to dereference freed memory, leading to a use-after-free or
+NULL pointer dereference in mana_hwc_handle_resp().
 
-Enhance mana_hwc_destroy_channel() to do the proper cleanup work and
-call it accordingly.
+mana_smc_teardown_hwc() signals the hardware to stop but does not
+synchronize against IRQ handlers already executing on other CPUs. The
+IRQ synchronization only happens in mana_hwc_destroy_cq() via
+mana_gd_destroy_eq() -> mana_gd_deregister_irq(). Since this runs
+after kfree(hwc->caller_ctx), a concurrent mana_hwc_rx_event_handler()
+can dereference freed caller_ctx (and rxq->msg_buf) in
+mana_hwc_handle_resp().
 
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Fix this by reordering teardown to reverse-of-creation order: destroy
+the TX/RX work queues and CQ/EQ before freeing hwc->caller_ctx. This
+ensures all in-flight interrupt handlers complete before the memory they
+access is freed.
+
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
 Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: fa103fc8f569 ("net: mana: fix use-after-free in mana_hwc_destroy_channel() by reordering teardown")
+Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/abHA3AjNtqa1nx9k@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/microsoft/mana/gdma_main.c   |  4 --
- .../net/ethernet/microsoft/mana/hw_channel.c  | 71 ++++++++-----------
- 2 files changed, 31 insertions(+), 44 deletions(-)
+ drivers/net/ethernet/microsoft/mana/hw_channel.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 7864611f55a77..f3e90313a4487 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1336,8 +1336,6 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- clean_up_gdma:
- 	mana_hwc_destroy_channel(gc);
--	vfree(gc->cq_table);
--	gc->cq_table = NULL;
- remove_irq:
- 	mana_gd_remove_irqs(pdev);
- unmap_bar:
-@@ -1360,8 +1358,6 @@ static void mana_gd_remove(struct pci_dev *pdev)
- 	mana_remove(&gc->mana);
- 
- 	mana_hwc_destroy_channel(gc);
--	vfree(gc->cq_table);
--	gc->cq_table = NULL;
- 
- 	mana_gd_remove_irqs(pdev);
- 
 diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 508f83c29f325..8b027bf6ede90 100644
+index 8b027bf6ede90..efd7ae1bab43c 100644
 --- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
 +++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -315,9 +315,6 @@ static void mana_hwc_comp_event(void *ctx, struct gdma_queue *q_self)
- 
- static void mana_hwc_destroy_cq(struct gdma_context *gc, struct hwc_cq *hwc_cq)
- {
--	if (!hwc_cq)
--		return;
--
- 	kfree(hwc_cq->comp_buf);
- 
- 	if (hwc_cq->gdma_cq)
-@@ -452,9 +449,6 @@ static void mana_hwc_dealloc_dma_buf(struct hw_channel_context *hwc,
- static void mana_hwc_destroy_wq(struct hw_channel_context *hwc,
- 				struct hwc_wq *hwc_wq)
- {
--	if (!hwc_wq)
--		return;
--
- 	mana_hwc_dealloc_dma_buf(hwc, hwc_wq->msg_buf);
- 
- 	if (hwc_wq->gdma_wq)
-@@ -627,6 +621,7 @@ static int mana_hwc_establish_channel(struct gdma_context *gc, u16 *q_depth,
- 	*max_req_msg_size = hwc->hwc_init_max_req_msg_size;
- 	*max_resp_msg_size = hwc->hwc_init_max_resp_msg_size;
- 
-+	/* Both were set in mana_hwc_init_event_handler(). */
- 	if (WARN_ON(cq->id >= gc->max_num_cqs))
- 		return -EPROTO;
- 
-@@ -642,9 +637,6 @@ static int mana_hwc_establish_channel(struct gdma_context *gc, u16 *q_depth,
- static int mana_hwc_init_queues(struct hw_channel_context *hwc, u16 q_depth,
- 				u32 max_req_msg_size, u32 max_resp_msg_size)
- {
--	struct hwc_wq *hwc_rxq = NULL;
--	struct hwc_wq *hwc_txq = NULL;
--	struct hwc_cq *hwc_cq = NULL;
- 	int err;
- 
- 	err = mana_hwc_init_inflight_msg(hwc, q_depth);
-@@ -657,44 +649,32 @@ static int mana_hwc_init_queues(struct hw_channel_context *hwc, u16 q_depth,
- 	err = mana_hwc_create_cq(hwc, q_depth * 2,
- 				 mana_hwc_init_event_handler, hwc,
- 				 mana_hwc_rx_event_handler, hwc,
--				 mana_hwc_tx_event_handler, hwc, &hwc_cq);
-+				 mana_hwc_tx_event_handler, hwc, &hwc->cq);
- 	if (err) {
- 		dev_err(hwc->dev, "Failed to create HWC CQ: %d\n", err);
- 		goto out;
+@@ -749,9 +749,6 @@ void mana_hwc_destroy_channel(struct gdma_context *gc)
+ 		gc->max_num_cqs = 0;
  	}
--	hwc->cq = hwc_cq;
  
- 	err = mana_hwc_create_wq(hwc, GDMA_RQ, q_depth, max_req_msg_size,
--				 hwc_cq, &hwc_rxq);
-+				 hwc->cq, &hwc->rxq);
- 	if (err) {
- 		dev_err(hwc->dev, "Failed to create HWC RQ: %d\n", err);
- 		goto out;
- 	}
--	hwc->rxq = hwc_rxq;
- 
- 	err = mana_hwc_create_wq(hwc, GDMA_SQ, q_depth, max_resp_msg_size,
--				 hwc_cq, &hwc_txq);
-+				 hwc->cq, &hwc->txq);
- 	if (err) {
- 		dev_err(hwc->dev, "Failed to create HWC SQ: %d\n", err);
- 		goto out;
- 	}
--	hwc->txq = hwc_txq;
- 
- 	hwc->num_inflight_msg = q_depth;
- 	hwc->max_req_msg_size = max_req_msg_size;
- 
- 	return 0;
- out:
--	if (hwc_txq)
--		mana_hwc_destroy_wq(hwc, hwc_txq);
+-	kfree(hwc->caller_ctx);
+-	hwc->caller_ctx = NULL;
 -
--	if (hwc_rxq)
--		mana_hwc_destroy_wq(hwc, hwc_rxq);
--
--	if (hwc_cq)
--		mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc_cq);
--
--	mana_gd_free_res_map(&hwc->inflight_msg_res);
-+	/* mana_hwc_create_channel() will do the cleanup.*/
- 	return err;
- }
+ 	if (hwc->txq)
+ 		mana_hwc_destroy_wq(hwc, hwc->txq);
  
-@@ -722,6 +702,9 @@ int mana_hwc_create_channel(struct gdma_context *gc)
- 	gd->pdid = INVALID_PDID;
- 	gd->doorbell = INVALID_DOORBELL;
+@@ -761,6 +758,9 @@ void mana_hwc_destroy_channel(struct gdma_context *gc)
+ 	if (hwc->cq)
+ 		mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc->cq);
  
-+	/* mana_hwc_init_queues() only creates the required data structures,
-+	 * and doesn't touch the HWC device.
-+	 */
- 	err = mana_hwc_init_queues(hwc, HW_CHANNEL_VF_BOOTSTRAP_QUEUE_DEPTH,
- 				   HW_CHANNEL_MAX_REQUEST_SIZE,
- 				   HW_CHANNEL_MAX_RESPONSE_SIZE);
-@@ -747,42 +730,50 @@ int mana_hwc_create_channel(struct gdma_context *gc)
- 
- 	return 0;
- out:
--	kfree(hwc);
-+	mana_hwc_destroy_channel(gc);
- 	return err;
- }
- 
- void mana_hwc_destroy_channel(struct gdma_context *gc)
- {
- 	struct hw_channel_context *hwc = gc->hwc.driver_data;
--	struct hwc_caller_ctx *ctx;
- 
--	mana_smc_teardown_hwc(&gc->shm_channel, false);
-+	if (!hwc)
-+		return;
-+
-+	/* gc->max_num_cqs is set in mana_hwc_init_event_handler(). If it's
-+	 * non-zero, the HWC worked and we should tear down the HWC here.
-+	 */
-+	if (gc->max_num_cqs > 0) {
-+		mana_smc_teardown_hwc(&gc->shm_channel, false);
-+		gc->max_num_cqs = 0;
-+	}
- 
--	ctx = hwc->caller_ctx;
--	kfree(ctx);
 +	kfree(hwc->caller_ctx);
- 	hwc->caller_ctx = NULL;
- 
--	mana_hwc_destroy_wq(hwc, hwc->txq);
--	hwc->txq = NULL;
-+	if (hwc->txq)
-+		mana_hwc_destroy_wq(hwc, hwc->txq);
- 
--	mana_hwc_destroy_wq(hwc, hwc->rxq);
--	hwc->rxq = NULL;
-+	if (hwc->rxq)
-+		mana_hwc_destroy_wq(hwc, hwc->rxq);
- 
--	mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc->cq);
--	hwc->cq = NULL;
-+	if (hwc->cq)
-+		mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc->cq);
- 
++	hwc->caller_ctx = NULL;
++
  	mana_gd_free_res_map(&hwc->inflight_msg_res);
  
  	hwc->num_inflight_msg = 0;
- 
--	if (hwc->gdma_dev->pdid != INVALID_PDID) {
--		hwc->gdma_dev->doorbell = INVALID_DOORBELL;
--		hwc->gdma_dev->pdid = INVALID_PDID;
--	}
-+	hwc->gdma_dev->doorbell = INVALID_DOORBELL;
-+	hwc->gdma_dev->pdid = INVALID_PDID;
- 
- 	kfree(hwc);
- 	gc->hwc.driver_data = NULL;
- 	gc->hwc.gdma_context = NULL;
-+
-+	vfree(gc->cq_table);
-+	gc->cq_table = NULL;
- }
- 
- int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
 -- 
 2.51.0
 
