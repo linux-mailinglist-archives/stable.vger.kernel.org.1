@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-237023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iK/AL0If3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:18 +0200
+	id 6M8lCTcZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02AC83F0109
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3143EEEE8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 89E81307BCF6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C8A1322D0DF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6F230BF4E;
-	Mon, 13 Apr 2026 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE652F6931;
+	Mon, 13 Apr 2026 16:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0QAFDmq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KE2W9Gwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B208F1D5AD4;
-	Mon, 13 Apr 2026 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F5128505E;
+	Mon, 13 Apr 2026 16:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098390; cv=none; b=jBJPwOezVawbwz4bFGTT3VmlSbqtDL8tOGG5sO0mJOx8v7ajHbW1V4t0a1tnG8NyHQd8QvqJyMWTPG/RduRy0w9vbmD3XxorKExdpPnR85ysbv4dVP22cf/GczfMNAcQcKbzGTKDJRRZpzAz7WTOfhEUkEpL0Vzg0bq7HkE2yqI=
+	t=1776096978; cv=none; b=T2N8p1HKpcU1v9uNy00BdXLArzeNV2uw/SY5t8aLGu/zGkVe0Z5CFLCju6LMIt6J8ZvUlc7Es4xj88s19fDwHkoI0r9Pj22sSQajqrksyebbeQ6r6yLUrpiRobJBufM/tndi+mSg+VjTpCPrq4z6TtP0VCOH+A7FQRFoSR8E3ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098390; c=relaxed/simple;
-	bh=BbGEgRZ6kC8Ubbfg8CycqfkKa94QqtL5bLFZPM1L/JM=;
+	s=arc-20240116; t=1776096978; c=relaxed/simple;
+	bh=f1CIRpe5dKiQ1G4RmG6XWIE3wDgaiaPQpv68Jjhu6q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAq3s0qUbOOx1mT1WoKQQs18cOut9YLZ5lVgsDby+snitghCTb1xNvrYfak8jWR51dqzqHHRMsHlvHNN4JgrxI7aA49hzmJwVT9fjaUfpyQ45RXYxJLdjyQpN40TWU3ZFzxCSyu+QX34ygRM49uGe/K11eZcXD+2CqjxcXNeD3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0QAFDmq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4783DC2BCAF;
-	Mon, 13 Apr 2026 16:39:50 +0000 (UTC)
+	 MIME-Version; b=PBKpIg0ik9NDAv0fxFyvso4hzgmJ9rcetlq5bj3+W829ZTxFQK/MFvy3N7KRZYjWanehEHVkwcOtSagwfaKsf9YrNNlpBRtWjZZdsnC9iUlfDJp0xdjKu5Y1FH/S61b/356DqiHI1vhzpwruoen95pV1mj5Mb65wr3ic/T00GwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KE2W9Gwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64185C2BCB0;
+	Mon, 13 Apr 2026 16:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098390;
-	bh=BbGEgRZ6kC8Ubbfg8CycqfkKa94QqtL5bLFZPM1L/JM=;
+	s=korg; t=1776096977;
+	bh=f1CIRpe5dKiQ1G4RmG6XWIE3wDgaiaPQpv68Jjhu6q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0QAFDmqXvIua/nsNsYM3QR0tv6x73dIPUxp/CKlPF3T40cL4jpJxCfft2PIfAWa4
-	 FUUIOGQMhHpgxft5yl71KsOftKGtD3aiOeZhf3ptUGSBp6+/Rn1gwHc2+XObNQ58NU
-	 rzixkJgIcM24LX7X0pF7tZpMeryjpAKXlP3UD4j8=
+	b=KE2W9GwetmXFD7RfmWKvs9YC/fafSEuWGfNHYg9og/nPDMqj5YdPv4xOn2feyvIA/
+	 pvV8Tar3So0CCw/eoCnpAEFk6LGvwtAnYAnzQRWHJqNixtxrrFF8KpISAucD5anaMl
+	 aCNMLt93Too6RpDh5X1YXWQUO0bEy6NnKdhKpi0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.15 505/570] lib/crypto: chacha: Zeroize permuted_state before it leaves scope
+	Vishal Thanki <vishalthanki@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 02/55] wifi: rt2x00usb: fix devres lifetime
 Date: Mon, 13 Apr 2026 18:00:36 +0200
-Message-ID: <20260413155849.370112155@linuxfoundation.org>
+Message-ID: <20260413155724.915939779@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,wp.pl,intel.com];
+	TAGGED_FROM(0.00)[bounces-236466-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237023-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 02AC83F0109
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wp.pl:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 7F3143EEEE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit e5046823f8fa3677341b541a25af2fcb99a5b1e0 upstream.
+commit 25369b22223d1c56e42a0cd4ac9137349d5a898e upstream.
 
-Since the ChaCha permutation is invertible, the local variable
-'permuted_state' is sufficient to compute the original 'state', and thus
-the key, even after the permutation has been done.
+USB drivers bind to USB interfaces and any device managed resources
+should have their lifetime tied to the interface rather than parent USB
+device. This avoids issues like memory leaks when drivers are unbound
+without their devices being physically disconnected (e.g. on probe
+deferral or configuration changes).
 
-While the kernel is quite inconsistent about zeroizing secrets on the
-stack (and some prominent userspace crypto libraries don't bother at all
-since it's not guaranteed to work anyway), the kernel does try to do it
-as a best practice, especially in cases involving the RNG.
+Fix the USB anchor lifetime so that it is released on driver unbind.
 
-Thus, explicitly zeroize 'permuted_state' before it goes out of scope.
-
-Fixes: c08d0e647305 ("crypto: chacha20 - Add a generic ChaCha20 stream cipher implementation")
-Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260326032920.39408-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Vishal Thanki <vishalthanki@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260327113219.1313748-1-johan@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/crypto/chacha.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/crypto/chacha.c
-+++ b/lib/crypto/chacha.c
-@@ -86,6 +86,8 @@ void chacha_block_generic(u32 *state, u8
- 		put_unaligned_le32(x[i] + state[i], &stream[i * sizeof(u32)]);
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -830,7 +830,7 @@ int rt2x00usb_probe(struct usb_interface
+ 	if (retval)
+ 		goto exit_free_device;
  
- 	state[12]++;
-+
-+	memzero_explicit(x, sizeof(x));
- }
- EXPORT_SYMBOL(chacha_block_generic);
- 
-@@ -110,5 +112,7 @@ void hchacha_block_generic(const u32 *st
- 
- 	memcpy(&stream[0], &x[0], 16);
- 	memcpy(&stream[4], &x[12], 16);
-+
-+	memzero_explicit(x, sizeof(x));
- }
- EXPORT_SYMBOL(hchacha_block_generic);
+-	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
++	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+ 					sizeof(struct usb_anchor),
+ 					GFP_KERNEL);
+ 	if (!rt2x00dev->anchor) {
 
 
 
