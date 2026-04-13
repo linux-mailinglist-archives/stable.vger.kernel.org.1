@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPErExYX3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:26 +0200
+	id cLpeEjoj3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-236968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF7C3EE8EE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E013F0D7E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8326A30C8E62
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8E0C30C66DD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063CD27FB18;
-	Mon, 13 Apr 2026 16:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99B26CE32;
+	Mon, 13 Apr 2026 16:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqSAJOEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ad51F4bC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC0024DCF6;
-	Mon, 13 Apr 2026 16:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEF3280CFB;
+	Mon, 13 Apr 2026 16:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096449; cv=none; b=Yof8Xd2mVolhCpY+uHQRI2mfjtt8V0f9gkwrtiDamBfMdZLJ2vaBr6KX355QDCW5e3MJxkx2aMVVCNNZbl2rBUHoAMsU8xR0FWl+bmtYR3F2aXRkz7lKzXYXG79krTaYWN5snvVhMoP+uXgfbVPX5bPHaxAoMCVvzSJxys0Rk6g=
+	t=1776098254; cv=none; b=o6ktNOr7HUjMaoj7G+f0KpUdKXqPLVaz69Ho6e2HJ3yf0EXTY/hVno9b2UKdZmSuqs/fALXDkH7r9I4ml4uI8VVjhmX4r7b0hTvS/8TupReoHFlxmmEHZkHaZipPNUDXb+QzLHue0Te/+oGIC5X45evsxd/HWfPDyvWs1PUa+RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096449; c=relaxed/simple;
-	bh=6KsTMiviaFP+KxAth7HqMogLHhCuCM4OCafPsEa/ldo=;
+	s=arc-20240116; t=1776098254; c=relaxed/simple;
+	bh=IZbe/3fNrW5c+iBHdZ22irkX9sYX4lRgmjDJQSDnbs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a032LYrxBoAmOgXvBaMeWkavZv37IKCUHVLrF30bG+rc+qyIj5OAJKkddlSYdXR7lAD9dN3NKriSh6GuKpTZoQDij0MLF34vjND6L2EnL+p75t4o1dIPqAsDlzt8Ew5hnA6IHLXdoHHl2QlQzTdoPdWBUUp5rx0G2hcJe1M2txM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqSAJOEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F9FC2BCAF;
-	Mon, 13 Apr 2026 16:07:29 +0000 (UTC)
+	 MIME-Version; b=FhRDrwy/MSjLrP1+TvVd7g6HHawU1WCOMrVLPsK+hS2tWsvaBJctbzx/cbpF7mkqKXE+ReoVcB6eJUAoPs5g9tiT11Nr4L6+3U8mxsmpLpYx45g3Yx2iINZX8vxCBgVwL83gMDLynT9X64MqmOhoXE2LvWbo5aNZVr5qK7aQJCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ad51F4bC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B982FC2BCB0;
+	Mon, 13 Apr 2026 16:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096449;
-	bh=6KsTMiviaFP+KxAth7HqMogLHhCuCM4OCafPsEa/ldo=;
+	s=korg; t=1776098254;
+	bh=IZbe/3fNrW5c+iBHdZ22irkX9sYX4lRgmjDJQSDnbs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqSAJOEN7DUjyi5hP+YlPgAL2W0CnKgAgo3eHln1VBwgVmdGigOO1vo5EtKNiNB8g
-	 8COXU9h3It3kwPYgPEYg+elrLtxSWAkA2fzJ/x+k2DjtONtxJIib38OcrFvfpGpqKc
-	 R4H/i78I156cZ8uq7lDf52QwdqXDkZ5M8DRt4RkA=
+	b=ad51F4bCKKrujEw7nPoGzhTuy1sYL02Zu9+2o22ho0cG+a5sBSRm0NQNbjw/ybb2h
+	 /aAAiZxHZlpv7XdRMbz5oBZzZVzE6IVf8Claa1IhbmztSnXsY4eFne33/wULvVgYKC
+	 zX7XRFPk0NRPMRsfOZuNPRb/bAUsKk6/JtsYNbqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 16/83] af_unix: Count cyclic SCC.
-Date: Mon, 13 Apr 2026 17:59:44 +0200
-Message-ID: <20260413155731.633233517@linuxfoundation.org>
+	Wanquan Zhong <wanquan.zhong@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 454/570] USB: serial: option: add support for Rolling Wireless RW135R-GL
+Date: Mon, 13 Apr 2026 17:59:45 +0200
+Message-ID: <20260413155847.475789133@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236258-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236968-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,142 +86,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: ADF7C3EE8EE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fibocom.com:email]
+X-Rspamd-Queue-Id: B6E013F0D7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Wanquan Zhong <wanquan.zhong@fibocom.com>
 
-[ Upstream commit 58b47c713711b8afbf68e3158d4d5acdead00e9b ]
+commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
 
-__unix_walk_scc() and unix_walk_scc_fast() call unix_scc_cyclic()
-for each SCC to check if it forms a cyclic reference, so that we
-can skip GC at the following invocations in case all SCCs do not
-have any cycles.
+Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
+which is used in laptop debug cards with MBIM interface for
+Linux/Chrome OS. The device supports mbim, pipe functionalities.
 
-If we count the number of cyclic SCCs in __unix_walk_scc(), we can
-simplify unix_walk_scc_fast() because the number of cyclic SCCs
-only changes when it garbage-collects a SCC.
+Here are the outputs of usb-devices:
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-So, let's count cyclic SCC in __unix_walk_scc() and decrement it
-in unix_walk_scc_fast() when performing garbage collection.
-
-Note that we will use this counter in a later patch to check if a
-cycle existed in the previous GC run.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20251115020935.2643121-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e5b31d988a41 ("af_unix: Give up GC if MSG_PEEK intervened.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/garbage.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 65396a4e1b07e..9f62d50979735 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -404,9 +404,11 @@ static bool unix_scc_cyclic(struct list_head *scc)
- static LIST_HEAD(unix_visited_vertices);
- static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
- 
--static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_index,
--			    struct sk_buff_head *hitlist)
-+static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
-+				     unsigned long *last_index,
-+				     struct sk_buff_head *hitlist)
- {
-+	unsigned long cyclic_sccs = 0;
- 	LIST_HEAD(vertex_stack);
- 	struct unix_edge *edge;
- 	LIST_HEAD(edge_stack);
-@@ -497,8 +499,8 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 			if (unix_vertex_max_scc_index < vertex->scc_index)
- 				unix_vertex_max_scc_index = vertex->scc_index;
- 
--			if (!unix_graph_maybe_cyclic)
--				unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
-+			if (unix_scc_cyclic(&scc))
-+				cyclic_sccs++;
- 		}
- 
- 		list_del(&scc);
-@@ -507,13 +509,17 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 	/* Need backtracking ? */
- 	if (!list_empty(&edge_stack))
- 		goto prev_vertex;
-+
-+	return cyclic_sccs;
- }
- 
-+static unsigned long unix_graph_cyclic_sccs;
-+
- static void unix_walk_scc(struct sk_buff_head *hitlist)
- {
- 	unsigned long last_index = UNIX_VERTEX_INDEX_START;
-+	unsigned long cyclic_sccs = 0;
- 
--	unix_graph_maybe_cyclic = false;
- 	unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
- 
- 	/* Visit every vertex exactly once.
-@@ -523,18 +529,20 @@ static void unix_walk_scc(struct sk_buff_head *hitlist)
- 		struct unix_vertex *vertex;
- 
- 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
--		__unix_walk_scc(vertex, &last_index, hitlist);
-+		cyclic_sccs += __unix_walk_scc(vertex, &last_index, hitlist);
- 	}
- 
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
- 	swap(unix_vertex_unvisited_index, unix_vertex_grouped_index);
- 
-+	unix_graph_cyclic_sccs = cyclic_sccs;
-+	unix_graph_maybe_cyclic = !!unix_graph_cyclic_sccs;
- 	unix_graph_grouped = true;
- }
- 
- static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- {
--	unix_graph_maybe_cyclic = false;
-+	unsigned long cyclic_sccs = unix_graph_cyclic_sccs;
- 
- 	while (!list_empty(&unix_unvisited_vertices)) {
- 		struct unix_vertex *vertex;
-@@ -551,15 +559,18 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- 				scc_dead = unix_vertex_dead(vertex);
- 		}
- 
--		if (scc_dead)
-+		if (scc_dead) {
-+			cyclic_sccs--;
- 			unix_collect_skb(&scc, hitlist);
--		else if (!unix_graph_maybe_cyclic)
--			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
-+		}
- 
- 		list_del(&scc);
- 	}
- 
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
-+
-+	unix_graph_cyclic_sccs = cyclic_sccs;
-+	unix_graph_maybe_cyclic = !!unix_graph_cyclic_sccs;
- }
- 
- static bool gc_in_progress;
--- 
-2.53.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
