@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-236829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGl+FVsi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:31 +0200
+	id 6GSTC0Qf3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA04C3F0B27
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B873F0117
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33A2C310720C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D839430201B6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7FE2D0C7E;
-	Mon, 13 Apr 2026 16:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5B731619A;
+	Mon, 13 Apr 2026 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+OZC71Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4r8JW1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AA82C3768;
-	Mon, 13 Apr 2026 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A82D3161BF;
+	Mon, 13 Apr 2026 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097899; cv=none; b=bOOqei4qlFWFZThCSod+4ACRK28SbYS76yaOeEB8rb1//ugNzYOkLl41BUxkDjSrM1roRPwN8rCLQBYioDWK8zILvaKoZoRp8yoaZzxh3NxusPOlPKhALIVjdLh0wvcuwVx6f/JY5DQejEWzrHjw9Pro548gFdExdNKk88oktOc=
+	t=1776099032; cv=none; b=CL+9+Tj/nW9Kv+mceXAMk12W5xw4BRVaM8MXuNtfaUwghW5V1BpA58aJEu5Xqf6vdmgxRLBQMQ87gKkWbsK5PNWuE035sup/4vxA90swNBnQLOL00VkoQil+dnCzwmS2a3azprxWEgecOkt1FCuSoDj4ZOXr5fl+5PrJ8L8r7lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097899; c=relaxed/simple;
-	bh=+wg+pWacRFw9tqe8GaL1kwVZbJjLf8LgKRO9gdsH92k=;
+	s=arc-20240116; t=1776099032; c=relaxed/simple;
+	bh=juPsD51gu8aLjZx8Kvy/T11tSEtX1k5vncYxnMnX2mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a6fbJPixnvAebF2M2770YryL5Y8waQq16DAPSd3ogHKFqnH8gH1DBdsu7Ni/L9aJqEiUkLFjrjRcUM3kJnlc0LQ9yJKdm7mS3LKu5gN0XfszvggpyMKtK4M3w19gjIiAfnrb1m6M3jF49VbRdGiH3lGMI5S/1PP/pEeVfkY3r1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+OZC71Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB34C2BCAF;
-	Mon, 13 Apr 2026 16:31:38 +0000 (UTC)
+	 MIME-Version; b=rNirZIgTbLBtRPq89kd0WERa2YzS45+pkO7GoUkI8vXPtzqoYxCnn3Kwmh34+64fAh4m5uFWc8Sh/RFKZu3n/HlrYPJLXKBiqaD9FxA7olSuzU3F4AuqhtaKvazDiKG2TfTRE/qKIVHdLAY5+ZL6uXonWfypXb2NHdLOQYboTeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4r8JW1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914B1C2BCAF;
+	Mon, 13 Apr 2026 16:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097898;
-	bh=+wg+pWacRFw9tqe8GaL1kwVZbJjLf8LgKRO9gdsH92k=;
+	s=korg; t=1776099031;
+	bh=juPsD51gu8aLjZx8Kvy/T11tSEtX1k5vncYxnMnX2mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+OZC71QIN82UE7Z3Q52Jn9g6H0dY0fEgp1vzC2E8jz/cCc/pcIbWxf/hIa+1wl0G
-	 Eu6bzO71jUlL2O/U0WD+ozoCXKbyewAaX6gX9dDiKuZ+OTVX2ExsJKoUszz6uMTClS
-	 L3nMd5etbUQSzuE2BcV1JRwfN4NxcKOYRMqzTISo=
+	b=W4r8JW1iUQV4Tk+8JVk3NpxLYlE7O7VdeY1BKrB+WZwpKQtKMR94hwc4CUsATMOjt
+	 YbPOwLw5holG3bRo22pEgNqxqKOxquftz6yOHanWq9RQBjDTGgPBfco10ygyTzAYmr
+	 82YWpA4ejtHuXSeFNlZir7tK+/I7Ob3e2oHb4C/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Metz <peter.metz@unarin.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	stable@kernel.org,
+	Nicholas Carlini <npc@anthropic.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 298/570] platform/x86: intel-hid: Add Dell 14 Plus 2-in-1 to dmi_vgbs_allow_list
+Subject: [PATCH 5.10 184/491] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
 Date: Mon, 13 Apr 2026 17:57:09 +0200
-Message-ID: <20260413155841.665912619@linuxfoundation.org>
+Message-ID: <20260413155825.951641665@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +65,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236829-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237273-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: AA04C3F0B27
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,anthropic.com:email]
+X-Rspamd-Queue-Id: D8B873F0117
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Metz <peter.metz@unarin.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 6b3fa0615cd8432148581de62a52f83847af3d70 ]
+[ Upstream commit 5133b61aaf437e5f25b1b396b14242a6bb0508e2 ]
 
-The Dell 14 Plus 2-in-1 (model DB04250) requires the VGBS allow list
-entry to correctly enable the tablet mode switch. Without this, the
-chassis state is not reported, and the hinge rotation only emits
-unknown scancodes.
+The NFSv4.0 replay cache uses a fixed 112-byte inline buffer
+(rp_ibuf[NFSD4_REPLAY_ISIZE]) to store encoded operation responses.
+This size was calculated based on OPEN responses and does not account
+for LOCK denied responses, which include the conflicting lock owner as
+a variable-length field up to 1024 bytes (NFS4_OPAQUE_LIMIT).
 
-Verified on Dell 14 Plus 2-in-1 DB04250.
+When a LOCK operation is denied due to a conflict with an existing lock
+that has a large owner, nfsd4_encode_operation() copies the full encoded
+response into the undersized replay buffer via read_bytes_from_xdr_buf()
+with no bounds check. This results in a slab-out-of-bounds write of up
+to 944 bytes past the end of the buffer, corrupting adjacent heap memory.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221090
-Signed-off-by: Peter Metz <peter.metz@unarin.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260213044627.203638-1-peter.metz@unarin.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This can be triggered remotely by an unauthenticated attacker with two
+cooperating NFSv4.0 clients: one sets a lock with a large owner string,
+then the other requests a conflicting lock to provoke the denial.
+
+We could fix this by increasing NFSD4_REPLAY_ISIZE to allow for a full
+opaque, but that would increase the size of every stateowner, when most
+lockowners are not that large.
+
+Instead, fix this by checking the encoded response length against
+NFSD4_REPLAY_ISIZE before copying into the replay buffer. If the
+response is too large, set rp_buflen to 0 to skip caching the replay
+payload. The status is still cached, and the client already received the
+correct response on the original request.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Reported-by: Nicholas Carlini <npc@anthropic.com>
+Tested-by: Nicholas Carlini <npc@anthropic.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ replaced `op_status_offset + XDR_UNIT` with existing `post_err_offset` variable ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/hid.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfsd/nfs4xdr.c |    9 +++++++--
+ fs/nfsd/state.h   |   17 ++++++++++++-----
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 4d488e985dc55..6331469ee6585 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -156,6 +156,12 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Dell 14 Plus 2-in-1 DB04250"),
-+		},
-+	},
- 	{ }
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -5438,9 +5438,14 @@ nfsd4_encode_operation(struct nfsd4_comp
+ 		int len = xdr->buf->len - post_err_offset;
+ 
+ 		so->so_replay.rp_status = op->status;
+-		so->so_replay.rp_buflen = len;
+-		read_bytes_from_xdr_buf(xdr->buf, post_err_offset,
++		if (len <= NFSD4_REPLAY_ISIZE) {
++			so->so_replay.rp_buflen = len;
++			read_bytes_from_xdr_buf(xdr->buf,
++						post_err_offset,
+ 						so->so_replay.rp_buf, len);
++		} else {
++			so->so_replay.rp_buflen = 0;
++		}
+ 	}
+ status:
+ 	*p = op->status;
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -430,11 +430,18 @@ struct nfs4_client_reclaim {
+ 	struct xdr_netobj	cr_princhash;
  };
  
--- 
-2.51.0
-
+-/* A reasonable value for REPLAY_ISIZE was estimated as follows:  
+- * The OPEN response, typically the largest, requires 
+- *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + 
+- *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + 
+- *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes 
++/*
++ * REPLAY_ISIZE is sized for an OPEN response with delegation:
++ *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +
++ *   8(verifier) + 4(deleg. type) + 8(deleg. stateid) +
++ *   4(deleg. recall flag) + 20(deleg. space limit) +
++ *   ~32(deleg. ace) = 112 bytes
++ *
++ * Some responses can exceed this. A LOCK denial includes the conflicting
++ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
++ * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
++ * saved. Enlarging this constant increases the size of every
++ * nfs4_stateowner.
+  */
+ 
+ #define NFSD4_REPLAY_ISIZE       112 
 
 
 
