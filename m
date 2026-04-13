@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-236483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMutD7Ec3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236483-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:21 +0200
+	id HPpiBeAc3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-237052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DAA3EF82B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2B53EF8A1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9F0E319962C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7EA9930270A4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B3E27280A;
-	Mon, 13 Apr 2026 16:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4CD30DED5;
+	Mon, 13 Apr 2026 16:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHrLiUZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYVmZJJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C2824DCF6;
-	Mon, 13 Apr 2026 16:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB6924E4A1;
+	Mon, 13 Apr 2026 16:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097021; cv=none; b=E5sFDzYQDABEuBetGWGlLZdAqEZiax7uJAJyXan+MFM3c45t2UN2cNXiWhTykyyujmE298Y7jW9UecjGWwFt6LJsRULXS0yAXVyW9Z9wM1/kCw+yv/J+h3+wFAnvztJ1IZ9GODe5yn3J08Zr1cvNhDF4xc26uNPJ3msaBjiVXSU=
+	t=1776098466; cv=none; b=sb7g0NoFb3/egg6F4Jo71/eIK6HHOuFfb6mZimZlrGgc0i3jAA/MA/lzBGhz1YgFmeqeKXDUChzW1ox06sKphhFOvjCByM4NsrAC1+HlLjODkf/d+3/c5myNEuNjMPxUzdeHcQAOWfnxE2IL0opasC1hmbex8HyhSiyjMYp9oT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097021; c=relaxed/simple;
-	bh=VI3RPw6AmeekoXCU1jC6sy01NSbr8EQdQ7Ljden2he8=;
+	s=arc-20240116; t=1776098466; c=relaxed/simple;
+	bh=nYoDCRw0do2HR4J/Sl3zEgV/eyxQnz/0cemQo/3ZDTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeHhCKt5c7RUKQzx4CraVxWqRb6Ns3/5U2lB0hVCDxzKdneDqpwFzHtgsrvdn+ZvwL4Tawi40osbJzLYMQfLlmfwFKb2YmW+EiDyrLqh/rk3gNb0HE+3XnMBqkAH8CK7UGgV+c/yNCgnlPaKp0ORHB3fvjwNhTrD/Mjhpd7lxhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHrLiUZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1465C2BCAF;
-	Mon, 13 Apr 2026 16:17:00 +0000 (UTC)
+	 MIME-Version; b=WSSWrDoP2gyqTnRosNUQXYtSvZfpX0azR3j92YMvxeji19Nuosfy0GMWBcadyqQOzk91Enxybyhb8ki/6H31+Ug+HhUWHG6mtDtysYGLUrOpSgT/6Zx66b5qdVbGCQqeohMN10SIeUtyzbCSm96kvLLRvmpt7WwJo5lwKkP0OVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYVmZJJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94ABC2BCAF;
+	Mon, 13 Apr 2026 16:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097021;
-	bh=VI3RPw6AmeekoXCU1jC6sy01NSbr8EQdQ7Ljden2he8=;
+	s=korg; t=1776098466;
+	bh=nYoDCRw0do2HR4J/Sl3zEgV/eyxQnz/0cemQo/3ZDTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHrLiUZo2kfTRsvh5FtlW+jdXterfVl1cST9hpd8SmXcRchUdZyC+DgF5I6lZwBiq
-	 eoaTqMSL/tKoIeOtq4OlsvC/bAEpeaZ0Z2ThdaTyxxH16Jz5VmfE+3Ixz3pDwmvLEK
-	 HgSayOkayOeW0MX/V5gAhv9FDGq6S6Knpyb4I7TE=
+	b=WYVmZJJyGQcOgdw44OCJ3pWLNv4UzskrWeNXSkgKNz8t3laY7yyxVt4/qcyT5dxPI
+	 KgFXO/vz7vefCYLF92sKG5W6pzZks2Vt2rTd9vOdmyE+msqUEw22aPgJmVQ3kikoPL
+	 oyKKyRCS7pMU5Z6UgTVrpCJN9QRvBkKkMICzeAcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 32/55] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 5.15 535/570] drm/i915/gt: fix refcount underflow in intel_engine_park_heartbeat
 Date: Mon, 13 Apr 2026 18:01:06 +0200
-Message-ID: <20260413155726.034519953@linuxfoundation.org>
+Message-ID: <20260413155850.486193566@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,167 +65,155 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236483-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,6wind.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237052-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniroma2.it:email,6wind.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 82DAA3EF82B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 9F2B53EF8A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 
-[ Upstream commit c3812651b522fe8437ebb7063b75ddb95b571643 ]
+commit 4c71fd099513bfa8acab529b626e1f0097b76061 upstream.
 
-The seg6 lwtunnel uses a single dst_cache per encap route, shared
-between seg6_input_core() and seg6_output_core(). These two paths
-can perform the post-encap SID lookup in different routing contexts
-(e.g., ip rules matching on the ingress interface, or VRF table
-separation). Whichever path runs first populates the cache, and the
-other reuses it blindly, bypassing its own lookup.
+A use-after-free / refcount underflow is possible when the heartbeat
+worker and intel_engine_park_heartbeat() race to release the same
+engine->heartbeat.systole request.
 
-Fix this by splitting the cache into cache_input and cache_output,
-so each path maintains its own cached dst independently.
+The heartbeat worker reads engine->heartbeat.systole and calls
+i915_request_put() on it when the request is complete, but clears
+the pointer in a separate, non-atomic step. Concurrently, a request
+retirement on another CPU can drop the engine wakeref to zero, triggering
+__engine_park() -> intel_engine_park_heartbeat(). If the heartbeat
+timer is pending at that point, cancel_delayed_work() returns true and
+intel_engine_park_heartbeat() reads the stale non-NULL systole pointer
+and calls i915_request_put() on it again, causing a refcount underflow:
 
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260404004405.4057-2-andrea.mayer@uniroma2.it
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ added missing dst reference loop guard in seg6_output_core() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+```
+<4> [487.221889] Workqueue: i915-unordered engine_retire [i915]
+<4> [487.222640] RIP: 0010:refcount_warn_saturate+0x68/0xb0
+...
+<4> [487.222707] Call Trace:
+<4> [487.222711]  <TASK>
+<4> [487.222716]  intel_engine_park_heartbeat.part.0+0x6f/0x80 [i915]
+<4> [487.223115]  intel_engine_park_heartbeat+0x25/0x40 [i915]
+<4> [487.223566]  __engine_park+0xb9/0x650 [i915]
+<4> [487.223973]  ____intel_wakeref_put_last+0x2e/0xb0 [i915]
+<4> [487.224408]  __intel_wakeref_put_last+0x72/0x90 [i915]
+<4> [487.224797]  intel_context_exit_engine+0x7c/0x80 [i915]
+<4> [487.225238]  intel_context_exit+0xf1/0x1b0 [i915]
+<4> [487.225695]  i915_request_retire.part.0+0x1b9/0x530 [i915]
+<4> [487.226178]  i915_request_retire+0x1c/0x40 [i915]
+<4> [487.226625]  engine_retire+0x122/0x180 [i915]
+<4> [487.227037]  process_one_work+0x239/0x760
+<4> [487.227060]  worker_thread+0x200/0x3f0
+<4> [487.227068]  ? __pfx_worker_thread+0x10/0x10
+<4> [487.227075]  kthread+0x10d/0x150
+<4> [487.227083]  ? __pfx_kthread+0x10/0x10
+<4> [487.227092]  ret_from_fork+0x3d4/0x480
+<4> [487.227099]  ? __pfx_kthread+0x10/0x10
+<4> [487.227107]  ret_from_fork_asm+0x1a/0x30
+<4> [487.227141]  </TASK>
+```
+
+Fix this by replacing the non-atomic pointer read + separate clear with
+xchg() in both racing paths. xchg() is a single indivisible hardware
+instruction that atomically reads the old pointer and writes NULL. This
+guarantees only one of the two concurrent callers obtains the non-NULL
+pointer and performs the put, the other gets NULL and skips it.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15880
+Fixes: 058179e72e09 ("drm/i915/gt: Replace hangcheck by heartbeats")
+Cc: <stable@vger.kernel.org> # v5.5+
+Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/d4c1c14255688dd07cc8044973c4f032a8d1559e.1775038106.git.sebastian.brzezinka@intel.com
+(cherry picked from commit 13238dc0ee4f9ab8dafa2cca7295736191ae2f42)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_iptunnel.c |   41 ++++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c |   26 +++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct s
+--- a/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
+@@ -116,10 +116,12 @@ static void heartbeat(struct work_struct
+ 	/* Just in case everything has gone horribly wrong, give it a kick */
+ 	intel_engine_flush_submission(engine);
+ 
+-	rq = engine->heartbeat.systole;
+-	if (rq && i915_request_completed(rq)) {
+-		i915_request_put(rq);
+-		engine->heartbeat.systole = NULL;
++	rq = xchg(&engine->heartbeat.systole, NULL);
++	if (rq) {
++		if (i915_request_completed(rq))
++			i915_request_put(rq);
++		else
++			engine->heartbeat.systole = rq;
+ 	}
+ 
+ 	if (!intel_engine_pm_get_if_awake(engine))
+@@ -200,8 +202,11 @@ static void heartbeat(struct work_struct
+ unlock:
+ 	mutex_unlock(&ce->timeline->mutex);
+ out:
+-	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine))
+-		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
++	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine)) {
++		rq = xchg(&engine->heartbeat.systole, NULL);
++		if (rq)
++			i915_request_put(rq);
++	}
+ 	intel_engine_pm_put(engine);
  }
  
- struct seg6_lwt {
--	struct dst_cache cache;
-+	struct dst_cache cache_input;
-+	struct dst_cache cache_output;
- 	struct seg6_iptunnel_encap tuninfo[];
- };
+@@ -215,8 +220,13 @@ void intel_engine_unpark_heartbeat(struc
  
-@@ -486,7 +487,7 @@ static int seg6_input_core(struct net *n
- 	slwt = seg6_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_input);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -502,7 +503,7 @@ static int seg6_input_core(struct net *n
- 		/* cache only if we don't create a dst reference loop */
- 		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
--			dst_cache_set_ip6(&slwt->cache, dst,
-+			dst_cache_set_ip6(&slwt->cache_input, dst,
- 					  &ipv6_hdr(skb)->saddr);
- 			local_bh_enable();
- 		}
-@@ -561,7 +562,7 @@ static int seg6_output_core(struct net *
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_output);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -586,9 +587,12 @@ static int seg6_output_core(struct net *
- 			goto drop;
- 		}
- 
--		local_bh_disable();
--		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
--		local_bh_enable();
-+		/* cache only if we don't create a dst reference loop */
-+		if (orig_dst->lwtstate != dst->lwtstate) {
-+			local_bh_disable();
-+			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 
- 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 		if (unlikely(err))
-@@ -695,11 +699,13 @@ static int seg6_build_state(struct net *
- 
- 	slwt = seg6_lwt_lwtunnel(newts);
- 
--	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
--	if (err) {
--		kfree(newts);
--		return err;
--	}
-+	err = dst_cache_init(&slwt->cache_input, GFP_ATOMIC);
-+	if (err)
-+		goto err_free_newts;
-+
-+	err = dst_cache_init(&slwt->cache_output, GFP_ATOMIC);
-+	if (err)
-+		goto err_destroy_input;
- 
- 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
- 
-@@ -714,11 +720,20 @@ static int seg6_build_state(struct net *
- 	*ts = newts;
- 
- 	return 0;
-+
-+err_destroy_input:
-+	dst_cache_destroy(&slwt->cache_input);
-+err_free_newts:
-+	kfree(newts);
-+	return err;
- }
- 
- static void seg6_destroy_state(struct lwtunnel_state *lwt)
+ void intel_engine_park_heartbeat(struct intel_engine_cs *engine)
  {
--	dst_cache_destroy(&seg6_lwt_lwtunnel(lwt)->cache);
-+	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwt);
+-	if (cancel_delayed_work(&engine->heartbeat.work))
+-		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
++	if (cancel_delayed_work(&engine->heartbeat.work)) {
++		struct i915_request *rq;
 +
-+	dst_cache_destroy(&slwt->cache_input);
-+	dst_cache_destroy(&slwt->cache_output);
++		rq = xchg(&engine->heartbeat.systole, NULL);
++		if (rq)
++			i915_request_put(rq);
++	}
  }
  
- static int seg6_fill_encap_info(struct sk_buff *skb,
+ void intel_gt_unpark_heartbeats(struct intel_gt *gt)
 
 
 
