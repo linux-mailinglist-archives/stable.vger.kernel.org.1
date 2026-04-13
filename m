@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KhsKWQc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:04 +0200
+	id cCtQALgi3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DA13EF78B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849113F0C64
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBE84315523F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BBA830285E2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2482225A2C9;
-	Mon, 13 Apr 2026 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A805B32F765;
+	Mon, 13 Apr 2026 17:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcZ9HSdI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQklDR6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDDE5C9E;
-	Mon, 13 Apr 2026 16:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB6823C8C7;
+	Mon, 13 Apr 2026 17:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096936; cv=none; b=VbFV4skpdcnr1evAYpX8DD5QBIpcC7vfkrUSuIXIyJ8A9Vke4omaMDUfWfzFk4+HKu9kSmBBm4lcKhmj9i/wC5sgVun6LtGjC6byC+4K5ayLaCT3MDEq61PABDix/R3fTCbXK0eVN0tMPLx5QBzzGLFV+iJdQpx8zb1XCgLxb+4=
+	t=1776099635; cv=none; b=EMpenASZWNijjVBCOO37+FprWfWlfWP5XPZam7zueeB8XDlxFg7OIvEmkNzPB4XPSLR74x7fVRRjs6YkjXpcGEYCXuMa6PHPfKoaPpBmUjDUyeymi2JcxUC/SL+zwHi4w0qJBAj8w06TI3djPkNxlN0jWEUUyY6her4TlrE+8P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096936; c=relaxed/simple;
-	bh=pphS1h6dRLtR5T44SgYGcEXsIHIBEVYuc1vqnlH9XRw=;
+	s=arc-20240116; t=1776099635; c=relaxed/simple;
+	bh=dc+x41aXunnCpixEOw9pcpct4SjwhG8KrGoLcujoPkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLHY4qxx5CdTj3zNEKS9E6veXXBzr+Sdt8ToP5Aj5+ODhejxdXThgecrsMy0XIiHqDuOKtZUR4jmC/oIkN5/kQfSy0gdBQbFFdznDaOno25eR92J5/6+IGgSSz60Ew+GY4+Ri/90tn9st4u6ezGaSFtoNVkOs4N8lwX2V6fcB80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcZ9HSdI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0ABC2BCAF;
-	Mon, 13 Apr 2026 16:15:36 +0000 (UTC)
+	 MIME-Version; b=ZCXgk2UjpLGKbbNA5hw1EkkN5/T84zzZ0zjldUK4ZdFSLXjO4lwMJWPoBb5hRmy8raZny20kBKKWM3k1UeLFI3NFc+t9rL88VwHLljScbBLbX04JXstEosaxRpHqV8kUSjP5xYI7S8d3jI8uyzebbDQuEUPMv0Wuw6/SZdNE9eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQklDR6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA64C2BCAF;
+	Mon, 13 Apr 2026 17:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096936;
-	bh=pphS1h6dRLtR5T44SgYGcEXsIHIBEVYuc1vqnlH9XRw=;
+	s=korg; t=1776099635;
+	bh=dc+x41aXunnCpixEOw9pcpct4SjwhG8KrGoLcujoPkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcZ9HSdI4deI1daheuH8xF1JCLN+1XuBK3hRYTInavQx+3Muv3S2YWxzRt5mREGqU
-	 zIGzbxq+iUt2qXp7skXoVtd9uZqwLVYjA9Irxhlc6da8FOREpDqsyjG3UFGCQ3lCaa
-	 Ldlp1n3dakHplmYMhC0WqHYDVmEA/XUkBSnsIBSs=
+	b=eQklDR6mxWMRUaRODf9xaZ2b8253nBgEDEUc0ttxZscPY0gM3ARYFhaWM67DFQQbR
+	 XlK1ev5ZNgqWeE3gJsOKp1dGyxAzJIi44emUp8KWEsf73xYZND/fZu6mfs+9efZk/+
+	 G27QzhQrsFT+Krdk+sBCQ8YF01XVkM/OXfz2Ty7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 32/50] net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
+	Vishal Thanki <vishalthanki@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 414/491] wifi: rt2x00usb: fix devres lifetime
 Date: Mon, 13 Apr 2026 18:00:59 +0200
-Message-ID: <20260413155725.714342034@linuxfoundation.org>
+Message-ID: <20260413155834.526875387@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,wp.pl,intel.com];
+	TAGGED_FROM(0.00)[bounces-237507-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236450-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,queasysnail.net:email,starlabs.sg:email]
-X-Rspamd-Queue-Id: 01DA13EF78B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,wp.pl:email]
+X-Rspamd-Queue-Id: 849113F0C64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+From: Johan Hovold <johan@kernel.org>
 
-commit a9b8b18364fffce4c451e6f6fd218fa4ab646705 upstream.
+commit 25369b22223d1c56e42a0cd4ac9137349d5a898e upstream.
 
-The -EBUSY handling in tls_do_encryption(), introduced by commit
-859054147318 ("net: tls: handle backlogging of crypto requests"), has
-a use-after-free due to double cleanup of encrypt_pending and the
-scatterlist entry.
+USB drivers bind to USB interfaces and any device managed resources
+should have their lifetime tied to the interface rather than parent USB
+device. This avoids issues like memory leaks when drivers are unbound
+without their devices being physically disconnected (e.g. on probe
+deferral or configuration changes).
 
-When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
-the cryptd backlog and the async callback tls_encrypt_done() will be
-invoked upon completion. That callback unconditionally restores the
-scatterlist entry (sge->offset, sge->length) and decrements
-ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
-error, the synchronous error path in tls_do_encryption() performs the
-same cleanup again, double-decrementing encrypt_pending and
-double-restoring the scatterlist.
+Fix the USB anchor lifetime so that it is released on driver unbind.
 
-The double-decrement corrupts the encrypt_pending sentinel (initialized
-to 1), making tls_encrypt_async_wait() permanently skip the wait for
-pending async callbacks. A subsequent sendmsg can then free the
-tls_rec via bpf_exec_tx_verdict() while a cryptd callback is still
-pending, resulting in a use-after-free when the callback fires on the
-freed record.
-
-Fix this by skipping the synchronous cleanup when the -EBUSY async
-wait returns an error, since the callback has already handled
-encrypt_pending and sge restoration.
-
-Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260403013617.2838875-1-ramdhan@starlabs.sg
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Vishal Thanki <vishalthanki@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260327113219.1313748-1-johan@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -584,6 +584,16 @@ static int tls_do_encryption(struct sock
- 	if (rc == -EBUSY) {
- 		rc = tls_encrypt_async_wait(ctx);
- 		rc = rc ?: -EINPROGRESS;
-+		/*
-+		 * The async callback tls_encrypt_done() has already
-+		 * decremented encrypt_pending and restored the sge on
-+		 * both success and error. Skip the synchronous cleanup
-+		 * below on error, just remove the record and return.
-+		 */
-+		if (rc != -EINPROGRESS) {
-+			list_del(&rec->list);
-+			return rc;
-+		}
- 	}
- 	if (!rc || rc != -EINPROGRESS) {
- 		atomic_dec(&ctx->encrypt_pending);
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -830,7 +830,7 @@ int rt2x00usb_probe(struct usb_interface
+ 	if (retval)
+ 		goto exit_free_device;
+ 
+-	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
++	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+ 					sizeof(struct usb_anchor),
+ 					GFP_KERNEL);
+ 	if (!rt2x00dev->anchor) {
 
 
 
