@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-236239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEPEH/sW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:59 +0200
+	id wIiCOQIf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C29C3EE8CC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E236C3EFFDA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B93313091316
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0BBBA30601A7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EC828C2DD;
-	Mon, 13 Apr 2026 16:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5E130BF68;
+	Mon, 13 Apr 2026 16:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGdfgIPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1B5pEAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8A3271464;
-	Mon, 13 Apr 2026 16:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E7C1D5AD4;
+	Mon, 13 Apr 2026 16:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096400; cv=none; b=NiylVuGSXN9pKBeudMucEIeqm8UcxmV13X9gUA5PPaKyRUiu/ZZ9Sr5X1FQ7kMESZ85TOH0Thu4er86DXJUGiuyN55qEx4NanFruTyooFIvV+a1iUEvP1cvyPb0f8r3XE4zyrpY8/Pcg7yNOog8s0AO92v6u9fdBtIWn34H/kvg=
+	t=1776098326; cv=none; b=uLohIUNCFckgkwvLwozy4zcnldRDs79AKa5FOgMomp51Jm7QZUNQ0d4jgv25CgFwczymXfSPDhMS08gMF8+nBDDmX6WjjIPUR4dyyOlrwgFvEP++arUe3gXytr6SgFaP7SO93jhwJRBBoXkppI+NbSFlAanSEIKryk9S8ZFrREw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096400; c=relaxed/simple;
-	bh=V2yHaPuww0XSJnCIky4r9UtouZSje0RTz6/ZkrKjC3Q=;
+	s=arc-20240116; t=1776098326; c=relaxed/simple;
+	bh=HG1A7IVJUwkTcvRNLTTnPI0JjW5+OTrAuP3vYx5BlYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1h5JW+krRfdYdxc2BBSuR5GqG2tOVOMWXWnf2440AsBYd9RWSX+teMpKVv6m3uGJOfFt59Jo+tpkyL984xxX61karO0XNSnMoz3+BOMpW05qqGz1e19QmJOJorgu3cVoQladvJ16ZPJBOFI7LgY3UKCiprIq7RVugLhr6zgrjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGdfgIPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725DFC2BCB0;
-	Mon, 13 Apr 2026 16:06:40 +0000 (UTC)
+	 MIME-Version; b=dBA7cqvw2SY+oPEJcXyA8iOOSFYtABppUZ4KhC+kCcAoKkiBWtcl4Id+XpvQA+Nysny9Luzd7VV4hBgBCtoDLaBmnyNS5/MUZkfEW2D5YflcNZB2ETwVfY4cZVLcWOTVy5if0MWapfbxV9sXNpj8kJlWlCxMB791AJ5kSusqIgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1B5pEAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9966C2BCB0;
+	Mon, 13 Apr 2026 16:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096400;
-	bh=V2yHaPuww0XSJnCIky4r9UtouZSje0RTz6/ZkrKjC3Q=;
+	s=korg; t=1776098326;
+	bh=HG1A7IVJUwkTcvRNLTTnPI0JjW5+OTrAuP3vYx5BlYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGdfgIPkueOhHBPGbjdaxi5OyYZxGG6n30WrHinXQMRaUY2I6IYYw/Jsx3Heqts5g
-	 /8JUZYh0LaH4EQe1jXorX0p6U2cqbvtYBp6FF4nxdk/+WwyFHBfaQUufeaE0Jan84H
-	 qbZ7OzjaP3B61/FqO6UeInJzPcx3vFxVqz0wEJbE=
+	b=e1B5pEAA24QhaUAnAnjO9tDbyU9C1UV+w3kpvoaWKa7XK3Q8HwO6/dwLJ1yePDHYx
+	 P2HL/RB2Xp1cF4JHdcvMDziczSeTYZzofsR6diOm6d8m3m+M5kHsRQbzV4n60FnEl1
+	 5fN+UcM2kbyxGvJ4gUPmjX4nD0wF8CSY4RlDfLmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 66/86] rxrpc: Fix key parsing memleak
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.15 482/570] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
 Date: Mon, 13 Apr 2026 18:00:13 +0200
-Message-ID: <20260413155734.017046395@linuxfoundation.org>
+Message-ID: <20260413155848.515444197@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,71 +67,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236239-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236998-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,auristor.com:email,infradead.org:email]
-X-Rspamd-Queue-Id: 1C29C3EE8CC
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E236C3EFFDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit b555912b9b21075e8298015f888ffe3ff60b1a97 upstream.
+commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
 
-In rxrpc_preparse_xdr_yfs_rxgk(), the memory attached to token->rxgk can be
-leaked in a few error paths after it's allocated.
+If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
+returns an error, the COMEDI core will call the driver's "detach"
+handler function (`atmio16d_detach()`) to clean up.  This calls
+`reset_atmio16d()` unconditionally, but depending on where the error
+occurred in the attach handler, the device may not have been
+sufficiently initialized to call `reset_atmio16d()`.  It uses
+`dev->iobase` as the I/O port base address and `dev->private` as the
+pointer to the COMEDI device's private data structure.  `dev->iobase`
+may still be set to its initial value of 0, which would result in
+undesired writes to low I/O port addresses.  `dev->private` may still be
+`NULL`, which would result in null pointer dereferences.
 
-Fix this by freeing it in the "reject_token:" case.
+Fix `atmio16d_detach()` by checking that `dev->private` is valid
+(non-null) before calling `reset_atmio16d()`.  This implies that
+`dev->iobase` was set correctly since that is set up before
+`dev->private`.
 
-Fixes: 0ca100ff4df6 ("rxrpc: Add YFS RxGK (GSSAPI) security class")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-3-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/key.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/comedi/drivers/ni_atmio16d.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -274,6 +274,7 @@ nomem_token:
- nomem:
- 	return -ENOMEM;
- reject_token:
-+	kfree(token->rxgk);
- 	kfree(token);
- reject:
- 	return -EKEYREJECTED;
+--- a/drivers/comedi/drivers/ni_atmio16d.c
++++ b/drivers/comedi/drivers/ni_atmio16d.c
+@@ -699,7 +699,8 @@ static int atmio16d_attach(struct comedi
+ 
+ static void atmio16d_detach(struct comedi_device *dev)
+ {
+-	reset_atmio16d(dev);
++	if (dev->private)
++		reset_atmio16d(dev);
+ 	comedi_legacy_detach(dev);
+ }
+ 
 
 
 
