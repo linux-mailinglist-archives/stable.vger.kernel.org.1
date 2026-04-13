@@ -1,90 +1,72 @@
-Return-Path: <stable+bounces-235870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEfmAuhB3GkzOgkAu9opvQ
-	(envelope-from <stable+bounces-235870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:07:52 +0200
+	id AAomKh1I3GkCOwkAu9opvQ
+	(envelope-from <stable+bounces-235871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:34:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC0C3E68DF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:07:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46E33E6A78
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 700313023DD8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 01:06:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6A1773003BF2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 01:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F272D1A840A;
-	Mon, 13 Apr 2026 01:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C041DE8AE;
+	Mon, 13 Apr 2026 01:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZAs1d4Kh"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="EOAc4R+n"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mail114-241.sinamail.sina.com.cn (mail114-241.sinamail.sina.com.cn [218.30.114.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D8F35950;
-	Mon, 13 Apr 2026 01:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1521CA6F
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 01:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776042407; cv=none; b=lLeC6EjFdUsMbeQ/f7Z55/Bs3DGsPMN3PhaUJkKYfz8+QaD/ve2F3ltCbuUqDaA4zk6HSX+1sOaoqWe/wSn613j//l0yiEELklJqTtEj54cSWlsLbVL/J0B+9hRfJ71CM7+Qk97hD7MDVmCIWdEvyU9kHDz3aO6RWBF1Jrx+bZk=
+	t=1776044014; cv=none; b=DMdMO4lnWN2gfU4qK0DYR5TL3ld0iCYPBts+UkBFDBMIeG2Lj/3oxaSq0A46mjKNDpDgOeCwSgXEWJV68Fv9QgbHYm8LQVnwctFaMFA0+Rt/BWOlVSSWvdfNpKWYwLcD9M6T9gtPVrRWnLnfSCHg9AmUnWLqgmJkSAxG75ARQUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776042407; c=relaxed/simple;
-	bh=129nPjVpDoaaHM2ZmHDbl767W7EK5HCaERwpRVcRLss=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D+PuufxFXu0gKHMt0Dk2Ea1AVEKmURNlIwO5sNHRINwPxY/vcTdDMD+N7P9PFK0Ear/webwNqeSR8xk2s7QSRkc7use0FgCE5TZld5EvFRs2Pz7C0tS8c4pQp/7o8iYlLofGfhMWHA27weyiVloy8zq+9qGP7fs65tKyjaHuNiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZAs1d4Kh; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776042407; x=1807578407;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=129nPjVpDoaaHM2ZmHDbl767W7EK5HCaERwpRVcRLss=;
-  b=ZAs1d4Khnr/DlezBrdZia31loZ7B+dUdc9KWVQwee0duPbgwg0WDwsQD
-   234BI+/l8TUS0oDR+OoVFP7tr2sWAYdcWjfaSnViIOhvDPyK6cfIM/raZ
-   BH2eNZQ5WAN7LrjKzcgpc8meNnrNg2xjrTEd9QfEll8bZBIGNNyI38wtg
-   2EcUC726Pilo2HWuBTyX2hYphHZdAQL2x8/oyL8YH1iUSjl8hNepHX52y
-   iKfms5/q8fGr2KpDbDEtCJ8yRDZdy72pFzEjayKdXrHAz1YUy0GvpVaDc
-   TBERqU3uWZv1rZKKqiOhMhRY5zO91H0bzqPhcRE0krRwZjTV5bLLWatzl
-   A==;
-X-CSE-ConnectionGUID: QQl0xPA6TzC6CxTUIbLFcA==
-X-CSE-MsgGUID: +Q8mPbupSv2zdJgOupssCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="76933887"
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
-   d="scan'208";a="76933887"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 18:06:46 -0700
-X-CSE-ConnectionGUID: bfdOK9msS7i+ksanHXsRGQ==
-X-CSE-MsgGUID: VCDL7359S+ChPkV8396+Hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
-   d="scan'208";a="231366315"
-Received: from spr.sh.intel.com ([10.112.229.196])
-  by fmviesa004.fm.intel.com with ESMTP; 12 Apr 2026 18:06:42 -0700
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Dapeng Mi <dapeng1.mi@intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] perf/x86/intel: Disable PMI for self-reloaded ACR events
-Date: Mon, 13 Apr 2026 09:01:57 +0800
-Message-Id: <20260413010157.535990-3-dapeng1.mi@linux.intel.com>
+	s=arc-20240116; t=1776044014; c=relaxed/simple;
+	bh=QahBc1mPe2ZsYDuTT3SH67YCUSQ8H3KUkvoUGntnbuM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nQXueBStXujfbRAmOCAmKr1C/q8rYYZUzG1UwRd4zkioa4na8IVUYXza7WwaLfYBA8M3z7f1V0K1JdahcHM0N+ejdD6Pws4a/GKqqIKnRNSKPQ90JUNbtfs07Zf/Slo1sEvjDFppfNFOSt6R+r2hLVGYoFEHKew+1AKIIb2nNUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=EOAc4R+n; arc=none smtp.client-ip=218.30.114.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1776044009;
+	bh=CKWJ8adBqHEK0S8UEdWGJBcrStEi5oVNXbP7Bhu43sg=;
+	h=From:Subject:Date:Message-Id;
+	b=EOAc4R+nSlgc921EHi0GVglM3wFUQHXppHKvq3DN8lMZq4gt00WwNjNrzTY+1DFsW
+	 ldCx0lEEwJXvEbauuOsghOAuourriLJuraVrO4hafBozmP+jpLiFVwEgIxEXR/bJ9k
+	 iHu+oDo7NIrPaajIsl/ARG67KD5inif0s0cSWF58=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.23) with ESMTP
+	id 69DC47BE0000292A; Mon, 13 Apr 2026 09:32:48 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 8605948913356
+X-SMAIL-UIID: C7865F5684A949E0B922B949EB68AADE-20260413-093248-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	ira.weiny@intel.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	alexander.h.duyck@linux.intel.com,
+	linux-nvdimm@lists.01.org,
+	dingiso.kernel@gmail.com
+Subject: [PATCH 5.15.y] nvdimm/bus: Fix potential use after free in asynchronous initialization
+Date: Mon, 13 Apr 2026 09:32:46 +0800
+Message-Id: <20260413013246.836999-1-jianqkang@sina.cn>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260413010157.535990-1-dapeng1.mi@linux.intel.com>
-References: <20260413010157.535990-1-dapeng1.mi@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,121 +74,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,intel.com,linux.intel.com,lists.01.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235870-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235871-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sina.cn:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,linux.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8BC0C3E68DF
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B46E33E6A78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On platforms with Auto Counter Reload (ACR) support, such as NVL, a
-"NMI received for unknown reason 30" warning is observed when running
-multiple events in a group with ACR enabled:
+From: Ira Weiny <ira.weiny@intel.com>
 
-  $ perf record -e '{instructions/period=20000,acr_mask=0x2/u,\
-    cycles/period=40000,acr_mask=0x3/u}' ./test
+[ Upstream commit a8aec14230322ed8f1e8042b6d656c1631d41163 ]
 
-The warning occurs because the Performance Monitoring Interrupt (PMI)
-is enabled for the self-reloaded event (the cycles event in this case).
-According to the Intel SDM, the overflow bit
-(IA32_PERF_GLOBAL_STATUS.PMCn_OVF) is never set for self-reloaded events.
-Since the bit is not set, the perf NMI handler cannot identify the source
-of the interrupt, leading to the "unknown reason" message.
+Dingisoul with KASAN reports a use after free if device_add() fails in
+nd_async_device_register().
 
-Furthermore, enabling PMI for self-reloaded events is unnecessary and
-can lead to extraneous records that pollute the user's requested data.
+Commit b6eae0f61db2 ("libnvdimm: Hold reference on parent while
+scheduling async init") correctly added a reference on the parent device
+to be held until asynchronous initialization was complete.  However, if
+device_add() results in an allocation failure the ref count of the
+device drops to 0 prior to the parent pointer being accessed.  Thus
+resulting in use after free.
 
-Disable the interrupt bit for all events configured with ACR self-reload.
+The bug bot AI correctly identified the fix.  Save a reference to the
+parent pointer to be used to drop the parent reference regardless of the
+outcome of device_add().
 
-Reported-by: Andi Kleen <ak@linux.intel.com>
+Reported-by: Dingisoul <dingiso.kernel@gmail.com>
+Closes: http://lore.kernel.org/8855544b-be9e-4153-aa55-0bc328b13733@gmail.com
+Fixes: b6eae0f61db2 ("libnvdimm: Hold reference on parent while scheduling async init")
 Cc: stable@vger.kernel.org
-Fixes: ec980e4facef ("perf/x86/intel: Support auto counter reload")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20260306-fix-uaf-async-init-v1-1-a28fd7526723@intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
- arch/x86/events/intel/core.c | 17 +++++++++++++----
- arch/x86/events/perf_event.h | 10 ++++++++++
- 2 files changed, 23 insertions(+), 4 deletions(-)
+ drivers/nvdimm/bus.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 58c236ce4747..c45cd88c3710 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3118,11 +3118,11 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
- 	intel_set_masks(event, idx);
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 84d197cc09f8..47d13ef9e07f 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -492,14 +492,15 @@ EXPORT_SYMBOL_GPL(nd_synchronize);
+ static void nd_async_device_register(void *d, async_cookie_t cookie)
+ {
+ 	struct device *dev = d;
++	struct device *parent = dev->parent;
  
- 	/*
--	 * Enable IRQ generation (0x8), if not PEBS,
--	 * and enable ring-3 counting (0x2) and ring-0 counting (0x1)
--	 * if requested:
-+	 * Enable IRQ generation (0x8), if not PEBS and self-reloaded
-+	 * ACR event, and enable ring-3 counting (0x2) and ring-0
-+	 * counting (0x1) if requested:
- 	 */
--	if (!event->attr.precise_ip)
-+	if (!event->attr.precise_ip && !is_acr_self_reload_event(event))
- 		bits |= INTEL_FIXED_0_ENABLE_PMI;
- 	if (hwc->config & ARCH_PERFMON_EVENTSEL_USR)
- 		bits |= INTEL_FIXED_0_USER;
-@@ -3306,6 +3306,15 @@ static void intel_pmu_enable_event(struct perf_event *event)
- 		intel_set_masks(event, idx);
- 		static_call_cond(intel_pmu_enable_acr_event)(event);
- 		static_call_cond(intel_pmu_enable_event_ext)(event);
-+		/*
-+		 * For self-reloaded ACR event, Don't enable PMI since
-+		 * HW won't set overflow bit in GLOBAL_STATUS. Otherwise,
-+		 * the PMI would be recognized as a suspicious NMI.
-+		 */
-+		if (is_acr_self_reload_event(event))
-+			hwc->config &= ~ARCH_PERFMON_EVENTSEL_INT;
-+		else if (!event->attr.precise_ip)
-+			hwc->config |= ARCH_PERFMON_EVENTSEL_INT;
- 		__x86_pmu_enable_event(hwc, enable_mask);
- 		break;
- 	case INTEL_PMC_IDX_FIXED ... INTEL_PMC_IDX_FIXED_BTS - 1:
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index fad87d3c8b2c..524668dcf4cc 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -137,6 +137,16 @@ static inline bool is_acr_event_group(struct perf_event *event)
- 	return check_leader_group(event->group_leader, PERF_X86_EVENT_ACR);
+ 	if (device_add(dev) != 0) {
+ 		dev_err(dev, "%s: failed\n", __func__);
+ 		put_device(dev);
+ 	}
+ 	put_device(dev);
+-	if (dev->parent)
+-		put_device(dev->parent);
++	if (parent)
++		put_device(parent);
  }
  
-+static inline bool is_acr_self_reload_event(struct perf_event *event)
-+{
-+	struct hw_perf_event *hwc = &event->hw;
-+
-+	if (hwc->idx < 0)
-+		return false;
-+
-+	return test_bit(hwc->idx, (unsigned long *)&hwc->config1);
-+}
-+
- struct amd_nb {
- 	int nb_id;  /* NorthBridge id */
- 	int refcnt; /* reference count */
+ static void nd_async_device_unregister(void *d, async_cookie_t cookie)
 -- 
 2.34.1
 
