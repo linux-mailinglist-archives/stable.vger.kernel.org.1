@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPm6Hn4f3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:18 +0200
+	id APRTHEoi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396F83F01CF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC04C3F0AE3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09583302AA7C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E7723164FDA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E342313298;
-	Mon, 13 Apr 2026 16:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6759238D27;
+	Mon, 13 Apr 2026 16:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wM0t0CKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qws6nfZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45DB3168EE;
-	Mon, 13 Apr 2026 16:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA29C233722;
+	Mon, 13 Apr 2026 16:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099070; cv=none; b=bYlsRcNrqnN34S73rl8PF3d7W+5JtudzuqNGbpEHLQxn78HvwTuv2hQ2K92hHU5J8CkafB7PXvA/saJ8B64H5ZOyrByGIh7qxk6zzIPCa+w9nooshwdurp5lQo4rU7jtQI4ZgPhfZk71qGs+ChVfa65MCTplWICI/XrnBY+1Mt4=
+	t=1776097888; cv=none; b=EhCGwc2clPXkJxUv+cvH6DOBq5Q1H3FoRSpHkLDdFh3tL4RzxDvFjL/9NTL3yLyNDUNZkOVpYXFjf1JdfJS0kkQpkTp/xUHnngIpkbsio6xMkKaK5bgGRSYM7aNMO8ohfnCSJEQWGxwUw8gjskzZdQ+pLg8PyzJc8lb3jSLvbsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099070; c=relaxed/simple;
-	bh=OzgWyYDhWUr0qPvziBS53mC42pdKG8hLVBxmg9I9I4M=;
+	s=arc-20240116; t=1776097888; c=relaxed/simple;
+	bh=I19+Kkfky01kxUhCMfJm1pVN+sO16dmKGslztdkfE38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVmDeYqO2Gj3Egw7RuOfrBWApMBKkK/KwecNsWW3tAOPcMxN1ZKT8jR3agS/iN9SBKVNopnfKsjrrEHQsAkyfZq6QtA5XMqRIP4CO6PGrB+CqH9EpLaHkkwtJbPiMxcowNjxOtHNZYJO7I8AFht+YWAr7r5+EWpYjkVmzgVD+Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wM0t0CKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40533C2BCAF;
-	Mon, 13 Apr 2026 16:51:10 +0000 (UTC)
+	 MIME-Version; b=cz1gyAo4aNvnSi7elPvCIC6YpBEWDSTxNe9Boqgy3otbrCGNXgBpAEKAy5UXFYM1JYvN2xP+o9LOXvXSsn3l/esTR6jra7fVQ18QjgxG0lxxXxJ65/AgttqbdL1EgSqrb1ioE9H9MXItvdv7a3v1QW5s++dBI56iwLyCWJ2FkVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qws6nfZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404EEC2BCB0;
+	Mon, 13 Apr 2026 16:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099070;
-	bh=OzgWyYDhWUr0qPvziBS53mC42pdKG8hLVBxmg9I9I4M=;
+	s=korg; t=1776097888;
+	bh=I19+Kkfky01kxUhCMfJm1pVN+sO16dmKGslztdkfE38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wM0t0CKcTY/QYGPWRTPzh/HD8sq99iRDMpxKKCh2jcUTTJa5dl2F+qYFhgsqdLXic
-	 JWOGnMjwKuG/sJa0h+zNJWmoUFyg1Az/5ZFtxTezrGM6MBt2+DIvfnVxux74C2xtCX
-	 omQxT3EZ+51HWLq99PXXq3vQWW+3VYh5Mav0Lnmw=
+	b=qws6nfZi/4ke6UqEcFltUEKjP3oKI6lSPKKkIXlgU6GQV8itNsUP68CQEhivJH3r+
+	 3F9Zq4mkrZcTTX5yhjjUEQfNu4tBctioqy45/is5/ODrOFb4nQhsSQ38DPvyEKkGgp
+	 19LyBtAndloaWHtnE6QMiY+WlMmHs2P7icRchi6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 198/491] soc: fsl: qbman: fix race condition in qman_destroy_fq
+Subject: [PATCH 5.15 312/570] xfrm: call xdo_dev_state_delete during state update
 Date: Mon, 13 Apr 2026 17:57:23 +0200
-Message-ID: <20260413155826.486137864@linuxfoundation.org>
+Message-ID: <20260413155842.183825093@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237288-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236825-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,104 +86,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 396F83F01CF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,queasysnail.net:email,secunet.com:email]
+X-Rspamd-Queue-Id: DC04C3F0AE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 014077044e874e270ec480515edbc1cadb976cf2 ]
+[ Upstream commit 7d2fc41f91bc69acb6e01b0fa23cd7d0109a6a23 ]
 
-When QMAN_FQ_FLAG_DYNAMIC_FQID is set, there's a race condition between
-fq_table[fq->idx] state and freeing/allocating from the pool and
-WARN_ON(fq_table[fq->idx]) in qman_create_fq() gets triggered.
+When we update an SA, we construct a new state and call
+xdo_dev_state_add, but never insert it. The existing state is updated,
+then we immediately destroy the new state. Since we haven't added it,
+we don't go through the standard state delete code, and we're skipping
+removing it from the device (but xdo_dev_state_free will get called
+when we destroy the temporary state).
 
-Indeed, we can have:
-         Thread A                             Thread B
-    qman_destroy_fq()                    qman_create_fq()
-      qman_release_fqid()
-        qman_shutdown_fq()
-        gen_pool_free()
-           -- At this point, the fqid is available again --
-                                           qman_alloc_fqid()
-           -- so, we can get the just-freed fqid in thread B --
-                                           fq->fqid = fqid;
-                                           fq->idx = fqid * 2;
-                                           WARN_ON(fq_table[fq->idx]);
-                                           fq_table[fq->idx] = fq;
-     fq_table[fq->idx] = NULL;
+This is similar to commit c5d4d7d83165 ("xfrm: Fix deletion of
+offloaded SAs on failure.").
 
-And adding some logs between qman_release_fqid() and
-fq_table[fq->idx] = NULL makes the WARN_ON() trigger a lot more.
-
-To prevent that, ensure that fq_table[fq->idx] is set to NULL before
-gen_pool_free() is called by using smp_wmb().
-
-Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Tested-by: CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>
-Link: https://lore.kernel.org/r/20251223072549.397625-1-richard.genoud@bootlin.com
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Fixes: d77e38e612a0 ("xfrm: Add an IPsec hardware offloading API")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_state.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 7abc9b6a04ab6..0309ed2df0d71 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -1827,6 +1827,8 @@ EXPORT_SYMBOL(qman_create_fq);
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 54ae99f69f25f..f7f568bfb93a8 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1770,6 +1770,7 @@ int xfrm_state_update(struct xfrm_state *x)
  
- void qman_destroy_fq(struct qman_fq *fq)
- {
-+	int leaked;
-+
- 	/*
- 	 * We don't need to lock the FQ as it is a pre-condition that the FQ be
- 	 * quiesced. Instead, run some checks.
-@@ -1834,11 +1836,29 @@ void qman_destroy_fq(struct qman_fq *fq)
- 	switch (fq->state) {
- 	case qman_fq_state_parked:
- 	case qman_fq_state_oos:
--		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID))
--			qman_release_fqid(fq->fqid);
-+		/*
-+		 * There's a race condition here on releasing the fqid,
-+		 * setting the fq_table to NULL, and freeing the fqid.
-+		 * To prevent it, this order should be respected:
-+		 */
-+		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID)) {
-+			leaked = qman_shutdown_fq(fq->fqid);
-+			if (leaked)
-+				pr_debug("FQID %d leaked\n", fq->fqid);
-+		}
+ 		err = 0;
+ 		x->km.state = XFRM_STATE_DEAD;
++		xfrm_dev_state_delete(x);
+ 		__xfrm_state_put(x);
+ 	}
  
- 		DPAA_ASSERT(fq_table[fq->idx]);
- 		fq_table[fq->idx] = NULL;
-+
-+		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID) && !leaked) {
-+			/*
-+			 * fq_table[fq->idx] should be set to null before
-+			 * freeing fq->fqid otherwise it could by allocated by
-+			 * qman_alloc_fqid() while still being !NULL
-+			 */
-+			smp_wmb();
-+			gen_pool_free(qm_fqalloc, fq->fqid | DPAA_GENALLOC_OFF, 1);
-+		}
- 		return;
- 	default:
- 		break;
 -- 
 2.51.0
 
