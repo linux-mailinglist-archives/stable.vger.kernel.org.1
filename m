@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJimE1Ua3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:17 +0200
+	id AFoCEgIc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F1F3EF23C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36293EF6E7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7698D30297B6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07E2D30F2ABD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC0F3093CF;
-	Mon, 13 Apr 2026 16:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCCA27466A;
+	Mon, 13 Apr 2026 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JpOljws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xkyop+IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEA72EB5BA;
-	Mon, 13 Apr 2026 16:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5290826E6F8;
+	Mon, 13 Apr 2026 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096990; cv=none; b=VpijMlUxqg51opTq/Piwu45FNIITHoUKqd4kwvZ7QcilwYw9+Jdec6wsiAivVhGTgoDdh0c94W5Hnxxh8RaqJ87WzGamAsKjyOpL3brGf4bC1IbhgVsZi/YQP9O0AXjGSfKQFSew9juP2aoJ3vbxcKAqao5drCQVzNL0ymXeMY8=
+	t=1776096844; cv=none; b=g1DzxkNJNGrufyf5k5mm0FmSDFtUWT3fAkAMVOK2uEZ1nxwdabAbXAp8GVWwuGjZUomr3VwZ/9EGmUWNsrzK/xCcPWDTxYfUedqCxgdtoaWhyXp2Dpwerbg0yQkoo6WGVxiud1arfq66aI1wJRcLUMxf4fFtitPKTX3OJpzezNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096990; c=relaxed/simple;
-	bh=u2Us+VJjVIQkb0oNLDVas31cplgF/bWKh6tVdGTJe9M=;
+	s=arc-20240116; t=1776096844; c=relaxed/simple;
+	bh=l72kAaygBvKjrg4L0g+bhUecASpFhDaKdQMmFOU6diQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pzwpw9hOTFGh+ldJ+x13GQ6JH79BC5HlFkjx6iq+cIb+BfUhinLL/ue6cXfcUyRPKSHQrNoWk557RAugdaTWn9I/UtO1eZuTGZAGkbl77KW5xoLnpSDXGShrZhCpTX2pOmbSn+XhKzjIlKC2rn0G03wqToD+GNBF6Q2eaOeg40o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JpOljws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E59C2BCAF;
-	Mon, 13 Apr 2026 16:16:29 +0000 (UTC)
+	 MIME-Version; b=SVbDjIHsMmx7ZBxY+gqBqJLGMOrRxHr+RhcaA1gNT9HLlccmAg4Km/T0XoMIImndp07m+Ly7pq2TqprP8rUmD3CHBaHIKcGqNvK13HpZpriCls4EgQn79hHVHEGO+hzUGY/cXUB71LH1xVjmg0WhCfGiueu/FsGfPsxAO469hPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xkyop+IH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1C6C2BCAF;
+	Mon, 13 Apr 2026 16:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096990;
-	bh=u2Us+VJjVIQkb0oNLDVas31cplgF/bWKh6tVdGTJe9M=;
+	s=korg; t=1776096844;
+	bh=l72kAaygBvKjrg4L0g+bhUecASpFhDaKdQMmFOU6diQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0JpOljwsYK60D3DFcoznYF5qaPjJ9sEhYTt1boaaMoNFuRsPDp1WyCYMv1mgQKOZz
-	 zi0rjYTMpHchij6WmbsSgU0LoE5+ya1IHNYhqYIqChk8cpmlBlpbEXXXyVKKHBMrE4
-	 UfqhEBMcRqzlmfG0toEo0/w4SMhO4Y2Xx9kUBHxk=
+	b=Xkyop+IH731bLF/60Me4tNcFll/YaJ5j3x1iyFAgl6K/gn6v0LWuML6lCu7kxUgJZ
+	 hPxTUHFfB4VhX2zUT7ey6Wku9o981Na+RqGmiweJthbr7ZSUpuoqstqGStZf0zpJPi
+	 DYCEQIU9DNAGu7JnaWADnVdeU9lcx+GDSELiTOuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/55] MIPS: Always record SEGBITS in cpu_data.vmbits
+	Li Xiasong <lixiasong1@huawei.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 14/50] mptcp: fix soft lockup in mptcp_recvmsg()
 Date: Mon, 13 Apr 2026 18:00:41 +0200
-Message-ID: <20260413155725.098613569@linuxfoundation.org>
+Message-ID: <20260413155725.042518976@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236471-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236414-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,121 +89,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,franken.de:email]
-X-Rspamd-Queue-Id: E5F1F3EF23C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: A36293EF6E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Li Xiasong <lixiasong1@huawei.com>
 
-commit 8374c2cb83b95b3c92f129fd56527225c20a058c upstream.
+commit 5dd8025a49c268ab6b94d978532af3ad341132a7 upstream.
 
-With a 32-bit kernel running on 64-bit MIPS hardware the hardcoded value
-of `cpu_vmbits' only records the size of compatibility useg and does not
-reflect the size of native xuseg or the complete range of values allowed
-in the VPN2 field of TLB entries.
+syzbot reported a soft lockup in mptcp_recvmsg() [0].
 
-An upcoming change will need the actual VPN2 value range permitted even
-in 32-bit kernel configurations, so always include the `vmbits' member
-in `struct cpuinfo_mips' and probe for SEGBITS when running on 64-bit
-hardware and resorting to the currently hardcoded value of 31 on 32-bit
-processors.  No functional change for users of `cpu_vmbits'.
+When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
+removed from the sk_receive_queue. This causes sk_wait_data() to always
+find available data and never perform actual waiting, leading to a soft
+lockup.
 
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by adding a 'last' parameter to track the last peeked skb.
+This allows sk_wait_data() to make informed waiting decisions and prevent
+infinite loops when MSG_PEEK is used.
+
+[0]:
+watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
+Modules linked in:
+CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:sk_wait_data+0x15/0x190
+Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
+RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
+RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
+R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
+R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
+FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
+ inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
+ sock_recvmsg+0x94/0xc0 net/socket.c:1100
+ __sys_recvfrom+0xb2/0x130 net/socket.c:2256
+ __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
+ do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
+RIP: 0033:0x7f6e386a4a1d
+Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
+RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
+RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
+RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
+RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
+R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260330120335.659027-1-lixiasong1@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in protocol.c, because commit bc68b0efa1bf ("mptcp: move the
+  whole rx path under msk socket lock protection") and commit
+  d88b2127b242 ("mptcp: add eat_recv_skb helper") (with some
+  dependences) are not in this version. These conflicts were in the
+  context, and not related to this fix. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/cpu-features.h |  1 -
- arch/mips/include/asm/cpu-info.h     |  2 --
- arch/mips/include/asm/mipsregs.h     |  2 ++
- arch/mips/kernel/cpu-probe.c         | 13 ++++++++-----
- arch/mips/kernel/cpu-r3k-probe.c     |  2 ++
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ net/mptcp/protocol.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index e0a4da4cfd8bc..53ea41be37351 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -484,7 +484,6 @@
- # endif
- # ifndef cpu_vmbits
- # define cpu_vmbits cpu_data[0].vmbits
--# define __NEED_VMBITS_PROBE
- # endif
- #endif
- 
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index a600670d00e97..1aee44124f118 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -80,9 +80,7 @@ struct cpuinfo_mips {
- 	int			srsets; /* Shadow register sets */
- 	int			package;/* physical package number */
- 	unsigned int		globalnumber;
--#ifdef CONFIG_64BIT
- 	int			vmbits; /* Virtual memory size in bits */
--#endif
- 	void			*data;	/* Additional data */
- 	unsigned int		watch_reg_count;   /* Number that exist */
- 	unsigned int		watch_reg_use_cnt; /* Usable by ptrace */
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index c60e72917a281..581aa8876a74c 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1714,6 +1714,8 @@ do {									\
- 
- #define read_c0_entryhi()	__read_ulong_c0_register($10, 0)
- #define write_c0_entryhi(val)	__write_ulong_c0_register($10, 0, val)
-+#define read_c0_entryhi_64()	__read_64bit_c0_register($10, 0)
-+#define write_c0_entryhi_64(val) __write_64bit_c0_register($10, 0, val)
- 
- #define read_c0_guestctl1()	__read_32bit_c0_register($10, 4)
- #define write_c0_guestctl1(val)	__write_32bit_c0_register($10, 4, val)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index fdf00c228b67f..09d95482957a4 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -208,11 +208,14 @@ static inline void set_elf_base_platform(const char *plat)
- 
- static inline void cpu_probe_vmbits(struct cpuinfo_mips *c)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1960,7 +1960,7 @@ static int __mptcp_recvmsg_mskq(struct m
+ 				struct msghdr *msg,
+ 				size_t len, int flags, int copied_total,
+ 				struct scm_timestamping_internal *tss,
+-				int *cmsg_flags)
++				int *cmsg_flags, struct sk_buff **last)
  {
--#ifdef __NEED_VMBITS_PROBE
--	write_c0_entryhi(0x3fffffffffffe000ULL);
--	back_to_back_c0_hazard();
--	c->vmbits = fls64(read_c0_entryhi() & 0x3fffffffffffe000ULL);
--#endif
-+	int vmbits = 31;
-+
-+	if (cpu_has_64bits) {
-+		write_c0_entryhi_64(0x3fffffffffffe000ULL);
-+		back_to_back_c0_hazard();
-+		vmbits = fls64(read_c0_entryhi_64() & 0x3fffffffffffe000ULL);
-+	}
-+	c->vmbits = vmbits;
- }
+ 	struct sk_buff *skb, *tmp;
+ 	int total_data_len = 0;
+@@ -1976,6 +1976,7 @@ static int __mptcp_recvmsg_mskq(struct m
+ 			/* skip already peeked skbs */
+ 			if (total_data_len + data_len <= copied_total) {
+ 				total_data_len += data_len;
++				*last = skb;
+ 				continue;
+ 			}
  
- static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
-diff --git a/arch/mips/kernel/cpu-r3k-probe.c b/arch/mips/kernel/cpu-r3k-probe.c
-index be93469c0e0ec..2adf95225aa7e 100644
---- a/arch/mips/kernel/cpu-r3k-probe.c
-+++ b/arch/mips/kernel/cpu-r3k-probe.c
-@@ -138,6 +138,8 @@ void cpu_probe(void)
- 	else
- 		cpu_set_nofpu_opts(c);
+@@ -2016,6 +2017,8 @@ static int __mptcp_recvmsg_mskq(struct m
+ 			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
+ 			__skb_unlink(skb, &msk->receive_queue);
+ 			__kfree_skb(skb);
++		} else {
++			*last = skb;
+ 		}
  
-+	c->vmbits = 31;
-+
- 	reserve_exception_space(0, 0x400);
- }
+ 		if (copied >= len)
+@@ -2237,10 +2240,12 @@ static int mptcp_recvmsg(struct sock *sk
+ 		cmsg_flags = MPTCP_CMSG_INQ;
  
--- 
-2.53.0
-
+ 	while (copied < len) {
++		struct sk_buff *last = NULL;
+ 		int err, bytes_read;
+ 
+ 		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags,
+-						  copied, &tss, &cmsg_flags);
++						  copied, &tss, &cmsg_flags,
++						  &last);
+ 		if (unlikely(bytes_read < 0)) {
+ 			if (!copied)
+ 				copied = bytes_read;
+@@ -2298,7 +2303,7 @@ static int mptcp_recvmsg(struct sock *sk
+ 
+ 		pr_debug("block timeout %ld\n", timeo);
+ 		mptcp_cleanup_rbuf(msk, copied);
+-		err = sk_wait_data(sk, &timeo, NULL);
++		err = sk_wait_data(sk, &timeo, last);
+ 		if (err < 0) {
+ 			err = copied ? : err;
+ 			goto out_err;
 
 
 
