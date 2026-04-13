@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCFxN7UZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:37 +0200
+	id qNeFLLAh3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2F63EF069
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38313F090F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6147B3016486
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0C44330C2F0F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB70309F09;
-	Mon, 13 Apr 2026 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AEB3161AB;
+	Mon, 13 Apr 2026 16:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aITo01vz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoPj766C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035422E11B9;
-	Mon, 13 Apr 2026 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B63323E342;
+	Mon, 13 Apr 2026 16:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097672; cv=none; b=qquTXJm0VtVkaI9FQpsVC5TK4uGCV+X7Z5pC2ZrPJv3FNAWVWnGGMdr2b8UiJA9/0/xJZCqTFAm+WW9zYVcyh+GbpMjzIDG42SeXPTyW4EHmHCXzkvnLD+Iy4t8wyk+nYIPtbn7wICwIxfRe+s2r4sZaj7cUUOBPDiHyfzqlTxE=
+	t=1776098766; cv=none; b=VcX2r7TAdSS/DAdyUo4rS7rJwUE97pbEjPC6gMkl2bO2pH3WKxTET5nRwFrOK51rWWS4xqBta/MERPUX8SGrJLO8YjlQp/ozJctpZlM0yEJU9bse31s/Mwv5O1tmvSkbCgroA6Q8upWUuxY7FGjw4GOce3EdU9hJq499l6yiocY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097672; c=relaxed/simple;
-	bh=/viRJrbp2xZeRS7zy+bjqI9Y+jYgSkMO8yIzakZIwx8=;
+	s=arc-20240116; t=1776098766; c=relaxed/simple;
+	bh=qC9TJqdp0dDICrSmY8QVIDhaqGGU2SR4eAR+nrihhoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a37h/+oZb2CGZtPhFTRiMIFWkMCHkdBZKWHnYYCDnA/6Wwg+ppdpD3AeBWvKKjBlgBuRNu8cDSK4R86PGha4dx1+c8BoE4v9tkpmqvuY8zEK1Glvo7LAHqqsHzKoAofl9Zz9/4Kmhuysy9hY8NxkhoxTnvynSOktS7vpntxPbuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aITo01vz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63038C2BCAF;
-	Mon, 13 Apr 2026 16:27:51 +0000 (UTC)
+	 MIME-Version; b=YF1Aa/Gu/0I4k45Kj4a+3KDOGjKcmB+R9xW2k8xtxoEe2dGQFxqY89mYTRTjVRyp+XrFe8J8Rjx3tr9J2DbkR42HDcXi6rNoGt/f23s2ciA5orB6lYLtq2ZYWYOrqQSiWdXgCFkRHLr2cgMhjJ4z9EDNAjgiVBpzEDcaTxs4xQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoPj766C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A2EC2BCAF;
+	Mon, 13 Apr 2026 16:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097671;
-	bh=/viRJrbp2xZeRS7zy+bjqI9Y+jYgSkMO8yIzakZIwx8=;
+	s=korg; t=1776098766;
+	bh=qC9TJqdp0dDICrSmY8QVIDhaqGGU2SR4eAR+nrihhoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aITo01vz+fE1DjEcxcy5+5n5Y5dLdWx5Khl4eVRs06Bh/lXwoDAMt9A4jDU1f8e55
-	 BhjRhHsA/pf3Uk3wFocfEhfKEsB+yK3pWmQFSwS7Wu3jsvipHk2BevyTcwNKh4m+DW
-	 kKeZ80/bvTZfzTVn6rbKv8Vl/llaSObaEcJOTtxY=
+	b=VoPj766CE9OTGmcI6Q+tnru/zEVg4AFRFLnEdOKC0ob/WFmNopVik7l1exEB3FuCf
+	 DOQJwBHc0kzGUxzMXrbD0OpEuYiKX+wuyJonPi9FyyS2vRy/C9BnhI8ugUBAYxMaKS
+	 fFdjCXmL84YmoJ4THdcUconoIFGz9oDQAJ7nsI8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Jianqiang kang <jianqkang@sina.cn>
-Subject: [PATCH 5.15 195/570] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
+	Peng Fan <peng.fan@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 081/491] regulator: pca9450: Correct interrupt type
 Date: Mon, 13 Apr 2026 17:55:26 +0200
-Message-ID: <20260413155837.764363549@linuxfoundation.org>
+Message-ID: <20260413155822.077627050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +64,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236740-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237169-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.dk,sina.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,4eb282331cab6d5b6588];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_PROHIBIT(0.00)[1.204.208.192:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sina.cn:email]
-X-Rspamd-Queue-Id: 7E2F63EF069
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A38313F090F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 10dc959398175736e495f71c771f8641e1ca1907 upstream.
+[ Upstream commit 5d0efaf47ee90ac60efae790acee3a3ed99ebf80 ]
 
-Currently this is checked before running the pending work. Normally this
-is quite fine, as work items either end up blocking (which will create a
-new worker for other items), or they complete fairly quickly. But syzbot
-reports an issue where io-wq takes seemingly forever to exit, and with a
-bit of debugging, this turns out to be because it queues a bunch of big
-(2GB - 4096b) reads with a /dev/msr* file. Since this file type doesn't
-support ->read_iter(), loop_rw_iter() ends up handling them. Each read
-returns 16MB of data read, which takes 20 (!!) seconds. With a bunch of
-these pending, processing the whole chain can take a long time. Easily
-longer than the syzbot uninterruptible sleep timeout of 140 seconds.
-This then triggers a complaint off the io-wq exit path:
+Kernel warning on i.MX8MP-EVK when doing module test:
+irq: type mismatch, failed to map hwirq-3 for gpio@30200000!
 
-INFO: task syz.4.135:6326 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-      Blocked by coredump.
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.4.135       state:D stack:26824 pid:6326  tgid:6324  ppid:5957   task_flags:0x400548 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x1139/0x6150 kernel/sched/core.c:6863
- __schedule_loop kernel/sched/core.c:6945 [inline]
- schedule+0xe7/0x3a0 kernel/sched/core.c:6960
- schedule_timeout+0x257/0x290 kernel/time/sleep_timeout.c:75
- do_wait_for_common kernel/sched/completion.c:100 [inline]
- __wait_for_common+0x2fc/0x4e0 kernel/sched/completion.c:121
- io_wq_exit_workers io_uring/io-wq.c:1328 [inline]
- io_wq_put_and_exit+0x271/0x8a0 io_uring/io-wq.c:1356
- io_uring_clean_tctx+0x10d/0x190 io_uring/tctx.c:203
- io_uring_cancel_generic+0x69c/0x9a0 io_uring/cancel.c:651
- io_uring_files_cancel include/linux/io_uring.h:19 [inline]
- do_exit+0x2ce/0x2bd0 kernel/exit.c:911
- do_group_exit+0xd3/0x2a0 kernel/exit.c:1112
- get_signal+0x2671/0x26d0 kernel/signal.c:3034
- arch_do_signal_or_restart+0x8f/0x7e0 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
- exit_to_user_mode_loop+0x8c/0x540 kernel/entry/common.c:75
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
- do_syscall_64+0x4ee/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa02738f749
-RSP: 002b:00007fa0281ae0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-RAX: fffffffffffffe00 RBX: 00007fa0275e6098 RCX: 00007fa02738f749
-RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007fa0275e6098
-RBP: 00007fa0275e6090 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa0275e6128 R14: 00007fff14e4fcb0 R15: 00007fff14e4fd98
+Per PCA945[X] specification: The IRQ_B pin is pulled low when any unmasked
+interrupt bit status is changed and it is released high once application
+processor read INT1 register.
 
-There's really nothing wrong here, outside of processing these reads
-will take a LONG time. However, we can speed up the exit by checking the
-IO_WQ_BIT_EXIT inside the io_worker_handle_work() loop, as syzbot will
-exit the ring after queueing up all of these reads. Then once the first
-item is processed, io-wq will simply cancel the rest. That should avoid
-syzbot running into this complaint again.
+So the interrupt should be configured as IRQF_TRIGGER_LOW, not
+IRQF_TRIGGER_FALLING.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/68a2decc.050a0220.e29e5.0099.GAE@google.com/
-Reported-by: syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0935ff5f1f0a4 ("regulator: pca9450: add pca9450 pmic driver")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260310-pca9450-irq-v1-1-36adf52c2c55@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c |    2 +-
+ drivers/regulator/pca9450-regulator.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -554,9 +554,9 @@ static void io_worker_handle_work(struct
- 	struct io_wqe_acct *acct = io_wqe_get_acct(worker);
- 	struct io_wqe *wqe = worker->wqe;
- 	struct io_wq *wq = wqe->wq;
--	bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
- 
- 	do {
-+		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
- 		struct io_wq_work *work;
- get_next:
- 		/*
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index 6ec2ad5b9efcc..6f2f097b677d2 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -773,7 +773,7 @@ static int pca9450_i2c_probe(struct i2c_client *i2c,
+ 	if (pca9450->irq) {
+ 		ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
+ 						pca9450_irq_handler,
+-						(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
++						(IRQF_TRIGGER_LOW | IRQF_ONESHOT),
+ 						"pca9450-irq", pca9450);
+ 		if (ret != 0) {
+ 			dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
+-- 
+2.51.0
+
 
 
 
