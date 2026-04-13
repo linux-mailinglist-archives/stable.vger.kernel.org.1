@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-237483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NKtBscm3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237483-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:23 +0200
+	id MOGGOpce3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B653F1548
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1D53EFE2C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D4E443063EB9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 789763022F4B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD1E3271EA;
-	Mon, 13 Apr 2026 16:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F7E30C359;
+	Mon, 13 Apr 2026 16:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXZX4Wqa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDstiDdM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E44131E857;
-	Mon, 13 Apr 2026 16:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49551D5AD4;
+	Mon, 13 Apr 2026 16:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099571; cv=none; b=J6ZNCxPdslwYlZhfl6xvyB1TFmSjwIBPXaivVZLmCTI9MwHbz/aD1qRd2F4a07EKdRuf6ckPA28ZgvBJ16A7oAq+sn7BmQtpJlAtAH4ojKOzgTdlRJFqbqdkObA3zObW+csXS54QDyKOVxqc0OeyXiqcNV4UvfaOQdSA6hyGTiQ=
+	t=1776098372; cv=none; b=CABl+ZIc/rvUF7flZiiC6Fk5wEI4Gu5JVcgJzqL8y5LLi08beH7ef1SbIWDgqDjtsWJHXgBdvOhfN+6uYTPVxysTZqQ2EaQtseYRToBN8qtGpy+y+po4HYwZVTUaF74GMmWXwhrvDooS0aaYZsmw4hGc5mlIT0LdKMfTLypakvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099571; c=relaxed/simple;
-	bh=FiY1f6Lnx7wz0X2xHOSfMSoyrfoGFwtoZzEtfBpjLcs=;
+	s=arc-20240116; t=1776098372; c=relaxed/simple;
+	bh=HhXfXQ1TMPeaCP7wifvnK7WAnq/57LXuKwgUMQGk9og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PifVZahO3HAOMchVhM5uQOUE/oA96tlhqE7HPy2TADQp+srj5k152uB/rgkCGfLJwX/2U2QenL9B+l8sgDbRg+EDJUnU2WptFESi02QWXn9sH+klVY8l31XauGqcgbLLF6318+KxixFUDheBNr5KQzVg/lTuL+QFpvObjhUWzog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXZX4Wqa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9683C2BCB0;
-	Mon, 13 Apr 2026 16:59:30 +0000 (UTC)
+	 MIME-Version; b=oHZgLKmB6QogVw1Gacnzk2YI6jwsopMmu3h61TbvN0lFsp3xRLfjp6dKwHJW/SBk7HVocbHf7eQXDEOuWot4oCNOVt5LYahyu+4VAI8RZJsB8OH/D/S6Szcf1H+aY6GKmaBzYvVK+2ywDTVNCSwdLqxbhsZiZE0R/9mKEjQ5nRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDstiDdM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B246C2BCAF;
+	Mon, 13 Apr 2026 16:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099571;
-	bh=FiY1f6Lnx7wz0X2xHOSfMSoyrfoGFwtoZzEtfBpjLcs=;
+	s=korg; t=1776098372;
+	bh=HhXfXQ1TMPeaCP7wifvnK7WAnq/57LXuKwgUMQGk9og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXZX4WqaWetaPrm7LRw5CJLJmlBuH30dizmjNIpzr0GmJwhKkEVf6c0iGzF1EbauD
-	 Ujgwu3EfevQnPeRN9ObUTxOonzbO3z8Wg3VDkWpYUS4ZiezURl3r3dzWxHeLsFaB2I
-	 rDB6xltw1A85tg/U+O8xHM2loxQlW3VYKtTAelpo=
+	b=SDstiDdMfvl7A5fJGN2xy/HAzHhE4nP9ZDb1LQkKNCla2VNmkAYRZY2gvimxOeuuF
+	 Dmha+E59ZMN2O8a0kcM+c5XkvvFmge+/FaF+0/bE0v7hXV4knRj8BKAZ0JgnRm6zF4
+	 0a5E+Skj95AJ7h3mb4QQwEpNrP3sx9Zs7IIzbO/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 384/491] iio: gyro: mpu3050: Fix irq resource leak
-Date: Mon, 13 Apr 2026 18:00:29 +0200
-Message-ID: <20260413155833.409281996@linuxfoundation.org>
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 5.15 499/570] usb: gadget: f_subset: Fix unbalanced refcnt in geth_free
+Date: Mon, 13 Apr 2026 18:00:30 +0200
+Message-ID: <20260413155849.148471721@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +66,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-237483-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237016-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email]
-X-Rspamd-Queue-Id: 47B653F1548
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 5A1D53EFE2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 4216db1043a3be72ef9c2b7b9f393d7fa72496e6 upstream.
+commit caa27923aacd8a5869207842f2ab1657c6c0c7bc upstream.
 
-The interrupt handler is setup but only a few lines down if
-iio_trigger_register() fails the function returns without properly
-releasing the handler.
+geth_alloc() increments the reference count, but geth_free() fails to
+decrement it. This prevents the configuration of attributes via configfs
+after unlinking the function.
 
-Add cleanup goto to resolve resource leak.
+Decrement the reference count in geth_free() to ensure proper cleanup.
 
-Detected by Smatch:
-drivers/iio/gyro/mpu3050-core.c:1128 mpu3050_trigger_probe() warn:
-'irq' from request_threaded_irq() not released on lines: 1124.
-
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 02832e56f88a ("usb: gadget: f_subset: add configfs support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-1-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_subset.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1137,11 +1137,16 @@ static int mpu3050_trigger_probe(struct
+--- a/drivers/usb/gadget/function/f_subset.c
++++ b/drivers/usb/gadget/function/f_subset.c
+@@ -6,6 +6,7 @@
+  * Copyright (C) 2008 Nokia Corporation
+  */
  
- 	ret = iio_trigger_register(mpu3050->trig);
- 	if (ret)
--		return ret;
-+		goto err_iio_trigger;
- 
- 	indio_dev->trig = iio_trigger_get(mpu3050->trig);
- 
- 	return 0;
++#include <linux/cleanup.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -451,8 +452,14 @@ static struct usb_function_instance *get
+ static void geth_free(struct usb_function *f)
+ {
+ 	struct f_gether *eth;
++	struct f_gether_opts *opts;
 +
-+err_iio_trigger:
-+	free_irq(mpu3050->irq, mpu3050->trig);
-+
-+	return ret;
++	opts = container_of(f->fi, struct f_gether_opts, func_inst);
+ 
+ 	eth = func_to_geth(f);
++	mutex_lock(&opts->lock);
++	opts->refcnt--;
++	mutex_unlock(&opts->lock);
+ 	kfree(eth);
  }
  
- int mpu3050_common_probe(struct device *dev,
 
 
 
