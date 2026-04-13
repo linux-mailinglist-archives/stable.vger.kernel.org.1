@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKs5KEMk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:39 +0200
+	id 2BauEhQZ3Wn3ZwkAu9opvQ
+	(envelope-from <stable+bounces-236643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121CD3F106E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FC83EEE69
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C1BD3002B5D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C5B92303D11A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB63E3090F5;
-	Mon, 13 Apr 2026 16:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DAC30B50A;
+	Mon, 13 Apr 2026 16:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg1/Fn6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gLSij1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8991D5AD4;
-	Mon, 13 Apr 2026 16:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF282F8BC3;
+	Mon, 13 Apr 2026 16:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098614; cv=none; b=LBRg3VeJfSv/ZPZf0VK3P/ABkzM1l7TYNIxGOMSyLUrev2pYLv+QoRXB7tmcUUHIT1Upvt69wbd1hvnuYioWB6DTe7hIwh+6mP6hZ0M+5tkNJYZdfVWEyrG3zZfdJL6cM+cR3GGMwaRcKkOJxW3hKlQL/RFg7oYnFPU1THnlaGQ=
+	t=1776097432; cv=none; b=c8y1ggIFWv7CThMzI+zXdAQmifu8z4zsLoe0PcjMhKOEd0FtftbmsITe+LyMKNaFkW8wpoLNmMfqOYKYAa8tRg3+rUvPLOyBUDKtwGcDaEHnK2+oKiflaFXiMSBv/ngwIy2zIAhWsiyu9lxDlmzZJAV2zxI3h2Kyq3S9xjeKRsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098614; c=relaxed/simple;
-	bh=FesK3RbHO9+L8zaWbXgv2dSutMrrElizw+gQrvN/uFw=;
+	s=arc-20240116; t=1776097432; c=relaxed/simple;
+	bh=SeKjABHmDc8GiAAVr430ZQRv/qeUIz+CHcddLj9C8As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaM4A3plYk4SC7pDC5yeqicmFehqThe2jEKy5S7ivS0wtxPiO/GgaV4XJ1tjnk3TdEypRijkfWdbYiBe+qjcxry5Ksl3abQ1pMHwjn4g55XaR+atvXv85FLXl94/cy0TmI3DyrYRweg7bWxWr5DbH2nIL6Ai1AxvD4bLsK2o9jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rg1/Fn6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC870C2BCAF;
-	Mon, 13 Apr 2026 16:43:33 +0000 (UTC)
+	 MIME-Version; b=dlGAorN3VUR3yeCncs/xcl+/CmOWJwC292gtJFa05RGPQKMlqg3rEqsn/abZvyScZPyNNwP2hxvdlRAUQtT/H9nA82KfNM2e5heItudXr3/EmcjGuPjQi+1PFZGVP/2Jcg3jdVXUbxt49S4AkJZV1hVdQQvhWl3Ylk8EQXrWRXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gLSij1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A620C2BCB0;
+	Mon, 13 Apr 2026 16:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098614;
-	bh=FesK3RbHO9+L8zaWbXgv2dSutMrrElizw+gQrvN/uFw=;
+	s=korg; t=1776097432;
+	bh=SeKjABHmDc8GiAAVr430ZQRv/qeUIz+CHcddLj9C8As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rg1/Fn6STVC0FaZvk7SiXxUz8NaOu7kgz0sHfpB4/jPRZw3x0WOiqHEuVtF8pSjI9
-	 F/PtBk9pFoaWleJGyy/4qB2n5GBkcNJbzGMMK68SoL3ilg1WDcCWVokQxhb2Bt4Mfe
-	 rLLUL0Mr+dUDN6FJU531BQIavd7ZImcCobvrnSEQ=
+	b=0gLSij1fbYFUu8d7c3sWBN4FRQpumR6mGHBKRjZsn+cydDV2XbCETzw2tt/+vEwH/
+	 0PalYBme1F73RzjDdS3I8B7tlUUSIgti2MteBzzoQ4h7FPVqw77dfRdfc/md1sgO8W
+	 PO2vdASl+8dVgMzUfpqP8fjvTTjP+MwfoJMP8Fng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 021/491] net: usb: kaweth: validate USB endpoints
+	Zilin Guan <zilin@seu.edu.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 135/570] usb: xhci: Fix memory leak in xhci_disable_slot()
 Date: Mon, 13 Apr 2026 17:54:26 +0200
-Message-ID: <20260413155819.847444627@linuxfoundation.org>
+Message-ID: <20260413155835.500536660@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237110-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236643-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,67 +86,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 121CD3F106E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,seu.edu.cn:email]
+X-Rspamd-Queue-Id: F1FC83EEE69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 4b063c002ca759d1b299988ee23f564c9609c875 upstream.
+commit c1c8550e70401159184130a1afc6261db01fc0ce upstream.
 
-The kaweth driver should validate that the device it is probing has the
-proper number and types of USB endpoints it is expecting before it binds
-to it.  If a malicious device were to not have the same urbs the driver
-will crash later on when it blindly accesses these endpoints.
+xhci_alloc_command() allocates a command structure and, when the
+second argument is true, also allocates a completion structure.
+Currently, the error handling path in xhci_disable_slot() only frees
+the command structure using kfree(), causing the completion structure
+to leak.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://patch.msgid.link/2026022305-substance-virtual-c728@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use xhci_free_command() instead of kfree(). xhci_free_command() correctly
+frees both the command structure and the associated completion structure.
+Since the command structure is allocated with zero-initialization,
+command->in_ctx is NULL and will not be erroneously freed by
+xhci_free_command().
+
+This bug was found using an experimental static analysis tool we are
+developing. The tool is based on the LLVM framework and is specifically
+designed to detect memory management issues. It is currently under
+active development and not yet publicly available, but we plan to
+open-source it after our research is published.
+
+The bug was originally detected on v6.13-rc1 using our static analysis
+tool, and we have verified that the issue persists in the latest mainline
+kernel.
+
+We performed build testing on x86_64 with allyesconfig using GCC=11.4.0.
+Since triggering these error paths in xhci_disable_slot() requires specific
+hardware conditions or abnormal state, we were unable to construct a test
+case to reliably trigger these specific error paths at runtime.
+
+Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260304223639.3882398-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/kaweth.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/usb/host/xhci.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/kaweth.c
-+++ b/drivers/net/usb/kaweth.c
-@@ -883,6 +883,13 @@ static int kaweth_probe(
- 	const eth_addr_t bcast_addr = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
- 	int result = 0;
- 	int rv = -EIO;
-+	static const u8 bulk_ep_addr[] = {
-+		1 | USB_DIR_IN,
-+		2 | USB_DIR_OUT,
-+		0};
-+	static const u8 int_ep_addr[] = {
-+		3 | USB_DIR_IN,
-+		0};
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -4056,7 +4056,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 	if (state == 0xffffffff || (xhci->xhc_state & XHCI_STATE_DYING) ||
+ 			(xhci->xhc_state & XHCI_STATE_HALTED)) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return -ENODEV;
+ 	}
  
- 	dev_dbg(dev,
- 		"Kawasaki Device Probe (Device number:%d): 0x%4.4x:0x%4.4x:0x%4.4x\n",
-@@ -896,6 +903,12 @@ static int kaweth_probe(
- 		(int)udev->descriptor.bLength,
- 		(int)udev->descriptor.bDescriptorType);
- 
-+	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
-+	    !usb_check_int_endpoints(intf, int_ep_addr)) {
-+		dev_err(dev, "couldn't find required endpoints\n");
-+		return -ENODEV;
-+	}
-+
- 	netdev = alloc_etherdev(sizeof(*kaweth));
- 	if (!netdev)
- 		return -ENOMEM;
+@@ -4064,7 +4064,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 				slot_id);
+ 	if (ret) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return ret;
+ 	}
+ 	xhci_ring_cmd_db(xhci);
 
 
 
