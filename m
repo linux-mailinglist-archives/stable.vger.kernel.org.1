@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPRjC4AW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:56 +0200
+	id IPvsAQIY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBAB3EE7F2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0075E3EEB03
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE94F306F781
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E88D30671C9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F398A2F60B2;
-	Mon, 13 Apr 2026 16:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFC4309F1C;
+	Mon, 13 Apr 2026 16:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNtUnTPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2G5Zr6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15227FB2E;
-	Mon, 13 Apr 2026 16:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536F13093B2;
+	Mon, 13 Apr 2026 16:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096354; cv=none; b=ppR70JU6xBhHqevWsaHlBBDWe2Fm9AMLBQS4Ms5sCsjhRPqJ0cM8PAfVigX2tYYdYvIC3RWy33IUauleRoWusxSzVXqAWP59cXwPyAgnmNHCIwNyyOa0q9dNA4IzCiX5I3r5isN9Av2ywPYsXQ8QZGH1C9dBOCQw23T8Bl6eVPk=
+	t=1776096524; cv=none; b=q0Ry4kwM+KiE+QEH2jQvSaAut8kCDFCJtqmZ2/7mRoaIbgSz5Rj/Hmox9AvfLeA4nAYavmbx/rxFpB5QhtUcFSirLXhCKcz7c1WaME99oGMyE4NqaKK6MAWu8MQLNQvG9EO2hUqE0nLmxn+HmMup/GBDIdtvHx6HimJz65RSsLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096354; c=relaxed/simple;
-	bh=CEh7NRcFVQDISZa7arCxb9o5E5k7buHJFe/9KQZROz0=;
+	s=arc-20240116; t=1776096524; c=relaxed/simple;
+	bh=mCYB0SgRgJuiQtMMYJiaSqXyKD4HG1cqrVWX77CJGks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mo8sGeqpPMOW6ntOgqWe1fY2cptI7lHKvzX0G2T1akm8ZF1lUg1nmcBssZeHwUOUhgWrz2ntwT3pPq7jp5OeK7fPEjPiR1krzNG/TgHdZA3vBkllxcjjgt8WnHwzv9spdMGC9VMegJhf7kwRWFMtNUbqJc8nfJH/DauqdONUH60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNtUnTPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ECBC2BCAF;
-	Mon, 13 Apr 2026 16:05:53 +0000 (UTC)
+	 MIME-Version; b=I1Inqi8bpnGAxUwO23oH5FfyIlqjkdfS7+YR4IsOMoJ3Gtkj6I6Xzlwpy534dT+X3q/Cu5Su4VgT/Pjck+Hj9bKpHsuZQBuhKtZqGXvxsSp8y1hWtHzQfTkOCqMtwO30XkRkKvwB/1XNGQucRko3bQWk7ML8Lau0kmCXIqlsnkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2G5Zr6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAE9C2BCB6;
+	Mon, 13 Apr 2026 16:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096354;
-	bh=CEh7NRcFVQDISZa7arCxb9o5E5k7buHJFe/9KQZROz0=;
+	s=korg; t=1776096524;
+	bh=mCYB0SgRgJuiQtMMYJiaSqXyKD4HG1cqrVWX77CJGks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNtUnTPwIWMXaDEpB/77jkgqPX5Glk0w+U4SRNKr2ys1NFl+rAAulT4AN+Ng3fdG8
-	 xW2hkWrUyyo9ML/ml79TaBnwx/ZLLz3P8Si+Q6S3h3I2H/FdrUBas+snX6C5XmrKzs
-	 01nKVOOyjC1+4NjkvPuPCNLGU0oXVcZJ/Gsyb8FI=
+	b=i2G5Zr6fNKpUa67lCFe554/MCHE+We3gV00V8saYbDByLipQII7hxPEGZJqJqxB96
+	 DGSLo0102Krt7ANyAGJIfYmA27KSe7kL26JOBDRpLG3K8j34vcnU5QdlVKvAm0ZKzb
+	 ZcY2sRP/nt2XfBgNp3o2sXdZB1PU78ILKGGxWKek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.19 33/86] arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 12/83] MIPS: mm: Suppress TLB uniquification on EHINV hardware
 Date: Mon, 13 Apr 2026 17:59:40 +0200
-Message-ID: <20260413155732.808229234@linuxfoundation.org>
+Message-ID: <20260413155731.485569604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236221-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236288-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,puri.sm:email]
-X-Rspamd-Queue-Id: 2CBAB3EE7F2
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,franken.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0075E3EEB03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 511f76bf1dce5acf8907b65a7d1bc8f7e7c0d637 upstream.
+commit 74283cfe216392c7b776ebf6045b5b15ed9dffcd upstream.
 
-The minimal voltage of VDD_SOC sourced from BUCK1 is 0.81V, which
-is the currently set value. However, BD71837 only guarantees accuracy
-of ±0.01V, and this still doesn't factor other reasons for actual
-voltage to slightly drop in, resulting in the possibility of running
-out of the operational range.
+Hardware that supports the EHINV feature, mandatory for R6 ISA and FTLB
+implementation, lets software mark TLB entries invalid, which eliminates
+the need to ensure no duplicate matching entries are ever created.  This
+feature is already used by local_flush_tlb_all(), via the UNIQUE_ENTRYHI
+macro, making the preceding call to r4k_tlb_uniquify() superfluous.
 
-Bump the voltage up to 0.85V, which should give enough headroom.
+The next change will also modify uniquification code such that it'll
+become incompatible with the FTLB and MMID features, as well as MIPSr6
+CPUs that do not implement 4KiB pages.
 
-Cc: stable@vger.kernel.org
-Fixes: 8f0216b006e5 ("arm64: dts: Add a device tree for the Librem 5 phone")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Therefore prevent r4k_tlb_uniquify() from being used on EHINV hardware,
+as denoted by `cpu_has_tlbinv'.
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mm/tlb-r4k.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -846,7 +846,7 @@
- 				regulator-ramp-delay = <1250>;
- 				rohm,dvs-run-voltage = <900000>;
- 				rohm,dvs-idle-voltage = <850000>;
--				rohm,dvs-suspend-voltage = <810000>;
-+				rohm,dvs-suspend-voltage = <850000>;
- 				regulator-always-on;
- 			};
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 645f77e09d5b8..65f0357958fc7 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -640,7 +640,8 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
  
+ 	/* From this point on the ARC firmware is dead.	 */
+-	r4k_tlb_uniquify();
++	if (!cpu_has_tlbinv)
++		r4k_tlb_uniquify();
+ 	local_flush_tlb_all();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+-- 
+2.53.0
+
 
 
 
