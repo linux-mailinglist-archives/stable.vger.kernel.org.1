@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLAcDeIj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:02 +0200
+	id 4NCoHrgd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1F13F0F77
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30923EFB80
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60572309AE20
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B77D3078AE6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6FA317152;
-	Mon, 13 Apr 2026 16:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B660B2D5A19;
+	Mon, 13 Apr 2026 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyn8orRy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoeBIga3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7F83161BF;
-	Mon, 13 Apr 2026 16:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CD9305064;
+	Mon, 13 Apr 2026 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099248; cv=none; b=O6Wph+QzJ+NRt06B+znSFL4yqyMKgMpHz3cTyol3T34mJe7PFMWMr2pJmfV+3HyCb7KTyF9GrXZsWt8XyvcM5RICtn7QLJg3/yelb9kgqOfRzjErxz+r4RePqwOVnw0q6tLcTz+0BmwVl3aIzMG6aJcS2MPC6sQ2u1lVvKyWgUI=
+	t=1776098066; cv=none; b=F4SbKg3MTWvEtWOtFqY5FkM+jQIyTysZ7YLwF8aiwln4vIwBfWV4ntybAiKSMS+CtZ3WZ3prXcyE8YbHqc4giCFFMIHKSc+GNyqWrHI/9wqxCMt2rKLH/RGgWIu8E7FfuMDW5PjYafB3fgNR2TQB1gW6/IadyWVhOEsc5rUjvCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099248; c=relaxed/simple;
-	bh=dKV7OrXXeuQ9VvKAeIGZEJeZkSKwN7VmymMmwcQNrvs=;
+	s=arc-20240116; t=1776098066; c=relaxed/simple;
+	bh=VhJ6smm/j11jlbRpTTfZQTf047oTrafyHezPY3I+7bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJmhB45ccUfJCDGKRI6X5lSr06RZBZTe7roeEWBS68JWmE4pqpiMom99fPbTdqtD/l/4oSYqq105lP4WOYP92wY7xuMTjs/2nAc1SZLmJT4BfgIvPrd/KZsVS0XrusQ9MHQ6EKrFnnVAEgE813foN3sPVlrI18+5eI4TAg5Vc7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyn8orRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162B5C2BCAF;
-	Mon, 13 Apr 2026 16:54:07 +0000 (UTC)
+	 MIME-Version; b=anKc//VvaRxoO/IfGQxjshx8CvWR6+5U3RSfObrMhtzAGX0A8ZnrtNeU8oKp+F5oBXF1nD8QF6R4aW94+wCJWUF71bPeiR43VDSNXOVjeaBRIDY+/QHc+ck0ujmR5agTFSEc7uB93yu38TMtcHkMOPk9iNSHtVaJl2LofFn6qwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoeBIga3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DA3C2BCAF;
+	Mon, 13 Apr 2026 16:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099248;
-	bh=dKV7OrXXeuQ9VvKAeIGZEJeZkSKwN7VmymMmwcQNrvs=;
+	s=korg; t=1776098066;
+	bh=VhJ6smm/j11jlbRpTTfZQTf047oTrafyHezPY3I+7bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dyn8orRyzjKgrkLF61aoejDI5wcdcBEoYkkUEaJ5g5jtJ2SkOfW5XtyuHfxp6ndzU
-	 CnKzcGtCf9pH3mLqUV4EENvw0V8RMXrNt+AgmO2lJ+mSsZ8ce0zGzBloJsALrJy/ZU
-	 MvWOGBs6WS6ysV5/6YXjYKnsaIQm85WEC4vVBBHw=
+	b=YoeBIga3S1SI8sNPmWsefC3PGkzMkyB95+uZXHZ67XHHpYyjl43DStL0RuxG4yA5C
+	 oUxWwz1bwwfI3mQ3a5Lren3UWQQXDyHomYak+RtIAG8JaGoEF3y96GF0lS3AcfpuRn
+	 N0uQt/OxO9YY6CBr06P3KtLuG7YHR+6dmRy0GHXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 267/491] netfilter: nfnetlink_log: fix uninitialized padding leak in NFULA_PAYLOAD
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.15 381/570] ext4: make recently_deleted() properly work with lazy itable initialization
 Date: Mon, 13 Apr 2026 17:58:32 +0200
-Message-ID: <20260413155829.047639824@linuxfoundation.org>
+Message-ID: <20260413155844.751817543@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237358-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236894-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2F1F13F0F77
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.cz:email,msgid.link:url]
+X-Rspamd-Queue-Id: E30923EFB80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 52025ebaa29f4eb4ed8bf92ce83a68f24ab7fdf7 ]
+commit bd060afa7cc3e0ad30afa9ecc544a78638498555 upstream.
 
-__build_packet_message() manually constructs the NFULA_PAYLOAD netlink
-attribute using skb_put() and skb_copy_bits(), bypassing the standard
-nla_reserve()/nla_put() helpers. While nla_total_size(data_len) bytes
-are allocated (including NLA alignment padding), only data_len bytes
-of actual packet data are copied. The trailing nla_padlen(data_len)
-bytes (1-3 when data_len is not 4-byte aligned) are never initialized,
-leaking stale heap contents to userspace via the NFLOG netlink socket.
+recently_deleted() checks whether inode has been used in the near past.
+However this can give false positive result when inode table is not
+initialized yet and we are in fact comparing to random garbage (or stale
+itable block of a filesystem before mkfs). Ultimately this results in
+uninitialized inodes being skipped during inode allocation and possibly
+they are never initialized and thus e2fsck complains.  Verify if the
+inode has been initialized before checking for dtime.
 
-Replace the manual attribute construction with nla_reserve(), which
-handles the tailroom check, header setup, and padding zeroing via
-__nla_reserve(). The subsequent skb_copy_bits() fills in the payload
-data on top of the properly initialized attribute.
-
-Fixes: df6fb868d611 ("[NETFILTER]: nfnetlink: convert to generic netlink attribute functions")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20260216164848.3074-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink_log.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ fs/ext4/ialloc.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index 80c09070ea9fa..3a71ba47224c4 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -632,15 +632,11 @@ __build_packet_message(struct nfnl_log_net *log,
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -688,6 +688,12 @@ static int recently_deleted(struct super
+ 	if (unlikely(!gdp))
+ 		return 0;
  
- 	if (data_len) {
- 		struct nlattr *nla;
--		int size = nla_attr_size(data_len);
- 
--		if (skb_tailroom(inst->skb) < nla_total_size(data_len))
-+		nla = nla_reserve(inst->skb, NFULA_PAYLOAD, data_len);
-+		if (!nla)
- 			goto nla_put_failure;
- 
--		nla = skb_put(inst->skb, nla_total_size(data_len));
--		nla->nla_type = NFULA_PAYLOAD;
--		nla->nla_len = size;
--
- 		if (skb_copy_bits(skb, 0, nla_data(nla), data_len))
- 			BUG();
- 	}
--- 
-2.51.0
-
++	/* Inode was never used in this filesystem? */
++	if (ext4_has_group_desc_csum(sb) &&
++	    (gdp->bg_flags & cpu_to_le16(EXT4_BG_INODE_UNINIT) ||
++	     ino >= EXT4_INODES_PER_GROUP(sb) - ext4_itable_unused_count(sb, gdp)))
++		return 0;
++
+ 	bh = sb_find_get_block(sb, ext4_inode_table(sb, gdp) +
+ 		       (ino / inodes_per_block));
+ 	if (!bh || !buffer_uptodate(bh))
 
 
 
