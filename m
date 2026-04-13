@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-236782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDeXGwUa3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:57 +0200
+	id YB3KJjQf3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECB33EF17C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A093F00BC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 77B373014686
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC3D03039B63
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3C430CD85;
-	Mon, 13 Apr 2026 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A903161BF;
+	Mon, 13 Apr 2026 16:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D93CTA+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s7ZaFGM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC7E30FF33;
-	Mon, 13 Apr 2026 16:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F73314D0D;
+	Mon, 13 Apr 2026 16:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097779; cv=none; b=Rdau6RILBBNcypP6P0L36+UJTmmT6uHNQXOzssDoJFpkmfixZVB2Zqu5Ffq45UKL41zTIyrO3AJ0nh+KQMO9y2lE+kVXBglkbjB4q59T6BYZV8wgsjIEQUXJt9oEN35iXwhqRdD/8j5yqZ9XR2Osu7fmx57I/uvYSgaCaNbchSk=
+	t=1776098941; cv=none; b=SSFmfuwcqs9qrUYASwFDTROqpwMNiOpS32aBIQU4DU6Exp3Un+7dPzYUCdu2Ryij3BQ5y0jCzi6yCf22DxGct753dNWs9fcalVqBY79z9f07MktjlOi/dDqXCukQ1A/dZNNd1aNFFb1/9PBmZjw5dnXBDjF9lbPkAvHhyZy81Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097779; c=relaxed/simple;
-	bh=vPJ1j5W+6Gpi7vXLSBNY4ynfoz0yHP7dMJxmfD2HZo4=;
+	s=arc-20240116; t=1776098941; c=relaxed/simple;
+	bh=Gcd/LCzIkpi5XZEtRXhdFUBVp6M0TBjUvo+1sXc9T1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ebc0zvPFjHlj8VkFaNoGZXA2jWFSsBSb+JL5vmGc/RlQVj243GLIQYUT53xtvBBCC3IVJrCGw3t7RAqJ50nIFLoxCddzsPdU0/cLyRT4digLzyurGS5atXdgxtU24cyfsAMI9bOX7AOA6mc0hsUyPE9Q6AkM/62kw3huSHZCRSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D93CTA+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7307EC2BCB6;
-	Mon, 13 Apr 2026 16:29:39 +0000 (UTC)
+	 MIME-Version; b=l4xv0l9+xuodaBUvkXqmLHaRiKTMjLgwFdfQx5HUXAtpWYFJN+159xZ5OuEm5u+IcDT+EV8g2psgOEcWNN8YhN0pycgOjsoZFcjngXqV9ybyPMRmotgEeH7+PAWxHpQddb0DKBNXv2kvCCcNf+C+ueAAp5kMXBLpGlifb93eKIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s7ZaFGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FB8C2BCAF;
+	Mon, 13 Apr 2026 16:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097779;
-	bh=vPJ1j5W+6Gpi7vXLSBNY4ynfoz0yHP7dMJxmfD2HZo4=;
+	s=korg; t=1776098941;
+	bh=Gcd/LCzIkpi5XZEtRXhdFUBVp6M0TBjUvo+1sXc9T1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D93CTA+ZeWrp+j9JJbG/EtWuXa7esRQbP2aJ1EXm1rdBfpZKJQlRZGVRwwzGmud5E
-	 KJtxqgbvxvsG1Q1bB5BYY8Uab+bm9A3rbZwQKpLRa4E/x0+2sDq7dTYxUcVmvXuuBB
-	 I77H0EDhhPLa+BhFQ+KkYsNZlakJVrHGuraAibQE=
+	b=2s7ZaFGMNePpu33Hf9at60Wvvp5Qp2U5RDMBpy59PzjN4gVDQWxHE9/p6Pbs0qmvQ
+	 E03WHa69HuzR36Blwzg273z2YVxdZ+bxgOuXBAEPWwr6jUOw70nTMDYCHRkKl6WAah
+	 vUp6nT8VTBtk1KrRzHOGynFe/hvRwtx5z9RABgMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 262/570] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
-Date: Mon, 13 Apr 2026 17:56:33 +0200
-Message-ID: <20260413155840.297238781@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Raul E Rangel <rrangel@google.com>
+Subject: [PATCH 5.10 149/491] serial: 8250: Fix TX deadlock when using DMA
+Date: Mon, 13 Apr 2026 17:56:34 +0200
+Message-ID: <20260413155824.611612155@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +62,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236782-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237238-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,vidocsecurity.com:email]
-X-Rspamd-Queue-Id: 1ECB33EF17C
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 59A093F00BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Raul E Rangel <rrangel@chromium.org>
 
-[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
+commit a424a34b8faddf97b5af41689087e7a230f79ba7 upstream.
 
-In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
-the packet, then decrements it by 1 to skip the protocol discriminator
-byte before passing it to DecodeH323_UserInformation(). If the encoded
-length is 0, the decrement wraps to -1, which is then passed as a
-large value to the decoder, leading to an out-of-bounds read.
+`dmaengine_terminate_async` does not guarantee that the
+`__dma_tx_complete` callback will run. The callback is currently the
+only place where `dma->tx_running` gets cleared. If the transaction is
+canceled and the callback never runs, then `dma->tx_running` will never
+get cleared and we will never schedule new TX DMA transactions again.
 
-Add a check to ensure len is positive after the decrement.
+This change makes it so we clear `dma->tx_running` after we terminate
+the DMA transaction. This is "safe" because `serial8250_tx_dma_flush`
+is holding the UART port lock. The first thing the callback does is also
+grab the UART port lock, so access to `dma->tx_running` is serialized.
 
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9e512eaaf8f4 ("serial: 8250: Fix fifo underflow on flush")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Raul E Rangel <rrangel@google.com>
+Link: https://patch.msgid.link/20260209135815.1.I16366ecb0f62f3c96fe3dd5763fcf6f3c2b4d8cd@changeid
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/8250/8250_dma.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index c972e9488e16f..7b1497ed97d26 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
- 				break;
- 			p++;
- 			len--;
-+			if (len <= 0)
-+				break;
- 			return DecodeH323_UserInformation(buf, p, len,
- 							  &q931->UUIE);
- 		}
--- 
-2.51.0
-
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -148,7 +148,22 @@ void serial8250_tx_dma_flush(struct uart
+ 	 */
+ 	dma->tx_size = 0;
+ 
++	/*
++	 * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
++	 * holding the uart port spinlock.
++	 */
+ 	dmaengine_terminate_async(dma->txchan);
++
++	/*
++	 * The callback might or might not run. If it doesn't run, we need to ensure
++	 * that `tx_running` is cleared so that we can schedule new transactions.
++	 * If it does run, then the zombie callback will clear `tx_running` again
++	 * and perform a no-op since `tx_size` was cleared above.
++	 *
++	 * In either case, we ASSUME the DMA transaction will terminate before we
++	 * issue a new `serial8250_tx_dma`.
++	 */
++	dma->tx_running = 0;
+ }
+ 
+ int serial8250_rx_dma(struct uart_8250_port *p)
 
 
 
