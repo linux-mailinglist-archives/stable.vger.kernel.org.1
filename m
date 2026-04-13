@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WE/FOFgf3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:40 +0200
+	id OOL3H5oX3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDB33F0175
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 879073EEA08
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 99147307C4FD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C6183031F02
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89849280CFB;
-	Mon, 13 Apr 2026 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DC6282F1B;
+	Mon, 13 Apr 2026 16:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKdWk+JM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nux94Tgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7D41A680C;
-	Mon, 13 Apr 2026 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A434827BF6C;
+	Mon, 13 Apr 2026 16:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098393; cv=none; b=DIineL77m8LwfvjeGVM74uaq1qSkqC2UnimFMqBP2OCthouDnEruxwOKgfkLh9piCHDYVTyUJu7SQAOpzkG3WfY5ZOVcpjY7/OUXHiy2gInmJSZRJ5sk6bARMPD5kLtEX4TpPS8yvAvqQPUq4nWtjKzo7Wk8WayyC5Qfzu8ooUQ=
+	t=1776096511; cv=none; b=jDhWf1skrbSzwM6oeWneCgmJdVNMQWTwmwDvVGI5Jw3AXPTBNHMuU1yynRnzH+mvDpxWLrW3wKWIwKHiXVtXs87vFL7gO9rFiJPuTcq07PxNmQKhtN0NTaLlVJMhx52uEV3C+83hX/pyl5yZ6rEhg/DhucrULTEkqEHd5TLLai0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098393; c=relaxed/simple;
-	bh=I15yQkZ+UrUa1laVaNzaUbqqy8F0wIhMmzVFPDuvNJo=;
+	s=arc-20240116; t=1776096511; c=relaxed/simple;
+	bh=D4mCvZrE4scGYcAY87BFkFRw4jdLUhYMWW2oUA6wglY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rh5+vTUicbi9pejHD31TMM+jT0inBh59LeRu/bytrjSQ+y9whwu5ShJZH9TFanDvjSWIM+jpy4n7g4tK0dLPMber1Dx1Tzw0vhDxTK28FUl1bDaxxWslaomlJDXOZjMhtq6iewtuZ5FWVEXxH+1CMJk0ftBNCoo0sGAM6pw7tX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKdWk+JM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EF6C2BCAF;
-	Mon, 13 Apr 2026 16:39:52 +0000 (UTC)
+	 MIME-Version; b=NXrpkibL4po5CxqyOuqOe6/BQVXPUKZCXJ5DUHFF4BvtMsNf1aSsPqk8i0Se6NM5M6e5PpUC6uGTUjjMwoTxSASaU+6O+CNFelyRmP38K/az9HWheq3Lax3rWo0baWnFkb3dxqSw8+pdTzMPW07OxuCBoCEWQfRZF4zJkdy6UUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nux94Tgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B8FC2BCB0;
+	Mon, 13 Apr 2026 16:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098393;
-	bh=I15yQkZ+UrUa1laVaNzaUbqqy8F0wIhMmzVFPDuvNJo=;
+	s=korg; t=1776096511;
+	bh=D4mCvZrE4scGYcAY87BFkFRw4jdLUhYMWW2oUA6wglY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKdWk+JMOlJ2iIaGsFzGU7rTtF4cnZYkgoXXbEx6KUJ33vSaP8B4j+h5D5RsR31nE
-	 mpmlHM/9yGG743RVx5r9s9aQ1u7bh5OW+93v3ou2smttiSpBrjlT8ft4UcRrrcM69w
-	 QgDeZ6UdPe5OOLDonPSDoUh0wH/Suo5UnlG/312w=
+	b=nux94Tgilm9psT/JlSgoW4KNxUuJh4BGY/fF4NR8yq1WRq/wRawKjf4eBlyVEA6VJ
+	 D0IDBmBreFxPHtYgMHSRmgC1umQj3bPbvml5+iauSuj1Xa0NWBmaUuDQm2ED7r3Tce
+	 f867Hicp0Y03DyuXyUIuG4rdZ9xiJJryKrJoA138=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 475/570] phy: renesas: rcar-gen3-usb2: Move IRQ request in probe
+	Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@linux.win>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Leo Lin <leo@depthfirst.com>
+Subject: [PATCH 6.18 38/83] X.509: Fix out-of-bounds access when parsing extensions
 Date: Mon, 13 Apr 2026 18:00:06 +0200
-Message-ID: <20260413155848.256750799@linuxfoundation.org>
+Message-ID: <20260413155732.438121981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237024-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236282-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,162 +87,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DBDB33F0175
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.win:email,apana.org.au:email,depthfirst.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,wunner.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 879073EEA08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit de76809f60cc938d3580bbbd5b04b7d12af6ce3a upstream.
+commit d702c3408213bb12bd570bb97204d8340d141c51 upstream.
 
-Commit 08b0ad375ca6 ("phy: renesas: rcar-gen3-usb2: move IRQ registration
-to init") moved the IRQ request operation from probe to
-struct phy_ops::phy_init API to avoid triggering interrupts (which lead to
-register accesses) while the PHY clocks (enabled through runtime PM APIs)
-are not active. If this happens, it results in a synchronous abort.
+Leo reports an out-of-bounds access when parsing a certificate with
+empty Basic Constraints or Key Usage extension because the first byte of
+the extension is read before checking its length.  Fix it.
 
-One way to reproduce this issue is by enabling CONFIG_DEBUG_SHIRQ, which
-calls free_irq() on driver removal.
+The bug can be triggered by an unprivileged user by submitting a
+specially crafted certificate to the kernel through the keyrings(7) API.
+Leo has demonstrated this with a proof-of-concept program responsibly
+disclosed off-list.
 
-Move the IRQ request and free operations back to probe, and take the
-runtime PM state into account in IRQ handler. This commit is preparatory
-for the subsequent fixes in this series.
-
-[claudiu.beznea: fixed conflict in probe b/w IRQ request probe and
- platform_set_drvdata() by keeping platform_set_drvdata() code before
- IRQ request code]
-
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 30eae2b037af ("KEYS: X.509: Parse Basic Constraints for CA")
+Fixes: 567671281a75 ("KEYS: X.509: Parse Key Usage")
+Reported-by: Leo Lin <leo@depthfirst.com> # off-list
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Ignat Korchagin <ignat@linux.win>
+Cc: stable@vger.kernel.org # v6.4+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 46 +++++++++++++-----------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+ crypto/asymmetric_keys/x509_cert_parser.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 8c03b683ba1c9..d873c49500cdd 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -115,7 +115,6 @@ struct rcar_gen3_chan {
- 	struct work_struct work;
- 	struct mutex lock;	/* protects rphys[...].powered */
- 	enum usb_dr_mode dr_mode;
--	int irq;
- 	u32 obint_enable_bits;
- 	bool extcon_host;
- 	bool is_otg_channel;
-@@ -420,16 +419,25 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
- {
- 	struct rcar_gen3_chan *ch = _ch;
- 	void __iomem *usb2_base = ch->base;
--	u32 status = readl(usb2_base + USB2_OBINTSTA);
-+	struct device *dev = ch->dev;
- 	irqreturn_t ret = IRQ_NONE;
-+	u32 status;
- 
-+	pm_runtime_get_noresume(dev);
-+
-+	if (pm_runtime_suspended(dev))
-+		goto rpm_put;
-+
-+	status = readl(usb2_base + USB2_OBINTSTA);
- 	if (status & ch->obint_enable_bits) {
--		dev_vdbg(ch->dev, "%s: %08x\n", __func__, status);
-+		dev_vdbg(dev, "%s: %08x\n", __func__, status);
- 		writel(ch->obint_enable_bits, usb2_base + USB2_OBINTSTA);
- 		rcar_gen3_device_recognition(ch);
- 		ret = IRQ_HANDLED;
- 	}
- 
-+rpm_put:
-+	pm_runtime_put_noidle(dev);
- 	return ret;
- }
- 
-@@ -439,17 +447,6 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
- 	struct rcar_gen3_chan *channel = rphy->ch;
- 	void __iomem *usb2_base = channel->base;
- 	u32 val;
--	int ret;
--
--	if (!rcar_gen3_is_any_rphy_initialized(channel) && channel->irq >= 0) {
--		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
--		ret = request_irq(channel->irq, rcar_gen3_phy_usb2_irq,
--				  IRQF_SHARED, dev_name(channel->dev), channel);
--		if (ret < 0) {
--			dev_err(channel->dev, "No irq handler (%d)\n", channel->irq);
--			return ret;
--		}
--	}
- 
- 	/* Initialize USB2 part */
- 	val = readl(usb2_base + USB2_INT_ENABLE);
-@@ -485,9 +482,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
- 		val &= ~USB2_INT_ENABLE_UCOM_INTEN;
- 	writel(val, usb2_base + USB2_INT_ENABLE);
- 
--	if (channel->irq >= 0 && !rcar_gen3_is_any_rphy_initialized(channel))
--		free_irq(channel->irq, channel);
--
- 	return 0;
- }
- 
-@@ -654,7 +648,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct rcar_gen3_chan *channel;
- 	struct phy_provider *provider;
--	int ret = 0, i;
-+	int ret = 0, i, irq;
- 
- 	if (!dev->of_node) {
- 		dev_err(dev, "This driver needs device tree\n");
-@@ -670,8 +664,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		return PTR_ERR(channel->base);
- 
- 	channel->obint_enable_bits = USB2_OBINT_BITS;
--	/* get irq number here and request_irq for OTG in phy_init */
--	channel->irq = platform_get_irq_optional(pdev, 0);
- 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
- 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
- 		channel->is_otg_channel = true;
-@@ -731,6 +723,20 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, channel);
- 	channel->dev = dev;
- 
-+	irq = platform_get_irq_optional(pdev, 0);
-+	if (irq < 0 && irq != -ENXIO) {
-+		ret = irq;
-+		goto error;
-+	} else if (irq > 0) {
-+		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
-+		ret = devm_request_irq(dev, irq, rcar_gen3_phy_usb2_irq,
-+				       IRQF_SHARED, dev_name(dev), channel);
-+		if (ret < 0) {
-+			dev_err(dev, "Failed to request irq (%d)\n", irq);
-+			goto error;
-+		}
-+	}
-+
- 	provider = devm_of_phy_provider_register(dev, rcar_gen3_phy_usb2_xlate);
- 	if (IS_ERR(provider)) {
- 		dev_err(dev, "Failed to register PHY provider\n");
--- 
-2.53.0
-
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -584,10 +584,10 @@ int x509_process_extension(void *context
+ 		 *   0x04 is where keyCertSign lands in this bit string
+ 		 *   0x80 is where digitalSignature lands in this bit string
+ 		 */
+-		if (v[0] != ASN1_BTS)
+-			return -EBADMSG;
+ 		if (vlen < 4)
+ 			return -EBADMSG;
++		if (v[0] != ASN1_BTS)
++			return -EBADMSG;
+ 		if (v[2] >= 8)
+ 			return -EBADMSG;
+ 		if (v[3] & 0x80)
+@@ -620,10 +620,10 @@ int x509_process_extension(void *context
+ 		 *	(Expect 0xFF if the CA is TRUE)
+ 		 * vlen should match the entire extension size
+ 		 */
+-		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
+-			return -EBADMSG;
+ 		if (vlen < 2)
+ 			return -EBADMSG;
++		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
++			return -EBADMSG;
+ 		if (v[1] != vlen - 2)
+ 			return -EBADMSG;
+ 		/* Empty SEQUENCE means CA:FALSE (default value omitted per DER) */
 
 
 
