@@ -1,248 +1,159 @@
-Return-Path: <stable+bounces-236136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SE+gCQ4L3WkZZAkAu9opvQ
-	(envelope-from <stable+bounces-236136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:26:06 +0200
+	id eNLTDhYL3WkZZAkAu9opvQ
+	(envelope-from <stable+bounces-236137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:26:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B913EDEF1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:26:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924AF3EDEF8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D31663086419
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:20:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC8213018AC7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0465C3B585C;
-	Mon, 13 Apr 2026 15:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DA13B0AC2;
+	Mon, 13 Apr 2026 15:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ony/0bUf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YjR1yM5t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC33226A0A7
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 15:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CEE3B8BD5
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 15:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776093607; cv=none; b=D3kxYAj2++m7i+GzmjQYL+TQFN8wO+KOcKwnWSRKXrAs1f7W4Bt56XoX6uYn9jLoSFJtaxfh0PeS04UXpnFGvbUyKHZvuGZW0B4NXuEmg4U0z7gZH3UIYvvGqLs3kV302cYdvBwOnoldAZ5IqCOPPEqNBIPxuqpJbkBYiQMiC4Y=
+	t=1776093687; cv=none; b=rWG+4eNNP8zhTRyHLWNgAU5f18mxDb8MmXqpqbD4/VducAZH8UA3AGJo1B7xkyWeUgP7drVPiROrFMWQZCiSFzmqQHGGoSgsjem9if6ECFhwLiuuXnnMg2lDynJoW/ZqH+ZbodWACqonUQ26ehJkZNSqZdc3O6gOtMB7HEgT3SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776093607; c=relaxed/simple;
-	bh=ccEzDE7Ie2+I5L7kp/p7Uq3EjObgwxNlw+lEWctjwWU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqPQvQXjL0/snQpGvfGxEKg0phwKDMwB9Tr/iNIRV062LfYJ1jxfotSmWwrxkhFlwdWv3sH+8+4FmaT5AwqjDCAG3fyD0U3ZoNaDov3UoW0DTn35VSjecZlrBUh+2i4H5CLcFEziB4JBesXsQOmAjHWo0yFI6NutsQNtWur2HTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ony/0bUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65F9C2BCAF;
-	Mon, 13 Apr 2026 15:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776093607;
-	bh=ccEzDE7Ie2+I5L7kp/p7Uq3EjObgwxNlw+lEWctjwWU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ony/0bUfPn07wAfHlDRhOsh/7D2PUKhiUKRUHgOihi9J7o/bu/1BY3nGc0KHYMUVA
-	 +HPkafifzS6zTkoRFjYoI/MkSGbhxN+oe7XQZx2NYJST2oK1r/T9LJKaFwwRyZJa6y
-	 /OHvc16JzOe1RqjtcGWsDn6mcFpp9EL53a4QqgInjXPAsaX/sCDEjbio0wnb5Kjakt
-	 up6Amk396vbEZjm4if69t0S40AK6zbUXGLbGxNnw61BzGBHkd/3LhynJ7b1eM33/P8
-	 nGkxGJna3PXh7Y+BLyRBBb74vVq3HnMlVft2Mu8EH65bxvGzOWAfUbQBZhqWrLPvvb
-	 ntcHalr+Q7rLQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Woodhouse <dwmw@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
-Date: Mon, 13 Apr 2026 11:20:05 -0400
-Message-ID: <20260413152005.3014972-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041319-perceive-bok-f424@gregkh>
-References: <2026041319-perceive-bok-f424@gregkh>
+	s=arc-20240116; t=1776093687; c=relaxed/simple;
+	bh=IBD/JgVsoz0ZuJmAgbQmjE5N4nkq2J8x1FpFUjapBN4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VZHZOrrD4GGJp8d3IoiikbDF4GP5dffm6uQ/QEvdwawzzJ8mQFonfcaFCeP4JH+g55NKCrV9KfMcGeCRV1EdJkHvVfRgWT4vOdHMpETO4lZNId8JfCSCsQOzNfoFKQ43+CM+zJ4djzFG+XqKAYXW3RO76Z84OHHtxH3RtKywKg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YjR1yM5t; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8cb20bcff5aso418647085a.3
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 08:21:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776093686; x=1776698486; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IBD/JgVsoz0ZuJmAgbQmjE5N4nkq2J8x1FpFUjapBN4=;
+        b=YjR1yM5tDn5JTn9me3m3WYhQqtz+mCEkOReJVBzAYDa3/UWpqrg6FZxciMGZd7iaN0
+         8H/SHe5v6cXnUkJfXba3a4gdv5y8H/35dO4C6rGQFVBtTmqoQxqviI9ln8mddApQz4Le
+         89ZuXt06KqdLfdvbgaUrnWnxu3fxHKQKmHhsTONn3sJEQzXcHwM+n3Vz6vdh57/KZyyS
+         jcm900uz8F3YMWJKVD4lB/EVvBkTgZW2lp0ridmcCR6xR/VmENNw52eAGPkCwHXX/I8k
+         KmJWYT2G0N57ZbtnjTsCbvvbj8MpSblgKZbTwbWu4GNjRbCcWNJ1iK/r4CiYQB1LrL6q
+         wlbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776093686; x=1776698486;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IBD/JgVsoz0ZuJmAgbQmjE5N4nkq2J8x1FpFUjapBN4=;
+        b=F5hPgFyLe7VPLMqrsAhWV7R6WPl0o/94X1n/WetSz58hyBZYzp4EqFofYBWJvE3p4m
+         wFcBF3v5+nXg4sF7p/adVOH1//YGQBl3kC6fKmf7mR9JtnNUIBnFO9rLLuuQr2g6ooFL
+         KRYGZ5UJF3lpw/DVVuSp+18llZBCShDNEszIQjpRNxNppd+ZY847lYgpTuspaoS56PU7
+         yFOXGWBA2KhwDm8tappTuIEChmDMWcMbpL9s3L54B3cAtjxpnKa04zBMVVOvMivYnGdW
+         J6iXeWEIfgIAr6QrZP2wkNgRWB1QzCa/XiVfJSDx4zXArAx0S/xpjVahJ360MRLLBcb1
+         jcsg==
+X-Forwarded-Encrypted: i=1; AFNElJ9Xd3yztK7aogxD3ZIIBVv/xJA7UZkMWJnmPaivT55DOMkgPDnJhvgzHpeDn9xalAej3XN6V0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYLt1M+C8G72A8nYRiEh6jevOrPBJKK66jSuV0fScrp9BWizdR
+	D2ljk2hMqDwsebFSNqy92ZyW24cAaC9e5iap9S3a4TiqaL++k28nSMqa
+X-Gm-Gg: AeBDietpxpq6bSixwKOm4Jh/0Mv3BVhON7/xCrPTAiWGEszzTjZ/l6OUuMw2C57FqA1
+	gnZh3QmYqAg14dzJsTSZ7MJVUcpb+BEQ6vO7H5dV3w/SCyt5ivU6+bzkcoIrCOV/+Wn29wCgQIL
+	Afa+NIYhcZLSDNfDCShZqOcVLSxbVP8yK02uGbSunN5Y3gvvzIlQKf9GyjUFCZAUZnjiHq1GpoI
+	/QMc0dGjIu9gZh3Bk/SXcuFjjwPaBTQrCrARzU0NRa5vFrDHiijhMFVdlTTDVrnuqhaatH3KMB/
+	MKSgf75Q/uXTGgIlo0Bhab1g/mMRhbdBBiBjrpFY2SO3cy3y1cYPD4TwKz0LZrgBfYH0aN2Y8Yg
+	v8XQpaHtb7TPq8+j4rZZy3X80yLa/YGp5N/NEa2ZC2/iSHxESQIfQK6EKOb/SdCsxvyXDci23lw
+	SKiWatxjaFpBDwJnxBcmwOcD7f0g8Oq1Fv2L1u+sx7ZalA0eozpnYbGwgH+MosCgfovvbItqMuM
+	herCa/OjBQ60WexwUgqgOPW9Q4j
+X-Received: by 2002:a05:620a:1a11:b0:8cd:b3dc:9d4e with SMTP id af79cd13be357-8ddcf1b8049mr2119875185a.32.1776093685356;
+        Mon, 13 Apr 2026 08:21:25 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb9351afasm864057385a.36.2026.04.13.08.21.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 08:21:25 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: mcanal@igalia.com,
+	dri-devel@lists.freedesktop.org
+Cc: itoral@igalia.com,
+	stable@vger.kernel.org,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: Re: [PATCH v2] drm/v3d: Limit ioctl extension chain depth to prevent infinite loop
+Date: Mon, 13 Apr 2026 15:21:15 +0000
+Message-Id: <20260413152115.3444105-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <80158c8c-a270-498b-b947-bc3276359d4b@igalia.com>
+References: <80158c8c-a270-498b-b947-bc3276359d4b@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236137-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[igalia.com,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236136-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.co.uk:email]
-X-Rspamd-Queue-Id: 88B913EDEF1
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 924AF3EDEF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Hi Maíra,
 
-[ Upstream commit 2619da73bb2f10d88f7e1087125c40144fdf0987 ]
+On 4/13/26 09:16, Maíra Canal wrote:
+> How about checking if (!multisync.in_sync_count &&
+> !multisync.out_sync_count)? After all, it doesn't make any sense to have
+> an empty multisync.
+>
+> I believe this is better strategy than using a hard-coded max.
 
-Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-flexible-array members") broke the userspace API for C++.
+That check makes good semantic sense and directly closes the attack
+vector - I agree an empty multisync isn't useful.
 
-These structures ending in VLAs are typically a *header*, which can be
-followed by an arbitrary number of entries. Userspace typically creates
-a larger structure with some non-zero number of entries, for example in
-QEMU's kvm_arch_get_supported_msr_feature():
+That said, I'd like to raise one thought before sending v3. The reason
+xe and i915 added a general depth limit wasn't just to fix a specific
+known loop - it was to make the extension walker generically robust as
+the extension set grows. If a future extension is added that can also
+tolerate a second visit without erroring out, the unbounded walk
+vulnerability class reappears without a counter. Since the current
+architectural maximum is 2 (one multisync + one CPU job extension),
+capping the walk at 2 would reflect the real limit and provide that
+safety net without being arbitrary.
 
-    struct {
-        struct kvm_msrs info;
-        struct kvm_msr_entry entries[1];
-    } msr_data = {};
+Happy to go either way - just wanted to raise it before sending v3.
+What do you think?
 
-While that works in C, it fails in C++ with an error like:
- flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
-
-Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
-for C++ compilation.
-
-Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
-[sean: tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ applied `__DECLARE_FLEX_ARRAY(char, name)` change directly instead of inside missing `#ifdef __KERNEL__` else branch ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/include/uapi/asm/kvm.h | 12 ++++++------
- include/uapi/linux/kvm.h        | 11 ++++++-----
- 2 files changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 46de10a809ecb..c4ca3fb749e01 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -198,13 +198,13 @@ struct kvm_msrs {
- 	__u32 nmsrs; /* number of msrs in entries */
- 	__u32 pad;
- 
--	struct kvm_msr_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
- };
- 
- /* for KVM_GET_MSR_INDEX_LIST */
- struct kvm_msr_list {
- 	__u32 nmsrs; /* number of msrs in entries */
--	__u32 indices[];
-+	__DECLARE_FLEX_ARRAY(__u32, indices);
- };
- 
- /* Maximum size of any access bitmap in bytes */
-@@ -241,7 +241,7 @@ struct kvm_cpuid_entry {
- struct kvm_cpuid {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
- };
- 
- struct kvm_cpuid_entry2 {
-@@ -263,7 +263,7 @@ struct kvm_cpuid_entry2 {
- struct kvm_cpuid2 {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry2 entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
- };
- 
- /* for KVM_GET_PIT and KVM_SET_PIT */
-@@ -394,7 +394,7 @@ struct kvm_xsave {
- 	 * the contents of CPUID leaf 0xD on the host.
- 	 */
- 	__u32 region[1024];
--	__u32 extra[];
-+	__DECLARE_FLEX_ARRAY(__u32, extra);
- };
- 
- #define KVM_MAX_XCRS	16
-@@ -522,7 +522,7 @@ struct kvm_pmu_event_filter {
- 	__u32 fixed_counter_bitmap;
- 	__u32 flags;
- 	__u32 pad[4];
--	__u64 events[];
-+	__DECLARE_FLEX_ARRAY(__u64, events);
- };
- 
- #define KVM_PMU_EVENT_ALLOW 0
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 0d5d4419139ae..79b4c194b262f 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -11,6 +11,7 @@
- #include <linux/const.h>
- #include <linux/types.h>
- #include <linux/compiler.h>
-+#include <linux/stddef.h>
- #include <linux/ioctl.h>
- #include <asm/kvm.h>
- 
-@@ -556,7 +557,7 @@ struct kvm_coalesced_mmio {
- 
- struct kvm_coalesced_mmio_ring {
- 	__u32 first, last;
--	struct kvm_coalesced_mmio coalesced_mmio[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
- };
- 
- #define KVM_COALESCED_MMIO_MAX \
-@@ -635,7 +636,7 @@ struct kvm_clear_dirty_log {
- /* for KVM_SET_SIGNAL_MASK */
- struct kvm_signal_mask {
- 	__u32 len;
--	__u8  sigset[];
-+	__DECLARE_FLEX_ARRAY(__u8, sigset);
- };
- 
- /* for KVM_TPR_ACCESS_REPORTING */
-@@ -1242,7 +1243,7 @@ struct kvm_irq_routing_entry {
- struct kvm_irq_routing {
- 	__u32 nr;
- 	__u32 flags;
--	struct kvm_irq_routing_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
- };
- 
- #endif
-@@ -1362,7 +1363,7 @@ struct kvm_dirty_tlb {
- 
- struct kvm_reg_list {
- 	__u64 n; /* number of regs */
--	__u64 reg[];
-+	__DECLARE_FLEX_ARRAY(__u64, reg);
- };
- 
- struct kvm_one_reg {
-@@ -2183,7 +2184,7 @@ struct kvm_stats_desc {
- 	__u16 size;
- 	__u32 offset;
- 	__u32 bucket_size;
--	char name[];
-+	__DECLARE_FLEX_ARRAY(char, name);
- };
- 
- #define KVM_GET_STATS_FD  _IO(KVMIO,  0xce)
--- 
-2.53.0
-
+Best regards,
+Ashutosh
 
