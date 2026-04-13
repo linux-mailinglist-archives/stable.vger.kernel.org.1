@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMObF8Ag3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:40 +0200
+	id AAptM+EY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B02A3F0652
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4343EEDB9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38E3C3075EF3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E59273030B8F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A92C30DEDD;
-	Mon, 13 Apr 2026 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368862FFFBE;
+	Mon, 13 Apr 2026 16:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npEWPHCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9ikF5Uh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE55280CFB;
-	Mon, 13 Apr 2026 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDC3302146;
+	Mon, 13 Apr 2026 16:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098637; cv=none; b=k2lljycFh2IaWepSuEWtKp1+3dPcSXdJTym2da3S/OecHuYFqon26rLFkxeemscjE/9YubdtqMhTfbUJAd+zNa3qIaCjHGTYT2aFJS1AtxJKR6yXSIehputM62mQ7+9dJHnHdv4Dq4FfeWIDsubt+XG25PI1sKrmVU77W2SMNYk=
+	t=1776097394; cv=none; b=j3Rzd4l4ixxS3TYl5blVTo9A7xoix8GbkfT4NjU91JvZNUGA2mTxQyIibbd+Y3xyVlzQ/HcMFFZS0hmcg4Z4J0umhN7vV7bkxOEAAHd5rhtOW/gyMETnpAt+1VJZwlaGoxW5sOs1m1GmKqYloulfoRBpgfVA9RX33vXnWBiYD1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098637; c=relaxed/simple;
-	bh=qZ3ecsqEuZDzXXZO7fHk9zUKeA00NmVbkUwYxh1w3LQ=;
+	s=arc-20240116; t=1776097394; c=relaxed/simple;
+	bh=LkUo140fVMn6MS7b6kloeNYd8ZgqpXWRMQKFp7SFOzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfTPeOBRa2aHrksDHT5g7fdMXXweXVkWsIvtUpYEDrHTTsZbQGXSqAo6A6N/EGWiLgcMPHRbGd/kjsNieyK0Z54XS+S5/fBYoD0VoNh3nupJMeSkIyQcy11BZ5fGQWsbAefgRelTS7iVdyErs2AhgIIzpkqCLnm16Gx9LrqQUhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npEWPHCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9946C2BCAF;
-	Mon, 13 Apr 2026 16:43:56 +0000 (UTC)
+	 MIME-Version; b=q1A8try348o4UVewogRmCTiM/TIEiEcvTM837N8i5ykQOOrD/JrjtkVPfUxvTYF4dDu5Jv9sJ0JDVu7HK0lXwvzLBI6louSgwig676JZs1/TkDQvyz6TLCCNfuwAggatsukee9u8gbO68SmP7YaG1aCcA7qt0Y0owBVmbYeQ/rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9ikF5Uh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E8EC2BCB3;
+	Mon, 13 Apr 2026 16:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098637;
-	bh=qZ3ecsqEuZDzXXZO7fHk9zUKeA00NmVbkUwYxh1w3LQ=;
+	s=korg; t=1776097393;
+	bh=LkUo140fVMn6MS7b6kloeNYd8ZgqpXWRMQKFp7SFOzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npEWPHCPfIukywMUj/D1kDfPqFt8cOMOQoyUvF6CmnIaTXFCqXVC7FZvJZjEpOxU7
-	 Rqyvp0kks4wN1fe6MdrgUF1n94yeKL+ckRjT97DbXvOgbXXszKDyyMQR64C+D4SQAD
-	 XRe4Z1pbYmGZ1l6ojyGqLFV343BifLnRWKLdXUjw=
+	b=n9ikF5UhJ/2t5K3ypa2UVyYqGwSRN4uTPvTgLc+RkRZYxUhNSqU40phjWjAHIva2p
+	 4UhnyRFlPw2EI/72PGauGjwnUU7i1IF6Y2O4OjUwA9wRXIff1AqHHGXv6D8RnEXMZf
+	 qCxvtDyfIsrBFGe9fmiPl6lil3djyOmquMAqn4Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Krause <minipli@grsecurity.net>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 003/491] scsi: lpfc: Properly set WC for DPP mapping
-Date: Mon, 13 Apr 2026 17:54:08 +0200
-Message-ID: <20260413155819.178874738@linuxfoundation.org>
+Subject: [PATCH 5.15 118/570] regulator: pca9450: Make IRQ optional
+Date: Mon, 13 Apr 2026 17:54:09 +0200
+Message-ID: <20260413155834.863250592@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,156 +68,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237119-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236627-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,broadcom.com:email,grsecurity.net:email]
-X-Rspamd-Queue-Id: 6B02A3F0652
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kontron.de:email]
+X-Rspamd-Queue-Id: 8C4343EEDB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Krause <minipli@grsecurity.net>
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-[ Upstream commit bffda93a51b40afd67c11bf558dc5aae83ca0943 ]
+[ Upstream commit 83808c54064eef620ad8645dfdcaffe125551532 ]
 
-Using set_memory_wc() to enable write-combining for the DPP portion of
-the MMIO mapping is wrong as set_memory_*() is meant to operate on RAM
-only, not MMIO mappings. In fact, as used currently triggers a BUG_ON()
-with enabled CONFIG_DEBUG_VIRTUAL.
+The IRQ line might not be connected on some boards. Allow the driver
+to be probed without it.
 
-Simply map the DPP region separately and in addition to the already
-existing mappings, avoiding any possible negative side effects for
-these.
-
-Fixes: 1351e69fc6db ("scsi: lpfc: Add push-to-adapter support to sli4")
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://patch.msgid.link/20260212192327.141104-1-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Link: https://patch.msgid.link/20240708084107.38986-5-frieder@fris.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 5d0efaf47ee9 ("regulator: pca9450: Correct interrupt type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_init.c |  2 ++
- drivers/scsi/lpfc/lpfc_sli.c  | 36 +++++++++++++++++++++++++++++------
- drivers/scsi/lpfc/lpfc_sli4.h |  3 +++
- 3 files changed, 35 insertions(+), 6 deletions(-)
+ drivers/regulator/pca9450-regulator.c | 41 +++++++++++++--------------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 5f2009327a593..0f144fbf2a6cb 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -10558,6 +10558,8 @@ lpfc_sli4_pci_mem_unset(struct lpfc_hba *phba)
- 		iounmap(phba->sli4_hba.conf_regs_memmap_p);
- 		if (phba->sli4_hba.dpp_regs_memmap_p)
- 			iounmap(phba->sli4_hba.dpp_regs_memmap_p);
-+		if (phba->sli4_hba.dpp_regs_memmap_wc_p)
-+			iounmap(phba->sli4_hba.dpp_regs_memmap_wc_p);
- 		break;
- 	case LPFC_SLI_INTF_IF_TYPE_1:
- 	default:
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 49931577da38b..0b3242b058b99 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -14966,6 +14966,32 @@ lpfc_dual_chute_pci_bar_map(struct lpfc_hba *phba, uint16_t pci_barset)
- 	return NULL;
- }
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index 556074d7fe242..756e4807d27a7 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -704,11 +704,6 @@ static int pca9450_i2c_probe(struct i2c_client *i2c,
+ 	unsigned int device_id, i;
+ 	int ret;
  
-+static __maybe_unused void __iomem *
-+lpfc_dpp_wc_map(struct lpfc_hba *phba, uint8_t dpp_barset)
-+{
-+
-+	/* DPP region is supposed to cover 64-bit BAR2 */
-+	if (dpp_barset != WQ_PCI_BAR_4_AND_5) {
-+		lpfc_log_msg(phba, KERN_WARNING, LOG_INIT,
-+			     "3273 dpp_barset x%x != WQ_PCI_BAR_4_AND_5\n",
-+			     dpp_barset);
-+		return NULL;
-+	}
-+
-+	if (!phba->sli4_hba.dpp_regs_memmap_wc_p) {
-+		void __iomem *dpp_map;
-+
-+		dpp_map = ioremap_wc(phba->pci_bar2_map,
-+				     pci_resource_len(phba->pcidev,
-+						      PCI_64BIT_BAR4));
-+
-+		if (dpp_map)
-+			phba->sli4_hba.dpp_regs_memmap_wc_p = dpp_map;
-+	}
-+
-+	return phba->sli4_hba.dpp_regs_memmap_wc_p;
-+}
-+
- /**
-  * lpfc_modify_hba_eq_delay - Modify Delay Multiplier on EQs
-  * @phba: HBA structure that EQs are on.
-@@ -15876,9 +15902,6 @@ lpfc_wq_create(struct lpfc_hba *phba, struct lpfc_queue *wq,
- 	uint8_t dpp_barset;
- 	uint32_t dpp_offset;
- 	uint8_t wq_create_version;
--#ifdef CONFIG_X86
--	unsigned long pg_addr;
--#endif
+-	if (!i2c->irq) {
+-		dev_err(&i2c->dev, "No IRQ configured?\n");
+-		return -EINVAL;
+-	}
+-
+ 	pca9450 = devm_kzalloc(&i2c->dev, sizeof(struct pca9450), GFP_KERNEL);
+ 	if (!pca9450)
+ 		return -ENOMEM;
+@@ -775,23 +770,25 @@ static int pca9450_i2c_probe(struct i2c_client *i2c,
+ 		}
+ 	}
  
- 	/* sanity check on queue memory */
- 	if (!wq || !cq)
-@@ -16070,14 +16093,15 @@ lpfc_wq_create(struct lpfc_hba *phba, struct lpfc_queue *wq,
+-	ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
+-					pca9450_irq_handler,
+-					(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
+-					"pca9450-irq", pca9450);
+-	if (ret != 0) {
+-		dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
+-			pca9450->irq);
+-		return ret;
+-	}
+-	/* Unmask all interrupt except PWRON/WDOG/RSVD */
+-	ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_INT1_MSK,
+-				IRQ_VR_FLT1 | IRQ_VR_FLT2 | IRQ_LOWVSYS |
+-				IRQ_THERM_105 | IRQ_THERM_125,
+-				IRQ_PWRON | IRQ_WDOGB | IRQ_RSVD);
+-	if (ret) {
+-		dev_err(&i2c->dev, "Unmask irq error\n");
+-		return ret;
++	if (pca9450->irq) {
++		ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
++						pca9450_irq_handler,
++						(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
++						"pca9450-irq", pca9450);
++		if (ret != 0) {
++			dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
++				pca9450->irq);
++			return ret;
++		}
++		/* Unmask all interrupt except PWRON/WDOG/RSVD */
++		ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_INT1_MSK,
++					IRQ_VR_FLT1 | IRQ_VR_FLT2 | IRQ_LOWVSYS |
++					IRQ_THERM_105 | IRQ_THERM_125,
++					IRQ_PWRON | IRQ_WDOGB | IRQ_RSVD);
++		if (ret) {
++			dev_err(&i2c->dev, "Unmask irq error\n");
++			return ret;
++		}
+ 	}
  
- #ifdef CONFIG_X86
- 			/* Enable combined writes for DPP aperture */
--			pg_addr = (unsigned long)(wq->dpp_regaddr) & PAGE_MASK;
--			rc = set_memory_wc(pg_addr, 1);
--			if (rc) {
-+			bar_memmap_p = lpfc_dpp_wc_map(phba, dpp_barset);
-+			if (!bar_memmap_p) {
- 				lpfc_printf_log(phba, KERN_ERR, LOG_INIT,
- 					"3272 Cannot setup Combined "
- 					"Write on WQ[%d] - disable DPP\n",
- 					wq->queue_id);
- 				phba->cfg_enable_dpp = 0;
-+			} else {
-+				wq->dpp_regaddr = bar_memmap_p + dpp_offset;
- 			}
- #else
- 			phba->cfg_enable_dpp = 0;
-diff --git a/drivers/scsi/lpfc/lpfc_sli4.h b/drivers/scsi/lpfc/lpfc_sli4.h
-index 100cb1a94811b..80c168b2a2ddd 100644
---- a/drivers/scsi/lpfc/lpfc_sli4.h
-+++ b/drivers/scsi/lpfc/lpfc_sli4.h
-@@ -772,6 +772,9 @@ struct lpfc_sli4_hba {
- 	void __iomem *dpp_regs_memmap_p;  /* Kernel memory mapped address for
- 					   * dpp registers
- 					   */
-+	void __iomem *dpp_regs_memmap_wc_p;/* Kernel memory mapped address for
-+					    * dpp registers with write combining
-+					    */
- 	union {
- 		struct {
- 			/* IF Type 0, BAR 0 PCI cfg space reg mem map */
+ 	/* Clear PRESET_EN bit in BUCK123_DVS to use DVS registers */
 -- 
 2.51.0
 
