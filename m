@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKZuOs4c3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-237045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:50 +0200
+	id YPMNCGga3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914B93EF85F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA713EF261
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 016653021187
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6723430E8819
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA633090F5;
-	Mon, 13 Apr 2026 16:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D25306B0A;
+	Mon, 13 Apr 2026 16:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHk8/dTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUGTrATp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43582D5A19;
-	Mon, 13 Apr 2026 16:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1704C24DCF6;
+	Mon, 13 Apr 2026 16:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098447; cv=none; b=guGK8UaZP7g6/qIRWnBLVLl1bsh1MLoAJZvIwXc1OBAt/jxOX4Ued9iEh9I+W7ifMin6A/yeKPsR1QopStQniRc/T4wsr/cv1Ue/DvnXytHTveAhsXZQ28iA7eQIMPPA4iUOwh9lMygfsjcmwW7i4NUENmZvynLwyyUlf+zlR2A=
+	t=1776097006; cv=none; b=cjdoSu227z9rlEtCWXURU7/O5fUuufuPK2fEqSUNVRRaU5A4cAIiFaqNPOQY26JRT2hv5tTwWsCGHmtQZIkll1sziGyBllMReouofGZqP9Q4FrUrkzfwd1qPSnJgBfM/rEFDZ0P+4lqAgZKUSKuuvvoRVEMF9wscvebTbUlTXNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098447; c=relaxed/simple;
-	bh=VMvADTCspQ7EEGsKs24b6vQbhBw421zGf1eTTqHyJ18=;
+	s=arc-20240116; t=1776097006; c=relaxed/simple;
+	bh=qDq/xGUiZXBfunN82ZRS5JkQZKtRyUQwSUJFsqd132w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5YEVtKWXxsP2vo9TTRxt7hMisFFypecCh8ZjAchL83gTSnnANUhLLrhaKa/BJDSQB89bZ1HDWLjHEXOq70LKf92v7slLeRg9o2nq0kbYJkQ3RVv8pfrHD4y7SIHUP0HrWDBD0zocKnow0zPM6ieRP6YDUO/D0y3ocExFZhZ+3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHk8/dTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF38C2BCAF;
-	Mon, 13 Apr 2026 16:40:47 +0000 (UTC)
+	 MIME-Version; b=IoWNx/mB+l+M1ieizbjOUXBH9tdiMLy5Cm/oWp7KR671ecXRirfZtzwuRfxeJQYeH5UV/yXS3vM7KmilZ85fpC6QY3HznxRox1njx/G7SafjjSFmzFebGliAQAJtVNckqKSTc5iWYkT6QlIROY+Kyk8BWRZIi8L3F5UVMf4Rk/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUGTrATp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CAEC2BCAF;
+	Mon, 13 Apr 2026 16:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098447;
-	bh=VMvADTCspQ7EEGsKs24b6vQbhBw421zGf1eTTqHyJ18=;
+	s=korg; t=1776097006;
+	bh=qDq/xGUiZXBfunN82ZRS5JkQZKtRyUQwSUJFsqd132w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHk8/dTiGkKRFtx+Sfx2DB0DuGrRALKq4ZNcPINs7cx79oTCe2mQA1c6QvbJ0eW7m
-	 AVWpV+sdWFZcJERcXhqdwPbuEiBQXV6+oe6Fqf1q38nxKt1fpNCb61QaAyU393hIL0
-	 bTGgxAQ4PTdAY2FdPQonzE4I5fWcyLv+5EZqrF2k=
+	b=pUGTrATp3rLCTiCXgkbmYtTJXVzEbzY2RYNRq1N5abuAmdG4i2IlDVoi0oBC3jnX7
+	 65L7PndhMs3Xl11wrDSGec9xAveBAl/2b4959Hk1ruNkZ2R+JZdQJe9zuLsZkPaerK
+	 o9o4tQu8qY6Xtlcw32l9wUt2wI+DkfVIuAOI8gc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 528/570] wifi: brcmsmac: Fix dma_free_coherent() size
-Date: Mon, 13 Apr 2026 18:00:59 +0200
-Message-ID: <20260413155850.227231828@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 26/55] ACPI: EC: Evaluate _REG outside the EC scope more carefully
+Date: Mon, 13 Apr 2026 18:01:00 +0200
+Message-ID: <20260413155725.807194765@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +64,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237045-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236477-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.985];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,broadcom.com:email]
-X-Rspamd-Queue-Id: 914B93EF85F
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 8AA713EF261
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-commit 12cd7632757a54ce586e36040210b1a738a0fc53 upstream.
+[ Upstream commit 71bf41b8e913ec9fc91f0d39ab8fb320229ec604 ]
 
-dma_alloc_consistent() may change the size to align it. The new size is
-saved in alloced.
+Commit 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the
+namespace root") caused _REG methods for EC operation regions outside
+the EC device scope to be evaluated which on some systems leads to the
+evaluation of _REG methods in the scopes of device objects representing
+devices that are not present and not functional according to the _STA
+return values. Some of those device objects represent EC "alternatives"
+and if _REG is evaluated for their operation regions, the platform
+firmware may be confused and the platform may start to behave
+incorrectly.
 
-Change the free size to match the allocation size.
+To avoid this problem, only evaluate _REG for EC operation regions
+located in the scopes of device objects representing known-to-be-present
+devices.
 
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260218130741.46566-3-fourier.thomas@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+For this purpose, partially revert commit 60fa6ae6e6d0 and trigger the
+evaluation of _REG for EC operation regions from acpi_bus_attach() for
+the known-valid devices.
+
+Fixes: 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the namespace root")
+Link: https://lore.kernel.org/linux-acpi/1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2298938
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2302253
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/23612351.6Emhk5qWAg@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/ec.c       |   11 +++++++++--
+ drivers/acpi/internal.h |    1 +
+ drivers/acpi/scan.c     |    2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
-@@ -483,7 +483,7 @@ static void *dma_ringalloc(struct dma_in
- 	if (((desc_strtaddr + size - 1) & boundary) != (desc_strtaddr
- 							& boundary)) {
- 		*alignbits = dma_align_sizetobits(size);
--		dma_free_coherent(di->dmadev, size, va, *descpa);
-+		dma_free_coherent(di->dmadev, *alloced, va, *descpa);
- 		va = dma_alloc_consistent(di, size, *alignbits,
- 			alloced, descpa);
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1512,12 +1512,13 @@ static bool install_gpio_irq_event_handl
+ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
+ 			       bool call_reg)
+ {
+-	acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
+ 	acpi_status status;
+ 
+ 	acpi_ec_start(ec, false);
+ 
+ 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
++		acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
++
+ 		acpi_ec_enter_noirq(ec);
+ 		status = acpi_install_address_space_handler_no_reg(scope_handle,
+ 								   ACPI_ADR_SPACE_EC,
+@@ -1531,7 +1532,7 @@ static int ec_install_handlers(struct ac
  	}
+ 
+ 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+-		acpi_execute_reg_methods(scope_handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
++		acpi_execute_reg_methods(ec->handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
+ 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+ 	}
+ 
+@@ -1749,6 +1750,12 @@ static int acpi_ec_remove(struct acpi_de
+ 	return 0;
+ }
+ 
++void acpi_ec_register_opregions(struct acpi_device *adev)
++{
++	if (first_ec && first_ec->handle != adev->handle)
++		acpi_execute_reg_methods(adev->handle, 1, ACPI_ADR_SPACE_EC);
++}
++
+ static acpi_status
+ ec_parse_io_ports(struct acpi_resource *resource, void *context)
+ {
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -210,6 +210,7 @@ int acpi_ec_add_query_handler(struct acp
+ 			      acpi_handle handle, acpi_ec_query_func func,
+ 			      void *data);
+ void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit);
++void acpi_ec_register_opregions(struct acpi_device *adev);
+ 
+ #ifdef CONFIG_PM_SLEEP
+ void acpi_ec_flush_work(void);
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2198,6 +2198,8 @@ static int acpi_bus_attach(struct acpi_d
+ 	if (device->handler)
+ 		goto ok;
+ 
++	acpi_ec_register_opregions(device);
++
+ 	if (!device->flags.initialized) {
+ 		device->flags.power_manageable =
+ 			device->power.states[ACPI_STATE_D0].flags.valid;
 
 
 
