@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-236331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLzSHSAY3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:52 +0200
+	id KMafHBUi3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCE03EEB68
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCC53F0A54
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84BAD31995B9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DFBFC302074F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553D7280035;
-	Mon, 13 Apr 2026 16:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE15F3264D7;
+	Mon, 13 Apr 2026 16:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt099mIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeiYl8kl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CD6225788;
-	Mon, 13 Apr 2026 16:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BF331F9BC;
+	Mon, 13 Apr 2026 16:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096630; cv=none; b=cpJzjBvqVoOYIHNr05qkudgvooDJXH3nSsmCYJrxDn+7ScOzEe3ZvPpxSteD0VKwrknn9KDlanHARucgMfcA3XykiO1xVfUnAXD4gTFAoWg4KOBfi+vMtKjZXqbbpK3snvJGtCMXTjiGbxu2NpyG2layqXa0DALN5YXOZW2qbv0=
+	t=1776099594; cv=none; b=qNjFiqufCuzXi1vh3cH0zY7TZoHSanoANKuOh9U86hVbWzAeXx7OPUPji0BxGwKWfC+dvr2CrC5cGPqzX5twt9tsUWu3unaqL8kyb+lGdEXHDzKMOU1OvmHbRG5BvMy6o4AK3bh2Tg38lDxEO5IBXzDtmNDKD5Z7En6iTdunC84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096630; c=relaxed/simple;
-	bh=F4TJEA/3ZlyV8gqh23JdrzpGaDW8Ddfd579WqB8bHAM=;
+	s=arc-20240116; t=1776099594; c=relaxed/simple;
+	bh=pH3DiRAWrTN3XV9VIZmfMxjyFSkKoTkfl9PINllhIvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5M8sQkTM2udxr5S9n9SC6wmsjNl5Eqi7X5iJFz0hTVTQvT0Yz7DtoZ9ZYroNS18JrhAkRVgG+oPzQ49Qmj45nuGooZIwe3vdtt4U7A1kzYM/LwSw3Mlx+6gY9nSMrK79B7Q8qkVKHsjHB8jlAuWwU8grMpDBx2yieIjDQHvYEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt099mIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A02C2BCAF;
-	Mon, 13 Apr 2026 16:10:29 +0000 (UTC)
+	 MIME-Version; b=nhzQ303nWqVQdaN60rjoDARVTzr00i5wJZF2Z3sRNdtc/6UJD87Yfe6wZcLu4F+IyjD1caXaz2krFhH5VjHRLZRwij+C8hyBJdaWVLecdxzQGRWvyzZQ24Z7aQEsF+XTJgQ1MGTpgEMbHpJSp0u/OwkhMg0QkY766n5mgIu0wvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeiYl8kl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13E5C2BCAF;
+	Mon, 13 Apr 2026 16:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096630;
-	bh=F4TJEA/3ZlyV8gqh23JdrzpGaDW8Ddfd579WqB8bHAM=;
+	s=korg; t=1776099594;
+	bh=pH3DiRAWrTN3XV9VIZmfMxjyFSkKoTkfl9PINllhIvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qt099mINL4hO+4reSsW+NgJJaAHDB3jPlBQGVVk1M5RLcdrRR1Beu6wy4iKip0PEQ
-	 T5OYEyYnxiz6KZyYrkzwi78XWh+uhjrP+d3+1fhRp4uIscbiA5fg+gxCmAIPbEiaot
-	 tCG3VbUKuCss5xbvfWaWyYIPt5a+hIYB6DIdTatk=
+	b=AeiYl8klWSs8py6UKln5MFBo8dCTcAuclT01XEYWFfACIfQi5R6qYgO4gcioK33NN
+	 pq4dpo0RzyGigqsUQKR0evTgig2Cf2Y4g3HsDhCgsaYbcZNcdpqKL6dKcg65U9CtFa
+	 ZYaRK866G7S0FfZYeTp733b1NeyhN1+XykI9H5Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 78/83] rxrpc: Fix integer overflow in rxgk_verify_response()
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 401/491] comedi: me4000: Fix potential overrun of firmware buffer
 Date: Mon, 13 Apr 2026 18:00:46 +0200
-Message-ID: <20260413155733.906676015@linuxfoundation.org>
+Message-ID: <20260413155834.044620735@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,75 +67,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236331-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237492-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,auristor.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
-X-Rspamd-Queue-Id: DCCE03EEB68
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 4FCC53F0A54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 699e52180f4231c257821c037ed5c99d5eb0edb8 upstream.
+commit 3fb43a7a5b44713f892c58ead2e5f3a1bc9f4ee7 upstream.
 
-In rxgk_verify_response(), there's a potential integer overflow due to
-rounding up token_len before checking it, thereby allowing the length check to
-be bypassed.
+`me4000_xilinx_download()` loads the firmware that was requested by
+`request_firmware()`.  It is possible for it to overrun the source
+buffer because it blindly trusts the file format.  It reads a data
+stream length from the first 4 bytes into variable `file_length` and
+reads the data stream contents of length `file_length` from offset 16
+onwards.
 
-Fix this by checking the unrounded value against len too (len is limited as
-the response must fit in a single UDP packet).
+Add a test to ensure that the supplied firmware is long enough to
+contain the header and the data stream.  On failure, log an error and
+return `-EINVAL`.
 
-Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
-Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-18-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note: The firmware loading was totally broken before commit ac584af59945
+("staging: comedi: me4000: fix firmware downloading"), but that is the
+most sensible target for this fix.
+
+Fixes: ac584af59945 ("staging: comedi: me4000: fix firmware downloading")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260205133949.71722-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxgk.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/staging/comedi/drivers/me4000.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -1209,7 +1209,8 @@ static int rxgk_verify_response(struct r
+--- a/drivers/staging/comedi/drivers/me4000.c
++++ b/drivers/staging/comedi/drivers/me4000.c
+@@ -316,6 +316,18 @@ static int me4000_xilinx_download(struct
+ 	unsigned int val;
+ 	unsigned int i;
  
- 	token_offset	= offset;
- 	token_len	= ntohl(rhdr.token_len);
--	if (xdr_round_up(token_len) + sizeof(__be32) > len)
-+	if (token_len > len ||
-+	    xdr_round_up(token_len) + sizeof(__be32) > len)
- 		goto short_packet;
++	/* Get data stream length from header. */
++	if (size >= 4) {
++		file_length = (((unsigned int)data[0] & 0xff) << 24) +
++			      (((unsigned int)data[1] & 0xff) << 16) +
++			      (((unsigned int)data[2] & 0xff) << 8) +
++			      ((unsigned int)data[3] & 0xff);
++	}
++	if (size < 16 || file_length > size - 16) {
++		dev_err(dev->class_dev, "Firmware length inconsistency\n");
++		return -EINVAL;
++	}
++
+ 	if (!xilinx_iobase)
+ 		return -ENODEV;
  
- 	trace_rxrpc_rx_response(conn, sp->hdr.serial, 0, sp->hdr.cksum, token_len);
+@@ -347,10 +359,6 @@ static int me4000_xilinx_download(struct
+ 	outl(val, devpriv->plx_regbase + PLX9052_CNTRL);
+ 
+ 	/* Download Xilinx firmware */
+-	file_length = (((unsigned int)data[0] & 0xff) << 24) +
+-		      (((unsigned int)data[1] & 0xff) << 16) +
+-		      (((unsigned int)data[2] & 0xff) << 8) +
+-		      ((unsigned int)data[3] & 0xff);
+ 	usleep_range(10, 1000);
+ 
+ 	for (i = 0; i < file_length; i++) {
 
 
 
