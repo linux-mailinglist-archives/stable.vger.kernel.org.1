@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJyeD5se3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:31 +0200
+	id 4E3ZFkYh3Wn4aAkAu9opvQ
+	(envelope-from <stable+bounces-236713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA663EFE47
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A773F07CD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F6FF301F3F0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EF7C31C2599
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17245315D53;
-	Mon, 13 Apr 2026 16:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27BA3093CF;
+	Mon, 13 Apr 2026 16:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGrzcxQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pJR3ccV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0A423E342;
-	Mon, 13 Apr 2026 16:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66C426CE32;
+	Mon, 13 Apr 2026 16:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098781; cv=none; b=IS14cMF7LJXZTDnBRzr59f6gH54XCm9BX68xc+YjB3OkgBIjy6g2bkdYib0uS3o4t8I5SwB04rb8w6xKEZUoQBF+U2IY5WgPCnnKwOb3oxVtGFAKu6J1otDDOGOFB+wFMP/Jg3MmKOdrrls4KKmAQitxv1ZshoFWGqJFffQfkls=
+	t=1776097602; cv=none; b=VIFtEonHsRmhhias8EN8kfqMFKWK3e3RgmApQDmAENocyWJEdSokF/K1W79yqhZEcoeSBIukTaGkcyI/tDOfOg1YT/rQxCs0QxVc3qsmzGiL0qH4ToDTmXnxuWk4LsjirLKI9DY0J641+4MwTVYmhIp9Dkp3a4b3NVfCd/u+2TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098781; c=relaxed/simple;
-	bh=ire2IVMhDr2e/j4+xViaZkk5cU7hIRD95U4pnjlWA8c=;
+	s=arc-20240116; t=1776097602; c=relaxed/simple;
+	bh=B2Zzqkzrhi7SWiVW8VcvXd25UOQ1OHxHMFjqGZSsXXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rK15d30oq8BoMluX86LzGXBdR7UcKeveBjn4c/n5hwFPB/8akn6pwc5b6rbdjgrDhJ0B1/2XJUmvvkgrdZUUB3XtJCbc+Wl94u+SZektfIZJRMi5FK7UCFk6bFgOxD2iUyoHUK8s9hj0/hpK3tUfk4pftp0ar6q4CqA7gHLKyzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGrzcxQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6592BC2BCAF;
-	Mon, 13 Apr 2026 16:46:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E8AIqlAUBf+5/5t1Y0ES3f+cI6xZt/ZXyw6qft1huT52ESvOep7Ba1ikmwOWwg7gdQUm0GBqgXF5vQ9dGd/SHae8UnZM5w+z3dw7wZwJDKidhCrmMY2GctBazsyqthYgYVWygHlqB/toi21Zg0J+FC+Sp+05SnWemMcu2zJV4yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pJR3ccV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B95EC2BCAF;
+	Mon, 13 Apr 2026 16:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098781;
-	bh=ire2IVMhDr2e/j4+xViaZkk5cU7hIRD95U4pnjlWA8c=;
+	s=korg; t=1776097602;
+	bh=B2Zzqkzrhi7SWiVW8VcvXd25UOQ1OHxHMFjqGZSsXXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGrzcxQmfS02qk1kW2+sZikoBvcU7/k2TXDpUWTb0iTaD+gfGOh2EQ1tkt/4yB1rR
-	 /A5dlbxsl2oXDhjcl7NX5j/83yIFbtYl2hFBNXOPL96gfhRFZe+LT/RgwUUVmGDNOY
-	 sln5g46ZdmlISssvcTYr1hJWKFdwra2Qqc2vJi3A=
+	b=2pJR3ccV1lGpnJz7jCwUrPO9Y0B8bgqm0tfCm8c485yP+URnVntKBZHCS53anqE7l
+	 vZfoQiA2VbNadfzZc+vFoyc1Rn6cThUx0jUsn5f3FfvoT45vOH8qmd4YUmtW30Diae
+	 i1jwbHfFiipHnH5mWyzCclMsLcywEK14sOAhnabs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/491] ASoC: amd: acp3x-rt5682-max9836: Add missing error check for clock acquisition
+	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 201/570] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
 Date: Mon, 13 Apr 2026 17:55:32 +0200
-Message-ID: <20260413155822.300523155@linuxfoundation.org>
+Message-ID: <20260413155837.987857141@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237175-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236713-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DCA663EFE47
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,johannes-moeller.dev:email]
+X-Rspamd-Queue-Id: C7A773F07CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Lukas Johannes Möller <research@johannes-moeller.dev>
 
-[ Upstream commit 53f3a900e9a383d47af7253076e19f510c5708d0 ]
+commit 15145675690cab2de1056e7ed68e59cbd0452529 upstream.
 
-The acp3x_5682_init() function did not check the return value of
-clk_get(), which could lead to dereferencing error pointers in
-rt5682_clk_enable().
+l2cap_ecred_reconf_rsp() casts the incoming data to struct
+l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
+result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
+with result at offset 0).
 
-Fix this by:
-1. Changing clk_get() to the device-managed devm_clk_get().
-2. Adding proper IS_ERR() checks for both clock acquisitions.
+This causes two problems:
 
-Fixes: 6b8e4e7db3cd ("ASoC: amd: Add machine driver for Raven based platform")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20260310024246.2153827-1-nichen@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - The sizeof(*rsp) length check requires 8 bytes instead of the
+   correct 2, so valid L2CAP_ECRED_RECONF_RSP packets are rejected
+   with -EPROTO.
+
+ - rsp->result reads from offset 6 instead of offset 0, returning
+   wrong data when the packet is large enough to pass the check.
+
+Fix by using the correct type.  Also pass the already byte-swapped
+result variable to BT_DBG instead of the raw __le16 field.
+
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp3x-rt5682-max9836.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/acp3x-rt5682-max9836.c b/sound/soc/amd/acp3x-rt5682-max9836.c
-index 1a4e8ca0f99c2..7e2f8d628cbbc 100644
---- a/sound/soc/amd/acp3x-rt5682-max9836.c
-+++ b/sound/soc/amd/acp3x-rt5682-max9836.c
-@@ -83,8 +83,13 @@ static int acp3x_5682_init(struct snd_soc_pcm_runtime *rtd)
- 		return ret;
- 	}
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6397,7 +6397,7 @@ static inline int l2cap_ecred_reconf_rsp
+ 					 u8 *data)
+ {
+ 	struct l2cap_chan *chan, *tmp;
+-	struct l2cap_ecred_conn_rsp *rsp = (void *) data;
++	struct l2cap_ecred_reconf_rsp *rsp = (void *)data;
+ 	u16 result;
  
--	rt5682_dai_wclk = clk_get(component->dev, "rt5682-dai-wclk");
--	rt5682_dai_bclk = clk_get(component->dev, "rt5682-dai-bclk");
-+	rt5682_dai_wclk = devm_clk_get(component->dev, "rt5682-dai-wclk");
-+	if (IS_ERR(rt5682_dai_wclk))
-+		return PTR_ERR(rt5682_dai_wclk);
-+
-+	rt5682_dai_bclk = devm_clk_get(component->dev, "rt5682-dai-bclk");
-+	if (IS_ERR(rt5682_dai_bclk))
-+		return PTR_ERR(rt5682_dai_bclk);
+ 	if (cmd_len < sizeof(*rsp))
+@@ -6405,7 +6405,7 @@ static inline int l2cap_ecred_reconf_rsp
  
- 	ret = snd_soc_card_jack_new(card, "Headset Jack",
- 				SND_JACK_HEADSET | SND_JACK_LINEOUT |
--- 
-2.51.0
-
+ 	result = __le16_to_cpu(rsp->result);
+ 
+-	BT_DBG("result 0x%4.4x", rsp->result);
++	BT_DBG("result 0x%4.4x", result);
+ 
+ 	if (!result)
+ 		return 0;
 
 
 
