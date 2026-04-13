@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-236173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAl5G+AV3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:16 +0200
+	id 2HBWNJUj3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-236950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0373EE6A4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2959F3F0E84
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E38530626EA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3D773054F73
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31D324E4A1;
-	Mon, 13 Apr 2026 16:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19B61D5AD4;
+	Mon, 13 Apr 2026 16:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkIjP27j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1sBMQcx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972A423EA94;
-	Mon, 13 Apr 2026 16:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C1A2D5A19;
+	Mon, 13 Apr 2026 16:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096230; cv=none; b=CEoNjtL9BuiQjdSfkvMthBGKHe0aBP0ZpCqlnpZgxeYmSTW7oet+94FoZ75QC3ivYexH/l74m4Jngin1cB3EqNcXxsxakUfB6KDJ2zufvLTQ+4Bub7Cnf5Ve3k09aejcloa3OKH+gIZuXcEoNyQRJMDdNyxyKgdsQYkqS+e3GnA=
+	t=1776098207; cv=none; b=GyBM6fq3zlPBU6Gjkrxq5tmgYjHUngYMFC9y/Ezc8q5JF6BnEcmF3EvMZBoot9Ez94QirTOyCXfKztNdtA3htId0XCJwoJ5m5Jff7XFhzy8oMk0fgvKcY3xaaTvPUC1QvZsPPJVCuy2xshmMCgtjKixn5qwgOErDw1DepSt9hqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096230; c=relaxed/simple;
-	bh=oQig0a3JMXaJ98ya+mKVIUYg1ljBeqB7i6Bx8Zr0rrM=;
+	s=arc-20240116; t=1776098207; c=relaxed/simple;
+	bh=umOb7iyZo5TEuQW1j8NfaVnqPrkeHIEFCQ0b+T8fuFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/DNi8jN1INtnLLF0UICUkLmalESkpsoGSeX3tidGBdy8JbmkBZdSkmT+7rHL37EjqNxtWiAbiZ3u/7v4rGTv4xGCNxIFoMoVXJ/HIQqiUj7AceQl98+W425c/9ZIAzk7CEDSn+77LI6Hq15NeKVtZmlxBbRrULz9PgjFeRppWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkIjP27j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FA7C2BCAF;
-	Mon, 13 Apr 2026 16:03:49 +0000 (UTC)
+	 MIME-Version; b=oceKC+CgsolyPq5wxCHid8PC6oi/5cKzvFlOpwQOYRk2Z+jvpHZkCRNsO9GF9GPxuN5FvP3hkW+nDOUyt1SDx3uzXIMQkKrLMiCJ/XFoUhsgeQl2tghQKHKhv12JytI/gC4ZEcwZ9LK873JVhAX7fmpcXvF1OSmYiMWe76O2rW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1sBMQcx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49910C2BCAF;
+	Mon, 13 Apr 2026 16:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096230;
-	bh=oQig0a3JMXaJ98ya+mKVIUYg1ljBeqB7i6Bx8Zr0rrM=;
+	s=korg; t=1776098207;
+	bh=umOb7iyZo5TEuQW1j8NfaVnqPrkeHIEFCQ0b+T8fuFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkIjP27jwDf4gKEB9pEkOqdiY9CWnDdFQYLbie3bCR1bBm2L4abXoHcr+Ln7PrN4n
-	 UtNk2e2asdSg+SM2ci2vTK2uWZR6GcdNVtkrsseUUcXh69EK/MaT87BXCdV4ssNpEr
-	 1s+Sgy4tg5SZuBQ3QfvAK4naq9gmovSsk9hN8ROo=
+	b=k1sBMQcxA4LPvBmreoMcz1UB/djq2T8hIT7xOOxg2f7XvlG4rE5CPv5sJVBROGIO3
+	 4RAYFj0HFU4nVDCWu+P6l4iZLy4AJmPFfK10y5/D4qch39+GzmL1/tpO0SaztBlwyn
+	 ub4MrCo/LnIyHxzgcAn9OF4coceJ0Gbc/aNMQicg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuan Do <tuan@calif.io>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.19 18/86] netfilter: nft_ct: fix use-after-free in timeout object destroy
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 434/570] net/sched: cls_fw: fix NULL pointer dereference on shared blocks
 Date: Mon, 13 Apr 2026 17:59:25 +0200
-Message-ID: <20260413155732.260097041@linuxfoundation.org>
+Message-ID: <20260413155846.731321606@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,100 +75,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236950-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236173-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,calif.io:email]
-X-Rspamd-Queue-Id: CD0373EE6A4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2959F3F0E84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuan Do <tuan@calif.io>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit f8dca15a1b190787bbd03285304b569631160eda upstream.
+[ Upstream commit faeea8bbf6e958bf3c00cb08263109661975987c ]
 
-nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
-immediately after nf_ct_untimeout(), without waiting for an RCU grace
-period. Concurrent packet processing on other CPUs may still hold
-RCU-protected references to the timeout object obtained via
-rcu_dereference() in nf_ct_timeout_data().
+The old-method path in fw_classify() calls tcf_block_q() and
+dereferences q->handle.  Shared blocks leave block->q NULL, causing a
+NULL deref when an empty cls_fw filter is attached to a shared block
+and a packet with a nonzero major skb mark is classified.
 
-Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
-freeing until after an RCU grace period, matching the approach already
-used in nfnetlink_cttimeout.c.
+Reject the configuration in fw_change() when the old method (no
+TCA_OPTIONS) is used on a shared block, since fw_classify()'s
+old-method path needs block->q which is NULL for shared blocks.
 
-KASAN report:
- BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
- Read of size 4 at addr ffff8881035fe19c by task exploit/80
-
+The fixed null-ptr-deref calling stack:
+ KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+ RIP: 0010:fw_classify (net/sched/cls_fw.c:81)
  Call Trace:
-  nf_conntrack_tcp_packet+0x1381/0x29d0
-  nf_conntrack_in+0x612/0x8b0
-  nf_hook_slow+0x70/0x100
-  __ip_local_out+0x1b2/0x210
-  tcp_sendmsg_locked+0x722/0x1580
-  __sys_sendto+0x2d8/0x320
+  tcf_classify (./include/net/tc_wrapper.h:197 net/sched/cls_api.c:1764 net/sched/cls_api.c:1860)
+  tc_run (net/core/dev.c:4401)
+  __dev_queue_xmit (net/core/dev.c:4535 net/core/dev.c:4790)
 
- Allocated by task 75:
-  nft_ct_timeout_obj_init+0xf6/0x290
-  nft_obj_init+0x107/0x1b0
-  nf_tables_newobj+0x680/0x9c0
-  nfnetlink_rcv_batch+0xc29/0xe00
-
- Freed by task 26:
-  nft_obj_destroy+0x3f/0xa0
-  nf_tables_trans_destroy_work+0x51c/0x5c0
-  process_one_work+0x2c4/0x5a0
-
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tuan Do <tuan@calif.io>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260331050217.504278-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_timeout.h |    1 +
- net/netfilter/nft_ct.c                       |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/sched/cls_fw.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/include/net/netfilter/nf_conntrack_timeout.h
-+++ b/include/net/netfilter/nf_conntrack_timeout.h
-@@ -14,6 +14,7 @@
- struct nf_ct_timeout {
- 	__u16			l3num;
- 	const struct nf_conntrack_l4proto *l4proto;
-+	struct rcu_head		rcu;
- 	char			data[];
- };
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index a2f53aee39097..a4ffee135c855 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -245,8 +245,18 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 	struct nlattr *tb[TCA_FW_MAX + 1];
+ 	int err;
  
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1021,7 +1021,7 @@ static void nft_ct_timeout_obj_destroy(c
- 	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
--	kfree(priv->timeout);
-+	kfree_rcu(priv->timeout, rcu);
- }
+-	if (!opt)
+-		return handle ? -EINVAL : 0; /* Succeed if it is old method. */
++	if (!opt) {
++		if (handle)
++			return -EINVAL;
++
++		if (tcf_block_shared(tp->chain->block)) {
++			NL_SET_ERR_MSG(extack,
++				       "Must specify mark when attaching fw filter to block");
++			return -EINVAL;
++		}
++
++		return 0; /* Succeed if it is old method. */
++	}
  
- static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
+ 	err = nla_parse_nested_deprecated(tb, TCA_FW_MAX, opt, fw_policy,
+ 					  NULL);
+-- 
+2.53.0
+
 
 
 
