@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-236476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eI/IKjka3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:49 +0200
+	id YLtFHK0Z3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267033EF1F1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8FB3EF03F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D44E30E85B9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 896C630A5ABE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2BE3093CF;
-	Mon, 13 Apr 2026 16:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB2425A2C9;
+	Mon, 13 Apr 2026 16:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIHWsYfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+6sBxiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EECC27280A;
-	Mon, 13 Apr 2026 16:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215BB24EA90;
+	Mon, 13 Apr 2026 16:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097003; cv=none; b=pEYqRHNJNPanwEYh+TfvHXVnv4W/pOXQlCx0kXW2AytKTbJzflmUTKVHTGCDtg8uXab6xAJsb6jBuCAjUFWDfUijncm388yClw1qHPWIGkG9laDhf7Z1F8apyCE7VCg8bz8PsGbBPCroer05hOG5/FoPFnvqeG8Rc2zB2TxirUc=
+	t=1776096790; cv=none; b=A8JnXxHh3QSaxjeZuBoiId02ccWFBRfJso7qALawexnT+fhKjbPwCboWpfsGZzF4lqv51uQHXWv9r1VtnbU9fODP1UtN2O22nChf7kz9KUEs+hNyefeW6u/STuXTw4+vTP9YI7Cn8SS/03g+01xUsTEmsekuVHoDmoh2Xzqtr9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097003; c=relaxed/simple;
-	bh=emCCImVyosW8Mm+qOCcCSzkMrziAvVw4JRBZiS1subQ=;
+	s=arc-20240116; t=1776096790; c=relaxed/simple;
+	bh=IncVa67EiUFF2Kx3AW+w0XxNXFgqNBjMp1tHk/FniXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjIW82dakeNMSnA2Rj+3m2eCJcLpiJEw1plBaIbDI021EOEqOSgEhqIeYuNeF8wZqQt9QyKZIWYoqYmSn3ZX9Bfo0iWRp5C42uwKKOuI25VrBeNSRHgiQ+1eS8F8fho1GBbcQplzNJhSL8QFelTy504izq7Xkpr8JsMbB2/Mvb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIHWsYfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163FAC2BCAF;
-	Mon, 13 Apr 2026 16:16:42 +0000 (UTC)
+	 MIME-Version; b=sikSh7ZzEuPhVHpFZdp4ohU8hJ+dvde4bHQD1oo0BmV4KtD/cl2jxefyxVgW3MyGnQE/8vV25cfI9b+6Le0ygt0dd/694sCxW9bzWTXuo7Lrxwms0q+bdWAoIB4WU/d1cwWikoBylXydWB2aIb/0G6Sb2SXaQ3XGsOaZTkGYeFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+6sBxiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840E9C2BCAF;
+	Mon, 13 Apr 2026 16:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097003;
-	bh=emCCImVyosW8Mm+qOCcCSzkMrziAvVw4JRBZiS1subQ=;
+	s=korg; t=1776096790;
+	bh=IncVa67EiUFF2Kx3AW+w0XxNXFgqNBjMp1tHk/FniXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIHWsYfxoar8czmvVwrPjXH1G6a+VzTWcf3Odb77kVIAeLXEzsZqxnvHsEnhyhiKG
-	 N36Lpow4N6yqL4wRX3/c6fIQclsEAsqusY/55IW0JPswUAlqlNY6VOT9ko9kEXHZEr
-	 Usne+++k9qeJnLRURg+mO5B314lxEqDap8F64akA=
+	b=Q+6sBxiP7SPpqNc4O37QPw3eX6d8a7bkr3LZzKt8KqFgcRKjfpXSMN0esogJs6/r1
+	 PzsEZnLRvSf4N7QvoRAHG5xoYZwaYOpAOLQj88nveJLA5vBlqjXrtG0tu2wx6xaMbe
+	 nlwnJmyqdxDGHnhIb+Q7htkz0HyM5LMkeMhn5tgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/55] ACPICA: Add a depth argument to acpi_execute_reg_methods()
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Douya Le <ldy3087146292@gmail.com>,
+	Yuan Tan <tanyuan98@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 64/70] rxrpc: Only put the call ref if one was acquired
 Date: Mon, 13 Apr 2026 18:00:59 +0200
-Message-ID: <20260413155725.769602533@linuxfoundation.org>
+Message-ID: <20260413155730.567437748@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,171 +75,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236393-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236476-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 267033EF1F1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,auristor.com:email,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,infradead.org:email]
+X-Rspamd-Queue-Id: DB8FB3EF03F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Douya Le <ldy3087146292@gmail.com>
 
-[ Upstream commit cdf65d73e001fde600b18d7e45afadf559425ce5 ]
+commit 6331f1b24a3e85465f6454e003a3e6c22005a5c5 upstream.
 
-A subsequent change will need to pass a depth argument to
-acpi_execute_reg_methods(), so prepare that function for it.
+rxrpc_input_packet_on_conn() can process a to-client packet after the
+current client call on the channel has already been torn down.  In that
+case chan->call is NULL, rxrpc_try_get_call() returns NULL and there is
+no reference to drop.
 
-No intentional functional changes.
+The client-side implicit-end error path does not account for that and
+unconditionally calls rxrpc_put_call().  This turns a protocol error
+path into a kernel crash instead of rejecting the packet.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/8451567.NyiUUSuA9g@rjwysocki.net
-Stable-dep-of: 71bf41b8e913 ("ACPI: EC: Evaluate _REG outside the EC scope more carefully")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Only drop the call reference if one was actually acquired.  Keep the
+existing protocol error handling unchanged.
+
+Fixes: 5e6ef4f1017c ("rxrpc: Make the I/O thread take over the call and local processor work")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Douya Le <ldy3087146292@gmail.com>
+Co-developed-by: Yuan Tan <tanyuan98@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-11-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/acevents.h |    2 +-
- drivers/acpi/acpica/evregion.c |    6 ++++--
- drivers/acpi/acpica/evxfregn.c |   10 +++++++---
- drivers/acpi/ec.c              |    2 +-
- include/acpi/acpixf.h          |    1 +
- 5 files changed, 14 insertions(+), 7 deletions(-)
+ net/rxrpc/io_thread.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpica/acevents.h
-+++ b/drivers/acpi/acpica/acevents.h
-@@ -188,7 +188,7 @@ acpi_ev_detach_region(union acpi_operand
- 		      u8 acpi_ns_is_locked);
+--- a/net/rxrpc/io_thread.c
++++ b/net/rxrpc/io_thread.c
+@@ -400,7 +400,8 @@ static int rxrpc_input_packet_on_conn(st
  
- void
--acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
-+acpi_ev_execute_reg_methods(struct acpi_namespace_node *node, u32 max_depth,
- 			    acpi_adr_space_type space_id, u32 function);
- 
- acpi_status
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -65,6 +65,7 @@ acpi_status acpi_ev_initialize_op_region
- 						acpi_gbl_default_address_spaces
- 						[i])) {
- 			acpi_ev_execute_reg_methods(acpi_gbl_root_node,
-+						    ACPI_UINT32_MAX,
- 						    acpi_gbl_default_address_spaces
- 						    [i], ACPI_REG_CONNECT);
+ 	if (sp->hdr.callNumber > chan->call_id) {
+ 		if (rxrpc_to_client(sp)) {
+-			rxrpc_put_call(call, rxrpc_call_put_input);
++			if (call)
++				rxrpc_put_call(call, rxrpc_call_put_input);
+ 			return rxrpc_protocol_error(skb,
+ 						    rxrpc_eproto_unexpected_implicit_end);
  		}
-@@ -665,6 +666,7 @@ cleanup1:
-  * FUNCTION:    acpi_ev_execute_reg_methods
-  *
-  * PARAMETERS:  node            - Namespace node for the device
-+ *              max_depth       - Depth to which search for _REG
-  *              space_id        - The address space ID
-  *              function        - Passed to _REG: On (1) or Off (0)
-  *
-@@ -676,7 +678,7 @@ cleanup1:
-  ******************************************************************************/
- 
- void
--acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
-+acpi_ev_execute_reg_methods(struct acpi_namespace_node *node, u32 max_depth,
- 			    acpi_adr_space_type space_id, u32 function)
- {
- 	struct acpi_reg_walk_info info;
-@@ -710,7 +712,7 @@ acpi_ev_execute_reg_methods(struct acpi_
- 	 * regions and _REG methods. (i.e. handlers must be installed for all
- 	 * regions of this Space ID before we can run any _REG methods)
- 	 */
--	(void)acpi_ns_walk_namespace(ACPI_TYPE_ANY, node, ACPI_UINT32_MAX,
-+	(void)acpi_ns_walk_namespace(ACPI_TYPE_ANY, node, max_depth,
- 				     ACPI_NS_WALK_UNLOCK, acpi_ev_reg_run, NULL,
- 				     &info, NULL);
- 
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -85,7 +85,8 @@ acpi_install_address_space_handler_inter
- 	/* Run all _REG methods for this address space */
- 
- 	if (run_reg) {
--		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
-+		acpi_ev_execute_reg_methods(node, ACPI_UINT32_MAX, space_id,
-+					    ACPI_REG_CONNECT);
- 	}
- 
- unlock_and_exit:
-@@ -261,6 +262,7 @@ ACPI_EXPORT_SYMBOL(acpi_remove_address_s
-  * FUNCTION:    acpi_execute_reg_methods
-  *
-  * PARAMETERS:  device          - Handle for the device
-+ *              max_depth       - Depth to which search for _REG
-  *              space_id        - The address space ID
-  *
-  * RETURN:      Status
-@@ -269,7 +271,8 @@ ACPI_EXPORT_SYMBOL(acpi_remove_address_s
-  *
-  ******************************************************************************/
- acpi_status
--acpi_execute_reg_methods(acpi_handle device, acpi_adr_space_type space_id)
-+acpi_execute_reg_methods(acpi_handle device, u32 max_depth,
-+			 acpi_adr_space_type space_id)
- {
- 	struct acpi_namespace_node *node;
- 	acpi_status status;
-@@ -294,7 +297,8 @@ acpi_execute_reg_methods(acpi_handle dev
- 
- 		/* Run all _REG methods for this address space */
- 
--		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
-+		acpi_ev_execute_reg_methods(node, max_depth, space_id,
-+					    ACPI_REG_CONNECT);
- 	} else {
- 		status = AE_BAD_PARAMETER;
- 	}
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1531,7 +1531,7 @@ static int ec_install_handlers(struct ac
- 	}
- 
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
--		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
-+		acpi_execute_reg_methods(scope_handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
- 
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -666,6 +666,7 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			     void *context))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_execute_reg_methods(acpi_handle device,
-+						     u32 nax_depth,
- 						     acpi_adr_space_type
- 						     space_id))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
 
 
 
