@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CRdLdwd3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:20 +0200
+	id eH9zCHkj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3D23EFBFE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D793F0E17
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E8D19306F97E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BC5E3047BD0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0642F90C5;
-	Mon, 13 Apr 2026 16:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBE83254A3;
+	Mon, 13 Apr 2026 16:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKe+jU5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqGyvbzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2342D0C7E;
-	Mon, 13 Apr 2026 16:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2037331F9BC;
+	Mon, 13 Apr 2026 16:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098097; cv=none; b=KhnSt49bamHm3bmKUGa11p/70QMleqPmOqucly6WlLHyvsCO0JJrimjmL6w4AKdmByHpYJhPfTPkChayXpxnov3o6DbZ3nThb0jIY1b44dc+r1oHo+TjForAjGAzLUpJ4GhD8vSasGs6F+gGI9u1Jm/sMW1XccLH0KuhfErkLtA=
+	t=1776099386; cv=none; b=F2GNyyQFoYnxcVaz2zlZDv23ldqJLkbpIs+KX9U/p8vSIxFN0Xq5FG1VXlMAVqBVSOUJWQh8UE/EZQpllvtG0czb67mp5bWAtE5ZjufhaAz44/V6iup8kzVwfJbI6shemWundorkTXQjMeq/+xFKv/mCxpAFs5hDccWzbWwpxi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098097; c=relaxed/simple;
-	bh=UEjifrbcA+F5UtPi8cGIRuIHOzPC+D3G8vngpQUC4wI=;
+	s=arc-20240116; t=1776099386; c=relaxed/simple;
+	bh=qbaKl8WHBEZMJIKX8jiuGmaTwhUt1JQFxIj/SMrNSqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkbfpC8r2n9W38AeS+LaA0oU9AGH7tPiiUNMuOUSEumBN1VEgSAO6+72KG9oZ3dbUfO0FtTx7/PVHH4igRPa/IRX7wm8YlRcbaqOblQDcDbblNqo1j8GW3FY/4ickKcAJV412BSEDb+K80w+lROc38Iw4iDdiz8+0uVpEZzq7Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKe+jU5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79D4C2BCAF;
-	Mon, 13 Apr 2026 16:34:56 +0000 (UTC)
+	 MIME-Version; b=E0ph3XsGdjaLYvqR66iqv0ykyldmzoDBbb97EZn4sToz91yil+RWfEs9jLZXJfSehCGFdYeXRM9HW3gV5MGrRkn1zpVlyQZnEuPiIeNohM9/SonWlQGso/xH2NTgvKQPf5X9AJGKQ5yE8Sq8N/wmATT+hUi72Xt5cT/wtTamv/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqGyvbzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F32C2BCB3;
+	Mon, 13 Apr 2026 16:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098097;
-	bh=UEjifrbcA+F5UtPi8cGIRuIHOzPC+D3G8vngpQUC4wI=;
+	s=korg; t=1776099385;
+	bh=qbaKl8WHBEZMJIKX8jiuGmaTwhUt1JQFxIj/SMrNSqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKe+jU5/BUIZmZ03dkvu8Mdlycv6SWEl3zqLewlKWxRluApElMOMVYATqI++qd7yC
-	 5eNte67NU0PsZFiRkcnZ3IpnBx/OmaX96SX7owHwmYCIYsYUQvbOBLR4umpxznwHA0
-	 Jfj8RWNAD7Lnu9UNAgOCoQDOjNRwq3ynIFT/AnEk=
+	b=XqGyvbzmHIRDBZT3pop9pyZxFkdebaZpZzsPqCl9dbjHQSGDBhfIkeIZM04wi5kq3
+	 AQrhb+h0HLbqxkSS7mLQqui0Ne2M+VtvSsawX2MQRCbHCh/8/jPFhexnkQQ+jxWdfG
+	 fY+nY/PSroufMP8SgfFt1RhdSZYVGugpCNh+iQNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 392/570] btrfs: fix lost error when running device stats on multiple devices fs
+Subject: [PATCH 5.10 278/491] regmap: Synchronize cache for the page selector
 Date: Mon, 13 Apr 2026 17:58:43 +0200
-Message-ID: <20260413155845.158112715@linuxfoundation.org>
+Message-ID: <20260413155829.453916526@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,70 +74,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237411-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236906-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email]
-X-Rspamd-Queue-Id: 5B3D23EFBFE
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 93D793F0E17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
+[ Upstream commit 09e70e4f119ff650d24c96161fd2f62ac7e424b0 ]
 
-Whenever we get an error updating the device stats item for a device in
-btrfs_run_dev_stats() we allow the loop to go to the next device, and if
-updating the stats item for the next device succeeds, we end up losing
-the error we had from the previous device.
+If the selector register is represented in each page, its value
+according to the debugfs is stale because it gets synchronized
+only after the real page switch happens. Hence the regmap cache
+initialisation from the HW inherits outdated data in the selector
+register.
 
-Fix this by breaking out of the loop once we get an error and make sure
-it's returned to the caller. Since we are in the transaction commit path
-(and in the critical section actually), returning the error will result
-in a transaction abort.
+Synchronize cache for the page selector just in time.
 
-Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Before (offset followed by hexdump, the first byte is selector):
+
+    // Real registers
+    18: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
+    ...
+    // Virtual (per port)
+    40: 05 ff 00 00 e0 e0 00 00 00 00 00 1f
+    50: 00 ff 00 00 e0 e0 00 00 00 00 00 1f
+    60: 01 ff 00 00 ff ff 00 00 00 00 00 00
+    70: 02 ff 00 00 cf f3 00 00 00 00 00 0c
+    80: 03 ff 00 00 00 00 00 00 00 00 00 ff
+    90: 04 ff 00 00 ff 0f 00 00 f0 00 00 00
+
+After:
+
+    // Real registers
+    18: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
+    ...
+    // Virtual (per port)
+    40: 00 ff 00 00 e0 e0 00 00 00 00 00 1f
+    50: 01 ff 00 00 e0 e0 00 00 00 00 00 1f
+    60: 02 ff 00 00 ff ff 00 00 00 00 00 00
+    70: 03 ff 00 00 cf f3 00 00 00 00 00 0c
+    80: 04 ff 00 00 00 00 00 00 00 00 00 ff
+    90: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
+
+Fixes: 6863ca622759 ("regmap: Add support for register indirect addressing.")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260302184753.2693803-1-andriy.shevchenko@linux.intel.com
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/base/regmap/regmap.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 839ee01827b26..9ab226814cfde 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -8016,8 +8016,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
- 		smp_rmb();
- 
- 		ret = update_dev_stat_item(trans, device);
--		if (!ret)
--			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
-+		if (ret)
-+			break;
-+		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index e86d069894c06..3ad37e5615ea4 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1587,6 +1587,7 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
+ 			       unsigned int val_num)
+ {
+ 	void *orig_work_buf;
++	unsigned int selector_reg;
+ 	unsigned int win_offset;
+ 	unsigned int win_page;
+ 	bool page_chg;
+@@ -1605,10 +1606,31 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
+ 			return -EINVAL;
  	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
+ 
+-	/* It is possible to have selector register inside data window.
+-	   In that case, selector register is located on every page and
+-	   it needs no page switching, when accessed alone. */
++	/*
++	 * Calculate the address of the selector register in the corresponding
++	 * data window if it is located on every page.
++	 */
++	page_chg = in_range(range->selector_reg, range->window_start, range->window_len);
++	if (page_chg)
++		selector_reg = range->range_min + win_page * range->window_len +
++			       range->selector_reg - range->window_start;
++
++	/*
++	 * It is possible to have selector register inside data window.
++	 * In that case, selector register is located on every page and it
++	 * needs no page switching, when accessed alone.
++	 *
++	 * Nevertheless we should synchronize the cache values for it.
++	 * This can't be properly achieved if the selector register is
++	 * the first and the only one to be read inside the data window.
++	 * That's why we update it in that case as well.
++	 *
++	 * However, we specifically avoid updating it for the default page,
++	 * when it's overlapped with the real data window, to prevent from
++	 * infinite looping.
++	 */
+ 	if (val_num > 1 ||
++	    (page_chg && selector_reg != range->selector_reg) ||
+ 	    range->window_start + win_offset != range->selector_reg) {
+ 		/* Use separate work_buf during page switching */
+ 		orig_work_buf = map->work_buf;
+@@ -1617,7 +1639,7 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
+ 		ret = _regmap_update_bits(map, range->selector_reg,
+ 					  range->selector_mask,
+ 					  win_page << range->selector_shift,
+-					  &page_chg, false);
++					  NULL, false);
+ 
+ 		map->work_buf = orig_work_buf;
  
 -- 
 2.53.0
