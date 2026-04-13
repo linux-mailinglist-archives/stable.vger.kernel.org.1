@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-236242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8A4wNSYX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:42 +0200
+	id iJOEHm4Y3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A933EE911
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8411E3EEC2F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 594FC30C2BA9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 849AF3049DE4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A5C28CF5F;
-	Mon, 13 Apr 2026 16:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936AB305E1F;
+	Mon, 13 Apr 2026 16:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3bwH7/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMMiSZmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F5B277035;
-	Mon, 13 Apr 2026 16:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565652DEA6B;
+	Mon, 13 Apr 2026 16:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096408; cv=none; b=ZTS5KzDBLSmwvkdHcMIfBVrw8X4miIFQwjvbNlmBRqMmN/mhj77GwBtavMXCuF3rk4vVmb9iTIkcAqnqtp5+22WbnF6gR8/iR8V8dWA6mfymlNyCUhYAN+nr6zRwyBYulYLHgWW1+uWwYE9GGuD/C5dLAsq+UWW8mQWpM8pvmts=
+	t=1776096581; cv=none; b=Qh5/rx8d4D1z7OcLilXZaAag+1vR5IUdjp5Pn60SbplgsywrWraVOh9YFgptqz85nN2iuZTHj4WptN5GWUOTbtqPbOprW9RlNKjelIyKwrAiGO5TIo95FsfSdK1tHHAeFTrvaP2daae4aNywKex903DdtmYIV2sFo/h/Gt/chv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096408; c=relaxed/simple;
-	bh=1BQU5acfmCdx6jX1UBndlvVBehp9MYIag2F0B7KRcxk=;
+	s=arc-20240116; t=1776096581; c=relaxed/simple;
+	bh=oxKZEX0OgjFnyKhE9B997rs+QfayqzJ/w4bIybw9M6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHamUBGihS06e0HrTK5j1rZWRduT4MVoCcwLonoqwxwy3PZNnLzllq20z3X3tpDca4EYf+jC6Z3Fv2piLCaNVKmkfsDJan9p4otUKzxw5iKHHOlJxPb6XLkVcowtf7E6PhU3pZH8bcz3MsuNbZUHDztftJoiSgi79KpN8zXWdT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3bwH7/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5FAC2BCAF;
-	Mon, 13 Apr 2026 16:06:48 +0000 (UTC)
+	 MIME-Version; b=KAjXu7PcjhzG0C/pUOFMtCZQ6VF7BI2lIYkHmd6OQuEe1ZOP/MjdmZKBRftl5nvjcpka0KRXSO8Yg0DDo1GaVR6me7//n/EY6Jlc4P8szmUqHsE6SBuDr7eizON2gN4SnqWmBNqHW11V/3JXOLZkeidQ2/ypUa0V4B99o4PM+eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMMiSZmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEC7C2BCAF;
+	Mon, 13 Apr 2026 16:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096408;
-	bh=1BQU5acfmCdx6jX1UBndlvVBehp9MYIag2F0B7KRcxk=;
+	s=korg; t=1776096581;
+	bh=oxKZEX0OgjFnyKhE9B997rs+QfayqzJ/w4bIybw9M6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3bwH7/Sc5OhokGANLi/ARECTDCabtXWfsMvMVFQblJ9JJYcvTS/2Z7vU7FdTSBKC
-	 cgqAUSQ1Fd0UY3tB9vEK2LPprSCrLuVyBXFRiXUWmjWvs50kUvbRcBUiLieX3GRoP1
-	 GjJqeDD+2UUlcJ2WUXVFAkvX/xuYaY1KCXTqOmrI=
+	b=IMMiSZmWjqNbnfsPZy4WbfszwrPRqFqyYJfZ+3ZnmlpWpJMSPL21M00+QnDHRh7ms
+	 GmqPP5W+okC1g2lT5i1nODNZ0AzG58ap+vSU24mOZBeWgjmFyUy/3KzWhX8JqSljfD
+	 neup0CooT3LMMZ+sB4ThiiABdjTZ0FXHrP/HSQOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonius <antonius@bluedragonsec.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
+	Oleh Konko <security@1seal.org>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 86/86] net: skb: fix cross-cache free of KFENCE-allocated skb head
-Date: Mon, 13 Apr 2026 18:00:33 +0200
-Message-ID: <20260413155734.752821008@linuxfoundation.org>
+Subject: [PATCH 6.18 66/83] rxrpc: Fix RxGK token loading to check bounds
+Date: Mon, 13 Apr 2026 18:00:34 +0200
+Message-ID: <20260413155733.470618621@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236242-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236311-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,73 +90,147 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bluedragonsec.com:email]
-X-Rspamd-Queue-Id: 77A933EE911
+	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,msgid.link:url,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,1seal.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8411E3EEC2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Oleh Konko <security@1seal.org>
 
-commit 0f42e3f4fe2a58394e37241d02d9ca6ab7b7d516 upstream.
+commit d179a868dd755b0cfcf7582e00943d702b9943b8 upstream.
 
-SKB_SMALL_HEAD_CACHE_SIZE is intentionally set to a non-power-of-2
-value (e.g. 704 on x86_64) to avoid collisions with generic kmalloc
-bucket sizes. This ensures that skb_kfree_head() can reliably use
-skb_end_offset to distinguish skb heads allocated from
-skb_small_head_cache vs. generic kmalloc caches.
+rxrpc_preparse_xdr_yfs_rxgk() reads the raw key length and ticket length
+from the XDR token as u32 values and passes each through round_up(x, 4)
+before using the rounded value for validation and allocation.  When the raw
+length is >= 0xfffffffd, round_up() wraps to 0, so the bounds check and
+kzalloc both use 0 while the subsequent memcpy still copies the original
+~4 GiB value, producing a heap buffer overflow reachable from an
+unprivileged add_key() call.
 
-However, when KFENCE is enabled, kfence_ksize() returns the exact
-requested allocation size instead of the slab bucket size. If a caller
-(e.g. bpf_test_init) allocates skb head data via kzalloc() and the
-requested size happens to equal SKB_SMALL_HEAD_CACHE_SIZE, then
-slab_build_skb() -> ksize() returns that exact value. After subtracting
-skb_shared_info overhead, skb_end_offset ends up matching
-SKB_SMALL_HEAD_HEADROOM, causing skb_kfree_head() to incorrectly free
-the object to skb_small_head_cache instead of back to the original
-kmalloc cache, resulting in a slab cross-cache free:
+Fix this by:
 
-  kmem_cache_free(skbuff_small_head): Wrong slab cache. Expected
-  skbuff_small_head but got kmalloc-1k
+ (1) Rejecting raw key lengths above AFSTOKEN_GK_KEY_MAX and raw ticket
+     lengths above AFSTOKEN_GK_TOKEN_MAX before rounding, consistent with
+     the caps that the RxKAD path already enforces via AFSTOKEN_RK_TIX_MAX.
 
-Fix this by always calling kfree(head) in skb_kfree_head(). This keeps
-the free path generic and avoids allocator-specific misclassification
-for KFENCE objects.
+ (2) Sizing the flexible-array allocation from the validated raw key
+     length via struct_size_t() instead of the rounded value.
 
-Fixes: bf9f1baa279f ("net: add dedicated kmem_cache for typical/small skb->head")
-Reported-by: Antonius <antonius@bluedragonsec.com>
-Closes: https://lore.kernel.org/netdev/CAK8a0jxC5L5N7hq-DT2_NhUyjBxrPocoiDazzsBk4TGgT1r4-A@mail.gmail.com/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260403014517.142550-1-jiayuan.chen@linux.dev
+ (3) Caching the raw lengths so that the later field assignments and
+     memcpy calls do not re-read from the token, eliminating a class of
+     TOCTOU re-parse.
+
+The control path (valid token with lengths within bounds) is unaffected.
+
+Fixes: 0ca100ff4df6 ("rxrpc: Add YFS RxGK (GSSAPI) security class")
+Signed-off-by: Oleh Konko <security@1seal.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-6-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/rxrpc/key.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1062,10 +1062,7 @@ static int skb_pp_frag_ref(struct sk_buf
+diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
+index 26d4336a4a02..77237a82be3b 100644
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -13,6 +13,7 @@
+ #include <crypto/skcipher.h>
+ #include <linux/module.h>
+ #include <linux/net.h>
++#include <linux/overflow.h>
+ #include <linux/skbuff.h>
+ #include <linux/key-type.h>
+ #include <linux/ctype.h>
+@@ -171,7 +172,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	size_t plen;
+ 	const __be32 *ticket, *key;
+ 	s64 tmp;
+-	u32 tktlen, keylen;
++	size_t raw_keylen, raw_tktlen, keylen, tktlen;
  
- static void skb_kfree_head(void *head, unsigned int end_offset)
- {
--	if (end_offset == SKB_SMALL_HEAD_HEADROOM)
--		kmem_cache_free(net_hotdata.skb_small_head_cache, head);
--	else
--		kfree(head);
-+	kfree(head);
- }
+ 	_enter(",{%x,%x,%x,%x},%x",
+ 	       ntohl(xdr[0]), ntohl(xdr[1]), ntohl(xdr[2]), ntohl(xdr[3]),
+@@ -181,18 +182,22 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 		goto reject;
  
- static void skb_free_head(struct sk_buff *skb)
+ 	key = xdr + (6 * 2 + 1);
+-	keylen = ntohl(key[-1]);
+-	_debug("keylen: %x", keylen);
+-	keylen = round_up(keylen, 4);
++	raw_keylen = ntohl(key[-1]);
++	_debug("keylen: %zx", raw_keylen);
++	if (raw_keylen > AFSTOKEN_GK_KEY_MAX)
++		goto reject;
++	keylen = round_up(raw_keylen, 4);
+ 	if ((6 * 2 + 2) * 4 + keylen > toklen)
+ 		goto reject;
+ 
+ 	ticket = xdr + (6 * 2 + 1 + (keylen / 4) + 1);
+-	tktlen = ntohl(ticket[-1]);
+-	_debug("tktlen: %x", tktlen);
+-	tktlen = round_up(tktlen, 4);
++	raw_tktlen = ntohl(ticket[-1]);
++	_debug("tktlen: %zx", raw_tktlen);
++	if (raw_tktlen > AFSTOKEN_GK_TOKEN_MAX)
++		goto reject;
++	tktlen = round_up(raw_tktlen, 4);
+ 	if ((6 * 2 + 2) * 4 + keylen + tktlen != toklen) {
+-		kleave(" = -EKEYREJECTED [%x!=%x, %x,%x]",
++		kleave(" = -EKEYREJECTED [%zx!=%x, %zx,%zx]",
+ 		       (6 * 2 + 2) * 4 + keylen + tktlen, toklen,
+ 		       keylen, tktlen);
+ 		goto reject;
+@@ -206,7 +211,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	if (!token)
+ 		goto nomem;
+ 
+-	token->rxgk = kzalloc(sizeof(*token->rxgk) + keylen, GFP_KERNEL);
++	token->rxgk = kzalloc(struct_size_t(struct rxgk_key, _key, raw_keylen), GFP_KERNEL);
+ 	if (!token->rxgk)
+ 		goto nomem_token;
+ 
+@@ -221,9 +226,9 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	token->rxgk->enctype	= tmp = xdr_dec64(xdr + 5 * 2);
+ 	if (tmp < 0 || tmp > UINT_MAX)
+ 		goto reject_token;
+-	token->rxgk->key.len	= ntohl(key[-1]);
++	token->rxgk->key.len	= raw_keylen;
+ 	token->rxgk->key.data	= token->rxgk->_key;
+-	token->rxgk->ticket.len = ntohl(ticket[-1]);
++	token->rxgk->ticket.len = raw_tktlen;
+ 
+ 	if (token->rxgk->endtime != 0) {
+ 		expiry = rxrpc_s64_to_time64(token->rxgk->endtime);
+@@ -236,8 +241,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	memcpy(token->rxgk->key.data, key, token->rxgk->key.len);
+ 
+ 	/* Pad the ticket so that we can use it directly in XDR */
+-	token->rxgk->ticket.data = kzalloc(round_up(token->rxgk->ticket.len, 4),
+-					   GFP_KERNEL);
++	token->rxgk->ticket.data = kzalloc(tktlen, GFP_KERNEL);
+ 	if (!token->rxgk->ticket.data)
+ 		goto nomem_yrxgk;
+ 	memcpy(token->rxgk->ticket.data, ticket, token->rxgk->ticket.len);
+-- 
+2.53.0
+
 
 
 
