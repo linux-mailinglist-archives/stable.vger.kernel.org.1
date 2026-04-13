@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-237416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COMsBo8j3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:39 +0200
+	id MAHVOjIX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B7F3F0E66
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A1C3EE934
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BC16306E82A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 066B63041D53
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0A5329C6B;
-	Mon, 13 Apr 2026 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C9B2797AC;
+	Mon, 13 Apr 2026 16:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I82689vo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyH8di/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4498328B4B;
-	Mon, 13 Apr 2026 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA30424E4AF;
+	Mon, 13 Apr 2026 16:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099399; cv=none; b=ChlJNhX5FSUbLLvL2DO//7fAH1/Q7w9OB7fL18rGhaHDHlfhAU2aFQb56hkNSATD9S1XeXVv6rQxzaOZvVD2ZEE+SuPgAlBcGXtvvdvDr2p8DTSD5Vmm4Oy8geSq5x9wwCeH4GrMT0MQFimZTx9jcB+MDGmewluXWuF4m91DF/0=
+	t=1776096436; cv=none; b=SaxEnfxD7aJ1IxFgvgtvUBlsNTPzvjDw/OJs6kTd6fqbNPHt7GklV9mlp0tbgRNW3XlgfoWjNkZL5kNhYyLbVzbGxZAByujvXJsqZiuiQwCBlGr/YAEPzw18iUcEInyjne1yfcBqq7N/mbm45xOVVKuPJPVyQJCWL//euG8X87k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099399; c=relaxed/simple;
-	bh=uZt3zjADzQlWu2pM5H3zPlxYupBpd+1XakTag1nCuac=;
+	s=arc-20240116; t=1776096436; c=relaxed/simple;
+	bh=nP4K/kW8WoW6bFymw/uJTVwu2PNXE9UfFoiMsr06RPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAxtfR+ruualZ1m93ogOlkQ48Q6BJYeDPZYnto2/tmF/Y+9ZaTNMYe4g95v+TcCm6G6sYJYf7yXAw57XDjJlHtLfmEl+6jSzxcSWgYXqHchMKeL8i5+moW7CuLHJGL1AmvdBfs31s+dcPuzZ6me+bWOVzNdiXoOH9K9DE7Ga46c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I82689vo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69961C2BCFC;
-	Mon, 13 Apr 2026 16:56:38 +0000 (UTC)
+	 MIME-Version; b=RYzS9eKbuOJ56z3vNMsPFAE6yRTmWNqfGO9uh5X9Z0/GuRVPVXwiaN/WZ0taEao00PXUwgZY5TqBTcDpDX1LqORve2P9UHP87xQYZlqVCmekFkwzk4M4qjRAhDucvvSZ0cWsI9O6KEOzsdzFDTPtHmnm44/dWV+rSg4NxRokfVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyH8di/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2B2C2BCAF;
+	Mon, 13 Apr 2026 16:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099398;
-	bh=uZt3zjADzQlWu2pM5H3zPlxYupBpd+1XakTag1nCuac=;
+	s=korg; t=1776096436;
+	bh=nP4K/kW8WoW6bFymw/uJTVwu2PNXE9UfFoiMsr06RPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I82689vow7n/FGYnvjSNAvFgL0UpKMM5B7ViIlOKNqoignsdV28YwRRMoydK1unjj
-	 F0gXYnni3qLUW71UgufytsCxJm/B7t4/Lk0cFri1klKagGBf04h9nvN3S9UdJvoouV
-	 fAcYYF+4DWi3BZMgfV3vtEQnohrhpB95/peGLer0=
+	b=IyH8di/hjBgF/dKijJQ+e1syw0Dcx6f7jozw9/+RzqDFIlHWCMFDLDVBbUe6XhF6d
+	 ajjPjkIiuRcz1nLMQvxTk20utjCNli/5l46Hn8xfbTXwlJ7/scxqE14mQ0dtSJsh4b
+	 0PFw6Dq6OGqLe7I+gaebVVtUfhFyErheyycHpBvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	stable <stable@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 326/491] tg3: Fix race for querying speed/duplex
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.18 03/83] xfrm_user: fix info leak in build_report()
 Date: Mon, 13 Apr 2026 17:59:31 +0200
-Message-ID: <20260413155831.248096716@linuxfoundation.org>
+Message-ID: <20260413155731.153756149@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237416-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236253-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,53 +92,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,davemloft.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 82B7F3F0E66
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,davemloft.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,secunet.com:email]
+X-Rspamd-Queue-Id: 67A1C3EE934
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit bb417456c7814d1493d98b7dd9c040bf3ce3b4ed ]
+commit d10119968d0e1f2b669604baf2a8b5fdb72fa6b4 upstream.
 
-When driver signals carrier up via netif_carrier_on() its internal
-link_up state isn't updated immediately. This leads to inconsistent
-speed/duplex in /proc/net/bonding/bondX where the speed and duplex
-is shown as unknown while ethtool shows correct values. Fix this by
-using netif_carrier_ok() for link checking in get_ksettings function.
+struct xfrm_user_report is a __u8 proto field followed by a struct
+xfrm_selector which means there is three "empty" bytes of padding, but
+the padding is never zeroed before copying to userspace.  Fix that up by
+zeroing the structure before setting individual member variables.
 
-Fixes: 84421b99cedc ("tg3: Update link_up flag for phylib devices")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xfrm/xfrm_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index e8be9e5a244fd..954a51fe0cd70 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -12232,7 +12232,7 @@ static int tg3_get_link_ksettings(struct net_device *dev,
- 	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
- 						advertising);
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -4108,6 +4108,7 @@ static int build_report(struct sk_buff *
+ 		return -EMSGSIZE;
  
--	if (netif_running(dev) && tp->link_up) {
-+	if (netif_running(dev) && netif_carrier_ok(dev)) {
- 		cmd->base.speed = tp->link_config.active_speed;
- 		cmd->base.duplex = tp->link_config.active_duplex;
- 		ethtool_convert_legacy_u32_to_link_mode(
--- 
-2.53.0
-
+ 	ur = nlmsg_data(nlh);
++	memset(ur, 0, sizeof(*ur));
+ 	ur->proto = proto;
+ 	memcpy(&ur->sel, sel, sizeof(ur->sel));
+ 
 
 
 
