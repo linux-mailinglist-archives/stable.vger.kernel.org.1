@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-237311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNUECvgl3WlkaQkAu9opvQ
-	(envelope-from <stable+bounces-237311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:56 +0200
+	id eN+pJv8a3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46FD3F138C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD4D3EF439
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 421663241B2C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5680A30181A0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77122318BA6;
-	Mon, 13 Apr 2026 16:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F4A2D2483;
+	Mon, 13 Apr 2026 16:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRFybd4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWeby28h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3952F3168EE;
-	Mon, 13 Apr 2026 16:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31942D5A19;
+	Mon, 13 Apr 2026 16:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099130; cv=none; b=W+6P+LOy+CzzqYKjZNNSTNnUSc7pD2fG94J8XXg4fEx+wN7qfL8M1aE29FcpPLNDnCTVkfjAMbFOceXhkAsUT7pwzho/ywqREtH1W1CinzlVTrOVvbjKOVGjoOTFK+XFbh9LWWqzK8+h54Il+8qZftAnqMOcYfC9zLY2TRvYr6c=
+	t=1776098040; cv=none; b=NImD0NZ74N3OD/fLwBpQ9yvX2qOreNNEpfYjzuFDli3yu9SK8AEppGE1VlzGlI/QrfGQdEOe7tPSeZyV2Owvps2oC3C0hD4h80Cg8HAWC+oX9z2OsCsFHhqOJL//VExIoh9pQVLZtd8Bcd/NlR7btmD7bAOw+qqR4ljtQsgDMPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099130; c=relaxed/simple;
-	bh=vqTC/Xoy2elLrGPfPHkyS8mHNWeq6k/L7V8aMr1snBg=;
+	s=arc-20240116; t=1776098040; c=relaxed/simple;
+	bh=SSIzTnI7y3mh9onqT2Uni7janyT4a+wqQ0kfG896N/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TnPVqPbjL0YuPhzqmq/8UZCOAzhg+/W2De7jrg1J6CeMB1OnT456LhXxKtaI9VXZ2IiqsgAt0frEBGSDelnIyTI9APtxrclQS/zrgL6Fn8naEfHGZKYFZd4YcJklTCTSj/a9ZNP8aTyqrGUoIb8SNP+CeyGU9zy8JC3DaQnDSiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRFybd4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791A7C2BCB0;
-	Mon, 13 Apr 2026 16:52:09 +0000 (UTC)
+	 MIME-Version; b=JMtEJTv5MkeM39Itd9C/tRLPenRbDuNvzoQL8KLM2DNeBs4rDrTPLezUFTvSwrCOzxbsodhSXAr4uPDnAzQ9yoT7bisdWO2VJ4x3ez0zctujOB99y1Wb68oWwwaUfnMHJ/IQx7v2ESEk4hccQdvN4Tn+c5t0gVYSS0WRgjmgK+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWeby28h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BA1C2BCAF;
+	Mon, 13 Apr 2026 16:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099129;
-	bh=vqTC/Xoy2elLrGPfPHkyS8mHNWeq6k/L7V8aMr1snBg=;
+	s=korg; t=1776098040;
+	bh=SSIzTnI7y3mh9onqT2Uni7janyT4a+wqQ0kfG896N/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRFybd4p3Vu/B4/+sDRjRvHUduWwCM6vjblM6vmCSPUxcfuLjRHa21tllUHNuEq9k
-	 cTN37HmIfq18XeLXKMSuCH0j4IcpkGiDKQX1Hb67mPCFa6wkUxpBRwmQ9O75qLNlKM
-	 C98a5GfMd4s37h3C+OW+FiEWhVfztMzxLBzBMng4=
+	b=EWeby28hh+2l1aauIbqPpAyzH+JI3zRn5/ei/CUVqJrlYI0zY35EXItvRuTsGfy7T
+	 c2KvCtDqiEKTp84QqBQil3v3tdL9eaOXYtubqpnUn8kYfVKughp0dSrfkwzPIfWQt1
+	 3FUijX0LimhEAs8InHkWdUJ53K+GF7UTVs6iIunI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
 	Xiang Mei <xmei5@asu.edu>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 222/491] udp_tunnel: fix NULL deref caused by udp_sock_create6 when CONFIG_IPV6=n
-Date: Mon, 13 Apr 2026 17:57:47 +0200
-Message-ID: <20260413155827.374895096@linuxfoundation.org>
+Subject: [PATCH 5.15 337/570] netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
+Date: Mon, 13 Apr 2026 17:57:48 +0200
+Message-ID: <20260413155843.117591449@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +70,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237311-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236884-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: B46FD3F138C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asu.edu:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
+X-Rspamd-Queue-Id: 3BD4D3EF439
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit b3a6df291fecf5f8a308953b65ca72b7fc9e015d ]
+[ Upstream commit 6a2b724460cb67caed500c508c2ae5cf012e4db4 ]
 
-When CONFIG_IPV6 is disabled, the udp_sock_create6() function returns 0
-(success) without actually creating a socket. Callers such as
-fou_create() then proceed to dereference the uninitialized socket
-pointer, resulting in a NULL pointer dereference.
+process_sdp() declares union nf_inet_addr rtp_addr on the stack and
+passes it to the nf_nat_sip sdp_session hook after walking the SDP
+media descriptions. However rtp_addr is only initialized inside the
+media loop when a recognized media type with a non-zero port is found.
 
-The captured NULL deref crash:
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  RIP: 0010:fou_nl_add_doit (net/ipv4/fou_core.c:590 net/ipv4/fou_core.c:764)
-  [...]
-  Call Trace:
-    <TASK>
-    genl_family_rcv_msg_doit.constprop.0 (net/netlink/genetlink.c:1114)
-    genl_rcv_msg (net/netlink/genetlink.c:1194 net/netlink/genetlink.c:1209)
-    [...]
-    netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-    genl_rcv (net/netlink/genetlink.c:1219)
-    netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
-    netlink_sendmsg (net/netlink/af_netlink.c:1894)
-    __sock_sendmsg (net/socket.c:727 (discriminator 1) net/socket.c:742 (discriminator 1))
-    __sys_sendto (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:2183 (discriminator 1))
-    __x64_sys_sendto (net/socket.c:2213 (discriminator 1) net/socket.c:2209 (discriminator 1) net/socket.c:2209 (discriminator 1))
-    do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-    entry_SYSCALL_64_after_hwframe (net/arch/x86/entry/entry_64.S:130)
+If the SDP body contains no m= lines, only inactive media sections
+(m=audio 0 ...) or only unrecognized media types, rtp_addr is never
+assigned. Despite that, the function still calls hooks->sdp_session()
+with &rtp_addr, causing nf_nat_sdp_session() to format the stale stack
+value as an IP address and rewrite the SDP session owner and connection
+lines with it.
 
-This patch makes udp_sock_create6 return -EPFNOSUPPORT instead, so
-callers correctly take their error paths. There is only one caller of
-the vulnerable function and only privileged users can trigger it.
+With CONFIG_INIT_STACK_ALL_ZERO (default on most distributions) this
+results in the session-level o= and c= addresses being rewritten to
+0.0.0.0 for inactive SDP sessions. Without stack auto-init the
+rewritten address is whatever happened to be on the stack.
 
-Fixes: fd384412e199b ("udp_tunnel: Seperate ipv6 functions into its own file.")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260317010241.1893893-1-xmei5@asu.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by pre-initializing rtp_addr from the session-level connection
+address (caddr) when available, and tracking via a have_rtp_addr flag
+whether any valid address was established. Skip the sdp_session hook
+entirely when no valid address exists.
+
+Fixes: 4ab9e64e5e3c ("[NETFILTER]: nf_nat_sip: split up SDP mangling")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/udp_tunnel.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_sip.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index 24ece06bad9ef..97a739c21f1f8 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -47,7 +47,7 @@ int udp_sock_create6(struct net *net, struct udp_port_cfg *cfg,
- static inline int udp_sock_create6(struct net *net, struct udp_port_cfg *cfg,
- 				   struct socket **sockp)
- {
--	return 0;
-+	return -EPFNOSUPPORT;
- }
- #endif
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 5db17768ec2ad..dcb0a5e592775 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -1040,6 +1040,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	unsigned int port;
+ 	const struct sdp_media_type *t;
+ 	int ret = NF_ACCEPT;
++	bool have_rtp_addr = false;
  
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
+ 
+@@ -1056,8 +1057,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	caddr_len = 0;
+ 	if (ct_sip_parse_sdp_addr(ct, *dptr, sdpoff, *datalen,
+ 				  SDP_HDR_CONNECTION, SDP_HDR_MEDIA,
+-				  &matchoff, &matchlen, &caddr) > 0)
++				  &matchoff, &matchlen, &caddr) > 0) {
+ 		caddr_len = matchlen;
++		memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
++		have_rtp_addr = true;
++	}
+ 
+ 	mediaoff = sdpoff;
+ 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
+@@ -1091,9 +1095,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 					  &matchoff, &matchlen, &maddr) > 0) {
+ 			maddr_len = matchlen;
+ 			memcpy(&rtp_addr, &maddr, sizeof(rtp_addr));
+-		} else if (caddr_len)
++			have_rtp_addr = true;
++		} else if (caddr_len) {
+ 			memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
+-		else {
++			have_rtp_addr = true;
++		} else {
+ 			nf_ct_helper_log(skb, ct, "cannot parse SDP message");
+ 			return NF_DROP;
+ 		}
+@@ -1125,7 +1131,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	/* Update session connection and owner addresses */
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
+-	if (hooks && ct->status & IPS_NAT_MASK)
++	if (hooks && ct->status & IPS_NAT_MASK && have_rtp_addr)
+ 		ret = hooks->sdp_session(skb, protoff, dataoff,
+ 					 dptr, datalen, sdpoff,
+ 					 &rtp_addr);
 -- 
 2.51.0
 
