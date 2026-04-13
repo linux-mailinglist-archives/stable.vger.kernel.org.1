@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-236915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBcnEzke3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:53 +0200
+	id EFoFHa4e3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473573EFD2E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9859B3EFEAC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9158E3044C9B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 122F9301530D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE3F2E7185;
-	Mon, 13 Apr 2026 16:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE1B2D5A19;
+	Mon, 13 Apr 2026 16:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSegjYMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZW0o65P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60F29BD87;
-	Mon, 13 Apr 2026 16:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BBC1D5AD4;
+	Mon, 13 Apr 2026 16:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098120; cv=none; b=GEhu+/xqGGwPUaSSAsynX1TfyElzTLhUv5TJ0mrXhiL/AVv41OuymfLa9xgAIHZg32Xudg8JQcDp3hys8eO7aOMUkp3UJAu6GFK6VznrNua4QfZQlTwywNTj2IX6TGDz8Te/lZovpj/L2DaxUgGbBSvUG3WvLoDuNINKGoodxfE=
+	t=1776098228; cv=none; b=EzFMtLN7MA0eYWy8ttuRLN3/i4i+xx09nemopAV5beBFvvqd4wOHg+LR0A2LRAIiikAn5u0EOj+b0VjkD1GyNNHyfD4R63y1uu/+nlkkQxK7LsAutlyvReRaF2Shd8HlauI1r0F4W4rmYM92p7lFXtJHOv7Ve87PaF/fIjzMHgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098120; c=relaxed/simple;
-	bh=DDib8WaRsWhj4tMEKU5b65sCVz8xAd+40fT4ngUeWG0=;
+	s=arc-20240116; t=1776098228; c=relaxed/simple;
+	bh=GZirb8Bmxc7Vg1UnjSHFRoAvhL8D4GhEeyRGDbGw1xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srLaJpjXz5s+zTRFe0IvKnO6EmgGf13gIj/tu5/B48xMDaCH8miF37qzew4aGXhuyFAvf/eQOG9eCPjIHCVXR+sgZJbbfZKvYAvPL7hSQOCi2KIL0AwRQeb71K+s8s9n/51vdbrvh2v858Hnp/K9il4H0T+nLmvGukeUaPvn06o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSegjYMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D034DC2BCAF;
-	Mon, 13 Apr 2026 16:35:19 +0000 (UTC)
+	 MIME-Version; b=UFuDQ6FeUmttQNrYQ8k/a0hf8UW4evzD8b3652e7oq9RFsn9REdvWY8GhWdUgIOmuwf69QoyxXfdUvVuZtciMw4elEBv8h0k49DHJ3535iLNwn3dW/O5VEzxWOmBkf2Oj8vyVZD7T7zXkrIrqBPddcUzlQ4aMIhIQlc7omFH4js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZW0o65P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96A3C2BCB3;
+	Mon, 13 Apr 2026 16:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098120;
-	bh=DDib8WaRsWhj4tMEKU5b65sCVz8xAd+40fT4ngUeWG0=;
+	s=korg; t=1776098228;
+	bh=GZirb8Bmxc7Vg1UnjSHFRoAvhL8D4GhEeyRGDbGw1xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSegjYMo0Ufj5tylGRK861KdmLiLLbOiJE39PI2vS4odOBhS2ue2tmhcQ2QyZb1PK
-	 Cvu+6zxbtJprVfQLv9ohIOFdyiY7xCseDDHFcdXu2VujwZq+Sf7RGUMY1C9b00lYrf
-	 IVWeqdJLeeRElRMTnzqvcQFzkg7e1pCe/iJrdkrk=
+	b=GZW0o65PohwEHc8NPztUdsKjTtMIGTNltM7Gbvg4td6sFdf+TXK4Lbexvy8W6pt9C
+	 ZgqZIECAcz9NOcgXgAv3Jnxq6zaqoBymR7yH+V21V7OwiyjD7jJou84nWgXrrodX8C
+	 t8QtTj5Xxw41WdzM27bmxsDR9P80mAwB8cPNSM7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 400/570] btrfs: dont take device_list_mutex when querying zone info
-Date: Mon, 13 Apr 2026 17:58:51 +0200
-Message-ID: <20260413155845.454687245@linuxfoundation.org>
+Subject: [PATCH 5.15 401/570] objtool: Fix Clang jump table detection
+Date: Mon, 13 Apr 2026 17:58:52 +0200
+Message-ID: <20260413155845.491297961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -70,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236915-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236958-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 473573EFD2E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9859B3EFEAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,194 +99,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 77603ab10429fe713a03345553ca8dbbfb1d91c6 ]
+[ Upstream commit 4e5019216402ad0b4a84cff457b662d26803f103 ]
 
-Shin'ichiro reported sporadic hangs when running generic/013 in our CI
-system. When enabling lockdep, there is a lockdep splat when calling
-btrfs_get_dev_zone_info_all_devices() in the mount path that can be
-triggered by i.e. generic/013:
+With Clang, there can be a conditional forward jump between the load of
+the jump table address and the indirect branch.
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  7.0.0-rc1+ #355 Not tainted
-  ------------------------------------------------------
-  mount/1043 is trying to acquire lock:
-  ffff8881020b5470 (&vblk->vdev_mutex){+.+.}-{4:4}, at: virtblk_report_zones+0xda/0x430
+Fixes the following warning:
 
-  but task is already holding lock:
-  ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
+  vmlinux.o: warning: objtool: ___bpf_prog_run+0x1c5: sibling call from callable instruction with modified stack frame
 
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #4 (&fs_devs->device_list_mutex){+.+.}-{4:4}:
-	 __mutex_lock+0xa3/0x1360
-	 btrfs_create_pending_block_groups+0x1f4/0x9d0
-	 __btrfs_end_transaction+0x3e/0x2e0
-	 btrfs_zoned_reserve_data_reloc_bg+0x2f8/0x390
-	 open_ctree+0x1934/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #3 (btrfs_trans_num_extwriters){++++}-{0:0}:
-	 join_transaction+0xc2/0x5c0
-	 start_transaction+0x17c/0xbc0
-	 btrfs_zoned_reserve_data_reloc_bg+0x2b4/0x390
-	 open_ctree+0x1934/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #2 (btrfs_trans_num_writers){++++}-{0:0}:
-	 lock_release+0x163/0x4b0
-	 __btrfs_end_transaction+0x1c7/0x2e0
-	 btrfs_dirty_inode+0x6f/0xd0
-	 touch_atime+0xe5/0x2c0
-	 btrfs_file_mmap_prepare+0x65/0x90
-	 __mmap_region+0x4b9/0xf00
-	 mmap_region+0xf7/0x120
-	 do_mmap+0x43d/0x610
-	 vm_mmap_pgoff+0xd6/0x190
-	 ksys_mmap_pgoff+0x7e/0xc0
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #1 (&mm->mmap_lock){++++}-{4:4}:
-	 __might_fault+0x68/0xa0
-	 _copy_to_user+0x22/0x70
-	 blkdev_copy_zone_to_user+0x22/0x40
-	 virtblk_report_zones+0x282/0x430
-	 blkdev_report_zones_ioctl+0xfd/0x130
-	 blkdev_ioctl+0x20f/0x2c0
-	 __x64_sys_ioctl+0x86/0xd0
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #0 (&vblk->vdev_mutex){+.+.}-{4:4}:
-	 __lock_acquire+0x1522/0x2680
-	 lock_acquire+0xd5/0x2f0
-	 __mutex_lock+0xa3/0x1360
-	 virtblk_report_zones+0xda/0x430
-	 blkdev_report_zones_cached+0x162/0x190
-	 btrfs_get_dev_zones+0xdc/0x2e0
-	 btrfs_get_dev_zone_info+0x219/0xe80
-	 btrfs_get_dev_zone_info_all_devices+0x62/0x90
-	 open_ctree+0x1200/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  other info that might help us debug this:
-
-  Chain exists of:
-    &vblk->vdev_mutex --> btrfs_trans_num_extwriters --> &fs_devs->device_list_mutex
-
-   Possible unsafe locking scenario:
-
-	 CPU0                    CPU1
-	 ----                    ----
-    lock(&fs_devs->device_list_mutex);
-				 lock(btrfs_trans_num_extwriters);
-				 lock(&fs_devs->device_list_mutex);
-    lock(&vblk->vdev_mutex);
-
-   *** DEADLOCK ***
-
-  3 locks held by mount/1043:
-   #0: ffff88811063e878 (&fc->uapi_mutex){+.+.}-{4:4}, at: __do_sys_fsconfig+0x2ae/0x680
-   #1: ffff88810cb9f0e8 (&type->s_umount_key#31/1){+.+.}-{4:4}, at: alloc_super+0xc0/0x3e0
-   #2: ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
-
-  stack backtrace:
-  CPU: 2 UID: 0 PID: 1043 Comm: mount Not tainted 7.0.0-rc1+ #355 PREEMPT(full)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/10/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5b/0x80
-   print_circular_bug.cold+0x18d/0x1d8
-   check_noncircular+0x10d/0x130
-   __lock_acquire+0x1522/0x2680
-   ? vmap_small_pages_range_noflush+0x3ef/0x820
-   lock_acquire+0xd5/0x2f0
-   ? virtblk_report_zones+0xda/0x430
-   ? lock_is_held_type+0xcd/0x130
-   __mutex_lock+0xa3/0x1360
-   ? virtblk_report_zones+0xda/0x430
-   ? virtblk_report_zones+0xda/0x430
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   ? virtblk_report_zones+0xda/0x430
-   virtblk_report_zones+0xda/0x430
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   blkdev_report_zones_cached+0x162/0x190
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   btrfs_get_dev_zones+0xdc/0x2e0
-   btrfs_get_dev_zone_info+0x219/0xe80
-   btrfs_get_dev_zone_info_all_devices+0x62/0x90
-   open_ctree+0x1200/0x23db
-   btrfs_get_tree.cold+0x105/0x26c
-   ? rcu_is_watching+0x18/0x50
-   vfs_get_tree+0x28/0xb0
-   __do_sys_fsconfig+0x324/0x680
-   do_syscall_64+0x92/0x4f0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f615e27a40e
-  RSP: 002b:00007fff11b18fb8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-  RAX: ffffffffffffffda RBX: 000055572e92ab10 RCX: 00007f615e27a40e
-  RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-  RBP: 00007fff11b19100 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 000055572e92bc40 R14: 00007f615e3faa60 R15: 000055572e92bd08
-   </TASK>
-
-Don't hold the device_list_mutex while calling into
-btrfs_get_dev_zone_info() in btrfs_get_dev_zone_info_all_devices() to
-mitigate the issue. This is safe, as no other thread can touch the device
-list at the moment of execution.
-
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
+Link: https://patch.msgid.link/7d8600caed08901b6679767488acd639f6df9688.1773071992.git.jpoimboe@kernel.org
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/objtool/check.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 8c858f31bdbc0..bff56f87b426a 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -313,7 +313,10 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
- 	if (!btrfs_fs_incompat(fs_info, ZONED))
- 		return 0;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index d2366ec61edc4..72a7e49dec276 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1759,12 +1759,11 @@ static void mark_func_jump_tables(struct objtool_file *file,
+ 			last = insn;
  
--	mutex_lock(&fs_devices->device_list_mutex);
-+	/*
-+	 * No need to take the device_list mutex here, we're still in the mount
-+	 * path and devices cannot be added to or removed from the list yet.
-+	 */
- 	list_for_each_entry(device, &fs_devices->devices, dev_list) {
- 		/* We can skip reading of zone info for missing devices */
- 		if (!device->bdev)
-@@ -323,7 +326,6 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
- 		if (ret)
- 			break;
- 	}
--	mutex_unlock(&fs_devices->device_list_mutex);
+ 		/*
+-		 * Store back-pointers for unconditional forward jumps such
++		 * Store back-pointers for forward jumps such
+ 		 * that find_jump_table() can back-track using those and
+ 		 * avoid some potentially confusing code.
+ 		 */
+-		if (insn->type == INSN_JUMP_UNCONDITIONAL && insn->jump_dest &&
+-		    insn->offset > last->offset &&
++		if (insn->jump_dest &&
+ 		    insn->jump_dest->offset > insn->offset &&
+ 		    !insn->jump_dest->first_jump_src) {
  
- 	return ret;
- }
 -- 
 2.53.0
 
