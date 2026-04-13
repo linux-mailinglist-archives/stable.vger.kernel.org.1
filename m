@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-237476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNTWIBkk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:57 +0200
+	id MGGGBsIV3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:11:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177B93F0FFB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229B43EE68C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF19E309DC71
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08E69304D9BA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D843264F2;
-	Mon, 13 Apr 2026 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58E72D73B5;
+	Mon, 13 Apr 2026 16:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frKp1XRu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eltdBKhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7823A31F9BC;
-	Mon, 13 Apr 2026 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EBB279DC2;
+	Mon, 13 Apr 2026 16:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099553; cv=none; b=Zvoe/cv7OKj8JzYz7oak2rKIx4TXqkZR2pDg4OoeXZUEgNhaPH22uex+CmrQ/hnxpAcKV725Vs+5RsA3e+DIp1Uq0OtJrBwyribrhCMQDqZ+jlUlAIyaRVy3qyUqopDGgYl1frXynnpD3DgQtreGTwW6BBaWzYIWsiMnjXslnzA=
+	t=1776096315; cv=none; b=FGmj/wtOtSY9kCl4Xo+f0Gri3PRBHgZS3axSu/f1WdwQ6M72vaBuxA9QsTeZHulCuDSXdaoLxiQeiUizFDeWhbaa/3CatpeOJRbIYkOfZ303JHxSs14xrffVBodFC6E5/KjjAOyKQR3E7+ymvaeMDg/+j6tJ0dvAOcaQm/w0sHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099553; c=relaxed/simple;
-	bh=JJGYQhMqwU8/ejRHk+hBkKSxD9ZjyIxQQbpSfghtby4=;
+	s=arc-20240116; t=1776096315; c=relaxed/simple;
+	bh=XK5T++VibeKtS6u6KdXhFtEqfaaIeC/An95g6MJMs80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fU+QAmR05esalTovw9ubEEPWbHLWvLFt4Nfn6mCI019sTZKAYHHU5La8lO/cIPIOWrWucvPoB3DVP5vfWpY8yWxmQazd6bNbUINyE/fKzacYR1qZAIpx17DRQQ18LDG27tYEdTpV55w2fzWRK2GRihXXYhZSVUY/Y14+W+WYzbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frKp1XRu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC84C2BCAF;
-	Mon, 13 Apr 2026 16:59:12 +0000 (UTC)
+	 MIME-Version; b=hwF/PsN86x5mzfJBBGxsxIKVZLpq/vriksrqToQfeOZNgM1uF1G6ZYtS19UC/7RHBcSybRH7Jx3AwH2+B5sjhErWg8w1cmByQqOIzc/+OJyORn/DDVDw5wqgh7Lko+XTV8ici/Htji5px51Eil8qdwqSsra3PQZoZ1gA8UWwk4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eltdBKhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF6CC2BCAF;
+	Mon, 13 Apr 2026 16:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099553;
-	bh=JJGYQhMqwU8/ejRHk+hBkKSxD9ZjyIxQQbpSfghtby4=;
+	s=korg; t=1776096315;
+	bh=XK5T++VibeKtS6u6KdXhFtEqfaaIeC/An95g6MJMs80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frKp1XRuvJH1mFOwlXSUtKi/FgnF/GcqvpAu/btgcSYxXFflyMdu5aC0TTFFKRF1j
-	 DYhVzVZ1ozenMpKXwTY316H2nI5zWyIAyozxrCDEbCAKMb/4+MbdeDh2R5AJ/6P5D8
-	 nsOVJ2Wz06AvIHU1viY9Qy/HlHe3qohCuUMhC9Qk=
+	b=eltdBKhDryJNm6G+4r91Cj/F3qrXr/4nk455TMH0XB6cyQiYj1P+NX8ZvAuH+BaR/
+	 0SX1CU3+uWaOIfjIqi2kW2HZhHb7loOC1Plr+PW3aaa1iLrgFQJPe+yGv5ZDOprDjz
+	 012LB3++qqgvv0tQxyFJNrbGJ2xLll88D2OgXh9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 352/491] net/sched: cls_flow: fix NULL pointer dereference on shared blocks
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 50/86] mm/vma: fix memory leak in __mmap_region()
 Date: Mon, 13 Apr 2026 17:59:57 +0200
-Message-ID: <20260413155832.217643175@linuxfoundation.org>
+Message-ID: <20260413155733.436077701@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +72,134 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237476-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com,oracle.com,suse.de,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-236206-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,asu.edu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,mojatatu.com:email]
-X-Rspamd-Queue-Id: 177B93F0FFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,oracle.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 229B43EE68C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Sechang Lim <rhkrqnwk98@gmail.com>
 
-[ Upstream commit 1a280dd4bd1d616a01d6ffe0de284c907b555504 ]
+commit 894f99eb535edc4514f756818f3c4f688ba53a59 upstream.
 
-flow_change() calls tcf_block_q() and dereferences q->handle to derive
-a default baseclass.  Shared blocks leave block->q NULL, causing a NULL
-deref when a flow filter without a fully qualified baseclass is created
-on a shared block.
+commit 605f6586ecf7 ("mm/vma: do not leak memory when .mmap_prepare
+swaps the file") handled the success path by skipping get_file() via
+file_doesnt_need_get, but missed the error path.
 
-Check tcf_block_shared() before accessing block->q and return -EINVAL
-for shared blocks.  This avoids the null-deref shown below:
+When /dev/zero is mmap'd with MAP_SHARED, mmap_zero_prepare() calls
+shmem_zero_setup_desc() which allocates a new shmem file to back the
+mapping. If __mmap_new_vma() subsequently fails, this replacement
+file is never fput()'d - the original is released by
+ksys_mmap_pgoff(), but nobody releases the new one.
 
-=======================================================================
-KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
-RIP: 0010:flow_change (net/sched/cls_flow.c:508)
+Add fput() for the swapped file in the error path.
+
+Reproducible with fault injection.
+
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 1
+CPU: 2 UID: 0 PID: 366 Comm: syz.7.14 Not tainted 7.0.0-rc6 #2 PREEMPT(full)
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
 Call Trace:
- tc_new_tfilter (net/sched/cls_api.c:2432)
- rtnetlink_rcv_msg (net/core/rtnetlink.c:6980)
- [...]
-=======================================================================
+ <TASK>
+ dump_stack_lvl+0x164/0x1f0
+ should_fail_ex+0x525/0x650
+ should_failslab+0xdf/0x140
+ kmem_cache_alloc_noprof+0x78/0x630
+ vm_area_alloc+0x24/0x160
+ __mmap_region+0xf6b/0x2660
+ mmap_region+0x2eb/0x3a0
+ do_mmap+0xc79/0x1240
+ vm_mmap_pgoff+0x252/0x4c0
+ ksys_mmap_pgoff+0xf8/0x120
+ __x64_sys_mmap+0x12a/0x190
+ do_syscall_64+0xa9/0x580
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ </TASK>
 
-Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260331050217.504278-2-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+BUG: memory leak
+unreferenced object 0xffff8881118aca80 (size 360):
+  comm "syz.7.14", pid 366, jiffies 4294913255
+  hex dump (first 32 bytes):
+    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
+    ff ff ff ff ff ff ff ff c0 28 4d ae ff ff ff ff  .........(M.....
+  backtrace (crc db0f53bc):
+    kmem_cache_alloc_noprof+0x3ab/0x630
+    alloc_empty_file+0x5a/0x1e0
+    alloc_file_pseudo+0x135/0x220
+    __shmem_file_setup+0x274/0x420
+    shmem_zero_setup_desc+0x9c/0x170
+    mmap_zero_prepare+0x123/0x140
+    __mmap_region+0xdda/0x2660
+    mmap_region+0x2eb/0x3a0
+    do_mmap+0xc79/0x1240
+    vm_mmap_pgoff+0x252/0x4c0
+    ksys_mmap_pgoff+0xf8/0x120
+    __x64_sys_mmap+0x12a/0x190
+    do_syscall_64+0xa9/0x580
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Found by syzkaller.
+
+Link: https://lkml.kernel.org/r/20260331180811.1333348-1-rhkrqnwk98@gmail.com
+Fixes: 605f6586ecf7 ("mm/vma: do not leak memory when .mmap_prepare swaps the file")
+Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flow.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ mm/vma.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
-index 117c7b038591e..7918ecdcfe696 100644
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -501,8 +501,16 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 		}
- 
- 		if (TC_H_MAJ(baseclass) == 0) {
--			struct Qdisc *q = tcf_block_q(tp->chain->block);
-+			struct tcf_block *block = tp->chain->block;
-+			struct Qdisc *q;
- 
-+			if (tcf_block_shared(block)) {
-+				NL_SET_ERR_MSG(extack,
-+					       "Must specify baseclass when attaching flow filter to block");
-+				goto err2;
-+			}
-+
-+			q = tcf_block_q(block);
- 			baseclass = TC_H_MAKE(q->handle, baseclass);
- 		}
- 		if (TC_H_MIN(baseclass) == 0)
--- 
-2.53.0
-
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2774,6 +2774,13 @@ unacct_error:
+ 	if (map.charged)
+ 		vm_unacct_memory(map.charged);
+ abort_munmap:
++	/*
++	 * This indicates that .mmap_prepare has set a new file, differing from
++	 * desc->vm_file. But since we're aborting the operation, only the
++	 * original file will be cleaned up. Ensure we clean up both.
++	 */
++	if (map.file_doesnt_need_get)
++		fput(map.file);
+ 	vms_abort_munmap_vmas(&map.vms, &map.mas_detach);
+ 	return error;
+ }
 
 
 
