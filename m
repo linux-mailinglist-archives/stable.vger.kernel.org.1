@@ -1,227 +1,203 @@
-Return-Path: <stable+bounces-235961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id w4vROMes3GnfVAkAu9opvQ
-	(envelope-from <stable+bounces-235961-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:43:51 +0200
+	id aKMoCJ6v3GnfVAkAu9opvQ
+	(envelope-from <stable+bounces-235966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:55:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C693E93E1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:43:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E393E9661
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 83A903015879
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:43:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 453803010B64
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F8A3ACA45;
-	Mon, 13 Apr 2026 08:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74813AE1BD;
+	Mon, 13 Apr 2026 08:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="G2mKo/tA"
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="SGx3k+5B";
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="orBkzjje"
 X-Original-To: stable@vger.kernel.org
-Received: from MEUPR01CU001.outbound.protection.outlook.com (mail-australiasoutheastazolkn19010015.outbound.protection.outlook.com [52.103.73.15])
+Received: from mailhub11-fb.kaspersky-labs.com (mailhub11-fb.kaspersky-labs.com [81.19.104.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631483ACA6F;
-	Mon, 13 Apr 2026 08:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.73.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776069824; cv=fail; b=BPc+vFf4Iuqo1VnnofINM+Jdc6JfjuKymSpl1/e07/kzGgkYEVCXvUaClrZjH29Z93Jtl0O/sLQfdZN7K9V7ZwSHS7DR87AwTNB0vfwoiRJRa93gdEEiAatdX6lnsae0d+aIVpvaiTf8m7pjP9xb9Ky9AFXrrajzxqCHAyMYS1M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776069824; c=relaxed/simple;
-	bh=Jp1+xiliacoivZHxscInKIQz8kTQvnUSZ8dQcFJoXBU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OaxaYz12ux0/xjiQ1o88WzBnfx2EUflVCVqFa+ar0Y2OR52jx6vcoH0VGHinHt/BMuEs9LFd646nWs42ktfdxo8Mu3omWvxfRmGbS+l3NKR7TJI2PDmAKoYw2IO1SVAVV4RN9H3wb3sAR06MPtuLV/eZFBFIGacnTY1uHqsaYFQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=G2mKo/tA; arc=fail smtp.client-ip=52.103.73.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=COizYLcOaKLPAH1Ev8AYy/yLRr6rNFQJmBCFJ8P1Cf0cwbD0wMQ8hgmMMU0H8dixBd+UVauTzLSwOjLZeJkN21jQL2ey5cAwqi0GtR1HP6rfBwXLNPj5h57XaRETN1IGI4k4fR3GYYIxKFVqNfVmvS3iAN/UqlacrChHiCfpb+8VUCYwwohLV3qn4h980BZQNZfu9UtPx8IHGQnn0uTJ5AxFDhzEmceCubQcq8lRtN4khoxgG7mp7GV5hR/gYuByjyhAZc1OX5pZ2lSBbV9Hu0QAP2Ox0GWEgz9adaOIbcVAKHhAb6TMsZmi79iiVe24spxegxEIrW/vMJZ+WbvbFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GSLhJQLaH737B3o/YVOG/Bxi3cerC65ZcyjpZrNmzMM=;
- b=LI+0NkSTt/B4d9sNMBbzLoeyo61ESLoVxSOG5pDpod5vIP1DDw/GU6HxZXI0X6chSe1yDMEdVSgYQgu/YGki7hxeUGHu+TpqNJabG2WmVSd1gR/uIsYCkNMj0u5ED3ZezYpl49kqv+qexJg2cwvvgfSxwlo9nNbSpVK9c46D4eDFVuUK49fp7vy7+gT906zGkJ/honNFK+8xr6BDa8fG0f1+rlcyNhCjdygcszWKZslV9WOGbiHi9uZBYuaO9NxjVzkfd0vBNslXS66bT8jDBvLBv7OQSO/RDqGiH5GuqVfJS2lplYatUy87EykIQkZ5sIXImdusKPS8ZO0+Jf1Gjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GSLhJQLaH737B3o/YVOG/Bxi3cerC65ZcyjpZrNmzMM=;
- b=G2mKo/tAAsUnKvT8Z4lZmnfi1qVgYGmN/WStKLpLgySC1iygXkUiOgekyoei6WmvzAC0gOzkqtF4CcQw0KNBqNe1O9SfdYkjwEFtU6G2614bLd925MxBfpdZhbUu5M1xK9rljkNEWDDDuaBFAQRuHoZkQrKBug4+0zDgkLu8/5AVLj3Y8kNUNncW74g9u2nQdEcA5DrXKY2Dag43U21+KIZPNES8uond+czHezHc4SLah10tONzldGTjwK1hL1u1ooTDrVN2yuE8/CKJwZkZtZnp7X55yGHRC/4gslz/J+bi5hit551eeiqlQwEpUrljV0RuaQZEcnVqnUl/M+5iuA==
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
- by SY7PR01MB10711.ausprd01.prod.outlook.com (2603:10c6:10:312::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Mon, 13 Apr
- 2026 08:43:37 +0000
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9769.046; Mon, 13 Apr 2026
- 08:43:37 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-To: "vdso@mailbox.org" <vdso@mailbox.org>, Stanislav Kinsburskii
-	<skinsburskii@linux.microsoft.com>
-CC: "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
-	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
-	<decui@microsoft.com>, Long Li <longli@microsoft.com>, Nuno Das Neves
-	<nunodasneves@linux.microsoft.com>, Anirudh Rayabharam
-	<anrayabh@linux.microsoft.com>, Mukesh Rathor <mrathor@linux.microsoft.com>,
-	Muminul Islam <muislam@microsoft.com>, Praveen K Paladugu
-	<prapal@linux.microsoft.com>, Jinank Jain <jinankjain@microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yuhao Jiang
-	<danisjiang@gmail.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] Drivers: hv: mshv: fix integer overflow in memory
- region overlap check
-Thread-Topic: [PATCH v2] Drivers: hv: mshv: fix integer overflow in memory
- region overlap check
-Thread-Index: AQHcvpRNbg/7iVrB0UyyX/rVQKTUD7XMcrMAgAs+NQCAAbOYgIADYYUA
-Date: Mon, 13 Apr 2026 08:43:37 +0000
-Message-ID: <19EDB8B0-A6F4-460F-8ABA-E9D3E239511B@outlook.com>
-References:
- <SYBPR01MB788138A30BC69B0F5C3316E5AF54A@SYBPR01MB7881.ausprd01.prod.outlook.com>
- <ac76zlXjXhPVkA6f@skinsburskii.localdomain>
- <89730D18-D9A3-4A18-87DD-E7A51625FF69@outlook.com>
- <319614096.43465.1775883935863@app.mailbox.org>
-In-Reply-To: <319614096.43465.1775883935863@app.mailbox.org>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SYBPR01MB7881:EE_|SY7PR01MB10711:EE_
-x-ms-office365-filtering-correlation-id: 7ab42bb3-d6bb-4331-3d93-08de9938c15b
-x-microsoft-antispam:
- BCL:0;ARA:14566002|51005399006|24121999003|22091999003|12121999013|15080799012|461199028|19110799012|31061999003|8060799015|8062599012|41001999006|40105399003|3412199025|440099028|102099032|26121999003;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?DQgtO39d1YJ+wqqqVQSsSXc7H6zZJLdKIxxcHB4SseukTpeo0HarWOART//Q?=
- =?us-ascii?Q?TWAv5y5glchb7DUoD+zyBGYhE61Gcpqb260xefQQnvrufdQSw1bwkD8of7gK?=
- =?us-ascii?Q?amXEwPTB46T07oTG0aH2KJ14H96pw79VeAHDfVDcfu8G6tkiMTHB89MEzVtN?=
- =?us-ascii?Q?Oa1cvj/C5lcbQEMCeYdwxf9ely89Or5bV5eQRx4Hej1/CKC3Y/MIGGqlM/xi?=
- =?us-ascii?Q?qi1cWlzTJmOgCCSyjxu9e3dwylnGDYnB/1psluk6wH1sBa319o6VDE4r9qBP?=
- =?us-ascii?Q?ZlQC8QKpn7KJnlFMz1NV1pOZukbjRM7t/rScqFiNWgrxsQ6dzuCvlc1ob8/6?=
- =?us-ascii?Q?gATU8nJuPdecJzu1tF3OmCxeA+EasrpARugKS1rwPS2V3i7VHOwF9IlZXBgx?=
- =?us-ascii?Q?zRLcefqmScQestJcL5SE+DqJk9YUDnGLp2NEtXJZ4cn4WvSP74nrBK1U38R6?=
- =?us-ascii?Q?QAFjVqHNFLK+2RzF8eNR9OnDs28hZn5JLwxTenDdJ8z0vJUzEpACOQAqziLy?=
- =?us-ascii?Q?v4Cm1Gfq7sTnR6SXoxkd2/B0RZ5k+HzO3vrX+BkcgrkQJa3yAFPlRmgQwOvb?=
- =?us-ascii?Q?ABxS+x0xAOrf5P67Tr5v9WLcR3fdSjNJZ7vxiNVdN6V6CP6AQ/zuMZPwLJkr?=
- =?us-ascii?Q?XG2TNyzHQurEjCxJJLMtWy8X8jStinlXL6bQZVL/MKuQbjxODk1Dk6+gC+aK?=
- =?us-ascii?Q?i8xU4PO9NEw2sDuttjlx2LJuaoohXsPdhRHebeTiuI/Wf2YhsubuCUxhdhhQ?=
- =?us-ascii?Q?kpFqrs5CQVN1HdTyLQKmtvd3ufrTw9OT9N8HxVLZfPUDY54Zfj/iTvYle1tI?=
- =?us-ascii?Q?RzuEJlU1qBkM6+ANsQUTbH2VQYn1Bix8pyCh8l7R4umC2jYsFUSWwTMzYUhA?=
- =?us-ascii?Q?ByHBBkaU5J375PFZ5tuAU2A0RDjBLZ1DV2yJ2Pm1e1z5YlvIcn1ooIPQ0cmV?=
- =?us-ascii?Q?aQtGfHApvyMEJBSx9WrgWR6Ut5y0uukufn7eKd/5wd3N6h3vAnCidB9j9hzj?=
- =?us-ascii?Q?2KuEdq/7HUpv5b9Oz+5oWAnSKc0mo+TFQRnZ0PCsAb7pk/ku9VeObmM9uy7L?=
- =?us-ascii?Q?29t2Mki1?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+ZOa+9bOv/o6D4bgq10+nuanIChUyd65imCaXr+l0JtUevoef/gQaInlV9DP?=
- =?us-ascii?Q?J+Vi5a/Zd3w5hLcw1Z0BnlRC9RSImllctSPmLY1DZT9f3iH01si1POVfMnGD?=
- =?us-ascii?Q?gOvpP/JqhC6UhY4uw0kLK6P9XXU1FBgiPri1yrB7cgSVwyAi50YXcB1zX5nR?=
- =?us-ascii?Q?igE+4KkcCM2+bwI/CYrnDIzod9WzH9jWYOUyygw+xTd1yIx1Ru9dPMNY/fUC?=
- =?us-ascii?Q?k6p8uC1JeQFCFNlGXL/3bEtygGBlL/YcaEuvRWi1oQFHkRGGEl5H/Eo8l6Mr?=
- =?us-ascii?Q?TdlBDYCgNE/y8GOsjz76qAKHyGsXNvT0rda6g5Gnf9+yVfC10v3/PVYsk+SI?=
- =?us-ascii?Q?XpsyTGLyqpFFAwyVMbrfRPE6KJIuo6kqn0jh5qtGghm7NABlXfwW0meAg8BQ?=
- =?us-ascii?Q?hkttoOFQd2P+y9YMZhSLAC7LGhOkxhOTLoT1QNtHpO7UWXnmWZ4UPuhQW2Xh?=
- =?us-ascii?Q?D0lgzHH7lG4F0aQ225jmO0VQ+bd2QfiKNix/OUsPR5pBicL50z5rSXQSfKSy?=
- =?us-ascii?Q?d7aB483l+9KLLpfFIYzzbi6SgYsdiSiAwq6WE54yLvQo/3PqQqa0oYZ2NuHB?=
- =?us-ascii?Q?VnnQfniZmevWiHDoOgMGVB+fSrGYasn3PO/PgtYFYVWIoYl/lX1HPPTnxkUm?=
- =?us-ascii?Q?fkEDxHVMKHxDVdBX1ReWHgpGMOxc+rNvsuW2DlF61sSMQLQ2n+NJqII19qCl?=
- =?us-ascii?Q?ysu0f/jBYmahh4VvjRIvgiOPXdZY04gr2daufW/Bnr29SR7D2+Rx5CxZHjZi?=
- =?us-ascii?Q?vkIH12+YX6f2nEYmzXaqe2cDbwrYS1mRbWGMqhvr5MyBjoHpA7GoS60MkSaM?=
- =?us-ascii?Q?OxlqAv4OJJ0Qs0sx7+XTknct2e0Fj4snjsLQNrGDuXtasUwE/iMOaiuTKYac?=
- =?us-ascii?Q?fLUXLyLEnpA4ZRFTf3VVobbbmAN8zkGLhzRaxjWR4ZlrlT5yRhG5ruSvWMM4?=
- =?us-ascii?Q?6yh3xhic2C0rns0J2fqZulLl79H22be7xzVo65S8pH57XLmwJJdigqSTFETH?=
- =?us-ascii?Q?BGd1oCI7Nv4kbXArYoAYj6ADY0RKEaQaL8SDTSJhWX12/eq2nKTwoA5SWNwI?=
- =?us-ascii?Q?IXUoO2f/vOGU9UXkD+UG5mu8kVgvVBPQPuxSTZ77LKUbgd1lD6Xsys0qPaEE?=
- =?us-ascii?Q?CYnMY9ydda/uD3PiAN4v7wuSN2Wy88lFFkRjfEn2r6cPzu28xI6x9S3SCvJJ?=
- =?us-ascii?Q?4lUyMyptyjz9L1SvgxWAxJ95mr43BTKBObS26mibttIrx811EX5I2iVksnax?=
- =?us-ascii?Q?pYfOrdcdRhaJdzK9Sny2LMiH6Vt+FLMvntDVs+8LWGdN6jF5MEaK7pJcZea+?=
- =?us-ascii?Q?59K8aMbzioPkoAArnGq4hKXtmNEfO+o7HX/7FLI5w8cRho4A9b8X/0p6nE/i?=
- =?us-ascii?Q?oySPJI2dD661F4Ad6p2ojizLcM6RMkHa36O7DliVygU2uiRcjA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <0C49A8A4C4E7F444BB6A9C988E1BB352@ausprd01.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB903AE6FA
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 08:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.104.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776070488; cv=none; b=gdefLCbpImZ5U0MzRkQVzuouBoMyUm5OECzrcV9e4jsBypBn8MK66HPElJAt0o8wFVgz2vz+z8u+9cF/DeneWDx5xt4Oi1dLZQZ1BSn6tghhuAqqTCKvH7VuVT/59TDaDpi7Dv7bZ5JpnsZ3s6RxMPdtDJy7gXd48AUWu2bDcFo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776070488; c=relaxed/simple;
+	bh=WzzuVQiM3vQq7Pu3MA9rG3D8KIzEfGSPLkZjzsLkU5o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C26N+Q401T2BBuE640u9D3gPSi+6kvbp9D1GLAaZer4sfttIyZsaxoQwIdLEFC8/zhdE0hlC483hJj9sz9OY67Bw/4O8Td/KyOgeNNzigEhK5uVQDb2PKhP7fRrq/kW/i1k561o8I1QBJkPUKkYsjDZCp8l4dDfpgdYO13dLiUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=SGx3k+5B; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=orBkzjje; arc=none smtp.client-ip=81.19.104.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1776070165;
+	bh=K+knYpaQC63S6yxb+K9P2BEcXIw8nVZezjjBAu4p/T8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=SGx3k+5BYPDxEvIQJqGUPD1zA4afE/yt+RpVviPrVqOl801Px/4GX3LCEl8wCH8kI
+	 Q/A7Esr9IoQHts2HqLQTnsm4uX4b50YZyzXCPrGh15LCn5yp3N7L6G9R+RG9RUHJjN
+	 bifEd+keo+PSfHNLwMbNbp9DANS52nDWzsApKWvSWukdsKfQ9dBtQXjHgNptbs+Ogi
+	 nnXMuTehDNMXGH/SUIBhApMubAXpMoCT9ZHGvNcvRDX/B0uE6hMR5PjDQDGpRKsdM3
+	 ZwDz/O0vsrlcU1AAN8aYt4MbAFwveme9EGS7pDUI49TofDEuTgx7YY0jh6FyzOxPWQ
+	 OZcAMnvBw4T8g==
+Received: from mailhub11-fb.kaspersky-labs.com (localhost [127.0.0.1])
+	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTP id 4322BE8198C
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:25 +0300 (MSK)
+Received: from mx9.kaspersky-labs.com (mx9.kaspersky-labs.com [195.122.169.44])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "mx9.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTPS id 1B770E81359
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:25 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1776070157;
+	bh=K+knYpaQC63S6yxb+K9P2BEcXIw8nVZezjjBAu4p/T8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=orBkzjjeb3Wk4MjxQPUt6sYM6uO4FMulv31qvC0bze8Q+8NTEDFnuidPVc3jpLkKg
+	 7CGFEFdPRvLZDZp7JWdjpEcjc7zaxry5eonfn9g7SJ4rgv+DoEjMtzlIUMivJQjNi/
+	 x/D4VIm0Q11SzZLhRy8I04gyV/Ajdeux0i0CV2K5onf1F2R2Qp44F9+bZHbauTsokn
+	 f+VCs3A07comtN4zu9RHUJ/VHaRkkmEVf1I9yrqpTg2UxyaMJPCtGyZTvS5/dHWPii
+	 csn0O9KVGedaCjPwf9SDgUZDpXAoNZnDzQWWQJGWImRUCf6jmAiFpmDkGMNSSt8Aw8
+	 XfRQyAvUTtB2A==
+Received: from relay9.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay9.kaspersky-labs.com (Postfix) with ESMTP id 027BE8A063E
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:17 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub9.kaspersky-labs.com (Postfix) with ESMTPS id C926C8A0581
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 11:49:16 +0300 (MSK)
+Received: from chesnokov.avp.ru (10.16.105.7) by HQMAILSRV2.avp.ru
+ (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 13 Apr
+ 2026 11:49:15 +0300
+From: <Alexander.Chesnokov@kaspersky.com>
+To: <Alexander.Chesnokov@kaspersky.com>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH] net: dsa: sja1105: fix division by zero in sja1105_tas_set_runtime_params()
+Date: Mon, 13 Apr 2026 11:49:08 +0300
+Message-ID: <20260413084908.32745-1-Alexander.Chesnokov@kaspersky.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ab42bb3-d6bb-4331-3d93-08de9938c15b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Apr 2026 08:43:37.4041
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7PR01MB10711
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
+ (10.64.57.52)
+X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 04/13/2026 08:35:29
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 202220 [Apr 13 2026]
+X-KSE-AntiSpam-Info: Version: 6.1.1.22
+X-KSE-AntiSpam-Info: Envelope from: Alexander.Chesnokov@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 98 0.3.98
+ ca9d2f3beca9ca2a85e178af9d8e97d5fa2c38a3
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_black_eng_exceptions}
+X-KSE-AntiSpam-Info: kaspersky.com:7.1.1,5.0.1;chesnokov.avp.ru:7.1.1,5.0.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 04/13/2026 08:38:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 4/13/2026 6:00:00 AM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/04/13 06:49:00 #28394185
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kaspersky.com,reject];
+	R_DKIM_ALLOW(-0.20)[kaspersky.com:s=mail202505];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235961-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,linux.microsoft.com,vger.kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kaspersky.com:+];
+	TAGGED_FROM(0.00)[bounces-235966-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Alexander.Chesnokov@kaspersky.com,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url,kaspersky.com:dkim,kaspersky.com:email,kaspersky.com:mid];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mailbox.org:email,outlook.com:dkim,outlook.com:mid]
-X-Rspamd-Queue-Id: 80C693E93E1
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: D5E393E9661
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 10, 2026 at 09:05:35PM -0800, vdso@mailbox.org wrote:
-> All in all, from the three options of (generic check for overflow, simple=
- check
-> for arch bad PFNs/GFNs, an elaborated check with all specifics) I suggest=
-ed the simple check.
-> Fast and still more useful than checking for overflow in my opinion.
-=20
-Thanks Roman for the thorough write-up. Since the original patch mixes
-host and hypervisor-side constants with an unclear unit, IMO we should
-do the bounds check in bytes instead.
+From: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
 
-For instance:
+If taprio offload is configured such that none of the ports' base_time
+is less than S64_MAX (the initial value of earliest_base_time), then
+its_cycle_time remains zero and is passed to future_base_time() as
+cycle_time, causing division by zero in div_s64().
 
-	u64 start_gpa, end_gpa;
+Add a check for its_cycle_time being zero before calling
+future_base_time() and return -EINVAL.
 
-	if (check_mul_overflow(mem->guest_pfn, HV_HYP_PAGE_SIZE,
-						   &start_gpa) ||
-		check_add_overflow(start_gpa, mem->size, &end_gpa) ||
-		end_gpa > (1ULL << MAX_PHYSMEM_BITS))
-		return -EINVAL;
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Both sides of the final comparison are bytes, so no host-vs-hv page
-unit conversion is needed.
+Fixes: 86db36a347b4 ("net: dsa: sja1105: Implement state machine for TAS with PTP clock source")
+Cc: stable@vger.kernel.org
 
-In addition, it changes return value from -EOVERFLOW to -EINVAL.
+Signed-off-by: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
+---
+ drivers/net/dsa/sja1105/sja1105_tas.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Does this approach look reasonable? Happy to iterate if either of you
-would prefer a different choice.
-
-Thanks,
-Junrui Luo
+diff --git a/drivers/net/dsa/sja1105/sja1105_tas.c b/drivers/net/dsa/sja1105/sja1105_tas.c
+index e6153848a950..ce4b544a2b9c 100644
+--- a/drivers/net/dsa/sja1105/sja1105_tas.c
++++ b/drivers/net/dsa/sja1105/sja1105_tas.c
+@@ -62,6 +62,9 @@ static int sja1105_tas_set_runtime_params(struct sja1105_private *priv)
+ 	if (!tas_data->enabled)
+ 		return 0;
+ 
++	if (!its_cycle_time)
++		return -EINVAL;
++
+ 	/* Roll the earliest base time over until it is in a comparable
+ 	 * time base with the latest, then compare their deltas.
+ 	 * We want to enforce that all ports' base times are within
+-- 
+2.43.0
 
 
