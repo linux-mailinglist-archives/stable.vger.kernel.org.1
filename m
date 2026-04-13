@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-237548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sETOAM0l3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:13 +0200
+	id kFZiOQgZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E601D3F1327
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D6C3EEE29
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 830493105BCE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCFF0302E307
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D3E33BBC0;
-	Mon, 13 Apr 2026 17:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F70330AACB;
+	Mon, 13 Apr 2026 16:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYbXlgJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGdmXyfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1E733B6F8;
-	Mon, 13 Apr 2026 17:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410BE30ACE6;
+	Mon, 13 Apr 2026 16:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099738; cv=none; b=T5DEys8FOE9hOEFS64Bubj/XwtjIGcLNVFnWWnRKBO7OknnD0o+Aic0/vNPGmnj3vnwiGN052IEvEFKZLJGLpRfNjlnolI1W1A9h4Gooxe0MAz+C/77nufR0yUuhjVbNncyd8LPXQLXfO+6uz4a8ymeW0M0rXOBsYx2HlljlekU=
+	t=1776096916; cv=none; b=p7J5hZxNfS5k5om0UGiEq34I3MGlz6QntrKCx69bKZN1ym5xl/otb3VG2nwJ0q/sjLRD1B2WUm2Rhv7+z2c4l/hpnN+1TVYKr3iBwgq11bkgIWcZYno1sOxsn/o0yt1jL+cI39Ee+Gs93fRcducsfxzxIQ1vwZ1ws2QLiy/eJyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099738; c=relaxed/simple;
-	bh=ki7VfXK+iosex8cJuIMyiSmEAK0Z1MLwQQ6kdfFTAqQ=;
+	s=arc-20240116; t=1776096916; c=relaxed/simple;
+	bh=/b7WRGqVwSeQR4fcmYAeN4djvQt9ZfQDB292qQZ1b10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2oUP5ZkqWF4DgizGA3Xb7ZhgVdsl3ANbBasr3kjWgS65EqLBjBEm1LiZYZAoXKytSv4i49xT7RYpcpNtDn66d41siuyVPfy7ktW5/EEeM9IYdid7TY2vs8cIcitzCBS8O2f321hRJK+ln+LdtpD9I5+5uD8q0nBt2NdF0jGmuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYbXlgJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44406C2BCAF;
-	Mon, 13 Apr 2026 17:02:18 +0000 (UTC)
+	 MIME-Version; b=MK0CeBY/XcguwP6H6u9IJfwHM3Mah9SiwJ02czmLCGo/+Y4hwhJQTV4negr+vOnzBheeSysYT2dF25AScnPNIGIFBRD8HUFsJnfhh0FOCItb54eS9OKya9hXYw0Nb/pQ4liMYNbjoJOv0wA9P53DGccfXSE64Aeizt22cqQ5wDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGdmXyfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC769C2BCAF;
+	Mon, 13 Apr 2026 16:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099738;
-	bh=ki7VfXK+iosex8cJuIMyiSmEAK0Z1MLwQQ6kdfFTAqQ=;
+	s=korg; t=1776096916;
+	bh=/b7WRGqVwSeQR4fcmYAeN4djvQt9ZfQDB292qQZ1b10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYbXlgJlHS8bZygvSWq/9M/BmZxavyA1JTzz6tItM8rpQCrCUMpc2hK+n9dF1tSUe
-	 DJJS9ZLNIgi/qv1FGZRaS+gV9PPnIF7saY6vXd9WaI2l9tSg7vsQpoYd0k8+arrESI
-	 iE3uM5Oio8ODJkCfImolAQalC5UwE8rM4izdjf+E=
+	b=XGdmXyfD6GL9uee8PiTf58mC+tVw4DVGJuXtFH51K/S90gfdzanwvi89/XtMgtMxz
+	 Rb9wyj0GnMNcnUSQczi8wqnDjG4TTT58WDhrGZKgss49fvCnw46BxzRHKF41KjyMcS
+	 EFlHpNStxD7j+NUzzZc5Y0fQqdiLuHP55ZC59xFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	"Uschakow, Stanislav" <suschako@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 423/491] mm/rmap: fix two comments related to huge_pmd_unshare()
-Date: Mon, 13 Apr 2026 18:01:08 +0200
-Message-ID: <20260413155834.862582376@linuxfoundation.org>
+	David Carlier <devnexen@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 42/50] net: lan966x: fix page_pool error handling in lan966x_fdma_rx_alloc_page_pool()
+Date: Mon, 13 Apr 2026 18:01:09 +0200
+Message-ID: <20260413155726.082621997@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,96 +65,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236442-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237548-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E601D3F1327
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 58D6C3EEE29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand (Red Hat) <david@kernel.org>
+From: David Carlier <devnexen@gmail.com>
 
-PMD page table unsharing no longer touches the refcount of a PMD page
-table.  Also, it is not about dropping the refcount of a "PMD page" but
-the "PMD page table".
+commit 3fd0da4fd8851a7e62d009b7db6c4a05b092bc19 upstream.
 
-Let's just simplify by saying that the PMD page table was unmapped,
-consequently also unmapping the folio that was mapped into this page.
+page_pool_create() can return an ERR_PTR on failure. The return value
+is used unconditionally in the loop that follows, passing the error
+pointer through xdp_rxq_info_reg_mem_model() into page_pool_use_xdp_mem(),
+which dereferences it, causing a kernel oops.
 
-This code should be deduplicated in the future.
+Add an IS_ERR check after page_pool_create() to return early on failure.
 
-Link: https://lkml.kernel.org/r/20251223214037.580860-4-david@kernel.org
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit a8682d500f691b6dfaa16ae1502d990aeb86e8be)
-[ David: We don't have 40549ba8f8e0 ("hugetlb: use new vma_lock
-  for pmd sharing synchronization") and a98a2f0c8ce1 ("mm/rmap: split
-  migration into its own so changes in mm/rmap.c looks quite different. ]
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 11871aba1974 ("net: lan96x: Use page_pool API")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260405055241.35767-2-devnexen@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/rmap.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index e6f840be18906..315d7ceb573ae 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1490,13 +1490,8 @@ static bool try_to_unmap_one(struct page *page, struct vm_area_struct *vma,
- 							      range.end);
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+@@ -85,6 +85,8 @@ static int lan966x_fdma_rx_alloc_page_po
+ 		pp_params.dma_dir = DMA_BIDIRECTIONAL;
  
- 				/*
--				 * The ref count of the PMD page was dropped
--				 * which is part of the way map counting
--				 * is done for shared PMDs.  Return 'true'
--				 * here.  When there is no other sharing,
--				 * huge_pmd_unshare returns false and we will
--				 * unmap the actual page and drop map count
--				 * to zero.
-+				 * The PMD table was unmapped,
-+				 * consequently unmapping the folio.
- 				 */
- 				page_vma_mapped_walk_done(&pvmw);
- 				break;
--- 
-2.53.0
-
+ 	rx->page_pool = page_pool_create(&pp_params);
++	if (unlikely(IS_ERR(rx->page_pool)))
++		return PTR_ERR(rx->page_pool);
+ 
+ 	for (int i = 0; i < lan966x->num_phys_ports; ++i) {
+ 		struct lan966x_port *port;
 
 
 
