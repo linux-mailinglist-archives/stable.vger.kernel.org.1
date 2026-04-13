@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-237087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH23LYsk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:14:51 +0200
+	id 2ISgNF4j3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104703F10CC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:14:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C8F3F0DD7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CADA30A542A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 804FB30B5F9D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0780E313535;
-	Mon, 13 Apr 2026 16:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB0D33F5B4;
+	Mon, 13 Apr 2026 17:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="de5WKc5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPdqaOIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD03730BF4E;
-	Mon, 13 Apr 2026 16:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA413161AB;
+	Mon, 13 Apr 2026 17:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098553; cv=none; b=DUmPuDLwKhwVE/3T6wEAJLEqpuKEEJR2xfeOoKW7jpMk5adjqQ6lW5X8uujOxWD7Unsou9ysk+4JVoweVLLIWJv8iwGR0SyixMsxRTVHDpeQI3++ZntErWXQx63qQwfwF5L9MIUKTrDlhHUzNMfkpoX7OrfhCL0j0ZfAcZbjaDs=
+	t=1776099783; cv=none; b=OXR6qbOOW8Dzx24+DL/WanxJT55BmpjF9iZP2H5bT0SdByEkvOJFHO3k1Gp33ThdBOQ7Jky8OsI4lS+p6K4WQQoA9985XmcYmA0+VgmwGq0pC5SXT2U8oOlV0YNdBozoXuzc736l78xF4fF5v9mB6E8N1UGDzgoeX//rCTNPVts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098553; c=relaxed/simple;
-	bh=k82+4lM4lLHMqrFJTwbHNGDILbQpOrcf860nZjs7eZo=;
+	s=arc-20240116; t=1776099783; c=relaxed/simple;
+	bh=SCMUQtNqrWPlVjE0XaLY9SKvB5a9gKxDUk/WkEdImaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDaXyds2n6WYDvjm3oa7YJGGzDbJ4R5e4E5u+Wi+r+XwHiNUPoNhbNL8/aboWDzY5jVmxtm40V3Cx//3FWuOwgjQ3ajw5oMcDtsb5CvHQPWhvjn6tYD1Taa3LYpZEEBdsuZWkP7xh1tFW1mQXLD0zUtOnPsADHbZUnsUrGzRtLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=de5WKc5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5341DC2BCB0;
-	Mon, 13 Apr 2026 16:42:33 +0000 (UTC)
+	 MIME-Version; b=aFP/CbTDc/csD4vN97zYQFhJ18H/f7W99M7LhLN3jb8tmiQ7h88Q79NZfenSDBzxfvmBmc1VzgqUVw5KccLJCl6SmTqT1aueCjkYH4ArcMlHKwzteRTZzZAtCQLicDa8PSG9vkVgyGyU+k1gPg5T+PYyELsk4XwWdoDQ86sQjUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPdqaOIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AB6C2BCAF;
+	Mon, 13 Apr 2026 17:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098553;
-	bh=k82+4lM4lLHMqrFJTwbHNGDILbQpOrcf860nZjs7eZo=;
+	s=korg; t=1776099782;
+	bh=SCMUQtNqrWPlVjE0XaLY9SKvB5a9gKxDUk/WkEdImaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=de5WKc5MLRpStvOO+PMAO3w4KzVdPghgvKzg5Fx4141IO/emYoUq+3JkKeZWUQatm
-	 xi5Irt7fM4KCku0KODID5N+81JZstGcU5pL9rE4bE5+/pkqszuqdvAvijDRoWIc2HG
-	 EPquIcpQLu5uLvs6N70IcXABooXE2JB0BaO/9XO0=
+	b=QPdqaOIvg0EGcWm/TNz5J0+70SPZGMy641YhcHmFZihWQhTVrXYzvsKhj2Svv7SpH
+	 yd9/4g/sDf2zoAZDhdaaPwPNsBbxhjzIbL5h/4I8yhvajeuYE1YZM9D8U9r1dqcouf
+	 LZbrogxyjhCoRRVSRSIH3k1JXLrf1UwZ4ztT1smQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hancock <john@kernel.doghat.io>,
-	bjorn.forsman@gmail.com,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Subject: [PATCH 5.15 569/570] Revert "PCI: Enable ACS after configuring IOMMU for OF platforms"
+	Jon Hunter <jonathanh@nvidia.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 455/491] ASoC: tegra: Fix Master Volume Control
 Date: Mon, 13 Apr 2026 18:01:40 +0200
-Message-ID: <20260413155851.793145415@linuxfoundation.org>
+Message-ID: <20260413155836.070169376@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +63,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237087-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.doghat.io,gmail.com,oss.qualcomm.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237565-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linux.dev:email,doghat.io:email]
-X-Rspamd-Queue-Id: 104703F10CC
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 73C8F3F0DD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-This reverts commit b20b659c2c6a072560b360feda81ae52176034df which is
-commit c41e2fb67e26b04d919257875fa954aa5f6e392e upstream.
+commit f9fd804aa0a36f15a35ca070ec4c52650876cc29 upstream.
 
-The original commit attempted to enable ACS in pci_dma_configure() prior
-to IOMMU group assignment in iommu_init_device() to fix the ACS enablement
-issue for OF platforms. But that assumption doesn't hold true for kernel
-versions prior to v6.15, because on these older kernels,
-pci_dma_configure() is called *after* iommu_init_device(). So the IOMMU
-groups are already created before the ACS gets enabled. This causes the
-devices that should have been split into separate groups by ACS, getting
-merged into one group, thereby breaking the IOMMU isolation as reported on
-the AMD machines.
+Commit 3ed2b549b39f ("ALSA: pcm: fix wait_time calculations") corrected
+the PCM wait_time calculations and in doing so reduced the calculated
+wait_time. This exposed an issue with the Tegra Master Volume Control
+(MVC) device where the reduced wait_time caused the MVC to fail. For now
+fix this by setting the default wait_time for Tegra to be 500ms.
 
-So revert the offending commit to restore the IOMMU group assignment on
-those affected machines. It should be noted that ACS has never really
-worked on kernel versions prior to v6.15, so the revert doesn't make any
-difference for OF platforms.
-
-Reported-by: John Hancock <john@kernel.doghat.io>
-Reported-by: bjorn.forsman@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221234
-Fixes: b20b659c2c6a ("PCI: Enable ACS after configuring IOMMU for OF platforms")
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>
-Link: https://lore.kernel.org/regressions/2c30f181-ffc6-4d63-a64e-763cf4528f48@leemhuis.info
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Fixes: 3ed2b549b39f ("ALSA: pcm: fix wait_time calculations")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20230613093453.13927-1-jonathanh@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-driver.c |    8 --------
- drivers/pci/pci.c        |   10 +++++++++-
- drivers/pci/pci.h        |    1 -
- 3 files changed, 9 insertions(+), 10 deletions(-)
+ sound/soc/tegra/tegra_pcm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -1616,14 +1616,6 @@ static int pci_dma_configure(struct devi
- 		ret = acpi_dma_configure(dev, acpi_get_dma_attr(adev));
+--- a/sound/soc/tegra/tegra_pcm.c
++++ b/sound/soc/tegra/tegra_pcm.c
+@@ -111,6 +111,9 @@ int tegra_pcm_open(struct snd_soc_compon
+ 		return ret;
  	}
  
--	/*
--	 * Attempt to enable ACS regardless of capability because some Root
--	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
--	 * the standard ACS capability but still support ACS via those
--	 * quirks.
--	 */
--	pci_enable_acs(to_pci_dev(dev));
--
- 	pci_put_host_bridge_device(bridge);
- 	return ret;
- }
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -936,7 +936,7 @@ static void pci_std_enable_acs(struct pc
-  * pci_enable_acs - enable ACS if hardware support it
-  * @dev: the PCI device
-  */
--void pci_enable_acs(struct pci_dev *dev)
-+static void pci_enable_acs(struct pci_dev *dev)
- {
- 	if (!pci_acs_enable)
- 		goto disable_acs_redir;
-@@ -3609,6 +3609,14 @@ bool pci_acs_path_enabled(struct pci_dev
- void pci_acs_init(struct pci_dev *dev)
- {
- 	dev->acs_cap = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS);
++	/* Set wait time to 500ms by default */
++	substream->wait_time = 500;
 +
-+	/*
-+	 * Attempt to enable ACS regardless of capability because some Root
-+	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
-+	 * the standard ACS capability but still support ACS via those
-+	 * quirks.
-+	 */
-+	pci_enable_acs(dev);
+ 	return 0;
  }
- 
- /**
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -562,7 +562,6 @@ static inline resource_size_t pci_resour
- }
- 
- void pci_acs_init(struct pci_dev *dev);
--void pci_enable_acs(struct pci_dev *dev);
- #ifdef CONFIG_PCI_QUIRKS
- int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
- int pci_dev_specific_enable_acs(struct pci_dev *dev);
+ EXPORT_SYMBOL_GPL(tegra_pcm_open);
 
 
 
