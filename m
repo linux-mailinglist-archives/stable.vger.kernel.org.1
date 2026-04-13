@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-237236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDwaEZUl3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:17 +0200
+	id qM2+B1wb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C783F12B1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 937CA3EF55D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5E00302D5C0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 47279302F7D6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83A0314D0D;
-	Mon, 13 Apr 2026 16:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F6226CE32;
+	Mon, 13 Apr 2026 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kC/oZB6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ygm8wdtA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BC83168EE;
-	Mon, 13 Apr 2026 16:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A798E309F09;
+	Mon, 13 Apr 2026 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098936; cv=none; b=cWOm/jpNStSnag64Rb1KiP4lOEUJ4sRl8stRBZdayvQXHhSqgLPGU8CX50mxHG1jzNAxU19pixvoLFKbqgy4bK699lvTnkB5P4/PRb7kNc+jDHRPXZZOojcAdyba+RUTq4IjoGywuxCWjEKXrD+ZVSi7bx046Uec9k+Gv78RyZk=
+	t=1776097648; cv=none; b=toRLNHpIyRbnyR9+sTlVoybO/H0645umqlO65vEnG1YBlJrvg9zmVNB77ofWn0trg9l3qqcrbzRq1ffaVuSTkFC4/umKAeVLpeAFyYhWWEUbEVGJVgVPXmKadFX+dkGXAavlyv9tQUd74Iycd+OBZq11dZJY5yTW3gqROi0+e4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098936; c=relaxed/simple;
-	bh=KyGRFv4U+MmtwfYvJIsH6egzS4Hi8PWH8/J5nqUvKj8=;
+	s=arc-20240116; t=1776097648; c=relaxed/simple;
+	bh=eNQ/az6lh71gGlZ1rHLkg84kV2WZNdeq3EqkKcXDrSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIPWZu7A3mNhBWXGOw08BJJUoA6zD6lMRv5643ULQFJZ4nUdyv/7gGiI0XggJxh0sOynsUbSnX/cWe9f5pZXSzWrUfFieUU+pkniD0P+vjgGpJ0p59RmeqaPfcz7w66OX56RP89dyGKEYamBenNeXjME8tKwIR2/PfJkSoqtWNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kC/oZB6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11810C2BCAF;
-	Mon, 13 Apr 2026 16:48:55 +0000 (UTC)
+	 MIME-Version; b=LBOhcgCyuRYks2gqdPrql9agijPuFant/JC7KXK7pxB8ThHj59wlD7VC95Gz1jgnJPYkok8iYHuTLdfkMLckbyi+s6cFe4ju8RS1kBaFsJB/2QUicRCPxbPTWMJO75+QtOCUDnzM6X5jLhPQu+HFK/GQZ7gzH+Gk1++0TD8K9nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ygm8wdtA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F543C2BCAF;
+	Mon, 13 Apr 2026 16:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098936;
-	bh=KyGRFv4U+MmtwfYvJIsH6egzS4Hi8PWH8/J5nqUvKj8=;
+	s=korg; t=1776097648;
+	bh=eNQ/az6lh71gGlZ1rHLkg84kV2WZNdeq3EqkKcXDrSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kC/oZB6BPUn/h0AbDZvqdG7SV0ZaydTE0OyhquOxoXtiOFUbTr5Y00y6PwWlzc/h+
-	 CA6NdCvRV+usZXR1hcmkuyuauIpXG8UDNVBmLad7RAhivpyIW9Hp1oOmm0okRoOuDz
-	 vK9fC9knZJsERDUXZXw1y1n/89wTlX4S5/2KUEJY=
+	b=Ygm8wdtAVMP+jBHGyDFTGSl/mK1+XwQuEElriujawGrf977VYvju4537rBjYUP0sD
+	 yr/2pV5f+eg1P3PW9KzzOf0vRU+1yyw76ZgZPSl3ryxkvpdi83BeH6WFQaIYrh9Qwt
+	 ybhy4MoMo7sTTeMYL3th972pRGWUQc6rcamDy008=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 104/491] usb: image: mdc800: kill download URB on timeout
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Uschakow, Stanislav" <suschako@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 218/570] mm/rmap: fix two comments related to huge_pmd_unshare()
 Date: Mon, 13 Apr 2026 17:55:49 +0200
-Message-ID: <20260413155822.937130058@linuxfoundation.org>
+Message-ID: <20260413155838.621000055@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,8 +85,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237236-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236731-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -86,62 +94,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A9C783F12B1
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 937CA3EF55D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+From: David Hildenbrand (Red Hat) <david@kernel.org>
 
-commit 1be3b77de4eb89af8ae2fd6610546be778e25589 upstream.
+commit a8682d500f691b6dfaa16ae1502d990aeb86e8be upstream.
 
-mdc800_device_read() submits download_urb and waits for completion.
-If the timeout fires and the device has not responded, the function
-returns without killing the URB, leaving it active.
+PMD page table unsharing no longer touches the refcount of a PMD page
+table.  Also, it is not about dropping the refcount of a "PMD page" but
+the "PMD page table".
 
-A subsequent read() resubmits the same URB while it is still
-in-flight, triggering the WARN in usb_submit_urb():
+Let's just simplify by saying that the PMD page table was unmapped,
+consequently also unmapping the folio that was mapped into this page.
 
-  "URB submitted while active"
+This code should be deduplicated in the future.
 
-Check the return value of wait_event_timeout() and kill the URB if
-it indicates timeout, ensuring the URB is complete before its status
-is inspected or the URB is resubmitted.
-
-Similar to
-- commit 372c93131998 ("USB: yurex: fix control-URB timeout handling")
-- commit b98d5000c505 ("media: rc: iguanair: handle timeouts")
-
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260209151937.2247202-1-n7l8m4@u.northwestern.edu
+Link: https://lkml.kernel.org/r/20251223214037.580860-4-david@kernel.org
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ David: We don't have 40549ba8f8e0 ("hugetlb: use new vma_lock
+  for pmd sharing synchronization") so there are some contextual
+  differences. ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/image/mdc800.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/rmap.c |   18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/image/mdc800.c
-+++ b/drivers/usb/image/mdc800.c
-@@ -731,9 +731,11 @@ static ssize_t mdc800_device_read (struc
- 					mutex_unlock(&mdc800->io_lock);
- 					return len-left;
- 				}
--				wait_event_timeout(mdc800->download_wait,
-+				retval = wait_event_timeout(mdc800->download_wait,
- 				     mdc800->downloaded,
- 				     msecs_to_jiffies(TO_DOWNLOAD_GET_READY));
-+				if (!retval)
-+					usb_kill_urb(mdc800->download_urb);
- 				mdc800->downloaded = 0;
- 				if (mdc800->download_urb->status != 0)
- 				{
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1489,13 +1489,8 @@ static bool try_to_unmap_one(struct page
+ 							      range.end);
+ 
+ 				/*
+-				 * The ref count of the PMD page was dropped
+-				 * which is part of the way map counting
+-				 * is done for shared PMDs.  Return 'true'
+-				 * here.  When there is no other sharing,
+-				 * huge_pmd_unshare returns false and we will
+-				 * unmap the actual page and drop map count
+-				 * to zero.
++				 * The PMD table was unmapped,
++				 * consequently unmapping the folio.
+ 				 */
+ 				page_vma_mapped_walk_done(&pvmw);
+ 				break;
+@@ -1808,13 +1803,8 @@ static bool try_to_migrate_one(struct pa
+ 							      range.end);
+ 
+ 				/*
+-				 * The ref count of the PMD page was dropped
+-				 * which is part of the way map counting
+-				 * is done for shared PMDs.  Return 'true'
+-				 * here.  When there is no other sharing,
+-				 * huge_pmd_unshare returns false and we will
+-				 * unmap the actual page and drop map count
+-				 * to zero.
++				 * The PMD table was unmapped,
++				 * consequently unmapping the folio.
+ 				 */
+ 				page_vma_mapped_walk_done(&pvmw);
+ 				break;
 
 
 
