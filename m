@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OteNAom3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:14 +0200
+	id eHUxNhsd3WlUaAkAu9opvQ
+	(envelope-from <stable+bounces-236857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF743F13C0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 216BF3EF968
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13EF93252E36
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F64F303FFC2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D278131714F;
-	Mon, 13 Apr 2026 16:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8050E27466A;
+	Mon, 13 Apr 2026 16:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+qcOPvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcNOqWFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9605C3161BF;
-	Mon, 13 Apr 2026 16:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435AE225A38;
+	Mon, 13 Apr 2026 16:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099150; cv=none; b=trHaO7f4aSnEUkkD9+UnIR7sZtfiVuu7TYSOHV0lpUvKsrd+Qwp/apIQNS7uzdiaXKCtepepcgyYes9pFSpg65pWVp9nz10kW2G+1j/HDq9iqYWKG/ZyWif/yvrP4zCQBoaqNNo2CKaeoJqTlX0V3urQV8gJc6NMTii3vHXBoNo=
+	t=1776097971; cv=none; b=au/am1KlyUakcXkiaaBuQvyve+gqxU/a/25+uXGRr4NjF4iDr7F4by1N8XN4SEdXisSnz0uhvc/r/bbadZGbriWO8wfSidsqMsWh9hst5TLG2nYQGQMw3mWZGZhhX19XTN9Gi9Y+7K29oX7L0pZ8QwstN9B9+6i8/0vZF0wAvik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099150; c=relaxed/simple;
-	bh=WVe0fGTsE/xPK0d6jp2zdfvGgI+WmVyJ2YVtJfGTYqE=;
+	s=arc-20240116; t=1776097971; c=relaxed/simple;
+	bh=a9QXRB66w0SKTMTMDT6kt39nWBxvZDMwTtE7aKBH05c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STaGcEhyYO651lPkRma5s+fl5trcakyzjBPj+U0LBzeoDgsa+0wVa/hEZMRcw5FiQyduSEsCRMlhUyJWiNREeV/RnliMPr5B4bDIbN+2DB0+TVmXBDUUQVV8sFmxuOqDlLgtAvCSYB2wBBdUyBY9VCAgO32n8yt2s5AeYk5VZM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+qcOPvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016D2C2BCAF;
-	Mon, 13 Apr 2026 16:52:29 +0000 (UTC)
+	 MIME-Version; b=fnAPFk9dl6CSk2dju9Ar20dVzb+xPKgVnlzhT9q4IX0XC6HnIf1DdA8NHUjSyJJ6DrECxESuQ4gaLPAccp3767RDcnAxoN4i1bNphQNTu/n6iRW/XEM3ClNM9sUQi/5C7ngu+9RrdKN58Ikq0uHKS9vd1HJuM5/kbvmF7Brlsrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcNOqWFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D20C2BCB0;
+	Mon, 13 Apr 2026 16:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099150;
-	bh=WVe0fGTsE/xPK0d6jp2zdfvGgI+WmVyJ2YVtJfGTYqE=;
+	s=korg; t=1776097971;
+	bh=a9QXRB66w0SKTMTMDT6kt39nWBxvZDMwTtE7aKBH05c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+qcOPvoqFNJWAhqiOZbekr1aN9qV8oQFuFR/t+ggXExJHJRoCTwUoW4O7A0bnsnk
-	 dsKPoRFzhsLT2TcvY3xbJHxLwfkUZLpithvqgaKAl83CCx9Z4tDVpdUrw+wiq+II5H
-	 aDoVwyZVCyl4uDXebt+xZVOIcz+KcNWrQgQsWzd8=
+	b=HcNOqWFbQDhWyiF4tHppK+9XqJxdd5KsvJM00ifyytYk9+R9cXxVoLg9PiZo2K4wv
+	 w8tBLXL7X09vYpkMv0WgBmod580E8UPlc3VaTSt1fmqL3SX36f2JYKVxxEn5hE/6xc
+	 Dnc6fVLgwKVMdRl4CwA82lwMhCUBCysCtayRW8hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Paolo Valerio <pvalerio@redhat.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 229/491] mtd: rawnand: serialize lock/unlock against other NAND operations
-Date: Mon, 13 Apr 2026 17:57:54 +0200
-Message-ID: <20260413155827.633618954@linuxfoundation.org>
+Subject: [PATCH 5.15 344/570] net: macb: use the current queue number for stats
+Date: Mon, 13 Apr 2026 17:57:55 +0200
+Message-ID: <20260413155843.377146363@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237320-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236857-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,82 +86,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: 3CF743F13C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,tipi-net.de:email]
+X-Rspamd-Queue-Id: 216BF3EF968
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Paolo Valerio <pvalerio@redhat.com>
 
-[ Upstream commit bab2bc6e850a697a23b9e5f0e21bb8c187615e95 ]
+[ Upstream commit 72d96e4e24bbefdcfbc68bdb9341a05d8f5cb6e5 ]
 
-nand_lock() and nand_unlock() call into chip->ops.lock_area/unlock_area
-without holding the NAND device lock. On controllers that implement
-SET_FEATURES via multiple low-level PIO commands, these can race with
-concurrent UBI/UBIFS background erase/write operations that hold the
-device lock, resulting in cmd_pending conflicts on the NAND controller.
+There's a potential mismatch between the memory reserved for statistics
+and the amount of memory written.
 
-Add nand_get_device()/nand_release_device() around the lock/unlock
-operations to serialize them against all other NAND controller access.
+gem_get_sset_count() correctly computes the number of stats based on the
+active queues, whereas gem_get_ethtool_stats() indiscriminately copies
+data using the maximum number of queues, and in the case the number of
+active queues is less than MACB_MAX_QUEUES, this results in a OOB write
+as observed in the KASAN splat.
 
-Fixes: 92270086b7e5 ("mtd: rawnand: Add support for manufacturer specific lock/unlock operation")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+==================================================================
+BUG: KASAN: vmalloc-out-of-bounds in gem_get_ethtool_stats+0x54/0x78
+  [macb]
+Write of size 760 at addr ffff80008080b000 by task ethtool/1027
+
+CPU: [...]
+Tainted: [E]=UNSIGNED_MODULE
+Hardware name: raspberrypi rpi/rpi, BIOS 2025.10 10/01/2025
+Call trace:
+ show_stack+0x20/0x38 (C)
+ dump_stack_lvl+0x80/0xf8
+ print_report+0x384/0x5e0
+ kasan_report+0xa0/0xf0
+ kasan_check_range+0xe8/0x190
+ __asan_memcpy+0x54/0x98
+ gem_get_ethtool_stats+0x54/0x78 [macb
+   926c13f3af83b0c6fe64badb21ec87d5e93fcf65]
+ dev_ethtool+0x1220/0x38c0
+ dev_ioctl+0x4ac/0xca8
+ sock_do_ioctl+0x170/0x1d8
+ sock_ioctl+0x484/0x5d8
+ __arm64_sys_ioctl+0x12c/0x1b8
+ invoke_syscall+0xd4/0x258
+ el0_svc_common.constprop.0+0xb4/0x240
+ do_el0_svc+0x48/0x68
+ el0_svc+0x40/0xf8
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1b0/0x1b8
+
+The buggy address belongs to a 1-page vmalloc region starting at
+  0xffff80008080b000 allocated at dev_ethtool+0x11f0/0x38c0
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000
+  index:0xffff00000a333000 pfn:0xa333
+flags: 0x7fffc000000000(node=0|zone=0|lastcpupid=0x1ffff)
+raw: 007fffc000000000 0000000000000000 dead000000000122 0000000000000000
+raw: ffff00000a333000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff80008080b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff80008080b100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff80008080b180: 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                                  ^
+ ffff80008080b200: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ ffff80008080b280: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+==================================================================
+
+Fix it by making sure the copied size only considers the active number of
+queues.
+
+Fixes: 512286bbd4b7 ("net: macb: Added some queue statistics")
+Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://patch.msgid.link/20260323191634.2185840-1-pvalerio@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 308fcbe394a5e..b40dc3ac8615a 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -4383,11 +4383,16 @@ static void nand_shutdown(struct mtd_info *mtd)
- static int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- {
- 	struct nand_chip *chip = mtd_to_nand(mtd);
-+	int ret;
- 
- 	if (!chip->ops.lock_area)
- 		return -ENOTSUPP;
- 
--	return chip->ops.lock_area(chip, ofs, len);
-+	nand_get_device(chip);
-+	ret = chip->ops.lock_area(chip, ofs, len);
-+	nand_release_device(chip);
-+
-+	return ret;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 6a3e9082bda8c..a0beb6eb505da 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -2977,7 +2977,7 @@ static void gem_get_ethtool_stats(struct net_device *dev,
+ 	spin_lock_irq(&bp->stats_lock);
+ 	gem_update_stats(bp);
+ 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
+-			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
++			* (GEM_STATS_LEN + QUEUE_STATS_LEN * bp->num_queues));
+ 	spin_unlock_irq(&bp->stats_lock);
  }
  
- /**
-@@ -4399,11 +4404,16 @@ static int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- static int nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- {
- 	struct nand_chip *chip = mtd_to_nand(mtd);
-+	int ret;
- 
- 	if (!chip->ops.unlock_area)
- 		return -ENOTSUPP;
- 
--	return chip->ops.unlock_area(chip, ofs, len);
-+	nand_get_device(chip);
-+	ret = chip->ops.unlock_area(chip, ofs, len);
-+	nand_release_device(chip);
-+
-+	return ret;
- }
- 
- /* Set default functions */
 -- 
 2.51.0
 
