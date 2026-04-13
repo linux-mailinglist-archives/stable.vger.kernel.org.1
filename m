@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-237185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yM5VLLge3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:00 +0200
+	id mLbfCKcZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F633EFECD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DB53EF02F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 185CD3045558
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8F80300E007
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673EC314D26;
-	Mon, 13 Apr 2026 16:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C858530ACE6;
+	Mon, 13 Apr 2026 16:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOxO6ANj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMvQ7I8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A218314A8E;
-	Mon, 13 Apr 2026 16:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFFE3093B2;
+	Mon, 13 Apr 2026 16:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098805; cv=none; b=tQmbd1D4Yti/jxes9d5zCMp2kyP0JhfnSdgx5r8m7ePFHOfPjWcu6t9akfrgWjPtIoRMRmVRJh1rL8KJjbcbcTqMYB3bMvf4yucecAv4PBQP4n82PJlc4q5AKH0dIUJCKxQ00Qkd6riqZoIWtYMR1Av3RfjSCFq0ea4c3Vi1rco=
+	t=1776097625; cv=none; b=Sicoap6cvdLWCuYj8XX+B6dpdh1f+o5K8/HXpCGYmTnXMEj/VkB3s5aeejN6+rd57XU0eT88CFYt5jLG6Dp4vzwR/nZXcs1N4QkS9dW/o8+6yDeHUL1Pcn49V2ILrlhXjdH8lEog9tAbAAnsxvFTAAaOm7FSl3Af886tYdZsjPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098805; c=relaxed/simple;
-	bh=bJlR6GewDZONBV+hrgTx8W6xwIS/SyTmDUFUYYmzLZY=;
+	s=arc-20240116; t=1776097625; c=relaxed/simple;
+	bh=VSp9Z7Joel7cAInllUSf43fjxNyr8KtejRsOnp0f52E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdht8clH1vRvAXgaQ6GSiWVVTQX2WdW6pyTipmEl6Zi7Vg1IajrsnW05NVW2Lmlbq0dUpxS7IHtkqGBQYUl1K7bX0CuJDJVg33kzGgszQnj8VecTcMkCtPuW0LPzvBKRUCagnSU5z18Z5S7djN1oEcEoSSzFKu7om/C2C+uQM20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOxO6ANj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844E8C2BCAF;
-	Mon, 13 Apr 2026 16:46:44 +0000 (UTC)
+	 MIME-Version; b=M4imI9Rwcg7NAhkpOeHLUwzIkL6YQYfs4Z+UdUbfQtwQuF78wC+FF5RDfi/kztsd9WpQjGZbsUIgxf3ZngOFcnvB8/BxAALEmNpQTt0G3i1txI5AM7UvfRJYuATNWs5H9/BI9qBwHNbP3Czk1ILtHv5gDqzWgtSL03ckIeLdijc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMvQ7I8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EE9C2BCAF;
+	Mon, 13 Apr 2026 16:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098804;
-	bh=bJlR6GewDZONBV+hrgTx8W6xwIS/SyTmDUFUYYmzLZY=;
+	s=korg; t=1776097625;
+	bh=VSp9Z7Joel7cAInllUSf43fjxNyr8KtejRsOnp0f52E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOxO6ANjKevKg8dnY65aaxsLv/RiXNTRaMMsh2+3S/UXZzFAyu9AqtdaRqZQBgihn
-	 lVrsDc9r4xXLDJR3L4NpZdUIM1buHfmLaFM7NlmavHtR9I5pNRMpibiKzuDys079om
-	 dAta9qRbZJTaJgNXuMxOVrSXzrQuqEY4uYjtSdZU=
+	b=JMvQ7I8Gm45G+D3UmbDw8tc0EO0nL4D51+2BtT+C1gSNmqCPkW0er2qmW7k1dg7uc
+	 z1Kd2p4BDNjEd7SGzpfxgYRStACRzOUYQhpbObwZouj/mVlhoRC4qvzdFbeXHhQnC3
+	 LnMbnAXOTYiUzebLwJsrc9gwW29CPyWTAfaLZJQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 095/491] usb: misc: uss720: properly clean up reference in uss720_probe()
-Date: Mon, 13 Apr 2026 17:55:40 +0200
-Message-ID: <20260413155822.601539766@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Raul E Rangel <rrangel@google.com>
+Subject: [PATCH 5.15 210/570] serial: 8250: Fix TX deadlock when using DMA
+Date: Mon, 13 Apr 2026 17:55:41 +0200
+Message-ID: <20260413155838.324491566@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,60 +72,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237185-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236722-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 90F633EFECD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E4DB53EF02F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Raul E Rangel <rrangel@chromium.org>
 
-commit 45dba8011efac11a2f360383221b541f5ea53ce5 upstream.
+commit a424a34b8faddf97b5af41689087e7a230f79ba7 upstream.
 
-If get_1284_register() fails, the usb device reference count is
-incorrect and needs to be properly dropped before returning.  That will
-happen when the kref is dropped in the call to destroy_priv(), so jump
-to that error path instead of returning directly.
+`dmaengine_terminate_async` does not guarantee that the
+`__dma_tx_complete` callback will run. The callback is currently the
+only place where `dma->tx_running` gets cleared. If the transaction is
+canceled and the callback never runs, then `dma->tx_running` will never
+get cleared and we will never schedule new TX DMA transactions again.
 
+This change makes it so we clear `dma->tx_running` after we terminate
+the DMA transaction. This is "safe" because `serial8250_tx_dma_flush`
+is holding the UART port lock. The first thing the callback does is also
+grab the UART port lock, so access to `dma->tx_running` is serialized.
+
+Fixes: 9e512eaaf8f4 ("serial: 8250: Fix fifo underflow on flush")
 Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Link: https://patch.msgid.link/2026022342-smokiness-stove-d792@gregkh
+Signed-off-by: Raul E Rangel <rrangel@google.com>
+Link: https://patch.msgid.link/20260209135815.1.I16366ecb0f62f3c96fe3dd5763fcf6f3c2b4d8cd@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/uss720.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_dma.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/usb/misc/uss720.c
-+++ b/drivers/usb/misc/uss720.c
-@@ -733,7 +733,7 @@ static int uss720_probe(struct usb_inter
- 	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
- 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
- 	if (ret < 0)
--		return ret;
-+		goto probe_abort;
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -150,7 +150,22 @@ void serial8250_tx_dma_flush(struct uart
+ 	 */
+ 	dma->tx_size = 0;
  
- 	ret = usb_find_last_int_in_endpoint(interface, &epd);
- 	if (!ret) {
++	/*
++	 * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
++	 * holding the uart port spinlock.
++	 */
+ 	dmaengine_terminate_async(dma->txchan);
++
++	/*
++	 * The callback might or might not run. If it doesn't run, we need to ensure
++	 * that `tx_running` is cleared so that we can schedule new transactions.
++	 * If it does run, then the zombie callback will clear `tx_running` again
++	 * and perform a no-op since `tx_size` was cleared above.
++	 *
++	 * In either case, we ASSUME the DMA transaction will terminate before we
++	 * issue a new `serial8250_tx_dma`.
++	 */
++	dma->tx_running = 0;
+ }
+ 
+ int serial8250_rx_dma(struct uart_8250_port *p)
 
 
 
