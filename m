@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-237526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCUUEf8i3WkoaQkAu9opvQ
-	(envelope-from <stable+bounces-237526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:15 +0200
+	id aIgKLeMc3WlUaAkAu9opvQ
+	(envelope-from <stable+bounces-236500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D953F0D05
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAA13EF8B6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6639E3069348
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EF83305A42B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA59346FA0;
-	Mon, 13 Apr 2026 17:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0712309F1C;
+	Mon, 13 Apr 2026 16:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHm6+kXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQEhayBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B87346E7B;
-	Mon, 13 Apr 2026 17:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3D27280A;
+	Mon, 13 Apr 2026 16:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099684; cv=none; b=icQ9V1sZJ7MIQOjoiimkJLfLZnTLi/6mVLGKWpn7H4q/n7xWgzrzIqO53vOaPXdlPb49i9ns9MgRnoCk3YYAaezupYdkDeSLxem/LDWYgm4GvyJCYiP1zFX5cg99zU2ZKJ0Jb9dBZLT61pjvmguTmU6Am4chzbRPoldOsjqwn/A=
+	t=1776097062; cv=none; b=WOiM7tWIoyqQn0gYoAmBfG2iY/nKBwL9Ss5wGJpj4i9fJuA1UqeQCMONP3RTG2QlsqzWslrp8W+FlJqB9riqcZnks+dsl1Vsy3RUnqrJ4jG/+11uqBbVuxKJdh01zh54O2/TRccb4617h9v1tX0eQBETayFrZhFIwDN3ACLcJeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099684; c=relaxed/simple;
-	bh=40diKpSCrj8J2O04uXfAEzpKPyEG/GTI2UcU8kG3AAg=;
+	s=arc-20240116; t=1776097062; c=relaxed/simple;
+	bh=k+kvv0DGvdHeMpcVpHhfQcmaFJtlWInRzbXn+SIjXuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIyT7n2O9xRhEt73Jg6yHDuvc9027xc1jYazoTXu3/hdXr3c10n2w1cj1l4Jt5RoPkRPcHglAEaYVEq5sWWMxswQdtZYj6V1ZKOrRl9tb0h1bInUsfqtpjCDTmxIVvj6CChVzJoQFpGiCiqNK1nP2pxUu1naIcIAhVCxqRslV1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHm6+kXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA79C2BCAF;
-	Mon, 13 Apr 2026 17:01:23 +0000 (UTC)
+	 MIME-Version; b=gIoFICEaFAzIYd2TDamhpw3crD0zdr+tAZZXYlqUXAgBxDOr6YrDOWQXhRBuhF5Jqzpg/RXf1zLnIMC3tO9r7/2b3DRFhU5zIMy1QBRQ+vUTXlBtl7v6508RU80IysuhVE2ydjISv9evwHNTCwhA3A/+/dfRoPAH6+N+Y8yqiX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQEhayBr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB45CC2BCAF;
+	Mon, 13 Apr 2026 16:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099684;
-	bh=40diKpSCrj8J2O04uXfAEzpKPyEG/GTI2UcU8kG3AAg=;
+	s=korg; t=1776097062;
+	bh=k+kvv0DGvdHeMpcVpHhfQcmaFJtlWInRzbXn+SIjXuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHm6+kXgPzg8S5/kE5/6meozYwwxwC5hbOmWQeahVT/Scujuck6uYZf8fGYfuKGFb
-	 Z/oROahM8ZJQqDHSpUe2A2gDbFQ9FMrgn301vjXyngv4d155FqMYl5fTVnlQOCREDB
-	 OJzMfxedeOrBbRS+zz8fWuG2ilTBkXTMOshIj03Q=
+	b=uQEhayBrrHK/+HNq4bQHccUBsGTsPwfZ3H9K6d/hGQczONFqu3fXXF4JNi9d/qmPd
+	 oOTPVB5ak+iowG/WXj49kTiXyUAaxgZEfLRevhV20Ce/9Hmofze4qIpejTohuDBfR+
+	 BlZ5DcEFQwD2rkXFVe8+dvxa49JZf14U3mk/6Cyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.10 435/491] apparmor: fix missing bounds check on DEFAULT table in verify_dfa()
+	David Carlier <devnexen@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 46/55] net: altera-tse: fix skb leak on DMA mapping error in tse_start_xmit()
 Date: Mon, 13 Apr 2026 18:01:20 +0200
-Message-ID: <20260413155835.313154328@linuxfoundation.org>
+Message-ID: <20260413155726.549055629@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,125 +65,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236500-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237526-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,canonical.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D3D953F0D05
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 4CAA13EF8B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit d352873bbefa7eb39995239d0b44ccdf8aaa79a4 upstream.
+commit 6dede3967619b5944003227a5d09fdc21ed57d10 upstream.
 
-The verify_dfa() function only checks DEFAULT_TABLE bounds when the state
-is not differentially encoded.
+When dma_map_single() fails in tse_start_xmit(), the function returns
+NETDEV_TX_OK without freeing the skb. Since NETDEV_TX_OK tells the
+stack the packet was consumed, the skb is never freed, leaking memory
+on every DMA mapping failure.
 
-When the verification loop traverses the differential encoding chain,
-it reads k = DEFAULT_TABLE[j] and uses k as an array index without
-validation. A malformed DFA with DEFAULT_TABLE[j] >= state_count,
-therefore, causes both out-of-bounds reads and writes.
+Add dev_kfree_skb_any() before returning to properly free the skb.
 
-[   57.179855] ==================================================================
-[   57.180549] BUG: KASAN: slab-out-of-bounds in verify_dfa+0x59a/0x660
-[   57.180904] Read of size 4 at addr ffff888100eadec4 by task su/993
-
-[   57.181554] CPU: 1 UID: 0 PID: 993 Comm: su Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
-[   57.181558] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   57.181563] Call Trace:
-[   57.181572]  <TASK>
-[   57.181577]  dump_stack_lvl+0x5e/0x80
-[   57.181596]  print_report+0xc8/0x270
-[   57.181605]  ? verify_dfa+0x59a/0x660
-[   57.181608]  kasan_report+0x118/0x150
-[   57.181620]  ? verify_dfa+0x59a/0x660
-[   57.181623]  verify_dfa+0x59a/0x660
-[   57.181627]  aa_dfa_unpack+0x1610/0x1740
-[   57.181629]  ? __kmalloc_cache_noprof+0x1d0/0x470
-[   57.181640]  unpack_pdb+0x86d/0x46b0
-[   57.181647]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181653]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181656]  ? aa_unpack_nameX+0x1a8/0x300
-[   57.181659]  aa_unpack+0x20b0/0x4c30
-[   57.181662]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181664]  ? stack_depot_save_flags+0x33/0x700
-[   57.181681]  ? kasan_save_track+0x4f/0x80
-[   57.181683]  ? kasan_save_track+0x3e/0x80
-[   57.181686]  ? __kasan_kmalloc+0x93/0xb0
-[   57.181688]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181693]  ? aa_simple_write_to_buffer+0x54/0x130
-[   57.181697]  ? policy_update+0x154/0x330
-[   57.181704]  aa_replace_profiles+0x15a/0x1dd0
-[   57.181707]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181710]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181712]  ? aa_loaddata_alloc+0x77/0x140
-[   57.181715]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181717]  ? _copy_from_user+0x2a/0x70
-[   57.181730]  policy_update+0x17a/0x330
-[   57.181733]  profile_replace+0x153/0x1a0
-[   57.181735]  ? rw_verify_area+0x93/0x2d0
-[   57.181740]  vfs_write+0x235/0xab0
-[   57.181745]  ksys_write+0xb0/0x170
-[   57.181748]  do_syscall_64+0x8e/0x660
-[   57.181762]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   57.181765] RIP: 0033:0x7f6192792eb2
-
-Remove the MATCH_FLAG_DIFF_ENCODE condition to validate all DEFAULT_TABLE
-entries unconditionally.
-
-Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: bbd2190ce96d ("Altera TSE: Add main and header file for Altera Ethernet Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260401211218.279185-1-devnexen@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/match.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/altera/altera_tse_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -204,9 +204,10 @@ static int verify_dfa(struct aa_dfa *dfa
- 	if (state_count == 0)
+--- a/drivers/net/ethernet/altera/altera_tse_main.c
++++ b/drivers/net/ethernet/altera/altera_tse_main.c
+@@ -572,6 +572,7 @@ static netdev_tx_t tse_start_xmit(struct
+ 				  DMA_TO_DEVICE);
+ 	if (dma_mapping_error(priv->device, dma_addr)) {
+ 		netdev_err(priv->dev, "%s: DMA mapping error\n", __func__);
++		dev_kfree_skb_any(skb);
+ 		ret = NETDEV_TX_OK;
  		goto out;
- 	for (i = 0; i < state_count; i++) {
--		if (!(BASE_TABLE(dfa)[i] & MATCH_FLAG_DIFF_ENCODE) &&
--		    (DEFAULT_TABLE(dfa)[i] >= state_count))
-+		if (DEFAULT_TABLE(dfa)[i] >= state_count) {
-+			pr_err("AppArmor DFA default state out of bounds");
- 			goto out;
-+		}
- 		if (BASE_TABLE(dfa)[i] & MATCH_FLAGS_INVALID) {
- 			pr_err("AppArmor DFA state with invalid match flags");
- 			goto out;
+ 	}
 
 
 
