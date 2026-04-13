@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-237105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QE1tMpYd3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-237105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:10 +0200
+	id QAKbIg0Z3Wn3ZwkAu9opvQ
+	(envelope-from <stable+bounces-236639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F41F3EFB20
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575523EEE3F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B8D19301E70B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97926303A94F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81742D8364;
-	Mon, 13 Apr 2026 16:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C7930C360;
+	Mon, 13 Apr 2026 16:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMmtbHwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ioJBrZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCFB1A680C;
-	Mon, 13 Apr 2026 16:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C9B2DF12F;
+	Mon, 13 Apr 2026 16:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098601; cv=none; b=nfh/pXCzWtByaemAWZSyDQ8m9/S6Rbt8xnHBMMxklT8O97ct6vZl9Q27F71Eqpknj8fFcY79x9RumkhncmcaaoFjGFMOgGGBUO1/QhHWWBtb9vU/9xiLWsTQ2EdfUZRVEFZ3qAGz5yPiYID24imFPlwjKU8iGT/J2KK4pG1diKM=
+	t=1776097422; cv=none; b=d6UQ9J6LB1OrmCXR9iK1a2MU4J63i6id9/qFqcLvmn7GUjn+xgF7CowLZYjV2SBk927ltgSdVAhY2wqZHv99rKWqDRxIw8Y4Uar2xOmnYFTtQxmTkVRrSb59hTXJKzS/4MZ5WFwcTXAVfvF4gcB39sGQ1ph/MX2ywFX17mrUNmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098601; c=relaxed/simple;
-	bh=2x3oOiuarE9J+JBYpnbpCja6FPQy3V7ifUH1o77Xn2I=;
+	s=arc-20240116; t=1776097422; c=relaxed/simple;
+	bh=frejrtFgII3462+1R8nz+B4sJZLaa0YQfU/3krJ46tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bs+S5uNreYLn7OTtHI43Y21JssDxE7HS6YJ8md9TZVfZzR3knhVridIw1tRZ422zmVbMW+Pl+0y4vr6pu/y1gZfjew7v6kc/7P6UJOgFbdmKQHVeC2E3YdLeV2BwntGnamBnV5tqugMrGkp2pxVPV7jmdZ44YdaH4SBCv1vXyqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMmtbHwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DEFC2BCAF;
-	Mon, 13 Apr 2026 16:43:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dk+sRTHcS25bipW//Uq8oWOsEiAu4uZIeZQd8pUnj/JFAmJz2EVyFHwpjv5pnxlTSUt3XncueOfOYGYFco/O5mhEYuMyv1PnHvhUmZAe+IiuRp5ZZTMsBVRMoYQE0NSvbfC7pZl3xIMRtXGvFyIprgkWUeFoLejT7uWYIPZhDzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ioJBrZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1069C2BCAF;
+	Mon, 13 Apr 2026 16:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098601;
-	bh=2x3oOiuarE9J+JBYpnbpCja6FPQy3V7ifUH1o77Xn2I=;
+	s=korg; t=1776097422;
+	bh=frejrtFgII3462+1R8nz+B4sJZLaa0YQfU/3krJ46tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMmtbHwUB7mcVV2HLmf1Au5equjYO5+pdXl80LKBZ7xhE9E2E8f4Y69tfyZEJeHl+
-	 523adQzoCj/nZscehSh5GElEfz72GaD1wvgoHIkVX5Ir9EB3XejLaVKR59Qu6ukC2e
-	 NQCoyWPiycz9xmjr6Qb1OPt2snBp1Moy6zrhrkUw=
+	b=2ioJBrZqkPAA+ulUwNW03wH+gHuBJ3jF8+Odq31oybCOp6txGDZs71Jf8W1gxhnM5
+	 uTQnkjaMz6+FbQegat2u8nlJa8xHSYLh67S1vlSWLSSaubBfu5bVZ9QdXXrF5YQepC
+	 xH26dIaTOvtSwivTq0xZusloTZ/wBHJ3wr9nnQA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/491] ALSA: hda/conexant: Fix headphone jack handling on Acer Swift SF314
+	Qingye Zhao <zhaoqingye@honor.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 5.15 131/570] cgroup: fix race between task migration and iteration
 Date: Mon, 13 Apr 2026 17:54:22 +0200
-Message-ID: <20260413155819.698878249@linuxfoundation.org>
+Message-ID: <20260413155835.350674340@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237105-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236639-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: 7F41F3EFB20
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email,honor.com:email]
+X-Rspamd-Queue-Id: 575523EEE3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Qingye Zhao <zhaoqingye@honor.com>
 
-[ Upstream commit 7bc0df86c2384bc1e2012a2c946f82305054da64 ]
+commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
 
-Acer Swift SF314 (SSID 1025:136d) needs a bit of tweaks of the pin
-configurations for NID 0x16 and 0x19 to make the headphone / headset
-jack working.  NID 0x17 can remain as is for the working speaker, and
-the built-in mic is supported via SOF.
+When a task is migrated out of a css_set, cgroup_migrate_add_task()
+first moves it from cset->tasks to cset->mg_tasks via:
 
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221086
-Link: https://patch.msgid.link/20260217104414.62911-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    list_move_tail(&task->cg_list, &cset->mg_tasks);
+
+If a css_task_iter currently has it->task_pos pointing to this task,
+css_set_move_task() calls css_task_iter_skip() to keep the iterator
+valid. However, since the task has already been moved to ->mg_tasks,
+the iterator is advanced relative to the mg_tasks list instead of the
+original tasks list. As a result, remaining tasks on cset->tasks, as
+well as tasks queued on cset->mg_tasks, can be skipped by iteration.
+
+Fix this by calling css_set_skip_task_iters() before unlinking
+task->cg_list from cset->tasks. This advances all active iterators to
+the next task on cset->tasks, so iteration continues correctly even
+when a task is concurrently being migrated.
+
+This race is hard to hit in practice without instrumentation, but it
+can be reproduced by artificially slowing down cgroup_procs_show().
+For example, on an Android device a temporary
+/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
+into cgroup_procs_show(), and then:
+
+  1) Spawn three long-running tasks (PIDs 101, 102, 103).
+  2) Create a test cgroup and move the tasks into it.
+  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
+  4) In one shell, read cgroup.procs from the test cgroup.
+  5) Within the delay window, in another shell migrate PID 102 by
+     writing it to a different cgroup.procs file.
+
+Under this setup, cgroup.procs can intermittently show only PID 101
+while skipping PID 103. Once the migration completes, reading the
+file again shows all tasks as expected.
+
+Note that this change does not allow removing the existing
+css_set_skip_task_iters() call in css_set_move_task(). The new call
+in cgroup_migrate_add_task() only handles iterators that are racing
+with migration while the task is still on cset->tasks. Iterators may
+also start after the task has been moved to cset->mg_tasks. If we
+dropped css_set_skip_task_iters() from css_set_move_task(), such
+iterators could keep task_pos pointing to a migrating task, causing
+css_task_iter_advance() to malfunction on the destination css_set,
+up to and including crashes or infinite loops.
+
+The race window between migration and iteration is very small, and
+css_task_iter is not on a hot path. In the worst case, when an
+iterator is positioned on the first thread of the migrating process,
+cgroup_migrate_add_task() may have to skip multiple tasks via
+css_set_skip_task_iters(). However, this only happens when migration
+and iteration actually race, so the performance impact is negligible
+compared to the correctness fix provided here.
+
+Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/cgroup/cgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index fae09c88a33c0..4d0bd1903ccbd 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -239,6 +239,7 @@ enum {
- 	CXT_PINCFG_SWS_JS201D,
- 	CXT_PINCFG_TOP_SPEAKER,
- 	CXT_FIXUP_HP_A_U,
-+	CXT_FIXUP_ACER_SWIFT_HP,
- };
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2454,6 +2454,7 @@ static void cgroup_migrate_add_task(stru
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -969,6 +970,14 @@ static const struct hda_fixup cxt_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_hp_a_u,
- 	},
-+	[CXT_FIXUP_ACER_SWIFT_HP] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x16, 0x0321403f }, /* Headphone */
-+			{ 0x19, 0x40f001f0 }, /* Mic */
-+			{ }
-+		},
-+	},
- };
+ 	mgctx->tset.nr_tasks++;
  
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -1018,6 +1027,7 @@ static const struct snd_pci_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x1025, 0x0543, "Acer Aspire One 522", CXT_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054c, "Acer Aspire 3830TG", CXT_FIXUP_ASPIRE_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054f, "Acer Aspire 4830T", CXT_FIXUP_ASPIRE_DMIC),
-+	SND_PCI_QUIRK(0x1025, 0x136d, "Acer Swift SF314", CXT_FIXUP_ACER_SWIFT_HP),
- 	SND_PCI_QUIRK(0x103c, 0x8079, "HP EliteBook 840 G3", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x807C, "HP EliteBook 820 G3", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x80FD, "HP ProBook 640 G2", CXT_FIXUP_HP_DOCK),
--- 
-2.51.0
-
++	css_set_skip_task_iters(cset, task);
+ 	list_move_tail(&task->cg_list, &cset->mg_tasks);
+ 	if (list_empty(&cset->mg_node))
+ 		list_add_tail(&cset->mg_node,
 
 
 
