@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-237002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJI3BSYc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-237002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:02 +0200
+	id GHHpCgUk3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DE63EF71A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15923F0FD6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09A293010632
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A654D307F4E0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC1430DD3C;
-	Mon, 13 Apr 2026 16:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE5032FA18;
+	Mon, 13 Apr 2026 16:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTcK5HWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns71F+ds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A65307AC7;
-	Mon, 13 Apr 2026 16:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06D332863D;
+	Mon, 13 Apr 2026 16:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098336; cv=none; b=jsAwemNcMleGTLWZIGWpRF57pEUwVzzpxUrOTeZP8Kb4AwjNdb4Y7Lr/VaotbGsezQ5ERW4tsnAv2YZhKdVjDcQG5teCeGZ5wGaK9YnBfGOkDaMBFYK60812uN8sX3dmZSNxDjZkSvdFoF1Z0MybkcbvlKnipM+uA3h6hWWtWYo=
+	t=1776099522; cv=none; b=P2ZIbt0iPQyz4NQqBvXhutppRWyfpkHMT31aXVirmtLdycp7HV9+T3gs7E/+pNMz+E48R0FPVIKrm2dRVHP/5Kcjjz3OyMvIY3wCfATai6jeVVbGMjnNKHLJBnOzh/8y6BumsM7ckBMSBVNYS3jycnyHjwnEpobmaekkjgWUy/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098336; c=relaxed/simple;
-	bh=kVhAv+uvT2TMZ1hVtsnUBOZpSTzsn93hboiXGLKEWL4=;
+	s=arc-20240116; t=1776099522; c=relaxed/simple;
+	bh=VtnmLQvSr68gshyIjsTOyerjd2o00NUzp2xpMuUzErE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fu6IqMOFbaZhGSGlYgP3Ht2IaE7qKd5t6Glo/klngJRcD+783GYJDi3WKTXxWsbw8pXkrBld3kV7SFX7xFf/6oZIWxD20A0I8C0dByROPfIOWs7UsrubBXB4lhM2tEoBEMyVsEWmpwu/1eANLuYmhfVH+9PczjisWGtMcHBbDj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTcK5HWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36213C2BCAF;
-	Mon, 13 Apr 2026 16:38:56 +0000 (UTC)
+	 MIME-Version; b=tyol27nZnIENXtDbUi3M950nZZSSY2dyT5KpS6trm6WznMQu1EpoLaJo7/UCEHmlcNmTNivMgRwbRb9M4XDiYPDNkEcWNSWzbxiqYbRsg3rAPZf8Z7P8cUr4TDDMUY2RgpIFngKBS6TADUuc8+rIlvkjOkF9BTNt/6XcfuyiVxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns71F+ds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89E5C2BCAF;
+	Mon, 13 Apr 2026 16:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098336;
-	bh=kVhAv+uvT2TMZ1hVtsnUBOZpSTzsn93hboiXGLKEWL4=;
+	s=korg; t=1776099522;
+	bh=VtnmLQvSr68gshyIjsTOyerjd2o00NUzp2xpMuUzErE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wTcK5HWcEYzw/SKVv/nHAi7zhvf+kQA3wsHH4G162QTj7x/YznqNRD4CwwQymW39c
-	 DTswGGmRyli71Yd6eh/aRX58sNTkq7oS5i/UcGiCYbMtCX5O0Q/AzGj2nEozV86b3h
-	 dtyENGC3yCZYBMth1CNKGZDJ8OqjhEsWzV9tkZSE=
+	b=Ns71F+dsNnYZq/aF1hS+gw1z/QAZwRTLL8ZTz6QHdH18h1ojsXuPqX6Osm1czHfkt
+	 KP1NV9NX/u7AswiNfKt8i2kQgChiBdQbfKnF3GXX5i+jyIXpKKOc6BcetlwBvtMyVf
+	 rVwVgWwtGh6oYjxsDwj7lCcv98/w6yKPO7rPfNmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 486/570] vxlan: validate ND option lengths in vxlan_na_create
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 372/491] hwmon: (occ) Fix division by zero in occ_show_power_1()
 Date: Mon, 13 Apr 2026 18:00:17 +0200
-Message-ID: <20260413155848.662627144@linuxfoundation.org>
+Message-ID: <20260413155832.961213778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,87 +67,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237002-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-237463-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,outlook.com:email]
-X-Rspamd-Queue-Id: 49DE63EF71A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,juniper.net:email]
+X-Rspamd-Queue-Id: A15923F0FD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit afa9a05e6c4971bd5586f1b304e14d61fb3d9385 upstream.
+commit 39e2a5bf970402a8530a319cf06122e216ba57b8 upstream.
 
-vxlan_na_create() walks ND options according to option-provided
-lengths. A malformed option can make the parser advance beyond the
-computed option span or use a too-short source LLADDR option payload.
+In occ_show_power_1() case 1, the accumulator is divided by
+update_tag without checking for zero. If no samples have been
+collected yet (e.g. during early boot when the sensor block is
+included but hasn't been updated), update_tag is zero, causing
+a kernel divide-by-zero crash.
 
-Validate option lengths against the remaining NS option area before
-advancing, and only read source LLADDR when the option is large enough
-for an Ethernet address.
+The 2019 fix in commit 211186cae14d ("hwmon: (occ) Fix division by
+zero issue") only addressed occ_get_powr_avg() used by
+occ_show_power_2() and occ_show_power_a0(). This separate code
+path in occ_show_power_1() was missed.
 
-Fixes: 4b29dba9c085 ("vxlan: fix nonfunctional neigh_reduce()")
+Fix this by reusing the existing occ_get_powr_avg() helper, which
+already handles the zero-sample case and uses mul_u64_u32_div()
+to multiply before dividing for better precision. Move the helper
+above occ_show_power_1() so it is visible at the call site.
+
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260326034441.2037420-4-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260326224510.294619-2-sanman.pradhan@hpe.com
+[groeck: Fix alignment problems reported by checkpatch]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwmon/occ/common.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2099,12 +2099,14 @@ static struct sk_buff *vxlan_na_create(s
- 	ns_olen = request->len - skb_network_offset(request) -
- 		sizeof(struct ipv6hdr) - sizeof(*ns);
- 	for (i = 0; i < ns_olen-1; i += (ns->opt[i+1]<<3)) {
--		if (!ns->opt[i + 1]) {
-+		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
- 			kfree_skb(reply);
- 			return NULL;
- 		}
- 		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
--			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
-+			if ((ns->opt[i + 1] << 3) >=
-+			    sizeof(struct nd_opt_hdr) + ETH_ALEN)
-+				daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
- 			break;
- 		}
- 	}
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -422,6 +422,12 @@ static ssize_t occ_show_freq_2(struct de
+ 	return sysfs_emit(buf, "%u\n", val);
+ }
+ 
++static u64 occ_get_powr_avg(u64 accum, u32 samples)
++{
++	return (samples == 0) ? 0 :
++		mul_u64_u32_div(accum, 1000000UL, samples);
++}
++
+ static ssize_t occ_show_power_1(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
+@@ -443,9 +449,8 @@ static ssize_t occ_show_power_1(struct d
+ 		val = get_unaligned_be16(&power->sensor_id);
+ 		break;
+ 	case 1:
+-		val = get_unaligned_be32(&power->accumulator) /
+-			get_unaligned_be32(&power->update_tag);
+-		val *= 1000000ULL;
++		val = occ_get_powr_avg(get_unaligned_be32(&power->accumulator),
++				       get_unaligned_be32(&power->update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->update_tag) *
+@@ -461,12 +466,6 @@ static ssize_t occ_show_power_1(struct d
+ 	return sysfs_emit(buf, "%llu\n", val);
+ }
+ 
+-static u64 occ_get_powr_avg(u64 accum, u32 samples)
+-{
+-	return (samples == 0) ? 0 :
+-		mul_u64_u32_div(accum, 1000000UL, samples);
+-}
+-
+ static ssize_t occ_show_power_2(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
 
 
 
