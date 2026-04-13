@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IdLDp0n3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:27:57 +0200
+	id cHxPMocd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-237093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70253F16FB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:27:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A333B3EFAEA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70B013183883
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6400C3052B8C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2F0345CD0;
-	Mon, 13 Apr 2026 17:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D241C30C359;
+	Mon, 13 Apr 2026 16:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eamiW5ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWcIYCtd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DC733C536;
-	Mon, 13 Apr 2026 17:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940EA1A680C;
+	Mon, 13 Apr 2026 16:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099679; cv=none; b=oDhQe08YNkAGCdzcJc6ZY4Ii1JjSpBKxHO8fFzVB3KpMeeA7MyhPYXVB64CHLyksBRO+O1nOBanP46IMQbhwUM/53TFqmtdBkFzZ6PeddQ0pSXNL3rMjwLFYyYjVQPJOZYLCTOT16UhB4FnSt4SZXF96JijybD+EMGHedwU7Qqs=
+	t=1776098566; cv=none; b=hZIjB1ezXJi6RLqPey009+NOZYchJHgCITD/i8tmzUys6rRC9B9XpOsbLJON53/3P76e61Fsj9tNOKi6Y2F0VOI/xqZdGDDG0QOT6tOZMSUIky6126d9Bk/JdbqOTUNbYjhGyVoG0yTz4ulgViCDs03robulNyA+IzIvNHbmQeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099679; c=relaxed/simple;
-	bh=G0SdyRhGxKPfV9hIt9y7c9TX471Of8masXoY3zNSwHw=;
+	s=arc-20240116; t=1776098566; c=relaxed/simple;
+	bh=tv8aUGFMaN79fIks6eu1pl44L6icBSDx7JuQCyej5kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hN34CKeV969k2ooQHJbaGSARG1I4cIZRX6JJvt6h9C0UQEuKBcEAe685WKityX7RXLjZSANDoJe39I/bGPV5VnQdDiuA9F+U3A5qsxpx2eIwy/w37xw4dOfoyE7HDrU3RyWW8LRCTRGT9RacXS7HdQm1FYP1zzXnBjmZCaW2tqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eamiW5ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CDAC2BCB0;
-	Mon, 13 Apr 2026 17:01:18 +0000 (UTC)
+	 MIME-Version; b=i46sof7WdAjGwogiw5kRngFAQk26YESa9F6xn18aGCjxPrkEBVydFZ4Kf9I7h8GBdQy+7Eo5p+i7BAfuDCY2Hxd0kZg5voD1yH3zjEQ2NSST3j/sc8B/ZuM7cyy4AfBT10zkkE/jJecGfCapkUh5SMFXXNbZbT2Cx3jSieBATRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWcIYCtd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1CBC2BCAF;
+	Mon, 13 Apr 2026 16:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099679;
-	bh=G0SdyRhGxKPfV9hIt9y7c9TX471Of8masXoY3zNSwHw=;
+	s=korg; t=1776098566;
+	bh=tv8aUGFMaN79fIks6eu1pl44L6icBSDx7JuQCyej5kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eamiW5ib8VeGtJjoE60ddkgG/bJubP8TVy1lYo9JcRnss4tXpBtpAnBpbrlwNKcNO
-	 6wwb2Nsv1a0jTOiA56ITPTs271G6P7fNxmi5Xi+6xp8/xxHxJ0uMJefmdUV9yTCijY
-	 3pVXZkYbi41c5D6uCR8IIj9/mIlEyGMYi8Y+CvGQ=
+	b=zWcIYCtd+wRoXiV/821n5x5WoRp7BSzd+lwHhYPvM6tFRGheF9vcc5MtWLCOUkrAW
+	 TteFbYGMBtHgG4jPcogop4DXGCzJWnTxRog8Wo9DzHUpjJviC0els6x5pup987CnNx
+	 f1r7q0vOYAVVt+oSL24+5ukaStbaBfsaqhFuue0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Ryan Lee <ryan.lee@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.10 433/491] apparmor: fix: limit the number of levels of policy namespaces
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 547/570] usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
 Date: Mon, 13 Apr 2026 18:01:18 +0200
-Message-ID: <20260413155835.239306457@linuxfoundation.org>
+Message-ID: <20260413155850.937488713@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +68,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237524-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237093-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B70253F16FB
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: A333B3EFAEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 306039414932c80f8420695a24d4fe10c84ccfb2 upstream.
+[ Upstream commit e1eabb072c75681f78312c484ccfffb7430f206e ]
 
-Currently the number of policy namespaces is not bounded relying on
-the user namespace limit. However policy namespaces aren't strictly
-tied to user namespaces and it is possible to create them and nest
-them arbitrarily deep which can be used to exhaust system resource.
+A race condition between gether_disconnect() and eth_stop() leads to a
+NULL pointer dereference. Specifically, if eth_stop() is triggered
+concurrently while gether_disconnect() is tearing down the endpoints,
+eth_stop() attempts to access the cleared endpoint descriptor, causing
+the following NPE:
 
-Hard cap policy namespaces to the same depth as user namespaces.
+  Unable to handle kernel NULL pointer dereference
+  Call trace:
+   __dwc3_gadget_ep_enable+0x60/0x788
+   dwc3_gadget_ep_enable+0x70/0xe4
+   usb_ep_enable+0x60/0x15c
+   eth_stop+0xb8/0x108
 
-Fixes: c88d4c7b049e8 ("AppArmor: core policy routines")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Reviewed-by: Ryan Lee <ryan.lee@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Because eth_stop() crashes while holding the dev->lock, the thread
+running gether_disconnect() fails to acquire the same lock and spins
+forever, resulting in a hardlockup:
+
+  Core - Debugging Information for Hardlockup core(7)
+  Call trace:
+   queued_spin_lock_slowpath+0x94/0x488
+   _raw_spin_lock+0x64/0x6c
+   gether_disconnect+0x19c/0x1e8
+   ncm_set_alt+0x68/0x1a0
+   composite_setup+0x6a0/0xc50
+
+The root cause is that the clearing of dev->port_usb in
+gether_disconnect() is delayed until the end of the function.
+
+Move the clearing of dev->port_usb to the very beginning of
+gether_disconnect() while holding dev->lock. This cuts off the link
+immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+safely bail out.
+
+Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/include/policy_ns.h |    2 ++
- security/apparmor/policy_ns.c         |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/usb/gadget/function/u_ether.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/security/apparmor/include/policy_ns.h
-+++ b/security/apparmor/include/policy_ns.h
-@@ -18,6 +18,8 @@
- #include "label.h"
- #include "policy.h"
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1173,6 +1173,10 @@ void gether_disconnect(struct gether *li
  
-+/* Match max depth of user namespaces */
-+#define MAX_NS_DEPTH 32
+ 	DBG(dev, "%s\n", __func__);
  
- /* struct aa_ns_acct - accounting of profiles in namespace
-  * @max_size: maximum space allowed for all profiles in namespace
---- a/security/apparmor/policy_ns.c
-+++ b/security/apparmor/policy_ns.c
-@@ -249,6 +249,8 @@ static struct aa_ns *__aa_create_ns(stru
- 	AA_BUG(!name);
- 	AA_BUG(!mutex_is_locked(&parent->lock));
++	spin_lock(&dev->lock);
++	dev->port_usb = NULL;
++	spin_unlock(&dev->lock);
++
+ 	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
  
-+	if (parent->level > MAX_NS_DEPTH)
-+		return ERR_PTR(-ENOSPC);
- 	ns = alloc_ns(parent->base.hname, name);
- 	if (!ns)
- 		return ERR_PTR(-ENOMEM);
+@@ -1210,10 +1214,6 @@ void gether_disconnect(struct gether *li
+ 	dev->header_len = 0;
+ 	dev->unwrap = NULL;
+ 	dev->wrap = NULL;
+-
+-	spin_lock(&dev->lock);
+-	dev->port_usb = NULL;
+-	spin_unlock(&dev->lock);
+ }
+ EXPORT_SYMBOL_GPL(gether_disconnect);
+ 
 
 
 
