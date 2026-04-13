@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-236072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEa+NE3o3GmUYAkAu9opvQ
-	(envelope-from <stable+bounces-236072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:57:49 +0200
+	id 6CW+EOrm3GkZYAkAu9opvQ
+	(envelope-from <stable+bounces-236073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:51:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35EC13EC482
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:57:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C853F3EC361
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 625A3302E791
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:51:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3CA0A300830F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4DE3C873D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D08F3C8722;
 	Mon, 13 Apr 2026 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFpjX0C6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLaeMJFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C490E3C8734
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE183C8734
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776084711; cv=none; b=lS3nQyZrblWIGsh1HRDGWPodbfS9ARO+S6CjURgalyuq4gSgayVlKSjzFNxA8Zy9XsjRniafXrTz9fN6QhPe419ZORfSpItHH6i2NnQ5w6CE94pfTM6UriTdrEdtYRwKUdaAY/F2jfj7ahs91GTHK9/N20iQHtGJmnCnKtraRDQ=
+	t=1776084712; cv=none; b=KZMcBTEMUVEChI3AdY0r+Ozy7b12ZuHoWx8sdOE9o4CxVjZz0ez1+QRklkyMfCGfcHm2cHsbLMG4J1ojVXSqfFD1ru5sjbr2R0lDYKFis4xn4ADuyQ975ristMTQ2xHFtXzJ/HwwoMg+StmIIPbyw+jxoK1LbMBqvYajXo+/K8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776084711; c=relaxed/simple;
-	bh=pq6m4kJqzdDmFMseXDmB4oHCk/tCaj7xXlTMMwqNDWo=;
+	s=arc-20240116; t=1776084712; c=relaxed/simple;
+	bh=AmJGeUvJ5xik5A1YjEociSJ0TuwuZgWxQFA4mlrscqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dmiKJgRn0grqWxLwtrfLVl1IFGi+/ifdSW1smXivev8EhjHDmNVEDm5OnPyAhp4wygyuz9E8M6xOj0xdUYq8sFVE3VWr4ziGLBtkFVzbIhKZS+07krEzw3Joun8WnyBfuHB4cEH3gBQPys+lOr3/KyYQqREw0pDEhOlpASTfGSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFpjX0C6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D25C2BCB1;
-	Mon, 13 Apr 2026 12:51:50 +0000 (UTC)
+	 MIME-Version; b=LNaslN/NvtJhI6qty1qyf9K7ouv+ZRRtmHLvYGu7lpxevRcVnZ0t6dUEPPNbw2TMsNnZhZx4fr+t/k/7iaTzOK15EEAJ9l9OHDc7hqcIUMBxY7cbOQz0cr2O21oyM/mSJBl4oBo+qMBxbTYSu05ftNwgEvhCemM68dUV/PNlzXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLaeMJFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A3FC2BCB4;
+	Mon, 13 Apr 2026 12:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776084711;
-	bh=pq6m4kJqzdDmFMseXDmB4oHCk/tCaj7xXlTMMwqNDWo=;
+	s=k20201202; t=1776084712;
+	bh=AmJGeUvJ5xik5A1YjEociSJ0TuwuZgWxQFA4mlrscqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFpjX0C63OPHSahSABJFLrKXtw8R9ytxH6BoI4uNoex/tTHVsXervnHp8YO3VshPk
-	 rhy8P/4yn/obC1Q9yAjDqv4GOreO+sHWWPlI5NVq+FJkypWpkHMRmzRoaKCEGXOqCF
-	 /v+CBq0k4idrtchmOOodEuCyxgl5j/m9WT/gAIzrMUaB5bgd9Fpaa0EhtIce725TSc
-	 nS6OA7B68o44nLjrR0sTmGK1mUNAr7IZ1Pp12JSsee7Wal/XnLn+RxgyVMsx7VwCXs
-	 S7Ezw7oHKKLDmPaMKZotccg8i4bhDxmoorX8mjBx1e1KiQUxs5J4CFlNg9KimVMRKp
-	 R3U1QI58SfrMg==
+	b=tLaeMJFxpJF/UiL8kch37OFwaV0uX88u8MaVTGAR7U/PkEjed5IsRmolOeOJatbSn
+	 9kXrxmiV1kzLHQ6bE8ZWNfRUtVJzA7cmf9wF3kdYtJg5KLTGUSbnsxT8ByfiOQ/bKI
+	 65w7+0L4V87XtBSRmPX4ehYLeM53QVBWEU1NN2q5/EZ8dYcOAd2pu20054NIIl/lYU
+	 7/oK+aobNYGqKThWm09gJGGW5Z6rGQdysHdUdKhj+spWlIq4QN4kUtISKO6LLFDUj4
+	 /AJXT4U+Dw7JtcqxNfy3COe6BAvMDDopHNhQgN1qVt+8bjxXMY6v0X4XHOeUlxA0Sd
+	 t860YogQmnb7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Anup Patel <anup@brainfault.org>,
-	Bibo Mao <maobibo@loongson.cn>,
+Cc: David Woodhouse <dwmw@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y 1/2] KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
-Date: Mon, 13 Apr 2026 08:51:48 -0400
-Message-ID: <20260413125149.2876836-1-sashal@kernel.org>
+Subject: [PATCH 6.19.y 2/2] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
+Date: Mon, 13 Apr 2026 08:51:49 -0400
+Message-ID: <20260413125149.2876836-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041316-tribunal-pendant-dc80@gregkh>
+In-Reply-To: <20260413125149.2876836-1-sashal@kernel.org>
 References: <2026041316-tribunal-pendant-dc80@gregkh>
+ <20260413125149.2876836-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,498 +64,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236072-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236073-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 35EC13EC482
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C853F3EC361
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Christopherson <seanjc@google.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit da142f3d373a6ddaca0119615a8db2175ddc4121 ]
+[ Upstream commit 2619da73bb2f10d88f7e1087125c40144fdf0987 ]
 
-Remove KVM's internal pseudo-overlay of kvm_stats_desc, which subtly
-aliases the flexible name[] in the uAPI definition with a fixed-size array
-of the same name.  The unusual embedded structure results in compiler
-warnings due to -Wflex-array-member-not-at-end, and also necessitates an
-extra level of dereferencing in KVM.  To avoid the "overlay", define the
-uAPI structure to have a fixed-size name when building for the kernel.
+Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+flexible-array members") broke the userspace API for C++.
 
-Opportunistically clean up the indentation for the stats macros, and
-replace spaces with tabs.
+These structures ending in VLAs are typically a *header*, which can be
+followed by an arbitrary number of entries. Userspace typically creates
+a larger structure with some non-zero number of entries, for example in
+QEMU's kvm_arch_get_supported_msr_feature():
 
-No functional change intended.
+    struct {
+        struct kvm_msrs info;
+        struct kvm_msr_entry entries[1];
+    } msr_data = {};
 
-Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Closes: https://lore.kernel.org/all/aPfNKRpLfhmhYqfP@kspp
-Acked-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-[..]
-Acked-by: Anup Patel <anup@brainfault.org>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/20251205232655.445294-1-seanjc@google.com
+While that works in C, it fails in C++ with an error like:
+ flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
+
+Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
+for C++ compilation.
+
+Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
+[sean: tag for stable@]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 2619da73bb2f ("KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/guest.c    |  4 +-
- arch/loongarch/kvm/vcpu.c |  2 +-
- arch/loongarch/kvm/vm.c   |  2 +-
- arch/mips/kvm/mips.c      |  4 +-
- arch/powerpc/kvm/book3s.c |  4 +-
- arch/powerpc/kvm/booke.c  |  4 +-
- arch/riscv/kvm/vcpu.c     |  2 +-
- arch/riscv/kvm/vm.c       |  2 +-
- arch/s390/kvm/kvm-s390.c  |  4 +-
- arch/x86/kvm/x86.c        |  4 +-
- include/linux/kvm_host.h  | 83 +++++++++++++++++----------------------
- include/uapi/linux/kvm.h  |  8 ++++
- virt/kvm/binary_stats.c   |  2 +-
- virt/kvm/kvm_main.c       | 20 +++++-----
- 14 files changed, 70 insertions(+), 75 deletions(-)
+ arch/x86/include/uapi/asm/kvm.h | 12 ++++++------
+ include/uapi/linux/kvm.h        | 11 ++++++-----
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index 1c87699fd886e..332c453b87cf8 100644
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -29,7 +29,7 @@
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 774eb6989ef9e..d94b2471aa216 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -197,13 +197,13 @@ struct kvm_msrs {
+ 	__u32 nmsrs; /* number of msrs in entries */
+ 	__u32 pad;
  
- #include "trace.h"
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS()
+-	struct kvm_msr_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
  };
  
-@@ -42,7 +42,7 @@ const struct kvm_stats_header kvm_vm_stats_header = {
- 		       sizeof(kvm_vm_stats_desc),
+ /* for KVM_GET_MSR_INDEX_LIST */
+ struct kvm_msr_list {
+ 	__u32 nmsrs; /* number of msrs in entries */
+-	__u32 indices[];
++	__DECLARE_FLEX_ARRAY(__u32, indices);
  };
  
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, hvc_exit_stat),
- 	STATS_DESC_COUNTER(VCPU, wfe_exit_stat),
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index f15d78c00dbd6..3a359d83b022a 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -14,7 +14,7 @@
- #define CREATE_TRACE_POINTS
- #include "trace.h"
- 
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, int_exits),
- 	STATS_DESC_COUNTER(VCPU, idle_exits),
-diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-index 194ccbcdc3b38..7deff56e0e1ab 100644
---- a/arch/loongarch/kvm/vm.c
-+++ b/arch/loongarch/kvm/vm.c
-@@ -10,7 +10,7 @@
- #include <asm/kvm_eiointc.h>
- #include <asm/kvm_pch_pic.h>
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS(),
- 	STATS_DESC_ICOUNTER(VM, pages),
- 	STATS_DESC_ICOUNTER(VM, hugepages),
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index b0fb92fda4d42..23e69baad453c 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -38,7 +38,7 @@
- #define VECTORSPACING 0x100	/* for EI/VI mode */
- #endif
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS()
+ /* Maximum size of any access bitmap in bytes */
+@@ -245,7 +245,7 @@ struct kvm_cpuid_entry {
+ struct kvm_cpuid {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
  };
  
-@@ -51,7 +51,7 @@ const struct kvm_stats_header kvm_vm_stats_header = {
- 		       sizeof(kvm_vm_stats_desc),
+ struct kvm_cpuid_entry2 {
+@@ -267,7 +267,7 @@ struct kvm_cpuid_entry2 {
+ struct kvm_cpuid2 {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry2 entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
  };
  
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, wait_exits),
- 	STATS_DESC_COUNTER(VCPU, cache_exits),
-diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index d79c5d1098c05..2efbe05caed76 100644
---- a/arch/powerpc/kvm/book3s.c
-+++ b/arch/powerpc/kvm/book3s.c
-@@ -38,7 +38,7 @@
- 
- /* #define EXIT_DEBUG */
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS(),
- 	STATS_DESC_ICOUNTER(VM, num_2M_pages),
- 	STATS_DESC_ICOUNTER(VM, num_1G_pages)
-@@ -53,7 +53,7 @@ const struct kvm_stats_header kvm_vm_stats_header = {
- 		       sizeof(kvm_vm_stats_desc),
+ /* for KVM_GET_PIT and KVM_SET_PIT */
+@@ -398,7 +398,7 @@ struct kvm_xsave {
+ 	 * the contents of CPUID leaf 0xD on the host.
+ 	 */
+ 	__u32 region[1024];
+-	__u32 extra[];
++	__DECLARE_FLEX_ARRAY(__u32, extra);
  };
  
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, sum_exits),
- 	STATS_DESC_COUNTER(VCPU, mmio_exits),
-diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index 3401b96be475e..f3ddb24ece749 100644
---- a/arch/powerpc/kvm/booke.c
-+++ b/arch/powerpc/kvm/booke.c
-@@ -36,7 +36,7 @@
- 
- unsigned long kvmppc_booke_handlers;
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS(),
- 	STATS_DESC_ICOUNTER(VM, num_2M_pages),
- 	STATS_DESC_ICOUNTER(VM, num_1G_pages)
-@@ -51,7 +51,7 @@ const struct kvm_stats_header kvm_vm_stats_header = {
- 		       sizeof(kvm_vm_stats_desc),
+ #define KVM_MAX_XCRS	16
+@@ -565,7 +565,7 @@ struct kvm_pmu_event_filter {
+ 	__u32 fixed_counter_bitmap;
+ 	__u32 flags;
+ 	__u32 pad[4];
+-	__u64 events[];
++	__DECLARE_FLEX_ARRAY(__u64, events);
  };
  
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, sum_exits),
- 	STATS_DESC_COUNTER(VCPU, mmio_exits),
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index a55a95da54d0f..fdd99ac1e7148 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -24,7 +24,7 @@
- #define CREATE_TRACE_POINTS
- #include "trace.h"
- 
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
- 	STATS_DESC_COUNTER(VCPU, wfi_exit_stat),
-diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-index 66d91ae6e9b2a..715a06ae8c131 100644
---- a/arch/riscv/kvm/vm.c
-+++ b/arch/riscv/kvm/vm.c
-@@ -13,7 +13,7 @@
- #include <linux/kvm_host.h>
- #include <asm/kvm_mmu.h>
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS()
- };
- static_assert(ARRAY_SIZE(kvm_vm_stats_desc) ==
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 56a50524b3eee..495141bf03989 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -64,7 +64,7 @@
- #define VCPU_IRQS_MAX_BUF (sizeof(struct kvm_s390_irq) * \
- 			   (KVM_MAX_VCPUS + LOCAL_IRQS))
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS(),
- 	STATS_DESC_COUNTER(VM, inject_io),
- 	STATS_DESC_COUNTER(VM, inject_float_mchk),
-@@ -90,7 +90,7 @@ const struct kvm_stats_header kvm_vm_stats_header = {
- 		       sizeof(kvm_vm_stats_desc),
- };
- 
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, exit_userspace),
- 	STATS_DESC_COUNTER(VCPU, exit_null),
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0d731ce4c4e16..ad2f0a5a84328 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -239,7 +239,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_ipiv);
- bool __read_mostly enable_device_posted_irqs = true;
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_device_posted_irqs);
- 
--const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS(),
- 	STATS_DESC_COUNTER(VM, mmu_shadow_zapped),
- 	STATS_DESC_COUNTER(VM, mmu_pte_write),
-@@ -265,7 +265,7 @@ const struct kvm_stats_header kvm_vm_stats_header = {
- 		       sizeof(kvm_vm_stats_desc),
- };
- 
--const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
-+const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, pf_taken),
- 	STATS_DESC_COUNTER(VCPU, pf_fixed),
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index d93f75b05ae22..7428d9949382f 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1927,56 +1927,43 @@ enum kvm_stat_kind {
- 
- struct kvm_stat_data {
- 	struct kvm *kvm;
--	const struct _kvm_stats_desc *desc;
-+	const struct kvm_stats_desc *desc;
- 	enum kvm_stat_kind kind;
- };
- 
--struct _kvm_stats_desc {
--	struct kvm_stats_desc desc;
--	char name[KVM_STATS_NAME_SIZE];
--};
--
--#define STATS_DESC_COMMON(type, unit, base, exp, sz, bsz)		       \
--	.flags = type | unit | base |					       \
--		 BUILD_BUG_ON_ZERO(type & ~KVM_STATS_TYPE_MASK) |	       \
--		 BUILD_BUG_ON_ZERO(unit & ~KVM_STATS_UNIT_MASK) |	       \
--		 BUILD_BUG_ON_ZERO(base & ~KVM_STATS_BASE_MASK),	       \
--	.exponent = exp,						       \
--	.size = sz,							       \
-+#define STATS_DESC_COMMON(type, unit, base, exp, sz, bsz)		\
-+	.flags = type | unit | base |					\
-+		 BUILD_BUG_ON_ZERO(type & ~KVM_STATS_TYPE_MASK) |       \
-+		 BUILD_BUG_ON_ZERO(unit & ~KVM_STATS_UNIT_MASK) |	\
-+		 BUILD_BUG_ON_ZERO(base & ~KVM_STATS_BASE_MASK),	\
-+	.exponent = exp,						\
-+	.size = sz,							\
- 	.bucket_size = bsz
- 
--#define VM_GENERIC_STATS_DESC(stat, type, unit, base, exp, sz, bsz)	       \
--	{								       \
--		{							       \
--			STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),     \
--			.offset = offsetof(struct kvm_vm_stat, generic.stat)   \
--		},							       \
--		.name = #stat,						       \
--	}
--#define VCPU_GENERIC_STATS_DESC(stat, type, unit, base, exp, sz, bsz)	       \
--	{								       \
--		{							       \
--			STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),     \
--			.offset = offsetof(struct kvm_vcpu_stat, generic.stat) \
--		},							       \
--		.name = #stat,						       \
--	}
--#define VM_STATS_DESC(stat, type, unit, base, exp, sz, bsz)		       \
--	{								       \
--		{							       \
--			STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),     \
--			.offset = offsetof(struct kvm_vm_stat, stat)	       \
--		},							       \
--		.name = #stat,						       \
--	}
--#define VCPU_STATS_DESC(stat, type, unit, base, exp, sz, bsz)		       \
--	{								       \
--		{							       \
--			STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),     \
--			.offset = offsetof(struct kvm_vcpu_stat, stat)	       \
--		},							       \
--		.name = #stat,						       \
--	}
-+#define VM_GENERIC_STATS_DESC(stat, type, unit, base, exp, sz, bsz)	\
-+{									\
-+	STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),		\
-+	.offset = offsetof(struct kvm_vm_stat, generic.stat),		\
-+	.name = #stat,							\
-+}
-+#define VCPU_GENERIC_STATS_DESC(stat, type, unit, base, exp, sz, bsz)	\
-+{									\
-+	STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),		\
-+	.offset = offsetof(struct kvm_vcpu_stat, generic.stat),		\
-+	.name = #stat,							\
-+}
-+#define VM_STATS_DESC(stat, type, unit, base, exp, sz, bsz)		\
-+{									\
-+	STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),		\
-+	.offset = offsetof(struct kvm_vm_stat, stat),			\
-+	.name = #stat,							\
-+}
-+#define VCPU_STATS_DESC(stat, type, unit, base, exp, sz, bsz)		\
-+{									\
-+	STATS_DESC_COMMON(type, unit, base, exp, sz, bsz),		\
-+	.offset = offsetof(struct kvm_vcpu_stat, stat),			\
-+	.name = #stat,							\
-+}
- /* SCOPE: VM, VM_GENERIC, VCPU, VCPU_GENERIC */
- #define STATS_DESC(SCOPE, stat, type, unit, base, exp, sz, bsz)		       \
- 	SCOPE##_STATS_DESC(stat, type, unit, base, exp, sz, bsz)
-@@ -2053,7 +2040,7 @@ struct _kvm_stats_desc {
- 	STATS_DESC_IBOOLEAN(VCPU_GENERIC, blocking)
- 
- ssize_t kvm_stats_read(char *id, const struct kvm_stats_header *header,
--		       const struct _kvm_stats_desc *desc,
-+		       const struct kvm_stats_desc *desc,
- 		       void *stats, size_t size_stats,
- 		       char __user *user_buffer, size_t size, loff_t *offset);
- 
-@@ -2098,9 +2085,9 @@ static inline void kvm_stats_log_hist_update(u64 *data, size_t size, u64 value)
- 
- 
- extern const struct kvm_stats_header kvm_vm_stats_header;
--extern const struct _kvm_stats_desc kvm_vm_stats_desc[];
-+extern const struct kvm_stats_desc kvm_vm_stats_desc[];
- extern const struct kvm_stats_header kvm_vcpu_stats_header;
--extern const struct _kvm_stats_desc kvm_vcpu_stats_desc[];
-+extern const struct kvm_stats_desc kvm_vcpu_stats_desc[];
- 
- #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
- static inline int mmu_invalidate_retry(struct kvm *kvm, unsigned long mmu_seq)
+ #define KVM_PMU_EVENT_ALLOW 0
 diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index dddb781b0507d..76bd54848b112 100644
+index 76bd54848b112..bcc8532986171 100644
 --- a/include/uapi/linux/kvm.h
 +++ b/include/uapi/linux/kvm.h
-@@ -14,6 +14,10 @@
+@@ -11,6 +11,7 @@
+ #include <linux/const.h>
+ #include <linux/types.h>
+ #include <linux/compiler.h>
++#include <linux/stddef.h>
  #include <linux/ioctl.h>
  #include <asm/kvm.h>
  
-+#ifdef __KERNEL__
-+#include <linux/kvm_types.h>
-+#endif
-+
- #define KVM_API_VERSION 12
+@@ -532,7 +533,7 @@ struct kvm_coalesced_mmio {
  
- /*
-@@ -1579,7 +1583,11 @@ struct kvm_stats_desc {
- 	__u16 size;
- 	__u32 offset;
- 	__u32 bucket_size;
-+#ifdef __KERNEL__
-+	char name[KVM_STATS_NAME_SIZE];
-+#else
- 	char name[];
-+#endif
+ struct kvm_coalesced_mmio_ring {
+ 	__u32 first, last;
+-	struct kvm_coalesced_mmio coalesced_mmio[];
++	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
  };
  
- #define KVM_GET_STATS_FD  _IO(KVMIO,  0xce)
-diff --git a/virt/kvm/binary_stats.c b/virt/kvm/binary_stats.c
-index eefca6c69f519..76ce697c773bf 100644
---- a/virt/kvm/binary_stats.c
-+++ b/virt/kvm/binary_stats.c
-@@ -50,7 +50,7 @@
-  * Return: the number of bytes that has been successfully read
-  */
- ssize_t kvm_stats_read(char *id, const struct kvm_stats_header *header,
--		       const struct _kvm_stats_desc *desc,
-+		       const struct kvm_stats_desc *desc,
- 		       void *stats, size_t size_stats,
- 		       char __user *user_buffer, size_t size, loff_t *offset)
- {
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 5b5b69c97665e..cf65fd82d36dd 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -983,9 +983,9 @@ static void kvm_free_memslots(struct kvm *kvm, struct kvm_memslots *slots)
- 		kvm_free_memslot(kvm, memslot);
- }
+ #define KVM_COALESCED_MMIO_MAX \
+@@ -582,7 +583,7 @@ struct kvm_clear_dirty_log {
+ /* for KVM_SET_SIGNAL_MASK */
+ struct kvm_signal_mask {
+ 	__u32 len;
+-	__u8  sigset[];
++	__DECLARE_FLEX_ARRAY(__u8, sigset);
+ };
  
--static umode_t kvm_stats_debugfs_mode(const struct _kvm_stats_desc *pdesc)
-+static umode_t kvm_stats_debugfs_mode(const struct kvm_stats_desc *desc)
- {
--	switch (pdesc->desc.flags & KVM_STATS_TYPE_MASK) {
-+	switch (desc->flags & KVM_STATS_TYPE_MASK) {
- 	case KVM_STATS_TYPE_INSTANT:
- 		return 0444;
- 	case KVM_STATS_TYPE_CUMULATIVE:
-@@ -1020,7 +1020,7 @@ static int kvm_create_vm_debugfs(struct kvm *kvm, const char *fdname)
- 	struct dentry *dent;
- 	char dir_name[ITOA_MAX_LEN * 2];
- 	struct kvm_stat_data *stat_data;
--	const struct _kvm_stats_desc *pdesc;
-+	const struct kvm_stats_desc *pdesc;
- 	int i, ret = -ENOMEM;
- 	int kvm_debugfs_num_entries = kvm_vm_stats_header.num_desc +
- 				      kvm_vcpu_stats_header.num_desc;
-@@ -6186,11 +6186,11 @@ static int kvm_stat_data_get(void *data, u64 *val)
- 	switch (stat_data->kind) {
- 	case KVM_STAT_VM:
- 		r = kvm_get_stat_per_vm(stat_data->kvm,
--					stat_data->desc->desc.offset, val);
-+					stat_data->desc->offset, val);
- 		break;
- 	case KVM_STAT_VCPU:
- 		r = kvm_get_stat_per_vcpu(stat_data->kvm,
--					  stat_data->desc->desc.offset, val);
-+					  stat_data->desc->offset, val);
- 		break;
- 	}
+ /* for KVM_TPR_ACCESS_REPORTING */
+@@ -1040,7 +1041,7 @@ struct kvm_irq_routing_entry {
+ struct kvm_irq_routing {
+ 	__u32 nr;
+ 	__u32 flags;
+-	struct kvm_irq_routing_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
+ };
  
-@@ -6208,11 +6208,11 @@ static int kvm_stat_data_clear(void *data, u64 val)
- 	switch (stat_data->kind) {
- 	case KVM_STAT_VM:
- 		r = kvm_clear_stat_per_vm(stat_data->kvm,
--					  stat_data->desc->desc.offset);
-+					  stat_data->desc->offset);
- 		break;
- 	case KVM_STAT_VCPU:
- 		r = kvm_clear_stat_per_vcpu(stat_data->kvm,
--					    stat_data->desc->desc.offset);
-+					    stat_data->desc->offset);
- 		break;
- 	}
+ #define KVM_IRQFD_FLAG_DEASSIGN (1 << 0)
+@@ -1131,7 +1132,7 @@ struct kvm_dirty_tlb {
  
-@@ -6360,7 +6360,7 @@ static void kvm_uevent_notify_change(unsigned int type, struct kvm *kvm)
- static void kvm_init_debug(void)
- {
- 	const struct file_operations *fops;
--	const struct _kvm_stats_desc *pdesc;
-+	const struct kvm_stats_desc *pdesc;
- 	int i;
+ struct kvm_reg_list {
+ 	__u64 n; /* number of regs */
+-	__u64 reg[];
++	__DECLARE_FLEX_ARRAY(__u64, reg);
+ };
  
- 	kvm_debugfs_dir = debugfs_create_dir("kvm", NULL);
-@@ -6373,7 +6373,7 @@ static void kvm_init_debug(void)
- 			fops = &vm_stat_readonly_fops;
- 		debugfs_create_file(pdesc->name, kvm_stats_debugfs_mode(pdesc),
- 				kvm_debugfs_dir,
--				(void *)(long)pdesc->desc.offset, fops);
-+				(void *)(long)pdesc->offset, fops);
- 	}
- 
- 	for (i = 0; i < kvm_vcpu_stats_header.num_desc; ++i) {
-@@ -6384,7 +6384,7 @@ static void kvm_init_debug(void)
- 			fops = &vcpu_stat_readonly_fops;
- 		debugfs_create_file(pdesc->name, kvm_stats_debugfs_mode(pdesc),
- 				kvm_debugfs_dir,
--				(void *)(long)pdesc->desc.offset, fops);
-+				(void *)(long)pdesc->offset, fops);
- 	}
- }
+ struct kvm_one_reg {
+@@ -1586,7 +1587,7 @@ struct kvm_stats_desc {
+ #ifdef __KERNEL__
+ 	char name[KVM_STATS_NAME_SIZE];
+ #else
+-	char name[];
++	__DECLARE_FLEX_ARRAY(char, name);
+ #endif
+ };
  
 -- 
 2.53.0
