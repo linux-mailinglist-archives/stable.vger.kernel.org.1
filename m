@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-237052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id HPpiBeAc3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-237052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:08 +0200
+	id KB1HHskn3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2B53EF8A1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB563F1720
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EA9930270A4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53E9B311B169
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4CD30DED5;
-	Mon, 13 Apr 2026 16:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED617346FA0;
+	Mon, 13 Apr 2026 17:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYVmZJJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcW413Wk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB6924E4A1;
-	Mon, 13 Apr 2026 16:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01DE345CDC;
+	Mon, 13 Apr 2026 17:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098466; cv=none; b=sb7g0NoFb3/egg6F4Jo71/eIK6HHOuFfb6mZimZlrGgc0i3jAA/MA/lzBGhz1YgFmeqeKXDUChzW1ox06sKphhFOvjCByM4NsrAC1+HlLjODkf/d+3/c5myNEuNjMPxUzdeHcQAOWfnxE2IL0opasC1hmbex8HyhSiyjMYp9oT4=
+	t=1776099720; cv=none; b=CiebymDTy2wxAJicFAIYS6NqDSSISEK8i7Mw6WQeY9VJm/Ystb+bLcTZQRTzqsybcyy4Z7AN5FFZW5CiTONqOI0wwXN3SNpFEIxPlRxF4GA0mrfFPzkn+e6xvDcu7R2cpa11fi/Qv2+MmFAGCPaMOZmQdxJjPhGXqhfP3+21h4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098466; c=relaxed/simple;
-	bh=nYoDCRw0do2HR4J/Sl3zEgV/eyxQnz/0cemQo/3ZDTo=;
+	s=arc-20240116; t=1776099720; c=relaxed/simple;
+	bh=zDZoORf9XyOrGILCvLTK7ddyAcTgpCmFJ3RQwvP8ADU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSSWrDoP2gyqTnRosNUQXYtSvZfpX0azR3j92YMvxeji19Nuosfy0GMWBcadyqQOzk91Enxybyhb8ki/6H31+Ug+HhUWHG6mtDtysYGLUrOpSgT/6Zx66b5qdVbGCQqeohMN10SIeUtyzbCSm96kvLLRvmpt7WwJo5lwKkP0OVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYVmZJJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94ABC2BCAF;
-	Mon, 13 Apr 2026 16:41:05 +0000 (UTC)
+	 MIME-Version; b=az7cf3EO1JiopA9sCYQ1f2ELe6vdEiINUga3RHWIcynmnB5i2mjTCEhswlNjE5XBPwSlfWpIkf2t+08F6yQw9WXMgzPZWkr13wkLPKbTfvMR4IyG/SxLhXhMHhp1RnNZlQVDQyKnbGzJo+DXH7tJh3+LULLVl/lcMVjzmzq58r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcW413Wk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDABC2BCAF;
+	Mon, 13 Apr 2026 17:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098466;
-	bh=nYoDCRw0do2HR4J/Sl3zEgV/eyxQnz/0cemQo/3ZDTo=;
+	s=korg; t=1776099720;
+	bh=zDZoORf9XyOrGILCvLTK7ddyAcTgpCmFJ3RQwvP8ADU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYVmZJJyGQcOgdw44OCJ3pWLNv4UzskrWeNXSkgKNz8t3laY7yyxVt4/qcyT5dxPI
-	 KgFXO/vz7vefCYLF92sKG5W6pzZks2Vt2rTd9vOdmyE+msqUEw22aPgJmVQ3kikoPL
-	 oyKKyRCS7pMU5Z6UgTVrpCJN9QRvBkKkMICzeAcg=
+	b=vcW413WkmzYrtnXarJYTvhhRLhKbLZhzPZeANUgEABBr+kWwAQs4uLaECk+OFQVzj
+	 7a5FglgIZiFSHIA1O5/YIPC7C08r2EIqnFeQxIy4jTnMkMV+AC33qYrMBO4Bd7+6EQ
+	 t0TJ+A4oXcUhlvP1yhQPxajpNwj8O1JUe6b9Joes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 5.15 535/570] drm/i915/gt: fix refcount underflow in intel_engine_park_heartbeat
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Liu Shixin <liushixin2@huawei.com>,
+	"Uschakow, Stanislav" <suschako@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 421/491] mm/hugetlb: fix hugetlb_pmd_shared()
 Date: Mon, 13 Apr 2026 18:01:06 +0200
-Message-ID: <20260413155850.486193566@linuxfoundation.org>
+Message-ID: <20260413155834.787570692@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,151 +76,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237052-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237541-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 9F2B53EF8A1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CCB563F1720
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+From: David Hildenbrand (Red Hat) <david@kernel.org>
 
-commit 4c71fd099513bfa8acab529b626e1f0097b76061 upstream.
+Commit ca1a47cd3f5f4c46ca188b1c9a27af87d1ab2216 upstream.
 
-A use-after-free / refcount underflow is possible when the heartbeat
-worker and intel_engine_park_heartbeat() race to release the same
-engine->heartbeat.systole request.
+Patch series "mm/hugetlb: fixes for PMD table sharing (incl.  using
+mmu_gather)", v3.
 
-The heartbeat worker reads engine->heartbeat.systole and calls
-i915_request_put() on it when the request is complete, but clears
-the pointer in a separate, non-atomic step. Concurrently, a request
-retirement on another CPU can drop the engine wakeref to zero, triggering
-__engine_park() -> intel_engine_park_heartbeat(). If the heartbeat
-timer is pending at that point, cancel_delayed_work() returns true and
-intel_engine_park_heartbeat() reads the stale non-NULL systole pointer
-and calls i915_request_put() on it again, causing a refcount underflow:
+One functional fix, one performance regression fix, and two related
+comment fixes.
 
-```
-<4> [487.221889] Workqueue: i915-unordered engine_retire [i915]
-<4> [487.222640] RIP: 0010:refcount_warn_saturate+0x68/0xb0
-...
-<4> [487.222707] Call Trace:
-<4> [487.222711]  <TASK>
-<4> [487.222716]  intel_engine_park_heartbeat.part.0+0x6f/0x80 [i915]
-<4> [487.223115]  intel_engine_park_heartbeat+0x25/0x40 [i915]
-<4> [487.223566]  __engine_park+0xb9/0x650 [i915]
-<4> [487.223973]  ____intel_wakeref_put_last+0x2e/0xb0 [i915]
-<4> [487.224408]  __intel_wakeref_put_last+0x72/0x90 [i915]
-<4> [487.224797]  intel_context_exit_engine+0x7c/0x80 [i915]
-<4> [487.225238]  intel_context_exit+0xf1/0x1b0 [i915]
-<4> [487.225695]  i915_request_retire.part.0+0x1b9/0x530 [i915]
-<4> [487.226178]  i915_request_retire+0x1c/0x40 [i915]
-<4> [487.226625]  engine_retire+0x122/0x180 [i915]
-<4> [487.227037]  process_one_work+0x239/0x760
-<4> [487.227060]  worker_thread+0x200/0x3f0
-<4> [487.227068]  ? __pfx_worker_thread+0x10/0x10
-<4> [487.227075]  kthread+0x10d/0x150
-<4> [487.227083]  ? __pfx_kthread+0x10/0x10
-<4> [487.227092]  ret_from_fork+0x3d4/0x480
-<4> [487.227099]  ? __pfx_kthread+0x10/0x10
-<4> [487.227107]  ret_from_fork_asm+0x1a/0x30
-<4> [487.227141]  </TASK>
-```
+I cleaned up my prototype I recently shared [1] for the performance fix,
+deferring most of the cleanups I had in the prototype to a later point.
+While doing that I identified the other things.
 
-Fix this by replacing the non-atomic pointer read + separate clear with
-xchg() in both racing paths. xchg() is a single indivisible hardware
-instruction that atomically reads the old pointer and writes NULL. This
-guarantees only one of the two concurrent callers obtains the non-NULL
-pointer and performs the put, the other gets NULL and skips it.
+The goal of this patch set is to be backported to stable trees "fairly"
+easily. At least patch #1 and #4.
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15880
-Fixes: 058179e72e09 ("drm/i915/gt: Replace hangcheck by heartbeats")
-Cc: <stable@vger.kernel.org> # v5.5+
-Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/d4c1c14255688dd07cc8044973c4f032a8d1559e.1775038106.git.sebastian.brzezinka@intel.com
-(cherry picked from commit 13238dc0ee4f9ab8dafa2cca7295736191ae2f42)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
+Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
+Patch #4 is a fix for the reported performance regression due to excessive
+IPI broadcasts during fork()+exit().
+
+The last patch is all about TLB flushes, IPIs and mmu_gather.
+Read: complicated
+
+There are plenty of cleanups in the future to be had + one reasonable
+optimization on x86. But that's all out of scope for this series.
+
+Runtime tested, with a focus on fixing the performance regression using
+the original reproducer [2] on x86.
+
+This patch (of 4):
+
+We switched from (wrongly) using the page count to an independent shared
+count.  Now, shared page tables have a refcount of 1 (excluding
+speculative references) and instead use ptdesc->pt_share_count to identify
+sharing.
+
+We didn't convert hugetlb_pmd_shared(), so right now, we would never
+detect a shared PMD table as such, because sharing/unsharing no longer
+touches the refcount of a PMD table.
+
+Page migration, like mbind() or migrate_pages() would allow for migrating
+folios mapped into such shared PMD tables, even though the folios are not
+exclusive.  In smaps we would account them as "private" although they are
+"shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+pagemap interface.
+
+Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
+
+Link: https://lkml.kernel.org/r/20251223214037.580860-1-david@kernel.org
+Link: https://lkml.kernel.org/r/20251223214037.580860-2-david@kernel.org
+Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [1]
+Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [2]
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit ca1a47cd3f5f4c46ca188b1c9a27af87d1ab2216)
+[ David: We don't have ptdesc and the wrappers, so work directly on
+  page->pt_share_count. ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c |   26 +++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ include/linux/hugetlb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
-@@ -116,10 +116,12 @@ static void heartbeat(struct work_struct
- 	/* Just in case everything has gone horribly wrong, give it a kick */
- 	intel_engine_flush_submission(engine);
- 
--	rq = engine->heartbeat.systole;
--	if (rq && i915_request_completed(rq)) {
--		i915_request_put(rq);
--		engine->heartbeat.systole = NULL;
-+	rq = xchg(&engine->heartbeat.systole, NULL);
-+	if (rq) {
-+		if (i915_request_completed(rq))
-+			i915_request_put(rq);
-+		else
-+			engine->heartbeat.systole = rq;
- 	}
- 
- 	if (!intel_engine_pm_get_if_awake(engine))
-@@ -200,8 +202,11 @@ static void heartbeat(struct work_struct
- unlock:
- 	mutex_unlock(&ce->timeline->mutex);
- out:
--	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine))
--		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
-+	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine)) {
-+		rq = xchg(&engine->heartbeat.systole, NULL);
-+		if (rq)
-+			i915_request_put(rq);
-+	}
- 	intel_engine_pm_put(engine);
- }
- 
-@@ -215,8 +220,13 @@ void intel_engine_unpark_heartbeat(struc
- 
- void intel_engine_park_heartbeat(struct intel_engine_cs *engine)
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 1c03935aa3d13..0d3fece27031c 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -955,7 +955,7 @@ static inline __init void hugetlb_cma_check(void)
+ #ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
  {
--	if (cancel_delayed_work(&engine->heartbeat.work))
--		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
-+	if (cancel_delayed_work(&engine->heartbeat.work)) {
-+		struct i915_request *rq;
-+
-+		rq = xchg(&engine->heartbeat.systole, NULL);
-+		if (rq)
-+			i915_request_put(rq);
-+	}
+-	return page_count(virt_to_page(pte)) > 1;
++	return atomic_read(&virt_to_page(pte)->pt_share_count);
  }
- 
- void intel_gt_unpark_heartbeats(struct intel_gt *gt)
+ #else
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
+-- 
+2.53.0
+
 
 
 
