@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-236495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGmsFpgZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:08 +0200
+	id WNyrLm8a3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20EE3EF003
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C16B73EF286
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B94B13106BED
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 486A63026913
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6061F2EBB8C;
-	Mon, 13 Apr 2026 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97EA25A2C9;
+	Mon, 13 Apr 2026 16:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3K0XLWr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crMSOle+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2404E27280A;
-	Mon, 13 Apr 2026 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9D21DDC37;
+	Mon, 13 Apr 2026 16:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097052; cv=none; b=CpvOoL1H8g1U4ZvPdoCOcvpWSsQqBnAZENenbT4BK6kpuA/olk/uKoTcwQphfRIw3b6qezMGKTrQHhlg1y9YQx+GQnPfz3hMo81A5OgLuf6tiPI1ySvYjw4jGAqGrwtLLknAF3yPVPjA//mvq6jRZ8l8tWCHeBGVb5Tl+nU1cOA=
+	t=1776096939; cv=none; b=ghUBjfuOdY5aRmER1eZlFI/hEdqzPmNSXfBsqSbhBMsgZpXsO0yoDRHUB0gtuDhJGSFY5GofM2JnqEy/IhhV3gqe7kO51SnEM8B+y7UH4DE9uvPWwZdpchE0vYTg5P1Z3HsK0Qo3tLWdlg8x9gFBktc5wUM7l9BeHiOV1s5qFXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097052; c=relaxed/simple;
-	bh=uyj2yC58cozHK509uw0mrtnR4keIMV9pokWUyqpw07w=;
+	s=arc-20240116; t=1776096939; c=relaxed/simple;
+	bh=9jZQq1S33XNhHmQKuRpP0taHcOZFhMo6NbkHv6zwLb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQuuMN8dnZ0K48QkkX8TIPOdu8GVlE5nPWCg8E7zlTaNH+DHT6EAfh7NWd3u7EZAIWajkA+sk9f2fCL4mKH6YnXNclEAOH26uCkuLFhfBf+lskoR9kFIw7/Cm6+o9E2N++WbCLqb6OtUbKQYOdoZJTQsa+9mHW4kACB7yrrlL18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3K0XLWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE42BC2BCAF;
-	Mon, 13 Apr 2026 16:17:31 +0000 (UTC)
+	 MIME-Version; b=LGLt9Z+nBj4m6SKHCm+asmK27gh6y8KqzJCkLi7dhkBGQMQ/lNuombUfeXjA6YzEPgSKnru/gxil4n0X4qHeTEsU4gnu1YJTMtBFfBs14VUqmfztbqEUnj6l84q69TgyK+wcd2E2TOAsJJNsdgkgYtGOT6QQwgwr+/OPpSHG/Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crMSOle+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D511FC2BCAF;
+	Mon, 13 Apr 2026 16:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097052;
-	bh=uyj2yC58cozHK509uw0mrtnR4keIMV9pokWUyqpw07w=;
+	s=korg; t=1776096939;
+	bh=9jZQq1S33XNhHmQKuRpP0taHcOZFhMo6NbkHv6zwLb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3K0XLWrDA/JmDWj/hACoxdt+7Ax9dsY07DmXbetrnXdRtU1S728ZyrPDv+RxAaaY
-	 UYaQWNFzCViRSQ6jOT4GahuFx78XY6HdPq3eNz58SwcHkep4uIqoWTZzFjZTvzPeYm
-	 dq7t8BoEmEm/f7zF26STSTPfTsurYyc+Ft8J8yu4=
+	b=crMSOle+PLE0EIIcf8DvMEwsAoJ8A5Y2jl8yqA5JA7kK/8bHMsZhhMwi1Ky36f4FZ
+	 7Tjqm5fbwNTYgI+V48Lyb8O1PrRTNeCLzijf7CMPpT1QpfIWOxVkEZTICCHhK+cyjw
+	 /h5mXOjDjpvzc4a6wJbZQIjt/6H+R/Sb+M2qIbiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.1 43/55] batman-adv: reject oversized global TT response buffers
+	John Hancock <john@kernel.doghat.io>,
+	bjorn.forsman@gmail.com,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Subject: [PATCH 6.6 50/50] Revert "PCI: Enable ACS after configuring IOMMU for OF platforms"
 Date: Mon, 13 Apr 2026 18:01:17 +0200
-Message-ID: <20260413155726.440459258@linuxfoundation.org>
+Message-ID: <20260413155726.378592989@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,101 +65,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236495-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-236451-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.doghat.io,gmail.com,oss.qualcomm.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,simonwunderlich.de:email,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,narfation.org:email]
-X-Rspamd-Queue-Id: B20EE3EF003
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C16B73EF286
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 3a359bf5c61d52e7f09754108309d637532164a6 upstream.
+This reverts commit ec494c0260bf57a6fa3aa43a91daf7a774f8bd97 which is
+commit c41e2fb67e26b04d919257875fa954aa5f6e392e upstream.
 
-batadv_tt_prepare_tvlv_global_data() builds the allocation length for a
-global TT response in 16-bit temporaries. When a remote originator
-advertises a large enough global TT, the TT payload length plus the VLAN
-header offset can exceed 65535 and wrap before kmalloc().
+The original commit attempted to enable ACS in pci_dma_configure() prior
+to IOMMU group assignment in iommu_init_device() to fix the ACS enablement
+issue for OF platforms. But that assumption doesn't hold true for kernel
+versions prior to v6.15, because on these older kernels,
+pci_dma_configure() is called *after* iommu_init_device(). So the IOMMU
+groups are already created before the ACS gets enabled. This causes the
+devices that should have been split into separate groups by ACS, getting
+merged into one group, thereby breaking the IOMMU isolation as reported on
+the AMD machines.
 
-The full-table response path still uses the original TT payload length when
-it fills tt_change, so the wrapped allocation is too small and
-batadv_tt_prepare_tvlv_global_data() writes past the end of the heap object
-before the later packet-size check runs.
+So revert the offending commit to restore the IOMMU group assignment on
+those affected machines. It should be noted that ACS has never really
+worked on kernel versions prior to v6.15, so the revert doesn't make any
+difference for OF platforms.
 
-Fix this by rejecting TT responses whose TVLV value length cannot fit in
-the 16-bit TVLV payload length field.
-
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Reported-by: John Hancock <john@kernel.doghat.io>
+Reported-by: bjorn.forsman@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221234
+Fixes: b20b659c2c6a ("PCI: Enable ACS after configuring IOMMU for OF platforms")
+Cc: Linux kernel regressions list <regressions@lists.linux.dev>
+Link: https://lore.kernel.org/regressions/2c30f181-ffc6-4d63-a64e-763cf4528f48@leemhuis.info
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pci/pci-driver.c |    8 --------
+ drivers/pci/pci.c        |   10 +++++++++-
+ drivers/pci/pci.h        |    1 -
+ 3 files changed, 9 insertions(+), 10 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -844,8 +844,8 @@ batadv_tt_prepare_tvlv_global_data(struc
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -1668,14 +1668,6 @@ static int pci_dma_configure(struct devi
+ 		ret = acpi_dma_configure(dev, acpi_get_dma_attr(adev));
+ 	}
+ 
+-	/*
+-	 * Attempt to enable ACS regardless of capability because some Root
+-	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
+-	 * the standard ACS capability but still support ACS via those
+-	 * quirks.
+-	 */
+-	pci_enable_acs(to_pci_dev(dev));
+-
+ 	pci_put_host_bridge_device(bridge);
+ 
+ 	if (!ret && !driver->driver_managed_dma) {
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1046,7 +1046,7 @@ static void pci_std_enable_acs(struct pc
+  * pci_enable_acs - enable ACS if hardware support it
+  * @dev: the PCI device
+  */
+-void pci_enable_acs(struct pci_dev *dev)
++static void pci_enable_acs(struct pci_dev *dev)
  {
- 	u16 num_vlan = 0;
- 	u16 num_entries = 0;
--	u16 change_offset;
--	u16 tvlv_len;
-+	u16 tvlv_len = 0;
-+	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
- 	u8 *tt_change_ptr;
-@@ -863,6 +863,11 @@ batadv_tt_prepare_tvlv_global_data(struc
- 	if (*tt_len < 0)
- 		*tt_len = batadv_tt_len(num_entries);
- 
-+	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
-+		*tt_len = 0;
-+		goto out;
-+	}
+ 	if (!pci_acs_enable)
+ 		goto disable_acs_redir;
+@@ -3823,6 +3823,14 @@ bool pci_acs_path_enabled(struct pci_dev
+ void pci_acs_init(struct pci_dev *dev)
+ {
+ 	dev->acs_cap = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS);
 +
- 	tvlv_len = *tt_len;
- 	tvlv_len += change_offset;
++	/*
++	 * Attempt to enable ACS regardless of capability because some Root
++	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
++	 * the standard ACS capability but still support ACS via those
++	 * quirks.
++	 */
++	pci_enable_acs(dev);
+ }
  
+ /**
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -557,7 +557,6 @@ static inline resource_size_t pci_resour
+ }
+ 
+ void pci_acs_init(struct pci_dev *dev);
+-void pci_enable_acs(struct pci_dev *dev);
+ #ifdef CONFIG_PCI_QUIRKS
+ int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
+ int pci_dev_specific_enable_acs(struct pci_dev *dev);
 
 
 
