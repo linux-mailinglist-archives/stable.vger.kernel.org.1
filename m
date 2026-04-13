@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-236986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IP1EFkQf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-236986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:20 +0200
+	id +GsxOBsk3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B493F0116
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB003F100F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ABD0A30940A3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 806CE30B0CDA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C54930DEB5;
-	Mon, 13 Apr 2026 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C6E325490;
+	Mon, 13 Apr 2026 16:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8yVZADG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDgWbFug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102D33090F5;
-	Mon, 13 Apr 2026 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466A3203B6;
+	Mon, 13 Apr 2026 16:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098298; cv=none; b=vEG3ttYPwrf0lUsSBR8XhHzcz3XTlW9eYrYSF5Ijss4AK2n/ciu6D6nqUQ2t7jFSV2eXAvCVAD7W4pE7BfmT6zELsa3LzI+ba1yTUfjagb3cc0ofa9vTE2r2eABfbPiKnBEBeldK2MhuFGAPx3dHaEKQKXDhqvO+nC/cVc2sVHI=
+	t=1776099561; cv=none; b=Qh7Gra+CORuLqINUjZFQ+WTvis/9HSvLLffUxKi2VFbA+owHNKWkXCZkqkIc4UmDH0tGEVNupTE5lZA8jt9ivFeEcSjkxpCwc6OzzaheJe80BhLwuEsOzRFnZuq/3R5iYUOwwqBsk0IdPnADjUB6cd0eKWHphIPQy+h0sXaA6nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098298; c=relaxed/simple;
-	bh=xdM9s3AmofWFmiTHfTtNdJdZaqFR8R86zqupzd5Uboo=;
+	s=arc-20240116; t=1776099561; c=relaxed/simple;
+	bh=9Dip2lUNe56WJDLRZ5H5BzENCif2zWLL4i8CNDlzoXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeNYtYdc/ZXud8vZgmAMk3fKHm0oU1wLHT4RfiUtZ9j8iu5DOxX+I4Frti3bd8z+hO8fH3aMBEeR0azEvGU/w/gQvkZ2zngOmviISFtcO0//rW/BXM6W0sxaIPD5BbjWokQv5anwxdUe6o2BZS0oepgE0bZBysmn9zViUOuqSP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8yVZADG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5FEC2BCB3;
-	Mon, 13 Apr 2026 16:38:17 +0000 (UTC)
+	 MIME-Version; b=VMCuj/8CkQz0f6Biwu4wcv+AdNgyqXK2N5+96SHqlXa3F5JgrlSCxHKdrFA/abfzqb4ElEflPOPoOHWv9wbL0ytSTjw45zrS2USf2Aezr2O9lh9mRSxFlIyxoPUJcFCe9c/nHHa1UMKz2BK8Zz8wC5kN/IuwAVQQ/MpIoFT/8vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDgWbFug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760DAC2BCAF;
+	Mon, 13 Apr 2026 16:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098297;
-	bh=xdM9s3AmofWFmiTHfTtNdJdZaqFR8R86zqupzd5Uboo=;
+	s=korg; t=1776099560;
+	bh=9Dip2lUNe56WJDLRZ5H5BzENCif2zWLL4i8CNDlzoXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8yVZADGh4F8hRDRA6IcLIYyHD8xivMoLdMUyekRerAlyeUOgFDb+wVj9CjpfV0fe
-	 gCKh3XPkXn9jYHkgRLkZZCxSHpGL3/tsmmymL8iPTza2XFEJmS9zIbeq9P/gzAuDsR
-	 lyRtUigyQQj3vA9iEe+TYTv1BDzTr9umyEfT0xic=
+	b=kDgWbFug8Re2f5T3geBu0WbkdVymkCClbS232cpH3l7ArMCQi6ToAYB41yjeQuhh3
+	 0YDv0Lyrac2sC/ao0tBONH7tbsKoxcOdXsind1BSSXQQU3RnzXlPtt8/bGajQ0rOv0
+	 TEg5IFyRNXl0P9/CvnXpGOJ6mV7t42oL9nnxV7d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 5.15 469/570] usb: ehci-brcm: fix sleep during atomic
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 355/491] Revert "drm/vmwgfx: Add seqno waiter for sync_files"
 Date: Mon, 13 Apr 2026 18:00:00 +0200
-Message-ID: <20260413155848.034156121@linuxfoundation.org>
+Message-ID: <20260413155832.329434416@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,64 +71,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237479-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236986-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D8B493F0116
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9CB003F100F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+This reverts commit 7db6c88bb52f3b7525a06110cfd208990c49f8b4.
 
-commit 679b771ea05ad0f8eeae83e14a91b8f4f39510c4 upstream.
-
-echi_brcm_wait_for_sof() gets called after disabling interrupts
-in ehci_brcm_hub_control(). Use the atomic version of poll_timeout
-to fix the warning.
-
-Fixes: 9df231511bd6 ("usb: ehci: Add new EHCI driver for Broadcom STB SoC's")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260318185707.2588431-1-justin.chen@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ehci-brcm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 -------------------------
+ 1 file changed, 26 deletions(-)
 
---- a/drivers/usb/host/ehci-brcm.c
-+++ b/drivers/usb/host/ehci-brcm.c
-@@ -31,8 +31,8 @@ static inline void ehci_brcm_wait_for_so
- 	int res;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 361f96d09374d..daea547704ddc 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -4039,23 +4039,6 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
+ 	return 0;
+ }
  
- 	/* Wait for next microframe (every 125 usecs) */
--	res = readl_relaxed_poll_timeout(&ehci->regs->frame_index, val,
--					 val != frame_idx, 1, 130);
-+	res = readl_relaxed_poll_timeout_atomic(&ehci->regs->frame_index,
-+						val, val != frame_idx, 1, 130);
- 	if (res)
- 		ehci_err(ehci, "Error waiting for SOF\n");
- 	udelay(delay);
+-/*
+- * DMA fence callback to remove a seqno_waiter
+- */
+-struct seqno_waiter_rm_context {
+-	struct dma_fence_cb base;
+-	struct vmw_private *dev_priv;
+-};
+-
+-static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
+-{
+-	struct seqno_waiter_rm_context *ctx =
+-		container_of(cb, struct seqno_waiter_rm_context, base);
+-
+-	vmw_seqno_waiter_remove(ctx->dev_priv);
+-	kfree(ctx);
+-}
+-
+ int vmw_execbuf_process(struct drm_file *file_priv,
+ 			struct vmw_private *dev_priv,
+ 			void __user *user_commands, void *kernel_commands,
+@@ -4249,15 +4232,6 @@ int vmw_execbuf_process(struct drm_file *file_priv,
+ 		} else {
+ 			/* Link the fence with the FD created earlier */
+ 			fd_install(out_fence_fd, sync_file->file);
+-			struct seqno_waiter_rm_context *ctx =
+-				kmalloc(sizeof(*ctx), GFP_KERNEL);
+-			ctx->dev_priv = dev_priv;
+-			vmw_seqno_waiter_add(dev_priv);
+-			if (dma_fence_add_callback(&fence->base, &ctx->base,
+-						   seqno_waiter_rm_cb) < 0) {
+-				vmw_seqno_waiter_remove(dev_priv);
+-				kfree(ctx);
+-			}
+ 		}
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
