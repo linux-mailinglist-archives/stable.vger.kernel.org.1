@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGWcOn8h3Wn4aAkAu9opvQ
-	(envelope-from <stable+bounces-237430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:51 +0200
+	id mPErExYX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BB33F086D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF7C3EE8EE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4C61304B84C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:57:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8326A30C8E62
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8460033372D;
-	Mon, 13 Apr 2026 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063CD27FB18;
+	Mon, 13 Apr 2026 16:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ney3mzUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqSAJOEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D743271EA;
-	Mon, 13 Apr 2026 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC0024DCF6;
+	Mon, 13 Apr 2026 16:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099437; cv=none; b=hxUHyhD8+U/L7DvvUr0sKPTVZDIIkjcEHElQO3AEQk99WYtUnzlrP4jsGNaQ+ZmrbYepwgHQ6u5jsYJJJa2pZS5wYEnwykMNoRQWeKleMpHIn6UA74y2tMwTzBGe4ubYevt8Uzz3bY3hbm2yOskkbHilINpQ+MKGC5X7Z4XXKk4=
+	t=1776096449; cv=none; b=Yof8Xd2mVolhCpY+uHQRI2mfjtt8V0f9gkwrtiDamBfMdZLJ2vaBr6KX355QDCW5e3MJxkx2aMVVCNNZbl2rBUHoAMsU8xR0FWl+bmtYR3F2aXRkz7lKzXYXG79krTaYWN5snvVhMoP+uXgfbVPX5bPHaxAoMCVvzSJxys0Rk6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099437; c=relaxed/simple;
-	bh=9kLH7ZMomj3+bIqhp0np73Ekz9mK2sOGwSYv7ogvOtU=;
+	s=arc-20240116; t=1776096449; c=relaxed/simple;
+	bh=6KsTMiviaFP+KxAth7HqMogLHhCuCM4OCafPsEa/ldo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UK3JSj6opOj73HA9ocFxFQ3Bhkn2jfBoKGuYLERSfOJ0d0XHjCJPv2TE3JTWc9l/kgmxX5t2d1XV3NrUaCBqBbNCVanvNzr4EI4Dp67VbUPmpBWOwmNkeWpTE3NCp9TOMOSeJclOClhdzhTOrzD3WCGvIWEXkDqC2l29voJNjGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ney3mzUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C494FC2BCB7;
-	Mon, 13 Apr 2026 16:57:16 +0000 (UTC)
+	 MIME-Version; b=a032LYrxBoAmOgXvBaMeWkavZv37IKCUHVLrF30bG+rc+qyIj5OAJKkddlSYdXR7lAD9dN3NKriSh6GuKpTZoQDij0MLF34vjND6L2EnL+p75t4o1dIPqAsDlzt8Ew5hnA6IHLXdoHHl2QlQzTdoPdWBUUp5rx0G2hcJe1M2txM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqSAJOEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F9FC2BCAF;
+	Mon, 13 Apr 2026 16:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099437;
-	bh=9kLH7ZMomj3+bIqhp0np73Ekz9mK2sOGwSYv7ogvOtU=;
+	s=korg; t=1776096449;
+	bh=6KsTMiviaFP+KxAth7HqMogLHhCuCM4OCafPsEa/ldo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ney3mzUqka7clcn1fGcIOC0lRS6ooBRLygeYPhOcRwJLumlrR2y3lpE/qHbk0Gu3U
-	 E80sweROL59Cqemo2B+DfyV+9mt0H3Clok1EtfN3crKHVMGjsHYNifiS3OOBKA+SZD
-	 +3RO2PTvf1cIXguG3pcrGRqVfmH1QBm83CG2I0lM=
+	b=vqSAJOEN7DUjyi5hP+YlPgAL2W0CnKgAgo3eHln1VBwgVmdGigOO1vo5EtKNiNB8g
+	 8COXU9h3It3kwPYgPEYg+elrLtxSWAkA2fzJ/x+k2DjtONtxJIib38OcrFvfpGpqKc
+	 R4H/i78I156cZ8uq7lDf52QwdqXDkZ5M8DRt4RkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 339/491] netfilter: ipset: use nla_strcmp for IPSET_ATTR_NAME attr
+Subject: [PATCH 6.18 16/83] af_unix: Count cyclic SCC.
 Date: Mon, 13 Apr 2026 17:59:44 +0200
-Message-ID: <20260413155831.731579828@linuxfoundation.org>
+Message-ID: <20260413155731.633233517@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237430-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236258-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,93 +89,137 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
-X-Rspamd-Queue-Id: 89BB33F086D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: ADF7C3EE8EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit b7e8590987aa94c9dc51518fad0e58cb887b1db5 ]
+[ Upstream commit 58b47c713711b8afbf68e3158d4d5acdead00e9b ]
 
-IPSET_ATTR_NAME and IPSET_ATTR_NAMEREF are of NLA_STRING type, they
-cannot be treated like a c-string.
+__unix_walk_scc() and unix_walk_scc_fast() call unix_scc_cyclic()
+for each SCC to check if it forms a cyclic reference, so that we
+can skip GC at the following invocations in case all SCCs do not
+have any cycles.
 
-They either have to be switched to NLA_NUL_STRING, or the compare
-operations need to use the nla functions.
+If we count the number of cyclic SCCs in __unix_walk_scc(), we can
+simplify unix_walk_scc_fast() because the number of cyclic SCCs
+only changes when it garbage-collects a SCC.
 
-Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+So, let's count cyclic SCC in __unix_walk_scc() and decrement it
+in unix_walk_scc_fast() when performing garbage collection.
+
+Note that we will use this counter in a later patch to check if a
+cycle existed in the previous GC run.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20251115020935.2643121-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e5b31d988a41 ("af_unix: Give up GC if MSG_PEEK intervened.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter/ipset/ip_set.h | 2 +-
- net/netfilter/ipset/ip_set_core.c      | 4 ++--
- net/netfilter/ipset/ip_set_list_set.c  | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ net/unix/garbage.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/netfilter/ipset/ip_set.h b/include/linux/netfilter/ipset/ip_set.h
-index f27894e50ef19..4269b64252787 100644
---- a/include/linux/netfilter/ipset/ip_set.h
-+++ b/include/linux/netfilter/ipset/ip_set.h
-@@ -306,7 +306,7 @@ enum {
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 65396a4e1b07e..9f62d50979735 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -404,9 +404,11 @@ static bool unix_scc_cyclic(struct list_head *scc)
+ static LIST_HEAD(unix_visited_vertices);
+ static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
  
- /* register and unregister set references */
- extern ip_set_id_t ip_set_get_byname(struct net *net,
--				     const char *name, struct ip_set **set);
-+				     const struct nlattr *name, struct ip_set **set);
- extern void ip_set_put_byindex(struct net *net, ip_set_id_t index);
- extern void ip_set_name_byindex(struct net *net, ip_set_id_t index, char *name);
- extern ip_set_id_t ip_set_nfnl_get_byindex(struct net *net, ip_set_id_t index);
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index a265efd31ba96..cf827d72581e1 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -823,7 +823,7 @@ EXPORT_SYMBOL_GPL(ip_set_del);
-  *
-  */
- ip_set_id_t
--ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
-+ip_set_get_byname(struct net *net, const struct nlattr *name, struct ip_set **set)
+-static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_index,
+-			    struct sk_buff_head *hitlist)
++static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
++				     unsigned long *last_index,
++				     struct sk_buff_head *hitlist)
  {
- 	ip_set_id_t i, index = IPSET_INVALID_ID;
- 	struct ip_set *s;
-@@ -832,7 +832,7 @@ ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
- 	rcu_read_lock();
- 	for (i = 0; i < inst->ip_set_max; i++) {
- 		s = rcu_dereference(inst->ip_set_list)[i];
--		if (s && STRNCMP(s->name, name)) {
-+		if (s && nla_strcmp(name, s->name) == 0) {
- 			__ip_set_get(s);
- 			index = i;
- 			*set = s;
-diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
-index 5cc35b553a048..7d1ba6ad514f5 100644
---- a/net/netfilter/ipset/ip_set_list_set.c
-+++ b/net/netfilter/ipset/ip_set_list_set.c
-@@ -367,7 +367,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
- 	ret = ip_set_get_extensions(set, tb, &ext);
- 	if (ret)
- 		return ret;
--	e.id = ip_set_get_byname(map->net, nla_data(tb[IPSET_ATTR_NAME]), &s);
-+	e.id = ip_set_get_byname(map->net, tb[IPSET_ATTR_NAME], &s);
- 	if (e.id == IPSET_INVALID_ID)
- 		return -IPSET_ERR_NAME;
- 	/* "Loop detection" */
-@@ -389,7 +389,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
++	unsigned long cyclic_sccs = 0;
+ 	LIST_HEAD(vertex_stack);
+ 	struct unix_edge *edge;
+ 	LIST_HEAD(edge_stack);
+@@ -497,8 +499,8 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
+ 			if (unix_vertex_max_scc_index < vertex->scc_index)
+ 				unix_vertex_max_scc_index = vertex->scc_index;
  
- 	if (tb[IPSET_ATTR_NAMEREF]) {
- 		e.refid = ip_set_get_byname(map->net,
--					    nla_data(tb[IPSET_ATTR_NAMEREF]),
-+					    tb[IPSET_ATTR_NAMEREF],
- 					    &s);
- 		if (e.refid == IPSET_INVALID_ID) {
- 			ret = -IPSET_ERR_NAMEREF;
+-			if (!unix_graph_maybe_cyclic)
+-				unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
++			if (unix_scc_cyclic(&scc))
++				cyclic_sccs++;
+ 		}
+ 
+ 		list_del(&scc);
+@@ -507,13 +509,17 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
+ 	/* Need backtracking ? */
+ 	if (!list_empty(&edge_stack))
+ 		goto prev_vertex;
++
++	return cyclic_sccs;
+ }
+ 
++static unsigned long unix_graph_cyclic_sccs;
++
+ static void unix_walk_scc(struct sk_buff_head *hitlist)
+ {
+ 	unsigned long last_index = UNIX_VERTEX_INDEX_START;
++	unsigned long cyclic_sccs = 0;
+ 
+-	unix_graph_maybe_cyclic = false;
+ 	unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
+ 
+ 	/* Visit every vertex exactly once.
+@@ -523,18 +529,20 @@ static void unix_walk_scc(struct sk_buff_head *hitlist)
+ 		struct unix_vertex *vertex;
+ 
+ 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
+-		__unix_walk_scc(vertex, &last_index, hitlist);
++		cyclic_sccs += __unix_walk_scc(vertex, &last_index, hitlist);
+ 	}
+ 
+ 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
+ 	swap(unix_vertex_unvisited_index, unix_vertex_grouped_index);
+ 
++	unix_graph_cyclic_sccs = cyclic_sccs;
++	unix_graph_maybe_cyclic = !!unix_graph_cyclic_sccs;
+ 	unix_graph_grouped = true;
+ }
+ 
+ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
+ {
+-	unix_graph_maybe_cyclic = false;
++	unsigned long cyclic_sccs = unix_graph_cyclic_sccs;
+ 
+ 	while (!list_empty(&unix_unvisited_vertices)) {
+ 		struct unix_vertex *vertex;
+@@ -551,15 +559,18 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
+ 				scc_dead = unix_vertex_dead(vertex);
+ 		}
+ 
+-		if (scc_dead)
++		if (scc_dead) {
++			cyclic_sccs--;
+ 			unix_collect_skb(&scc, hitlist);
+-		else if (!unix_graph_maybe_cyclic)
+-			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
++		}
+ 
+ 		list_del(&scc);
+ 	}
+ 
+ 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
++
++	unix_graph_cyclic_sccs = cyclic_sccs;
++	unix_graph_maybe_cyclic = !!unix_graph_cyclic_sccs;
+ }
+ 
+ static bool gc_in_progress;
 -- 
 2.53.0
 
