@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-236752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJzdI8YZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:54 +0200
+	id uHblBKgh3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-236753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515413EF0C2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575DC3F08EA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0660300E29B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2F573224497
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D95306B0A;
-	Mon, 13 Apr 2026 16:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26F93093CF;
+	Mon, 13 Apr 2026 16:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po6H6Ezd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klCGNkK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE0A49620;
-	Mon, 13 Apr 2026 16:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BC830ACE6;
+	Mon, 13 Apr 2026 16:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097702; cv=none; b=vEe5PPHuzWlvlE50e8lxR+RhN5RvLaD8DVGzJXZhSQYm6nVYKB6SDyIqEkkeGoLKjuWBSQMPX2UQcJL3Xb4FSMkCy7ntjltqJ/JEUrbwOEJNbVsbacMYVCimgLouaaIZBnGxP+N27LWlu4ZOBxB9cJrNdDGSW0w9xJmtgTdYOqg=
+	t=1776097705; cv=none; b=vDVRu0t8yHkzuAG6AApJm4qsigDYLyL4qEMk8hM8y+5r4ov//5ywcIdcadrXwpRQZdu5lnF855KCn2AHpsADZIT4hjLlIr+TMJ0OfMy8TsVVlv6jOFJki1Y2PDeLCVsGrzqpNg6nLpRM+F23Njq5mBq9A8FcU+LwqjVbkYhMV2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097702; c=relaxed/simple;
-	bh=5/JHE6D8YLL8MvCMIO/I4TJ4aaDCIOCmbDzB59o5rQg=;
+	s=arc-20240116; t=1776097705; c=relaxed/simple;
+	bh=b78vqhJnHxNLWf4ySHjI9pbWFMOM6vAJVShn4SXMsrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pOQKk/S21N6Snjp9LM9y3Qfgj8+gy3kw+M7m7qLs07NCfkpLiPN6d2fCiXNky7o/X6Wih/suMm1uCVHFe9FCO6yqgvoT+JogWVUlAZKmcjWrvWDsKqan2m+qfQdr3oZ85EVCsdF30r9wyXHiEB45B9z5S252BYHEilNtatBbnZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po6H6Ezd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A46C2BCAF;
-	Mon, 13 Apr 2026 16:28:22 +0000 (UTC)
+	 MIME-Version; b=NQJsbjHcS95JVDU/YB4aikK1zHor34dWBKReG6+yPztCRSfKtraGhPuRA+lvjPkZ28MazoQA46SOkga185NS8IeYggVBqfxKmUvGk5pqsEjAC3izl7qLnWuuG3iUzVj37I2OITH7wEawFrR9nAuoPS8I57HMTGbE8npurXNgatQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klCGNkK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15DCC2BCAF;
+	Mon, 13 Apr 2026 16:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097702;
-	bh=5/JHE6D8YLL8MvCMIO/I4TJ4aaDCIOCmbDzB59o5rQg=;
+	s=korg; t=1776097705;
+	bh=b78vqhJnHxNLWf4ySHjI9pbWFMOM6vAJVShn4SXMsrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Po6H6EzdMoMiEfeHWN4dJDPIC5EE/d6d88H2RhkQ4MLRPHg+C/TGAltaHyYJcqkRb
-	 3wm8igQ4X09vah4lf9GR27146vZNTHLi6VhA1RIWgmCvoHEpcOnsZjp+SnQKM9nnSH
-	 0hS/rtxNMVpzUdNyruqNDQ6jnl1gl4hMrNIkW9P4=
+	b=klCGNkK2G+L4djXGqUTYCET3L5UEp5maHK/rxE621kZyqj2T36rOhnSDlNVRHjbSS
+	 LisWhmu/vdLzjrepU+mkbXPMQuzxbI+cGj0HmAnbq5iX5ATTobnilvi4FykgrVB3lQ
+	 j//n3+DJJAO38oHB7bOD6h7lgsZcPX97azGK06VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 240/570] pmdomain: bcm: bcm2835-power: Increase ASB control timeout
-Date: Mon, 13 Apr 2026 17:56:11 +0200
-Message-ID: <20260413155839.458768040@linuxfoundation.org>
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.15 241/570] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
+Date: Mon, 13 Apr 2026 17:56:12 +0200
+Message-ID: <20260413155839.496995498@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -64,36 +67,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,gmx.net,linaro.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236752-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
+	TAGGED_FROM(0.00)[bounces-236753-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,igalia.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 515413EF0C2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,narfation.org:email,simonwunderlich.de:email]
+X-Rspamd-Queue-Id: 575DC3F08EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,95 +104,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit b826d2c0b0ecb844c84431ba6b502e744f5d919a ]
+commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
 
-The bcm2835_asb_control() function uses a tight polling loop to wait
-for the ASB bridge to acknowledge a request. During intensive workloads,
-this handshake intermittently fails for V3D's master ASB on BCM2711,
-resulting in "Failed to disable ASB master for v3d" errors during
-runtime PM suspend. As a consequence, the failed power-off leaves V3D in
-a broken state, leading to bus faults or system hangs on later accesses.
+When OGM aggregation state is toggled at runtime, an existing forwarded
+packet may have been allocated with only packet_len bytes, while a later
+packet can still be selected for aggregation. Appending in this case can
+hit skb_put overflow conditions.
 
-As the timeout is insufficient in some scenarios, increase the polling
-timeout from 1us to 5us, which is still negligible in the context of a
-power domain transition. Also, replace the open-coded ktime_get_ns()/
-cpu_relax() polling loop with readl_poll_timeout_atomic().
+Reject aggregation when the target skb tailroom cannot accommodate the new
+packet. The caller then falls back to creating a new forward packet
+instead of appending.
 
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
 Cc: stable@vger.kernel.org
-Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power domains under a new binding.")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ adapted unified bcm2835_asb_control() function changes to separate bcm2835_asb_enable() and bcm2835_asb_disable() functions ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+[ Adjust context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/bcm/bcm2835-power.c |   27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ net/batman-adv/bat_iv_ogm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/soc/bcm/bcm2835-power.c
-+++ b/drivers/soc/bcm/bcm2835-power.c
-@@ -9,6 +9,7 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/mfd/bcm2835-pm.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -150,40 +151,34 @@ struct bcm2835_power {
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -465,6 +465,9 @@ batadv_iv_ogm_can_aggregate(const struct
+ 	    !time_after_eq(aggregation_end_time, forw_packet->send_time))
+ 		return false;
  
- static int bcm2835_asb_enable(struct bcm2835_power *power, u32 reg)
- {
--	u64 start;
-+	u32 val;
- 
- 	if (!reg)
- 		return 0;
- 
--	start = ktime_get_ns();
--
- 	/* Enable the module's async AXI bridges. */
- 	ASB_WRITE(reg, ASB_READ(reg) & ~ASB_REQ_STOP);
--	while (ASB_READ(reg) & ASB_ACK) {
--		cpu_relax();
--		if (ktime_get_ns() - start >= 1000)
--			return -ETIMEDOUT;
--	}
++	if (skb_tailroom(forw_packet->skb) < packet_len)
++		return false;
 +
-+	if (readl_poll_timeout_atomic(power->asb + reg, val,
-+				      !(val & ASB_ACK), 0, 5))
-+		return -ETIMEDOUT;
+ 	if (aggregated_bytes > BATADV_MAX_AGGREGATION_BYTES)
+ 		return false;
  
- 	return 0;
- }
- 
- static int bcm2835_asb_disable(struct bcm2835_power *power, u32 reg)
- {
--	u64 start;
-+	u32 val;
- 
- 	if (!reg)
- 		return 0;
- 
--	start = ktime_get_ns();
--
- 	/* Enable the module's async AXI bridges. */
- 	ASB_WRITE(reg, ASB_READ(reg) | ASB_REQ_STOP);
--	while (!(ASB_READ(reg) & ASB_ACK)) {
--		cpu_relax();
--		if (ktime_get_ns() - start >= 1000)
--			return -ETIMEDOUT;
--	}
-+
-+	if (readl_poll_timeout_atomic(power->asb + reg, val,
-+				      !!(val & ASB_ACK), 0, 5))
-+		return -ETIMEDOUT;
- 
- 	return 0;
- }
 
 
 
