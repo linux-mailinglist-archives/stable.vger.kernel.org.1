@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-237186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NFtBGMg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:07 +0200
+	id +OqLIi0d3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908FB3F0513
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93B03EF9AA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 046033075873
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 51D8E3079054
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75F5314D0D;
-	Mon, 13 Apr 2026 16:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E988030BB9B;
+	Mon, 13 Apr 2026 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXLzhW40"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WH1tmrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A221314A6B;
-	Mon, 13 Apr 2026 16:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC97A3093B2;
+	Mon, 13 Apr 2026 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098807; cv=none; b=bE6/3WO7/5zkflv60oCd4J+3jRZeFaAue0Y57036zkI92FxWF5hPvsKICRp7XU4JcRHYwRpo6kqIlHfuBynyAqFp0gDvhDPJQJI49QxTXevg7vWC0kgGos5jtS8exVNGK2X2O8bYqJwctECVVlN9zqPoSsrXXnZCkXRCkDyA2VE=
+	t=1776097630; cv=none; b=Cg9TmSDbp5jqK32PNVYq2AnTtl1N7fdU5Z9eykI/ag7iF/nJbAUPMD8el7WU/7dURB1/KC4+m2oxT9UBXU2IFafEeHakUqX+u/wNrxGMKPCR2UOHV6w/Ton3O3zAHV/Ee3hxwcLh9IZ6F7g7oXbWysOfEkppMwzcyfAsPgiO93Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098807; c=relaxed/simple;
-	bh=UgGFxlizCP/rrXBvG1/TQd80E36sqYbuAed2sleg0cg=;
+	s=arc-20240116; t=1776097630; c=relaxed/simple;
+	bh=4THCdCmqZlId0M0q7rqmWitkSskjGjazAcJptoIidhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozQWYnco+P3OvxX1LC2gdv7wJjFYMFVGpal9GwKwfq5uG2ypJ/+EUK31CZ8Whm869B4ViW7Ie4/Pp7O3Ys/5KjX9yxdo6+sX0T5OlpBaYSNLarhvyIYJk/JzBFNoX2Iyyu7nPokmzbzAKLsqICRgnbgZfrNvH9DQ9ZnE100nhvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXLzhW40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20798C2BCAF;
-	Mon, 13 Apr 2026 16:46:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YeVsYn6TsbKWIBsyMIyCT94D0EdDeL0KlVpyXeEDDIJzmWHFbg6OaqFJzQIwMYgmzrgssGKbGPcBFNQqxvdylpQxNQwHXwjTTPsgRCN78MN5c0dDisYoWJs2mzwMs063w51UiXxgnvlxpnPkpZTlj4fZcZ3BJqwz9NmqxajOpJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WH1tmrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E82C2BCAF;
+	Mon, 13 Apr 2026 16:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098807;
-	bh=UgGFxlizCP/rrXBvG1/TQd80E36sqYbuAed2sleg0cg=;
+	s=korg; t=1776097630;
+	bh=4THCdCmqZlId0M0q7rqmWitkSskjGjazAcJptoIidhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXLzhW407Su4gm/cx8P3WPxChQbjBgluyI1fUeaFCLQLZLOLIdwGzlADRBg6D/j1M
-	 f7ScvEo5RiWgj3P6852mDMTb6qulKeS2WMLCc3+E5E0iUiyPlxuKCTHuCUMNrOW2Rp
-	 dUqQyj7uez5NWHQKEVbnnKBMzARXCw2Uq87gL1t8=
+	b=1WH1tmrtotMlZlcAy9B4UCEZe2NlLsY9cccLk+sWQR5VweuSnx/77QI13PG2f4vCv
+	 8u2N4o8589rKU4/9Igv7oVzqf78uR8XHWXxmnYo06lfu9cV3G23pwD9UJwQriVn6q5
+	 jOk3+jdJpBqFZMyi0uz3jN3kxKcpaHJzg3CiCe3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 096/491] usb: core: dont power off roothub PHYs if phy_set_mode() fails
-Date: Mon, 13 Apr 2026 17:55:41 +0200
-Message-ID: <20260413155822.638703850@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5.15 211/570] serial: 8250: Add late synchronize_irq() to shutdown to handle DW UART BUSY
+Date: Mon, 13 Apr 2026 17:55:42 +0200
+Message-ID: <20260413155838.361073263@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237186-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-236724-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 908FB3F0513
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B93B03EF9AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
+commit e0a368ae79531ff92105a2692f10d83052055856 upstream.
 
-Remove the error path from the usb_phy_roothub_set_mode() function.
-The code is clearly wrong, because phy_set_mode() calls can't be
-balanced with phy_power_off() calls.
+When DW UART is !uart_16550_compatible, it can indicate BUSY at any
+point (when under constant Rx pressure) unless a complex sequence of
+steps is performed. Any LCR write can run a foul with the condition
+that prevents writing LCR while the UART is BUSY, which triggers
+BUSY_DETECT interrupt that seems unmaskable using IER bits.
 
-Additionally, the usb_phy_roothub_set_mode() function is called only
-from usb_add_hcd() before it powers on the PHYs, so powering off those
-makes no sense anyway.
+Normal flow is that dw8250_handle_irq() handles BUSY_DETECT condition
+by reading USR register. This BUSY feature, however, breaks the
+assumptions made in serial8250_do_shutdown(), which runs
+synchronize_irq() after clearing IER and assumes no interrupts can
+occur after that point but then proceeds to update LCR, which on DW
+UART can trigger an interrupt.
 
-Presumably, the code is copy-pasted from the phy_power_on() function
-without adjusting the error handling.
+If serial8250_do_shutdown() releases the interrupt handler before the
+handler has run and processed the BUSY_DETECT condition by read the USR
+register, the IRQ is not deasserted resulting in interrupt storm that
+triggers "irq x: nobody cared" warning leading to disabling the IRQ.
 
-Cc: stable@vger.kernel.org # v5.1+
-Fixes: b97a31348379 ("usb: core: comply to PHY framework")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
+Add late synchronize_irq() into serial8250_do_shutdown() to ensure
+BUSY_DETECT from DW UART is handled before port's interrupt handler is
+released. Alternative would be to add DW UART specific shutdown
+function but it would mostly duplicate the generic code and the extra
+synchronize_irq() seems pretty harmless in serial8250_do_shutdown().
+
+Fixes: 7d4008ebb1c9 ("tty: add a DesignWare 8250 driver")
+Cc: stable <stable@kernel.org>
+Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260203171049.4353-7-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/phy.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/core/phy.c
-+++ b/drivers/usb/core/phy.c
-@@ -138,16 +138,10 @@ int usb_phy_roothub_set_mode(struct usb_
- 	list_for_each_entry(roothub_entry, head, list) {
- 		err = phy_set_mode(roothub_entry->phy, mode);
- 		if (err)
--			goto err_out;
-+			return err;
- 	}
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2488,6 +2488,12 @@ void serial8250_do_shutdown(struct uart_
+ 	 * the IRQ chain.
+ 	 */
+ 	serial_port_in(port, UART_RX);
++	/*
++	 * LCR writes on DW UART can trigger late (unmaskable) IRQs.
++	 * Handle them before releasing the handler.
++	 */
++	synchronize_irq(port->irq);
++
+ 	serial8250_rpm_put(up);
  
- 	return 0;
--
--err_out:
--	list_for_each_entry_continue_reverse(roothub_entry, head, list)
--		phy_power_off(roothub_entry->phy);
--
--	return err;
- }
- EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
- 
+ 	up->ops->release_irq(up);
 
 
 
