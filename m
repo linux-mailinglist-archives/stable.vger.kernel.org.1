@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-237587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPadCMoj3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:38 +0200
+	id EOE5G2gd3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-237086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF42C3F0F21
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D353EFA75
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C5EDD3043930
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:04:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7CBA0302D67D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6831833372A;
-	Mon, 13 Apr 2026 17:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1A2311C15;
+	Mon, 13 Apr 2026 16:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5K2TmgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmEWA6Hx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F6731354F;
-	Mon, 13 Apr 2026 17:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6343148A3;
+	Mon, 13 Apr 2026 16:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099842; cv=none; b=KtVGx41Zt+6HJCaJoNI9d3TeCztVZE9LuTJlYLti3MFLdyfCkkmUVwgdDb6ujF3Iss7PAhAQrtqsDuTyQbLU71lcfVfuK/LVZL5nkTb/jD00MpDY2Qfe/Z9paHg99jiJPbPML7oiou3WQGGptgwGjZVwiyGVc+5zf7Y/AaZxK+c=
+	t=1776098551; cv=none; b=IZQxgbmwlvjdO4YoSEGQMKT6TbsYWYSRV91CsGuK7EnOwT063QGRSMav3o646kxoNsYD+oX3yb6xGUaFYW2hNIzGXSpPYmkyjQP1ot8krAIHWCK/1f73k/8Jo+2FUqCBoJ5LJnxmz+oYwOHJfUfQVWkXLDtzEXikOgEbdRzG4Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099842; c=relaxed/simple;
-	bh=s3iO4BnXBdq21pt9BCuizcdZqR/DgYLsAMWOewM7x8U=;
+	s=arc-20240116; t=1776098551; c=relaxed/simple;
+	bh=1wFqu9JT2joKHekLk5Y8JoDtaCNMIGn2DB8giCMXE5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0Jt2lh0///2MjuaSiEXxhtHAC2cVd8QQmpbIq78ER0Q2Vnyekol01E0RBswQ780o3KBBJnPvTSwaJfHmX/YZIsehy5Pe1lNUlYCCoz3dkp4QDGfDEOl9VHWVzqza0S4xIh+Iratooc8Ujlt89nYOPgMKhFnDP2vd5kuGgNumQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5K2TmgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEABC2BCAF;
-	Mon, 13 Apr 2026 17:04:01 +0000 (UTC)
+	 MIME-Version; b=aMkDU1652cFPz/G1J7Dd0RPJpuDffmDPvjA/7X5SVysS0my3kGzqHVMcACZ2lmBvcQ80TdDHJ0sUIS6YGKDHgXvajJcc9lnrkw3j6bi+kUR7ocGOGC9r2h9KDUfR9Uoi9nI8IPA7GaCRm3W7MsUD2s1IEIfiyvaLIQawIpcBUjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmEWA6Hx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC276C2BCB0;
+	Mon, 13 Apr 2026 16:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099842;
-	bh=s3iO4BnXBdq21pt9BCuizcdZqR/DgYLsAMWOewM7x8U=;
+	s=korg; t=1776098551;
+	bh=1wFqu9JT2joKHekLk5Y8JoDtaCNMIGn2DB8giCMXE5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5K2TmgWHHI14uid425C90asSHCxsJ+MdqOTN+0lh7DbjqURkzrzf9Yof7eITZJqJ
-	 qlBcn+jqApwEDBm5ZNRM/sW2BQrpyKyQwM3Vt79n3H1APscZTS+kx4VvdLHh5COeWV
-	 2T/ReHr6722QMwaFmFF8jPfuJG1JaWn0Hx72Qrsk=
+	b=XmEWA6HxyVzc+Ski51q4RcAanp4pvSj2Sjq416D8UZEm9GzHoe3paUxCj9CzucJen
+	 rqgY4VB6LJMgbNLKc04/6k5SKy/lznHWnj8kcz1Vg5aHfGhGtjtqnEpDxWsDaT94DM
+	 WQ6+Y8vdHldRSLYzTmQn72Wbqmy9XNAc4Ff+fqkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GuoHan Zhao <zhaoguohan@kylinos.cn>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 453/491] xen/privcmd: unregister xenstore notifier on module exit
-Date: Mon, 13 Apr 2026 18:01:38 +0200
-Message-ID: <20260413155835.995440150@linuxfoundation.org>
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Leon Chen <leonchen.oss@139.com>
+Subject: [PATCH 5.15 568/570] ksmbd: Fix dangling pointer in krb_authenticate
+Date: Mon, 13 Apr 2026 18:01:39 +0200
+Message-ID: <20260413155851.755021446@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,69 +74,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com,139.com];
+	TAGGED_FROM(0.00)[bounces-237086-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237587-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: BF42C3F0F21
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 23D353EFA75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GuoHan Zhao <zhaoguohan@kylinos.cn>
+From: Sean Heelan <seanheelan@gmail.com>
 
-commit cd7e1fef5a1ca1c4fcd232211962ac2395601636 upstream.
+[ Upstream commit 1e440d5b25b7efccb3defe542a73c51005799a5f ]
 
-Commit 453b8fb68f36 ("xen/privcmd: restrict usage in
-unprivileged domU") added a xenstore notifier to defer setting the
-restriction target until Xenstore is ready.
+krb_authenticate frees sess->user and does not set the pointer
+to NULL. It calls ksmbd_krb5_authenticate to reinitialise
+sess->user but that function may return without doing so. If
+that happens then smb2_sess_setup, which calls krb_authenticate,
+will be accessing free'd memory when it later uses sess->user.
 
-XEN_PRIVCMD can be built as a module, but privcmd_exit() leaves that
-notifier behind. Balance the notifier lifecycle by unregistering it on
-module exit.
-
-This is harmless even if xenstore was already ready at registration
-time and the notifier was never queued on the chain.
-
-Fixes: 453b8fb68f3641fe ("xen/privcmd: restrict usage in unprivileged domU")
-Signed-off-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20260325120246.252899-1-zhaoguohan@kylinos.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/privcmd.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ksmbd/smb2pdu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -1069,6 +1069,9 @@ static int __init privcmd_init(void)
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1619,8 +1619,10 @@ static int krb5_authenticate(struct ksmb
+ 	if (prev_sess_id && prev_sess_id != sess->id)
+ 		destroy_previous_session(conn, sess->user, prev_sess_id);
  
- static void __exit privcmd_exit(void)
- {
-+	if (!xen_initial_domain())
-+		unregister_xenstore_notifier(&xenstore_notifier);
-+
- 	misc_deregister(&privcmd_dev);
- 	misc_deregister(&xen_privcmdbuf_dev);
- }
+-	if (sess->state == SMB2_SESSION_VALID)
++	if (sess->state == SMB2_SESSION_VALID) {
+ 		ksmbd_free_user(sess->user);
++		sess->user = NULL;
++	}
+ 
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
 
 
 
