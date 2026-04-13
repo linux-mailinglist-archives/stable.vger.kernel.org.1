@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QONsLl0g3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:01 +0200
+	id kG6JHTwn3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25F83F04FE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795B33F1618
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E9E3630ACE57
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BEAF930B5320
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB11730E857;
-	Mon, 13 Apr 2026 16:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFFA33F5AA;
+	Mon, 13 Apr 2026 17:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOEctJXf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Px2XYNPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4C3280CFB;
-	Mon, 13 Apr 2026 16:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F940337BB5;
+	Mon, 13 Apr 2026 17:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098520; cv=none; b=cnerOQ5E8R5TVzFm4NVpD3g9+QQG4jvCl/GoiMprpDVD0b8C6koVG1QPgI5LFOC+ZrWusWya95xgVAsJqaekkVvZSjJF0F+WhQ2NvhiAmJj5Hui2Jb2n75URRDScdhp+wMgoweyO8njeApmLFIUrqeMBfr2BWQLot/8dPcm8zwQ=
+	t=1776099707; cv=none; b=GsOLAUys9jBvyC8jo/LY327cD38m8W5BtJ10bkMn7d+rXxGrmOb9wB6yvhrOVF3PgYmauZqYSl5hKWCjKCC2e1lp6/383MNMOpefL3vDrw8VqAFYYrVtyISi7IOZeCwtmyLeIdc3aQcFhy61dVGwm+kU9HSytEQ8bod+3WkxlVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098520; c=relaxed/simple;
-	bh=t1ofnhUq+FZddpMVIPAn9ts6sz55M1QlTwkRhQaB3ZA=;
+	s=arc-20240116; t=1776099707; c=relaxed/simple;
+	bh=7fKtP9KwUL8bfBa3AtjKdT+JLhB2+r+h46vcvzLIscg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pB5p1g/C2HB2QzoARnuXXqVZGIoIGUgsxAq1tNQk1pOy2y8xI3C/jGm6NYjUNeisVFZIaBPlOrWoKdX/+91J5gesmtM/HwXqgKxQ7kBvaTYph0AbP9TH+RqoY1WN6SsKyICAAdzuhtnHA+Rgz6J0RioKUgib9H3BncOo60yvirk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOEctJXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7374C2BCAF;
-	Mon, 13 Apr 2026 16:41:59 +0000 (UTC)
+	 MIME-Version; b=OukTL2CtgJGU8FUcaVNU3rfqZvxnmhh3RnlMbArn5XDoH/s9EiZXF8QE52M/APc4RS3bXnVYGzbeKxso2/BrFskQpHBcQLcJznf/OROKXSGM1Mxy35NUeBxJ+CKtlgabXTo008oH6dzoyCjBYsa/67uv/FHHhqOBWYRZBr5gYxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Px2XYNPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358F7C2BCB3;
+	Mon, 13 Apr 2026 17:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098520;
-	bh=t1ofnhUq+FZddpMVIPAn9ts6sz55M1QlTwkRhQaB3ZA=;
+	s=korg; t=1776099707;
+	bh=7fKtP9KwUL8bfBa3AtjKdT+JLhB2+r+h46vcvzLIscg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOEctJXf/7994v3WTmllf7MOR+xqK4aWDTtS00FsYoXgrpkzd2qidfyAAQOZtkL8X
-	 kygHT2NMilKLwupxXBQYDq/bQiCDNvw+k0umfP8I2Bo6cvQT2fkCJ1Fah5z0uBreIs
-	 2WT01D8/O/xOB7Tnz5qAPkn8vYKujkGIpL1fZMMY=
+	b=Px2XYNPMZBTzgyUBa+0HlkR4JXV7NhBUbOHkdGq9yGGVe9P8Jn74HGM7/T6qfAmHb
+	 dglN2/cMT7SpgEZvGFZD1xx1ZNvvRSGD20WHD35C5ItuJTuJLCt602p/hvA6C9Rq68
+	 jgZvtKY8uoHMI4Lmt8dgbtG9oVR9q9uXfTfqFaeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 557/570] scsi: target: tcm_loop: Drain commands in target_reset handler
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 443/491] wifi: brcmsmac: Fix dma_free_coherent() size
 Date: Mon, 13 Apr 2026 18:01:28 +0200
-Message-ID: <20260413155851.330470090@linuxfoundation.org>
+Message-ID: <20260413155835.613050116@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,182 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237074-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-237535-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.985];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,toxicpanda.com:email]
-X-Rspamd-Queue-Id: E25F83F04FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,broadcom.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 795B33F1618
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 1333eee56cdf3f0cf67c6ab4114c2c9e0a952026 ]
+commit 12cd7632757a54ce586e36040210b1a738a0fc53 upstream.
 
-tcm_loop_target_reset() violates the SCSI EH contract: it returns SUCCESS
-without draining any in-flight commands.  The SCSI EH documentation
-(scsi_eh.rst) requires that when a reset handler returns SUCCESS the driver
-has made lower layers "forget about timed out scmds" and is ready for new
-commands.  Every other SCSI LLD (virtio_scsi, mpt3sas, ipr, scsi_debug,
-mpi3mr) enforces this by draining or completing outstanding commands before
-returning SUCCESS.
+dma_alloc_consistent() may change the size to align it. The new size is
+saved in alloced.
 
-Because tcm_loop_target_reset() doesn't drain, the SCSI EH reuses in-flight
-scsi_cmnd structures for recovery commands (e.g. TUR) while the target core
-still has async completion work queued for the old se_cmd.  The memset in
-queuecommand zeroes se_lun and lun_ref_active, causing
-transport_lun_remove_cmd() to skip its percpu_ref_put().  The leaked LUN
-reference prevents transport_clear_lun_ref() from completing, hanging
-configfs LUN unlink forever in D-state:
+Change the free size to match the allocation size.
 
-  INFO: task rm:264 blocked for more than 122 seconds.
-  rm              D    0   264    258 0x00004000
-  Call Trace:
-   __schedule+0x3d0/0x8e0
-   schedule+0x36/0xf0
-   transport_clear_lun_ref+0x78/0x90 [target_core_mod]
-   core_tpg_remove_lun+0x28/0xb0 [target_core_mod]
-   target_fabric_port_unlink+0x50/0x60 [target_core_mod]
-   configfs_unlink+0x156/0x1f0 [configfs]
-   vfs_unlink+0x109/0x290
-   do_unlinkat+0x1d5/0x2d0
-
-Fix this by making tcm_loop_target_reset() actually drain commands:
-
- 1. Issue TMR_LUN_RESET via tcm_loop_issue_tmr() to drain all commands that
-    the target core knows about (those not yet CMD_T_COMPLETE).
-
- 2. Use blk_mq_tagset_busy_iter() to iterate all started requests and
-    flush_work() on each se_cmd — this drains any deferred completion work
-    for commands that already had CMD_T_COMPLETE set before the TMR (which
-    the TMR skips via __target_check_io_state()).  This is the same pattern
-    used by mpi3mr, scsi_debug, and libsas to drain outstanding commands
-    during reset.
-
-Fixes: e0eb5d38b732 ("scsi: target: tcm_loop: Use block cmd allocator for se_cmds")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Link: https://patch.msgid.link/27011aa34c8f6b1b94d2e3cf5655b6d037f53428.1773706803.git.josef@toxicpanda.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ added `bool reserved` parameter to `tcm_loop_flush_work_iter()` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260218130741.46566-3-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/loopback/tcm_loop.c |   52 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 46 insertions(+), 6 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -26,6 +26,7 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/configfs.h>
-+#include <linux/blk-mq.h>
- #include <scsi/scsi.h>
- #include <scsi/scsi_tcq.h>
- #include <scsi/scsi_host.h>
-@@ -274,15 +275,27 @@ static int tcm_loop_device_reset(struct
- 	return (ret == TMR_FUNCTION_COMPLETE) ? SUCCESS : FAILED;
- }
- 
-+static bool tcm_loop_flush_work_iter(struct request *rq, void *data, bool reserved)
-+{
-+	struct scsi_cmnd *sc = blk_mq_rq_to_pdu(rq);
-+	struct tcm_loop_cmd *tl_cmd = scsi_cmd_priv(sc);
-+	struct se_cmd *se_cmd = &tl_cmd->tl_se_cmd;
-+
-+	flush_work(&se_cmd->work);
-+	return true;
-+}
-+
- static int tcm_loop_target_reset(struct scsi_cmnd *sc)
- {
- 	struct tcm_loop_hba *tl_hba;
- 	struct tcm_loop_tpg *tl_tpg;
-+	struct Scsi_Host *sh = sc->device->host;
-+	int ret;
- 
- 	/*
- 	 * Locate the tcm_loop_hba_t pointer
- 	 */
--	tl_hba = *(struct tcm_loop_hba **)shost_priv(sc->device->host);
-+	tl_hba = *(struct tcm_loop_hba **)shost_priv(sh);
- 	if (!tl_hba) {
- 		pr_err("Unable to perform device reset without active I_T Nexus\n");
- 		return FAILED;
-@@ -291,11 +304,38 @@ static int tcm_loop_target_reset(struct
- 	 * Locate the tl_tpg pointer from TargetID in sc->device->id
- 	 */
- 	tl_tpg = &tl_hba->tl_hba_tpgs[sc->device->id];
--	if (tl_tpg) {
--		tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
--		return SUCCESS;
--	}
--	return FAILED;
-+	if (!tl_tpg)
-+		return FAILED;
-+
-+	/*
-+	 * Issue a LUN_RESET to drain all commands that the target core
-+	 * knows about.  This handles commands not yet marked CMD_T_COMPLETE.
-+	 */
-+	ret = tcm_loop_issue_tmr(tl_tpg, sc->device->lun, 0, TMR_LUN_RESET);
-+	if (ret != TMR_FUNCTION_COMPLETE)
-+		return FAILED;
-+
-+	/*
-+	 * Flush any deferred target core completion work that may still be
-+	 * queued.  Commands that already had CMD_T_COMPLETE set before the TMR
-+	 * are skipped by the TMR drain, but their async completion work
-+	 * (transport_lun_remove_cmd → percpu_ref_put, release_cmd → scsi_done)
-+	 * may still be pending in target_completion_wq.
-+	 *
-+	 * The SCSI EH will reuse in-flight scsi_cmnd structures for recovery
-+	 * commands (e.g. TUR) immediately after this handler returns SUCCESS —
-+	 * if deferred work is still pending, the memset in queuecommand would
-+	 * zero the se_cmd while the work accesses it, leaking the LUN
-+	 * percpu_ref and hanging configfs unlink forever.
-+	 *
-+	 * Use blk_mq_tagset_busy_iter() to find all started requests and
-+	 * flush_work() on each — the same pattern used by mpi3mr, scsi_debug,
-+	 * and other SCSI drivers to drain outstanding commands during reset.
-+	 */
-+	blk_mq_tagset_busy_iter(&sh->tag_set, tcm_loop_flush_work_iter, NULL);
-+
-+	tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
-+	return SUCCESS;
- }
- 
- static struct scsi_host_template tcm_loop_driver_template = {
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+@@ -483,7 +483,7 @@ static void *dma_ringalloc(struct dma_in
+ 	if (((desc_strtaddr + size - 1) & boundary) != (desc_strtaddr
+ 							& boundary)) {
+ 		*alignbits = dma_align_sizetobits(size);
+-		dma_free_coherent(di->dmadev, size, va, *descpa);
++		dma_free_coherent(di->dmadev, *alloced, va, *descpa);
+ 		va = dma_alloc_consistent(di, size, *alignbits,
+ 			alloced, descpa);
+ 	}
 
 
 
