@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DNkIZgY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:52 +0200
+	id 6NCGH1Ma3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBED3EECA4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3329F3EF234
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A8B0321A3AA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8158A3022F7A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FA92BEFEF;
-	Mon, 13 Apr 2026 16:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C92B309DAF;
+	Mon, 13 Apr 2026 16:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdVNfbmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2T+L/hL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF3924DCF6;
-	Mon, 13 Apr 2026 16:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9EA27280A;
+	Mon, 13 Apr 2026 16:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096746; cv=none; b=QllG/nOO7w7Jt48nQv+P8tGanTEMk1wyXP3SgkKRLIIlFNhEHncrT4ySrAp/EzkAsZ4drl43yp8zyxldMDVWkN9FvMIB8yUqGUSfhKxXkWI/LliSo0Tcvt2m1elrvwFfeoNfIhqiQA4z7Mjh4XVA+F2oQ4vjbWZoBD1fsp/q4j4=
+	t=1776096988; cv=none; b=IJ9wNh8AKlGH7AeqB7QVsnsuJcKXqn05+IxyiRWcTnRhDHo/dYFZyA+/ClWyOEcst4KZJ1l6zGRnYYGSVBpTX5Uhnw3RzXBpce5rQwvzhfsQ9ezsHVzfKfIQ9pI/+QNcO1RRgaPI7hYeBqnMFHOxp1IZLggFDWpIfZvKF9JCWZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096746; c=relaxed/simple;
-	bh=ek7BovnAEEAxHKTSweScUrc8yyv5n92tU2yjSa28IDU=;
+	s=arc-20240116; t=1776096988; c=relaxed/simple;
+	bh=88dFMIVITCfwV7bYC56EXSalDLRob1qdhYnkOTEbi8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVwMK0LjyE0s7eVfUKT40rc1YCWGwVYYkpeyYgKga+Jez465XMmr5nzhefVkqkuhvGuqsH9f/9bO2R0kW8AKevmNPcPycj3tbzvWIg434lcdxm4SXbxQ+mhAolHUI9wRBhRH/BkSrBiINVVUWL9+t60tEley0tPFwuftMoX7LEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdVNfbmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A76C2BCAF;
-	Mon, 13 Apr 2026 16:12:25 +0000 (UTC)
+	 MIME-Version; b=V011RMKddHXqR2Lo2Ly/FPiTqrFoaojwUxdfk5Iyxb1Kja8Jnm20JwgzsFCBUFIOBH2XixhxyNH87Ig1a3GcNc5beVtjtrYWYWAxSgfZDxizAY8+x1Q+7Nfzpf6LZZ6hWlsljo4S4rrZvFiO38XPfPNJxn/7DLdJWTMoSIM04a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2T+L/hL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B38C2BCAF;
+	Mon, 13 Apr 2026 16:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096746;
-	bh=ek7BovnAEEAxHKTSweScUrc8yyv5n92tU2yjSa28IDU=;
+	s=korg; t=1776096987;
+	bh=88dFMIVITCfwV7bYC56EXSalDLRob1qdhYnkOTEbi8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdVNfbmEzBSnojsmtIRAbFCnynL112IH7iY3lIJLIbKk1ZXK0emRHJfhdNdV0qRCa
-	 VPYVJ2a86bhujZOTsaQWAQm0qhSPDNbxTkJ7/uIQvlNJ+r7Zb/iyIadhSxtd+54TOw
-	 WibMvXVe9gvEOAYK2u6hlVHP+ytbjyiAspbA5rGk=
+	b=R2T+L/hLMLUw0/rWdjhgFpFyazj8rwouCprwD9nEYmh8jntbaUcqUG7vCG7flkQvS
+	 izGzBMRawxCZ+kxe05XBfqbk42JxQkrx5PaF6b+EaUPULanlLFLwIz92K0+YIXBV+B
+	 9oNAKwUUsM9YYlRvEceE0QKhLLl3D2pLZhVw+0yQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 45/70] net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 06/55] Input: uinput - take event lock when submitting FF request "event"
 Date: Mon, 13 Apr 2026 18:00:40 +0200
-Message-ID: <20260413155729.863673173@linuxfoundation.org>
+Message-ID: <20260413155725.063294503@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236376-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236470-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,starlabs.sg:email,msgid.link:url]
-X-Rspamd-Queue-Id: DEBED3EECA4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 3329F3EF234
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit a9b8b18364fffce4c451e6f6fd218fa4ab646705 upstream.
+commit ff14dafde15c11403fac61367a34fea08926e9ee upstream.
 
-The -EBUSY handling in tls_do_encryption(), introduced by commit
-859054147318 ("net: tls: handle backlogging of crypto requests"), has
-a use-after-free due to double cleanup of encrypt_pending and the
-scatterlist entry.
+To avoid racing with FF playback events and corrupting device's event
+queue take event_lock spinlock when calling uinput_dev_event() when
+submitting a FF upload or erase "event".
 
-When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
-the cryptd backlog and the async callback tls_encrypt_done() will be
-invoked upon completion. That callback unconditionally restores the
-scatterlist entry (sge->offset, sge->length) and decrements
-ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
-error, the synchronous error path in tls_do_encryption() performs the
-same cleanup again, double-decrementing encrypt_pending and
-double-restoring the scatterlist.
-
-The double-decrement corrupts the encrypt_pending sentinel (initialized
-to 1), making tls_encrypt_async_wait() permanently skip the wait for
-pending async callbacks. A subsequent sendmsg can then free the
-tls_rec via bpf_exec_tx_verdict() while a cryptd callback is still
-pending, resulting in a use-after-free when the callback fires on the
-freed record.
-
-Fix this by skipping the synchronous cleanup when the -EBUSY async
-wait returns an error, since the callback has already handled
-encrypt_pending and sge restoration.
-
-Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Link: https://patch.msgid.link/adXkf6MWzlB8LA_s@google.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260403013617.2838875-1-ramdhan@starlabs.sg
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/input/misc/uinput.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -584,6 +584,16 @@ static int tls_do_encryption(struct sock
- 	if (rc == -EBUSY) {
- 		rc = tls_encrypt_async_wait(ctx);
- 		rc = rc ?: -EINPROGRESS;
-+		/*
-+		 * The async callback tls_encrypt_done() has already
-+		 * decremented encrypt_pending and restored the sge on
-+		 * both success and error. Skip the synchronous cleanup
-+		 * below on error, just remove the record and return.
-+		 */
-+		if (rc != -EINPROGRESS) {
-+			list_del(&rec->list);
-+			return rc;
-+		}
- 	}
- 	if (!rc || rc != -EINPROGRESS) {
- 		atomic_dec(&ctx->encrypt_pending);
+--- a/drivers/input/misc/uinput.c
++++ b/drivers/input/misc/uinput.c
+@@ -25,8 +25,10 @@
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/fs.h>
++#include <linux/lockdep.h>
+ #include <linux/miscdevice.h>
+ #include <linux/overflow.h>
++#include <linux/spinlock.h>
+ #include <linux/input/mt.h>
+ #include "../input-compat.h"
+ 
+@@ -75,6 +77,8 @@ static int uinput_dev_event(struct input
+ 	struct uinput_device	*udev = input_get_drvdata(dev);
+ 	struct timespec64	ts;
+ 
++	lockdep_assert_held(&dev->event_lock);
++
+ 	ktime_get_ts64(&ts);
+ 
+ 	udev->buff[udev->head] = (struct input_event) {
+@@ -146,6 +150,7 @@ static void uinput_request_release_slot(
+ static int uinput_request_send(struct uinput_device *udev,
+ 			       struct uinput_request *request)
+ {
++	unsigned long flags;
+ 	int retval = 0;
+ 
+ 	spin_lock(&udev->state_lock);
+@@ -159,7 +164,9 @@ static int uinput_request_send(struct ui
+ 	 * Tell our userspace application about this new request
+ 	 * by queueing an input event.
+ 	 */
++	spin_lock_irqsave(&udev->dev->event_lock, flags);
+ 	uinput_dev_event(udev->dev, EV_UINPUT, request->code, request->id);
++	spin_unlock_irqrestore(&udev->dev->event_lock, flags);
+ 
+  out:
+ 	spin_unlock(&udev->state_lock);
 
 
 
