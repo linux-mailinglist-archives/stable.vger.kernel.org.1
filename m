@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-237091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOvDJoEd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-237091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:49 +0200
+	id OA3JNxAZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3901E3EFADD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CB73EEE54
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 70840305034C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA0233025719
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE93930F545;
-	Mon, 13 Apr 2026 16:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681FE28505E;
+	Mon, 13 Apr 2026 16:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlwsXAhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/MSF8NO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DBF28C874;
-	Mon, 13 Apr 2026 16:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9A45C9E;
+	Mon, 13 Apr 2026 16:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098561; cv=none; b=Q1jYO7KlP7y8PMIAmxnKUJEIei6gG0ecD1hBO2Xdbs3BpQwikbA3xw4jaN8LXTOybH1rPWi7sWRJ4sPE336Y4JtYdG+rXz+H6xM2KzWlyl/b7bmBa1ZS2dZ0zEr/f3oCNzq8g8301FcBL2cRLYh/GYKxC9GS/5HuNlizkmYNtmo=
+	t=1776096934; cv=none; b=aqj/gZ0RPpGW/c4RjvqB+UwSyo0hCpS/T0HBFvrObF6i3G/VZk+7jmrm3hTJ6OuxOSskThGzp19AjUYJIqb2GcjQp4DuZJLkQ9Jjfh/GfqBnEYMTQUVCzackdO8DvcZ592y1nnwJhLMT9exY4kYh29rzhWDBYgXybkXznKixbf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098561; c=relaxed/simple;
-	bh=HKS3kuiSEGuc/cfmpwXG1M1fUgzshIQbMHUbbSQj830=;
+	s=arc-20240116; t=1776096934; c=relaxed/simple;
+	bh=dOmeW7j0tQqlTzwM6q58uGGhxpIQopwABi9nHlf/9Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ga5vMbTcEurtvBgb0siQaUK0fNpP6zf29WT2RtKoXFgHgYwyJnP5KfirqaTA1U5EG5Pd4s2EoK+Paj5ElTKOChSkaclI/KHXi935w9fB4l52/vgcrncJx7Q71fvi13cu3SqVJTuFuQ4K60OPqVvfi3ispn8el5wf/kFq3OD/4vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlwsXAhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12753C2BCB0;
-	Mon, 13 Apr 2026 16:42:40 +0000 (UTC)
+	 MIME-Version; b=NXxrkHAz3NYn/jbbZkp2tZuYUIObctzBUdXe7GDwM/8dNs2l3C904DxyUOfi+U3FtO6fm35y2JMbJ8MG3YeqC2JWeZM2xH6DsfLIZpog06yP5NweUd/rN7m2cakxkWzJK4XxfKvE/Aad//SX2ofJEwYMMd4kio68I+wuQeYVn6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/MSF8NO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56EAC2BCAF;
+	Mon, 13 Apr 2026 16:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098561;
-	bh=HKS3kuiSEGuc/cfmpwXG1M1fUgzshIQbMHUbbSQj830=;
+	s=korg; t=1776096934;
+	bh=dOmeW7j0tQqlTzwM6q58uGGhxpIQopwABi9nHlf/9Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dlwsXAhUkC1Ezhjx886L/GKzm5oizkje/fKcPFzwIlKI9ClV6RJSz9TtXP33Vahpr
-	 yXsIlrOpPLDNE76B0Fk6tz3GGKcPY6LzgB2EWgNQBRwEidwcF7XOw4dZK+s9URi1BF
-	 8Pk5p4FtRl+/r2AiC76zwoFcnh0QUhXOgLJ6Mzzs=
+	b=a/MSF8NOhkNP5hhmLoh2InCKkCgb1tO0p/DMTr2jiS3c3JQQYpZs7NQqnB8I6YFPC
+	 6GJujM/sQcaReqqgWAslbhuUK9U2fWWmuk5/ZMFmrYL2GQ5FAa1kVWA26QJIjMHtDu
+	 k+xXqvqV0TWGpzKCbAnIfw5A4hS4ZGKtuhy7hCco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	stable <stable@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 545/570] net: rfkill: prevent unlimited numbers of rfkill events from being created
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 49/50] rxrpc: Fix missing error checks for rxkad encryption/decryption failure
 Date: Mon, 13 Apr 2026 18:01:16 +0200
-Message-ID: <20260413155850.863116135@linuxfoundation.org>
+Message-ID: <20260413155726.341033999@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,167 +72,235 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,lzu.edu.cn,kernel.org,intel.com];
-	TAGGED_FROM(0.00)[bounces-237091-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236449-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sipsolutions.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 3901E3EFADD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,infradead.org:email]
+X-Rspamd-Queue-Id: 71CB73EEE54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit ea245d78dec594372e27d8c79616baf49e98a4a1 ]
+commit f93af41b9f5f798823d0d0fb8765c2a936d76270 upstream.
 
-Userspace can create an unlimited number of rfkill events if the system
-is so configured, while not consuming them from the rfkill file
-descriptor, causing a potential out of memory situation.  Prevent this
-from bounding the number of pending rfkill events at a "large" number
-(i.e. 1000) to prevent abuses like this.
+Add error checking for failure of crypto_skcipher_en/decrypt() to various
+rxkad function as the crypto functions can fail with ENOMEM at least.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ replaced `scoped_guard()` with explicit `mutex_lock()`/`mutex_unlock()` calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-17-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/core.c |   37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ net/rxrpc/rxkad.c |   57 ++++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 38 insertions(+), 19 deletions(-)
 
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -72,11 +72,14 @@ struct rfkill_int_event {
- 	struct rfkill_event_ext	ev;
- };
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -189,6 +189,7 @@ static int rxkad_prime_packet_security(s
+ 	struct rxrpc_crypt iv;
+ 	__be32 *tmpbuf;
+ 	size_t tmpsize = 4 * sizeof(__be32);
++	int ret;
  
-+/* Max rfkill events that can be "in-flight" for one data source */
-+#define MAX_RFKILL_EVENT	1000
- struct rfkill_data {
- 	struct list_head	list;
- 	struct list_head	events;
- 	struct mutex		mtx;
- 	wait_queue_head_t	read_wait;
-+	u32			event_count;
- 	bool			input_handler;
- 	u8			max_size;
- };
-@@ -254,10 +257,12 @@ static void rfkill_global_led_trigger_un
+ 	_enter("");
+ 
+@@ -217,13 +218,13 @@ static int rxkad_prime_packet_security(s
+ 	skcipher_request_set_sync_tfm(req, ci);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, &sg, &sg, tmpsize, iv.x);
+-	crypto_skcipher_encrypt(req);
++	ret = crypto_skcipher_encrypt(req);
+ 	skcipher_request_free(req);
+ 
+ 	memcpy(&conn->rxkad.csum_iv, tmpbuf + 2, sizeof(conn->rxkad.csum_iv));
+ 	kfree(tmpbuf);
+-	_leave(" = 0");
+-	return 0;
++	_leave(" = %d", ret);
++	return ret;
  }
- #endif /* CONFIG_RFKILL_LEDS */
  
--static void rfkill_fill_event(struct rfkill_event_ext *ev,
--			      struct rfkill *rfkill,
--			      enum rfkill_operation op)
-+static int rfkill_fill_event(struct rfkill_int_event *int_ev,
-+			     struct rfkill *rfkill,
-+			     struct rfkill_data *data,
-+			     enum rfkill_operation op)
- {
-+	struct rfkill_event_ext *ev = &int_ev->ev;
- 	unsigned long flags;
+ /*
+@@ -256,6 +257,7 @@ static int rxkad_secure_packet_auth(cons
+ 	struct scatterlist sg;
+ 	size_t pad;
+ 	u16 check;
++	int ret;
  
- 	ev->idx = rfkill->idx;
-@@ -270,6 +275,16 @@ static void rfkill_fill_event(struct rfk
- 					RFKILL_BLOCK_SW_PREV));
- 	ev->hard_block_reasons = rfkill->hard_block_reasons;
- 	spin_unlock_irqrestore(&rfkill->lock, flags);
-+
-+	mutex_lock(&data->mtx);
-+	if (data->event_count++ > MAX_RFKILL_EVENT) {
-+		data->event_count--;
-+		mutex_unlock(&data->mtx);
-+		return -ENOSPC;
+ 	_enter("");
+ 
+@@ -278,11 +280,11 @@ static int rxkad_secure_packet_auth(cons
+ 	skcipher_request_set_sync_tfm(req, call->conn->rxkad.cipher);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, &sg, &sg, 8, iv.x);
+-	crypto_skcipher_encrypt(req);
++	ret = crypto_skcipher_encrypt(req);
+ 	skcipher_request_zero(req);
+ 
+-	_leave(" = 0");
+-	return 0;
++	_leave(" = %d", ret);
++	return ret;
+ }
+ 
+ /*
+@@ -340,7 +342,7 @@ static int rxkad_secure_packet(struct rx
+ 	union {
+ 		__be32 buf[2];
+ 	} crypto __aligned(8);
+-	u32 x, y;
++	u32 x, y = 0;
+ 	int ret;
+ 
+ 	_enter("{%d{%x}},{#%u},%u,",
+@@ -371,8 +373,10 @@ static int rxkad_secure_packet(struct rx
+ 	skcipher_request_set_sync_tfm(req, call->conn->rxkad.cipher);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, &sg, &sg, 8, iv.x);
+-	crypto_skcipher_encrypt(req);
++	ret = crypto_skcipher_encrypt(req);
+ 	skcipher_request_zero(req);
++	if (ret < 0)
++		goto out;
+ 
+ 	y = ntohl(crypto.buf[1]);
+ 	y = (y >> 16) & 0xffff;
+@@ -395,6 +399,7 @@ static int rxkad_secure_packet(struct rx
+ 		break;
+ 	}
+ 
++out:
+ 	skcipher_request_free(req);
+ 	_leave(" = %d [set %x]", ret, y);
+ 	return ret;
+@@ -435,8 +440,10 @@ static int rxkad_verify_packet_1(struct
+ 	skcipher_request_set_sync_tfm(req, call->conn->rxkad.cipher);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, sg, sg, 8, iv.x);
+-	crypto_skcipher_decrypt(req);
++	ret = crypto_skcipher_decrypt(req);
+ 	skcipher_request_zero(req);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* Extract the decrypted packet length */
+ 	if (skb_copy_bits(skb, sp->offset, &sechdr, sizeof(sechdr)) < 0)
+@@ -513,10 +520,14 @@ static int rxkad_verify_packet_2(struct
+ 	skcipher_request_set_sync_tfm(req, call->conn->rxkad.cipher);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, sg, sg, sp->len, iv.x);
+-	crypto_skcipher_decrypt(req);
++	ret = crypto_skcipher_decrypt(req);
+ 	skcipher_request_zero(req);
+ 	if (sg != _sg)
+ 		kfree(sg);
++	if (ret < 0) {
++		WARN_ON_ONCE(ret != -ENOMEM);
++		return ret;
 +	}
-+	list_add_tail(&int_ev->list, &data->events);
-+	mutex_unlock(&data->mtx);
-+	return 0;
+ 
+ 	/* Extract the decrypted packet length */
+ 	if (skb_copy_bits(skb, sp->offset, &sechdr, sizeof(sechdr)) < 0)
+@@ -584,8 +595,10 @@ static int rxkad_verify_packet(struct rx
+ 	skcipher_request_set_sync_tfm(req, call->conn->rxkad.cipher);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, &sg, &sg, 8, iv.x);
+-	crypto_skcipher_encrypt(req);
++	ret = crypto_skcipher_encrypt(req);
+ 	skcipher_request_zero(req);
++	if (ret < 0)
++		goto out;
+ 
+ 	y = ntohl(crypto.buf[1]);
+ 	cksum = (y >> 16) & 0xffff;
+@@ -988,21 +1001,23 @@ static int rxkad_decrypt_ticket(struct r
+ /*
+  * decrypt the response packet
+  */
+-static void rxkad_decrypt_response(struct rxrpc_connection *conn,
+-				   struct rxkad_response *resp,
+-				   const struct rxrpc_crypt *session_key)
++static int rxkad_decrypt_response(struct rxrpc_connection *conn,
++				  struct rxkad_response *resp,
++				  const struct rxrpc_crypt *session_key)
+ {
+ 	struct skcipher_request *req = rxkad_ci_req;
+ 	struct scatterlist sg[1];
+ 	struct rxrpc_crypt iv;
++	int ret;
+ 
+ 	_enter(",,%08x%08x",
+ 	       ntohl(session_key->n[0]), ntohl(session_key->n[1]));
+ 
+ 	mutex_lock(&rxkad_ci_mutex);
+-	if (crypto_sync_skcipher_setkey(rxkad_ci, session_key->x,
+-					sizeof(*session_key)) < 0)
+-		BUG();
++	ret = crypto_sync_skcipher_setkey(rxkad_ci, session_key->x,
++					  sizeof(*session_key));
++	if (ret < 0)
++		goto unlock;
+ 
+ 	memcpy(&iv, session_key, sizeof(iv));
+ 
+@@ -1011,12 +1026,14 @@ static void rxkad_decrypt_response(struc
+ 	skcipher_request_set_sync_tfm(req, rxkad_ci);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, sg, sg, sizeof(resp->encrypted), iv.x);
+-	crypto_skcipher_decrypt(req);
++	ret = crypto_skcipher_decrypt(req);
+ 	skcipher_request_zero(req);
+ 
++unlock:
+ 	mutex_unlock(&rxkad_ci_mutex);
+ 
+ 	_leave("");
++	return ret;
  }
  
- static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
-@@ -281,10 +296,10 @@ static void rfkill_send_events(struct rf
- 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
- 		if (!ev)
- 			continue;
--		rfkill_fill_event(&ev->ev, rfkill, op);
--		mutex_lock(&data->mtx);
--		list_add_tail(&ev->list, &data->events);
--		mutex_unlock(&data->mtx);
-+		if (rfkill_fill_event(ev, rfkill, data, op)) {
-+			kfree(ev);
-+			continue;
-+		}
- 		wake_up_interruptible(&data->read_wait);
- 	}
- }
-@@ -1149,7 +1164,6 @@ static int rfkill_fop_open(struct inode
- 	init_waitqueue_head(&data->read_wait);
+ /*
+@@ -1109,7 +1126,9 @@ static int rxkad_verify_response(struct
  
- 	mutex_lock(&rfkill_global_mutex);
--	mutex_lock(&data->mtx);
- 	/*
- 	 * start getting events from elsewhere but hold mtx to get
- 	 * startup events added first
-@@ -1159,11 +1173,10 @@ static int rfkill_fop_open(struct inode
- 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
- 		if (!ev)
- 			goto free;
--		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
--		list_add_tail(&ev->list, &data->events);
-+		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
-+			kfree(ev);
- 	}
- 	list_add(&data->list, &rfkill_fds);
--	mutex_unlock(&data->mtx);
- 	mutex_unlock(&rfkill_global_mutex);
+ 	/* use the session key from inside the ticket to decrypt the
+ 	 * response */
+-	rxkad_decrypt_response(conn, response, &session_key);
++	ret = rxkad_decrypt_response(conn, response, &session_key);
++	if (ret < 0)
++		goto temporary_error_free_ticket;
  
- 	file->private_data = data;
-@@ -1171,7 +1184,6 @@ static int rfkill_fop_open(struct inode
- 	return stream_open(inode, file);
- 
-  free:
--	mutex_unlock(&data->mtx);
- 	mutex_unlock(&rfkill_global_mutex);
- 	mutex_destroy(&data->mtx);
- 	list_for_each_entry_safe(ev, tmp, &data->events, list)
-@@ -1232,6 +1244,7 @@ static ssize_t rfkill_fop_read(struct fi
- 		ret = -EFAULT;
- 
- 	list_del(&ev->list);
-+	data->event_count--;
- 	kfree(ev);
-  out:
- 	mutex_unlock(&data->mtx);
+ 	if (ntohl(response->encrypted.epoch) != conn->proto.epoch ||
+ 	    ntohl(response->encrypted.cid) != conn->proto.cid ||
 
 
 
