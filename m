@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-237420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKl0Hmch3Wn4aAkAu9opvQ
-	(envelope-from <stable+bounces-237420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:27 +0200
+	id 0FR4F0AX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7733F0843
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22103EE93B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A5A330466BA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:57:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08A713043AD3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16EC33B97D;
-	Mon, 13 Apr 2026 16:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F5E2C11CA;
+	Mon, 13 Apr 2026 16:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/5on+So"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4gQYQqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DE933A6E2;
-	Mon, 13 Apr 2026 16:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C21F2BEC5E;
+	Mon, 13 Apr 2026 16:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099411; cv=none; b=WZ/zaL26U4+DKJq6wScXR27GbBdlWqf1RN63UNJ4OAr1PlE4eEA4z1UZz4WlzzZDi66c0G4GBxLdK1rkk8n7oafyWhx7QAtKEuQqt98Nt00TYh68jWN1ZSGjzScEeS48mMrV+JpeSa7staENBbB6TJlf9Dd/sczTb4PlAVNJ5QM=
+	t=1776096447; cv=none; b=klxx/M7Sy3mFf01v7rKbUGc01ISO/6WKln4A6XRE0MSfy6mlAP2Ww03hXW6Jc/Dx0M4d2BuiMCMay0BSMvpLqr0PaFMuG2WU5cc9DglwPCogYcZii3hIc0vi7pmiAJyf5PnWkX969WwfWqdWCXFIi3OqSa2vwPhju0LBviPTQyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099411; c=relaxed/simple;
-	bh=mlCngU1p4fI1eN5yXHp9U+sb1eJNoaoYJ4u5HGs00V8=;
+	s=arc-20240116; t=1776096447; c=relaxed/simple;
+	bh=g2i81jZysxNwjtJ3A2WW5Z98i3A4MqYCivlU0kAnBng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTRDoty8h/6N+bGDIJpkSB/394sMOKIYzTA7s5xIlqgc61xdeRhUf/+Mec89SVFuf6NaL1u6BQp9AL2Qb1DCaTHnwKqnAtpvyqM2lnNvZv7Ezqd1VRxbcwNexNjSyw64aSGbux988PN+FvLdkUrM53BUbLvk7vIZCbgT3lKYc+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/5on+So; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC45C2BCB0;
-	Mon, 13 Apr 2026 16:56:50 +0000 (UTC)
+	 MIME-Version; b=NMqcjkD5qIA/9nqo1qtvYs4x+/kQXybndXajHZoL3TjZYIfkHSkbascDDJ1EkiRoja1jao7GRXPh8ybUGUUx8vzd7I7Z+d+8VRmj7s/EdLUOttgd7nZI2cSe/BcYqAZz74Yah1KFy+RND+sgAk8uNurgi7PF3WHfYXgt1C9RIDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4gQYQqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B601CC2BCB0;
+	Mon, 13 Apr 2026 16:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099411;
-	bh=mlCngU1p4fI1eN5yXHp9U+sb1eJNoaoYJ4u5HGs00V8=;
+	s=korg; t=1776096447;
+	bh=g2i81jZysxNwjtJ3A2WW5Z98i3A4MqYCivlU0kAnBng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/5on+SoJ0q56VV/zXRQOh0yfjtILEEEhqs7BKS59cfyLe8JhGuM4kOiIL9et9ZMV
-	 by9Ym7pWD2Du3gUNqKBQ/B5L8yzpOUilQtTKCWM8kojcOUuK8cdIyvpaBn7wbnw93S
-	 U2Sf91tBjklCTZzPa9SlN+cZ2z0TTgRa6ND0ESik=
+	b=d4gQYQqIwobHKKIom+TOyYGkUjB2pNkO7micHKekjmBw49cqpbUWjUtoqEwUmjM/l
+	 1Mll7KMYddRacCP4T2dv75/UeL5iI+avOzHkabLTSbjXhOfv8o0vo2ekJn3ZlQtdun
+	 9aP3MwaEmnXcdaYG25mfqgbptDDGI0DCiTrLWGMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 330/491] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 07/83] mptcp: fix slab-use-after-free in __inet_lookup_established
 Date: Mon, 13 Apr 2026 17:59:35 +0200
-Message-ID: <20260413155831.396661494@linuxfoundation.org>
+Message-ID: <20260413155731.304371373@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +68,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237420-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-236257-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: 0F7733F0843
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mptcp_v6_prot.name:url]
+X-Rspamd-Queue-Id: D22103EE93B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 4576100b8cd03118267513cafacde164b498b322 ]
+commit 9b55b253907e7431210483519c5ad711a37dafa1 upstream.
 
-m2sm() converts a u32 slope to a u64 scaled value.  For large inputs
-(e.g. m1=4000000000), the result can reach 2^32.  rtsc_min() stores
-the difference of two such u64 values in a u32 variable `dsm` and
-uses it as a divisor.  When the difference is exactly 2^32 the
-truncation yields zero, causing a divide-by-zero oops in the
-concave-curve intersection path:
+The ehash table lookups are lockless and rely on
+SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
+during RCU read-side critical sections. Both tcp_prot and
+tcpv6_prot have their slab caches created with this flag
+via proto_register().
 
-  Oops: divide error: 0000
-  RIP: 0010:rtsc_min (net/sched/sch_hfsc.c:601)
-  Call Trace:
-   init_ed (net/sched/sch_hfsc.c:629)
-   hfsc_enqueue (net/sched/sch_hfsc.c:1569)
-   [...]
+However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
+tcpv6_prot_override during inet_init() (fs_initcall, level 5),
+before inet6_init() (module_init/device_initcall, level 6) has
+called proto_register(&tcpv6_prot). At that point,
+tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
+remains NULL permanently.
 
-Widen `dsm` to u64 and replace do_div() with div64_u64() so the full
-difference is preserved.
+This causes MPTCP v6 subflow child sockets to be allocated via
+kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
+cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
+when these sockets are freed without SOCK_RCU_FREE (which is
+cleared for child sockets by design), the memory can be
+immediately reused. Concurrent ehash lookups under
+rcu_read_lock can then access freed memory, triggering a
+slab-use-after-free in __inet_lookup_established.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260326204310.1549327-1-xmei5@asu.edu
+Fix this by splitting the IPv6-specific initialization out of
+mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
+from mptcp_proto_v6_init() before protocol registration. This
+ensures tcpv6_prot_override.slab correctly inherits the
+SLAB_TYPESAFE_BY_RCU slab cache.
+
+Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260406031512.189159-1-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    2 ++
+ net/mptcp/protocol.h |    1 +
+ net/mptcp/subflow.c  |   15 +++++++++------
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 25360061ad288..3a271ad16443b 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -556,7 +556,7 @@ static void
- rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -4271,6 +4271,8 @@ int __init mptcp_proto_v6_init(void)
  {
- 	u64 y1, y2, dx, dy;
--	u32 dsm;
-+	u64 dsm;
+ 	int err;
  
- 	if (isc->sm1 <= isc->sm2) {
- 		/* service curve is convex */
-@@ -599,7 +599,7 @@ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
- 	 */
- 	dx = (y1 - y) << SM_SHIFT;
- 	dsm = isc->sm1 - isc->sm2;
--	do_div(dx, dsm);
-+	dx = div64_u64(dx, dsm);
- 	/*
- 	 * check if (x, y1) belongs to the 1st segment of rtsc.
- 	 * if so, add the offset.
--- 
-2.53.0
-
++	mptcp_subflow_v6_init();
++
+ 	mptcp_v6_prot = mptcp_prot;
+ 	strscpy(mptcp_v6_prot.name, "MPTCPv6", sizeof(mptcp_v6_prot.name));
+ 	mptcp_v6_prot.slab = NULL;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -830,6 +830,7 @@ static inline void mptcp_subflow_tcp_fal
+ void __init mptcp_proto_init(void);
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+ int __init mptcp_proto_v6_init(void);
++void __init mptcp_subflow_v6_init(void);
+ #endif
+ 
+ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -2145,7 +2145,15 @@ void __init mptcp_subflow_init(void)
+ 	tcp_prot_override.psock_update_sk_prot = NULL;
+ #endif
+ 
++	mptcp_diag_subflow_init(&subflow_ulp_ops);
++
++	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
++		panic("MPTCP: failed to register subflows to ULP\n");
++}
++
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
++void __init mptcp_subflow_v6_init(void)
++{
+ 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
+ 	 * structures for v4 and v6 have the same size. It should not changed in
+ 	 * the future but better to make sure to be warned if it is no longer
+@@ -2184,10 +2192,5 @@ void __init mptcp_subflow_init(void)
+ 	/* Disable sockmap processing for subflows */
+ 	tcpv6_prot_override.psock_update_sk_prot = NULL;
+ #endif
+-#endif
+-
+-	mptcp_diag_subflow_init(&subflow_ulp_ops);
+-
+-	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
+-		panic("MPTCP: failed to register subflows to ULP\n");
+ }
++#endif
 
 
 
