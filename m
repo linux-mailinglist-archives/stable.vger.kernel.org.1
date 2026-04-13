@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-236918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCbECkEe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:01 +0200
+	id gN9RMG0i3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3773EFD52
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 913C23F0B52
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E9C1C3033D6F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2CC913097404
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAA52F90C5;
-	Mon, 13 Apr 2026 16:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC6F31714F;
+	Mon, 13 Apr 2026 16:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLlYS7Gz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSHEOHYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCC62D8364;
-	Mon, 13 Apr 2026 16:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D1A313298;
+	Mon, 13 Apr 2026 16:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098128; cv=none; b=pc9mPDakzLbhVaOcMsnMBV4tVzYGTtx0nPV2boqV/V1TVdE5zwO6QzpfxktZBAdD9JZOGBRJd64XSs6dOLLcTpfuu6qBvb2zI3jbhNuiv8GWKtK8Palx73KXa+b2w4OYb8gVldr1Xc0Z7E891eJqq3sPPUM0zalS+JIAGExbnbY=
+	t=1776099222; cv=none; b=hZeoRnVGcif0gy2dTCRSsQLQPz8dP9+BVZmXq1fLywtnuuLBa2C5QDZcw31m7zLmurd2nuBUFvRUrbWm25vFHGfiRJdS7uy8H7pph0oGlbE6Zj6TyE4XxjXbpjfgbvV5fQDvueA5A6xoL6v5giMCUmB9+VfwVbUcG9Omx3HKPCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098128; c=relaxed/simple;
-	bh=TXUYGRa/BqeoT/WTk3WP7O650KK3i+zfMeolzucIQKI=;
+	s=arc-20240116; t=1776099222; c=relaxed/simple;
+	bh=dbU+xGdv+TUsdE+g5YDefCa4XdCApJ/MCWw7CgH9+ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SghQjZa2woqTdKKSzWXbHqTU6XwoeMgHi76a1rQ4gOLFOlc7/wT3xaEws6mwOyYsJZ95xF5CY3wa4WI7bAoIey6025IAG3pDSIe47mq3a+xlt7wOdKcAptd+DrvJ+EzdE26PraC6LSsjQXrgwsiAoQe2siDdXU/h2hj1gJ6luJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLlYS7Gz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B0BC2BCAF;
-	Mon, 13 Apr 2026 16:35:27 +0000 (UTC)
+	 MIME-Version; b=HQZ0HnJaP3LB+vmcPbR7dr1LvNK6Tjj0YAy+DGaqj5hHcLsOrEPsXLSgTReIyqMGmikfTWS3lQsYxliDTHEGpO4JyFFrHj1LUhD2LLanNhiNvJLnw6yxflVCST/85fR0hzIkbZWUfHZPZRd668uuM6p5aZv0sZr7F1cQBWiHCAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSHEOHYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FDCC2BCB0;
+	Mon, 13 Apr 2026 16:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098127;
-	bh=TXUYGRa/BqeoT/WTk3WP7O650KK3i+zfMeolzucIQKI=;
+	s=korg; t=1776099222;
+	bh=dbU+xGdv+TUsdE+g5YDefCa4XdCApJ/MCWw7CgH9+ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLlYS7GzhZ6T0zStlbfomEPns/IbJowOVYF9JrVuBVtX8EKl+Bh/ERvP1PvJx8WJO
-	 yX6ttSQNBNQkRrd1eTTJgybZaJziWeydYwMuvuCodYJ7jVGVWRvcYyZ3aHSzx9Om5r
-	 ncKeHLCGRNtIdQpTxyJU0+75q+Xi0GB0MBi8xUbY=
+	b=bSHEOHYE4NG1k57hj89i+2npRjXIHh3SDYQWBSLTDqnBWPgOQBq3RdLJrp1NsX4bN
+	 w6Et1Eyn8z3N0LlSs3ZhapAZSc0l28d7wujidkzAr1HNspZ3HsfQvh5xSj5ehcT2Il
+	 unHJt2VeCqLPkyAOb+ZTz+lrIsjowO2p7q7Fn3zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuchan Nam <entropy1110@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 372/570] media: mc, v4l2: serialize REINIT and REQBUFS with req_queue_mutex
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 258/491] openvswitch: validate MPLS set/set_masked payload length
 Date: Mon, 13 Apr 2026 17:58:23 +0200
-Message-ID: <20260413155844.415236228@linuxfoundation.org>
+Message-ID: <20260413155828.711636005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +69,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236918-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,ovn.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237348-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D3773EFD52
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ovn.org:email]
+X-Rspamd-Queue-Id: 913C23F0B52
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuchan Nam <entropy1110@gmail.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-commit bef4f4a88b73e4cc550d25f665b8a9952af22773 upstream.
+[ Upstream commit 546b68ac893595877ffbd7751e5c55fd1c43ede6 ]
 
-MEDIA_REQUEST_IOC_REINIT can run concurrently with VIDIOC_REQBUFS(0)
-queue teardown paths. This can race request object cleanup against vb2
-queue cancellation and lead to use-after-free reports.
+validate_set() accepted OVS_KEY_ATTR_MPLS as variable-sized payload for
+SET/SET_MASKED actions. In action handling, OVS expects fixed-size
+MPLS key data (struct ovs_key_mpls).
 
-We already serialize request queueing against STREAMON/OFF with
-req_queue_mutex. Extend that serialization to REQBUFS, and also take
-the same mutex in media_request_ioctl_reinit() so REINIT is in the
-same exclusion domain.
+Use the already normalized key_len (masked case included) and reject
+non-matching MPLS action key sizes.
 
-This keeps request cleanup and queue cancellation from running in
-parallel for request-capable devices.
+Reject invalid MPLS action payload lengths early.
 
-Fixes: 6093d3002eab ("media: vb2: keep a reference to the request until dqbuf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuchan Nam <entropy1110@gmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260319080228.3423307-1-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-request.c        |    5 +++++
- drivers/media/v4l2-core/v4l2-ioctl.c |    5 +++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ net/openvswitch/flow_netlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/mc/mc-request.c
-+++ b/drivers/media/mc/mc-request.c
-@@ -190,6 +190,8 @@ static long media_request_ioctl_reinit(s
- 	struct media_device *mdev = req->mdev;
- 	unsigned long flags;
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 54f952620b214..2185fd5596fc7 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2911,6 +2911,8 @@ static int validate_set(const struct nlattr *a,
+ 	case OVS_KEY_ATTR_MPLS:
+ 		if (!eth_p_mpls(eth_type))
+ 			return -EINVAL;
++		if (key_len != sizeof(struct ovs_key_mpls))
++			return -EINVAL;
+ 		break;
  
-+	mutex_lock(&mdev->req_queue_mutex);
-+
- 	spin_lock_irqsave(&req->lock, flags);
- 	if (req->state != MEDIA_REQUEST_STATE_IDLE &&
- 	    req->state != MEDIA_REQUEST_STATE_COMPLETE) {
-@@ -197,6 +199,7 @@ static long media_request_ioctl_reinit(s
- 			"request: %s not in idle or complete state, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
- 	}
- 	if (req->access_count) {
-@@ -204,6 +207,7 @@ static long media_request_ioctl_reinit(s
- 			"request: %s is being accessed, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
- 	}
- 	req->state = MEDIA_REQUEST_STATE_CLEANING;
-@@ -214,6 +218,7 @@ static long media_request_ioctl_reinit(s
- 	spin_lock_irqsave(&req->lock, flags);
- 	req->state = MEDIA_REQUEST_STATE_IDLE;
- 	spin_unlock_irqrestore(&req->lock, flags);
-+	mutex_unlock(&mdev->req_queue_mutex);
- 
- 	return 0;
- }
---- a/drivers/media/v4l2-core/v4l2-ioctl.c
-+++ b/drivers/media/v4l2-core/v4l2-ioctl.c
-@@ -2926,13 +2926,14 @@ static long __video_do_ioctl(struct file
- 		vfh = file->private_data;
- 
- 	/*
--	 * We need to serialize streamon/off with queueing new requests.
-+	 * We need to serialize streamon/off/reqbufs with queueing new requests.
- 	 * These ioctls may trigger the cancellation of a streaming
- 	 * operation, and that should not be mixed with queueing a new
- 	 * request at the same time.
- 	 */
- 	if (v4l2_device_supports_requests(vfd->v4l2_dev) &&
--	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF)) {
-+	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF ||
-+	     cmd == VIDIOC_REQBUFS)) {
- 		req_queue_lock = &vfd->v4l2_dev->mdev->req_queue_mutex;
- 
- 		if (mutex_lock_interruptible(req_queue_lock))
+ 	case OVS_KEY_ATTR_SCTP:
+-- 
+2.51.0
+
 
 
 
