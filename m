@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-237385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAWUIkok3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:46 +0200
+	id 6EydCu4l3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE443F107D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:13:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA2B3F135C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BF39E301E578
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E63B301CC42
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0733161BF;
-	Mon, 13 Apr 2026 16:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7663264F2;
+	Mon, 13 Apr 2026 16:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGiaHxEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dn9MQIlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0F7327C1D;
-	Mon, 13 Apr 2026 16:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB843264CA;
+	Mon, 13 Apr 2026 16:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099319; cv=none; b=DCD4nSlDanwTZcwvp/NK6/DV0nLXKtB6bozpmY5bqgFdpxraldEdJH79YjppYdQU0F8zXprJ8H4hW1tn0xO7YOwsONRiULJfpgkdQMg08O5EkM/boeU4oZ1yuw7GN+TnBe6D75Dm0tLXmCF0UsMvLNSlUKGW/qttGA8pN71FZLE=
+	t=1776099321; cv=none; b=L6jhx7CXrv60xHR6kIyyCZQcjujwkHNlVh0jaECoGfWRr9dzy4dMANoEjHU9IrXIA11kE1YpJvhQ+Fl0yaihu2PoawwEhagDwcIEQXnvy8e7mCsW5vf16vjEjmw0hOl6gcbHEpYsVpxPa93ZBuQtU1ppgT8JM4oaJNFeqCh/L+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099319; c=relaxed/simple;
-	bh=EIpapzGe7G3BaZxIYLLGCCpnHItrlhadzNsEWASwLHM=;
+	s=arc-20240116; t=1776099321; c=relaxed/simple;
+	bh=tJetqciEapeVEah8v0vLfGi/O5JP69u8No8Omq5cYm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kcq5V+NLaI/ou3+4O4EysxVHrBB23ZzgXKg79DjVh2b3G4CtJc9ipzfmWEBDce4hMy/QOb9Eak6WPFYoTLJWnKwW4mlsyiBw4w9WrzzFW813Khc0G7vUVMo1K/lZg/YZSvNDh1JBS9k1Q9mhNdqMv+z/m3E7xHyZjTOyv2h+dBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGiaHxEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890B1C2BCB8;
-	Mon, 13 Apr 2026 16:55:18 +0000 (UTC)
+	 MIME-Version; b=fggzDwWLOpWYh9kWhc/sTgqAmrfqlwsLK6bnA71bPPlEcAnbdXcQmwGvo6K2fQxqzX4M+JbNEknzJnnesCEpvW6vcsZ4Rzh0WRDmmLX6FossS9K4GpWp9JuJhtMLg+3f8OtN3jnTT/1fABAvbfoRMNlhJUie6TYjL79pepZxEPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dn9MQIlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FA7C2BCB0;
+	Mon, 13 Apr 2026 16:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099318;
-	bh=EIpapzGe7G3BaZxIYLLGCCpnHItrlhadzNsEWASwLHM=;
+	s=korg; t=1776099321;
+	bh=tJetqciEapeVEah8v0vLfGi/O5JP69u8No8Omq5cYm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGiaHxEd3EWOR21sHzKnmRuATTsJGdELHgepSFRUTpn629J5W5DvqBlf3lB9flaXJ
-	 k3axrQcRLEAGoGfXMzvUEMnFcPsAyJ/5T4ZQ5S8S9u+EGlKzeo+p35iMwH9dyiNMS/
-	 Qs38v2cPmp1/Va6J05Gq3UbqliOlyCEP0lN/nyDQ=
+	b=Dn9MQIlbAflVf1vM+5FuW1zrBxwShfvfpw3ST8SgRDuQaAPGJ7VQmkC7i09IMGCzk
+	 V9lZ0jIy90RCFVWZpEdCEOzxZUYLxfdo61BfLCW9WudnEBLCMfvaieOYupxmEF1KbR
+	 40xAKLr47kBNmKfezGP24XFpaVpRfopR9IS+6ERU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.10 295/491] s390/barrier: Make array_index_mask_nospec() __always_inline
-Date: Mon, 13 Apr 2026 17:59:00 +0200
-Message-ID: <20260413155830.088738391@linuxfoundation.org>
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 296/491] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
+Date: Mon, 13 Apr 2026 17:59:01 +0200
+Message-ID: <20260413155830.125832624@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237385-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237386-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8CE443F107D
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pengutronix.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hartkopp.net:email]
+X-Rspamd-Queue-Id: 2EA2B3F135C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,35 +99,78 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Ali Norouzi <ali.norouzi@keysight.com>
 
-commit c5c0a268b38adffbb2e70e6957017537ff54c157 upstream.
+commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
 
-Mark array_index_mask_nospec() as __always_inline to guarantee the
-mitigation is emitted inline regardless of compiler inlining decisions.
+cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
 
-Fixes: e2dd833389cc ("s390: add optimized array_index_mask_nospec")
-Cc: stable@kernel.org
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+    int from = calc_idx(crc8->from_idx, cf->len);
+    int to   = calc_idx(crc8->to_idx,   cf->len);
+    int res  = calc_idx(crc8->result_idx, cf->len);
+
+    if (from < 0 || to < 0 || res < 0)
+        return;
+
+However, the loop and the result write then use the raw s8 fields directly
+instead of the computed variables:
+
+    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
+    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
+
+With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
+calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
+i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
+This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
+start of the canfd_frame on the heap.
+
+The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
+correctly throughout; fix cgw_csum_crc8_rel() to match.
+
+Confirmed with KASAN on linux-7.0-rc2:
+  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
+  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
+
+To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
+
+Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
+Cc: stable@vger.kernel.org
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/barrier.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/can/gw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/s390/include/asm/barrier.h
-+++ b/arch/s390/include/asm/barrier.h
-@@ -56,8 +56,8 @@ do {									\
-  * @size: number of elements in array
-  */
- #define array_index_mask_nospec array_index_mask_nospec
--static inline unsigned long array_index_mask_nospec(unsigned long index,
--						    unsigned long size)
-+static __always_inline unsigned long array_index_mask_nospec(unsigned long index,
-+							     unsigned long size)
- {
- 	unsigned long mask;
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -312,10 +312,10 @@ static void cgw_csum_crc8_rel(struct can
+ 		return;
  
+ 	if (from <= to) {
+-		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
++		for (i = from; i <= to; i++)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	} else {
+-		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
++		for (i = from; i >= to; i--)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	}
+ 
+@@ -334,7 +334,7 @@ static void cgw_csum_crc8_rel(struct can
+ 		break;
+ 	}
+ 
+-	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
++	cf->data[res] = crc ^ crc8->final_xor_val;
+ }
+ 
+ static void cgw_csum_crc8_pos(struct canfd_frame *cf,
 
 
 
