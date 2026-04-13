@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLgONMUa3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:09 +0200
+	id gHwlBs4h3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E2D3EF376
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0C93F096D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A5593090657
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B99D43072F66
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E34A2BE655;
-	Mon, 13 Apr 2026 16:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF3A33556D;
+	Mon, 13 Apr 2026 16:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDZ8ST8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbjL5EkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600F92777FC;
-	Mon, 13 Apr 2026 16:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4833346A8;
+	Mon, 13 Apr 2026 16:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096429; cv=none; b=aZkctIJAHse+9R94rcAaknIsgzW8EXj+Dv4b4QozOlqsqdXwgLQg/u4TpmdXPsM0KsRzTl4/MACaFbVSlium/UCdZ8HDWC0tV7iOcnAmxOrzPIhIt1Q95JqvC4IAvfazOV1Wbg4nlYvRyDXX/khzZZtERJhy0ErMQTXvSjobs08=
+	t=1776099504; cv=none; b=WEC4mV5juslYkg/EA4J7dlEUzH/3KmSW8scOq3rFWKC7o0DDTC2OflqUE7x+/oJ0V10hMHoVwN6kNXzDRb+i2CRrgaYXqHyRi2wWDGze2gySmGM7itRJIM8W3mfJKNFky8bXHWPnDMHFwdB6g0XK/rfH5KqUUXbBIZVxO2BP1XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096429; c=relaxed/simple;
-	bh=c1r8AZjDy609aSSNMxFQsWWqCxRLGbmrEytQNlU7XHs=;
+	s=arc-20240116; t=1776099504; c=relaxed/simple;
+	bh=IyTJMCpII9Xa3EoW0sU+IyrAJDcO4EHEiz3ujF2o34I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o4TAIEA9SlD2SY/1X+kFqJnEbBT7GWrN1qb4kk1dFCBwIgX2MizZF/nGskwpOJZchxvaCYn4+07wbAzlpaRAlZ6lqiGVdzKOwqNJ3EZKLH48DqkE2qNvvbEiNWi4t/uwkrAknHtTFHV9UrbDknVXlnEcD5TbeXH1+YEJHGlGgGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDZ8ST8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CC6C2BCAF;
-	Mon, 13 Apr 2026 16:07:08 +0000 (UTC)
+	 MIME-Version; b=Nex67DzJrNzXgur2lug9dLTAU9YP9DVOYOrycYf1s09QncqQ7NdWv5SnN0MwOkaPc48qzRIgljfCay0zLYW3UhsF+fOkPnrEbepkcbXCu44u+dvRc3hn+4hLZrd2IkwhXqSxFc7q+VpunExA+VIoav6D/rEQyMRVt9ZA2eZDg6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbjL5EkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D487CC2BCB0;
+	Mon, 13 Apr 2026 16:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096429;
-	bh=c1r8AZjDy609aSSNMxFQsWWqCxRLGbmrEytQNlU7XHs=;
+	s=korg; t=1776099504;
+	bh=IyTJMCpII9Xa3EoW0sU+IyrAJDcO4EHEiz3ujF2o34I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDZ8ST8F0B7lsWWjGJySwkshHHpUz1XdfCekn0h/Wc8X/0ev+o6R3FP/pzPzRAcj2
-	 davLkNJly3UkDXVXK1jjeKMUzpNGB4GZoH/C4MPAhDjR+rPHjCE19kHn8SiZ0OYOCg
-	 u7FFi4GV0ZumosVwYhTYy0Puawr1mdDDW+Ix+D50=
+	b=zbjL5EkO84j02kwVJYiqrv4LTqlSP7CyGw3Odwt0MBSHGMQUBwXvo+owr0hUFbDqd
+	 xSq4Yfr8nVSfgXU/1KjS6TuUV5K+/Mxtwy4Uan1WwhIsngi01RgO91N6Drm0/pOmtg
+	 wxML5YKA5QkAT6mXKt16E2Jv2GklLCiARfuBGDww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.19 64/86] net: lan966x: fix use-after-free and leak in lan966x_fdma_reload()
+	Ernestas Kulik <ernestas.k@iconn-networks.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 366/491] USB: serial: option: add MeiG Smart SRM825WN
 Date: Mon, 13 Apr 2026 18:00:11 +0200
-Message-ID: <20260413155733.946386173@linuxfoundation.org>
+Message-ID: <20260413155832.737030200@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +65,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236250-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237456-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 58E2D3EF376
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BB0C93F096D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Ernestas Kulik <ernestas.k@iconn-networks.com>
 
-commit 59c3d55a946cacdb4181600723c20ac4f4c20c84 upstream.
+commit e8d0ed37bd51da52da6225d278e330c2f18a6198 upstream.
 
-When lan966x_fdma_reload() fails to allocate new RX buffers, the restore
-path restarts DMA using old descriptors whose pages were already freed
-via lan966x_fdma_rx_free_pages(). Since page_pool_put_full_page() can
-release pages back to the buddy allocator, the hardware may DMA into
-memory now owned by other kernel subsystems.
+Add support for the SDX62-based MeiG Smart SRM825WN module.
 
-Additionally, on the restore path, the newly created page pool (if
-allocation partially succeeded) is overwritten without being destroyed,
-leaking it.
+If#= 0: RNDIS
+If#= 1: RNDIS
+If#= 2: Diag
+If#= 3: AT
+If#= 4: AT
+If#= 5: NMEA
 
-Fix both issues by deferring the release of old pages until after the
-new allocation succeeds. Save the old page array before the allocation
-so old pages can be freed on the success path. On the failure path, the
-old descriptors, pages and page pool are all still valid, making the
-restore safe. Also ensure the restore path re-enables NAPI and wakes
-the netdev, matching the success path.
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#= 19 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d38 Rev= 5.04
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=da47a175
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=81(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 89ba464fcf54 ("net: lan966x: refactor buffer reload function")
+Signed-off-by: Ernestas Kulik <ernestas.k@iconn-networks.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260405055241.35767-4-devnexen@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c |   21 +++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -813,9 +813,15 @@ static int lan966x_qsys_sw_status(struct
- 
- static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
- {
-+	struct page *(*old_pages)[FDMA_RX_DCB_MAX_DBS];
- 	struct page_pool *page_pool;
- 	struct fdma fdma_rx_old;
--	int err;
-+	int err, i, j;
-+
-+	old_pages = kmemdup(lan966x->rx.page, sizeof(lan966x->rx.page),
-+			   GFP_KERNEL);
-+	if (!old_pages)
-+		return -ENOMEM;
- 
- 	/* Store these for later to free them */
- 	memcpy(&fdma_rx_old, &lan966x->rx.fdma, sizeof(struct fdma));
-@@ -826,7 +832,6 @@ static int lan966x_fdma_reload(struct la
- 	lan966x_fdma_stop_netdev(lan966x);
- 
- 	lan966x_fdma_rx_disable(&lan966x->rx);
--	lan966x_fdma_rx_free_pages(&lan966x->rx);
- 	lan966x->rx.page_order = round_up(new_mtu, PAGE_SIZE) / PAGE_SIZE - 1;
- 	lan966x->rx.max_mtu = new_mtu;
- 	err = lan966x_fdma_rx_alloc(&lan966x->rx);
-@@ -834,6 +839,11 @@ static int lan966x_fdma_reload(struct la
- 		goto restore;
- 	lan966x_fdma_rx_start(&lan966x->rx);
- 
-+	for (i = 0; i < fdma_rx_old.n_dcbs; ++i)
-+		for (j = 0; j < fdma_rx_old.n_dbs; ++j)
-+			page_pool_put_full_page(page_pool,
-+						old_pages[i][j], false);
-+
- 	fdma_free_coherent(lan966x->dev, &fdma_rx_old);
- 
- 	page_pool_destroy(page_pool);
-@@ -841,12 +851,17 @@ static int lan966x_fdma_reload(struct la
- 	lan966x_fdma_wakeup_netdev(lan966x);
- 	napi_enable(&lan966x->napi);
- 
--	return err;
-+	kfree(old_pages);
-+	return 0;
- restore:
- 	lan966x->rx.page_pool = page_pool;
- 	memcpy(&lan966x->rx.fdma, &fdma_rx_old, sizeof(struct fdma));
- 	lan966x_fdma_rx_start(&lan966x->rx);
- 
-+	lan966x_fdma_wakeup_netdev(lan966x);
-+	napi_enable(&lan966x->napi);
-+
-+	kfree(old_pages);
- 	return err;
- }
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2441,6 +2441,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
