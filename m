@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-237462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MMeJAEk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:33 +0200
+	id OE8eKCoX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A273F0FCD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D9B3EE91F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8497A307ECB8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CE2F30C33BF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B31032D43C;
-	Mon, 13 Apr 2026 16:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9318A2765FF;
+	Mon, 13 Apr 2026 16:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUYCGBbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LLHxFml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24B03203B6;
-	Mon, 13 Apr 2026 16:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560B7271464;
+	Mon, 13 Apr 2026 16:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099519; cv=none; b=UzqwAp0saZ+JKakU9JnzxZMQlqegvF0exz85Adg6AlyVHXW4GSvxz8jWV7lb4kklS3B5Qh1Ot6rceDXdqKtwLekwsBxqX9+B/pc7DQHau7boB5O88fKLjiTPce1KTljXOv5Gt1PFwn/zUeNJPvjPJYx9fUDizEME03JOprkMJmw=
+	t=1776096416; cv=none; b=miWQ+rsaCT/cSJZgl8MscKI7oSvMCGgwcoNQnNBWpcEcik8TOIBWkAGxgkAuO+hgfFYEss9wJDWxdnaGPp1TVkEwpTgslS1IcqmF6gF5N5o6PAjus5C05mU5OxA1tYySwEaSrj4IrftPiBMMH7zXfzrjyutDK5lZWfr3eXuKRpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099519; c=relaxed/simple;
-	bh=jTU51ZXbo+O+KQX8e3BwVuLdAWyYlTDwtpLHLZJUWao=;
+	s=arc-20240116; t=1776096416; c=relaxed/simple;
+	bh=pkP1vDWGsowcJQfhqENB0YFn9UB9Vz8s3nSUiqT3Ijc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8phpNfR+OFK4Brlst/+pnaL8jVEuph6KaiNVi7hxIgJvIfYOXDzSs4u8NH8kxCu+gCmajpeZf8HVJvKr2MSkQpufu293Ur9abVf5QVuGDecQPxrQIixykmwMPcbUrr9dDT7UpJPZQncpZnkUDWE7CtH9j9iJBPV9P5A53TppNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUYCGBbx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5854FC2BCAF;
-	Mon, 13 Apr 2026 16:58:39 +0000 (UTC)
+	 MIME-Version; b=uQLaRfOLE66nLhWSFt37CJfW5GsrJTkBEWzaA+wxxv16+PM2sBU1fLbHroKLScBlzODp3HEASddExE1rnP+Nl18sSjfxQs7vmIVjHGQ+OoXS1teBEmEeuxtUxjNkdt2+tsGe0KZMLB41pz1iyzPV4EvqU/oOq5gpgkzm4938Bpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LLHxFml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB942C2BCAF;
+	Mon, 13 Apr 2026 16:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099519;
-	bh=jTU51ZXbo+O+KQX8e3BwVuLdAWyYlTDwtpLHLZJUWao=;
+	s=korg; t=1776096416;
+	bh=pkP1vDWGsowcJQfhqENB0YFn9UB9Vz8s3nSUiqT3Ijc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUYCGBbxC+ZpqcD8/XaTe3OxTKfwMoRbmw3ah7FU7n3zQTXg5Sro4MX3Y81X+kj4H
-	 2oib2nG0dHOMrAjFK552eyqemlzcjSuQe8SN+pyRkOD2Qvl0mQA5qZhFXaeWHXybgb
-	 ZoAnKFe40qvyqzcRKsUIwRj3mSxQsfV6HPvVY63w=
+	b=1LLHxFml/S+kkKs/4bNK7NMziAFC6WChrcLUMggAfLbWr+pC/Qexy3r5SkPF3Rz6V
+	 oRuWyF+fWNWiMmCMgMvANq7ide2+EdIP2ZrR1IvwBuoXZlvtzxVucTgqWMEo4//jKY
+	 69XaesTCPDDfEpuNA7Y/og7JcV3OUG6gAWfR4AiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 371/491] MIPS: Fix the GCC version check for `__multi3 workaround
+	Oleh Konko <security@1seal.org>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 69/86] rxrpc: Fix RxGK token loading to check bounds
 Date: Mon, 13 Apr 2026 18:00:16 +0200
-Message-ID: <20260413155832.923212349@linuxfoundation.org>
+Message-ID: <20260413155734.125852555@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,84 +78,154 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236245-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237462-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,orcam.me.uk:email,franken.de:email,gnu.org:url]
-X-Rspamd-Queue-Id: 04A273F0FCD
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,1seal.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,auristor.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 29D9B3EE91F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Oleh Konko <security@1seal.org>
 
-commit ec8bf18814915460d9c617b556bf024efef26613 upstream.
+commit d179a868dd755b0cfcf7582e00943d702b9943b8 upstream.
 
-It was only GCC 10 that fixed a MIPS64r6 code generation issue with a
-`__multi3' libcall inefficiently produced to perform 64-bit widening
-multiplication while suitable machine instructions exist to do such a
-calculation.  The fix went in with GCC commit 48b2123f6336 ("re PR
-target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)").
+rxrpc_preparse_xdr_yfs_rxgk() reads the raw key length and ticket length
+from the XDR token as u32 values and passes each through round_up(x, 4)
+before using the rounded value for validation and allocation.  When the raw
+length is >= 0xfffffffd, round_up() wraps to 0, so the bounds check and
+kzalloc both use 0 while the subsequent memcpy still copies the original
+~4 GiB value, producing a heap buffer overflow reachable from an
+unprivileged add_key() call.
 
-Adjust our code accordingly, removing build failures such as:
+Fix this by:
 
-mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
-div64.c:(.text+0x84): undefined reference to `__multi3'
+ (1) Rejecting raw key lengths above AFSTOKEN_GK_KEY_MAX and raw ticket
+     lengths above AFSTOKEN_GK_TOKEN_MAX before rounding, consistent with
+     the caps that the RxKAD path already enforces via AFSTOKEN_RK_TIX_MAX.
 
-with the GCC versions affected.
+ (2) Sizing the flexible-array allocation from the validated raw key
+     length via struct_size_t() instead of the rounded value.
 
-Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v4.15+
-Reviewed-by: David Laight <david.laight.linux@gmail.com.
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+ (3) Caching the raw lengths so that the later field assignments and
+     memcpy calls do not re-read from the token, eliminating a class of
+     TOCTOU re-parse.
+
+The control path (valid token with lengths within bounds) is unaffected.
+
+Fixes: 0ca100ff4df6 ("rxrpc: Add YFS RxGK (GSSAPI) security class")
+Signed-off-by: Oleh Konko <security@1seal.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-6-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/lib/multi3.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/rxrpc/key.c |   30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
---- a/arch/mips/lib/multi3.c
-+++ b/arch/mips/lib/multi3.c
-@@ -4,12 +4,12 @@
- #include "libgcc.h"
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -13,6 +13,7 @@
+ #include <crypto/skcipher.h>
+ #include <linux/module.h>
+ #include <linux/net.h>
++#include <linux/overflow.h>
+ #include <linux/skbuff.h>
+ #include <linux/key-type.h>
+ #include <linux/ctype.h>
+@@ -171,7 +172,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(s
+ 	size_t plen;
+ 	const __be32 *ticket, *key;
+ 	s64 tmp;
+-	u32 tktlen, keylen;
++	size_t raw_keylen, raw_tktlen, keylen, tktlen;
  
- /*
-- * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
-+ * GCC 9 & older can suboptimally generate __multi3 calls for mips64r6, so for
-  * that specific case only we implement that intrinsic here.
-  *
-  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
-  */
--#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
-+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 10)
+ 	_enter(",{%x,%x,%x,%x},%x",
+ 	       ntohl(xdr[0]), ntohl(xdr[1]), ntohl(xdr[2]), ntohl(xdr[3]),
+@@ -181,18 +182,22 @@ static int rxrpc_preparse_xdr_yfs_rxgk(s
+ 		goto reject;
  
- /* multiply 64-bit values, low 64-bits returned */
- static inline long long notrace dmulu(long long a, long long b)
-@@ -51,4 +51,4 @@ ti_type notrace __multi3(ti_type a, ti_t
- }
- EXPORT_SYMBOL(__multi3);
+ 	key = xdr + (6 * 2 + 1);
+-	keylen = ntohl(key[-1]);
+-	_debug("keylen: %x", keylen);
+-	keylen = round_up(keylen, 4);
++	raw_keylen = ntohl(key[-1]);
++	_debug("keylen: %zx", raw_keylen);
++	if (raw_keylen > AFSTOKEN_GK_KEY_MAX)
++		goto reject;
++	keylen = round_up(raw_keylen, 4);
+ 	if ((6 * 2 + 2) * 4 + keylen > toklen)
+ 		goto reject;
  
--#endif /* 64BIT && CPU_MIPSR6 && GCC7 */
-+#endif /* 64BIT && CPU_MIPSR6 && GCC9 */
+ 	ticket = xdr + (6 * 2 + 1 + (keylen / 4) + 1);
+-	tktlen = ntohl(ticket[-1]);
+-	_debug("tktlen: %x", tktlen);
+-	tktlen = round_up(tktlen, 4);
++	raw_tktlen = ntohl(ticket[-1]);
++	_debug("tktlen: %zx", raw_tktlen);
++	if (raw_tktlen > AFSTOKEN_GK_TOKEN_MAX)
++		goto reject;
++	tktlen = round_up(raw_tktlen, 4);
+ 	if ((6 * 2 + 2) * 4 + keylen + tktlen != toklen) {
+-		kleave(" = -EKEYREJECTED [%x!=%x, %x,%x]",
++		kleave(" = -EKEYREJECTED [%zx!=%x, %zx,%zx]",
+ 		       (6 * 2 + 2) * 4 + keylen + tktlen, toklen,
+ 		       keylen, tktlen);
+ 		goto reject;
+@@ -206,7 +211,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(s
+ 	if (!token)
+ 		goto nomem;
+ 
+-	token->rxgk = kzalloc(sizeof(*token->rxgk) + keylen, GFP_KERNEL);
++	token->rxgk = kzalloc(struct_size_t(struct rxgk_key, _key, raw_keylen), GFP_KERNEL);
+ 	if (!token->rxgk)
+ 		goto nomem_token;
+ 
+@@ -221,9 +226,9 @@ static int rxrpc_preparse_xdr_yfs_rxgk(s
+ 	token->rxgk->enctype	= tmp = xdr_dec64(xdr + 5 * 2);
+ 	if (tmp < 0 || tmp > UINT_MAX)
+ 		goto reject_token;
+-	token->rxgk->key.len	= ntohl(key[-1]);
++	token->rxgk->key.len	= raw_keylen;
+ 	token->rxgk->key.data	= token->rxgk->_key;
+-	token->rxgk->ticket.len = ntohl(ticket[-1]);
++	token->rxgk->ticket.len = raw_tktlen;
+ 
+ 	if (token->rxgk->endtime != 0) {
+ 		expiry = rxrpc_s64_to_time64(token->rxgk->endtime);
+@@ -236,8 +241,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(s
+ 	memcpy(token->rxgk->key.data, key, token->rxgk->key.len);
+ 
+ 	/* Pad the ticket so that we can use it directly in XDR */
+-	token->rxgk->ticket.data = kzalloc(round_up(token->rxgk->ticket.len, 4),
+-					   GFP_KERNEL);
++	token->rxgk->ticket.data = kzalloc(tktlen, GFP_KERNEL);
+ 	if (!token->rxgk->ticket.data)
+ 		goto nomem_yrxgk;
+ 	memcpy(token->rxgk->ticket.data, ticket, token->rxgk->ticket.len);
 
 
 
