@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-237192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLN8KN8h3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:27 +0200
+	id UNGLIKwZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9439C3F09A1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E8A3EF038
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 380853030AA0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C8D82301ED87
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492A8314A6B;
-	Mon, 13 Apr 2026 16:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A993093CF;
+	Mon, 13 Apr 2026 16:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvfGUVAU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R043QSV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A692223DCE;
-	Mon, 13 Apr 2026 16:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E153726CE32;
+	Mon, 13 Apr 2026 16:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098823; cv=none; b=H6m6/mi1opArjm7xPdz8kxeNIMhRdppcbzUY0utUr/EQAUnh7WLxpU5T/Om8VkNEXPNRSLxfYyQLTW5h9Pr+Gua097e3kpVfKMnFGpC7ui5/6tK4ZM4vjX+dFgvhk9hSg7Gd7etX2suMZX4pp/I73CFHlHj868x73M4nrSdyxzg=
+	t=1776097641; cv=none; b=Z8nR82QfwjVxCxq3yBHRhlGznF5k3AYcLkyLQwU4RqNeuV0AAfE3Fw40ms+WiZCm1o9KCuGe52dxeB4RUh7ZDCw8UoQsxSIqbFBwjO6h2jHYNcb621no0plVSDRO1qDBNVFx/1xrVQTcXjTB6bWVUZMEflb041wCvzmzyOKn4Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098823; c=relaxed/simple;
-	bh=U66awp2D1lRIrjHcrG5xgXWqb+abkrF9bY3BmpX0kqY=;
+	s=arc-20240116; t=1776097641; c=relaxed/simple;
+	bh=fupDeiP3fy2UCToG6LE822mqZ+KhM9BVvLRBQHdj+28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5dLnjwUAenqo3UU8g4UjaQ2kGkGSQr9jdec55OLuUIqQh01r5QJSbh9mCXhlj3YQhfhZVlOacnrHoqGaUFC+zyTAtcdn7iaKlIyj/bKOv+GchBNYG8Wjn0sThXi7SqbTuPF8lJqR4k82J6KvJ9dPC8fj4qbu01aAZAEIlESLS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvfGUVAU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7ACC2BCAF;
-	Mon, 13 Apr 2026 16:47:02 +0000 (UTC)
+	 MIME-Version; b=hGZGISpEFgtzJWODpsf8VtoCEtca9ICUJOFScHWxdWO8HlICFraaAPdw5MMDUQCjGythH9PsHhoQ/L7P2zFwR2z23u1K98rk2p3W+8rF5LKBC8l87vXTqF7wVyo6SzwF3Vv7V8bFWuv2vHzNC7zCCwKr0HWA5V6P/vtkrJu6I8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R043QSV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774E1C2BCAF;
+	Mon, 13 Apr 2026 16:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098822;
-	bh=U66awp2D1lRIrjHcrG5xgXWqb+abkrF9bY3BmpX0kqY=;
+	s=korg; t=1776097640;
+	bh=fupDeiP3fy2UCToG6LE822mqZ+KhM9BVvLRBQHdj+28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvfGUVAUioKV6azTgjNaSvyvYO69sG2Bhmn6BhVJxfKFJFCubrHEB+zida81qj3Jk
-	 jIVXd0qnWGh08l0gE/sfctf6MDuV1ay7QubGuc1kpxVEClfvREn3Z61+yWxBkTceMq
-	 N5zHZda8gUBtiwp52d/p+BkWW0b4RKCQzWUl+1/U=
+	b=R043QSV08K9VfbVqGotjQ7RklLrhXp+icH6LJwEiPdMfSCqZ1GVKPOHflgPG5d0x9
+	 kWmpvRi77hjftwv+sk5rXI9sNPIyXPtpLoO3yJFb1b360tEWhdLKVwePpsxF8eWwhC
+	 2ElXy0cLy/AQ0Tnhc6PYx2bADCPZipOU9XYMMH+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>,
-	Gui-Dong Han <hanguidong02@gmail.com>
-Subject: [PATCH 5.10 101/491] usb: class: cdc-wdm: fix reordering issue in read code path
+	Jane Chu <jane.chu@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 5.15 215/570] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
 Date: Mon, 13 Apr 2026 17:55:46 +0200
-Message-ID: <20260413155822.826495590@linuxfoundation.org>
+Message-ID: <20260413155838.509457242@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +72,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237192-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236728-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.com:email]
-X-Rspamd-Queue-Id: 9439C3F09A1
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,suse.de:email,linux.dev:email,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 28E8A3EF038
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Jane Chu <jane.chu@oracle.com>
 
-commit 8df672bfe3ec2268c2636584202755898e547173 upstream.
+commit 14967a9c7d247841b0312c48dcf8cd29e55a4cc8 upstream.
 
-Quoting the bug report:
+commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
+count") introduced ->pt_share_count dedicated to hugetlb PMD share count
+tracking, but omitted fixing copy_hugetlb_page_range(), leaving the
+function relying on page_count() for tracking that no longer works.
 
-Due to compiler optimization or CPU out-of-order execution, the
-desc->length update can be reordered before the memmove. If this
-happens, wdm_read() can see the new length and call copy_to_user() on
-uninitialized memory. This also violates LKMM data race rules [1].
+When lazy page table copy for hugetlb is disabled, that is, revert commit
+bcd51a3c679d ("hugetlb: lazy page table copies in fork()") fork()'ing with
+hugetlb PMD sharing quickly lockup -
 
-Fix it by using WRITE_ONCE and memory barriers.
+[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
+[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
+[  239.446631] Call Trace:
+[  239.446633]  <TASK>
+[  239.446636]  _raw_spin_lock+0x3f/0x60
+[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
+[  239.446645]  copy_page_range+0x22b/0x2c0
+[  239.446651]  dup_mmap+0x3e2/0x770
+[  239.446654]  dup_mm.constprop.0+0x5e/0x230
+[  239.446657]  copy_process+0xd17/0x1760
+[  239.446660]  kernel_clone+0xc0/0x3e0
+[  239.446661]  __do_sys_clone+0x65/0xa0
+[  239.446664]  do_syscall_64+0x82/0x930
+[  239.446668]  ? count_memcg_events+0xd2/0x190
+[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
+[  239.446676]  ? syscall_exit_work+0x118/0x150
+[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
+[  239.446681]  ? clear_bhb_loop+0x30/0x80
+[  239.446684]  ? clear_bhb_loop+0x30/0x80
+[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Closes: https://lore.kernel.org/linux-usb/CALbr=LbrUZn_cfp7CfR-7Z5wDTHF96qeuM=3fO2m-q4cDrnC4A@mail.gmail.com/
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://patch.msgid.link/20260304130116.1721682-1-oneukum@suse.com
+There are two options to resolve the potential latent issue:
+  1. warn against PMD sharing in copy_hugetlb_page_range(),
+  2. fix it.
+This patch opts for the second option.
+While at it, simplify the comment, the details are not actually relevant
+anymore.
+
+Link: https://lkml.kernel.org/r/20250916004520.1604530-1-jane.chu@oracle.com
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ David: We don't have ptdesc and the wrappers, so work directly on the
+  page->pt_share_count. CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING is still
+  called CONFIG_ARCH_WANT_HUGE_PMD_SHARE. ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -212,7 +212,8 @@ static void wdm_in_callback(struct urb *
- 		/* we may already be in overflow */
- 		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
- 			memmove(desc->ubuf + desc->length, desc->inbuf, length);
--			desc->length += length;
-+			smp_wmb(); /* against wdm_read() */
-+			WRITE_ONCE(desc->length, desc->length + length);
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4341,16 +4341,11 @@ int copy_hugetlb_page_range(struct mm_st
+ 			break;
  		}
- 	}
- skip_error:
-@@ -519,6 +520,7 @@ static ssize_t wdm_read
- 		return -ERESTARTSYS;
  
- 	cntr = READ_ONCE(desc->length);
-+	smp_rmb(); /* against wdm_in_callback() */
- 	if (cntr == 0) {
- 		desc->read = 0;
- retry:
+-		/*
+-		 * If the pagetables are shared don't copy or take references.
+-		 *
+-		 * dst_pte == src_pte is the common case of src/dest sharing.
+-		 * However, src could have 'unshared' and dst shares with
+-		 * another vma. So page_count of ptep page is checked instead
+-		 * to reliably determine whether pte is shared.
+-		 */
+-		if (page_count(virt_to_page(dst_pte)) > 1)
++#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
++		/* If the pagetables are shared, there is nothing to do */
++		if (atomic_read(&virt_to_page(dst_pte)->pt_share_count))
+ 			continue;
++#endif
+ 
+ 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
+ 		src_ptl = huge_pte_lockptr(h, src, src_pte);
 
 
 
