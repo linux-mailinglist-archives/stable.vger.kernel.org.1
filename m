@@ -1,169 +1,140 @@
-Return-Path: <stable+bounces-235943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UearIJmd3GkEUgkAu9opvQ
-	(envelope-from <stable+bounces-235943-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:39:05 +0200
+	id OEQSElmd3GkxUAkAu9opvQ
+	(envelope-from <stable+bounces-235942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:38:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6913E8563
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:39:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4573E8534
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FD5A304DE8F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:34:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55809300CC33
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DF73939AF;
-	Mon, 13 Apr 2026 07:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71505391E65;
+	Mon, 13 Apr 2026 07:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="qQaMmMcp"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="N4AOvUkP"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C866389111;
-	Mon, 13 Apr 2026 07:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DC7366055
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776065675; cv=none; b=V0MCgo/tmj7FOXgDd8K8LwxpPw1FiN2+C72wtj64eYr6zHEVTuEjcrOrr5erNueHrE+qwunnXsY0Ab/BFYyYKnpbEIXBJYv/P+tNEx1zej7Z/y8fWMo5tzuQTecZ95u48QcZ5qmyvNNcD5wC6qLn8FzR/GWPISvO0slJhzgnYfw=
+	t=1776065621; cv=none; b=i8Wp0y0UqvHCOQA/mu+WcNw1lsKA0osCnNtz4koPsUjjVFAbWvpju/gWAXJQxTiCOdHVSoFFmgk1cgssfi+Id7HZnqCLL4GEeFupKXTqolSVrrdv+u2V+thqXHKW7t0SHaaRp5RrwhbaGts1zPHUHL8OgXOU06eviJpBlUXp9+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776065675; c=relaxed/simple;
-	bh=V3WFhOJ14ldxim/GRHhxMiMs5RksmKIiGzmv36LwcGI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iL6S//ELhSFqoUIihBvVnixsjAwK0UQjJXYRedEysWipI11KqtYzCXnCceeV2lGCbDjgDTqqEd1ey1+svzoxerP+zkwsRMAr92E//XHKJ+xTcy7vZy5lROXYw3/2b93g3X3e615mbpuFO6ScUNogXPmClXik0AEeBo2w+5WpZlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=qQaMmMcp; arc=none smtp.client-ip=120.232.169.111
+	s=arc-20240116; t=1776065621; c=relaxed/simple;
+	bh=n69w6rLScSwCCr1HV9wYvatYzWr3FsxDX7udJtq1lK4=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type; b=dLGvffIuqcXMftdHssc50KjfuLCYHvOpCcxEWOcFcE0fhnfA1/WN4GLWkoTFLMCNmqPSsg9Tj5TCcvWC+Kb+N9CFdDq+YpBdU8e8o1JWdKPyQDb5ZsTLbkPBuXTJq9ZkqMDcnW18iCieylGK5r/cgFoeCQJHboLWk15wzXLOGUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=N4AOvUkP; arc=none smtp.client-ip=120.232.169.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
+	h=from:subject:message-id:to:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=qQaMmMcpmhrOyLVt+UcXfuamFbGCHqy2bsfNiyFJ3axIZgV/OKtZbZ0dZOzWtKWNqVtbPCkU/9l0g
-	 kbhMszL2hnbpar21iqRGufUkcZ/Oijrh7KhdCaJyGU3pkYW9+qrbo6LUCyYDwVGq94u2D2Mr5JNFf1
-	 iFA2xTGBo62Qh2zc=
+	b=N4AOvUkPjan3tRJBDkwK62/MDc03XlbUZVEIjs8EI6OQlNKg1kD/3aU400YIrJgG/xYO2ia4GLNy/
+	 r2Eyq3ThgOq3wR2APVH8oSiCMjC3dLzsDQfS6AwFIw5CoUmbixIPUlLrN5uEjarLPNssGo4ghqeHl9
+	 p+Uhg0sEDXSeiql4=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-10-12088 (RichMail) with SMTP id 2f3869dc9bb6403-0141d;
-	Mon, 13 Apr 2026 15:31:06 +0800 (CST)
-X-RM-TRANSID:2f3869dc9bb6403-0141d
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	fw@strlen.de
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	pablo@netfilter.org,
-	kadlec@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kaber@trash.net,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: [PATCH 6.12.y] netfilter: conntrack: add missing netlink policy validations
-Date: Mon, 13 Apr 2026 15:31:05 +0800
-Message-Id: <20260413073105.2990210-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+Received:from China-Mobile-Kernel-Team (unknown[223.104.41.220])
+	by rmsmtp-lg-appmail-23-12026 (RichMail) with SMTP id 2efa69dc9c41163-c214a;
+	Mon, 13 Apr 2026 15:33:26 +0800 (CST)
+X-RM-TRANSID:2efa69dc9c41163-c214a
+From: Leon Chen <leonchen.oss@139.com>
+To: lincao12@amd.com,
+	phasta@kernel.org,
+	christian.koenig@amd.com,
+	stable@vger.kernel.org
+Subject: [PATCH 6.1.y] drm/scheduler: signal scheduled fence when kill job
+Date: Mon, 13 Apr 2026 15:33:23 +0800
+Message-Id: <20260413073323.7541-1-leonchen.oss@139.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235943-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,netfilter.org,davemloft.net,google.com,kernel.org,redhat.com,trash.net,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235942-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[leonchen.oss@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.645];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,139.com:email,139.com:mid]
-X-Rspamd-Queue-Id: CD6913E8563
+	NEURAL_HAM(-0.00)[-0.994];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 8F4573E8534
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Florian Westphal <fw@strlen.de>
+From: "Lin.Cao" <lincao12@amd.com>
 
-[ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
+[ Upstream commit 471db2c2d4f80ee94225a1ef246e4f5011733e50 ]
 
-Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
+When an entity from application B is killed, drm_sched_entity_kill()
+removes all jobs belonging to that entity through
+drm_sched_entity_kill_jobs_work(). If application A's job depends on a
+scheduled fence from application B's job, and that fence is not properly
+signaled during the killing process, application A's dependency cannot be
+cleared.
 
-These attributes are used by the kernel without any validation.
-Extend the netlink policies accordingly.
+This leads to application A hanging indefinitely while waiting for a
+dependency that will never be resolved. Fix this issue by ensuring that
+scheduled fences are properly signaled when an entity is killed, allowing
+dependent applications to continue execution.
 
-Quoting the reporter:
-  nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
-  value directly to ct->proto.sctp.state without checking that it is
-  within the valid range. [..]
-
-  and: ... with exp->dir = 100, the access at
-  ct->master->tuplehash[100] reads 5600 bytes past the start of a
-  320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
-  UBSAN.
-
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Reviewed-by: Philipp Stanner <phasta@kernel.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250515020713.1110476-1-lincao12@amd.com
+[ Modified drm_sched_fence_scheduled(job->s_fence, NULL) to
+  drm_sched_fence_scheduled(job->s_fence) for kernel 6.1.y ]
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 ---
- net/netfilter/nf_conntrack_netlink.c    | 2 +-
- net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 323e147fe282..f51cdfba68fb 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3460,7 +3460,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 3f68a47e3406..3af74eac83b6 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -196,6 +196,7 @@ static void drm_sched_entity_kill_jobs_work(struct work_struct *wrk)
+ {
+ 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
  
- #if IS_ENABLED(CONFIG_NF_NAT)
- static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
--	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
-+	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
- 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
- };
- #endif
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 4cc97f971264..fabb2c1ca00a 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -587,7 +587,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
- }
- 
- static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
--	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
-+	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
-+							 SCTP_CONNTRACK_HEARTBEAT_SENT),
- 	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
- 	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
- };
++	drm_sched_fence_scheduled(job->s_fence, NULL);
+ 	drm_sched_fence_finished(job->s_fence);
+ 	WARN_ON(job->s_fence->parent);
+ 	job->sched->ops->free_job(job);
 -- 
-2.34.1
+2.35.3
 
 
 
