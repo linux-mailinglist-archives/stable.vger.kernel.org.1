@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHBGMlMW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:11 +0200
+	id kMNgHsAj3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-236967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3CE3EE7A1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90BC3F0F0C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03BDF3037656
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E91CA30C11C9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2A5282F1C;
-	Mon, 13 Apr 2026 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84CC2D5A19;
+	Mon, 13 Apr 2026 16:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGTdhxtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3UerQJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C50227FB2E;
-	Mon, 13 Apr 2026 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C07926CE32;
+	Mon, 13 Apr 2026 16:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096362; cv=none; b=BPYJTdRW3tRt70oDodjZMVSltiM59EMSu8A9OySo9k3wI9uQv2ueOCDkXU+uvo+1K6LSp2Rmknr3lilBFjwP+5+kTcGXd/FSc4bQ1rvkLIAO00UmjjX5aUubrVZAOuWZ6+lTjfE5OSlqpbmwfukAU+Y98e8zyzW1sF2FQfyhPIg=
+	t=1776098251; cv=none; b=g66ed0xOPG1gwHimXV9UGpwwie7RtlPi1Xgk/oJAj47E0oW3SQM+Rj5XRcYF3epgayaC7mKj1GvnQ08i/MmFxkxo/HDCQdwTYF/j3ldfSdjNGpZat8mwc5YDilS8xnSXfZmojcy8OmPPXVlEPUKRkciyHDRvFenWRhHujzwWpBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096362; c=relaxed/simple;
-	bh=UAxsVlOklwk4fl7otj+LjaIl/eSEKp517H+ZXozMjt4=;
+	s=arc-20240116; t=1776098251; c=relaxed/simple;
+	bh=DKG3dYpfi+j6lDWIC5AL0T8u7/ytLvyjBH/GNGdfhO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNoquNPbGiBuK9uInUmbBNXeenp/zJbE6R1FC85PkW0s5E3kpo1mEe9BYvRl/2vq9Q/j27PgAxBZdUCRtTJED89zKgcLOpbRL/ZVd6KhMN8plS1HMR7DbcCKVLKZW9drxU/33JWtJPE9xkl31IeV+nuYh9WwG6x4p+8ofg4iNBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGTdhxtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AB8C2BCAF;
-	Mon, 13 Apr 2026 16:06:01 +0000 (UTC)
+	 MIME-Version; b=NLdZ4u+pxBOvJ48Nj0swEB/kPcooPG2apung7th5IPW6GtONfF/5SpUv2z2+/yUqujAlYtM0iVeN+kcCBexmuV3nVdx+tkvQWsizYkAmbiXIbPptZCIHbi7ewOak8rNwk62ds6pKYOHClloYlL0xGr7HO7eh2mp8rcs+UDnCyrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3UerQJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3A9C2BCB0;
+	Mon, 13 Apr 2026 16:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096362;
-	bh=UAxsVlOklwk4fl7otj+LjaIl/eSEKp517H+ZXozMjt4=;
+	s=korg; t=1776098251;
+	bh=DKG3dYpfi+j6lDWIC5AL0T8u7/ytLvyjBH/GNGdfhO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGTdhxtfj++1yU1x8pxUMRlHaNkmmQb2598vTuitHbEGzfW18/SdF2Fr13n9LZVof
-	 y9jcFOYMpyMLCXYP+X+161RIk+m95mVnLvCI9cuwObz0mW4Uiz6kzsLNWVLWgZf0U+
-	 jlmszVcQfyp6e7CNJucf0DNFtOhcBKQxD9eNYW2g=
+	b=h3UerQJu+OTTVx/G9IxyJZ4ZPZTXGQ/YPYh4KH2o4Qy0bMB42mnOOTdBMWBlfSX3u
+	 tlJuWagsOVk6KWhH2IUsbpdw+Nf7ZnR9QO4S8iYUnxZ44N/p6VNvO71FdKII1nFxKo
+	 xGaO97plZDXn8SEJO/bFlZW8Mwv3OvjpHeMd0kck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Wei Xu <xuwei5@hisilicon.com>
-Subject: [PATCH 6.19 36/86] arm64: dts: hisilicon: hi3798cv200: Add missing dma-ranges
-Date: Mon, 13 Apr 2026 17:59:43 +0200
-Message-ID: <20260413155732.917136143@linuxfoundation.org>
+	Frej Drejhammar <frej@stacken.kth.se>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 453/570] USB: serial: io_edgeport: add support for Blackbox IC135A
+Date: Mon, 13 Apr 2026 17:59:44 +0200
+Message-ID: <20260413155847.438594688@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,57 +77,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236224-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236967-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B3CE3EE7A1
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kth.se:email]
+X-Rspamd-Queue-Id: D90BC3F0F0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Guo <shawnguo@kernel.org>
+From: Frej Drejhammar <frej@stacken.kth.se>
 
-commit 1af997cad473d505248df6d9577183bb91f69670 upstream.
+commit 0e01c3416eb863ee7f156a9d7e7421ec0a9f68a0 upstream.
 
-Reboot starts failing on Poplar since commit 8424ecdde7df ("arm64: mm:
-Set ZONE_DMA size based on devicetree's dma-ranges"), which effectively
-changes zone_dma_bits from 30 to 32 for arm64 platforms that do not
-properly define dma-ranges in device tree.  It's unclear how Poplar reboot
-gets broken by this change exactly, but a dma-ranges limiting zone_dma to
-the first 1 GB fixes the regression.
+The Blackbox 724-746-5500 USB Director USB-RS-232 HUB, part number
+IC135A, is a rebadged Edgeport/4 with its own USB device id.
 
-Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
+Signed-off-by: Frej Drejhammar <frej@stacken.kth.se>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/io_edgeport.c |    3 +++
+ drivers/usb/serial/io_usbvend.h  |    1 +
+ 2 files changed, 4 insertions(+)
 
---- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-@@ -122,6 +122,7 @@
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		ranges = <0x0 0x0 0xf0000000 0x10000000>;
-+		dma-ranges = <0x0 0x0 0x0 0x40000000>;
+--- a/drivers/usb/serial/io_edgeport.c
++++ b/drivers/usb/serial/io_edgeport.c
+@@ -73,6 +73,7 @@ static const struct usb_device_id edgepo
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_22I) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_412_4) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_COMPATIBLE) },
++	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_BLACKBOX_IC135A) },
+ 	{ }
+ };
  
- 		crg: clock-reset-controller@8a22000 {
- 			compatible = "hisilicon,hi3798cv200-crg", "syscon", "simple-mfd";
+@@ -121,6 +122,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_8R) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_8RR) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_412_8) },
++	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_BLACKBOX_IC135A) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0202) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0203) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0310) },
+@@ -470,6 +472,7 @@ static void get_product_info(struct edge
+ 	case ION_DEVICE_ID_EDGEPORT_2_DIN:
+ 	case ION_DEVICE_ID_EDGEPORT_4_DIN:
+ 	case ION_DEVICE_ID_EDGEPORT_16_DUAL_CPU:
++	case ION_DEVICE_ID_BLACKBOX_IC135A:
+ 		product_info->IsRS232 = 1;
+ 		break;
+ 
+--- a/drivers/usb/serial/io_usbvend.h
++++ b/drivers/usb/serial/io_usbvend.h
+@@ -211,6 +211,7 @@
+ 
+ //
+ // Definitions for other product IDs
++#define ION_DEVICE_ID_BLACKBOX_IC135A		0x0801	// OEM device (rebranded Edgeport/4)
+ #define ION_DEVICE_ID_MT4X56USB			0x1403	// OEM device
+ #define ION_DEVICE_ID_E5805A			0x1A01  // OEM device (rebranded Edgeport/4)
+ 
 
 
 
