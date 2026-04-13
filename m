@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-237466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOc9ADQl3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:40 +0200
+	id 6I2+G7wl3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063053F11DE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8733F12FB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1409D30438FA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF5043049E1B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525A233123B;
-	Mon, 13 Apr 2026 16:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C8C346E60;
+	Mon, 13 Apr 2026 17:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hu3tnQJT"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="nCIv8n2+"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345FA3203B6
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 16:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5469433EB1B;
+	Mon, 13 Apr 2026 17:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099529; cv=none; b=GwtP+SdmJsrndlYnJzeZ/6BqkCvffyipBRu/kHKlJv2CWjk9+GmJmBpYrSaiB68UDjkOXzgBn5XjECIn0BzhvnkxaaS2eXSSYoL9ShovLBnQi4HyfYo2ZMhaarcBWA80qUUCHiFvl9CJoX7wymCRpLEG8poFOOFTFOzTXUb+olA=
+	t=1776099717; cv=none; b=kPeP3iOjDjgyPb5DxVa4bieDh1oejCmuwMDVizEOeld2w5lPEXVhpwINex/z2wgCeG/uU6lLfN9e63wDexy8N2QxeUsnbYUaBiy9zmElnP9VHQV4FA4I4eibPiNpkIGxPHXLdRaD1wpJQr66M/dXVO0KbpYEMhheb5iB61+ZRO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099529; c=relaxed/simple;
-	bh=NW79sEuPdbHoQcLLfX2FnTYtxYGQ26IoLIPnKdpQb1M=;
+	s=arc-20240116; t=1776099717; c=relaxed/simple;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YfCOZbSzlXsHiIinCLIZXBRWKo0p4BAuNS8nOgSWVMnOcRqJho7Ma79IQU6wYEBJiQhOVIV5XH/+stXgQSfAP+IOJRfNOD8eT4B6vKYqLfqGC3Tqe+JosUlVSS61OnJyndaJ4Tr63ymXAYVoVuffUFYk2V2cWpCCe6hkALMf8Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hu3tnQJT; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UN/jdZ4ycKnKbeFApRknBikRqWnRbiWbPLgeGde1veI=; b=hu3tnQJTejBwSJkcNx4SYw4K1S
-	TwNJMjeIThhSNR/2TfQMuztwgEKJy8RMYNWsrZWE25qko7CvmD1edQOrnMeaONPpI7eKQQGY+y7c2
-	zHaGiyYpGsXEwtMT2/Jz/KEPlYEAjwjRJTqh+7Y64j/L0PZKAGUfCdYbLHme02CI8FO/QukKtEktv
-	PvSmPYc22npROwqLWeyyY247Zk5Lo78SwHt2M5mXhHhqPlO0QQagMQAbkn5em4W7/Cdfm194oupgt
-	sxw0FHjcdM0ojTkXpQqR3+wD8rLb+/hiVGFtIB/0J0IZlwEVpC3RoGXSZF+22sWJ5gBSt1ZyT++XM
-	xSnKaADQ==;
-Received: from [189.7.87.169] (helo=[192.168.0.2])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1wCKcS-00FVfH-O6; Mon, 13 Apr 2026 18:58:40 +0200
-Message-ID: <616c212a-067d-485c-802c-c1375094c53e@igalia.com>
-Date: Mon, 13 Apr 2026 13:58:36 -0300
+	 In-Reply-To:Content-Type; b=FNJnKln4saguB53RToyPAjTh5s3WpY1x8n3sR1zfn4K5puZpBORPjhTHBiq9vORUQaq4x7yj6EWJJapgqrEu8IfXECAEiQOWYQZvQfWUGLIa6PNdMwica+3NPsYxtoDNfXPSRe63lMWTfJNSLPSItZWgFZoW1VPQuAa8QQ9DLiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=nCIv8n2+; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1776099713; x=1776704513; i=rwarsow@gmx.de;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=nCIv8n2+pJnNZpUBRKRidj2cMqXBo69UkTy5qsu3Nji2zJQv9NAISxnh0LJsOY7Y
+	 5mz+1ovauozF06IY0c29KTftz2Eid3RGL8B5uD56qkaYdL4V24ffTUZTLd6T+76CB
+	 hAk0MvY7MK1Kp1WOrEOt6yiZVfLmsnDzSH7V0dJQjCw3UGFGGBESxGrne13JEgDRa
+	 ZL3NZbp6ylsUvdJ40BdIn3RnJmbV+oE/nH/t3jowAatuoBbDG68CZWc4aZWCvq6pY
+	 iH4KjG/haickgPIpAGpWzbtcZFodpLOiGuVwZKJ/nVYiAwJGvmik1aC6NTqeoKD14
+	 j4gwJFj8ggBB8ANjxQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N9MpY-1vP1qn1WZ2-010bz3; Mon, 13
+ Apr 2026 19:01:53 +0200
+Message-ID: <613e0190-553d-48f9-9b65-c07c2de8e158@gmx.de>
+Date: Mon, 13 Apr 2026 19:01:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,116 +61,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/v3d: Limit ioctl extension chain depth to prevent
- infinite loop
-To: Ashutosh Desai <ashutoshdesai993@gmail.com>,
- dri-devel@lists.freedesktop.org
-Cc: itoral@igalia.com, stable@vger.kernel.org
-References: <80158c8c-a270-498b-b947-bc3276359d4b@igalia.com>
- <20260413152115.3444105-1-ashutoshdesai993@gmail.com>
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Content-Language: en-US
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
- /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
- gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
- SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
- G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
- AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
- dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
- P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
- O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
- GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
- 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
- FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
- TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
- Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
- 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
- LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
- T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
- wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
- zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
- it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
- Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
- uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
- raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
-In-Reply-To: <20260413152115.3444105-1-ashutoshdesai993@gmail.com>
+Subject: Re: [PATCH 6.19 00/86] 6.19.13-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260413155731.568515178@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:jXoxNgslWe82j+k5mcePflOwbW2Etd0DfiitXLiB3V7ly8nSiqo
+ u+/RRY03ib9iKcgF5dnwsR3TYKhRVHaRzA5rL5zBXIU5aKVaCjnQqWHBf/NV2oNhIxe4ayq
+ cboxrCpAcjunJCUJ2uv22jhdOzwgkGHuuuKnOtk8JaAtBgIFqPbXlYXe075E2mS7aGFoZW0
+ rytvIINGvzQszKyHcrj1Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:xqUphWNNOA4=;KXXWz5Fas7FbAaMjBx/UJc9CZh9
+ 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
+ cb8SB/tVcVO
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237466-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237539-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.883];
-	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[igalia.com:-];
+	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.de:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 063053F11DE
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:email,gmx.de:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5D8733F12FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Ashutosh,
+Hi
 
-On 13/04/26 12:21, Ashutosh Desai wrote:
-> Hi Maíra,
-> 
-> On 4/13/26 09:16, Maíra Canal wrote:
->> How about checking if (!multisync.in_sync_count &&
->> !multisync.out_sync_count)? After all, it doesn't make any sense to have
->> an empty multisync.
->>
->> I believe this is better strategy than using a hard-coded max.
-> 
-> That check makes good semantic sense and directly closes the attack
-> vector - I agree an empty multisync isn't useful.
-> 
-> That said, I'd like to raise one thought before sending v3. The reason
-> xe and i915 added a general depth limit wasn't just to fix a specific
-> known loop - it was to make the extension walker generically robust as
-> the extension set grows. If a future extension is added that can also
-> tolerate a second visit without erroring out, the unbounded walk
-> vulnerability class reappears without a counter. Since the current
-> architectural maximum is 2 (one multisync + one CPU job extension),
-> capping the walk at 2 would reflect the real limit and provide that
-> safety net without being arbitrary.
+no regressions here on x86_64 (Intel 11th Gen. CPU)
 
-The problem I see is maintainability. We will need to keep updating this
-macro as the number of extensions increase. So far, all the extensions
-we have can only be added once, so we can guarantee that per-extension.
+Thanks
 
-If in the future we have an extension that can be added multiple times,
-it would make sense to add this hard-coded limit.
-
-I'd prefer to check the multisync extension and make sure that a single
-one non-empty is added.
-
-Best regards,
-- Maíra
-
-> 
-> Happy to go either way - just wanted to raise it before sending v3.
-> What do you think?
-> 
-> Best regards,
-> Ashutosh
-
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
