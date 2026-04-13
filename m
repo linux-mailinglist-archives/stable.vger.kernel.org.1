@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-236038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEuOGhXh3GnrXgkAu9opvQ
-	(envelope-from <stable+bounces-236038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:27:01 +0200
+	id EEYxMnTf3GnrXgkAu9opvQ
+	(envelope-from <stable+bounces-236039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:20:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3C33EBF49
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:27:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B453EBD22
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1ECC30849C7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:19:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD6C930087F8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A2B3C4579;
-	Mon, 13 Apr 2026 12:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C7E3C3BED;
+	Mon, 13 Apr 2026 12:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0WvTsMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pR6WHNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4F63C4552
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92F13BD63E
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776082736; cv=none; b=er17VilhdIuallkYr0Kf9jO8qsEExj3n8VIpOhLf5U3ETklp68TFaIpLbEgSuYxohiJ30AXh3j6SzUOdK+vkqtv0EgaqhIqJT1XfbF28kcHPxfLVdwb5AR94/N8nx/Ky2okWKFAfPbNsMg2mQJ4XEa4tlFbhh5Fy7wuPK3Kj7/k=
+	t=1776082787; cv=none; b=htvzKcs0SwS8NN7/PpCmQfb0hm4MmqrZX4axo72cu9lsDmz/xOmX1v2y/Xd1gTsoRs8pF3fIG1awlX4PmzI7L+kfUAiQKWGhNwkKJ3+pfG64TfoIgDruYYhBFkZKDVRkvM3EQzHeErNYnoQLYgOkxXaVp/q6f8glsV7U5E1KTlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776082736; c=relaxed/simple;
-	bh=qTcRR6FcNQUw89tyzsDt8JVg1RoHqulg1+APJtHkoKM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LRgjaxyLytyrjkThGuDR2spIwpjGbVxu/msGRCGCzOesQ303AW78iABpto3Mno9FjIH7b8p1Bxgk3oamO30Zn8d2ZGfEpUpFbEquY0HRX0/H7Gt1p5d5P45tM7tRecJpJKWo1XdAzmBZcBnBTDrxV6jamoT7J4whPQz5OPE/14I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0WvTsMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26811C19421;
-	Mon, 13 Apr 2026 12:18:55 +0000 (UTC)
+	s=arc-20240116; t=1776082787; c=relaxed/simple;
+	bh=RFls+Or6uVdTL1pWrwQRHdipWKixQcazPsdm7yXzj+Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b75ju4s6SJ3OyX89aoiJy6pWWlsT/3NkFjhJITBbMuqxh+5SJndkdR88dSRqsnwoLntcu+51Ipp8qzQoBRM3dvYuPcOcxTJfJaxDewU43ShGt3qC82OYoGjAI777UkJMf6n5z+FA1g5fDTd4jQvm8POSiLmvwLjWeS76ru3C5cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pR6WHNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037F9C116C6;
+	Mon, 13 Apr 2026 12:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776082736;
-	bh=qTcRR6FcNQUw89tyzsDt8JVg1RoHqulg1+APJtHkoKM=;
+	s=korg; t=1776082787;
+	bh=RFls+Or6uVdTL1pWrwQRHdipWKixQcazPsdm7yXzj+Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=i0WvTsMNx5I7L66l6yaXLPfvXfDCrrq7sRoK/QhQRKfVsGRCh+zxcjdx8m9xJ49do
-	 gLAO5pj2cKtRmpXCRV8HZT3MJgpfVWcUg0+7S0F4XPqjWEjZY4OJAD++PaLBdfNveD
-	 GjueE7qN06RrdCOA10Ul9HNYfSKTyJR16BP5+Ytw=
-Subject: FAILED: patch "[PATCH] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC" failed to apply to 6.12-stable tree
-To: emil.s.tantilov@intel.com,Samuel.salin@intel.com,aleksandr.loktionov@intel.com,anthony.l.nguyen@intel.com,bigeasy@linutronix.de,sgzhang@google.com
+	b=0pR6WHNq7v6cTJpVW97R+FnKnd8wcgpaqQ/FyGwRJLnnpkg/HgsPZUX4kXM7ELKxI
+	 DX1wJ9wySucJRGl2yDUr+vuo607ZrWp2yp8f8M+V0WUPjtHj2IUuZi7DKDYOfPdMqO
+	 azeaKFi4gj26+AkSSAh1Lq5ncUCibNVbECrL4WuY=
+Subject: FAILED: patch "[PATCH] net: lan966x: fix page pool leak in error paths" failed to apply to 6.6-stable tree
+To: devnexen@gmail.com,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Apr 2026 14:18:54 +0200
-Message-ID: <2026041354-trowel-buggy-c7ca@gregkh>
+Date: Mon, 13 Apr 2026 14:19:44 +0200
+Message-ID: <2026041344-expedited-sizing-f2df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,49 +57,50 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236038-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-236039-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linutronix.de:email,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: BA3C33EBF49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 50B453EBD22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 591478118293c1bd628de330a99eb1eb2ef8d76b
+git cherry-pick -x 076344a6ad9d1308faaed1402fdcfdda68b604ab
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041354-trowel-buggy-c7ca@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041344-expedited-sizing-f2df@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,130 +112,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 591478118293c1bd628de330a99eb1eb2ef8d76b Mon Sep 17 00:00:00 2001
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-Date: Thu, 19 Mar 2026 14:13:33 -0700
-Subject: [PATCH] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC
- handling
+From 076344a6ad9d1308faaed1402fdcfdda68b604ab Mon Sep 17 00:00:00 2001
+From: David Carlier <devnexen@gmail.com>
+Date: Sun, 5 Apr 2026 06:52:40 +0100
+Subject: [PATCH] net: lan966x: fix page pool leak in error paths
 
-Switch from using the completion's raw spinlock to a local lock in the
-idpf_vc_xn struct. The conversion is safe because complete/_all() are
-called outside the lock and there is no reason to share the completion
-lock in the current logic. This avoids invalid wait context reported by
-the kernel due to the async handler taking BH spinlock:
+lan966x_fdma_rx_alloc() creates a page pool but does not destroy it if
+the subsequent fdma_alloc_coherent() call fails, leaking the pool.
 
-[  805.726977] =============================
-[  805.726991] [ BUG: Invalid wait context ]
-[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
-[  805.727026] -----------------------------
-[  805.727038] kworker/u261:0/572 is trying to lock:
-[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727099] other info that might help us debug this:
-[  805.727111] context-{5:5}
-[  805.727119] 3 locks held by kworker/u261:0/572:
-[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
-[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
-[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
-[  805.727218] stack backtrace:
-...
-[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
-[  805.727247] Call Trace:
-[  805.727249]  <TASK>
-[  805.727251]  dump_stack_lvl+0x77/0xb0
-[  805.727259]  __lock_acquire+0xb3b/0x2290
-[  805.727268]  ? __irq_work_queue_local+0x59/0x130
-[  805.727275]  lock_acquire+0xc6/0x2f0
-[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727284]  ? _printk+0x5b/0x80
-[  805.727290]  _raw_spin_lock_bh+0x38/0x50
-[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
-[  805.727317]  process_one_work+0x226/0x730
-[  805.727322]  worker_thread+0x19e/0x340
-[  805.727325]  ? __pfx_worker_thread+0x10/0x10
-[  805.727328]  kthread+0xf4/0x130
-[  805.727333]  ? __pfx_kthread+0x10/0x10
-[  805.727336]  ret_from_fork+0x32c/0x410
-[  805.727345]  ? __pfx_kthread+0x10/0x10
-[  805.727347]  ret_from_fork_asm+0x1a/0x30
-[  805.727354]  </TASK>
+Similarly, lan966x_fdma_init() frees the coherent DMA memory when
+lan966x_fdma_tx_alloc() fails but does not destroy the page pool that
+was successfully created by lan966x_fdma_rx_alloc(), leaking it.
 
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Add the missing page_pool_destroy() calls in both error paths.
+
+Fixes: 11871aba1974 ("net: lan96x: Use page_pool API")
 Cc: stable@vger.kernel.org
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reported-by: Ray Zhang <sgzhang@google.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260405055241.35767-3-devnexen@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 113ecfc16dd7..582e0c8e9dc0 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -287,26 +287,21 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, struct idpf_ctlq_info *asq,
- 	return err;
- }
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+index 74851c63e46a..10773fe93d4d 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+@@ -119,8 +119,10 @@ static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
+ 		return PTR_ERR(rx->page_pool);
  
--/* API for virtchnl "transaction" support ("xn" for short).
-- *
-- * We are reusing the completion lock to serialize the accesses to the
-- * transaction state for simplicity, but it could be its own separate synchro
-- * as well. For now, this API is only used from within a workqueue context;
-- * raw_spin_lock() is enough.
-- */
-+/* API for virtchnl "transaction" support ("xn" for short). */
-+
- /**
-  * idpf_vc_xn_lock - Request exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_lock(xn)			\
--	raw_spin_lock(&(xn)->completed.wait.lock)
-+	spin_lock(&(xn)->lock)
+ 	err = fdma_alloc_coherent(lan966x->dev, fdma);
+-	if (err)
++	if (err) {
++		page_pool_destroy(rx->page_pool);
+ 		return err;
++	}
  
- /**
-  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_unlock(xn)		\
--	raw_spin_unlock(&(xn)->completed.wait.lock)
-+	spin_unlock(&(xn)->lock)
- 
- /**
-  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
-@@ -338,6 +333,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
- 		xn->state = IDPF_VC_XN_IDLE;
- 		xn->idx = i;
- 		idpf_vc_xn_release_bufs(xn);
-+		spin_lock_init(&xn->lock);
- 		init_completion(&xn->completed);
+ 	fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
+ 		       FDMA_DCB_STATUS_INTR);
+@@ -957,6 +959,7 @@ int lan966x_fdma_init(struct lan966x *lan966x)
+ 	err = lan966x_fdma_tx_alloc(&lan966x->tx);
+ 	if (err) {
+ 		fdma_free_coherent(lan966x->dev, &lan966x->rx.fdma);
++		page_pool_destroy(lan966x->rx.page_pool);
+ 		return err;
  	}
  
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index fe065911ad5a..6876e3ed9d1b 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -42,8 +42,8 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
-  * struct idpf_vc_xn - Data structure representing virtchnl transactions
-  * @completed: virtchnl event loop uses that to signal when a reply is
-  *	       available, uses kernel completion API
-- * @state: virtchnl event loop stores the data below, protected by the
-- *	   completion's lock.
-+ * @lock: protects the transaction state fields below
-+ * @state: virtchnl event loop stores the data below, protected by @lock
-  * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
-  *	      truncated on its way to the receiver thread according to
-  *	      reply_buf.iov_len.
-@@ -58,6 +58,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
-  */
- struct idpf_vc_xn {
- 	struct completion completed;
-+	spinlock_t lock;
- 	enum idpf_vc_xn_state state;
- 	size_t reply_sz;
- 	struct kvec reply;
 
 
