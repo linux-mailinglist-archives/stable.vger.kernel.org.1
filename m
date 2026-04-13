@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-236742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mK6GHikf3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:53 +0200
+	id KMUlH5Ue3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4AAF3F0065
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AB53EFE23
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D73CC30C9596
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 14E9E304A1D0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2DB309F09;
-	Mon, 13 Apr 2026 16:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AFC3148A3;
+	Mon, 13 Apr 2026 16:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SczQVrCb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1TXbY1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F298D26CE32;
-	Mon, 13 Apr 2026 16:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F3823E342;
+	Mon, 13 Apr 2026 16:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097677; cv=none; b=F+oyfRvRfVrpGlWh2uvsrNqSdUXh91t387Y9wGS60fa/UfQwVxqG61AcMwVm6W8z5/Pjt4WWI7eCGyUDIq/K2wJZZ/tTckmSHMjK3yM5qWTEVike6ZHqkfMpmAVf4VQOyK3gAssFBWLQWF2E8hJiX8qGV9NH/TbmBL4E31I0XFg=
+	t=1776098771; cv=none; b=iSI74WTsKUKZPKwI07ITvlEO+C4oiIIWxISq3TMJ6ALXAevU7pXp0VDFf0Ykhjz1Wj2E4xwFWEulNTrFrMXADHbpNGV6/rMujpmvRWLAgkINPBBOYsUlPDG+O7PtNJSB6QetDNmrUiYnc4PmvE4zITaOFbMt8zyhE6K8imtT0kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097677; c=relaxed/simple;
-	bh=9dIfCQWN2gCOLwkcI2bu+kRQ/lq5htpmStmMWbgblY4=;
+	s=arc-20240116; t=1776098771; c=relaxed/simple;
+	bh=6f1X4MbWCs4AVQKunwvesxGe3EPxouo14wLOtpLRx70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLkUgOAiz4qfyZ1rRSZws1EqfQcNygg7silMsnzB1cw/wGVEVkYzOm5ncISUjbi7VU7RnQm0qe8UIlT1F4EvOCsTZ6Gu7WYq90NOK7br/XKemH/IBwrKA8XJ24aLldZ9YUIT1/rsspPt+Kv4raxAGi7NXPs0HVGo6rTeayn8eTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SczQVrCb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87827C2BCAF;
-	Mon, 13 Apr 2026 16:27:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uqEbwecB03LJ91iDzjwNg12Nq8J4b0r2nU3zd6i97UITi3r0TQtVxWixKu+2HUlUuQTfB8VpjRcOLkluUQQHLs9xX/jYk4RZOWun5RBL9ws1RrapR1n/IceW/zH2zaudw221zWmEOrcH0Txz+leEw/BEzFvJpyWWxvRSfU1pcXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1TXbY1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C19BC2BCAF;
+	Mon, 13 Apr 2026 16:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097676;
-	bh=9dIfCQWN2gCOLwkcI2bu+kRQ/lq5htpmStmMWbgblY4=;
+	s=korg; t=1776098771;
+	bh=6f1X4MbWCs4AVQKunwvesxGe3EPxouo14wLOtpLRx70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SczQVrCb7DG6vNDL57yseenGtMhbKCv97JrRr4xwVt6Dl4edqCNiAtEA9epVv4MZ9
-	 jpJPIanPznWtnGcai8z3/+ueT/vhuTaxIoWWYP3ToacGVuSxrLfjKxtZ1UOPEJBf2S
-	 yOwwiYX58msNMvSe8cIqOjh98HyEgnSmKliMaWeo=
+	b=j1TXbY1afJNlv4pPsESYmr/UclXwjKhpWGnLMR3xVMiv6XZfdNljLGLkSeTPxxGDr
+	 TgzuhBartvpDZUPl/UsR0kAvZ2U+DyZ36kOBB993Qmr3ft6fQuqS3bMJY1UeaItWOY
+	 1v7qfqFTAAvi4ALoz3hV6fXcjkowx34UMUrFbyR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@ownmail.net>,
-	stable@kernel.org,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 197/570] sunrpc: fix cache_request leak in cache_release
+	Chao Shi <cshi008@fiu.edu>,
+	Weidong Zhu <weizhu@fiu.edu>,
+	Dave Tian <daveti@purdue.edu>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 083/491] nvme-pci: Fix slab-out-of-bounds in nvme_dbbuf_set
 Date: Mon, 13 Apr 2026 17:55:28 +0200
-Message-ID: <20260413155837.838847646@linuxfoundation.org>
+Message-ID: <20260413155822.152853953@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +66,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237171-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ownmail.net,kernel.org,oracle.com];
-	TAGGED_FROM(0.00)[bounces-236742-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
-X-Rspamd-Queue-Id: C4AAF3F0065
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[purdue.edu:email,qemu.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,sung-woo.kim:email]
+X-Rspamd-Queue-Id: 17AB53EFE23
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-commit 17ad31b3a43b72aec3a3d83605891e1397d0d065 upstream.
+[ Upstream commit b4e78f1427c7d6859229ae9616df54e1fc05a516 ]
 
-When a reader's file descriptor is closed while in the middle of reading
-a cache_request (rp->offset != 0), cache_release() decrements the
-request's readers count but never checks whether it should free the
-request.
+dev->online_queues is a count incremented in nvme_init_queue. Thus,
+valid indices are 0 through dev->online_queues − 1.
 
-In cache_read(), when readers drops to 0 and CACHE_PENDING is clear, the
-cache_request is removed from the queue and freed along with its buffer
-and cache_head reference. cache_release() lacks this cleanup.
+This patch fixes the loop condition to ensure the index stays within the
+valid range. Index 0 is excluded because it is the admin queue.
 
-The only other path that frees requests with readers == 0 is
-cache_dequeue(), but it runs only when CACHE_PENDING transitions from
-set to clear. If that transition already happened while readers was
-still non-zero, cache_dequeue() will have skipped the request, and no
-subsequent call will clean it up.
+KASAN splat:
 
-Add the same cleanup logic from cache_read() to cache_release(): after
-decrementing readers, check if it reached 0 with CACHE_PENDING clear,
-and if so, dequeue and free the cache_request.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
+BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
+Read of size 2 at addr ffff88800592a574 by task kworker/u8:5/74
 
-Reported-by: NeilBrown <neilb@ownmail.net>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 0 UID: 0 PID: 74 Comm: kworker/u8:5 Not tainted 6.19.0-dirty #10 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+Workqueue: nvme-reset-wq nvme_reset_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xea/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xce/0x5d0 mm/kasan/report.c:482
+ kasan_report+0xdc/0x110 mm/kasan/report.c:595
+ __asan_report_load2_noabort+0x18/0x20 mm/kasan/report_generic.c:379
+ nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
+ nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
+ nvme_reset_work+0x36b/0x8c0 drivers/nvme/host/pci.c:3252
+ process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
+ kthread+0x41a/0x930 kernel/kthread.c:463
+ ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+
+Allocated by task 34 on cpu 1 at 4.241550s:
+ kasan_save_stack+0x2c/0x60 mm/kasan/common.c:57
+ kasan_save_track+0x1c/0x70 mm/kasan/common.c:78
+ kasan_save_alloc_info+0x3c/0x50 mm/kasan/generic.c:570
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0xb5/0xc0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __do_kmalloc_node mm/slub.c:5657 [inline]
+ __kmalloc_node_noprof+0x2bf/0x8d0 mm/slub.c:5663
+ kmalloc_array_node_noprof include/linux/slab.h:1075 [inline]
+ nvme_pci_alloc_dev drivers/nvme/host/pci.c:3479 [inline]
+ nvme_probe+0x2f1/0x1820 drivers/nvme/host/pci.c:3534
+ local_pci_probe+0xef/0x1c0 drivers/pci/pci-driver.c:324
+ pci_call_probe drivers/pci/pci-driver.c:392 [inline]
+ __pci_device_probe drivers/pci/pci-driver.c:417 [inline]
+ pci_device_probe+0x743/0x920 drivers/pci/pci-driver.c:451
+ call_driver_probe drivers/base/dd.c:583 [inline]
+ really_probe+0x29b/0xb70 drivers/base/dd.c:661
+ __driver_probe_device+0x3b0/0x4a0 drivers/base/dd.c:803
+ driver_probe_device+0x56/0x1f0 drivers/base/dd.c:833
+ __driver_attach_async_helper+0x155/0x340 drivers/base/dd.c:1159
+ async_run_entry_fn+0xa6/0x4b0 kernel/async.c:129
+ process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
+ kthread+0x41a/0x930 kernel/kthread.c:463
+ ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+The buggy address belongs to the object at ffff88800592a000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 244 bytes to the right of
+ allocated 1152-byte region [ffff88800592a000, ffff88800592a480)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x5928
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0xfffffc0000040(head|node=0|zone=1|lastcpupid=0x1fffff)
+page_type: f5(slab)
+raw: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
+raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
+head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 000fffffc0000003 ffffea0000164a01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff88800592a400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff88800592a480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff88800592a500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                                                             ^
+ ffff88800592a580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88800592a600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+Fixes: 0f0d2c876c96 (nvme: free sq/cq dbbuf pointers when dbbuf set fails)
+Acked-by: Chao Shi <cshi008@fiu.edu>
+Acked-by: Weidong Zhu <weizhu@fiu.edu>
+Acked-by: Dave Tian <daveti@purdue.edu>
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c |   26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1037,14 +1037,25 @@ static int cache_release(struct inode *i
- 	struct cache_reader *rp = filp->private_data;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 7a6827306e740..fbf8961f69efa 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -324,7 +324,7 @@ static void nvme_dbbuf_set(struct nvme_dev *dev)
+ 		/* Free memory and continue on */
+ 		nvme_dbbuf_dma_free(dev);
  
- 	if (rp) {
-+		struct cache_request *rq = NULL;
-+
- 		spin_lock(&queue_lock);
- 		if (rp->offset) {
- 			struct cache_queue *cq;
--			for (cq= &rp->q; &cq->list != &cd->queue;
--			     cq = list_entry(cq->list.next, struct cache_queue, list))
-+			for (cq = &rp->q; &cq->list != &cd->queue;
-+			     cq = list_entry(cq->list.next,
-+					     struct cache_queue, list))
- 				if (!cq->reader) {
--					container_of(cq, struct cache_request, q)
--						->readers--;
-+					struct cache_request *cr =
-+						container_of(cq,
-+						struct cache_request, q);
-+					cr->readers--;
-+					if (cr->readers == 0 &&
-+					    !test_bit(CACHE_PENDING,
-+						      &cr->item->flags)) {
-+						list_del(&cr->q.list);
-+						rq = cr;
-+					}
- 					break;
- 				}
- 			rp->offset = 0;
-@@ -1052,9 +1063,14 @@ static int cache_release(struct inode *i
- 		list_del(&rp->q.list);
- 		spin_unlock(&queue_lock);
- 
-+		if (rq) {
-+			cache_put(rq->item, cd);
-+			kfree(rq->buf);
-+			kfree(rq);
-+		}
-+
- 		filp->private_data = NULL;
- 		kfree(rp);
--
+-		for (i = 1; i <= dev->online_queues; i++)
++		for (i = 1; i < dev->online_queues; i++)
+ 			nvme_dbbuf_free(&dev->queues[i]);
  	}
- 	if (filp->f_mode & FMODE_WRITE) {
- 		atomic_dec(&cd->writers);
+ }
+-- 
+2.51.0
+
 
 
 
