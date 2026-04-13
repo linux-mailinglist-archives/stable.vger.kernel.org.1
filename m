@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-236649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBy+F9Ug3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:01 +0200
+	id cCe1Eswk3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CE93F069A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979233F112C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C1DA30C86C8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EF6931358AA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785303093B2;
-	Mon, 13 Apr 2026 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647ED30BF68;
+	Mon, 13 Apr 2026 16:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Srqa/r3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAAzaeB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EC72DF12F;
-	Mon, 13 Apr 2026 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277CD1D5AD4;
+	Mon, 13 Apr 2026 16:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097448; cv=none; b=qHbP+ho7mdfEvrReuk6ZmhP0bmNvhdZ+c+/Y+epN3DXl4yUHOuUz4UZTxY28VSOB4X6RivQAvua+VPkJ3BCEW5A/+Ecwn+p/bpm37TAa8PbXztWOB3SnWyY4fupwom7YXDKr0mtn5qU9ZAHRSSHFubeLRpUP4tRRFZKC3yTcQgA=
+	t=1776098627; cv=none; b=E65z0k44sRMNGzYtyzji/G5avGp15uIwABugs8p3AnFetAiA2XzVFp6EWXGQxuhrZgT/KzecfMJOKLmWqBchyu3/wczt84YauEfHVZh5eGkuAgHDkWGM42aC8ZrwbjODN50afC1hpL5SRW1lz1r18g7YoDHUvgamMubirvc7ZeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097448; c=relaxed/simple;
-	bh=xa+dezLCvpu4tr9/ff9BIX4Cc19CT9T4/3Hb0FZ+Cww=;
+	s=arc-20240116; t=1776098627; c=relaxed/simple;
+	bh=q+vFSHHkMC7wCZWP3kQ/BcOndfjWZDP01SFipzYzNUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3Kz864jUNXnobHd02SCx+QHwHI34WJXqIyXsPmhTpeQq64meOFYdA6mR7HudIH9q0wSWJVKV7FvewbrgUXWnmToQtttR6AZ323BsWpTO+3dmrL5hanBMxNfr0tyxRJsfDIRHHSB8tT8+ae7VxXfUb74Rl/4LNKRWqHvSYKL6P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Srqa/r3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E95C2BCAF;
-	Mon, 13 Apr 2026 16:24:07 +0000 (UTC)
+	 MIME-Version; b=SVUkL+xlQLYqV8tLY6SdtWL2p2zuiPxY3HAPIXnokjgwdMtIe/V2Usxc9y5yftlJlvkssIdQ2sxSuFbFRTRKo9G6XrsAqRrtlnscQm33r89Z0KPeAumQ7MgK6GeISKjhbNbtroi6HwjbU8k7KgH01yeilV5jB0+QU6+63FccP40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAAzaeB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F90C2BCAF;
+	Mon, 13 Apr 2026 16:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097448;
-	bh=xa+dezLCvpu4tr9/ff9BIX4Cc19CT9T4/3Hb0FZ+Cww=;
+	s=korg; t=1776098627;
+	bh=q+vFSHHkMC7wCZWP3kQ/BcOndfjWZDP01SFipzYzNUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Srqa/r3v1bD8Qb13ZzR6eimrssLwGAqpmovRLZcEfuTE858QsX9SXXNqoRzsZZIm8
-	 zpcUpjgSrCg9KGjfwY1raZoobqYaHx+mTkILxbulYz6ekqHU1O+q/cz6SfR0LOVpCA
-	 ZSOPPO1fZ2UhuUySoSjIJ8CKzD/6hVF3YAM/v2LM=
+	b=qAAzaeB89nf5T9VyVcn9ITYlZcv0rqZ7InzvM+1+TmO4pnVMhp3CiKoz/vBUGxGW0
+	 KC7WFESwwZRuQkfuwE6lSXOa4e+4s2dnIvCNQfLKymGyS+DYCEVe5MF2P3Qzicvs+o
+	 ID2gwEpQaPKfBv844bh4X8nwIuJB7gjlzColjO1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.15 140/570] USB: usbcore: Introduce usb_bulk_msg_killable()
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Bastien Nocera <hadess@hadess.net>,
+	linux-input@vger.kernel.org,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 026/491] HID: Add HID_CLAIMED_INPUT guards in raw_event callbacks missing them
 Date: Mon, 13 Apr 2026 17:54:31 +0200
-Message-ID: <20260413155835.687402414@linuxfoundation.org>
+Message-ID: <20260413155820.032099415@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,193 +75,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237115-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236649-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,harvard.edu:email]
-X-Rspamd-Queue-Id: 80CE93F069A
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,hadess.net:email]
+X-Rspamd-Queue-Id: 979233F112C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 416909962e7cdf29fd01ac523c953f37708df93d upstream.
+commit ecfa6f34492c493a9a1dc2900f3edeb01c79946b upstream.
 
-The synchronous message API in usbcore (usb_control_msg(),
-usb_bulk_msg(), and so on) uses uninterruptible waits.  However,
-drivers may call these routines in the context of a user thread, which
-means it ought to be possible to at least kill them.
+In commit 2ff5baa9b527 ("HID: appleir: Fix potential NULL dereference at
+raw event handle"), we handle the fact that raw event callbacks
+can happen even for a HID device that has not been "claimed" causing a
+crash if a broken device were attempted to be connected to the system.
 
-For this reason, introduce a new usb_bulk_msg_killable() function
-which behaves the same as usb_bulk_msg() except for using
-wait_for_completion_killable_timeout() instead of
-wait_for_completion_timeout().  The same can be done later for
-usb_control_msg() later on, if it turns out to be needed.
+Fix up the remaining in-tree HID drivers that forgot to add this same
+check to resolve the same issue.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-CC: stable@vger.kernel.org
-Link: https://patch.msgid.link/248628b4-cc83-4e81-a620-3ce4e0376d41@rowland.harvard.edu
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Benjamin Tissoires <bentiss@kernel.org>
+Cc: Bastien Nocera <hadess@hadess.net>
+Cc: linux-input@vger.kernel.org
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/message.c |   79 +++++++++++++++++++++++++++++++++++++++------
- include/linux/usb.h        |    5 +-
- 2 files changed, 72 insertions(+), 12 deletions(-)
+ drivers/hid/hid-cmedia.c          |    2 +-
+ drivers/hid/hid-creative-sb0540.c |    2 +-
+ drivers/hid/hid-zydacron.c        |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -41,16 +41,17 @@ static void usb_api_blocking_completion(
- 
- 
- /*
-- * Starts urb and waits for completion or timeout. Note that this call
-- * is NOT interruptible. Many device driver i/o requests should be
-- * interruptible and therefore these drivers should implement their
-- * own interruptible routines.
-+ * Starts urb and waits for completion or timeout.
-+ * Whether or not the wait is killable depends on the flag passed in.
-+ * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
-  */
--static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length)
-+static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
-+		bool killable)
+--- a/drivers/hid/hid-cmedia.c
++++ b/drivers/hid/hid-cmedia.c
+@@ -57,7 +57,7 @@ static int cmhid_raw_event(struct hid_de
  {
- 	struct api_context ctx;
- 	unsigned long expire;
- 	int retval;
-+	long rc;
+ 	struct cmhid *cm = hid_get_drvdata(hid);
  
- 	init_completion(&ctx.done);
- 	urb->context = &ctx;
-@@ -60,12 +61,21 @@ static int usb_start_wait_urb(struct urb
+-	if (len != CM6533_JD_RAWEV_LEN)
++	if (len != CM6533_JD_RAWEV_LEN || !(hid->claimed & HID_CLAIMED_INPUT))
  		goto out;
+ 	if (memcmp(data+CM6533_JD_SFX_OFFSET, ji_sfx, sizeof(ji_sfx)))
+ 		goto out;
+--- a/drivers/hid/hid-creative-sb0540.c
++++ b/drivers/hid/hid-creative-sb0540.c
+@@ -153,7 +153,7 @@ static int creative_sb0540_raw_event(str
+ 	u64 code, main_code;
+ 	int key;
  
- 	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
--	if (!wait_for_completion_timeout(&ctx.done, expire)) {
-+	if (killable)
-+		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
-+	else
-+		rc = wait_for_completion_timeout(&ctx.done, expire);
-+	if (rc <= 0) {
- 		usb_kill_urb(urb);
--		retval = (ctx.status == -ENOENT ? -ETIMEDOUT : ctx.status);
-+		if (ctx.status != -ENOENT)
-+			retval = ctx.status;
-+		else if (rc == 0)
-+			retval = -ETIMEDOUT;
-+		else
-+			retval = rc;
+-	if (len != 6)
++	if (len != 6 || !(hid->claimed & HID_CLAIMED_INPUT))
+ 		return 0;
  
- 		dev_dbg(&urb->dev->dev,
--			"%s timed out on ep%d%s len=%u/%u\n",
-+			"%s timed out or killed on ep%d%s len=%u/%u\n",
- 			current->comm,
- 			usb_endpoint_num(&urb->ep->desc),
- 			usb_urb_dir_in(urb) ? "in" : "out",
-@@ -99,7 +109,7 @@ static int usb_internal_control_msg(stru
- 	usb_fill_control_urb(urb, usb_dev, pipe, (unsigned char *)cmd, data,
- 			     len, usb_api_blocking_completion, NULL);
+ 	/* From daemons/hw_hiddev.c sb0540_rec() in lirc */
+--- a/drivers/hid/hid-zydacron.c
++++ b/drivers/hid/hid-zydacron.c
+@@ -114,7 +114,7 @@ static int zc_raw_event(struct hid_devic
+ 	unsigned key;
+ 	unsigned short index;
  
--	retv = usb_start_wait_urb(urb, timeout, &length);
-+	retv = usb_start_wait_urb(urb, timeout, &length, false);
- 	if (retv < 0)
- 		return retv;
- 	else
-@@ -384,10 +394,59 @@ int usb_bulk_msg(struct usb_device *usb_
- 		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
- 				usb_api_blocking_completion, NULL);
+-	if (report->id == data[0]) {
++	if (report->id == data[0] && (hdev->claimed & HID_CLAIMED_INPUT)) {
  
--	return usb_start_wait_urb(urb, timeout, actual_length);
-+	return usb_start_wait_urb(urb, timeout, actual_length, false);
- }
- EXPORT_SYMBOL_GPL(usb_bulk_msg);
- 
-+/**
-+ * usb_bulk_msg_killable - Builds a bulk urb, sends it off and waits for completion in a killable state
-+ * @usb_dev: pointer to the usb device to send the message to
-+ * @pipe: endpoint "pipe" to send the message to
-+ * @data: pointer to the data to send
-+ * @len: length in bytes of the data to send
-+ * @actual_length: pointer to a location to put the actual length transferred
-+ *	in bytes
-+ * @timeout: time in msecs to wait for the message to complete before
-+ *	timing out (if 0 the wait is forever)
-+ *
-+ * Context: task context, might sleep.
-+ *
-+ * This function is just like usb_blk_msg() except that it waits in a
-+ * killable state.
-+ *
-+ * Return:
-+ * If successful, 0. Otherwise a negative error number. The number of actual
-+ * bytes transferred will be stored in the @actual_length parameter.
-+ *
-+ */
-+int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
-+		 void *data, int len, int *actual_length, int timeout)
-+{
-+	struct urb *urb;
-+	struct usb_host_endpoint *ep;
-+
-+	ep = usb_pipe_endpoint(usb_dev, pipe);
-+	if (!ep || len < 0)
-+		return -EINVAL;
-+
-+	urb = usb_alloc_urb(0, GFP_KERNEL);
-+	if (!urb)
-+		return -ENOMEM;
-+
-+	if ((ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
-+			USB_ENDPOINT_XFER_INT) {
-+		pipe = (pipe & ~(3 << 30)) | (PIPE_INTERRUPT << 30);
-+		usb_fill_int_urb(urb, usb_dev, pipe, data, len,
-+				usb_api_blocking_completion, NULL,
-+				ep->desc.bInterval);
-+	} else
-+		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
-+				usb_api_blocking_completion, NULL);
-+
-+	return usb_start_wait_urb(urb, timeout, actual_length, true);
-+}
-+EXPORT_SYMBOL_GPL(usb_bulk_msg_killable);
-+
- /*-------------------------------------------------------------------*/
- 
- static void sg_clean(struct usb_sg_request *io)
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -1811,8 +1811,9 @@ extern int usb_control_msg(struct usb_de
- extern int usb_interrupt_msg(struct usb_device *usb_dev, unsigned int pipe,
- 	void *data, int len, int *actual_length, int timeout);
- extern int usb_bulk_msg(struct usb_device *usb_dev, unsigned int pipe,
--	void *data, int len, int *actual_length,
--	int timeout);
-+	void *data, int len, int *actual_length, int timeout);
-+extern int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
-+	void *data, int len, int *actual_length, int timeout);
- 
- /* wrappers around usb_control_msg() for the most common standard requests */
- int usb_control_msg_send(struct usb_device *dev, __u8 endpoint, __u8 request,
+ 		/* break keys */
+ 		for (index = 0; index < 4; index++) {
 
 
 
