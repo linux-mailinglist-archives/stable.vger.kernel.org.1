@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-237127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CH0Fdod3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-237127-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:18 +0200
+	id yDoaM0Qe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1339F3EFBE8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:46:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F3A3EFD68
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AC72A3058327
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37D1A3256B3B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3912D8364;
-	Mon, 13 Apr 2026 16:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFF830BB9B;
+	Mon, 13 Apr 2026 16:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTOEu/4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsm/7eAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A1B30EF68;
-	Mon, 13 Apr 2026 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4A3302146;
+	Mon, 13 Apr 2026 16:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098658; cv=none; b=cnOrZZDTKEmeeXT2AZ0QRht/fBCDIrBHhGavI9+BvtHWPFOGVUtnzYOLGxpB9jwQ2bioR1B2Wl11P5q60gfrnzikbu9jvbzhn84dhIihCJq/sdW7mRyxkpd/QlIqdE/ZDFhXZl0JQ3FNoW6E/0ctRTHxMTk8ai2wy6Ce/SxjvPQ=
+	t=1776097417; cv=none; b=Dh6gUjG8rMrbjGTKQrLV+t1HcVbwCN44h842Kp7eus4HA0WBrjlZuULp/F3X0ZfcVyX2lPL0Orv9EHv+0EzfXF1N8vUztKoHOSKfrUsIEV+x0WZ06s1RMK0f96jtL/ThvFx5S9ToxYZz37vkyfB+e2BYIOEhoz80KLm5bVyF5VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098658; c=relaxed/simple;
-	bh=0vohfmxsfEgV7u3x2dGa8OHRGEeFgH3SNWbDzwJ58HQ=;
+	s=arc-20240116; t=1776097417; c=relaxed/simple;
+	bh=bRv7uQzSZLd6lg8nwJYX4/gbtRj0RRSXDFcrl7xa0mE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jc3o3W4n4mpYK1oZW67cWTMLT6WTZv3iJeteKvUW1QHcur6V/+OmIl/5lmjutzFx29HFiWp5doY9jmrL8Cw32Do6SHk19d2ecHM05OxL0X/0TgspLMh8FHT9V7QNUXNKjQMyEj9DXKR3NRlgERN+VoBw87Cxn0cPkFsEzgVtqGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTOEu/4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79413C2BCAF;
-	Mon, 13 Apr 2026 16:44:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FtMYq5y6d433e9liyiMY/0+8PvJn99Rr77y66GEzJSh78aCRawSCnPntnujRCfNaHeIBhqS10xKja4tjhNRGa7esa1UhJ5eiKT95rHpFrshJuwhEHCdL73bC8g1veejawVZnWLn3aPK4DDrl483Y6N9DS29o1P4j9z29idM4srY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsm/7eAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5212C2BCB0;
+	Mon, 13 Apr 2026 16:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098657;
-	bh=0vohfmxsfEgV7u3x2dGa8OHRGEeFgH3SNWbDzwJ58HQ=;
+	s=korg; t=1776097417;
+	bh=bRv7uQzSZLd6lg8nwJYX4/gbtRj0RRSXDFcrl7xa0mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VTOEu/4yMUX0mLKNDWgVT0rpNFxBwVmyWWZY42+2C8gWWp9fbFZDxPAA5Ijt7R8Va
-	 zdtXp/e1wQ/DTb1NyoB2+rY5YH0vowZhm0zYt0Zugk7aCttK1x1lo/vkcd6Bhotjk6
-	 p+py74rSRIWf8f6PRDCC9xU2IgmcNO3pknFfbTcg=
+	b=hsm/7eAO5RFJdGtdZ03kq1JlOO97ezR9iO8ZvWpF5BZWnykRpcjZ2xFuEBYU9KLRy
+	 2fxgXwp2Fq/lV3HlcgM6QNVtEyXooSebvlfeQ5Suwjoqr8VHi5HBBfxIK/PlPlSTtC
+	 Ij8//6kbuIYolgHijVJ40S8nJONdCXHybKanhRD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Qing <wangqing@vivo.com>,
-	Tony Lindgren <tony@atomide.com>,
+	Chao Shi <cshi008@fiu.edu>,
+	Weidong Zhu <weizhu@fiu.edu>,
+	Dave Tian <daveti@purdue.edu>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/491] ARM: OMAP2+: add missing of_node_put before break and return
+Subject: [PATCH 5.15 121/570] nvme-pci: Fix slab-out-of-bounds in nvme_dbbuf_set
 Date: Mon, 13 Apr 2026 17:54:12 +0200
-Message-ID: <20260413155819.326022555@linuxfoundation.org>
+Message-ID: <20260413155834.976293585@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +66,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-236636-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237127-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,vivo.com:email,atomide.com:email]
-X-Rspamd-Queue-Id: 1339F3EFBE8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,purdue.edu:email,sung-woo.kim:email]
+X-Rspamd-Queue-Id: 46F3A3EFD68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Qing <wangqing@vivo.com>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-[ Upstream commit 883f464c1d23663047eda4f2bcf622365e2d0dd0 ]
+[ Upstream commit b4e78f1427c7d6859229ae9616df54e1fc05a516 ]
 
-Fix following coccicheck warning:
-WARNING: Function "for_each_matching_node_and_match"
-should have of_node_put() before return.
+dev->online_queues is a count incremented in nvme_init_queue. Thus,
+valid indices are 0 through dev->online_queues − 1.
 
-Early exits from for_each_matching_node_and_match should decrement the
-node reference counter.
+This patch fixes the loop condition to ensure the index stays within the
+valid range. Index 0 is excluded because it is the admin queue.
 
-Signed-off-by: Wang Qing <wangqing@vivo.com>
-Message-Id: <1639388545-63615-1-git-send-email-wangqing@vivo.com>
-[tony@atomide.com: updated for omap_hwmod.c that was already patched]
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Stable-dep-of: 93a04ab480c8 ("ARM: omap2: Fix reference count leaks in omap_control_init()")
+KASAN splat:
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
+BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
+Read of size 2 at addr ffff88800592a574 by task kworker/u8:5/74
+
+CPU: 0 UID: 0 PID: 74 Comm: kworker/u8:5 Not tainted 6.19.0-dirty #10 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+Workqueue: nvme-reset-wq nvme_reset_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xea/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xce/0x5d0 mm/kasan/report.c:482
+ kasan_report+0xdc/0x110 mm/kasan/report.c:595
+ __asan_report_load2_noabort+0x18/0x20 mm/kasan/report_generic.c:379
+ nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
+ nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
+ nvme_reset_work+0x36b/0x8c0 drivers/nvme/host/pci.c:3252
+ process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
+ kthread+0x41a/0x930 kernel/kthread.c:463
+ ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+
+Allocated by task 34 on cpu 1 at 4.241550s:
+ kasan_save_stack+0x2c/0x60 mm/kasan/common.c:57
+ kasan_save_track+0x1c/0x70 mm/kasan/common.c:78
+ kasan_save_alloc_info+0x3c/0x50 mm/kasan/generic.c:570
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0xb5/0xc0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __do_kmalloc_node mm/slub.c:5657 [inline]
+ __kmalloc_node_noprof+0x2bf/0x8d0 mm/slub.c:5663
+ kmalloc_array_node_noprof include/linux/slab.h:1075 [inline]
+ nvme_pci_alloc_dev drivers/nvme/host/pci.c:3479 [inline]
+ nvme_probe+0x2f1/0x1820 drivers/nvme/host/pci.c:3534
+ local_pci_probe+0xef/0x1c0 drivers/pci/pci-driver.c:324
+ pci_call_probe drivers/pci/pci-driver.c:392 [inline]
+ __pci_device_probe drivers/pci/pci-driver.c:417 [inline]
+ pci_device_probe+0x743/0x920 drivers/pci/pci-driver.c:451
+ call_driver_probe drivers/base/dd.c:583 [inline]
+ really_probe+0x29b/0xb70 drivers/base/dd.c:661
+ __driver_probe_device+0x3b0/0x4a0 drivers/base/dd.c:803
+ driver_probe_device+0x56/0x1f0 drivers/base/dd.c:833
+ __driver_attach_async_helper+0x155/0x340 drivers/base/dd.c:1159
+ async_run_entry_fn+0xa6/0x4b0 kernel/async.c:129
+ process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
+ kthread+0x41a/0x930 kernel/kthread.c:463
+ ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+The buggy address belongs to the object at ffff88800592a000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 244 bytes to the right of
+ allocated 1152-byte region [ffff88800592a000, ffff88800592a480)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x5928
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0xfffffc0000040(head|node=0|zone=1|lastcpupid=0x1fffff)
+page_type: f5(slab)
+raw: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
+raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
+head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 000fffffc0000003 ffffea0000164a01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff88800592a400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff88800592a480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff88800592a500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                                                             ^
+ ffff88800592a580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88800592a600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+Fixes: 0f0d2c876c96 (nvme: free sq/cq dbbuf pointers when dbbuf set fails)
+Acked-by: Chao Shi <cshi008@fiu.edu>
+Acked-by: Weidong Zhu <weizhu@fiu.edu>
+Acked-by: Dave Tian <daveti@purdue.edu>
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/cm_common.c  |  8 ++++++--
- arch/arm/mach-omap2/control.c    | 19 ++++++++++++++-----
- arch/arm/mach-omap2/prm_common.c |  8 ++++++--
- 3 files changed, 26 insertions(+), 9 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap2/cm_common.c b/arch/arm/mach-omap2/cm_common.c
-index b7ea609386d52..d86a36120738d 100644
---- a/arch/arm/mach-omap2/cm_common.c
-+++ b/arch/arm/mach-omap2/cm_common.c
-@@ -333,8 +333,10 @@ int __init omap2_cm_base_init(void)
- 		data = (struct omap_prcm_init_data *)match->data;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 0a2207a1be6a6..04cccbb05372a 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -321,7 +321,7 @@ static void nvme_dbbuf_set(struct nvme_dev *dev)
+ 		/* Free memory and continue on */
+ 		nvme_dbbuf_dma_free(dev);
  
- 		ret = of_address_to_resource(np, 0, &res);
--		if (ret)
-+		if (ret) {
-+			of_node_put(np);
- 			return ret;
-+		}
- 
- 		if (data->index == TI_CLKM_CM)
- 			mem = &cm_base;
-@@ -380,8 +382,10 @@ int __init omap_cm_init(void)
- 			continue;
- 
- 		ret = omap2_clk_provider_init(np, data->index, NULL, data->mem);
--		if (ret)
-+		if (ret) {
-+			of_node_put(np);
- 			return ret;
-+		}
+-		for (i = 1; i <= dev->online_queues; i++)
++		for (i = 1; i < dev->online_queues; i++)
+ 			nvme_dbbuf_free(&dev->queues[i]);
  	}
- 
- 	return 0;
-diff --git a/arch/arm/mach-omap2/control.c b/arch/arm/mach-omap2/control.c
-index 73338cf80d76c..9bc69caf338f1 100644
---- a/arch/arm/mach-omap2/control.c
-+++ b/arch/arm/mach-omap2/control.c
-@@ -774,8 +774,10 @@ int __init omap2_control_base_init(void)
- 		data = (struct control_init_data *)match->data;
- 
- 		mem = of_iomap(np, 0);
--		if (!mem)
-+		if (!mem) {
-+			of_node_put(np);
- 			return -ENOMEM;
-+		}
- 
- 		if (data->index == TI_CLKM_CTRL) {
- 			omap2_ctrl_base = mem;
-@@ -815,22 +817,24 @@ int __init omap_control_init(void)
- 		if (scm_conf) {
- 			syscon = syscon_node_to_regmap(scm_conf);
- 
--			if (IS_ERR(syscon))
--				return PTR_ERR(syscon);
-+			if (IS_ERR(syscon)) {
-+				ret = PTR_ERR(syscon);
-+				goto of_node_put;
-+			}
- 
- 			if (of_get_child_by_name(scm_conf, "clocks")) {
- 				ret = omap2_clk_provider_init(scm_conf,
- 							      data->index,
- 							      syscon, NULL);
- 				if (ret)
--					return ret;
-+					goto of_node_put;
- 			}
- 		} else {
- 			/* No scm_conf found, direct access */
- 			ret = omap2_clk_provider_init(np, data->index, NULL,
- 						      data->mem);
- 			if (ret)
--				return ret;
-+				goto of_node_put;
- 		}
- 	}
- 
-@@ -841,6 +845,11 @@ int __init omap_control_init(void)
- 	}
- 
- 	return 0;
-+
-+of_node_put:
-+	of_node_put(np);
-+	return ret;
-+
  }
- 
- /**
-diff --git a/arch/arm/mach-omap2/prm_common.c b/arch/arm/mach-omap2/prm_common.c
-index 65b2d82efa27b..fb2d48cfe756b 100644
---- a/arch/arm/mach-omap2/prm_common.c
-+++ b/arch/arm/mach-omap2/prm_common.c
-@@ -752,8 +752,10 @@ int __init omap2_prm_base_init(void)
- 		data = (struct omap_prcm_init_data *)match->data;
- 
- 		ret = of_address_to_resource(np, 0, &res);
--		if (ret)
-+		if (ret) {
-+			of_node_put(np);
- 			return ret;
-+		}
- 
- 		data->mem = ioremap(res.start, resource_size(&res));
- 
-@@ -799,8 +801,10 @@ int __init omap_prcm_init(void)
- 		data = match->data;
- 
- 		ret = omap2_clk_provider_init(np, data->index, NULL, data->mem);
--		if (ret)
-+		if (ret) {
-+			of_node_put(np);
- 			return ret;
-+		}
- 	}
- 
- 	omap_cm_init();
 -- 
 2.51.0
 
