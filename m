@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Gr3HVwe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236942-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:28 +0200
+	id EEvcBKsi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8570B3EFDA2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C2B3F0C36
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 813763069A60
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0B0D930F332D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC4A30BF4E;
-	Mon, 13 Apr 2026 16:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C3E3314DE;
+	Mon, 13 Apr 2026 16:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTZyT66d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKDNkprj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1856626CE32;
-	Mon, 13 Apr 2026 16:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F33330D4C;
+	Mon, 13 Apr 2026 16:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098187; cv=none; b=tFKWmXLvR+TnH87R8P+wAhCIlhDRhyv2M9yOnD6EIafozwdTCCLowe0lskkBLgCDZwSi8hozEDcAbapChjlQjOsfudWemouw7Hpd87dp7dGDDHBuw7RJBS/I5vt2/ux+QXRgBHD5fV+Ph4MzvgXEbZ82rUDyAsRlE8AtNCJCTcU=
+	t=1776099478; cv=none; b=JCwiGiI/JQWE4YnZdp71NcqtR6wFFujdSo6BU8QDZwS+Z4cld7u2RNr/bVMMLw+pCqcfkagReSZMgydSkSbyQImVIN4K146Pjb6t5DAHrJ7ZRSb07+vkj78pwkmq+xbB3jGd+LQ4W31hYlb4esuwnuBS2rha14Nyeg8zRsdxOZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098187; c=relaxed/simple;
-	bh=EQLWq0BK/XDHvpUQzASXMdw0Ij/FQe/guOOOE7ccsew=;
+	s=arc-20240116; t=1776099478; c=relaxed/simple;
+	bh=VqZvVzQz/7OvGjXg420arLP9ocE4tTjox06+3Fi49Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etBocVdcYN/f+VpDp0VAaZtLe+isOE5dwvtBvXp78Y0ngQLnw0o0HBv9w8E/fhy02E+dOykxH35Un36jBpiUGj5aT2kSNqmcN4NJDmvPd4l08MLfr5JRAxacgyeN3b/+GX1kXlHOeQVtUULqJSuATwrtTRqVc9sdZsENgNinmxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTZyT66d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29CAC2BCAF;
-	Mon, 13 Apr 2026 16:36:26 +0000 (UTC)
+	 MIME-Version; b=DRvn0sW4OCEAULdcwJLJ4tHnX6BtKr3h6p1sm57v9Ly0YH7dg9jYP5kuhFlbPhqhnp3SKJgAxnyVzdOavPVHdztq3OEbJpVvKnPsTNsYUQqIUPJmpw7fFnBh9UHgfehgm62a/Z/bXkOHEW+ZVAi5oJTeGbvFDx70Pyb4laoYnNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKDNkprj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26A0C2BCAF;
+	Mon, 13 Apr 2026 16:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098187;
-	bh=EQLWq0BK/XDHvpUQzASXMdw0Ij/FQe/guOOOE7ccsew=;
+	s=korg; t=1776099478;
+	bh=VqZvVzQz/7OvGjXg420arLP9ocE4tTjox06+3Fi49Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JTZyT66d6pNrr0Og2KS3YlzbJinfyinOt6R3cpMzclKAPFqam9VSkXgRWb1CU63Ua
-	 p3koZIcKE84byj7tClUYfYUxBut38zPP95f6nN0UMYH1CaDElHn2UwUv9umLRa6E2l
-	 pCa9w1DzzmuuC2Za/QGkO+r21ujmnBc8iwsaFPX4=
+	b=UKDNkprjGiuy+fmmPBqtkM54xWSn09MXxNV63nENU6BwaacOylTxnje2YVxIDlZUE
+	 E7AwVVDw6KV4eorM8zY/gHeZ7JByiUn0YIr10BujjocGjcgYYia2qqLTlUJfhJpcrH
+	 P8HULsAwiv4S+7u+I3ULZtAyLTY+ts/vqtjmcHxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 427/570] Bluetooth: MGMT: validate LTK enc_size on load
+Subject: [PATCH 5.10 313/491] btrfs: fix lost error when running device stats on multiple devices fs
 Date: Mon, 13 Apr 2026 17:59:18 +0200
-Message-ID: <20260413155846.468089525@linuxfoundation.org>
+Message-ID: <20260413155830.757978214@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +66,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236942-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237446-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 8570B3EFDA2
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 86C2B3F0C36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit b8dbe9648d69059cfe3a28917bfbf7e61efd7f15 ]
+[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
 
-Load Long Term Keys stores the user-provided enc_size and later uses
-it to size fixed-size stack operations when replying to LE LTK
-requests. An enc_size larger than the 16-byte key buffer can therefore
-overflow the reply stack buffer.
+Whenever we get an error updating the device stats item for a device in
+btrfs_run_dev_stats() we allow the loop to go to the next device, and if
+updating the stats item for the next device succeeds, we end up losing
+the error we had from the previous device.
 
-Reject oversized enc_size values while validating the management LTK
-record so invalid keys never reach the stored key state.
+Fix this by breaking out of the loop once we get an error and make sure
+it's returned to the caller. Since we are in the transaction commit path
+(and in the critical section actually), returning the error will result
+in a transaction abort.
 
-Fixes: 346af67b8d11 ("Bluetooth: Add MGMT handlers for dealing with SMP LTK's")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/volumes.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 1d04fb42f13f2..09232c424446b 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -6214,6 +6214,9 @@ static bool ltk_is_valid(struct mgmt_ltk_info *key)
- 	if (key->initiator != 0x00 && key->initiator != 0x01)
- 		return false;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 2bba6e8d43740..da77493f4c17d 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -7553,8 +7553,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
+ 		smp_rmb();
  
-+	if (key->enc_size > sizeof(key->val))
-+		return false;
-+
- 	switch (key->addr.type) {
- 	case BDADDR_LE_PUBLIC:
- 		return true;
+ 		ret = update_dev_stat_item(trans, device);
+-		if (!ret)
+-			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
++		if (ret)
++			break;
++		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
+ 
 -- 
 2.53.0
 
