@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-236380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB68J80b3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:33 +0200
+	id jLYBMSIl3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BC33EF675
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A6A3F11AF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5F6130868B0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4038430494AC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7372773DE;
-	Mon, 13 Apr 2026 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4114F330D4C;
+	Mon, 13 Apr 2026 16:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSsjN99H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihO7oHrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D25826F293;
-	Mon, 13 Apr 2026 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0525E31F9BC;
+	Mon, 13 Apr 2026 16:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096756; cv=none; b=IfRtk1JoVQxHD+BRNQ3loXudxDgAR95BEHXpCuE+F63sJiyl7Y4Lb1RJS9U6kiI60fyggXDVEH12nGmKNT6Kj+sWXJ8bjFaDfdreuXifBS75r9TUZmw5ASuf0bF0ezqkZcXjfKN9WsSAQN5qMakcHV6A68FnOz1idj333p8EhtE=
+	t=1776099512; cv=none; b=GIFo3zU3MMRYld5zNXRDnxcyuAZTmp3ER3tiuRB/643A8KisTlUvTMuhaZNHpvMwHb0V8Nt4ABe8zNLjzCO4ynZ0Abi7TUm1FFTRIlk1ecI2eNmj2LSKt8+Xp24BSHyry4ZtTm4UKtQqD798wnWHVucbiN+ih9gJdqvzvBMuTP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096756; c=relaxed/simple;
-	bh=EkRlO0bex6DW/78ravCFS1t+Cf95Tw3aALPoH9RlMPQ=;
+	s=arc-20240116; t=1776099512; c=relaxed/simple;
+	bh=KmDOoKklymDAZpCX6zomQ3eEthJhZlxnhUGJGPsN+CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xr2ZVO2KA/+WcWBndMAXkdVzRrPym5iRz1Mf8c4j3xkFbWio1npVjYKWDPGOvkujLbrWsP5Wvjf0iH7fWZvBCGxQ0nfr9Q+20beRE/czqQERh1DLbmgduAqtQd8N40nxbkxq6N4lxxiR46kn1r06u3gAC7sFu9qsTH8pRrHSF/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSsjN99H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FBAC2BCAF;
-	Mon, 13 Apr 2026 16:12:36 +0000 (UTC)
+	 MIME-Version; b=fW2atVfSyR9mJPtC5F5kzWnnBP/kHMZb2Ru4EsWxr32MbhZ4gt3g1L2yypeHerGx0Dt+Di0qaKEsevSpWxajzb14Ue1ZCrITSHkO4ab5ioRPQDZK4sU755bgEdnSBD8Lq/gaph/tu6RMG2U34V1nn7jsQOvhKJV9f6qh+fxlTLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihO7oHrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7F1C2BCB3;
+	Mon, 13 Apr 2026 16:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096756;
-	bh=EkRlO0bex6DW/78ravCFS1t+Cf95Tw3aALPoH9RlMPQ=;
+	s=korg; t=1776099511;
+	bh=KmDOoKklymDAZpCX6zomQ3eEthJhZlxnhUGJGPsN+CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSsjN99HqCeTA815ritC5naXTpIuXlVQTpKdf3U37rQoDJhR1WxpP1R9EIgb7oGOo
-	 9LAQbpVGVf0PlzYV3Iw9m/RzaYhkgjPgLkmurLDqYtsBOBCLti0CHA72W6KkCic1ek
-	 P4cEDo/v9gyDycA7ooDy1WbxYMNxc4An3XLpSV2A=
+	b=ihO7oHrNTyZhoYD3OWITDsglexnHXs8Uuc1e/HTp/mJ5WsadIeZ9QBFtt+6GQ9uMJ
+	 33j4IL7zvEaJnW6CXBgqW+7yWJBAf8cudR7OUwGEWr2MRXhLkatIDv04u97j/0STU5
+	 5gtgCurQrUgb4KepmiNaRzmJtRYiIc61gFbSr588=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Daniel Vacek <neelx@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 18/70] btrfs: remove unused flag EXTENT_BUFFER_CORRUPT
+	Takashi Iwai <tiwai@suse.de>,
+	Karsten Hohmeier <linux@hohmatik.de>
+Subject: [PATCH 5.10 368/491] ALSA: ctxfi: Fix missing SPDIFI1 index handling
 Date: Mon, 13 Apr 2026 18:00:13 +0200
-Message-ID: <20260413155728.866573478@linuxfoundation.org>
+Message-ID: <20260413155832.811242619@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +67,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236380-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237459-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: E3BC33EF675
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hohmatik.de:email]
+X-Rspamd-Queue-Id: C7A6A3F11AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vacek <neelx@suse.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c61660ec341e65650e58c92d0af71184aa216ff0 ]
+commit b045ab3dff97edae6d538eeff900a34c098761f8 upstream.
 
-This flag is no longer being used.  It was added by commit a826d6dcb32d
-("Btrfs: check items for correctness as we search") but it's no longer
-being used after commit f26c92386028 ("btrfs: remove reada
-infrastructure").
+SPDIF1 DAIO type isn't properly handled in daio_device_index() for
+hw20k2, and it returned -EINVAL, which ended up with the out-of-bounds
+array access.  Follow the hw20k1 pattern and return the proper index
+for this type, too.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 316fb1b3169e ("btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Karsten Hohmeier <linux@hohmatik.de>
+Closes: https://lore.kernel.org/20260315155004.15633-1-linux@hohmatik.de
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260329091240.420194-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c     | 11 ++---------
- fs/btrfs/extent-tree.c |  6 ------
- fs/btrfs/extent_io.h   |  1 -
- 3 files changed, 2 insertions(+), 16 deletions(-)
+ sound/pci/ctxfi/ctdaio.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 5de12f3a679df..2dab2ce94cc40 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -225,7 +225,6 @@ int btrfs_read_extent_buffer(struct extent_buffer *eb,
- 	ASSERT(check);
- 
- 	while (1) {
--		clear_bit(EXTENT_BUFFER_CORRUPT, &eb->bflags);
- 		ret = read_extent_buffer_pages(eb, mirror_num, check);
- 		if (!ret)
- 			break;
-@@ -454,15 +453,9 @@ int btrfs_validate_extent_buffer(struct extent_buffer *eb,
- 			goto out;
- 	}
- 
--	/*
--	 * If this is a leaf block and it is corrupt, set the corrupt bit so
--	 * that we don't try and read the other copies of this block, just
--	 * return -EIO.
--	 */
--	if (found_level == 0 && btrfs_check_leaf(eb)) {
--		set_bit(EXTENT_BUFFER_CORRUPT, &eb->bflags);
-+	/* If this is a leaf block and it is corrupt, just return -EIO. */
-+	if (found_level == 0 && btrfs_check_leaf(eb))
- 		ret = -EIO;
--	}
- 
- 	if (found_level > 0 && btrfs_check_node(eb))
- 		ret = -EIO;
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index c052c8df05fb4..568fe9f702b74 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -3517,12 +3517,6 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
- 	trace_btrfs_reserved_extent_free(fs_info, buf->start, buf->len);
- 
- out:
--
--	/*
--	 * Deleting the buffer, clear the corrupt flag since it doesn't
--	 * matter anymore.
--	 */
--	clear_bit(EXTENT_BUFFER_CORRUPT, &buf->bflags);
- 	return 0;
- }
- 
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index 4126fe7f3f10e..0eedfd7c4b6ec 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -38,7 +38,6 @@ struct btrfs_tree_parent_check;
- enum {
- 	EXTENT_BUFFER_UPTODATE,
- 	EXTENT_BUFFER_DIRTY,
--	EXTENT_BUFFER_CORRUPT,
- 	EXTENT_BUFFER_TREE_REF,
- 	EXTENT_BUFFER_STALE,
- 	EXTENT_BUFFER_WRITEBACK,
--- 
-2.53.0
-
+--- a/sound/pci/ctxfi/ctdaio.c
++++ b/sound/pci/ctxfi/ctdaio.c
+@@ -119,6 +119,7 @@ static unsigned int daio_device_index(en
+ 		switch (type) {
+ 		case SPDIFOO:	return 0;
+ 		case SPDIFIO:	return 0;
++		case SPDIFI1:	return 1;
+ 		case LINEO1:	return 4;
+ 		case LINEO2:	return 7;
+ 		case LINEO3:	return 5;
 
 
 
