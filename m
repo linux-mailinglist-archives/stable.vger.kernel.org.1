@@ -1,65 +1,69 @@
-Return-Path: <stable+bounces-236356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDIBOsYY3Wn3ZwkAu9opvQ
-	(envelope-from <stable+bounces-236356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:38 +0200
+	id aJptHOkW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F3E3EED70
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0363EE8AF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AA8DD30A5A8A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A7D7308D24E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D28282F27;
-	Mon, 13 Apr 2026 16:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0589B283FD9;
+	Mon, 13 Apr 2026 16:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aC8A/tcS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSrB0du7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3482874F8;
-	Mon, 13 Apr 2026 16:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8932737FC;
+	Mon, 13 Apr 2026 16:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096694; cv=none; b=uKkQ/WJJsZzWEIe89h/CX2M+1PFDW9Q7PAr7klCwQnNg/MWyv7o3amI9TixQwlSlq/la0bbZzY8FJsp74Ku43KsC1U4bcJ8v442ZZQidU0EOwniV0yH0jjOABoOIAN+heY2MZpCCaLz0mzhG4H5iQYKLsGfgbcIcO4g8MBJZh7Q=
+	t=1776096377; cv=none; b=Una3niDLXFSQHc7z8ejfK7wSEyXAz803GOTmYWn2YlnssJ5gGRMb8alIUfFOg+0YYxVYFDyD4EHpsYY9s7O/DRtsdZaM+VfgNJ+nlFE71MQqtl+9IGxXUM1oDPG8Oh8iAOXdUIT7L4O7nRRYJAc7uikJFaNLY5C0tvprLilyois=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096694; c=relaxed/simple;
-	bh=n0E1ain8IkoprFXpzmV3VTweofGR1fZh0PfQyh1mADE=;
+	s=arc-20240116; t=1776096377; c=relaxed/simple;
+	bh=puRwMATFaWcKOenuR8ACLpOSlLOkP+VFlAeesQ7TkTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ao3ZXFQdM2Y2CoN/6usLAg2Y564TTkL08zP/L/6rNWp6dNGwX5S9J9R34hHz5bvN7y1tnJfgu8QOcUCfpWnXQFUO9eqOV95mcBK1yXa7AtUiEYwS3gwvc59qoJ4f8G3cFZAeX1uMI9wFFs8dwV4n5IJb1sRCKwpUMPjzx+9H7WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aC8A/tcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540FAC2BCAF;
-	Mon, 13 Apr 2026 16:11:34 +0000 (UTC)
+	 MIME-Version; b=WQDnl4g1QSjZ3VrBljxId6Bbw7b//g0lUehFNaPCnO/scogjlK+5J95xa1K0m13mr2V8OKRjLZrLt3w/Wzbn09e685kQqTJcyNE6VSEsDiV4VkJ11Wtn49giH8fuzHFpfHnvAuAKdVj6t5PLRC3Yp6fM1RmgguLRlhuuRjhY0Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSrB0du7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2617AC2BCAF;
+	Mon, 13 Apr 2026 16:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096694;
-	bh=n0E1ain8IkoprFXpzmV3VTweofGR1fZh0PfQyh1mADE=;
+	s=korg; t=1776096377;
+	bh=puRwMATFaWcKOenuR8ACLpOSlLOkP+VFlAeesQ7TkTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aC8A/tcSshqrbn3xI4yXrJMAUc0HtPDX0/w+KKisgodnrfzz8GhjCbsNJIvwtTiFH
-	 MjHIIsK1iqeaNqZhAGK4cRip1XPBTAqWKqhhRGkXO82FegY3DxBamIySMoj4FyXQaX
-	 rQ7xj48HWMOUzOBOj5elljDU52NOTF0de/klJu6k=
+	b=FSrB0du7ptN+pPXFvRWFs4s4reGIRKvPd2enOc4lmoe5bqkYS4PXVB++V26RlP976
+	 nzXFTKRc5KL0a9Y2abmeOXQcXdLic1HXDAIDryddXHPY1S8uvZC1J/zmaYnph7zmDZ
+	 Q+SZMS6iXZlVY5b760eHbPuMUUbxBaKcXrgduxvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+87f770387a9e5dc6b79b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Leon Chen <leonchen.oss@139.com>
-Subject: [PATCH 6.12 27/70] net: annotate data-races around sk->sk_{data_ready,write_space}
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Yuqi Xu <xuyuqiabc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 75/86] rxrpc: reject undecryptable rxkad response tickets
 Date: Mon, 13 Apr 2026 18:00:22 +0200
-Message-ID: <20260413155729.202479357@linuxfoundation.org>
+Message-ID: <20260413155734.342592560@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,281 +74,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-236356-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,iogearbox.net,gmail.com,cloudflare.com,kernel.org,139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236230-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.984];
-	TAGGED_RCPT(0.00)[stable,87f770387a9e5dc6b79b];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,139.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,iogearbox.net:email]
-X-Rspamd-Queue-Id: F0F3E3EED70
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lzu.edu.cn:email,infradead.org:email]
+X-Rspamd-Queue-Id: CD0363EE8AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-[ Upstream commit 2ef2b20cf4e04ac8a6ba68493f8780776ff84300 ]
+commit fe4447cd95623b1cfacc15f280aab73a6d7340b2 upstream.
 
-skmsg (and probably other layers) are changing these pointers
-while other cpus might read them concurrently.
+rxkad_decrypt_ticket() decrypts the RXKAD response ticket and then
+parses the buffer as plaintext without checking whether
+crypto_skcipher_decrypt() succeeded.
 
-Add corresponding READ_ONCE()/WRITE_ONCE() annotations
-for UDP, TCP and AF_UNIX.
+A malformed RESPONSE can therefore use a non-block-aligned ticket
+length, make the decrypt operation fail, and still drive the ticket
+parser with attacker-controlled bytes.
 
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Reported-by: syzbot+87f770387a9e5dc6b79b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/699ee9fc.050a0220.1cd54b.0009.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260225131547.1085509-1-edumazet@google.com
+Check the decrypt result and abort the connection with RXKADBADTICKET
+when ticket decryption fails.
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-12-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Leon Chen <leonchen.oss@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c         |   14 +++++++-------
- net/ipv4/tcp.c           |    4 ++--
- net/ipv4/tcp_bpf.c       |    2 +-
- net/ipv4/tcp_input.c     |   14 ++++++++------
- net/ipv4/tcp_minisocks.c |    2 +-
- net/ipv4/udp.c           |    3 ++-
- net/ipv4/udp_bpf.c       |    2 +-
- net/unix/af_unix.c       |    8 ++++----
- 8 files changed, 26 insertions(+), 23 deletions(-)
+ net/rxrpc/rxkad.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1204,8 +1204,8 @@ void sk_psock_start_strp(struct sock *sk
- 		return;
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -958,6 +958,7 @@ static int rxkad_decrypt_ticket(struct r
+ 	struct in_addr addr;
+ 	unsigned int life;
+ 	time64_t issue, now;
++	int ret;
+ 	bool little_endian;
+ 	u8 *p, *q, *name, *end;
  
- 	psock->saved_data_ready = sk->sk_data_ready;
--	sk->sk_data_ready = sk_psock_strp_data_ready;
--	sk->sk_write_space = sk_psock_write_space;
-+	WRITE_ONCE(sk->sk_data_ready, sk_psock_strp_data_ready);
-+	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
- }
+@@ -977,8 +978,11 @@ static int rxkad_decrypt_ticket(struct r
+ 	sg_init_one(&sg[0], ticket, ticket_len);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, sg, sg, ticket_len, iv.x);
+-	crypto_skcipher_decrypt(req);
++	ret = crypto_skcipher_decrypt(req);
+ 	skcipher_request_free(req);
++	if (ret < 0)
++		return rxrpc_abort_conn(conn, skb, RXKADBADTICKET, -EPROTO,
++					rxkad_abort_resp_tkt_short);
  
- void sk_psock_stop_strp(struct sock *sk, struct sk_psock *psock)
-@@ -1215,8 +1215,8 @@ void sk_psock_stop_strp(struct sock *sk,
- 	if (!psock->saved_data_ready)
- 		return;
- 
--	sk->sk_data_ready = psock->saved_data_ready;
--	psock->saved_data_ready = NULL;
-+	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
-+	WRITE_ONCE(psock->saved_data_ready, NULL);
- 	strp_stop(&psock->strp);
- }
- 
-@@ -1298,8 +1298,8 @@ void sk_psock_start_verdict(struct sock
- 		return;
- 
- 	psock->saved_data_ready = sk->sk_data_ready;
--	sk->sk_data_ready = sk_psock_verdict_data_ready;
--	sk->sk_write_space = sk_psock_write_space;
-+	WRITE_ONCE(sk->sk_data_ready, sk_psock_verdict_data_ready);
-+	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
- }
- 
- void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
-@@ -1310,6 +1310,6 @@ void sk_psock_stop_verdict(struct sock *
- 	if (!psock->saved_data_ready)
- 		return;
- 
--	sk->sk_data_ready = psock->saved_data_ready;
-+	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
- 	psock->saved_data_ready = NULL;
- }
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1346,7 +1346,7 @@ out_err:
- 	err = sk_stream_error(sk, flags, err);
- 	/* make sure we wake any epoll edge trigger waiter */
- 	if (unlikely(tcp_rtx_and_write_queues_empty(sk) && err == -EAGAIN)) {
--		sk->sk_write_space(sk);
-+		READ_ONCE(sk->sk_write_space)(sk);
- 		tcp_chrono_stop(sk, TCP_CHRONO_SNDBUF_LIMITED);
- 	}
- 	return err;
-@@ -4023,7 +4023,7 @@ ao_parse:
- 		break;
- 	case TCP_NOTSENT_LOWAT:
- 		WRITE_ONCE(tp->notsent_lowat, val);
--		sk->sk_write_space(sk);
-+		READ_ONCE(sk->sk_write_space)(sk);
- 		break;
- 	case TCP_INQ:
- 		if (val > 1 || val < 0)
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -725,7 +725,7 @@ int tcp_bpf_update_proto(struct sock *sk
- 			WRITE_ONCE(sk->sk_prot->unhash, psock->saved_unhash);
- 			tcp_update_ulp(sk, psock->sk_proto, psock->saved_write_space);
- 		} else {
--			sk->sk_write_space = psock->saved_write_space;
-+			WRITE_ONCE(sk->sk_write_space, psock->saved_write_space);
- 			/* Pairs with lockless read in sk_clone_lock() */
- 			sock_replace_proto(sk, psock->sk_proto);
- 		}
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5034,7 +5034,7 @@ static void tcp_data_queue_ofo(struct so
- 
- 	if (unlikely(tcp_try_rmem_schedule(sk, skb, skb->truesize))) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPOFODROP);
--		sk->sk_data_ready(sk);
-+		READ_ONCE(sk->sk_data_ready)(sk);
- 		tcp_drop_reason(sk, skb, SKB_DROP_REASON_PROTO_MEM);
- 		return;
- 	}
-@@ -5241,7 +5241,7 @@ err:
- void tcp_data_ready(struct sock *sk)
- {
- 	if (tcp_epollin_ready(sk, sk->sk_rcvlowat) || sock_flag(sk, SOCK_DONE))
--		sk->sk_data_ready(sk);
-+		READ_ONCE(sk->sk_data_ready)(sk);
- }
- 
- static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
-@@ -5297,7 +5297,7 @@ queue_and_out:
- 			inet_csk(sk)->icsk_ack.pending |=
- 					(ICSK_ACK_NOMEM | ICSK_ACK_NOW);
- 			inet_csk_schedule_ack(sk);
--			sk->sk_data_ready(sk);
-+			READ_ONCE(sk->sk_data_ready)(sk);
- 
- 			if (skb_queue_len(&sk->sk_receive_queue) && skb->len) {
- 				reason = SKB_DROP_REASON_PROTO_MEM;
-@@ -5735,7 +5735,9 @@ static void tcp_new_space(struct sock *s
- 		tp->snd_cwnd_stamp = tcp_jiffies32;
- 	}
- 
--	INDIRECT_CALL_1(sk->sk_write_space, sk_stream_write_space, sk);
-+	INDIRECT_CALL_1(READ_ONCE(sk->sk_write_space),
-+			sk_stream_write_space,
-+			sk);
- }
- 
- /* Caller made space either from:
-@@ -5941,7 +5943,7 @@ static void tcp_urg(struct sock *sk, str
- 				BUG();
- 			WRITE_ONCE(tp->urg_data, TCP_URG_VALID | tmp);
- 			if (!sock_flag(sk, SOCK_DEAD))
--				sk->sk_data_ready(sk);
-+				READ_ONCE(sk->sk_data_ready)(sk);
- 		}
- 	}
- }
-@@ -7341,7 +7343,7 @@ int tcp_conn_request(struct request_sock
- 			sock_put(fastopen_sk);
- 			goto drop_and_free;
- 		}
--		sk->sk_data_ready(sk);
-+		READ_ONCE(sk->sk_data_ready)(sk);
- 		bh_unlock_sock(fastopen_sk);
- 		sock_put(fastopen_sk);
- 	} else {
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -928,7 +928,7 @@ enum skb_drop_reason tcp_child_process(s
- 		reason = tcp_rcv_state_process(child, skb);
- 		/* Wakeup parent, send SIGIO */
- 		if (state == TCP_SYN_RECV && child->sk_state != state)
--			parent->sk_data_ready(parent);
-+			READ_ONCE(parent->sk_data_ready)(parent);
- 	} else {
- 		/* Alas, it is possible again, because we do lookup
- 		 * in main socket hash table and lock on listening
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1622,7 +1622,8 @@ int __udp_enqueue_schedule_skb(struct so
- 	spin_unlock(&list->lock);
- 
- 	if (!sock_flag(sk, SOCK_DEAD))
--		INDIRECT_CALL_1(sk->sk_data_ready, sock_def_readable, sk);
-+		INDIRECT_CALL_1(READ_ONCE(sk->sk_data_ready),
-+				sock_def_readable, sk);
- 
- 	busylock_release(busy);
- 	return 0;
---- a/net/ipv4/udp_bpf.c
-+++ b/net/ipv4/udp_bpf.c
-@@ -158,7 +158,7 @@ int udp_bpf_update_proto(struct sock *sk
- 	int family = sk->sk_family == AF_INET ? UDP_BPF_IPV4 : UDP_BPF_IPV6;
- 
- 	if (restore) {
--		sk->sk_write_space = psock->saved_write_space;
-+		WRITE_ONCE(sk->sk_write_space, psock->saved_write_space);
- 		sock_replace_proto(sk, psock->sk_proto);
- 		return 0;
- 	}
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1707,7 +1707,7 @@ restart:
- 	__skb_queue_tail(&other->sk_receive_queue, skb);
- 	spin_unlock(&other->sk_receive_queue.lock);
- 	unix_state_unlock(other);
--	other->sk_data_ready(other);
-+	READ_ONCE(other->sk_data_ready)(other);
- 	sock_put(other);
- 	return 0;
- 
-@@ -2175,7 +2175,7 @@ restart_locked:
- 	scm_stat_add(other, skb);
- 	skb_queue_tail(&other->sk_receive_queue, skb);
- 	unix_state_unlock(other);
--	other->sk_data_ready(other);
-+	READ_ONCE(other->sk_data_ready)(other);
- 	sock_put(other);
- 	scm_destroy(&scm);
- 	return len;
-@@ -2243,7 +2243,7 @@ static int queue_oob(struct socket *sock
- 
- 	sk_send_sigurg(other);
- 	unix_state_unlock(other);
--	other->sk_data_ready(other);
-+	READ_ONCE(other->sk_data_ready)(other);
- 
- 	return err;
- }
-@@ -2354,7 +2354,7 @@ static int unix_stream_sendmsg(struct so
- 		scm_stat_add(other, skb);
- 		skb_queue_tail(&other->sk_receive_queue, skb);
- 		unix_state_unlock(other);
--		other->sk_data_ready(other);
-+		READ_ONCE(other->sk_data_ready)(other);
- 		sent += size;
- 	}
- 
+ 	p = ticket;
+ 	end = p + ticket_len;
 
 
 
