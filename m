@@ -1,60 +1,71 @@
-Return-Path: <stable+bounces-237055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PxAFyQg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:04 +0200
+	id yCqWAwUZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFD3F044D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762B73EEE22
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5ADC830591D0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEF5430D0218
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A9130DEAC;
-	Mon, 13 Apr 2026 16:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA58D306B0A;
+	Mon, 13 Apr 2026 16:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmD7IVZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fv70FxBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00A32D8364;
-	Mon, 13 Apr 2026 16:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE6E305057;
+	Mon, 13 Apr 2026 16:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098474; cv=none; b=P4lPYUZgjKFl+C9MLZ61LkvvP6ECMl9/lEL/CUegW3WLfZMWizE2riu3xlsvqHFie9R6OD2Mefry7sjQC0fBaugxCARtAEO8RWoMPDm6G/H6J/qjI6uGCzbVWH0ZDvPtk3avqlJ48fIhlNp/OkxqvQSR1kQM64VYe7X320UCF/o=
+	t=1776096913; cv=none; b=jIS2moi9kB0F+Dyam7iXPjNwWG4xiIvlKZtvG9I2BSRamV8aIvjM6Zlw9V5Xh/ail6leZMD3PpVPcdPLSNHjpzvPw2errrtdV2QqUYAKP0Ih0voLeyoL69RXCAGNOXO3I0yNshprRdXlXkcvfOT7RnibbIq0XVWA8jAoTbsw7yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098474; c=relaxed/simple;
-	bh=LSwNGCs83aEOpqVBgCyXkZUmV+Z5jrDpqN+J7mRsJFk=;
+	s=arc-20240116; t=1776096913; c=relaxed/simple;
+	bh=YCZTkLB+lVdEG+OPpoE/YUL0QMcLZDCvBE44gxfbDSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kq4WAsh35iWk8JuNB58RXi7D/gy72cxlcsbd7m6EbuJkiNYVmDNyClnDzrCd66c+lY39iL8270iExusi7ICZLifxnPSnGnFNVjuq3JVC82QLtarVvlVzsq6cwfVg1jWcXsQHEKNiTZpvwMMWhVwtp6XHkulT7N87872WFty+dZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmD7IVZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75277C2BCAF;
-	Mon, 13 Apr 2026 16:41:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mZpj80BIQeIRqnFcBnanT4OttqcbYqi2wex39DF4nDonTEioPtGXyXniC70beJH8y8Cn/fWNUM9f+7z0LfuBzqtJFO27WIQnPLiydru92qQXFseRPkKMA34kZD90SIhkceNZC8WPmSXEMXMuZF7zDhxSYd0ykAcEA9F89iNVYLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fv70FxBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5EAC2BCAF;
+	Mon, 13 Apr 2026 16:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098473;
-	bh=LSwNGCs83aEOpqVBgCyXkZUmV+Z5jrDpqN+J7mRsJFk=;
+	s=korg; t=1776096913;
+	bh=YCZTkLB+lVdEG+OPpoE/YUL0QMcLZDCvBE44gxfbDSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmD7IVZvPBynXhlWHKdBp09FaniAFBAtWQIxY5FgZNJrM9Ma5TMcta5SpGnl7pkLK
-	 bCxgYxS9EC5iwF28rBAUvxSMBXs6ebsKZXYVzwgLgWGixW+rmSyjxhvsMbFcgbcAcP
-	 YhTiP9SNGUh/6wlD3m8V8R5B3gL9ijKBa+ZtBb5A=
+	b=Fv70FxBFR+XcaFEBr60SyeE3e3KmsrNRyZoc4PCA9NMU2CDupWEotMZa87q+QIQ+c
+	 WjY8X/dzR9h4KZ5UXtNmVoHFlO4fhHvZ2cq9rljsgkogJMUbL4tx1xEbT28CEZAIUE
+	 QkpAXe++Q1FdOh9mis7TXCoisCcJftCKPOSpB1C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 537/570] net: qualcomm: qca_uart: report the consumed byte on RX skb allocation failure
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Yuanhe Shu <xiangzao@linux.alibaba.com>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 41/50] mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
 Date: Mon, 13 Apr 2026 18:01:08 +0200
-Message-ID: <20260413155850.562604751@linuxfoundation.org>
+Message-ID: <20260413155726.045942200@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +75,176 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmx.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237055-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236441-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,iscas.ac.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4FBFD3F044D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 762B73EEE22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-commit b76254c55dc8f23edc089027dd3f8792554c69fb upstream.
+commit f58df566524ebcdfa394329c64f47e3c9257516e upstream.
 
-qca_tty_receive() consumes each input byte before checking whether a
-completed frame needs a fresh receive skb. When the current byte completes
-a frame, the driver delivers that frame and then allocates a new skb for
-the next one.
+When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
+encountered some very strange crash issues showing up as "Bad page state":
 
-If that allocation fails, the current code returns i even though data[i]
-has already been consumed and may already have completed the delivered
-frame. Since serdev interprets the return value as the number of accepted
-bytes, this under-reports progress by one byte and can replay the final
-byte of the completed frame into a fresh parser state on the next call.
+"
+[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
+[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
+[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
+[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
+[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
+[  734.496442] page dumped because: nonzero mapcount
+"
 
-Return i + 1 in that failure path so the accepted-byte count matches the
-actual receive-state progress.
+After analyzing this page’s state, it is hard to understand why the
+mapcount is not 0 while the refcount is 0, since this page is not where
+the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
+reproduce the crash as well and captured the first warning where the issue
+appears:
 
-Fixes: dfc768fbe618 ("net: qualcomm: add QCA7000 UART driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260402071207.4036-1-pengpeng@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+"
+[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
+[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  734.469315] memcg:ffff000807a8ec00
+[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
+[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
+......
+[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
+const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
+(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+[  734.469390] ------------[ cut here ]------------
+[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
+CPU#90: stress-ng-mlock/9430
+[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
+[  734.469555]  set_pte_range+0xd8/0x2f8
+[  734.469566]  filemap_map_folio_range+0x190/0x400
+[  734.469579]  filemap_map_pages+0x348/0x638
+[  734.469583]  do_fault_around+0x140/0x198
+......
+[  734.469640]  el0t_64_sync+0x184/0x188
+"
+
+The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
+nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
+tried to map beyond the large folio’s size.
+
+By adding more debug information, I found that 'nr_pages' had overflowed
+in filemap_map_pages(), causing set_pte_range() to establish mappings for
+a range exceeding the folio size, potentially corrupting fields of pages
+that do not belong to this folio (e.g., page->_mapcount).
+
+After above analysis, I think the possible race is as follows:
+
+CPU 0                                                  CPU 1
+filemap_map_pages()                                   ext4_setattr()
+   //get and lock folio with old inode->i_size
+   next_uptodate_folio()
+
+                                                          .......
+                                                          //shrink the inode->i_size
+                                                          i_size_write(inode, attr->ia_size);
+
+   //calculate the end_pgoff with the new inode->i_size
+   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+   end_pgoff = min(end_pgoff, file_end);
+
+   ......
+   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
+   end = folio_next_index(folio) - 1;
+   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+
+   ......
+   //map large folio
+   filemap_map_folio_range()
+                                                          ......
+                                                          //truncate folios
+                                                          truncate_pagecache(inode, inode->i_size);
+
+To fix this issue, move the 'end_pgoff' calculation before
+next_uptodate_folio(), so the retrieved folio stays consistent with the
+file end to avoid 'nr_pages' calculation overflow.  After this patch, the
+crash issue is gone.
+
+Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
+Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <dchinner@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_uart.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/filemap.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/qualcomm/qca_uart.c
-+++ b/drivers/net/ethernet/qualcomm/qca_uart.c
-@@ -115,7 +115,7 @@ qca_tty_receive(struct serdev_device *se
- 			if (!qca->rx_skb) {
- 				netdev_dbg(netdev, "recv: out of RX resources\n");
- 				n_stats->rx_errors++;
--				return i;
-+				return i + 1;
- 			}
- 		}
- 	}
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3616,14 +3616,19 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 	unsigned int nr_pages = 0, mmap_miss = 0, mmap_miss_saved;
+ 	bool can_map_large;
+ 
++	/*
++	 * Recalculate end_pgoff based on file_end before calling
++	 * next_uptodate_folio() to avoid races with concurrent
++	 * truncation.
++	 */
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
++
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
+ 
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	end_pgoff = min(end_pgoff, file_end);
+-
+ 	/*
+ 	 * Do not allow to map with PTEs beyond i_size and with PMD
+ 	 * across i_size to preserve SIGBUS semantics.
 
 
 
