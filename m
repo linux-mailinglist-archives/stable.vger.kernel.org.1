@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-236314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KILNMuAX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:48 +0200
+	id IFjaDKoe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCF73EEA91
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8183EFE9D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 807BB313DDC3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1F4230A50C8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8942C0F7F;
-	Mon, 13 Apr 2026 16:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F7B30DEAC;
+	Mon, 13 Apr 2026 16:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjZ/sphu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id+cFIfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6796279334;
-	Mon, 13 Apr 2026 16:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D0430C361;
+	Mon, 13 Apr 2026 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096588; cv=none; b=tFyj2UEas7TqjaBEP7R+yvxm0kKS95ahhGWpX8m8ahcwNBqv8gMv6DlqcEdmWAmEiU/laEHfMz828Bpm+/z8F/CIBtjHGgFChNwRUUpcVmbtbNk/pxxPqpQXXRgQi1fvU1OnvtJM8ooYkY2SNx+7n1IaqM4UWajeUxi9Xiyz4nQ=
+	t=1776098411; cv=none; b=JfmLxbE/60uBmcr1GtD1IO8DB1GkS3FkHhi2rKzGeNrYT6GVyakWcQ4rXm2LcHvo7ohBpzyFELlkPWERm+gH4wdRs6Tj5KxoSbUM+nat8Cw5zGYZjJ1dANxS4ekgInDEk+Op2yMlU/J9oot+8u3t+kEmZ3NKKhax6L3Rx69dkD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096588; c=relaxed/simple;
-	bh=ls3h21ocD29zUjWXAvTBTOpbQk6vEhxymtf2+OvQ0fc=;
+	s=arc-20240116; t=1776098411; c=relaxed/simple;
+	bh=C6rpKQm7//mqWmdwLjaWc7jeo6RlA1mTJsmu43lKthA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/t3lvrWi+RcaDMc+pjAqBKW2kDDFiWCZ/Cyfc3BkSk8sE8zLK0uObWy9ZFwv5OcZ8WPvQkqulRCDQ2BflW3ZDaPdmW01FEmfKMDQlqaqkG5fGR+H1CLPKeOto3JYWiak/wMR0S6HenlRqE6sbQY1PY75hz8iUcTp5F8+5alK1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjZ/sphu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C18EC2BCAF;
-	Mon, 13 Apr 2026 16:09:48 +0000 (UTC)
+	 MIME-Version; b=FFQmb5GZGKjmrLX+o9hxxFokihy7Xy57wQmqclOjip+FTKctpey1mTr2obqQ0ZaBLV6j0iz3xFQA2sFgsSSMdCczUcHoIdeDkvQxnafhp4kKfik1Eyp08OfP9bUTD921JPL7ojEVoFuhoylLunRjj/VHBx1wpj44sbuxAclI05w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Id+cFIfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466B2C2BCAF;
+	Mon, 13 Apr 2026 16:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096588;
-	bh=ls3h21ocD29zUjWXAvTBTOpbQk6vEhxymtf2+OvQ0fc=;
+	s=korg; t=1776098411;
+	bh=C6rpKQm7//mqWmdwLjaWc7jeo6RlA1mTJsmu43lKthA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjZ/sphuO2VRmFpWs8GQWgnsCY8OGwjo5aCmlOWQV5PR5h5cJV8BSwp9twOPQu8N+
-	 RwO9IPCHmA+HAyr0VFZ2uQj/zoSm9/eJKG45ePlv1b9x/Nvkc6bbZywKZoOXeuRDGl
-	 J6cDdj4fL3cvDTI+ZXURwMhBiq0t0dQunMzdq8TY=
+	b=Id+cFIfxLNS6aelFFHa1wCcuNOes7tfQPJ6zY/nh1+TN3NVNvBYKbTM9V6Oi/0u2S
+	 buV9bxRvU9MiJBoUGeDYsumyvheogqe1oyqTt1Ftap3ky2Z3eZynj8cXRwBKBsL/Dt
+	 5VbO39BSgH77KUhP2Jep95E/dSzE8t6vubC+wFUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 69/83] rxrpc: Fix key reference count leak from call->key
-Date: Mon, 13 Apr 2026 18:00:37 +0200
-Message-ID: <20260413155733.580833902@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 5.15 507/570] xfrm_user: fix info leak in build_report()
+Date: Mon, 13 Apr 2026 18:00:38 +0200
+Message-ID: <20260413155849.445117161@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236314-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237031-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,66 +90,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[allelesecurity.com:email,auristor.com:email,infradead.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,0.0.212.49:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3DCF73EEA91
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AE8183EFE9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit d666540d217e8d420544ebdfbadeedd623562733 upstream.
+commit d10119968d0e1f2b669604baf2a8b5fdb72fa6b4 upstream.
 
-When creating a client call in rxrpc_alloc_client_call(), the code obtains
-a reference to the key.  This is never cleaned up and gets leaked when the
-call is destroyed.
+struct xfrm_user_report is a __u8 proto field followed by a struct
+xfrm_selector which means there is three "empty" bytes of padding, but
+the padding is never zeroed before copying to userspace.  Fix that up by
+zeroing the structure before setting individual member variables.
 
-Fix this by freeing call->key in rxrpc_destroy_call().
-
-Before the patch, it shows the key reference counter elevated:
-
-$ cat /proc/keys | grep afs@54321
-1bffe9cd I--Q--i 8053480 4169w 3b010000  1000  1000 rxrpc     afs@54321: ka
-$
-
-After the patch, the invalidated key is removed when the code exits:
-
-$ cat /proc/keys | grep afs@54321
-$
-
-Fixes: f3441d4125fc ("rxrpc: Copy client call parameters into rxrpc_call earlier")
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Co-developed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-9-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable <stable@kernel.org>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/call_object.c |    1 +
+ net/xfrm/xfrm_user.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -692,6 +692,7 @@ static void rxrpc_destroy_call(struct wo
- 	rxrpc_put_bundle(call->bundle, rxrpc_bundle_put_call);
- 	rxrpc_put_peer(call->peer, rxrpc_peer_put_call);
- 	rxrpc_put_local(call->local, rxrpc_local_put_call);
-+	key_put(call->key);
- 	call_rcu(&call->rcu, rxrpc_rcu_free_call);
- }
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3544,6 +3544,7 @@ static int build_report(struct sk_buff *
+ 		return -EMSGSIZE;
+ 
+ 	ur = nlmsg_data(nlh);
++	memset(ur, 0, sizeof(*ur));
+ 	ur->proto = proto;
+ 	memcpy(&ur->sel, sel, sizeof(ur->sel));
  
 
 
