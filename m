@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-236432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SH+GDDYZ3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:30 +0200
+	id KOEfOzEf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280493EEEE0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CED3F00A8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7D20A30957D9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C551304893D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7D726E6F8;
-	Mon, 13 Apr 2026 16:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825462EBB8C;
+	Mon, 13 Apr 2026 16:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHLM73wM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irT41X1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8672472A2;
-	Mon, 13 Apr 2026 16:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A8F1D5AD4;
+	Mon, 13 Apr 2026 16:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096890; cv=none; b=dMivhLZxu70QasrfRQfpa4KsFO1cDF9qWxXeUgeyVXg1rtjb2VYI3UJsXtFtzPYdy9Qq5FpiMGZrEyKYot9O+4B2qFiLLHf1fUh+okiyChVOfX+1RXfMJMPbQC+lNweoascMPweOnWvORpNsuYyKGiL4mOBO8zhGQrEO/gOgRjc=
+	t=1776098375; cv=none; b=K77zvh+c5/l6hoLTG5pv0J1sAUdmWsXNn68hUWXb5Sb1ayHtNEG8BXWu0PDZ2Zlt1JvsMcy8w1y8tt2ZPK1jlk1DMPdqK6fg+waq6Fx1Ir9VYfnq/TJX745SK8QxZk9ynN3tO3FPB3MSOl1hlvvnBG/1pftLBoYQwm3lwUxkdGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096890; c=relaxed/simple;
-	bh=2WCJ1T+tzJmNiZXtKbELsUcYrRiO9IGIe7qEUXwhC9Y=;
+	s=arc-20240116; t=1776098375; c=relaxed/simple;
+	bh=5QUNUN2dGUR7+memMa2jET3f/Cd1DFDvBtEimAQa5gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izYRU/MmdZGV+K7bGR1ILv7Y5iE5cOfVe8OJLOOsmyzirrK1gg8pCiZrnqB71WfZ+0lUnHbuUecAYUQ1UpvMmzVXCFYEpCcuyetumlQ91VuqbQvRtJDwVOwIf/poVo0FnlhFQP8CGroZXTfWKjqfObRVB3M34skiivDHrCeyK9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHLM73wM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FE6C2BCAF;
-	Mon, 13 Apr 2026 16:14:49 +0000 (UTC)
+	 MIME-Version; b=taAsIfxE8wRP0JsUCvF/smejrKh9cFHy9I0cK5GfYnbRdr6nCAkwp0J/BR+7ewjVVfcwyPpVI6/dAzkXYbkUwVDcNJuIcMXYl5SgoTYdXsDGShV0T7D0ZcIqhbAvqH3q3oRNMMJDoTU9bNtTqNNNIjZnHAVW/2XyKV2lrtDdcJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irT41X1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD526C2BCAF;
+	Mon, 13 Apr 2026 16:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096890;
-	bh=2WCJ1T+tzJmNiZXtKbELsUcYrRiO9IGIe7qEUXwhC9Y=;
+	s=korg; t=1776098375;
+	bh=5QUNUN2dGUR7+memMa2jET3f/Cd1DFDvBtEimAQa5gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHLM73wMdm/8JC3fwRav4mDRFMHbyTTkWfd880poQ4+jr3h9OhDN/dVvbyuXT/MKd
-	 /Yz8aovndv1cjFQcnl7soAadcQCdJXkNzlYa7cn4QV0+0/iZSxdTukfHB4pqFnZGh5
-	 y7WE3BtoIcx4gMcAKI8gN4qd1SfeMSl0QtnoI/Dk=
+	b=irT41X1kFnKsU2HTAKBkgyM3mWeapseay/9Yhqzp9lyuLSQN4LMC10n43aVYq/uaX
+	 Ipfu1v/vy9QkVySCf3nY/BSm1WjcZ2W7EWYA2wG3L0P/Mt43GMsyYIm3LBwD5SY11C
+	 +XCD37iri9NXYI9Cq9al2ZCeJNmlN8Zl/3gbrd+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	stable <stable@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 04/50] net: rfkill: prevent unlimited numbers of rfkill events from being created
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 5.15 500/570] usb: gadget: f_rndis: Protect RNDIS options with mutex
 Date: Mon, 13 Apr 2026 18:00:31 +0200
-Message-ID: <20260413155724.668778166@linuxfoundation.org>
+Message-ID: <20260413155849.184853201@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,141 +72,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,lzu.edu.cn,kernel.org,intel.com];
-	TAGGED_FROM(0.00)[bounces-236432-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237017-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sipsolutions.net:email]
-X-Rspamd-Queue-Id: 280493EEEE0
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 27CED3F00A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit ea245d78dec594372e27d8c79616baf49e98a4a1 upstream.
+commit 8d8c68b1fc06ece60cf43e1306ff0f4ac121547e upstream.
 
-Userspace can create an unlimited number of rfkill events if the system
-is so configured, while not consuming them from the rfkill file
-descriptor, causing a potential out of memory situation.  Prevent this
-from bounding the number of pending rfkill events at a "large" number
-(i.e. 1000) to prevent abuses like this.
+The class/subclass/protocol options are suspectible to race conditions
+as they can be accessed concurrently through configfs.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Use existing mutex to protect these options. This issue was identified
+during code inspection.
+
+Fixes: 73517cf49bd4 ("usb: gadget: add RNDIS configfs options for class/subclass/protocol")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-2-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/core.c |   35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ drivers/usb/gadget/function/f_rndis.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -73,11 +73,14 @@ struct rfkill_int_event {
- 	struct rfkill_event_ext	ev;
- };
+--- a/drivers/usb/gadget/function/f_rndis.c
++++ b/drivers/usb/gadget/function/f_rndis.c
+@@ -11,6 +11,7 @@
  
-+/* Max rfkill events that can be "in-flight" for one data source */
-+#define MAX_RFKILL_EVENT	1000
- struct rfkill_data {
- 	struct list_head	list;
- 	struct list_head	events;
- 	struct mutex		mtx;
- 	wait_queue_head_t	read_wait;
-+	u32			event_count;
- 	bool			input_handler;
- 	u8			max_size;
- };
-@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_un
- }
- #endif /* CONFIG_RFKILL_LEDS */
+ /* #define VERBOSE_DEBUG */
  
--static void rfkill_fill_event(struct rfkill_event_ext *ev,
--			      struct rfkill *rfkill,
--			      enum rfkill_operation op)
-+static int rfkill_fill_event(struct rfkill_int_event *int_ev,
-+			     struct rfkill *rfkill,
-+			     struct rfkill_data *data,
-+			     enum rfkill_operation op)
- {
-+	struct rfkill_event_ext *ev = &int_ev->ev;
- 	unsigned long flags;
- 
- 	ev->idx = rfkill->idx;
-@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfk
- 					RFKILL_BLOCK_SW_PREV));
- 	ev->hard_block_reasons = rfkill->hard_block_reasons;
- 	spin_unlock_irqrestore(&rfkill->lock, flags);
-+
-+	scoped_guard(mutex, &data->mtx) {
-+		if (data->event_count++ > MAX_RFKILL_EVENT) {
-+			data->event_count--;
-+			return -ENOSPC;
-+		}
-+		list_add_tail(&int_ev->list, &data->events);
-+	}
-+	return 0;
- }
- 
- static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
-@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rf
- 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
- 		if (!ev)
- 			continue;
--		rfkill_fill_event(&ev->ev, rfkill, op);
--		mutex_lock(&data->mtx);
--		list_add_tail(&ev->list, &data->events);
--		mutex_unlock(&data->mtx);
-+		if (rfkill_fill_event(ev, rfkill, data, op)) {
-+			kfree(ev);
-+			continue;
-+		}
- 		wake_up_interruptible(&data->read_wait);
++#include <linux/cleanup.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -690,9 +691,11 @@ rndis_bind(struct usb_configuration *c,
+ 		f->os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
  	}
- }
-@@ -1190,10 +1204,8 @@ static int rfkill_fop_open(struct inode
- 		if (!ev)
- 			goto free;
- 		rfkill_sync(rfkill);
--		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
--		mutex_lock(&data->mtx);
--		list_add_tail(&ev->list, &data->events);
--		mutex_unlock(&data->mtx);
-+		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
-+			kfree(ev);
- 	}
- 	list_add(&data->list, &rfkill_fds);
- 	mutex_unlock(&rfkill_global_mutex);
-@@ -1263,6 +1275,7 @@ static ssize_t rfkill_fop_read(struct fi
- 		ret = -EFAULT;
  
- 	list_del(&ev->list);
-+	data->event_count--;
- 	kfree(ev);
-  out:
- 	mutex_unlock(&data->mtx);
++	mutex_lock(&rndis_opts->lock);
+ 	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
+ 	rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
+ 	rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
++	mutex_unlock(&rndis_opts->lock);
+ 
+ 	/*
+ 	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
 
 
 
