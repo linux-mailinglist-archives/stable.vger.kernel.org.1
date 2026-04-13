@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-237257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNSJJmgl3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:18:32 +0200
+	id 8PtlMO8f3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4403F1251
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:18:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D3A3F0396
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1BBAE30EC4EB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAE6930FA591
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36BD317141;
-	Mon, 13 Apr 2026 16:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC842874F8;
+	Mon, 13 Apr 2026 16:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZ4Okxlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFXL8qO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53643168EF;
-	Mon, 13 Apr 2026 16:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6084BCA6F;
+	Mon, 13 Apr 2026 16:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098990; cv=none; b=WEA7G7qCgizRGlGVx7gTWOLc2dgnVRyN5BkkDdaroJ4rl3PIlPmlpEPIEpd3weiKEz6NLOMiR6kH4cJvASO03h8geqDMITORV8Pw8bE8YUMeIe1hkLKS3lUfndyAXj6sPyceljqYpyf76ytpKaBUvVcQBOzm00HoOvaANRlRPvY=
+	t=1776097811; cv=none; b=cx5wfU23ddJqpeH+sxW3jP+1/cohtmsy4EsM1ftUt3MIQJeaETj7gDy//ur4WonVG1ol1pTw0S6NbMqNVZ+BtxbAQa1aSk99aUS3n2Wr/8UDIkgDhFFY0YvC2haGaBv1iZf4rqzhALBX1z/pMzrVAhG0ainn9h+fyffL9q+VUqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098990; c=relaxed/simple;
-	bh=U3C5BovV19G7Md03wGzAzD/QjWoxj+KV2+v0pXyqv7U=;
+	s=arc-20240116; t=1776097811; c=relaxed/simple;
+	bh=pvErh1mh1X8UoOz07BfsgtnQ8iHviwWr8k+anq0aVA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wlthfn1zCqtpOWApS1Lcsvs5gZt+gzetUtE29pHUSB2PLTSRXVFoj6ORx0D6RR0O4QuJXHCTm9xvYTzqGt9ZCuyN9CEb1SfALi6eStBY18EqSQIu+dDDCFD0Mci8S7p+3yrSFFc8ZzPVCSzwZgsM9cUakM9kYhIfuRYn11lSLr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZ4Okxlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7C1C2BCAF;
-	Mon, 13 Apr 2026 16:49:50 +0000 (UTC)
+	 MIME-Version; b=uO6DpMXPce77az660pciUTsFLTpS/zBmv4npsocEFTqS1m1wkG+ZHgEaLxADagQ9MKbNVcZhvdrVO+erc6hLP93e0A2tqRrPU/a2x9U6RKwTyDwerD8mIWOC9ZCUFTC2Cj2lGCkMbsSXhZQzUmQ0MuzAPLNCLdbwNvSSN31CKLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFXL8qO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78E3C2BCAF;
+	Mon, 13 Apr 2026 16:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098990;
-	bh=U3C5BovV19G7Md03wGzAzD/QjWoxj+KV2+v0pXyqv7U=;
+	s=korg; t=1776097811;
+	bh=pvErh1mh1X8UoOz07BfsgtnQ8iHviwWr8k+anq0aVA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZ4OkxlmP5YDY9Jfpcsg8OqKRoUMMvAo0WPd4NQWmWlTfdufN9MxjL13COMqRURNQ
-	 KDuWuwuY0ST8p1lGGDksCmDzt5UcsHYvJjRBAjQfFZyPIMyv/uaAcqMx0rrrPd0Z3q
-	 neiGZ5JjCtqiG3FL8X3QZqTwqsv3n76TZUG/u3HY=
+	b=xFXL8qO+MXJ5gXx7EQQCRrgG4TDqz+yiEPXL0wdurawzIoSog802QIjHUTQTpeiSr
+	 PpNDwwmYU0+4nzRK7PVt09nrQ6YAWTJKOBQq/BJ5Xq0juwN/Wh9ILK0Zt4+zUh9PyM
+	 XBiVUgPYhJOIidNpIgJKjcuNsbtP6ZYHRKCYjdCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Natalie Vock <natalie.vock@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Anas Iqbal <mohd.abd.6602@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 167/491] drm/amd/display: Use GFP_ATOMIC in dc_create_stream_for_sink
+Subject: [PATCH 5.15 281/570] net: dsa: bcm_sf2: fix missing clk_disable_unprepare() in error paths
 Date: Mon, 13 Apr 2026 17:56:52 +0200
-Message-ID: <20260413155825.293224481@linuxfoundation.org>
+Message-ID: <20260413155841.017448223@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +66,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237257-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,amd.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-236794-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0B4403F1251
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 30D3A3F0396
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Natalie Vock <natalie.vock@gmx.de>
+From: Anas Iqbal <mohd.abd.6602@gmail.com>
 
-[ Upstream commit 28dfe4317541e57fe52f9a290394cd29c348228b ]
+[ Upstream commit b48731849609cbd8c53785a48976850b443153fd ]
 
-This can be called while preemption is disabled, for example by
-dcn32_internal_validate_bw which is called with the FPU active.
+Smatch reports:
+drivers/net/dsa/bcm_sf2.c:997 bcm_sf2_sw_resume() warn:
+'priv->clk' from clk_prepare_enable() not released on lines: 983,990.
 
-Fixes "BUG: scheduling while atomic" messages I encounter on my Navi31
-machine.
+The clock enabled by clk_prepare_enable() in bcm_sf2_sw_resume()
+is not released if bcm_sf2_sw_rst() or bcm_sf2_cfp_resume() fails.
 
-Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b42dae2ebc5c84a68de63ec4ffdfec49362d53f1)
-Cc: stable@vger.kernel.org
-[ Context ]
+Add the missing clk_disable_unprepare() calls in the error paths
+to properly release the clock resource.
+
+Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
+Link: https://patch.msgid.link/20260318084212.1287-1-mohd.abd.6602@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/bcm_sf2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -167,7 +167,7 @@ struct dc_stream_state *dc_create_stream
- 	if (sink == NULL)
- 		return NULL;
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index f259b0add5b2e..6105f4d8faf06 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -962,15 +962,19 @@ static int bcm_sf2_sw_resume(struct dsa_switch *ds)
+ 	ret = bcm_sf2_sw_rst(priv);
+ 	if (ret) {
+ 		pr_err("%s: failed to software reset switch\n", __func__);
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
+ 	}
  
--	stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
-+	stream = kzalloc(sizeof(struct dc_stream_state), GFP_ATOMIC);
- 	if (stream == NULL)
- 		goto alloc_fail;
+ 	bcm_sf2_crossbar_setup(priv);
  
+ 	ret = bcm_sf2_cfp_resume(ds);
+-	if (ret)
++	if (ret) {
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
+-
++	}
+ 	if (priv->hw_params.num_gphy == 1)
+ 		bcm_sf2_gphy_enable_set(ds, true);
+ 
+-- 
+2.51.0
+
 
 
 
