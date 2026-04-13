@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236944-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yE1hOHUj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:13 +0200
+	id OGZ3HMEb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236944-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C493F0E09
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8CF3EF641
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1573730FA810
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 411E530164D9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA276325490;
-	Mon, 13 Apr 2026 16:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7FD30C360;
+	Mon, 13 Apr 2026 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCmRCjiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaAlbHMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFB131E84D;
-	Mon, 13 Apr 2026 16:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9E526B971;
+	Mon, 13 Apr 2026 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099388; cv=none; b=T63SBni4mTEtmYV4OGFwkbFFa2d/s60UDm1PD3vgwutarygdUKohR4M0FvCg3hxJDu3c7sp9Nbh8n1ZzCEU8x6uihJOIxkA4LHVrqZyqQg/UGvkYVK2fz6SzTBNvJxK+7Bc9qFCFToTiSQYYK081/dyrkamtl6ZEREkKt8C3mFE=
+	t=1776098192; cv=none; b=EvYXcfRP9YwI3Ov8nLRaYvLn7VFwCIJVzFupJxzsO9yPPkebCDzxxD8AbfeTqVthyUuJVHyzrPGKBEAVtwWHEmpKVcNsKgYv7XhxOgia2MSIuLG2m4SeQLJORNgk0oLffSmpebEiqcmmr+diNVaUH7SuHV24TKVfBf5cxWlXAow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099388; c=relaxed/simple;
-	bh=l6whB6YRhUMci8KbULsQdaoJETQeIzDscEt89snSCu8=;
+	s=arc-20240116; t=1776098192; c=relaxed/simple;
+	bh=0TNPryAetwK4EJlvEpFQ5+T0SbuRSri4J+kM96fLnOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b16BPr3+9B2KCp3mkEV2hB2hbLyncli2La0kgUDXPHidsd0dlRV4ucfQ9/eawn2mqsPlM+bA3SzUb4bgR/NV01vka1lB2ZjDjyKRcGsi3nLZxOGyFoL+d/bP7qB/QE0jea+EfEp5o9BVZaHZgXbt32J2br0muq/AJ498qS0+U7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCmRCjiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A49C2BCB3;
-	Mon, 13 Apr 2026 16:56:27 +0000 (UTC)
+	 MIME-Version; b=Gv0AhiVkn14hpDkwsXgi6FyH7k5usU11Ppq1LP9K0HQdN2cRhKrGMJZKGc8vM97ZkHTr5XLVTb4JEbsXn81sgw8aTaVpRQYS2YEvzWvfdWErnhwbOyT9oTRP6Iienz+fZZyCbLv0ExOT1wjiNZSFa8QZB4yMqw6ZkQbterHPE3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaAlbHMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4B3C2BCB0;
+	Mon, 13 Apr 2026 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099388;
-	bh=l6whB6YRhUMci8KbULsQdaoJETQeIzDscEt89snSCu8=;
+	s=korg; t=1776098192;
+	bh=0TNPryAetwK4EJlvEpFQ5+T0SbuRSri4J+kM96fLnOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCmRCjiP0DvUEVXwnUF8NkuMtCbXEOYHfNM7btxCVk9ZRsZG+/pmsEwh14LOH6wC3
-	 pYzGzC5bOsWrl+wLz8pWP+luAMyAKNTdCyVI5P8s6jwA8eoLjwmTbtIFa8oHcg90/N
-	 AYD28q0TlXB69dR4Ah2d4k7gSUe+mGHFG/KsAbNk=
+	b=OaAlbHMwvUeooEJQMw1/7nOaHA5c4jIjuFRi3CeJkkPdxL9jLH1THyeHDgRx0RGWo
+	 mx6f+M5YsMqcuNP3X4zz4B2/g7D3Ww+dwY6Ov0dzQi47SuWMV1x120hHRcDUWatCZe
+	 cFmLnS+tHyrGby1oUz4s4DSXtZSnRBU8NJLhF+wI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 314/491] dmaengine: xilinx_dma: Program interrupt delay timeout
-Date: Mon, 13 Apr 2026 17:59:19 +0200
-Message-ID: <20260413155830.794864541@linuxfoundation.org>
+Subject: [PATCH 5.15 429/570] net: macb: fix clk handling on PCI glue driver removal
+Date: Mon, 13 Apr 2026 17:59:20 +0200
+Message-ID: <20260413155846.541592790@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237412-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236944-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,105 +89,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 54C493F0E09
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,ispras.ru:email]
+X-Rspamd-Queue-Id: 0D8CF3EF641
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 84b798fedf3fa8f0ab0c096593ba817abc454fe5 ]
+[ Upstream commit ce8fe5287b87e24e225c342f3b0ec04f0b3680fe ]
 
-Program IRQDelay for AXI DMA. The interrupt timeout mechanism causes
-the DMA engine to generate an interrupt after the delay time period
-has expired. It enables dmaengine to respond in real-time even though
-interrupt coalescing is configured. It also remove the placeholder
-for delay interrupt and merge it with frame completion interrupt.
-Since by default interrupt delay timeout is disabled this feature
-addition has no functional impact on VDMA, MCDMA and CDMA IP's.
+platform_device_unregister() may still want to use the registered clks
+during runtime resume callback.
 
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/1691387509-2113129-8-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: a17ce4bc6f4f ("dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA")
+Note that there is a commit d82d5303c4c5 ("net: macb: fix use after free
+on rmmod") that addressed the similar problem of clk vs platform device
+unregistration but just moved the bug to another place.
+
+Save the pointers to clks into local variables for reuse after platform
+device is unregistered.
+
+BUG: KASAN: use-after-free in clk_prepare+0x5a/0x60
+Read of size 8 at addr ffff888104f85e00 by task modprobe/597
+
+CPU: 2 PID: 597 Comm: modprobe Not tainted 6.1.164+ #114
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8d/0xba
+ print_report+0x17f/0x496
+ kasan_report+0xd9/0x180
+ clk_prepare+0x5a/0x60
+ macb_runtime_resume+0x13d/0x410 [macb]
+ pm_generic_runtime_resume+0x97/0xd0
+ __rpm_callback+0xc8/0x4d0
+ rpm_callback+0xf6/0x230
+ rpm_resume+0xeeb/0x1a70
+ __pm_runtime_resume+0xb4/0x170
+ bus_remove_device+0x2e3/0x4b0
+ device_del+0x5b3/0xdc0
+ platform_device_del+0x4e/0x280
+ platform_device_unregister+0x11/0x50
+ pci_device_remove+0xae/0x210
+ device_remove+0xcb/0x180
+ device_release_driver_internal+0x529/0x770
+ driver_detach+0xd4/0x1a0
+ bus_remove_driver+0x135/0x260
+ driver_unregister+0x72/0xb0
+ pci_unregister_driver+0x26/0x220
+ __do_sys_delete_module+0x32e/0x550
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ </TASK>
+
+Allocated by task 519:
+ kasan_save_stack+0x2c/0x50
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x8e/0x90
+ __clk_register+0x458/0x2890
+ clk_hw_register+0x1a/0x60
+ __clk_hw_register_fixed_rate+0x255/0x410
+ clk_register_fixed_rate+0x3c/0xa0
+ macb_probe+0x1d8/0x42e [macb_pci]
+ local_pci_probe+0xd7/0x190
+ pci_device_probe+0x252/0x600
+ really_probe+0x255/0x7f0
+ __driver_probe_device+0x1ee/0x330
+ driver_probe_device+0x4c/0x1f0
+ __driver_attach+0x1df/0x4e0
+ bus_for_each_dev+0x15d/0x1f0
+ bus_add_driver+0x486/0x5e0
+ driver_register+0x23a/0x3d0
+ do_one_initcall+0xfd/0x4d0
+ do_init_module+0x18b/0x5a0
+ load_module+0x5663/0x7950
+ __do_sys_finit_module+0x101/0x180
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Freed by task 597:
+ kasan_save_stack+0x2c/0x50
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x50
+ __kasan_slab_free+0x106/0x180
+ __kmem_cache_free+0xbc/0x320
+ clk_unregister+0x6de/0x8d0
+ macb_remove+0x73/0xc0 [macb_pci]
+ pci_device_remove+0xae/0x210
+ device_remove+0xcb/0x180
+ device_release_driver_internal+0x529/0x770
+ driver_detach+0xd4/0x1a0
+ bus_remove_driver+0x135/0x260
+ driver_unregister+0x72/0xb0
+ pci_unregister_driver+0x26/0x220
+ __do_sys_delete_module+0x32e/0x550
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fixes: d82d5303c4c5 ("net: macb: fix use after free on rmmod")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260330184542.626619-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/cadence/macb_pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index a89a150be3284..7b3c47e442c15 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -174,8 +174,10 @@
- #define XILINX_DMA_MAX_TRANS_LEN_MAX	23
- #define XILINX_DMA_V2_MAX_TRANS_LEN_MAX	26
- #define XILINX_DMA_CR_COALESCE_MAX	GENMASK(23, 16)
-+#define XILINX_DMA_CR_DELAY_MAX		GENMASK(31, 24)
- #define XILINX_DMA_CR_CYCLIC_BD_EN_MASK	BIT(4)
- #define XILINX_DMA_CR_COALESCE_SHIFT	16
-+#define XILINX_DMA_CR_DELAY_SHIFT	24
- #define XILINX_DMA_BD_SOP		BIT(27)
- #define XILINX_DMA_BD_EOP		BIT(26)
- #define XILINX_DMA_COALESCE_MAX		255
-@@ -411,6 +413,7 @@ struct xilinx_dma_tx_descriptor {
-  * @stop_transfer: Differentiate b/w DMA IP's quiesce
-  * @tdest: TDEST value for mcdma
-  * @has_vflip: S2MM vertical flip
-+ * @irq_delay: Interrupt delay timeout
-  */
- struct xilinx_dma_chan {
- 	struct xilinx_dma_device *xdev;
-@@ -449,6 +452,7 @@ struct xilinx_dma_chan {
- 	int (*stop_transfer)(struct xilinx_dma_chan *chan);
- 	u16 tdest;
- 	bool has_vflip;
-+	u8 irq_delay;
- };
+diff --git a/drivers/net/ethernet/cadence/macb_pci.c b/drivers/net/ethernet/cadence/macb_pci.c
+index f66d22de5168d..4dd0cec2e5423 100644
+--- a/drivers/net/ethernet/cadence/macb_pci.c
++++ b/drivers/net/ethernet/cadence/macb_pci.c
+@@ -110,10 +110,12 @@ static void macb_remove(struct pci_dev *pdev)
+ {
+ 	struct platform_device *plat_dev = pci_get_drvdata(pdev);
+ 	struct macb_platform_data *plat_data = dev_get_platdata(&plat_dev->dev);
++	struct clk *pclk = plat_data->pclk;
++	struct clk *hclk = plat_data->hclk;
  
- /**
-@@ -1560,6 +1564,9 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
- 	if (chan->has_sg)
- 		xilinx_write(chan, XILINX_DMA_REG_CURDESC,
- 			     head_desc->async_tx.phys);
-+	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
-+	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
-+	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
+-	clk_unregister(plat_data->pclk);
+-	clk_unregister(plat_data->hclk);
+ 	platform_device_unregister(plat_dev);
++	clk_unregister(pclk);
++	clk_unregister(hclk);
+ }
  
- 	xilinx_dma_start(chan);
- 
-@@ -1876,15 +1883,8 @@ static irqreturn_t xilinx_dma_irq_handler(int irq, void *data)
- 		}
- 	}
- 
--	if (status & XILINX_DMA_DMASR_DLY_CNT_IRQ) {
--		/*
--		 * Device takes too long to do the transfer when user requires
--		 * responsiveness.
--		 */
--		dev_dbg(chan->dev, "Inter-packet latency too long\n");
--	}
--
--	if (status & XILINX_DMA_DMASR_FRM_CNT_IRQ) {
-+	if (status & (XILINX_DMA_DMASR_FRM_CNT_IRQ |
-+		      XILINX_DMA_DMASR_DLY_CNT_IRQ)) {
- 		spin_lock(&chan->lock);
- 		xilinx_dma_complete_descriptor(chan);
- 		chan->idle = true;
-@@ -2801,6 +2801,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 	/* Retrieve the channel properties from the device tree */
- 	has_dre = of_property_read_bool(node, "xlnx,include-dre");
- 
-+	of_property_read_u8(node, "xlnx,irq-delay", &chan->irq_delay);
-+
- 	chan->genlock = of_property_read_bool(node, "xlnx,genlock-mode");
- 
- 	err = of_property_read_u32(node, "xlnx,datawidth", &value);
+ static const struct pci_device_id dev_id_table[] = {
 -- 
 2.53.0
 
