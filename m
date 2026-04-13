@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-236426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHL/DkIa3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:58 +0200
+	id iHgUJ+0b3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766A53EF210
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:30:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3582F3EF6D1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 10DBA306C502
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 032DB30EC7AB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB9226F293;
-	Mon, 13 Apr 2026 16:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AE0274B58;
+	Mon, 13 Apr 2026 16:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+6gjqxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPVIKoTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2002B26CE32;
-	Mon, 13 Apr 2026 16:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584AC25DB12;
+	Mon, 13 Apr 2026 16:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096875; cv=none; b=AyYX5CSTyMg9S1a6JegLrZuS6GgwwByZZBrWaPrRYPvQYcoZte1T0wVCR+NRDAtxcvlLOpai6zbGem3u981l1eGUz4eqNYV+GdqKjWknDX2nOZ/suTDvKgAPoP5KDua7TfogvVJW+byoHPYwcX9WjxU3bEDU1Yg96y9KOWy7F00=
+	t=1776096826; cv=none; b=YOcWsk7/JtXlH5+2eKAulB5eKioG60jOsmkF77ZYgKO6KeKQPyTL0QvY9IkVXBan9MUPWdAGRyqlcFGm8KRByAMbYZOZwplmptQm8rHPOX6YDdtE9tm8RmHtxsm3J2J8WPnWN/+N47yHZjP+Lgzic4xt1PX4bVfc/iCsd3SLC2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096875; c=relaxed/simple;
-	bh=YBIJhLcV8ztcSR8xbulhg4w5HY3kwhYra/UyWGPsnvg=;
+	s=arc-20240116; t=1776096826; c=relaxed/simple;
+	bh=c6VGH40ZvsQMh1P3d0ogdaBu0cQvHt4Dd1T7KkShAAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dO0Qn2SuOy81wkTB9GQy7l2swohz6iqtenIJCeoH4z850u3EJoACXIWYeFrXp+ahZiVM4mMv71nLSxMoUmanPkoDjCYcXUiDEk1n/VjBjp9XFvc1JXwUOj0fhe+zVzYak95O10u6dhiWDIENOyyZtWbZV/8ZjzG4t9RThkd8pFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+6gjqxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A367EC2BCAF;
-	Mon, 13 Apr 2026 16:14:34 +0000 (UTC)
+	 MIME-Version; b=MR5hUvVPv/DCXwDbPc9xmCQHTudWPdlGt2KV1ToLxNl/9YxgnrKrR9NyNddbojA0wfi52A/GYDYMzVuOY4XHnn30DK4+F/HzVihtHJlXKZFjjaFp2R77xB2QxP92yi+K8DuUah6pU1nGdlbQj3wXyt41V5819Bko7aywMPcfcPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPVIKoTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E305DC2BCAF;
+	Mon, 13 Apr 2026 16:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096875;
-	bh=YBIJhLcV8ztcSR8xbulhg4w5HY3kwhYra/UyWGPsnvg=;
+	s=korg; t=1776096826;
+	bh=c6VGH40ZvsQMh1P3d0ogdaBu0cQvHt4Dd1T7KkShAAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+6gjqxZYbB9iZVsDdbbwTJraCAygk4Q3zW2Drup7+kMkIkpMqJ44yz5BCqPSGP4P
-	 NoHCgeHEesmiiXXGLP3zFM6WDwEvwOIjG8f79yECzIqGjv3zwvB0CbrT3CthnEWi0Z
-	 VVHdSnnfFy6DLOLr4jUntkSrQ3cQLxOE9eh6cr30=
+	b=GPVIKoTeLDCqWzSPoGE/3wiwi5/P6OgVvvkXoUekQzpPylP17fJz7oiM4DK3p0Ker
+	 xpBJNlQ9h2yrZSCQN8q/QU4jnI0Nq7HmUiDcxgPV6MSoy8j/tUuPtow8VomF7Stjiw
+	 30lgtOAuyIYf9hTknHzkhqhIduQwEYDJRTJMmcJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.6 25/50] arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Li Li <boolli@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 57/70] idpf: set the payload size before calling the async handler
 Date: Mon, 13 Apr 2026 18:00:52 +0200
-Message-ID: <20260413155725.453378229@linuxfoundation.org>
+Message-ID: <20260413155730.313761607@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +66,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236426-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236407-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,puri.sm:email]
-X-Rspamd-Queue-Id: 766A53EF210
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 3582F3EF6D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-commit 511f76bf1dce5acf8907b65a7d1bc8f7e7c0d637 upstream.
+commit 8e2a2420e267a515f6db56a6e9570b5cacd92919 upstream.
 
-The minimal voltage of VDD_SOC sourced from BUCK1 is 0.81V, which
-is the currently set value. However, BD71837 only guarantees accuracy
-of ±0.01V, and this still doesn't factor other reasons for actual
-voltage to slightly drop in, resulting in the possibility of running
-out of the operational range.
+Set the payload size before forwarding the reply to the async handler.
+Without this, xn->reply_sz will be 0 and idpf_mac_filter_async_handler()
+will never get past the size check.
 
-Bump the voltage up to 0.85V, which should give enough headroom.
-
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
 Cc: stable@vger.kernel.org
-Fixes: 8f0216b006e5 ("arm64: dts: Add a device tree for the Librem 5 phone")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Li Li <boolli@google.com>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -849,7 +849,7 @@
- 				regulator-ramp-delay = <1250>;
- 				rohm,dvs-run-voltage = <900000>;
- 				rohm,dvs-idle-voltage = <850000>;
--				rohm,dvs-suspend-voltage = <810000>;
-+				rohm,dvs-suspend-voltage = <850000>;
- 				regulator-always-on;
- 			};
- 
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -641,6 +641,10 @@ idpf_vc_xn_forward_reply(struct idpf_ada
+ 		err = -ENXIO;
+ 		goto out_unlock;
+ 	case IDPF_VC_XN_ASYNC:
++		/* Set reply_sz from the actual payload so that async_handler
++		 * can evaluate the response.
++		 */
++		xn->reply_sz = ctlq_msg->data_len;
+ 		err = idpf_vc_xn_forward_async(adapter, xn, ctlq_msg);
+ 		idpf_vc_xn_unlock(xn);
+ 		return err;
 
 
 
