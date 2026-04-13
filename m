@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-237386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EydCu4l3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:46 +0200
+	id oO7QJ3Ye3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA2B3F135C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4A93EFDD2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7E63B301CC42
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FDEB3027DA4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7663264F2;
-	Mon, 13 Apr 2026 16:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD41307AC7;
+	Mon, 13 Apr 2026 16:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dn9MQIlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgv2h6zb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB843264CA;
-	Mon, 13 Apr 2026 16:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFEE2D8364;
+	Mon, 13 Apr 2026 16:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099321; cv=none; b=L6jhx7CXrv60xHR6kIyyCZQcjujwkHNlVh0jaECoGfWRr9dzy4dMANoEjHU9IrXIA11kE1YpJvhQ+Fl0yaihu2PoawwEhagDwcIEQXnvy8e7mCsW5vf16vjEjmw0hOl6gcbHEpYsVpxPa93ZBuQtU1ppgT8JM4oaJNFeqCh/L+E=
+	t=1776098225; cv=none; b=Y8z3UdI10/+uZNtIi7Szq+vkQDRUUMAMzvNFAbQYcyNf9KZwyDrm7wMuGxxz4N/Bi9t7qGQvbV0CAIM8fqHuYMWtKvT0BluU2MY2F8y6d/E60cy/dinl7NuTcFnZx5/xNvYdWHCgBbwcKBSoUmJKto4uNHqjxe5PVa+XRqVf2yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099321; c=relaxed/simple;
-	bh=tJetqciEapeVEah8v0vLfGi/O5JP69u8No8Omq5cYm0=;
+	s=arc-20240116; t=1776098225; c=relaxed/simple;
+	bh=cPJJLlOvduWChpF9prrap1Zb5JmjxMsn/pW5UbPvxFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fggzDwWLOpWYh9kWhc/sTgqAmrfqlwsLK6bnA71bPPlEcAnbdXcQmwGvo6K2fQxqzX4M+JbNEknzJnnesCEpvW6vcsZ4Rzh0WRDmmLX6FossS9K4GpWp9JuJhtMLg+3f8OtN3jnTT/1fABAvbfoRMNlhJUie6TYjL79pepZxEPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dn9MQIlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FA7C2BCB0;
-	Mon, 13 Apr 2026 16:55:20 +0000 (UTC)
+	 MIME-Version; b=NwReo3nCzF5TteHYQZ62uzRiLFycYXjRqosspKTYAp86WU+ufSu6/tvOMIUi02rIK6NgH/77QcRi1PdLjolJoJEXgTSw0y4RGn1xTJ+SXCPnQ6pfSLzMnXp276VAFgJeMEvNKg92sHGe9Z2cOXjceGhIZR7zWvDGRaLb6gUVpoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgv2h6zb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61263C2BCAF;
+	Mon, 13 Apr 2026 16:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099321;
-	bh=tJetqciEapeVEah8v0vLfGi/O5JP69u8No8Omq5cYm0=;
+	s=korg; t=1776098225;
+	bh=cPJJLlOvduWChpF9prrap1Zb5JmjxMsn/pW5UbPvxFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dn9MQIlbAflVf1vM+5FuW1zrBxwShfvfpw3ST8SgRDuQaAPGJ7VQmkC7i09IMGCzk
-	 V9lZ0jIy90RCFVWZpEdCEOzxZUYLxfdo61BfLCW9WudnEBLCMfvaieOYupxmEF1KbR
-	 40xAKLr47kBNmKfezGP24XFpaVpRfopR9IS+6ERU=
+	b=zgv2h6zbI3tJisrZOSbajFsYZUXRQzPBazeFJZl/srxdQBSjLTNDHCXHKnhFpMjV7
+	 m4GbWkNUBoQA+cpcYoYtrvBENaoe4J1hUePrH/hYdFAMzRpXldh+e76tCyP2zbkgSh
+	 D3HpYZeNhBfZOXx3js/3wvclJVDzDElnR9v4/Kek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Norouzi <ali.norouzi@keysight.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 296/491] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
+	Oskar Kjos <oskar.kjos@hotmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 410/570] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
 Date: Mon, 13 Apr 2026 17:59:01 +0200
-Message-ID: <20260413155830.125832624@linuxfoundation.org>
+Message-ID: <20260413155845.825998868@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,109 +70,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236957-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237386-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pengutronix.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hartkopp.net:email]
-X-Rspamd-Queue-Id: 2EA2B3F135C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: 0E4A93EFDD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ali Norouzi <ali.norouzi@keysight.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
+[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
 
-cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
+Oskar Kjos reported the following problem.
 
-    int from = calc_idx(crc8->from_idx, cf->len);
-    int to   = calc_idx(crc8->to_idx,   cf->len);
-    int res  = calc_idx(crc8->result_idx, cf->len);
+ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
+by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
+IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
+as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
+at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
+value. __ip_options_echo() then reads optlen from attacker-controlled
+packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
+a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
 
-    if (from < 0 || to < 0 || res < 0)
-        return;
+To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
 
-However, the loop and the result write then use the raw s8 fields directly
-instead of the computed variables:
+Also add minimal IPv4 header validation (version == 4, ihl >= 5).
 
-    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
-    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
-
-With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
-calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
-i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
-This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
-start of the canfd_frame on the heap.
-
-The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
-correctly throughout; fix cgw_csum_crc8_rel() to match.
-
-Confirmed with KASAN on linux-7.0-rc2:
-  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
-  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
-
-To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
-
-Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
-Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
+Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/gw.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/ip6_tunnel.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/can/gw.c
-+++ b/net/can/gw.c
-@@ -312,10 +312,10 @@ static void cgw_csum_crc8_rel(struct can
- 		return;
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 7c1b5d01f8203..53930c28b6946 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -603,11 +603,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 	if (!skb2)
+ 		return 0;
  
- 	if (from <= to) {
--		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
-+		for (i = from; i <= to; i++)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	} else {
--		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
-+		for (i = from; i >= to; i--)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	}
++	/* Remove debris left by IPv6 stack. */
++	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
++
+ 	skb_dst_drop(skb2);
  
-@@ -334,7 +334,7 @@ static void cgw_csum_crc8_rel(struct can
- 		break;
- 	}
+ 	skb_pull(skb2, offset);
+ 	skb_reset_network_header(skb2);
+ 	eiph = ip_hdr(skb2);
++	if (eiph->version != 4 || eiph->ihl < 5)
++		goto out;
  
--	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
-+	cf->data[res] = crc ^ crc8->final_xor_val;
- }
- 
- static void cgw_csum_crc8_pos(struct canfd_frame *cf,
+ 	/* Try to guess incoming interface */
+ 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
+-- 
+2.53.0
+
 
 
 
