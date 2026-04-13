@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-236281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGyaKJcX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:35 +0200
+	id 8AZpCU4Z3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB913EE9FA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A698A3EEF18
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 972A63096C83
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F39A3083F7E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167EA279DC2;
-	Mon, 13 Apr 2026 16:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFB93016F5;
+	Mon, 13 Apr 2026 16:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/cJwxzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGaJ/1Mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5EF25332E;
-	Mon, 13 Apr 2026 16:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBD72D949C;
+	Mon, 13 Apr 2026 16:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096508; cv=none; b=AAQrg3/mhFc1L31Ozdd5W8KRMMkEMwrGZryyES9IYlqWz6rJKLDPNxSwGuC9PhUlB8iO23oOUZHg7iLmn6T+n+zniqnhA3LuEuCcxNa34L5Nbv/2h+sh4GzqYSFPbkVHrdLXTqLUKp0M+B664NIWo5vuwhYNZfJNMHDRw3t5Rzk=
+	t=1776096651; cv=none; b=CjJs3D0wp0EvupIfWCZ8yW8itSO/oQ9vgb7/TyBCusvCQDCVu1ZyiutL/P4Td0lw1U3qePWSnX1SwwQAr9pCYlOUi0KYtuxvleab3ZqBP1P9Zyr4UUbjHrQf9s5RmeI/18EcGLFMBkXb4bm7YwF3y7YMGhsv2Yfcw9tuwQEQHgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096508; c=relaxed/simple;
-	bh=8MFcamisTe+oboVHT2tumWE5vb0NgHs4sHM+o+opcN8=;
+	s=arc-20240116; t=1776096651; c=relaxed/simple;
+	bh=BJ/J9O2+/26eycMmYVKd4e9UfTYEgARlHM6ZgZYoh1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXLpBH5fqRWlcGcxUukxG7ZLDxwd/fmS2a+s1fDY5YG/lezpmSqqEu020kvQE/m+ADredaGjsy3JsRREtEyowMi6dvbXzmnUvcQFllf5B+68vVQVG/YUrHvbw+/duFndEx/8W+399zWkXwHp/qcdoFXE9gwU9jWkMSP3HAjyvjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/cJwxzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651C0C2BCB0;
-	Mon, 13 Apr 2026 16:08:28 +0000 (UTC)
+	 MIME-Version; b=f4rmiiFUy977aUr9PdWJkCQP+1ysAj3M2mD1h29lcb1lbbuX/SArI8rg9i5IPWN2e/qS/qzkE2/hzORlyJUFcP7fN/3DLqAPAlzyjMt/FrBf+K6Y3S3AIYIoJF+gY8HhytHCaftUfYanCddymqlRKnPpTfQmTNeq7JEu13mPRx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGaJ/1Mq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B590C2BCAF;
+	Mon, 13 Apr 2026 16:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096508;
-	bh=8MFcamisTe+oboVHT2tumWE5vb0NgHs4sHM+o+opcN8=;
+	s=korg; t=1776096650;
+	bh=BJ/J9O2+/26eycMmYVKd4e9UfTYEgARlHM6ZgZYoh1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/cJwxzmrSI74jYqkv6WJTEHDga4hSaXxufxC45seGOLrZXeE/j5+gHfo/yHRUr75
-	 eKL9kZpB3C/38fr9P3B84ew6BOSsAE9AhrQO/hJxDaP2UQrpaASEZLkqcTAvLw7VBJ
-	 J1n6buS9qWvBakqv0sVKRWAp72wiCYjX0hNW1UkA=
+	b=sGaJ/1MqrVKYeiXl3SviJ26l7bLt3yy1Vqeg9+9rId059+cDGy4co0HbL4NXSqErP
+	 zc1afKcnjyMaoJoPx5VUJPURoz50jmJHy/nChJRgjbYisCfLptLzmzco+h4daDs2ZC
+	 fZxtji8ImLcaQgMN54S3yeEa/Zl688OYzxAJHHLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.18 37/83] batman-adv: reject oversized global TT response buffers
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 10/70] MIPS: Always record SEGBITS in cpu_data.vmbits
 Date: Mon, 13 Apr 2026 18:00:05 +0200
-Message-ID: <20260413155732.401647922@linuxfoundation.org>
+Message-ID: <20260413155728.570965462@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +66,144 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236281-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236339-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,simonwunderlich.de:email,narfation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DEB913EE9FA
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,orcam.me.uk:email]
+X-Rspamd-Queue-Id: A698A3EEF18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 3a359bf5c61d52e7f09754108309d637532164a6 upstream.
+commit 8374c2cb83b95b3c92f129fd56527225c20a058c upstream.
 
-batadv_tt_prepare_tvlv_global_data() builds the allocation length for a
-global TT response in 16-bit temporaries. When a remote originator
-advertises a large enough global TT, the TT payload length plus the VLAN
-header offset can exceed 65535 and wrap before kmalloc().
+With a 32-bit kernel running on 64-bit MIPS hardware the hardcoded value
+of `cpu_vmbits' only records the size of compatibility useg and does not
+reflect the size of native xuseg or the complete range of values allowed
+in the VPN2 field of TLB entries.
 
-The full-table response path still uses the original TT payload length when
-it fills tt_change, so the wrapped allocation is too small and
-batadv_tt_prepare_tvlv_global_data() writes past the end of the heap object
-before the later packet-size check runs.
+An upcoming change will need the actual VPN2 value range permitted even
+in 32-bit kernel configurations, so always include the `vmbits' member
+in `struct cpuinfo_mips' and probe for SEGBITS when running on 64-bit
+hardware and resorting to the currently hardcoded value of 31 on 32-bit
+processors.  No functional change for users of `cpu_vmbits'.
 
-Fix this by rejecting TT responses whose TVLV value length cannot fit in
-the 16-bit TVLV payload length field.
-
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/cpu-features.h |  1 -
+ arch/mips/include/asm/cpu-info.h     |  2 --
+ arch/mips/include/asm/mipsregs.h     |  2 ++
+ arch/mips/kernel/cpu-probe.c         | 13 ++++++++-----
+ arch/mips/kernel/cpu-r3k-probe.c     |  2 ++
+ 5 files changed, 12 insertions(+), 8 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -798,8 +798,8 @@ batadv_tt_prepare_tvlv_global_data(struc
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 404390bb87eaf..3f11e5218e6c6 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -484,7 +484,6 @@
+ # endif
+ # ifndef cpu_vmbits
+ # define cpu_vmbits cpu_data[0].vmbits
+-# define __NEED_VMBITS_PROBE
+ # endif
+ #endif
+ 
+diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
+index a600670d00e97..1aee44124f118 100644
+--- a/arch/mips/include/asm/cpu-info.h
++++ b/arch/mips/include/asm/cpu-info.h
+@@ -80,9 +80,7 @@ struct cpuinfo_mips {
+ 	int			srsets; /* Shadow register sets */
+ 	int			package;/* physical package number */
+ 	unsigned int		globalnumber;
+-#ifdef CONFIG_64BIT
+ 	int			vmbits; /* Virtual memory size in bits */
+-#endif
+ 	void			*data;	/* Additional data */
+ 	unsigned int		watch_reg_count;   /* Number that exist */
+ 	unsigned int		watch_reg_use_cnt; /* Usable by ptrace */
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 3c6ddc0c2c7ac..db8e02493eb89 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1871,6 +1871,8 @@ do {									\
+ 
+ #define read_c0_entryhi()	__read_ulong_c0_register($10, 0)
+ #define write_c0_entryhi(val)	__write_ulong_c0_register($10, 0, val)
++#define read_c0_entryhi_64()	__read_64bit_c0_register($10, 0)
++#define write_c0_entryhi_64(val) __write_64bit_c0_register($10, 0, val)
+ 
+ #define read_c0_guestctl1()	__read_32bit_c0_register($10, 4)
+ #define write_c0_guestctl1(val)	__write_32bit_c0_register($10, 4, val)
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index af7412549e6ea..3220e68bd12e8 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -207,11 +207,14 @@ static inline void set_elf_base_platform(const char *plat)
+ 
+ static inline void cpu_probe_vmbits(struct cpuinfo_mips *c)
  {
- 	u16 num_vlan = 0;
- 	u16 num_entries = 0;
--	u16 change_offset;
--	u16 tvlv_len;
-+	u16 tvlv_len = 0;
-+	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
- 	u8 *tt_change_ptr;
-@@ -816,6 +816,11 @@ batadv_tt_prepare_tvlv_global_data(struc
- 	if (*tt_len < 0)
- 		*tt_len = batadv_tt_len(num_entries);
- 
-+	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
-+		*tt_len = 0;
-+		goto out;
-+	}
+-#ifdef __NEED_VMBITS_PROBE
+-	write_c0_entryhi(0x3fffffffffffe000ULL);
+-	back_to_back_c0_hazard();
+-	c->vmbits = fls64(read_c0_entryhi() & 0x3fffffffffffe000ULL);
+-#endif
++	int vmbits = 31;
 +
- 	tvlv_len = *tt_len;
- 	tvlv_len += change_offset;
++	if (cpu_has_64bits) {
++		write_c0_entryhi_64(0x3fffffffffffe000ULL);
++		back_to_back_c0_hazard();
++		vmbits = fls64(read_c0_entryhi_64() & 0x3fffffffffffe000ULL);
++	}
++	c->vmbits = vmbits;
+ }
  
+ static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
+diff --git a/arch/mips/kernel/cpu-r3k-probe.c b/arch/mips/kernel/cpu-r3k-probe.c
+index 0c826f729f752..edcf04de0a6fb 100644
+--- a/arch/mips/kernel/cpu-r3k-probe.c
++++ b/arch/mips/kernel/cpu-r3k-probe.c
+@@ -137,6 +137,8 @@ void cpu_probe(void)
+ 	else
+ 		cpu_set_nofpu_opts(c);
+ 
++	c->vmbits = 31;
++
+ 	reserve_exception_space(0, 0x400);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
