@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-236183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sANcOz8U3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:19 +0200
+	id gIN0Cq0j3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FA53EE4AA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EA63F0EBD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 75A373025146
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05F2431225F8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C64248880;
-	Mon, 13 Apr 2026 16:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115A03382F3;
+	Mon, 13 Apr 2026 16:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAv4kNUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGDjZp5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6D61D6DB5;
-	Mon, 13 Apr 2026 16:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8170329C6B;
+	Mon, 13 Apr 2026 16:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096256; cv=none; b=HU7yOeRSBmhgAlh2s/JfpEkqdu9em2S/Wg8wj3pQADipgH+2dKfb15asgnUDF4coU2rv+yfwA7bVkTOAoVvPiP9yW4gFHP2b2PpxL8KYbxU33Py7+VHysRawRT55wZmiLR8E9kP313tQ0CNXLx27Xlz8Y7C/yv7w6/7o9K9TARY=
+	t=1776099408; cv=none; b=JZBZdQ6yGXRKN7AC/XRTbdQNosYfSY9DCAI0UEQlcmJqLb/XMCsFBg5U4eqiSxR2cGeeHXK4RdDdQvmN4+n/MTcnhWdO0m5tNLgjqPlMmz7NYIpW1Zf3fi/srz2eOMU7tWVw6cGpjyXsMldiGRPTdF3EPzVBjp1hBIubkO9c5Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096256; c=relaxed/simple;
-	bh=wzpSCBfuywZmk+mjNTdGyO34hS/dzf5vRdSMiXEmFIQ=;
+	s=arc-20240116; t=1776099408; c=relaxed/simple;
+	bh=kwEet1VGK4pdYL7cMin4h5ZPco3nCFVxnKxGDiROB6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViE8A4ESlRJPCcTIgOAQ9pjE4WHyH4YyDVss0HglTZ7rVeGBqdd7jYwLFDN3v8iqXRPGfFkvJ1Q+XQmcdfzt8o5JBXuEu05+rPe+0G+snriY1gnmwSDd/e7yOhixPLBJVSfNCFqMYzbHfJWHLDV9pVDJI1HBOuqTPMheE6fDo5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAv4kNUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E504C2BCAF;
-	Mon, 13 Apr 2026 16:04:16 +0000 (UTC)
+	 MIME-Version; b=JIFVWOSdKVnM7FUO3Dd5DdnnCy4JuEDtFPbPtou/27iu1ZbB7Wd47Kdcy3q1vnvpt6CmTOKXCW5Qgt+9MBzYF/iF8GHkHAAd9CRyLxrxGHMlrH17abWQOIbZRyPdzjkp2Bt38gC1aJZ5Aqj2hnv5ZOIBAre4PKHq+uI7gdOFFnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGDjZp5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57584C2BCB3;
+	Mon, 13 Apr 2026 16:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096256;
-	bh=wzpSCBfuywZmk+mjNTdGyO34hS/dzf5vRdSMiXEmFIQ=;
+	s=korg; t=1776099408;
+	bh=kwEet1VGK4pdYL7cMin4h5ZPco3nCFVxnKxGDiROB6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAv4kNUFCshqrOyjdooNHQGTcmMMMss1km4381iM2hMI3bDcl0OmCJZyPce+rbHIb
-	 R2rFcUysmpZiRosdB9EH8Xdj/xklpdJrNYcU1Da0q6eFpRPnH+bH5zOE9d87QVOqAk
-	 b5KYaHYF9tUGA8IfPxQgp3WjHbHVaDkB8frQaCFM=
+	b=mGDjZp5VEqeGAGx0HnsOwH6skmIEihj/vQ7vPhQd+yQNkGu9ofXYKIdKIP75zc9b0
+	 2Phld19uhgdzhlk4TraLpWTcMsTBZHmVNYcOQ6OarLsI+F/QpUE3OSMW4X1uLwaMZe
+	 gXi/Svr2/Tuvsy35FbvRzxxdGULyUiLbHjbAIBNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.19 27/86] wifi: brcmsmac: Fix dma_free_coherent() size
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 329/491] bridge: br_nd_send: linearize skb before parsing ND options
 Date: Mon, 13 Apr 2026 17:59:34 +0200
-Message-ID: <20260413155732.590372756@linuxfoundation.org>
+Message-ID: <20260413155831.359568259@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +70,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236183-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237419-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 68FA53EE4AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,blackwall.org:email]
+X-Rspamd-Queue-Id: 90EA63F0EBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-commit 12cd7632757a54ce586e36040210b1a738a0fc53 upstream.
+[ Upstream commit a01aee7cafc575bb82f5529e8734e7052f9b16ea ]
 
-dma_alloc_consistent() may change the size to align it. The new size is
-saved in alloced.
+br_nd_send() parses neighbour discovery options from ns->opt[] and
+assumes that these options are in the linear part of request.
 
-Change the free size to match the allocation size.
+Its callers only guarantee that the ICMPv6 header and target address
+are available, so the option area can still be non-linear. Parsing
+ns->opt[] in that case can access data past the linear buffer.
 
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260218130741.46566-3-fourier.thomas@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Linearize request before option parsing and derive ns from the linear
+network header.
+
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260326034441.2037420-2-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/br_arp_nd_proxy.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
-@@ -483,7 +483,7 @@ static void *dma_ringalloc(struct dma_in
- 	if (((desc_strtaddr + size - 1) & boundary) != (desc_strtaddr
- 							& boundary)) {
- 		*alignbits = dma_align_sizetobits(size);
--		dma_free_coherent(di->dmadev, size, va, *descpa);
-+		dma_free_coherent(di->dmadev, *alloced, va, *descpa);
- 		va = dma_alloc_consistent(di, size, *alignbits,
- 			alloced, descpa);
- 	}
+diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+index 3db1def4437b3..a44d14b94865e 100644
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -248,12 +248,12 @@ struct nd_msg *br_is_nd_neigh_msg(struct sk_buff *skb, struct nd_msg *msg)
+ 
+ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 		       struct sk_buff *request, struct neighbour *n,
+-		       __be16 vlan_proto, u16 vlan_tci, struct nd_msg *ns)
++		       __be16 vlan_proto, u16 vlan_tci)
+ {
+ 	struct net_device *dev = request->dev;
+ 	struct net_bridge_vlan_group *vg;
++	struct nd_msg *na, *ns;
+ 	struct sk_buff *reply;
+-	struct nd_msg *na;
+ 	struct ipv6hdr *pip6;
+ 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
+ 	int ns_olen;
+@@ -261,7 +261,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	u8 *daddr;
+ 	u16 pvid;
+ 
+-	if (!dev)
++	if (!dev || skb_linearize(request))
+ 		return;
+ 
+ 	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
+@@ -278,6 +278,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	skb_set_mac_header(reply, 0);
+ 
+ 	daddr = eth_hdr(request)->h_source;
++	ns = (struct nd_msg *)(skb_network_header(request) +
++			       sizeof(struct ipv6hdr));
+ 
+ 	/* Do we need option processing ? */
+ 	ns_olen = request->len - (skb_network_offset(request) +
+@@ -465,9 +467,9 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
+ 				if (vid != 0)
+ 					br_nd_send(br, p, skb, n,
+ 						   skb->vlan_proto,
+-						   skb_vlan_tag_get(skb), msg);
++						   skb_vlan_tag_get(skb));
+ 				else
+-					br_nd_send(br, p, skb, n, 0, 0, msg);
++					br_nd_send(br, p, skb, n, 0, 0);
+ 				replied = true;
+ 			}
+ 
+-- 
+2.53.0
+
 
 
 
