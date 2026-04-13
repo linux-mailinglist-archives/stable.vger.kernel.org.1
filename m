@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-236749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDGcH5gh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:16 +0200
+	id iMYsDP0g3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887103F08C5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9683F0706
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7573A32A02CE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D60C3308743F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B30230BB91;
-	Mon, 13 Apr 2026 16:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D76315D53;
+	Mon, 13 Apr 2026 16:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cz4xCrea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+rgNf57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10BB309F09;
-	Mon, 13 Apr 2026 16:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59085313E10;
+	Mon, 13 Apr 2026 16:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097694; cv=none; b=VqrQYdtwY1t9RlbbqYFdLNxr2snMwRm946aJ8EIN6vI9LAPOPK3nkVY5s76bGQhPAVH3krxLsClKV5hdAnb5s+mziT5pVwd7vdtKF+w6bVve1h/1zQIqu5MLxrrO+xToDFD9va57I/Ijg3amercdgxQYfAmbsAsu58lDW4znEb4=
+	t=1776098874; cv=none; b=iY/7NktZUQ511lfCQpl5Hx9u4wHoZsB2rjvl6K9kMwyN3vT/ImETqnmPK+7roCmYGVL9dlDy4UlTAgywsUNvIVrhG3k/wDih7I+230XpzGOkM+B2cOb6n9tK8OE8q0gvGGKsUOFtib9ZV9oRKQzdgw3ZD53Kl5rPb15qx+P8wtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097694; c=relaxed/simple;
-	bh=3k918NCkzh8u3fz9aUtlKhlhEIhDvZtXBkIcCcF0XB4=;
+	s=arc-20240116; t=1776098874; c=relaxed/simple;
+	bh=TbRRdGXkTHqEoEPj3oGLMCEbL3k98Ab3LCwOmEHmb+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYS9vx2rszT2/HfYDmXnm/6i8sjs8mO90O2LoxQtAMrLB7NlAAyySXYP7moubrJu4ZvIG6jK50UEqU/VYrW9n2j+mhF+K1sBYWrAQKQZDIBS+2qa8OATGqPazuyp3RjAzoEYl3EB+OM05YTyYPfSwjRjG+dARGZsC28F/eZ9CVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cz4xCrea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67136C2BCAF;
-	Mon, 13 Apr 2026 16:28:14 +0000 (UTC)
+	 MIME-Version; b=c5kzvRLZe8qcJIngHxGowAD0yXirKqGfQG39lEMvGt42HG/HZCA7Qgo+0A6pEq0yOnb9xxUg5IGWZKGjDEJAdaVdyMxJxBFdsjG00ybBQ9Q8ORCF0scFe2JhgtA7cLbU5Fpfc4W2WlrZX5iC333QBJ+jpC0DQ4qrStyxQn8CIqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+rgNf57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CC4C2BCB0;
+	Mon, 13 Apr 2026 16:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097694;
-	bh=3k918NCkzh8u3fz9aUtlKhlhEIhDvZtXBkIcCcF0XB4=;
+	s=korg; t=1776098874;
+	bh=TbRRdGXkTHqEoEPj3oGLMCEbL3k98Ab3LCwOmEHmb+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cz4xCrea/BVrgsOiup/gRherIdam5lKqyjNJGqjjU3SEFRFtFGa9mdegzKqV/2MNy
-	 D7my3sEx41xbWIeUfSoRusZzO5pWxKmKw3mUFIhQutwFkra9bygZWGgYc6oREKS+le
-	 tlO3CVk9IBHfoo875jSUBkA5yU5DoXQV1DKyMKlM=
+	b=W+rgNf57DSy25prEDgzzrZHPWJlUWcIP4vY/lHfrKYDGo6psEPRyFl3wFMKuLdujC
+	 f9OJCPd1+YXP8QQS5tP8sisV09mVJ5v+bZezNMocC2pFd/j/77FAKbYZExVQmDKec0
+	 gh+PmSBoV5y+xX64zi3xyUTtgzhZ+TqCCFvv5nAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 237/570] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Calvin Owens <calvin@wbinvd.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 123/491] tracing: Fix trace_buf_size= cmdline parameter with sizes >= 2G
 Date: Mon, 13 Apr 2026 17:56:08 +0200
-Message-ID: <20260413155839.344337826@linuxfoundation.org>
+Message-ID: <20260413155823.646040430@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,141 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,lunn.ch,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236749-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237212-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,outlook.com:email,lunn.ch:email]
-X-Rspamd-Queue-Id: 887103F08C5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wbinvd.org:email,efficios.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,goodmis.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8F9683F0706
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Calvin Owens <calvin@wbinvd.org>
 
-[ Upstream commit c8dbdc6e380e7e96a51706db3e4b7870d8a9402d ]
+commit d008ba8be8984760e36d7dcd4adbd5a41a645708 upstream.
 
-There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
-LED_TRIGGER_PHY are enabled:
+Some of the sizing logic through tracer_alloc_buffers() uses int
+internally, causing unexpected behavior if the user passes a value that
+does not fit in an int (on my x86 machine, the result is uselessly tiny
+buffers).
 
-[ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
-[ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
-[ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
-[ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
-[ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
-[ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
-[ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
-[ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
-[ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
-[ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
-[ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
-[ 1362.104022] [<80014504>] syscall_common+0x34/0x58
+Fix by plumbing the parameter's real type (unsigned long) through to the
+ring buffer allocation functions, which already use unsigned long.
 
-Here LED_TRIGGER_PHY is registering LED triggers during phy_attach
-while holding RTNL and then taking triggers_list_lock.
+It has always been possible to create larger ring buffers via the sysfs
+interface: this only affects the cmdline parameter.
 
-[ 1362.191101] [<806c2640>] register_netdevice_notifier+0x60/0x168      <-- Trying to get lock "rtnl_mutex" via rtnl_lock();
-[ 1362.197073] [<805504ac>] netdev_trig_activate+0x194/0x1e4
-[ 1362.202490] [<8054e28c>] led_trigger_set+0x1d4/0x360                 <-- Hold lock "triggers_list_lock" by down_read(&triggers_list_lock);
-[ 1362.207511] [<8054eb38>] led_trigger_write+0xd8/0x14c
-[ 1362.212566] [<80381d98>] sysfs_kf_bin_write+0x80/0xbc
-[ 1362.217688] [<8037fcd8>] kernfs_fop_write_iter+0x17c/0x28c
-[ 1362.223174] [<802cbd70>] vfs_write+0x21c/0x3c4
-[ 1362.227712] [<802cc0c4>] ksys_write+0x78/0x12c
-[ 1362.232164] [<80014504>] syscall_common+0x34/0x58
-
-Here LEDS_TRIGGER_NETDEV is being enabled on an LED. It first takes
-triggers_list_lock and then RTNL. A classical AB-BA deadlock.
-
-phy_led_triggers_registers() does not require the RTNL, it does not
-make any calls into the network stack which require protection. There
-is also no requirement the PHY has been attached to a MAC, the
-triggers only make use of phydev state. This allows the call to
-phy_led_triggers_registers() to be placed elsewhere. PHY probe() and
-release() don't hold RTNL, so solving the AB-BA deadlock.
-
-Reported-by: Shiji Yang <yangshiji66@outlook.com>
-Closes: https://lore.kernel.org/all/OS7PR01MB13602B128BA1AD3FA38B6D1FFBC69A@OS7PR01MB13602.jpnprd01.prod.outlook.com/
-Fixes: 06f502f57d0d ("leds: trigger: Introduce a NETDEV trigger")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Shiji Yang <yangshiji66@outlook.com>
-Link: https://patch.msgid.link/20260222152601.1978655-1-andrew@lunn.ch
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ dropped `is_on_sfp_module` guards and `CONFIG_PHYLIB_LEDS`/`of_phy_leds` logic ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/bff42a4288aada08bdf74da3f5b67a2c28b761f8.1772852067.git.calvin@wbinvd.org
+Fixes: 73c5162aa362 ("tracing: keep ring buffer to minimum size till used")
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy_device.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ kernel/trace/trace.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1508,7 +1508,6 @@ int phy_attach_direct(struct net_device
- 		return err;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8771,7 +8771,7 @@ static void
+ init_tracer_tracefs(struct trace_array *tr, struct dentry *d_tracer);
  
- 	phy_resume(phydev);
--	phy_led_triggers_register(phydev);
+ static int
+-allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size)
++allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, unsigned long size)
+ {
+ 	enum ring_buffer_flags rb_flags;
  
- 	return err;
- 
-@@ -1765,8 +1764,6 @@ void phy_detach(struct phy_device *phyde
- 	}
- 	phydev->phylink = NULL;
- 
--	phy_led_triggers_unregister(phydev);
--
- 	if (phydev->mdio.dev.driver)
- 		module_put(phydev->mdio.dev.driver->owner);
- 
-@@ -3120,10 +3117,14 @@ static int phy_probe(struct device *dev)
- 	/* Set the state to READY by default */
- 	phydev->state = PHY_READY;
- 
-+	/* Register the PHY LED triggers */
-+	phy_led_triggers_register(phydev);
-+
-+	return 0;
-+
- out:
- 	/* Re-assert the reset signal on error */
--	if (err)
--		phy_device_reset(phydev, 1);
-+	phy_device_reset(phydev, 1);
- 
- 	return err;
+@@ -8797,7 +8797,7 @@ allocate_trace_buffer(struct trace_array
+ 	return 0;
  }
-@@ -3134,6 +3135,8 @@ static int phy_remove(struct device *dev
  
- 	cancel_delayed_work_sync(&phydev->state_queue);
+-static int allocate_trace_buffers(struct trace_array *tr, int size)
++static int allocate_trace_buffers(struct trace_array *tr, unsigned long size)
+ {
+ 	int ret;
  
-+	phy_led_triggers_unregister(phydev);
-+
- 	phydev->state = PHY_DOWN;
+@@ -9728,7 +9728,7 @@ out:
  
- 	sfp_bus_del_upstream(phydev->sfp_bus);
+ __init static int tracer_alloc_buffers(void)
+ {
+-	int ring_buf_size;
++	unsigned long ring_buf_size;
+ 	int ret = -ENOMEM;
+ 
+ 
 
 
 
