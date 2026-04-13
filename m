@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-237573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2D3JAk4m3WlpaQkAu9opvQ
-	(envelope-from <stable+bounces-237573-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:22:22 +0200
+	id IJMlLE0m3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:22:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7AA3F1442
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6703F1440
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16E5D3247CBB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38C803248A00
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D5233F390;
-	Mon, 13 Apr 2026 17:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC34D330649;
+	Mon, 13 Apr 2026 17:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Npuaqa2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWWXKuST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B825A336881;
-	Mon, 13 Apr 2026 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F787336881;
+	Mon, 13 Apr 2026 17:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099803; cv=none; b=lFRc7yFzyiOJzpjO+/WMMawFXRdJZLwK5YbWdEGnJN7UuwT+v2lqSAFUEjwaj0ZKh0s1TmMoKIQnZ37n85kKvcEhduvcS4tYgr4tcdNiELOG2oZiF5Y5hndC4gh3c5VrNEappJmW4to0ok03cGFaatWWil0aaXahJvfrD0R+24E=
+	t=1776099806; cv=none; b=n2py1sWy2UDy60Ad1kmv4KHlyryfYaqSG2KH5uMp6QpT7XBPN2hnPva8DHabbqUovWI97GBbEZuD4y6diBhMOk9y5zK1JC0IboY6zCFfQGEZXYw9H7CTQPom3zxwOYVpXWEOStgNkaMNIxYe4w3XBzwDHHzKlQu2vGwQOlbbNSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099803; c=relaxed/simple;
-	bh=Q57wfVqV9k8a5dYFwNMVHC6OwMXgeXVzIZ6KawLGDr0=;
+	s=arc-20240116; t=1776099806; c=relaxed/simple;
+	bh=KyOBt7nUzqdbiXtBdYZpYZocBOBilPEhQujTGKjjURM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVIGjSIsnU2QrZL5t/TBzc6LcMrMSuXqJ/MNRj2xO2OjWblCcxNFUZwQUljdk8rHc4n3yAmGSkMxFtEMCv+XSQ48UmcSDfK4+PUCkay5iTofsoUabP8v9WN5z1LwiGowgnIH8v3s440lJ89iwAnRyXDh+nfkS5to3+82kpFshyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Npuaqa2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51786C2BCAF;
-	Mon, 13 Apr 2026 17:03:23 +0000 (UTC)
+	 MIME-Version; b=XEA0E/VKSfzUxDxl6+fNBTq65wVmQi+4GlZc4hOJGo4yaurCMtiNXoXbLS0f1z5ADcpT8ymvRF/fFmlqHvKWWexh3pJKubAq+3Mzu4pC7YY4IFvSxKhOeMmlJAOifr+oz4hapY4p8v3OWquoYAze2K0qTOAH88mrrRXlK4jHSTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWWXKuST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5D6C2BCAF;
+	Mon, 13 Apr 2026 17:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099803;
-	bh=Q57wfVqV9k8a5dYFwNMVHC6OwMXgeXVzIZ6KawLGDr0=;
+	s=korg; t=1776099806;
+	bh=KyOBt7nUzqdbiXtBdYZpYZocBOBilPEhQujTGKjjURM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Npuaqa2Mgyv2Q+lPGvepOKh2BQFCgo9YSZrYU0ezma0pWtYldhDvOSRA5DZtyPKfe
-	 33l7dpg0ah1isVGCMzAqWudvfHjMQlFSiI5B+YWtL/alF7P8IP0JMDMzznSwJSz4Z2
-	 68hnvvsJfigwcUb8h1O3eMAqWO38PrFUQYimjx2U=
+	b=vWWXKuSTB9vPgK2KNPVbL5AwGdSDmo/rpOW6WsTmUjBr339XkR24IHR6Mb6aT8D0O
+	 a+GALBYziJVqcxmdXeeOwmO0ASMNV1ZmqSQ+zqgxZ7LptzlvLiG99Frfh+iC8VlI0j
+	 MqG2OskhI/9ljChS4bNUhg5WSZJEdAH/TC5q5J1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 480/491] media: device property: Return true in fwnode_device_is_available for NULL ops
-Date: Mon, 13 Apr 2026 18:02:05 +0200
-Message-ID: <20260413155837.022688904@linuxfoundation.org>
+Subject: [PATCH 5.10 481/491] device property: Retrieve fwnode from of_node via accessor
+Date: Mon, 13 Apr 2026 18:02:06 +0200
+Message-ID: <20260413155837.059968617@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -72,33 +67,33 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237573-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ideasonboard.com,linux.intel.com,gmail.com,intel.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237574-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.979];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8A7AA3F1442
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0E6703F1440
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -106,50 +101,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Daniel Scally <djrscally@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-[ Upstream commit 5273382d03763277aaf8c6a2d6088e2afaee0cf0 ]
+[ Upstream commit 3cd8015040d7537a6b88e26f36768a90d9247829 ]
 
-Some types of fwnode_handle do not implement the device_is_available()
-check, such as those created by software_nodes. There isn't really a
-meaningful way to check for the availability of a device that doesn't
-actually exist, so if the check isn't implemented just assume that the
-"device" is present.
+OF provides a specific accessor to retrieve fwnode handle.
+Use it instead of direct dereferencing.
 
-Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Daniel Scally <djrscally@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Stable-dep-of: 2692c614f8f0 ("device property: Allow secondary lookup in fwnode_get_next_child_node()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/property.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/base/property.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 --- a/drivers/base/property.c
 +++ b/drivers/base/property.c
-@@ -837,9 +837,15 @@ EXPORT_SYMBOL_GPL(fwnode_handle_put);
- /**
-  * fwnode_device_is_available - check if a device is available for use
-  * @fwnode: Pointer to the fwnode of the device.
-+ *
-+ * For fwnode node types that don't implement the .device_is_available()
-+ * operation, this function returns true.
-  */
- bool fwnode_device_is_available(const struct fwnode_handle *fwnode)
+@@ -21,7 +21,7 @@
+ struct fwnode_handle *dev_fwnode(const struct device *dev)
  {
-+	if (!fwnode_has_op(fwnode, device_is_available))
-+		return true;
-+
- 	return fwnode_call_bool_op(fwnode, device_is_available);
+ 	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+-		&dev->of_node->fwnode : dev->fwnode;
++		of_fwnode_handle(dev->of_node) : dev->fwnode;
  }
- EXPORT_SYMBOL_GPL(fwnode_device_is_available);
+ EXPORT_SYMBOL_GPL(dev_fwnode);
+ 
+@@ -763,7 +763,7 @@ struct fwnode_handle *device_get_next_ch
+ 	struct fwnode_handle *fwnode = NULL, *next;
+ 
+ 	if (dev->of_node)
+-		fwnode = &dev->of_node->fwnode;
++		fwnode = of_fwnode_handle(dev->of_node);
+ 	else if (adev)
+ 		fwnode = acpi_fwnode_handle(adev);
+ 
 
 
 
