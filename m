@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-237551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNrGEo0j3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:37 +0200
+	id 2MgeLN4e3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5853F0E51
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8F53EFF4A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3BBC830AD263
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 644B030C4D35
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE3033EB0E;
-	Mon, 13 Apr 2026 17:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CA2313535;
+	Mon, 13 Apr 2026 16:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAyPp2J7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3P8XnKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3740299929;
-	Mon, 13 Apr 2026 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AFF3112C0;
+	Mon, 13 Apr 2026 16:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099746; cv=none; b=ifH5EzHhadI4XNuDebVRgFuI81o/JbMaCVgCjamd1x5m+btZssfcg8zHvoO+NEpZZvf9j/PAa7vK1jncrGSStvomNINty09M5LGEpSuH8uJgsv2kow3+6am/gcFrPTQcbzh8uvm6WWdh3v4ObH7kZH+RgQfWUxp5XPGP+MP9CZc=
+	t=1776098481; cv=none; b=THK56Xzo39Su0lzmYK9tHBoOonYTypMhWEwywwrzfyg3NBv2IjRyri0pP+qTmfPwCDAExowNm7qvsiVZHLmIIQV8YsLQ82y1/SoAj0YzXqXxU1JkaQee3009a42yBI6ntE4dFIGUBM72hdnOzsfSaFVCVBPUUaqRHZQ7UfETdhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099746; c=relaxed/simple;
-	bh=1TvWQW+tcW/6bD1riYR7kzOJzmqiCoGmnrgN87rYGxc=;
+	s=arc-20240116; t=1776098481; c=relaxed/simple;
+	bh=aUQlTrquwWMTvYtYADs/7301wj90NeKxT3u/taOE7x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fstnEnMqpvrN1jcubyY7eV974FwAfBZT6smsHNiJo2nSwhVN5papLI37cnhQzng7gwEudBVRuLVpELRLaiF3zTECMwCqN45LXeEKRQ4ux8mjZaUa2PvGo9ItTzKbbQuU4xt3aW3dn+LM3H13HQaZvby+ncnLWkonG76sx2+24yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAyPp2J7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF65C2BCAF;
-	Mon, 13 Apr 2026 17:02:26 +0000 (UTC)
+	 MIME-Version; b=DruJZvuj9XHxUJ7UV0ZHjQlVViq0dRvLYH1Ayf+9RwrpsdlFDFbdWCu/mqJMXa41CUXQZxZvSjPa+p83fKVZXKJK8+BOCKMxW/AdJh4qhRTmHxA2cunE1DfB6VX8tCVJHLXv56c8RZZmTPW0BSKnIwuFKfIR53iiDkheA2iZCwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3P8XnKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3C6C2BCAF;
+	Mon, 13 Apr 2026 16:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099746;
-	bh=1TvWQW+tcW/6bD1riYR7kzOJzmqiCoGmnrgN87rYGxc=;
+	s=korg; t=1776098481;
+	bh=aUQlTrquwWMTvYtYADs/7301wj90NeKxT3u/taOE7x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAyPp2J7CHiGxpi2inM5kAg4yDgeb1CljX2LJ9YGc/rPv2tVQzn3XtUWOPs7qUvYH
-	 aIu3YUlpjjT9BwrhIb3exrDkeeiBZkVcUjWxYIZU8U2KfuVl1AZ1ZrrdsHoHSyP6O4
-	 RTe6EMfq+cQJ1fKssaWYvURqjjDxa8B7uBaZ6q50=
+	b=N3P8XnKpqCydp3T/Z8eYvcOhvPc+k71bgLklNUjneFcd8w7dX2cqjo3Lgc0lWBk5W
+	 XWwDLHNxH43Y2FBldfiUaejh+sTgcMn/0wqeNLCZEI9vf5TOnr15pRLgzcV+0g8GJD
+	 3FOxZzsSg0BEd/syUSeChP0x+SrQSMFH40Nuw6fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 426/491] media: uvcvideo: Allow extra entities
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 540/570] rxrpc: Fix key/keyring checks in setsockopt(RXRPC_SECURITY_KEY/KEYRING)
 Date: Mon, 13 Apr 2026 18:01:11 +0200
-Message-ID: <20260413155834.976642542@linuxfoundation.org>
+Message-ID: <20260413155850.673355098@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +70,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237058-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,auristor.com,allelesecurity.com,gmail.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237551-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DD5853F0E51
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,allelesecurity.com:email]
+X-Rspamd-Queue-Id: 1E8F53EFF4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit cae79e50d1222010fde8c522410c315f74d35c40 ]
+commit 2afd86ccbb2082a3c4258aea8c07e5bb6267bc2f upstream.
 
-Increase the size of the id, to avoid collisions with entities
-implemented by the driver that are not part of the UVC device.
+An AF_RXRPC socket can be both client and server at the same time.  When
+sending new calls (ie. it's acting as a client), it uses rx->key to set the
+security, and when accepting incoming calls (ie. it's acting as a server),
+it uses rx->securities.
 
-Entities exposed by the UVC device use IDs 0-255, extra entities
-implemented by the driver (such as the GPIO entity) use IDs 256 and
-up.
+setsockopt(RXRPC_SECURITY_KEY) sets rx->key to point to an rxrpc-type key
+and setsockopt(RXRPC_SECURITY_KEYRING) sets rx->securities to point to a
+keyring of rxrpc_s-type keys.
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Now, it should be possible to use both rx->key and rx->securities on the
+same socket - but for userspace AF_RXRPC sockets rxrpc_setsockopt()
+prevents that.
+
+Fix this by:
+
+ (1) Remove the incorrect check rxrpc_setsockopt(RXRPC_SECURITY_KEYRING)
+     makes on rx->key.
+
+ (2) Move the check that rxrpc_setsockopt(RXRPC_SECURITY_KEY) makes on
+     rx->key down into rxrpc_request_key().
+
+ (3) Remove rxrpc_request_key()'s check on rx->securities.
+
+This (in combination with a previous patch) pushes the checks down into the
+functions that set those pointers and removes the cross-checks that prevent
+both key and keyring being set.
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Luxiao Xu <rakukuip@gmail.com>
+cc: Yuan Tan <yuantan098@gmail.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-16-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 2 +-
- drivers/media/usb/uvc/uvcvideo.h   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ net/rxrpc/af_rxrpc.c |    6 ------
+ net/rxrpc/key.c      |    2 +-
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 15202269194ad..e1d3e753e80ed 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -1037,7 +1037,7 @@ static const u8 uvc_media_transport_input_guid[16] =
- 	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
- static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
+--- a/net/rxrpc/af_rxrpc.c
++++ b/net/rxrpc/af_rxrpc.c
+@@ -615,9 +615,6 @@ static int rxrpc_setsockopt(struct socke
+ 			goto success;
  
--static struct uvc_entity *uvc_alloc_entity(u16 type, u8 id,
-+static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
- 		unsigned int num_pads, unsigned int extra_size)
- {
- 	struct uvc_entity *entity;
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 656ab4d9356c2..0e4209dbf307f 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -302,7 +302,12 @@ struct uvc_entity {
- 					 * chain. */
- 	unsigned int flags;
+ 		case RXRPC_SECURITY_KEY:
+-			ret = -EINVAL;
+-			if (rx->key)
+-				goto error;
+ 			ret = -EISCONN;
+ 			if (rx->sk.sk_state != RXRPC_UNBOUND)
+ 				goto error;
+@@ -625,9 +622,6 @@ static int rxrpc_setsockopt(struct socke
+ 			goto error;
  
--	u8 id;
-+	/*
-+	 * Entities exposed by the UVC device use IDs 0-255, extra entities
-+	 * implemented by the driver (such as the GPIO entity) use IDs 256 and
-+	 * up.
-+	 */
-+	u16 id;
- 	u16 type;
- 	char name[64];
- 	u8 guid[16];
--- 
-2.53.0
-
+ 		case RXRPC_SECURITY_KEYRING:
+-			ret = -EINVAL;
+-			if (rx->key)
+-				goto error;
+ 			ret = -EISCONN;
+ 			if (rx->sk.sk_state != RXRPC_UNBOUND)
+ 				goto error;
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -452,7 +452,7 @@ int rxrpc_request_key(struct rxrpc_sock
+ 
+ 	_enter("");
+ 
+-	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->securities)
++	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->key)
+ 		return -EINVAL;
+ 
+ 	description = memdup_sockptr_nul(optval, optlen);
 
 
 
