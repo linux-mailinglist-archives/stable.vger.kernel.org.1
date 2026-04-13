@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-237038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACH3CpEc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-237038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:49 +0200
+	id gCxVHJkY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC66C3EF7FE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EFD3EECAB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E90F3019763
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3294C30A37BA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3112330DEAC;
-	Mon, 13 Apr 2026 16:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A582877E5;
+	Mon, 13 Apr 2026 16:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Anh4FiN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yI4boHLY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C5530BBAE;
-	Mon, 13 Apr 2026 16:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E3725A2C9;
+	Mon, 13 Apr 2026 16:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098430; cv=none; b=ft+F9vxHOdaCR7M9ycyJB33PWw3SX03G9cxo90PNzpWWxODTYVg1UAiZY0A/8UTyvyNOcW7vBlhKLlyR4KjmWwrzeN0G41KPT4459r++rPRqtEFzZyaWsmJT/3l7EDk8bXi8Ugo2q49/CIogxI66k1habQuNZO1cvDvEd3gbaOQ=
+	t=1776096774; cv=none; b=Ml7P5JRX/NfjlTAYh00nTpHLBuFExfhKh3we4PRaDLBaqzOcUB80MFSVuELHheA+VIFq7fwHhJsMG+osz/6JtP49YaZzSaiffsM8IM+t57BbmVqzb/9pStz1Bg74iGAD7tFjupGNm5uaocxnY1bvRZ1nnX8DA0tF5wW9GJufzv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098430; c=relaxed/simple;
-	bh=pbXZp8FAJsJS51Q/CT+BAyam9/kqqTLLYiMMDUCffOo=;
+	s=arc-20240116; t=1776096774; c=relaxed/simple;
+	bh=i3k9XUAEssKLt59AcbjI9rRPuHUOy7SJUfjP8g86cQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UpFV59zjgq9BWrwV7UDWZlOjytNIcpZIiSfbfhpBLOMW8feumEVrPvbYLFw9GAJ1ax8Uf6P4PWFqkAwyDTX8ciGjXQli/VNO4WQWSjLFp/V9XtF3fRETQjQh0ynY0+dgNNBwlr7DcYRqQzCdt1AoiRHFb2CKQKQtDLli2WGoADM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Anh4FiN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBDCC2BCAF;
-	Mon, 13 Apr 2026 16:40:29 +0000 (UTC)
+	 MIME-Version; b=oCHXB6E1sFeXfvKJHNQt4IRAg2lkpDgPpUInlYFWwDEEHqXFBDPYRUUJcbukhWeTwrhPG9ZshYZdUpY7M5v0jY5s+Gm387VM/1an1ANCji4vtOO48yiJayUFZSmZFTWAtHbNgQkH5Y6YQOQxBo9Eq+9DiRbOR67iivnJEyxcMX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yI4boHLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AAFBC2BCAF;
+	Mon, 13 Apr 2026 16:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098429;
-	bh=pbXZp8FAJsJS51Q/CT+BAyam9/kqqTLLYiMMDUCffOo=;
+	s=korg; t=1776096774;
+	bh=i3k9XUAEssKLt59AcbjI9rRPuHUOy7SJUfjP8g86cQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Anh4FiN3Y4Jqqt/NTEHPHYsRfSf5xMTyjaZxb3vZbv2IgPeAbdT7/EOUXsuoCR+rM
-	 ezmjXfN0ZmMEIGySBZ1EfTtbQ5i51oxdkHEv7UcDEyMUB/EywfvJL5O6F7WBWdss7n
-	 0xNW+gy+RpHLboB7iXaGhwIGeRjXYi2po7hSO9dU=
+	b=yI4boHLYkOIFYSj5OSxdgABC1UFDGqfCDeJ/zuUE+lZMYG7gwybZ9DduwYoCUEjr+
+	 J2W68wnLAHtJuqwuwiveM1BSy8J2Rl02Y2yPyTyLLMMeKkS4XM2yQmWkTA2m3w/VwS
+	 HISOu4pijKCfMZO1lI8qFKpBicAPG0idDKdIE9bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.15 522/570] apparmor: fix unprivileged local user can do privileged policy management
+	David Carlier <devnexen@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 58/70] net: lan966x: fix page_pool error handling in lan966x_fdma_rx_alloc_page_pool()
 Date: Mon, 13 Apr 2026 18:00:53 +0200
-Message-ID: <20260413155850.002858811@linuxfoundation.org>
+Message-ID: <20260413155730.350368565@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,226 +65,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236387-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237038-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,canonical.com:email]
-X-Rspamd-Queue-Id: BC66C3EF7FE
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 00EFD3EECAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 6601e13e82841879406bf9f369032656f441a425 upstream.
+commit 3fd0da4fd8851a7e62d009b7db6c4a05b092bc19 upstream.
 
-Backport for api changes introduced in
-- 90c436a64a6e ("apparmor: pass cred through to audit info.")
-- 92de220a7f33 ("apparmor: update policy capable checks to use a label")
+page_pool_create() can return an ERR_PTR on failure. The return value
+is used unconditionally in the loop that follows, passing the error
+pointer through xdp_rxq_info_reg_mem_model() into page_pool_use_xdp_mem(),
+which dereferences it, causing a kernel oops.
 
-An unprivileged local user can load, replace, and remove profiles by
-opening the apparmorfs interfaces, via a confused deputy attack, by
-passing the opened fd to a privileged process, and getting the
-privileged process to write to the interface.
+Add an IS_ERR check after page_pool_create() to return early on failure.
 
-This does require a privileged target that can be manipulated to do
-the write for the unprivileged process, but once such access is
-achieved full policy management is possible and all the possible
-implications that implies: removing confinement, DoS of system or
-target applications by denying all execution, by-passing the
-unprivileged user namespace restriction, to exploiting kernel bugs for
-a local privilege escalation.
-
-The policy management interface can not have its permissions simply
-changed from 0666 to 0600 because non-root processes need to be able
-to load policy to different policy namespaces.
-
-Instead ensure the task writing the interface has privileges that
-are a subset of the task that opened the interface. This is already
-done via policy for confined processes, but unconfined can delegate
-access to the opened fd, by-passing the usual policy check.
-
-Fixes: b7fd2c0340eac ("apparmor: add per policy ns .load, .replace, .remove interface files")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 11871aba1974 ("net: lan96x: Use page_pool API")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260405055241.35767-2-devnexen@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/apparmorfs.c     |   19 +++++++++++-------
- security/apparmor/include/policy.h |    5 ++--
- security/apparmor/policy.c         |   39 +++++++++++++++++++++++++++++++++++--
- 3 files changed, 52 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -409,7 +409,8 @@ static struct aa_loaddata *aa_simple_wri
- }
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+@@ -91,6 +91,8 @@ static int lan966x_fdma_rx_alloc_page_po
+ 		pp_params.dma_dir = DMA_BIDIRECTIONAL;
  
- static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
--			     loff_t *pos, struct aa_ns *ns)
-+			     loff_t *pos, struct aa_ns *ns,
-+			     const struct cred *ocred)
- {
- 	struct aa_loaddata *data;
- 	struct aa_label *label;
-@@ -420,7 +421,7 @@ static ssize_t policy_update(u32 mask, c
- 	/* high level check about policy management - fine grained in
- 	 * below after unpack
- 	 */
--	error = aa_may_manage_policy(label, ns, mask);
-+	error = aa_may_manage_policy(current_cred(), label, ns, ocred, mask);
- 	if (error)
- 		goto end_section;
+ 	rx->page_pool = page_pool_create(&pp_params);
++	if (unlikely(IS_ERR(rx->page_pool)))
++		return PTR_ERR(rx->page_pool);
  
-@@ -441,7 +442,8 @@ static ssize_t profile_load(struct file
- 			    loff_t *pos)
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
--	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns);
-+	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns,
-+				  f->f_cred);
- 
- 	aa_put_ns(ns);
- 
-@@ -459,7 +461,7 @@ static ssize_t profile_replace(struct fi
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
- 	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
--				  buf, size, pos, ns);
-+				  buf, size, pos, ns, f->f_cred);
- 	aa_put_ns(ns);
- 
- 	return error;
-@@ -483,7 +485,8 @@ static ssize_t profile_remove(struct fil
- 	/* high level check about policy management - fine grained in
- 	 * below after unpack
- 	 */
--	error = aa_may_manage_policy(label, ns, AA_MAY_REMOVE_POLICY);
-+	error = aa_may_manage_policy(current_cred(), label, ns,
-+				     f->f_cred, AA_MAY_REMOVE_POLICY);
- 	if (error)
- 		goto out;
- 
-@@ -1797,7 +1800,8 @@ static int ns_mkdir_op(struct user_names
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(label, NULL, AA_MAY_LOAD_POLICY);
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
-+				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
- 		return error;
-@@ -1846,7 +1850,8 @@ static int ns_rmdir_op(struct inode *dir
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(label, NULL, AA_MAY_LOAD_POLICY);
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
-+				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
- 		return error;
---- a/security/apparmor/include/policy.h
-+++ b/security/apparmor/include/policy.h
-@@ -303,7 +303,8 @@ static inline int AUDIT_MODE(struct aa_p
- 
- bool policy_view_capable(struct aa_ns *ns);
- bool policy_admin_capable(struct aa_ns *ns);
--int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns,
--			 u32 mask);
-+int aa_may_manage_policy(const struct cred *subj_cred,
-+			 struct aa_label *label, struct aa_ns *ns,
-+			 const struct cred *ocred, u32 mask);
- 
- #endif /* __AA_POLICY_H */
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -695,14 +695,44 @@ bool policy_admin_capable(struct aa_ns *
- 	return policy_view_capable(ns) && capable && !aa_g_lock_policy;
- }
- 
-+static bool is_subset_of_obj_privilege(const struct cred *cred,
-+				       struct aa_label *label,
-+				       const struct cred *ocred)
-+{
-+	if (cred == ocred)
-+		return true;
-+
-+	if (!aa_label_is_subset(label, cred_label(ocred)))
-+		return false;
-+	/* don't allow crossing userns for now */
-+	if (cred->user_ns != ocred->user_ns)
-+		return false;
-+	if (!cap_issubset(cred->cap_inheritable, ocred->cap_inheritable))
-+		return false;
-+	if (!cap_issubset(cred->cap_permitted, ocred->cap_permitted))
-+		return false;
-+	if (!cap_issubset(cred->cap_effective, ocred->cap_effective))
-+		return false;
-+	if (!cap_issubset(cred->cap_bset, ocred->cap_bset))
-+		return false;
-+	if (!cap_issubset(cred->cap_ambient, ocred->cap_ambient))
-+		return false;
-+	return true;
-+}
-+
-+
- /**
-  * aa_may_manage_policy - can the current task manage policy
-+ * @subj_cred; subjects cred
-  * @label: label to check if it can manage policy
-- * @op: the policy manipulation operation being done
-+ * @ns: namespace being managed by @label (may be NULL if @label's ns)
-+ * @ocred: object cred if request is coming from an open object
-+ * @mask: contains the policy manipulation operation being done
-  *
-  * Returns: 0 if the task is allowed to manipulate policy else error
-  */
--int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns, u32 mask)
-+int aa_may_manage_policy(const struct cred *subj_cred, struct aa_label *label,
-+			 struct aa_ns *ns, const struct cred *ocred, u32 mask)
- {
- 	const char *op;
- 
-@@ -718,6 +748,11 @@ int aa_may_manage_policy(struct aa_label
- 		return audit_policy(label, op, NULL, NULL, "policy_locked",
- 				    -EACCES);
- 
-+	if (ocred && !is_subset_of_obj_privilege(subj_cred, label, ocred))
-+		return audit_policy(label, op, NULL, NULL,
-+				    "not privileged for target profile",
-+				    -EACCES);
-+
- 	if (!policy_admin_capable(ns))
- 		return audit_policy(label, op, NULL, NULL, "not policy admin",
- 				    -EACCES);
+ 	for (int i = 0; i < lan966x->num_phys_ports; ++i) {
+ 		struct lan966x_port *port;
 
 
 
