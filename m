@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKoZCbkb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:13 +0200
+	id SB62H3UU3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:06:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA313EF623
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D263EE502
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 722143026CE2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38B533029A76
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2C330EF80;
-	Mon, 13 Apr 2026 16:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D962724DCF6;
+	Mon, 13 Apr 2026 16:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Qu5nMjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPtkHENO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9326B971;
-	Mon, 13 Apr 2026 16:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8FC1D6DB5;
+	Mon, 13 Apr 2026 16:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098179; cv=none; b=mxu6Y9bvSKGNtFfqCiRashjAdB+7lkEnsTfbwhU968YAt2t1CkvoGOcFWJu40lCaGQpxG8drzZD6aKeZUrFFna6hEeniAZA7akak/yoVnT3Vj8+vHgfj0gM6FML4U3CoG3qE2BlXsVoiqhvR2PTsd8hU4IfShiftzk05iDeklCg=
+	t=1776096274; cv=none; b=JXNrYkQcvxgUsKnz3lk7krXdTyPBrpmDC8j1WSujE20B/rL9tyAXDo9pF1BLbsBEVJ2h+iIorbn7S8HRBqX8O5nOXLtlDywZ6lbsMshtfD4fbM469Im/tF14rJ+MH6HXVdZdDWnxEhv+yAkD+CSMm6cqoLDyZowRKrIZFa7sZMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098179; c=relaxed/simple;
-	bh=hPgImQ2GX9D8QxnrxH4LCdRLMs/rI0mx+YA6tbDNsbA=;
+	s=arc-20240116; t=1776096274; c=relaxed/simple;
+	bh=ubO9KwSn+KJUEJTsklvBGbB6bPlym8hRiSs97uxhl7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTzR2gfNMJDJJ94xW2XdcmPfswVE88Ds8Ni0XKaTfUp92/WVZCrgqYFBMzDYx3DgYYMh9Sni0XmCr/tdOg1TtPHyvMIySurLaftRd3unkouWsDj3vOJ5RK8TWLRa8mU0RE03v76qskkK5uxKfvv9E1dB6EMMP9bLe3x4Ii7g24E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Qu5nMjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EB1C2BCAF;
-	Mon, 13 Apr 2026 16:36:18 +0000 (UTC)
+	 MIME-Version; b=hrM9rjyMtWJ01lvgA1igUCpwD3oBtJEb/pVSIiQD9I7JQ1dTznLzhq6Lv7VPiilKz5wHGcMc81uI9oDXGgTphHtXABzyxJgk0I0O4noxLX5/yVGI0TjiI+uGJNrblEsn/YGcsI3eg0J/DDP9/HB9twt7mqqPrFj/8EHTG4KOIT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPtkHENO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3394EC2BCAF;
+	Mon, 13 Apr 2026 16:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098179;
-	bh=hPgImQ2GX9D8QxnrxH4LCdRLMs/rI0mx+YA6tbDNsbA=;
+	s=korg; t=1776096274;
+	bh=ubO9KwSn+KJUEJTsklvBGbB6bPlym8hRiSs97uxhl7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Qu5nMjIEwhWcvzXc2SvMZJpF8Ql9j8mx9hwxyr2W/0ahddxnjnR3DCxHwpKSF0Rs
-	 j8cIiFRZ90+obeChxBL8NNdJ4ZbjhDzQobnLA9HzWR2zJc/URMdGKduvnqXHB4xOtE
-	 SMHLn1mYX6pl7heL4d1wOnhw+6GB2VT8Bq34qsac=
+	b=FPtkHENOjrkyhIYJBWrlYbgKFfdmFB0socRQU2+AejcP0BE7ArU7U9JXGs1VRW+Bk
+	 pFSyKWw9IMpsb1YmyCgWJcjf7nV9TgNLj69kFSPonaXEgmbhSpzhNZdE6YUeYMkLCv
+	 W2GEF2I+rvzErHCW3rVBrfcr+5UkvjYyeK6pt4WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 424/570] netfilter: ctnetlink: zero expect NAT fields when CTA_EXPECT_NAT absent
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 08/86] mptcp: fix slab-use-after-free in __inet_lookup_established
 Date: Mon, 13 Apr 2026 17:59:15 +0200
-Message-ID: <20260413155846.354760264@linuxfoundation.org>
+Message-ID: <20260413155731.884152105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +68,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236939-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-236190-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,netfilter.org:email]
-X-Rspamd-Queue-Id: DBA313EF623
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: F3D263EE502
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 35177c6877134a21315f37d57a5577846225623e ]
+commit 9b55b253907e7431210483519c5ad711a37dafa1 upstream.
 
-ctnetlink_alloc_expect() allocates expectations from a non-zeroing
-slab cache via nf_ct_expect_alloc().  When CTA_EXPECT_NAT is not
-present in the netlink message, saved_addr and saved_proto are
-never initialized.  Stale data from a previous slab occupant can
-then be dumped to userspace by ctnetlink_exp_dump_expect(), which
-checks these fields to decide whether to emit CTA_EXPECT_NAT.
+The ehash table lookups are lockless and rely on
+SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
+during RCU read-side critical sections. Both tcp_prot and
+tcpv6_prot have their slab caches created with this flag
+via proto_register().
 
-The safe sibling nf_ct_expect_init(), used by the packet path,
-explicitly zeroes these fields.
+However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
+tcpv6_prot_override during inet_init() (fs_initcall, level 5),
+before inet6_init() (module_init/device_initcall, level 6) has
+called proto_register(&tcpv6_prot). At that point,
+tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
+remains NULL permanently.
 
-Zero saved_addr, saved_proto and dir in the else branch, guarded
-by IS_ENABLED(CONFIG_NF_NAT) since these fields only exist when
-NAT is enabled.
+This causes MPTCP v6 subflow child sockets to be allocated via
+kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
+cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
+when these sockets are freed without SOCK_RCU_FREE (which is
+cleared for child sockets by design), the memory can be
+immediately reused. Concurrent ehash lookups under
+rcu_read_lock can then access freed memory, triggering a
+slab-use-after-free in __inet_lookup_established.
 
-Confirmed by priming the expect slab with NAT-bearing expectations,
-freeing them, creating a new expectation without CTA_EXPECT_NAT,
-and observing that the ctnetlink dump emits a spurious
-CTA_EXPECT_NAT containing stale data from the prior allocation.
+Fix this by splitting the IPv6-specific initialization out of
+mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
+from mptcp_proto_v6_init() before protocol registration. This
+ensures tcpv6_prot_override.slab correctly inherits the
+SLAB_TYPESAFE_BY_RCU slab cache.
 
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260406031512.189159-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/mptcp/protocol.c |    2 ++
+ net/mptcp/protocol.h |    1 +
+ net/mptcp/subflow.c  |   15 +++++++++------
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 5087ab9b137f2..def356f828cd8 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3580,6 +3580,12 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 						 exp, nf_ct_l3num(ct));
- 		if (err < 0)
- 			goto err_out;
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	} else {
-+		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
-+		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
-+		exp->dir = 0;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -4456,6 +4456,8 @@ int __init mptcp_proto_v6_init(void)
+ {
+ 	int err;
+ 
++	mptcp_subflow_v6_init();
++
+ 	mptcp_v6_prot = mptcp_prot;
+ 	strscpy(mptcp_v6_prot.name, "MPTCPv6", sizeof(mptcp_v6_prot.name));
+ 	mptcp_v6_prot.slab = NULL;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -875,6 +875,7 @@ static inline void mptcp_subflow_tcp_fal
+ void __init mptcp_proto_init(void);
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+ int __init mptcp_proto_v6_init(void);
++void __init mptcp_subflow_v6_init(void);
+ #endif
+ 
+ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -2167,7 +2167,15 @@ void __init mptcp_subflow_init(void)
+ 	tcp_prot_override.psock_update_sk_prot = NULL;
+ #endif
+ 
++	mptcp_diag_subflow_init(&subflow_ulp_ops);
++
++	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
++		panic("MPTCP: failed to register subflows to ULP\n");
++}
++
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
++void __init mptcp_subflow_v6_init(void)
++{
+ 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
+ 	 * structures for v4 and v6 have the same size. It should not changed in
+ 	 * the future but better to make sure to be warned if it is no longer
+@@ -2206,10 +2214,5 @@ void __init mptcp_subflow_init(void)
+ 	/* Disable sockmap processing for subflows */
+ 	tcpv6_prot_override.psock_update_sk_prot = NULL;
+ #endif
+-#endif
+-
+-	mptcp_diag_subflow_init(&subflow_ulp_ops);
+-
+-	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
+-		panic("MPTCP: failed to register subflows to ULP\n");
+ }
 +#endif
- 	}
- 	return exp;
- err_out:
--- 
-2.53.0
-
 
 
 
