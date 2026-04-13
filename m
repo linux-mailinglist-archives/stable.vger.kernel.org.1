@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-236361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOYfEKkb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:57 +0200
+	id QOOnOf4h3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96283EF606
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A324D3F09F6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F07230B7656
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18952307B405
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DBC309F1C;
-	Mon, 13 Apr 2026 16:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B7F3203B6;
+	Mon, 13 Apr 2026 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wapt5vL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh/GWA5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A5D29D27A;
-	Mon, 13 Apr 2026 16:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ECC327BEC;
+	Mon, 13 Apr 2026 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096707; cv=none; b=pdw64vsO0dydp9eeLgAIUC8Cn54ETa5HyUof3wAZJ3tr9R4PaDpurdfpaEZh7gN7hAN5gJjj9/RpG9MtfO3/Ji/zbVD4I/zxk+HdSfL24hf+GfHDhMAIsiNwQxDPaMDMVyYPxthLMH/ZwjUNWducRbiIvIDZJFpeg+yAhFdjFSY=
+	t=1776099550; cv=none; b=YH4BFPSer3QnWEjzfCCS1lnKF0HcWMpOw0Jt+o7rJZ/yz0y8RApfP8sz+gJ4RUV7e2PLtHSAp3cvdxY3bA2Vk5wZPULC9TOEv5zaXQ+nw8OrM0BAGplfb1q/J9mzDSoB34/fhew9zgodpo4vmME+N9W2D2DNT3xtHB8pMv80QTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096707; c=relaxed/simple;
-	bh=u2/xWPP8NjKY8T+JaMdfPo+DP2Fio/EQnUIn7kaAxP8=;
+	s=arc-20240116; t=1776099550; c=relaxed/simple;
+	bh=JU1F+aGs7c0Jk4YRyHx8sGY77Z3G2Kjb6lK87OeLulI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X3RKuLFDx5btbnDa3tSFDjqu4xBvE4q5yyHQ4j3PYixsh69SkX/wAdm0NUdHv02yjMKZhNAL3dDGyq/shdBe7sers0EboTT1rtii94bdWbbxNCUOezxJXUsSNZJjl/BF4mJBDAfIlBjh5YO8XU55MFepCI7DAQzOMKB0yj7bvDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wapt5vL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6A9C2BCB0;
-	Mon, 13 Apr 2026 16:11:47 +0000 (UTC)
+	 MIME-Version; b=KrHCYtp3c+cBmlHNjrBgoaI1tM3UIfqunVhj9KLoBEr0V98V45kIxiDfOUVvtD73gR2Hfl7+0j4GfHaWY5aEehUBGHow9o5I9z2ciHc9MfNT+EEZc6jtX+C4uF20d0AdYuiHAFy0oZFAC5qo6xNedcM6lF1tsyX+UkIrVsaQcnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh/GWA5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30968C2BCAF;
+	Mon, 13 Apr 2026 16:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096707;
-	bh=u2/xWPP8NjKY8T+JaMdfPo+DP2Fio/EQnUIn7kaAxP8=;
+	s=korg; t=1776099550;
+	bh=JU1F+aGs7c0Jk4YRyHx8sGY77Z3G2Kjb6lK87OeLulI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wapt5vL5nykdj+5V4X/aizLy4a5KKn6skAoR4ZxrkCpk9c8JM4TCBvAwoMTLIy00M
-	 q29vi1J12YeDzUwaKcmOU8yuFGvwIkV4Us0xt4S7T7b+5kcWxMruYFV6Pm2Gr5hHkX
-	 0/8KetrJieU8adF/+/UCUV1h1FrvzNVsf3LyLHzU=
+	b=Fh/GWA5brPzzmVyHH/AlGNOHiX+YJz4yvrcgZcDVYKS7m9DfthPHlv725e9aNkKnf
+	 pFc184gEvESvyN1L6rnKgJuhGRZQz6JvD/tonL7kv56cXJDRjFjNcVeXUG+lwQ5CFO
+	 vtyPC2iP+WD6H0xKQvMXz5WQigF5VNBUc1KalYnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Santa <carlos.santa@intel.com>,
-	Ryan Neph <ryanneph@google.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 32/70] workqueue: Add pool_workqueue to pending_pwqs list when unplugging multiple inactive works
+	Francesco Lavra <flavra@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 382/491] iio: imu: st_lsm6dsx: Set FIFO ODR for accelerometer and gyroscope only
 Date: Mon, 13 Apr 2026 18:00:27 +0200
-Message-ID: <20260413155729.385647125@linuxfoundation.org>
+Message-ID: <20260413155833.334604050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,google.com,gmail.com,redhat.com,vger.kernel.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236361-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237475-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: A96283EF606
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,baylibre.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: A324D3F09F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-commit 703ccb63ae9f7444d6ff876d024e17f628103c69 upstream.
+commit 630748afa7030b272b7bee5df857e7bcf132ed51 upstream.
 
-In unplug_oldest_pwq(), the first inactive work item on the
-pool_workqueue is activated correctly. However, if multiple inactive
-works exist on the same pool_workqueue, subsequent works fail to
-activate because wq_node_nr_active.pending_pwqs is empty — the list
-insertion is skipped when the pool_workqueue is plugged.
+The st_lsm6dsx_set_fifo_odr() function, which is called when enabling and
+disabling the hardware FIFO, checks the contents of the hw->settings->batch
+array at index sensor->id, and then sets the current ODR value in sensor
+registers that depend on whether the register address is set in the above
+array element. This logic is valid for internal sensors only, i.e. the
+accelerometer and gyroscope; however, since commit c91c1c844ebd ("iio: imu:
+st_lsm6dsx: add i2c embedded controller support"), this function is called
+also when configuring the hardware FIFO for external sensors (i.e. sensors
+accessed through the sensor hub functionality), which can result in
+unrelated device registers being written.
 
-Fix this by checking for additional inactive works in
-unplug_oldest_pwq() and updating wq_node_nr_active.pending_pwqs
-accordingly.
+Add a check to the beginning of st_lsm6dsx_set_fifo_odr() so that it does
+not touch any registers unless it is called for internal sensors.
 
-Fixes: 4c065dbce1e8 ("workqueue: Enable unbound cpumask update on ordered workqueues")
-Cc: stable@vger.kernel.org
-Cc: Carlos Santa <carlos.santa@intel.com>
-Cc: Ryan Neph <ryanneph@google.com>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
+Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/workqueue.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -1856,8 +1856,20 @@ static void unplug_oldest_pwq(struct wor
- 	raw_spin_lock_irq(&pwq->pool->lock);
- 	if (pwq->plugged) {
- 		pwq->plugged = false;
--		if (pwq_activate_first_inactive(pwq, true))
-+		if (pwq_activate_first_inactive(pwq, true)) {
-+			/*
-+			 * While plugged, queueing skips activation which
-+			 * includes bumping the nr_active count and adding the
-+			 * pwq to nna->pending_pwqs if the count can't be
-+			 * obtained. We need to restore both for the pwq being
-+			 * unplugged. The first call activates the first
-+			 * inactive work item and the second, if there are more
-+			 * inactive, puts the pwq on pending_pwqs.
-+			 */
-+			pwq_activate_first_inactive(pwq, false);
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -201,6 +201,10 @@ static int st_lsm6dsx_set_fifo_odr(struc
+ 	const struct st_lsm6dsx_reg *batch_reg;
+ 	u8 data;
+ 
++	/* Only internal sensors have a FIFO ODR configuration register. */
++	if (sensor->id >= ARRAY_SIZE(hw->settings->batch))
++		return 0;
 +
- 			kick_pool(pwq->pool);
-+		}
- 	}
- 	raw_spin_unlock_irq(&pwq->pool->lock);
- }
+ 	batch_reg = &hw->settings->batch[sensor->id];
+ 	if (batch_reg->addr) {
+ 		int val;
 
 
 
