@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-236557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mO8+Agob3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:18 +0200
+	id UKz0E9kX3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1C63EF45A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E0F3EEA64
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD16F30DBCF1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:20:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01861301B04D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF4F2F8BC3;
-	Mon, 13 Apr 2026 16:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2C82EBB8C;
+	Mon, 13 Apr 2026 16:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5mcztkR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8claS9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05D02FFFA4;
-	Mon, 13 Apr 2026 16:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5027D2F6931;
+	Mon, 13 Apr 2026 16:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097213; cv=none; b=GIo77kcIk6dPEpD/DopLlNLRrzR2XgwDdZRn1cmXkmTca0+C00oFjJZeNczvDOrDgLeT6P24aHjqFcpfVbo2KIe745q1y+9xydxXdgdPatEjCb+RXgNsFIF68MwSPbOpnboInZNZq7eiNBysm8Duxybu0S5rcGshTxHTOGXGiMc=
+	t=1776097216; cv=none; b=mKCRw/5Ql/+DaA1Km7NApZUVZTi4xy5ZHm4g0/wkIyNVHVbtLZrDHdY1tiQpBY7HUzgHgPoh00YFPxbnp1HVesFJLedGk2ZKszP7eP8zB6BW4EGCt6ynBHcbSji3N1V3x9RhGQBOrNtc3fA0X33FGJwFx0/EHlBrEqZIjJ++9LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097213; c=relaxed/simple;
-	bh=mwqm9ZxjMhc2Af1UOa726MUvJJUph7zDeyrLaWOr/yE=;
+	s=arc-20240116; t=1776097216; c=relaxed/simple;
+	bh=SHKfes1oVR7sGvA7fpYSDJziw2PjHIX1mQSOkPFFdIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuVQUvwl9VVb+fAMUz3pTIZwpTC2PDJ8T0CexJ4XR+vtLvzgr3/xHd1o8rT9I9stuYOR15jyvey7dC17/alV337SxxsEdDWX1P74HsfIPbZLsSM1jsvXGIDJTxkcCW8YwW3Sq3rDMBLWSwQ0v8MMDuEaxKnEjsAI+7NThV2lhdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5mcztkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E73C2BCAF;
-	Mon, 13 Apr 2026 16:20:13 +0000 (UTC)
+	 MIME-Version; b=IwfwC3zs7wIFb3ZJqUtqJxC6C5mNOpXK5uPsz6TgUNS+OazZV4LPrpdlhfg4gE6i0k9BLgqh/dZSwuxpaDJKekOot9xjzVBKC+KHdan/o6vTen+R05GEuslieuj7eHWvM22fs38WV9sxczPel8dV7NgKAdBha/mKkyje9UZNoyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8claS9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA54FC2BCB3;
+	Mon, 13 Apr 2026 16:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097213;
-	bh=mwqm9ZxjMhc2Af1UOa726MUvJJUph7zDeyrLaWOr/yE=;
+	s=korg; t=1776097216;
+	bh=SHKfes1oVR7sGvA7fpYSDJziw2PjHIX1mQSOkPFFdIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5mcztkRiFT3xO+hgmu4c+CSQ8Uvp4JSyBggwbOEs3RNRw5uOPGtlrR4aipregn+A
-	 BYn5DfYdOpVwGtEwVuc+4ZZHFb8s8jy6PjOHZYwlc47Z1h54qshHdCG2JbfO0OLsHp
-	 2OXv5RBkjZE6m6+YwX4BGAG+M8PfetbI+Zmojixw=
+	b=z8claS9Xc2289jecwp25TZUCeHKX4F16DVt20bHT61u50JUvvnPMxFk1KPvT39UPW
+	 NkyuPFJjbeHEXYwRQDVvUfjPVuTZ8pCWxRu/dpTiQKZJX/98HlXK/PF4UoOzdZ0CfV
+	 3vCkLnvcVNd25IgqlM0qqZ+4jdm/hIfEqEJdzAeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	stable@kernel.org
-Subject: [PATCH 5.15 048/570] can: ucan: Fix infinite loop from zero-length messages
-Date: Mon, 13 Apr 2026 17:52:59 +0200
-Message-ID: <20260413155832.239501637@linuxfoundation.org>
+Subject: [PATCH 5.15 049/570] can: usb: etas_es58x: correctly anchor the urb in the read bulk callback
+Date: Mon, 13 Apr 2026 17:53:00 +0200
+Message-ID: <20260413155832.277856643@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236557-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236558-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pengutronix.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7E1C63EF45A
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,pengutronix.de:email]
+X-Rspamd-Queue-Id: 30E0F3EEA64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,42 +101,50 @@ X-Rspamd-Server: lfdr
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 1e446fd0582ad8be9f6dafb115fc2e7245f9bea7 upstream.
+commit 5eaad4f768266f1f17e01232ffe2ef009f8129b7 upstream.
 
-If a broken ucan device gets a message with the message length field set
-to 0, then the driver will loop for forever in
-ucan_read_bulk_callback(), hanging the system.  If the length is 0, just
-skip the message and go on to the next one.
+When submitting an urb, that is using the anchor pattern, it needs to be
+anchored before submitting it otherwise it could be leaked if
+usb_kill_anchored_urbs() is called.  This logic is correctly done
+elsewhere in the driver, except in the read bulk callback so do that
+here also.
 
-This has been fixed in the kvaser_usb driver in the past in commit
-0c73772cd2b8 ("can: kvaser_usb: leaf: Fix potential infinite loop in
-command parsers"), so there must be some broken devices out there like
-this somewhere.
-
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: stable@kernel.org
 Assisted-by: gkh_clanker_2000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022319-huff-absurd-6a18@gregkh
-Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Tested-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/2026022320-poser-stiffly-9d84@gregkh
+Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/ucan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/etas_es58x/es58x_core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -747,7 +747,7 @@ static void ucan_read_bulk_callback(stru
- 		len = le16_to_cpu(m->len);
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -1467,12 +1467,17 @@ static void es58x_read_bulk_callback(str
+ 			  urb->transfer_buffer, urb->transfer_buffer_length,
+ 			  es58x_read_bulk_callback, es58x_dev);
  
- 		/* check sanity (length of content) */
--		if (urb->actual_length - pos < len) {
-+		if ((len == 0) || (urb->actual_length - pos < len)) {
- 			netdev_warn(up->netdev,
- 				    "invalid message (short; no data; l:%d)\n",
- 				    urb->actual_length);
++	usb_anchor_urb(urb, &es58x_dev->rx_urbs);
+ 	ret = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!ret)
++		return;
++
++	usb_unanchor_urb(urb);
+ 	if (ret == -ENODEV) {
+ 		for (i = 0; i < es58x_dev->num_can_ch; i++)
+ 			if (es58x_dev->netdev[i])
+ 				netif_device_detach(es58x_dev->netdev[i]);
+-	} else if (ret)
++	} else
+ 		dev_err_ratelimited(dev,
+ 				    "Failed resubmitting read bulk urb: %pe\n",
+ 				    ERR_PTR(ret));
 
 
 
