@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMlvM5EZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:01 +0200
+	id iK/AL0If3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900133EEFE6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AC83F0109
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2706A309D21D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 89E81307BCF6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80AB279DC2;
-	Mon, 13 Apr 2026 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6F230BF4E;
+	Mon, 13 Apr 2026 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IW1V69B3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0QAFDmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1AC2727E2;
-	Mon, 13 Apr 2026 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B208F1D5AD4;
+	Mon, 13 Apr 2026 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096733; cv=none; b=pTTOKlYVhh6k7TMhPr3DB/V14UaEeAw/j1/XAyUKmionJgfTzKbWobf6CoRAUi/6zCJZvgH2uSe2NzXT5Dds0/jEoPT+cRhxgZ+cxRidSprkJEzyi75I+ZNojg8z+CWiTQmi9dxUQrkusENxj3FUI1r4CCvJG/CAkS/R5w1UCW0=
+	t=1776098390; cv=none; b=jBJPwOezVawbwz4bFGTT3VmlSbqtDL8tOGG5sO0mJOx8v7ajHbW1V4t0a1tnG8NyHQd8QvqJyMWTPG/RduRy0w9vbmD3XxorKExdpPnR85ysbv4dVP22cf/GczfMNAcQcKbzGTKDJRRZpzAz7WTOfhEUkEpL0Vzg0bq7HkE2yqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096733; c=relaxed/simple;
-	bh=m4HPKKHlkyv5qBCJQq9iLl6edooG6YUJOlu7DZ2mEPo=;
+	s=arc-20240116; t=1776098390; c=relaxed/simple;
+	bh=BbGEgRZ6kC8Ubbfg8CycqfkKa94QqtL5bLFZPM1L/JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WzI51k42BQWpRTEbvHGFf2kqxJQU4/YS6lPso5gumAtlQrmAihndkegim9vSGACrbAR3uU6UtsFcN4fB7n6Bt3yYRVAl6i5DEz2FaOLADZVGuurOGVfjZ6iOnkzP42WliTmhow+P7u7FDIm40t4EO5CN8WxO6clI1wPaBaaJBe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IW1V69B3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CC2C2BCAF;
-	Mon, 13 Apr 2026 16:12:12 +0000 (UTC)
+	 MIME-Version; b=iAq3s0qUbOOx1mT1WoKQQs18cOut9YLZ5lVgsDby+snitghCTb1xNvrYfak8jWR51dqzqHHRMsHlvHNN4JgrxI7aA49hzmJwVT9fjaUfpyQ45RXYxJLdjyQpN40TWU3ZFzxCSyu+QX34ygRM49uGe/K11eZcXD+2CqjxcXNeD3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0QAFDmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4783DC2BCAF;
+	Mon, 13 Apr 2026 16:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096733;
-	bh=m4HPKKHlkyv5qBCJQq9iLl6edooG6YUJOlu7DZ2mEPo=;
+	s=korg; t=1776098390;
+	bh=BbGEgRZ6kC8Ubbfg8CycqfkKa94QqtL5bLFZPM1L/JM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IW1V69B33vJO4JtBB0aCs3gD78NFj0E0iczEmRqI1GpqYlCMp7Poegibt48rN9qgs
-	 AaJTxk4u99ECbm7eP9gO9+9PP+vznl1s2LSEkr3pwwRsg+EuUnAo8DxEKzKzjgeEBW
-	 frOamzazCgxXPjhKQ82lZdx5CaaGPLdrA93DO9CQ=
+	b=y0QAFDmqXvIua/nsNsYM3QR0tv6x73dIPUxp/CKlPF3T40cL4jpJxCfft2PIfAWa4
+	 FUUIOGQMhHpgxft5yl71KsOftKGtD3aiOeZhf3ptUGSBp6+/Rn1gwHc2+XObNQ58NU
+	 rzixkJgIcM24LX7X0pF7tZpMeryjpAKXlP3UD4j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 41/70] nfc: pn533: allocate rx skb before consuming bytes
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.15 505/570] lib/crypto: chacha: Zeroize permuted_state before it leaves scope
 Date: Mon, 13 Apr 2026 18:00:36 +0200
-Message-ID: <20260413155729.713055558@linuxfoundation.org>
+Message-ID: <20260413155849.370112155@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,81 +77,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236371-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237023-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 900133EEFE6
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 02AC83F0109
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit c71ba669b570c7b3f86ec875be222ea11dacb352 upstream.
+commit e5046823f8fa3677341b541a25af2fcb99a5b1e0 upstream.
 
-pn532_receive_buf() reports the number of accepted bytes to the serdev
-core. The current code consumes bytes into recv_skb and may already hand
-a complete frame to pn533_recv_frame() before allocating a fresh receive
-buffer.
+Since the ChaCha permutation is invertible, the local variable
+'permuted_state' is sufficient to compute the original 'state', and thus
+the key, even after the permutation has been done.
 
-If that alloc_skb() fails, the callback returns 0 even though it has
-already consumed bytes, and it leaves recv_skb as NULL for the next
-receive callback. That breaks the receive_buf() accounting contract and
-can also lead to a NULL dereference on the next skb_put_u8().
+While the kernel is quite inconsistent about zeroizing secrets on the
+stack (and some prominent userspace crypto libraries don't bother at all
+since it's not guaranteed to work anyway), the kernel does try to do it
+as a best practice, especially in cases involving the RNG.
 
-Allocate the receive skb lazily before consuming the next byte instead.
-If allocation fails, return the number of bytes already accepted.
+Thus, explicitly zeroize 'permuted_state' before it goes out of scope.
 
-Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Fixes: c08d0e647305 ("crypto: chacha20 - Add a generic ChaCha20 stream cipher implementation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260326032920.39408-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/pn533/uart.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ lib/crypto/chacha.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/nfc/pn533/uart.c
-+++ b/drivers/nfc/pn533/uart.c
-@@ -211,6 +211,13 @@ static size_t pn532_receive_buf(struct s
+--- a/lib/crypto/chacha.c
++++ b/lib/crypto/chacha.c
+@@ -86,6 +86,8 @@ void chacha_block_generic(u32 *state, u8
+ 		put_unaligned_le32(x[i] + state[i], &stream[i * sizeof(u32)]);
  
- 	del_timer(&dev->cmd_timeout);
- 	for (i = 0; i < count; i++) {
-+		if (!dev->recv_skb) {
-+			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
-+						  GFP_KERNEL);
-+			if (!dev->recv_skb)
-+				return i;
-+		}
+ 	state[12]++;
 +
- 		if (unlikely(!skb_tailroom(dev->recv_skb)))
- 			skb_trim(dev->recv_skb, 0);
++	memzero_explicit(x, sizeof(x));
+ }
+ EXPORT_SYMBOL(chacha_block_generic);
  
-@@ -219,9 +226,7 @@ static size_t pn532_receive_buf(struct s
- 			continue;
+@@ -110,5 +112,7 @@ void hchacha_block_generic(const u32 *st
  
- 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
--		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
--		if (!dev->recv_skb)
--			return 0;
-+		dev->recv_skb = NULL;
- 	}
- 
- 	return i;
+ 	memcpy(&stream[0], &x[0], 16);
+ 	memcpy(&stream[4], &x[12], 16);
++
++	memzero_explicit(x, sizeof(x));
+ }
+ EXPORT_SYMBOL(hchacha_block_generic);
 
 
 
