@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-236707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHzLAjsh3Wn4aAkAu9opvQ
-	(envelope-from <stable+bounces-236707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:43 +0200
+	id YFE5GpQZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544A13F0798
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E853EEFEE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 065903293F2F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A696E3024097
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABBD24DCF6;
-	Mon, 13 Apr 2026 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E71C3090F5;
+	Mon, 13 Apr 2026 16:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVDnejV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPKkkDcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8853090F5;
-	Mon, 13 Apr 2026 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1201C2E11B9;
+	Mon, 13 Apr 2026 16:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097589; cv=none; b=rFkhQZ2slNkDSncbuBCANLhSQ5DtulgUnfQhLINF3Okr5D5TUDJm+c5J9BFjYyejMIa9Fcz1M0G9di6mf8DXzNauXgQ9Bc4sAhlPR/qpqsGxTkCPiGjj/DtS1Y61TcwQyGit6Bqm6QId8RsFFJBg7meqWKDHYsytW21v/uyQrr8=
+	t=1776097592; cv=none; b=gS3AvQOVMWi7qtuKqVQaTH8unWqg19Ez4/56pm76qSYYUvuz2SWuhxKJDl1l2kMeGXPyxfpK8jQnfH3zvLekLywQkvTxuJx9QlqbAiZpHu58QPeZBozp+T0SM6k0eNps1AHRASpn3mT0mSFA7KHBviz2VUbP5b6uFlh5FSnff8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097589; c=relaxed/simple;
-	bh=8v0vVHbzspQbDoEyGG2zzNZA5uLGzXNWwgopEFTtMAA=;
+	s=arc-20240116; t=1776097592; c=relaxed/simple;
+	bh=Na0XhSMZzUdwlhxDpnLvWa3H0DwUaMn/4OeY6rmPRUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbh9Xb+AYlF4g3TFEnopur3m+Ba7TB6i1T1py5RogHO99ttdacsNKYjEzklBYRj6mlhuEruUpYxbVh7E+yKymKo/N/5X1jBxim1ynvI5eoGw7wnWmSYRJ0ESCERwkYWNCMoYXJeUPByFe/fkLxNw3NNQ7Mkp3thdODUqAGkoHnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVDnejV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E6FC2BCAF;
-	Mon, 13 Apr 2026 16:26:28 +0000 (UTC)
+	 MIME-Version; b=SBWZxEyJLqzkKJ/WH5PVc2fEDALg6ZKvUprYUttuMnO6QS3YFiVwXoDe+SZsb+WWVDpcJ49tddZONcPvtR2uDKFm1SKfUXNIHtLo65rRbWq4uxk532ghOjJAHKesvyCOwT5KR99LK76R06BETLiQ4NtghyQNpUy1Ogrz2myZggA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPKkkDcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B65AC2BCAF;
+	Mon, 13 Apr 2026 16:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097589;
-	bh=8v0vVHbzspQbDoEyGG2zzNZA5uLGzXNWwgopEFTtMAA=;
+	s=korg; t=1776097592;
+	bh=Na0XhSMZzUdwlhxDpnLvWa3H0DwUaMn/4OeY6rmPRUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVDnejV8G+LkgekKPVos50XnTEwQWwzdBZPKmGZOFRr9lhwh8Qfwrx+COA/jsPoYs
-	 Y0SltM+Rn9bN7eTQErudz17a0ePC5pNfHpmGqo+ZTzoPt8AKByuN2AKtfty4rkonz3
-	 GKkoKOaZ/9L2uRjnf9dfnFVdC3ZD9mMUBVbnDR4w=
+	b=YPKkkDcBuEmAcvG66n4vNO0OSr1uFUbFq0WCz5ItGyDKaE3YXJxjysZRSqtNTHvII
+	 VPPeQZ1AcL9TX29/7bgch5spZLztLcfyJlCsh7eLL+iwJ4WaqYL5vbbly3Si8+hluT
+	 QBWGKMxmbWwBeHZfc5BHTeF22wbcZidJp5tTBYa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ariel Silver <arielsilver77@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 163/570] media: dvb-net: fix OOB access in ULE extension header tables
-Date: Mon, 13 Apr 2026 17:54:54 +0200
-Message-ID: <20260413155836.556954078@linuxfoundation.org>
+	Long Li <longli@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 164/570] net: mana: Ring doorbell at 4 CQ wraparounds
+Date: Mon, 13 Apr 2026 17:54:55 +0200
+Message-ID: <20260413155836.593906334@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -63,36 +65,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236707-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236708-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.991];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 544A13F0798
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 36E853EEFEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,42 +100,89 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ariel Silver <arielsilver77@gmail.com>
+From: Long Li <longli@microsoft.com>
 
-commit 24d87712727a5017ad142d63940589a36cd25647 upstream.
+commit dabffd08545ffa1d7183bc45e387860984025291 upstream.
 
-The ule_mandatory_ext_handlers[] and ule_optional_ext_handlers[] tables
-in handle_one_ule_extension() are declared with 255 elements (valid
-indices 0-254), but the index htype is derived from network-controlled
-data as (ule_sndu_type & 0x00FF), giving a range of 0-255. When
-htype equals 255, an out-of-bounds read occurs on the function pointer
-table, and the OOB value may be called as a function pointer.
+MANA hardware requires at least one doorbell ring every 8 wraparounds
+of the CQ. The driver rings the doorbell as a form of flow control to
+inform hardware that CQEs have been consumed.
 
-Add a bounds check on htype against the array size before either table
-is accessed. Out-of-range values now cause the SNDU to be discarded.
+The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
+poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
+has fewer than 512 entries, a single poll call can process more than
+4 wraparounds without ringing the doorbell. The doorbell threshold
+check also uses ">" instead of ">=", delaying the ring by one extra
+CQE beyond 4 wraparounds. Combined, these issues can cause the driver
+to exceed the 8-wraparound hardware limit, leading to missed
+completions and stalled queues.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Ariel Silver <arielsilver77@gmail.com>
-Signed-off-by: Ariel Silver <arielsilver77@gmail.com>
+Fix this by capping the number of CQEs polled per call to 4 wraparounds
+of the CQ in both TX and RX paths. Also change the doorbell threshold
+from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
+reached.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20260226192833.1050807-1-longli@microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_net.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/media/dvb-core/dvb_net.c
-+++ b/drivers/media/dvb-core/dvb_net.c
-@@ -228,6 +228,9 @@ static int handle_one_ule_extension( str
- 	unsigned char hlen = (p->ule_sndu_type & 0x0700) >> 8;
- 	unsigned char htype = p->ule_sndu_type & 0x00FF;
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -798,8 +798,14 @@ static void mana_poll_tx_cq(struct mana_
+ 	ndev = txq->ndev;
+ 	apc = netdev_priv(ndev);
  
-+	if (htype >= ARRAY_SIZE(ule_mandatory_ext_handlers))
-+		return -1;
-+
- 	/* Discriminate mandatory and optional extension headers. */
- 	if (hlen == 0) {
- 		/* Mandatory extension header */
++	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
++	 * doorbell can be rung in time for the hardware's requirement
++	 * of at least one doorbell ring every 8 wraparounds.
++	 */
+ 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
+-				    CQE_POLLING_BUFFER);
++				    min((cq->gdma_cq->queue_size /
++					  COMP_ENTRY_SIZE) * 4,
++					 CQE_POLLING_BUFFER));
+ 
+ 	if (comp_read < 1)
+ 		return;
+@@ -1056,7 +1062,14 @@ static void mana_poll_rx_cq(struct mana_
+ 	struct gdma_comp *comp = cq->gdma_comp_buf;
+ 	int comp_read, i;
+ 
+-	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
++	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
++	 * doorbell can be rung in time for the hardware's requirement
++	 * of at least one doorbell ring every 8 wraparounds.
++	 */
++	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
++				    min((cq->gdma_cq->queue_size /
++					  COMP_ENTRY_SIZE) * 4,
++					 CQE_POLLING_BUFFER));
+ 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
+ 
+ 	for (i = 0; i < comp_read; i++) {
+@@ -1090,11 +1103,11 @@ static int mana_cq_handler(void *context
+ 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
+ 		cq->work_done_since_doorbell = 0;
+ 		napi_complete_done(&cq->napi, w);
+-	} else if (cq->work_done_since_doorbell >
+-		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
++	} else if (cq->work_done_since_doorbell >=
++		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
+ 		/* MANA hardware requires at least one doorbell ring every 8
+ 		 * wraparounds of CQ even if there is no need to arm the CQ.
+-		 * This driver rings the doorbell as soon as we have exceeded
++		 * This driver rings the doorbell as soon as it has processed
+ 		 * 4 wraparounds.
+ 		 */
+ 		mana_gd_ring_cq(gdma_queue, 0);
 
 
 
