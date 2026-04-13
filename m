@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-236248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OONCEHEW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:41 +0200
+	id uELmKBIf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58443EE7E4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59D93F0022
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD7FC30C41A5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6186A3042D7F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3102BDC23;
-	Mon, 13 Apr 2026 16:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CC630BF68;
+	Mon, 13 Apr 2026 16:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yC33yI1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zx5A5MGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1090F271464;
-	Mon, 13 Apr 2026 16:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEFA2D8364;
+	Mon, 13 Apr 2026 16:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096424; cv=none; b=iXeWrbPh2pr735bOLqVrcMFf9QgphEez6uQAla11DBXo1SzqewyZscOmWJtDigA8eWzAFXPl300gXQtvAZRdIuUVOMnmlfzaaaQm7B5mMZO+0BvIoEDqJ4phi1kcdOzl5Zu4X2s+DwO6LnVZS+TL/N0xqiUaNfSi8+ieaPVYLcg=
+	t=1776098341; cv=none; b=TVHP+/vRHSF2ilc4t45OegHUFh8gT9LMqCuNTAQOkE7Kk8EeXiB5+3D3dnbqRToqjg3PVy+5ExHN9WuJK0weP2atXkZwvGJ1yaF782zcx6jAwMZ4xSv25qAtwBC/qFWjGRHlNRWTIRZxh8iCOZc2FJs/hhqBeGKVhvBsi0cWXCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096424; c=relaxed/simple;
-	bh=pntr6K4PbNhWfzsw1hOLfngkYa/i1hk5RXXvvTQS284=;
+	s=arc-20240116; t=1776098341; c=relaxed/simple;
+	bh=4oJx/WYWp2BUHerg/sdNFLFUJZ137R6wOG2tAX9wXiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YaKctthRfTWp2RM1XC3JtvmEIidfqJksW15vVv41jZq9vV/xBXtjNLuWp9hIhvsh+qloI/W+/dfjukCLjtJV+b9ee8ZcNlzU1xgEYOUNuGlASC2Fm6kKGxOewUx/77jPyrP2OCqXNCiwJFFyFSJvZ/nwzi2bs+Lxs7LJEeBL7pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yC33yI1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE18C2BCAF;
-	Mon, 13 Apr 2026 16:07:03 +0000 (UTC)
+	 MIME-Version; b=Podj7a650Bq2skdvznukN05951StSGL8qp1kuIONRDgrQg2Lj8t2S1D6xkuZaRylJXcD7N7nzLl/zOiiCeadK7Q7tIUkHFnVoCOu7JHByBwDpY2351cdc0jvaHcPNFBgDJFQYjPHtnG2rQaLV12RxvZnQ2y/AOKxsr/0VIgc2dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zx5A5MGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DB7C2BCAF;
+	Mon, 13 Apr 2026 16:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096423;
-	bh=pntr6K4PbNhWfzsw1hOLfngkYa/i1hk5RXXvvTQS284=;
+	s=korg; t=1776098341;
+	bh=4oJx/WYWp2BUHerg/sdNFLFUJZ137R6wOG2tAX9wXiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yC33yI1pqeM5+R3n4c09hON9zXjegRRCWD5AY/kt0uYsuEETQCuL4k9koNjpKenBo
-	 R2tlen9JKqnHUWCAWKRnQ0F+CLxQWe7aJS5LqPV9ZeC3taXtfMEJ0fG3cwyn1a5Ty4
-	 CMU9VWccHbrjTPq4U7kdfwKzzOUM0cgVj2rK1oD0=
+	b=Zx5A5MGpWJegbqVscg3W/dp2XiOAUiT8AqmKDbWI8xGCCAbWfo5JS4X7xFg08x4op
+	 s3e0Y+VLaeIRFi6V1D7R3gmcHqohlamGIVrEk0HEZeyvnxH92HoM83FJjWtkdS9UzR
+	 XIED5QYVcORx3I3ksbfmWAWW4KqCLL84Uk8o3Nk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 72/86] rxrpc: Fix key reference count leak from call->key
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.15 488/570] thunderbolt: Fix property read in nhi_wake_supported()
 Date: Mon, 13 Apr 2026 18:00:19 +0200
-Message-ID: <20260413155734.234656245@linuxfoundation.org>
+Message-ID: <20260413155848.736244737@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,84 +67,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236248-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237004-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,infradead.org:email,0.0.212.49:email]
-X-Rspamd-Queue-Id: A58443EE7E4
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: B59D93F0022
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-commit d666540d217e8d420544ebdfbadeedd623562733 upstream.
+commit 73a505dc48144ec72e25874e2b2a72487b02d3bc upstream.
 
-When creating a client call in rxrpc_alloc_client_call(), the code obtains
-a reference to the key.  This is never cleaned up and gets leaked when the
-call is destroyed.
+device_property_read_foo() returns 0 on success and only then modifies
+'val'. Currently, val is left uninitialized if the aforementioned
+function returns non-zero, making nhi_wake_supported() return true
+almost always (random != 0) if the property is not present in device
+firmware.
 
-Fix this by freeing call->key in rxrpc_destroy_call().
+Invert the check to make it make sense.
 
-Before the patch, it shows the key reference counter elevated:
-
-$ cat /proc/keys | grep afs@54321
-1bffe9cd I--Q--i 8053480 4169w 3b010000  1000  1000 rxrpc     afs@54321: ka
-$
-
-After the patch, the invalidated key is removed when the code exits:
-
-$ cat /proc/keys | grep afs@54321
-$
-
-Fixes: f3441d4125fc ("rxrpc: Copy client call parameters into rxrpc_call earlier")
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Co-developed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-9-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3cdb9446a117 ("thunderbolt: Add support for Intel Ice Lake")
+Cc: stable@vger.kernel.org
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/call_object.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/thunderbolt/nhi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -692,6 +692,7 @@ static void rxrpc_destroy_call(struct wo
- 	rxrpc_put_bundle(call->bundle, rxrpc_bundle_put_call);
- 	rxrpc_put_peer(call->peer, rxrpc_peer_put_call);
- 	rxrpc_put_local(call->local, rxrpc_local_put_call);
-+	key_put(call->key);
- 	call_rcu(&call->rcu, rxrpc_rcu_free_call);
- }
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1002,7 +1002,7 @@ static bool nhi_wake_supported(struct pc
+ 	 * If power rails are sustainable for wakeup from S4 this
+ 	 * property is set by the BIOS.
+ 	 */
+-	if (device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
++	if (!device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
+ 		return !!val;
  
+ 	return true;
 
 
 
