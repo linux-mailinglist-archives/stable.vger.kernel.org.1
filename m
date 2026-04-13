@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-237463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHHpCgUk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:37 +0200
+	id 6DyGMdwW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15923F0FD6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C1E3EE87C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A654D307F4E0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 682AC302B5B3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE5032FA18;
-	Mon, 13 Apr 2026 16:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CCF29B8D0;
+	Mon, 13 Apr 2026 16:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns71F+ds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHJ1R/Rr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06D332863D;
-	Mon, 13 Apr 2026 16:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1E2271464;
+	Mon, 13 Apr 2026 16:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099522; cv=none; b=P2ZIbt0iPQyz4NQqBvXhutppRWyfpkHMT31aXVirmtLdycp7HV9+T3gs7E/+pNMz+E48R0FPVIKrm2dRVHP/5Kcjjz3OyMvIY3wCfATai6jeVVbGMjnNKHLJBnOzh/8y6BumsM7ckBMSBVNYS3jycnyHjwnEpobmaekkjgWUy/c=
+	t=1776096418; cv=none; b=CVMFY7URh/mX2LFfn/OezJc1iq5is+7OTIhadqZWZNtG+3EnlT27CoxKW/O6ClhCmToFQ4iM1HChznfVefrntaT4dZUYNfpPmytC8ra10NFc/OYDYuB5S45IY5KpHCNbL3fw1BzcROrhvU1/zIbb4AYvLJod7MeC8o6PizjXDv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099522; c=relaxed/simple;
-	bh=VtnmLQvSr68gshyIjsTOyerjd2o00NUzp2xpMuUzErE=;
+	s=arc-20240116; t=1776096418; c=relaxed/simple;
+	bh=+DvuA6KADTByjohAtLvJ7Z92gznVNLSjvvOKC0dT2Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyol27nZnIENXtDbUi3M950nZZSSY2dyT5KpS6trm6WznMQu1EpoLaJo7/UCEHmlcNmTNivMgRwbRb9M4XDiYPDNkEcWNSWzbxiqYbRsg3rAPZf8Z7P8cUr4TDDMUY2RgpIFngKBS6TADUuc8+rIlvkjOkF9BTNt/6XcfuyiVxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns71F+ds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89E5C2BCAF;
-	Mon, 13 Apr 2026 16:58:41 +0000 (UTC)
+	 MIME-Version; b=Krfm3NVc1pbarlDyUlYWPFOUgijylMYbSM1oI0Lcer3L1e01LAwqo/qMvS1wnZ2mIA0jODmu/T4SMoHAAVkLSo1vS+OcevGclPykqz3NQDJ2rtnKCjkIneVyosqdLopy6PZ73lZ7yDwhwxDwX+CGCoCOgc0zTHJGoAxOgfNX3GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHJ1R/Rr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BF2C2BCAF;
+	Mon, 13 Apr 2026 16:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099522;
-	bh=VtnmLQvSr68gshyIjsTOyerjd2o00NUzp2xpMuUzErE=;
+	s=korg; t=1776096418;
+	bh=+DvuA6KADTByjohAtLvJ7Z92gznVNLSjvvOKC0dT2Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ns71F+dsNnYZq/aF1hS+gw1z/QAZwRTLL8ZTz6QHdH18h1ojsXuPqX6Osm1czHfkt
-	 KP1NV9NX/u7AswiNfKt8i2kQgChiBdQbfKnF3GXX5i+jyIXpKKOc6BcetlwBvtMyVf
-	 rVwVgWwtGh6oYjxsDwj7lCcv98/w6yKPO7rPfNmU=
+	b=VHJ1R/Rrxkgk5LiihPTZiJCjPQeI9c4/R/yU59ZadziMuVymbFbhldslyXKoBf5mM
+	 uMrEtilLWQnMRhpiv+taU/dSAuxtSQgkIKyGd/ythexs5QgqukX9xhzEWRhsszX2Jo
+	 qp60L7Acuq/YPfxHzifkXQhE626NNgJzWbpiExZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 372/491] hwmon: (occ) Fix division by zero in occ_show_power_1()
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 70/86] rxrpc: Fix use of wrong skb when comparing queued RESP challenge serial
 Date: Mon, 13 Apr 2026 18:00:17 +0200
-Message-ID: <20260413155832.961213778@linuxfoundation.org>
+Message-ID: <20260413155734.161401729@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,108 +73,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236246-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237463-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,juniper.net:email]
-X-Rspamd-Queue-Id: A15923F0FD6
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,sashiko.dev:url,auristor.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,infradead.org:email]
+X-Rspamd-Queue-Id: F2C1E3EE87C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 39e2a5bf970402a8530a319cf06122e216ba57b8 upstream.
+commit b33f5741bb187db8ff32e8f5b96def77cc94dfca upstream.
 
-In occ_show_power_1() case 1, the accumulator is divided by
-update_tag without checking for zero. If no samples have been
-collected yet (e.g. during early boot when the sensor block is
-included but hasn't been updated), update_tag is zero, causing
-a kernel divide-by-zero crash.
+In rxrpc_post_response(), the code should be comparing the challenge serial
+number from the cached response before deciding to switch to a newer
+response, but looks at the newer packet private data instead, rendering the
+comparison always false.
 
-The 2019 fix in commit 211186cae14d ("hwmon: (occ) Fix division by
-zero issue") only addressed occ_get_powr_avg() used by
-occ_show_power_2() and occ_show_power_a0(). This separate code
-path in occ_show_power_1() was missed.
+Fix this by switching to look at the older packet.
 
-Fix this by reusing the existing occ_get_powr_avg() helper, which
-already handles the zero-sample case and uses mul_u64_u32_div()
-to multiply before dividing for better precision. Move the helper
-above occ_show_power_1() so it is visible at the call site.
+Fix further[1] to substitute the new packet in place of the old one if
+newer and also to release whichever we don't use.
 
-Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260326224510.294619-2-sanman.pradhan@hpe.com
-[groeck: Fix alignment problems reported by checkpatch]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 5800b1cf3fd8 ("rxrpc: Allow CHALLENGEs to the passed to the app for a RESPONSE")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com [1]
+Link: https://patch.msgid.link/20260408121252.2249051-7-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/occ/common.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ include/trace/events/rxrpc.h |    1 +
+ net/rxrpc/conn_event.c       |    5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -422,6 +422,12 @@ static ssize_t occ_show_freq_2(struct de
- 	return sysfs_emit(buf, "%u\n", val);
- }
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -185,6 +185,7 @@
+ 	EM(rxrpc_skb_put_input,			"PUT input    ") \
+ 	EM(rxrpc_skb_put_jumbo_subpacket,	"PUT jumbo-sub") \
+ 	EM(rxrpc_skb_put_oob,			"PUT oob      ") \
++	EM(rxrpc_skb_put_old_response,		"PUT old-resp ") \
+ 	EM(rxrpc_skb_put_purge,			"PUT purge    ") \
+ 	EM(rxrpc_skb_put_purge_oob,		"PUT purge-oob") \
+ 	EM(rxrpc_skb_put_response,		"PUT response ") \
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -557,11 +557,11 @@ void rxrpc_post_response(struct rxrpc_co
+ 	spin_lock_irq(&local->lock);
+ 	old = conn->tx_response;
+ 	if (old) {
+-		struct rxrpc_skb_priv *osp = rxrpc_skb(skb);
++		struct rxrpc_skb_priv *osp = rxrpc_skb(old);
  
-+static u64 occ_get_powr_avg(u64 accum, u32 samples)
-+{
-+	return (samples == 0) ? 0 :
-+		mul_u64_u32_div(accum, 1000000UL, samples);
-+}
-+
- static ssize_t occ_show_power_1(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
-@@ -443,9 +449,8 @@ static ssize_t occ_show_power_1(struct d
- 		val = get_unaligned_be16(&power->sensor_id);
- 		break;
- 	case 1:
--		val = get_unaligned_be32(&power->accumulator) /
--			get_unaligned_be32(&power->update_tag);
--		val *= 1000000ULL;
-+		val = occ_get_powr_avg(get_unaligned_be32(&power->accumulator),
-+				       get_unaligned_be32(&power->update_tag));
- 		break;
- 	case 2:
- 		val = (u64)get_unaligned_be32(&power->update_tag) *
-@@ -461,12 +466,6 @@ static ssize_t occ_show_power_1(struct d
- 	return sysfs_emit(buf, "%llu\n", val);
+ 		/* Always go with the response to the most recent challenge. */
+ 		if (after(sp->resp.challenge_serial, osp->resp.challenge_serial))
+-			conn->tx_response = old;
++			conn->tx_response = skb;
+ 		else
+ 			old = skb;
+ 	} else {
+@@ -569,4 +569,5 @@ void rxrpc_post_response(struct rxrpc_co
+ 	}
+ 	spin_unlock_irq(&local->lock);
+ 	rxrpc_poke_conn(conn, rxrpc_conn_get_poke_response);
++	rxrpc_free_skb(old, rxrpc_skb_put_old_response);
  }
- 
--static u64 occ_get_powr_avg(u64 accum, u32 samples)
--{
--	return (samples == 0) ? 0 :
--		mul_u64_u32_div(accum, 1000000UL, samples);
--}
--
- static ssize_t occ_show_power_2(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
 
 
 
