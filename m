@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-236727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INGqImkh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:29 +0200
+	id ECnzD7Mg3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F1A3F084A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81F33F0627
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C34F231E7196
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46FED3079E3B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959EB30B50F;
-	Mon, 13 Apr 2026 16:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67ED315D53;
+	Mon, 13 Apr 2026 16:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWOeXkp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQLxLTTP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5827C26CE32;
-	Mon, 13 Apr 2026 16:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99733314A6B;
+	Mon, 13 Apr 2026 16:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097638; cv=none; b=imP64KCSyIZOmFNGXoP2QLTPNfz6wwQutNCYa/Gz4SkDWijfj4AASF8RsTChS3FuDOREwB+QIaG8ZqIuBE1EiM/njyog9z5vt8TQncX+0X2pLq0ARMZIkxFwqVaSkw0hd7/uv0r6vYhVSrgsrHjoli2IfJjYCOAFUZaXIk+cpmQ=
+	t=1776098820; cv=none; b=oZSU4/xHYL6YtwF/fonaDQZiJaTtgmsntiQlil6sHQ/UKolxb9jECxmrIeWBTNuvMi385iO9KKQ1Uqj/upEvleQuNCqI6ReUij/U+/eYO6Fz+Bm1PL8NIsALW2DRSPJY7WDRUG/RsQReoCEt9pW+6wSIsArhUC+jdsamMgZD8Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097638; c=relaxed/simple;
-	bh=EUY6LeTrq+wK2tecLTTIFv21UNSC/kIAMmPxec6ba94=;
+	s=arc-20240116; t=1776098820; c=relaxed/simple;
+	bh=OOvUvcH08mdjRSoPI/uWylDpnMo0fZFf52pTDYI92Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auOvQNdXBfqV1/33P5dwItRH2iDtQ+pniKtFTRwGPITc558rhFQntjmj3Z6wd7qXIJHTGhtdaxb6Wkh3exDZ3uz4eYWUawQD7LaVQ+ksgKZsbv7NTWrgzH7cyQtjx1dQHLtzcvPH8iykCnC31bkFdlNpeFDODIf8wKb20Z9VI8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWOeXkp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E203AC2BCAF;
-	Mon, 13 Apr 2026 16:27:17 +0000 (UTC)
+	 MIME-Version; b=IV8BABie3oPq0J6hWchfnPOOqMqXdqk/6IWs2XSL/7YlcHUHYT/+KqafNcYllGUZxJawfHIloUgTC+Uv3wiYSDRprTR6EHmvlbnYipFkbjswwlox6syGlbo84r763aQgTb30CaTQB8/zZhvnyZjZMGNT3rzuyt7T3KWjhNAmtaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQLxLTTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E52C2BCAF;
+	Mon, 13 Apr 2026 16:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097638;
-	bh=EUY6LeTrq+wK2tecLTTIFv21UNSC/kIAMmPxec6ba94=;
+	s=korg; t=1776098820;
+	bh=OOvUvcH08mdjRSoPI/uWylDpnMo0fZFf52pTDYI92Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWOeXkp0vHuZjKAgMxrN+EHlnB7/oYtd2cnoa8OVQgMVWQiTd43QEq2DUL5D9o8YA
-	 PXFJ/Cz6nNSqab/1AtVXa3p8lhFa5lAG9QCeXMY8KUOiBJ0hH0287G64ovjYeqNuhg
-	 InlHMZM1GNU4P8H3/ZHYvBSA6TpKg0C2OPImXJ9I=
+	b=qQLxLTTPR/CqKsLi0OjSv+VMfRPaiGA9Pk7HvMOcRqb4uwJdnWJCepeVINOfyI/lW
+	 dAHLKUPylfofMDc4iJwMjiF9te2XOEFtVUOqTrCtLvvGpGhUWKC49QmzfOGU4oMZnN
+	 sMYROFmshTbfCk4vUjql9k0kpAlqeiPpgfkZxkto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 5.15 214/570] mm/hugetlb: make detecting shared pte more reliable
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 100/491] USB: core: Limit the length of unkillable synchronous timeouts
 Date: Mon, 13 Apr 2026 17:55:45 +0200
-Message-ID: <20260413155838.472278978@linuxfoundation.org>
+Message-ID: <20260413155822.788962967@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,123 +62,160 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236727-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,oracle.com,bytedance.com,linux-foundation.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237191-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:email,huawei.com:email,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 02F1A3F084A
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,harvard.edu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D81F33F0627
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 3aa4ed8040e1535d95c03cef8b52cf11bf0d8546 upstream.
+commit 1015c27a5e1a63efae2b18a9901494474b4d1dc3 upstream.
 
-If the pagetables are shared, we shouldn't copy or take references.  Since
-src could have unshared and dst shares with another vma, huge_pte_none()
-is thus used to determine whether dst_pte is shared.  But this check isn't
-reliable.  A shared pte could have pte none in pagetable in fact.  The
-page count of ptep page should be checked here in order to reliably
-determine whether pte is shared.
+The usb_control_msg(), usb_bulk_msg(), and usb_interrupt_msg() APIs in
+usbcore allow unlimited timeout durations.  And since they use
+uninterruptible waits, this leaves open the possibility of hanging a
+task for an indefinitely long time, with no way to kill it short of
+unplugging the target device.
 
-[lukas.bulwahn@gmail.com: remove unused local variable dst_entry in copy_hugetlb_page_range()]
-  Link: https://lkml.kernel.org/r/20220822082525.26071-1-lukas.bulwahn@gmail.com
-Link: https://lkml.kernel.org/r/20220816130553.31406-7-linmiaohe@huawei.com
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+To prevent this sort of problem, enforce a maximum limit on the length
+of these unkillable timeouts.  The limit chosen here, somewhat
+arbitrarily, is 60 seconds.  On many systems (although not all) this
+is short enough to avoid triggering the kernel's hung-task detector.
+
+In addition, clear up the ambiguity of negative timeout values by
+treating them the same as 0, i.e., using the maximum allowed timeout.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/15fc9773-a007-47b0-a703-df89a8cf83dd@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ drivers/usb/core/message.c |   24 ++++++++++++------------
+ include/linux/usb.h        |    3 +++
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4304,7 +4304,7 @@ hugetlb_install_page(struct vm_area_stru
- int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 			    struct vm_area_struct *vma)
- {
--	pte_t *src_pte, *dst_pte, entry, dst_entry;
-+	pte_t *src_pte, *dst_pte, entry;
- 	struct page *ptepage;
- 	unsigned long addr;
- 	bool cow = is_cow_mapping(vma->vm_flags);
-@@ -4343,28 +4343,23 @@ int copy_hugetlb_page_range(struct mm_st
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -44,6 +44,8 @@ static void usb_api_blocking_completion(
+  * Starts urb and waits for completion or timeout.
+  * Whether or not the wait is killable depends on the flag passed in.
+  * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
++ *
++ * For non-killable waits, we enforce a maximum limit on the timeout value.
+  */
+ static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
+ 		bool killable)
+@@ -60,7 +62,9 @@ static int usb_start_wait_urb(struct urb
+ 	if (unlikely(retval))
+ 		goto out;
  
- 		/*
- 		 * If the pagetables are shared don't copy or take references.
--		 * dst_pte == src_pte is the common case of src/dest sharing.
- 		 *
-+		 * dst_pte == src_pte is the common case of src/dest sharing.
- 		 * However, src could have 'unshared' and dst shares with
--		 * another vma.  If dst_pte !none, this implies sharing.
--		 * Check here before taking page table lock, and once again
--		 * after taking the lock below.
-+		 * another vma. So page_count of ptep page is checked instead
-+		 * to reliably determine whether pte is shared.
- 		 */
--		dst_entry = huge_ptep_get(dst_pte);
--		if ((dst_pte == src_pte) || !huge_pte_none(dst_entry))
-+		if (page_count(virt_to_page(dst_pte)) > 1)
- 			continue;
+-	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
++	if (!killable && (timeout <= 0 || timeout > USB_MAX_SYNCHRONOUS_TIMEOUT))
++		timeout = USB_MAX_SYNCHRONOUS_TIMEOUT;
++	expire = (timeout > 0) ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
+ 	if (killable)
+ 		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
+ 	else
+@@ -126,8 +130,7 @@ static int usb_internal_control_msg(stru
+  * @index: USB message index value
+  * @data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: !in_interrupt ()
+  *
+@@ -182,8 +185,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -245,8 +247,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_send);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to be filled in by the message
+  * @size: length in bytes of the data to be received
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -317,8 +318,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_recv);
+  * @len: length in bytes of the data to send
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+- * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: !in_interrupt ()
+  *
+@@ -411,12 +411,12 @@ EXPORT_SYMBOL_GPL(usb_bulk_msg);
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+  * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ *	timing out (if <= 0, the wait is as long as possible)
+  *
+  * Context: task context, might sleep.
+  *
+- * This function is just like usb_blk_msg() except that it waits in a
+- * killable state.
++ * This function is just like usb_blk_msg(), except that it waits in a
++ * killable state and there is no limit on the timeout length.
+  *
+  * Return:
+  * If successful, 0. Otherwise a negative error number. The number of actual
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1798,6 +1798,9 @@ void usb_buffer_unmap_sg(const struct us
+  *                         SYNCHRONOUS CALL SUPPORT                  *
+  *-------------------------------------------------------------------*/
  
- 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
- 		src_ptl = huge_pte_lockptr(h, src, src_pte);
- 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
- 		entry = huge_ptep_get(src_pte);
--		dst_entry = huge_ptep_get(dst_pte);
- again:
--		if (huge_pte_none(entry) || !huge_pte_none(dst_entry)) {
-+		if (huge_pte_none(entry)) {
- 			/*
--			 * Skip if src entry none.  Also, skip in the
--			 * unlikely case dst entry !none as this implies
--			 * sharing with another vma.
-+			 * Skip if src entry none.
- 			 */
- 			;
- 		} else if (unlikely(is_hugetlb_entry_migration(entry) ||
-@@ -4423,7 +4418,7 @@ again:
- 					restore_reserve_on_error(h, vma, addr,
- 								new);
- 					put_page(new);
--					/* dst_entry won't change as in child */
-+					/* huge_ptep of dst_pte won't change as in child */
- 					goto again;
- 				}
- 				hugetlb_install_page(vma, dst_pte, addr, new);
++/* Maximum value allowed for timeout in synchronous routines below */
++#define USB_MAX_SYNCHRONOUS_TIMEOUT		60000	/* ms */
++
+ extern int usb_control_msg(struct usb_device *dev, unsigned int pipe,
+ 	__u8 request, __u8 requesttype, __u16 value, __u16 index,
+ 	void *data, __u16 size, int timeout);
 
 
 
