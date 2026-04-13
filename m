@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-237397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHNpOEsj3WkYaQkAu9opvQ
-	(envelope-from <stable+bounces-237397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:31 +0200
+	id CGCkBxMW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860FA3F0DA2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6986A3EE712
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6986530511A6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC8630CD481
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ED9326D44;
-	Mon, 13 Apr 2026 16:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFDA23D7E3;
+	Mon, 13 Apr 2026 16:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="010siBDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVtKMubj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DD03264F2;
-	Mon, 13 Apr 2026 16:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903C723EA94;
+	Mon, 13 Apr 2026 16:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099349; cv=none; b=HTkPN353KRBF7D9Ib/vq64y4etf+SfF8KcmMnY0k+qHlzRXTmyKa+l3tEHjY/vhShh96uR4LVoY6of3oqxB6YVnlW9eoSzaRkD6kwyFXLQiDE/gWPw3+jAdLreLGbVOb37VDZc5Xg+ck51h++/rsZmiJaOokj3TXKq//uIGh37M=
+	t=1776096264; cv=none; b=n7bvKwrVy56tpff4EHoUJT+S3bPjua5Fb/MoZntT5LA7yxu+mm8avdRuVRzN9iOujVJMf8H2QWI0GDhf9DpYtD+gC57cSEHcVEmOZx0JacCg5iYFsb+2Bvk8btY4IVFm0bVX0jKf8aEdS3RqHuaYeC3RBGN7iS+K4jG7vf7yo9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099349; c=relaxed/simple;
-	bh=LtJd5CcpA0dBg/rKDJ9WVSfS00VAKbu41iVvUgyNgAU=;
+	s=arc-20240116; t=1776096264; c=relaxed/simple;
+	bh=PE2o1LUJxZKpbC2HVngjz/5nnphwmW/bRQqDi4R1z+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=niuUS5DN9/LHGxvCSG8W+dqIEGGU2GVbK1plm788AZe+C22E7ehuV0wkmchZNMBzEDvDY90zq4J39bIWYBeegY3hLc3h1k7b7ZZv+OkulyybteUfNn1GmVMzGdCye4Eb/L9Uari1KkRktO/QOKvBasMPmGi4nJVIhFCl825fsTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=010siBDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70778C2BCAF;
-	Mon, 13 Apr 2026 16:55:49 +0000 (UTC)
+	 MIME-Version; b=LFQcshf7M35ip8Tr9kSULJYa5AEhNSOpZu/UyzXngTkXjtYP+Ibmdf7dvBNp+sHf7p/NoG+4+rTvJT+gNdmBjbeiejNfxg06QdiI04+mlUqI5kMvK9ygTNvDDqXBsWUVJUZ1+UtvHNpzssk936Nay/EdXoxW5c4l1AC0AcwgxjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVtKMubj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EE4C2BCAF;
+	Mon, 13 Apr 2026 16:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099349;
-	bh=LtJd5CcpA0dBg/rKDJ9WVSfS00VAKbu41iVvUgyNgAU=;
+	s=korg; t=1776096264;
+	bh=PE2o1LUJxZKpbC2HVngjz/5nnphwmW/bRQqDi4R1z+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=010siBDkr9D/CcwR3CprY6WmPKb6Lypfm6W7HN1iOlb1Ik/1EiIEZc15Cf0XCnp/q
-	 vsek1v7igEIQoPkRcmquvqXK5Hn2jgS8/LDk+ZtrTetAIo2ljKNJF9m9Fpn5UtfuUt
-	 2OlJRAojPYHATcO2r6ilh06L86N1Mu5GHSpyJa70=
+	b=MVtKMubjItO6BOTR3VrvDsyECHG/VaBtuXGLyVo0C16pE1WMtIOT0WtyA7mwoqRRX
+	 Z38oNyxjpAEMyPYv8B1+5XX/Go2yZh2++yzCXof6O1KOmLFX9aIjVTWFldrkCWoqYO
+	 L6MadaWL3a4zm4Xfr902jeZgtANIyZUIo+WxNKP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 306/491] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
+	Johannes Berg <johannes@sipsolutions.net>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	stable <stable@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.19 04/86] net: rfkill: prevent unlimited numbers of rfkill events from being created
 Date: Mon, 13 Apr 2026 17:59:11 +0200
-Message-ID: <20260413155830.496958091@linuxfoundation.org>
+Message-ID: <20260413155731.738130711@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,130 +68,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237397-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,lzu.edu.cn,kernel.org,intel.com];
+	TAGGED_FROM(0.00)[bounces-236186-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dilger.ca:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 860FA3F0DA2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lzu.edu.cn:email,intel.com:email,sipsolutions.net:email]
+X-Rspamd-Queue-Id: 6986A3EE712
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
+commit ea245d78dec594372e27d8c79616baf49e98a4a1 upstream.
 
-There's issue as follows:
-...
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Userspace can create an unlimited number of rfkill events if the system
+is so configured, while not consuming them from the rfkill file
+descriptor, causing a potential out of memory situation.  Prevent this
+from bounding the number of pending rfkill events at a "large" number
+(i.e. 1000) to prevent abuses like this.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): error count since last fsck: 1
-EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
-EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
-...
-
-According to the log analysis, blocks are always requested from the
-corrupted block group. This may happen as follows:
-ext4_mb_find_by_goal
-  ext4_mb_load_buddy
-   ext4_mb_load_buddy_gfp
-     ext4_mb_init_cache
-      ext4_read_block_bitmap_nowait
-      ext4_wait_block_bitmap
-       ext4_validate_block_bitmap
-        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
-         return -EFSCORRUPTED; // There's no logs.
- if (err)
-  return err;  // Will return error
-ext4_lock_group(ac->ac_sb, group);
-  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
-   goto out;
-
-After commit 9008a58e5dce ("ext4: make the bitmap read routines return
-real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
-as corrupt on block bitmap error") is no real solution for allocating
-blocks from corrupted block groups. This is because if
-'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
-'ext4_mb_load_buddy()' may return an error. This means that the block
-allocation will fail.
-Therefore, check block group if corrupted when ext4_mb_load_buddy()
-returns error.
-
-Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026033013-disfigure-scroll-e25e@gregkh
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/rfkill/core.c |   35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1929,8 +1929,12 @@ int ext4_mb_find_by_goal(struct ext4_all
- 		return 0;
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -73,11 +73,14 @@ struct rfkill_int_event {
+ 	struct rfkill_event_ext	ev;
+ };
  
- 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
--	if (err)
-+	if (err) {
-+		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
-+		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
-+			return 0;
- 		return err;
++/* Max rfkill events that can be "in-flight" for one data source */
++#define MAX_RFKILL_EVENT	1000
+ struct rfkill_data {
+ 	struct list_head	list;
+ 	struct list_head	events;
+ 	struct mutex		mtx;
+ 	wait_queue_head_t	read_wait;
++	u32			event_count;
+ 	bool			input_handler;
+ 	u8			max_size;
+ };
+@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_un
+ }
+ #endif /* CONFIG_RFKILL_LEDS */
+ 
+-static void rfkill_fill_event(struct rfkill_event_ext *ev,
+-			      struct rfkill *rfkill,
+-			      enum rfkill_operation op)
++static int rfkill_fill_event(struct rfkill_int_event *int_ev,
++			     struct rfkill *rfkill,
++			     struct rfkill_data *data,
++			     enum rfkill_operation op)
+ {
++	struct rfkill_event_ext *ev = &int_ev->ev;
+ 	unsigned long flags;
+ 
+ 	ev->idx = rfkill->idx;
+@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfk
+ 					RFKILL_BLOCK_SW_PREV));
+ 	ev->hard_block_reasons = rfkill->hard_block_reasons;
+ 	spin_unlock_irqrestore(&rfkill->lock, flags);
++
++	scoped_guard(mutex, &data->mtx) {
++		if (data->event_count++ > MAX_RFKILL_EVENT) {
++			data->event_count--;
++			return -ENOSPC;
++		}
++		list_add_tail(&int_ev->list, &data->events);
 +	}
++	return 0;
+ }
  
- 	ext4_lock_group(ac->ac_sb, group);
- 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
+ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
+@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rf
+ 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
+ 		if (!ev)
+ 			continue;
+-		rfkill_fill_event(&ev->ev, rfkill, op);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, op)) {
++			kfree(ev);
++			continue;
++		}
+ 		wake_up_interruptible(&data->read_wait);
+ 	}
+ }
+@@ -1186,10 +1200,8 @@ static int rfkill_fop_open(struct inode
+ 		if (!ev)
+ 			goto free;
+ 		rfkill_sync(rfkill);
+-		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
++			kfree(ev);
+ 	}
+ 	list_add(&data->list, &rfkill_fds);
+ 	mutex_unlock(&rfkill_global_mutex);
+@@ -1259,6 +1271,7 @@ static ssize_t rfkill_fop_read(struct fi
+ 		ret = -EFAULT;
+ 
+ 	list_del(&ev->list);
++	data->event_count--;
+ 	kfree(ev);
+  out:
+ 	mutex_unlock(&data->mtx);
 
 
 
