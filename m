@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-237304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wB5qOSUj3WkoaQkAu9opvQ
-	(envelope-from <stable+bounces-237304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:53 +0200
+	id cFgJFTsi3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-236818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12963F0D59
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5813F0AB2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61E2730193A7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8A2F3067743
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B50317152;
-	Mon, 13 Apr 2026 16:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6D2238166;
+	Mon, 13 Apr 2026 16:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0RN2zzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gP/jLSxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6B031619A;
-	Mon, 13 Apr 2026 16:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2306225A38;
+	Mon, 13 Apr 2026 16:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099112; cv=none; b=j+yUaDGWzYpQxkB+XNUrTAuPkXBB5P7S2gYzeWOD9hIfSqdflivuEDt7PtRS1xurjO9b3HLnAxh58iwB2qkUVO3iODDfYMZ9FdSt7pW050+KfoaEcfnCWGlTHbes2eXILRf3DmtMQ6/9dGmuyxwlTUOp8PvdIo7YWT0faPQZw1I=
+	t=1776097870; cv=none; b=QXcch1qVrD+zGirFqjTkvDNALwWxuTMLvmRNEMoTS57KhfCL4vHFH7QvCyniLPHGpSemkVCviam3U7rJF0xUbj7dMiOKPxBHi99eftc98yVo0YvOONgI/KBBQPFn7x4Dc6etkL143YJwfkbeI0FH9hg6G2PDQiq1vExNXLUkI30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099112; c=relaxed/simple;
-	bh=yCUW5IzQmnM9KhKsY5N7cFQldOsB/VBYxHruPDkhv0o=;
+	s=arc-20240116; t=1776097870; c=relaxed/simple;
+	bh=Q+k8rwogVwiWM0zylv7mdTIs+VJ3iQEMqyPX8pvTJzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8nvbFr0Vb6ePms2SAEXQbHvxYsZiAXvyoSfgKIMt3wIk8u76rSs3cv6RZ442+tYZ3HBMeDCYophrgosXJfBIisxgLua5mO2Pnx/S2PtMT64KMFKU5boPswF90VtzoFcaHTCOJEVRZXaCGUhPJq0SMYC95VdDiB580rJGLsOXbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0RN2zzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE0BC2BCAF;
-	Mon, 13 Apr 2026 16:51:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uus/aRdx3nTb2k4QfmbTU4SwZ2aj11kHhwitWgND+RkYpCaMZPR2SrtsFG0wLATfGV6wCIXQ2+JKzVIlx3k+lL64e2DsfLQMkl2EeOPuJ6Zm8sbqX9+bvUDarlEaq3hL+KGkrB423Q/6dfblPgsFou0sG7srbZH15TMo0SDhZ1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gP/jLSxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C25C2BCAF;
+	Mon, 13 Apr 2026 16:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099111;
-	bh=yCUW5IzQmnM9KhKsY5N7cFQldOsB/VBYxHruPDkhv0o=;
+	s=korg; t=1776097870;
+	bh=Q+k8rwogVwiWM0zylv7mdTIs+VJ3iQEMqyPX8pvTJzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0RN2zzzcGupySOaV5uvebf0ycSnJdQEgd2ea6P0mhZ4u6Y6KrnhYwUOTE6jdFLLv
-	 GirKFIwp26Di+lGzHordbTCYpN8p2sHj0cnLNlSHUYRU6mMCVDYpCi13Faw9FVGI4a
-	 z9QbWACK8vu60WBAPHQ5x1WLYEyPoZeR2qOmtGIw=
+	b=gP/jLSxCcuuDd/r0syS4e88KfCUZALuPK+6xTQ0mNd4mGaTJWyGBjv/eHzqKlUavH
+	 ckaxyBiLxPXWFs46XhuyoZygnklf5rKxz0z82stlSi8HvMru2ai1hl9gtb1plTdftR
+	 SRXwtVcU6FcxcLgVaLqfvOcTqBf4Vp+HxV247V9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/491] NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd
+Subject: [PATCH 5.15 297/570] HID: asus: avoid memory leak in asus_report_fixup()
 Date: Mon, 13 Apr 2026 17:57:08 +0200
-Message-ID: <20260413155825.913298947@linuxfoundation.org>
+Message-ID: <20260413155841.628310657@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,118 +63,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237304-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236818-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,brown.name:email]
-X-Rspamd-Queue-Id: C12963F0D59
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DF5813F0AB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Günther Noack <gnoack@google.com>
 
-[ Upstream commit e7fcf179b82d3a3730fd8615da01b087cc654d0b ]
+[ Upstream commit 2bad24c17742fc88973d6aea526ce1353f5334a3 ]
 
-The /proc/fs/nfs/exports proc entry is created at module init
-and persists for the module's lifetime. exports_proc_open()
-captures the caller's current network namespace and stores
-its svc_export_cache in seq->private, but takes no reference
-on the namespace. If the namespace is subsequently torn down
-(e.g. container destruction after the opener does setns() to a
-different namespace), nfsd_net_exit() calls nfsd_export_shutdown()
-which frees the cache. Subsequent reads on the still-open fd
-dereference the freed cache_detail, walking a freed hash table.
+The asus_report_fixup() function was returning a newly allocated
+kmemdup()-allocated buffer, but never freeing it.  Switch to
+devm_kzalloc() to ensure the memory is managed and freed automatically
+when the device is removed.
 
-Hold a reference on the struct net for the lifetime of the open
-file descriptor. This prevents nfsd_net_exit() from running --
-and thus prevents nfsd_export_shutdown() from freeing the cache
--- while any exports fd is open. cache_detail already stores
-its net pointer (cd->net, set by cache_create_net()), so
-exports_release() can retrieve it without additional per-file
-storage.
+The caller of report_fixup() does not take ownership of the returned
+pointer, but it is permitted to return a pointer whose lifetime is at
+least that of the input buffer.
 
-Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-nfs/dcd371d3a95815a84ba7de52cef447b8@linux.ibm.com/
-Fixes: 96d851c4d28d ("nfsd: use proper net while reading "exports" file")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Tested-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Also fix a harmless out-of-bounds read by copying only the original
+descriptor size.
+
+Assisted-by: Gemini-CLI:Google Gemini 3
+Signed-off-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/hid/hid-asus.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -152,9 +152,19 @@ static int exports_net_open(struct net *
- 
- 	seq = file->private_data;
- 	seq->private = nn->svc_export_cache;
-+	get_net(net);
- 	return 0;
- }
- 
-+static int exports_release(struct inode *inode, struct file *file)
-+{
-+	struct seq_file *seq = file->private_data;
-+	struct cache_detail *cd = seq->private;
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index feec0724328ff..3be17a8b7a293 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1224,14 +1224,21 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		 */
+ 		if (*rsize == rsize_orig &&
+ 			rdesc[offs] == 0x09 && rdesc[offs + 1] == 0x76) {
+-			*rsize = rsize_orig + 1;
+-			rdesc = kmemdup(rdesc, *rsize, GFP_KERNEL);
+-			if (!rdesc)
+-				return NULL;
++			__u8 *new_rdesc;
 +
-+	put_net(cd->net);
-+	return seq_release(inode, file);
-+}
++			new_rdesc = devm_kzalloc(&hdev->dev, rsize_orig + 1,
++						 GFP_KERNEL);
++			if (!new_rdesc)
++				return rdesc;
+ 
+ 			hid_info(hdev, "Fixing up %s keyb report descriptor\n",
+ 				drvdata->quirks & QUIRK_T100CHI ?
+ 				"T100CHI" : "T90CHI");
 +
- static int exports_nfsd_open(struct inode *inode, struct file *file)
- {
- 	return exports_net_open(inode->i_sb->s_fs_info, file);
-@@ -164,7 +174,7 @@ static const struct file_operations expo
- 	.open		= exports_nfsd_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
--	.release	= seq_release,
-+	.release	= exports_release,
- };
- 
- static int export_features_show(struct seq_file *m, void *v)
-@@ -1421,7 +1431,7 @@ static const struct proc_ops exports_pro
- 	.proc_open	= exports_proc_open,
- 	.proc_read	= seq_read,
- 	.proc_lseek	= seq_lseek,
--	.proc_release	= seq_release,
-+	.proc_release	= exports_release,
- };
- 
- static int create_proc_exports_entry(void)
++			memcpy(new_rdesc, rdesc, rsize_orig);
++			*rsize = rsize_orig + 1;
++			rdesc = new_rdesc;
++
+ 			memmove(rdesc + offs + 4, rdesc + offs + 2, 12);
+ 			rdesc[offs] = 0x19;
+ 			rdesc[offs + 1] = 0x00;
+-- 
+2.51.0
+
 
 
 
