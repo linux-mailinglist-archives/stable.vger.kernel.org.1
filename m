@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBFTBZMh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:11 +0200
+	id IKBjCYch3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-236741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14E93F08AF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885873F0884
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2229E30C2F2D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B93E330BF420
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EF73168EE;
-	Mon, 13 Apr 2026 16:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A757B309F09;
+	Mon, 13 Apr 2026 16:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLGHyuzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcV3i4eU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3537C314D0D;
-	Mon, 13 Apr 2026 16:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B11949620;
+	Mon, 13 Apr 2026 16:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098769; cv=none; b=PxLlcF+H4q7TwtSUwHe652ds2M0Sn/W6rxl2NWXYEGXCSDwr+8PFiC0m0/8YiU8D2WEMshrg62U4Jfyxu68yZr2y686Fr2zJx+nZYF5ekQnRhCakufonnNdSX5CuYMSY7TuRzX93sjtdhL3grpS7SUGeVcK/1+ohWlAmQCgsuPQ=
+	t=1776097674; cv=none; b=DlChiQKQE5/LpYLY67b81pnuggwOt/zr5FUFTT57Sbvtl5IYc1fhGFOCsXkZeycDmNb1QcruSogfym9dS6Nr8It4BoAoY8ukgH2IUa0LjjpHEhrwamSdouO8B28QukBibkUYM4jkKcKRoICyUzV/3YHXuxv7SmRH/BRTt7ixjYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098769; c=relaxed/simple;
-	bh=0Z6qYcNsrGrNIMx/fgFh8lsAmckLyRwyNBTaAQ7w+mc=;
+	s=arc-20240116; t=1776097674; c=relaxed/simple;
+	bh=v6/txUr8jcv/xBaFz8jr0IxIQZMQzOtSIlC9cP52uPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vtr4Br6/KbQfyJDjJz4Ra+iVLMb0RaAS4JHWa8f3NRfR5ZwRytIqsbjGffsAgo9gcSyYjWGgbNj902h9eEfCSJEUaQ/mUwYdHpdaCL3elMm44XwdSDVPMQcQq4ne7qywwBMCFBidup46EVyp8AwxjLA/wIMLKFieybLmvAX1mX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLGHyuzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A2CC2BCAF;
-	Mon, 13 Apr 2026 16:46:08 +0000 (UTC)
+	 MIME-Version; b=r4FCG5QrF6ErBqmsveVTdCLNa3Q1L3e3k5FtORGn5JYL6UNbvfA9NDsR+5Od2ZEZQbEf7EyrsUsxt9d749kkxvLOzgABHN85UW6gTTLCoNZs+23lGu+9U8MqZ2pBMKi4PAYthqetfOXdOf88uNMFnu0cC7hQszXSaMJBmMceSIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcV3i4eU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8A6C2BCAF;
+	Mon, 13 Apr 2026 16:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098768;
-	bh=0Z6qYcNsrGrNIMx/fgFh8lsAmckLyRwyNBTaAQ7w+mc=;
+	s=korg; t=1776097674;
+	bh=v6/txUr8jcv/xBaFz8jr0IxIQZMQzOtSIlC9cP52uPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLGHyuzcT++gqYpQVhHce/bt3Hp298sHHUDF62GCCpCBsS1U1wsA4qVeqPZoB/zh8
-	 3dQpWDJkvhqO2SFXH6Bqg5127yzZJo4Rzl332+v9KMPDyq1CKQNPr4yHUjoTfzRPGy
-	 6aZTUjWN9vDNrABf3epO2BZINzWfTKDkJG+CiyOU=
+	b=UcV3i4eUUBe5qmAuQurpR9/t3FHpMFkkhCsc72gd3AF/5vfA/X9YtSf5PQ8M07o2X
+	 TKGhAutLmSyHHFEGCdCV3nShzMPMYzFI7O1qgEmYnT6Qu4hFKANWWI0FSqiCjWyGEO
+	 CemmxSlHqDuWOJgPoFd0nEH0IGTm7XINP9C3nGlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/491] sched: idle: Make skipping governor callbacks more consistent
+	Nuno Sa <nuno.sa@analog.com>,
+	Julien Stephan <jstephan@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Charles Xu <charles_xu@189.cn>
+Subject: [PATCH 5.15 196/570] driver: iio: add missing checks on iio_infos callback access
 Date: Mon, 13 Apr 2026 17:55:27 +0200
-Message-ID: <20260413155822.115327250@linuxfoundation.org>
+Message-ID: <20260413155837.801593842@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,111 +69,201 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,baylibre.com,huawei.com,189.cn];
+	TAGGED_FROM(0.00)[bounces-236741-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237170-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D14E93F08AF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,analog.com:email,baylibre.com:email,189.cn:email]
+X-Rspamd-Queue-Id: 885873F0884
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Julien Stephan <jstephan@baylibre.com>
 
-[ Upstream commit d557640e4ce589a24dca5ca7ce3b9680f471325f ]
+commit c4ec8dedca961db056ec85cb7ca8c9f7e2e92252 upstream.
 
-If the cpuidle governor .select() callback is skipped because there
-is only one idle state in the cpuidle driver, the .reflect() callback
-should be skipped as well, at least for consistency (if not for
-correctness), so do it.
+Some callbacks from iio_info structure are accessed without any check, so
+if a driver doesn't implement them trying to access the corresponding
+sysfs entries produce a kernel oops such as:
 
-Fixes: e5c9ffc6ae1b ("cpuidle: Skip governor when only one idle state is available")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://patch.msgid.link/12857700.O9o76ZdvQC@rafael.j.wysocki
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 2203.527791] Unable to handle kernel NULL pointer dereference at virtual address 00000000 when execute
+[...]
+[ 2203.783416] Call trace:
+[ 2203.783429]  iio_read_channel_info_avail from dev_attr_show+0x18/0x48
+[ 2203.789807]  dev_attr_show from sysfs_kf_seq_show+0x90/0x120
+[ 2203.794181]  sysfs_kf_seq_show from seq_read_iter+0xd0/0x4e4
+[ 2203.798555]  seq_read_iter from vfs_read+0x238/0x2a0
+[ 2203.802236]  vfs_read from ksys_read+0xa4/0xd4
+[ 2203.805385]  ksys_read from ret_fast_syscall+0x0/0x54
+[ 2203.809135] Exception stack(0xe0badfa8 to 0xe0badff0)
+[ 2203.812880] dfa0:                   00000003 b6f10f80 00000003 b6eab000 00020000 00000000
+[ 2203.819746] dfc0: 00000003 b6f10f80 7ff00000 00000003 00000003 00000000 00020000 00000000
+[ 2203.826619] dfe0: b6e1bc88 bed80958 b6e1bc94 b6e1bcb0
+[ 2203.830363] Code: bad PC value
+[ 2203.832695] ---[ end trace 0000000000000000 ]---
+
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Link: https://lore.kernel.org/r/20240530-iio-core-fix-segfault-v3-1-8b7cd2a03773@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Charles Xu <charles_xu@189.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/cpuidle.c | 10 ----------
- kernel/sched/idle.c       | 11 ++++++++++-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/iio/industrialio-core.c  |    7 ++++++-
+ drivers/iio/industrialio-event.c |    9 +++++++++
+ drivers/iio/inkern.c             |   35 ++++++++++++++++++++++++-----------
+ 3 files changed, 39 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 87a57cee40fcb..1c1fa6ac9244a 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -319,16 +319,6 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
- int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		   bool *stop_tick)
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -776,9 +776,11 @@ static ssize_t iio_read_channel_info(str
+ 							INDIO_MAX_RAW_ELEMENTS,
+ 							vals, &val_len,
+ 							this_attr->address);
+-	else
++	else if (indio_dev->info->read_raw)
+ 		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
+ 				    &vals[0], &vals[1], this_attr->address);
++	else
++		return -EINVAL;
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -860,6 +862,9 @@ static ssize_t iio_read_channel_info_ava
+ 	int length;
+ 	int type;
+ 
++	if (!indio_dev->info->read_avail)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->read_avail(indio_dev, this_attr->c,
+ 					  &vals, &type, &length,
+ 					  this_attr->address);
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -277,6 +277,9 @@ static ssize_t iio_ev_state_store(struct
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (!indio_dev->info->write_event_config)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->write_event_config(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr), val);
+@@ -292,6 +295,9 @@ static ssize_t iio_ev_state_show(struct
+ 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
+ 	int val;
+ 
++	if (!indio_dev->info->read_event_config)
++		return -EINVAL;
++
+ 	val = indio_dev->info->read_event_config(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr));
+@@ -310,6 +316,9 @@ static ssize_t iio_ev_value_show(struct
+ 	int val, val2, val_arr[2];
+ 	int ret;
+ 
++	if (!indio_dev->info->read_event_value)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->read_event_value(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -517,6 +517,7 @@ EXPORT_SYMBOL_GPL(devm_iio_channel_get_a
+ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
+ 	enum iio_chan_info_enum info)
  {
--	/*
--	 * If there is only a single idle state (or none), there is nothing
--	 * meaningful for the governor to choose. Skip the governor and
--	 * always use state 0 with the tick running.
--	 */
--	if (drv->state_count <= 1) {
--		*stop_tick = false;
--		return 0;
--	}
--
- 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
++	const struct iio_info *iio_info = chan->indio_dev->info;
+ 	int unused;
+ 	int vals[INDIO_MAX_RAW_ELEMENTS];
+ 	int ret;
+@@ -528,15 +529,19 @@ static int iio_channel_read(struct iio_c
+ 	if (!iio_channel_has_info(chan->channel, info))
+ 		return -EINVAL;
+ 
+-	if (chan->indio_dev->info->read_raw_multi) {
+-		ret = chan->indio_dev->info->read_raw_multi(chan->indio_dev,
+-					chan->channel, INDIO_MAX_RAW_ELEMENTS,
+-					vals, &val_len, info);
++	if (iio_info->read_raw_multi) {
++		ret = iio_info->read_raw_multi(chan->indio_dev,
++					       chan->channel,
++					       INDIO_MAX_RAW_ELEMENTS,
++					       vals, &val_len, info);
+ 		*val = vals[0];
+ 		*val2 = vals[1];
+-	} else
+-		ret = chan->indio_dev->info->read_raw(chan->indio_dev,
+-					chan->channel, val, val2, info);
++	} else if (iio_info->read_raw) {
++		ret = iio_info->read_raw(chan->indio_dev,
++					 chan->channel, val, val2, info);
++	} else {
++		return -EINVAL;
++	}
+ 
+ 	return ret;
+ }
+@@ -754,11 +759,15 @@ static int iio_channel_read_avail(struct
+ 				  const int **vals, int *type, int *length,
+ 				  enum iio_chan_info_enum info)
+ {
++	const struct iio_info *iio_info = chan->indio_dev->info;
++
+ 	if (!iio_channel_has_available(chan->channel, info))
+ 		return -EINVAL;
+ 
+-	return chan->indio_dev->info->read_avail(chan->indio_dev, chan->channel,
+-						 vals, type, length, info);
++	if (iio_info->read_avail)
++		return iio_info->read_avail(chan->indio_dev, chan->channel,
++					    vals, type, length, info);
++	return -EINVAL;
  }
  
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index cdc3e690de714..8c38b4fe9ee72 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -223,7 +223,7 @@ static void cpuidle_idle_call(void)
- 
- 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
- 		call_cpuidle(drv, dev, next_state);
--	} else {
-+	} else if (drv->state_count > 1) {
- 		bool stop_tick = true;
- 
- 		/*
-@@ -241,6 +241,15 @@ static void cpuidle_idle_call(void)
- 		 * Give the governor an opportunity to reflect on the outcome
- 		 */
- 		cpuidle_reflect(dev, entered_state);
-+	} else {
-+		tick_nohz_idle_retain_tick();
+ int iio_read_avail_channel_attribute(struct iio_channel *chan,
+@@ -889,8 +898,12 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
+ static int iio_channel_write(struct iio_channel *chan, int val, int val2,
+ 			     enum iio_chan_info_enum info)
+ {
+-	return chan->indio_dev->info->write_raw(chan->indio_dev,
+-						chan->channel, val, val2, info);
++	const struct iio_info *iio_info = chan->indio_dev->info;
 +
-+		/*
-+		 * If there is only a single idle state (or none), there is
-+		 * nothing meaningful for the governor to choose.  Skip the
-+		 * governor and always use state 0.
-+		 */
-+		call_cpuidle(drv, dev, 0);
- 	}
++	if (iio_info->write_raw)
++		return iio_info->write_raw(chan->indio_dev,
++					   chan->channel, val, val2, info);
++	return -EINVAL;
+ }
  
- exit_idle:
--- 
-2.51.0
-
+ int iio_write_channel_attribute(struct iio_channel *chan, int val, int val2,
 
 
 
