@@ -1,205 +1,162 @@
-Return-Path: <stable+bounces-237641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCVVEoZA3WkubQkAu9opvQ
-	(envelope-from <stable+bounces-237641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:14:14 +0200
+	id eK4VBXdB3WkubQkAu9opvQ
+	(envelope-from <stable+bounces-237642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:18:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0884F3F289B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:14:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDB83F2905
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B02893061D43
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F18F13032F5E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2381837EFFA;
-	Mon, 13 Apr 2026 19:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C445138D005;
+	Mon, 13 Apr 2026 19:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="J3yExkq/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rRlurC5T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CD0382388
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 19:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4A638E5E8
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 19:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776107502; cv=none; b=LICDV1lO3ZbdNYXyI4XhvOAo6G0eDdijTnnqcC5RlRfJayQUK/4HHhe8AWvN/sBt1XjtRWDe1Lon7giT+muCzV6GWkQY7JIH2lVrchvts+6RZpi+mRJEeFJNdTJHVSitBKAV3dX5QUI+qxOTxqxa02LcwCEywJsuyfpgUtGaSVs=
+	t=1776107700; cv=none; b=Xin3LODzGdfRMEjMYdTD+nOAmPdU1oMjdDhqX0C62mfDKpYto3MbgSpdgDksiJ3urP4EW+S7upGpVQBRVIAXazdhsL01x4yu7HdQ++6F/vH3TtKFuHpj/689XmeqNoP1TkGv8qdNDcl778zdeab5SyNWfRZ/XHJldSoQND2uTiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776107502; c=relaxed/simple;
-	bh=f9oCGipDy6RcLee8mwGZHQR7Mqjd2U38RG0Ya7eHqI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2TxeVnl6IBIQGHU2a47TZ+LWBVr7nQCc5toUu6Kl0Na3PkF8VICftmtAxw7X27ml7rjkvlGqIaHpxMXb1myYLOW/UOfgR5f+8P7QAnpxZNZyvXO3urc9pLU+ThbXTpEcsQsu2dv8SrB1ytYQjcO151z5h/jRxaKWH1rStx7+AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=J3yExkq/; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488c21c636dso28552575e9.2
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:11:41 -0700 (PDT)
+	s=arc-20240116; t=1776107700; c=relaxed/simple;
+	bh=hjrbUh3K16uhPv+qGKiFJMHaayQ7zUPBcGTS9VdYRT8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eriLC40w9RezSQ1LGqE/7qexbI4lu2iTEl0Tsku6OYbSZDMN9zAr/xIqRP5uzCEju1bjb6Gfx0Qn36LXuSlStBwf22ECEtmp1TxI14VqHxUls5Nb2EwOJK+mKU196dhxxesITX4UyPJ5W5l2OnMTY76AQuFHZVun6+P990OeaCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rRlurC5T; arc=none smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-12c45281a06so2733753c88.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:14:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776107500; x=1776712300; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3nCfqvin2GADlXqoFK8yPp3FrJJtNV6XYhevnyEsvuc=;
-        b=J3yExkq/eUdMKl/tyHfOCOOcCpVY0AhMLrU1K6qAW8AoQfiUMsHzAaBMD7aaJpWqMA
-         5b2lMpJvSZ2iEGqAcgDM6KcHFXr9EJClp7rzJ6VACq+YKep3p++aF00kaqg/NZj3t600
-         UD+b3J+J2rpEqtGO8Jg/b7e7f11UjTxK9rNLBZbYvscr14t2eEzrLWMvM09qSn8NZaqJ
-         Cffy4MVAqm4ENslu71GGnEscMZqdnDr6ACHqHFyj1XuKmIjiJNzuqqZsJHCBLg3sgVRe
-         mcXDgadBqisFy1zM1B2v0OxQ8B43rjQNWCsGJ8jlpZzql0BKJ8pUpUSclL7YfCaNq3rl
-         WkZQ==
+        d=gmail.com; s=20251104; t=1776107697; x=1776712497; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6CQP3NmVGMh1UqGBteJSFQx79n5V+bZQmDU6yBEPTYU=;
+        b=rRlurC5TKFv6O8pRVsv1dG4rMz87alNOWepmhw4Ej7MOs8ju8Ucldho+Sm16Z0iBx/
+         omQxhv7+zH5vQ0sM0FCGtRIuEmivnSg6P6aRhQD8G3E2c/bsvwAVuiD/qMk4xGlOReX6
+         DjCpN5u7E5uN+uJ9rDoqcGb7iirUoi6iSMWxZMbCzMBe7w6AccQ2LEtg7SVwBKhB+kBN
+         NjPF7nJYvzCHo7YC5WWCcyAu2lm4H/jHKcuf0A3gPocJmHnXPitrG0RmKOX5wuMzhcRf
+         wKASMOiLrvfjksXZbIvB+xbRJpO9siHyiJ5FO5T69oLa0DLJ0tU7t+oeb8G6V7POB/7m
+         43Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776107500; x=1776712300;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3nCfqvin2GADlXqoFK8yPp3FrJJtNV6XYhevnyEsvuc=;
-        b=FLh+hsZd2+cJjfkW+myrYXjq4iU/ODoKU54121GX2RFIrufNSXhROCZZ6+AOGk/cBp
-         z0K1bltF3GsSkeJtef0mIhpyPh6ehA5WUSb6mnGj2mBN+ZFLNqt9j3/bGErPL7cetakh
-         bShYAZGoB28ZbobHc17PRVlfuV314YeNxAuIp9Rc9gH0YNo0tMc+gInuKWjVz3wDpFPx
-         TfimxLB/yCekyHCTOY/+U8mrzvL6w/WdptmWTn9gaOWlpF9zjg3MpvFGyOmYFUpj6Zcg
-         slfTSVLQo83lQZjEIimbV4t3FVCIuXnr3bYOTpJOlfLPAgmFd8yVGcFrHh65c6HKDLqT
-         dOCA==
-X-Forwarded-Encrypted: i=1; AFNElJ9vRdIcbpJogN5XVJwIAnUVLVYqF9BdpfbCBFVQhQ8Cj4dQOSadxmyHziiy1nmNzvORR9OslV8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7C6ij3W8j5QS5289hjpiDn5mbcMk7Xvq0kuQGSc0r/pXSSMVp
-	Xt5UhEf/xsH0AKtq1yyWVoqagA7aYSJvkkarHBCvA1uEyNL3FEBqKgqHfhnLwCsYHnk=
-X-Gm-Gg: AeBDietMGy+mB3HRjVZrTex4wo4UxVJzwVadtvf5VsOd93bHrpObBG06RZTJREw/v84
-	qIqxd5IGtxUrPv+nvjdu1WcQqb/yTw0dGDESUFz02A69cWgXzLgNfl4G7XvBBcNns4vgpRK+puA
-	gh9yrM6FExgONaxPniYrR2ba7iSoSDsGdyjuGHQSY8qEH9Yk2fMDJZ9mCH1yRRNQ6AtHHSOoaQ2
-	6UiK7oCv6CiCu75z42AJWl//Vzr92Oot8YRlp/2EDFg0v8/09bH50CuDvXSU1oJBMDDatWTVlRH
-	NEvqsiLi/2oAmd2/mIqJZLw4Gn2v7/uLRxuK99iqW6JPKIov5SOADZ4nUpcIULxgQGd3sRl4Z9X
-	pcxuXgev0hp81x8DwShL+BoMFq6LqqdrRGq2Tw31LC2s44DVEm/uybg+Z6Bg7fnvy4gOGs1BOzI
-	jKl4MrKSTOd3nVXUbngDb/UkIh9zNkZq0C4tsnp/NJxA==
-X-Received: by 2002:a05:600c:8b27:b0:488:af7f:775f with SMTP id 5b1f17b1804b1-488d68766c7mr185272365e9.18.1776107499704;
-        Mon, 13 Apr 2026 12:11:39 -0700 (PDT)
-Received: from precision ([2804:7f0:6401:5290:433e:afae:f475:c9f7])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55f5c6afdsm17508032eec.4.2026.04.13.12.11.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 12:11:38 -0700 (PDT)
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: sfrench@samba.org
-Cc: pc@manguebit.org,
-	ronniesahlberg@gmail.com,
-	sprasad@microsoft.com,
-	tom@talpey.com,
-	bharathsm@microsoft.com,
-	ematsumiya@suse.de,
-	linux-cifs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] smb: client: pass correct from_reconnect to cifs_put_tcp_session()
-Date: Mon, 13 Apr 2026 16:11:10 -0300
-Message-ID: <20260413191110.1508848-2-henrique.carvalho@suse.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413191110.1508848-1-henrique.carvalho@suse.com>
-References: <20260413191110.1508848-1-henrique.carvalho@suse.com>
+        d=1e100.net; s=20251104; t=1776107697; x=1776712497;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6CQP3NmVGMh1UqGBteJSFQx79n5V+bZQmDU6yBEPTYU=;
+        b=lcC5ZN99kjXAQiG4mZMzcyHj53LNhoCyAEbunn+gnX+WhsPyS/rB2Yu/c0fl+JQdqO
+         zJEM9z9U7sX+F3oPa5WA/h0ooexUdcyNxl3DEkRHRnp/Pv0nCefR+HDV4BnpNi1ZhHul
+         AAtPCQAslXXCsKRGFt7EK+PnR9TXh/GDnRedacpqtu1wiETiY7ivdjBz60ipXmEQXe+j
+         Q5c3q0oofZsRUVdiSpYiEBtsswvdFzP+SLZwn8cNyN0LqC4cKQES+1rpR0qud7sCIx/D
+         wVBAZR6/Rmjiwi+av8kZ89gv6B2TMWZ2DC1QntiQDCpR5a7lydxEa9bZIodykVRYFRqx
+         oHIA==
+X-Forwarded-Encrypted: i=1; AFNElJ/1KsqcKoobGsP8bbTgFkU10RsCRvDlrodAl6S+TsuLV5ouP7PtJXu08NyIrQDWVHChnE+iH9o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN1aCoG223BGJ+bLfZnRUgg2xVLFOvM5WtFXnwtpLMhLpXqsCQ
+	/foZ218ClTU7uZ6BSQy34xa8LWuYdY0UQhdQgd0X2DkbxCInTL50p/eV
+X-Gm-Gg: AeBDieuA05daPawjYOaFUjPYoLjzuRpnaey2YmWgfLEFcYLsVjn+LY7F4pK7Tbk6LO/
+	WgBZgxz0o+WWlmc8w3945eqrjH/snn9gbGxBimCp+41jmpeMxdiH+olARIDvAMHDe6T1dHuNJrL
+	uuRSleN/iUeEvb8ox8blkUp/S/ihwkeyegGgY5+NjOa6eWK++lT2Uy4Hw9vILGkqC4JpHxvxmCb
+	/mDMhPitILwpVpzrGKXwcXh2+wmtS2RTnqY+LyU6lED8l/HziWeoJPCy5odJIefThNvNo+fbwi+
+	FqqeBcu7rOr6SXPi3UYN3fc0BW+2O4X4RDYgYXR+wuSg1alkZ2IWKRLYJpidKqG44LSbP9EMtg0
+	oQ1tEPgJ+AFdZOkdErXQR2zAm600wmBB/QkvH1lxF7xXg75sHE2SCnYvKiC8hnr9khVZJSu5x5f
+	tdqiCy0hQlvcykOZbuE6tIN+54LuoUa4JGzrPavkFGw70zTMBm9Q==
+X-Received: by 2002:a05:7300:d70b:b0:2da:9a3c:8062 with SMTP id 5a478bee46e88-2da9a3c91a3mr1371099eec.17.1776107697433;
+        Mon, 13 Apr 2026 12:14:57 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55faa571csm20993898eec.10.2026.04.13.12.14.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 12:14:56 -0700 (PDT)
+Message-ID: <36b828ee-71ff-4c48-9ab6-139a3ba6bc1d@gmail.com>
+Date: Mon, 13 Apr 2026 12:14:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 00/50] 6.6.135-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260413155724.497323914@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_FROM(0.00)[bounces-237641-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237642-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.996];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:dkim,suse.com:email,suse.com:mid]
-X-Rspamd-Queue-Id: 0884F3F289B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7FDB83F2905
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-cifs_decrease_secondary_channels() tore down removed channels with
-from_reconnect=false, even when the shrink was triggered from reconnect
-context, which could synchronously wait on reconnect work and break the
-reconnect-side teardown path.
+On 4/13/26 09:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.135 release.
+> There are 50 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.135-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Pass down the from_reconnect argument to cifs_put_tcp_session() so
-reconnect-driven channel removal uses the same non-blocking teardown
-semantics as the rest of the reconnect path.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This is a minor fix. I believe this bug cannot be triggered in the
-current state of cifs.
-
-Fixes: ee1d21794e55 ("cifs: handle when server stops supporting multichannel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
----
- fs/smb/client/cifsproto.h | 1 +
- fs/smb/client/sess.c      | 4 ++--
- fs/smb/client/smb2pdu.c   | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 884bfa1cf0b4..b00b2e070ada 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -374,6 +374,7 @@ bool cifs_chan_needs_reconnect(struct cifs_ses *ses,
- bool cifs_chan_is_iface_active(struct cifs_ses *ses,
- 			       struct TCP_Server_Info *server);
- void cifs_decrease_secondary_channels(struct cifs_ses *ses,
-+				      bool from_reconnect,
- 				      bool disable_mchan);
- void cifs_chan_update_iface(struct cifs_ses *ses,
- 			    struct TCP_Server_Info *server);
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 698bd27119ae..47bb566c8731 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -273,7 +273,7 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
-  * Otherwise, it disables all but the primary channel.
-  */
- void
--cifs_decrease_secondary_channels(struct cifs_ses *ses, bool disable_mchan)
-+cifs_decrease_secondary_channels(struct cifs_ses *ses, bool from_reconnect, bool disable_mchan)
- {
- 	int i, chan_count;
- 	struct TCP_Server_Info *server;
-@@ -319,7 +319,7 @@ cifs_decrease_secondary_channels(struct cifs_ses *ses, bool disable_mchan)
- 				server->terminate = true;
- 				cifs_signal_cifsd_for_reconnect(server, false);
- 			}
--			cifs_put_tcp_session(server, false);
-+			cifs_put_tcp_session(server, from_reconnect);
- 		}
- 
- 		spin_lock(&ses->chan_lock);
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 2eb13b2665a4..cf7b74a2b9b0 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -206,7 +206,7 @@ cifs_chan_skip_or_disable(struct cifs_ses *ses,
- 		return -EHOSTDOWN;
- 	}
- 
--	cifs_decrease_secondary_channels(ses, disable_mchan);
-+	cifs_decrease_secondary_channels(ses, from_reconnect, disable_mchan);
- 
- 	return 0;
- }
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.53.0
-
+Florian
 
