@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-236720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHmCCqUZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236720-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:21 +0200
+	id SMYoMrce3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC5D3EF01A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E923EFEC5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6EFC63011C92
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2B5003022434
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999B730B50F;
-	Mon, 13 Apr 2026 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CBF3161BF;
+	Mon, 13 Apr 2026 16:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQ5D2fk3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkZngz5Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B48306B0A;
-	Mon, 13 Apr 2026 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997D73148A3;
+	Mon, 13 Apr 2026 16:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097620; cv=none; b=Hf3JuDlKvoUCQXa5f72YU4N/RSvqZ4BlOaNeToarfzI2BRWHz5ESEg6dCTXgH99iKEmxNdHwGVRNteVTofsOW6E0qYS4vtIuoQmhYdotumduN5lV1NxcV2+vDAHItxkzomyDKUQZpsyQ2/qf4J0CaA6QPaTmWC0aY0P8auQawVw=
+	t=1776098802; cv=none; b=mcmh+T7XkUAIvBqOiYrsTFLXqxCJWFoWvAgboYkq0IqsCcQrvSDACrJndnRMUi+ENQsS2nVNRzcZJIS+Gp7uNasWQbHq7gxQrbR248ueKEnXPmEoYnni0eKkbK6cC4YkeTC+Q2bubX90P85qIwxYDUUCQBgm59Hl+xDwqipreag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097620; c=relaxed/simple;
-	bh=AGZKWoMo4S0diwJRezMRYp2a4fxZ362lan7VtOSlORQ=;
+	s=arc-20240116; t=1776098802; c=relaxed/simple;
+	bh=PPjw+QqalDK7SpmS1Glm1ou0iWOLswEZUPmy+zEXZ+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgpLMwwPvc7sJdydJ18VJNRWQ8IVWnzvFnJUhrP34h3Q+kvpMMnN3xZlDbK9b1+xJiCrksluJybTrqJQQDXoxz+3Y3krj39L1/N9xpx1xEbGItFSt2B2tlEPUHYqjXpKWVOv26EEzp73SKp6tRoLvqTltGOxdqrv360k9bUSVnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQ5D2fk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E23C2BCAF;
-	Mon, 13 Apr 2026 16:26:59 +0000 (UTC)
+	 MIME-Version; b=M6QR3Jn1GFkDtSTVLt7f6MsCEi3gDotsbEX0MwxNKuhm7q/LRJO86lu9dkg+hADGHVK2QzNam3JkXAgebMqZJqRt+E2qdseGgnJHTSnPzjdKHwDdY60UxcY4Nhg/a+xvh51Idro/hx9z0Pougnr9ePhaKRU2UYmLDlnYPY+uMwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkZngz5Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D25C2BCAF;
+	Mon, 13 Apr 2026 16:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097620;
-	bh=AGZKWoMo4S0diwJRezMRYp2a4fxZ362lan7VtOSlORQ=;
+	s=korg; t=1776098802;
+	bh=PPjw+QqalDK7SpmS1Glm1ou0iWOLswEZUPmy+zEXZ+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQ5D2fk3uPx3VQ2LY5/v8Q+D1fG4Cqx8prELBhmyh9w/I5y8S2jA9UHgFdBd6BH+L
-	 UUhH1+raOpxpInaTsZboFiw2i2XIX0jVEYb3f3oHJHcf1DZaUVJWL+569L8oPuwPR5
-	 KXwHSOOXSONemFJwgMe75XQ7Y89VCplEWudk5iEU=
+	b=qkZngz5ZzyfQQ6dbGCsq8sc8SiOXniW3UEZs05gpKvxhefeZSVYrDbDN52oNC1n3q
+	 nlOisqwFt5BB3bJtM8GB6x40rABarCRcBGjtGzI0zvUc9i5oVWDiOFQLiHBW3PtmiT
+	 qp//A6y4q4PvNEez9RjpTrUdDKPkjIzbmsrFNRKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.15 208/570] iommu/vt-d: Fix intel iommu iotlb sync hardlockup and retry
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.10 094/491] usb: yurex: fix race in probe
 Date: Mon, 13 Apr 2026 17:55:39 +0200
-Message-ID: <20260413155838.249849069@linuxfoundation.org>
+Message-ID: <20260413155822.564600070@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,81 +72,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236720-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237184-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9FC5D3EF01A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 69E923EFEC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit fe89277c9ceb0d6af0aa665bcf24a41d8b1b79cd upstream.
+commit 7a875c09899ba0404844abfd8f0d54cdc481c151 upstream.
 
-During the qi_check_fault process after an IOMMU ITE event, requests at
-odd-numbered positions in the queue are set to QI_ABORT, only satisfying
-single-request submissions. However, qi_submit_sync now supports multiple
-simultaneous submissions, and can't guarantee that the wait_desc will be
-at an odd-numbered position. Therefore, if an item times out, IOMMU can't
-re-initiate the request, resulting in an infinite polling wait.
+The bbu member of the descriptor must be set to the value
+standing for uninitialized values before the URB whose
+completion handler sets bbu is submitted. Otherwise there is
+a window during which probing can overwrite already retrieved
+data.
 
-This modifies the process by setting the status of all requests already
-fetched by IOMMU and recorded as QI_IN_USE status (including wait_desc
-requests) to QI_ABORT, thus enabling multiple requests to be resubmitted.
-
-Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per qi_submit_sync()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Link: https://lore.kernel.org/r/20260306101516.3885775-1-guanghuifeng@linux.alibaba.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per  qi_submit_sync()")
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20260209143720.1507500-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/dmar.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/misc/yurex.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1305,7 +1305,6 @@ static int qi_check_fault(struct intel_i
- 	if (fault & DMA_FSTS_ITE) {
- 		head = readl(iommu->reg + DMAR_IQH_REG);
- 		head = ((head >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
--		head |= 1;
- 		tail = readl(iommu->reg + DMAR_IQT_REG);
- 		tail = ((tail >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -271,6 +271,7 @@ static int yurex_probe(struct usb_interf
+ 			 dev->int_buffer, YUREX_BUF_SIZE, yurex_interrupt,
+ 			 dev, 1);
+ 	dev->urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
++	dev->bbu = -1;
+ 	if (usb_submit_urb(dev->urb, GFP_KERNEL)) {
+ 		retval = -EIO;
+ 		dev_err(&interface->dev, "Could not submitting URB\n");
+@@ -279,7 +280,6 @@ static int yurex_probe(struct usb_interf
  
-@@ -1315,7 +1314,7 @@ static int qi_check_fault(struct intel_i
- 		do {
- 			if (qi->desc_status[head] == QI_IN_USE)
- 				qi->desc_status[head] = QI_ABORT;
--			head = (head - 2 + QI_LENGTH) % QI_LENGTH;
-+			head = (head - 1 + QI_LENGTH) % QI_LENGTH;
- 		} while (head != tail);
+ 	/* save our data pointer in this interface device */
+ 	usb_set_intfdata(interface, dev);
+-	dev->bbu = -1;
  
- 		if (qi->desc_status[wait_index] == QI_ABORT)
+ 	/* we can register the device now, as it is ready */
+ 	retval = usb_register_dev(interface, &yurex_class);
 
 
 
