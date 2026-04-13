@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4E3ZFkYh3Wn4aAkAu9opvQ
-	(envelope-from <stable+bounces-236713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:54 +0200
+	id yI5bEZwe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A773F07CD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE823EFE55
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EF7C31C2599
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7768D302D75C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27BA3093CF;
-	Mon, 13 Apr 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4EE31714B;
+	Mon, 13 Apr 2026 16:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pJR3ccV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxXlPLJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66C426CE32;
-	Mon, 13 Apr 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F37423E342;
+	Mon, 13 Apr 2026 16:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097602; cv=none; b=VIFtEonHsRmhhias8EN8kfqMFKWK3e3RgmApQDmAENocyWJEdSokF/K1W79yqhZEcoeSBIukTaGkcyI/tDOfOg1YT/rQxCs0QxVc3qsmzGiL0qH4ToDTmXnxuWk4LsjirLKI9DY0J641+4MwTVYmhIp9Dkp3a4b3NVfCd/u+2TQ=
+	t=1776098784; cv=none; b=h5c1Wn7uLxYK0jzvJg7fNz8xoL5r+3LSlr//5a8BXpyHKxWFzef5I9VN0h0SvtbgaWsVNWd5XEUQkttZZrbXltCOPMddauDlA7H6EcO2A2n9mjDJVI/Gxx/aeClKUjXqp7iyA1Uf93PvDrIELCilzushNwi+mOn8SxF/ekNF3eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097602; c=relaxed/simple;
-	bh=B2Zzqkzrhi7SWiVW8VcvXd25UOQ1OHxHMFjqGZSsXXs=;
+	s=arc-20240116; t=1776098784; c=relaxed/simple;
+	bh=Hv0b8slT6w0AXsEDnDJ3NDkR3S69w52lbx05KmZnmAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E8AIqlAUBf+5/5t1Y0ES3f+cI6xZt/ZXyw6qft1huT52ESvOep7Ba1ikmwOWwg7gdQUm0GBqgXF5vQ9dGd/SHae8UnZM5w+z3dw7wZwJDKidhCrmMY2GctBazsyqthYgYVWygHlqB/toi21Zg0J+FC+Sp+05SnWemMcu2zJV4yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pJR3ccV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B95EC2BCAF;
-	Mon, 13 Apr 2026 16:26:41 +0000 (UTC)
+	 MIME-Version; b=Fon1cfQ27ke5evolZfsn2d7afotP6KAjhYNDMSBnT5q6oHqIYdOx0rA9tgjKLkbv6eiYRasUMuLtfIP9w3vj8lkqD/c0e8TXMS1qmE2Igi/uHllZZzCPhtP8TOE4/y++xJeZ+Cq1f3anLz4m6WOLuYf94Lex1xqWqoVgF1WrDe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxXlPLJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C79C2BCAF;
+	Mon, 13 Apr 2026 16:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097602;
-	bh=B2Zzqkzrhi7SWiVW8VcvXd25UOQ1OHxHMFjqGZSsXXs=;
+	s=korg; t=1776098784;
+	bh=Hv0b8slT6w0AXsEDnDJ3NDkR3S69w52lbx05KmZnmAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pJR3ccV1lGpnJz7jCwUrPO9Y0B8bgqm0tfCm8c485yP+URnVntKBZHCS53anqE7l
-	 vZfoQiA2VbNadfzZc+vFoyc1Rn6cThUx0jUsn5f3FfvoT45vOH8qmd4YUmtW30Diae
-	 i1jwbHfFiipHnH5mWyzCclMsLcywEK14sOAhnabs=
+	b=VxXlPLJmcwbyPopZVsNxCaSaKuWhf3gPRZCY181SjDX15X7XdFXZlRALA0LIg1Nud
+	 CrKw3vdC9mBf0zdIRjAhlqNNHZth7LUHazqQe/862qh4/YR7WZMkP+0h/JD6B9Bfux
+	 BAUMbUC1w7x3DR4e3b6kY5yaw9ooh3E2AJj+lCsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 201/570] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
-Date: Mon, 13 Apr 2026 17:55:32 +0200
-Message-ID: <20260413155837.987857141@linuxfoundation.org>
+	Casey Connolly <casey.connolly@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 088/491] ASoC: detect empty DMI strings
+Date: Mon, 13 Apr 2026 17:55:33 +0200
+Message-ID: <20260413155822.339595298@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236713-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237176-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,johannes-moeller.dev:email]
-X-Rspamd-Queue-Id: C7A773F07CD
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2CE823EFE55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Johannes Möller <research@johannes-moeller.dev>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-commit 15145675690cab2de1056e7ed68e59cbd0452529 upstream.
+[ Upstream commit a9683730e8b1d632674f81844ed03ddfbe4821c0 ]
 
-l2cap_ecred_reconf_rsp() casts the incoming data to struct
-l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
-result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
-with result at offset 0).
+Some bootloaders like recent versions of U-Boot may install some DMI
+properties with empty values rather than not populate them. This manages
+to make its way through the validator and cleanup resulting in a rogue
+hyphen being appended to the card longname.
 
-This causes two problems:
-
- - The sizeof(*rsp) length check requires 8 bytes instead of the
-   correct 2, so valid L2CAP_ECRED_RECONF_RSP packets are rejected
-   with -EPROTO.
-
- - rsp->result reads from offset 6 instead of offset 0, returning
-   wrong data when the packet is large enough to pass the check.
-
-Fix by using the correct type.  Also pass the already byte-swapped
-result variable to BT_DBG instead of the raw __le16 field.
-
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4e01e5dbba96 ("ASoC: improve the DMI long card code in asoc-core")
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Link: https://patch.msgid.link/20260306174707.283071-2-casey.connolly@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/soc-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6397,7 +6397,7 @@ static inline int l2cap_ecred_reconf_rsp
- 					 u8 *data)
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 7ecbea296e917..8ceffa6851bd0 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1675,12 +1675,15 @@ static void cleanup_dmi_name(char *name)
+ 
+ /*
+  * Check if a DMI field is valid, i.e. not containing any string
+- * in the black list.
++ * in the black list and not the empty string.
+  */
+ static int is_dmi_valid(const char *field)
  {
- 	struct l2cap_chan *chan, *tmp;
--	struct l2cap_ecred_conn_rsp *rsp = (void *) data;
-+	struct l2cap_ecred_reconf_rsp *rsp = (void *)data;
- 	u16 result;
+ 	int i = 0;
  
- 	if (cmd_len < sizeof(*rsp))
-@@ -6405,7 +6405,7 @@ static inline int l2cap_ecred_reconf_rsp
- 
- 	result = __le16_to_cpu(rsp->result);
- 
--	BT_DBG("result 0x%4.4x", rsp->result);
-+	BT_DBG("result 0x%4.4x", result);
- 
- 	if (!result)
- 		return 0;
++	if (!field[0])
++		return 0;
++
+ 	while (dmi_blacklist[i]) {
+ 		if (strstr(field, dmi_blacklist[i]))
+ 			return 0;
+-- 
+2.51.0
+
 
 
 
