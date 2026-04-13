@@ -1,248 +1,143 @@
-Return-Path: <stable+bounces-236101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGryF0n53Gn6YgkAu9opvQ
-	(envelope-from <stable+bounces-236101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:17 +0200
+	id YG19AC363GnXYgkAu9opvQ
+	(envelope-from <stable+bounces-236103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032B53ED15D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 939513ED29C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B14330257BC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:08:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 22D4B300DCF8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79303D811C;
-	Mon, 13 Apr 2026 14:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571533D8137;
+	Mon, 13 Apr 2026 14:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFZwG9lw"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U2qrO4/B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04AE3D6CAD
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A549E3D88F2
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776089270; cv=none; b=sMQaOWpefeK9Mj8JAdWRyJnxh6j4S5pL4RNJkk8MpIfXNdrP2Mt9P66iRnAI1QmsnWxJvgC5ZC//KvMpxxl+XhzrWoJWkLOfWvuOC6Uy/fU6jT5/SDhxrKCLku6xkcyQCikL1uXy8170R3laHHO7Z8yz0Ok8phPsUh7DxYw3djk=
+	t=1776089630; cv=none; b=DXXRQScX5dtjgcMJAztLm6zs62CKkSlVVH0DU+3KOxL30SauThzbMuyfkDOSA5a7oinI2gB4VwIFltkqsLpd/3lcunlLDv2Tkk00zNHlpzO0gEPxER+j/BTuxUVJBz5nN+P+hvD0nJAtPYAr6Ygm9/trFB1A3D2sfpSp6Ji5hZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776089270; c=relaxed/simple;
-	bh=Zw2g++RIhZcNc0BvbPygGb1K0hpn8LRWi7EFmhOtcuU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUaeDvWjauFLLBJvouxRyEIS9ZDsfvpHxoazWE84z/4bzFZo/wvmusgoTg6oYLAw8jmFYc2YcAoIAO6ABp0ow0sYcbeZCShvbMRMTob8ulC8vHgKWWOBSNqhl+FZISVGD/wMOxzjkfo0teX4cqO3K84JJG/p4hKgSWoRuWLGllw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFZwG9lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1884EC2BCB6;
-	Mon, 13 Apr 2026 14:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776089269;
-	bh=Zw2g++RIhZcNc0BvbPygGb1K0hpn8LRWi7EFmhOtcuU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFZwG9lwPt0jo4vBAe7yRYPvYFr6JavoxyKaitil36hZkHe+nB9jzhDrkrdw/2jMP
-	 pilPt9wYr8v/B74AhoO3cn56Px9Nv/92ARDADzdrfp+p7w3iX3KVtRByu+jjWAXGq6
-	 HgGiwX7Lpz+YBar+Wo2JEleby09kllyWjxAjCA+8KpjkfhCNccFXF4wRPuB4vzj5Qe
-	 drJlN+dYAnMq0Ah1oTCzavoQhNRISH9pEAzHuvVC6INupAXXIXWQo8foSeVztHHBhl
-	 fv7sigUArgGfjzkXSlrVGRxWwkVbMhMj6w2tgKS1yHKWaQlJ6gZw1NpVplYyYJl+Ok
-	 f5phBj6rCZLVQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Woodhouse <dwmw@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
-Date: Mon, 13 Apr 2026 10:07:46 -0400
-Message-ID: <20260413140746.2904035-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413140746.2904035-1-sashal@kernel.org>
-References: <2026041318-chowder-paper-ef87@gregkh>
- <20260413140746.2904035-1-sashal@kernel.org>
+	s=arc-20240116; t=1776089630; c=relaxed/simple;
+	bh=przxY71irLjGb3M1w1Mo47dYsyHXv7/dKtrfZKwKU/U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EqTB1zW7Rz3B8j83rl5OP6OvJvhRgMapNdGU0UmKCXM3cq8lvSmER1BYGiYUI+2Kw4Rra7MTaGpmfeMigDzmY2HQV0gxGIEUgrWHGrBpFCnICGrNWo94UWYs5AOVL741Rf13MHIEl1PWm2xueKpzadR0AQYjx9i/ff8vZoWE8FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U2qrO4/B; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <8747df25-721f-4813-b81d-8c7275a2f33b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776089616;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7M+7T8ZcuIplDzLqOqdGKThmKW/nekPSMPdpLelpxjM=;
+	b=U2qrO4/BLedHXxuPkTjgI2NHer3fd2VJbGz/lKOBJ4HPiD6R9Uzd86XNZ+k/r78JkhmcJn
+	oO50JyjP5yRF18Ia6feGFHQ/voxt99Jfj38P9q17VC/t6iWQPNoFNUlS2GJeaRducNnsGY
+	MOODgu6Prd7Fy5mRp7RJ7n0kpAssa+8=
+Date: Mon, 13 Apr 2026 22:13:23 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Subject: Re: [PATCH v2] mm: thp: Fix refcount leak in thpsize_create() error
+ path
+Content-Language: en-US
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: stable@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Barry Song <baohua@kernel.org>, Nico Pache <npache@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>
+References: <20260412175428.2613383-1-lgs201920130244@gmail.com>
+ <8eda3f8b-b811-4303-aefb-4b23aeeff16c@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <8eda3f8b-b811-4303-aefb-4b23aeeff16c@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236101-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-236103-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 032B53ED15D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
+X-Rspamd-Queue-Id: 939513ED29C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 2619da73bb2f10d88f7e1087125c40144fdf0987 ]
 
-Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-flexible-array members") broke the userspace API for C++.
+On 2026/4/13 19:39, David Hildenbrand (Arm) wrote:
+[...]
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 40cf59301c21..c8ffa188a198 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -726,10 +726,8 @@ static struct thpsize *thpsize_create(int order, struct kobject *parent)
+>>   
+>>   	ret = kobject_init_and_add(&thpsize->kobj, &thpsize_ktype, parent,
+>>   				   "hugepages-%lukB", size);
+>> -	if (ret) {
+>> -		kfree(thpsize);
+>> +	if (ret)
+>>   		goto err;
+>> -	}
+> 
+> kobject_init_and_add() indeed documents "If this function returns an
+> error, kobject_put() must be called".
+> 
+> As Andrew says, that's not what the "goto err" does.
 
-These structures ending in VLAs are typically a *header*, which can be
-followed by an arbitrary number of entries. Userspace typically creates
-a larger structure with some non-zero number of entries, for example in
-QEMU's kvm_arch_get_supported_msr_feature():
+Right. v1[1] should do the trick: just jump to err_put
 
-    struct {
-        struct kvm_msrs info;
-        struct kvm_msr_entry entries[1];
-    } msr_data = {};
+-	if (ret) {
+-		kfree(thpsize);
+-		goto err;
+-	}
+-
++	if (ret)
++		goto err_put;
 
-While that works in C, it fails in C++ with an error like:
- flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
+Hmm... not sure why this changed to "goto err"
 
-Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
-for C++ compilation.
-
-Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
-[sean: tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/include/uapi/asm/kvm.h | 12 ++++++------
- include/uapi/linux/kvm.h        | 11 ++++++-----
- 2 files changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 64cdf9763c0e0..f1b0a28b3a36b 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -192,13 +192,13 @@ struct kvm_msrs {
- 	__u32 nmsrs; /* number of msrs in entries */
- 	__u32 pad;
- 
--	struct kvm_msr_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
- };
- 
- /* for KVM_GET_MSR_INDEX_LIST */
- struct kvm_msr_list {
- 	__u32 nmsrs; /* number of msrs in entries */
--	__u32 indices[];
-+	__DECLARE_FLEX_ARRAY(__u32, indices);
- };
- 
- /* Maximum size of any access bitmap in bytes */
-@@ -240,7 +240,7 @@ struct kvm_cpuid_entry {
- struct kvm_cpuid {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
- };
- 
- struct kvm_cpuid_entry2 {
-@@ -262,7 +262,7 @@ struct kvm_cpuid_entry2 {
- struct kvm_cpuid2 {
- 	__u32 nent;
- 	__u32 padding;
--	struct kvm_cpuid_entry2 entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
- };
- 
- /* for KVM_GET_PIT and KVM_SET_PIT */
-@@ -393,7 +393,7 @@ struct kvm_xsave {
- 	 * the contents of CPUID leaf 0xD on the host.
- 	 */
- 	__u32 region[1024];
--	__u32 extra[];
-+	__DECLARE_FLEX_ARRAY(__u32, extra);
- };
- 
- #define KVM_MAX_XCRS	16
-@@ -530,7 +530,7 @@ struct kvm_pmu_event_filter {
- 	__u32 fixed_counter_bitmap;
- 	__u32 flags;
- 	__u32 pad[4];
--	__u64 events[];
-+	__DECLARE_FLEX_ARRAY(__u64, events);
- };
- 
- #define KVM_PMU_EVENT_ALLOW 0
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 03bbe12620e98..9222f5e3c59b9 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -11,6 +11,7 @@
- #include <linux/const.h>
- #include <linux/types.h>
- #include <linux/compiler.h>
-+#include <linux/stddef.h>
- #include <linux/ioctl.h>
- #include <asm/kvm.h>
- 
-@@ -496,7 +497,7 @@ struct kvm_coalesced_mmio {
- 
- struct kvm_coalesced_mmio_ring {
- 	__u32 first, last;
--	struct kvm_coalesced_mmio coalesced_mmio[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
- };
- 
- #define KVM_COALESCED_MMIO_MAX \
-@@ -546,7 +547,7 @@ struct kvm_clear_dirty_log {
- /* for KVM_SET_SIGNAL_MASK */
- struct kvm_signal_mask {
- 	__u32 len;
--	__u8  sigset[];
-+	__DECLARE_FLEX_ARRAY(__u8, sigset);
- };
- 
- /* for KVM_TPR_ACCESS_REPORTING */
-@@ -999,7 +1000,7 @@ struct kvm_irq_routing_entry {
- struct kvm_irq_routing {
- 	__u32 nr;
- 	__u32 flags;
--	struct kvm_irq_routing_entry entries[];
-+	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
- };
- 
- #define KVM_IRQFD_FLAG_DEASSIGN (1 << 0)
-@@ -1086,7 +1087,7 @@ struct kvm_dirty_tlb {
- 
- struct kvm_reg_list {
- 	__u64 n; /* number of regs */
--	__u64 reg[];
-+	__DECLARE_FLEX_ARRAY(__u64, reg);
- };
- 
- struct kvm_one_reg {
-@@ -1533,7 +1534,7 @@ struct kvm_stats_desc {
- #ifdef __KERNEL__
- 	char name[KVM_STATS_NAME_SIZE];
- #else
--	char name[];
-+	__DECLARE_FLEX_ARRAY(char, name);
- #endif
- };
- 
--- 
-2.53.0
-
+[1] 
+https://lore.kernel.org/linux-mm/20260411062152.2092967-1-lgs201920130244@gmail.com/#t
 
