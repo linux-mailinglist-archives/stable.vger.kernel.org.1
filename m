@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-237336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MH3ZKAMi3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:03 +0200
+	id uJNNIHgi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384EE3F0A05
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C543F0B89
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C2D63095647
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15B28308144D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA37F31714F;
-	Mon, 13 Apr 2026 16:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA6C27F4F5;
+	Mon, 13 Apr 2026 16:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jX8tQzzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhyAFCQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF2231715D;
-	Mon, 13 Apr 2026 16:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1127E27BF6C;
+	Mon, 13 Apr 2026 16:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099191; cv=none; b=rn6W48ILodkRkdSMARA2A/lk8/Etpd0lGD7BxvG8h//71HhdAxZcfP57bL14y43k0G7bPIR+uzR+F7qLtl5DPHiPytouJeXcJCKhuIfrqs5tLiLbq7oMN8putjUH+84fh7OvRW3FpmzELW9qXhzHhacF1fF9IR5XkRuIVHtPHwU=
+	t=1776097930; cv=none; b=SsgL0e019zBjMF5EQuV6ztIrGIsf+65oi4xh7pZUicmKqPAMzcKmu+9YR3es9OQQ6VLJY/+eNdvUrNPV1YGJZnqh4MVS2o67n8KB1r/gudGWNdkFszr75WErneAbITY8bEo85Nm62WtpzOrBqN+4hqTJaWpeS9iTxZxbVNKBGyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099191; c=relaxed/simple;
-	bh=VikyoReH9M16TZjVEXwalDfsDbi7QHKH5SfbCPiXX8s=;
+	s=arc-20240116; t=1776097930; c=relaxed/simple;
+	bh=/XdB50MFfRq88Rr+HGpFaiA+s/QdCk8fxhyx+BeB7vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J4KpX57UIcxQyiY0fHD66SdT0yC1ZpoYvqn0kskTxGR8w7TWKMsU6V/QPcOoUXj84UBD1cRdX06DU9ant8jRCCZ+6lL2F0JmXSpjZZynciXCgLpc9WvIh00qD5pfsrXDpf9bD5ofKHrIb62AYri/QSh/jk/0LlClpv9F8zm8MTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jX8tQzzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432A6C2BCB0;
-	Mon, 13 Apr 2026 16:53:11 +0000 (UTC)
+	 MIME-Version; b=DXfx1Lbbb+WpFSVL/+NTzspKOHEuT+L+frYESW+EccUaNJjHeZ132BfmoFw6j4d8dx41PjAOzit66s0fv2QYukXTQPTo1fPIVr5NoDBFZZjRbO8xh3FnU+qovoquLlp5mJJPpDHMUU4nrCB+7WNB4joEfgvQGoSg6JIauJAk1p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhyAFCQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550ECC2BCAF;
+	Mon, 13 Apr 2026 16:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099191;
-	bh=VikyoReH9M16TZjVEXwalDfsDbi7QHKH5SfbCPiXX8s=;
+	s=korg; t=1776097929;
+	bh=/XdB50MFfRq88Rr+HGpFaiA+s/QdCk8fxhyx+BeB7vE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jX8tQzzp5TR3kURfSwjm31wSkeJXl2QCZegkH7OwxXdHHpKueKs7PgJ85aXR6I3JO
-	 8NV1DhFX6gxy57qudkz8B0cnaHJMH+M1MUY0jK32PqH+c80Xe8Y6SffXrggNsmYfX+
-	 ikwzyTeYONtj9LfHMb0X2BjmjZlioyvGqUFNo34o=
+	b=OhyAFCQ17Qb6bs5RFLJPFRoIaYgHKBNNDcFQE8Kc0tL244kqayH4QtKQ81gbw7VFm
+	 njhL28qw5CGFm4vktysdskfuvrTB/L0/uFdWyj8GuADwHD2aq8kCcyqhoZM3nO2d6K
+	 9CEt42qvXumXtsC/iLAoqtft7N4IXnOmSPfLQyxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 212/491] netfilter: xt_time: use unsigned int for monthday bit shift
+Subject: [PATCH 5.15 326/570] net/smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
 Date: Mon, 13 Apr 2026 17:57:37 +0200
-Message-ID: <20260413155827.004138807@linuxfoundation.org>
+Message-ID: <20260413155842.708645734@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +63,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237336-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236841-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,vidocsecurity.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 384EE3F0A05
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: D2C543F0B89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Qi Tang <tpluszz77@gmail.com>
 
-[ Upstream commit 00050ec08cecfda447e1209b388086d76addda3a ]
+[ Upstream commit 24dd586bb4cbba1889a50abe74143817a095c1c9 ]
 
-The monthday field can be up to 31, and shifting a signed integer 1
-by 31 positions (1 << 31) is undefined behavior in C, as the result
-overflows a 32-bit signed int. Use 1U to ensure well-defined behavior
-for all valid monthday values.
+smc_rx_splice() allocates one smc_spd_priv per pipe_buffer and stores
+the pointer in pipe_buffer.private.  The pipe_buf_operations for these
+buffers used .get = generic_pipe_buf_get, which only increments the page
+reference count when tee(2) duplicates a pipe buffer.  The smc_spd_priv
+pointer itself was not handled, so after tee() both the original and the
+cloned pipe_buffer share the same smc_spd_priv *.
 
-Change the weekday shift to 1U as well for consistency.
+When both pipes are subsequently released, smc_rx_pipe_buf_release() is
+called twice against the same object:
 
-Fixes: ee4411a1b1e0 ("[NETFILTER]: x_tables: add xt_time match")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+  1st call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [correct]
+  2nd call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [UAF]
+
+KASAN reports a slab-use-after-free in smc_rx_pipe_buf_release(), which
+then escalates to a NULL-pointer dereference and kernel panic via
+smc_rx_update_consumer() when it chases the freed priv->smc pointer:
+
+  BUG: KASAN: slab-use-after-free in smc_rx_pipe_buf_release+0x78/0x2a0
+  Read of size 8 at addr ffff888004a45740 by task smc_splice_tee_/74
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x53/0x70
+   print_report+0xce/0x650
+   kasan_report+0xc6/0x100
+   smc_rx_pipe_buf_release+0x78/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000020
+  RIP: 0010:smc_rx_update_consumer+0x8d/0x350
+  Call Trace:
+   <TASK>
+   smc_rx_pipe_buf_release+0x121/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  Kernel panic - not syncing: Fatal exception
+
+Beyond the memory-safety problem, duplicating an SMC splice buffer is
+semantically questionable: smc_rx_update_cons() would advance the
+consumer cursor twice for the same data, corrupting receive-window
+accounting.  A refcount on smc_spd_priv could fix the double-free, but
+the cursor-accounting issue would still need to be addressed separately.
+
+The .get callback is invoked by both tee(2) and splice_pipe_to_pipe()
+for partial transfers; both will now return -EFAULT.  Users who need
+to duplicate SMC socket data must use a copy-based read path.
+
+Fixes: 9014db202cb7 ("smc: add support for splice()")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Link: https://patch.msgid.link/20260318064847.23341-1-tpluszz77@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_time.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/smc/smc_rx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_time.c b/net/netfilter/xt_time.c
-index 6aa12d0f54e23..61de85e02a40f 100644
---- a/net/netfilter/xt_time.c
-+++ b/net/netfilter/xt_time.c
-@@ -227,13 +227,13 @@ time_mt(const struct sk_buff *skb, struct xt_action_param *par)
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index 81cf611eae750..3468c58bbeebe 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -130,9 +130,16 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
+ 	sock_put(sk);
+ }
  
- 	localtime_2(&current_time, stamp);
++static bool smc_rx_pipe_buf_get(struct pipe_inode_info *pipe,
++				struct pipe_buffer *buf)
++{
++	/* smc_spd_priv in buf->private is not shareable; disallow cloning. */
++	return false;
++}
++
+ static const struct pipe_buf_operations smc_pipe_ops = {
+ 	.release = smc_rx_pipe_buf_release,
+-	.get = generic_pipe_buf_get
++	.get	 = smc_rx_pipe_buf_get,
+ };
  
--	if (!(info->weekdays_match & (1 << current_time.weekday)))
-+	if (!(info->weekdays_match & (1U << current_time.weekday)))
- 		return false;
- 
- 	/* Do not spend time computing monthday if all days match anyway */
- 	if (info->monthdays_match != XT_TIME_ALL_MONTHDAYS) {
- 		localtime_3(&current_time, stamp);
--		if (!(info->monthdays_match & (1 << current_time.monthday)))
-+		if (!(info->monthdays_match & (1U << current_time.monthday)))
- 			return false;
- 	}
- 
+ static void smc_rx_spd_release(struct splice_pipe_desc *spd,
 -- 
 2.51.0
 
