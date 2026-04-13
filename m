@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-236391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kL9KBsIY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:34 +0200
+	id YJHECBgg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6313EED58
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8E23F0416
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A14F030E3D32
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F2CF308E0E1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0CC2472A2;
-	Mon, 13 Apr 2026 16:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0585330E857;
+	Mon, 13 Apr 2026 16:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arBW0kPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubnsMSvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBC727280A;
-	Mon, 13 Apr 2026 16:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC3A30C361;
+	Mon, 13 Apr 2026 16:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096785; cv=none; b=Ei8K/kJBxH5tnYylPHO55TWXEnXr8neJghA6ruaa0dOmbCwKUaPPSsSLdAP/EPnrbI/1EKyRp2YLN/E1S5KzD3FAaK/KHCyYxUtwG/xoDWV1s63G05QsaMCS286qQBz7porUjIwFHVC04P/U+J0lNeEFQ2ppJzZg9Ky4dKf46mA=
+	t=1776098442; cv=none; b=CpCPCy9iyUawB2YR9xlNweVJKdDCj+5bqoMw5RTZKFyq50LO1vsixrGNksyHx+etlxpwTKfNzjpuMXHdc1CyoYXBOj7eX1HaZk5C9txQ4sh1Fd0o4oPDfByDQvMKqkMGIWdGwE1OnCE8Xa/ar4/W5LS1a7jpT971Dj9Mgu8LvGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096785; c=relaxed/simple;
-	bh=ByfQ8cYfLpbP56qEIx340VFNo7oEKJeXIRNCohYXVk4=;
+	s=arc-20240116; t=1776098442; c=relaxed/simple;
+	bh=ixil2JnuMNJN5l8aE9uMAyA85yu6rVuOG+0Ad8BXWmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyeGR++Tq04ZFzkK/8lbDYxcg0Td9d6S1iOl+uMDCpDNrJ/CfqQeavVVSlmTn3D8HMG/y6uv083kuJXmRdvCjMsxJZbtSNQnk9b6EyI+FEeESUUAycdr0tAKYvFIP2UWE8LMoB94rn0qzNUHtKoQHzmgq3nsNwXRblHZPwnlboU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arBW0kPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B84C2BCAF;
-	Mon, 13 Apr 2026 16:13:04 +0000 (UTC)
+	 MIME-Version; b=JKX3YWpKTORW2GIQKIn5LASK6d+JUJQdxcKTESrwvAtqtHh+Kye3sZj78eC2AD3oL8LTh4zs44NnepqzjQClqByqYPuweWqKohkDyyONrxWkWK3uRM5F++bDVCxeKLKzw2bdWljyNN1X2DZLUG+eN2UK9ugopfdIbZpqWyznSBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubnsMSvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542F7C2BCAF;
+	Mon, 13 Apr 2026 16:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096784;
-	bh=ByfQ8cYfLpbP56qEIx340VFNo7oEKJeXIRNCohYXVk4=;
+	s=korg; t=1776098442;
+	bh=ixil2JnuMNJN5l8aE9uMAyA85yu6rVuOG+0Ad8BXWmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arBW0kPyZjojcGbaPtcupe4oIiKCRlTBV5Q3LEZSLzmLdfr6c7wXa8fnxh70UoWeI
-	 qaHnIpHaRYb/DaSZA3ulSsAwKGvEeRJKdLWD9hQCWltQU7Bb/bCt70DwVeQQdF1tNM
-	 qMGHKcWfbwkrEO3Ckc81RMSD2L/W+OY6vNPYFRdg=
+	b=ubnsMSvq0ZqzUeHDy0WHigCTfFB0WhH7hQTAF72Cr64xk17TwhInUpRA0cJYQXeKm
+	 7XjXZqubier8rL+1yWsZb9on9yUCrDpjDhXOFrAec7L5F1IjyxmJPtgv3jJs8zABl0
+	 pYlhxehR/PoLvESukG24lJlcV6T5x/iRQBPo2aeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 62/70] rxrpc: Fix call removal to use RCU safe deletion
+	Tuan Do <tuan@calif.io>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.15 526/570] netfilter: nft_ct: fix use-after-free in timeout object destroy
 Date: Mon, 13 Apr 2026 18:00:57 +0200
-Message-ID: <20260413155730.495221116@linuxfoundation.org>
+Message-ID: <20260413155850.153569376@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,133 +67,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236391-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237043-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,auristor.com:email,msgid.link:url,sashiko.dev:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 8C6313EED58
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,calif.io:email]
+X-Rspamd-Queue-Id: 1A8E23F0416
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Tuan Do <tuan@calif.io>
 
-commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 upstream.
+commit f8dca15a1b190787bbd03285304b569631160eda upstream.
 
-Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
-rather than list_del_init() to prevent stuffing up reading
-/proc/net/rxrpc/calls from potentially getting into an infinite loop.
+nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
+immediately after nf_ct_untimeout(), without waiting for an RCU grace
+period. Concurrent packet processing on other CPUs may still hold
+RCU-protected references to the timeout object obtained via
+rcu_dereference() in nf_ct_timeout_data().
 
-This, however, means that list_empty() no longer works on an entry that's
-been deleted from the list, making it harder to detect prior deletion.  Fix
-this by:
+Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
+freeing until after an RCU grace period, matching the approach already
+used in nfnetlink_cttimeout.c.
 
-Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
-are unexpectedly still on the list.  Limiting the number of steps means
-there's no need to call cond_resched() or to remove calls from the list
-here, thereby eliminating the need for rxrpc_put_call() to check for that.
+KASAN report:
+ BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
+ Read of size 4 at addr ffff8881035fe19c by task exploit/80
 
-rxrpc_put_call() can then be fixed to unconditionally delete the call from
-the list as it is the only place that the deletion occurs.
+ Call Trace:
+  nf_conntrack_tcp_packet+0x1381/0x29d0
+  nf_conntrack_in+0x612/0x8b0
+  nf_hook_slow+0x70/0x100
+  __ip_local_out+0x1b2/0x210
+  tcp_sendmsg_locked+0x722/0x1580
+  __sys_sendto+0x2d8/0x320
 
-Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ Allocated by task 75:
+  nft_ct_timeout_obj_init+0xf6/0x290
+  nft_obj_init+0x107/0x1b0
+  nf_tables_newobj+0x680/0x9c0
+  nfnetlink_rcv_batch+0xc29/0xe00
+
+ Freed by task 26:
+  nft_obj_destroy+0x3f/0xa0
+  nf_tables_trans_destroy_work+0x51c/0x5c0
+  process_one_work+0x2c4/0x5a0
+
+Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tuan Do <tuan@calif.io>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/rxrpc.h |    2 +-
- net/rxrpc/call_object.c      |   24 +++++++++---------------
- 2 files changed, 10 insertions(+), 16 deletions(-)
+ include/net/netfilter/nf_conntrack_timeout.h |    1 +
+ net/netfilter/nft_ct.c                       |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -298,7 +298,7 @@
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
- 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
--	E_(rxrpc_call_see_zap,			"SEE zap     ")
-+	E_(rxrpc_call_see_still_live,		"SEE !still-l")
+--- a/include/net/netfilter/nf_conntrack_timeout.h
++++ b/include/net/netfilter/nf_conntrack_timeout.h
+@@ -14,6 +14,7 @@
+ struct nf_ct_timeout {
+ 	__u16			l3num;
+ 	const struct nf_conntrack_l4proto *l4proto;
++	struct rcu_head		rcu;
+ 	char			data[];
+ };
  
- #define rxrpc_txqueue_traces \
- 	EM(rxrpc_txqueue_await_reply,		"AWR") \
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -640,11 +640,9 @@ void rxrpc_put_call(struct rxrpc_call *c
- 	if (dead) {
- 		ASSERTCMP(__rxrpc_call_state(call), ==, RXRPC_CALL_COMPLETE);
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -935,7 +935,7 @@ static void nft_ct_timeout_obj_destroy(c
+ 	nf_queue_nf_hook_drop(ctx->net);
+ 	nf_ct_untimeout(ctx->net, timeout);
+ 	nf_ct_netns_put(ctx->net, ctx->family);
+-	kfree(priv->timeout);
++	kfree_rcu(priv->timeout, rcu);
+ }
  
--		if (!list_empty(&call->link)) {
--			spin_lock(&rxnet->call_lock);
--			list_del_init(&call->link);
--			spin_unlock(&rxnet->call_lock);
--		}
-+		spin_lock(&rxnet->call_lock);
-+		list_del_rcu(&call->link);
-+		spin_unlock(&rxnet->call_lock);
- 
- 		rxrpc_cleanup_call(call);
- 	}
-@@ -728,24 +726,20 @@ void rxrpc_destroy_all_calls(struct rxrp
- 	_enter("");
- 
- 	if (!list_empty(&rxnet->calls)) {
--		spin_lock(&rxnet->call_lock);
-+		int shown = 0;
- 
--		while (!list_empty(&rxnet->calls)) {
--			call = list_entry(rxnet->calls.next,
--					  struct rxrpc_call, link);
--			_debug("Zapping call %p", call);
-+		spin_lock(&rxnet->call_lock);
- 
--			rxrpc_see_call(call, rxrpc_call_see_zap);
--			list_del_init(&call->link);
-+		list_for_each_entry(call, &rxnet->calls, link) {
-+			rxrpc_see_call(call, rxrpc_call_see_still_live);
- 
- 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
- 			       call, refcount_read(&call->ref),
- 			       rxrpc_call_states[__rxrpc_call_state(call)],
- 			       call->flags, call->events);
- 
--			spin_unlock(&rxnet->call_lock);
--			cond_resched();
--			spin_lock(&rxnet->call_lock);
-+			if (++shown >= 10)
-+				break;
- 		}
- 
- 		spin_unlock(&rxnet->call_lock);
+ static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
 
 
 
