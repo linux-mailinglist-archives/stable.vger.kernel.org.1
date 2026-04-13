@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPtDJFgg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:56 +0200
+	id UGC0BKga3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C60B3F04E7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5FF3EF32D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6A73D30ABA91
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:42:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45B7530416A6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B7830C371;
-	Mon, 13 Apr 2026 16:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF96727280A;
+	Mon, 13 Apr 2026 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0py9Sy1W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2lUaI+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7825230C359;
-	Mon, 13 Apr 2026 16:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19C824DCF6;
+	Mon, 13 Apr 2026 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098512; cv=none; b=iyZg5adZjP+Dq+v4jQ+YRqgDmc/prbEis+qGe8uFGAOFDp+JmzS2QWOKuHwBnwRtFONLdTJwmnlwmXXWdksrsYuoKJ18oJ8L/d9NzPwAkuwbPaNNKZ8GoifjxQdMQjSt1x0o6fhpsFLZlTlXCJne2/hNe8Qn0UXmFlSOF51fEc8=
+	t=1776097090; cv=none; b=cBChOaq/gtG9EOuTYH0pmIPY2+9KaMPbiCRqqn1qGP0U3lIxoALK3+U2FF+D+nU0TfD1gFsMMlzHv135/bAA4muifIrso38VVYNB3fcdiBAMMS1+5sVj6dRsusvJa5HZn/7dTYNp4Ey4Mxkhu7/Y1e8WxldGZvvWqTHpliAtliA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098512; c=relaxed/simple;
-	bh=SBH3+qTDJ29bVqGzyWQxp2AzGzd0udnyduJ9ZkEC4xA=;
+	s=arc-20240116; t=1776097090; c=relaxed/simple;
+	bh=gEUyqlh0H9pbGQW3Zo238dh7c66hioEpFOEjnRTOZEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKqTJiznTkrg6/QR3HoAHKn204N6GGzRYG0B1BWYvy0uPYWWVHCKCN7yO6vWTJjpp5ibttPJGknHZIe+aHRkVkeGyhNFPAkrWWOKKwDzndMf5poSibuH5uYBT0P05gyBTQzPrAgV4qi/eXfmWZMEX5Ta6pemBRwrwsVPCQtTN78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0py9Sy1W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBA1C2BCAF;
-	Mon, 13 Apr 2026 16:41:51 +0000 (UTC)
+	 MIME-Version; b=bxjOdxPZ5RLmCEKSJejBHyZZ+rwEjZoWTpDXHgB4sT9FWk1twshVfN51IU8nsykiJqnCOuA+LeCXfma/+lKoqR1rU3VvhliTYknRlZXhYtt/DYipE8JgKvbzLPucuti4xRzhWzV+zqho0OxAqp4WWRC+Ep+RCfUz0YUo9F9aGgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2lUaI+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37616C2BCAF;
+	Mon, 13 Apr 2026 16:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098512;
-	bh=SBH3+qTDJ29bVqGzyWQxp2AzGzd0udnyduJ9ZkEC4xA=;
+	s=korg; t=1776097090;
+	bh=gEUyqlh0H9pbGQW3Zo238dh7c66hioEpFOEjnRTOZEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0py9Sy1Wu8fZ9j8B6JO5gLseSv4Qmllsi7enefzYppx/epSGoIKh4U/BsCeiQJlmp
-	 /tAbu8Iwnc9mINlfXmBklJIW2IRIp0HCjDil3EDDBxkDPwjiEXrwlq5dW/nwNPbmcY
-	 MIfWmK+T5AbgyLh+EGMwJmyWRPttKgCZJ//CCOmM=
+	b=k2lUaI+uargRfHjlGn+mAZrDH4dJKlafnAjXKa/gALzT9gYKkLQQD7glnHgwzbzhN
+	 4xLs7D1YSlqcT7T39BEzJjjUA1EyCGnbCJXd7kOKUn0DRmWBUaRCPzLSyjFzgXqx1I
+	 AfBIuac8jCCLxOWiS4fFe60NKoknzHtXrZGIhVjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 554/570] dmaengine: sh: rz-dmac: Protect the driver specific lists
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 51/55] net: qualcomm: qca_uart: report the consumed byte on RX skb allocation failure
 Date: Mon, 13 Apr 2026 18:01:25 +0200
-Message-ID: <20260413155851.215217511@linuxfoundation.org>
+Message-ID: <20260413155726.737439363@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,136 +69,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmx.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236511-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237071-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,renesas.com:email]
-X-Rspamd-Queue-Id: 8C60B3F04E7
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,iscas.ac.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7C5FF3EF32D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit abb863e6213dc41a58ef8bb3289b7e77460dabf3 ]
+commit b76254c55dc8f23edc089027dd3f8792554c69fb upstream.
 
-The driver lists (ld_free, ld_queue) are used in
-rz_dmac_free_chan_resources(), rz_dmac_terminate_all(),
-rz_dmac_issue_pending(), and rz_dmac_irq_handler_thread(), all under
-the virtual channel lock. Take the same lock in rz_dmac_prep_slave_sg()
-and rz_dmac_prep_dma_memcpy() as well to avoid concurrency issues, since
-these functions also check whether the lists are empty and update or
-remove list entries.
+qca_tty_receive() consumes each input byte before checking whether a
+completed frame needs a fresh receive skb. When the current byte completes
+a frame, the driver delivers that frame and then allocates a new skb for
+the next one.
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+If that allocation fails, the current code returns i even though data[i]
+has already been consumed and may already have completed the delivered
+frame. Since serdev interprets the return value as the number of accepted
+bytes, this under-reports progress by one byte and can replay the final
+byte of the completed frame into a fresh parser state on the next call.
+
+Return i + 1 in that failure path so the accepted-byte count matches the
+actual receive-state progress.
+
+Fixes: dfc768fbe618 ("net: qualcomm: add QCA7000 UART driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260316133252.240348-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[ replaced scoped_guard(spinlock_irqsave) with explicit spin_lock_irqsave/spin_unlock_irqrestore calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260402071207.4036-1-pengpeng@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/rz-dmac.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_uart.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -419,6 +419,7 @@ static int rz_dmac_alloc_chan_resources(
- 		if (!desc)
- 			break;
- 
-+		/* No need to lock. This is called only for the 1st client. */
- 		list_add_tail(&desc->node, &channel->ld_free);
- 		channel->descs_allocated++;
+--- a/drivers/net/ethernet/qualcomm/qca_uart.c
++++ b/drivers/net/ethernet/qualcomm/qca_uart.c
+@@ -115,7 +115,7 @@ qca_tty_receive(struct serdev_device *se
+ 			if (!qca->rx_skb) {
+ 				netdev_dbg(netdev, "recv: out of RX resources\n");
+ 				n_stats->rx_errors++;
+-				return i;
++				return i + 1;
+ 			}
+ 		}
  	}
-@@ -470,12 +471,17 @@ rz_dmac_prep_dma_memcpy(struct dma_chan
- 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
- 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
- 	struct rz_dmac_desc *desc;
-+	unsigned long irqflags;
- 
- 	dev_dbg(dmac->dev, "%s channel: %d src=0x%pad dst=0x%pad len=%zu\n",
- 		__func__, channel->index, &src, &dest, len);
- 
--	if (list_empty(&channel->ld_free))
-+	spin_lock_irqsave(&channel->vc.lock, irqflags);
-+
-+	if (list_empty(&channel->ld_free)) {
-+		spin_unlock_irqrestore(&channel->vc.lock, irqflags);
- 		return NULL;
-+	}
- 
- 	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
- 
-@@ -486,6 +492,9 @@ rz_dmac_prep_dma_memcpy(struct dma_chan
- 	desc->direction = DMA_MEM_TO_MEM;
- 
- 	list_move_tail(channel->ld_free.next, &channel->ld_queue);
-+
-+	spin_unlock_irqrestore(&channel->vc.lock, irqflags);
-+
- 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
- }
- 
-@@ -498,17 +507,21 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
- 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
- 	struct rz_dmac_desc *desc;
- 	struct scatterlist *sg;
-+	unsigned long irqflags;
- 	int dma_length = 0;
- 	int i = 0;
- 
--	if (list_empty(&channel->ld_free))
-+	spin_lock_irqsave(&channel->vc.lock, irqflags);
-+
-+	if (list_empty(&channel->ld_free)) {
-+		spin_unlock_irqrestore(&channel->vc.lock, irqflags);
- 		return NULL;
-+	}
- 
- 	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
- 
--	for_each_sg(sgl, sg, sg_len, i) {
-+	for_each_sg(sgl, sg, sg_len, i)
- 		dma_length += sg_dma_len(sg);
--	}
- 
- 	desc->type = RZ_DMAC_DESC_SLAVE_SG;
- 	desc->sg = sgl;
-@@ -522,6 +535,9 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
- 		desc->dest = channel->dst_per_address;
- 
- 	list_move_tail(channel->ld_free.next, &channel->ld_queue);
-+
-+	spin_unlock_irqrestore(&channel->vc.lock, irqflags);
-+
- 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
- }
- 
 
 
 
