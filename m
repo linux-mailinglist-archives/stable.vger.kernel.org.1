@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-237006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLqrKBAk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:48 +0200
+	id +F++DHMZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8943F0FF3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A0C3EEF75
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D4F0312FBCA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A1C69308DD7A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D4630BBAE;
-	Mon, 13 Apr 2026 16:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A9E3090F5;
+	Mon, 13 Apr 2026 16:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kx9SswMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wyg2Bo4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEA824E4A1;
-	Mon, 13 Apr 2026 16:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F033090C5;
+	Mon, 13 Apr 2026 16:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098346; cv=none; b=sMUck7Q6QyBt0tzBSj/NCZ6o30v2in9HLGPU/4KrSEYCoAmYAGGImz8dmmg9oypR90f7KJzYd/xMqSl08EhpCysht+RLWxoKVzpDMZhP4b1ERjSwM6fc42FPNPiTRRSe9QzXuvVs0nggDDeEMkFqjUdbH90xcwJ4JFdymPcHWHk=
+	t=1776096692; cv=none; b=B6Y43iBooj1F+bb3vVpbfvuvU/jukw9Fm1ZXt+xrfDuRXUcwyUTgYgoACRrSQpS1wK5bekcO1nPTrZ1BFUyIrcTtzdYukuNAiAf/DJ9eKpIBKCxGRZ3NEBEtjRz0ZEiuG1tMBuTXm4nJ7JbK6WHukBCpTTEMBFT30m0JfXqfat8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098346; c=relaxed/simple;
-	bh=ocx7hBLfpHSe1QinprgKcmEOWy8hBDmmajmIywpq6MI=;
+	s=arc-20240116; t=1776096692; c=relaxed/simple;
+	bh=g0ZSTolLpLwARI/HqnyiGicWk/02+RE24paXekirkro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qT7iFF7P1nIQl1j8aDDcXaAwmD/7u9AuKawKwdTX2YfWOHsiLG7ZD5j5IBenXjjhrQw91SQxIdy5V1nmW6DpUYIspFZ3tLvy9MOGTV9MR0AfDdDFMXez4YP2nTVfXudlPCq8XYJseYLCSLZ+e9OfwhcZFBUx9f44WHqZPLOMBik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kx9SswMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6603FC2BCAF;
-	Mon, 13 Apr 2026 16:39:06 +0000 (UTC)
+	 MIME-Version; b=pJOfdtlWs+j9XYVTU9bTWg5+WLZgBW+gkVxrjiEJpnJwdhxw3/HEo1Exxczknc63SddX8xMDK2MHDRk5Pw3Cv6kyZS5rJDniWfNEVFzVOLIBsAjcLfXp1TSSIBMAvLGfK+1+dUqGYJixzy8iFRAs4jjBkbvvWaaQ98jvvcV0tE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wyg2Bo4F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE091C2BCB0;
+	Mon, 13 Apr 2026 16:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098346;
-	bh=ocx7hBLfpHSe1QinprgKcmEOWy8hBDmmajmIywpq6MI=;
+	s=korg; t=1776096692;
+	bh=g0ZSTolLpLwARI/HqnyiGicWk/02+RE24paXekirkro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kx9SswMDTHMZBNkHZjZoeEe+hs6Zd7WN0K5AJFFmHQuh04KDPb4aV9RrliRFYDzlA
-	 unYbBsDLBQg1R07VYLg3YmmqURjLi0ZuVTrL8riaT5TpDH+CuVb+1llmkhjIqFWY4H
-	 aO8aMwbszmrDYXBBCsOqJnd+4WUdd/H0vSi2VSXc=
+	b=Wyg2Bo4FIdSU1ZQ3ba/gp3FIj2K7IjGN0aPqM69mSw3olykwcW9Yvnnv5RTnjgYpB
+	 X9jEbdrlxKg2BM64shjuUy5H9XInGnhVfMMkGIaWQd4hZ9LHeZaU4/JimJ5xhOYsWq
+	 loK/7LLL+nhMMj1hB/bbecmw+bUcQ5hTX4Z0A9mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 490/570] USB: dummy-hcd: Fix interrupt synchronization error
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 26/70] Revert "mptcp: add needs_id for netlink appending addr"
 Date: Mon, 13 Apr 2026 18:00:21 +0200
-Message-ID: <20260413155848.814494471@linuxfoundation.org>
+Message-ID: <20260413155729.164812636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,131 +69,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236355-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237006-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,harvard.edu:email]
-X-Rspamd-Queue-Id: EA8943F0FF3
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ietf.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A0A0C3EEF75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 2ca9e46f8f1f5a297eb0ac83f79d35d5b3a02541 upstream.
+[ Upstream commit 8e2760eaab778494fc1fa257031e0e1799647f46 ]
 
-This fixes an error in synchronization in the dummy-hcd driver.  The
-error has a somewhat involved history.  The synchronization mechanism
-was introduced by commit 7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous
-synchronization change"), which added an emulated "interrupts enabled"
-flag together with code emulating synchronize_irq() (it waits until
-all current handler callbacks have returned).
+This commit was originally adding the ability to add MPTCP endpoints
+with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
+net namespace level, is not supposed to handle endpoints with such ID,
+because this ID 0 is reserved to the initial subflow, as mentioned in
+the MPTCPv1 protocol [1], a per-connection setting.
 
-But the emulated interrupt-disable occurred too late, after the driver
-containing the handler callback routines had been told that it was
-unbound and no more callbacks would occur.  Commit 4a5d797a9f9c ("usb:
-gadget: dummy_hcd: fix gpf in gadget_setup") tried to fix this by
-moving the synchronize_irq() emulation code from dummy_stop() to
-dummy_pullup(), which runs before the unbind callback.
+Note that 'ip mptcp endpoint add id 0' stops early with an error, but
+other tools might still request the in-kernel PM to create MPTCP
+endpoints with this restricted ID 0.
 
-There still were races, though, because the emulated interrupt-disable
-still occurred too late.  It couldn't be moved to dummy_pullup(),
-because that routine can be called for reasons other than an impending
-unbind.  Therefore commits 7dc0c55e9f30 ("USB: UDC core: Add
-udc_async_callbacks gadget op") and 04145a03db9d ("USB: UDC: Implement
-udc_async_callbacks in dummy-hcd") added an API allowing the UDC core
-to tell dummy-hcd exactly when emulated interrupts and their callbacks
-should be disabled.
+In other words, it was wrong to call the mptcp_pm_has_addr_attr_id
+helper to check whether the address ID attribute is set: if it was set
+to 0, a new MPTCP endpoint would be created with ID 0, which is not
+expected, and might cause various issues later.
 
-That brings us to the current state of things, which is still wrong
-because the emulated synchronize_irq() occurs before the emulated
-interrupt-disable!  That's no good, beause it means that more emulated
-interrupts can occur after the synchronize_irq() emulation has run,
-leading to the possibility that a callback handler may be running when
-the gadget driver is unbound.
-
-To fix this, we have to move the synchronize_irq() emulation code yet
-again, to the dummy_udc_async_callbacks() routine, which takes care of
-enabling and disabling emulated interrupt requests.  The
-synchronization will now run immediately after emulated interrupts are
-disabled, which is where it belongs.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: 04145a03db9d ("USB: UDC: Implement udc_async_callbacks in dummy-hcd")
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/c7bc93fe-4241-4d04-bd56-27c12ba35c97@rowland.harvard.edu
+Fixes: 584f38942626 ("mptcp: add needs_id for netlink appending addr")
+Cc: stable@vger.kernel.org
+Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.2-9 [1]
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied changes to net/mptcp/pm_netlink.c instead of renamed net/mptcp/pm_kernel.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |   29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ net/mptcp/pm_netlink.c |   24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -909,21 +909,6 @@ static int dummy_pullup(struct usb_gadge
- 	spin_lock_irqsave(&dum->lock, flags);
- 	dum->pullup = (value != 0);
- 	set_link_state(dum_hcd);
--	if (value == 0) {
--		/*
--		 * Emulate synchronize_irq(): wait for callbacks to finish.
--		 * This seems to be the best place to emulate the call to
--		 * synchronize_irq() that's in usb_gadget_remove_driver().
--		 * Doing it in dummy_udc_stop() would be too late since it
--		 * is called after the unbind callback and unbind shouldn't
--		 * be invoked until all the other callbacks are finished.
--		 */
--		while (dum->callback_usage > 0) {
--			spin_unlock_irqrestore(&dum->lock, flags);
--			usleep_range(1000, 2000);
--			spin_lock_irqsave(&dum->lock, flags);
--		}
--	}
- 	spin_unlock_irqrestore(&dum->lock, flags);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1076,7 +1076,7 @@ static void __mptcp_pm_release_addr_entr
  
- 	usb_hcd_poll_rh_status(dummy_hcd_to_hcd(dum_hcd));
-@@ -946,6 +931,20 @@ static void dummy_udc_async_callbacks(st
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 					     struct mptcp_pm_addr_entry *entry,
+-					     bool needs_id, bool replace)
++					     bool replace)
+ {
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	unsigned int addr_max;
+@@ -1135,7 +1135,7 @@ static int mptcp_pm_nl_append_new_local_
+ 		}
+ 	}
  
- 	spin_lock_irq(&dum->lock);
- 	dum->ints_enabled = enable;
-+	if (!enable) {
-+		/*
-+		 * Emulate synchronize_irq(): wait for callbacks to finish.
-+		 * This has to happen after emulated interrupts are disabled
-+		 * (dum->ints_enabled is clear) and before the unbind callback,
-+		 * just like the call to synchronize_irq() in
-+		 * gadget/udc/core:gadget_unbind_driver().
-+		 */
-+		while (dum->callback_usage > 0) {
-+			spin_unlock_irq(&dum->lock);
-+			usleep_range(1000, 2000);
-+			spin_lock_irq(&dum->lock);
-+		}
-+	}
- 	spin_unlock_irq(&dum->lock);
+-	if (!entry->addr.id && needs_id) {
++	if (!entry->addr.id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -1146,7 +1146,7 @@ find_next:
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id && needs_id)
++	if (!entry->addr.id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -1279,7 +1279,7 @@ int mptcp_pm_nl_get_local_id(struct mptc
+ 	entry->ifindex = 0;
+ 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
+ 	entry->lsk = NULL;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true, false);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, false);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -1498,18 +1498,6 @@ next:
+ 	return 0;
  }
  
+-static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
+-				      struct genl_info *info)
+-{
+-	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
+-
+-	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
+-					 mptcp_pm_address_nl_policy, info->extack) &&
+-	    tb[MPTCP_PM_ADDR_ATTR_ID])
+-		return true;
+-	return false;
+-}
+-
+ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *attr = info->attrs[MPTCP_PM_ENDPOINT_ADDR];
+@@ -1551,9 +1539,7 @@ int mptcp_pm_nl_add_addr_doit(struct sk_
+ 			goto out_free;
+ 		}
+ 	}
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
+-						!mptcp_pm_has_addr_attr_id(attr, info),
+-						true);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
+ 		goto out_free;
 
 
 
