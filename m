@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-236661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFI0JZce3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:27 +0200
+	id GIGGISQe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249273EFE2B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5206C3EFCE2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1530A3282E0E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6FA0130227FB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA0C30B508;
-	Mon, 13 Apr 2026 16:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0B0314D0D;
+	Mon, 13 Apr 2026 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGYpe+ym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npaE9rHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EFD28505E;
-	Mon, 13 Apr 2026 16:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907E4223DCE;
+	Mon, 13 Apr 2026 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097479; cv=none; b=OaZsyDI162in2Tk2Eu68qIJT05ztsSzCx/AMdS5tkOpka87E50N1u2lmJBE805DBAhn6HFa5XTqC8deufcIa3E49w28aO76ycfBGm/JOLpV9M+1bSGXX+H86uz+ndmcaTn0fk1S1OS1cv2hJSvu1h/bzxB7OYbqgG9VNHcpdw8M=
+	t=1776098725; cv=none; b=VNoY5l0dPPblZcZrGmKMlr5+4AW3AQRiDw9sMwZ71PxXgPjhhg2KC7U6VePiKAm4GBLzYPhK5MOztFd+0TbIoZmYECwQLp0M7f9iOwQ55SjoAU4/AxpJM4+fuALt7lRkl9zrRH20Q6rFRtW5/ovaMKOWSCnu2aeIzEApXz6hO9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097479; c=relaxed/simple;
-	bh=Wv59DP0TxSAV8dSD65NNXmxg3eEYiaTXcpXltR+4uH4=;
+	s=arc-20240116; t=1776098725; c=relaxed/simple;
+	bh=F2zkFt+SYWxuFodGds9Bdp0PWvAy+8sdH5R5QMnYrYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axxnmzySb3f7EZuSonHWr0dTiqPAI4Vsckzhx5HleILJMPfmt+fl5NdlEKNmnr3JkzCsM/YdggeYrYy4X96LFXLL3gMDpUCcXxrKXU7f967w2gRTinICZqh95i0JEr3f/WBzdcGTG0saKiqxGnYepG+AH/ZGMeCIUIF3PUJytH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGYpe+ym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDB3C2BCB3;
-	Mon, 13 Apr 2026 16:24:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X+u+wKtJmAmQibs39I7RUPwOJ84mfb8OLrtwlLgb32WKyVOXmwbrvJcH/LPleS2lwmiJm0gxXhFNqJOOvX6Qgt5IBxUag34Ml0aXLR44rYWn8RWI1T+75AA1R6GiVnJbfLSwivpxSVcNqr2BBNtGq/v1b5BHbRZdjrdUonykRMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npaE9rHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9314C2BCAF;
+	Mon, 13 Apr 2026 16:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097479;
-	bh=Wv59DP0TxSAV8dSD65NNXmxg3eEYiaTXcpXltR+4uH4=;
+	s=korg; t=1776098725;
+	bh=F2zkFt+SYWxuFodGds9Bdp0PWvAy+8sdH5R5QMnYrYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGYpe+ymXhMYkMhnq83RETDhPgJ6SX/30kNuDs84fAOjMxY3cSBRUczFa82JUOIkN
-	 crzqxyk2qvAh5JCChPr9EXfE3YgWdwX4wXZ4xPxerr7bvutQKXtnZpE6240OV2JK2l
-	 8PVYFm5990YCl/Uytug3TWqhuNbqWKEZI67SKa9o=
+	b=npaE9rHENrfIWArlicISqjOAmO1er/+b+D/HTbX3HL+yrYBTff6nlr+SjTuOEJmQt
+	 jp8FkwXZeRLdBOHcbx3z4PSa0Nlp4EWW3xiAO0tI2vjV9M4Xd4c6N0In36iORu1ybU
+	 v9wqykBa47nA/mVzlQkyOHC75LKhPkudSeILSYvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.15 151/570] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
+	syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 037/491] atm: lec: fix null-ptr-deref in lec_arp_clear_vccs
 Date: Mon, 13 Apr 2026 17:54:42 +0200
-Message-ID: <20260413155836.106760314@linuxfoundation.org>
+Message-ID: <20260413155820.442409213@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +66,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236661-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237153-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,72e3ea390c305de0e259];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tu-ilmenau.de:email]
-X-Rspamd-Queue-Id: 249273EFE2B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,linaro.org:email,shopee.com:email]
+X-Rspamd-Queue-Id: 5206C3EFCE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
+[ Upstream commit 101bacb303e89dc2e0640ae6a5e0fb97c4eb45bb ]
 
-This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
-that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
-ceph_handle_auth_reply(), the value of the payload_len field of such a
-message is stored in a variable of type int. A value greater than
-INT_MAX leads to an integer overflow and is interpreted as a negative
-value. This leads to decrementing the pointer address by this value and
-subsequently accessing it because ceph_decode_need() only checks that
-the memory access does not exceed the end address of the allocation.
+syzkaller reported a null-ptr-deref in lec_arp_clear_vccs().
+This issue can be easily reproduced using the syzkaller reproducer.
 
-This patch fixes the issue by changing the data type of payload_len to
-u32. Additionally, the data type of result_msg_len is changed to u32,
-as it is also a variable holding a non-negative length.
+In the ATM LANE (LAN Emulation) module, the same atm_vcc can be shared by
+multiple lec_arp_table entries (e.g., via entry->vcc or entry->recv_vcc).
+When the underlying VCC is closed, lec_vcc_close() iterates over all
+ARP entries and calls lec_arp_clear_vccs() for each matched entry.
 
-Also, an additional layer of sanity checks is introduced, ensuring that
-directly after reading it from the message, payload_len and
-result_msg_len are not greater than the overall segment length.
+For example, when lec_vcc_close() iterates through the hlists in
+priv->lec_arp_empty_ones or other ARP tables:
 
-BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
-Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
+1. In the first iteration, for the first matched ARP entry sharing the VCC,
+lec_arp_clear_vccs() frees the associated vpriv (which is vcc->user_back)
+and sets vcc->user_back to NULL.
+2. In the second iteration, for the next matched ARP entry sharing the same
+VCC, lec_arp_clear_vccs() is called again. It obtains a NULL vpriv from
+vcc->user_back (via LEC_VCC_PRIV(vcc)) and then attempts to dereference it
+via `vcc->pop = vpriv->old_pop`, leading to a null-ptr-deref crash.
 
-CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: ceph-msgr ceph_con_workfn [libceph]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x76/0xa0
- print_report+0xd1/0x620
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? kasan_complete_mode_report_info+0x72/0x210
- kasan_report+0xe7/0x130
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- __asan_report_load_n_noabort+0xf/0x20
- ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- mon_dispatch+0x973/0x23d0 [libceph]
- ? apparmor_socket_recvmsg+0x6b/0xa0
- ? __pfx_mon_dispatch+0x10/0x10 [libceph]
- ? __kasan_check_write+0x14/0x30i
- ? mutex_unlock+0x7f/0xd0
- ? __pfx_mutex_unlock+0x10/0x10
- ? __pfx_do_recvmsg+0x10/0x10 [libceph]
- ceph_con_process_message+0x1f1/0x650 [libceph]
- process_message+0x1e/0x450 [libceph]
- ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
- ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
- ? save_fpregs_to_fpstate+0xb0/0x230
- ? raw_spin_rq_unlock+0x17/0xa0
- ? finish_task_switch.isra.0+0x13b/0x760
- ? __switch_to+0x385/0xda0
- ? __kasan_check_write+0x14/0x30
- ? mutex_lock+0x8d/0xe0
- ? __pfx_mutex_lock+0x10/0x10
- ceph_con_workfn+0x248/0x10c0 [libceph]
- process_one_work+0x629/0xf80
- ? __kasan_check_write+0x14/0x30
- worker_thread+0x87f/0x1570
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? __pfx_try_to_wake_up+0x10/0x10
- ? kasan_print_address_stack_frame+0x1f7/0x280
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x396/0x830
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- ? __pfx_kthread+0x10/0x10
- ? __kasan_check_write+0x14/0x30
- ? recalc_sigpending+0x180/0x210
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x3f7/0x610
- ? __pfx_ret_from_fork+0x10/0x10
- ? __switch_to+0x385/0xda0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+Fix this by adding a null check for vpriv before dereferencing
+it. If vpriv is already NULL, it means the VCC has been cleared
+by a previous call, so we can safely skip the cleanup and just
+clear the entry's vcc/recv_vcc pointers.
 
-[ idryomov: replace if statements with ceph_decode_need() for
-  payload_len and result_msg_len ]
+The entire cleanup block (including vcc_release_async()) is placed inside
+the vpriv guard because a NULL vpriv indicates the VCC has already been
+fully released by a prior iteration — repeating the teardown would
+redundantly set flags and trigger callbacks on an already-closing socket.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The Fixes tag points to the initial commit because the entry->vcc path has
+been vulnerable since the original code. The entry->recv_vcc path was later
+added by commit 8d9f73c0ad2f ("atm: fix a memory leak of vcc->user_back")
+with the same pattern, and both paths are fixed here.
+
+Reported-by: syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68c95a83.050a0220.3c6139.0e5c.GAE@google.com/T/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260225123250.189289-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/auth.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/atm/lec.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/net/ceph/auth.c
-+++ b/net/ceph/auth.c
-@@ -205,9 +205,9 @@ int ceph_handle_auth_reply(struct ceph_a
- 	s32 result;
- 	u64 global_id;
- 	void *payload, *payload_end;
--	int payload_len;
-+	u32 payload_len;
- 	char *result_msg;
--	int result_msg_len;
-+	u32 result_msg_len;
- 	int ret = -EINVAL;
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index 73078306504c0..768df9d7cd676 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -1262,24 +1262,28 @@ static void lec_arp_clear_vccs(struct lec_arp_table *entry)
+ 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+ 		struct net_device *dev = (struct net_device *)vcc->proto_data;
  
- 	mutex_lock(&ac->mutex);
-@@ -217,10 +217,12 @@ int ceph_handle_auth_reply(struct ceph_a
- 	result = ceph_decode_32(&p);
- 	global_id = ceph_decode_64(&p);
- 	payload_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, payload_len, bad);
- 	payload = p;
- 	p += payload_len;
- 	ceph_decode_need(&p, end, sizeof(u32), bad);
- 	result_msg_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, result_msg_len, bad);
- 	result_msg = p;
- 	p += result_msg_len;
- 	if (p != end)
+-		vcc->pop = vpriv->old_pop;
+-		if (vpriv->xoff)
+-			netif_wake_queue(dev);
+-		kfree(vpriv);
+-		vcc->user_back = NULL;
+-		vcc->push = entry->old_push;
+-		vcc_release_async(vcc, -EPIPE);
++		if (vpriv) {
++			vcc->pop = vpriv->old_pop;
++			if (vpriv->xoff)
++				netif_wake_queue(dev);
++			kfree(vpriv);
++			vcc->user_back = NULL;
++			vcc->push = entry->old_push;
++			vcc_release_async(vcc, -EPIPE);
++		}
+ 		entry->vcc = NULL;
+ 	}
+ 	if (entry->recv_vcc) {
+ 		struct atm_vcc *vcc = entry->recv_vcc;
+ 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+ 
+-		kfree(vpriv);
+-		vcc->user_back = NULL;
++		if (vpriv) {
++			kfree(vpriv);
++			vcc->user_back = NULL;
+ 
+-		entry->recv_vcc->push = entry->old_recv_push;
+-		vcc_release_async(entry->recv_vcc, -EPIPE);
++			entry->recv_vcc->push = entry->old_recv_push;
++			vcc_release_async(entry->recv_vcc, -EPIPE);
++		}
+ 		entry->recv_vcc = NULL;
+ 	}
+ }
+-- 
+2.51.0
+
 
 
 
