@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-236601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eB2lM5cd3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-236601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:11 +0200
+	id MOzzK6UY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7273EFB27
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:45:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBBF3EECDE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29B1D32207F9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E1B2302B943
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C69B30ACE6;
-	Mon, 13 Apr 2026 16:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9324C30C360;
+	Mon, 13 Apr 2026 16:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m922PAvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDYIhGnm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601503093CF;
-	Mon, 13 Apr 2026 16:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563F030BF6F;
+	Mon, 13 Apr 2026 16:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097327; cv=none; b=UOHyCt2vHGB9epQd6DO/v6roVroXIC3aFxtx8WMmrF2sDeenUaGnoXuFZG3W+RRGAvGmAwk+sNB8iMYKT/7gs8q2OMQUlvxfqCQ7Cu/j9l/UK0SYxrblTDufLeYyPGfnwt97qMKnVMofysihkh4sT2qWyiatGULASvuSVGcR8WU=
+	t=1776097355; cv=none; b=pYh+TeRc0Wk66oYeQPK43OPllkBXT7TJwC7JfgUFHuK9FF2y79dAJGoqcMkwaDK8o2GYz0sZvCnPARp/FEm3sBtnm0WHUEDa8qFGs+cmM735c4uIymfD1B4lSGWuuwa85w4XU5Q+aw6q2cto7zgn0OLAkj/C2bX0sAnNi2FKABU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097327; c=relaxed/simple;
-	bh=Vq0U6L3dKQgt2mkkfOr+f0KXM+OHKgajHKZjkKbBzsQ=;
+	s=arc-20240116; t=1776097355; c=relaxed/simple;
+	bh=kBh/ceDHh5Y94o5lLm/oCBPBd1OrTHilB6EadaCTdZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IP0R8sjvS03ElTTFLHPc7ECSRtwLewL/HjCmV8w+W8Yu/4AgxkmBmPejsWmOr4dKGtDJpyU1nkf4wUK8UQfYJsEXPBxgS6KPi2YehA80+zIoi9V8Fh5gAvMzwxwhR2XcWt7ZU81+Ct4oJBTOpMhR2irxu00xLlL8CHz/xPGcF1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m922PAvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99099C2BCAF;
-	Mon, 13 Apr 2026 16:22:06 +0000 (UTC)
+	 MIME-Version; b=NuZ40n5GSOazzNygfxFtZ11vqO+KwWnJIjmMsS6woBL09Vva82h4DeF47YRnOjCdwzw1/MW9xaVpBwaRTQJ98LoqCB0/1BXjmygGG0x2S3PgLv/LYlLs0FO8qB7L4ZYeFu6MaCcmVp0qm82Jlk4kXgPPMTdqC2a1Wh7gud6vyxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDYIhGnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5987C2BCAF;
+	Mon, 13 Apr 2026 16:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097326;
-	bh=Vq0U6L3dKQgt2mkkfOr+f0KXM+OHKgajHKZjkKbBzsQ=;
+	s=korg; t=1776097355;
+	bh=kBh/ceDHh5Y94o5lLm/oCBPBd1OrTHilB6EadaCTdZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m922PAvHdLeBWwxPHOl+3yJnmA7l3q3BXh92KQwjeLjlzTu7G/6HFS8RrmXpaWliE
-	 kHGHpLSz34U0OWAFalJ+tJrXi+KK01QCdrPXBLd6aDm8Zin5SiAUmzXvJtAqu34kRE
-	 +/7jAY+MIHTqPoyM/f8F2G07nmc8XRwQI8whhXSE=
+	b=KDYIhGnm1smlNR8eJROX+q7tQiavyF87jyvqL2eZ5gCQvClD6RBQGnyzgmWrp2sY4
+	 we/aNXBjj6EF7PPiD+XwXX+5kZQG6unMNphwPemthtzhVxrh6jw7zlooeyrw9cqYZc
+	 GwTjRK/tzND7vqazgp0qCvclBIVwXK60DQ2PNXHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guruprasad C P <gurucp2005@gmail.com>,
 	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/570] net: bridge: fix nd_tbl NULL dereference when IPv6 is disabled
-Date: Mon, 13 Apr 2026 17:53:37 +0200
-Message-ID: <20260413155833.665870409@linuxfoundation.org>
+Subject: [PATCH 5.15 087/570] net: vxlan: fix nd_tbl NULL dereference when IPv6 is disabled
+Date: Mon, 13 Apr 2026 17:53:38 +0200
+Message-ID: <20260413155833.703871207@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -71,31 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,nvidia.com,blackwall.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236601-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-236612-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,blackwall.org:email]
-X-Rspamd-Queue-Id: 4E7273EFB27
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 5EBBF3EECDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,78 +101,59 @@ X-Rspamd-Server: lfdr
 
 From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit e5e890630533bdc15b26a34bb8e7ef539bdf1322 ]
+[ Upstream commit 168ff39e4758897d2eee4756977d036d52884c7e ]
 
 When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
 initialized because inet6_init() exits before ndisc_init() is called
-which initializes it. Then, if neigh_suppress is enabled and an ICMPv6
-Neighbor Discovery packet reaches the bridge, br_do_suppress_nd() will
-dereference ipv6_stub->nd_tbl which is NULL, passing it to
-neigh_lookup(). This causes a kernel NULL pointer dereference.
+which initializes it. If an IPv6 packet is injected into the interface,
+route_shortcircuit() is called and a NULL pointer dereference happens on
+neigh_lookup().
 
- BUG: kernel NULL pointer dereference, address: 0000000000000268
- Oops: 0000 [#1] PREEMPT SMP NOPTI
+ BUG: kernel NULL pointer dereference, address: 0000000000000380
+ Oops: Oops: 0000 [#1] SMP NOPTI
  [...]
- RIP: 0010:neigh_lookup+0x16/0xe0
+ RIP: 0010:neigh_lookup+0x20/0x270
  [...]
  Call Trace:
-  <IRQ>
-  ? neigh_lookup+0x16/0xe0
-  br_do_suppress_nd+0x160/0x290 [bridge]
-  br_handle_frame_finish+0x500/0x620 [bridge]
-  br_handle_frame+0x353/0x440 [bridge]
-  __netif_receive_skb_core.constprop.0+0x298/0x1110
-  __netif_receive_skb_one_core+0x3d/0xa0
-  process_backlog+0xa0/0x140
-  __napi_poll+0x2c/0x170
-  net_rx_action+0x2c4/0x3a0
-  handle_softirqs+0xd0/0x270
-  do_softirq+0x3f/0x60
+  <TASK>
+  vxlan_xmit+0x638/0x1ef0 [vxlan]
+  dev_hard_start_xmit+0x9e/0x2e0
+  __dev_queue_xmit+0xbee/0x14e0
+  packet_sendmsg+0x116f/0x1930
+  __sys_sendto+0x1f5/0x200
+  __x64_sys_sendto+0x24/0x30
+  do_syscall_64+0x12f/0x1590
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fix this by replacing IS_ENABLED(IPV6) call with ipv6_mod_enabled() in
-the callers. This is in essence disabling NS/NA suppression when IPv6 is
-disabled.
+Fix this by adding an early check on route_shortcircuit() when protocol
+is ETH_P_IPV6. Note that ipv6_mod_enabled() cannot be used here because
+VXLAN can be built-in even when IPv6 is built as a module.
 
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-Reported-by: Guruprasad C P <gurucp2005@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com/
+Fixes: e15a00aafa4b ("vxlan: add ipv6 route short circuit support")
 Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260304120357.9778-1-fmancera@suse.de
+Link: https://patch.msgid.link/20260304120357.9778-2-fmancera@suse.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_device.c | 2 +-
- net/bridge/br_input.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index b2fa4ca281021..4886be8970a88 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -70,7 +70,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 	     eth_hdr(skb)->h_proto == htons(ETH_P_RARP)) &&
- 	    br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED)) {
- 		br_do_proxy_suppress_arp(skb, br, vid, NULL);
--	} else if (IS_ENABLED(CONFIG_IPV6) &&
-+	} else if (ipv6_mod_enabled() &&
- 		   skb->protocol == htons(ETH_P_IPV6) &&
- 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
- 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index 14423132a3df5..a66df464f8562 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -130,7 +130,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	    (skb->protocol == htons(ETH_P_ARP) ||
- 	     skb->protocol == htons(ETH_P_RARP))) {
- 		br_do_proxy_suppress_arp(skb, br, vid, p);
--	} else if (IS_ENABLED(CONFIG_IPV6) &&
-+	} else if (ipv6_mod_enabled() &&
- 		   skb->protocol == htons(ETH_P_IPV6) &&
- 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
- 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 91122d4d404b7..934a2f02a6c6a 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2259,6 +2259,11 @@ static bool route_shortcircuit(struct net_device *dev, struct sk_buff *skb)
+ 	{
+ 		struct ipv6hdr *pip6;
+ 
++		/* check if nd_tbl is not initiliazed due to
++		 * ipv6.disable=1 set during boot
++		 */
++		if (!ipv6_stub->nd_tbl)
++			return false;
+ 		if (!pskb_may_pull(skb, sizeof(struct ipv6hdr)))
+ 			return false;
+ 		pip6 = ipv6_hdr(skb);
 -- 
 2.51.0
 
