@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-236923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKnqGGUb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:49 +0200
+	id qIB4Oycb3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B28B3EF56B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CF53EF4B9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D8E2730181B7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C6105301F3FF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF0B311C2D;
-	Mon, 13 Apr 2026 16:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BFD30FF33;
+	Mon, 13 Apr 2026 16:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="en3rAsrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kheJy+CL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB25030DEB5;
-	Mon, 13 Apr 2026 16:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DE230C359;
+	Mon, 13 Apr 2026 16:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098138; cv=none; b=hukuMcmElNC6k9/a/7TpNNtKv+HnhfxzD1GxClN85iF8dt+bhkqVQvjS+6u8KzFg/Ua3hm6mtX/du0IL59MmWvIP1EBsibim6pgjolwbdiW18W5m1Xi9GthNQg6l51KE4pS3MPOO0FEaD6o9VUymqEE9EpgqTLlOMWFiQzTHpSw=
+	t=1776098051; cv=none; b=gtQfDxMmfJZXwml2HM3v9t7AXRY5g4Mgeuipi54Zmn0l7YcEtCZuvKc/XrQOje4dw6URfr6VNKZQ8wvs+FChHW3RZbioo5vbK+n1IA+Sc+SvQgPRzRRW+QXIc/Nx8VquI8KJbiI8Y36ZLttBoYA4ItghNfXt0LSn5D7TZV3ERRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098138; c=relaxed/simple;
-	bh=+5akIcFXDa0yd/qqYMSfqYw+PYBUmBVpQct/b/iz3IE=;
+	s=arc-20240116; t=1776098051; c=relaxed/simple;
+	bh=2hN8h1QVEakHNc+ndKXXB6Idw6Pq7TSJoNU5adqSzBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IzTRR4mr25XARCUlR2ou1+Lb0sTRvSNvHWR2jjk8SFX6Sz/vTh6g3dQOi+G1z8B2ZewcRL7Q3VwGJ6LZda/njAb5FkKRGMUU8vqi/Pxs65zTJSRPie86HCLgc6/0KqFF7AnLvN+col9kkpOHHQNmZmY4rHRjK4td+K0Am3IaWlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en3rAsrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6A0C2BCAF;
-	Mon, 13 Apr 2026 16:35:37 +0000 (UTC)
+	 MIME-Version; b=UwNZAGSxtI7hYQHUpI3gyPu+owGToiWew0t9suPw7g4Ef+B/0813h7RQ4wjuTr2zEoH2v/QGhEDKhRPy0bNe0tC0kg97IyWO4fKSBJkrfNhY5TffjTtugSt5jWFb53fu9CaE3aMpVCyDl3pEh9er8aYRBa9r/YRXhStZksLPsig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kheJy+CL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839CDC2BCB0;
+	Mon, 13 Apr 2026 16:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098138;
-	bh=+5akIcFXDa0yd/qqYMSfqYw+PYBUmBVpQct/b/iz3IE=;
+	s=korg; t=1776098050;
+	bh=2hN8h1QVEakHNc+ndKXXB6Idw6Pq7TSJoNU5adqSzBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=en3rAsrDsL5gcgTZtDQAgbGxwhJsnAS5fwSTGtlj3m5pi8gN3ArsnbWZux5aGREOB
-	 8FIELdOH6Mn+YOaiyjkaOeuRLQiqsAXz5QjocDiMNHo77r/bPM71MwqvcuWMLGeLsJ
-	 CpL2c1fEYGWcn+kBvQqvs3x8HtiBoCchRZyU3ask=
+	b=kheJy+CL7c357xh8qwBDec1MuoFy9NWq3gUhdGU6+mZwU3gSqi/1dIv80FbxG4KKA
+	 snQgcDTfeCoFLCYmPOL/VJsHqS01nc1yjP7mX9gMWyNs6SnQ8hlKEPwCSffaT2pxJ7
+	 1sSk8zLkXgL/70d1fJsy4v2TMrji77UrIfEePnFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 366/570] ASoC: adau1372: Fix clock leak on PLL lock failure
-Date: Mon, 13 Apr 2026 17:58:17 +0200
-Message-ID: <20260413155844.191065270@linuxfoundation.org>
+Subject: [PATCH 5.15 367/570] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
+Date: Mon, 13 Apr 2026 17:58:18 +0200
+Message-ID: <20260413155844.228766351@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -64,37 +63,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236923-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236888-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,analog.com:email]
-X-Rspamd-Queue-Id: 1B28B3EF56B
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,pengutronix.de:email]
+X-Rspamd-Queue-Id: 92CF53EF4B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,75 +99,67 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit bfe6a264effcb6fe99ad7ceaf9e8c7439fc9555b ]
+[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
 
-adau1372_enable_pll() was a void function that logged a dev_err() on
-PLL lock timeout but did not propagate the error. As a result,
-adau1372_set_power() would continue with adau1372->enabled set to true
-despite the PLL being unlocked, and the mclk left enabled with no
-corresponding disable on the error path.
+There is a teardown order issue in the driver. The SPI controller is
+registered using devm_spi_register_controller(), which delays
+unregistration of the SPI controller until after the fsl_lpspi_remove()
+function returns.
 
-Convert adau1372_enable_pll() to return int, using -ETIMEDOUT on lock
-timeout and propagating regmap errors directly. In adau1372_set_power(),
-check the return value and unwind in reverse order: restore regcache to
-cache-only mode, reassert GPIO power-down, and disable the clock before
-returning the error.
+As the fsl_lpspi_remove() function synchronously tears down the DMA
+channels, a running SPI transfer triggers the following NULL pointer
+dereference due to use after free:
 
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Fixes: 6cd4c6459e47 ("ASoC: Add ADAU1372 audio CODEC support")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20260325210704.76847-3-jihed.chaibi.dev@gmail.com
+| fsl_lpspi 42550000.spi: I/O Error in DMA RX
+| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[...]
+| Call trace:
+|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
+|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
+|  spi_transfer_one_message+0x49c/0x7c8
+|  __spi_pump_transfer_message+0x120/0x420
+|  __spi_sync+0x2c4/0x520
+|  spi_sync+0x34/0x60
+|  spidev_message+0x20c/0x378 [spidev]
+|  spidev_ioctl+0x398/0x750 [spidev]
+[...]
+
+Switch from devm_spi_register_controller() to spi_register_controller() in
+fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
+fsl_lpspi_remove().
+
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/adau1372.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/adau1372.c b/sound/soc/codecs/adau1372.c
-index 0997d5f3e4039..e20145812f12b 100644
---- a/sound/soc/codecs/adau1372.c
-+++ b/sound/soc/codecs/adau1372.c
-@@ -761,7 +761,7 @@ static int adau1372_startup(struct snd_pcm_substream *substream, struct snd_soc_
- 	return 0;
- }
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 319cd96bd201b..540815ae49e78 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -914,7 +914,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		enable_irq(irq);
+ 	}
  
--static void adau1372_enable_pll(struct adau1372 *adau1372)
-+static int adau1372_enable_pll(struct adau1372 *adau1372)
- {
- 	unsigned int val, timeout = 0;
- 	int ret;
-@@ -777,8 +777,12 @@ static void adau1372_enable_pll(struct adau1372 *adau1372)
- 		timeout++;
- 	} while (!(val & 1) && timeout < 3);
+-	ret = devm_spi_register_controller(&pdev->dev, controller);
++	ret = spi_register_controller(controller);
+ 	if (ret < 0) {
+ 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
+ 		goto free_dma;
+@@ -943,6 +943,7 @@ static int fsl_lpspi_remove(struct platform_device *pdev)
+ 	struct fsl_lpspi_data *fsl_lpspi =
+ 				spi_controller_get_devdata(controller);
  
--	if (ret < 0 || !(val & 1))
-+	if (ret < 0 || !(val & 1)) {
- 		dev_err(adau1372->dev, "Failed to lock PLL\n");
-+		return ret < 0 ? ret : -ETIMEDOUT;
-+	}
-+
-+	return 0;
- }
++	spi_unregister_controller(controller);
+ 	fsl_lpspi_dma_exit(controller);
  
- static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
-@@ -806,7 +810,14 @@ static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
- 		 * accessed.
- 		 */
- 		if (adau1372->use_pll) {
--			adau1372_enable_pll(adau1372);
-+			ret = adau1372_enable_pll(adau1372);
-+			if (ret) {
-+				regcache_cache_only(adau1372->regmap, true);
-+				if (adau1372->pd_gpio)
-+					gpiod_set_value(adau1372->pd_gpio, 1);
-+				clk_disable_unprepare(adau1372->mclk);
-+				return ret;
-+			}
- 			clk_ctrl |= ADAU1372_CLK_CTRL_CLKSRC;
- 		}
- 
+ 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
 -- 
 2.53.0
 
