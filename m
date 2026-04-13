@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-236455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJ5NBXAc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:16 +0200
+	id YNzAEaka3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903063EF799
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7555E3EF334
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55D92307AE53
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 013CE3074FB1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2498E28505E;
-	Mon, 13 Apr 2026 16:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24CA306B0A;
+	Mon, 13 Apr 2026 16:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxegeJ2X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sb+8xjIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0DC24DCF6;
-	Mon, 13 Apr 2026 16:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B7F2F8BC3;
+	Mon, 13 Apr 2026 16:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096949; cv=none; b=tQEDgW/DQavW59tzZzPiYEb/nsGK+4WKZibQZLXmoukDAEn3qpr6nvhTZpV2YVPB46u4Q2aQAPtxFWiJ2EwvelfFzNHOCE3I+8LkSIjz9/wtN8KtnfWamsHA4BPo64yNzcxSH7YoH5veb4cwkBKSgciyLZPIHeirOjuGFy5W8zQ=
+	t=1776097013; cv=none; b=YvjdmhhKUdfw51S2gICO/zINBZsCNhsCeAOuxx62b7VlTtcP69luj/A9L9DKj0Nvd976Ine+40FB+I1vBxea6PeTZYIrNt5vabLPwCHpisk7sv4koAHHFbjmvXLTpJ5cU2z50a8mwMfZZUmdgMU1wvfoG6EGhO8hR+wSGNGiglA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096949; c=relaxed/simple;
-	bh=lUOEWIt4c8yk73bH76GfOsDnUjsPZKk9ez+Kr/Ohv7Q=;
+	s=arc-20240116; t=1776097013; c=relaxed/simple;
+	bh=zA1jG+4ADxSQdOvijRkhCHP7DZFyneMI1RRLo7nkABQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8LRMMT8WtzjxGpk5WyyfKjQhNmqxNK6XXpUkaz8tRqP9q8UrO4cgz2LnIaqhQ0jj4jQUZxajWN89/54Egyw22+DOd1+dxqAkU7Sm/qHBw1XUJ4V4l6Ebn+N2jd1FjKxHFDDFHYHlhzuUrwf8GbBfKjrACPzMrcskEzlaNBqGEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxegeJ2X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D62C2BCAF;
-	Mon, 13 Apr 2026 16:15:48 +0000 (UTC)
+	 MIME-Version; b=pGYIEiR3lxvIC5XP0T1/Ep617CkaPgy1EZ5fs9dgIisP1GtaTlxLdjUIYd6iRZXX1XYabsbaucGW3C1zFVhFvE2yixo/+KmU5tCqyDCvAdFGZhl/fACPTOLQfOTMILXk5D5936ln7kinHHfzn6IXxu3PIjXw1gwxx6VXw5UY1/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sb+8xjIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48595C2BCAF;
+	Mon, 13 Apr 2026 16:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096949;
-	bh=lUOEWIt4c8yk73bH76GfOsDnUjsPZKk9ez+Kr/Ohv7Q=;
+	s=korg; t=1776097013;
+	bh=zA1jG+4ADxSQdOvijRkhCHP7DZFyneMI1RRLo7nkABQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xxegeJ2XVIl11Zwd4sF2Vq+39Q6350yOZdVwqEz28SOXXzW23xCILGmvz0Q4BNW1E
-	 TysTL0mUttgdMyA3fn2ZVa7CzS1q6J+2IElv8JrOY9GGYTXXfuKu96JwD01PNuPDxG
-	 4l8i+U3jmmXA8O3VAsSIXumvkHJTgaPz4wvXC/Pg=
+	b=sb+8xjIXGD2yNbx/v5dFIn8jB8nj4PaooaWpiLYXzTudsFgH0UezMcF9QPX5IRjOU
+	 ZipkPxPOiKoZphFR7WP46jh5AX/FP9kkgdLauBPZENHXKWRddlk5reSv26BP+uEOaP
+	 lzUfE89b1iu8cd5DgK5ozCq+1a2v5XZ/cTe0IJPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 36/50] net/mlx5: Update the list of the PCI supported devices
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 29/55] rfkill: sync before userspace visibility/changes
 Date: Mon, 13 Apr 2026 18:01:03 +0200
-Message-ID: <20260413155725.860067119@linuxfoundation.org>
+Message-ID: <20260413155725.921664479@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,66 +67,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236455-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236480-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 903063EF799
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7555E3EF334
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit a9d4f4f6e65e0bf9bbddedecc84d67249991979c upstream.
+[ Upstream commit 2c3dfba4cf84ac4f306cc6653b37b6dd6859ae9d ]
 
-Add the upcoming ConnectX-10 NVLink-C2C device ID to the table of
-supported PCI device IDs.
+If userspace quickly opens /dev/rfkill after a new
+instance was created, it might see the old state of
+the instance from before the sync work runs and may
+even _change_ the state, only to have the sync work
+change it again.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260403091756.139583-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by doing the sync inline where needed, not
+just for /dev/rfkill but also for sysfs.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: ea245d78dec5 ("net: rfkill: prevent unlimited numbers of rfkill events from being created")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/rfkill/core.c |   32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -2208,6 +2208,7 @@ static const struct pci_device_id mlx5_c
- 	{ PCI_VDEVICE(MELLANOX, 0x1023) },			/* ConnectX-8 */
- 	{ PCI_VDEVICE(MELLANOX, 0x1025) },			/* ConnectX-9 */
- 	{ PCI_VDEVICE(MELLANOX, 0x1027) },			/* ConnectX-10 */
-+	{ PCI_VDEVICE(MELLANOX, 0x2101) },			/* ConnectX-10 NVLink-C2C */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d2) },			/* BlueField integrated ConnectX-5 network controller */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d3), MLX5_PCI_DEV_IS_VF},	/* BlueField integrated ConnectX-5 network controller VF */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d6) },			/* BlueField-2 integrated ConnectX-6 Dx network controller */
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -48,6 +48,7 @@ struct rfkill {
+ 	bool			persistent;
+ 	bool			polling_paused;
+ 	bool			suspended;
++	bool			need_sync;
+ 
+ 	const struct rfkill_ops	*ops;
+ 	void			*data;
+@@ -368,6 +369,17 @@ static void rfkill_set_block(struct rfki
+ 		rfkill_event(rfkill);
+ }
+ 
++static void rfkill_sync(struct rfkill *rfkill)
++{
++	lockdep_assert_held(&rfkill_global_mutex);
++
++	if (!rfkill->need_sync)
++		return;
++
++	rfkill_set_block(rfkill, rfkill_global_states[rfkill->type].cur);
++	rfkill->need_sync = false;
++}
++
+ static void rfkill_update_global_state(enum rfkill_type type, bool blocked)
+ {
+ 	int i;
+@@ -730,6 +742,10 @@ static ssize_t soft_show(struct device *
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
++	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
++	mutex_unlock(&rfkill_global_mutex);
++
+ 	return sysfs_emit(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_SW) ? 1 : 0);
+ }
+ 
+@@ -751,6 +767,7 @@ static ssize_t soft_store(struct device
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
+ 	rfkill_set_block(rfkill, state);
+ 	mutex_unlock(&rfkill_global_mutex);
+ 
+@@ -783,6 +800,10 @@ static ssize_t state_show(struct device
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
++	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
++	mutex_unlock(&rfkill_global_mutex);
++
+ 	return sysfs_emit(buf, "%d\n", user_state_from_blocked(rfkill->state));
+ }
+ 
+@@ -805,6 +826,7 @@ static ssize_t state_store(struct device
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&rfkill_global_mutex);
++	rfkill_sync(rfkill);
+ 	rfkill_set_block(rfkill, state == RFKILL_USER_STATE_SOFT_BLOCKED);
+ 	mutex_unlock(&rfkill_global_mutex);
+ 
+@@ -1032,14 +1054,10 @@ static void rfkill_uevent_work(struct wo
+ 
+ static void rfkill_sync_work(struct work_struct *work)
+ {
+-	struct rfkill *rfkill;
+-	bool cur;
+-
+-	rfkill = container_of(work, struct rfkill, sync_work);
++	struct rfkill *rfkill = container_of(work, struct rfkill, sync_work);
+ 
+ 	mutex_lock(&rfkill_global_mutex);
+-	cur = rfkill_global_states[rfkill->type].cur;
+-	rfkill_set_block(rfkill, cur);
++	rfkill_sync(rfkill);
+ 	mutex_unlock(&rfkill_global_mutex);
+ }
+ 
+@@ -1087,6 +1105,7 @@ int __must_check rfkill_register(struct
+ 			round_jiffies_relative(POLL_INTERVAL));
+ 
+ 	if (!rfkill->persistent || rfkill_epo_lock_active) {
++		rfkill->need_sync = true;
+ 		schedule_work(&rfkill->sync_work);
+ 	} else {
+ #ifdef CONFIG_RFKILL_INPUT
+@@ -1171,6 +1190,7 @@ static int rfkill_fop_open(struct inode
+ 		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
+ 		if (!ev)
+ 			goto free;
++		rfkill_sync(rfkill);
+ 		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
+ 		list_add_tail(&ev->list, &data->events);
+ 	}
 
 
 
