@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-236485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBJ7GXca3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:51 +0200
+	id sETOAM0l3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10473EF2A2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E601D3F1327
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F0B2E303321C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 830493105BCE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B829C24DCF6;
-	Mon, 13 Apr 2026 16:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D3E33BBC0;
+	Mon, 13 Apr 2026 17:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AS69IQOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYbXlgJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7EC27280A;
-	Mon, 13 Apr 2026 16:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1E733B6F8;
+	Mon, 13 Apr 2026 17:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097026; cv=none; b=IkJCFBQz4NqzjLD2Z7Y/MlJITJQNGbDayMDtgihCJYKL8UtSPpf9HsI+pdWFJ/apRP4Bvbavl80i7uJs2jurgAQYcyyEMtuiRVnnzIRcTQ2HnPLQGi0lnMaSlRuXfa4LjIIvYnYF51ta3vd14B+Ckaw9xJV3uLJ0/K/g96K8inM=
+	t=1776099738; cv=none; b=T5DEys8FOE9hOEFS64Bubj/XwtjIGcLNVFnWWnRKBO7OknnD0o+Aic0/vNPGmnj3vnwiGN052IEvEFKZLJGLpRfNjlnolI1W1A9h4Gooxe0MAz+C/77nufR0yUuhjVbNncyd8LPXQLXfO+6uz4a8ymeW0M0rXOBsYx2HlljlekU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097026; c=relaxed/simple;
-	bh=YLSM1IDeCktIfNYrFmSJEmgc40N32VKog5uVHkVphCc=;
+	s=arc-20240116; t=1776099738; c=relaxed/simple;
+	bh=ki7VfXK+iosex8cJuIMyiSmEAK0Z1MLwQQ6kdfFTAqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qjd15lP9Hkw2xJiEDA4gsKTN75Z3RA5z80IJFNtIfhQ7HcmoYMiuSWU/pZbQZvbOpYvpwMUyOXGzcyTeY5givD9FCH2D/Au79oCt8ExdMmZ5RhMl0bnjXyxeWimu2QI8mfMR0/HR3+1/sysMW5A/5ctJG0TR6mScg+X0dUDOmnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AS69IQOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1219FC2BCAF;
-	Mon, 13 Apr 2026 16:17:05 +0000 (UTC)
+	 MIME-Version; b=l2oUP5ZkqWF4DgizGA3Xb7ZhgVdsl3ANbBasr3kjWgS65EqLBjBEm1LiZYZAoXKytSv4i49xT7RYpcpNtDn66d41siuyVPfy7ktW5/EEeM9IYdid7TY2vs8cIcitzCBS8O2f321hRJK+ln+LdtpD9I5+5uD8q0nBt2NdF0jGmuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYbXlgJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44406C2BCAF;
+	Mon, 13 Apr 2026 17:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097026;
-	bh=YLSM1IDeCktIfNYrFmSJEmgc40N32VKog5uVHkVphCc=;
+	s=korg; t=1776099738;
+	bh=ki7VfXK+iosex8cJuIMyiSmEAK0Z1MLwQQ6kdfFTAqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AS69IQOqICjPgKqb4Cf4KZ4nwb5htXTA3yUlzeDtVe9dgzG8KqOyHSSESw6+Qf+HS
-	 YmVCgj6Ora64zJwXp3m+GM58mmf4g2/DjnheoVL6ijIqXvvYntAu1Uc5vE6ftI8aTs
-	 E4HmkC9ycQVvudooPy+i6DeYni+tPKj8y5nXWv9E=
+	b=pYbXlgJlHS8bZygvSWq/9M/BmZxavyA1JTzz6tItM8rpQCrCUMpc2hK+n9dF1tSUe
+	 DJJS9ZLNIgi/qv1FGZRaS+gV9PPnIF7saY6vXd9WaI2l9tSg7vsQpoYd0k8+arrESI
+	 iE3uM5Oio8ODJkCfImolAQalC5UwE8rM4izdjf+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Leon Chen <leonchen.oss@139.com>
-Subject: [PATCH 6.1 34/55] drm/scheduler: signal scheduled fence when kill job
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Uschakow, Stanislav" <suschako@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 423/491] mm/rmap: fix two comments related to huge_pmd_unshare()
 Date: Mon, 13 Apr 2026 18:01:08 +0200
-Message-ID: <20260413155726.110922418@linuxfoundation.org>
+Message-ID: <20260413155834.862582376@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +71,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,kernel.org,139.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236485-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237548-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:email]
-X-Rspamd-Queue-Id: F10473EF2A2
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E601D3F1327
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin.Cao <lincao12@amd.com>
+From: David Hildenbrand (Red Hat) <david@kernel.org>
 
-commit 471db2c2d4f80ee94225a1ef246e4f5011733e50 upstream.
+PMD page table unsharing no longer touches the refcount of a PMD page
+table.  Also, it is not about dropping the refcount of a "PMD page" but
+the "PMD page table".
 
-When an entity from application B is killed, drm_sched_entity_kill()
-removes all jobs belonging to that entity through
-drm_sched_entity_kill_jobs_work(). If application A's job depends on a
-scheduled fence from application B's job, and that fence is not properly
-signaled during the killing process, application A's dependency cannot be
-cleared.
+Let's just simplify by saying that the PMD page table was unmapped,
+consequently also unmapping the folio that was mapped into this page.
 
-This leads to application A hanging indefinitely while waiting for a
-dependency that will never be resolved. Fix this issue by ensuring that
-scheduled fences are properly signaled when an entity is killed, allowing
-dependent applications to continue execution.
+This code should be deduplicated in the future.
 
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Reviewed-by: Philipp Stanner <phasta@kernel.org>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250515020713.1110476-1-lincao12@amd.com
-[ Modified drm_sched_fence_scheduled(job->s_fence, NULL) to
-  drm_sched_fence_scheduled(job->s_fence) for kernel 6.1.y ]
-Signed-off-by: Leon Chen <leonchen.oss@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20251223214037.580860-4-david@kernel.org
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit a8682d500f691b6dfaa16ae1502d990aeb86e8be)
+[ David: We don't have 40549ba8f8e0 ("hugetlb: use new vma_lock
+  for pmd sharing synchronization") and a98a2f0c8ce1 ("mm/rmap: split
+  migration into its own so changes in mm/rmap.c looks quite different. ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/rmap.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -196,6 +196,7 @@ static void drm_sched_entity_kill_jobs_w
- {
- 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
+diff --git a/mm/rmap.c b/mm/rmap.c
+index e6f840be18906..315d7ceb573ae 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1490,13 +1490,8 @@ static bool try_to_unmap_one(struct page *page, struct vm_area_struct *vma,
+ 							      range.end);
  
-+	drm_sched_fence_scheduled(job->s_fence);
- 	drm_sched_fence_finished(job->s_fence);
- 	WARN_ON(job->s_fence->parent);
- 	job->sched->ops->free_job(job);
+ 				/*
+-				 * The ref count of the PMD page was dropped
+-				 * which is part of the way map counting
+-				 * is done for shared PMDs.  Return 'true'
+-				 * here.  When there is no other sharing,
+-				 * huge_pmd_unshare returns false and we will
+-				 * unmap the actual page and drop map count
+-				 * to zero.
++				 * The PMD table was unmapped,
++				 * consequently unmapping the folio.
+ 				 */
+ 				page_vma_mapped_walk_done(&pvmw);
+ 				break;
+-- 
+2.53.0
+
 
 
 
