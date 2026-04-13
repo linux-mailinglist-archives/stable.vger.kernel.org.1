@@ -1,71 +1,64 @@
-Return-Path: <stable+bounces-236405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDFHC7cZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:39 +0200
+	id IC5FJj0Z3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9606A3EF070
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0253EEEFC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D656B30ABA92
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 186FF307F4E5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2752472A2;
-	Mon, 13 Apr 2026 16:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC911291864;
+	Mon, 13 Apr 2026 16:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1ph34YE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B15JeouP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEF025A2C9;
-	Mon, 13 Apr 2026 16:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA4428C2DD;
+	Mon, 13 Apr 2026 16:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096821; cv=none; b=rfH4YKeii8rEz/0U/kTor3qs8MkVNQNDrUGASKT4RMAeWtC8BeD/FFZOs7jqLzp3mG6zHu8n1gPZqWHhzOa3+sFcnOMjUIR37XtfzM55NLERnNPU4yiMJW+Y3mu6lSMJbTVunSLHMJxzIfOsFshJcrn/Hjdge48e14HTBANpQW8=
+	t=1776096640; cv=none; b=H5yqAgZ8HOE/TGzjPENhUkRtOzP+1PwuY3+sv0yiHmkgfW4cDNDU67+TnFvHFSOU9IleoTnHqe5Mxv9s2qDxLfjA4fv1RhTeVdg58kLRKlV3J2tACsZV7oF53TzVycnNhZyHb7O5A3ZlTlmL2WGpwyHna7BWZDEp5bgfFUf5WZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096821; c=relaxed/simple;
-	bh=yNwNGUNZfwaV35wme/2uRQJ54Ge1oi4R8shNMEE6/VE=;
+	s=arc-20240116; t=1776096640; c=relaxed/simple;
+	bh=PK4BtdYHe41+hnBjswLrdCgExZVGNQT3FC8nugEBfmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I6wXydtDJ9DIm9J+C0dLdYsDd9nuptgovVBnyU6EIIgGdn11pRBy0OdhcYeG5VcEKr6FfI3+W77fH1qANGv9VdaJjH3VwcJ4D87ubyJZmu2KVw0Dvq/VBGdlfBZzh0+3tRpjhzuRF876NsQ5+wO1lag8t/vcfFkp2LE5e/I2oI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1ph34YE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66241C2BCAF;
-	Mon, 13 Apr 2026 16:13:40 +0000 (UTC)
+	 MIME-Version; b=mnki3nexr3G0SDF36AJqnCEj89nSE34C8EXo0aNhxKzjSgxpG4zQj3pW/8+f8pFeVZkLC+LsNVl0n3F/UW44ui3JaRWjOV70mxNceGZIosgubTRvpTfOwTH8sH92N3TJ+/HzfFfv0B36zQE4mPpX1l+T1PXVnWIBBmDgl19vSGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B15JeouP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AD1C2BCAF;
+	Mon, 13 Apr 2026 16:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096821;
-	bh=yNwNGUNZfwaV35wme/2uRQJ54Ge1oi4R8shNMEE6/VE=;
+	s=korg; t=1776096640;
+	bh=PK4BtdYHe41+hnBjswLrdCgExZVGNQT3FC8nugEBfmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1ph34YEIlOIbfQn8YVTBXwUtXBW4XQdKqnecDY8z35RwUiqR+3b/lbJjzCg8ZQ7a
-	 JT9ZUmgh5zls/D3zIRXnAqKiljcQIkU/yXD40D0Ql9Vt9HdRGICe3Pxw9f7swLPMvU
-	 kwaPPSD6BvRUKZUy0nvnqCGopI7TWs8usdCENEA8=
+	b=B15JeouPGG7CpDWJxMamWGLKy5u6tPGRBYFCzd8/r7X6WKAqzamHKH6xKe05cMayh
+	 5hz7dvIgC/tEIadFU7vujXHzzm/+anDSwgczjVpLzLO2OTHxviBxCwgvgvi+uZ6d29
+	 i8O0uhnWq82iuemC1+TAnpJYLqLoqxVa7Gha2mkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Yuanhe Shu <xiangzao@linux.alibaba.com>,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
 	David Howells <dhowells@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Luis Chamberalin <mcgrof@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 55/70] mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 82/83] rxrpc: proc: size address buffers for %pISpc output
 Date: Mon, 13 Apr 2026 18:00:50 +0200
-Message-ID: <20260413155730.238620944@linuxfoundation.org>
+Message-ID: <20260413155734.051563396@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,176 +68,201 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236405-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236335-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9606A3EF070
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,auristor.com:email,infradead.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,allelesecurity.com:email]
+X-Rspamd-Queue-Id: 1F0253EEEFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit f58df566524ebcdfa394329c64f47e3c9257516e upstream.
+commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 upstream.
 
-When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
-encountered some very strange crash issues showing up as "Bad page state":
+The AF_RXRPC procfs helpers format local and remote socket addresses into
+fixed 50-byte stack buffers with "%pISpc".
 
-"
-[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
-[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
-[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
-[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
-[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
-[  734.496442] page dumped because: nonzero mapcount
-"
+That is too small for the longest current-tree IPv6-with-port form the
+formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
+dotted-quad tail not only for v4mapped addresses, but also for ISATAP
+addresses via ipv6_addr_is_isatap().
 
-After analyzing this page’s state, it is hard to understand why the
-mapcount is not 0 while the refcount is 0, since this page is not where
-the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
-reproduce the crash as well and captured the first warning where the issue
-appears:
+As a result, a case such as
 
-"
-[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
-[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  734.469315] memcg:ffff000807a8ec00
-[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
-[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
-......
-[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
-const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
-(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
-[  734.469390] ------------[ cut here ]------------
-[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
-CPU#90: stress-ng-mlock/9430
-[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
-[  734.469555]  set_pte_range+0xd8/0x2f8
-[  734.469566]  filemap_map_folio_range+0x190/0x400
-[  734.469579]  filemap_map_pages+0x348/0x638
-[  734.469583]  do_fault_around+0x140/0x198
-......
-[  734.469640]  el0t_64_sync+0x184/0x188
-"
+  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
 
-The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
-nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
-tried to map beyond the large folio’s size.
+is possible with the current formatter. That is 50 visible characters, so
+51 bytes including the trailing NUL, which does not fit in the existing
+char[50] buffers used by net/rxrpc/proc.c.
 
-By adding more debug information, I found that 'nr_pages' had overflowed
-in filemap_map_pages(), causing set_pte_range() to establish mappings for
-a range exceeding the folio size, potentially corrupting fields of pages
-that do not belong to this folio (e.g., page->_mapcount).
+Size the buffers from the formatter's maximum textual form and switch the
+call sites to scnprintf().
 
-After above analysis, I think the possible race is as follows:
+Changes since v1:
+- correct the changelog to cite the actual maximum current-tree case
+  explicitly
+- frame the proof around the ISATAP formatting path instead of the earlier
+  mapped-v4 example
 
-CPU 0                                                  CPU 1
-filemap_map_pages()                                   ext4_setattr()
-   //get and lock folio with old inode->i_size
-   next_uptodate_folio()
-
-                                                          .......
-                                                          //shrink the inode->i_size
-                                                          i_size_write(inode, attr->ia_size);
-
-   //calculate the end_pgoff with the new inode->i_size
-   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-   end_pgoff = min(end_pgoff, file_end);
-
-   ......
-   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
-   end = folio_next_index(folio) - 1;
-   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
-
-   ......
-   //map large folio
-   filemap_map_folio_range()
-                                                          ......
-                                                          //truncate folios
-                                                          truncate_pagecache(inode, inode->i_size);
-
-To fix this issue, move the 'end_pgoff' calculation before
-next_uptodate_folio(), so the retrieved folio stays consistent with the
-file end to avoid 'nr_pages' calculation overflow.  After this patch, the
-crash issue is gone.
-
-Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
-Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Daniel Gomez <da.gomez@samsung.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <dchinner@redhat.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/rxrpc/proc.c |   32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3655,14 +3655,19 @@ vm_fault_t filemap_map_pages(struct vm_f
- 	unsigned int nr_pages = 0, mmap_miss = 0, mmap_miss_saved, folio_type;
- 	bool can_map_large;
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -10,6 +10,10 @@
+ #include <net/af_rxrpc.h>
+ #include "ar-internal.h"
  
-+	/*
-+	 * Recalculate end_pgoff based on file_end before calling
-+	 * next_uptodate_folio() to avoid races with concurrent
-+	 * truncation.
-+	 */
-+	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-+	end_pgoff = min(end_pgoff, file_end);
++#define RXRPC_PROC_ADDRBUF_SIZE \
++	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
++	 sizeof(":12345"))
 +
- 	rcu_read_lock();
- 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
- 	if (!folio)
- 		goto out;
+ static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
+ 	[RXRPC_CONN_UNUSED]			= "Unused  ",
+ 	[RXRPC_CONN_CLIENT_UNSECURED]		= "ClUnsec ",
+@@ -53,7 +57,7 @@ static int rxrpc_call_seq_show(struct se
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	enum rxrpc_call_state state;
+ 	rxrpc_seq_t tx_bottom;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 	long timeout = 0;
  
--	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
--	end_pgoff = min(end_pgoff, file_end);
--
- 	/*
- 	 * Do not allow to map with PTEs beyond i_size and with PMD
- 	 * across i_size to preserve SIGBUS semantics.
+ 	if (v == &rxnet->calls) {
+@@ -69,11 +73,11 @@ static int rxrpc_call_seq_show(struct se
+ 
+ 	local = call->local;
+ 	if (local)
+-		sprintf(lbuff, "%pISpc", &local->srx.transport);
++		scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 	else
+ 		strcpy(lbuff, "no_local");
+ 
+-	sprintf(rbuff, "%pISpc", &call->dest_srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &call->dest_srx.transport);
+ 
+ 	state = rxrpc_call_state(call);
+ 	if (state != RXRPC_CALL_SERVER_PREALLOC)
+@@ -142,7 +146,7 @@ static int rxrpc_connection_seq_show(str
+ 	struct rxrpc_connection *conn;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	const char *state;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->conn_proc_list) {
+ 		seq_puts(seq,
+@@ -161,8 +165,8 @@ static int rxrpc_connection_seq_show(str
+ 		goto print;
+ 	}
+ 
+-	sprintf(lbuff, "%pISpc", &conn->local->srx.transport);
+-	sprintf(rbuff, "%pISpc", &conn->peer->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->local->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->peer->srx.transport);
+ print:
+ 	state = rxrpc_is_conn_aborted(conn) ?
+ 		rxrpc_call_completions[conn->completion] :
+@@ -228,7 +232,7 @@ static int rxrpc_bundle_seq_show(struct
+ {
+ 	struct rxrpc_bundle *bundle;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->bundle_proc_list) {
+ 		seq_puts(seq,
+@@ -242,8 +246,8 @@ static int rxrpc_bundle_seq_show(struct
+ 
+ 	bundle = list_entry(v, struct rxrpc_bundle, proc_link);
+ 
+-	sprintf(lbuff, "%pISpc", &bundle->local->srx.transport);
+-	sprintf(rbuff, "%pISpc", &bundle->peer->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &bundle->local->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &bundle->peer->srx.transport);
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %4x %3u %3d"
+ 		   " %c%c%c %08x | %08x %08x %08x %08x %08x\n",
+@@ -279,7 +283,7 @@ static int rxrpc_peer_seq_show(struct se
+ {
+ 	struct rxrpc_peer *peer;
+ 	time64_t now;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -290,9 +294,9 @@ static int rxrpc_peer_seq_show(struct se
+ 
+ 	peer = list_entry(v, struct rxrpc_peer, hash_link);
+ 
+-	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+@@ -401,7 +405,7 @@ const struct seq_operations rxrpc_peer_s
+ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_local *local;
+-	char lbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -412,7 +416,7 @@ static int rxrpc_local_seq_show(struct s
+ 
+ 	local = hlist_entry(v, struct rxrpc_local, link);
+ 
+-	sprintf(lbuff, "%pISpc", &local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %3u %3u %3u\n",
 
 
 
