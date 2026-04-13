@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qG9PKrIZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:34 +0200
+	id UHQsKCsf3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBBB3EF05B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECAD3F007A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCBE330146BC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F156B304AF03
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601AC2E11B9;
-	Mon, 13 Apr 2026 16:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D558C3161BF;
+	Mon, 13 Apr 2026 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLjK/06V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLo+6aEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231FA49620;
-	Mon, 13 Apr 2026 16:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9868B314D0D;
+	Mon, 13 Apr 2026 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097664; cv=none; b=r202UqxHkwn044glXLFCy+8ciwqH9OdKb1baofxLRCZ0Rw3tun4/MlyU2xhPspm7KEDoaMSYVWlJkIbHqaTCcPnBfWaBIQpBiarZeiKAYwr11UGOp2QaujoKld0/qtThxrggO3jFqtBKyHcsWHhmPSG9q8Hv3H0mmvpGnA+07to=
+	t=1776098923; cv=none; b=YEvr2vOe8e0XAraM6XYrEkMNIl0MIljKhbLajX7VSPSMey5Pgrxka7vfRP1adWTjGFadg6kZHA7Efw9ep2ms0TOg9s5S9x1A71CJsvNwtpCujpgA/UTelRARa5jZ5Zeeoa4dFlIJvjYaXgAZe98xhOG0fVeKONP0ENHNpGFsrEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097664; c=relaxed/simple;
-	bh=/JMZTWjHqq9sn24P3H5+4rPuZogqRcellGXx3R4jwcs=;
+	s=arc-20240116; t=1776098923; c=relaxed/simple;
+	bh=HKl5cTBhTVS6DgWi5SVPFT2CYdg6/SXZJ55mFdeoQAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KncTDSE5wiNx2Jj4UzXismBdVUAAhMfy8QmPR6m/k4xnlHg3ZHy8JyOOg6FBy8lSCrIoHZYvFJO54ZFIh0pW7EUL+1FG0kwqgdGnQioF8a/L8j8APC84O4I6HQ8mFv3ZT1Z0NIo2jtIZN0e2ohgCxb4ovuXiwTeaSKc360/8aCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLjK/06V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9DBC2BCAF;
-	Mon, 13 Apr 2026 16:27:43 +0000 (UTC)
+	 MIME-Version; b=qYjWDlEgsLBRQAzynKJw4rVgpdimdhZycDLH9YfNUiBlxesCbfZi3Ro2Bisb3rypNZ7n0dgXO2tW+9MaVadZ1mKAoxDxj078yd3rV1ej0YmQhbUZJmZasdLKXTsXsl0zJW38PMwhSf1zypn/yHEGzynXpcHYBWTruaphUGyudF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLo+6aEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FA0C2BCAF;
+	Mon, 13 Apr 2026 16:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097664;
-	bh=/JMZTWjHqq9sn24P3H5+4rPuZogqRcellGXx3R4jwcs=;
+	s=korg; t=1776098923;
+	bh=HKl5cTBhTVS6DgWi5SVPFT2CYdg6/SXZJ55mFdeoQAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLjK/06VPJmaTezKH8gd0X4I2ZGjQjCPIuby6vsEitsQVhrdLHmvyeniR0juTRqV/
-	 6zLCmwXxb0XV3Ewh+M2ruJqrB8sPj69BtikPuJh3fDoVSeDeG2Kb3IOZcMgPD0MxcZ
-	 t31mHyCgnnhalrjJiA9ZbDiPF30nNIs6/x2F3S10=
+	b=VLo+6aEacjdN2M+8FbgDRnczDwrn31y0FjPTia6OT2EFI9igkB9dJ8bXP49uX+iU2
+	 H9/5hZ67xiLW0v+e9S9yYSvnK+CTyFxtgR0LBVwfcsNLPWhrjnPepqhnskhP5pGfLz
+	 AhL0vJgtxPPqbhqPug+qqmXVlgU4kRBE7RZn3KbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Inki Dae <inki.dae@samsung.com>
-Subject: [PATCH 5.15 223/570] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 109/491] ceph: fix i_nlink underrun during async unlink
 Date: Mon, 13 Apr 2026 17:55:54 +0200
-Message-ID: <20260413155838.809387099@linuxfoundation.org>
+Message-ID: <20260413155823.123041928@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236737-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
+	TAGGED_FROM(0.00)[bounces-237231-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,100 +91,131 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,samsung.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5BBBB3EF05B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5ECAD3F007A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit d3968a0d85b211e197f2f4f06268a7031079e0d0 upstream.
+commit ce0123cbb4a40a2f1bbb815f292b26e96088639f upstream.
 
-vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
-obtain a struct vidi_context pointer. However, drm_dev->dev is the
-exynos-drm master device, and the driver_data contained therein is not
-the vidi component device, but a completely different device.
+During async unlink, we drop the `i_nlink` counter before we receive
+the completion (that will eventually update the `i_nlink`) because "we
+assume that the unlink will succeed".  That is not a bad idea, but it
+races against deletions by other clients (or against the completion of
+our own unlink) and can lead to an underrun which emits a WARNING like
+this one:
 
-This can lead to various bugs, ranging from null pointer dereferences and
-garbage value accesses to, in unlucky cases, out-of-bounds errors,
-use-after-free errors, and more.
+ WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
+ Modules linked in:
+ CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : drop_nlink+0x50/0x68
+ lr : ceph_unlink+0x6c4/0x720
+ sp : ffff80012173bc90
+ x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
+ x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
+ x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
+ x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
+ x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
+ x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
+ x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
+ x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
+ x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
+ Call trace:
+  drop_nlink+0x50/0x68 (P)
+  vfs_unlink+0xb0/0x2e8
+  do_unlinkat+0x204/0x288
+  __arm64_sys_unlinkat+0x3c/0x80
+  invoke_syscall.constprop.0+0x54/0xe8
+  do_el0_svc+0xa4/0xc8
+  el0_svc+0x18/0x58
+  el0t_64_sync_handler+0x104/0x130
+  el0t_64_sync+0x154/0x158
 
-To resolve this issue, we need to store/delete the vidi device pointer in
-exynos_drm_private->vidi_dev during bind/unbind, and then read this
-exynos_drm_private->vidi_dev within ioctl() to obtain the correct
-struct vidi_context pointer.
+In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
+CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Meanwhile, between this call and the following drop_nlink() call, a
+worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
+just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
+completion).  These will lead to a set_nlink() call, updating the
+`i_nlink` counter to the value received from the MDS.  If that new
+`i_nlink` value happens to be zero, it is illegal to decrement it
+further.  But that is exactly what ceph_unlink() will do then.
+
+The WARNING can be reproduced this way:
+
+1. Force async unlink; only the async code path is affected.  Having
+   no real clue about Ceph internals, I was unable to find out why the
+   MDS wouldn't give me the "Fxr" capabilities, so I patched
+   get_caps_for_async_unlink() to always succeed.
+
+   (Note that the WARNING dump above was found on an unpatched kernel,
+   without this kludge - this is not a theoretical bug.)
+
+2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
+   completion gets handled by a worker thread before drop_nlink() is
+   called.  This guarantees that the `i_nlink` is already zero before
+   drop_nlink() runs.
+
+The solution is to skip the counter decrement when it is already zero,
+but doing so without a lock is still racy (TOCTOU).  Since
+ceph_fill_inode() and handle_cap_grant() both hold the
+`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
+seems like the proper lock to protect the `i_nlink` updates.
+
+I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
+`afs_vnode.cb_lock`).  All three have the zero check as well.
+
+Cc: stable@vger.kernel.org
+Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_drv.h  |    1 +
- drivers/gpu/drm/exynos/exynos_drm_vidi.c |   14 +++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ fs/ceph/dir.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
-+++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
-@@ -201,6 +201,7 @@ struct exynos_drm_private {
- 
- 	struct device *g2d_dev;
- 	struct device *dma_dev;
-+	struct device *vidi_dev;
- 	void *mapping;
- 
- 	/* for atomic commit */
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -223,9 +223,14 @@ ATTRIBUTE_GROUPS(vidi);
- int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
- 				struct drm_file *file_priv)
- {
--	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
-+	struct device *dev = priv ? priv->vidi_dev : NULL;
-+	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
- 	struct drm_exynos_vidi_connection *vidi = data;
- 
-+	if (!ctx)
-+		return -ENODEV;
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1129,6 +1129,7 @@ static int ceph_unlink(struct inode *dir
+ 	struct ceph_fs_client *fsc = ceph_sb_to_client(dir->i_sb);
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct inode *inode = d_inode(dentry);
++	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_mds_request *req;
+ 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
+ 	int err = -EROFS;
+@@ -1173,7 +1174,19 @@ retry:
+ 			 * We have enough caps, so we assume that the unlink
+ 			 * will succeed. Fix up the target inode and dcache.
+ 			 */
+-			drop_nlink(inode);
 +
- 	if (!vidi) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev,
- 				  "user data for vidi is null.\n");
-@@ -385,6 +390,7 @@ static int vidi_bind(struct device *dev,
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
- 	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 	struct drm_encoder *encoder = &ctx->encoder;
- 	struct exynos_drm_plane *exynos_plane;
- 	struct exynos_drm_plane_config plane_config = { 0 };
-@@ -392,6 +398,8 @@ static int vidi_bind(struct device *dev,
- 	int ret;
- 
- 	ctx->drm_dev = drm_dev;
-+	if (priv)
-+		priv->vidi_dev = dev;
- 
- 	plane_config.pixel_formats = formats;
- 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
-@@ -437,8 +445,12 @@ static int vidi_bind(struct device *dev,
- static void vidi_unbind(struct device *dev, struct device *master, void *data)
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
-+	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 
- 	del_timer_sync(&ctx->timer);
-+	if (priv)
-+		priv->vidi_dev = NULL;
- }
- 
- static const struct component_ops vidi_component_ops = {
++			/*
++			 * Protect the i_nlink update with i_ceph_lock
++			 * to precent racing against ceph_fill_inode()
++			 * handling our completion on a worker thread
++			 * and don't decrement if i_nlink has already
++			 * been updated to zero by this completion.
++			 */
++			spin_lock(&ci->i_ceph_lock);
++			if (inode->i_nlink > 0)
++				drop_nlink(inode);
++			spin_unlock(&ci->i_ceph_lock);
++
+ 			d_delete(dentry);
+ 		} else if (err == -EJUKEBOX) {
+ 			try_async = false;
 
 
 
