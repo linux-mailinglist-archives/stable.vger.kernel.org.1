@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCtwLiAg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:00 +0200
+	id sHbWIBEg3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-236765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBC73F0438
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F4B3F0402
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB93C30EE1FD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16CCA30FB4A1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05233164BB;
-	Mon, 13 Apr 2026 16:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F7130BB91;
+	Mon, 13 Apr 2026 16:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVzojiP2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFXLXNBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6343F313298;
-	Mon, 13 Apr 2026 16:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208C52E11B9;
+	Mon, 13 Apr 2026 16:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098918; cv=none; b=J8nF90D8LkHDA5yp0NwS7EOfusCo1GDHS5Dw+eA2skYG5i2kVOzDDaKd/t2LEt820ZRKauVkjorKib7bfJ/aFIflBZfNrSE2VaQazQbJCho99fkoC8UjOHzKkSZFQ1CC6bhayBPDNwhxrRFLOFGBMoXu0kxLHMhYRO1K+LIA2G8=
+	t=1776097736; cv=none; b=VLjoxnWBnk27E4IAgnZZnWaJk9ZfDFgALPrq+bpPtUwIhwFOA8m8HDPBhi34x8v7SK85Xzr2hU8OHsMTpZAKLVHQ10UG06YHKW4AtWGJSdgmjNMdr7afJ+5SONHai2lTEmIVbUb8jHiXWdjnwM2Tm5oRJ/hG3geLsR9/mG+Zacc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098918; c=relaxed/simple;
-	bh=JbSXeSpHB1qyexYFmGwDqbHlwHMvJqL64v1L0aoZ464=;
+	s=arc-20240116; t=1776097736; c=relaxed/simple;
+	bh=9Z3Zc/8NdgtfQQvvTGYiEEX0QyHo6fqFmX6CoPWmFug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f541Bpm089P7bnB3wLKu975y63/FZHA8ZQ6orzb+tX4oRd1GLDs/as+/KLXZMD4wfrUzw5YBk2LNSAbqjU5Fcn4H1tgV5mOmE1jNOIJUUIYPm+abOd2WjCAFi6S66wYQd0OJaCuMTGM0mNZayFToFXl/MfNHJ+9dBu2j+EdNdPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVzojiP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6ECC2BCAF;
-	Mon, 13 Apr 2026 16:48:37 +0000 (UTC)
+	 MIME-Version; b=Myj5iesIrIuHpuMu0rj8zr9BpYyY+/EqfxqyR7m8YBKa5425K0nBSTBSMSUfLQULapE0lkGSsxIzehH9f4ifJGoCm/Z1CZ4wWXibc6UwvKOO181KtcEa77YotHr1N7jwUlK3idH0ZJqCxXq284DC60O0LVyfMGh90dajH3fAjac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFXLXNBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4C1C2BCAF;
+	Mon, 13 Apr 2026 16:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098918;
-	bh=JbSXeSpHB1qyexYFmGwDqbHlwHMvJqL64v1L0aoZ464=;
+	s=korg; t=1776097736;
+	bh=9Z3Zc/8NdgtfQQvvTGYiEEX0QyHo6fqFmX6CoPWmFug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVzojiP2sbzWsZH3zlxaTITu3GBnGbGAOZWguz/dVIfZ4zi2meQ5/VIthgYA4bLXU
-	 1Sa2XcOLzr9cnzeEfm0ex9T7EkA263+RC8O8HD4tfY1iUPdjbnivbltzXmZAPQdi16
-	 a2r2cqLPz6chUQyh6XZsJPicKEgGAhsDim+5z8Q0=
+	b=PFXLXNBCtFen0FP+E6lgfjfPJp25czLojqSZOOqjypsqq86tQ4+03EA4uZOUulOL9
+	 dUFedbbu4usKEA9EKSOvBJotHMjRoYpkGnBaloJsdXgcUHOeIsjzIUeEHI9jKNFBRb
+	 Z9RZUWWdKlOU2QG2Vqqf0nbZEgWKtNWF/X+PFGTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@ownmail.net>,
-	stable@kernel.org,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 138/491] sunrpc: fix cache_request leak in cache_release
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 252/570] Bluetooth: qca: fix ROM version reading on WCN3998 chips
 Date: Mon, 13 Apr 2026 17:56:23 +0200
-Message-ID: <20260413155824.206223457@linuxfoundation.org>
+Message-ID: <20260413155839.906399351@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +69,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ownmail.net,kernel.org,oracle.com];
-	TAGGED_FROM(0.00)[bounces-237229-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236765-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,ownmail.net:email]
-X-Rspamd-Queue-Id: 2EBC73F0438
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A8F4B3F0402
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit 17ad31b3a43b72aec3a3d83605891e1397d0d065 upstream.
+[ Upstream commit 99b2c531e0e797119ae1b9195a8764ee98b00e65 ]
 
-When a reader's file descriptor is closed while in the middle of reading
-a cache_request (rp->offset != 0), cache_release() decrements the
-request's readers count but never checks whether it should free the
-request.
+WCN3998 uses a bit different format for rom version:
 
-In cache_read(), when readers drops to 0 and CACHE_PENDING is clear, the
-cache_request is removed from the queue and freed along with its buffer
-and cache_head reference. cache_release() lacks this cleanup.
+[    5.479978] Bluetooth: hci0: setting up wcn399x
+[    5.633763] Bluetooth: hci0: QCA Product ID   :0x0000000a
+[    5.645350] Bluetooth: hci0: QCA SOC Version  :0x40010224
+[    5.650906] Bluetooth: hci0: QCA ROM Version  :0x00001001
+[    5.665173] Bluetooth: hci0: QCA Patch Version:0x00006699
+[    5.679356] Bluetooth: hci0: QCA controller version 0x02241001
+[    5.691109] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+[    6.680102] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+[    6.842948] Bluetooth: hci0: QCA setup on UART is completed
 
-The only other path that frees requests with readers == 0 is
-cache_dequeue(), but it runs only when CACHE_PENDING transitions from
-set to clear. If that transition already happened while readers was
-still non-zero, cache_dequeue() will have skipped the request, and no
-subsequent call will clean it up.
-
-Add the same cleanup logic from cache_read() to cache_release(): after
-decrementing readers, check if it reached 0 with CACHE_PENDING clear,
-and if so, dequeue and free the cache_request.
-
-Reported-by: NeilBrown <neilb@ownmail.net>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998")
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c |   26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/bluetooth/btqca.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1056,14 +1056,25 @@ static int cache_release(struct inode *i
- 	struct cache_reader *rp = filp->private_data;
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 78244d53dbe0f..25e98ce4a5af9 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -677,6 +677,8 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 	 */
+ 	if (soc_type == QCA_WCN3988)
+ 		rom_ver = ((soc_ver & 0x00000f00) >> 0x05) | (soc_ver & 0x0000000f);
++	else if (soc_type == QCA_WCN3998)
++		rom_ver = ((soc_ver & 0x0000f000) >> 0x07) | (soc_ver & 0x0000000f);
+ 	else
+ 		rom_ver = ((soc_ver & 0x00000f00) >> 0x04) | (soc_ver & 0x0000000f);
  
- 	if (rp) {
-+		struct cache_request *rq = NULL;
-+
- 		spin_lock(&queue_lock);
- 		if (rp->offset) {
- 			struct cache_queue *cq;
--			for (cq= &rp->q; &cq->list != &cd->queue;
--			     cq = list_entry(cq->list.next, struct cache_queue, list))
-+			for (cq = &rp->q; &cq->list != &cd->queue;
-+			     cq = list_entry(cq->list.next,
-+					     struct cache_queue, list))
- 				if (!cq->reader) {
--					container_of(cq, struct cache_request, q)
--						->readers--;
-+					struct cache_request *cr =
-+						container_of(cq,
-+						struct cache_request, q);
-+					cr->readers--;
-+					if (cr->readers == 0 &&
-+					    !test_bit(CACHE_PENDING,
-+						      &cr->item->flags)) {
-+						list_del(&cr->q.list);
-+						rq = cr;
-+					}
- 					break;
- 				}
- 			rp->offset = 0;
-@@ -1071,9 +1082,14 @@ static int cache_release(struct inode *i
- 		list_del(&rp->q.list);
- 		spin_unlock(&queue_lock);
- 
-+		if (rq) {
-+			cache_put(rq->item, cd);
-+			kfree(rq->buf);
-+			kfree(rq);
-+		}
-+
- 		filp->private_data = NULL;
- 		kfree(rp);
--
- 	}
- 	if (filp->f_mode & FMODE_WRITE) {
- 		atomic_dec(&cd->writers);
+-- 
+2.51.0
+
 
 
 
