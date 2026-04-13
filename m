@@ -1,179 +1,176 @@
-Return-Path: <stable+bounces-236146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLiNIUQP3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:44:04 +0200
+	id 9m80NXAP3WnSZQkAu9opvQ
+	(envelope-from <stable+bounces-236147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:44:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1E73EE1FD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:44:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A733EE20F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70014301BC0A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:35:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C20EC3039810
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 15:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D623C65FE;
-	Mon, 13 Apr 2026 15:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925613E0C69;
+	Mon, 13 Apr 2026 15:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="teQATJKt"
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="mPE3fXBT";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZsWBLItC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BDD1A680E
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 15:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00274355819;
+	Mon, 13 Apr 2026 15:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776094536; cv=none; b=JCl87seSkOxmcdAygufpWWZthl9dWfooZzkKd7EcxLKPqm4VzB+NHu9jSxR3Iu/2yPZVm0iEMiqS5w6zAtHcq/NK1EL0BpV15cpIHLt+FzE2AAUgvPp60fd8zyMUBnd9gFCvHN2rtbmMYIeh2cvFDx8VhHDTYPAQaM5lUYSgS0U=
+	t=1776094639; cv=none; b=S0YMqDLP5UFSIhJu5fFfONecKhBne3Z7fOQWj2nT5koMEiT7bSrIUosSI12ZCa57R7ZJQDr2O04QoeykPa8po3LKkoew61kZnP/QaQ5z5y4ph1hRXNtO4wbsZnQ5w/nCTxyAXqM7l9o3PlbweTTluslmND7GVMASls1XDrNvScE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776094536; c=relaxed/simple;
-	bh=cdVk/TnfRyeFBipr09GBNE1IUiZFHn/zsmtWbkWkQto=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FeoyxKIpZAVshNFY/j5yC7kRdRRFYuJ84fu2ojwla5TYRK36LGb5S/aZ4Zo0Wo8Rq4rziKpmW8QUKnh1ROuXLZIhpVVfLM/A30ownUkaHKKGijCxHargC+hVbXiH17Re1lxJCqT/pBns5uIlRoebl7/zdmUpSWRuZ2mDT+dfvYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=teQATJKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C71C2BCAF;
-	Mon, 13 Apr 2026 15:35:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776094536;
-	bh=cdVk/TnfRyeFBipr09GBNE1IUiZFHn/zsmtWbkWkQto=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=teQATJKtRRBzXUBQ8g2zX0x4ARTfR9LlfjfLek7U3vXnJDa62WZPxO4kMy5csknKg
-	 klr+5Q0iteY827MCPmmso/LtxG/PNrGohSV7/qXNreoHF1QZ5U1cbSmtJq8osE7w6f
-	 soHut9Q1sJ0WTrQ4vOJ65H5lL4HYoUntGQMBJYhHfvwotrZboa72dkaBlpgEnYsG9n
-	 vNCb7GVIS++UaHcgvWfNiZ+eQvi2BhAIdIvi58FxkxSv/UZhUfVfytKpG9Dq/HWDcb
-	 N2GOUsc1v31HYzyiGwMTb3D/6Bku1x1RX5nz+bSZBfCEN9fQ2bsidSgpPSUYUD4Xb7
-	 qWIjFLOGOP5CA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Joseph Qi <joseph.qi@linux.alibaba.com>,
-	syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] ocfs2: fix out-of-bounds write in ocfs2_write_end_inline
-Date: Mon, 13 Apr 2026 11:35:30 -0400
-Message-ID: <20260413153531.3097531-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413153531.3097531-1-sashal@kernel.org>
-References: <2026041351-barbecue-conductor-c8e7@gregkh>
- <20260413153531.3097531-1-sashal@kernel.org>
+	s=arc-20240116; t=1776094639; c=relaxed/simple;
+	bh=y1ke5gb2xuiN8FFIldU6UiCwJkfDC5LydsNnw3HHWhs=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Q9kHiWMSWZMIq9DVxQlsU0Jf4OfztQrOb6PC7M+Wk/wdPklIL7SmlLnW+T+cSbrguYrt0AJD5JXpABHsFZWZIONpzYgFkzfLhQFgAzwCMxn/QPMHTJvCm8vZVhjSkoqmcLWama5f6DbmZ1dhRmduqTPlyMmTNkv7/AhoU0g/lJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=mPE3fXBT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZsWBLItC; arc=none smtp.client-ip=103.168.172.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id 5305613808AC;
+	Mon, 13 Apr 2026 11:37:17 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-02.internal (MEProxy); Mon, 13 Apr 2026 11:37:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1776094637;
+	 x=1776098237; bh=isCljd4BCPG3HJK3zKTboOtcG/nGAMzjBZJjfS3t7zU=; b=
+	mPE3fXBT4Lo63Sk4v63CEqsDKsRcwI97kff+KeB9LQR2tUpKYaCqMvWqTKxEhW8H
+	C9Dx/4A+80ppCBY6lUWY2WpyiMHjSav7gr0oCGk23LRLLF/hdjToXOmGxxh+5DLE
+	lKP/ZI6ZgoAUkR7XFaoDusMM8Y0CmR7Va4+amIoOUhVAbwE40zIirAnud5Q7pE0/
+	BQVkiU5DzXbPNSEkXIplJX+jjsivT+Wq7UJOVVVjbOfRBIUWSZci0U69isIMD3RM
+	qziK3q8NTabAoWsqFoyzQ1OmBP1JMbnoRJxjTCx/rV64d38voDa+8gB1aivmJw0n
+	qFkTZ25b9hUfB7OjVFsf8A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776094637; x=
+	1776098237; bh=isCljd4BCPG3HJK3zKTboOtcG/nGAMzjBZJjfS3t7zU=; b=Z
+	sWBLItCgpBLW/X6TabAqj3l3aIiS8a0TYoVYaPSNPRBZ2iKpB1NEV73Ahpp59RKB
+	sftAEHOUKjoyxgIe6nbyIcOGvgjzU29pFQ8resA8yi7Er7hCbUH3aizc64hKQakm
+	qNa0Ot/XMfPL2UXgnkV6MguNDImir/NK+UKmiuB9F1WRdKv1HgSnCZ/iN3Pk22te
+	WvUk2dUjLNhlkQGm4646vqQlkGrl5FBAAM9FNOVYojqXz+F57QGXbvIySKRF9rTv
+	YKKoCxFeDnPC2xB28WHBDAveb7fGXruAH3QgBucNlTxuiIlE9f5euJniyhhGIHjE
+	9EeM4O8eXA5b0EQmVGsfg==
+X-ME-Sender: <xms:rA3dafbKyfHCZFXBnTEPuvC0o_BMQP3cGXb6poi8d54fQp50gNObvw>
+    <xme:rA3daZNCm4mzv_27s33XNPsHhCwXjga_UrYz2JAg2Jvm3Tnueoyusfra5nxrtRTrg
+    OIm_zRCAeqLatSu8cY7-YO3OEg90qE9sFWjL4du_-lWhaqnV-mkq34>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeeitdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdffrghnucgh
+    ihhllhhirghmshdfuceoughjsgifsehfrghsthhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhepvdetgeejgeejvedttdejffelgfeihfeuheejvdeuuedvffefffetudelveeh
+    vdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepug
+    hjsgifsehfrghsthhmrghilhdrtghomhdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheplhhgshdvtdduledvtddufedtvdeggeesghhmrghilh
+    drtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesihhnthgvlhdrtgho
+    mhdprhgtphhtthhopegurghvvgdrjhhirghnghesihhnthgvlhdrtghomhdprhgtphhtth
+    hopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomhdprhgtphhtthhopegr
+    khhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepnhhvug
+    himhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqtgig
+    lhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnh
+    gvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhg
+    vghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:rA3daa7UgkgnOcKmbpDfbGNVCFL9bKINCRKOsbNa1LCdDu0e-3sm1w>
+    <xmx:rA3daW_jpY9GG4EB6LqBG7YBTEgQ7KPUrYPVdJ4TpZCbuOnVkIOXwg>
+    <xmx:rA3daUFoaXyYeaNx3xekkOxg5ij_9j54m9rMLPjYzZYkkzIhGNxkRg>
+    <xmx:rA3daTVBev91FR0bkoCh0n9dFgH9fw_F_tC3WM7WUJp2wwtqUqBGbA>
+    <xmx:rQ3daa-SZ64h0KPuE4HUUnuGyo2NJaa6KOuu4_-WGpgtNv8vUacWfeQr>
+Feedback-ID: i006e4b2f:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id BD9622CC0083; Mon, 13 Apr 2026 11:37:16 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-ThreadId: AcMtGZTwwEIV
+Date: Mon, 13 Apr 2026 08:36:55 -0700
+From: "Dan Williams" <djbw@fastmail.com>
+To: "Guangshuo Li" <lgs201920130244@gmail.com>,
+ "Dan J Williams" <dan.j.williams@intel.com>,
+ "Vishal Verma" <vishal.l.verma@intel.com>,
+ "Dave Jiang" <dave.jiang@intel.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Message-Id: <adf2a8bc-ce1c-4b88-957b-5d5643810d19@app.fastmail.com>
+In-Reply-To: <20260413135625.2890908-1-lgs201920130244@gmail.com>
+References: <20260413135625.2890908-1-lgs201920130244@gmail.com>
+Subject: Re: [PATCH v3] device-dax: Fix refcount leak in __devm_create_dev_dax() error
+ path
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[fastmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[fastmail.com:s=fm2,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.alibaba.com,syzkaller.appspotmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	XM_UA_NO_VERSION(0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236147-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com,linux-foundation.org,lists.linux.dev,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236146-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,62c1793956716ea8b28a];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0B1E73EE1FD
+	DKIM_TRACE(0.00)[fastmail.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[fastmail.com];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djbw@fastmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,app.fastmail.com:mid,fastmail.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 36A733EE20F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit 7bc5da4842bed3252d26e742213741a4d0ac1b14 ]
 
-KASAN reports a use-after-free write of 4086 bytes in
-ocfs2_write_end_inline, called from ocfs2_write_end_nolock during a
-copy_file_range splice fallback on a corrupted ocfs2 filesystem mounted on
-a loop device.  The actual bug is an out-of-bounds write past the inode
-block buffer, not a true use-after-free.  The write overflows into an
-adjacent freed page, which KASAN reports as UAF.
+On Mon, Apr 13, 2026, at 6:56 AM, Guangshuo Li wrote:
+> After device_initialize(), the embedded struct device in dev_dax is
+> expected to be released through the device core with put_device().
+>
+> In __devm_create_dev_dax(), several failure paths after
+> device_initialize() free dev_dax directly instead of dropping the device
+> reference, which bypasses the normal device core lifetime handling and
+> leaks the reference held on the embedded struct device.
 
-The root cause is that ocfs2_try_to_write_inline_data trusts the on-disk
-id_count field to determine whether a write fits in inline data.  On a
-corrupted filesystem, id_count can exceed the physical maximum inline data
-capacity, causing writes to overflow the inode block buffer.
+Like I said before please focus on the practical problem this causes. It is always the case that device setup will have some steps  that are handlded by direct kfree before switching to a put_device() model.
 
-Call trace (crash path):
+In this case the practical problem is that the memory allocation from dev_set_name() is leaked. Also the error return from dev_set_name() is ignored.
 
-   vfs_copy_file_range (fs/read_write.c:1634)
-     do_splice_direct
-       splice_direct_to_actor
-         iter_file_splice_write
-           ocfs2_file_write_iter
-             generic_perform_write
-               ocfs2_write_end
-                 ocfs2_write_end_nolock (fs/ocfs2/aops.c:1949)
-                   ocfs2_write_end_inline (fs/ocfs2/aops.c:1915)
-                     memcpy_from_folio     <-- KASAN: write OOB
+> The issue was identified by a static analysis tool I developed and
+> confirmed by manual review.
 
-So add id_count upper bound check in ocfs2_validate_inode_block() to
-alongside the existing i_size check to fix it.
+If you are going to be doing more of these please make sure not to just rework code just to get all freeing done by put_device() when not strictly necessary.
 
-Link: https://lkml.kernel.org/r/20260403063830.3662739-1-joseph.qi@linux.alibaba.com
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=62c1793956716ea8b28a
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ocfs2/inode.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+One issue to avoid is early returns in the error goto path.
 
-diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
-index e614b5981ae2c..26a0d4ef8829d 100644
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -1430,6 +1430,16 @@ int ocfs2_validate_inode_block(struct super_block *sb,
- 			goto bail;
- 		}
- 
-+		if (le16_to_cpu(data->id_count) >
-+		    ocfs2_max_inline_data_with_xattr(sb, di)) {
-+			rc = ocfs2_error(sb,
-+					 "Invalid dinode #%llu: inline data id_count %u exceeds max %d\n",
-+					 (unsigned long long)bh->b_blocknr,
-+					 le16_to_cpu(data->id_count),
-+					 ocfs2_max_inline_data_with_xattr(sb, di));
-+			goto bail;
-+		}
-+
- 		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
- 			rc = ocfs2_error(sb,
- 					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
--- 
-2.53.0
+In this case I believe you can address this by moving the device_initialize() later in the function. Make it so that the switch from error unwind to put_device() is the last step of the setup.
 
+It would be nice to fix the dev_set_name() error handling in a follow-on patch as well.
 
