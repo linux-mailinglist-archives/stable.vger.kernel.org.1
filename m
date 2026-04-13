@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-236271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAICAWoX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:50 +0200
+	id 6P2HKO4h3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCDE3EE99B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:18:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3507C3F09CB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 23B76304267D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9C1EE30201A2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA2F2DEA6B;
-	Mon, 13 Apr 2026 16:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4653D330B22;
+	Mon, 13 Apr 2026 16:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bm06LCq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/sXQOy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4683A2D3225;
-	Mon, 13 Apr 2026 16:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090723264D7;
+	Mon, 13 Apr 2026 16:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096483; cv=none; b=QBseas0sFUTPTNXrwJubLB8vpBM6qDeqH84NZEMEYgSxCc1Ix6O8Da/eFab2ELgYdgRlm9VYrbec4Fa5ZzOjtgU72PVa8t6vj+I8lSbz81DqOQHgBEy9x5bALJ1WAaHtG6mJajdy0RooaKxORYET8gvgJNDlr6R8iLU0VTN4E70=
+	t=1776099538; cv=none; b=BykYIi56yeVZDwkD0pNL6a1TYjHZpu0YCPm089HGp6SPi3/S0qA9M57ycDQBb48sJTy/ddEG1kRjofj5e4KRtwK50HETNWV4UdsTJjIX3CpJZe994K5Fqzhjx3hycpB6bKktJCol7PR2w0on0oLHkZXYrNXT1hCGTda7SgCqj/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096483; c=relaxed/simple;
-	bh=JLFA/QnYpVQ3ahjbh2WcYu4wcC7jMh+ibA7tgTco214=;
+	s=arc-20240116; t=1776099538; c=relaxed/simple;
+	bh=Zge050bSmU4geplVTuBwvmTYtjcGGZHTiKD9MiMdUGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gEmYNGDPuMaM+teXg0AiqFeBYNMfFSYPE7mhnlQobrXtQ9qfmTLNk1lEfFsFT3ccd/A0cAUOcT9NHYmT8c/HJxjR/6/v6StbZJEt+wjCzPjJl4ohrcUULha4Vyjr3v8SWzR57TshnbmcIU2cAEbM37lf7YwRKZP5RkwHH5dU+GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bm06LCq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5444C2BCB4;
-	Mon, 13 Apr 2026 16:08:02 +0000 (UTC)
+	 MIME-Version; b=mRWRq7JMhZSUrjZO0VHX13k/9Q/2MBrCbbn/u+8WCBGyDB9Jr9fRaRfwMGBksW+CQAzbReUop/hACkjlyrHEUbRH/MOy+qNlNYSplYZiI4HiEo/v6SD/ADv3utkouvk0rgTl6OqitQkmYZfVqbwQZiwAnaoZTFBbAku04gAXN6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/sXQOy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D82BC2BCAF;
+	Mon, 13 Apr 2026 16:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096483;
-	bh=JLFA/QnYpVQ3ahjbh2WcYu4wcC7jMh+ibA7tgTco214=;
+	s=korg; t=1776099537;
+	bh=Zge050bSmU4geplVTuBwvmTYtjcGGZHTiKD9MiMdUGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bm06LCq0d/rCXZyh3/w5Njo+MCoAIMZCbYENp6JHTmTwUqdiyXEZl18opa7QYtDAS
-	 3Lrhkk9AHf/8ngWsFGo3jvFS0m3F30jWPVw14R6mlaBZyjavuhpiBqoJqQevp7Cv9j
-	 oBimxx2NReJjefbVBZvfcXNxw09b5sn31VXJlK58=
+	b=e/sXQOy0B2CcA5NKF/CfoJjCx5rs7VQm2jf6XAyCIpl7qEnG54xtJ5xN5oF27hj6H
+	 2/h/AaU1LWgrRFXzFaUOYQdK+96NS3bFT5NHWwoKU8vHr6/y6EVwJMDzfeUADXrIJt
+	 YrVTzeHrRjgHpfBQJfdbRAqTcXGvHWKh1G+PchEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.18 28/83] platform/x86: ISST: Reset core count to 0
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 351/491] net/sched: cls_fw: fix NULL pointer dereference on shared blocks
 Date: Mon, 13 Apr 2026 17:59:56 +0200
-Message-ID: <20260413155732.070209685@linuxfoundation.org>
+Message-ID: <20260413155832.180799668@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236271-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237470-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EBCDE3EE99B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,mojatatu.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3507C3F09CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit e1415b9418eb22b4a7a1ef4b4aec9dd0a49e3fa7 upstream.
+[ Upstream commit faeea8bbf6e958bf3c00cb08263109661975987c ]
 
-Based on feature revision, number of buckets can be less than the
-TRL_MAX_BUCKETS. In that case core counts in the remaining buckets
-can be set to some invalid values.
+The old-method path in fw_classify() calls tcf_block_q() and
+dereferences q->handle.  Shared blocks leave block->q NULL, causing a
+NULL deref when an empty cls_fw filter is attached to a shared block
+and a packet with a nonzero major skb mark is classified.
 
-Hence reset core count to 0 for all buckets before assigning correct
-values.
+Reject the configuration in fw_change() when the old method (no
+TCA_OPTIONS) is used on a shared block, since fw_classify()'s
+old-method path needs block->q which is NULL for shared blocks.
 
-Fixes: 885d1c2a30b7 ("platform/x86: ISST: Support SST-TF revision 2")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260325192638.3417281-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fixed null-ptr-deref calling stack:
+ KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+ RIP: 0010:fw_classify (net/sched/cls_fw.c:81)
+ Call Trace:
+  tcf_classify (./include/net/tc_wrapper.h:197 net/sched/cls_api.c:1764 net/sched/cls_api.c:1860)
+  tc_run (net/core/dev.c:4401)
+  __dev_queue_xmit (net/core/dev.c:4535 net/core/dev.c:4790)
+
+Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260331050217.504278-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/cls_fw.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -1460,6 +1460,8 @@ static int isst_if_get_turbo_freq_info(v
- 					    SST_MUL_FACTOR_FREQ)
- 	}
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index 08c41f1976c47..23cf4f7111174 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -246,8 +246,18 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 	struct nlattr *tb[TCA_FW_MAX + 1];
+ 	int err;
  
-+	memset(turbo_freq.bucket_core_counts, 0, sizeof(turbo_freq.bucket_core_counts));
+-	if (!opt)
+-		return handle ? -EINVAL : 0; /* Succeed if it is old method. */
++	if (!opt) {
++		if (handle)
++			return -EINVAL;
 +
- 	if (feature_rev >= 2) {
- 		bool has_tf_info_8 = false;
++		if (tcf_block_shared(tp->chain->block)) {
++			NL_SET_ERR_MSG(extack,
++				       "Must specify mark when attaching fw filter to block");
++			return -EINVAL;
++		}
++
++		return 0; /* Succeed if it is old method. */
++	}
  
+ 	err = nla_parse_nested_deprecated(tb, TCA_FW_MAX, opt, fw_policy,
+ 					  NULL);
+-- 
+2.53.0
+
 
 
 
