@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-236184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EL1MBEkU3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:29 +0200
+	id 0BcyE/kj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEE93EE4B9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:05:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6E93F0FB0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C458A3025F40
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8993A314FFF1
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEDE25332E;
-	Mon, 13 Apr 2026 16:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CDD280CFB;
+	Mon, 13 Apr 2026 16:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+Is9nCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUqlUROd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD411D6DB5;
-	Mon, 13 Apr 2026 16:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790BF307AC7;
+	Mon, 13 Apr 2026 16:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096259; cv=none; b=tVLyWyZE0BESv++oDt772YeLB4kkIHYqRSo0OJsR9nXYE5LauZCR52B+oUE3npzSQH241YcidUKPCds1Mr5YCPZrsp/Mscy6KGjBsEGYSmY53f6OynIOC7wEc2w2/nDzeG1k3CphXkARF8rcGhHLaO+vVeCNdrCCTwjt8rRHPMg=
+	t=1776098313; cv=none; b=vDp+319H9qgrztBoutK/Em9WlU2CRimfB1RbRuTxQCdZrYLZT5nX57q515dfKhqLvCvBrH+npPoBxmsq6k0GpjFggJQF0fHvMk9eV7/D8kfN+IlSev8v/ZjQGTigowB5Aa7ejr+LSrDD1SdWJ2EnrgQmYkiHxDxDExK/S6MwYrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096259; c=relaxed/simple;
-	bh=yZ1sMwNtiHiB17mQ8KdIV9cBqUzIYc8DMmBOXctUICg=;
+	s=arc-20240116; t=1776098313; c=relaxed/simple;
+	bh=qj5mFLj1SGDlSHCGilhA4ddopw3VnQqAPjs1Es5WTLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FTxUtkPkGVFezAl0OopGzzLADyFWeyu7zjNNQhXCVjGuAVg/Uqdq0q1N2n0xAj4VXM4BISqffD+OhBzxR/VbpW4uZaQMmXwIQsG2oTAN9T62G8e3rh96LM9ECsBgNTDk1WFv4xnRpGRLckZbREuMlKYpUGiO4O9bIhg7Yhi24Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+Is9nCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA83DC2BCAF;
-	Mon, 13 Apr 2026 16:04:18 +0000 (UTC)
+	 MIME-Version; b=RJB9nMzwJjkRy+VhAbs0ez/xe2tcwYTSdpyFgGujZ5cgLiU/Mmj9vIZbjUEnumhdEui6pDZZ7/U3zOLQuT4xSsDB3s7WDk6XZ4lIrzzrIY/E4/e+01BS7tMtKtchizO1F7pizue4rKeB2XVM8RkqXH7EV5YSqbfV5AR17ic3vf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUqlUROd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6DCC2BCAF;
+	Mon, 13 Apr 2026 16:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096259;
-	bh=yZ1sMwNtiHiB17mQ8KdIV9cBqUzIYc8DMmBOXctUICg=;
+	s=korg; t=1776098313;
+	bh=qj5mFLj1SGDlSHCGilhA4ddopw3VnQqAPjs1Es5WTLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+Is9nCe12Qkkjj1KDQQQykqa21VGt6qA/r8gP99Uoa/WwL1KbSgOUA6u+Ki5XInV
-	 iRT1u+zV14pzNoocv4rqKY0R08uQYWiaJU0d614IzFLF/DIpbTO/v3x3uA6Xmqk9zB
-	 cLhnJuPGiJqoORP3nAXGxQbsoml+nuH78Jjb1icM=
+	b=TUqlUROd7aQ/qbCDq+AEfwUeW9JqIgAM1G9jfIiLr3M+RCbOSjztb/UA85sKHj0nr
+	 3wcQfNsi+esIH57WcU2buAopo0YiLRXgvZghg5uzlm0fObrpEDHwXV0TXazuxwWXwg
+	 d/qMmMLUHnzIXCzSTEaxjUZMj6X2kqC6jq29aIXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.19 28/86] x86/mce/amd: Filter bogus hardware errors on Zen3 clients
+	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 444/570] wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
 Date: Mon, 13 Apr 2026 17:59:35 +0200
-Message-ID: <20260413155732.626381397@linuxfoundation.org>
+Message-ID: <20260413155847.102709959@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,amd.com,alien8.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236184-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236992-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 7AEE93EE4B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 9A6E93F0FB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 
-commit 0422b07bc4c296b736e240d95d21fbfebbfaa2ca upstream.
+commit d049e56b1739101d1c4d81deedb269c52a8dbba0 upstream.
 
-Users have been observing multiple L3 cache deferred errors after recent
-kernel rework of deferred error handling.¹ ⁴
+The variable valuesize is declared as u8 but accumulates the total
+length of all SSIDs to scan. Each SSID contributes up to 33 bytes
+(IEEE80211_MAX_SSID_LEN + 1), and with WILC_MAX_NUM_PROBED_SSID (10)
+SSIDs the total can reach 330, which wraps around to 74 when stored
+in a u8.
 
-The errors are bogus due to inconsistent status values. Also, user verified
-that bogus MCA_DESTAT values are present on the system even with an older
-kernel.²
+This causes kmalloc to allocate only 75 bytes while the subsequent
+memcpy writes up to 331 bytes into the buffer, resulting in a 256-byte
+heap buffer overflow.
 
-The errors seem to be garbage values present in the MCA_DESTAT of some L3
-cache banks. These were implicitly ignored before the recent kernel rework
-because these do not generate a deferred error interrupt.
+Widen valuesize from u8 to u32 to accommodate the full range.
 
-A later revision of the rework patch was merged for v6.19. This naturally
-filtered out most of the bogus error logs. However, a few signatures still
-remain.³
-
-Minimize the scope of the filter to the reported CPU
-family/model/stepping and only for errors which don't have the Enabled
-bit in the MCi status MSR.
-
-¹ https://lore.kernel.org/20250915010010.3547-1-spasswolf@web.de
-² https://lore.kernel.org/6e1eda7dd55f6fa30405edf7b0f75695cf55b237.camel@web.de
-³ https://lore.kernel.org/21ba47fa8893b33b94370c2a42e5084cf0d2e975.camel@web.de
-⁴ https://lore.kernel.org/r/CAKFB093B2k3sKsGJ_QNX1jVQsaXVFyy=wNwpzCGLOXa_vSDwXw@mail.gmail.com
-
-  [ bp: Generalize the condition according to which errors are bogus. ]
-
-Fixes: 7cb735d7c0cb ("x86/mce: Unify AMD DFR handler with MCA Polling")
-Closes: https://lore.kernel.org/20250915010010.3547-1-spasswolf@web.de
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-By: Bert Karwatzki <spasswolf@web.de>
+Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250915010010.3547-1-spasswolf@web.de
+Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+Link: https://patch.msgid.link/20260324100624.983458-1-yasuakitorimaru@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/microchip/wilc1000/hif.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index a030ee4cecc2..28deaba08833 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -604,6 +604,14 @@ bool amd_filter_mce(struct mce *m)
- 	enum smca_bank_types bank_type = smca_get_bank_type(m->extcpu, m->bank);
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -157,7 +157,7 @@ int wilc_scan(struct wilc_vif *vif, u8 s
+ 	u32 index = 0;
+ 	u32 i, scan_timeout;
+ 	u8 *buffer;
+-	u8 valuesize = 0;
++	u32 valuesize = 0;
+ 	u8 *search_ssid_vals = NULL;
+ 	struct host_if_drv *hif_drv = vif->hif_drv;
  
-+	/* Bogus hw errors on Cezanne A0. */
-+	if (c->x86 == 0x19 &&
-+	    c->x86_model == 0x50 &&
-+	    c->x86_stepping == 0x0) {
-+		if (!(m->status & MCI_STATUS_EN))
-+			return true;
-+	}
-+
- 	/* See Family 17h Models 10h-2Fh Erratum #1114. */
- 	if (c->x86 == 0x17 &&
- 	    c->x86_model >= 0x10 && c->x86_model <= 0x2F &&
--- 
-2.53.0
-
 
 
 
