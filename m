@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-236851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EOdEAId3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:42 +0200
+	id wB5qOSUj3WkoaQkAu9opvQ
+	(envelope-from <stable+bounces-237304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D093EF90A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12963F0D59
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A0133037919
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 61E2730193A7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF362472B6;
-	Mon, 13 Apr 2026 16:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B50317152;
+	Mon, 13 Apr 2026 16:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zj9WJZ0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0RN2zzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7C6238D27;
-	Mon, 13 Apr 2026 16:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6B031619A;
+	Mon, 13 Apr 2026 16:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097955; cv=none; b=egrHLX2sIJRCaH2KqocE8cak7WObWG+zSn/2uty+Ao/MiOXKZOqkZD5tqiVRW64oqt47gam2qxzxfrRgGwY4iFJBZYmZM5rBOx+yKK5u89YpYoPWt8diSaURH0yDnLRu7JxyZTvVhC9eoIJFN0oexghz52cAMWD7a41alPlw6+E=
+	t=1776099112; cv=none; b=j+yUaDGWzYpQxkB+XNUrTAuPkXBB5P7S2gYzeWOD9hIfSqdflivuEDt7PtRS1xurjO9b3HLnAxh58iwB2qkUVO3iODDfYMZ9FdSt7pW050+KfoaEcfnCWGlTHbes2eXILRf3DmtMQ6/9dGmuyxwlTUOp8PvdIo7YWT0faPQZw1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097955; c=relaxed/simple;
-	bh=JK/L6VeTfgIFi+IDg7ohbiln+b4Pm3P8eiAs8KxFMPA=;
+	s=arc-20240116; t=1776099112; c=relaxed/simple;
+	bh=yCUW5IzQmnM9KhKsY5N7cFQldOsB/VBYxHruPDkhv0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqaijwNwWRFnweyfCT0u4lbpG/aPzoALtruEljzI0jWX+6/EktQFjl5nUPF4RA7komKPliQyUg9A4o5VXjoIXhuT+qnEocgBlR+11OJFLnusUJClHsnvUdmlHiLN0XgdnreXEJzUf0oE8f4G/sotanf9Jek8r78zs90it0BO6yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zj9WJZ0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B0AC2BCAF;
-	Mon, 13 Apr 2026 16:32:35 +0000 (UTC)
+	 MIME-Version; b=C8nvbFr0Vb6ePms2SAEXQbHvxYsZiAXvyoSfgKIMt3wIk8u76rSs3cv6RZ442+tYZ3HBMeDCYophrgosXJfBIisxgLua5mO2Pnx/S2PtMT64KMFKU5boPswF90VtzoFcaHTCOJEVRZXaCGUhPJq0SMYC95VdDiB580rJGLsOXbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0RN2zzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE0BC2BCAF;
+	Mon, 13 Apr 2026 16:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097955;
-	bh=JK/L6VeTfgIFi+IDg7ohbiln+b4Pm3P8eiAs8KxFMPA=;
+	s=korg; t=1776099111;
+	bh=yCUW5IzQmnM9KhKsY5N7cFQldOsB/VBYxHruPDkhv0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zj9WJZ0J/8dc6C7++amysNTNVDOL8ahZv981KpJJpCzbQIlwzMPKD6LcB19CZNjW5
-	 XgUfpa1RBB6c8ARYcj4T3sDs3Hn9YJHOcyDs4z2KCzdt61Wvs+7G+N2AV7K5RItbuX
-	 b9JLBDVnOae4sXxTZi7cAe83PMa0m/dLd+wY0jzM=
+	b=H0RN2zzzcGupySOaV5uvebf0ycSnJdQEgd2ea6P0mhZ4u6Y6KrnhYwUOTE6jdFLLv
+	 GirKFIwp26Di+lGzHordbTCYpN8p2sHj0cnLNlSHUYRU6mMCVDYpCi13Faw9FVGI4a
+	 z9QbWACK8vu60WBAPHQ5x1WLYEyPoZeR2qOmtGIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Gregory Bell <grbell@redhat.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Misbah Anjum N <misanjum@linux.ibm.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 296/570] bpf: Release module BTF IDR before module unload
-Date: Mon, 13 Apr 2026 17:57:07 +0200
-Message-ID: <20260413155841.589889120@linuxfoundation.org>
+Subject: [PATCH 5.10 183/491] NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd
+Date: Mon, 13 Apr 2026 17:57:08 +0200
+Message-ID: <20260413155825.913298947@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,161 +71,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,etsalapatis.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-236851-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237304-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B3D093EF90A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,brown.name:email]
+X-Rspamd-Queue-Id: C12963F0D59
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 146bd2a87a65aa407bb17fac70d8d583d19aba06 ]
+[ Upstream commit e7fcf179b82d3a3730fd8615da01b087cc654d0b ]
 
-Gregory reported in [0] that the global_map_resize test when run in
-repeatedly ends up failing during program load. This stems from the fact
-that BTF reference has not dropped to zero after the previous run's
-module is unloaded, and the older module's BTF is still discoverable and
-visible. Later, in libbpf, load_module_btfs() will find the ID for this
-stale BTF, open its fd, and then it will be used during program load
-where later steps taking module reference using btf_try_get_module()
-fail since the underlying module for the BTF is gone.
+The /proc/fs/nfs/exports proc entry is created at module init
+and persists for the module's lifetime. exports_proc_open()
+captures the caller's current network namespace and stores
+its svc_export_cache in seq->private, but takes no reference
+on the namespace. If the namespace is subsequently torn down
+(e.g. container destruction after the opener does setns() to a
+different namespace), nfsd_net_exit() calls nfsd_export_shutdown()
+which frees the cache. Subsequent reads on the still-open fd
+dereference the freed cache_detail, walking a freed hash table.
 
-Logically, once a module is unloaded, it's associated BTF artifacts
-should become hidden. The BTF object inside the kernel may still remain
-alive as long its reference counts are alive, but it should no longer be
-discoverable.
+Hold a reference on the struct net for the lifetime of the open
+file descriptor. This prevents nfsd_net_exit() from running --
+and thus prevents nfsd_export_shutdown() from freeing the cache
+-- while any exports fd is open. cache_detail already stores
+its net pointer (cd->net, set by cache_create_net()), so
+exports_release() can retrieve it without additional per-file
+storage.
 
-To fix this, let us call btf_free_id() from the MODULE_STATE_GOING case
-for the module unload to free the BTF associated IDR entry, and disable
-its discovery once module unload returns to user space. If a race
-happens during unload, the outcome is non-deterministic anyway. However,
-user space should be able to rely on the guarantee that once it has
-synchronously established a successful module unload, no more stale
-artifacts associated with this module can be obtained subsequently.
-
-Note that we must be careful to not invoke btf_free_id() in btf_put()
-when btf_is_module() is true now. There could be a window where the
-module unload drops a non-terminal reference, frees the IDR, but the
-same ID gets reused and the second unconditional btf_free_id() ends up
-releasing an unrelated entry.
-
-To avoid a special case for btf_is_module() case, set btf->id to zero to
-make btf_free_id() idempotent, such that we can unconditionally invoke it
-from btf_put(), and also from the MODULE_STATE_GOING case. Since zero is
-an invalid IDR, the idr_remove() should be a noop.
-
-Note that we can be sure that by the time we reach final btf_put() for
-btf_is_module() case, the btf_free_id() is already done, since the
-module itself holds the BTF reference, and it will call this function
-for the BTF before dropping its own reference.
-
-  [0]: https://lore.kernel.org/bpf/cover.1773170190.git.grbell@redhat.com
-
-Fixes: 36e68442d1af ("bpf: Load and verify kernel module BTFs")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reported-by: Gregory Bell <grbell@redhat.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20260312205307.1346991-1-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
+Closes: https://lore.kernel.org/linux-nfs/dcd371d3a95815a84ba7de52cef447b8@linux.ibm.com/
+Fixes: 96d851c4d28d ("nfsd: use proper net while reading "exports" file")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Tested-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/btf.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ fs/nfsd/nfsctl.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index d3eb75bfd9718..5d87df80c4bd7 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -1501,7 +1501,16 @@ static void btf_free_id(struct btf *btf)
- 	 * of the _bh() version.
- 	 */
- 	spin_lock_irqsave(&btf_idr_lock, flags);
--	idr_remove(&btf_idr, btf->id);
-+	if (btf->id) {
-+		idr_remove(&btf_idr, btf->id);
-+		/*
-+		 * Clear the id here to make this function idempotent, since it will get
-+		 * called a couple of times for module BTFs: on module unload, and then
-+		 * the final btf_put(). btf_alloc_id() starts IDs with 1, so we can use
-+		 * 0 as sentinel value.
-+		 */
-+		WRITE_ONCE(btf->id, 0);
-+	}
- 	spin_unlock_irqrestore(&btf_idr_lock, flags);
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -152,9 +152,19 @@ static int exports_net_open(struct net *
+ 
+ 	seq = file->private_data;
+ 	seq->private = nn->svc_export_cache;
++	get_net(net);
+ 	return 0;
  }
  
-@@ -5890,7 +5899,7 @@ static void bpf_btf_show_fdinfo(struct seq_file *m, struct file *filp)
++static int exports_release(struct inode *inode, struct file *file)
++{
++	struct seq_file *seq = file->private_data;
++	struct cache_detail *cd = seq->private;
++
++	put_net(cd->net);
++	return seq_release(inode, file);
++}
++
+ static int exports_nfsd_open(struct inode *inode, struct file *file)
  {
- 	const struct btf *btf = filp->private_data;
+ 	return exports_net_open(inode->i_sb->s_fs_info, file);
+@@ -164,7 +174,7 @@ static const struct file_operations expo
+ 	.open		= exports_nfsd_open,
+ 	.read		= seq_read,
+ 	.llseek		= seq_lseek,
+-	.release	= seq_release,
++	.release	= exports_release,
+ };
  
--	seq_printf(m, "btf_id:\t%u\n", btf->id);
-+	seq_printf(m, "btf_id:\t%u\n", READ_ONCE(btf->id));
- }
- #endif
+ static int export_features_show(struct seq_file *m, void *v)
+@@ -1421,7 +1431,7 @@ static const struct proc_ops exports_pro
+ 	.proc_open	= exports_proc_open,
+ 	.proc_read	= seq_read,
+ 	.proc_lseek	= seq_lseek,
+-	.proc_release	= seq_release,
++	.proc_release	= exports_release,
+ };
  
-@@ -5985,7 +5994,7 @@ int btf_get_info_by_fd(const struct btf *btf,
- 	if (copy_from_user(&info, uinfo, info_copy))
- 		return -EFAULT;
- 
--	info.id = btf->id;
-+	info.id = READ_ONCE(btf->id);
- 	ubtf = u64_to_user_ptr(info.btf);
- 	btf_copy = min_t(u32, btf->data_size, info.btf_size);
- 	if (copy_to_user(ubtf, btf->data, btf_copy))
-@@ -6048,7 +6057,7 @@ int btf_get_fd_by_id(u32 id)
- 
- u32 btf_obj_id(const struct btf *btf)
- {
--	return btf->id;
-+	return READ_ONCE(btf->id);
- }
- 
- bool btf_is_kernel(const struct btf *btf)
-@@ -6185,6 +6194,13 @@ static int btf_module_notify(struct notifier_block *nb, unsigned long op,
- 			if (btf_mod->module != module)
- 				continue;
- 
-+			/*
-+			 * For modules, we do the freeing of BTF IDR as soon as
-+			 * module goes away to disable BTF discovery, since the
-+			 * btf_try_get_module() on such BTFs will fail. This may
-+			 * be called again on btf_put(), but it's ok to do so.
-+			 */
-+			btf_free_id(btf_mod->btf);
- 			list_del(&btf_mod->list);
- 			if (btf_mod->sysfs_attr)
- 				sysfs_remove_bin_file(btf_kobj, btf_mod->sysfs_attr);
--- 
-2.51.0
-
+ static int create_proc_exports_entry(void)
 
 
 
