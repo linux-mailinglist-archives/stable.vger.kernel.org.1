@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDB4NJUX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:33 +0200
+	id uFj6K84W3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8833EE9EC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D633EE864
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F39203045FDB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22A8830879C7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B914B26A1CF;
-	Mon, 13 Apr 2026 16:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C89C2F2914;
+	Mon, 13 Apr 2026 16:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV8bB+ZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5kLVmC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C25925332E;
-	Mon, 13 Apr 2026 16:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2ACF2E8DFC;
+	Mon, 13 Apr 2026 16:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096506; cv=none; b=Ls45DVDvA3Sbw6B/MuWoCMvu1mfdlW/bryvPzO0bCyQ/sPvwLiA8xbR2XEQ3D3K5Jxx9Nh5o7ubBpvgViP4FZsYogty+vRBTQ8V8Sfs9CzRpcmdutk5IA7XNA82rJYfLpyqmnhldZkpIlD/OayIoaWhRDstzG3p0N0bDGlm/WZM=
+	t=1776096333; cv=none; b=PcbiNiJoS6O54u03wfAS3iw45/YedyV7T+zaZYREVqA44gZ2jY4c5Bh7rEZcd1xkrg22eUTYnlWRR9a1VTsWvqK+B07OF6FJ2Yn9vpxILBJGVCzMw2kwxxcrk/IBrp0qhUMCCAWxkwEGVRyALUTEdYfgb4Al4JFBNEEVAv7Bffc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096506; c=relaxed/simple;
-	bh=VUCfXGotR8gRq17l8mszLnBbBhLK/pAwUwELVgP5YQI=;
+	s=arc-20240116; t=1776096333; c=relaxed/simple;
+	bh=M7MlIHqhEEJdskENC79d7wpkdkkqYQkOyitMNfnrWxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1WKDoda8uuSQOZpy0FmYFwyfv8TS3TlnVo09UmhiOy+JSqrl6hRt7KVh+hovF5N+N75m8STRl+uDTD7CW5be/0vCAgOgE3FA9oYAq8GC1X/HOZ1V91ttEfH/gLiRJh8bTV/wzbKxS9Py5P+GHPS3/zHEFZUAa1DNODJc6/0CzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV8bB+ZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52FFC2BCAF;
-	Mon, 13 Apr 2026 16:08:25 +0000 (UTC)
+	 MIME-Version; b=K8bRAFdEF2Dom8SQM63z4os5ZaN2Udb6Tayl5x+0tEQI3dcD76mg6JgTcLpTg05DDR5MMSWkpWtisIWZvywoKaARYhOsCkGz3zNKtLCJLqzuhLRBr4+KI3WJbVyBtDAZYqrhINWphYJDkMbIzzJ1tqmnlgrn8TM5SmjM4yCQkD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5kLVmC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C8DC2BCAF;
+	Mon, 13 Apr 2026 16:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096506;
-	bh=VUCfXGotR8gRq17l8mszLnBbBhLK/pAwUwELVgP5YQI=;
+	s=korg; t=1776096333;
+	bh=M7MlIHqhEEJdskENC79d7wpkdkkqYQkOyitMNfnrWxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV8bB+ZXcCA63SP1RSkCnQoang3lOZpscNnG5W2yEpLcBlmtOcWQisVkUSlddx1Ix
-	 qJB9rPCdcu8tQitLthozykrutkNOeWJcCPQ431l8ac1i+/N2TuiPUNHbjOK++iqH+r
-	 1GQUoVue7Es+s6D6i0R3r1eIsk1RPapcwWieqhZI=
+	b=n5kLVmC4uiuP+fxqRLhLqul13Q/omT+Jv1Y71vnk/V0okVwfeOC603xaESG13Z1tZ
+	 o9mMnfJgLBto3G+6f5FvCCYwuDunONUfD6CSgDBuFz6mS0j3c8RQcWF+XeEFw5CHER
+	 yMRZeu/OYAJEL7Mgsz/s4hYA7jhU7k/onU2k01GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 36/83] nfc: pn533: allocate rx skb before consuming bytes
+	Tyllis Xu <LivelyCarpet87@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 57/86] net: stmmac: fix integer underflow in chain mode
 Date: Mon, 13 Apr 2026 18:00:04 +0200
-Message-ID: <20260413155732.366542646@linuxfoundation.org>
+Message-ID: <20260413155733.692202335@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +65,115 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236213-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236280-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: DE8833EE9EC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 52D633EE864
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit c71ba669b570c7b3f86ec875be222ea11dacb352 upstream.
+commit 51f4e090b9f87b40c21b6daadb5c06e6c0a07b67 upstream.
 
-pn532_receive_buf() reports the number of accepted bytes to the serdev
-core. The current code consumes bytes into recv_skb and may already hand
-a complete frame to pn533_recv_frame() before allocating a fresh receive
-buffer.
+The jumbo_frm() chain-mode implementation unconditionally computes
 
-If that alloc_skb() fails, the callback returns 0 even though it has
-already consumed bytes, and it leaves recv_skb as NULL for the next
-receive callback. That breaks the receive_buf() accounting contract and
-can also lead to a NULL dereference on the next skb_put_u8().
+    len = nopaged_len - bmax;
 
-Allocate the receive skb lazily before consuming the next byte instead.
-If allocation fails, return the number of bytes already accepted.
+where nopaged_len = skb_headlen(skb) (linear bytes only) and bmax is
+BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
+decides to invoke jumbo_frm() based on skb->len (total length including
+page fragments):
 
-Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+    is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
+
+When a packet has a small linear portion (nopaged_len <= bmax) but a
+large total length due to page fragments (skb->len > bmax), the
+subtraction wraps as an unsigned integer, producing a huge len value
+(~0xFFFFxxxx).  This causes the while (len != 0) loop to execute
+hundreds of thousands of iterations, passing skb->data + bmax * i
+pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
+SoCs (the typical deployment for stmmac), this maps arbitrary kernel
+memory to the DMA engine, constituting a kernel memory disclosure and
+potential memory corruption from hardware.
+
+Fix this by introducing a buf_len local variable clamped to
+min(nopaged_len, bmax).  Computing len = nopaged_len - buf_len is then
+always safe: it is zero when the linear portion fits within a single
+descriptor, causing the while (len != 0) loop to be skipped naturally,
+and the fragment loop in stmmac_xmit() handles page fragments afterward.
+
+Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260401044708.1386919-1-LivelyCarpet87@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/pn533/uart.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/nfc/pn533/uart.c
-+++ b/drivers/nfc/pn533/uart.c
-@@ -211,6 +211,13 @@ static size_t pn532_receive_buf(struct s
+--- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+@@ -20,7 +20,7 @@ static int jumbo_frm(struct stmmac_tx_qu
+ 	unsigned int nopaged_len = skb_headlen(skb);
+ 	struct stmmac_priv *priv = tx_q->priv_data;
+ 	unsigned int entry = tx_q->cur_tx;
+-	unsigned int bmax, des2;
++	unsigned int bmax, buf_len, des2;
+ 	unsigned int i = 1, len;
+ 	struct dma_desc *desc;
  
- 	timer_delete(&dev->cmd_timeout);
- 	for (i = 0; i < count; i++) {
-+		if (!dev->recv_skb) {
-+			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
-+						  GFP_KERNEL);
-+			if (!dev->recv_skb)
-+				return i;
-+		}
-+
- 		if (unlikely(!skb_tailroom(dev->recv_skb)))
- 			skb_trim(dev->recv_skb, 0);
+@@ -31,17 +31,18 @@ static int jumbo_frm(struct stmmac_tx_qu
+ 	else
+ 		bmax = BUF_SIZE_2KiB;
  
-@@ -219,9 +226,7 @@ static size_t pn532_receive_buf(struct s
- 			continue;
+-	len = nopaged_len - bmax;
++	buf_len = min_t(unsigned int, nopaged_len, bmax);
++	len = nopaged_len - buf_len;
  
- 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
--		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
--		if (!dev->recv_skb)
--			return 0;
-+		dev->recv_skb = NULL;
- 	}
+ 	des2 = dma_map_single(priv->device, skb->data,
+-			      bmax, DMA_TO_DEVICE);
++			      buf_len, DMA_TO_DEVICE);
+ 	desc->des2 = cpu_to_le32(des2);
+ 	if (dma_mapping_error(priv->device, des2))
+ 		return -1;
+ 	tx_q->tx_skbuff_dma[entry].buf = des2;
+-	tx_q->tx_skbuff_dma[entry].len = bmax;
++	tx_q->tx_skbuff_dma[entry].len = buf_len;
+ 	/* do not close the descriptor and do not set own bit */
+-	stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum, STMMAC_CHAIN_MODE,
++	stmmac_prepare_tx_desc(priv, desc, 1, buf_len, csum, STMMAC_CHAIN_MODE,
+ 			0, false, skb->len);
  
- 	return i;
+ 	while (len != 0) {
 
 
 
