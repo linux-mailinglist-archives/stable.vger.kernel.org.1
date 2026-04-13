@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-235871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAomKh1I3GkCOwkAu9opvQ
-	(envelope-from <stable+bounces-235871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:34:21 +0200
+	id 6KTbGfxH3GkCOwkAu9opvQ
+	(envelope-from <stable+bounces-235872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:33:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46E33E6A78
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:34:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B1C3E6A5B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 03:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6A1773003BF2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 01:33:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5373730094E9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 01:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C041DE8AE;
-	Mon, 13 Apr 2026 01:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D821F7569;
+	Mon, 13 Apr 2026 01:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="EOAc4R+n"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="y0dPstk4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail114-241.sinamail.sina.com.cn (mail114-241.sinamail.sina.com.cn [218.30.114.241])
+Received: from mail115-69.sinamail.sina.com.cn (mail115-69.sinamail.sina.com.cn [218.30.115.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1521CA6F
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 01:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9A4CA6F
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 01:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776044014; cv=none; b=DMdMO4lnWN2gfU4qK0DYR5TL3ld0iCYPBts+UkBFDBMIeG2Lj/3oxaSq0A46mjKNDpDgOeCwSgXEWJV68Fv9QgbHYm8LQVnwctFaMFA0+Rt/BWOlVSSWvdfNpKWYwLcD9M6T9gtPVrRWnLnfSCHg9AmUnWLqgmJkSAxG75ARQUA=
+	t=1776044023; cv=none; b=sKYH4mR5cKXkmU7DwuwNV2mCDjwyZb9mPYFvptF+e+TYCLZr8/k//UoPXl6pxLagPCkte7VrOxKYuhbEQFNt0I3idaIXBbKBJOdw20rJuGnWLnf1GYmeZHGfJKJ+nT4bz+Ft4HuXmokEPRRPOop2Dz9DNKBCoa2gwypFOoezUkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776044014; c=relaxed/simple;
-	bh=QahBc1mPe2ZsYDuTT3SH67YCUSQ8H3KUkvoUGntnbuM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nQXueBStXujfbRAmOCAmKr1C/q8rYYZUzG1UwRd4zkioa4na8IVUYXza7WwaLfYBA8M3z7f1V0K1JdahcHM0N+ejdD6Pws4a/GKqqIKnRNSKPQ90JUNbtfs07Zf/Slo1sEvjDFppfNFOSt6R+r2hLVGYoFEHKew+1AKIIb2nNUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=EOAc4R+n; arc=none smtp.client-ip=218.30.114.241
+	s=arc-20240116; t=1776044023; c=relaxed/simple;
+	bh=fg8f6Jjir04dYy1MUu5cm/qWNdaGJEtBqGRWLfrK//U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E26MKCW47TV6CKMTi03UToYwVFKRnY3cl2b5yXJk3YcyRbQIKMccb1oZBx9Xrxddv0OLufryvAD5RyR34ax6Z9gf/Q4GXU+f6j9G5c8HFeKQk0ttNdi4t7c+NEV+alDMmz5u5wOfw8bosLC1uYkjgAdSB2XKvibrXmi2xYicsv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=y0dPstk4; arc=none smtp.client-ip=218.30.115.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1776044009;
-	bh=CKWJ8adBqHEK0S8UEdWGJBcrStEi5oVNXbP7Bhu43sg=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1776044020;
+	bh=5AiOv3OmSV1vAgdRKipxBvh8ToeMYXa8wksWt6WBwek=;
 	h=From:Subject:Date:Message-Id;
-	b=EOAc4R+nSlgc921EHi0GVglM3wFUQHXppHKvq3DN8lMZq4gt00WwNjNrzTY+1DFsW
-	 ldCx0lEEwJXvEbauuOsghOAuourriLJuraVrO4hafBozmP+jpLiFVwEgIxEXR/bJ9k
-	 iHu+oDo7NIrPaajIsl/ARG67KD5inif0s0cSWF58=
+	b=y0dPstk4pFWiOO/3fS5Q2wu+b9BWmUU9a+ZhvWo6IvQY5sG2293Zy1WvOLjHv2CIp
+	 aWmbKmKZ9zbxV/QXiZw1t9I540Z7UO9w6KqZoxYwaUszAWpoPw2zktG/lLG6EUDwMc
+	 naLyfdUGMqR38z1YwA1LwOHF5pebF8DNw+jM8u+g=
 X-SMAIL-HELO: NTT-kernel-dev
 Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.23) with ESMTP
-	id 69DC47BE0000292A; Mon, 13 Apr 2026 09:32:48 +0800 (CST)
+	by sina.cn (10.185.250.22) with ESMTP
+	id 69DC47E900000EAA; Mon, 13 Apr 2026 09:33:31 +0800 (CST)
 X-Sender: jianqkang@sina.cn
 X-Auth-ID: jianqkang@sina.cn
 Authentication-Results: sina.cn;
 	 spf=none smtp.mailfrom=jianqkang@sina.cn;
 	 dkim=none header.i=none;
 	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 8605948913356
-X-SMAIL-UIID: C7865F5684A949E0B922B949EB68AADE-20260413-093248-1
+X-SMAIL-MID: 2821247602310
+X-SMAIL-UIID: EF915E9DFECA41D78B31B4BD59713C7D-20260413-093331-1
 From: Jianqiang kang <jianqkang@sina.cn>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc: patches@lists.linux.dev,
 	alexander.h.duyck@linux.intel.com,
 	linux-nvdimm@lists.01.org,
 	dingiso.kernel@gmail.com
-Subject: [PATCH 5.15.y] nvdimm/bus: Fix potential use after free in asynchronous initialization
-Date: Mon, 13 Apr 2026 09:32:46 +0800
-Message-Id: <20260413013246.836999-1-jianqkang@sina.cn>
+Subject: [PATCH 5.10.y] nvdimm/bus: Fix potential use after free in asynchronous initialization
+Date: Mon, 13 Apr 2026 09:33:29 +0800
+Message-Id: <20260413013329.837358-1-jianqkang@sina.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
 	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235871-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235872-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[sina.cn];
@@ -100,9 +100,9 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B46E33E6A78
+X-Rspamd-Queue-Id: A5B1C3E6A5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -137,10 +137,10 @@ Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index 84d197cc09f8..47d13ef9e07f 100644
+index 9ec59960f216..1aacc40ad09f 100644
 --- a/drivers/nvdimm/bus.c
 +++ b/drivers/nvdimm/bus.c
-@@ -492,14 +492,15 @@ EXPORT_SYMBOL_GPL(nd_synchronize);
+@@ -502,14 +502,15 @@ EXPORT_SYMBOL_GPL(nd_synchronize);
  static void nd_async_device_register(void *d, async_cookie_t cookie)
  {
  	struct device *dev = d;
