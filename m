@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFacMJUj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:45 +0200
+	id eIY4Izoe3WlhaAkAu9opvQ
+	(envelope-from <stable+bounces-236916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7733F0E83
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A39163EFD35
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 22011309498F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 097973013703
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA02831715D;
-	Mon, 13 Apr 2026 16:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171C12E54D1;
+	Mon, 13 Apr 2026 16:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LeoUyeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn9xU343"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB53313298;
-	Mon, 13 Apr 2026 16:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE97B29BD87;
+	Mon, 13 Apr 2026 16:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099217; cv=none; b=t/qAF9eWx1BMwBzqCHpAxAAatA8krjsEhp6X8U03b8HDZXKh2LL0Ir19bEZ9fDOkrS+hrVVfaGFkeY/uy37i++9Gta/mu5ZVlx+rneFWAA/6A7t7Yyjju0X8BCHhVcqzkY6m3uefr3FlxaU8VXqhERvNnWCPO0NItIM/RK6lu9M=
+	t=1776098122; cv=none; b=K4Xa5JWCWch0tF3AYfmLTes125zNf+pcVVQad3S4Q7ncsm0yYyq5m3P4cZj3Hqivd4ILI108t181o7N39PY/NP2dkxWbBLFFD6deTYKCxgOZIsjmyRC7z4Un6PmghWbKalCO4d4q80b3EBZ8AdG6WAE3W+NKLTac9G1Do8CNjL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099217; c=relaxed/simple;
-	bh=Y6mi3CIInFwTPuZXfPESwvPhDM5oLPDO7JqzCgcbVP4=;
+	s=arc-20240116; t=1776098122; c=relaxed/simple;
+	bh=UX5h/BGxh+mCInWCXV4CJDM8ZxSphPyRjEByvCT66ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeXrsaGD7g5Trk75+xHH1pUSHdTau/s4fLfEUBgpytMwpJcbA95LuO7rFeQ2dlJKQvC0tBbH2fakeVrwSEQ/PnhUYktY+pAae0SUiyCkRGAGEqzqCqHa2CVtR74clVrw3tfSz7wyEr86b4txrPraYNqUbi+0XSnf78uo7YJwQqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LeoUyeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1414EC2BCAF;
-	Mon, 13 Apr 2026 16:53:36 +0000 (UTC)
+	 MIME-Version; b=BNujWzvsZvtOTZIkI7dFvVoJsVLrnX2cF+geVafvrrIqLNzTyQ6ol5A11lQfKy5ogxW3tQ3qknKO72uTWucmB7BI9Xtav5j7NQdhcCvBU979EcO2TphykaLxFLQtlOZtrjpeZrhHfmN747ReWizBD8/8iJXD2TuJ77VubiFlWyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zn9xU343; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664EBC2BCAF;
+	Mon, 13 Apr 2026 16:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099217;
-	bh=Y6mi3CIInFwTPuZXfPESwvPhDM5oLPDO7JqzCgcbVP4=;
+	s=korg; t=1776098122;
+	bh=UX5h/BGxh+mCInWCXV4CJDM8ZxSphPyRjEByvCT66ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2LeoUyeM9UJZc2DL9ramoMcjh4IOOxkzNxtBjctPXisO7Diw2pPZ48PP+ULFg7s48
-	 vVbp+z8r4iwPHi4CRNr9wOwLtFY20rNDShnBLV+3um9gcVFX3kFzq81aMTxAz2ueD2
-	 jedVVELcGlZ/93vpftOTNj/SVyfgVRwTH02Lqj0o=
+	b=Zn9xU343qwHqTtrG8vDN2Fz/EpuhxX3V2MBtyi2Bhhp61wDDgUykViq3/b03Da09O
+	 q/+xxKrvtnvHf4sFYk5XqdGHptsAezCVeUNlJC2fCUM6MRJS7Thi5fUraO9P5zDppu
+	 BXLwLDrO2XdAHpQpna94LLH5NzO4bE2EYdfSXOWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 256/491] nfc: nci: fix circular locking dependency in nci_close_device
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 370/570] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
 Date: Mon, 13 Apr 2026 17:58:21 +0200
-Message-ID: <20260413155828.636557312@linuxfoundation.org>
+Message-ID: <20260413155844.339873616@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237346-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236916-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,87 +90,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gehealthcare.com:email]
-X-Rspamd-Queue-Id: BB7733F0E83
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,hartkopp.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A39163EFD35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ali Norouzi <ali.norouzi@keysight.com>
 
-[ Upstream commit 4527025d440ce84bf56e75ce1df2e84cb8178616 ]
+commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
 
-nci_close_device() flushes rx_wq and tx_wq while holding req_lock.
-This causes a circular locking dependency because nci_rx_work()
-running on rx_wq can end up taking req_lock too:
+cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
 
-  nci_rx_work -> nci_rx_data_packet -> nci_data_exchange_complete
-    -> __sk_destruct -> rawsock_destruct -> nfc_deactivate_target
-    -> nci_deactivate_target -> nci_request -> mutex_lock(&ndev->req_lock)
+    int from = calc_idx(crc8->from_idx, cf->len);
+    int to   = calc_idx(crc8->to_idx,   cf->len);
+    int res  = calc_idx(crc8->result_idx, cf->len);
 
-Move the flush of rx_wq after req_lock has been released.
-This should safe (I think) because NCI_UP has already been cleared
-and the transport is closed, so the work will see it and return
--ENETDOWN.
+    if (from < 0 || to < 0 || res < 0)
+        return;
 
-NIPA has been hitting this running the nci selftest with a debug
-kernel on roughly 4% of the runs.
+However, the loop and the result write then use the raw s8 fields directly
+instead of the computed variables:
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reviewed-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317193334.988609-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
+    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
+
+With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
+calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
+i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
+This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
+start of the canfd_frame on the heap.
+
+The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
+correctly throughout; fix cgw_csum_crc8_rel() to match.
+
+Confirmed with KASAN on linux-7.0-rc2:
+  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
+  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
+
+To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
+
+Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
+Cc: stable@vger.kernel.org
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/can/gw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 873c9073e4111..78472b1929705 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -562,8 +562,7 @@ static int nci_close_device(struct nci_dev *ndev)
- 	skb_queue_purge(&ndev->rx_q);
- 	skb_queue_purge(&ndev->tx_q);
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -374,10 +374,10 @@ static void cgw_csum_crc8_rel(struct can
+ 		return;
  
--	/* Flush RX and TX wq */
--	flush_workqueue(ndev->rx_wq);
-+	/* Flush TX wq, RX wq flush can't be under the lock */
- 	flush_workqueue(ndev->tx_wq);
+ 	if (from <= to) {
+-		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
++		for (i = from; i <= to; i++)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	} else {
+-		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
++		for (i = from; i >= to; i--)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	}
  
- 	/* Reset device */
-@@ -575,13 +574,13 @@ static int nci_close_device(struct nci_dev *ndev)
- 		      msecs_to_jiffies(NCI_RESET_TIMEOUT));
+@@ -396,7 +396,7 @@ static void cgw_csum_crc8_rel(struct can
+ 		break;
+ 	}
  
- 	/* After this point our queues are empty
--	 * and no works are scheduled.
-+	 * rx work may be running but will see that NCI_UP was cleared
- 	 */
- 	ndev->ops->close(ndev);
- 
- 	clear_bit(NCI_INIT, &ndev->flags);
- 
--	/* Flush cmd wq */
-+	/* Flush cmd and tx wq */
- 	flush_workqueue(ndev->cmd_wq);
- 
- 	del_timer_sync(&ndev->cmd_timer);
-@@ -591,6 +590,9 @@ static int nci_close_device(struct nci_dev *ndev)
- 
- 	mutex_unlock(&ndev->req_lock);
- 
-+	/* rx_work may take req_lock via nci_deactivate_target */
-+	flush_workqueue(ndev->rx_wq);
-+
- 	return 0;
+-	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
++	cf->data[res] = crc ^ crc8->final_xor_val;
  }
  
--- 
-2.51.0
-
+ static void cgw_csum_crc8_pos(struct canfd_frame *cf,
 
 
 
