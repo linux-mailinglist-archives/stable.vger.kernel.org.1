@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-236475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPNvNGUa3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:33 +0200
+	id GDFHC7cZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F159E3EF25A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9606A3EF070
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9A98E302740F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:16:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D656B30ABA92
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FF330B50F;
-	Mon, 13 Apr 2026 16:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2752472A2;
+	Mon, 13 Apr 2026 16:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHUYWdrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1ph34YE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FAE30AACB;
-	Mon, 13 Apr 2026 16:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEF025A2C9;
+	Mon, 13 Apr 2026 16:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097001; cv=none; b=hCHKYcSu4gN22WKij2oNnmXMG5osm6VElJXKhXeNkW1ytM6G1b7ZIJDPvJf5jt4U+QI9h9HZ51kfKhB/qqCHnsBmkkO+sRsVEjgbsoDERSEnZT2ZUXCbxNYHsW6SWBrGk+c7kxqoKoXI5je5k5/cG/NWWM23JvTm22VfNCOHqqM=
+	t=1776096821; cv=none; b=rfH4YKeii8rEz/0U/kTor3qs8MkVNQNDrUGASKT4RMAeWtC8BeD/FFZOs7jqLzp3mG6zHu8n1gPZqWHhzOa3+sFcnOMjUIR37XtfzM55NLERnNPU4yiMJW+Y3mu6lSMJbTVunSLHMJxzIfOsFshJcrn/Hjdge48e14HTBANpQW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097001; c=relaxed/simple;
-	bh=DsCzmfL5pIH7T6Tx3+p2NREQvdBXKjai2uoflallKFo=;
+	s=arc-20240116; t=1776096821; c=relaxed/simple;
+	bh=yNwNGUNZfwaV35wme/2uRQJ54Ge1oi4R8shNMEE6/VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9uhY4Eakcfx0jAotCE5UJ9tmxZN8xTQEWn4sHqHhTq26c4V6uYw/t05+Hvs81IxdJEf5gvGoEwEX/C3C/dOymzj7bJtOlDIBYXl19e9Z1XEPsg6u4xrMT9fgAHyRkQfmWx8FQUhePoubwzGJrZScjoqVu2NBNR0EizCTqqe//8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHUYWdrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8147DC2BCAF;
-	Mon, 13 Apr 2026 16:16:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I6wXydtDJ9DIm9J+C0dLdYsDd9nuptgovVBnyU6EIIgGdn11pRBy0OdhcYeG5VcEKr6FfI3+W77fH1qANGv9VdaJjH3VwcJ4D87ubyJZmu2KVw0Dvq/VBGdlfBZzh0+3tRpjhzuRF876NsQ5+wO1lag8t/vcfFkp2LE5e/I2oI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1ph34YE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66241C2BCAF;
+	Mon, 13 Apr 2026 16:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097000;
-	bh=DsCzmfL5pIH7T6Tx3+p2NREQvdBXKjai2uoflallKFo=;
+	s=korg; t=1776096821;
+	bh=yNwNGUNZfwaV35wme/2uRQJ54Ge1oi4R8shNMEE6/VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHUYWdrDYDVp9/VqqcpUPe8l9EnVlA+dqpE1Yyvi16PUnXAPtiJktSkdUP32v/s77
-	 26GQyyYHM9VS8lN+9N1x4KTMRbBp/4BbNw1CNP0ajvKlquy9ZEH/NlbUCEH5ktzTY+
-	 0YVwGay4T4uwXOFmBYhRBhqrUiG5kosxdf53Zxss=
+	b=C1ph34YEIlOIbfQn8YVTBXwUtXBW4XQdKqnecDY8z35RwUiqR+3b/lbJjzCg8ZQ7a
+	 JT9ZUmgh5zls/D3zIRXnAqKiljcQIkU/yXD40D0Ql9Vt9HdRGICe3Pxw9f7swLPMvU
+	 kwaPPSD6BvRUKZUy0nvnqCGopI7TWs8usdCENEA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.1 16/55] apparmor: fix side-effect bug in match_char() macro usage
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Yuanhe Shu <xiangzao@linux.alibaba.com>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 55/70] mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
 Date: Mon, 13 Apr 2026 18:00:50 +0200
-Message-ID: <20260413155725.433391186@linuxfoundation.org>
+Message-ID: <20260413155730.238620944@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,160 +75,176 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236475-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236405-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,canonical.com:email]
-X-Rspamd-Queue-Id: F159E3EF25A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9606A3EF070
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-commit 8756b68edae37ff546c02091989a4ceab3f20abd upstream.
+commit f58df566524ebcdfa394329c64f47e3c9257516e upstream.
 
-The match_char() macro evaluates its character parameter multiple
-times when traversing differential encoding chains. When invoked
-with *str++, the string pointer advances on each iteration of the
-inner do-while loop, causing the DFA to check different characters
-at each iteration and therefore skip input characters.
-This results in out-of-bounds reads when the pointer advances past
-the input buffer boundary.
+When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
+encountered some very strange crash issues showing up as "Bad page state":
 
-[   94.984676] ==================================================================
-[   94.985301] BUG: KASAN: slab-out-of-bounds in aa_dfa_match+0x5ae/0x760
-[   94.985655] Read of size 1 at addr ffff888100342000 by task file/976
+"
+[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
+[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
+[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
+[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
+[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
+[  734.496442] page dumped because: nonzero mapcount
+"
 
-[   94.986319] CPU: 7 UID: 1000 PID: 976 Comm: file Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
-[   94.986322] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   94.986329] Call Trace:
-[   94.986341]  <TASK>
-[   94.986347]  dump_stack_lvl+0x5e/0x80
-[   94.986374]  print_report+0xc8/0x270
-[   94.986384]  ? aa_dfa_match+0x5ae/0x760
-[   94.986388]  kasan_report+0x118/0x150
-[   94.986401]  ? aa_dfa_match+0x5ae/0x760
-[   94.986405]  aa_dfa_match+0x5ae/0x760
-[   94.986408]  __aa_path_perm+0x131/0x400
-[   94.986418]  aa_path_perm+0x219/0x2f0
-[   94.986424]  apparmor_file_open+0x345/0x570
-[   94.986431]  security_file_open+0x5c/0x140
-[   94.986442]  do_dentry_open+0x2f6/0x1120
-[   94.986450]  vfs_open+0x38/0x2b0
-[   94.986453]  ? may_open+0x1e2/0x2b0
-[   94.986466]  path_openat+0x231b/0x2b30
-[   94.986469]  ? __x64_sys_openat+0xf8/0x130
-[   94.986477]  do_file_open+0x19d/0x360
-[   94.986487]  do_sys_openat2+0x98/0x100
-[   94.986491]  __x64_sys_openat+0xf8/0x130
-[   94.986499]  do_syscall_64+0x8e/0x660
-[   94.986515]  ? count_memcg_events+0x15f/0x3c0
-[   94.986526]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986540]  ? handle_mm_fault+0x1639/0x1ef0
-[   94.986551]  ? vma_start_read+0xf0/0x320
-[   94.986558]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986561]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986563]  ? fpregs_assert_state_consistent+0x50/0xe0
-[   94.986572]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986574]  ? arch_exit_to_user_mode_prepare+0x9/0xb0
-[   94.986587]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   94.986588]  ? irqentry_exit+0x3c/0x590
-[   94.986595]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   94.986597] RIP: 0033:0x7fda4a79c3ea
+After analyzing this page’s state, it is hard to understand why the
+mapcount is not 0 while the refcount is 0, since this page is not where
+the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
+reproduce the crash as well and captured the first warning where the issue
+appears:
 
-Fix by extracting the character value before invoking match_char,
-ensuring single evaluation per outer loop.
+"
+[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
+[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  734.469315] memcg:ffff000807a8ec00
+[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
+[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
+......
+[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
+const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
+(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+[  734.469390] ------------[ cut here ]------------
+[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
+CPU#90: stress-ng-mlock/9430
+[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
+[  734.469555]  set_pte_range+0xd8/0x2f8
+[  734.469566]  filemap_map_folio_range+0x190/0x400
+[  734.469579]  filemap_map_pages+0x348/0x638
+[  734.469583]  do_fault_around+0x140/0x198
+......
+[  734.469640]  el0t_64_sync+0x184/0x188
+"
 
-Fixes: 074c1cd798cb ("apparmor: dfa move character match into a macro")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
+nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
+tried to map beyond the large folio’s size.
+
+By adding more debug information, I found that 'nr_pages' had overflowed
+in filemap_map_pages(), causing set_pte_range() to establish mappings for
+a range exceeding the folio size, potentially corrupting fields of pages
+that do not belong to this folio (e.g., page->_mapcount).
+
+After above analysis, I think the possible race is as follows:
+
+CPU 0                                                  CPU 1
+filemap_map_pages()                                   ext4_setattr()
+   //get and lock folio with old inode->i_size
+   next_uptodate_folio()
+
+                                                          .......
+                                                          //shrink the inode->i_size
+                                                          i_size_write(inode, attr->ia_size);
+
+   //calculate the end_pgoff with the new inode->i_size
+   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+   end_pgoff = min(end_pgoff, file_end);
+
+   ......
+   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
+   end = folio_next_index(folio) - 1;
+   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+
+   ......
+   //map large folio
+   filemap_map_folio_range()
+                                                          ......
+                                                          //truncate folios
+                                                          truncate_pagecache(inode, inode->i_size);
+
+To fix this issue, move the 'end_pgoff' calculation before
+next_uptodate_folio(), so the retrieved folio stays consistent with the
+file end to avoid 'nr_pages' calculation overflow.  After this patch, the
+crash issue is gone.
+
+Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
+Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <dchinner@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/match.c |   30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ mm/filemap.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -452,13 +452,18 @@ unsigned int aa_dfa_match_len(struct aa_
- 	if (dfa->tables[YYTD_ID_EC]) {
- 		/* Equivalence class table defined */
- 		u8 *equiv = EQUIV_TABLE(dfa);
--		for (; len; len--)
--			match_char(state, def, base, next, check,
--				   equiv[(u8) *str++]);
-+		for (; len; len--) {
-+			u8 c = equiv[(u8) *str];
-+
-+			match_char(state, def, base, next, check, c);
-+			str++;
-+		}
- 	} else {
- 		/* default is direct to next state */
--		for (; len; len--)
--			match_char(state, def, base, next, check, (u8) *str++);
-+		for (; len; len--) {
-+			match_char(state, def, base, next, check, (u8) *str);
-+			str++;
-+		}
- 	}
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3655,14 +3655,19 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 	unsigned int nr_pages = 0, mmap_miss = 0, mmap_miss_saved, folio_type;
+ 	bool can_map_large;
  
- 	return state;
-@@ -493,13 +498,18 @@ unsigned int aa_dfa_match(struct aa_dfa
- 		/* Equivalence class table defined */
- 		u8 *equiv = EQUIV_TABLE(dfa);
- 		/* default is direct to next state */
--		while (*str)
--			match_char(state, def, base, next, check,
--				   equiv[(u8) *str++]);
-+		while (*str) {
-+			u8 c = equiv[(u8) *str];
++	/*
++	 * Recalculate end_pgoff based on file_end before calling
++	 * next_uptodate_folio() to avoid races with concurrent
++	 * truncation.
++	 */
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
 +
-+			match_char(state, def, base, next, check, c);
-+			str++;
-+		}
- 	} else {
- 		/* default is direct to next state */
--		while (*str)
--			match_char(state, def, base, next, check, (u8) *str++);
-+		while (*str) {
-+			match_char(state, def, base, next, check, (u8) *str);
-+			str++;
-+		}
- 	}
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
  
- 	return state;
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	end_pgoff = min(end_pgoff, file_end);
+-
+ 	/*
+ 	 * Do not allow to map with PTEs beyond i_size and with PMD
+ 	 * across i_size to preserve SIGBUS semantics.
 
 
 
