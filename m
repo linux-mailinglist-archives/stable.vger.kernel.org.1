@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-236854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOnGHJEi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:25 +0200
+	id 0OhlHQgm3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA52E3F0BF0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0456E3F13B0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 005B1308DD97
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F138D32515DC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02A627466A;
-	Mon, 13 Apr 2026 16:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3EC318B85;
+	Mon, 13 Apr 2026 16:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="el7RdQyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NROb1+bA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35D723D297;
-	Mon, 13 Apr 2026 16:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30FA313298;
+	Mon, 13 Apr 2026 16:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097963; cv=none; b=CNo4/hq9PN60Nvc805TFKKh4hx2qCmEr1zT8V+oUEFfr5kLYIuTeFhYzCqn61Bof1eC5cmhYWOF3+aQbUvYBccmG43weTXLxjqXd7/IGXwXtQEWDJhs9ahQ6Dbnu63L/zieyIAVXnhC5Wk3bwHqai824d43sn2iHnQjQKa4i0Aw=
+	t=1776099147; cv=none; b=lOy8xQ82QzDIG1a3Sc59La4i6IHHHIWStnowuHpjZRxpLsBlae4pMeIagJonA3RJQgk3Y65tuVgp+yW/XFwpWHNFmH2uz73/l0l9ltpgHkOIrcuy/zxZ+qLokWULbgQ39+PMnb/sS8esVQ2aCVAOcXNnVZ8lQ7ygfS43Ybw+ouU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097963; c=relaxed/simple;
-	bh=lS1RyJdeB+d6RobS1DNAqrJZIFKJheSRZ5ia5nqp6Mc=;
+	s=arc-20240116; t=1776099147; c=relaxed/simple;
+	bh=Z3Vy6gFSMKY+7A+Qtrp92BGUw1qPkeujA9Jq/mTe1CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WaN2tg7LnNfqZ4ie1TuQBc2idsom5uXu9IeqpLxi6xUEKrD6q78zTYLyL2RLf2DGWcNbWChVGk52bmXsSsA3/L3mUKAjAUH7EfeDM0kVA8mt30CWzACafUSmXr2Gq1dSUeJTcQehbFV7iw3pdpXnfHSmkeZmqAX6SBiH7ywmTPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=el7RdQyE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C861C2BCAF;
-	Mon, 13 Apr 2026 16:32:42 +0000 (UTC)
+	 MIME-Version; b=oiBu98iUIYKAKkVHi2QOpE0BCpZYTpHRx5gE7Lqh+TQvQMopF3T2Wfoxz2NEG+wE/23VoInZn38dAKuVeDv1BEmhgG0qgSN34JwdXtdVHHcU/9QPNlLc3QUNHF6AKi+KOm5tr7pXB/XIAGMdq3Jq4N45E7XMIwbA4ITAukDcabs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NROb1+bA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693A9C2BCAF;
+	Mon, 13 Apr 2026 16:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097963;
-	bh=lS1RyJdeB+d6RobS1DNAqrJZIFKJheSRZ5ia5nqp6Mc=;
+	s=korg; t=1776099147;
+	bh=Z3Vy6gFSMKY+7A+Qtrp92BGUw1qPkeujA9Jq/mTe1CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=el7RdQyEfCT367qUzSBbLF/WAQi6LqSScyGrD+zrP7a7DUSImyHf6wtDR1JuNAr9s
-	 bhJBj2TB/y7ZcSknowazARXtUlbiJu60J+7WZR94jOvRDp+UhOXsNwxbxU4zh3pVJV
-	 djuBNebps3xpZ0MXgFKUgEcOeAWBzuTo2+hQVEhE=
+	b=NROb1+bAPzwuBEQNxI1lonCAkon4g0RnKgICBU1X6AoduNRfQXFgEU645rByQsI49
+	 66C2eDxhHE0QC6pGurg/vZvj1vQdb6nIJVOzkkqhda7jNRU1fXGXaU7m56EN2Hxrkb
+	 Pclr0x+i9KX7oyDYz/hBh+qCjOCqRBWVcecDeYJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 341/570] netlink: introduce bigendian integer types
-Date: Mon, 13 Apr 2026 17:57:52 +0200
-Message-ID: <20260413155843.265692520@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.10 228/491] i2c: fsi: Fix a potential leak in fsi_i2c_probe()
+Date: Mon, 13 Apr 2026 17:57:53 +0200
+Message-ID: <20260413155827.595550676@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,254 +65,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237319-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wanadoo.fr,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236854-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,sipsolutions.net:email]
-X-Rspamd-Queue-Id: CA52E3F0BF0
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0456E3F13B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit ecaf75ffd5f5db320d8b1da0198eef5a5ce64a3f ]
+commit be627abcc0d5dbd5882873bd85fbc18aa3d189ed upstream.
 
-Jakub reported that the addition of the "network_byte_order"
-member in struct nla_policy increases size of 32bit platforms.
+In the commit in Fixes:, when the code has been updated to use an explicit
+for loop, instead of for_each_available_child_of_node(), the assumption
+that a reference to a device_node structure would be released at each
+iteration has been broken.
 
-Instead of scraping the bit from elsewhere Johannes suggested
-to add explicit NLA_BE types instead, so do this here.
+Now, an explicit of_node_put() is needed to release the reference.
 
-NLA_POLICY_MAX_BE() macro is removed again, there is no need
-for it: NLA_POLICY_MAX(NLA_BE.., ..) will do the right thing.
-
-NLA_BE64 can be added later.
-
-Fixes: 08724ef69907 ("netlink: introduce NLA_POLICY_MAX_BE")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://lore.kernel.org/r/20221031123407.9158-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8f15b5071b45 ("netfilter: ctnetlink: use netlink policy range checks")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 095561f476ab ("i2c: fsi: Create busses for all ports")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: <stable@vger.kernel.org> # v5.3+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/fd805c39f8de51edf303856103d782138a1633c8.1772382022.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netlink.h       | 19 +++++++++--------
- lib/nlattr.c                | 41 ++++++++++++++-----------------------
- net/netfilter/nft_payload.c |  6 +++---
- 3 files changed, 28 insertions(+), 38 deletions(-)
+ drivers/i2c/busses/i2c-fsi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/netlink.h b/include/net/netlink.h
-index 8c67db47556e2..356b805f50151 100644
---- a/include/net/netlink.h
-+++ b/include/net/netlink.h
-@@ -181,6 +181,8 @@ enum {
- 	NLA_S64,
- 	NLA_BITFIELD32,
- 	NLA_REJECT,
-+	NLA_BE16,
-+	NLA_BE32,
- 	__NLA_TYPE_MAX,
- };
- 
-@@ -231,6 +233,7 @@ enum nla_policy_validation {
-  *    NLA_U32, NLA_U64,
-  *    NLA_S8, NLA_S16,
-  *    NLA_S32, NLA_S64,
-+ *    NLA_BE16, NLA_BE32,
-  *    NLA_MSECS            Leaving the length field zero will verify the
-  *                         given type fits, using it verifies minimum length
-  *                         just like "All other"
-@@ -261,6 +264,8 @@ enum nla_policy_validation {
-  *    NLA_U16,
-  *    NLA_U32,
-  *    NLA_U64,
-+ *    NLA_BE16,
-+ *    NLA_BE32,
-  *    NLA_S8,
-  *    NLA_S16,
-  *    NLA_S32,
-@@ -349,7 +354,6 @@ struct nla_policy {
- 		struct netlink_range_validation_signed *range_signed;
- 		struct {
- 			s16 min, max;
--			u8 network_byte_order:1;
- 		};
- 		int (*validate)(const struct nlattr *attr,
- 				struct netlink_ext_ack *extack);
-@@ -374,6 +378,8 @@ struct nla_policy {
- 	(tp == NLA_U8 || tp == NLA_U16 || tp == NLA_U32 || tp == NLA_U64)
- #define __NLA_IS_SINT_TYPE(tp)						\
- 	(tp == NLA_S8 || tp == NLA_S16 || tp == NLA_S32 || tp == NLA_S64)
-+#define __NLA_IS_BEINT_TYPE(tp)						\
-+	(tp == NLA_BE16 || tp == NLA_BE32)
- 
- #define __NLA_ENSURE(condition) BUILD_BUG_ON_ZERO(!(condition))
- #define NLA_ENSURE_UINT_TYPE(tp)			\
-@@ -387,6 +393,7 @@ struct nla_policy {
- #define NLA_ENSURE_INT_OR_BINARY_TYPE(tp)		\
- 	(__NLA_ENSURE(__NLA_IS_UINT_TYPE(tp) ||		\
- 		      __NLA_IS_SINT_TYPE(tp) ||		\
-+		      __NLA_IS_BEINT_TYPE(tp) ||	\
- 		      tp == NLA_MSECS ||		\
- 		      tp == NLA_BINARY) + tp)
- #define NLA_ENSURE_NO_VALIDATION_PTR(tp)		\
-@@ -394,6 +401,8 @@ struct nla_policy {
- 		      tp != NLA_REJECT &&		\
- 		      tp != NLA_NESTED &&		\
- 		      tp != NLA_NESTED_ARRAY) + tp)
-+#define NLA_ENSURE_BEINT_TYPE(tp)			\
-+	(__NLA_ENSURE(__NLA_IS_BEINT_TYPE(tp)) + tp)
- 
- #define NLA_POLICY_RANGE(tp, _min, _max) {		\
- 	.type = NLA_ENSURE_INT_OR_BINARY_TYPE(tp),	\
-@@ -424,14 +433,6 @@ struct nla_policy {
- 	.type = NLA_ENSURE_INT_OR_BINARY_TYPE(tp),	\
- 	.validation_type = NLA_VALIDATE_MAX,		\
- 	.max = _max,					\
--	.network_byte_order = 0,			\
--}
--
--#define NLA_POLICY_MAX_BE(tp, _max) {			\
--	.type = NLA_ENSURE_UINT_TYPE(tp),		\
--	.validation_type = NLA_VALIDATE_MAX,		\
--	.max = _max,					\
--	.network_byte_order = 1,			\
- }
- 
- #define NLA_POLICY_MASK(tp, _mask) {			\
-diff --git a/lib/nlattr.c b/lib/nlattr.c
-index a0c80fbf71895..dffd60e4065fd 100644
---- a/lib/nlattr.c
-+++ b/lib/nlattr.c
-@@ -125,10 +125,12 @@ void nla_get_range_unsigned(const struct nla_policy *pt,
- 		range->max = U8_MAX;
- 		break;
- 	case NLA_U16:
-+	case NLA_BE16:
- 	case NLA_BINARY:
- 		range->max = U16_MAX;
- 		break;
- 	case NLA_U32:
-+	case NLA_BE32:
- 		range->max = U32_MAX;
- 		break;
- 	case NLA_U64:
-@@ -160,31 +162,6 @@ void nla_get_range_unsigned(const struct nla_policy *pt,
- 	}
- }
- 
--static u64 nla_get_attr_bo(const struct nla_policy *pt,
--			   const struct nlattr *nla)
--{
--	switch (pt->type) {
--	case NLA_U16:
--		if (pt->network_byte_order)
--			return ntohs(nla_get_be16(nla));
--
--		return nla_get_u16(nla);
--	case NLA_U32:
--		if (pt->network_byte_order)
--			return ntohl(nla_get_be32(nla));
--
--		return nla_get_u32(nla);
--	case NLA_U64:
--		if (pt->network_byte_order)
--			return be64_to_cpu(nla_get_be64(nla));
--
--		return nla_get_u64(nla);
--	}
--
--	WARN_ON_ONCE(1);
--	return 0;
--}
--
- static int nla_validate_range_unsigned(const struct nla_policy *pt,
- 				       const struct nlattr *nla,
- 				       struct netlink_ext_ack *extack,
-@@ -198,9 +175,13 @@ static int nla_validate_range_unsigned(const struct nla_policy *pt,
- 		value = nla_get_u8(nla);
- 		break;
- 	case NLA_U16:
-+		value = nla_get_u16(nla);
-+		break;
- 	case NLA_U32:
-+		value = nla_get_u32(nla);
-+		break;
- 	case NLA_U64:
--		value = nla_get_attr_bo(pt, nla);
-+		value = nla_get_u64(nla);
- 		break;
- 	case NLA_MSECS:
- 		value = nla_get_u64(nla);
-@@ -208,6 +189,12 @@ static int nla_validate_range_unsigned(const struct nla_policy *pt,
- 	case NLA_BINARY:
- 		value = nla_len(nla);
- 		break;
-+	case NLA_BE16:
-+		value = ntohs(nla_get_be16(nla));
-+		break;
-+	case NLA_BE32:
-+		value = ntohl(nla_get_be32(nla));
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -335,6 +322,8 @@ static int nla_validate_int_range(const struct nla_policy *pt,
- 	case NLA_U64:
- 	case NLA_MSECS:
- 	case NLA_BINARY:
-+	case NLA_BE16:
-+	case NLA_BE32:
- 		return nla_validate_range_unsigned(pt, nla, extack, validate);
- 	case NLA_S8:
- 	case NLA_S16:
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index cb6ee00bbc09b..dbafb964bd706 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -176,10 +176,10 @@ static const struct nla_policy nft_payload_policy[NFTA_PAYLOAD_MAX + 1] = {
- 	[NFTA_PAYLOAD_SREG]		= { .type = NLA_U32 },
- 	[NFTA_PAYLOAD_DREG]		= { .type = NLA_U32 },
- 	[NFTA_PAYLOAD_BASE]		= { .type = NLA_U32 },
--	[NFTA_PAYLOAD_OFFSET]		= NLA_POLICY_MAX_BE(NLA_U32, 255),
--	[NFTA_PAYLOAD_LEN]		= NLA_POLICY_MAX_BE(NLA_U32, 255),
-+	[NFTA_PAYLOAD_OFFSET]		= NLA_POLICY_MAX(NLA_BE32, 255),
-+	[NFTA_PAYLOAD_LEN]		= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_PAYLOAD_CSUM_TYPE]	= { .type = NLA_U32 },
--	[NFTA_PAYLOAD_CSUM_OFFSET]	= NLA_POLICY_MAX_BE(NLA_U32, 255),
-+	[NFTA_PAYLOAD_CSUM_OFFSET]	= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_PAYLOAD_CSUM_FLAGS]	= { .type = NLA_U32 },
- };
- 
--- 
-2.51.0
-
+--- a/drivers/i2c/busses/i2c-fsi.c
++++ b/drivers/i2c/busses/i2c-fsi.c
+@@ -728,6 +728,7 @@ static int fsi_i2c_probe(struct device *
+ 		rc = i2c_add_adapter(&port->adapter);
+ 		if (rc < 0) {
+ 			dev_err(dev, "Failed to register adapter: %d\n", rc);
++			of_node_put(np);
+ 			kfree(port);
+ 			continue;
+ 		}
 
 
 
