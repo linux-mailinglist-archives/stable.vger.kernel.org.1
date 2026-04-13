@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-236959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJp+Dq0e3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:49 +0200
+	id gLm3J4Aj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDC73EFEA4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8903F0E2E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E9B8D3000585
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C403C3043D66
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E23307AC7;
-	Mon, 13 Apr 2026 16:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04B931F9BC;
+	Mon, 13 Apr 2026 16:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdsNVb82"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T/rSPU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4421D5AD4;
-	Mon, 13 Apr 2026 16:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C03320393;
+	Mon, 13 Apr 2026 16:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098231; cv=none; b=AlGYsNPZq/+xHDzy3LsxUPe6DmFUP06dXQuR0gzJMxmZXM5ebiw2pAJfMWdCWwKG0Od3FdUc4NEHqpA4sTx4NGx4sZ91G3rWDFN92tnUZDYjoZU9wGDGUVTtH8gVScmuvc1BP74Td277+M9z0SHH9ZLiJ5IwFeDfFtZ0ShVAqIo=
+	t=1776099393; cv=none; b=bYJ9fCygQObG7uuCw5eVDi4hLlilcmeXjINWYutZP8ctGhKHJUhlqvGAnnLfCtdz2ECslQa0QFkbkbcjj3r2eE7eC2ge/zppEwMy3FJQqkk/gaVkBuLvmf0U5DGW6Iym2eVOROnyU5U/8JdhD7ozudwDQJFdE7RBe4eQM2qZJ90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098231; c=relaxed/simple;
-	bh=MlBo/bEkPzvmKWgkaKv9+gNgD9OM2PBNDpqt/EstPSM=;
+	s=arc-20240116; t=1776099393; c=relaxed/simple;
+	bh=uMqEYdq30jf2bFQeoT+2VTO2sj4omtQqMHlYvZuEtiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uquBgrQN4FfK6ISE/aEzoWlpt4+AzHYluRVVEJj7VeTFfX0yp1oeon8wMWs5XVok1WWEgGADH16G1va8aCuvLk4Edr/vIcfvDgPc9x4fgqlZC1ui3Pi7tT1KWJRAaL1UKr6pM+5sRZgafjUZDtHvDQEhjoBj7qu9sKVrMP0Q9XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdsNVb82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84107C2BCAF;
-	Mon, 13 Apr 2026 16:37:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cJM4+uwUfeXiASgdTSNZWbRA7Wim0soo/vM+KWKk8MBoBwdYRCz1UbKtH4DlgJAnDSwPXPysXe4mqjbFWy89j55IirfftPmak1LcOVCPxAz+zE5S9igPzPY0Kch563XJttoBFaN6W+a8a49AYiq/a4WYHDx8mNfVtu+p4QFAQII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T/rSPU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26031C2BCAF;
+	Mon, 13 Apr 2026 16:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098230;
-	bh=MlBo/bEkPzvmKWgkaKv9+gNgD9OM2PBNDpqt/EstPSM=;
+	s=korg; t=1776099393;
+	bh=uMqEYdq30jf2bFQeoT+2VTO2sj4omtQqMHlYvZuEtiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdsNVb82p1GDO9K+3uDBoyjntYYNV4Y3RMMiyaIr1h4lhfk7fFLrxpCjhGfmR4fL1
-	 ayVwmELZMxbcCcUVF2dqICxB/rwXOviC48OCQ8W/zkuNZf0Paumn5fddTr0IVwxOGz
-	 MOVT/cqyfF6E+N3VJlkOpHyce2R5z46iEM2+eLos=
+	b=1T/rSPU09KEftaIG3jmcnkXjS5EN7LaFXQffzR/9W3zmFX8V19UHft2dr6oLMyF2C
+	 nk3GUjjNMSYFl3jfGe3yvKDwtjE+aFZuW6MjKljfR78w621QYu0AALX6we7VqbLEJy
+	 +i+pnXUZTl2XoG6JqG9X5GO/xNSek+QIrZETGbQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+	syzbot+006987d1be3586e13555@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 437/570] ipv6: avoid overflows in ip6_datagram_send_ctl()
-Date: Mon, 13 Apr 2026 17:59:28 +0200
-Message-ID: <20260413155846.845693330@linuxfoundation.org>
+Subject: [PATCH 5.10 324/491] net: qrtr: replace qrtr_tx_flow radix_tree with xarray to fix memory leak
+Date: Mon, 13 Apr 2026 17:59:29 +0200
+Message-ID: <20260413155831.172820044@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,224 +65,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236959-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237414-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2FDC73EFEA4
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,006987d1be3586e13555];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,shopee.com:email]
+X-Rspamd-Queue-Id: 1B8903F0E2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 4e453375561fc60820e6b9d8ebeb6b3ee177d42e ]
+[ Upstream commit 2428083101f6883f979cceffa76cd8440751ffe6 ]
 
-Yiming Qian reported :
-<quote>
- I believe I found a locally triggerable kernel bug in the IPv6 sendmsg
- ancillary-data path that can panic the kernel via `skb_under_panic()`
- (local DoS).
+__radix_tree_create() allocates and links intermediate nodes into the
+tree one by one. If a subsequent allocation fails, the already-linked
+nodes remain in the tree with no corresponding leaf entry. These orphaned
+internal nodes are never reclaimed because radix_tree_for_each_slot()
+only visits slots containing leaf values.
 
- The core issue is a mismatch between:
+The radix_tree API is deprecated in favor of xarray. As suggested by
+Matthew Wilcox, migrate qrtr_tx_flow from radix_tree to xarray instead
+of fixing the radix_tree itself [1]. xarray properly handles cleanup of
+internal nodes — xa_destroy() frees all internal xarray nodes when the
+qrtr_node is released, preventing the leak.
 
- - a 16-bit length accumulator (`struct ipv6_txoptions::opt_flen`, type
- `__u16`) and
- - a pointer to the *last* provided destination-options header (`opt->dst1opt`)
-
- when multiple `IPV6_DSTOPTS` control messages (cmsgs) are provided.
-
- - `include/net/ipv6.h`:
-   - `struct ipv6_txoptions::opt_flen` is `__u16` (wrap possible).
- (lines 291-307, especially 298)
- - `net/ipv6/datagram.c:ip6_datagram_send_ctl()`:
-   - Accepts repeated `IPV6_DSTOPTS` and accumulates into `opt_flen`
- without rejecting duplicates. (lines 909-933)
- - `net/ipv6/ip6_output.c:__ip6_append_data()`:
-   - Uses `opt->opt_flen + opt->opt_nflen` to compute header
- sizes/headroom decisions. (lines 1448-1466, especially 1463-1465)
- - `net/ipv6/ip6_output.c:__ip6_make_skb()`:
-   - Calls `ipv6_push_frag_opts()` if `opt->opt_flen` is non-zero.
- (lines 1930-1934)
- - `net/ipv6/exthdrs.c:ipv6_push_frag_opts()` / `ipv6_push_exthdr()`:
-   - Push size comes from `ipv6_optlen(opt->dst1opt)` (based on the
- pointed-to header). (lines 1179-1185 and 1206-1211)
-
- 1. `opt_flen` is a 16-bit accumulator:
-
- - `include/net/ipv6.h:298` defines `__u16 opt_flen; /* after fragment hdr */`.
-
- 2. `ip6_datagram_send_ctl()` accepts *repeated* `IPV6_DSTOPTS` cmsgs
- and increments `opt_flen` each time:
-
- - In `net/ipv6/datagram.c:909-933`, for `IPV6_DSTOPTS`:
-   - It computes `len = ((hdr->hdrlen + 1) << 3);`
-   - It checks `CAP_NET_RAW` using `ns_capable(net->user_ns,
- CAP_NET_RAW)`. (line 922)
-   - Then it does:
-     - `opt->opt_flen += len;` (line 927)
-     - `opt->dst1opt = hdr;` (line 928)
-
- There is no duplicate rejection here (unlike the legacy
- `IPV6_2292DSTOPTS` path which rejects duplicates at
- `net/ipv6/datagram.c:901-904`).
-
- If enough large `IPV6_DSTOPTS` cmsgs are provided, `opt_flen` wraps
- while `dst1opt` still points to a large (2048-byte)
- destination-options header.
-
- In the attached PoC (`poc.c`):
-
- - 32 cmsgs with `hdrlen=255` => `len = (255+1)*8 = 2048`
- - 1 cmsg with `hdrlen=0` => `len = 8`
- - Total increment: `32*2048 + 8 = 65544`, so `(__u16)opt_flen == 8`
- - The last cmsg is 2048 bytes, so `dst1opt` points to a 2048-byte header.
-
- 3. The transmit path sizes headers using the wrapped `opt_flen`:
-
-- In `net/ipv6/ip6_output.c:1463-1465`:
-  - `headersize = sizeof(struct ipv6hdr) + (opt ? opt->opt_flen +
- opt->opt_nflen : 0) + ...;`
-
- With wrapped `opt_flen`, `headersize`/headroom decisions underestimate
- what will be pushed later.
-
- 4. When building the final skb, the actual push length comes from
- `dst1opt` and is not limited by wrapped `opt_flen`:
-
- - In `net/ipv6/ip6_output.c:1930-1934`:
-   - `if (opt->opt_flen) proto = ipv6_push_frag_opts(skb, opt, proto);`
- - In `net/ipv6/exthdrs.c:1206-1211`, `ipv6_push_frag_opts()` pushes
- `dst1opt` via `ipv6_push_exthdr()`.
- - In `net/ipv6/exthdrs.c:1179-1184`, `ipv6_push_exthdr()` does:
-   - `skb_push(skb, ipv6_optlen(opt));`
-   - `memcpy(h, opt, ipv6_optlen(opt));`
-
- With insufficient headroom, `skb_push()` underflows and triggers
- `skb_under_panic()` -> `BUG()`:
-
- - `net/core/skbuff.c:2669-2675` (`skb_push()` calls `skb_under_panic()`)
- - `net/core/skbuff.c:207-214` (`skb_panic()` ends in `BUG()`)
-
- - The `IPV6_DSTOPTS` cmsg path requires `CAP_NET_RAW` in the target
- netns user namespace (`ns_capable(net->user_ns, CAP_NET_RAW)`).
- - Root (or any task with `CAP_NET_RAW`) can trigger this without user
- namespaces.
- - An unprivileged `uid=1000` user can trigger this if unprivileged
- user namespaces are enabled and it can create a userns+netns to obtain
- namespaced `CAP_NET_RAW` (the attached PoC does this).
-
- - Local denial of service: kernel BUG/panic (system crash).
- - Reproducible with a small userspace PoC.
-</quote>
-
-This patch does not reject duplicated options, as this might break
-some user applications.
-
-Instead, it makes sure to adjust opt_flen and opt_nflen to correctly
-reflect the size of the current option headers, preventing the overflows
-and the potential for panics.
-
-This applies to IPV6_DSTOPTS, IPV6_HOPOPTS, and IPV6_RTHDR.
-
-Specifically:
-
-When a new IPV6_DSTOPTS is processed, the length of the old opt->dst1opt
-is subtracted from opt->opt_flen before adding the new length.
-
-When a new IPV6_HOPOPTS is processed, the length of the old opt->dst0opt
-is subtracted from opt->opt_nflen.
-
-When a new Routing Header (IPV6_RTHDR or IPV6_2292RTHDR) is processed,
-the length of the old opt->srcrt is subtracted from opt->opt_nflen.
-
-In the special case within IPV6_2292RTHDR handling where dst1opt is moved
-to dst0opt, the length of the old opt->dst0opt is subtracted from
-opt->opt_nflen before the new one is added.
-
-Fixes: 333fad5364d6 ("[IPV6]: Support several new sockopt / ancillary data in Advanced API (RFC3542).")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAL_bE8JNzawgr5OX5m+3jnQDHry2XxhQT5=jThW1zDPtUikRYA@mail.gmail.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260401154721.3740056-1-edumazet@google.com
+[1] https://lore.kernel.org/all/20260225071623.41275-1-jiayuan.chen@linux.dev/T/
+Reported-by: syzbot+006987d1be3586e13555@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000bfba3a060bf4ffcf@google.com/T/
+Fixes: 5fdeb0d372ab ("net: qrtr: Implement outgoing flow control")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324080645.290197-1-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/datagram.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/qrtr/af_qrtr.c | 31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
-index a30ff5d6808aa..d8af31805133f 100644
---- a/net/ipv6/datagram.c
-+++ b/net/ipv6/datagram.c
-@@ -756,6 +756,7 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- {
- 	struct in6_pktinfo *src_info;
- 	struct cmsghdr *cmsg;
-+	struct ipv6_rt_hdr *orthdr;
- 	struct ipv6_rt_hdr *rthdr;
- 	struct ipv6_opt_hdr *hdr;
- 	struct ipv6_txoptions *opt = ipc6->opt;
-@@ -917,9 +918,13 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- 				goto exit_f;
- 			}
- 			if (cmsg->cmsg_type == IPV6_DSTOPTS) {
-+				if (opt->dst1opt)
-+					opt->opt_flen -= ipv6_optlen(opt->dst1opt);
- 				opt->opt_flen += len;
- 				opt->dst1opt = hdr;
- 			} else {
-+				if (opt->dst0opt)
-+					opt->opt_nflen -= ipv6_optlen(opt->dst0opt);
- 				opt->opt_nflen += len;
- 				opt->dst0opt = hdr;
- 			}
-@@ -962,12 +967,17 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- 				goto exit_f;
- 			}
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index 68b6124fc8a10..fdb7a5a12f035 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -116,7 +116,7 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
+  * @ep: endpoint
+  * @ref: reference count for node
+  * @nid: node id
+- * @qrtr_tx_flow: tree of qrtr_tx_flow, keyed by node << 32 | port
++ * @qrtr_tx_flow: xarray of qrtr_tx_flow, keyed by node << 32 | port
+  * @qrtr_tx_lock: lock for qrtr_tx_flow inserts
+  * @rx_queue: receive queue
+  * @item: list item for broadcast list
+@@ -127,7 +127,7 @@ struct qrtr_node {
+ 	struct kref ref;
+ 	unsigned int nid;
  
-+			orthdr = opt->srcrt;
-+			if (orthdr)
-+				opt->opt_nflen -= ((orthdr->hdrlen + 1) << 3);
- 			opt->opt_nflen += len;
- 			opt->srcrt = rthdr;
+-	struct radix_tree_root qrtr_tx_flow;
++	struct xarray qrtr_tx_flow;
+ 	struct mutex qrtr_tx_lock; /* for qrtr_tx_flow */
  
- 			if (cmsg->cmsg_type == IPV6_2292RTHDR && opt->dst1opt) {
- 				int dsthdrlen = ((opt->dst1opt->hdrlen+1)<<3);
+ 	struct sk_buff_head rx_queue;
+@@ -170,6 +170,7 @@ static void __qrtr_node_release(struct kref *kref)
+ 	struct qrtr_tx_flow *flow;
+ 	unsigned long flags;
+ 	void __rcu **slot;
++	unsigned long index;
  
-+				if (opt->dst0opt)
-+					opt->opt_nflen -= ipv6_optlen(opt->dst0opt);
- 				opt->opt_nflen += dsthdrlen;
- 				opt->dst0opt = opt->dst1opt;
- 				opt->dst1opt = NULL;
+ 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
+ 	/* If the node is a bridge for other nodes, there are possibly
+@@ -187,11 +188,9 @@ static void __qrtr_node_release(struct kref *kref)
+ 	skb_queue_purge(&node->rx_queue);
+ 
+ 	/* Free tx flow counters */
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
+-		radix_tree_iter_delete(&node->qrtr_tx_flow, &iter, slot);
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		kfree(flow);
+-	}
++	xa_destroy(&node->qrtr_tx_flow);
+ 	kfree(node);
+ }
+ 
+@@ -226,9 +225,7 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
+ 
+ 	key = remote_node << 32 | remote_port;
+ 
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock(&flow->resume_tx.lock);
+ 		flow->pending = 0;
+@@ -267,12 +264,13 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
+ 		return 0;
+ 
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (!flow) {
+ 		flow = kzalloc(sizeof(*flow), GFP_KERNEL);
+ 		if (flow) {
+ 			init_waitqueue_head(&flow->resume_tx);
+-			if (radix_tree_insert(&node->qrtr_tx_flow, key, flow)) {
++			if (xa_err(xa_store(&node->qrtr_tx_flow, key, flow,
++					    GFP_KERNEL))) {
+ 				kfree(flow);
+ 				flow = NULL;
+ 			}
+@@ -324,9 +322,7 @@ static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
+ 	unsigned long key = (u64)dest_node << 32 | dest_port;
+ 	struct qrtr_tx_flow *flow;
+ 
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock_irq(&flow->resume_tx.lock);
+ 		flow->tx_failed = 1;
+@@ -593,7 +589,7 @@ int qrtr_endpoint_register(struct qrtr_endpoint *ep, unsigned int nid)
+ 	node->nid = QRTR_EP_NID_AUTO;
+ 	node->ep = ep;
+ 
+-	INIT_RADIX_TREE(&node->qrtr_tx_flow, GFP_KERNEL);
++	xa_init(&node->qrtr_tx_flow);
+ 	mutex_init(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_assign(node, nid);
+@@ -621,6 +617,7 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 	struct qrtr_tx_flow *flow;
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
++	unsigned long index;
+ 	void __rcu **slot;
+ 
+ 	mutex_lock(&node->ep_lock);
+@@ -643,10 +640,8 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 
+ 	/* Wake up any transmitters waiting for resume-tx from the node */
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		wake_up_interruptible_all(&flow->resume_tx);
+-	}
+ 	mutex_unlock(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_release(node);
 -- 
 2.53.0
 
