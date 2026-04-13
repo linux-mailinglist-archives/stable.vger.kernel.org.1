@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-237147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCG2Gx8e3WlhaAkAu9opvQ
-	(envelope-from <stable+bounces-237147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:27 +0200
+	id sAwpJAkh3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-236680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309FD3EFCBE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9003F073A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B24ED301ED90
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52745328EFAD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10549311C15;
-	Mon, 13 Apr 2026 16:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA542E11B9;
+	Mon, 13 Apr 2026 16:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmdF89yW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovK6BpoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FEF30EF89;
-	Mon, 13 Apr 2026 16:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21E7306B0A;
+	Mon, 13 Apr 2026 16:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098709; cv=none; b=Yll7ABQiGnCHe4pMQLCOztb2CFL2Z85RP2TNCMkaZVHcW3STeyVsxBALUmjCgsVmOu6WVgkeo36ubd6CIJTYWGHGYUGMaEcI5ku4TdydmF4xDvJnY8IBdbXbLdCjnAYiWFWikdPij76I1u7VEaVjcRxs5cb/+bulQhRkdTqxftQ=
+	t=1776097528; cv=none; b=CnRenASm45Oq/uTMsaXQyN13BEsWtxCGZ4WnHPlBQQS3U6XYHBoH8AKNVIHDa4cmgC9+WrByYUGAeltcE4TTTrrcUaTxhlWoG9NWyzTdUW+L4ED2neLyYbLA+dtZ0UwVfVNgtRadbOwf5lxMgLePaDEPfgP5jPgTyzBy51ehr0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098709; c=relaxed/simple;
-	bh=AeAKQ+X3cC7A2fu2ZtwcWQVHfoQPG2C3yO6roa95lDg=;
+	s=arc-20240116; t=1776097528; c=relaxed/simple;
+	bh=n+nigzL3F98FBrizZdEw4RlfeSAZPoL2G4lb5u8oSIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJBwYLyRxxgc1mbIkZSoV7/qKHcQJK1chD6tpmJuByRV49HjrEVN9AXoNGqAvcMRv9TnAtUW94lgd424qQg33mOSaY+M3Y8C3HrzYOpKLo8P6Bre2/8vjK1D7J9aC74eeVDm+R3219tvJ2yWz6U0wJXV8JBhgwgB94UgtQuMisQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmdF89yW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D78BC2BCAF;
-	Mon, 13 Apr 2026 16:45:09 +0000 (UTC)
+	 MIME-Version; b=BTyXSjdY81pxKhqtHFlIiJwezQ/qG5Y6eL4mbYs0D728LnpnfmqPSwcmSp8uC501SeXrG7nBpxpA70HTTuW4jnWDAO4Nzb/4eqO4D7DobY7xqk/3pbMxafaJ6s+53STxY1VwF0T7MKBWRpFOADqecZkb8juFA9sEf9+s0olrInU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovK6BpoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789A5C2BCB0;
+	Mon, 13 Apr 2026 16:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098709;
-	bh=AeAKQ+X3cC7A2fu2ZtwcWQVHfoQPG2C3yO6roa95lDg=;
+	s=korg; t=1776097527;
+	bh=n+nigzL3F98FBrizZdEw4RlfeSAZPoL2G4lb5u8oSIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmdF89yWeVpc/9JOaS4+MyGbZrn1+/8BsRsWSdCkCXJPoLiDa5i1ZaaMeT3y6/gqv
-	 lT+KvZB7LPZ15vCUNBNdV257GGV4m2DBnIAc+jFGjviFiAd4e1O4W+SnodWQnu2jIu
-	 nbO5UXmawW49zOu9usJXFhdVPNPFHj4E03zXy9f0=
+	b=ovK6BpoFl/WoEEbKHI3ljQbmo7o2Jc6yaw86Pq8F8Payw5CfMyaZlANBoSgRjQ5PA
+	 SGtzQde3yFHvnxEaz3Z5fXpaJf4ho+ovbCd3wK3UWZdWNftgv4P0bFOMvO3OMEWUtV
+	 x7oj3dCGY4o7Hcnnl1ZLE/Er5LMFg0j+fQgIdKsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/491] powerpc/uaccess: Fix inline assembly for clang build on PPC32
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 172/570] net: ethernet: arc: emac: quiesce interrupts before requesting IRQ
 Date: Mon, 13 Apr 2026 17:55:03 +0200
-Message-ID: <20260413155821.222162596@linuxfoundation.org>
+Message-ID: <20260413155836.897979675@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,124 +67,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237147-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236680-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 309FD3EFCBE
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zju.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DF9003F073A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-[ Upstream commit 0ee95a1d458630272d0415d0ffa9424fcb606c90 ]
+commit 2503d08f8a2de618e5c3a8183b250ff4a2e2d52c upstream.
 
-Test robot reports the following error with clang-16.0.6:
+Normal RX/TX interrupts are enabled later, in arc_emac_open(), so probe
+should not see interrupt delivery in the usual case. However, hardware may
+still present stale or latched interrupt status left by firmware or the
+bootloader.
 
-   In file included from kernel/rseq.c:75:
-   include/linux/rseq_entry.h:141:3: error: invalid operand for instruction
-                   unsafe_get_user(offset, &ucs->post_commit_offset, efault);
-                   ^
-   include/linux/uaccess.h:608:2: note: expanded from macro 'unsafe_get_user'
-           arch_unsafe_get_user(x, ptr, local_label);      \
-           ^
-   arch/powerpc/include/asm/uaccess.h:518:2: note: expanded from macro 'arch_unsafe_get_user'
-           __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
-           ^
-   arch/powerpc/include/asm/uaccess.h:284:2: note: expanded from macro '__get_user_size_goto'
-           __get_user_size_allowed(x, ptr, size, __gus_retval);    \
-           ^
-   arch/powerpc/include/asm/uaccess.h:275:10: note: expanded from macro '__get_user_size_allowed'
-           case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
-                   ^
-   arch/powerpc/include/asm/uaccess.h:258:4: note: expanded from macro '__get_user_asm2'
-                   "       li %1+1,0\n"                    \
-                    ^
-   <inline asm>:7:5: note: instantiated into assembly here
-           li 31+1,0
-              ^
-   1 error generated.
+If probe later unwinds after devm_request_irq() has installed the handler,
+such a stale interrupt can still reach arc_emac_intr() during teardown and
+race with release of the associated net_device.
 
-On PPC32, for 64 bits vars a pair of registers is used. Usually the
-lower register in the pair is the high part and the higher register is
-the low part. GCC uses r3/r4 ... r11/r12 ... r14/r15 ... r30/r31
+Avoid that window by putting the device into a known quiescent state before
+requesting the IRQ: disable all EMAC interrupt sources and clear any
+pending EMAC interrupt status bits. This keeps the change hardware-focused
+and minimal, while preventing spurious IRQ delivery from leftover state.
 
-In older kernel code inline assembly was using %1 and %1+1 to represent
-64 bits values. However here it looks like clang uses r31 as high part,
-allthough r32 doesn't exist hence the error.
-
-Allthoug %1+1 should work, most places now use %L1 instead of %1+1, so
-let's do the same here.
-
-With that change, the build doesn't fail anymore and a disassembly shows
-clang uses r17/r18 and r31/r14 pair when GCC would have used r16/r17 and
-r30/r31:
-
-	Disassembly of section .fixup:
-
-	00000000 <.fixup>:
-	   0:	38 a0 ff f2 	li      r5,-14
-	   4:	3a 20 00 00 	li      r17,0
-	   8:	3a 40 00 00 	li      r18,0
-	   c:	48 00 00 00 	b       c <.fixup+0xc>
-				c: R_PPC_REL24	.text+0xbc
-	  10:	38 a0 ff f2 	li      r5,-14
-	  14:	3b e0 00 00 	li      r31,0
-	  18:	39 c0 00 00 	li      r14,0
-	  1c:	48 00 00 00 	b       1c <.fixup+0x1c>
-				1c: R_PPC_REL24	.text+0x144
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202602021825.otcItxGi-lkp@intel.com/
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/8ca3a657a650e497a96bfe7acde2f637dadab344.1770103646.git.chleroy@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e4f2379db6c6 ("ethernet/arc/arc_emac - Add new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260309132409.584966-1-fanwu01@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/uaccess.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/arc/emac_main.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 6df110c1254e2..ab9efc429615f 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -279,7 +279,7 @@ extern long __get_user_bad(void);
- 		".section .fixup,\"ax\"\n"		\
- 		"4:	li %0,%3\n"			\
- 		"	li %1,0\n"			\
--		"	li %1+1,0\n"			\
-+		"	li %L1,0\n"			\
- 		"	b 3b\n"				\
- 		".previous\n"				\
- 		EX_TABLE(1b, 4b)			\
--- 
-2.51.0
-
+--- a/drivers/net/ethernet/arc/emac_main.c
++++ b/drivers/net/ethernet/arc/emac_main.c
+@@ -934,6 +934,17 @@ int arc_emac_probe(struct net_device *nd
+ 	/* Set poll rate so that it polls every 1 ms */
+ 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
+ 
++	/*
++	 * Put the device into a known quiescent state before requesting
++	 * the IRQ. Clear only EMAC interrupt status bits here; leave the
++	 * MDIO completion bit alone and avoid writing TXPL_MASK, which is
++	 * used to force TX polling rather than acknowledge interrupts.
++	 */
++	arc_reg_set(priv, R_ENABLE, 0);
++	arc_reg_set(priv, R_STATUS, RXINT_MASK | TXINT_MASK | ERR_MASK |
++		    TXCH_MASK | MSER_MASK | RXCR_MASK |
++		    RXFR_MASK | RXFL_MASK);
++
+ 	ndev->irq = irq;
+ 	dev_info(dev, "IRQ is %d\n", ndev->irq);
+ 
 
 
 
