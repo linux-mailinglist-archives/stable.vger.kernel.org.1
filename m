@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-237168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPeOI40e3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:17 +0200
+	id 8MqPGbEZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6A43EFE0F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2131A3EF04E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 16E0B3042F31
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 415183013BA9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1886C318EF4;
-	Mon, 13 Apr 2026 16:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA87B30ACE6;
+	Mon, 13 Apr 2026 16:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqz6Y5ZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVYfm7eY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D095A318EC4;
-	Mon, 13 Apr 2026 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA3A3093CF;
+	Mon, 13 Apr 2026 16:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098763; cv=none; b=l2x4wOeQpCE4uRXQhY9wZxP1X9Ks+XTPGscLnhKqYqi/PNViedo9B1cp/vgtBilqzLunIYTbpO7382v5ClPItlzuQzLYtY1k6x32j3tVc+pEKCyQIHxJSoxkaQ4qSBATbh23Wx/txi25jJgilp+tGLfII+nZLYnUlUqCPE+Q/Js=
+	t=1776097656; cv=none; b=tPr6bbGsuEJUESBdYk2JrQGeUfV3OyotgxfSDD1fP9XwAPTEjEeSocTvBfPdscKJe9Da5d5fstatMj2/XN0v4g/oVeBt8thUzwi1AE8XBfWE/luOc6Vhl2fT7s1NxM7zir+rmSyvNhDEyDmJ6nLnJK2NonseiDhGU9fERPM28x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098763; c=relaxed/simple;
-	bh=riDxBGEQJkpRM0AT6ckRGZTWzoNKYZpz38zHk2bkBiU=;
+	s=arc-20240116; t=1776097656; c=relaxed/simple;
+	bh=pI9epuPFzySfqHakhdj0yMv0T5pek6vOMn1jbg3CiOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqVSao4Fq2sFedsM+SRHqLMJ9H3Ufmm0kTrgqZM1/XGcbHRZX4niYf9brY7hWtBGFtsINOYRwsyS6ybRZRSxG1gd+6nhzVUABcmGmZGfQTITUhyxJiT5LC8/q5skpjsSQTfQn96cBiO2xwhHXr25zs4X08zOzScaSy4L33K5EHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqz6Y5ZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664FAC2BCB3;
-	Mon, 13 Apr 2026 16:46:03 +0000 (UTC)
+	 MIME-Version; b=Ib0gGGxLTtaVLFF4elFXoZ7aGYdZCkqqRtrgqMrLGr6dABzg2BHMBU5YsAUirXHRJS5xywiunbZwatseyhAF+OLTwHwjaT0qMAIiWKMrUXkxXxFvcy8ocFKzktIT9yvCV8d6Mr6Qf2JSDi93HCbdJbvaJnm89McYUCuGfsrjO4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVYfm7eY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08331C2BCAF;
+	Mon, 13 Apr 2026 16:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098763;
-	bh=riDxBGEQJkpRM0AT6ckRGZTWzoNKYZpz38zHk2bkBiU=;
+	s=korg; t=1776097656;
+	bh=pI9epuPFzySfqHakhdj0yMv0T5pek6vOMn1jbg3CiOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqz6Y5ZNq/DroLBP3L6nRpROCkkZFrpfijcwacBXyGyRbsc9kMweBgWh3jYWigMuJ
-	 HKOEXes5eQ/zuv87DY/kKllM6tVtMvh7uLgYxgJoxho0RCd83GDuxVL9Mh6VomdJae
-	 XiM+XefLP/l9hBUg6uMAhZZYBjt7wyBKoD5Ki1IE=
+	b=uVYfm7eYxfauORysSnxc+6E1potOySwvG69BHj8ZbScaQfyvKeu3EWFTg0JseLtua
+	 mH3AMF6zHxr+Ifq1SAZvakEkbKnlkMahKxatwqmrj8bCh8/0QWjDHx1TJgrcddhzC9
+	 CHxOfUNydBgxJqSIFlaGz3VKmZ6osA6MpxLN2yAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/491] regulator: pca9450: Make IRQ optional
+	Eric Dumazet <edumazet@google.com>,
+	James Chapman <jchapman@katalix.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Qingfang Deng <dqfext@gmail.com>
+Subject: [PATCH 5.15 194/570] l2tp: do not use sock_hold() in pppol2tp_session_get_sock()
 Date: Mon, 13 Apr 2026 17:55:25 +0200
-Message-ID: <20260413155822.039941229@linuxfoundation.org>
+Message-ID: <20260413155837.727006276@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +70,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,katalix.com,redhat.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-236734-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237168-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kontron.de:email]
-X-Rspamd-Queue-Id: 4E6A43EFE0F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2131A3EF04E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 83808c54064eef620ad8645dfdcaffe125551532 ]
+commit 9b8c88f875c04d4cb9111bd5dd9291c7e9691bf5 upstream.
 
-The IRQ line might not be connected on some boards. Allow the driver
-to be probed without it.
+pppol2tp_session_get_sock() is using RCU, it must be ready
+for sk_refcnt being zero.
 
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Link: https://patch.msgid.link/20240708084107.38986-5-frieder@fris.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 5d0efaf47ee9 ("regulator: pca9450: Correct interrupt type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit ee40fb2e1eb5 ("l2tp: protect sock pointer of
+struct pppol2tp_session with RCU") was correct because it
+had a call_rcu(..., pppol2tp_put_sk) which was later removed in blamed commit.
+
+pppol2tp_recv() can use pppol2tp_session_get_sock() as well.
+
+Fixes: c5cbaef992d6 ("l2tp: refactor ppp socket/session relationship")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: James Chapman <jchapman@katalix.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/20250826134435.1683435-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/pca9450-regulator.c | 41 +++++++++++++--------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ net/l2tp/l2tp_ppp.c |   25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
-index b3d206ebb2894..6ec2ad5b9efcc 100644
---- a/drivers/regulator/pca9450-regulator.c
-+++ b/drivers/regulator/pca9450-regulator.c
-@@ -704,11 +704,6 @@ static int pca9450_i2c_probe(struct i2c_client *i2c,
- 	unsigned int device_id, i;
- 	int ret;
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -130,22 +130,12 @@ static const struct ppp_channel_ops pppo
  
--	if (!i2c->irq) {
--		dev_err(&i2c->dev, "No IRQ configured?\n");
--		return -EINVAL;
--	}
+ static const struct proto_ops pppol2tp_ops;
+ 
+-/* Retrieves the pppol2tp socket associated to a session.
+- * A reference is held on the returned socket, so this function must be paired
+- * with sock_put().
+- */
++/* Retrieves the pppol2tp socket associated to a session. */
+ static struct sock *pppol2tp_session_get_sock(struct l2tp_session *session)
+ {
+ 	struct pppol2tp_session *ps = l2tp_session_priv(session);
+-	struct sock *sk;
+ 
+-	rcu_read_lock();
+-	sk = rcu_dereference(ps->sk);
+-	if (sk)
+-		sock_hold(sk);
+-	rcu_read_unlock();
 -
- 	pca9450 = devm_kzalloc(&i2c->dev, sizeof(struct pca9450), GFP_KERNEL);
- 	if (!pca9450)
- 		return -ENOMEM;
-@@ -775,23 +770,25 @@ static int pca9450_i2c_probe(struct i2c_client *i2c,
- 		}
+-	return sk;
++	return rcu_dereference(ps->sk);
+ }
+ 
+ /* Helpers to obtain tunnel/session contexts from sockets.
+@@ -212,14 +202,13 @@ end:
+ 
+ static void pppol2tp_recv(struct l2tp_session *session, struct sk_buff *skb, int data_len)
+ {
+-	struct pppol2tp_session *ps = l2tp_session_priv(session);
+-	struct sock *sk = NULL;
++	struct sock *sk;
+ 
+ 	/* If the socket is bound, send it in to PPP's input queue. Otherwise
+ 	 * queue it on the session socket.
+ 	 */
+ 	rcu_read_lock();
+-	sk = rcu_dereference(ps->sk);
++	sk = pppol2tp_session_get_sock(session);
+ 	if (!sk)
+ 		goto no_sock;
+ 
+@@ -529,13 +518,14 @@ static void pppol2tp_show(struct seq_fil
+ 	struct l2tp_session *session = arg;
+ 	struct sock *sk;
+ 
++	rcu_read_lock();
+ 	sk = pppol2tp_session_get_sock(session);
+ 	if (sk) {
+ 		struct pppox_sock *po = pppox_sk(sk);
+ 
+ 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
+-		sock_put(sk);
+ 	}
++	rcu_read_unlock();
+ }
+ 
+ static void pppol2tp_session_init(struct l2tp_session *session)
+@@ -1541,6 +1531,7 @@ static void pppol2tp_seq_session_show(st
+ 		port = ntohs(inet->inet_sport);
  	}
  
--	ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
--					pca9450_irq_handler,
--					(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
--					"pca9450-irq", pca9450);
--	if (ret != 0) {
--		dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
--			pca9450->irq);
--		return ret;
--	}
--	/* Unmask all interrupt except PWRON/WDOG/RSVD */
--	ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_INT1_MSK,
--				IRQ_VR_FLT1 | IRQ_VR_FLT2 | IRQ_LOWVSYS |
--				IRQ_THERM_105 | IRQ_THERM_125,
--				IRQ_PWRON | IRQ_WDOGB | IRQ_RSVD);
--	if (ret) {
--		dev_err(&i2c->dev, "Unmask irq error\n");
--		return ret;
-+	if (pca9450->irq) {
-+		ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
-+						pca9450_irq_handler,
-+						(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
-+						"pca9450-irq", pca9450);
-+		if (ret != 0) {
-+			dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
-+				pca9450->irq);
-+			return ret;
-+		}
-+		/* Unmask all interrupt except PWRON/WDOG/RSVD */
-+		ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_INT1_MSK,
-+					IRQ_VR_FLT1 | IRQ_VR_FLT2 | IRQ_LOWVSYS |
-+					IRQ_THERM_105 | IRQ_THERM_125,
-+					IRQ_PWRON | IRQ_WDOGB | IRQ_RSVD);
-+		if (ret) {
-+			dev_err(&i2c->dev, "Unmask irq error\n");
-+			return ret;
-+		}
- 	}
++	rcu_read_lock();
+ 	sk = pppol2tp_session_get_sock(session);
+ 	if (sk) {
+ 		state = sk->sk_state;
+@@ -1576,8 +1567,8 @@ static void pppol2tp_seq_session_show(st
+ 		struct pppox_sock *po = pppox_sk(sk);
  
- 	/* Clear PRESET_EN bit in BUCK123_DVS to use DVS registers */
--- 
-2.51.0
-
+ 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
+-		sock_put(sk);
+ 	}
++	rcu_read_unlock();
+ }
+ 
+ static int pppol2tp_seq_show(struct seq_file *m, void *v)
 
 
 
