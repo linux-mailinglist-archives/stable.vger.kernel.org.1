@@ -1,133 +1,189 @@
-Return-Path: <stable+bounces-236126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCYlDxwG3WkZZAkAu9opvQ
-	(envelope-from <stable+bounces-236126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:05:00 +0200
+	id 4BPbOh8G3WkZZAkAu9opvQ
+	(envelope-from <stable+bounces-236127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:05:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8680D3EDAD9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD473EDAE0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8ECD308E1A6
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:58:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01F4B308E7B2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8188E3B892D;
-	Mon, 13 Apr 2026 14:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CAF3B95E4;
+	Mon, 13 Apr 2026 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUstMKA9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MU8AhLiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460983B3C18
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC053AE6E6
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776092291; cv=none; b=E3aDY+rv5QJKD1nby6CBDW0bNi4LhROACopqnow9dn+gzaZb2dO7n1ReIaZ681v8vLc0Q6VBpDe8JBjpVIlvYAKdYW9RD6oJiyzzLLP7abAC0Q4+K99aBC3Gel7cMepp5Yq5y5IpceHQP+TR9TDw5Y14bErUcGlZgS5ebbc+AAY=
+	t=1776092294; cv=none; b=FkHKMp54xS+qsteW/TKb45tOClmTj+7Zjh6JIzV/thfZEGAuvZ1u91Css2wBqu33jvxWipTz8yWeVgbOMPAbVTJqglo26pt/3I6jQS5ZOwqXjZzFnV9B+KCzt8gIiWR1VJnCGWCMx6xaeokiKPYHRszDoXQttc6B6+zwaWyC2dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776092291; c=relaxed/simple;
-	bh=IWNA2PiUP0RRHe3/WeMmJrO8/t801asoq7J0PLEDbnU=;
+	s=arc-20240116; t=1776092294; c=relaxed/simple;
+	bh=jQuK/u9JiJNUhSLI3l4lBGCbQsdF09fg8qT6DQv1UFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kiqUMz01oGWC/ciVNkPf5p9et9PLX05HnDNA3PCDjDed+FdJbjJ70/1/RXk2Z7/tARXjMd4otABTJ7OeuCED2PeMBhb+pnUevKHtrLDZqpBE+XZhFY7zOMx+YPPQ35mYbLsDnsRdmVpJGIKUBk3p85XWlm9uVsaEUtOZ+ajwtJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUstMKA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B10C2BCAF;
-	Mon, 13 Apr 2026 14:58:10 +0000 (UTC)
+	 MIME-Version; b=mOOrnOh1bGDV9+IEwb1V7D0loDfSAOoh+bzlVn+YsnkONxPQm7x2U3laqp9bT9hF6gmzw5HFMKbjcEhuHRRgbvGgquJMQy+yWJKh/zcJncxa1T692BpcKqPS7wBHDA/Fa9lZow1yd4jGVLUFI72qyLZcRqstSgGsuwTXtAecyYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MU8AhLiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED39C2BCB4;
+	Mon, 13 Apr 2026 14:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776092291;
-	bh=IWNA2PiUP0RRHe3/WeMmJrO8/t801asoq7J0PLEDbnU=;
+	s=k20201202; t=1776092294;
+	bh=jQuK/u9JiJNUhSLI3l4lBGCbQsdF09fg8qT6DQv1UFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUstMKA94Likal7McMr5Q7v/XmKzcbBz3TVpC96LTQig2heIdeij1CNwGImqBWGpJ
-	 AaWXYvoUjQ0lTEE7e0OLw2PAaSJqDarhVLYDUDIdPXGmkIG2g5sZL/kcuHwLfqm+Fl
-	 Y2F8TSj9hHFUN246ohsQvlWZqGmLmLnNfa27eKc/wI0Mype6TYlIw/fUeVXK41OuQz
-	 PenycH1gW0iJ83AaO2t6cG+zru0zhkyOo1SxfEaXTP0EMFRRLcxNea4uJJS+p4u7GE
-	 /oQZHTFyvkk2zPC4gt+4RtPE6lutMvEaLncZAD9thcPny9nAauFLQeEjN9g2tw76GJ
-	 phhS8av8VP1XA==
+	b=MU8AhLiHAXnh70MkpGK6V6k4DN8NgJgerQe6WjzIVGN/R/UeQ/cK/TooZdabETjGA
+	 nxvZOtoOdMtfUCVQdKn597/MXiHPCOXwcjr8nBHc/C+D80JLFlnnZhgnZgMiD9ymB5
+	 43xbOfZSKP/SR2UdX4x+8FBmOMVTVWgYByO6KTSAzSgE5/8ywVHvSgs3mvX6YOJFtF
+	 HDaKB9pKy+bPeX+skMtxz3OuPLN29QxvzClTX8cmBI6+JXcL/a/Jhy0kfogHOUEZKQ
+	 cBPSCaK0SHfOzaL7bhAt7vSN1AaQeRNgA2mZNtLfDncNz23rsut71zb094/BKkhFRn
+	 ei75P9KguUzDw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 7/7] arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
-Date: Mon, 13 Apr 2026 10:58:04 -0400
-Message-ID: <20260413145804.2968471-7-sashal@kernel.org>
+Subject: [PATCH 6.19.y 1/2] ocfs2: validate inline data i_size during inode read
+Date: Mon, 13 Apr 2026 10:58:10 -0400
+Message-ID: <20260413145811.2968597-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413145804.2968471-1-sashal@kernel.org>
-References: <2026041310-reluctant-amaretto-6070@gregkh>
- <20260413145804.2968471-1-sashal@kernel.org>
+In-Reply-To: <2026041349-progeny-subway-5089@gregkh>
+References: <2026041349-progeny-subway-5089@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236126-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-236127-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,c897823f699449cc3eb4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,puri.sm:email,nxp.com:email]
-X-Rspamd-Queue-Id: 8680D3EDAD9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 4AD473EDAE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 511f76bf1dce5acf8907b65a7d1bc8f7e7c0d637 ]
+[ Upstream commit 1524af3685b35feac76662cc551cbc37bd14775f ]
 
-The minimal voltage of VDD_SOC sourced from BUCK1 is 0.81V, which
-is the currently set value. However, BD71837 only guarantees accuracy
-of ±0.01V, and this still doesn't factor other reasons for actual
-voltage to slightly drop in, resulting in the possibility of running
-out of the operational range.
+When reading an inode from disk, ocfs2_validate_inode_block() performs
+various sanity checks but does not validate the size of inline data.  If
+the filesystem is corrupted, an inode's i_size can exceed the actual
+inline data capacity (id_count).
 
-Bump the voltage up to 0.85V, which should give enough headroom.
+This causes ocfs2_dir_foreach_blk_id() to iterate beyond the inline data
+buffer, triggering a use-after-free when accessing directory entries from
+freed memory.
 
-Cc: stable@vger.kernel.org
-Fixes: 8f0216b006e5 ("arm64: dts: Add a device tree for the Librem 5 phone")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+In the syzbot report:
+  - i_size was 1099511627576 bytes (~1TB)
+  - Actual inline data capacity (id_count) is typically <256 bytes
+  - A garbage rec_len (54648) caused ctx->pos to jump out of bounds
+  - This triggered a UAF in ocfs2_check_dir_entry()
+
+Fix by adding a validation check in ocfs2_validate_inode_block() to ensure
+inodes with inline data have i_size <= id_count.  This catches the
+corruption early during inode read and prevents all downstream code from
+operating on invalid data.
+
+Link: https://lkml.kernel.org/r/20251212052132.16750-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c897823f699449cc3eb4
+Tested-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251211115231.3560028-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20251212040400.6377-1-kartikey406@gmail.com/T/ [v2]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/inode.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index 251504dba3f04..6e8d041dc4b80 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -653,7 +653,7 @@ buck1_reg: BUCK1 {
- 				regulator-ramp-delay = <1250>;
- 				rohm,dvs-run-voltage = <900000>;
- 				rohm,dvs-idle-voltage = <850000>;
--				rohm,dvs-suspend-voltage = <810000>;
-+				rohm,dvs-suspend-voltage = <850000>;
- 				regulator-always-on;
- 			};
+diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
+index b5fcc2725a296..7b7f1f3682da5 100644
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1494,12 +1494,25 @@ int ocfs2_validate_inode_block(struct super_block *sb,
+ 		goto bail;
+ 	}
  
+-	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
+-	    le32_to_cpu(di->i_clusters)) {
+-		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
+-				 (unsigned long long)bh->b_blocknr,
+-				 le32_to_cpu(di->i_clusters));
+-		goto bail;
++	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
++		struct ocfs2_inline_data *data = &di->id2.i_data;
++
++		if (le32_to_cpu(di->i_clusters)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode %llu: %u clusters\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le32_to_cpu(di->i_clusters));
++			goto bail;
++		}
++
++		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
++					 (unsigned long long)bh->b_blocknr,
++					 (unsigned long long)le64_to_cpu(di->i_size),
++					 le16_to_cpu(data->id_count));
++			goto bail;
++		}
+ 	}
+ 
+ 	if (le32_to_cpu(di->i_flags) & OCFS2_CHAIN_FL) {
 -- 
 2.53.0
 
