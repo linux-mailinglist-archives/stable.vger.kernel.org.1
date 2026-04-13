@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-237237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236767-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFiiGpgl3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:20 +0200
+	id eFamEmMf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236767-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B443F12C0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A47DB3F0192
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C73F5306443A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2EA2432A8CBA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB2931619A;
-	Mon, 13 Apr 2026 16:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C9F30EF6B;
+	Mon, 13 Apr 2026 16:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fX3g70G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LamDpaxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119723164BB;
-	Mon, 13 Apr 2026 16:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9248D30DED5;
+	Mon, 13 Apr 2026 16:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098939; cv=none; b=eBZZo07m3lXVM131HXLYkGK1yKCS2Y4aaFnmaSM3pPaHZVGtX27f1C1axmllxhjhvsRgnQkA/qmP8AqUVzc5wmDXzxSM4CXHvYTUB7/bRvo0j5tgGShOf51unXMVYFNyfPy4dtbfJQgdSiNgvcFo+031/WdqPM2IqxNylQ55DVc=
+	t=1776097741; cv=none; b=UZ6br9wK3ITUxkgq84ubogZwhF13k3dObFo4J7iy5Y98rMA9PLuE7org0kep/196T9MoRXcZHGJj34mJdP5G2E6stymgjASftsxkLjLORgh8nG9QHqhDcDV28H3BlK/BzL78kcdsMOp4ANx24/eYzfOc5lPCUBA4DHnF+2yuwjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098939; c=relaxed/simple;
-	bh=qa27mWJRGBgCKTxaRqKncRLXCeitxf1QUjldlvVOnww=;
+	s=arc-20240116; t=1776097741; c=relaxed/simple;
+	bh=/1m+QkTsMzRtkCi6jLho4Hr999eag70DYLoUs0H86yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mB9fKvpc43GD8T4xZ6yKNrX46eBdLzBclj6lnjYT3yByDe+Ti6iRbUcP+AZ+kDUcnA9UhUauCmMA03+H0DvfOQG6tA2PtN7EVy20DKR5t1gINrBv88YixtjPxsMj7l0zhmzRfvpLa8nPgAjrppvLNnbeo0zaQP8HSk2BeVkbmKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fX3g70G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DA5C2BCAF;
-	Mon, 13 Apr 2026 16:48:58 +0000 (UTC)
+	 MIME-Version; b=aFpdRYnac9SGsnpeWT3UwUxwyAT57jnOobQO1BbdEZ3k/tyoew2wtQA6KDJRQmkJUbrhiRyjVjj8OblOE13iY39kyi93ttcnmwVI7/SYUGuKe70q8EcguMw6lkW/3/WmkXH3kAhrw407JOupwSEqWom/imX77BaykCss7hnulmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LamDpaxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75FBC2BCB0;
+	Mon, 13 Apr 2026 16:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098938;
-	bh=qa27mWJRGBgCKTxaRqKncRLXCeitxf1QUjldlvVOnww=;
+	s=korg; t=1776097741;
+	bh=/1m+QkTsMzRtkCi6jLho4Hr999eag70DYLoUs0H86yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fX3g70G8Qtgjg6zazOZtOO0dXAQtlqXKk49KHFgXI2VNNPNrE/eRrzDfi5wHuGP5
-	 BJ1uAhuceTq5+1e6HJ+B27EAmeglgt1WZxkZS7gmbKwsaYmmXMNk/N2Y2ShioI2dCP
-	 WbF/SMFI++yIvV51GXrp7WPRk5X5/YOrDV/lQXro=
+	b=LamDpaxBcKtRaYqKLpak5q5ja6Zb+R++wOYjl08/wMlwHszu/Aj3cH9MnWMacnnrf
+	 4SIEQDwAHkMWBL1Exlq5s+mMeCW54HSUswnch8Ii7YB7UMKOmKHfD9wXu0gIOzLrR4
+	 90ZGT1AZZNHhC4dJ+RRn71NXYt8NdZ09W9XKJJ4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 140/491] NFC: nxp-nci: allow GPIOs to sleep
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 254/570] netfilter: ctnetlink: remove refcounting in expectation dumpers
 Date: Mon, 13 Apr 2026 17:56:25 +0200
-Message-ID: <20260413155824.280258517@linuxfoundation.org>
+Message-ID: <20260413155839.984263146@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,63 +78,187 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237237-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236767-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,gehealthcare.com:email]
-X-Rspamd-Queue-Id: 05B443F12C0
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A47DB3F0192
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
+[ Upstream commit 1492e3dcb2be3aa46d1963da96aa9593e4e4db5a ]
 
-Allow the firmware and enable GPIOs to sleep.
+Same pattern as previous patch: do not keep the expectation object
+alive via refcount, only store a cookie value and then use that
+as the skip hint for dump resumption.
 
-This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
-connected to I2C GPIO expanders.
+AFAICS this has the same issue as the one resolved in the conntrack
+dumper, when we do
+  if (!refcount_inc_not_zero(&exp->use))
 
--- >8 --
-kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
--- >8 --
+to increment the refcount, there is a chance that exp == last, which
+causes a double-increment of the refcount and subsequent memory leak.
 
-Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cf6994c2b981 ("[NETFILTER]: nf_conntrack_netlink: sync expectation dumping with conntrack table dumping")
+Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 5cb81eeda909 ("netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/nxp-nci/i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 41 ++++++++++++----------------
+ 1 file changed, 17 insertions(+), 24 deletions(-)
 
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 50f7531221c38..ba8d2c854fa89 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3160,23 +3160,27 @@ ctnetlink_expect_event(unsigned int events, const struct nf_exp_event *item)
+ 	return 0;
+ }
+ #endif
+-static int ctnetlink_exp_done(struct netlink_callback *cb)
++
++static unsigned long ctnetlink_exp_id(const struct nf_conntrack_expect *exp)
  {
- 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
+-	if (cb->args[1])
+-		nf_ct_expect_put((struct nf_conntrack_expect *)cb->args[1]);
+-	return 0;
++	unsigned long id = (unsigned long)exp;
++
++	id += nf_ct_get_id(exp->master);
++	id += exp->class;
++
++	return id ? id : 1;
+ }
  
--	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
--	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
- 	usleep_range(10000, 15000);
+ static int
+ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	struct net *net = sock_net(skb->sk);
+-	struct nf_conntrack_expect *exp, *last;
+ 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
+ 	u_int8_t l3proto = nfmsg->nfgen_family;
++	unsigned long last_id = cb->args[1];
++	struct nf_conntrack_expect *exp;
  
- 	if (mode == NXP_NCI_MODE_COLD)
+ 	rcu_read_lock();
+-	last = (struct nf_conntrack_expect *)cb->args[1];
+ 	for (; cb->args[0] < nf_ct_expect_hsize; cb->args[0]++) {
+ restart:
+ 		hlist_for_each_entry_rcu(exp, &nf_ct_expect_hash[cb->args[0]],
+@@ -3188,7 +3192,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 				continue;
+ 
+ 			if (cb->args[1]) {
+-				if (exp != last)
++				if (ctnetlink_exp_id(exp) != last_id)
+ 					continue;
+ 				cb->args[1] = 0;
+ 			}
+@@ -3197,9 +3201,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 						    cb->nlh->nlmsg_seq,
+ 						    IPCTNL_MSG_EXP_NEW,
+ 						    exp) < 0) {
+-				if (!refcount_inc_not_zero(&exp->use))
+-					continue;
+-				cb->args[1] = (unsigned long)exp;
++				cb->args[1] = ctnetlink_exp_id(exp);
+ 				goto out;
+ 			}
+ 		}
+@@ -3210,32 +3212,30 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 	}
+ out:
+ 	rcu_read_unlock();
+-	if (last)
+-		nf_ct_expect_put(last);
+-
+ 	return skb->len;
+ }
+ 
+ static int
+ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+-	struct nf_conntrack_expect *exp, *last;
+ 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
+ 	struct nf_conn *ct = cb->data;
+ 	struct nf_conn_help *help = nfct_help(ct);
+ 	u_int8_t l3proto = nfmsg->nfgen_family;
++	unsigned long last_id = cb->args[1];
++	struct nf_conntrack_expect *exp;
+ 
+ 	if (cb->args[0])
+ 		return 0;
+ 
+ 	rcu_read_lock();
+-	last = (struct nf_conntrack_expect *)cb->args[1];
++
+ restart:
+ 	hlist_for_each_entry_rcu(exp, &help->expectations, lnode) {
+ 		if (l3proto && exp->tuple.src.l3num != l3proto)
+ 			continue;
+ 		if (cb->args[1]) {
+-			if (exp != last)
++			if (ctnetlink_exp_id(exp) != last_id)
+ 				continue;
+ 			cb->args[1] = 0;
+ 		}
+@@ -3243,9 +3243,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 					    cb->nlh->nlmsg_seq,
+ 					    IPCTNL_MSG_EXP_NEW,
+ 					    exp) < 0) {
+-			if (!refcount_inc_not_zero(&exp->use))
+-				continue;
+-			cb->args[1] = (unsigned long)exp;
++			cb->args[1] = ctnetlink_exp_id(exp);
+ 			goto out;
+ 		}
+ 	}
+@@ -3256,9 +3254,6 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 	cb->args[0] = 1;
+ out:
+ 	rcu_read_unlock();
+-	if (last)
+-		nf_ct_expect_put(last);
+-
+ 	return skb->len;
+ }
+ 
+@@ -3277,7 +3272,6 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
+ 	struct nf_conntrack_zone zone;
+ 	struct netlink_dump_control c = {
+ 		.dump = ctnetlink_exp_ct_dump_table,
+-		.done = ctnetlink_exp_done,
+ 	};
+ 
+ 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
+@@ -3327,7 +3321,6 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
+ 		else {
+ 			struct netlink_dump_control c = {
+ 				.dump = ctnetlink_exp_dump_table,
+-				.done = ctnetlink_exp_done,
+ 			};
+ 			return netlink_dump_start(info->sk, skb, info->nlh, &c);
+ 		}
+-- 
+2.51.0
+
 
 
 
