@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHUxNhsd3WlUaAkAu9opvQ
-	(envelope-from <stable+bounces-236857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:07 +0200
+	id eDMZJw4m3WlcaQkAu9opvQ
+	(envelope-from <stable+bounces-237321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216BF3EF968
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE863F13C9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F64F303FFC2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BD743256B2C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8050E27466A;
-	Mon, 13 Apr 2026 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7DA31717E;
+	Mon, 13 Apr 2026 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcNOqWFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d99knWpf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435AE225A38;
-	Mon, 13 Apr 2026 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33831313298;
+	Mon, 13 Apr 2026 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097971; cv=none; b=au/am1KlyUakcXkiaaBuQvyve+gqxU/a/25+uXGRr4NjF4iDr7F4by1N8XN4SEdXisSnz0uhvc/r/bbadZGbriWO8wfSidsqMsWh9hst5TLG2nYQGQMw3mWZGZhhX19XTN9Gi9Y+7K29oX7L0pZ8QwstN9B9+6i8/0vZF0wAvik=
+	t=1776099153; cv=none; b=csyK3n1LM07NA/boM0x9pPeeKTGSDpd9/qvK12joSoyqWiSAWhnLCpVd3+HdPsBVhVlXsrnz82rdi3gzldwqAHyAx0CRnBQzhMwfqowNf1OvYmjWqr0V/EvzrPr/6A6zrRZg6p0bM7oLSXEzmNwl25qoF8wfGbYDvxcLW311UXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097971; c=relaxed/simple;
-	bh=a9QXRB66w0SKTMTMDT6kt39nWBxvZDMwTtE7aKBH05c=;
+	s=arc-20240116; t=1776099153; c=relaxed/simple;
+	bh=A3amAmm3RjVlKoQrrLPf6jeBy3CulXm0hKKG2ygq38Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnAPFk9dl6CSk2dju9Ar20dVzb+xPKgVnlzhT9q4IX0XC6HnIf1DdA8NHUjSyJJ6DrECxESuQ4gaLPAccp3767RDcnAxoN4i1bNphQNTu/n6iRW/XEM3ClNM9sUQi/5C7ngu+9RrdKN58Ikq0uHKS9vd1HJuM5/kbvmF7Brlsrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcNOqWFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D20C2BCB0;
-	Mon, 13 Apr 2026 16:32:50 +0000 (UTC)
+	 MIME-Version; b=HRJ2gpd8xm3Hnie0NVtLELC2dbE2MOh5/2L3LbVJODXrnm+Zn79hnAMitUtRS+p1LR+p1NT3yVKSsejTfZ7g1PmrC64IOS2/84EFGlFJ4B3v0UPnDsqhi/hkmvwJsLRSD9h05jArSruUO98qz9HHH2QRdNZ2dkuvJCTWVdyFEt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d99knWpf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50C4C2BCAF;
+	Mon, 13 Apr 2026 16:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097971;
-	bh=a9QXRB66w0SKTMTMDT6kt39nWBxvZDMwTtE7aKBH05c=;
+	s=korg; t=1776099153;
+	bh=A3amAmm3RjVlKoQrrLPf6jeBy3CulXm0hKKG2ygq38Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HcNOqWFbQDhWyiF4tHppK+9XqJxdd5KsvJM00ifyytYk9+R9cXxVoLg9PiZo2K4wv
-	 w8tBLXL7X09vYpkMv0WgBmod580E8UPlc3VaTSt1fmqL3SX36f2JYKVxxEn5hE/6xc
-	 Dnc6fVLgwKVMdRl4CwA82lwMhCUBCysCtayRW8hk=
+	b=d99knWpfhg5bSpMwHey7F44Lprn98cVzIBSYXYgYL8c5TbGz6jbJgck+MBZBafVjT
+	 A0CayE3wQvasqWDqcAxAPOBFajX/DdsIy0H3g51Rd6GIDCm127kkDFUITrM2yTL/i4
+	 0xGErdgaO7m/os4eiru7DA7Vj+a03ZAJ24GpRvAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Valerio <pvalerio@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kamal Dasu <kdasu.kdev@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 344/570] net: macb: use the current queue number for stats
+Subject: [PATCH 5.10 230/491] mtd: rawnand: brcmnand: read/write oob during EDU transfer
 Date: Mon, 13 Apr 2026 17:57:55 +0200
-Message-ID: <20260413155843.377146363@linuxfoundation.org>
+Message-ID: <20260413155827.670342452@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,128 +64,200 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236857-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237321-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,tipi-net.de:email]
-X-Rspamd-Queue-Id: 216BF3EF968
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email]
+X-Rspamd-Queue-Id: EDE863F13C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Valerio <pvalerio@redhat.com>
+From: Kamal Dasu <kdasu.kdev@gmail.com>
 
-[ Upstream commit 72d96e4e24bbefdcfbc68bdb9341a05d8f5cb6e5 ]
+[ Upstream commit a071912636cc3420f54e2a6312c1625ac763cf03 ]
 
-There's a potential mismatch between the memory reserved for statistics
-and the amount of memory written.
+Added support to read/write oob during EDU transfers.
 
-gem_get_sset_count() correctly computes the number of stats based on the
-active queues, whereas gem_get_ethtool_stats() indiscriminately copies
-data using the maximum number of queues, and in the case the number of
-active queues is less than MACB_MAX_QUEUES, this results in a OOB write
-as observed in the KASAN splat.
-
-==================================================================
-BUG: KASAN: vmalloc-out-of-bounds in gem_get_ethtool_stats+0x54/0x78
-  [macb]
-Write of size 760 at addr ffff80008080b000 by task ethtool/1027
-
-CPU: [...]
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: raspberrypi rpi/rpi, BIOS 2025.10 10/01/2025
-Call trace:
- show_stack+0x20/0x38 (C)
- dump_stack_lvl+0x80/0xf8
- print_report+0x384/0x5e0
- kasan_report+0xa0/0xf0
- kasan_check_range+0xe8/0x190
- __asan_memcpy+0x54/0x98
- gem_get_ethtool_stats+0x54/0x78 [macb
-   926c13f3af83b0c6fe64badb21ec87d5e93fcf65]
- dev_ethtool+0x1220/0x38c0
- dev_ioctl+0x4ac/0xca8
- sock_do_ioctl+0x170/0x1d8
- sock_ioctl+0x484/0x5d8
- __arm64_sys_ioctl+0x12c/0x1b8
- invoke_syscall+0xd4/0x258
- el0_svc_common.constprop.0+0xb4/0x240
- do_el0_svc+0x48/0x68
- el0_svc+0x40/0xf8
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1b0/0x1b8
-
-The buggy address belongs to a 1-page vmalloc region starting at
-  0xffff80008080b000 allocated at dev_ethtool+0x11f0/0x38c0
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000
-  index:0xffff00000a333000 pfn:0xa333
-flags: 0x7fffc000000000(node=0|zone=0|lastcpupid=0x1ffff)
-raw: 007fffc000000000 0000000000000000 dead000000000122 0000000000000000
-raw: ffff00000a333000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff80008080b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff80008080b100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff80008080b180: 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                                  ^
- ffff80008080b200: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- ffff80008080b280: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-==================================================================
-
-Fix it by making sure the copied size only considers the active number of
-queues.
-
-Fixes: 512286bbd4b7 ("net: macb: Added some queue statistics")
-Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260323191634.2185840-1-pvalerio@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20210311170909.9031-1-kdasu.kdev@gmail.com
+Stable-dep-of: da9ba4dcc01e ("mtd: rawnand: brcmnand: skip DMA during panic write")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 59 +++++++++++++++++++++---
+ 1 file changed, 52 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 6a3e9082bda8c..a0beb6eb505da 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2977,7 +2977,7 @@ static void gem_get_ethtool_stats(struct net_device *dev,
- 	spin_lock_irq(&bp->stats_lock);
- 	gem_update_stats(bp);
- 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
--			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
-+			* (GEM_STATS_LEN + QUEUE_STATS_LEN * bp->num_queues));
- 	spin_unlock_irq(&bp->stats_lock);
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index cb35090510470..a101df3b19f70 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -245,6 +245,9 @@ struct brcmnand_controller {
+ 	u32                     edu_ext_addr;
+ 	u32                     edu_cmd;
+ 	u32                     edu_config;
++	int			sas; /* spare area size, per flash cache */
++	int			sector_size_1k;
++	u8			*oob;
+ 
+ 	/* flash_dma reg */
+ 	const u16		*flash_dma_offsets;
+@@ -252,7 +255,7 @@ struct brcmnand_controller {
+ 	dma_addr_t		dma_pa;
+ 
+ 	int (*dma_trans)(struct brcmnand_host *host, u64 addr, u32 *buf,
+-			 u32 len, u8 dma_cmd);
++			 u8 *oob, u32 len, u8 dma_cmd);
+ 
+ 	/* in-memory cache of the FLASH_CACHE, used only for some commands */
+ 	u8			flash_cache[FC_BYTES];
+@@ -1527,6 +1530,23 @@ static irqreturn_t brcmnand_edu_irq(int irq, void *data)
+ 		edu_writel(ctrl, EDU_EXT_ADDR, ctrl->edu_ext_addr);
+ 		edu_readl(ctrl, EDU_EXT_ADDR);
+ 
++		if (ctrl->oob) {
++			if (ctrl->edu_cmd == EDU_CMD_READ) {
++				ctrl->oob += read_oob_from_regs(ctrl,
++							ctrl->edu_count + 1,
++							ctrl->oob, ctrl->sas,
++							ctrl->sector_size_1k);
++			} else {
++				brcmnand_write_reg(ctrl, BRCMNAND_CMD_ADDRESS,
++						   ctrl->edu_ext_addr);
++				brcmnand_read_reg(ctrl, BRCMNAND_CMD_ADDRESS);
++				ctrl->oob += write_oob_to_regs(ctrl,
++							       ctrl->edu_count,
++							       ctrl->oob, ctrl->sas,
++							       ctrl->sector_size_1k);
++			}
++		}
++
+ 		mb(); /* flush previous writes */
+ 		edu_writel(ctrl, EDU_CMD, ctrl->edu_cmd);
+ 		edu_readl(ctrl, EDU_CMD);
+@@ -1908,9 +1928,10 @@ static void brcmnand_write_buf(struct nand_chip *chip, const uint8_t *buf,
+  *  Kick EDU engine
+  */
+ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
+-			      u32 len, u8 cmd)
++			      u8 *oob, u32 len, u8 cmd)
+ {
+ 	struct brcmnand_controller *ctrl = host->ctrl;
++	struct brcmnand_cfg *cfg = &host->hwcfg;
+ 	unsigned long timeo = msecs_to_jiffies(200);
+ 	int ret = 0;
+ 	int dir = (cmd == CMD_PAGE_READ ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
+@@ -1918,6 +1939,9 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
+ 	unsigned int trans = len >> FC_SHIFT;
+ 	dma_addr_t pa;
+ 
++	dev_dbg(ctrl->dev, "EDU %s %p:%p\n", ((edu_cmd == EDU_CMD_READ) ?
++					      "read" : "write"), buf, oob);
++
+ 	pa = dma_map_single(ctrl->dev, buf, len, dir);
+ 	if (dma_mapping_error(ctrl->dev, pa)) {
+ 		dev_err(ctrl->dev, "unable to map buffer for EDU DMA\n");
+@@ -1929,6 +1953,8 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
+ 	ctrl->edu_ext_addr = addr;
+ 	ctrl->edu_cmd = edu_cmd;
+ 	ctrl->edu_count = trans;
++	ctrl->sas = cfg->spare_area_size;
++	ctrl->oob = oob;
+ 
+ 	edu_writel(ctrl, EDU_DRAM_ADDR, (u32)ctrl->edu_dram_addr);
+ 	edu_readl(ctrl,  EDU_DRAM_ADDR);
+@@ -1937,6 +1963,16 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
+ 	edu_writel(ctrl, EDU_LENGTH, FC_BYTES);
+ 	edu_readl(ctrl, EDU_LENGTH);
+ 
++	if (ctrl->oob && (ctrl->edu_cmd == EDU_CMD_WRITE)) {
++		brcmnand_write_reg(ctrl, BRCMNAND_CMD_ADDRESS,
++				   ctrl->edu_ext_addr);
++		brcmnand_read_reg(ctrl, BRCMNAND_CMD_ADDRESS);
++		ctrl->oob += write_oob_to_regs(ctrl,
++					       1,
++					       ctrl->oob, ctrl->sas,
++					       ctrl->sector_size_1k);
++	}
++
+ 	/* Start edu engine */
+ 	mb(); /* flush previous writes */
+ 	edu_writel(ctrl, EDU_CMD, ctrl->edu_cmd);
+@@ -1951,6 +1987,14 @@ static int brcmnand_edu_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
+ 
+ 	dma_unmap_single(ctrl->dev, pa, len, dir);
+ 
++	/* read last subpage oob */
++	if (ctrl->oob && (ctrl->edu_cmd == EDU_CMD_READ)) {
++		ctrl->oob += read_oob_from_regs(ctrl,
++						1,
++						ctrl->oob, ctrl->sas,
++						ctrl->sector_size_1k);
++	}
++
+ 	/* for program page check NAND status */
+ 	if (((brcmnand_read_reg(ctrl, BRCMNAND_INTFC_STATUS) &
+ 	      INTFC_FLASH_STATUS) & NAND_STATUS_FAIL) &&
+@@ -2060,7 +2104,7 @@ static void brcmnand_dma_run(struct brcmnand_host *host, dma_addr_t desc)
  }
  
+ static int brcmnand_dma_trans(struct brcmnand_host *host, u64 addr, u32 *buf,
+-			      u32 len, u8 dma_cmd)
++			      u8 *oob, u32 len, u8 dma_cmd)
+ {
+ 	struct brcmnand_controller *ctrl = host->ctrl;
+ 	dma_addr_t buf_pa;
+@@ -2205,8 +2249,9 @@ static int brcmnand_read(struct mtd_info *mtd, struct nand_chip *chip,
+ try_dmaread:
+ 	brcmnand_clear_ecc_addr(ctrl);
+ 
+-	if (ctrl->dma_trans && !oob && flash_dma_buf_ok(buf)) {
+-		err = ctrl->dma_trans(host, addr, buf,
++	if (ctrl->dma_trans && (has_edu(ctrl) || !oob) &&
++	    flash_dma_buf_ok(buf)) {
++		err = ctrl->dma_trans(host, addr, buf, oob,
+ 				      trans * FC_BYTES,
+ 				      CMD_PAGE_READ);
+ 
+@@ -2354,8 +2399,8 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
+ 	for (i = 0; i < ctrl->max_oob; i += 4)
+ 		oob_reg_write(ctrl, i, 0xffffffff);
+ 
+-	if (use_dma(ctrl) && !oob && flash_dma_buf_ok(buf)) {
+-		if (ctrl->dma_trans(host, addr, (u32 *)buf, mtd->writesize,
++	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
++		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
+ 				    CMD_PROGRAM_PAGE))
+ 
+ 			ret = -EIO;
 -- 
 2.51.0
 
