@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-236407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHgUJ+0b3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:05 +0200
+	id UMYeL1En3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3582F3EF6D1
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3FA3F164A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 032DB30EC7AB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D219C30DFC2D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AE0274B58;
-	Mon, 13 Apr 2026 16:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADB433F390;
+	Mon, 13 Apr 2026 17:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPVIKoTe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWNmM8Jp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584AC25DB12;
-	Mon, 13 Apr 2026 16:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEACD33F5AA;
+	Mon, 13 Apr 2026 17:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096826; cv=none; b=YOcWsk7/JtXlH5+2eKAulB5eKioG60jOsmkF77ZYgKO6KeKQPyTL0QvY9IkVXBan9MUPWdAGRyqlcFGm8KRByAMbYZOZwplmptQm8rHPOX6YDdtE9tm8RmHtxsm3J2J8WPnWN/+N47yHZjP+Lgzic4xt1PX4bVfc/iCsd3SLC2U=
+	t=1776099612; cv=none; b=SXEs6GV0Im18fbkziRPu9DH7VlPZkLkcCzjhOZiuv+hZGhWDQht4y+biMVv7lWjLNm2KVrDDSdmfQwlaWCRmOLyYuguJOH/Q0y4ITbc18be0DHea4yaHG1CZivCmSeXg3+ZPg4HW0gLmFT3eAOb+dI27DwIoBYAaQmY3Qhrs28Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096826; c=relaxed/simple;
-	bh=c6VGH40ZvsQMh1P3d0ogdaBu0cQvHt4Dd1T7KkShAAI=;
+	s=arc-20240116; t=1776099612; c=relaxed/simple;
+	bh=guu2Dtw0bKLwu8hoI6oRxqT2fSrLCIPSekJ7DHDt8uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MR5hUvVPv/DCXwDbPc9xmCQHTudWPdlGt2KV1ToLxNl/9YxgnrKrR9NyNddbojA0wfi52A/GYDYMzVuOY4XHnn30DK4+F/HzVihtHJlXKZFjjaFp2R77xB2QxP92yi+K8DuUah6pU1nGdlbQj3wXyt41V5819Bko7aywMPcfcPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPVIKoTe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E305DC2BCAF;
-	Mon, 13 Apr 2026 16:13:45 +0000 (UTC)
+	 MIME-Version; b=My5+LYXDLKS1YoMnflQj1ywvdJPCSxP+lVGJJTsMFgHXqAZM5EI4/iORufZQdTBNklnGeevn+w3Sj4g9Z+IuyDKoyLfAgbnza1KwuIi0Igv5wFgwxv3F2LCIkj7lHsB1GdzCruu7dSwVj3gjrupFYL31q7UJr5QUDKGYDsF1ARA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWNmM8Jp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B82C2BCAF;
+	Mon, 13 Apr 2026 17:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096826;
-	bh=c6VGH40ZvsQMh1P3d0ogdaBu0cQvHt4Dd1T7KkShAAI=;
+	s=korg; t=1776099612;
+	bh=guu2Dtw0bKLwu8hoI6oRxqT2fSrLCIPSekJ7DHDt8uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPVIKoTeLDCqWzSPoGE/3wiwi5/P6OgVvvkXoUekQzpPylP17fJz7oiM4DK3p0Ker
-	 xpBJNlQ9h2yrZSCQN8q/QU4jnI0Nq7HmUiDcxgPV6MSoy8j/tUuPtow8VomF7Stjiw
-	 30lgtOAuyIYf9hTknHzkhqhIduQwEYDJRTJMmcJo=
+	b=HWNmM8Jp0UDRRmTvN6NHArbfRDdEMHZc55og9GfsNx5jjpCmCU7KPEKehv+jNTzMa
+	 smaagOOtGT48JWBZFrO1c+mjgbNe2yar6XVNwkGAFadz4HrMDgG9D+hjJd1vXKcViO
+	 HC8sKspSvJb7FkizTZ9h6EHJ7w8OPjzi9WTBUfU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Li Li <boolli@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.12 57/70] idpf: set the payload size before calling the async handler
+	Sebastian Urban <surban@surban.net>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 407/491] usb: gadget: dummy_hcd: fix premature URB completion when ZLP follows partial transfer
 Date: Mon, 13 Apr 2026 18:00:52 +0200
-Message-ID: <20260413155730.313761607@linuxfoundation.org>
+Message-ID: <20260413155834.269280840@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,66 +73,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236407-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237499-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 3582F3EF6D1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,harvard.edu:email,surban.net:email]
+X-Rspamd-Queue-Id: 1C3FA3F164A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Sebastian Urban <surban@surban.net>
 
-commit 8e2a2420e267a515f6db56a6e9570b5cacd92919 upstream.
+commit f50200dd44125e445a6164e88c217472fa79cdbc upstream.
 
-Set the payload size before forwarding the reply to the async handler.
-Without this, xn->reply_sz will be 0 and idpf_mac_filter_async_handler()
-will never get past the size check.
+When a gadget request is only partially transferred in transfer()
+because the per-frame bandwidth budget is exhausted, the loop advances
+to the next queued request. If that next request is a zero-length
+packet (ZLP), len evaluates to zero and the code takes the
+unlikely(len == 0) path, which sets is_short = 1. This bypasses the
+bandwidth guard ("limit < ep->ep.maxpacket && limit < len") that
+lives in the else branch and would otherwise break out of the loop for
+non-zero requests. The is_short path then completes the URB before all
+data from the first request has been transferred.
 
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Li Li <boolli@google.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reproducer (bulk IN, high speed):
+
+  Device side (FunctionFS with Linux AIO):
+    1. Queue a 65024-byte write via io_submit (127 * 512, i.e. a
+       multiple of the HS bulk max packet size).
+    2. Immediately queue a zero-length write (ZLP) via io_submit.
+
+  Host side:
+    3. Submit a 65536-byte bulk IN URB.
+
+  Expected: URB completes with actual_length = 65024.
+  Actual:   URB completes with actual_length = 53248, losing 11776
+            bytes that leak into subsequent URBs.
+
+At high speed the per-frame budget is 53248 bytes (512 * 13 * 8).
+The 65024-byte request exhausts this budget after 53248 bytes, leaving
+the request incomplete (req->req.actual < req->req.length). Neither
+the request nor the URB is finished, and rescan is 0, so the loop
+advances to the ZLP. For the ZLP, dev_len = 0, so len = min(12288, 0)
+= 0, taking the unlikely(len == 0) path and setting is_short = 1.
+The is_short handler then sets *status = 0, completing the URB with
+only 53248 of the expected 65024 bytes.
+
+Fix this by breaking out of the loop when the current request has
+remaining data (req->req.actual < req->req.length). The request
+resumes on the next timer tick, preserving correct data ordering.
+
+Signed-off-by: Sebastian Urban <surban@surban.net>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260315151045.1155850-1-surban@surban.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/udc/dummy_hcd.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -641,6 +641,10 @@ idpf_vc_xn_forward_reply(struct idpf_ada
- 		err = -ENXIO;
- 		goto out_unlock;
- 	case IDPF_VC_XN_ASYNC:
-+		/* Set reply_sz from the actual payload so that async_handler
-+		 * can evaluate the response.
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -1521,6 +1521,12 @@ top:
+ 		/* rescan to continue with any other queued i/o */
+ 		if (rescan)
+ 			goto top;
++
++		/* request not fully transferred; stop iterating to
++		 * preserve data ordering across queued requests.
 +		 */
-+		xn->reply_sz = ctlq_msg->data_len;
- 		err = idpf_vc_xn_forward_async(adapter, xn, ctlq_msg);
- 		idpf_vc_xn_unlock(xn);
- 		return err;
++		if (req->req.actual < req->req.length)
++			break;
+ 	}
+ 	return sent;
+ }
 
 
 
