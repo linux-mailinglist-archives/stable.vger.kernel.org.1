@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIiCOQIf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-236998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:14 +0200
+	id gB68J80b3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E236C3EFFDA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BC33EF675
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0BBBA30601A7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5F6130868B0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5E130BF68;
-	Mon, 13 Apr 2026 16:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7372773DE;
+	Mon, 13 Apr 2026 16:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1B5pEAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSsjN99H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E7C1D5AD4;
-	Mon, 13 Apr 2026 16:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D25826F293;
+	Mon, 13 Apr 2026 16:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098326; cv=none; b=uLohIUNCFckgkwvLwozy4zcnldRDs79AKa5FOgMomp51Jm7QZUNQ0d4jgv25CgFwczymXfSPDhMS08gMF8+nBDDmX6WjjIPUR4dyyOlrwgFvEP++arUe3gXytr6SgFaP7SO93jhwJRBBoXkppI+NbSFlAanSEIKryk9S8ZFrREw=
+	t=1776096756; cv=none; b=IfRtk1JoVQxHD+BRNQ3loXudxDgAR95BEHXpCuE+F63sJiyl7Y4Lb1RJS9U6kiI60fyggXDVEH12nGmKNT6Kj+sWXJ8bjFaDfdreuXifBS75r9TUZmw5ASuf0bF0ezqkZcXjfKN9WsSAQN5qMakcHV6A68FnOz1idj333p8EhtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098326; c=relaxed/simple;
-	bh=HG1A7IVJUwkTcvRNLTTnPI0JjW5+OTrAuP3vYx5BlYI=;
+	s=arc-20240116; t=1776096756; c=relaxed/simple;
+	bh=EkRlO0bex6DW/78ravCFS1t+Cf95Tw3aALPoH9RlMPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBA7cqvw2SY+oPEJcXyA8iOOSFYtABppUZ4KhC+kCcAoKkiBWtcl4Id+XpvQA+Nysny9Luzd7VV4hBgBCtoDLaBmnyNS5/MUZkfEW2D5YflcNZB2ETwVfY4cZVLcWOTVy5if0MWapfbxV9sXNpj8kJlWlCxMB791AJ5kSusqIgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1B5pEAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9966C2BCB0;
-	Mon, 13 Apr 2026 16:38:45 +0000 (UTC)
+	 MIME-Version; b=Xr2ZVO2KA/+WcWBndMAXkdVzRrPym5iRz1Mf8c4j3xkFbWio1npVjYKWDPGOvkujLbrWsP5Wvjf0iH7fWZvBCGxQ0nfr9Q+20beRE/czqQERh1DLbmgduAqtQd8N40nxbkxq6N4lxxiR46kn1r06u3gAC7sFu9qsTH8pRrHSF/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSsjN99H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FBAC2BCAF;
+	Mon, 13 Apr 2026 16:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098326;
-	bh=HG1A7IVJUwkTcvRNLTTnPI0JjW5+OTrAuP3vYx5BlYI=;
+	s=korg; t=1776096756;
+	bh=EkRlO0bex6DW/78ravCFS1t+Cf95Tw3aALPoH9RlMPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1B5pEAA24QhaUAnAnjO9tDbyU9C1UV+w3kpvoaWKa7XK3Q8HwO6/dwLJ1yePDHYx
-	 P2HL/RB2Xp1cF4JHdcvMDziczSeTYZzofsR6diOm6d8m3m+M5kHsRQbzV4n60FnEl1
-	 5fN+UcM2kbyxGvJ4gUPmjX4nD0wF8CSY4RlDfLmc=
+	b=CSsjN99HqCeTA815ritC5naXTpIuXlVQTpKdf3U37rQoDJhR1WxpP1R9EIgb7oGOo
+	 9LAQbpVGVf0PlzYV3Iw9m/RzaYhkgjPgLkmurLDqYtsBOBCLti0CHA72W6KkCic1ek
+	 P4cEDo/v9gyDycA7ooDy1WbxYMNxc4An3XLpSV2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.15 482/570] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
+	Qu Wenruo <wqu@suse.com>,
+	Daniel Vacek <neelx@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 18/70] btrfs: remove unused flag EXTENT_BUFFER_CORRUPT
 Date: Mon, 13 Apr 2026 18:00:13 +0200
-Message-ID: <20260413155848.515444197@linuxfoundation.org>
+Message-ID: <20260413155728.866573478@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +69,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236380-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236998-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E236C3EFFDA
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: E3BC33EF675
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Daniel Vacek <neelx@suse.com>
 
-commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
+[ Upstream commit c61660ec341e65650e58c92d0af71184aa216ff0 ]
 
-If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
-returns an error, the COMEDI core will call the driver's "detach"
-handler function (`atmio16d_detach()`) to clean up.  This calls
-`reset_atmio16d()` unconditionally, but depending on where the error
-occurred in the attach handler, the device may not have been
-sufficiently initialized to call `reset_atmio16d()`.  It uses
-`dev->iobase` as the I/O port base address and `dev->private` as the
-pointer to the COMEDI device's private data structure.  `dev->iobase`
-may still be set to its initial value of 0, which would result in
-undesired writes to low I/O port addresses.  `dev->private` may still be
-`NULL`, which would result in null pointer dereferences.
+This flag is no longer being used.  It was added by commit a826d6dcb32d
+("Btrfs: check items for correctness as we search") but it's no longer
+being used after commit f26c92386028 ("btrfs: remove reada
+infrastructure").
 
-Fix `atmio16d_detach()` by checking that `dev->private` is valid
-(non-null) before calling `reset_atmio16d()`.  This implies that
-`dev->iobase` was set correctly since that is set up before
-`dev->private`.
-
-Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 316fb1b3169e ("btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/ni_atmio16d.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/disk-io.c     | 11 ++---------
+ fs/btrfs/extent-tree.c |  6 ------
+ fs/btrfs/extent_io.h   |  1 -
+ 3 files changed, 2 insertions(+), 16 deletions(-)
 
---- a/drivers/comedi/drivers/ni_atmio16d.c
-+++ b/drivers/comedi/drivers/ni_atmio16d.c
-@@ -699,7 +699,8 @@ static int atmio16d_attach(struct comedi
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 5de12f3a679df..2dab2ce94cc40 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -225,7 +225,6 @@ int btrfs_read_extent_buffer(struct extent_buffer *eb,
+ 	ASSERT(check);
  
- static void atmio16d_detach(struct comedi_device *dev)
- {
--	reset_atmio16d(dev);
-+	if (dev->private)
-+		reset_atmio16d(dev);
- 	comedi_legacy_detach(dev);
+ 	while (1) {
+-		clear_bit(EXTENT_BUFFER_CORRUPT, &eb->bflags);
+ 		ret = read_extent_buffer_pages(eb, mirror_num, check);
+ 		if (!ret)
+ 			break;
+@@ -454,15 +453,9 @@ int btrfs_validate_extent_buffer(struct extent_buffer *eb,
+ 			goto out;
+ 	}
+ 
+-	/*
+-	 * If this is a leaf block and it is corrupt, set the corrupt bit so
+-	 * that we don't try and read the other copies of this block, just
+-	 * return -EIO.
+-	 */
+-	if (found_level == 0 && btrfs_check_leaf(eb)) {
+-		set_bit(EXTENT_BUFFER_CORRUPT, &eb->bflags);
++	/* If this is a leaf block and it is corrupt, just return -EIO. */
++	if (found_level == 0 && btrfs_check_leaf(eb))
+ 		ret = -EIO;
+-	}
+ 
+ 	if (found_level > 0 && btrfs_check_node(eb))
+ 		ret = -EIO;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index c052c8df05fb4..568fe9f702b74 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -3517,12 +3517,6 @@ int btrfs_free_tree_block(struct btrfs_trans_handle *trans,
+ 	trace_btrfs_reserved_extent_free(fs_info, buf->start, buf->len);
+ 
+ out:
+-
+-	/*
+-	 * Deleting the buffer, clear the corrupt flag since it doesn't
+-	 * matter anymore.
+-	 */
+-	clear_bit(EXTENT_BUFFER_CORRUPT, &buf->bflags);
+ 	return 0;
  }
  
+diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
+index 4126fe7f3f10e..0eedfd7c4b6ec 100644
+--- a/fs/btrfs/extent_io.h
++++ b/fs/btrfs/extent_io.h
+@@ -38,7 +38,6 @@ struct btrfs_tree_parent_check;
+ enum {
+ 	EXTENT_BUFFER_UPTODATE,
+ 	EXTENT_BUFFER_DIRTY,
+-	EXTENT_BUFFER_CORRUPT,
+ 	EXTENT_BUFFER_TREE_REF,
+ 	EXTENT_BUFFER_STALE,
+ 	EXTENT_BUFFER_WRITEBACK,
+-- 
+2.53.0
+
 
 
 
