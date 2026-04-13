@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-236866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJHvGjQd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:32 +0200
+	id 0PvhLuEi3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281A93EF9C0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2AB3F0CB6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E90B304C4D5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:33:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 449FB308A7A0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85F327466A;
-	Mon, 13 Apr 2026 16:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FE13191CA;
+	Mon, 13 Apr 2026 16:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h72T7pum"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MZg1jNf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49574238D27;
-	Mon, 13 Apr 2026 16:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B69317152;
+	Mon, 13 Apr 2026 16:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097994; cv=none; b=iqZExooXdWfKHcCDtJ0ntobwPtCUf9ru67cCYkXWk19gvgIrEVuAlEO2umewL9J+16O0yubru5Z07lOA+kYziGzANsSLuhymK5PCJwuFqnBvs7M6VJeUQgaYvsPqU/ewyu77E81TNY4D+PeMVhxGLgZBgvEMdNtFwNJNH5ZydbE=
+	t=1776099176; cv=none; b=KA8Ge+m33gUWxszaro/xcjuJWPKx8L1cEeDhrqZc+vjiC4rRZBQlOTHN1ZdSyggMi6L2ZZZQkxS7TeBW2+FDMe7gndo6mJdpI1nt5HjNhPVGYEbP41il2y9yhv6E+mcGPTHV9rFXklYF08tdJUFG7D4rYKoBEmSLeftdD8TmiKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097994; c=relaxed/simple;
-	bh=p7WY2pUYFnntumurUmf2Zusx4h2sIqLhw2pw+q6ASkk=;
+	s=arc-20240116; t=1776099176; c=relaxed/simple;
+	bh=jEZkPXThmJDMW3nFjghRza/E576oUWCsHzXIF54YZCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPcN5pO0IOkctaPiV4a+qyT/BqP+Fo4Q0DPGFcryv/49mDuK3qKE1eHV3MjgOv/d/yQh7WNYY3V52QsLYQMQEudtNaeuHyXtPt5rqbAhSKsNwMyZ59cAqqgoVHnFd7zPl62HaASVP0x3Ls7IUK6A45vqzo+BkqhXgslG/L+BbsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h72T7pum; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BBCC2BCAF;
-	Mon, 13 Apr 2026 16:33:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DApP+U4kpIdgeGhbMqC5Pj2W85HEACjEbDeFFFD5eN/33Bgzw+BzdTomaupK9QMltF7pT9RU7gqAYUBoWyNAGvxKCrcn1pG605BqPWR57Tmampordeu/jhjSFurYsuVz3BJDM4G/MBL2pR9Yq12KUJ3b8egg2IBFPDb9ssy939U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MZg1jNf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDE6C2BCB7;
+	Mon, 13 Apr 2026 16:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097994;
-	bh=p7WY2pUYFnntumurUmf2Zusx4h2sIqLhw2pw+q6ASkk=;
+	s=korg; t=1776099176;
+	bh=jEZkPXThmJDMW3nFjghRza/E576oUWCsHzXIF54YZCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h72T7pumAh2DA6JrXxE+XgpCkddBRStknMnHjGyYuj2xTIVXb22k62czZ75xjZecJ
-	 11/H6didh6p1+AcGBkn/qHUd2PnOyZf07Ar8Urg171R3jzmeP8trRZFEQDKvCIp+ic
-	 4tsMGbPtsmaaewpxLZO0tXzeGtGCjGRu3xyUQgoc=
+	b=2MZg1jNfHnOqNxLr9yCE7uVIQEKX74/VEb2H6rZ7uWvbCh9UZLwUJVSlT2BgOnxJR
+	 z9cY0onTdMRf/vf3WUI4UTk5w7V67k9PSomPIxOkp2hPmpN+MCFpQKmdhGxy7JVKPK
+	 z2KRTEOh6sXfDQnI4nOzjPj5S2RBG8CCiuuYgdb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 352/570] RDMA/irdma: Return EINVAL for invalid arp index error
+Subject: [PATCH 5.10 238/491] HID: asus: avoid memory leak in asus_report_fixup()
 Date: Mon, 13 Apr 2026 17:58:03 +0200
-Message-ID: <20260413155843.672058372@linuxfoundation.org>
+Message-ID: <20260413155827.967917253@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236866-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237330-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 281A93EF9C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BC2AB3F0CB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Günther Noack <gnoack@google.com>
 
-[ Upstream commit 7221f581eefa79ead06e171044f393fb7ee22f87 ]
+[ Upstream commit 2bad24c17742fc88973d6aea526ce1353f5334a3 ]
 
-When rdma_connect() fails due to an invalid arp index, user space rdma core
-reports ENOMEM which is confusing. Modify irdma_make_cm_node() to return the
-correct error code.
+The asus_report_fixup() function was returning a newly allocated
+kmemdup()-allocated buffer, but never freeing it.  Switch to
+devm_kzalloc() to ensure the memory is managed and freed automatically
+when the device is removed.
 
-Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+The caller of report_fixup() does not take ownership of the returned
+pointer, but it is permitted to return a pointer whose lifetime is at
+least that of the input buffer.
+
+Also fix a harmless out-of-bounds read by copying only the original
+descriptor size.
+
+Assisted-by: Gemini-CLI:Google Gemini 3
+Signed-off-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/cm.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/hid/hid-asus.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
-index 8a99a040917f7..8d671bd64f37a 100644
---- a/drivers/infiniband/hw/irdma/cm.c
-+++ b/drivers/infiniband/hw/irdma/cm.c
-@@ -2197,11 +2197,12 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- 	int oldarpindex;
- 	int arpindex;
- 	struct net_device *netdev = iwdev->netdev;
-+	int ret;
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 2f82946fb36a2..9d425f81d6224 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1116,14 +1116,21 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		 */
+ 		if (*rsize == rsize_orig &&
+ 			rdesc[offs] == 0x09 && rdesc[offs + 1] == 0x76) {
+-			*rsize = rsize_orig + 1;
+-			rdesc = kmemdup(rdesc, *rsize, GFP_KERNEL);
+-			if (!rdesc)
+-				return NULL;
++			__u8 *new_rdesc;
++
++			new_rdesc = devm_kzalloc(&hdev->dev, rsize_orig + 1,
++						 GFP_KERNEL);
++			if (!new_rdesc)
++				return rdesc;
  
- 	/* create an hte and cm_node for this instance */
- 	cm_node = kzalloc(sizeof(*cm_node), GFP_ATOMIC);
- 	if (!cm_node)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* set our node specific transport info */
- 	cm_node->ipv4 = cm_info->ipv4;
-@@ -2296,8 +2297,10 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- 			arpindex = -EINVAL;
- 	}
- 
--	if (arpindex < 0)
-+	if (arpindex < 0) {
-+		ret = -EINVAL;
- 		goto err;
-+	}
- 
- 	ether_addr_copy(cm_node->rem_mac,
- 			iwdev->rf->arp_table[arpindex].mac_addr);
-@@ -2308,7 +2311,7 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- err:
- 	kfree(cm_node);
- 
--	return NULL;
-+	return ERR_PTR(ret);
- }
- 
- static void irdma_destroy_connection(struct irdma_cm_node *cm_node)
-@@ -2969,8 +2972,8 @@ static int irdma_create_cm_node(struct irdma_cm_core *cm_core,
- 
- 	/* create a CM connection node */
- 	cm_node = irdma_make_cm_node(cm_core, iwdev, cm_info, NULL);
--	if (!cm_node)
--		return -ENOMEM;
-+	if (IS_ERR(cm_node))
-+		return PTR_ERR(cm_node);
- 
- 	/* set our node side to client (active) side */
- 	cm_node->tcp_cntxt.client = 1;
-@@ -3167,9 +3170,9 @@ void irdma_receive_ilq(struct irdma_sc_vsi *vsi, struct irdma_puda_buf *rbuf)
- 		cm_info.cm_id = listener->cm_id;
- 		cm_node = irdma_make_cm_node(cm_core, iwdev, &cm_info,
- 					     listener);
--		if (!cm_node) {
-+		if (IS_ERR(cm_node)) {
- 			ibdev_dbg(&cm_core->iwdev->ibdev,
--				  "CM: allocate node failed\n");
-+				  "CM: allocate node failed ret=%ld\n", PTR_ERR(cm_node));
- 			refcount_dec(&listener->refcnt);
- 			return;
- 		}
+ 			hid_info(hdev, "Fixing up %s keyb report descriptor\n",
+ 				drvdata->quirks & QUIRK_T100CHI ?
+ 				"T100CHI" : "T90CHI");
++
++			memcpy(new_rdesc, rdesc, rsize_orig);
++			*rsize = rsize_orig + 1;
++			rdesc = new_rdesc;
++
+ 			memmove(rdesc + offs + 4, rdesc + offs + 2, 12);
+ 			rdesc[offs] = 0x19;
+ 			rdesc[offs + 1] = 0x00;
 -- 
-2.53.0
+2.51.0
 
 
 
