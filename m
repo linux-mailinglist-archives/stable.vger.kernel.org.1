@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-237457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2F9dGvgj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:24 +0200
+	id 4HugOhUX3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D388D3F0FA9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD2E3EE8ED
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15E3130FEF78
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 19C0930BC4D7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18204327BEC;
-	Mon, 13 Apr 2026 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0372F2727E2;
+	Mon, 13 Apr 2026 16:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="167XD+Ji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XILIetU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D011E31F9BC;
-	Mon, 13 Apr 2026 16:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B648E25DB12;
+	Mon, 13 Apr 2026 16:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099506; cv=none; b=BSu7LHJ0EoXDRSpNHLIgr6ajajtb8Y6+s3jLYdr6VCqu34W0VTt+IE6bu2pegTKMyFao0dCT7b8B8Wx8Zmdr+5BD6LSJuX/ZlJIQV5FaEmTFdUKAAqMuo8o3B2wi+F9guxX6KaKPUOduXsfwRiH7rJfGrNWqp2RPWkZDL5vLwdU=
+	t=1776096372; cv=none; b=e0W1PiqA/VfUVvwSapnzx2dHjbDzN2KOKMGbZrZ+oFadD+5bKM/TX7imev6dSEeyD28Gv0pPcAJ0YfpxRoNSKJtyYejuydWxS/t7ejIHLzfUCzJQSyxCviCtOebNktRp2UQ3TGp6NXx2O4M876xOwgavV2hVd8GiviepJeF4ef4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099506; c=relaxed/simple;
-	bh=w/EizIQ9+q1NSolU3Pt8sxv2a7GQ0PJbG+fWrNNy/qw=;
+	s=arc-20240116; t=1776096372; c=relaxed/simple;
+	bh=ks1Hb1jXrE6tuqdZtXgxmpOHxeNChQmd9NZuF1u6bIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQ8TJdG+IGdRPAWRxIbd/W0OFmlColnpY289se7RgOxgE3/Pj5vtIzOIpLBtwNjwTEcdCiXBHR9I1CXPxZef+tYPT6M2/IEcQkng/jCQnWaplUlgGsPROjn1Agh6mqZQkA2zRmxsF9qsgmTPsoY8bAasUchNG2XVs1+SQWXhEts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=167XD+Ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6672BC2BCB3;
-	Mon, 13 Apr 2026 16:58:26 +0000 (UTC)
+	 MIME-Version; b=uURBxGY9x3lmGtgkaTqoi0QdZFvDAc9ELrMNCZv8jhsK6D+aD8pV4oF4AwJaYEm7zpaCOcBTmV9hdbUHYVg727U3V27GjiXFuoDQ3AjlcNljvyOPN7P0Lx/mHSCdJtfQVfTwX+WOLaNpk1ihi2d2j3RP/oQpYVB4zYoxKOIkXWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XILIetU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18194C2BCB6;
+	Mon, 13 Apr 2026 16:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099506;
-	bh=w/EizIQ9+q1NSolU3Pt8sxv2a7GQ0PJbG+fWrNNy/qw=;
+	s=korg; t=1776096372;
+	bh=ks1Hb1jXrE6tuqdZtXgxmpOHxeNChQmd9NZuF1u6bIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=167XD+JiRhOGgSd1eQ4runZSOxOz+DxDQfUMHOGS2QHm7ulL0tIWAc1Q1kbimZLPq
-	 fTFQEvixmHSm8md9oApq1mqE4WIUpKheYzMrIHXTPzqtNsgEoufhgha9j2j/CWWSgn
-	 VtekEHBinWSavqC6QPGpkeTBRnIvB59Uq8pexxS0=
+	b=XILIetU2pJYTQb89CPMzMlnNavgTCHYXnBmg5+GMYqAGxF7iD35ADz3CfJZCKjWRJ
+	 HOA0cDUVDKg2JODAf+OsgPbm5qPRufbV6gS9p1pswYqkGmcxmDETRiWBGdf0a20L9R
+	 +BQSGqQO6EfzmYdh7NF5iE8D+qdlybWjirJddeLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 367/491] ALSA: caiaq: fix stack out-of-bounds read in init_card
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 65/86] rxrpc: Fix key quota calculation for multitoken keys
 Date: Mon, 13 Apr 2026 18:00:12 +0200
-Message-ID: <20260413155832.774261684@linuxfoundation.org>
+Message-ID: <20260413155733.981560551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +70,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237457-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236228-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D388D3F0FA9
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,auristor.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sashiko.dev:url,infradead.org:email]
+X-Rspamd-Queue-Id: 6BD2E3EE8ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 45424e871abf2a152e247a9cff78359f18dd95c0 upstream.
+commit bdbfead6d38979475df0c2f4bad2b19394fe9bdc upstream.
 
-The loop creates a whitespace-stripped copy of the card shortname
-where `len < sizeof(card->id)` is used for the bounds check. Since
-sizeof(card->id) is 16 and the local id buffer is also 16 bytes,
-writing 16 non-space characters fills the entire buffer,
-overwriting the terminating nullbyte.
+In the rxrpc key preparsing, every token extracted sets the proposed quota
+value, but for multitoken keys, this will overwrite the previous proposed
+quota, losing it.
 
-When this non-null-terminated string is later passed to
-snd_card_set_id() -> copy_valid_id_string(), the function scans
-forward with `while (*nid && ...)` and reads past the end of the
-stack buffer, reading the contents of the stack.
+Fix this by adding to the proposed quota instead.
 
-A USB device with a product name containing many non-ASCII, non-space
-characters (e.g. multibyte UTF-8) will reliably trigger this as follows:
-
-  BUG: KASAN: stack-out-of-bounds in copy_valid_id_string
-       sound/core/init.c:696 [inline]
-  BUG: KASAN: stack-out-of-bounds in snd_card_set_id_no_lock+0x698/0x74c
-       sound/core/init.c:718
-
-The off-by-one has been present since commit bafeee5b1f8d ("ALSA:
-snd_usb_caiaq: give better shortname") from June 2009 (v2.6.31-rc1),
-which first introduced this whitespace-stripping loop. The original
-code never accounted for the null terminator when bounding the copy.
-
-Fix this by changing the loop bound to `sizeof(card->id) - 1`,
-ensuring at least one byte remains as the null terminator.
-
-Fixes: bafeee5b1f8d ("ALSA: snd_usb_caiaq: give better shortname")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260329133825.581585-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/device.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rxrpc/key.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -502,7 +502,7 @@ static int init_card(struct snd_usb_caia
- 		memset(id, 0, sizeof(id));
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -72,7 +72,7 @@ static int rxrpc_preparse_xdr_rxkad(stru
+ 		return -EKEYREJECTED;
  
- 		for (c = card->shortname, len = 0;
--			*c && len < sizeof(card->id); c++)
-+			*c && len < sizeof(card->id) - 1; c++)
- 			if (*c != ' ')
- 				id[len++] = *c;
+ 	plen = sizeof(*token) + sizeof(*token->kad) + tktlen;
+-	prep->quotalen = datalen + plen;
++	prep->quotalen += datalen + plen;
  
+ 	plen -= sizeof(*token);
+ 	token = kzalloc(sizeof(*token), GFP_KERNEL);
+@@ -199,7 +199,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(s
+ 	}
+ 
+ 	plen = sizeof(*token) + sizeof(*token->rxgk) + tktlen + keylen;
+-	prep->quotalen = datalen + plen;
++	prep->quotalen += datalen + plen;
+ 
+ 	plen -= sizeof(*token);
+ 	token = kzalloc(sizeof(*token), GFP_KERNEL);
+@@ -460,6 +460,7 @@ static int rxrpc_preparse(struct key_pre
+ 	memcpy(&kver, prep->data, sizeof(kver));
+ 	prep->data += sizeof(kver);
+ 	prep->datalen -= sizeof(kver);
++	prep->quotalen = 0;
+ 
+ 	_debug("KEY I/F VERSION: %u", kver);
+ 
+@@ -497,7 +498,7 @@ static int rxrpc_preparse(struct key_pre
+ 		goto error;
+ 
+ 	plen = sizeof(*token->kad) + v1->ticket_length;
+-	prep->quotalen = plen + sizeof(*token);
++	prep->quotalen += plen + sizeof(*token);
+ 
+ 	ret = -ENOMEM;
+ 	token = kzalloc(sizeof(*token), GFP_KERNEL);
 
 
 
