@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-236634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FXMA0Ae3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:00 +0200
+	id 0FRDC4Ug3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-236602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6943EFD45
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC163F0591
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2605324C4DC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B77D324F7D7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8F830F52B;
-	Mon, 13 Apr 2026 16:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152F12F8BC3;
+	Mon, 13 Apr 2026 16:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wbn8ZoCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNfs21LG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FFA30BF6F;
-	Mon, 13 Apr 2026 16:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9F93090F5;
+	Mon, 13 Apr 2026 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097412; cv=none; b=brPqnkBR7LVDi84XByeKetNNpZ893/wlPm0gIMZ+Hjx35HzVwyNC8dJ59qxoiDSU7XHBlFN7xEFt4OojtD4p1kk0zOpXzuAetbvTn6oOycVwGteYAd8z07NlVfz/AKPEoDRhZsh9Xwro9BrLDycjdvmSUReLwUcHGxmm/FgXsIk=
+	t=1776097329; cv=none; b=WetE8S8YK07y8Nesvpon+Nyu7YEDZ55b/X9HJACrFt+ApMH1nTPpZ/AvoxjfVt0TdLMS4JlAN/8mG2rLCeIPG4uBWMZQCFdK4vfLYCwBpEFQ4WxCmg/mTG4UApfqtQE75SsgyDTb/c7Iq6M8GpGyTPWWCEKEJ4xSxj29wQHFeaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097412; c=relaxed/simple;
-	bh=/4h1rsz5NAuVr0FzEvQzv8gIihlVWNrFd/Wm7kMpn6Y=;
+	s=arc-20240116; t=1776097329; c=relaxed/simple;
+	bh=XmLzW0aUw1xbXCDg3Ckana1tny4BRONuELgd67BAIpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mo1KB1a3eA0zRo4bKIkpzGWrdiftPSNDqVviiSWPm/VGgbvPABeX9xMh78IRfBAYG35q3tNE7tMjwg1NIwJlCnUkrFkM8K5pFWUSk5Pti2WyLxjKvjL30Nf4R6GVMFjXHa+zFNNNPPO8SeiM+lFi65cftA7u4jrSEmiX4oU9SNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wbn8ZoCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD65C2BCAF;
-	Mon, 13 Apr 2026 16:23:31 +0000 (UTC)
+	 MIME-Version; b=Qdw44sTh0tWBAda7HSzDLGvUUBq0yr24YCgNB7z9RCLWgAvbmASK4HqLSAVYJRVAVS0XwH3sJJP+hAKWIDdFVnqisLHiNbEONmyolTIBmSIAgwkDXRiAKYJ3DK0uey3FJGak9MTnu2R76cBVLNOQH+3sjjTjGI6p1hXbCDvhscs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNfs21LG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB36C2BCAF;
+	Mon, 13 Apr 2026 16:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097411;
-	bh=/4h1rsz5NAuVr0FzEvQzv8gIihlVWNrFd/Wm7kMpn6Y=;
+	s=korg; t=1776097329;
+	bh=XmLzW0aUw1xbXCDg3Ckana1tny4BRONuELgd67BAIpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wbn8ZoCM94H+7qjuDS5oRnStw3eInavL52GCOdBLo107dbWSZbWJ7kw4xoxfSwdHB
-	 WYZqYOdzqe2V9jNjO5F/cnLgxyf7c1rXZx7eRhfyruKmtIRK3RxOP45pnO+kbYa2LD
-	 mfH1TwGP+t0963rr+O09n2GhTWZtTsodDc+QfgGE=
+	b=VNfs21LGEHrbaJbvGi/QoDRNoyEVP34JsWY8DL/J74vKtjbaSUd6X5jY93brp4Vh4
+	 BMiR1h3lEZDrPx2E7gpR6pJgJn5ZSBLIrT3T91RN44uf7F71NGOaLrDUO8rHnUyDJd
+	 jY74enyuYGFKivmIYLyYDJ+3o/vjett97O0TCN54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sofia Schneider <sofia@schn.dev>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	David Jeffery <djeffery@redhat.com>,
+	Tomas Henzl <thenzl@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/570] ACPI: OSI: Add DMI quirk for Acer Aspire One D255
-Date: Mon, 13 Apr 2026 17:53:45 +0200
-Message-ID: <20260413155833.964986761@linuxfoundation.org>
+Subject: [PATCH 5.15 095/570] scsi: ses: Fix devices attaching to different hosts
+Date: Mon, 13 Apr 2026 17:53:46 +0200
+Message-ID: <20260413155834.003089548@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -73,25 +74,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236602-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236634-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 4F6943EFD45
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 7BC163F0591
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,49 +100,53 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sofia Schneider <sofia@schn.dev>
+From: Tomas Henzl <thenzl@redhat.com>
 
-[ Upstream commit 5ede90206273ff156a778254f0f972a55e973c89 ]
+[ Upstream commit 70ca8caa96ce473647054f5c7b9dab5423902402 ]
 
-The screen backlight turns off during boot (specifically during udev device
-initialization) when returning true for _OSI("Windows 2009").
+On a multipath SAS system some devices don't end up with correct symlinks
+from the SCSI device to its enclosure. Some devices even have enclosure
+links pointing to enclosures attached to different SCSI hosts.
 
-Analyzing the device's DSDT reveals that the firmware takes a different
-code path when Windows 7 is reported, which leads to the backlight shutoff.
-Add a DMI quirk to invoke dmi_disable_osi_win7 for this model.
+ses_match_to_enclosure() calls enclosure_for_each_device() which iterates
+over all enclosures on the system, not just enclosures attached to the
+current SCSI host.
 
-Signed-off-by: Sofia Schneider <sofia@schn.dev>
-Link: https://patch.msgid.link/20260223025240.518509-1-sofia@schn.dev
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Replace the iteration with a direct call to ses_enclosure_find_by_addr().
+
+Reviewed-by: David Jeffery <djeffery@redhat.com>
+Signed-off-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://patch.msgid.link/20260210191850.36784-1-thenzl@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/osi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/scsi/ses.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-index d93409f2b2a07..6913264490225 100644
---- a/drivers/acpi/osi.c
-+++ b/drivers/acpi/osi.c
-@@ -413,6 +413,19 @@ static const struct dmi_system_id acpi_osi_dmi_table[] __initconst = {
- 		},
- 	},
+diff --git a/drivers/scsi/ses.c b/drivers/scsi/ses.c
+index 6a1428d453f3e..92b3fd10058dd 100644
+--- a/drivers/scsi/ses.c
++++ b/drivers/scsi/ses.c
+@@ -497,9 +497,8 @@ struct efd {
+ };
  
-+	/*
-+	 * The screen backlight turns off during udev device creation
-+	 * when returning true for _OSI("Windows 2009")
-+	 */
-+	{
-+	.callback = dmi_disable_osi_win7,
-+	.ident = "Acer Aspire One D255",
-+	.matches = {
-+		     DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+		     DMI_MATCH(DMI_PRODUCT_NAME, "AOD255"),
-+		},
-+	},
-+
- 	/*
- 	 * The wireless hotkey does not work on those machines when
- 	 * returning true for _OSI("Windows 2012")
+ static int ses_enclosure_find_by_addr(struct enclosure_device *edev,
+-				      void *data)
++				      struct efd *efd)
+ {
+-	struct efd *efd = data;
+ 	int i;
+ 	struct ses_component *scomp;
+ 
+@@ -652,7 +651,7 @@ static void ses_match_to_enclosure(struct enclosure_device *edev,
+ 	if (efd.addr) {
+ 		efd.dev = &sdev->sdev_gendev;
+ 
+-		enclosure_for_each_device(ses_enclosure_find_by_addr, &efd);
++		ses_enclosure_find_by_addr(edev, &efd);
+ 	}
+ }
+ 
 -- 
 2.51.0
 
