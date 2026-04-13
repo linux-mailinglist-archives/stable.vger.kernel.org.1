@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-236309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH9NDvsX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:15 +0200
+	id cI5sAz4f3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6EBB3EEAF2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065603F00D9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB2433073C03
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EDD003079336
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0DA3033F5;
-	Mon, 13 Apr 2026 16:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400AC30C361;
+	Mon, 13 Apr 2026 16:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uvp4MQB3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C55in2RM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EC1279334;
-	Mon, 13 Apr 2026 16:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001722D5A19;
+	Mon, 13 Apr 2026 16:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096576; cv=none; b=VY0+25hI80aAx+Xc8MHiA43sXJZWfcdLCs47SYKWvF6FeKaepRMaENHFVT0XLHJVdEs9OmH89e0lnTO2sUVNOIlqtZYmU/KwA9Ox14SUfBKGBRDYfRMpest1TvpxcbKQAwDa207RD46Vs/+YzkjNLpAi6qo5FvbR4P/x31Q98H0=
+	t=1776098383; cv=none; b=t+ENOhbngxdkLwICd6Yn7HTV48UrGmpRbQJqN6+H7ILwN1GAXgTqBoPEqcvolfEnMoiV1FwM6oThEsl7RhMi4zeHAwvlPCI1gXrhrED5E1WostmwE/0wK/eG9J9bTJzEEiBWYzio0L71tXN1cVE80aos+SVlK//FOtxZTAW9MFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096576; c=relaxed/simple;
-	bh=8rVVvj2DSIBPMlUNnGmKKG+yntv4L7JUWNlwjMoVyuU=;
+	s=arc-20240116; t=1776098383; c=relaxed/simple;
+	bh=BRZE2zp4Vzr5lYgebO75alVIxPZXJzy+gXE420L/UVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tP9CjJ5WN/PCMOimTZnrWSKa4NqR+PNpaPVyDk/7PtLIfSSx+2EcVL5DrrxQOsSaJ4+SSVUty7lmmCaeizLfVhEKVD9Re2Qqn05D2H/vNixoVFGGvc1pTcOq6nMja4a5s34q1JIdUjnvLY3A2bL5QRN+63TliE9t++qsf64XITY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uvp4MQB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FA1C2BCAF;
-	Mon, 13 Apr 2026 16:09:35 +0000 (UTC)
+	 MIME-Version; b=UnfBQNOO6HYhiGQZ4XOHW1jpIMwVYNQczY9gxbvT1h0ryTfQZiI7z86RXj7duJm/OKVZi58YCrWHon7Ts+YlBWx1gtx4W01AmzXiDXdPBnI7Y2QwTBeRs2vP2OigevwXVhsmANEI7x4LtOAgkVniN4gQXjQLsOWxhnVpz+e6Z4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C55in2RM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADDBC2BCAF;
+	Mon, 13 Apr 2026 16:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096575;
-	bh=8rVVvj2DSIBPMlUNnGmKKG+yntv4L7JUWNlwjMoVyuU=;
+	s=korg; t=1776098382;
+	bh=BRZE2zp4Vzr5lYgebO75alVIxPZXJzy+gXE420L/UVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uvp4MQB3DooeobKCTB/poJCvXk967QxV+fOxWRaFC923vuPH0ZzGAyg1mzWrdBU/a
-	 o10cGY30qnTeDBslrViEXyaQY0NUcIn2hwrcwprF2ompyQwqRl36sebzZsbnkykd2T
-	 pQGKvaRA8v6ICLjFOf1oI7VVQVN6AsPLh1xNVLto=
+	b=C55in2RMiJBXJAZaVC+jXzaW1Nflf5HCTOTTm6qcXuEXz+zGtdjAy6LA5E6gDhAz4
+	 JmmEwu3MuL8adbfT1292T5BtJR/oL+I7ybds9iIXVlZZrYdPUtpwurH+RjwbtL9zRj
+	 vOIj56A/yMs44/BKz+OXAm4+FBGmSu4Eey1IU8iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 64/83] rxrpc: Fix anonymous key handling
-Date: Mon, 13 Apr 2026 18:00:32 +0200
-Message-ID: <20260413155733.397630874@linuxfoundation.org>
+	syzbot+cc36d44ec9f368e443d3@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 5.15 502/570] io_uring/tctx: work around xa_store() allocation error issue
+Date: Mon, 13 Apr 2026 18:00:33 +0200
+Message-ID: <20260413155849.258514353@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +64,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236309-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237020-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.dk,163.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,cc36d44ec9f368e443d3];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,infradead.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A6EBB3EEAF2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 065603F00D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 6a59d84b4fc2f27f7b40e348506cc686712e260b upstream.
+commit 7eb75ce7527129d7f1fee6951566af409a37a1c4 upstream.
 
-In rxrpc_new_client_call_for_sendmsg(), a key with no payload is meant to
-be substituted for a NULL key pointer, but the variable this is done with
-is subsequently not used.
+syzbot triggered the following WARN_ON:
 
-Fix this by using "key" rather than "rx->key" when filling in the
-connection parameters.
+WARNING: CPU: 0 PID: 16 at io_uring/tctx.c:51 __io_uring_free+0xfa/0x140 io_uring/tctx.c:51
 
-Note that this only affects direct use of AF_RXRPC; the kAFS filesystem
-doesn't use sendmsg() directly and so bypasses the issue.  Further,
-AF_RXRPC passes a NULL key in if no key is set, so using an anonymous key
-in that manner works.  Since this hasn't been noticed to this point, it
-might be better just to remove the "key" variable and the code that sets it
-- and, arguably, rxrpc_init_client_call_security() would be a better place
-to handle it.
+which is the
 
-Fixes: 19ffa01c9c45 ("rxrpc: Use structs to hold connection params and protocol info")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+WARN_ON_ONCE(!xa_empty(&tctx->xa));
+
+sanity check in __io_uring_free() when a io_uring_task is going through
+its final put. The syzbot test case includes injecting memory allocation
+failures, and it very much looks like xa_store() can fail one of its
+memory allocations and end up with ->head being non-NULL even though no
+entries exist in the xarray.
+
+Until this issue gets sorted out, work around it by attempting to
+iterate entries in our xarray, and WARN_ON_ONCE() if one is found.
+
+Reported-by: syzbot+cc36d44ec9f368e443d3@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/io-uring/673c1643.050a0220.87769.0066.GAE@google.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Modify the function in io_uring.c because it's located here in v5.15. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/sendmsg.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -637,7 +637,7 @@ rxrpc_new_client_call_for_sendmsg(struct
- 	memset(&cp, 0, sizeof(cp));
- 	cp.local		= rx->local;
- 	cp.peer			= peer;
--	cp.key			= rx->key;
-+	cp.key			= key;
- 	cp.security_level	= rx->min_sec_level;
- 	cp.exclusive		= rx->exclusive | p->exclusive;
- 	cp.upgrade		= p->upgrade;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -8699,8 +8699,19 @@ static int io_uring_alloc_task_context(s
+ void __io_uring_free(struct task_struct *tsk)
+ {
+ 	struct io_uring_task *tctx = tsk->io_uring;
++	struct io_tctx_node *node;
++	unsigned long index;
+ 
+-	WARN_ON_ONCE(!xa_empty(&tctx->xa));
++	/*
++	 * Fault injection forcing allocation errors in the xa_store() path
++	 * can lead to xa_empty() returning false, even though no actual
++	 * node is stored in the xarray. Until that gets sorted out, attempt
++	 * an iteration here and warn if any entries are found.
++	 */
++	xa_for_each(&tctx->xa, index, node) {
++		WARN_ON_ONCE(1);
++		break;
++	}
+ 	WARN_ON_ONCE(tctx->io_wq);
+ 	WARN_ON_ONCE(tctx->cached_refs);
+ 
 
 
 
