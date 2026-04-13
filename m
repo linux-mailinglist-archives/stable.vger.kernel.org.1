@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-237296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKUpDDcl3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:43 +0200
+	id 4BLDA1gg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-236833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91013F11F2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AEC3F04E6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA8D9311A280
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AED6D30523D5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C95C317152;
-	Mon, 13 Apr 2026 16:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F5629E0E5;
+	Mon, 13 Apr 2026 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbmVTcU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnBMfNPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4F83161AB;
-	Mon, 13 Apr 2026 16:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477DF2874F8;
+	Mon, 13 Apr 2026 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099091; cv=none; b=bkp/WX9YCtFdBm0yWpsimwV+yigV92umlZvsaXmWA533vLRfy+T7GZ8Kt2al3bPG4Tl/1dZK3lc3mqhL+hUp9aB78Gbc62BoFr/qTgwhoy+mJbCOBtN5qHAopdguSAqVtsEQ+a1HutS1GvdvtzWu3BlV9jYHVNy0UBzxtCjPMOY=
+	t=1776097909; cv=none; b=YUlCwMkh4FAM0kQesofQlcdfXna2R02PIokbW7l9Id4DmPl2jYbLgl9RiMjaGnJXbwVjnY9b5VZGdFbok8b3/g7ODdeQofQKwdy9VcU2njSSybJJ9wNOhnyDEM2Jj2CeYDnyl7rN97QFM1x6JrEumaFhkb+Z0pOpW8fCGfK1evE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099091; c=relaxed/simple;
-	bh=JNgCQTx+r07gD6cBxk7L9n5QesUADiHDyVXTX0pmXpI=;
+	s=arc-20240116; t=1776097909; c=relaxed/simple;
+	bh=V2dLuNB4sNBypTGoQ/AflzjLAhYWzCx4n4FYAlAx2BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/cdOVGRNCssh83mUBtXhmFVMkZ6zO+Aiz3ynbYVsJC/CtABf/gtk6xzMpSrZnQ/BPVWFhOGiYFys24U3pgSJHepxM5ZQ7wS2eDvBhGuYjCqMBS24gZFSbPzeE0zpFUeZPXmG1RsHtmILQLkMJj30NpI5/ezsS69qQkMaUMGCd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbmVTcU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC4CC2BCAF;
-	Mon, 13 Apr 2026 16:51:30 +0000 (UTC)
+	 MIME-Version; b=W7txIHQUyvWmlbbhkB2Da3O6GxTMnKCOmDQck+FGqW21soqvj1NLPDyeqvLDM8jFCtalm1fHBSZMwy+rWTUpoDLDuY/DuWLbn3pH+dbRs6afhJyeprRpXwHz7Oy9tnPtDN0F7Bq/sq6zRg2ybhKn3FgHBf6Vv0cw+3zqfJUDNF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnBMfNPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FF7C2BCAF;
+	Mon, 13 Apr 2026 16:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099091;
-	bh=JNgCQTx+r07gD6cBxk7L9n5QesUADiHDyVXTX0pmXpI=;
+	s=korg; t=1776097909;
+	bh=V2dLuNB4sNBypTGoQ/AflzjLAhYWzCx4n4FYAlAx2BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PbmVTcU2mpJCc9z13crAmdSQMpZ3upFh8N3Jzwm0ZfKycqu18oC4yfkxmz69XADzZ
-	 699P2iixXvTH7/TZm0xIUt8fp1OTgx4ajApk8hLAvOURjjM9XX/jP25gSjKaJfzgwP
-	 yOeXkkOcruyK6JPjIEM3jO7gMAFds92yvumXqMuA=
+	b=PnBMfNPrtfznLYO0vDEgtGslcHwqIRT9UltPTmxwsuNTYTOMbJna2qXU2AiAF3wS8
+	 JsQZM8nuKWP7A2B4YvL8bTEsyi23lgF+1z6/sro7eUOci0M6t4Jj1c+7MUN11WO+Op
+	 SN69Zo9y3HBVb1hHnYs8vSBlMeaxrWfzLk6zVzC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Anas Iqbal <mohd.abd.6602@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/491] netfilter: ctnetlink: remove refcounting in expectation dumpers
+Subject: [PATCH 5.15 319/570] Bluetooth: hci_ll: Fix firmware leak on error path
 Date: Mon, 13 Apr 2026 17:57:30 +0200
-Message-ID: <20260413155826.745647897@linuxfoundation.org>
+Message-ID: <20260413155842.444721378@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,198 +65,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237296-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236833-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,molgen.mpg.de,gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.987];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
-X-Rspamd-Queue-Id: A91013F11F2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 48AEC3F04E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Anas Iqbal <mohd.abd.6602@gmail.com>
 
-[ Upstream commit 1492e3dcb2be3aa46d1963da96aa9593e4e4db5a ]
+[ Upstream commit 31148a7be723aa9f2e8fbd62424825ab8d577973 ]
 
-Same pattern as previous patch: do not keep the expectation object
-alive via refcount, only store a cookie value and then use that
-as the skip hint for dump resumption.
+Smatch reports:
 
-AFAICS this has the same issue as the one resolved in the conntrack
-dumper, when we do
-  if (!refcount_inc_not_zero(&exp->use))
+drivers/bluetooth/hci_ll.c:587 download_firmware() warn:
+'fw' from request_firmware() not released on lines: 544.
 
-to increment the refcount, there is a chance that exp == last, which
-causes a double-increment of the refcount and subsequent memory leak.
+In download_firmware(), if request_firmware() succeeds but the returned
+firmware content is invalid (no data or zero size), the function returns
+without releasing the firmware, resulting in a resource leak.
 
-Fixes: cf6994c2b981 ("[NETFILTER]: nf_conntrack_netlink: sync expectation dumping with conntrack table dumping")
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 5cb81eeda909 ("netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()")
+Fix this by calling release_firmware() before returning when
+request_firmware() succeeded but the firmware content is invalid.
+
+Fixes: 371805522f87 ("bluetooth: hci_uart: add LL protocol serdev driver support")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 41 ++++++++++++----------------
- 1 file changed, 17 insertions(+), 24 deletions(-)
+ drivers/bluetooth/hci_ll.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index f622fcad3f503..98a4c41f6df19 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3137,23 +3137,27 @@ ctnetlink_expect_event(unsigned int events, struct nf_exp_event *item)
- 	return 0;
- }
- #endif
--static int ctnetlink_exp_done(struct netlink_callback *cb)
-+
-+static unsigned long ctnetlink_exp_id(const struct nf_conntrack_expect *exp)
- {
--	if (cb->args[1])
--		nf_ct_expect_put((struct nf_conntrack_expect *)cb->args[1]);
--	return 0;
-+	unsigned long id = (unsigned long)exp;
-+
-+	id += nf_ct_get_id(exp->master);
-+	id += exp->class;
-+
-+	return id ? id : 1;
- }
- 
- static int
- ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct net *net = sock_net(skb->sk);
--	struct nf_conntrack_expect *exp, *last;
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	u_int8_t l3proto = nfmsg->nfgen_family;
-+	unsigned long last_id = cb->args[1];
-+	struct nf_conntrack_expect *exp;
- 
- 	rcu_read_lock();
--	last = (struct nf_conntrack_expect *)cb->args[1];
- 	for (; cb->args[0] < nf_ct_expect_hsize; cb->args[0]++) {
- restart:
- 		hlist_for_each_entry_rcu(exp, &nf_ct_expect_hash[cb->args[0]],
-@@ -3165,7 +3169,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 				continue;
- 
- 			if (cb->args[1]) {
--				if (exp != last)
-+				if (ctnetlink_exp_id(exp) != last_id)
- 					continue;
- 				cb->args[1] = 0;
- 			}
-@@ -3174,9 +3178,7 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 						    cb->nlh->nlmsg_seq,
- 						    IPCTNL_MSG_EXP_NEW,
- 						    exp) < 0) {
--				if (!refcount_inc_not_zero(&exp->use))
--					continue;
--				cb->args[1] = (unsigned long)exp;
-+				cb->args[1] = ctnetlink_exp_id(exp);
- 				goto out;
- 			}
- 		}
-@@ -3187,32 +3189,30 @@ ctnetlink_exp_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+diff --git a/drivers/bluetooth/hci_ll.c b/drivers/bluetooth/hci_ll.c
+index e4e5b26e2c33b..02c2122b452a8 100644
+--- a/drivers/bluetooth/hci_ll.c
++++ b/drivers/bluetooth/hci_ll.c
+@@ -541,6 +541,8 @@ static int download_firmware(struct ll_device *lldev)
+ 	if (err || !fw->data || !fw->size) {
+ 		bt_dev_err(lldev->hu.hdev, "request_firmware failed(errno %d) for %s",
+ 			   err, bts_scr_name);
++		if (!err)
++			release_firmware(fw);
+ 		return -EINVAL;
  	}
- out:
- 	rcu_read_unlock();
--	if (last)
--		nf_ct_expect_put(last);
--
- 	return skb->len;
- }
- 
- static int
- ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
--	struct nf_conntrack_expect *exp, *last;
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
- 	struct nf_conn_help *help = nfct_help(ct);
- 	u_int8_t l3proto = nfmsg->nfgen_family;
-+	unsigned long last_id = cb->args[1];
-+	struct nf_conntrack_expect *exp;
- 
- 	if (cb->args[0])
- 		return 0;
- 
- 	rcu_read_lock();
--	last = (struct nf_conntrack_expect *)cb->args[1];
-+
- restart:
- 	hlist_for_each_entry_rcu(exp, &help->expectations, lnode) {
- 		if (l3proto && exp->tuple.src.l3num != l3proto)
- 			continue;
- 		if (cb->args[1]) {
--			if (exp != last)
-+			if (ctnetlink_exp_id(exp) != last_id)
- 				continue;
- 			cb->args[1] = 0;
- 		}
-@@ -3220,9 +3220,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 					    cb->nlh->nlmsg_seq,
- 					    IPCTNL_MSG_EXP_NEW,
- 					    exp) < 0) {
--			if (!refcount_inc_not_zero(&exp->use))
--				continue;
--			cb->args[1] = (unsigned long)exp;
-+			cb->args[1] = ctnetlink_exp_id(exp);
- 			goto out;
- 		}
- 	}
-@@ -3233,9 +3231,6 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	cb->args[0] = 1;
- out:
- 	rcu_read_unlock();
--	if (last)
--		nf_ct_expect_put(last);
--
- 	return skb->len;
- }
- 
-@@ -3254,7 +3249,6 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
--		.done = ctnetlink_exp_done,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
-@@ -3305,7 +3299,6 @@ static int ctnetlink_get_expect(struct net *net, struct sock *ctnl,
- 		else {
- 			struct netlink_dump_control c = {
- 				.dump = ctnetlink_exp_dump_table,
--				.done = ctnetlink_exp_done,
- 			};
- 			return netlink_dump_start(ctnl, skb, nlh, &c);
- 		}
+ 	ptr = (void *)fw->data;
 -- 
 2.51.0
 
