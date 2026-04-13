@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKVhCAIh3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:46 +0200
+	id QHXHFBol3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F183F0725
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C094E3F11A5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C7D3328E2D4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A66B3030B17
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7995D30B508;
-	Mon, 13 Apr 2026 16:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5631630DEAC;
+	Mon, 13 Apr 2026 16:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egL3K/bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ks/zunoo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C12124DCF6;
-	Mon, 13 Apr 2026 16:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1837B30C361;
+	Mon, 13 Apr 2026 16:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097520; cv=none; b=K4VvfLOBjObxdYMR6/vAn/AiXacD7KgxRbvIc4NY8v+K+LKHmYJ4EMkxyTSga2VP4wtuA/zNdEKGgyTGVfZL0H0ypFOFWHwF9Nq/tGLOWc9cJb8fI9sZ8yTBy0PV+QVoq8Vw8lzhlpqcIZzp1Y3N4nkNTiBZJArJ/Dh9w8eJK4s=
+	t=1776098702; cv=none; b=mrq8ptyedQUdiVPRSBafipm4cuTTPARcCWg3KKrGCFT3jqhuQPwBZQ8gndafMAofF9a5AgyRoii+rTPToAoCPBbd0VNg1nAMDlTXsTfocQ925pkXNDqeum6TeQzMi0R+yiGOLK/wMbcKkepy5l47hovLWH/QWDYkbi9LzPmd/TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097520; c=relaxed/simple;
-	bh=uNR+mhYmyZsZdr6j5ONMH6XKtGug5ph5CSFsqQvMhVI=;
+	s=arc-20240116; t=1776098702; c=relaxed/simple;
+	bh=/7dljbPakRTOuXwFju46FHuj+Hx5CAOk9c7NZIQCqY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGrVBvpRmqcE5vaJ/g7VB9cAPHpKV/NebgYhcVcg/kZV8G/5yQWxgrJ1GzqvzGDsqpzUIzad0oQ4RJCfndUSMNb7N1hse/QN4Gan3eWenS6WW9haBzHww5hf4Acv1PSzs7lCnlR1ZCNa8AfSas+wu+Z7tJLsV4gLVHzGbSydg68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egL3K/bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF777C2BCAF;
-	Mon, 13 Apr 2026 16:25:19 +0000 (UTC)
+	 MIME-Version; b=j/Ga5OfTrbpQudgJAMId87pnNPocexqc1OlTmtkfuZP3OvVdrd8CGwgIHYjsApKBFjBD/BeR8WoGVq+pSmBbXsA1YyaiySK3Ce3D1o+vuC9YIY04O2+ueJoaerol09TnVtdgxp0n4XxOAtu0XXXt1eKRKcaRTrDofeaaqPUw4tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ks/zunoo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A306EC2BCAF;
+	Mon, 13 Apr 2026 16:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097520;
-	bh=uNR+mhYmyZsZdr6j5ONMH6XKtGug5ph5CSFsqQvMhVI=;
+	s=korg; t=1776098702;
+	bh=/7dljbPakRTOuXwFju46FHuj+Hx5CAOk9c7NZIQCqY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=egL3K/bvxC0bemiO6U3VfAnJVDygCVzn8951oMXUShq+ACx8Zn9DIw7Kk6MfNqMgS
-	 yNA0l8YQ4JYOkIjytINcgVq+YS1PmltT/6793Da+dvq0q9HTkJSD08bbyUpcovPaKC
-	 /PBCQRLpjPzY2s+YKzg5T67GSMId9WOCJtu7SqLo=
+	b=ks/zunoofnMGor7xEVbk6vAukwgXnzLlA0IFYFpzyGH/o5PexLsD8lE1mYHr4uFgw
+	 xLBqCYMHFVEz/QNhGTAaRHl3KooF865H6YSrn6f/iPlWv1kIADJSPhGPMGWYTBS56j
+	 UF1DHkrYf21roWbDbYDIWfRQe8uuH1P4J4PNV2/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 169/570] hwmon: (pmbus/q54sj108a2) fix stack overflow in debugfs read
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Waiman Long <longman@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 055/491] unshare: fix unshare_fs() handling
 Date: Mon, 13 Apr 2026 17:55:00 +0200
-Message-ID: <20260413155836.784696204@linuxfoundation.org>
+Message-ID: <20260413155821.110531384@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,113 +74,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237144-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236677-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74F183F0725
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: C094E3F11A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 25dd70a03b1f5f3aa71e1a5091ecd9cd2a13ee43 upstream.
+[ Upstream commit 6c4b2243cb6c0755159bd567130d5e12e7b10d9f ]
 
-The q54sj108a2_debugfs_read function suffers from a stack buffer overflow
-due to incorrect arguments passed to bin2hex(). The function currently
-passes 'data' as the destination and 'data_char' as the source.
+There's an unpleasant corner case in unshare(2), when we have a
+CLONE_NEWNS in flags and current->fs hadn't been shared at all; in that
+case copy_mnt_ns() gets passed current->fs instead of a private copy,
+which causes interesting warts in proof of correctness]
 
-Because bin2hex() converts each input byte into two hex characters, a
-32-byte block read results in 64 bytes of output. Since 'data' is only
-34 bytes (I2C_SMBUS_BLOCK_MAX + 2), this writes 30 bytes past the end
-of the buffer onto the stack.
+> I guess if private means fs->users == 1, the condition could still be true.
 
-Additionally, the arguments were swapped: it was reading from the
-zero-initialized 'data_char' and writing to 'data', resulting in
-all-zero output regardless of the actual I2C read.
+Unfortunately, it's worse than just a convoluted proof of correctness.
+Consider the case when we have CLONE_NEWCGROUP in addition to CLONE_NEWNS
+(and current->fs->users == 1).
 
-Fix this by:
-1. Expanding 'data_char' to 66 bytes to safely hold the hex output.
-2. Correcting the bin2hex() argument order and using the actual read count.
-3. Using a pointer to select the correct output buffer for the final
-   simple_read_from_buffer call.
+We pass current->fs to copy_mnt_ns(), all right.  Suppose it succeeds and
+flips current->fs->{pwd,root} to corresponding locations in the new namespace.
+Now we proceed to copy_cgroup_ns(), which fails (e.g. with -ENOMEM).
+We call put_mnt_ns() on the namespace created by copy_mnt_ns(), it's
+destroyed and its mount tree is dissolved, but...  current->fs->root and
+current->fs->pwd are both left pointing to now detached mounts.
 
-Fixes: d014538aa385 ("hwmon: (pmbus) Driver for Delta power supplies Q54SJ108A2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260304235116.1045-1-sanman.p211993@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+They are pinning those, so it's not a UAF, but it leaves the calling
+process with unshare(2) failing with -ENOMEM _and_ leaving it with
+pwd and root on detached isolated mounts.  The last part is clearly a bug.
+
+There is other fun related to that mess (races with pivot_root(), including
+the one between pivot_root() and fork(), of all things), but this one
+is easy to isolate and fix - treat CLONE_NEWNS as "allocate a new
+fs_struct even if it hadn't been shared in the first place".  Sure, we could
+go for something like "if both CLONE_NEWNS *and* one of the things that might
+end up failing after copy_mnt_ns() call in create_new_namespaces() are set,
+force allocation of new fs_struct", but let's keep it simple - the cost
+of copy_fs_struct() is trivial.
+
+Another benefit is that copy_mnt_ns() with CLONE_NEWNS *always* gets
+a freshly allocated fs_struct, yet to be attached to anything.  That
+seriously simplifies the analysis...
+
+FWIW, that bug had been there since the introduction of unshare(2) ;-/
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://patch.msgid.link/20260207082524.GE3183987@ZenIV
+Tested-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/q54sj108a2.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/q54sj108a2.c
-+++ b/drivers/hwmon/pmbus/q54sj108a2.c
-@@ -77,7 +77,8 @@ static ssize_t q54sj108a2_debugfs_read(s
- 	int idx = *idxp;
- 	struct q54sj108a2_data *psu = to_psu(idxp, idx);
- 	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
--	char data_char[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
-+	char data_char[I2C_SMBUS_BLOCK_MAX * 2 + 2] = { 0 };
-+	char *out = data;
- 	char *res;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 072fe9d6c47b6..531de2d1b3bfe 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2989,7 +2989,7 @@ static int unshare_fs(unsigned long unshare_flags, struct fs_struct **new_fsp)
+ 		return 0;
  
- 	switch (idx) {
-@@ -148,27 +149,27 @@ static ssize_t q54sj108a2_debugfs_read(s
- 		if (rc < 0)
- 			return rc;
+ 	/* don't need lock here; in the worst case we'll do useless copy */
+-	if (fs->users == 1)
++	if (!(unshare_flags & CLONE_NEWNS) && fs->users == 1)
+ 		return 0;
  
--		res = bin2hex(data, data_char, 32);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	case Q54SJ108A2_DEBUGFS_FLASH_KEY:
- 		rc = i2c_smbus_read_block_data(psu->client, PMBUS_FLASH_KEY_WRITE, data);
- 		if (rc < 0)
- 			return rc;
- 
--		res = bin2hex(data, data_char, 4);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
- 
--	data[rc] = '\n';
-+	out[rc] = '\n';
- 	rc += 2;
- 
--	return simple_read_from_buffer(buf, count, ppos, data, rc);
-+	return simple_read_from_buffer(buf, count, ppos, out, rc);
- }
- 
- static ssize_t q54sj108a2_debugfs_write(struct file *file, const char __user *buf,
+ 	*new_fsp = copy_fs_struct(fs);
+-- 
+2.51.0
+
 
 
 
