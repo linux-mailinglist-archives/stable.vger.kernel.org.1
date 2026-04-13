@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-237012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFheDpEe3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-237012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:21 +0200
+	id gGBNDkcl3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9AF43EFE1C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 482B73F1215
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 575C0309DF09
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3C91130AB9FE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93177307AC7;
-	Mon, 13 Apr 2026 16:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFD533065C;
+	Mon, 13 Apr 2026 16:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEOaAO4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmqpEBbH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572E724E4A1;
-	Mon, 13 Apr 2026 16:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5158632F765;
+	Mon, 13 Apr 2026 16:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098362; cv=none; b=qzAqMN/E68xgTQ5SDCdD3Xc8mHHoDfquC6lpn81Op1FSjj4CoZakm3cSPTbEdYrTXhN+k4cC7AdVAqQAp6g77qMJ/Ej63vExkIgExkt0v/wKEv3IwrxUWzerhXAzLwRHMKmmWWUOYkCZwokH4optVhykdy3UWXjJmwi1ECqDzY8=
+	t=1776099548; cv=none; b=P63+UcUySkJx4nrE4VQXTQyJ1l337l0fluUb2yhML/nYCgwfIMi3yMEPlPl/I2NKpq2UpPCkf0q2MQp5/Rum/6uJVOl+pEaTPiU0HKuiWd6u1LZBz5CAVZ8rZD7xan6ApGMhDsVFKiBlCV2pSa6LA4BY01GECdxu4y4JaK1E38U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098362; c=relaxed/simple;
-	bh=g/Qhh8lpvoOzakLzoZ36koauOmsnUvvE9+wHazlVYjc=;
+	s=arc-20240116; t=1776099548; c=relaxed/simple;
+	bh=mi4ZtdEgAxGfxxokyFMxnTrcSCkYIxK80pQenFS/uBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4sJYqcyARodYoK4ATx/PsS29WjSJ05rR/TJcB15dsn8zKcLtoB+/GZQyNfzwpXGEXj3awYyVn5wIinNGy5jLo6fBOZSksu1633NVwH8erwOSfQCTbGqyYKU60KsB96NYKDJT3ov6C/1+fdLKJUxsrJ+Yr9SP1dBYUzx2edFLdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEOaAO4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11FEC2BCAF;
-	Mon, 13 Apr 2026 16:39:21 +0000 (UTC)
+	 MIME-Version; b=D4BuXJPmAxUn7+EJPEFE9ELTmiUyaKIDoc3xpXwK24KCg5AvFQn4L4opmxcX8YupNO8Ele9Oo9/6xtiXE4g8UxxmxjXX8+tIFG7mPe4bF5Ma0I9wd+P9sDGGo+gFQB8sDpgPbJAp/3/pMn7Ab9fM8tQpMXEyR6f1+c5+k7gby0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmqpEBbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7004C2BCAF;
+	Mon, 13 Apr 2026 16:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098362;
-	bh=g/Qhh8lpvoOzakLzoZ36koauOmsnUvvE9+wHazlVYjc=;
+	s=korg; t=1776099548;
+	bh=mi4ZtdEgAxGfxxokyFMxnTrcSCkYIxK80pQenFS/uBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEOaAO4+Jac5e/ghre77kMVDzK8r7AgRUoE4mc5NcCN+Wt0f2J6HpFqIaQKpts7UK
-	 ADiXHJXpDnkLuLNWlmdy19wemBPzYi6zgCoQkbh2MXnbQaI+FFZUKUfrrqMeEoOJeY
-	 s3ukEIKb/ZJjAsRIz3vTqRFQrThxedcOPzBPDtFo=
+	b=mmqpEBbHhFXiw6krw9QtdqTUF2zJu+V/vDI/5b05s4+1e73Rzc/NAY6ZIujh+i0NC
+	 b04lKYMwNAkL3EgNwy7+xmjxOZG8ZJR47LBFaRdDjxtkqC2Mlwg97OI4DXTe0KikDS
+	 uoxpBBPwoT+GenAvsuMksMo8g0m8eg12J7rys6PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
-	Johnny Hao <johnny_haocn@sina.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 495/570] fbcon: Set fb_display[i]->mode to NULL when the mode is released
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 381/491] iio: light: vcnl4035: fix scan buffer on big-endian
 Date: Mon, 13 Apr 2026 18:00:26 +0200
-Message-ID: <20260413155849.000667410@linuxfoundation.org>
+Message-ID: <20260413155833.296524451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,162 +68,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,suse.de,gmx.de,sina.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237012-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-237474-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,gmx.de:email,sina.com:email,syz.xxx:url]
-X-Rspamd-Queue-Id: A9AF43EFE1C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,baylibre.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 482B73F1215
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quanmin Yan <yanquanmin1@huawei.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit a1f3058930745d2b938b6b4f5bd9630dc74b26b7 ]
+commit fdc7aa54a5d44c05880a4aad7cfb41aacfd16d7b upstream.
 
-Recently, we discovered the following issue through syzkaller:
+Rework vcnl4035_trigger_consumer_handler() so that we are not passing
+what should be a u16 value as an int * to regmap_read(). This won't
+work on bit endian systems.
 
-BUG: KASAN: slab-use-after-free in fb_mode_is_equal+0x285/0x2f0
-Read of size 4 at addr ff11000001b3c69c by task syz.xxx
-...
-Call Trace:
- <TASK>
- dump_stack_lvl+0xab/0xe0
- print_address_description.constprop.0+0x2c/0x390
- print_report+0xb9/0x280
- kasan_report+0xb8/0xf0
- fb_mode_is_equal+0x285/0x2f0
- fbcon_mode_deleted+0x129/0x180
- fb_set_var+0xe7f/0x11d0
- do_fb_ioctl+0x6a0/0x750
- fb_ioctl+0xe0/0x140
- __x64_sys_ioctl+0x193/0x210
- do_syscall_64+0x5f/0x9c0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Instead, add a new unsigned int variable to pass to regmap_read(). Then
+copy that value into the buffer struct.
 
-Based on experimentation and analysis, during framebuffer unregistration,
-only the memory of fb_info->modelist is freed, without setting the
-corresponding fb_display[i]->mode to NULL for the freed modes. This leads
-to UAF issues during subsequent accesses. Here's an example of reproduction
-steps:
-1. With /dev/fb0 already registered in the system, load a kernel module
-   to register a new device /dev/fb1;
-2. Set fb1's mode to the global fb_display[] array (via FBIOPUT_CON2FBMAP);
-3. Switch console from fb to VGA (to allow normal rmmod of the ko);
-4. Unload the kernel module, at this point fb1's modelist is freed, leaving
-   a wild pointer in fb_display[];
-5. Trigger the bug via system calls through fb0 attempting to delete a mode
-   from fb0.
+The buffer array is replaced with a struct since there is only one value
+being read. This allows us to use the correct u16 data type and has a
+side-effect of simplifying the alignment specification.
 
-Add a check in do_unregister_framebuffer(): if the mode to be freed exists
-in fb_display[], set the corresponding mode pointer to NULL.
+Also fix the endianness of the scan format from little-endian to CPU
+endianness. Since we are using regmap to read the value, it will be
+CPU-endian.
 
-[ The context change is due to the commit 2c0c19b681d5
-("fbdev: fbmem: Fix double free of 'fb_info->pixmap.addr'") in v5.16
-which is irrelevant to the logic of this patch. ]
-
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 20 ++++++++++++++++++++
- drivers/video/fbdev/core/fbmem.c |  2 ++
- include/linux/fbcon.h            |  2 ++
- 3 files changed, 24 insertions(+)
+ drivers/iio/light/vcnl4035.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index f4584681fa43d..7dce023c2fb34 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2797,6 +2797,26 @@ int fbcon_mode_deleted(struct fb_info *info,
- 	return found;
- }
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -105,17 +105,23 @@ static irqreturn_t vcnl4035_trigger_cons
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct vcnl4035_data *data = iio_priv(indio_dev);
+ 	/* Ensure naturally aligned timestamp */
+-	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)]  __aligned(8) = { };
++	struct {
++		u16 als_data;
++		aligned_s64 timestamp;
++	} buffer = { };
++	unsigned int val;
+ 	int ret;
  
-+static void fbcon_delete_mode(struct fb_videomode *m)
-+{
-+	struct fbcon_display *p;
-+	int i;
+-	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, (int *)buffer);
++	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, &val);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev,
+ 			"Trigger consumer can't read from sensor.\n");
+ 		goto fail_read;
+ 	}
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+-					iio_get_time_ns(indio_dev));
 +
-+	for (i = first_fb_vc; i <= last_fb_vc; i++) {
-+		p = &fb_display[i];
-+		if (p->mode == m)
-+			p->mode = NULL;
-+	}
-+}
-+
-+void fbcon_delete_modelist(struct list_head *head)
-+{
-+	struct fb_modelist *modelist;
-+
-+	list_for_each_entry(modelist, head, list)
-+		fbcon_delete_mode(&modelist->mode);
-+}
-+
- #ifdef CONFIG_VT_HW_CONSOLE_BINDING
- static void fbcon_unbind(void)
- {
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 3b52ddfe03506..03a7a7e2a670e 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1750,6 +1750,8 @@ static void do_unregister_framebuffer(struct fb_info *fb_info)
- 	if (fb_info->pixmap.addr &&
- 	    (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
- 		kfree(fb_info->pixmap.addr);
-+
-+	fbcon_delete_modelist(&fb_info->modelist);
- 	fb_destroy_modelist(&fb_info->modelist);
- 	registered_fb[fb_info->node] = NULL;
- 	num_registered_fb--;
-diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-index 2382dec6d6ab8..fb0fc2736b801 100644
---- a/include/linux/fbcon.h
-+++ b/include/linux/fbcon.h
-@@ -11,6 +11,7 @@ void fbcon_suspended(struct fb_info *info);
- void fbcon_resumed(struct fb_info *info);
- int fbcon_mode_deleted(struct fb_info *info,
- 		       struct fb_videomode *mode);
-+void fbcon_delete_modelist(struct list_head *head);
- void fbcon_new_modelist(struct fb_info *info);
- void fbcon_get_requirement(struct fb_info *info,
- 			   struct fb_blit_caps *caps);
-@@ -31,6 +32,7 @@ static inline void fbcon_suspended(struct fb_info *info) {}
- static inline void fbcon_resumed(struct fb_info *info) {}
- static inline int fbcon_mode_deleted(struct fb_info *info,
- 				     struct fb_videomode *mode) { return 0; }
-+static inline void fbcon_delete_modelist(struct list_head *head) {}
- static inline void fbcon_new_modelist(struct fb_info *info) {}
- static inline void fbcon_get_requirement(struct fb_info *info,
- 					 struct fb_blit_caps *caps) {}
--- 
-2.53.0
-
++	buffer.als_data = val;
++	iio_push_to_buffers_with_timestamp(indio_dev, &buffer,
++					   iio_get_time_ns(indio_dev));
+ 
+ fail_read:
+ 	iio_trigger_notify_done(indio_dev->trig);
+@@ -380,7 +386,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ 	{
+@@ -394,7 +400,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ };
 
 
 
