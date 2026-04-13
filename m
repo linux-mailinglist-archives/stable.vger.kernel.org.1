@@ -1,127 +1,169 @@
-Return-Path: <stable+bounces-235941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLihECea3GkxUAkAu9opvQ
-	(envelope-from <stable+bounces-235941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:24:23 +0200
+	id UearIJmd3GkEUgkAu9opvQ
+	(envelope-from <stable+bounces-235943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:39:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9393E82CB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:24:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6913E8563
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 09:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32CCA3009F85
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:23:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FD5A304DE8F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBA1392825;
-	Mon, 13 Apr 2026 07:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DF73939AF;
+	Mon, 13 Apr 2026 07:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ULGSXsZe"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="qQaMmMcp"
 X-Original-To: stable@vger.kernel.org
-Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8005D3932C5
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.111
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C866389111;
+	Mon, 13 Apr 2026 07:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776065027; cv=none; b=TYK499UTSQLanj44v4HJNnyA0WS4Jeg71uvgEFErazwYFQbiTZ2OqeeylA8rYbW9buXK1uiL+4/pVCOOJAly5xserI0RHWI687CE3IJodNbvFWeB9BMUTMUn/XfK34pyZeSWzEXW8Pmeng+ZuySKxNozb0HJysqgiSMpaz+SK/U=
+	t=1776065675; cv=none; b=V0MCgo/tmj7FOXgDd8K8LwxpPw1FiN2+C72wtj64eYr6zHEVTuEjcrOrr5erNueHrE+qwunnXsY0Ab/BFYyYKnpbEIXBJYv/P+tNEx1zej7Z/y8fWMo5tzuQTecZ95u48QcZ5qmyvNNcD5wC6qLn8FzR/GWPISvO0slJhzgnYfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776065027; c=relaxed/simple;
-	bh=0zZfHOOWFWw4+HC5cgC+7XSH/R0wjD1a138VWny+jHA=;
-	h=Cc:From:Subject:Content-Type:To:Date:Message-Id:Mime-Version; b=Wfufbkyxsu+VUvZBcdCOr9LYEAUvhdMxnC5y1IkmNvo4G14PBXCFacXyqiZ0kH7uSrEUookhN3lf3EudGwdsch6MazThfO8JVidCZeN++d6wqr3jwaEUWy4EATlTpB142JUcc7KZfaLN5rJUiGo4FU81oLF7+U6/SBloLJE0bKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ULGSXsZe; arc=none smtp.client-ip=209.127.231.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1776065019; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=jP3ET5/NQK/iIZIBTGcvS9TsKHd5N6bf39hH0vZuuvw=;
- b=ULGSXsZeW6xQzUEpP1k8aHAryB5PWPQ6p4GKAaCNNrruM5qNpvWkFPfUN6CXUyRx89mU/R
- MCD0nNXzCgv8ejMYtcVv5TiLE+wYLTVmneMZgytg2Qhz/B7T/SEcXX0xNWln+SGe5I3Abx
- 3UTRv1Fv+Wn7AFYT9uKk9lb9jeEeeaiM9MnqMOS2twn4Uzbu+RhUN43QiqXpR/azdKOuff
- 9C82I28t0D0WB07YCyWpjoS9d9EfBFitRgLBqZyW4xiqaU4FMViRtW4BiJFBIs8G6l0xGr
- IQE2Kct7dkt1WgqQYkK1sqkV55mS4oAW6KvTLGxNUJV9CRAwlxX/t/cbRpEsEg==
-Cc: <virtualization@lists.linux.dev>, <linux-kernel@vger.kernel.org>, 
-	"Jinhui Guo" <guojinhui.liam@bytedance.com>, <stable@vger.kernel.org>
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-Subject: [PATCH] virtio_pci_modern: Use GFP_ATOMIC with spin_lock_irqsave held in virtqueue_exec_admin_cmd()
-X-Mailer: git-send-email 2.17.1
-X-Lms-Return-Path: <lba+269dc99f9+728868+vger.kernel.org+guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
-	"Jason Wang" <jasowang@redhat.com>, 
-	"Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, 
-	=?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	"Jiri Pirko" <jiri@resnulli.us>
-Date: Mon, 13 Apr 2026 15:22:49 +0800
-Message-Id: <20260413072249.30433-1-guojinhui.liam@bytedance.com>
+	s=arc-20240116; t=1776065675; c=relaxed/simple;
+	bh=V3WFhOJ14ldxim/GRHhxMiMs5RksmKIiGzmv36LwcGI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iL6S//ELhSFqoUIihBvVnixsjAwK0UQjJXYRedEysWipI11KqtYzCXnCceeV2lGCbDjgDTqqEd1ey1+svzoxerP+zkwsRMAr92E//XHKJ+xTcy7vZy5lROXYw3/2b93g3X3e615mbpuFO6ScUNogXPmClXik0AEeBo2w+5WpZlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=qQaMmMcp; arc=none smtp.client-ip=120.232.169.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=qQaMmMcpmhrOyLVt+UcXfuamFbGCHqy2bsfNiyFJ3axIZgV/OKtZbZ0dZOzWtKWNqVtbPCkU/9l0g
+	 kbhMszL2hnbpar21iqRGufUkcZ/Oijrh7KhdCaJyGU3pkYW9+qrbo6LUCyYDwVGq94u2D2Mr5JNFf1
+	 iFA2xTGBo62Qh2zc=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-10-12088 (RichMail) with SMTP id 2f3869dc9bb6403-0141d;
+	Mon, 13 Apr 2026 15:31:06 +0800 (CST)
+X-RM-TRANSID:2f3869dc9bb6403-0141d
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	fw@strlen.de
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	pablo@netfilter.org,
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kaber@trash.net,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: [PATCH 6.12.y] netfilter: conntrack: add missing netlink policy validations
+Date: Mon, 13 Apr 2026 15:31:05 +0800
+Message-Id: <20260413073105.2990210-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235941-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235943-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,netfilter.org,davemloft.net,google.com,kernel.org,redhat.com,trash.net,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guojinhui.liam@bytedance.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AF9393E82CB
+	NEURAL_HAM(-0.00)[-0.645];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,139.com:email,139.com:mid]
+X-Rspamd-Queue-Id: CD6913E8563
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-virtqueue_exec_admin_cmd() holds admin_vq->lock with spin_lock_irqsave(),
-which disables interrupts.  Using GFP_KERNEL inside this critical section
-is unsafe because kmalloc() may sleep, leading to potential deadlocks or
-scheduling violations.
+From: Florian Westphal <fw@strlen.de>
 
-Switch to GFP_ATOMIC to ensure the allocation is non-blocking.
+[ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
 
-Fixes: 4c3b54af907e ("virtio_pci_modern: use completion instead of busy loop to wait on admin cmd result")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
+
+These attributes are used by the kernel without any validation.
+Extend the netlink policies accordingly.
+
+Quoting the reporter:
+  nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
+  value directly to ct->proto.sctp.state without checking that it is
+  within the valid range. [..]
+
+  and: ... with exp->dir = 100, the access at
+  ct->master->tuplehash[100] reads 5600 bytes past the start of a
+  320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
+  UBSAN.
+
+Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
+Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Li hongliang <1468888505@139.com>
 ---
- drivers/virtio/virtio_pci_modern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_netlink.c    | 2 +-
+ net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
-index 6d8ae2a6a8ca..db8e4f88b749 100644
---- a/drivers/virtio/virtio_pci_modern.c
-+++ b/drivers/virtio/virtio_pci_modern.c
-@@ -101,7 +101,7 @@ static int virtqueue_exec_admin_cmd(struct virtio_pci_admin_vq *admin_vq,
- 		return -EIO;
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 323e147fe282..f51cdfba68fb 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3460,7 +3460,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
  
- 	spin_lock_irqsave(&admin_vq->lock, flags);
--	ret = virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_KERNEL);
-+	ret = virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_ATOMIC);
- 	if (ret < 0) {
- 		if (ret == -ENOSPC) {
- 			spin_unlock_irqrestore(&admin_vq->lock, flags);
+ #if IS_ENABLED(CONFIG_NF_NAT)
+ static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
+-	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
++	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
+ 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
+ };
+ #endif
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index 4cc97f971264..fabb2c1ca00a 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -587,7 +587,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
+ }
+ 
+ static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
+-	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
++	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
++							 SCTP_CONNTRACK_HEARTBEAT_SENT),
+ 	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
+ 	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
+ };
 -- 
-2.20.1
+2.34.1
+
+
 
