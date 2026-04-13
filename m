@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-236808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMWdNM4b3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:34 +0200
+	id gGXWOV8b3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450AF3EF683
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5373EF564
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99B4B303EFCE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3FF2830164BC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E74D238D27;
-	Mon, 13 Apr 2026 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E3E305064;
+	Mon, 13 Apr 2026 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4QGVJeX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5ps2bll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1796226D18;
-	Mon, 13 Apr 2026 16:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76943280CFB;
+	Mon, 13 Apr 2026 16:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097845; cv=none; b=J3pmvQilNteknTATJ9GB8D+8jVESb1zNDIhktPyaDThLSusZ5ZulisnW3iddJpq+pcB1Lw6pVVMbB+pBB+R16XrLJlnAXaPD4ZGq9ubqwoVT6KcpQ89NY37UP0oCUaF3cVjZWV2IrVvw5ElUsaom2kcC9FprVQ+bfnl+LSopnpE=
+	t=1776098137; cv=none; b=jDuR1l6C9/gpc+SMCBW95CqZVtq+Ss9/phXhcvB0mj/r3CUS5764TFOXyNPFYO3tJ3sJNIgwIhHNG94wFrwjiOTHzB2Ox9ZRmwX3PqgugD2a9WkCorFA2WmMNRnhX2O9t07B2BFd7kxi8gnT4dZU57t1LQyEUoluIYMO5nqlk14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097845; c=relaxed/simple;
-	bh=PK7mbw5vK+PS7JS7cx0S0i5xX4pUE1edlP/rxkybuLc=;
+	s=arc-20240116; t=1776098137; c=relaxed/simple;
+	bh=Jc4nqUyrOUi1Nz4D+bekiKLIc0QDC++Iihbsm7TKSHQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F7PgD8MKeUw2wph6ukDG3Nwp6a6aea7MjMs1+UZOjYOp+rA1/tnBBo19J4/pNcTpsiRk8LYY1pK/nJX1vaE8TTok/tJRxsRFEf1lf3Q2zbZLASGYo43FqEJEo3wyNLThSX7k2CNZQROGDeIcxttp4Mkep29QpvYZNf0hHzfNAtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4QGVJeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7307C2BCB0;
-	Mon, 13 Apr 2026 16:30:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WQAhj9+ZWz2bTAu7gaqL6/PiaTZc3+sKGalZbKaygvwz7mBVjdLRHoNBYBdmUbJdCZeFKqnGQJ9gcQmghd24J9MWbiFtZi25fV9GYLkxU2jDOg1RZ3d+ggd11ICMKExbnrk/y62Ee7QhNFc7fB/2raMUQDXSeyFvP6A3uDMAbAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5ps2bll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80CAC2BCAF;
+	Mon, 13 Apr 2026 16:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776097844;
-	bh=PK7mbw5vK+PS7JS7cx0S0i5xX4pUE1edlP/rxkybuLc=;
+	s=k20201202; t=1776098137;
+	bh=Jc4nqUyrOUi1Nz4D+bekiKLIc0QDC++Iihbsm7TKSHQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a4QGVJeXLXzU7ZLYG3BHpnOkpB2nMYj0t5KjrnwAcO+kTKOFZnIbObBGL96KjktDx
-	 jsbHzhDeIiTk8S1g4zlNOGRl/s9idgMHNzFH2UwLkRu2BlvLpVJjmg7q2deef8PYzd
-	 QxhP73q9rv20akIahd4y1/DYiQIV+WgcAO7Hweloqk1oh8e5mheAZexTELAOONQDRm
-	 ZyPJocJ4yGDUwDvfc4s3uFAp67kerne9Z9a3o1ttcfOaHo9gsjsCE/PeKUtrGRnED6
-	 zbQxCzrWVpJhEAOHTJc1CYmUYzLo//GhEEbTLJcFsT8KtkhfnldkcmH09eAymfurdQ
-	 V7rjOBW+HpCkA==
-Date: Mon, 13 Apr 2026 06:30:43 -1000
+	b=H5ps2bll3FOA7hkTh90vEDWKW5ynlDPs0dp6oPTq0IobVU5jMWnbzdxEXelPJbnm3
+	 0QeCEOpb6papaZ81PORXF62n/Qt7iNjs3Wj492dgoaerCXcgQ9CN2zWPI1HUbIPe4n
+	 UqU5AQGIP/Y/r4yXhwVuNGjM5f6WlwKjJFEsKchMa1Dv14fs1ovhApsOpKQQEpgodp
+	 vN89Rf+4aZTp22oLcKNxq4vzjxN1nSRjK/96YiF5KBdnq3ArW+bkZncbfC/ZyxXd/u
+	 KU8516Fp3Gud4ksfEeOCss/xT43MlH5z6fCxWNc7q5eQhUKb+X9BkX7gk2kvfnY4bF
+	 a4T5MognHEruQ==
+Date: Mon, 13 Apr 2026 06:35:35 -1000
 From: Tejun Heo <tj@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] writeback: Fix use after free in
- inode_switch_wbs_work_fn()
-Message-ID: <ad0aM1nN4j2I9Zh_@slm.duckdns.org>
-References: <20260413093618.17244-2-jack@suse.cz>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jens Axboe <axboe@kernel.dk>,
+	shakeel.butt@linux.dev, inwardvessel@gmail.com, hannes@cmpxchg.org,
+	josef@toxicpanda.com,
+	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, martin.lau@linux.dev, usama.arif@linux.dev,
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: blk-cgroup: fix use-after-free in
+ cgwb_release_workfn()
+Message-ID: <ad0bV0OaUiyRqTKe@slm.duckdns.org>
+References: <20260413-blkcg-v1-1-35b72622d16c@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,77 +73,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260413093618.17244-2-jack@suse.cz>
+In-Reply-To: <20260413-blkcg-v1-1-35b72622d16c@debian.org>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236808-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-236922-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,oracle.com,google.com,suse.com,kernel.dk,linux.dev,gmail.com,cmpxchg.org,toxicpanda.com,kvack.org,vger.kernel.org,meta.com];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.cz:email,slm.duckdns.org:mid]
-X-Rspamd-Queue-Id: 450AF3EF683
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AD5373EF564
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 13, 2026 at 11:36:19AM +0200, Jan Kara wrote:
-> inode_switch_wbs_work_fn() has a loop like:
+On Mon, Apr 13, 2026 at 03:09:19AM -0700, Breno Leitao wrote:
+> cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later
+> accesses wb->blkcg_css again via blkcg_unpin_online(). If css_put()
+> drops the last reference, the blkcg can be freed asynchronously
+> (css_free_rwork_fn -> blkcg_css_free -> kfree) before blkcg_unpin_online()
+> dereferences the pointer to access blkcg->online_pin, resulting in a
+> use-after-free:
 > 
->   wb_get(new_wb);
->   while (1) {
->     list = llist_del_all(&new_wb->switch_wbs_ctxs);
->     /* Nothing to do? */
->     if (!list)
->       break;
->     ... process the items ...
->   }
+>   BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+>   Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+>    Workqueue: cgwb_release cgwb_release_workfn
+>    Call Trace:
+>     <TASK>
+>      blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+>      cgwb_release_workfn (mm/backing-dev.c:629)
+>      process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
 > 
-> Now adding of items to the list looks like:
+>    Freed by task 1016:
+>     kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+>     css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+>     process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
 > 
-> wb_queue_isw()
->   if (llist_add(&isw->list, &wb->switch_wbs_ctxs))
->     queue_work(isw_wq, &wb->switch_work);
+> ** Stack based on commit 66672af7a095 ("Add linux-next specific files
+> for 20260410")
 > 
-> Because inode_switch_wbs_work_fn() loops when processing isw items, it
-> can happen that wb->switch_work is pending while wb->switch_wbs_ctxs is
-> empty. This is a problem because in that case wb can get freed (no isw
-> items -> no wb reference) while the work is still pending causing
-> use-after-free issues.
+> I am seeing this crash sporadically in Meta fleet across multiple
+> kernel versions. A full reproducer is available at:
+> https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
 > 
-> We cannot just fix this by cancelling work when freeing wb because that
-> could still trigger problematic 0 -> 1 transitions on wb refcount due to
-> wb_get() in inode_switch_wbs_work_fn(). It could be all handled with
-> more careful code but that seems unnecessarily complex so let's avoid
-> that until it is proven that the looping actually brings practical
-> benefit. Just remove the loop from inode_switch_wbs_work_fn() instead.
-> That way when wb_queue_isw() queues work, we are guaranteed we have
-> added the first item to wb->switch_wbs_ctxs and nobody is going to
-> remove it (and drop the wb reference it holds) until the queued work
-> runs.
+> (The race window is narrow. To make it easily reproducible, inject
+> a msleep(100) between css_put() and blkcg_unpin_online() in
+> cgwb_release_workfn(). With that delay and a KASAN-enabled kernel, the
+> reproducer triggers the splat reliably in less than a second.)
 > 
-> Fixes: e1b849cfa6b6 ("writeback: Avoid contention on wb->list_lock when switching inodes")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Jan Kara <jack@suse.cz>
-
-Oh man, that's too subtle.
+> Fix this by moving blkcg_unpin_online() before css_put(), so the
+> cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+> accesses it.
+> 
+> Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
 Acked-by: Tejun Heo <tj@kernel.org>
 
