@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-236603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJh2O4Yg3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-236603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:42 +0200
+	id CMADNHgY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5139A3F059E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13193EEC4C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A6553062C0E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B499301D09E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641333090F5;
-	Mon, 13 Apr 2026 16:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3736530BB91;
+	Mon, 13 Apr 2026 16:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWDOicTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ea10nOt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275EE26CE32;
-	Mon, 13 Apr 2026 16:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFA62FFFBE;
+	Mon, 13 Apr 2026 16:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097332; cv=none; b=rPwkQQCFbAJNmuTc+JMBlcTDnLWtlyuuNvABZ8STdS+MeKliZtzYUMjW1Swa1LQDobDdgb2m2CmBHHwa2IKeemQB5BJOml8DukazEB1UC6mBTXMz3A5btqiI0IVd1xlIQamGphD86nKBhikSGvP6JvY7STCzCO/4SDcunbuKMVw=
+	t=1776097335; cv=none; b=sqAlJpSUC0V1lhR27aS4eh+GFLYOM/sWdHpPjC1Q+i+eMrCrloW+0TcyEeTp3Y4iO00ZdRSG5DbB+mEn9+6A/vwHej7z0rWZgl2cmCXddC4T1+4uMCFxVvt4tHrgQgWyo7Ee133lr1CcCTLiuNnyL2gUSdVFB3vrJawSKxglMmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097332; c=relaxed/simple;
-	bh=qEG2YTffo14WA33UAiPs5M6SEVvcYqSHau785LB0TsM=;
+	s=arc-20240116; t=1776097335; c=relaxed/simple;
+	bh=eoh3XpO6gywgHJvYSS786ouQRJE0Sn9QjZcIQW95nX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSxJEzGSGeEf8kjBy/CYMtd4VKTV1zbdZ24m6E1QznkQ212rqWz/MkR+A4b37Z6aLMtGeBbQTNBAWuCc0zdWm7WI31ULv9E+wQe9eYybVZGSlF3Ur0SSQbzgya29/uPtgEs/eyX9ofsR3KyglXYmExpUMfPeN7H5GBKP3DgwMX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWDOicTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30F9C2BCAF;
-	Mon, 13 Apr 2026 16:22:11 +0000 (UTC)
+	 MIME-Version; b=XjDvYMAjQuUx8YCiQLJVzp+D0k/KbZty0WMhtrBcYLSD0PFXgt7DnGihpz2vDB66Mc99MyeV+/R7dAJan9OZyp/VZGcJtfdEa4xQapid1JFj6t3NVBT8i5Q43nw+6+3aobXg4+NKMMCIdGh0Oh7RCnHFq4euqPVt99TSJYOYyiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ea10nOt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450F2C2BCAF;
+	Mon, 13 Apr 2026 16:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097332;
-	bh=qEG2YTffo14WA33UAiPs5M6SEVvcYqSHau785LB0TsM=;
+	s=korg; t=1776097334;
+	bh=eoh3XpO6gywgHJvYSS786ouQRJE0Sn9QjZcIQW95nX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWDOicTQ7UaxRKo0utf/pJiJhIqN2A/VbPUy2+QfiKsP9HNvuGVteUwdqX179S00w
-	 TJs34zLIvmy/Z4WaoYF2JIw+2OyvDfZ8hY4PPpNsRuOCNB0UaPmmcA0bne+fOJAi42
-	 /hM2pNzqC75Fn1GygalDjMuUxXvPvktK+udtQod8=
+	b=Ea10nOt53PiYvCeIwFVm/10MgLtR3uyx067cAgT6zw1UpThsAi/m6RIKiDA+pe2Au
+	 5C81KhXyMQxH48/BYgoIJkH3lrdkJMbjjIuxQRe7GWEJwZIxis51Kwbopdd84JDKwV
+	 PFOk8kcPXRjCKhZpkB+JC3Z/1bm+qiQHySmM9/rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/570] ALSA: usb-audio: Avoid implicit feedback mode on DIYINHK USB Audio 2.0
-Date: Mon, 13 Apr 2026 17:53:47 +0200
-Message-ID: <20260413155834.040269013@linuxfoundation.org>
+Subject: [PATCH 5.15 097/570] ALSA: usb-audio: Check max frame size for implicit feedback mode, too
+Date: Mon, 13 Apr 2026 17:53:48 +0200
+Message-ID: <20260413155834.077063590@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236603-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236604-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email]
-X-Rspamd-Queue-Id: 5139A3F059E
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: A13193EEC4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +100,36 @@ X-Rspamd-Server: lfdr
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c5bf24c8aba1ff711226ee0f039ff01a5754692b ]
+[ Upstream commit 7cb2a5422f5bbdf1cf32eae0eda41000485b9346 ]
 
-Although DIYINHK USB Audio 2.0 (ID 20b1:2009) shows the implicit
-feedback source for the capture stream, this would cause several
-problems for the playback.  Namely, the device can get wMaxPackSize
-1024 for 24/32 bit format with 6 channels, and when a high sample rate
-like 352.8kHz or 384kHz is played, the packet size overflows the max
-limit.  Also, the device has another two playback altsets, and those
-aren't properly handled with the implicit feedback.
-
-Since the device has been working well even before introducing the
-implicit feedback, we can assume that it works fine in the async mode.
-This patch adds the explicit skip of the implicit fb detection to make
-the playback running in the async mode.
+When the packet sizes are taken from the capture stream in the
+implicit feedback mode, the sizes might be larger than the upper
+boundary defined by the descriptor.  As already done for other
+transfer modes, we have to cap the sizes accordingly at sending,
+otherwise this would lead to an error in USB core at submission of
+URBs.
 
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=221076
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260225085233.316306-4-tiwai@suse.de
+Link: https://patch.msgid.link/20260225085233.316306-3-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/usb/endpoint.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 55fd74f198184..ceca05f91c89c 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1929,6 +1929,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x2040, 0x7281, /* Hauppauge HVR-950Q-MXL */
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
-+	DEVICE_FLG(0x20b1, 0x2009, /* XMOS Ltd DIYINHK USB Audio 2.0 */
-+		   QUIRK_FLAG_SKIP_IMPLICIT_FB | QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x2040, 0x8200, /* Hauppauge Woodbury */
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x21b4, 0x0081, /* AudioQuest DragonFly */
+diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
+index 6ba99ff2cefcf..22eb5de94c2be 100644
+--- a/sound/usb/endpoint.c
++++ b/sound/usb/endpoint.c
+@@ -223,6 +223,7 @@ int snd_usb_endpoint_next_packet_size(struct snd_usb_endpoint *ep,
+ 
+ 	packet = ctx->packet_size[idx];
+ 	if (packet) {
++		packet = min(packet, ep->maxframesize);
+ 		if (avail && packet >= avail)
+ 			return -EAGAIN;
+ 		return packet;
 -- 
 2.51.0
 
