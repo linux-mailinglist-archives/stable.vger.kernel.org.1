@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GLLBCUd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:17 +0200
+	id EFnrD1oj3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5BD3EF985
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375493F0DC6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5157530451F2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:33:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 601CE304C5DF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF814225A38;
-	Mon, 13 Apr 2026 16:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F38317153;
+	Mon, 13 Apr 2026 16:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzyaLhwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocMywVma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7276723D297;
-	Mon, 13 Apr 2026 16:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0966A313298;
+	Mon, 13 Apr 2026 16:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097981; cv=none; b=ExXwxEXbalu5hi8haFKD6Qv5WhpwSYm0Aq2p/8+g6MujDVLCUpRGhgF13Ik8agPXeK72Nb2miSTPLFnT98BjJB9horhcagaFsINqMHhbklWHwGQ64LdBsqxnEI3RZ4LQbGgfZrEwG8LDkKUGi+zkOPC/+lBeICetZxPj2/dldcg=
+	t=1776099166; cv=none; b=n4Twjvs+c5eFstiox339sfn1vapQFUAPbM/NcaSrkMe5C3wXYRB5QNUKmWSNJ0JI1Ssm+DsXYTtpFoN5yBReLK+tQFiMV2Jfn+7OWie+Kq9U8lsUAsS3LruY8da4JmGIsFiuXsMHAX/on/8l1NYs0tDiC8zfZmUKYiqBi2cSJcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097981; c=relaxed/simple;
-	bh=xa8m9/BkImIGZfHb5L6yPW7UHwuOUj6cBeJ2L1Qbs3A=;
+	s=arc-20240116; t=1776099166; c=relaxed/simple;
+	bh=vKyr5bdJP3xua1TuYNM4eUM64oPb97Olzt4ha/mS+fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BW45IJZ6sqGuo3EBARodyuKn8TOgsfnRaXNp5N1z1cqSzdoAjUiJaDvZjIVyiZeeQ+C7WKvCozbalpK486qKKUbSHsnPdylU2EL/ArafnNWJlueXIqh+Ix+yVAkqMmI0SACAxsJV3Z6wNCIHEMTlaVGPnzo8dtdQGg1WBBd5e/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzyaLhwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0925CC2BCAF;
-	Mon, 13 Apr 2026 16:33:00 +0000 (UTC)
+	 MIME-Version; b=qx/SP+LuYoCj81qrAOHdAq35H57QqiuhQD9oajSnbUJNvR8hFLEOt3G2HPb5O5YWyWgwTk+dNQED//kx4xHIu/1myXI4LmdoPu7TYX88DA8rEJX95GCetfqQHdCMZMoIkwGFqVplzy5/+XX0vTbqZZPvWmDITWQ3LuETltCcXKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocMywVma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AE2C2BCAF;
+	Mon, 13 Apr 2026 16:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097981;
-	bh=xa8m9/BkImIGZfHb5L6yPW7UHwuOUj6cBeJ2L1Qbs3A=;
+	s=korg; t=1776099165;
+	bh=vKyr5bdJP3xua1TuYNM4eUM64oPb97Olzt4ha/mS+fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TzyaLhwUp9bVjivyRhUd8ZbyxQnhfCY7iLI55aIKEkZjTYPO6VCR5i6XwziQ2SbuK
-	 b9JOLA2LQDyPtgQUQI9Jt5fZmG53dmB2ikMHBJYVHbaa6i9X+Uj+RWK0BFI7C8ruvE
-	 2kAVxigfF+X1GiX2d3aT9diFz3hzm2PwGs1zq/J4=
+	b=ocMywVma/y6zbHQUKyWxnGf5tWGqEqe3Zrk5/7LeKtaK6Eg03KhxoA0CLMWXD+Tvv
+	 ylSH85AjiA4wqEKNZGTbk2mFxsasiYAxwDIWuC+0J5awKFo7d4JPkcn/WTfUIKhO3t
+	 E9mFvW6hsb3aANACSr1sovLlKTCWelbPnApDcgP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 348/570] RDMA/irdma: Remove a NOP wait_event() in irdma_modify_qp_roce()
-Date: Mon, 13 Apr 2026 17:57:59 +0200
-Message-ID: <20260413155843.524898005@linuxfoundation.org>
+	Teddy Astie <teddy.astie@vates.tech>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.10 235/491] xen/privcmd: restrict usage in unprivileged domU
+Date: Mon, 13 Apr 2026 17:58:00 +0200
+Message-ID: <20260413155827.856258092@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236861-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237326-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,51 +86,169 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: AC5BD3EF985
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vates.tech:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 375493F0DC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 5e8f0239731a83753473b7aa91bda67bbdff5053 ]
+commit 453b8fb68f3641fea970db88b7d9a153ed2a37e8 upstream.
 
-Remove a NOP wait_event() in irdma_modify_qp_roce() which is relevant
-for iWARP and likely a copy and paste artifact for RoCEv2. The wait event
-is for sending a reset on a TCP connection, after the reset has been
-requested in irdma_modify_qp(), which occurs only in iWarp mode.
+The Xen privcmd driver allows to issue arbitrary hypercalls from
+user space processes. This is normally no problem, as access is
+usually limited to root and the hypervisor will deny any hypercalls
+affecting other domains.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In case the guest is booted using secure boot, however, the privcmd
+driver would be enabling a root user process to modify e.g. kernel
+memory contents, thus breaking the secure boot feature.
+
+The only known case where an unprivileged domU is really needing to
+use the privcmd driver is the case when it is acting as the device
+model for another guest. In this case all hypercalls issued via the
+privcmd driver will target that other guest.
+
+Fortunately the privcmd driver can already be locked down to allow
+only hypercalls targeting a specific domain, but this mode can be
+activated from user land only today.
+
+The target domain can be obtained from Xenstore, so when not running
+in dom0 restrict the privcmd driver to that target domain from the
+beginning, resolving the potential problem of breaking secure boot.
+
+This is XSA-482
+
+Reported-by: Teddy Astie <teddy.astie@vates.tech>
+Fixes: 1c5de1939c20 ("xen: add privcmd driver")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/xen/privcmd.c |   60 +++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 57 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index f1924e84d2568..b7186bb6a7bbc 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -1275,8 +1275,6 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 			roce_info->rd_en = true;
- 	}
+--- a/drivers/xen/privcmd.c
++++ b/drivers/xen/privcmd.c
+@@ -10,6 +10,7 @@
+ #define pr_fmt(fmt) "xen:" KBUILD_MODNAME ": " fmt
  
--	wait_event(iwqp->mod_qp_waitq, !atomic_read(&iwqp->hw_mod_qp_pend));
--
- 	ibdev_dbg(&iwdev->ibdev,
- 		  "VERBS: caller: %pS qp_id=%d to_ibqpstate=%d ibqpstate=%d irdma_qpstate=%d attr_mask=0x%x\n",
- 		  __builtin_return_address(0), ibqp->qp_num, attr->qp_state,
--- 
-2.53.0
-
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/module.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+@@ -24,6 +25,8 @@
+ #include <linux/seq_file.h>
+ #include <linux/miscdevice.h>
+ #include <linux/moduleparam.h>
++#include <linux/notifier.h>
++#include <linux/wait.h>
+ 
+ #include <asm/xen/hypervisor.h>
+ #include <asm/xen/hypercall.h>
+@@ -37,6 +40,7 @@
+ #include <xen/page.h>
+ #include <xen/xen-ops.h>
+ #include <xen/balloon.h>
++#include <xen/xenbus.h>
+ 
+ #include "privcmd.h"
+ 
+@@ -59,6 +63,11 @@ struct privcmd_data {
+ 	domid_t domid;
+ };
+ 
++/* DOMID_INVALID implies no restriction */
++static domid_t target_domain = DOMID_INVALID;
++static bool restrict_wait;
++static DECLARE_WAIT_QUEUE_HEAD(restrict_wait_wq);
++
+ static int privcmd_vma_range_is_mapped(
+                struct vm_area_struct *vma,
+                unsigned long addr,
+@@ -878,13 +887,16 @@ static long privcmd_ioctl(struct file *f
+ 
+ static int privcmd_open(struct inode *ino, struct file *file)
+ {
+-	struct privcmd_data *data = kzalloc(sizeof(*data), GFP_KERNEL);
++	struct privcmd_data *data;
++
++	if (wait_event_interruptible(restrict_wait_wq, !restrict_wait) < 0)
++		return -EINTR;
+ 
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ 
+-	/* DOMID_INVALID implies no restriction */
+-	data->domid = DOMID_INVALID;
++	data->domid = target_domain;
+ 
+ 	file->private_data = data;
+ 	return 0;
+@@ -977,6 +989,45 @@ static struct miscdevice privcmd_dev = {
+ 	.fops = &xen_privcmd_fops,
+ };
+ 
++static int init_restrict(struct notifier_block *notifier,
++			 unsigned long event,
++			 void *data)
++{
++	char *target;
++	unsigned int domid;
++
++	/* Default to an guaranteed unused domain-id. */
++	target_domain = DOMID_IDLE;
++
++	target = xenbus_read(XBT_NIL, "target", "", NULL);
++	if (IS_ERR(target) || kstrtouint(target, 10, &domid)) {
++		pr_err("No target domain found, blocking all hypercalls\n");
++		goto out;
++	}
++
++	target_domain = domid;
++
++ out:
++	if (!IS_ERR(target))
++		kfree(target);
++
++	restrict_wait = false;
++	wake_up_all(&restrict_wait_wq);
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block xenstore_notifier = {
++	.notifier_call = init_restrict,
++};
++
++static void __init restrict_driver(void)
++{
++	restrict_wait = true;
++
++	register_xenstore_notifier(&xenstore_notifier);
++}
++
+ static int __init privcmd_init(void)
+ {
+ 	int err;
+@@ -984,6 +1035,9 @@ static int __init privcmd_init(void)
+ 	if (!xen_domain())
+ 		return -ENODEV;
+ 
++	if (!xen_initial_domain())
++		restrict_driver();
++
+ 	err = misc_register(&privcmd_dev);
+ 	if (err != 0) {
+ 		pr_err("Could not register Xen privcmd device\n");
 
 
 
