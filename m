@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-236644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBG1LHIc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:18 +0200
+	id wJvvDtcg3WneaAkAu9opvQ
+	(envelope-from <stable+bounces-237112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89BB3EF7AA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C9E3F06A9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BC34C3069DB4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 285B630438E4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6A828505E;
-	Mon, 13 Apr 2026 16:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA10130C359;
+	Mon, 13 Apr 2026 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL8L/aNB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGfyQJ2R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5049C2F8BC3;
-	Mon, 13 Apr 2026 16:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA9F1D5AD4;
+	Mon, 13 Apr 2026 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097435; cv=none; b=c4UR9ghMeq4EoNButKysPOIG+ihv4h7sia697KMNc1LbCmHuX7wnSAs8zQ+JFu5uuzoIFb00ggnystiKdJHGNk8cIK0orSpxduK6Y19C1fsCqluaDAC2/0tgYSKCFTGvv/KXFfhAjkCXAytfEcuWTmZv3B0E7cOuN+nysGzDqko=
+	t=1776098619; cv=none; b=YC8n7rjC1pYB2sTgTSVvv9xDMzi2DN6lG240xVr2HsOcFLNGuxCZIzeW+xEVZRMFQGUK5idvPUutBTR7ZQPnGJX+wno6n1Z1VROiXF9l0H+VDUN781sQ+ZIeZPEJMxXC8WfCW4cJLG+HSqPWwUCZMp4SnCFFTS595yIqQ5c9rzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097435; c=relaxed/simple;
-	bh=7C+eggGTjp9V6gpvG0IrwF1fifvDzsbWzRQ0pLeo7Rk=;
+	s=arc-20240116; t=1776098619; c=relaxed/simple;
+	bh=nvH3nCrRVfAgUFFz3KQJZ0dNMRS6OYYXwTqroS3HIH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGOCD/dsPCppTWEFekm2x0f8CHECGIllor7xP2cLebzUwIMYVTVHoiuGjavQljqEKNMKaEc15mF7tYKEB6SUB4fY6tlzFZMJQuP6yYi0f0ickS1u7Cc7S5Dd+ZxsZQLZspt6bNpLeYozIM+vYgQw1hvYgHnQDtlhpXrsO42Mr88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL8L/aNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA328C2BCB0;
-	Mon, 13 Apr 2026 16:23:54 +0000 (UTC)
+	 MIME-Version; b=fjecch+lqBk/t3AyxZ52BXxyYkUjGEUqTnpD7k5qmwKagX4AFYtSXZXpq6IwHZ8sXEmKxog//uls3dNxV095IWYWHVJkFxNxuWm+9F99TekbE3OV7Mecl4GSpnc9gCWDjuQAxglnCLXuF+/P1axsB5WloU9HJb95hXXYKY2NqIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGfyQJ2R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0381CC2BCAF;
+	Mon, 13 Apr 2026 16:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097435;
-	bh=7C+eggGTjp9V6gpvG0IrwF1fifvDzsbWzRQ0pLeo7Rk=;
+	s=korg; t=1776098619;
+	bh=nvH3nCrRVfAgUFFz3KQJZ0dNMRS6OYYXwTqroS3HIH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vL8L/aNBFKknBMa88ibBk9UHMKXV+mNr+DEyGOoKT5tu4mVjrQ5qbl01XPMaEeuIr
-	 2olFWJr+4eS48pCrf3+5KDhguVT3tx13+Cp0Vzsm9/pvO08rsIAAL23Nw0zYR9EQxa
-	 55XWl9ZZb56xEcKze29un4JZydJM+i7oxoY+x35Y=
+	b=WGfyQJ2RPodLgQ6n2MUKBharpxhdE9D+PLy3bN0TxTuc/9z2FwGO+iM1xrzcLX0ys
+	 5LMmKnTRYfXKGJNidXwqE75z72sp2GX341q2gBCgNJbEMzovIIdsRYpCZ4ZWSOdhhW
+	 tI4O7xUCN5FCAf7xAjx1hGrugFwP7c+qylxMgyQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Petko Manolov <petkan@nucleusys.com>,
 	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.15 136/570] usb: yurex: fix race in probe
-Date: Mon, 13 Apr 2026 17:54:27 +0200
-Message-ID: <20260413155835.537523715@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 023/491] net: usb: pegasus: validate USB endpoints
+Date: Mon, 13 Apr 2026 17:54:28 +0200
+Message-ID: <20260413155819.921181009@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236644-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237112-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,54 +87,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,suse.com:email]
-X-Rspamd-Queue-Id: C89BB3EF7AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 57C9E3F06A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 7a875c09899ba0404844abfd8f0d54cdc481c151 upstream.
+commit 11de1d3ae5565ed22ef1f89d73d8f2d00322c699 upstream.
 
-The bbu member of the descriptor must be set to the value
-standing for uninitialized values before the URB whose
-completion handler sets bbu is submitted. Otherwise there is
-a window during which probing can overwrite already retrieved
-data.
+The pegasus driver should validate that the device it is probing has the
+proper number and types of USB endpoints it is expecting before it binds
+to it.  If a malicious device were to not have the same urbs the driver
+will crash later on when it blindly accesses these endpoints.
 
+Cc: Petko Manolov <petkan@nucleusys.com>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20260209143720.1507500-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026022347-legibly-attest-cc5c@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/yurex.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/pegasus.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -272,6 +272,7 @@ static int yurex_probe(struct usb_interf
- 			 dev->int_buffer, YUREX_BUF_SIZE, yurex_interrupt,
- 			 dev, 1);
- 	dev->urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
-+	dev->bbu = -1;
- 	if (usb_submit_urb(dev->urb, GFP_KERNEL)) {
- 		retval = -EIO;
- 		dev_err(&interface->dev, "Could not submitting URB\n");
-@@ -280,7 +281,6 @@ static int yurex_probe(struct usb_interf
+--- a/drivers/net/usb/pegasus.c
++++ b/drivers/net/usb/pegasus.c
+@@ -841,8 +841,19 @@ static void unlink_all_urbs(pegasus_t *p
  
- 	/* save our data pointer in this interface device */
- 	usb_set_intfdata(interface, dev);
--	dev->bbu = -1;
+ static int alloc_urbs(pegasus_t *pegasus)
+ {
++	static const u8 bulk_ep_addr[] = {
++		1 | USB_DIR_IN,
++		2 | USB_DIR_OUT,
++		0};
++	static const u8 int_ep_addr[] = {
++		3 | USB_DIR_IN,
++		0};
+ 	int res = -ENOMEM;
  
- 	/* we can register the device now, as it is ready */
- 	retval = usb_register_dev(interface, &yurex_class);
++	if (!usb_check_bulk_endpoints(pegasus->intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(pegasus->intf, int_ep_addr))
++		return -ENODEV;
++
+ 	pegasus->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (!pegasus->rx_urb) {
+ 		return res;
+@@ -1197,6 +1208,7 @@ static int pegasus_probe(struct usb_inte
+ 
+ 	pegasus = netdev_priv(net);
+ 	pegasus->dev_index = dev_index;
++	pegasus->intf = intf;
+ 
+ 	res = alloc_urbs(pegasus);
+ 	if (res < 0) {
+@@ -1208,7 +1220,6 @@ static int pegasus_probe(struct usb_inte
+ 
+ 	INIT_DELAYED_WORK(&pegasus->carrier_check, check_carrier);
+ 
+-	pegasus->intf = intf;
+ 	pegasus->usb = dev;
+ 	pegasus->net = net;
+ 
 
 
 
