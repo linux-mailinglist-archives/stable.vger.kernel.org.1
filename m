@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-236431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MqHH+QZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:24 +0200
+	id kJ8CBWUW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1533EF12C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1DA3EE7D6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E7C1303E8F8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1A2A330C0CAE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531892741A0;
-	Mon, 13 Apr 2026 16:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50B9274B5F;
+	Mon, 13 Apr 2026 16:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9v1NXhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vv46Rjsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A5327466A;
-	Mon, 13 Apr 2026 16:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8873626E6F8;
+	Mon, 13 Apr 2026 16:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096888; cv=none; b=s3NAKdFFvF5chdvCg3C3UvEGLq8z4OrZ9Z9R+s4y758GqhxCcdI8uitUy16rRPtiLy+RUMn6MME8V2pJBG1b7yi4kUUf7g4UUYpM2fxUvy7nDphvjlVKiUjnchSnvup4iTM2KHwEZYNg6wGAdyQLlxBrREC/QtBBVWOZj0eFs+c=
+	t=1776096398; cv=none; b=HO37mbnrIU89u05UeJPt7N9swyLNzIiLzP0klKb+RlocWyqklgX0LzNgaLrFIiXTmjZIBa5oHrhGeEbiYTPXjKiYv7ujy6mSkT1xNEM4jzg9teY3SMPD2TWKsuKZvB3yTEXgtfpgTpswjh7fDA44bjsA31JG1vBJubLQ93Z7DW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096888; c=relaxed/simple;
-	bh=1Q28rT/0nyAjLT74tDPlQ/XbZWr/ZuZcl33XmyQ3NYs=;
+	s=arc-20240116; t=1776096398; c=relaxed/simple;
+	bh=hRrIj5q9saMqCgV11scxZdcDaAckJ/qF9ieaHgaL0Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hf75N30HtLD9JHkdTgKgUDQtVEcfGiamqz8EK5Ju5uZdNjyngRsF2DZVz8nuLwP/zisA9RZ5U9VQ5jQS4IzXSFVGFtb3CiKtkuYeCuk8vhPwKNYMkrxWnc10Tzagrd22k0R5b5ufaLFd3PaXb0KraaqD/JNixEGE6pcagegjuo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9v1NXhX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C169C2BCAF;
-	Mon, 13 Apr 2026 16:14:47 +0000 (UTC)
+	 MIME-Version; b=SU8KI+KS1teqAKqXhI55pOUDXDAYFokvII8++fYVCXQy/Me8N8IoKin1F1sP+WL3kFGaY8reCAIuqBQYk2C9Y7D6xfAKq8sZ9tlTeQUQkvzoHlBYbFbnDurhoAPdh0whFahqdQuksQPJm+1zwDHnITViO0R2BWkH99ozbK9NHjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vv46Rjsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95FEC2BCAF;
+	Mon, 13 Apr 2026 16:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096887;
-	bh=1Q28rT/0nyAjLT74tDPlQ/XbZWr/ZuZcl33XmyQ3NYs=;
+	s=korg; t=1776096398;
+	bh=hRrIj5q9saMqCgV11scxZdcDaAckJ/qF9ieaHgaL0Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9v1NXhX06kwW2SQm9fqqnbnjrxv5dZSg7ob2YbqnirwVGlHieQOWM6f9Du51mxkB
-	 feNtA5ChJPgQ5jmo1PG8WwxcSWxRFaseSHR3KrHsRYMthFKe6s5ddQfTgnvFuFD0Pc
-	 YJRrvsRIv9dc54EWh7wMOiL/O0AkZvQLSdDsFCiQ=
+	b=vv46Rjsuwv8lwaHtV/vxbrGm8Y/ildldbyOikkcj2hhYgv86yRqh9dzM/RGp9RKJX
+	 f7BhI9ACjcpJrh1UOWSs0hWfchaovIwyJyZQMoZS2mvBdnZNAYUmxRRc9GqpLqxo3T
+	 3vTXyLZ4s3ClxxY/JaSVPb8R8UrtyN2dTyTWYmdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.6 03/50] xfrm_user: fix info leak in build_report()
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 83/86] rxrpc: Fix buffer overread in rxgk_do_verify_authenticator()
 Date: Mon, 13 Apr 2026 18:00:30 +0200
-Message-ID: <20260413155724.630375209@linuxfoundation.org>
+Message-ID: <20260413155734.641701403@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236431-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236238-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,53 +91,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,secunet.com:email]
-X-Rspamd-Queue-Id: EC1533EF12C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,auristor.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BB1DA3EE7D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: David Howells <dhowells@redhat.com>
 
-commit d10119968d0e1f2b669604baf2a8b5fdb72fa6b4 upstream.
+commit f564af387c8c28238f8ebc13314c589d7ba8475d upstream.
 
-struct xfrm_user_report is a __u8 proto field followed by a struct
-xfrm_selector which means there is three "empty" bytes of padding, but
-the padding is never zeroed before copying to userspace.  Fix that up by
-zeroing the structure before setting individual member variables.
+Fix rxgk_do_verify_authenticator() to check the buffer size before checking
+the nonce.
 
-Cc: stable <stable@kernel.org>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-20-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/rxrpc/rxgk.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3740,6 +3740,7 @@ static int build_report(struct sk_buff *
- 		return -EMSGSIZE;
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -1085,6 +1085,9 @@ static int rxgk_do_verify_authenticator(
  
- 	ur = nlmsg_data(nlh);
-+	memset(ur, 0, sizeof(*ur));
- 	ur->proto = proto;
- 	memcpy(&ur->sel, sel, sizeof(ur->sel));
+ 	_enter("");
  
++	if ((end - p) * sizeof(__be32) < 24)
++		return rxrpc_abort_conn(conn, skb, RXGK_NOTAUTH, -EPROTO,
++					rxgk_abort_resp_short_auth);
+ 	if (memcmp(p, conn->rxgk.nonce, 20) != 0)
+ 		return rxrpc_abort_conn(conn, skb, RXGK_NOTAUTH, -EPROTO,
+ 					rxgk_abort_resp_bad_nonce);
+@@ -1098,7 +1101,7 @@ static int rxgk_do_verify_authenticator(
+ 	p += xdr_round_up(app_len) / sizeof(__be32);
+ 	if (end - p < 4)
+ 		return rxrpc_abort_conn(conn, skb, RXGK_NOTAUTH, -EPROTO,
+-					rxgk_abort_resp_short_applen);
++					rxgk_abort_resp_short_auth);
+ 
+ 	level	= ntohl(*p++);
+ 	epoch	= ntohl(*p++);
 
 
 
