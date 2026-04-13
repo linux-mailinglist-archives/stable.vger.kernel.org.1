@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-237145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PEDHkwh3WneaAkAu9opvQ
-	(envelope-from <stable+bounces-237145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:00 +0200
+	id SDhSKLwe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-236678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771143F07F2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:00:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6603EFEE2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 503443025F43
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D385310913C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7104F507;
-	Mon, 13 Apr 2026 16:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083B530B50A;
+	Mon, 13 Apr 2026 16:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imI94u1t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2EL9sqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7E613A86C;
-	Mon, 13 Apr 2026 16:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C083A306B0A;
+	Mon, 13 Apr 2026 16:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098704; cv=none; b=oFNaLit4kPwCophe7JbZzkAKQHSnwLOdu1k61Zc5ubPR1xaSP68Wp3mEbAzzBEszE/gJdJHEg5mHNDov+SJagxs1bc38E3NvAbLoJTwGE3TurXmn518qp8K7yaKDujVgAizNU/FpqDleUwbT23agZOOAE1bUezlgVyNFkxm3YUQ=
+	t=1776097522; cv=none; b=NAIsnjwrRksAPc7Ec3QkzsfV65Jb772pSyZM39QAHp/bR5b0Za0skNPviAveUTER8BJcPUk2iQ/Wu84OGukKH+w/avkpwtQE1nBR9hZ4vEUUb7s6gg+WOWfgJrbWKpPqe45r+GLDjJAxXNHSebpHGHvvqIZzx4IlnsSQhpFH5a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098704; c=relaxed/simple;
-	bh=NGLBIvoUPi7o42ev+T56BNPIcUTH+873hzywPvAoxYc=;
+	s=arc-20240116; t=1776097522; c=relaxed/simple;
+	bh=lAhAqjlnjyGJOrQ5F6P3K4Ug2SebaCp3K9VwDzBh95k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHFE2OuqXteFaWFIPLpvC7O8Svk3sI7Qav6jYvo+Jr7H7flzrHuq76Pjm9olVkKZlY3Qk80Z0ZZuDOJHz0e3cjmOi87Ya/xoLSgZKuXyw9fMazrpwUhylJV4QJDXELms88AB0WK3gH3n04TjGQ15PsPXk2KDSOiFfcir9EhWXQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imI94u1t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A684C2BCAF;
-	Mon, 13 Apr 2026 16:45:04 +0000 (UTC)
+	 MIME-Version; b=OOBpT8sUka+lR84aAd48OetJjTVbT88UcpNMY1OR7BytOT2WYeZcRQ1NjtWbzRxMTA1cf98qfxET/x7Obzq3LkgshNHvUkZHz6aF6Be9tD6/y0o/1rI+Altl9+k/d0lDluo+jySUECkSNiEcMSl8dwzOTOLBXyQVx7YfZvrhwMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2EL9sqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58248C2BCB3;
+	Mon, 13 Apr 2026 16:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098704;
-	bh=NGLBIvoUPi7o42ev+T56BNPIcUTH+873hzywPvAoxYc=;
+	s=korg; t=1776097522;
+	bh=lAhAqjlnjyGJOrQ5F6P3K4Ug2SebaCp3K9VwDzBh95k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imI94u1tiCzJEwnOW9GZ5SaaE5Yv3atYPCzuE/6kPEsfKuDGTBTvcwSgnlCFgPuLd
-	 WZ7wqK8+npprzJ3DQVAp7XxG/54MnIyoffw2whLCImsXIqO1Rcc/iw/USFZ+UtXmS/
-	 AsA59NEUMPC0wCe6wsExB90md483cv3Ren20oRMc=
+	b=Z2EL9sqmIJpTzQ3JuyJetbZZfdKQfhwLptYNLH7ILjv8OFl8HEm97UoW1ijv1W4Nh
+	 ANXeUg5vTNkDFBYndZr8OWuBc1ppczvnV0OX0gHwiOdV7tKuP/TLZVuq5PYFeHrqdw
+	 sV6H7Fx1urdM+ZT3ssRn/oKaHov25dvLRoIqatdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sofia Schneider <sofia@schn.dev>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/491] ACPI: OSI: Add DMI quirk for Acer Aspire One D255
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 170/570] parisc: Fix initial page table creation for boot
 Date: Mon, 13 Apr 2026 17:55:01 +0200
-Message-ID: <20260413155821.147371251@linuxfoundation.org>
+Message-ID: <20260413155836.822090956@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +64,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237145-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236678-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,schn.dev:email]
-X-Rspamd-Queue-Id: 771143F07F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: 1E6603EFEE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sofia Schneider <sofia@schn.dev>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 5ede90206273ff156a778254f0f972a55e973c89 ]
+commit 8475d8fe21ec9c7eb2faca555fbc5b68cf0d2597 upstream.
 
-The screen backlight turns off during boot (specifically during udev device
-initialization) when returning true for _OSI("Windows 2009").
+The KERNEL_INITIAL_ORDER value defines the initial size (usually 32 or
+64 MB) of the page table during bootup. Up until now the whole area was
+initialized with PTE entries, but there was no check if we filled too
+many entries.  Change the code to fill up with so many entries that the
+"_end" symbol can be reached by the kernel, but not more entries than
+actually fit into the initial PTE tables.
 
-Analyzing the device's DSDT reveals that the firmware takes a different
-code path when Windows 7 is reported, which leads to the backlight shutoff.
-Add a DMI quirk to invoke dmi_disable_osi_win7 for this model.
-
-Signed-off-by: Sofia Schneider <sofia@schn.dev>
-Link: https://patch.msgid.link/20260223025240.518509-1-sofia@schn.dev
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/osi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/parisc/kernel/head.S |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-index d93409f2b2a07..6913264490225 100644
---- a/drivers/acpi/osi.c
-+++ b/drivers/acpi/osi.c
-@@ -413,6 +413,19 @@ static const struct dmi_system_id acpi_osi_dmi_table[] __initconst = {
- 		},
- 	},
+--- a/arch/parisc/kernel/head.S
++++ b/arch/parisc/kernel/head.S
+@@ -55,6 +55,7 @@ ENTRY(parisc_kernel_start)
  
-+	/*
-+	 * The screen backlight turns off during udev device creation
-+	 * when returning true for _OSI("Windows 2009")
-+	 */
-+	{
-+	.callback = dmi_disable_osi_win7,
-+	.ident = "Acer Aspire One D255",
-+	.matches = {
-+		     DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+		     DMI_MATCH(DMI_PRODUCT_NAME, "AOD255"),
-+		},
-+	},
-+
- 	/*
- 	 * The wireless hotkey does not work on those machines when
- 	 * returning true for _OSI("Windows 2012")
--- 
-2.51.0
-
+ 	.import __bss_start,data
+ 	.import __bss_stop,data
++	.import __end,data
+ 
+ 	load32		PA(__bss_start),%r3
+ 	load32		PA(__bss_stop),%r4
+@@ -148,7 +149,11 @@ $cpu_ok:
+ 	 * everything ... it will get remapped correctly later */
+ 	ldo		0+_PAGE_KERNEL_RWX(%r0),%r3 /* Hardwired 0 phys addr start */
+ 	load32		(1<<(KERNEL_INITIAL_ORDER-PAGE_SHIFT)),%r11 /* PFN count */
+-	load32		PA(pg0),%r1
++	load32		PA(_end),%r1
++	SHRREG		%r1,PAGE_SHIFT,%r1  /* %r1 is PFN count for _end symbol */
++	cmpb,<<,n	%r11,%r1,1f
++	copy		%r1,%r11	/* %r1 PFN count smaller than %r11 */
++1:	load32		PA(pg0),%r1
+ 
+ $pgt_fill_loop:
+ 	STREGM          %r3,ASM_PTE_ENTRY_SIZE(%r1)
 
 
 
