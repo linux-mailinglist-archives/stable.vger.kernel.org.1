@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-236980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HeTFW8i3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:51 +0200
+	id KILxLCIl3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1463F0B67
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3B43F11AE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E35C3318EB84
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 44D9830F46E0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62D0280CFB;
-	Mon, 13 Apr 2026 16:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17E53271EA;
+	Mon, 13 Apr 2026 16:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drPVFTSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2BmKD39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C0C30C360;
-	Mon, 13 Apr 2026 16:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DCB3203B6;
+	Mon, 13 Apr 2026 16:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098282; cv=none; b=r1irKn3CiEM8vA7a1F6JA1BBdwjZ1zPGqoc/XOMB5dmnaSsqiTixcC3qbiDqTZF5u7AED2yA1M+HRa/kEjW0CfHJP89ew4HlUTAJWOKycmQoxbaUivmCUn0dDFRkT38G7QrQ5mfXiy4DjFdwuwOPMFUVZiY15WdsaD9q1/81Cs8=
+	t=1776099509; cv=none; b=PSJoahIk0Mt+HySq+NlNncMighCfeyU6IpP2/Dr9B/GuQaCNSJyigBJCM/DiLW8vTrAB/q7CET/5ET+Viav91BAkte8efOzcspvoX19dkG/XCoB8L2vjo8SpX8M6gPWw2aIFPJ6f1kxO2LeJLz6L6n2dOMLGnmvNicqtSDLZevU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098282; c=relaxed/simple;
-	bh=4okYdYoFegQOZoyq/oWFH3jZoITFdH2y07dBNwSY6b8=;
+	s=arc-20240116; t=1776099509; c=relaxed/simple;
+	bh=rGSHVZDHV9Wbrzwg8eSoWKIT2Nkbl9OFO6jWmtF8mM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJdXxp4lIOZVLpTnfCdXRSSV1iUhPbyskvmIdbPybF6U0XNFlKMGilVl4rpLFKbvbagQth48z8efA9pP41TQbkSfMt2vD8YwHN9iTUOYC1QQsweHE47+9YH2AV7JfE2YBYBi/VUhSdGFK/Ja14hba9hBwIv/hdPE+/kWvrsGrIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drPVFTSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F87BC2BCAF;
-	Mon, 13 Apr 2026 16:38:01 +0000 (UTC)
+	 MIME-Version; b=ZsoOQJA+gzd6tef/8Pqz1/QcxyiE0/OChFKitW3h0D6C/md5u5SRFSoXpBXmIjDHtYBQm9APAlxKUs3H6wJ16zVJjzJS/Slpq+A1EleVGSqCMrJq/JN2fGig2s2T/Jn5Pm66MNihbB4dEZeHnJLoFy8wIin2jt3wcnntlp9hMpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2BmKD39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F405CC2BCAF;
+	Mon, 13 Apr 2026 16:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098282;
-	bh=4okYdYoFegQOZoyq/oWFH3jZoITFdH2y07dBNwSY6b8=;
+	s=korg; t=1776099509;
+	bh=rGSHVZDHV9Wbrzwg8eSoWKIT2Nkbl9OFO6jWmtF8mM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drPVFTSdAy9aSb7A0wY4h7AerWke5Ht8S4sVuuiBDdanKtjS3jFQZWeaNjiYNa0ho
-	 dA3nyhqQSW1vGKVkwV3ehB9GnyRTZwWuhlFmegWa6nT/oCDrL+/b3Obugfw3qUDDZH
-	 Ev8hP8dEh61VyJ4ds6YMWaXvG9lywwd6mojliQqs=
+	b=O2BmKD39ZHCmbbGc0Vj8trsjnIeRu4hpNyBA6yj9u9Tl7zptnfbogrUgD0nSrFPlc
+	 UYNnQduTFTQoQ1XKKibEFp+xzjlYXL5toOPlu6AKrj5nkYyLoCejqzIipkKkiTLc0D
+	 SexuoHO1k99QVzj5eRTtVUxi3TnwPgt0+3N5wH9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 464/570] iio: gyro: mpu3050: Move iio_device_register() to correct location
+	Yiming Qian <yimingqian591@gmail.com>,
+	Martin Schiller <ms@dev.tdt.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 350/491] net/x25: Fix overflow when accumulating packets
 Date: Mon, 13 Apr 2026 17:59:55 +0200
-Message-ID: <20260413155847.850596975@linuxfoundation.org>
+Message-ID: <20260413155832.142573212@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,112 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-236980-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dev.tdt.de,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237458-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.997];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: AC1463F0B67
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,tdt.de:email]
+X-Rspamd-Queue-Id: BD3B43F11AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Martin Schiller <ms@dev.tdt.de>
 
-commit 4c05799449108fb0e0a6bd30e65fffc71e60db4d upstream.
+[ Upstream commit a1822cb524e89b4cd2cf0b82e484a2335496a6d9 ]
 
-iio_device_register() should be at the end of the probe function to
-prevent race conditions.
+Add a check to ensure that `x25_sock.fraglen` does not overflow.
 
-Place iio_device_register() at the end of the probe function and place
-iio_device_unregister() accordingly.
+The `fraglen` also needs to be resetted when purging `fragment_queue` in
+`x25_clear_queues()`.
 
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Link: https://patch.msgid.link/20260331-x25_fraglen-v4-2-3e69f18464b4@dev.tdt.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ net/x25/x25_in.c   | 4 ++++
+ net/x25/x25_subr.c | 1 +
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1238,12 +1238,6 @@ int mpu3050_common_probe(struct device *
- 		goto err_power_down;
- 	}
+diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
+index 77ad186507f64..956e056803079 100644
+--- a/net/x25/x25_in.c
++++ b/net/x25/x25_in.c
+@@ -34,6 +34,10 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
+ 	struct sk_buff *skbo, *skbn = skb;
+ 	struct x25_sock *x25 = x25_sk(sk);
  
--	ret = iio_device_register(indio_dev);
--	if (ret) {
--		dev_err(dev, "device register failed\n");
--		goto err_cleanup_buffer;
--	}
--
- 	dev_set_drvdata(dev, indio_dev);
- 
- 	/* Check if we have an assigned IRQ to use as trigger */
-@@ -1266,9 +1260,20 @@ int mpu3050_common_probe(struct device *
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_put(dev);
- 
-+	ret = iio_device_register(indio_dev);
-+	if (ret) {
-+		dev_err(dev, "device register failed\n");
-+		goto err_iio_device_register;
-+	}
++	/* make sure we don't overflow */
++	if (x25->fraglen + skb->len > USHRT_MAX)
++		return 1;
 +
- 	return 0;
+ 	if (more) {
+ 		x25->fraglen += skb->len;
+ 		skb_queue_tail(&x25->fragment_queue, skb);
+diff --git a/net/x25/x25_subr.c b/net/x25/x25_subr.c
+index 0285aaa1e93c1..159708d9ad20c 100644
+--- a/net/x25/x25_subr.c
++++ b/net/x25/x25_subr.c
+@@ -40,6 +40,7 @@ void x25_clear_queues(struct sock *sk)
+ 	skb_queue_purge(&x25->interrupt_in_queue);
+ 	skb_queue_purge(&x25->interrupt_out_queue);
+ 	skb_queue_purge(&x25->fragment_queue);
++	x25->fraglen = 0;
+ }
  
--err_cleanup_buffer:
-+err_iio_device_register:
-+	pm_runtime_get_sync(dev);
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_disable(dev);
-+	if (irq)
-+		free_irq(mpu3050->irq, mpu3050->trig);
- 	iio_triggered_buffer_cleanup(indio_dev);
- err_power_down:
- 	mpu3050_power_down(mpu3050);
-@@ -1282,13 +1287,13 @@ int mpu3050_common_remove(struct device
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
  
-+	iio_device_unregister(indio_dev);
- 	pm_runtime_get_sync(dev);
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
- 	iio_triggered_buffer_cleanup(indio_dev);
- 	if (mpu3050->irq)
- 		free_irq(mpu3050->irq, mpu3050->trig);
--	iio_device_unregister(indio_dev);
- 	mpu3050_power_down(mpu3050);
- 
- 	return 0;
+-- 
+2.53.0
+
 
 
 
