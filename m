@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-237063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDXOKece3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-237063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:47 +0200
+	id kAThNEkZ3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219DA3EFF7B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA6C3EEF0A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC69930CB48E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:41:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 30D223026C99
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B4C30EF6B;
-	Mon, 13 Apr 2026 16:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED24301471;
+	Mon, 13 Apr 2026 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2p0JqK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1ppiHL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1E330DEAC;
-	Mon, 13 Apr 2026 16:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11A82FE598;
+	Mon, 13 Apr 2026 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098491; cv=none; b=POWVTz+LClw2U9l8GwP8vQSxIAlsvA+B2OtTyb/A1QQsazWq/SHryL9YV221i8J3rYB7PYN+vQWwPEgn5WOkLVoxhwuWGd0Yqf5sjoVil82RTnParllbQGAAsuQwGj5HAGlzVJzh8wZ7GcyWG3QlgPHDghAoz7aPOXWscD+uh20=
+	t=1776096645; cv=none; b=EH1HyEKD6UirFOU2IQuYNb2SHxlrLYqDtBAu72fU9KSK+keUMckjeGTSvhMkhsnkpHwHHl8HZQ0hGPMqs9huGHWOObT9dzP6t9haBpFAV5GHfMdK3TXDtjukI2O3GWfqL+lI9H/TFBkW/NNUNi8MS+Kmeit626aoLXPndIaLKKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098491; c=relaxed/simple;
-	bh=4+FoeYOj8/l3O5BaK+yNbvS1YMp8K5IjO0fLTLSN0Yc=;
+	s=arc-20240116; t=1776096645; c=relaxed/simple;
+	bh=U15RlfzELsh5o+DGbICD/VqtbXo2yE0MgZW1U4r8nJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIWZ+pngpxjnIioIcPTvMXZwav+BdpVOEWpEpOSzB0HvUmZWfA/mkURuVbLajnutZfDzB+GYRzsjIVKWEt5OGwHFnvhN20lMIdpmUlUysBblVkWwTEEVh6nZ++CgYgVWOgPoyVH+re+TZAxn/Cu3VMrNzHoy9FdutIzPapotZHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2p0JqK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E776C2BCAF;
-	Mon, 13 Apr 2026 16:41:31 +0000 (UTC)
+	 MIME-Version; b=hGqQwbQ6+WLZ3v/E5mLHatY+pXzrHyyaIKKE6FjSD05TL1vwGb4G1ZDClXQn9/gCQ/Nc8A7tl1+rUJvP3+D6U2mHkbIhQZlM2D8UC47hU92ccQ0QrXJK4vRd+2jOodd6hq3p11VwMsrZJkV5CWomzk5i/7QrvMiZNBJg6JReeR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1ppiHL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47331C2BCB4;
+	Mon, 13 Apr 2026 16:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098491;
-	bh=4+FoeYOj8/l3O5BaK+yNbvS1YMp8K5IjO0fLTLSN0Yc=;
+	s=korg; t=1776096645;
+	bh=U15RlfzELsh5o+DGbICD/VqtbXo2yE0MgZW1U4r8nJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2p0JqK9bsFTrJIvtei+PYLGLLuL+vd+EM53IDvK8EgVHWXezyZJwGX2O5VjcFDDW
-	 nMSIQo3edHWJ67tGnF/ZmJ2r3NXqnwjBveKrRD9y0P/yt4GRv4xm0wIFghpAaqj0IU
-	 QP56YiUQ/gUzbH5TRyHMfmWtB4MR/HRk0HnKNA2c=
+	b=n1ppiHL8at14nTDYqVcTh3veEA9NuxXoybbh4hmL5w1Z8J16amV2k6FFMNjRZsv6H
+	 Qsf1N6NY4A9zIF4OHY3JYA4Vpszaof0cr1E0u75rBysK01ortp70mYDd1px5o7pZUM
+	 IJox33ekRnuJG+BTPLvObnTLinGZXhB3OzAp0Jj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Robert Garcia <rob_garcia@163.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 513/570] gpiolib: cdev: fix uninitialised kfifo
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 76/83] rxrpc: Fix key/keyring checks in setsockopt(RXRPC_SECURITY_KEY/KEYRING)
 Date: Mon, 13 Apr 2026 18:00:44 +0200
-Message-ID: <20260413155849.666165308@linuxfoundation.org>
+Message-ID: <20260413155733.833143162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,97 +72,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,163.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237063-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236337-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,auristor.com,allelesecurity.com,gmail.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 219DA3EFF7B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,auristor.com:email,infradead.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,allelesecurity.com:email]
+X-Rspamd-Queue-Id: 4BA6C3EEF0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit ee0166b637a5e376118e9659e5b4148080f1d27e ]
+commit 2afd86ccbb2082a3c4258aea8c07e5bb6267bc2f upstream.
 
-If a line is requested with debounce, and that results in debouncing
-in software, and the line is subsequently reconfigured to enable edge
-detection then the allocation of the kfifo to contain edge events is
-overlooked.  This results in events being written to and read from an
-uninitialised kfifo.  Read events are returned to userspace.
+An AF_RXRPC socket can be both client and server at the same time.  When
+sending new calls (ie. it's acting as a client), it uses rx->key to set the
+security, and when accepting incoming calls (ie. it's acting as a server),
+it uses rx->securities.
 
-Initialise the kfifo in the case where the software debounce is
-already active.
+setsockopt(RXRPC_SECURITY_KEY) sets rx->key to point to an rxrpc-type key
+and setsockopt(RXRPC_SECURITY_KEYRING) sets rx->securities to point to a
+keyring of rxrpc_s-type keys.
 
-Fixes: 65cff7046406 ("gpiolib: cdev: support setting debounce")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240510065342.36191-1-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Now, it should be possible to use both rx->key and rx->securities on the
+same socket - but for userspace AF_RXRPC sockets rxrpc_setsockopt()
+prevents that.
+
+Fix this by:
+
+ (1) Remove the incorrect check rxrpc_setsockopt(RXRPC_SECURITY_KEYRING)
+     makes on rx->key.
+
+ (2) Move the check that rxrpc_setsockopt(RXRPC_SECURITY_KEY) makes on
+     rx->key down into rxrpc_request_key().
+
+ (3) Remove rxrpc_request_key()'s check on rx->securities.
+
+This (in combination with a previous patch) pushes the checks down into the
+functions that set those pointers and removes the cross-checks that prevent
+both key and keyring being set.
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Luxiao Xu <rakukuip@gmail.com>
+cc: Yuan Tan <yuantan098@gmail.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-16-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/rxrpc/af_rxrpc.c |    6 ------
+ net/rxrpc/key.c      |    2 +-
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 3cd19ab1fc2a0..d4b221c90bb20 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -896,6 +896,7 @@ static int edge_detector_update(struct line *line,
- 				unsigned int line_idx,
- 				u64 eflags, bool polarity_change)
- {
-+	int ret;
- 	unsigned int debounce_period_us =
- 		gpio_v2_line_config_debounce_period(lc, line_idx);
+--- a/net/rxrpc/af_rxrpc.c
++++ b/net/rxrpc/af_rxrpc.c
+@@ -654,9 +654,6 @@ static int rxrpc_setsockopt(struct socke
+ 			goto success;
  
-@@ -907,6 +908,18 @@ static int edge_detector_update(struct line *line,
- 	if (debounce_period_us && READ_ONCE(line->sw_debounced)) {
- 		WRITE_ONCE(line->eflags, eflags);
- 		WRITE_ONCE(line->desc->debounce_period_us, debounce_period_us);
-+		/*
-+		 * ensure event fifo is initialised if edge detection
-+		 * is now enabled.
-+		 */
-+		eflags = eflags & GPIO_V2_LINE_EDGE_FLAGS;
-+		if (eflags && !kfifo_initialized(&line->req->events)) {
-+			ret = kfifo_alloc(&line->req->events,
-+					  line->req->event_buffer_size,
-+					  GFP_KERNEL);
-+			if (ret)
-+				return ret;
-+		}
- 		return 0;
- 	}
+ 		case RXRPC_SECURITY_KEY:
+-			ret = -EINVAL;
+-			if (rx->key)
+-				goto error;
+ 			ret = -EISCONN;
+ 			if (rx->sk.sk_state != RXRPC_UNBOUND)
+ 				goto error;
+@@ -664,9 +661,6 @@ static int rxrpc_setsockopt(struct socke
+ 			goto error;
  
--- 
-2.53.0
-
+ 		case RXRPC_SECURITY_KEYRING:
+-			ret = -EINVAL;
+-			if (rx->key)
+-				goto error;
+ 			ret = -EISCONN;
+ 			if (rx->sk.sk_state != RXRPC_UNBOUND)
+ 				goto error;
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -622,7 +622,7 @@ int rxrpc_request_key(struct rxrpc_sock
+ 
+ 	_enter("");
+ 
+-	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->securities)
++	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->key)
+ 		return -EINVAL;
+ 
+ 	description = memdup_sockptr_nul(optval, optlen);
 
 
 
