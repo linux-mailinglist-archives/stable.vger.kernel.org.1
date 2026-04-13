@@ -1,283 +1,207 @@
-Return-Path: <stable+bounces-237657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIoCOoBZ3WnYcwkAu9opvQ
-	(envelope-from <stable+bounces-237657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 23:00:48 +0200
+	id 2JTVCJJR3WkFcQkAu9opvQ
+	(envelope-from <stable+bounces-237649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:26:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4712F3F354A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 23:00:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFEE3F3151
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 22:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F53D3073D42
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:53:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4F973021E97
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 20:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD02D3859D9;
-	Mon, 13 Apr 2026 20:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EE839446B;
+	Mon, 13 Apr 2026 20:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrR7S2ik"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC651D95A3;
-	Mon, 13 Apr 2026 20:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AA9393DC1
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 20:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776113622; cv=none; b=adCNCxH8n7LXeUSi3BhDfxZRKacMAdz8JF2OSaQQsOLijLgHcJpn/KHiHzU4KEyAFmBZ5FW8bKrNHYHjXEVJq4qZEA+8HTkznprSiSwX7O1dRVaCXAPr3j09wyETjH7Zga7bRFGkCv+QRLRWjRrcJQfjZ3bbwyg8+5RNLajiQpU=
+	t=1776111881; cv=none; b=HUH8gSuoNLwWi3O6MwOmw7n7PvskShA4tNZ/NdSv/zcTbrA0N/t4TiGwGcYTRZpeOK6lowZ91QghiMM8YoNpMmW6Vpc2PlxwLGJCXNgpCvk7BNbdB5kFKR6PEXga/s3V/67BY7Pima61JT55p4PkcDZbx/JvQ84El8PT34lEMcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776113622; c=relaxed/simple;
-	bh=IYjYLeJroBuUCahe5jafcSSBfWsSzetiWFc219Rcs8U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rQAdjTtywC+fL9PGpAejzfev06fdYf5MmwKr7SR7CqxdnpKavy9sKzzkIXhX4weOjoiuHqCfoFKF1/oz5VJF91ntthc17ulIR9kN388iQKrDcdNbt1gh6r/n17Wgr7sGox5Jn6wpLTXEVuCUfduThTwTi0NxVWftUS9ATXK6tZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCNie-004mtF-2t;
-	Mon, 13 Apr 2026 20:17:16 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCNic-00000002eOM-24Qq;
-	Mon, 13 Apr 2026 22:17:14 +0200
-Message-ID: <dce92963d28f3419e014c428a0b243f4fe638109.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 290/491] ACPI: EC: Install address space handler at
- the namespace root
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, webcaptcha <webcapcha@gmail.com>, Heikki
- Krogerus	 <heikki.krogerus@linux.intel.com>, "Rafael J. Wysocki"	
- <rafael.j.wysocki@intel.com>, Hans de Goede <hdegoede@redhat.com>, Mario
- Limonciello <mario.limonciello@amd.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Sasha Levin	 <sashal@kernel.org>
-Date: Mon, 13 Apr 2026 22:17:08 +0200
-In-Reply-To: <20260413155829.901289649@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
-	 <20260413155829.901289649@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-j1G0dLA27Kob4bewxve2"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1776111881; c=relaxed/simple;
+	bh=r035kg2j5tap0sXoLHNh8z+DMzv3pfkJNjVz0DQOCNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RyOr16tWHFjuuRKDyPznbbAm6pgQB240W/qw5i9lrxe+ZmG9mTDft0eQQDGhTSq5ZVMzI2FJxZd6kZqm7ZGk/spsm6RxoWfXeWwa0Mf7vBTzyMgFBkdHSQcF2Kfc+/vdQtqJroFUfDVGID8fYMstiSZCGVcmhLkjBYnM5nHV82U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrR7S2ik; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso58982355e9.2
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 13:24:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776111878; x=1776716678; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e+Q7hBnkIm57QECCVy2ANNrMAu0aGQ9vQGD+qze2OxU=;
+        b=IrR7S2ikOIlFA4P1IcTIsOdMb7lDHUPEN+r7tc0VPjp5SIzRUhJ9blk3xXoTkm0oqr
+         3aTjY5wv6ouqALgxjxqjLyH9PJ9f9KJ8SxqKVLtBmMjGBh6HGrsKmtoZfMFxSL3ZHfQG
+         8wpSPBznm9rxe+QbFFMZftpaSEZN2swhLHStaTs84CFbr5NLwncDl/JWZ9dPuizsbRVs
+         0xvyHjRxkpxHHHeSwmTXe3x/vXxetXXhTtOFgRPcgsgMaeiHywM9cTtT4tKBBKGTVHzT
+         IK67kEuPe+B6BHRqJq84SV1HMbRlsKrRAViBpoFccbXkzwnMbkYoAbViBBBHx9ywnCqZ
+         7p9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776111878; x=1776716678;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e+Q7hBnkIm57QECCVy2ANNrMAu0aGQ9vQGD+qze2OxU=;
+        b=aqH5omeNGjrwWlxg7PjNg4rze5k91pHLwXbQy2830jP/zio+R3V3e6TG2G+jQIfbVH
+         MFsr3kKPtJWVMjoBk5ue+iK4ec9Fs9vidr7oHkuJ0Fo9bb80MHBTE3NXrTBZ3aAZTmO4
+         60+gzC5kBpYVc712NBFX0S5foLxo5B9Zt2XChaaF3YluAUyxjMKCFVIGIVNARrA+OYuc
+         zM58IHdU4JqjnMsU2eHLppYg8RIZlTGVpveX943z0lj30jC6fJpG/ufbYHbcWte2lQkp
+         glAmbuecSHKpsDa2eY5jVYtyrOJQYNRB5xZCUrYxtya7+SxWMlxgc4lAiL/+E1WUYEEl
+         2gYw==
+X-Forwarded-Encrypted: i=1; AFNElJ8rTGANiVh5Hpk1qecOnM0ZmQ2qNzsSF2JuSZlFJNks/fFw1owScJSGbPzwU9bTKNEX+pl4wkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDb8HmhZiWxS5kn0G2iB4Mg4vjnx9S7p5uw/f0wWi2OhffF6Z6
+	+L/8pEC3ygAFD/zwfe/rJ4WDMkkxvp3tzpCvaBNdRmq0IIG28DMQsuBT
+X-Gm-Gg: AeBDiev9XPQ0lf6vATos+5P4NqFBdOqWntRvxvforRmN3aLG4IZQZhs7HOd4rQHcoFV
+	EXmBjEZKPlhQYlJ8UttsJW6+5TCWMg4Gu7iEy0BW2RbZKkOBEhPp0AonbaqdXZOLqHLBK4U3z2Y
+	yejOYQ7Arwx83VNnrcYWF0bCsADZnnGhT6OeDwxpbi4UdBfF/NV9upeAkqUfXM+lk1hYFA4yf8R
+	DY0ZN7xtfj2wmnJSRCiMgk3CMbxn899DlGaB+gpDhNTau4g+pTtRI7rUL+nQFTUCPh1ZhTLbnoM
+	730aNjUblrurV5zX7Unk0D/4HTXdkSPqenU8EnWK7DhaDcbmE2+4NPDx1Bti3XYuCR0VOoi572Z
+	doLgkyGKxymwC2Obrkw5fWgz6GcH50vHzI0bQM3zwexmngnvy5HojbqUJqx60XS4neU80Q1aHbK
+	ShdEaVmqaYAJ/8GY5c28bctQENGmWHqJ83yDHoePG9ex3m8Q==
+X-Received: by 2002:a05:600c:3b24:b0:488:c078:bfda with SMTP id 5b1f17b1804b1-488d688d2a1mr202847345e9.26.1776111878178;
+        Mon, 13 Apr 2026 13:24:38 -0700 (PDT)
+Received: from foxbook (bfi125.neoplus.adsl.tpnet.pl. [83.28.46.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67e685csm159780385e9.6.2026.04.13.13.24.36
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 13 Apr 2026 13:24:37 -0700 (PDT)
+Date: Mon, 13 Apr 2026 22:24:32 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Jeffrey Hein <jp@jphein.com>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Ricardo Ribalda
+ <ribalda@chromium.org>, Alan Stern <stern@rowland.harvard.edu>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
+ <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
+ fragile firmware
+Message-ID: <20260413222432.3f15151c.michal.pecio@gmail.com>
+In-Reply-To: <CAD5VvzCEV_XbHc_Gby7mFPBSgSebqKDKJf3VC8HNRrD+xWaTJg@mail.gmail.com>
+References: <20260331003806.212565-1-jp@jphein.com>
+	<20260331003806.212565-3-jp@jphein.com>
+	<CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
+	<20260409100247.7cfb62d1.michal.pecio@gmail.com>
+	<20260409221749.5e6bccab.michal.pecio@gmail.com>
+	<c4275422-a9b4-4519-95f9-1163a7912709@linux.intel.com>
+	<CAD5VvzCEV_XbHc_Gby7mFPBSgSebqKDKJf3VC8HNRrD+xWaTJg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,linux.intel.com,intel.com,redhat.com,amd.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DMARC_NA(0.00)[decadent.org.uk];
-	TAGGED_FROM(0.00)[bounces-237657-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237649-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,decadent.org.uk:mid,amd.com:email,uefi.org:url]
-X-Rspamd-Queue-Id: 4712F3F354A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7DFEE3F3151
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, 10 Apr 2026 16:06:43 -0700, Jeffrey Hein wrote:
+> Test 2: Michal's xhci patch ONLY (clean isolation)
+> ====================================================
+> Active: ONLY Michal's xhci patch. No usbcore.quirks cmdline, stock
+> uvcvideo (DKMS module disabled), LPM and autosuspend at defaults.
+> 
+> Result: HC survived.
+> 
+> Video call ran successfully.
 
---=-j1G0dLA27Kob4bewxve2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Something weird when video was being disabled:
 
-On Mon, 2026-04-13 at 17:58 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->=20
-> [ Upstream commit 60fa6ae6e6d09e377fce6f8d9b6f6a4d88769f63 ]
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e42200, comp_code 13 after 13
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e42230, comp_code 13 after 13
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Cancel URB 0000000052d839d8, dev 3.1, ep 0x81, starting at offset 0x272e42f00
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: // Ding dong!
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Stopped on Transfer TRB for slot 36 ep 2
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Removing canceled TD starting at 0x272e42f00 (dma) in stream 0 URB 0000000052d839d8
+[...]
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: xhci_giveback_invalidated_tds: Giveback cancelled URB 0000000052d839d8 TD
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Cancel URB 00000000d8d84b58, dev 3.1, ep 0x81, starting at offset 0x260549210
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: // Ding dong!
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Transfer error for slot 36 ep 2 on endpoint
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: ERROR Unknown event condition 198 for slot 36 ep 2 , HC probably busted
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: Stopped on Transfer TRB for slot 36 ep 2
+[...]
+[Fri Apr 10 15:44:31 2026] xhci_hcd 0000:00:14.0: drop ep 0x81, slot id 36, new drop flags = 0x8, new add flags = 0x0
 
-It appears that this can cause regressions, which were fixed by commits
-71bf41b8e913 ("ACPI: EC: Evaluate _REG outside the EC scope more
-carefully")=C2=A0and 0e6b6dedf168 ("ACPI: EC: Evaluate orphan _REG under EC
-device") upstream.  I didn't check whether those would apply and build
-cleanly here, but if not then this may have to be dropped.
+Video started again, seemed to work for a while:
 
-Ben.
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: add ep 0x81, slot id 36, new drop flags = 0x0, new add flags = 0x8
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: xhci_check_bandwidth called for udev 00000000e40f0c43
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: // Ding dong!
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Successful Endpoint Configure command
+[Fri Apr 10 15:44:47 2026] usb 2-3.1: Hub-initiated U1 disabled due to long timeout 16800us
+[Fri Apr 10 15:44:47 2026] usb 2-3.1: Hub-initiated U1 disabled due to long timeout 132us
+[Fri Apr 10 15:44:47 2026] usb 2-3.1: Hub-initiated U1 disabled due to long timeout 1050us
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Set up evaluate context for LPM MEL change.
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: // Ding dong!
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Successful evaluate context command
+[Fri Apr 10 15:44:47 2026] usb 2-3.1: Disable U2, ESIT shorter than exit latency
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000260549020, comp_code 13 after 13
+[Fri Apr 10 15:44:47 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000260549050, comp_code 13 after 13
 
-> It is reported that _DSM evaluation fails in ucsi_acpi_dsm() on Lenovo
-> IdeaPad Pro 5 due to a missing address space handler for the EC address
-> space:
->=20
->  ACPI Error: No handler for Region [ECSI] (000000007b8176ee) [EmbeddedCon=
-trol] (20230628/evregion-130)
->=20
-> This happens because if there is no ECDT, the EC driver only registers
-> the EC address space handler for operation regions defined in the EC
-> device scope of the ACPI namespace while the operation region being
-> accessed by the _DSM in question is located beyond that scope.
->=20
-> To address this, modify the ACPI EC driver to install the EC address
-> space handler at the root of the ACPI namespace for the first EC that
-> can be found regardless of whether or not an ECDT is present.
->=20
-> Note that this change is consistent with some examples in the ACPI
-> specification in which EC operation regions located outside the EC
-> device scope are used (for example, see Section 9.17.15 in ACPI 6.5),
-> so the current behavior of the EC driver is arguably questionable.
->=20
-> Reported-by: webcaptcha <webcapcha@gmail.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218789
-> Link: https://uefi.org/specs/ACPI/6.5/09_ACPI_Defined_Devices_and_Device_=
-Specific_Objects.html#example-asl-code
-> Link: https://lore.kernel.org/linux-acpi/Zi+0whTvDbAdveHq@kuha.fi.intel.c=
-om
-> Suggested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failur=
-e in acpi_ec_setup()")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/acpi/ec.c       | 25 ++++++++++++++++---------
->  drivers/acpi/internal.h |  1 -
->  2 files changed, 16 insertions(+), 10 deletions(-)
->=20
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index 10f7e3ef58791..1d7e7e47ea0e4 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -1514,13 +1514,14 @@ static bool install_gpio_irq_event_handler(struct=
- acpi_ec *ec)
->  static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *d=
-evice,
->  			       bool call_reg)
->  {
-> +	acpi_handle scope_handle =3D ec =3D=3D first_ec ? ACPI_ROOT_OBJECT : ec=
-->handle;
->  	acpi_status status;
-> =20
->  	acpi_ec_start(ec, false);
-> =20
->  	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
->  		acpi_ec_enter_noirq(ec);
-> -		status =3D acpi_install_address_space_handler_no_reg(ec->handle,
-> +		status =3D acpi_install_address_space_handler_no_reg(scope_handle,
->  								   ACPI_ADR_SPACE_EC,
->  								   &acpi_ec_space_handler,
->  								   NULL, ec);
-> @@ -1529,11 +1530,10 @@ static int ec_install_handlers(struct acpi_ec *ec=
-, struct acpi_device *device,
->  			return -ENODEV;
->  		}
->  		set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
-> -		ec->address_space_handler_holder =3D ec->handle;
->  	}
-> =20
->  	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
-> -		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
-> +		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
->  		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
->  	}
-> =20
-> @@ -1585,10 +1585,13 @@ static int ec_install_handlers(struct acpi_ec *ec=
-, struct acpi_device *device,
-> =20
->  static void ec_remove_handlers(struct acpi_ec *ec)
->  {
-> +	acpi_handle scope_handle =3D ec =3D=3D first_ec ? ACPI_ROOT_OBJECT : ec=
-->handle;
-> +
->  	if (test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
->  		if (ACPI_FAILURE(acpi_remove_address_space_handler(
-> -					ec->address_space_handler_holder,
-> -					ACPI_ADR_SPACE_EC, &acpi_ec_space_handler)))
-> +						scope_handle,
-> +						ACPI_ADR_SPACE_EC,
-> +						&acpi_ec_space_handler)))
->  			pr_err("failed to remove space handler\n");
->  		clear_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
->  	}
-> @@ -1627,14 +1630,18 @@ static int acpi_ec_setup(struct acpi_ec *ec, stru=
-ct acpi_device *device, bool ca
->  {
->  	int ret;
-> =20
-> -	ret =3D ec_install_handlers(ec, device, call_reg);
-> -	if (ret)
-> -		return ret;
-> -
->  	/* First EC capable of handling transactions */
->  	if (!first_ec)
->  		first_ec =3D ec;
-> =20
-> +	ret =3D ec_install_handlers(ec, device, call_reg);
-> +	if (ret) {
-> +		if (ec =3D=3D first_ec)
-> +			first_ec =3D NULL;
-> +
-> +		return ret;
-> +	}
-> +
->  	pr_info("EC_CMD/EC_SC=3D0x%lx, EC_DATA=3D0x%lx\n", ec->command_addr,
->  		ec->data_addr);
-> =20
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index 4edf591f8a3a5..f6c929787c9e6 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -169,7 +169,6 @@ static inline void acpi_early_processor_osc(void) {}
->     ---------------------------------------------------------------------=
------ */
->  struct acpi_ec {
->  	acpi_handle handle;
-> -	acpi_handle address_space_handler_holder;
->  	int gpe;
->  	int irq;
->  	unsigned long command_addr;
+Until it broke, not sure what caused this. No EP5IN unlinks here.
 
---=20
-Ben Hutchings
-When in doubt, use brute force. - Ken Thompson
+[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e42690, comp_code 13 after 13
+[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Spurious event dma 0x0000000272e426d0, comp_code 13 after 13
+[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: No Ping response error for slot 36 ep 2, Skip one Isoc TD
+[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: No Ping response error for slot 36 ep 2, Skip one Isoc TD
+[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: No Ping response error for slot 36 ep 2, Skip one Isoc TD
 
---=-j1G0dLA27Kob4bewxve2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Then EP5IN also fails and is soft-retried, but it doesn't help.
+Control requests get EPROTO or ETIMEDOUT as usual.
 
------BEGIN PGP SIGNATURE-----
+[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Transfer error for slot 36 ep 10 on endpoint
+[Fri Apr 10 15:45:09 2026] xhci_hcd 0000:00:14.0: Soft-reset ep 10, slot 36
 
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmndT0QACgkQ57/I7JWG
-EQlp8hAA0umBd4LrdRHQIDkE8dT27ae0qbREWuQ1Gh6Vkrax7PQzVcR2rQpSbwxv
-drWaPy/m1PoZrLXDwz5RsqvzqGy9oU3MqybmV46iqEO34yAgc6AjllqnjyJSrLrq
-+dlUlHf/CfpFIKb64w2ubXaAfoOwc0SZ0Nsi3sV1O+u4TKYYfDVji6MTDdUAXzhr
-b68rXLxqTHxnDVDLePR1VneYhTTfbdxLvWaukNBAi+yBjlN6ez1daM+nBRSSK43p
-Nv+DCIdJ9daNeL98BKMJL5iGYHhIvl8fI8vmaUd/UcBwawH+DORHyTnxHWs14p1D
-U0XehJCRpEGDGI7oe3+EpXbayRAVBZt8jjFP7gd1x4Qi9D7O2TFTDdRZWP3J3rqV
-4uKdNYtE17Phf9QWHowMsI783JMruuajlCPuTU4AkoZo77CCjLW+y1hoPQrCiH8G
-yuLbsueX134xOgPg4ZdFX6VDM8aZ2JTH7X+hkPdUEHO9H3gTUaYN8F4cAawKBTXJ
-ZBhpQRQvXYlwRdCchDgBB+jvDkTjEXtSDJVlUpkXclNI9bicrgpznfWCRxcWGXGf
-V2Ryx6IGRDH0OOpnUbbGTs3mxX3PwhjAlITPcREld/dw4s2fW7RwPHKrOCUjvYnr
-NMwUaiY3JUdvpN7vgC+3Of+W4UFet4rzHNIqC4972R4D4trlt4w=
-=ojTu
------END PGP SIGNATURE-----
-
---=-j1G0dLA27Kob4bewxve2--
+Looks like the device is dead indeed, or the HC broke down and
+can't communiate with it.
 
