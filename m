@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-236820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIcKCUEi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-236820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:05 +0200
+	id oHSvIo4h3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8375C3F0AC0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 118973F0899
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B49233067B31
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E188B30B9766
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8B027BF6C;
-	Mon, 13 Apr 2026 16:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BCE317148;
+	Mon, 13 Apr 2026 16:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeUH9PlP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRHzB9Ke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28E3225A38;
-	Mon, 13 Apr 2026 16:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D683161BF;
+	Mon, 13 Apr 2026 16:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097875; cv=none; b=XlyRXT9rGHsUduXMUvYQtaxtPxPOg5vNW/H6cHq4g8yLTmyQFXlaiw1MzOOoDJ3lxL1t2D1dFzCihMmYRzdPgIrhfEqO38B0tutGW/k9CuSVJQefBAruIv0iAXGb5nO9lmY1W+LfwMYdKXxyg//rngEz5Kn/bcLCBxt8xD1BMY8=
+	t=1776099055; cv=none; b=oZr9K+xwcGzyuJaRdxZKBV42gE1IQ9oYBIXe0a9+r1ziUDKcJz3UK2UGilSqG9oA/rfNyZnxTZLwvTy7dOHUbgw4s6upPNUiJhIcOLJAmEcMCeKwoj1cjFZdbfIsaEaAA7dg3Dz6o6Cx/3ZSeVXK/YZi1nAR3Cxfmd5alfqCo/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097875; c=relaxed/simple;
-	bh=OC2OO2sSH15hZNbSNQwvtc/zaZRGdIvcXZyFZnaqJ2A=;
+	s=arc-20240116; t=1776099055; c=relaxed/simple;
+	bh=X8b0uLa9YbDJrQ/+1jawC2CQJD55BU2ERI9TapxLQRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GM/Sk9Q5wyB2CBcErqQP0AyQfIwa8VaxHRj1LCy2hw0MYdd+Ao4wsRXH9iBRCR6yU/GrftqsJbZSkcJE+C4pTkPMOojREar7LrTz0C73/op1OwHQsi/tveUhzo52SbGlndGdQOHevqivHOXTfr373JYwQUfP3hjPb+/wMIDKWi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeUH9PlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D15C2BCB3;
-	Mon, 13 Apr 2026 16:31:15 +0000 (UTC)
+	 MIME-Version; b=u6FuKytW3wTGFQOgokjxRYrAfC8sfDUlnze2L6r/epAPmkRTQJD819cplcDE7aUi8rQKY63PjpEs6ZlgfXN0mS006yT0M0/PnxtWLa5WJi/Md22Z+X5WjGA22UbGrpWAScxinv1pXxlwT7KGK4OGkg44WgJwGZzPlfnlJitYPkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRHzB9Ke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED3DC2BCAF;
+	Mon, 13 Apr 2026 16:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097875;
-	bh=OC2OO2sSH15hZNbSNQwvtc/zaZRGdIvcXZyFZnaqJ2A=;
+	s=korg; t=1776099055;
+	bh=X8b0uLa9YbDJrQ/+1jawC2CQJD55BU2ERI9TapxLQRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TeUH9PlPg431WLj9C815Lsx4uP+W8ZiMckgtcVDVk/nVuLxGSIkxotOAMMzkH2+or
-	 Iq24U+ZpI+zoUK8Ee0d+Ohl/mO2e9n+lBbP2SJSla+cSkrKVq+dKsD+BuWSQyYewp5
-	 Avaxzt/r+Bgz7wQlkygDubnDtsEVp2XemloRlBgk=
+	b=XRHzB9KeMQKozZaZrBbj/BQI++oA7J+/vZo5MN3FWkZfkmHxE+BCvxTjJrCb8OHVX
+	 cBaWJBzqVa+220G7gdJ5FfBhdY9d4Brwsdli1HMlM9/4tePCNzsNpuxOkyLxiYuyqM
+	 h9L+wHTfTOQNsoHMs2Dk805HPYtTzpJJld9cRcvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 307/570] module: Fix kernel panic when a symbol st_shndx is out of bounds
+Subject: [PATCH 5.10 193/491] ALSA: pcm: fix wait_time calculations
 Date: Mon, 13 Apr 2026 17:57:18 +0200
-Message-ID: <20260413155841.999331414@linuxfoundation.org>
+Message-ID: <20260413155826.295516873@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,114 +66,137 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237282-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,suse.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236820-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,samsung.com:email]
-X-Rspamd-Queue-Id: 8375C3F0AC0
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,gmx.de:email]
+X-Rspamd-Queue-Id: 118973F0899
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-[ Upstream commit f9d69d5e7bde2295eb7488a56f094ac8f5383b92 ]
+[ Upstream commit 3ed2b549b39f57239aad50a255ece353997183fd ]
 
-The module loader doesn't check for bounds of the ELF section index in
-simplify_symbols():
+... in wait_for_avail() and snd_pcm_drain().
 
-       for (i = 1; i < symsec->sh_size / sizeof(Elf_Sym); i++) {
-		const char *name = info->strtab + sym[i].st_name;
+t was calculated in seconds, so it would be pretty much always zero, to
+be subsequently de-facto ignored due to being max(t, 10)'d. And then it
+(i.e., 10) would be treated as secs, which doesn't seem right.
 
-		switch (sym[i].st_shndx) {
-		case SHN_COMMON:
+However, fixing it to properly calculate msecs would potentially cause
+timeouts when using twice the period size for the default timeout (which
+seems reasonable to me), so instead use the buffer size plus 10 percent
+to be on the safe side ... but that still seems insufficient, presumably
+because the hardware typically needs a moment to fire up. To compensate
+for this, we up the minimal timeout to 100ms, which is still two orders
+of magnitude less than the bogus minimum.
 
-		[...]
+substream->wait_time was also misinterpreted as jiffies, despite being
+documented as being in msecs. Only the soc/sof driver sets it - to 500,
+which looks very much like msecs were intended.
 
-		default:
-			/* Divert to percpu allocation if a percpu var. */
-			if (sym[i].st_shndx == info->index.pcpu)
-				secbase = (unsigned long)mod_percpu(mod);
-			else
-  /** HERE --> **/		secbase = info->sechdrs[sym[i].st_shndx].sh_addr;
-			sym[i].st_value += secbase;
-			break;
-		}
-	}
+Speaking of which, shouldn't snd_pcm_drain() also use substream->
+wait_time?
 
-A symbol with an out-of-bounds st_shndx value, for example 0xffff
-(known as SHN_XINDEX or SHN_HIRESERVE), may cause a kernel panic:
+As a drive-by, make the debug messages on timeout less confusing.
 
-  BUG: unable to handle page fault for address: ...
-  RIP: 0010:simplify_symbols+0x2b2/0x480
-  ...
-  Kernel panic - not syncing: Fatal exception
-
-This can happen when module ELF is legitimately using SHN_XINDEX or
-when it is corrupted.
-
-Add a bounds check in simplify_symbols() to validate that st_shndx is
-within the valid range before using it.
-
-This issue was discovered due to a bug in llvm-objcopy, see relevant
-discussion for details [1].
-
-[1] https://lore.kernel.org/linux-modules/20251224005752.201911-1-ihor.solodrai@linux.dev/
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Link: https://lore.kernel.org/r/20230405201219.2197774-1-oswald.buddenhagen@gmx.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 9b1dbd69ba6f ("ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/core/pcm_lib.c    |   11 +++++------
+ sound/core/pcm_native.c |    8 ++++----
+ 2 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/module.c b/kernel/module.c
-index 2226b591b52e0..07fa34461fa2f 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -2347,6 +2347,13 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
- 			break;
+--- a/sound/core/pcm_lib.c
++++ b/sound/core/pcm_lib.c
+@@ -1843,15 +1843,14 @@ static int wait_for_avail(struct snd_pcm
+ 		if (substream->wait_time) {
+ 			wait_time = substream->wait_time;
+ 		} else {
+-			wait_time = 10;
++			wait_time = 100;
  
- 		default:
-+			if (sym[i].st_shndx >= info->hdr->e_shnum) {
-+				pr_err("%s: Symbol %s has an invalid section index %u (max %u)\n",
-+				       mod->name, name, sym[i].st_shndx, info->hdr->e_shnum - 1);
-+				ret = -ENOEXEC;
-+				break;
-+			}
-+
- 			/* Divert to percpu allocation if a percpu var. */
- 			if (sym[i].st_shndx == info->index.pcpu)
- 				secbase = (unsigned long)mod_percpu(mod);
--- 
-2.51.0
-
+ 			if (runtime->rate) {
+-				long t = runtime->period_size * 2 /
+-					 runtime->rate;
++				long t = runtime->buffer_size * 1100 / runtime->rate;
+ 				wait_time = max(t, wait_time);
+ 			}
+-			wait_time = msecs_to_jiffies(wait_time * 1000);
+ 		}
++		wait_time = msecs_to_jiffies(wait_time);
+ 	}
+ 
+ 	for (;;) {
+@@ -1899,8 +1898,8 @@ static int wait_for_avail(struct snd_pcm
+ 		}
+ 		if (!tout) {
+ 			pcm_dbg(substream->pcm,
+-				"%s write error (DMA or IRQ trouble?)\n",
+-				is_playback ? "playback" : "capture");
++				"%s timeout (DMA or IRQ trouble?)\n",
++				is_playback ? "playback write" : "capture read");
+ 			err = -EIO;
+ 			break;
+ 		}
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -2155,12 +2155,12 @@ static int snd_pcm_drain(struct snd_pcm_
+ 		if (runtime->no_period_wakeup)
+ 			tout = MAX_SCHEDULE_TIMEOUT;
+ 		else {
+-			tout = 10;
++			tout = 100;
+ 			if (runtime->rate) {
+-				long t = runtime->period_size * 2 / runtime->rate;
++				long t = runtime->buffer_size * 1100 / runtime->rate;
+ 				tout = max(t, tout);
+ 			}
+-			tout = msecs_to_jiffies(tout * 1000);
++			tout = msecs_to_jiffies(tout);
+ 		}
+ 		tout = schedule_timeout(tout);
+ 
+@@ -2183,7 +2183,7 @@ static int snd_pcm_drain(struct snd_pcm_
+ 				result = -ESTRPIPE;
+ 			else {
+ 				dev_dbg(substream->pcm->card->dev,
+-					"playback drain error (DMA or IRQ trouble?)\n");
++					"playback drain timeout (DMA or IRQ trouble?)\n");
+ 				snd_pcm_stop(substream, SNDRV_PCM_STATE_SETUP);
+ 				result = -EIO;
+ 			}
 
 
 
