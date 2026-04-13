@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-237523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mI4DEsYm3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:22 +0200
+	id wxV7KNgc3WlUaAkAu9opvQ
+	(envelope-from <stable+bounces-236497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72543F1547
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E652C3EF88A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54F983180F7E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E65F2319DE6D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C571833F5AA;
-	Mon, 13 Apr 2026 17:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029743093CF;
+	Mon, 13 Apr 2026 16:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="potycCkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXMMmIkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A2E33C536;
-	Mon, 13 Apr 2026 17:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95882F8BC3;
+	Mon, 13 Apr 2026 16:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099676; cv=none; b=Vh0HpoXKAKxmgVnB2Q5tPeoQVfZ0FaLXkEqqeB3LBAy+P9GE1IUGPlflh7Em5WEZt/WH04r2YDBY/F4fGzA7uFVmR4QxgIVK8r/Z2xMHksMPGJQ/WuIwB+VfqjcTtB3k5/IqErC0ziOeUMNH0u+OUviDIG+CsPFmEZXsIg8LSPc=
+	t=1776097054; cv=none; b=Sawyx8/d6AY5/x95PMtSh3Y3O1Uan7Gl4Ir5mPSJMHAfhB2+bSs1Bk4QXoqWaOem/Lz2NPCuKKwBToDePo+9IWu8xrowaG4k3WmgYLYlACYlqyIhrzFIk4+OrC2VbxY4Oln/uCN9sx+AVewG2OyL5/Mz+0Ph0hxQ5zeqi3Mq3dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099676; c=relaxed/simple;
-	bh=fpn/GW668OgqBtuowBzu+x23ykD/FZtaTrnP4EaBJ1w=;
+	s=arc-20240116; t=1776097054; c=relaxed/simple;
+	bh=U006km7u3X1SLgUdMwrprAhC0JjUeHlsH2kIqzxMf3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAIY+QbQZPnebFTORzIHt4Iw26BOyJRVlN/UfI8lLF+23ZF8u1KBGEfKX544JzGMotlJVY1fC41vbGem8z5PUDVkkbmBL5JRTIdP46HIo+pQW8Pn2Lbi2iVBeD94g0nfM5ZwZMPGJW3EHJ8U5DMVblV29tkHV++fkcCpO+rWr20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=potycCkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B325C2BCAF;
-	Mon, 13 Apr 2026 17:01:15 +0000 (UTC)
+	 MIME-Version; b=SHowd+iU60Fme8wUdW2VJQmCvaVeSfuokEFH43sBRqR3oMubJzXsSm+WPxLRoVXWza/UouY1Wpx8YuGUQu2glfBmsWIBBeq9SU/mfqGVUtALEPsm/FAQzTva6I6S7hupAHQ6YlqwWGHG06MeRzemlw0NgKsTvmgfoyFVQMTquEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXMMmIkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E20C2BCAF;
+	Mon, 13 Apr 2026 16:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099676;
-	bh=fpn/GW668OgqBtuowBzu+x23ykD/FZtaTrnP4EaBJ1w=;
+	s=korg; t=1776097054;
+	bh=U006km7u3X1SLgUdMwrprAhC0JjUeHlsH2kIqzxMf3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=potycCkVeDPa96q3XAeCVXESDEV6TeZYqRX7IFsxfx+DEu6xVNVRRYglW9qBtY1uc
-	 1sp3bmfq0WtiLkn6ZEVUa/388xZbxS3rIahw8pC/MRBkPTOY9kiv4ltyvoJLq5pcuV
-	 D/TP8f6gQh7MrLiVjrpvBPEf8dMr/o+1Opy06A/E=
+	b=XXMMmIkXuRw193aVscCNrrvfzdU5BAOiuHU7Uj5tclBnBfaSlZJP3K1i0vxOL19hI
+	 mUfsXQc5LHmBO9zdWHkE3aNbFE2++7oKg8ZwJLSgCavbz2Sv/lga2goiavnKv7oAit
+	 hG1XRhY6iGNelZJlWhrhlw3Tj5Q69zMW1D13TsXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.10 432/491] apparmor: replace recursive profile removal with iterative approach
-Date: Mon, 13 Apr 2026 18:01:17 +0200
-Message-ID: <20260413155835.202098862@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 44/55] EDAC/mc: Fix error path ordering in edac_mc_alloc()
+Date: Mon, 13 Apr 2026 18:01:18 +0200
+Message-ID: <20260413155726.476645559@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,112 +73,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237523-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236497-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C72543F1547
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alien8.de:email]
+X-Rspamd-Queue-Id: E652C3EF88A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit ab09264660f9de5d05d1ef4e225aa447c63a8747 upstream.
+commit 51520e03e70d6c73e33ee7cbe0319767d05764fe upstream.
 
-The profile removal code uses recursion when removing nested profiles,
-which can lead to kernel stack exhaustion and system crashes.
+When the mci->pvt_info allocation in edac_mc_alloc() fails, the error path
+will call put_device() which will end up calling the device's release
+function.
 
-Reproducer:
-  $ pf='a'; for ((i=0; i<1024; i++)); do
-      echo -e "profile $pf { \n }" | apparmor_parser -K -a;
-      pf="$pf//x";
-  done
-  $ echo -n a > /sys/kernel/security/apparmor/.remove
+However, the init ordering is wrong such that device_initialize() happens
+*after* the failed allocation and thus the device itself and the release
+function pointer are not initialized yet when they're called:
 
-Replace the recursive __aa_profile_list_release() approach with an
-iterative approach in __remove_profile(). The function repeatedly
-finds and removes leaf profiles until the entire subtree is removed,
-maintaining the same removal semantic without recursion.
+  MCE: In-kernel MCE decoding enabled.
+  ------------[ cut here ]------------
+  kobject: '(null)': is not initialized, yet kobject_put() is being called.
+  WARNING: lib/kobject.c:734 at kobject_put, CPU#22: systemd-udevd
+  CPU: 22 UID: 0 PID: 538 Comm: systemd-udevd Not tainted 7.0.0-rc1+ #2 PREEMPT(full)
+  RIP: 0010:kobject_put
+  Call Trace:
+   <TASK>
+   edac_mc_alloc+0xbe/0xe0 [edac_core]
+   amd64_edac_init+0x7a4/0xff0 [amd64_edac]
+   ? __pfx_amd64_edac_init+0x10/0x10 [amd64_edac]
+   do_one_initcall
+   ...
 
-Fixes: c88d4c7b049e ("AppArmor: core policy routines")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Reorder the calling sequence so that the device is initialized and thus the
+release function pointer is properly set before it can be used.
+
+This was found by Claude while reviewing another EDAC patch.
+
+Fixes: 0bbb265f7089 ("EDAC/mc: Get rid of silly one-shot struct allocation in edac_mc_alloc()")
+Reported-by: Claude Code:claude-opus-4.5
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20260331121623.4871-1-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy.c |   30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ drivers/edac/edac_mc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -146,19 +146,43 @@ static void __list_remove_profile(struct
- }
+--- a/drivers/edac/edac_mc.c
++++ b/drivers/edac/edac_mc.c
+@@ -369,13 +369,13 @@ struct mem_ctl_info *edac_mc_alloc(unsig
+ 	if (!mci->layers)
+ 		goto error;
  
- /**
-- * __remove_profile - remove old profile, and children
-- * @profile: profile to be replaced  (NOT NULL)
-+ * __remove_profile - remove profile, and children
-+ * @profile: profile to be removed  (NOT NULL)
-  *
-  * Requires: namespace list lock be held, or list not be shared
-  */
- static void __remove_profile(struct aa_profile *profile)
- {
-+	struct aa_profile *curr, *to_remove;
++	mci->dev.release = mci_release;
++	device_initialize(&mci->dev);
 +
- 	AA_BUG(!profile);
- 	AA_BUG(!profile->ns);
- 	AA_BUG(!mutex_is_locked(&profile->ns->lock));
+ 	mci->pvt_info = kzalloc(sz_pvt, GFP_KERNEL);
+ 	if (!mci->pvt_info)
+ 		goto error;
  
- 	/* release any children lists first */
--	__aa_profile_list_release(&profile->base.profiles);
-+	if (!list_empty(&profile->base.profiles)) {
-+		curr = list_first_entry(&profile->base.profiles, struct aa_profile, base.list);
-+
-+		while (curr != profile) {
-+
-+			while (!list_empty(&curr->base.profiles))
-+				curr = list_first_entry(&curr->base.profiles,
-+							struct aa_profile, base.list);
-+
-+			to_remove = curr;
-+			if (!list_is_last(&to_remove->base.list,
-+					  &aa_deref_parent(curr)->base.profiles))
-+				curr = list_next_entry(to_remove, base.list);
-+			else
-+				curr = aa_deref_parent(curr);
-+
-+			/* released by free_profile */
-+			aa_label_remove(&to_remove->label);
-+			__aafs_profile_rmdir(to_remove);
-+			__list_remove_profile(to_remove);
-+		}
-+	}
-+
- 	/* released by free_profile */
- 	aa_label_remove(&profile->label);
- 	__aafs_profile_rmdir(profile);
+-	mci->dev.release = mci_release;
+-	device_initialize(&mci->dev);
+-
+ 	/* setup index and various internal pointers */
+ 	mci->mc_idx = mc_num;
+ 	mci->tot_dimms = tot_dimms;
 
 
 
