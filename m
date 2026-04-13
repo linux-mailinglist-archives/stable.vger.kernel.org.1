@@ -1,71 +1,60 @@
-Return-Path: <stable+bounces-236441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCqWAwUZ3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:41 +0200
+	id QBJ7GXca3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762B73EEE22
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10473EF2A2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEF5430D0218
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F0B2E303321C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA58D306B0A;
-	Mon, 13 Apr 2026 16:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B829C24DCF6;
+	Mon, 13 Apr 2026 16:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fv70FxBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AS69IQOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE6E305057;
-	Mon, 13 Apr 2026 16:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7EC27280A;
+	Mon, 13 Apr 2026 16:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096913; cv=none; b=jIS2moi9kB0F+Dyam7iXPjNwWG4xiIvlKZtvG9I2BSRamV8aIvjM6Zlw9V5Xh/ail6leZMD3PpVPcdPLSNHjpzvPw2errrtdV2QqUYAKP0Ih0voLeyoL69RXCAGNOXO3I0yNshprRdXlXkcvfOT7RnibbIq0XVWA8jAoTbsw7yw=
+	t=1776097026; cv=none; b=IkJCFBQz4NqzjLD2Z7Y/MlJITJQNGbDayMDtgihCJYKL8UtSPpf9HsI+pdWFJ/apRP4Bvbavl80i7uJs2jurgAQYcyyEMtuiRVnnzIRcTQ2HnPLQGi0lnMaSlRuXfa4LjIIvYnYF51ta3vd14B+Ckaw9xJV3uLJ0/K/g96K8inM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096913; c=relaxed/simple;
-	bh=YCZTkLB+lVdEG+OPpoE/YUL0QMcLZDCvBE44gxfbDSw=;
+	s=arc-20240116; t=1776097026; c=relaxed/simple;
+	bh=YLSM1IDeCktIfNYrFmSJEmgc40N32VKog5uVHkVphCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mZpj80BIQeIRqnFcBnanT4OttqcbYqi2wex39DF4nDonTEioPtGXyXniC70beJH8y8Cn/fWNUM9f+7z0LfuBzqtJFO27WIQnPLiydru92qQXFseRPkKMA34kZD90SIhkceNZC8WPmSXEMXMuZF7zDhxSYd0ykAcEA9F89iNVYLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fv70FxBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5EAC2BCAF;
-	Mon, 13 Apr 2026 16:15:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qjd15lP9Hkw2xJiEDA4gsKTN75Z3RA5z80IJFNtIfhQ7HcmoYMiuSWU/pZbQZvbOpYvpwMUyOXGzcyTeY5givD9FCH2D/Au79oCt8ExdMmZ5RhMl0bnjXyxeWimu2QI8mfMR0/HR3+1/sysMW5A/5ctJG0TR6mScg+X0dUDOmnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AS69IQOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1219FC2BCAF;
+	Mon, 13 Apr 2026 16:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096913;
-	bh=YCZTkLB+lVdEG+OPpoE/YUL0QMcLZDCvBE44gxfbDSw=;
+	s=korg; t=1776097026;
+	bh=YLSM1IDeCktIfNYrFmSJEmgc40N32VKog5uVHkVphCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fv70FxBFR+XcaFEBr60SyeE3e3KmsrNRyZoc4PCA9NMU2CDupWEotMZa87q+QIQ+c
-	 WjY8X/dzR9h4KZ5UXtNmVoHFlO4fhHvZ2cq9rljsgkogJMUbL4tx1xEbT28CEZAIUE
-	 QkpAXe++Q1FdOh9mis7TXCoisCcJftCKPOSpB1C0=
+	b=AS69IQOqICjPgKqb4Cf4KZ4nwb5htXTA3yUlzeDtVe9dgzG8KqOyHSSESw6+Qf+HS
+	 YmVCgj6Ora64zJwXp3m+GM58mmf4g2/DjnheoVL6ijIqXvvYntAu1Uc5vE6ftI8aTs
+	 E4HmkC9ycQVvudooPy+i6DeYni+tPKj8y5nXWv9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Yuanhe Shu <xiangzao@linux.alibaba.com>,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Luis Chamberalin <mcgrof@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 41/50] mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
+	"Lin.Cao" <lincao12@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Leon Chen <leonchen.oss@139.com>
+Subject: [PATCH 6.1 34/55] drm/scheduler: signal scheduled fence when kill job
 Date: Mon, 13 Apr 2026 18:01:08 +0200
-Message-ID: <20260413155726.045942200@linuxfoundation.org>
+Message-ID: <20260413155726.110922418@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+References: <20260413155724.820472494@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,171 +69,76 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236441-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,kernel.org,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236485-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 762B73EEE22
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:email]
+X-Rspamd-Queue-Id: F10473EF2A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Lin.Cao <lincao12@amd.com>
 
-commit f58df566524ebcdfa394329c64f47e3c9257516e upstream.
+commit 471db2c2d4f80ee94225a1ef246e4f5011733e50 upstream.
 
-When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
-encountered some very strange crash issues showing up as "Bad page state":
+When an entity from application B is killed, drm_sched_entity_kill()
+removes all jobs belonging to that entity through
+drm_sched_entity_kill_jobs_work(). If application A's job depends on a
+scheduled fence from application B's job, and that fence is not properly
+signaled during the killing process, application A's dependency cannot be
+cleared.
 
-"
-[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
-[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
-[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
-[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
-[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
-[  734.496442] page dumped because: nonzero mapcount
-"
+This leads to application A hanging indefinitely while waiting for a
+dependency that will never be resolved. Fix this issue by ensuring that
+scheduled fences are properly signaled when an entity is killed, allowing
+dependent applications to continue execution.
 
-After analyzing this page’s state, it is hard to understand why the
-mapcount is not 0 while the refcount is 0, since this page is not where
-the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
-reproduce the crash as well and captured the first warning where the issue
-appears:
-
-"
-[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
-[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  734.469315] memcg:ffff000807a8ec00
-[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
-[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
-......
-[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
-const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
-(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
-[  734.469390] ------------[ cut here ]------------
-[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
-CPU#90: stress-ng-mlock/9430
-[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
-[  734.469555]  set_pte_range+0xd8/0x2f8
-[  734.469566]  filemap_map_folio_range+0x190/0x400
-[  734.469579]  filemap_map_pages+0x348/0x638
-[  734.469583]  do_fault_around+0x140/0x198
-......
-[  734.469640]  el0t_64_sync+0x184/0x188
-"
-
-The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
-nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
-tried to map beyond the large folio’s size.
-
-By adding more debug information, I found that 'nr_pages' had overflowed
-in filemap_map_pages(), causing set_pte_range() to establish mappings for
-a range exceeding the folio size, potentially corrupting fields of pages
-that do not belong to this folio (e.g., page->_mapcount).
-
-After above analysis, I think the possible race is as follows:
-
-CPU 0                                                  CPU 1
-filemap_map_pages()                                   ext4_setattr()
-   //get and lock folio with old inode->i_size
-   next_uptodate_folio()
-
-                                                          .......
-                                                          //shrink the inode->i_size
-                                                          i_size_write(inode, attr->ia_size);
-
-   //calculate the end_pgoff with the new inode->i_size
-   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-   end_pgoff = min(end_pgoff, file_end);
-
-   ......
-   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
-   end = folio_next_index(folio) - 1;
-   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
-
-   ......
-   //map large folio
-   filemap_map_folio_range()
-                                                          ......
-                                                          //truncate folios
-                                                          truncate_pagecache(inode, inode->i_size);
-
-To fix this issue, move the 'end_pgoff' calculation before
-next_uptodate_folio(), so the retrieved folio stays consistent with the
-file end to avoid 'nr_pages' calculation overflow.  After this patch, the
-crash issue is gone.
-
-Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
-Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Daniel Gomez <da.gomez@samsung.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <dchinner@redhat.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Reviewed-by: Philipp Stanner <phasta@kernel.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250515020713.1110476-1-lincao12@amd.com
+[ Modified drm_sched_fence_scheduled(job->s_fence, NULL) to
+  drm_sched_fence_scheduled(job->s_fence) for kernel 6.1.y ]
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3616,14 +3616,19 @@ vm_fault_t filemap_map_pages(struct vm_f
- 	unsigned int nr_pages = 0, mmap_miss = 0, mmap_miss_saved;
- 	bool can_map_large;
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -196,6 +196,7 @@ static void drm_sched_entity_kill_jobs_w
+ {
+ 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
  
-+	/*
-+	 * Recalculate end_pgoff based on file_end before calling
-+	 * next_uptodate_folio() to avoid races with concurrent
-+	 * truncation.
-+	 */
-+	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-+	end_pgoff = min(end_pgoff, file_end);
-+
- 	rcu_read_lock();
- 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
- 	if (!folio)
- 		goto out;
- 
--	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
--	end_pgoff = min(end_pgoff, file_end);
--
- 	/*
- 	 * Do not allow to map with PTEs beyond i_size and with PMD
- 	 * across i_size to preserve SIGBUS semantics.
++	drm_sched_fence_scheduled(job->s_fence);
+ 	drm_sched_fence_finished(job->s_fence);
+ 	WARN_ON(job->s_fence->parent);
+ 	job->sched->ops->free_job(job);
 
 
 
