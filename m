@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-237441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHTWLNEj3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:45 +0200
+	id +NEnItsV3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0952D3F0F4B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51633EE696
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 502433075D25
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFCC5305E9B5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E9A330649;
-	Mon, 13 Apr 2026 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C957D25A2C9;
+	Mon, 13 Apr 2026 16:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwZuAflr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2BBHby0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9722B32F765;
-	Mon, 13 Apr 2026 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D885248880;
+	Mon, 13 Apr 2026 16:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099465; cv=none; b=l8e63cReq4oqDbgs2xN0FcPOusojAbv1WyQh7ME4tbcze+CP/rJxifrWaEvaUcll+mF1Fos4faNDjApIRMjgjy+tG4bZX9M2zBklm7Ww6yb3Pq4tPzvBZFDlhMvRX+q7yeViLtuMxzZtFoRuBPERV5/4t5r7+PUhkzm5bl+mqWQ=
+	t=1776096225; cv=none; b=Qqptp7ZUMSIkuH4z+cy3Unjqid70723m6y548Fq19RW9YasCOQ7oNr7n5YeeBRNWXteADuz/Xmn6Sesy29u8B0MmygN9kLoIq91OeoOpgZST4ev3YYmB4pW4ZzDewVlCsnz2yCa1bFqjyW7KGWlABUGR4bkolVa1Ues6KQ6VqL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099465; c=relaxed/simple;
-	bh=FBSE9P6SB41mfYMwXVO8PIWXF1uUoqXTJlSbsODYFHk=;
+	s=arc-20240116; t=1776096225; c=relaxed/simple;
+	bh=uT31W0AFp6OqXT5Zb5Vpes9Kj2Vdk54d4x6ctIyMULI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nI5DKgWzqSXXuOTOkVOWC4ZU3+kILAWVwmaF9DpZN5Fc7aGrHQJulYjoaFXzTcHF3Ki+sCOSfU7p2cteAXk3xwLP1qwpJnYx4MhQqwOVZ78N4xa2zcLmaXPmdohm7EZeairftKLjZsCWv16tXPLUMLoIauQ2nBGnWp6HHCocteM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwZuAflr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C71CC2BCAF;
-	Mon, 13 Apr 2026 16:57:45 +0000 (UTC)
+	 MIME-Version; b=LOlrcQ1o/TAW1gvI6UcvjfzXOw262AT4br4A5OGWtu8PkiH5LzURYDH4rXrLKQ1t2gtN+0S3u5MpOQKDesmWmBK0PC3DWeeLW8rReghmIZ5hvXTabXB9nmmPDo8i2GMLFAMY2tgmw9oWiCbS6KIcmXmU5SlF36097qGjjrh8pEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2BBHby0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A95C2BCAF;
+	Mon, 13 Apr 2026 16:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099465;
-	bh=FBSE9P6SB41mfYMwXVO8PIWXF1uUoqXTJlSbsODYFHk=;
+	s=korg; t=1776096225;
+	bh=uT31W0AFp6OqXT5Zb5Vpes9Kj2Vdk54d4x6ctIyMULI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwZuAflrNXEWr2hnOXbcbwJTxdLu2t8BmWfHotcSqgTHbD+eI/gAj+szg7PtOJWO6
-	 LE4aU4pjJHV0QDVWUaNRz4BCmzgFZQ+XGeFUakMcBw4NYpyfdgBxgEMEagSplKYF9S
-	 zvotBVexEK5OJYRpr8j2H9QLcvfQAEBEoeMt1T9k=
+	b=K2BBHby0eahydpUM2rqG1Wx6EqCbq3kYRNDLu2IqVsB9c6rJvq+eAUKWkHUKpd+cC
+	 RoRDsz4J7Ls3dMrY/kH38g5RXJSwwyFdpol8OpgpRH/Y/6utz1DPAiPvya0D00Ccka
+	 vvEusJqqSi6iZPemkbBEkYmFuc+ZVcSfR8jHRCeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f50072212ab792c86925@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	robbieko <robbieko@synology.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 318/491] atm: lec: fix use-after-free in sock_def_readable()
+Subject: [PATCH 6.19 16/86] btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()
 Date: Mon, 13 Apr 2026 17:59:23 +0200
-Message-ID: <20260413155830.949658689@linuxfoundation.org>
+Message-ID: <20260413155732.184663659@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,282 +65,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-237441-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,google.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.980];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,f50072212ab792c86925];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236171-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 0952D3F0F4B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,synology.com:email]
+X-Rspamd-Queue-Id: D51633EE696
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: robbieko <robbieko@synology.com>
 
-[ Upstream commit 922814879542c2e397b0e9641fd36b8202a8e555 ]
+[ Upstream commit 316fb1b3169efb081d2db910cbbfef445afa03b9 ]
 
-A race condition exists between lec_atm_close() setting priv->lecd
-to NULL and concurrent access to priv->lecd in send_to_lecd(),
-lec_handle_bridge(), and lec_atm_send(). When the socket is freed
-via RCU while another thread is still using it, a use-after-free
-occurs in sock_def_readable() when accessing the socket's wait queue.
+After commit 1618aa3c2e01 ("btrfs: simplify return variables in
+lookup_extent_data_ref()"), the err and ret variables were merged into
+a single ret variable. However, when btrfs_next_leaf() returns 0
+(success), ret is overwritten from -ENOENT to 0. If the first key in
+the next leaf does not match (different objectid or type), the function
+returns 0 instead of -ENOENT, making the caller believe the lookup
+succeeded when it did not. This can lead to operations on the wrong
+extent tree item, potentially causing extent tree corruption.
 
-The root cause is that lec_atm_close() clears priv->lecd without
-any synchronization, while callers dereference priv->lecd without
-any protection against concurrent teardown.
+Fix this by returning -ENOENT directly when the key does not match,
+instead of relying on the ret variable.
 
-Fix this by converting priv->lecd to an RCU-protected pointer:
-- Mark priv->lecd as __rcu in lec.h
-- Use rcu_assign_pointer() in lec_atm_close() and lecd_attach()
-  for safe pointer assignment
-- Use rcu_access_pointer() for NULL checks that do not dereference
-  the pointer in lec_start_xmit(), lec_push(), send_to_lecd() and
-  lecd_attach()
-- Use rcu_read_lock/rcu_dereference/rcu_read_unlock in send_to_lecd(),
-  lec_handle_bridge() and lec_atm_send() to safely access lecd
-- Use rcu_assign_pointer() followed by synchronize_rcu() in
-  lec_atm_close() to ensure all readers have completed before
-  proceeding. This is safe since lec_atm_close() is called from
-  vcc_release() which holds lock_sock(), a sleeping lock.
-- Remove the manual sk_receive_queue drain from lec_atm_close()
-  since vcc_destroy_socket() already drains it after lec_atm_close()
-  returns.
-
-v2: Switch from spinlock + sock_hold/put approach to RCU to properly
-    fix the race. The v1 spinlock approach had two issues pointed out
-    by Eric Dumazet:
-    1. priv->lecd was still accessed directly after releasing the
-       lock instead of using a local copy.
-    2. The spinlock did not prevent packets being queued after
-       lec_atm_close() drains sk_receive_queue since timer and
-       workqueue paths bypass netif_stop_queue().
-
-Note: Syzbot patch testing was attempted but the test VM terminated
-    unexpectedly with "Connection to localhost closed by remote host",
-    likely due to a QEMU AHCI emulation issue unrelated to this fix.
-    Compile testing with "make W=1 net/atm/lec.o" passes cleanly.
-
-Reported-by: syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f50072212ab792c86925
-Link: https://lore.kernel.org/all/20260309093614.502094-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260309155908.508768-1-kartikey406@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1618aa3c2e01 ("btrfs: simplify return variables in lookup_extent_data_ref()")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: robbieko <robbieko@synology.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/lec.c |   72 +++++++++++++++++++++++++++++++++++++---------------------
- net/atm/lec.h |    2 -
- 2 files changed, 48 insertions(+), 26 deletions(-)
+ fs/btrfs/extent-tree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -142,6 +142,7 @@ static void lec_handle_bridge(struct sk_
- 		struct sock *sk;
- 		struct sk_buff *skb2;
- 		struct atmlec_msg *mesg;
-+		struct atm_vcc *vcc;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index f2b1bc2107539..f5ca544e35431 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -476,7 +476,7 @@ static noinline int lookup_extent_data_ref(struct btrfs_trans_handle *trans,
+ 		btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
+ 		if (key.objectid != bytenr ||
+ 		    key.type != BTRFS_EXTENT_DATA_REF_KEY)
+-			return ret;
++			return -ENOENT;
  
- 		skb2 = alloc_skb(sizeof(struct atmlec_msg), GFP_ATOMIC);
- 		if (skb2 == NULL)
-@@ -154,10 +155,18 @@ static void lec_handle_bridge(struct sk_
- 					/* 0x01 is topology change */
- 
- 		priv = netdev_priv(dev);
--		atm_force_charge(priv->lecd, skb2->truesize);
--		sk = sk_atm(priv->lecd);
--		skb_queue_tail(&sk->sk_receive_queue, skb2);
--		sk->sk_data_ready(sk);
-+
-+		rcu_read_lock();
-+		vcc = rcu_dereference(priv->lecd);
-+		if (vcc) {
-+			atm_force_charge(vcc, skb2->truesize);
-+			sk = sk_atm(vcc);
-+			skb_queue_tail(&sk->sk_receive_queue, skb2);
-+			sk->sk_data_ready(sk);
-+		} else {
-+			dev_kfree_skb(skb2);
-+		}
-+		rcu_read_unlock();
- 	}
- }
- #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-@@ -216,7 +225,7 @@ static netdev_tx_t lec_start_xmit(struct
- 	int is_rdesc;
- 
- 	pr_debug("called\n");
--	if (!priv->lecd) {
-+	if (!rcu_access_pointer(priv->lecd)) {
- 		pr_info("%s:No lecd attached\n", dev->name);
- 		dev->stats.tx_errors++;
- 		netif_stop_queue(dev);
-@@ -443,6 +452,7 @@ static int lec_atm_send(struct atm_vcc *
- 			/* hit from bridge table, send LE_ARP_RESPONSE */
- 			struct sk_buff *skb2;
- 			struct sock *sk;
-+			struct atm_vcc *vcc;
- 
- 			pr_debug("%s: entry found, responding to zeppelin\n",
- 				 dev->name);
-@@ -451,10 +461,18 @@ static int lec_atm_send(struct atm_vcc *
- 				break;
- 			skb2->len = sizeof(struct atmlec_msg);
- 			skb_copy_to_linear_data(skb2, mesg, sizeof(*mesg));
--			atm_force_charge(priv->lecd, skb2->truesize);
--			sk = sk_atm(priv->lecd);
--			skb_queue_tail(&sk->sk_receive_queue, skb2);
--			sk->sk_data_ready(sk);
-+
-+			rcu_read_lock();
-+			vcc = rcu_dereference(priv->lecd);
-+			if (vcc) {
-+				atm_force_charge(vcc, skb2->truesize);
-+				sk = sk_atm(vcc);
-+				skb_queue_tail(&sk->sk_receive_queue, skb2);
-+				sk->sk_data_ready(sk);
-+			} else {
-+				dev_kfree_skb(skb2);
-+			}
-+			rcu_read_unlock();
- 		}
- 	}
- #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-@@ -470,23 +488,16 @@ static int lec_atm_send(struct atm_vcc *
- 
- static void lec_atm_close(struct atm_vcc *vcc)
- {
--	struct sk_buff *skb;
- 	struct net_device *dev = (struct net_device *)vcc->proto_data;
- 	struct lec_priv *priv = netdev_priv(dev);
- 
--	priv->lecd = NULL;
-+	rcu_assign_pointer(priv->lecd, NULL);
-+	synchronize_rcu();
- 	/* Do something needful? */
- 
- 	netif_stop_queue(dev);
- 	lec_arp_destroy(priv);
- 
--	if (skb_peek(&sk_atm(vcc)->sk_receive_queue))
--		pr_info("%s closing with messages pending\n", dev->name);
--	while ((skb = skb_dequeue(&sk_atm(vcc)->sk_receive_queue))) {
--		atm_return(vcc, skb->truesize);
--		dev_kfree_skb(skb);
--	}
--
- 	pr_info("%s: Shut down!\n", dev->name);
- 	module_put(THIS_MODULE);
- }
-@@ -512,12 +523,14 @@ send_to_lecd(struct lec_priv *priv, atml
- 	     const unsigned char *mac_addr, const unsigned char *atm_addr,
- 	     struct sk_buff *data)
- {
-+	struct atm_vcc *vcc;
- 	struct sock *sk;
- 	struct sk_buff *skb;
- 	struct atmlec_msg *mesg;
- 
--	if (!priv || !priv->lecd)
-+	if (!priv || !rcu_access_pointer(priv->lecd))
- 		return -1;
-+
- 	skb = alloc_skb(sizeof(struct atmlec_msg), GFP_ATOMIC);
- 	if (!skb)
- 		return -1;
-@@ -534,18 +547,27 @@ send_to_lecd(struct lec_priv *priv, atml
- 	if (atm_addr)
- 		memcpy(&mesg->content.normal.atm_addr, atm_addr, ATM_ESA_LEN);
- 
--	atm_force_charge(priv->lecd, skb->truesize);
--	sk = sk_atm(priv->lecd);
-+	rcu_read_lock();
-+	vcc = rcu_dereference(priv->lecd);
-+	if (!vcc) {
-+		rcu_read_unlock();
-+		kfree_skb(skb);
-+		return -1;
-+	}
-+
-+	atm_force_charge(vcc, skb->truesize);
-+	sk = sk_atm(vcc);
- 	skb_queue_tail(&sk->sk_receive_queue, skb);
- 	sk->sk_data_ready(sk);
- 
- 	if (data != NULL) {
- 		pr_debug("about to send %d bytes of data\n", data->len);
--		atm_force_charge(priv->lecd, data->truesize);
-+		atm_force_charge(vcc, data->truesize);
- 		skb_queue_tail(&sk->sk_receive_queue, data);
- 		sk->sk_data_ready(sk);
- 	}
- 
-+	rcu_read_unlock();
- 	return 0;
- }
- 
-@@ -620,7 +642,7 @@ static void lec_push(struct atm_vcc *vcc
- 
- 		atm_return(vcc, skb->truesize);
- 		if (*(__be16 *) skb->data == htons(priv->lecid) ||
--		    !priv->lecd || !(dev->flags & IFF_UP)) {
-+		    !rcu_access_pointer(priv->lecd) || !(dev->flags & IFF_UP)) {
- 			/*
- 			 * Probably looping back, or if lecd is missing,
- 			 * lecd has gone down
-@@ -755,12 +777,12 @@ static int lecd_attach(struct atm_vcc *v
- 		priv = netdev_priv(dev_lec[i]);
- 	} else {
- 		priv = netdev_priv(dev_lec[i]);
--		if (priv->lecd)
-+		if (rcu_access_pointer(priv->lecd))
- 			return -EADDRINUSE;
- 	}
- 	lec_arp_init(priv);
- 	priv->itfnum = i;	/* LANE2 addition */
--	priv->lecd = vcc;
-+	rcu_assign_pointer(priv->lecd, vcc);
- 	vcc->dev = &lecatm_dev;
- 	vcc_insert_socket(sk_atm(vcc));
- 
---- a/net/atm/lec.h
-+++ b/net/atm/lec.h
-@@ -91,7 +91,7 @@ struct lec_priv {
- 						 */
- 	spinlock_t lec_arp_lock;
- 	struct atm_vcc *mcast_vcc;		/* Default Multicast Send VCC */
--	struct atm_vcc *lecd;
-+	struct atm_vcc __rcu *lecd;
- 	struct delayed_work lec_arp_work;	/* C10 */
- 	unsigned int maximum_unknown_frame_count;
- 						/*
+ 		ref = btrfs_item_ptr(leaf, path->slots[0],
+ 				     struct btrfs_extent_data_ref);
+-- 
+2.53.0
+
 
 
 
