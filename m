@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-237000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIkNDSMc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-237000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:59 +0200
+	id OGkCJRgY3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0EE3EF713
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9163EEB3E
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C90030089AF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CAF8318CF20
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C2C280CFB;
-	Mon, 13 Apr 2026 16:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCCB28B7DA;
+	Mon, 13 Apr 2026 16:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uz7W6K9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnTtqmQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78448307AC7;
-	Mon, 13 Apr 2026 16:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509C3283FD9;
+	Mon, 13 Apr 2026 16:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098331; cv=none; b=XR6Cc4p91YyH6yZ0GX4grSnM/I0Qd+fsPoj67m0v+n+f7Ua8VAOmtK8EAiAVTPudoOwELLZRpVSC7A9bvvDDJdOjCLm61p4lvWZGBWc27Ts6Z+SRjhJ44KQaTpZDEmJgSmAwEKVIL7mnx7kBSm4xeNfqE3hXXC4dHd2f+eNppr8=
+	t=1776096617; cv=none; b=hncu9aHvJLyCyVPXXYEBCikZsfHIjhS7BM4/kEmF2BgLPGS2aBroICkUsc40IrD+VL/zLpTme4Jd1CTLYA4UWB6mzu6zZvpopVx0Y4IGGe/I/btisTeJL9SVOPSRNiZjoiuTwZ5D47MVHiuRf2etWaWKuaNYOyKfIS9jzDzwXfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098331; c=relaxed/simple;
-	bh=lIDSzS9EPfSbfpVQdxtZEJ6jAzas17R+pEgeTxxnouE=;
+	s=arc-20240116; t=1776096617; c=relaxed/simple;
+	bh=9QmWnCRgILZgBTs2kIhikJ1YtF4Vm424GqE9JIxDLNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBrkGwevpVboYYiPENtEjb0PgLU1s8HqXjx7mUAlYS1Y7/Q93PGwz7wbJU4gf0eaVqS3tHJG0rgezPSqLHS35Sg++nLIG4Fer/jxZj5eYpVJ2tQ7NHql5WOvMeyJe5s+EJ6cI1yXwJnyM/Quv3o+TKWz3rrstORj+gJf8+wPHDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uz7W6K9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E321C2BCAF;
-	Mon, 13 Apr 2026 16:38:50 +0000 (UTC)
+	 MIME-Version; b=t2Ic3y6FZgjtF5bMImZK/31JXLq/0eUl9z9aOiUEN+eiKBCqc6cDCQzL1aTwbFt+N1VIG8Df0GSCsXVAt668XWSlk3mnHma1W6yb8MNgpdZccSWcjBEf/em/6MTQm6P1wnMCBNCYFzPY9SVq3BtoRhJR3u9tv7YGktbEydK9L5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnTtqmQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA604C2BCB0;
+	Mon, 13 Apr 2026 16:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098331;
-	bh=lIDSzS9EPfSbfpVQdxtZEJ6jAzas17R+pEgeTxxnouE=;
+	s=korg; t=1776096617;
+	bh=9QmWnCRgILZgBTs2kIhikJ1YtF4Vm424GqE9JIxDLNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uz7W6K9Hqlk1fBDnMy++6gcvoMEckT1UP75LlqQBM0eGI/xO6jmWCkOxi87lxGlRU
-	 Km3bUHy+hEVblkPaeJYhF0lIESzra+pIjrv5ymJLQlY4FmsiJqJJOa5KP9wSPHzgcF
-	 LGfSw5boFFj/y7S/DwV/uZfPJVOhxpdiZXGYeaCY=
+	b=SnTtqmQ0lTrAwQdqDq3WcWTnBmFrkFifhrtPjnl0K/7BbLOzvr0fF7AL6Vfom/R+I
+	 XHVxaukGqvGjulHnlJx2/KB1Ht3DL9A61EVnKaeUBtRN4R6sBLbGw74uhjspNNB66A
+	 kjk3Q++oC9+r1MkURhLeMFlnXTR62fGSY8RRxC9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.15 484/570] comedi: me4000: Fix potential overrun of firmware buffer
-Date: Mon, 13 Apr 2026 18:00:15 +0200
-Message-ID: <20260413155848.588782193@linuxfoundation.org>
+	Hao Li <hao.li@linux.dev>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 48/83] mm/memory_hotplug: maintain N_NORMAL_MEMORY during hotplug
+Date: Mon, 13 Apr 2026 18:00:16 +0200
+Message-ID: <20260413155732.811413054@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +69,132 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237000-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236326-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,kernel.org,gmail.com,suse.de,suse.cz,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.990];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BD0EE3EF713
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,suse.cz:email,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0C9163EEB3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Hao Li <hao.li@linux.dev>
 
-commit 3fb43a7a5b44713f892c58ead2e5f3a1bc9f4ee7 upstream.
+commit 2ecbe06abf9bfb2261cd6464a6bc3a3615625402 upstream.
 
-`me4000_xilinx_download()` loads the firmware that was requested by
-`request_firmware()`.  It is possible for it to overrun the source
-buffer because it blindly trusts the file format.  It reads a data
-stream length from the first 4 bytes into variable `file_length` and
-reads the data stream contents of length `file_length` from offset 16
-onwards.
+N_NORMAL_MEMORY is initialized from zone population at boot, but memory
+hotplug currently only updates N_MEMORY.  As a result, a node that gains
+normal memory via hotplug can remain invisible to users iterating over
+N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
+incorrectly marked as such.
 
-Add a test to ensure that the supplied firmware is long enough to
-contain the header and the data stream.  On failure, log an error and
-return `-EINVAL`.
+The most visible effect is that
+/sys/devices/system/node/has_normal_memory does not report a node even
+after that node has gained normal memory via hotplug.
 
-Note: The firmware loading was totally broken before commit ac584af59945
-("staging: comedi: me4000: fix firmware downloading"), but that is the
-most sensible target for this fix.
+Also, list_lru-based shrinkers can undercount objects on such a node
+and may skip reclaim on that node entirely, which can lead to a higher
+memory footprint than expected.
 
-Fixes: ac584af59945 ("staging: comedi: me4000: fix firmware downloading")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260205133949.71722-1-abbotti@mev.co.uk
+Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
+offline_pages().  Set the bit when a node that currently lacks normal
+memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
+offlining removes the last present pages from zones <= ZONE_NORMAL.
+
+This restores the intended semantics without bringing back the old
+status_change_nid_normal notifier plumbing which was removed in
+8d2882a8edb8.
+
+Current users that benefit include list_lru, zswap, nfsd filecache,
+hugetlb_cgroup, and has_normal_memory sysfs reporting.
+
+Link: https://lkml.kernel.org/r/20260330035941.518186-1-hao.li@linux.dev
+Fixes: 8d2882a8edb8 ("mm,memory_hotplug: remove status_change_nid_normal and update documentation")
+Signed-off-by: Hao Li <hao.li@linux.dev>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/me4000.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ mm/memory_hotplug.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/drivers/comedi/drivers/me4000.c
-+++ b/drivers/comedi/drivers/me4000.c
-@@ -316,6 +316,18 @@ static int me4000_xilinx_download(struct
- 	unsigned int val;
- 	unsigned int i;
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1218,6 +1218,13 @@ int online_pages(unsigned long pfn, unsi
  
-+	/* Get data stream length from header. */
-+	if (size >= 4) {
-+		file_length = (((unsigned int)data[0] & 0xff) << 24) +
-+			      (((unsigned int)data[1] & 0xff) << 16) +
-+			      (((unsigned int)data[2] & 0xff) << 8) +
-+			      ((unsigned int)data[3] & 0xff);
-+	}
-+	if (size < 16 || file_length > size - 16) {
-+		dev_err(dev->class_dev, "Firmware length inconsistency\n");
-+		return -EINVAL;
-+	}
+ 	if (node_arg.nid >= 0)
+ 		node_set_state(nid, N_MEMORY);
++	/*
++	 * Check whether we are adding normal memory to the node for the first
++	 * time.
++	 */
++	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
++		node_set_state(nid, N_NORMAL_MEMORY);
 +
- 	if (!xilinx_iobase)
- 		return -ENODEV;
+ 	if (need_zonelists_rebuild)
+ 		build_all_zonelists(NULL);
  
-@@ -347,10 +359,6 @@ static int me4000_xilinx_download(struct
- 	outl(val, devpriv->plx_regbase + PLX9052_CNTRL);
+@@ -1919,6 +1926,8 @@ int offline_pages(unsigned long start_pf
+ 	unsigned long flags;
+ 	char *reason;
+ 	int ret;
++	unsigned long normal_pages = 0;
++	enum zone_type zt;
  
- 	/* Download Xilinx firmware */
--	file_length = (((unsigned int)data[0] & 0xff) << 24) +
--		      (((unsigned int)data[1] & 0xff) << 16) +
--		      (((unsigned int)data[2] & 0xff) << 8) +
--		      ((unsigned int)data[3] & 0xff);
- 	usleep_range(10, 1000);
+ 	/*
+ 	 * {on,off}lining is constrained to full memory sections (or more
+@@ -2067,6 +2076,17 @@ int offline_pages(unsigned long start_pf
+ 	init_per_zone_wmark_min();
  
- 	for (i = 0; i < file_length; i++) {
+ 	/*
++	 * Check whether this operation removes the last normal memory from
++	 * the node. We do this before clearing N_MEMORY to avoid the possible
++	 * transient "!N_MEMORY && N_NORMAL_MEMORY" state.
++	 */
++	if (zone_idx(zone) <= ZONE_NORMAL) {
++		for (zt = 0; zt <= ZONE_NORMAL; zt++)
++			normal_pages += pgdat->node_zones[zt].present_pages;
++		if (!normal_pages)
++			node_clear_state(node, N_NORMAL_MEMORY);
++	}
++	/*
+ 	 * Make sure to mark the node as memory-less before rebuilding the zone
+ 	 * list. Otherwise this node would still appear in the fallback lists.
+ 	 */
 
 
 
