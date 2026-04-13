@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-236382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFFaCa8Y3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:15 +0200
+	id ePN3Er0a3WknaAkAu9opvQ
+	(envelope-from <stable+bounces-236244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83443EED17
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:24:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3ED33EF361
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4E3A30DCB8D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26C2A31FC416
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A1A2765FF;
-	Mon, 13 Apr 2026 16:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E2A29D27A;
+	Mon, 13 Apr 2026 16:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0jn0BDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVMSx1QZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C149A25A2C9;
-	Mon, 13 Apr 2026 16:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E7F29B22F;
+	Mon, 13 Apr 2026 16:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096761; cv=none; b=B0kSqylvwsfFVBFTFVHQYRcCFy5iEQEKBWYS/qhu296OEeoqdqZFjkYnlA5gzcMFXs6s61u48+ruWFsmOovMah6xbZcaLQtJXMAN0QgxSk0p0PX8Mp9Nm+SiveMz61uusgjJonQJeyA14lKqRVZKJUx19mnaIMuVHXcPuXLiAik=
+	t=1776096413; cv=none; b=LG0njnZ2BT0SACyaeMltd++js9/vUxg+sRdP+g7UeA/1kUXb6SfzMvMcMYck/bksc6fAP0o/7tVbIZ+Y9sYi5sgT8jaD7WtbCsGOAqE8KKYu72FEBl+QjKM+0r0rJsWSLKYIaso7h1oMkOAub9RGr9F0klqOxHtW9BW9qrxTdq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096761; c=relaxed/simple;
-	bh=7WQe4eJQxD0hX5iPXHZ0XEEw/+Oxx3msv7JBkU89LFI=;
+	s=arc-20240116; t=1776096413; c=relaxed/simple;
+	bh=KufDdCGvjaI0O5+fgoaVg4PllarQ4G7MFFX651lwqDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyesKc6+f2OkcOkAnRJM4RSQFbQPBJ13M+GREEkRKSD3qqHxrkEWO+nbbW3jrcXvekNv30OVlVYdDnSTFPO/D3W3HwoFOStytrrUM/IzqyEN/epF7h50AVkN+t0l4Kd1ovPWPq/FshfpLqJiDGa5vqX6hHM1XmMj4tANCjVsWuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0jn0BDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58405C2BCAF;
-	Mon, 13 Apr 2026 16:12:41 +0000 (UTC)
+	 MIME-Version; b=EhhWnhbFBcoM7DqkuRd/7WAixhPVkq6MYMfasMo3pWeGNqq1KVkHE7uP11+G4XDwTGQsWD3Amp9ISstIskqAewEW3xntRyCnOW5FSW71EUZ7boBfI+Fd9cnWe5RR6v7FwIJfOLIQy92Q+X+BMYZIpOD3RlRPGmAELmw+bDbTQvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVMSx1QZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB0CC2BCAF;
+	Mon, 13 Apr 2026 16:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096761;
-	bh=7WQe4eJQxD0hX5iPXHZ0XEEw/+Oxx3msv7JBkU89LFI=;
+	s=korg; t=1776096413;
+	bh=KufDdCGvjaI0O5+fgoaVg4PllarQ4G7MFFX651lwqDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0jn0BDb05RzeIvTqaFWEVcoOaLKUwiK9ChWdN5NcOQFsEs/jGCZUnDhiFe74F/Vw
-	 uV6bDdhf3RphQe95BU9N0gOJk6if3BniRnB6QHx+zVNpySynddOQ871qxn1Nz4vU85
-	 9pHaVHfk4vGaOdND3W0emXY6tgUwIDC4wzb9ezxs=
+	b=EVMSx1QZ1wcSPZDKfWlqjx8ZCIqMxEQUK8gyi8mwbxtZNecTF57TloW6+A7of4q1u
+	 5rdoJgWa+6PZJTMLaMpisvBgiBoQcnstUKTeSU2pSP8HNVMBEu0+/ovJH2cpIyG/tV
+	 cxB9VwecQnB4R/Q6Ix/Y5GWOr5uX2DuN7XvzP8VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	robbieko <robbieko@synology.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 20/70] btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 68/86] rxrpc: Fix call removal to use RCU safe deletion
 Date: Mon, 13 Apr 2026 18:00:15 +0200
-Message-ID: <20260413155728.940553088@linuxfoundation.org>
+Message-ID: <20260413155734.090025373@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236382-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236244-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,64 +90,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,synology.com:email]
-X-Rspamd-Queue-Id: B83443EED17
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,auristor.com:email]
+X-Rspamd-Queue-Id: B3ED33EF361
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: robbieko <robbieko@synology.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 316fb1b3169efb081d2db910cbbfef445afa03b9 ]
+commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 upstream.
 
-After commit 1618aa3c2e01 ("btrfs: simplify return variables in
-lookup_extent_data_ref()"), the err and ret variables were merged into
-a single ret variable. However, when btrfs_next_leaf() returns 0
-(success), ret is overwritten from -ENOENT to 0. If the first key in
-the next leaf does not match (different objectid or type), the function
-returns 0 instead of -ENOENT, making the caller believe the lookup
-succeeded when it did not. This can lead to operations on the wrong
-extent tree item, potentially causing extent tree corruption.
+Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
+rather than list_del_init() to prevent stuffing up reading
+/proc/net/rxrpc/calls from potentially getting into an infinite loop.
 
-Fix this by returning -ENOENT directly when the key does not match,
-instead of relying on the ret variable.
+This, however, means that list_empty() no longer works on an entry that's
+been deleted from the list, making it harder to detect prior deletion.  Fix
+this by:
 
-Fixes: 1618aa3c2e01 ("btrfs: simplify return variables in lookup_extent_data_ref()")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: robbieko <robbieko@synology.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
+are unexpectedly still on the list.  Limiting the number of steps means
+there's no need to call cond_resched() or to remove calls from the list
+here, thereby eliminating the need for rxrpc_put_call() to check for that.
+
+rxrpc_put_call() can then be fixed to unconditionally delete the call from
+the list as it is the only place that the deletion occurs.
+
+Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Linus Torvalds <torvalds@linux-foundation.org>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/trace/events/rxrpc.h |    2 +-
+ net/rxrpc/call_object.c      |   24 +++++++++---------------
+ 2 files changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 28da7a7b42296..3e44a303dea70 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -479,7 +479,7 @@ static noinline int lookup_extent_data_ref(struct btrfs_trans_handle *trans,
- 		btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
- 		if (key.objectid != bytenr ||
- 		    key.type != BTRFS_EXTENT_DATA_REF_KEY)
--			return ret;
-+			return -ENOENT;
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -347,7 +347,7 @@
+ 	EM(rxrpc_call_see_release,		"SEE release ") \
+ 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
+ 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
+-	E_(rxrpc_call_see_zap,			"SEE zap     ")
++	E_(rxrpc_call_see_still_live,		"SEE !still-l")
  
- 		ref = btrfs_item_ptr(leaf, path->slots[0],
- 				     struct btrfs_extent_data_ref);
--- 
-2.53.0
-
+ #define rxrpc_txqueue_traces \
+ 	EM(rxrpc_txqueue_await_reply,		"AWR") \
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -654,11 +654,9 @@ void rxrpc_put_call(struct rxrpc_call *c
+ 	if (dead) {
+ 		ASSERTCMP(__rxrpc_call_state(call), ==, RXRPC_CALL_COMPLETE);
+ 
+-		if (!list_empty(&call->link)) {
+-			spin_lock(&rxnet->call_lock);
+-			list_del_init(&call->link);
+-			spin_unlock(&rxnet->call_lock);
+-		}
++		spin_lock(&rxnet->call_lock);
++		list_del_rcu(&call->link);
++		spin_unlock(&rxnet->call_lock);
+ 
+ 		rxrpc_cleanup_call(call);
+ 	}
+@@ -730,24 +728,20 @@ void rxrpc_destroy_all_calls(struct rxrp
+ 	_enter("");
+ 
+ 	if (!list_empty(&rxnet->calls)) {
+-		spin_lock(&rxnet->call_lock);
++		int shown = 0;
+ 
+-		while (!list_empty(&rxnet->calls)) {
+-			call = list_entry(rxnet->calls.next,
+-					  struct rxrpc_call, link);
+-			_debug("Zapping call %p", call);
++		spin_lock(&rxnet->call_lock);
+ 
+-			rxrpc_see_call(call, rxrpc_call_see_zap);
+-			list_del_init(&call->link);
++		list_for_each_entry(call, &rxnet->calls, link) {
++			rxrpc_see_call(call, rxrpc_call_see_still_live);
+ 
+ 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
+ 			       call, refcount_read(&call->ref),
+ 			       rxrpc_call_states[__rxrpc_call_state(call)],
+ 			       call->flags, call->events);
+ 
+-			spin_unlock(&rxnet->call_lock);
+-			cond_resched();
+-			spin_lock(&rxnet->call_lock);
++			if (++shown >= 10)
++				break;
+ 		}
+ 
+ 		spin_unlock(&rxnet->call_lock);
 
 
 
