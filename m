@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-236296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJPuKEEY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:25 +0200
+	id WLqrKBAk3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20D83EEBC3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8943F0FF3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 618F0303D7E5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D4F0312FBCA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D14B2853EE;
-	Mon, 13 Apr 2026 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D4630BBAE;
+	Mon, 13 Apr 2026 16:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glMRyQ3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kx9SswMD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C37282F3D;
-	Mon, 13 Apr 2026 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEA824E4A1;
+	Mon, 13 Apr 2026 16:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096545; cv=none; b=iNymRLrEriT8cpexDMNmWNNdHcYKojJITheE1rS2YoInHSOSErNqC3VGRj8ce+w4j9tAeh81xsgNmQ7sX9XLeIEMtN4bsNa4DfeLf5F+9j89CdhZtH84fz9mwrfgNraPvgb83iaw2tn9ykU5qpKklAdHGuUgIXE0NPldSP4eBOs=
+	t=1776098346; cv=none; b=sMUck7Q6QyBt0tzBSj/NCZ6o30v2in9HLGPU/4KrSEYCoAmYAGGImz8dmmg9oypR90f7KJzYd/xMqSl08EhpCysht+RLWxoKVzpDMZhP4b1ERjSwM6fc42FPNPiTRRSe9QzXuvVs0nggDDeEMkFqjUdbH90xcwJ4JFdymPcHWHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096545; c=relaxed/simple;
-	bh=s62FdUp3beENydrVEzgzWPl/4K8u665qJawZtrxtdPI=;
+	s=arc-20240116; t=1776098346; c=relaxed/simple;
+	bh=ocx7hBLfpHSe1QinprgKcmEOWy8hBDmmajmIywpq6MI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQdQKu13MKne7YNS/F9n+GH8s4ntY4PNiQhhIpEwvazWP3DV6Dcs2jKkr0oqJzKZouxtGnSbUHeMI7op2TXQBn11G1WVdMCgkI9x5g+bYyj57lXZ4QtIrXXZIPdsvZQMNICKOIgZqlpitBshXAv7nADWavEnM9mWhvkD1ElHKUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glMRyQ3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1B3C2BCAF;
-	Mon, 13 Apr 2026 16:09:04 +0000 (UTC)
+	 MIME-Version; b=qT7iFF7P1nIQl1j8aDDcXaAwmD/7u9AuKawKwdTX2YfWOHsiLG7ZD5j5IBenXjjhrQw91SQxIdy5V1nmW6DpUYIspFZ3tLvy9MOGTV9MR0AfDdDFMXez4YP2nTVfXudlPCq8XYJseYLCSLZ+e9OfwhcZFBUx9f44WHqZPLOMBik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kx9SswMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6603FC2BCAF;
+	Mon, 13 Apr 2026 16:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096544;
-	bh=s62FdUp3beENydrVEzgzWPl/4K8u665qJawZtrxtdPI=;
+	s=korg; t=1776098346;
+	bh=ocx7hBLfpHSe1QinprgKcmEOWy8hBDmmajmIywpq6MI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glMRyQ3KsoFXy7B3dcwgy2jTVLwJSIEoLavWKKKVuBjnNY+xsy7kxUqBkPEPuiSp2
-	 LMcwNCGBeSBmoUPnaAiE3pu4vow9Oy3V4ldmLls/740UZlYx7ZdKWEeUIy+U0nfSYM
-	 /Z9syE3Ai+uXEmdUdKJ/qLq/fwe/h0mNbfLerox8=
+	b=Kx9SswMDTHMZBNkHZjZoeEe+hs6Zd7WN0K5AJFFmHQuh04KDPb4aV9RrliRFYDzlA
+	 unYbBsDLBQg1R07VYLg3YmmqURjLi0ZuVTrL8riaT5TpDH+CuVb+1llmkhjIqFWY4H
+	 aO8aMwbszmrDYXBBCsOqJnd+4WUdd/H0vSi2VSXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 53/83] net: qualcomm: qca_uart: report the consumed byte on RX skb allocation failure
+	Alan Stern <stern@rowland.harvard.edu>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 490/570] USB: dummy-hcd: Fix interrupt synchronization error
 Date: Mon, 13 Apr 2026 18:00:21 +0200
-Message-ID: <20260413155732.998594196@linuxfoundation.org>
+Message-ID: <20260413155848.814494471@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +67,131 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmx.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236296-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-237006-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E20D83EEBC3
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,harvard.edu:email]
+X-Rspamd-Queue-Id: EA8943F0FF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit b76254c55dc8f23edc089027dd3f8792554c69fb upstream.
+commit 2ca9e46f8f1f5a297eb0ac83f79d35d5b3a02541 upstream.
 
-qca_tty_receive() consumes each input byte before checking whether a
-completed frame needs a fresh receive skb. When the current byte completes
-a frame, the driver delivers that frame and then allocates a new skb for
-the next one.
+This fixes an error in synchronization in the dummy-hcd driver.  The
+error has a somewhat involved history.  The synchronization mechanism
+was introduced by commit 7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous
+synchronization change"), which added an emulated "interrupts enabled"
+flag together with code emulating synchronize_irq() (it waits until
+all current handler callbacks have returned).
 
-If that allocation fails, the current code returns i even though data[i]
-has already been consumed and may already have completed the delivered
-frame. Since serdev interprets the return value as the number of accepted
-bytes, this under-reports progress by one byte and can replay the final
-byte of the completed frame into a fresh parser state on the next call.
+But the emulated interrupt-disable occurred too late, after the driver
+containing the handler callback routines had been told that it was
+unbound and no more callbacks would occur.  Commit 4a5d797a9f9c ("usb:
+gadget: dummy_hcd: fix gpf in gadget_setup") tried to fix this by
+moving the synchronize_irq() emulation code from dummy_stop() to
+dummy_pullup(), which runs before the unbind callback.
 
-Return i + 1 in that failure path so the accepted-byte count matches the
-actual receive-state progress.
+There still were races, though, because the emulated interrupt-disable
+still occurred too late.  It couldn't be moved to dummy_pullup(),
+because that routine can be called for reasons other than an impending
+unbind.  Therefore commits 7dc0c55e9f30 ("USB: UDC core: Add
+udc_async_callbacks gadget op") and 04145a03db9d ("USB: UDC: Implement
+udc_async_callbacks in dummy-hcd") added an API allowing the UDC core
+to tell dummy-hcd exactly when emulated interrupts and their callbacks
+should be disabled.
 
-Fixes: dfc768fbe618 ("net: qualcomm: add QCA7000 UART driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260402071207.4036-1-pengpeng@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+That brings us to the current state of things, which is still wrong
+because the emulated synchronize_irq() occurs before the emulated
+interrupt-disable!  That's no good, beause it means that more emulated
+interrupts can occur after the synchronize_irq() emulation has run,
+leading to the possibility that a callback handler may be running when
+the gadget driver is unbound.
+
+To fix this, we have to move the synchronize_irq() emulation code yet
+again, to the dummy_udc_async_callbacks() routine, which takes care of
+enabling and disabling emulated interrupt requests.  The
+synchronization will now run immediately after emulated interrupts are
+disabled, which is where it belongs.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 04145a03db9d ("USB: UDC: Implement udc_async_callbacks in dummy-hcd")
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/c7bc93fe-4241-4d04-bd56-27c12ba35c97@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_uart.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/drivers/net/ethernet/qualcomm/qca_uart.c
-+++ b/drivers/net/ethernet/qualcomm/qca_uart.c
-@@ -100,7 +100,7 @@ qca_tty_receive(struct serdev_device *se
- 			if (!qca->rx_skb) {
- 				netdev_dbg(netdev, "recv: out of RX resources\n");
- 				n_stats->rx_errors++;
--				return i;
-+				return i + 1;
- 			}
- 		}
- 	}
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -909,21 +909,6 @@ static int dummy_pullup(struct usb_gadge
+ 	spin_lock_irqsave(&dum->lock, flags);
+ 	dum->pullup = (value != 0);
+ 	set_link_state(dum_hcd);
+-	if (value == 0) {
+-		/*
+-		 * Emulate synchronize_irq(): wait for callbacks to finish.
+-		 * This seems to be the best place to emulate the call to
+-		 * synchronize_irq() that's in usb_gadget_remove_driver().
+-		 * Doing it in dummy_udc_stop() would be too late since it
+-		 * is called after the unbind callback and unbind shouldn't
+-		 * be invoked until all the other callbacks are finished.
+-		 */
+-		while (dum->callback_usage > 0) {
+-			spin_unlock_irqrestore(&dum->lock, flags);
+-			usleep_range(1000, 2000);
+-			spin_lock_irqsave(&dum->lock, flags);
+-		}
+-	}
+ 	spin_unlock_irqrestore(&dum->lock, flags);
+ 
+ 	usb_hcd_poll_rh_status(dummy_hcd_to_hcd(dum_hcd));
+@@ -946,6 +931,20 @@ static void dummy_udc_async_callbacks(st
+ 
+ 	spin_lock_irq(&dum->lock);
+ 	dum->ints_enabled = enable;
++	if (!enable) {
++		/*
++		 * Emulate synchronize_irq(): wait for callbacks to finish.
++		 * This has to happen after emulated interrupts are disabled
++		 * (dum->ints_enabled is clear) and before the unbind callback,
++		 * just like the call to synchronize_irq() in
++		 * gadget/udc/core:gadget_unbind_driver().
++		 */
++		while (dum->callback_usage > 0) {
++			spin_unlock_irq(&dum->lock);
++			usleep_range(1000, 2000);
++			spin_lock_irq(&dum->lock);
++		}
++	}
+ 	spin_unlock_irq(&dum->lock);
+ }
+ 
 
 
 
