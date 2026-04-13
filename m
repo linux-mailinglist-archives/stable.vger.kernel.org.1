@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-236282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOL3H5oX3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:38 +0200
+	id IDRXDmMW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879073EEA08
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0043EE7C7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C6183031F02
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:08:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA2E0306A0D7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DC6282F1B;
-	Mon, 13 Apr 2026 16:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0172DECD3;
+	Mon, 13 Apr 2026 16:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nux94Tgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzJhpibk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A434827BF6C;
-	Mon, 13 Apr 2026 16:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9159D2741A0;
+	Mon, 13 Apr 2026 16:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096511; cv=none; b=jDhWf1skrbSzwM6oeWneCgmJdVNMQWTwmwDvVGI5Jw3AXPTBNHMuU1yynRnzH+mvDpxWLrW3wKWIwKHiXVtXs87vFL7gO9rFiJPuTcq07PxNmQKhtN0NTaLlVJMhx52uEV3C+83hX/pyl5yZ6rEhg/DhucrULTEkqEHd5TLLai0=
+	t=1776096341; cv=none; b=P3+lvtjFRKsvrtfsDrk2oGFR1qZOm9wr/1XYuhDhL2Xx6TziS+vBD1KkXGiU3ogZwRl9f+4ingRuK14KvoUVutCyJkfrSkZcbMUTXABvuNlof3On0s653IILDqxLOa2TpJSc31O67GQJQDkzUOWrBcLIS1tN7upLJygURXzovR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096511; c=relaxed/simple;
-	bh=D4mCvZrE4scGYcAY87BFkFRw4jdLUhYMWW2oUA6wglY=;
+	s=arc-20240116; t=1776096341; c=relaxed/simple;
+	bh=kAJ+OHVgpbLYocoErvhGnMKJySyZwjM+Bg7iL2XKOxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXrpkibL4po5CxqyOuqOe6/BQVXPUKZCXJ5DUHFF4BvtMsNf1aSsPqk8i0Se6NM5M6e5PpUC6uGTUjjMwoTxSASaU+6O+CNFelyRmP38K/az9HWheq3Lax3rWo0baWnFkb3dxqSw8+pdTzMPW07OxuCBoCEWQfRZF4zJkdy6UUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nux94Tgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B8FC2BCB0;
-	Mon, 13 Apr 2026 16:08:30 +0000 (UTC)
+	 MIME-Version; b=uKgEQxpdy96J7cxSmTN4BbVq4lxWSTalx+hcltv5VW8jwsr1RmJGtlaEEh6L5rJTVsqUoJcqz9mXsLA7Ypsbnb8iu1cyOvkxwNlDrAVSHxV0cOr12ekD1oSjjLe4aZWTV57zpKmEwLYQodvuoof7EUrafuds5dCFSAVo8TOx8/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzJhpibk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253E0C2BCAF;
+	Mon, 13 Apr 2026 16:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096511;
-	bh=D4mCvZrE4scGYcAY87BFkFRw4jdLUhYMWW2oUA6wglY=;
+	s=korg; t=1776096341;
+	bh=kAJ+OHVgpbLYocoErvhGnMKJySyZwjM+Bg7iL2XKOxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nux94Tgilm9psT/JlSgoW4KNxUuJh4BGY/fF4NR8yq1WRq/wRawKjf4eBlyVEA6VJ
-	 D0IDBmBreFxPHtYgMHSRmgC1umQj3bPbvml5+iauSuj1Xa0NWBmaUuDQm2ED7r3Tce
-	 f867Hicp0Y03DyuXyUIuG4rdZ9xiJJryKrJoA138=
+	b=fzJhpibk/AKfXCS98WXKIFV1137VG79IcrVuP/Hy2mE+gpwXVfVVxrDh+Ut4OAoHG
+	 7fgUmpm0Y6FEZ2a0CCnPy8LWtld79i79/zQeyyopcHLK3nqk//pmDNFI3XuJCbSGu8
+	 KPfGc4o54tpPCVNUkG6ugn3Fas9PwgpBQcctaXUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@linux.win>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Leo Lin <leo@depthfirst.com>
-Subject: [PATCH 6.18 38/83] X.509: Fix out-of-bounds access when parsing extensions
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ray Zhang <sgzhang@google.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.19 59/86] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
 Date: Mon, 13 Apr 2026 18:00:06 +0200
-Message-ID: <20260413155732.438121981@linuxfoundation.org>
+Message-ID: <20260413155733.766254467@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236282-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236216-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,73 +88,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.win:email,apana.org.au:email,depthfirst.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,wunner.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 879073EEA08
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3B0043EE7C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-commit d702c3408213bb12bd570bb97204d8340d141c51 upstream.
+commit 591478118293c1bd628de330a99eb1eb2ef8d76b upstream.
 
-Leo reports an out-of-bounds access when parsing a certificate with
-empty Basic Constraints or Key Usage extension because the first byte of
-the extension is read before checking its length.  Fix it.
+Switch from using the completion's raw spinlock to a local lock in the
+idpf_vc_xn struct. The conversion is safe because complete/_all() are
+called outside the lock and there is no reason to share the completion
+lock in the current logic. This avoids invalid wait context reported by
+the kernel due to the async handler taking BH spinlock:
 
-The bug can be triggered by an unprivileged user by submitting a
-specially crafted certificate to the kernel through the keyrings(7) API.
-Leo has demonstrated this with a proof-of-concept program responsibly
-disclosed off-list.
+[  805.726977] =============================
+[  805.726991] [ BUG: Invalid wait context ]
+[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
+[  805.727026] -----------------------------
+[  805.727038] kworker/u261:0/572 is trying to lock:
+[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727099] other info that might help us debug this:
+[  805.727111] context-{5:5}
+[  805.727119] 3 locks held by kworker/u261:0/572:
+[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
+[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
+[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
+[  805.727218] stack backtrace:
+...
+[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
+[  805.727247] Call Trace:
+[  805.727249]  <TASK>
+[  805.727251]  dump_stack_lvl+0x77/0xb0
+[  805.727259]  __lock_acquire+0xb3b/0x2290
+[  805.727268]  ? __irq_work_queue_local+0x59/0x130
+[  805.727275]  lock_acquire+0xc6/0x2f0
+[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727284]  ? _printk+0x5b/0x80
+[  805.727290]  _raw_spin_lock_bh+0x38/0x50
+[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
+[  805.727317]  process_one_work+0x226/0x730
+[  805.727322]  worker_thread+0x19e/0x340
+[  805.727325]  ? __pfx_worker_thread+0x10/0x10
+[  805.727328]  kthread+0xf4/0x130
+[  805.727333]  ? __pfx_kthread+0x10/0x10
+[  805.727336]  ret_from_fork+0x32c/0x410
+[  805.727345]  ? __pfx_kthread+0x10/0x10
+[  805.727347]  ret_from_fork_asm+0x1a/0x30
+[  805.727354]  </TASK>
 
-Fixes: 30eae2b037af ("KEYS: X.509: Parse Basic Constraints for CA")
-Fixes: 567671281a75 ("KEYS: X.509: Parse Key Usage")
-Reported-by: Leo Lin <leo@depthfirst.com> # off-list
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Ignat Korchagin <ignat@linux.win>
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reported-by: Ray Zhang <sgzhang@google.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/asymmetric_keys/x509_cert_parser.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |   14 +++++---------
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.h |    5 +++--
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -584,10 +584,10 @@ int x509_process_extension(void *context
- 		 *   0x04 is where keyCertSign lands in this bit string
- 		 *   0x80 is where digitalSignature lands in this bit string
- 		 */
--		if (v[0] != ASN1_BTS)
--			return -EBADMSG;
- 		if (vlen < 4)
- 			return -EBADMSG;
-+		if (v[0] != ASN1_BTS)
-+			return -EBADMSG;
- 		if (v[2] >= 8)
- 			return -EBADMSG;
- 		if (v[3] & 0x80)
-@@ -620,10 +620,10 @@ int x509_process_extension(void *context
- 		 *	(Expect 0xFF if the CA is TRUE)
- 		 * vlen should match the entire extension size
- 		 */
--		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
--			return -EBADMSG;
- 		if (vlen < 2)
- 			return -EBADMSG;
-+		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
-+			return -EBADMSG;
- 		if (v[1] != vlen - 2)
- 			return -EBADMSG;
- 		/* Empty SEQUENCE means CA:FALSE (default value omitted per DER) */
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -284,26 +284,21 @@ dma_mem_error:
+ 	return err;
+ }
+ 
+-/* API for virtchnl "transaction" support ("xn" for short).
+- *
+- * We are reusing the completion lock to serialize the accesses to the
+- * transaction state for simplicity, but it could be its own separate synchro
+- * as well. For now, this API is only used from within a workqueue context;
+- * raw_spin_lock() is enough.
+- */
++/* API for virtchnl "transaction" support ("xn" for short). */
++
+ /**
+  * idpf_vc_xn_lock - Request exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_lock(xn)			\
+-	raw_spin_lock(&(xn)->completed.wait.lock)
++	spin_lock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_unlock(xn)		\
+-	raw_spin_unlock(&(xn)->completed.wait.lock)
++	spin_unlock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
+@@ -335,6 +330,7 @@ static void idpf_vc_xn_init(struct idpf_
+ 		xn->state = IDPF_VC_XN_IDLE;
+ 		xn->idx = i;
+ 		idpf_vc_xn_release_bufs(xn);
++		spin_lock_init(&xn->lock);
+ 		init_completion(&xn->completed);
+ 	}
+ 
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -42,8 +42,8 @@ typedef int (*async_vc_cb) (struct idpf_
+  * struct idpf_vc_xn - Data structure representing virtchnl transactions
+  * @completed: virtchnl event loop uses that to signal when a reply is
+  *	       available, uses kernel completion API
+- * @state: virtchnl event loop stores the data below, protected by the
+- *	   completion's lock.
++ * @lock: protects the transaction state fields below
++ * @state: virtchnl event loop stores the data below, protected by @lock
+  * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
+  *	      truncated on its way to the receiver thread according to
+  *	      reply_buf.iov_len.
+@@ -58,6 +58,7 @@ typedef int (*async_vc_cb) (struct idpf_
+  */
+ struct idpf_vc_xn {
+ 	struct completion completed;
++	spinlock_t lock;
+ 	enum idpf_vc_xn_state state;
+ 	size_t reply_sz;
+ 	struct kvec reply;
 
 
 
