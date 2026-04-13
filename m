@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGkaKlAd3WlWaAkAu9opvQ
-	(envelope-from <stable+bounces-236815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:00 +0200
+	id aFT3AFMd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F533EFA2A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCA33EFA39
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3026A301BD9F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 79BC2301C832
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B055233722;
-	Mon, 13 Apr 2026 16:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBE6233722;
+	Mon, 13 Apr 2026 16:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCEsf74U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOAkKNQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35A3226D18;
-	Mon, 13 Apr 2026 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6B5225A38;
+	Mon, 13 Apr 2026 16:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097863; cv=none; b=ltq8sy/eH+ON4v/0uCXfQD+MswBfkigf2VHdhaSYXldQSX723xxwdmwqdFUVvv/c90PHnG3E8y9RfkBkKsjW345DWb/hUwxhxtAIUN38y902f6XGB1Nho9Umz5KKH/i9Ip+pt2YLMnUVL5z4bFqf/S9u7GX+jxhhh1eyNt7ooG0=
+	t=1776097865; cv=none; b=NVWCkbAEFnWJqOYIx/dmNpTJwzU1rVcY/tfjUhn2CAzX6lDmJR9ZPur9H4U5usBX1syT3RiWDAu9hAZlttWBVOJ6Qx3KROybvCgGQQVDoBsx+Oz8FnYwLviUmJOfqlRDXE7pJKHOioQLTEZD07WgwgELLpS5IaJGAh5qdD8IPEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097863; c=relaxed/simple;
-	bh=0GKs8B6u10t+hSABOE0fOnm+fKfNkJ0m+8mWzyzB7IA=;
+	s=arc-20240116; t=1776097865; c=relaxed/simple;
+	bh=SDzpMqLqSJNWn/CrYbWzBF7KQ7UeM6q45zVRQ1hmcgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MoLLXN3Tcf0btEbgMkD+jfdEoDOyP1ish9bEeolIwjwzc0ERdbep/eNt17DbAgaF3UhwlaYnllM+a9qQoW+EGSKZZwV2uv1FUyvzQiscdGF5NrQKlP2++DJRmE4Gt1pkrU/qUYwYMWdpY0tNcNK7pwbkbvI7jAcTG/h9XZuzYG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCEsf74U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FD7C2BCAF;
-	Mon, 13 Apr 2026 16:31:02 +0000 (UTC)
+	 MIME-Version; b=mND7wofYlL32kuvCF5R3FD8pC+b9mCVYZLhzHqjcpyMq/HjIjeQ4oWsP1lz74AfJzCeZVcD8MtgK4ty5u7umUIMcoqoxVgcLzAKtBKBsWlBWBTyevw8/CFe5fSAcv+Nxi41I1hTRp9wLnBUd2wm4D2S0zhspja5EfZ7RUFIZ1KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOAkKNQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A74C2BCAF;
+	Mon, 13 Apr 2026 16:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097862;
-	bh=0GKs8B6u10t+hSABOE0fOnm+fKfNkJ0m+8mWzyzB7IA=;
+	s=korg; t=1776097865;
+	bh=SDzpMqLqSJNWn/CrYbWzBF7KQ7UeM6q45zVRQ1hmcgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCEsf74UoXuOeG75+O8vwRDMMmIGuDFT32o4dV3ab/5HWTCl4yc3htVBXDCV3KApB
-	 AcQ3xc15c90v9Y2vt6jo/G16z3vvCRS4pBEQgmAHK11Bp11VxM1YF7ZxnZfMuLpTfx
-	 //CBPn1S4cqf7+ffCzOXytGtEHccRoVnFl7wNCg8=
+	b=fOAkKNQJBmwbthN6hLMObrTrtEay4k8StYkMqUaiZMJ27FTb55yOhIZqsAEQGyPIC
+	 PQ5t3mJnUxzlaoXJ1E1KTrUBr4+HYQ+01J9HL1Kr/2hnx3XHVFkFRqtSuGyKCG59fp
+	 iGiPt1mCC32YpkxO7V5g8zW4GiCd0vNT5UO/t8BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b425899ed22c6943e00b@syzkaller.appspotmail.com,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Karsten Graul <kgraul@linux.ibm.com>,
+	syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 269/570] net/smc: Fix slab-out-of-bounds issue in fallback
-Date: Mon, 13 Apr 2026 17:56:40 +0200
-Message-ID: <20260413155840.557172392@linuxfoundation.org>
+Subject: [PATCH 5.15 270/570] net/smc: fix NULL dereference and UAF in smc_tcp_syn_recv_sock()
+Date: Mon, 13 Apr 2026 17:56:41 +0200
+Message-ID: <20260413155840.597442587@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-236815-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236816-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -85,16 +85,16 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b425899ed22c6943e00b];
+	TAGGED_RCPT(0.00)[stable,827ae2bfb3a3529333e9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: C9F533EFA2A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shopee.com:email,appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: DDCA33EFA39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,218 +102,206 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 0558226cebee256aa3f8ec0cc5a800a10bf120a6 ]
+[ Upstream commit 6d5e4538364b9ceb1ac2941a4deb86650afb3538 ]
 
-syzbot reported a slab-out-of-bounds/use-after-free issue,
-which was caused by accessing an already freed smc sock in
-fallback-specific callback functions of clcsock.
+Syzkaller reported a panic in smc_tcp_syn_recv_sock() [1].
 
-This patch fixes the issue by restoring fallback-specific
-callback functions to original ones and resetting clcsock
-sk_user_data to NULL before freeing smc sock.
+smc_tcp_syn_recv_sock() is called in the TCP receive path
+(softirq) via icsk_af_ops->syn_recv_sock on the clcsock (TCP
+listening socket). It reads sk_user_data to get the smc_sock
+pointer. However, when the SMC listen socket is being closed
+concurrently, smc_close_active() sets clcsock->sk_user_data
+to NULL under sk_callback_lock, and then the smc_sock itself
+can be freed via sock_put() in smc_release().
 
-Meanwhile, this patch introduces sk_callback_lock to make
-the access and assignment to sk_user_data mutually exclusive.
+This leads to two issues:
 
-Reported-by: syzbot+b425899ed22c6943e00b@syzkaller.appspotmail.com
-Fixes: 341adeec9ada ("net/smc: Forward wakeup to smc socket waitqueue after fallback")
-Link: https://lore.kernel.org/r/00000000000013ca8105d7ae3ada@google.com/
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Acked-by: Karsten Graul <kgraul@linux.ibm.com>
+1) NULL pointer dereference: sk_user_data is NULL when
+   accessed.
+2) Use-after-free: sk_user_data is read as non-NULL, but the
+   smc_sock is freed before its fields (e.g., queued_smc_hs,
+   ori_af_ops) are accessed.
+
+The race window looks like this (the syzkaller crash [1]
+triggers via the SYN cookie path: tcp_get_cookie_sock() ->
+smc_tcp_syn_recv_sock(), but the normal tcp_check_req() path
+has the same race):
+
+  CPU A (softirq)              CPU B (process ctx)
+
+  tcp_v4_rcv()
+    TCP_NEW_SYN_RECV:
+    sk = req->rsk_listener
+    sock_hold(sk)
+    /* No lock on listener */
+                               smc_close_active():
+                                 write_lock_bh(cb_lock)
+                                 sk_user_data = NULL
+                                 write_unlock_bh(cb_lock)
+                                 ...
+                                 smc_clcsock_release()
+                                 sock_put(smc->sk) x2
+                                   -> smc_sock freed!
+    tcp_check_req()
+      smc_tcp_syn_recv_sock():
+        smc = user_data(sk)
+          -> NULL or dangling
+        smc->queued_smc_hs
+          -> crash!
+
+Note that the clcsock and smc_sock are two independent objects
+with separate refcounts. TCP stack holds a reference on the
+clcsock, which keeps it alive, but this does NOT prevent the
+smc_sock from being freed.
+
+Fix this by using RCU and refcount_inc_not_zero() to safely
+access smc_sock. Since smc_tcp_syn_recv_sock() is called in
+the TCP three-way handshake path, taking read_lock_bh on
+sk_callback_lock is too heavy and would not survive a SYN
+flood attack. Using rcu_read_lock() is much more lightweight.
+
+- Set SOCK_RCU_FREE on the SMC listen socket so that
+  smc_sock freeing is deferred until after the RCU grace
+  period. This guarantees the memory is still valid when
+  accessed inside rcu_read_lock().
+- Use rcu_read_lock() to protect reading sk_user_data.
+- Use refcount_inc_not_zero(&smc->sk.sk_refcnt) to pin the
+  smc_sock. If the refcount has already reached zero (close
+  path completed), it returns false and we bail out safely.
+
+Note: smc_hs_congested() has a similar lockless read of
+sk_user_data without rcu_read_lock(), but it only checks for
+NULL and accesses the global smc_hs_wq, never dereferencing
+any smc_sock field, so it is not affected.
+
+Reproducer was verified with mdelay injection and smc_run,
+the issue no longer occurs with this patch applied.
+
+[1] https://syzkaller.appspot.com/bug?extid=827ae2bfb3a3529333e9
+
+Fixes: 8270d9c21041 ("net/smc: Limit backlog connections")
+Reported-by: syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67eaf9b8.050a0220.3c3d88.004a.GAE@google.com/T/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260312092909.48325-1-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6d5e4538364b ("net/smc: fix NULL dereference and UAF in smc_tcp_syn_recv_sock()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c    | 80 ++++++++++++++++++++++++++++++++-------------
- net/smc/smc_close.c |  2 ++
- 2 files changed, 59 insertions(+), 23 deletions(-)
+ net/smc/af_smc.c    | 23 +++++++++++++++++------
+ net/smc/smc.h       |  5 +++++
+ net/smc/smc_close.c |  2 +-
+ 3 files changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 5c6759d2e271d..ea1a185327629 100644
+index ea1a185327629..5425c46a2e7c7 100644
 --- a/net/smc/af_smc.c
 +++ b/net/smc/af_smc.c
-@@ -170,11 +170,27 @@ struct proto smc_proto6 = {
- };
- EXPORT_SYMBOL_GPL(smc_proto6);
+@@ -81,7 +81,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
+ 	struct smc_sock *smc;
+ 	struct sock *child;
  
-+static void smc_fback_restore_callbacks(struct smc_sock *smc)
-+{
-+	struct sock *clcsk = smc->clcsock->sk;
-+
-+	write_lock_bh(&clcsk->sk_callback_lock);
-+	clcsk->sk_user_data = NULL;
-+
-+	smc_clcsock_restore_cb(&clcsk->sk_state_change, &smc->clcsk_state_change);
-+	smc_clcsock_restore_cb(&clcsk->sk_data_ready, &smc->clcsk_data_ready);
-+	smc_clcsock_restore_cb(&clcsk->sk_write_space, &smc->clcsk_write_space);
-+	smc_clcsock_restore_cb(&clcsk->sk_error_report, &smc->clcsk_error_report);
-+
-+	write_unlock_bh(&clcsk->sk_callback_lock);
-+}
-+
- static void smc_restore_fallback_changes(struct smc_sock *smc)
- {
- 	if (smc->clcsock->file) { /* non-accepted sockets have no file yet */
- 		smc->clcsock->file->private_data = smc->sk.sk_socket;
- 		smc->clcsock->file = NULL;
-+		smc_fback_restore_callbacks(smc);
+-	smc = smc_clcsock_user_data(sk);
++	rcu_read_lock();
++	smc = smc_clcsock_user_data_rcu(sk);
++	if (!smc || !refcount_inc_not_zero(&smc->sk.sk_refcnt)) {
++		rcu_read_unlock();
++		smc = NULL;
++		goto drop;
++	}
++	rcu_read_unlock();
+ 
+ 	if (READ_ONCE(sk->sk_ack_backlog) + atomic_read(&smc->queued_smc_hs) >
+ 				sk->sk_max_ack_backlog)
+@@ -103,11 +110,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
+ 		if (inet_csk(child)->icsk_af_ops == inet_csk(sk)->icsk_af_ops)
+ 			inet_csk(child)->icsk_af_ops = smc->ori_af_ops;
  	}
- }
++	sock_put(&smc->sk);
+ 	return child;
  
-@@ -659,48 +675,57 @@ static void smc_fback_forward_wakeup(struct smc_sock *smc, struct sock *clcsk,
- 
- static void smc_fback_state_change(struct sock *clcsk)
- {
--	struct smc_sock *smc =
--		smc_clcsock_user_data(clcsk);
-+	struct smc_sock *smc;
- 
--	if (!smc)
--		return;
--	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_state_change);
-+	read_lock_bh(&clcsk->sk_callback_lock);
-+	smc = smc_clcsock_user_data(clcsk);
+ drop:
+ 	dst_release(dst);
+ 	tcp_listendrop(sk);
 +	if (smc)
-+		smc_fback_forward_wakeup(smc, clcsk,
-+					 smc->clcsk_state_change);
-+	read_unlock_bh(&clcsk->sk_callback_lock);
++		sock_put(&smc->sk);
+ 	return NULL;
  }
  
- static void smc_fback_data_ready(struct sock *clcsk)
- {
--	struct smc_sock *smc =
--		smc_clcsock_user_data(clcsk);
-+	struct smc_sock *smc;
- 
--	if (!smc)
--		return;
--	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_data_ready);
-+	read_lock_bh(&clcsk->sk_callback_lock);
-+	smc = smc_clcsock_user_data(clcsk);
-+	if (smc)
-+		smc_fback_forward_wakeup(smc, clcsk,
-+					 smc->clcsk_data_ready);
-+	read_unlock_bh(&clcsk->sk_callback_lock);
- }
- 
- static void smc_fback_write_space(struct sock *clcsk)
- {
--	struct smc_sock *smc =
--		smc_clcsock_user_data(clcsk);
-+	struct smc_sock *smc;
- 
--	if (!smc)
--		return;
--	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_write_space);
-+	read_lock_bh(&clcsk->sk_callback_lock);
-+	smc = smc_clcsock_user_data(clcsk);
-+	if (smc)
-+		smc_fback_forward_wakeup(smc, clcsk,
-+					 smc->clcsk_write_space);
-+	read_unlock_bh(&clcsk->sk_callback_lock);
- }
- 
- static void smc_fback_error_report(struct sock *clcsk)
- {
--	struct smc_sock *smc =
--		smc_clcsock_user_data(clcsk);
-+	struct smc_sock *smc;
- 
--	if (!smc)
--		return;
--	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_error_report);
-+	read_lock_bh(&clcsk->sk_callback_lock);
-+	smc = smc_clcsock_user_data(clcsk);
-+	if (smc)
-+		smc_fback_forward_wakeup(smc, clcsk,
-+					 smc->clcsk_error_report);
-+	read_unlock_bh(&clcsk->sk_callback_lock);
- }
- 
- static void smc_fback_replace_callbacks(struct smc_sock *smc)
- {
+@@ -175,7 +185,7 @@ static void smc_fback_restore_callbacks(struct smc_sock *smc)
  	struct sock *clcsk = smc->clcsock->sk;
  
-+	write_lock_bh(&clcsk->sk_callback_lock);
- 	clcsk->sk_user_data = (void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
+ 	write_lock_bh(&clcsk->sk_callback_lock);
+-	clcsk->sk_user_data = NULL;
++	rcu_assign_sk_user_data(clcsk, NULL);
+ 
+ 	smc_clcsock_restore_cb(&clcsk->sk_state_change, &smc->clcsk_state_change);
+ 	smc_clcsock_restore_cb(&clcsk->sk_data_ready, &smc->clcsk_data_ready);
+@@ -726,7 +736,7 @@ static void smc_fback_replace_callbacks(struct smc_sock *smc)
+ 	struct sock *clcsk = smc->clcsock->sk;
+ 
+ 	write_lock_bh(&clcsk->sk_callback_lock);
+-	clcsk->sk_user_data = (void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
++	__rcu_assign_sk_user_data_with_flags(clcsk, smc, SK_USER_DATA_NOCOPY);
  
  	smc_clcsock_replace_cb(&clcsk->sk_state_change, smc_fback_state_change,
-@@ -711,6 +736,8 @@ static void smc_fback_replace_callbacks(struct smc_sock *smc)
- 			       &smc->clcsk_write_space);
- 	smc_clcsock_replace_cb(&clcsk->sk_error_report, smc_fback_error_report,
- 			       &smc->clcsk_error_report);
-+
-+	write_unlock_bh(&clcsk->sk_callback_lock);
- }
- 
- static int smc_switch_to_fallback(struct smc_sock *smc, int reason_code)
-@@ -2095,17 +2122,20 @@ static void smc_tcp_listen_work(struct work_struct *work)
- 
- static void smc_clcsock_data_ready(struct sock *listen_clcsock)
- {
--	struct smc_sock *lsmc =
--		smc_clcsock_user_data(listen_clcsock);
-+	struct smc_sock *lsmc;
- 
-+	read_lock_bh(&listen_clcsock->sk_callback_lock);
-+	lsmc = smc_clcsock_user_data(listen_clcsock);
- 	if (!lsmc)
--		return;
-+		goto out;
- 	lsmc->clcsk_data_ready(listen_clcsock);
- 	if (lsmc->sk.sk_state == SMC_LISTEN) {
- 		sock_hold(&lsmc->sk); /* sock_put in smc_tcp_listen_work() */
- 		if (!queue_work(smc_hs_wq, &lsmc->tcp_listen_work))
- 			sock_put(&lsmc->sk);
- 	}
-+out:
-+	read_unlock_bh(&listen_clcsock->sk_callback_lock);
- }
- 
- static int smc_listen(struct socket *sock, int backlog)
-@@ -2137,10 +2167,12 @@ static int smc_listen(struct socket *sock, int backlog)
- 	/* save original sk_data_ready function and establish
+ 			       &smc->clcsk_state_change);
+@@ -2168,8 +2178,8 @@ static int smc_listen(struct socket *sock, int backlog)
  	 * smc-specific sk_data_ready function
  	 */
-+	write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
- 	smc->clcsock->sk->sk_user_data =
- 		(void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
+ 	write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+-	smc->clcsock->sk->sk_user_data =
+-		(void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
++	__rcu_assign_sk_user_data_with_flags(smc->clcsock->sk, smc,
++					     SK_USER_DATA_NOCOPY);
  	smc_clcsock_replace_cb(&smc->clcsock->sk->sk_data_ready,
  			       smc_clcsock_data_ready, &smc->clcsk_data_ready);
-+	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
- 
- 	/* save original ops */
- 	smc->ori_af_ops = inet_csk(smc->clcsock->sk)->icsk_af_ops;
-@@ -2152,9 +2184,11 @@ static int smc_listen(struct socket *sock, int backlog)
- 
- 	rc = kernel_listen(smc->clcsock, backlog);
- 	if (rc) {
-+		write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+@@ -2187,10 +2197,11 @@ static int smc_listen(struct socket *sock, int backlog)
+ 		write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
  		smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
  				       &smc->clcsk_data_ready);
- 		smc->clcsock->sk->sk_user_data = NULL;
-+		write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+-		smc->clcsock->sk->sk_user_data = NULL;
++		rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
+ 		write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
  		goto out;
  	}
++	sock_set_flag(sk, SOCK_RCU_FREE);
  	sk->sk_max_ack_backlog = backlog;
+ 	sk->sk_ack_backlog = 0;
+ 	sk->sk_state = SMC_LISTEN;
+diff --git a/net/smc/smc.h b/net/smc/smc.h
+index 268dc975249f8..6455371430a3c 100644
+--- a/net/smc/smc.h
++++ b/net/smc/smc.h
+@@ -283,6 +283,11 @@ static inline struct smc_sock *smc_clcsock_user_data(const struct sock *clcsk)
+ 	       ((uintptr_t)clcsk->sk_user_data & ~SK_USER_DATA_NOCOPY);
+ }
+ 
++static inline struct smc_sock *smc_clcsock_user_data_rcu(const struct sock *clcsk)
++{
++	return (struct smc_sock *)rcu_dereference_sk_user_data(clcsk);
++}
++
+ /* save target_cb in saved_cb, and replace target_cb with new_cb */
+ static inline void smc_clcsock_replace_cb(void (**target_cb)(struct sock *),
+ 					  void (*new_cb)(struct sock *),
 diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-index 42f9a7cf9e671..313ef522dfab4 100644
+index 313ef522dfab4..e156039ff1e50 100644
 --- a/net/smc/smc_close.c
 +++ b/net/smc/smc_close.c
-@@ -212,9 +212,11 @@ int smc_close_active(struct smc_sock *smc)
- 		sk->sk_state = SMC_CLOSED;
- 		sk->sk_state_change(sk); /* wake up accept */
- 		if (smc->clcsock && smc->clcsock->sk) {
-+			write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+@@ -215,7 +215,7 @@ int smc_close_active(struct smc_sock *smc)
+ 			write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
  			smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
  					       &smc->clcsk_data_ready);
- 			smc->clcsock->sk->sk_user_data = NULL;
-+			write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+-			smc->clcsock->sk->sk_user_data = NULL;
++			rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
+ 			write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
  			rc = kernel_sock_shutdown(smc->clcsock, SHUT_RDWR);
  		}
- 		smc_close_cleanup_listen(sk);
 -- 
 2.51.0
 
