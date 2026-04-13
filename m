@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-237244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPCrEoUl3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:01 +0200
+	id cGkaKlAd3WlWaAkAu9opvQ
+	(envelope-from <stable+bounces-236815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:44:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E5E3F1285
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:19:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F533EFA2A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2089630D2C31
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3026A301BD9F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CC93168EE;
-	Mon, 13 Apr 2026 16:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B055233722;
+	Mon, 13 Apr 2026 16:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1FnRtIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCEsf74U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DB2313298;
-	Mon, 13 Apr 2026 16:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35A3226D18;
+	Mon, 13 Apr 2026 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098957; cv=none; b=sodMflcW4OSRTZGWQ/LOtMM+ZbqODutre/qLlfW0RHDhVziz3ElwKtNyCFvCUvx0Xv8CH9ulW6UVXK3530VB6shm9YMw0vniyySo5xUnI3nHm/e2oA5NPKY2i38aLDdOSBcSTpW0L38zcTRQjjfScruLg4nTcWFFucnn3GelwmM=
+	t=1776097863; cv=none; b=ltq8sy/eH+ON4v/0uCXfQD+MswBfkigf2VHdhaSYXldQSX723xxwdmwqdFUVvv/c90PHnG3E8y9RfkBkKsjW345DWb/hUwxhxtAIUN38y902f6XGB1Nho9Umz5KKH/i9Ip+pt2YLMnUVL5z4bFqf/S9u7GX+jxhhh1eyNt7ooG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098957; c=relaxed/simple;
-	bh=GbkEaxtqcGlZ+5ztIkd1WNSh/7rjH2Emy52Ec5fSEoA=;
+	s=arc-20240116; t=1776097863; c=relaxed/simple;
+	bh=0GKs8B6u10t+hSABOE0fOnm+fKfNkJ0m+8mWzyzB7IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uv9qfssV2kapIJ83u+j9WsLkDn6/25mX0r78Bh9jNaljfW5+czJprVg174EVkOTzzxyYNYoik924Ju8sWljfuuhxN1QenJqACnr0cAO6fdwhVLG/eUSN79HWeLI6lwEmrAY9qwCaIkaI3zuJuIaoDwTtPTLlPDOh/EruR3nsA70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1FnRtIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1617C2BCAF;
-	Mon, 13 Apr 2026 16:49:16 +0000 (UTC)
+	 MIME-Version; b=MoLLXN3Tcf0btEbgMkD+jfdEoDOyP1ish9bEeolIwjwzc0ERdbep/eNt17DbAgaF3UhwlaYnllM+a9qQoW+EGSKZZwV2uv1FUyvzQiscdGF5NrQKlP2++DJRmE4Gt1pkrU/qUYwYMWdpY0tNcNK7pwbkbvI7jAcTG/h9XZuzYG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCEsf74U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FD7C2BCAF;
+	Mon, 13 Apr 2026 16:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098957;
-	bh=GbkEaxtqcGlZ+5ztIkd1WNSh/7rjH2Emy52Ec5fSEoA=;
+	s=korg; t=1776097862;
+	bh=0GKs8B6u10t+hSABOE0fOnm+fKfNkJ0m+8mWzyzB7IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1FnRtITiBsNU0/Ler08T+KGqRNznh/MULm85Mdu7UE8KmYNHBafYW3oBfbambvCp
-	 g7TqxCxC0jivVSifDztS5EvjrwhyO3XHZt72P32X17hqyuDLzAESr4HyAq87M9h8+U
-	 hWAgPtJVdEXVD0TBc/YM3eYcjZjEVPepYTV4GqRA=
+	b=iCEsf74UoXuOeG75+O8vwRDMMmIGuDFT32o4dV3ab/5HWTCl4yc3htVBXDCV3KApB
+	 AcQ3xc15c90v9Y2vt6jo/G16z3vvCRS4pBEQgmAHK11Bp11VxM1YF7ZxnZfMuLpTfx
+	 //CBPn1S4cqf7+ffCzOXytGtEHccRoVnFl7wNCg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Inki Dae <inki.dae@samsung.com>
-Subject: [PATCH 5.10 155/491] drm/exynos: vidi: fix to avoid directly dereferencing user pointer
+	syzbot+b425899ed22c6943e00b@syzkaller.appspotmail.com,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Karsten Graul <kgraul@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 269/570] net/smc: Fix slab-out-of-bounds issue in fallback
 Date: Mon, 13 Apr 2026 17:56:40 +0200
-Message-ID: <20260413155824.834590960@linuxfoundation.org>
+Message-ID: <20260413155840.557172392@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +66,257 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237244-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-236815-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
-X-Rspamd-Queue-Id: C8E5E3F1285
+	TAGGED_RCPT(0.00)[stable,b425899ed22c6943e00b];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: C9F533EFA2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-commit d4c98c077c7fb2dfdece7d605e694b5ea2665085 upstream.
+[ Upstream commit 0558226cebee256aa3f8ec0cc5a800a10bf120a6 ]
 
-In vidi_connection_ioctl(), vidi->edid(user pointer) is directly
-dereferenced in the kernel.
+syzbot reported a slab-out-of-bounds/use-after-free issue,
+which was caused by accessing an already freed smc sock in
+fallback-specific callback functions of clcsock.
 
-This allows arbitrary kernel memory access from the user space, so instead
-of directly accessing the user pointer in the kernel, we should modify it
-to copy edid to kernel memory using copy_from_user() and use it.
+This patch fixes the issue by restoring fallback-specific
+callback functions to original ones and resetting clcsock
+sk_user_data to NULL before freeing smc sock.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Meanwhile, this patch introduces sk_callback_lock to make
+the access and assignment to sk_user_data mutually exclusive.
+
+Reported-by: syzbot+b425899ed22c6943e00b@syzkaller.appspotmail.com
+Fixes: 341adeec9ada ("net/smc: Forward wakeup to smc socket waitqueue after fallback")
+Link: https://lore.kernel.org/r/00000000000013ca8105d7ae3ada@google.com/
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Acked-by: Karsten Graul <kgraul@linux.ibm.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6d5e4538364b ("net/smc: fix NULL dereference and UAF in smc_tcp_syn_recv_sock()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/smc/af_smc.c    | 80 ++++++++++++++++++++++++++++++++-------------
+ net/smc/smc_close.c |  2 ++
+ 2 files changed, 59 insertions(+), 23 deletions(-)
 
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -251,19 +251,26 @@ int vidi_connection_ioctl(struct drm_dev
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 5c6759d2e271d..ea1a185327629 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -170,11 +170,27 @@ struct proto smc_proto6 = {
+ };
+ EXPORT_SYMBOL_GPL(smc_proto6);
  
- 	if (vidi->connection) {
- 		struct edid *raw_edid;
-+		struct edid edid_buf;
-+		void *edid_userptr = u64_to_user_ptr(vidi->edid);
++static void smc_fback_restore_callbacks(struct smc_sock *smc)
++{
++	struct sock *clcsk = smc->clcsock->sk;
++
++	write_lock_bh(&clcsk->sk_callback_lock);
++	clcsk->sk_user_data = NULL;
++
++	smc_clcsock_restore_cb(&clcsk->sk_state_change, &smc->clcsk_state_change);
++	smc_clcsock_restore_cb(&clcsk->sk_data_ready, &smc->clcsk_data_ready);
++	smc_clcsock_restore_cb(&clcsk->sk_write_space, &smc->clcsk_write_space);
++	smc_clcsock_restore_cb(&clcsk->sk_error_report, &smc->clcsk_error_report);
++
++	write_unlock_bh(&clcsk->sk_callback_lock);
++}
++
+ static void smc_restore_fallback_changes(struct smc_sock *smc)
+ {
+ 	if (smc->clcsock->file) { /* non-accepted sockets have no file yet */
+ 		smc->clcsock->file->private_data = smc->sk.sk_socket;
+ 		smc->clcsock->file = NULL;
++		smc_fback_restore_callbacks(smc);
+ 	}
+ }
  
--		raw_edid = (struct edid *)(unsigned long)vidi->edid;
--		if (!drm_edid_is_valid(raw_edid)) {
-+		if (copy_from_user(&edid_buf, edid_userptr, sizeof(struct edid)))
-+			return -EFAULT;
+@@ -659,48 +675,57 @@ static void smc_fback_forward_wakeup(struct smc_sock *smc, struct sock *clcsk,
+ 
+ static void smc_fback_state_change(struct sock *clcsk)
+ {
+-	struct smc_sock *smc =
+-		smc_clcsock_user_data(clcsk);
++	struct smc_sock *smc;
+ 
+-	if (!smc)
+-		return;
+-	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_state_change);
++	read_lock_bh(&clcsk->sk_callback_lock);
++	smc = smc_clcsock_user_data(clcsk);
++	if (smc)
++		smc_fback_forward_wakeup(smc, clcsk,
++					 smc->clcsk_state_change);
++	read_unlock_bh(&clcsk->sk_callback_lock);
+ }
+ 
+ static void smc_fback_data_ready(struct sock *clcsk)
+ {
+-	struct smc_sock *smc =
+-		smc_clcsock_user_data(clcsk);
++	struct smc_sock *smc;
+ 
+-	if (!smc)
+-		return;
+-	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_data_ready);
++	read_lock_bh(&clcsk->sk_callback_lock);
++	smc = smc_clcsock_user_data(clcsk);
++	if (smc)
++		smc_fback_forward_wakeup(smc, clcsk,
++					 smc->clcsk_data_ready);
++	read_unlock_bh(&clcsk->sk_callback_lock);
+ }
+ 
+ static void smc_fback_write_space(struct sock *clcsk)
+ {
+-	struct smc_sock *smc =
+-		smc_clcsock_user_data(clcsk);
++	struct smc_sock *smc;
+ 
+-	if (!smc)
+-		return;
+-	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_write_space);
++	read_lock_bh(&clcsk->sk_callback_lock);
++	smc = smc_clcsock_user_data(clcsk);
++	if (smc)
++		smc_fback_forward_wakeup(smc, clcsk,
++					 smc->clcsk_write_space);
++	read_unlock_bh(&clcsk->sk_callback_lock);
+ }
+ 
+ static void smc_fback_error_report(struct sock *clcsk)
+ {
+-	struct smc_sock *smc =
+-		smc_clcsock_user_data(clcsk);
++	struct smc_sock *smc;
+ 
+-	if (!smc)
+-		return;
+-	smc_fback_forward_wakeup(smc, clcsk, smc->clcsk_error_report);
++	read_lock_bh(&clcsk->sk_callback_lock);
++	smc = smc_clcsock_user_data(clcsk);
++	if (smc)
++		smc_fback_forward_wakeup(smc, clcsk,
++					 smc->clcsk_error_report);
++	read_unlock_bh(&clcsk->sk_callback_lock);
+ }
+ 
+ static void smc_fback_replace_callbacks(struct smc_sock *smc)
+ {
+ 	struct sock *clcsk = smc->clcsock->sk;
+ 
++	write_lock_bh(&clcsk->sk_callback_lock);
+ 	clcsk->sk_user_data = (void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
+ 
+ 	smc_clcsock_replace_cb(&clcsk->sk_state_change, smc_fback_state_change,
+@@ -711,6 +736,8 @@ static void smc_fback_replace_callbacks(struct smc_sock *smc)
+ 			       &smc->clcsk_write_space);
+ 	smc_clcsock_replace_cb(&clcsk->sk_error_report, smc_fback_error_report,
+ 			       &smc->clcsk_error_report);
 +
-+		if (!drm_edid_is_valid(&edid_buf)) {
- 			DRM_DEV_DEBUG_KMS(ctx->dev,
- 					  "edid data is invalid.\n");
- 			return -EINVAL;
++	write_unlock_bh(&clcsk->sk_callback_lock);
+ }
+ 
+ static int smc_switch_to_fallback(struct smc_sock *smc, int reason_code)
+@@ -2095,17 +2122,20 @@ static void smc_tcp_listen_work(struct work_struct *work)
+ 
+ static void smc_clcsock_data_ready(struct sock *listen_clcsock)
+ {
+-	struct smc_sock *lsmc =
+-		smc_clcsock_user_data(listen_clcsock);
++	struct smc_sock *lsmc;
+ 
++	read_lock_bh(&listen_clcsock->sk_callback_lock);
++	lsmc = smc_clcsock_user_data(listen_clcsock);
+ 	if (!lsmc)
+-		return;
++		goto out;
+ 	lsmc->clcsk_data_ready(listen_clcsock);
+ 	if (lsmc->sk.sk_state == SMC_LISTEN) {
+ 		sock_hold(&lsmc->sk); /* sock_put in smc_tcp_listen_work() */
+ 		if (!queue_work(smc_hs_wq, &lsmc->tcp_listen_work))
+ 			sock_put(&lsmc->sk);
+ 	}
++out:
++	read_unlock_bh(&listen_clcsock->sk_callback_lock);
+ }
+ 
+ static int smc_listen(struct socket *sock, int backlog)
+@@ -2137,10 +2167,12 @@ static int smc_listen(struct socket *sock, int backlog)
+ 	/* save original sk_data_ready function and establish
+ 	 * smc-specific sk_data_ready function
+ 	 */
++	write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 	smc->clcsock->sk->sk_user_data =
+ 		(void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
+ 	smc_clcsock_replace_cb(&smc->clcsock->sk->sk_data_ready,
+ 			       smc_clcsock_data_ready, &smc->clcsk_data_ready);
++	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 
+ 	/* save original ops */
+ 	smc->ori_af_ops = inet_csk(smc->clcsock->sk)->icsk_af_ops;
+@@ -2152,9 +2184,11 @@ static int smc_listen(struct socket *sock, int backlog)
+ 
+ 	rc = kernel_listen(smc->clcsock, backlog);
+ 	if (rc) {
++		write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 		smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
+ 				       &smc->clcsk_data_ready);
+ 		smc->clcsock->sk->sk_user_data = NULL;
++		write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 		goto out;
+ 	}
+ 	sk->sk_max_ack_backlog = backlog;
+diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+index 42f9a7cf9e671..313ef522dfab4 100644
+--- a/net/smc/smc_close.c
++++ b/net/smc/smc_close.c
+@@ -212,9 +212,11 @@ int smc_close_active(struct smc_sock *smc)
+ 		sk->sk_state = SMC_CLOSED;
+ 		sk->sk_state_change(sk); /* wake up accept */
+ 		if (smc->clcsock && smc->clcsock->sk) {
++			write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 			smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
+ 					       &smc->clcsk_data_ready);
+ 			smc->clcsock->sk->sk_user_data = NULL;
++			write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 			rc = kernel_sock_shutdown(smc->clcsock, SHUT_RDWR);
  		}
--		ctx->raw_edid = drm_edid_duplicate(raw_edid);
--		if (!ctx->raw_edid) {
-+
-+		raw_edid = drm_edid_duplicate(&edid_buf);
-+
-+		if (!raw_edid) {
- 			DRM_DEV_DEBUG_KMS(ctx->dev,
- 					  "failed to allocate raw_edid.\n");
- 			return -ENOMEM;
- 		}
-+		ctx->raw_edid = raw_edid;
- 	} else {
- 		/*
- 		 * with connection = 0, free raw_edid
+ 		smc_close_cleanup_listen(sk);
+-- 
+2.51.0
+
 
 
 
