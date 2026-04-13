@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJ6FD9Ai3WkYaQkAu9opvQ
-	(envelope-from <stable+bounces-237289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:28 +0200
+	id kMnuG0wi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-236826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485183F0C97
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C3B3F0AEB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 16E0D306C505
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:51:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 195F2319645B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F8231619A;
-	Mon, 13 Apr 2026 16:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA4727466A;
+	Mon, 13 Apr 2026 16:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEtbhAgQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itqeMoTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC1B3168EE;
-	Mon, 13 Apr 2026 16:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3D3226D18;
+	Mon, 13 Apr 2026 16:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099073; cv=none; b=QjZbNhZg3kNHnDhpUVDiQuRALP+0BiwKPXKxe31VGOd95bZ1boPbZi8yOBLbfCh0v6w2IMtM+RSo2d88fl7e9GTG55sp1mQ0eEnzNNrK330+zYrukI/yWaHcgNqU8FgFzBov4a6TwkY9YtsRS+D/s3iVKtBpk0G3RnY9aOUVxhg=
+	t=1776097891; cv=none; b=G0z5NbgurLFIE+JaoytMNM2UHX+N+9LesFXWexsBDq586b8nWYUUEJP1kwELNaaS6Gr28TlmRVtRPuVEegOdyQFfUEfgu3ovorztl6Xs7CoHH2UU8S6Id/T8pW6GTTN8s/B1L5CBfbz64gUEfsDcFHcDOeYr92MuoV0lkeamHAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099073; c=relaxed/simple;
-	bh=LvL4eqvOnMFDWP5spvH8hXXlQZi8/GXCEoXtEG5Pf4M=;
+	s=arc-20240116; t=1776097891; c=relaxed/simple;
+	bh=gfCkjnxKXuOt6q0p1iueP/L1AUuIdNTsfBQqLCI4erg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLlkh5q36YAdkNsM5g70iS/lc18wh8KHOmVlS/xFWe9Nb7ODlK2w8Ok79NZTma3W8AqeTw6V0OX1BTU1O5WQ36abP4PE2V88h89vylE8D6L9oCl6EDNCGY6Jtt/vR2KFdf/YpFEOBLx0cL/+nT5LNHTYatls4AG5IURXuPogKQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEtbhAgQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64D5C2BCAF;
-	Mon, 13 Apr 2026 16:51:12 +0000 (UTC)
+	 MIME-Version; b=CrvvbSgGIj/7R3WPbWX3q1O2m+wvJ9qVc5/YoD9pGZ94xL6cl+zL5cw4WwwOS51doIV+mC0ZOnWAaiR37DFBHZUd/Mv0ZO1JdVd5KMctjHpcYiDK7lSflwGmeh0bLZi3AkgETZgvcDgHzlJ1bs6MlSlGfOXapLePtXcS6HHzerM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itqeMoTx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63A1C2BCAF;
+	Mon, 13 Apr 2026 16:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099073;
-	bh=LvL4eqvOnMFDWP5spvH8hXXlQZi8/GXCEoXtEG5Pf4M=;
+	s=korg; t=1776097891;
+	bh=gfCkjnxKXuOt6q0p1iueP/L1AUuIdNTsfBQqLCI4erg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEtbhAgQgu6amST4nNfjvA0VcM65tA243XX6Aa45mZWySxbCBrNbWK1Hho6r0oma0
-	 ePNP7aODS+uA9cwnKBf6TefkDIySdDelDRGGn2R/nxOLSIzAPFxcub/of/a7jzlY0C
-	 7E4FcrIwqKQsxCoYF/XZ5iGmFNgSnrWWxVKAaPvg=
+	b=itqeMoTxxSUslAiJrJIG+Svo+w0d95iYDlvYduiiEhFVbOe7cwePuSEO3EzC0G98D
+	 EHwa55G6upp4d2PrOd4erRUsgbPhstXEzIqlggL/OksUgmz6u0fPjoBJYkeDFUhqQv
+	 p7cfzhw+sA/54vPoQi3LZlz42Q77BFZ2Zdqu+AzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 199/491] wifi: cfg80211: cancel pmsr_free_wk in cfg80211_pmsr_wdev_down
+Subject: [PATCH 5.15 313/570] xfrm: Fix the usage of skb->sk
 Date: Mon, 13 Apr 2026 17:57:24 +0200
-Message-ID: <20260413155826.522907380@linuxfoundation.org>
+Message-ID: <20260413155842.221559223@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237289-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236826-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,59 +89,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 485183F0C97
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,secunet.com:email]
+X-Rspamd-Queue-Id: B7C3B3F0AEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
+From: Steffen Klassert <steffen.klassert@secunet.com>
 
-[ Upstream commit 6dccbc9f3e1d38565dff7730d2b7d1e8b16c9b09 ]
+[ Upstream commit 1620c88887b16940e00dbe57dd38c74eda9bad9e ]
 
-When the nl80211 socket that originated a PMSR request is
-closed, cfg80211_release_pmsr() sets the request's nl_portid
-to zero and schedules pmsr_free_wk to process the abort
-asynchronously. If the interface is concurrently torn down
-before that work runs, cfg80211_pmsr_wdev_down() calls
-cfg80211_pmsr_process_abort() directly. However, the already-
-scheduled pmsr_free_wk work item remains pending and may run
-after the interface has been removed from the driver. This
-could cause the driver's abort_pmsr callback to operate on a
-torn-down interface, leading to undefined behavior and
-potential crashes.
+xfrm assumed to always have a full socket at skb->sk.
+This is not always true, so fix it by converting to a
+full socket before it is used.
 
-Cancel pmsr_free_wk synchronously in cfg80211_pmsr_wdev_down()
-before calling cfg80211_pmsr_process_abort(). This ensures any
-pending or in-progress work is drained before interface teardown
-proceeds, preventing the work from invoking the driver abort
-callback after the interface is gone.
-
-Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
-Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260305160712.1263829-3-peddolla.reddy@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Stable-dep-of: 0c0eef8ccd24 ("esp: fix skb leak with espintcp and async crypto")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/pmsr.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/esp4.c                | 2 +-
+ net/ipv6/esp6.c                | 2 +-
+ net/ipv6/xfrm6_output.c        | 4 ++--
+ net/xfrm/xfrm_interface_core.c | 2 +-
+ net/xfrm/xfrm_output.c         | 7 ++++---
+ net/xfrm/xfrm_policy.c         | 2 +-
+ 6 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index 7503c7dd71ab5..32cea07b98fd1 100644
---- a/net/wireless/pmsr.c
-+++ b/net/wireless/pmsr.c
-@@ -620,6 +620,7 @@ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev)
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 53170ecb2de08..272b64fd09eed 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -278,7 +278,7 @@ static void esp_output_done(struct crypto_async_request *base, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
  	}
- 	spin_unlock_bh(&wdev->pmsr_lock);
+ }
  
-+	cancel_work_sync(&wdev->pmsr_free_wk);
- 	if (found)
- 		cfg80211_pmsr_process_abort(wdev);
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index cbe575ade34d6..57e48dd905a48 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -315,7 +315,7 @@ static void esp_output_done(struct crypto_async_request *base, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ 	}
+ }
  
+diff --git a/net/ipv6/xfrm6_output.c b/net/ipv6/xfrm6_output.c
+index ad07904642cad..ff183bd76c998 100644
+--- a/net/ipv6/xfrm6_output.c
++++ b/net/ipv6/xfrm6_output.c
+@@ -82,14 +82,14 @@ static int __xfrm6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	toobig = skb->len > mtu && !skb_is_gso(skb);
+ 
+-	if (toobig && xfrm6_local_dontfrag(skb->sk)) {
++	if (toobig && xfrm6_local_dontfrag(sk)) {
+ 		xfrm6_local_rxpmtu(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+ 	} else if (toobig && xfrm6_noneed_fragment(skb)) {
+ 		skb->ignore_df = 1;
+ 		goto skip_frag;
+-	} else if (!skb->ignore_df && toobig && skb->sk) {
++	} else if (!skb->ignore_df && toobig && sk) {
+ 		xfrm_local_error(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index 9bd69887e16d2..4baa7a61df0e6 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -369,7 +369,7 @@ xfrmi_xmit2(struct sk_buff *skb, struct net_device *dev, struct flowi *fl)
+ 	skb_dst_set(skb, dst);
+ 	skb->dev = tdev;
+ 
+-	err = dst_output(xi->net, skb->sk, skb);
++	err = dst_output(xi->net, skb_to_full_sk(skb), skb);
+ 	if (net_xmit_eval(err) == 0) {
+ 		dev_sw_netstats_tx_add(dev, 1, length);
+ 	} else {
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index 29ce7f6f16a09..3e27daceebfe4 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -781,7 +781,7 @@ static int xfrm4_tunnel_check_size(struct sk_buff *skb)
+ 	     !skb_gso_validate_network_len(skb, ip_skb_dst_mtu(skb->sk, skb)))) {
+ 		skb->protocol = htons(ETH_P_IP);
+ 
+-		if (skb->sk)
++		if (skb->sk && sk_fullsock(skb->sk))
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmp_send(skb, ICMP_DEST_UNREACH,
+@@ -817,6 +817,7 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ {
+ 	int mtu, ret = 0;
+ 	struct dst_entry *dst = skb_dst(skb);
++	struct sock *sk = skb_to_full_sk(skb);
+ 
+ 	if (skb->ignore_df)
+ 		goto out;
+@@ -831,9 +832,9 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ 		skb->dev = dst->dev;
+ 		skb->protocol = htons(ETH_P_IPV6);
+ 
+-		if (xfrm6_local_dontfrag(skb->sk))
++		if (xfrm6_local_dontfrag(sk))
+ 			ipv6_stub->xfrm6_local_rxpmtu(skb, mtu);
+-		else if (skb->sk)
++		else if (sk)
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 16958656b6d43..851029a5383a2 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -2856,7 +2856,7 @@ static void xfrm_policy_queue_process(struct timer_list *t)
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 
+-		dst_output(net, skb->sk, skb);
++		dst_output(net, skb_to_full_sk(skb), skb);
+ 	}
+ 
+ out:
 -- 
 2.51.0
 
