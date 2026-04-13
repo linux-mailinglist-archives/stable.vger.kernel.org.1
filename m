@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-236957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oO7QJ3Ye3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:54 +0200
+	id OLWXEe4i3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4A93EFDD2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA483F0CCC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FDEB3027DA4
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:37:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49EBC30E8D66
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD41307AC7;
-	Mon, 13 Apr 2026 16:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBF731F9BC;
+	Mon, 13 Apr 2026 16:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgv2h6zb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbKaBjiB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFEE2D8364;
-	Mon, 13 Apr 2026 16:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617BC320393;
+	Mon, 13 Apr 2026 16:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098225; cv=none; b=Y8z3UdI10/+uZNtIi7Szq+vkQDRUUMAMzvNFAbQYcyNf9KZwyDrm7wMuGxxz4N/Bi9t7qGQvbV0CAIM8fqHuYMWtKvT0BluU2MY2F8y6d/E60cy/dinl7NuTcFnZx5/xNvYdWHCgBbwcKBSoUmJKto4uNHqjxe5PVa+XRqVf2yw=
+	t=1776099324; cv=none; b=fTvexMBByVQzPn5PXgt30uchazvWQsssYAyWhCOpIHlJXg4lfbpbbwsR87YOPXxMGgHjGQSPuIJkR17SEnJCBzxQ6KI3ih/PATXM5llROWEsmBGojP8837tS5spgZVA3In48HSzkeUA4lviMxeIuyQ4pnhhmcPFtnSfmXRwqfVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098225; c=relaxed/simple;
-	bh=cPJJLlOvduWChpF9prrap1Zb5JmjxMsn/pW5UbPvxFI=;
+	s=arc-20240116; t=1776099324; c=relaxed/simple;
+	bh=/4hDDq8UYmDzlei9dCXhhVChGa1bziKr167cw6lSnpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwReo3nCzF5TteHYQZ62uzRiLFycYXjRqosspKTYAp86WU+ufSu6/tvOMIUi02rIK6NgH/77QcRi1PdLjolJoJEXgTSw0y4RGn1xTJ+SXCPnQ6pfSLzMnXp276VAFgJeMEvNKg92sHGe9Z2cOXjceGhIZR7zWvDGRaLb6gUVpoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgv2h6zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61263C2BCAF;
-	Mon, 13 Apr 2026 16:37:05 +0000 (UTC)
+	 MIME-Version; b=h2uLYsxEx1HfqNR4SBIxyMeGtk32i9RLPGN6+Bl/6REQydmgPmMN5A4sXh5XUZ5xP2YDrpB1+U8ch6sPMUdkwtAPrkP4knRsg4CgHiRblmdvjGRbt4i5Lo9USN9VXu7cABDSmnCR27R5TLu86KLVKT124xmsWv1d6c3oz4CI3K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbKaBjiB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CDDC2BCAF;
+	Mon, 13 Apr 2026 16:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098225;
-	bh=cPJJLlOvduWChpF9prrap1Zb5JmjxMsn/pW5UbPvxFI=;
+	s=korg; t=1776099324;
+	bh=/4hDDq8UYmDzlei9dCXhhVChGa1bziKr167cw6lSnpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zgv2h6zbI3tJisrZOSbajFsYZUXRQzPBazeFJZl/srxdQBSjLTNDHCXHKnhFpMjV7
-	 m4GbWkNUBoQA+cpcYoYtrvBENaoe4J1hUePrH/hYdFAMzRpXldh+e76tCyP2zbkgSh
-	 D3HpYZeNhBfZOXx3js/3wvclJVDzDElnR9v4/Kek=
+	b=MbKaBjiB62QqqXWRC7lVm4WAcbXydDXUC+TadNBzU0u8Mq0Acgd+zIiMRpz7VU2Mh
+	 +QZfjO7kal/Qv1DE6TTocvfbdLRoKFJ7IKJOFR2sQG28Dfg8K/1og0q1vUteP3difW
+	 4m+yoxIErN2BHcQvXVEzIGSFYRaDoMfR4MGmi42s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 410/570] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
-Date: Mon, 13 Apr 2026 17:59:01 +0200
-Message-ID: <20260413155845.825998868@linuxfoundation.org>
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 297/491] cpufreq: conservative: Reset requested_freq on limits change
+Date: Mon, 13 Apr 2026 17:59:02 +0200
+Message-ID: <20260413155830.162589842@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,87 +74,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-236957-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237387-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nvidia.com:email]
-X-Rspamd-Queue-Id: 0E4A93EFDD2
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,linaro.org:email,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cs_governor.gov:url]
+X-Rspamd-Queue-Id: AAA483F0CCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
+commit 6a28fb8cb28b9eb39a392e531d938a889eacafc5 upstream.
 
-Oskar Kjos reported the following problem.
+A recently reported issue highlighted that the cached requested_freq
+is not guaranteed to stay in sync with policy->cur. If the platform
+changes the actual CPU frequency after the governor sets one (e.g.
+due to platform-specific frequency scaling) and a re-sync occurs
+later, policy->cur may diverge from requested_freq.
 
-ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
-by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
-IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
-as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
-at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
-value. __ip_options_echo() then reads optlen from attacker-controlled
-packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
-a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
+This can lead to incorrect behavior in the conservative governor.
+For example, the governor may assume the CPU is already running at
+the maximum frequency and skip further increases even though there
+is still headroom.
 
-To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
+Avoid this by resetting the cached requested_freq to policy->cur on
+detecting a change in policy limits.
 
-Also add minimal IPv4 header validation (version == 4, ihl >= 5).
-
-Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
-Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Tested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/all/20260210115458.3493646-1-zhenglifeng1@huawei.com/
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/d846a141a98ac0482f20560fcd7525c0f0ec2f30.1773999467.git.viresh.kumar@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_tunnel.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cpufreq/cpufreq_conservative.c |   12 ++++++++++++
+ drivers/cpufreq/cpufreq_governor.c     |    3 +++
+ drivers/cpufreq/cpufreq_governor.h     |    1 +
+ 3 files changed, 16 insertions(+)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 7c1b5d01f8203..53930c28b6946 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -603,11 +603,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	if (!skb2)
- 		return 0;
+--- a/drivers/cpufreq/cpufreq_conservative.c
++++ b/drivers/cpufreq/cpufreq_conservative.c
+@@ -311,6 +311,17 @@ static void cs_start(struct cpufreq_poli
+ 	dbs_info->requested_freq = policy->cur;
+ }
  
-+	/* Remove debris left by IPv6 stack. */
-+	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
++static void cs_limits(struct cpufreq_policy *policy)
++{
++	struct cs_policy_dbs_info *dbs_info = to_dbs_info(policy->governor_data);
 +
- 	skb_dst_drop(skb2);
++	/*
++	 * The limits have changed, so may have the current frequency. Reset
++	 * requested_freq to avoid any unintended outcomes due to the mismatch.
++	 */
++	dbs_info->requested_freq = policy->cur;
++}
++
+ static struct dbs_governor cs_governor = {
+ 	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
+ 	.kobj_type = { .default_attrs = cs_attributes },
+@@ -320,6 +331,7 @@ static struct dbs_governor cs_governor =
+ 	.init = cs_init,
+ 	.exit = cs_exit,
+ 	.start = cs_start,
++	.limits = cs_limits,
+ };
  
- 	skb_pull(skb2, offset);
- 	skb_reset_network_header(skb2);
- 	eiph = ip_hdr(skb2);
-+	if (eiph->version != 4 || eiph->ihl < 5)
-+		goto out;
+ #define CPU_FREQ_GOV_CONSERVATIVE	(cs_governor.gov)
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -555,6 +555,7 @@ EXPORT_SYMBOL_GPL(cpufreq_dbs_governor_s
  
- 	/* Try to guess incoming interface */
- 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
--- 
-2.53.0
-
+ void cpufreq_dbs_governor_limits(struct cpufreq_policy *policy)
+ {
++	struct dbs_governor *gov = dbs_governor_of(policy);
+ 	struct policy_dbs_info *policy_dbs;
+ 
+ 	/* Protect gov->gdbs_data against cpufreq_dbs_governor_exit() */
+@@ -566,6 +567,8 @@ void cpufreq_dbs_governor_limits(struct
+ 	mutex_lock(&policy_dbs->update_mutex);
+ 	cpufreq_policy_apply_limits(policy);
+ 	gov_update_sample_delay(policy_dbs, 0);
++	if (gov->limits)
++		gov->limits(policy);
+ 	mutex_unlock(&policy_dbs->update_mutex);
+ 
+ out:
+--- a/drivers/cpufreq/cpufreq_governor.h
++++ b/drivers/cpufreq/cpufreq_governor.h
+@@ -139,6 +139,7 @@ struct dbs_governor {
+ 	int (*init)(struct dbs_data *dbs_data);
+ 	void (*exit)(struct dbs_data *dbs_data);
+ 	void (*start)(struct cpufreq_policy *policy);
++	void (*limits)(struct cpufreq_policy *policy);
+ };
+ 
+ static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy)
 
 
 
