@@ -1,119 +1,123 @@
-Return-Path: <stable+bounces-235948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMKxJ2aj3GkqUwkAu9opvQ
-	(envelope-from <stable+bounces-235948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:03:50 +0200
+	id uJmCF96j3GkEUgkAu9opvQ
+	(envelope-from <stable+bounces-235950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:05:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CFD3E8BDB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2433E8C62
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 10:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C0A73066BC8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:55:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B26A300B112
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 07:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1661437E30D;
-	Mon, 13 Apr 2026 07:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7FB39D6E8;
+	Mon, 13 Apr 2026 07:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JO1RK0xq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fJtlyuCw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1CB1DD525
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BC237C105
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 07:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776066919; cv=pass; b=szeo8c4gjMLgG8FkAo6fuUlwNm6z4Ux1Z1ET94HuEtOniuahMV3DjDdAPrlRDQLBFptRk1rgsZjeQNtd+HukaNnmSeDfgDuA9VYHd1ccxcVKiAcO0s4Zf2cFvh8SoIqJlaXbI7qlFJgdBO80nA/32BbLA/3qpbTeux9fQZZYeoA=
+	t=1776067118; cv=pass; b=P9/FYbG3Ctj+f0GWIxX/5A2iKbySctndwEZy8w9af/+2Z/zDqrnqzLZXgG+3P59cR+9rJpkMgepu2dcS6k93OM4lNiUiwVXNBpHMYTGOYEZTH244TW+bwnC3LN5viE0lhEsGOdBDAToTX2HsVdzbOgRp4diDVAwTlfE00HOlVqg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776066919; c=relaxed/simple;
-	bh=9gc0LnLyL5gZ/okwpuRma5xwO90aLrmno7f04MKpCBE=;
+	s=arc-20240116; t=1776067118; c=relaxed/simple;
+	bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bRagZgZbv1xREzPmzY89GqFl7Uk6LbpFEHe+aKDR0cNQ1aC3x2h8hddAeEMuTzSkO6hoyyKqM/XkRawzTZySLrVF8iU+CnWWZDnwHVX6vSACl28FZYv+u18fOQbsHaCXS6WK6/UwIJAI4dMvxrz7O4F544KPAifm4axHfMZPYwk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JO1RK0xq; arc=pass smtp.client-ip=74.125.224.51
+	 To:Cc:Content-Type; b=X2JwOawoU/LLpOJrTcko9tbKIPIjAeT9Y4+Vj4G6Vy/aPIr4S0Q7A2rNZPX1n6dm2HHL3i3PRjfXLr6LrJ3qd0TzA+6s/73Wyo6YSm+xAtrgbJEcG7uzYwIUV7j/gFgbWEnaT8dw2tYXrvOEQxZ3Ex0/NYffgWcK3+IlglZ9dlU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fJtlyuCw; arc=pass smtp.client-ip=74.125.224.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-651b0eb2564so1344564d50.3
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 00:55:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776066918; cv=none;
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-650221149e2so3814371d50.0
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 00:58:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776067116; cv=none;
         d=google.com; s=arc-20240605;
-        b=bwfT6P6OvosAIXZFs7HNDTRe3L09XX4tpCqU8AAgEb3DiXMNhfhlwXO6pXQa6h2GMt
-         wg+SDlforrBYi3EFIA9jKKWQ8qhVqMhTBwmo5FFina3OQvgXmGG8IxyByxghGixclqvr
-         YVyW61Bu7LG78cDVMZU1xF/2Iq259m4njnpfGPC8qTY/QzHnzL6ncj4/QZC135vWYFmd
-         0FVHWJSvZLlP/yiS0LL0Zkr4OaIwItDepwxTxUhPNez3FIaH45+Uh9w7XB6CELAlhdtC
-         aNqZIB5LMzdl9C+gstaTaqaa+4mTBVlh5L8iMndips1okY1CMA4oEPeuRVIOhg6jfW0y
-         oW0Q==
+        b=FSI0gcDMjgeW8zL4x6WlAG7w1eYrU7wo6w4MeUv4LdN1phM06dKSVNihbIHHF1ZGQo
+         1daX/U8lGoim3RKgYDRJJ1hBbmpMgN+WXTlIe40G/xKCLeXlf4azT7HGC8ivq8fNI3uJ
+         qXImT3mIuhpWWAF3x91KbXmEQv1zcAzIjZKbCutxfIITWG3Epj06DJI5w3/ir8bFAVPD
+         D0AHSeyOB5ymmGJrfuBjA5d9KwPEaUYe3p2VRjGP/DCUN0NNQtiQysn8KMJicK2fewJ8
+         //vjr7bLVuX63Xr/vj3PBioi82hUUVuo13L99M3P6KEWYgq6W9N/G/E0Wc+tsVF3Jc04
+         tOAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=9gc0LnLyL5gZ/okwpuRma5xwO90aLrmno7f04MKpCBE=;
-        fh=Kioocv5QXhOqyG7cnxBaBc0ISiVQy1TLofYHtbHBMHg=;
-        b=X8zLYlrgmCGeyxGlB0pyXgeF4nbi0RylQyAm0aYxYZqc8BWi00crmrq2n/+Q5/H7Hz
-         JLRvcNfCrFniATPaFCgKA6zunRIF3/3sJRAAXrKx16EDivpaRn1Nbm5vZofzINeWRP7z
-         jjbbVyuItzdgSN3ugTjO5RwjCmq8M6ovPYIoKb194s5udrrhj3BvfJHMSzEA+YdROJL6
-         Fa425iR6hcKeS49JhjwE8GhXTLxLgkt5/sjyGSuo/kWLJBGmiAhjIjUrJ4SvZBPDD/QX
-         E82oIUvqAlLpFvxXvgqrDONGrjqp17lMDwRaUlwbKCjn8rXbE4BQPZKxvO3G1feSbiQG
-         D7lg==;
+        bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
+        fh=Q9kW8oF4I1iCVZzdvt9JXqNZxo5Hxwt4FL+BFuDEyC4=;
+        b=RvSCpt7Cxd1/14LQokwtU4JmUhE9D8xxPYgALUZ6GHPRQWdaih5YwY74kokA3VRjoh
+         ppGy6266sdgQERuig+ylNVQ7Cvk8KHrehtc0Z6B2ZlMSCXg+H+iXCnuy8JQ86UJvpX1/
+         hbgGJJC6ltzHrvS1Vm8ZHxvg0oeqLQo/0tGRfQxZHjwJh57uIZ+xnFGyK8eHe17uIxVC
+         qDX4FiGNs/nCfKk1Mi99KugzzeEY+i5V2attgaE07VZJCdO3MIum/v4zEMVMwcxVqIlY
+         WqIGlrHXsuDMolfrHQtVyBOB7OGik0IXCsN/l60UEMekFaIMJwVlP6seeJDgOUX34Zym
+         LmOA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776066918; x=1776671718; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776067116; x=1776671916; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9gc0LnLyL5gZ/okwpuRma5xwO90aLrmno7f04MKpCBE=;
-        b=JO1RK0xqPfeEk7i5h/v/lDu9og3nXjLVZuzGecAJR30OafNu3G9vwIWtBY0jalQ7ni
-         icBL0v+nu0RQ1zaxNSnm5CMlj3PSIF7bEUxpIZmZpPT16yiQmzjOhlEeybJ9BFHBHYi1
-         8B7wyFhw7M90XwKYUXMsN/tZVS/GUVD7h7YkE7YMktxrR4ZCiwM0QfOTose5qxUsTDho
-         udOKCYKhMZ6mn31DsV3TrEm3/h0ligtENq7buANUeXZtW4bSWOMbKdZxKo9ZNEIWMIxK
-         ApIi0GvYtYWWb9QarDGiewCXi4U3xlXOlmfbdnHvMvuFs5fXZpGUNNJkTImOK5ve/Mgo
-         urog==
+        bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
+        b=fJtlyuCwWx0MSLgj21qE5kLOBaP/bIcVdQtpz299tNutl3KVM3CJu3ZGvx3Bz2kPos
+         WTwYE24Pw475nOdXqyRQWW4PtS6q936RjafZAIuFZ95aJe1aXpcTObzJaopQSu4lg8T2
+         CV/LmkvHiZOT3sU6RQJ8TCWmjcbyLkEpvDC2UTXBFTdm4Qh6BqMoi1C7zj9vFFM2X/u8
+         Cs/23kPrW1qucbHmU7gmkc58rEfCAwH25DGotYQkgNkhAVJBVxtu17HEaQTsQ66OnnJr
+         LXit3//8tVjL8zwAZVdQF2SP2p5jlTqzYQDNnRk3GB8cEeJMmECx2310t7USjhnTeXQF
+         eC5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776066918; x=1776671718;
+        d=1e100.net; s=20251104; t=1776067116; x=1776671916;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9gc0LnLyL5gZ/okwpuRma5xwO90aLrmno7f04MKpCBE=;
-        b=bYSDo5wwjHQcSbgA8oYf9vGshU4CpfMoNTVCL6jDhrqtXKYzz2e524fj/GbFFQOwY6
-         b/7twZdZifWzf3yjTWdSyme7r2bGOey8atZJjmg0l71NZ2Fle3tw/DHGoXFjCjI9hPGb
-         Fo9Olv/gi/hCI/eD0eqAhe86LWryDx5aIo6HaefFlW09+0T88BhRAiJijZbe8WKICqcr
-         i9Su7+0KTsWTsGZD4mBKdigSCBUULOcAGfc3IoLGTxgvZagROE8F36rj5AxvJGVZltiG
-         J5/k7/KpiMu7dah5t/l9tVJ0pMb32EG+suIkij/gSlT+nJpj9pFuAoj0cQqcqfxxY404
-         PgvQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+NdrCQ0H6clqWLb9pFTOUyuj6MyVKo8V6Hb/l4y7oa6R1YL1WdoqOdXbSQpxCicRdCiCdEXII=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxehGrnBaOjZwRBxQ1mOQTVNiZaxT3QVsSSbZ5B1BtR5X8mgqqZ
-	8X5FMhQFul8etuPSCtPWH9b7Cqht0zlYnnEDt9Rtv1+jyKz9FNUUXrMjc1BH40RJktzxmKsi0M5
-	yJzbqKFSLrrwkjGjDJpio4mDmh3c+PGE=
-X-Gm-Gg: AeBDietG51n9+8BHp2yTUkGJ8mR52Oh8KxE9uLlkAQYM4FSF50VYX1DgV1qCYp0O0BN
-	tz2c5aqaW1Z7cuM1s1FTyXv+FGnzmD7XSPYu998X/oj/6EvcYf/k2Cn22ueH5E1ooGXFsnNTQfr
-	R0tX5LZVntVEDINPRrHfZ7guP/BDzIIdx+edYSLNMWcweU7JQfshUV2sFg74/caTxwc/+AU+u5y
-	BcwYCentVtgTeAG1Bb5I4gZaewrWOVIjLqfw8nWaV2jsagj9EVBd7Vh1RSm4k0GRoMYGtfrXCPB
-	csQkBeg=
-X-Received: by 2002:a05:690e:134c:b0:651:b7e2:6835 with SMTP id
- 956f58d0204a3-651b7e268f5mr6139035d50.35.1776066917886; Mon, 13 Apr 2026
- 00:55:17 -0700 (PDT)
+        bh=rCO1b6jT4qW3ldfK0o55NFQ/frBnnfo6DXzmtZ5lzmU=;
+        b=hisd3Jg5shzFz1SwX2Y24J0yycUxJ/U0bBpxpMBSffXswkVTCR81hBTrfMtIc8S8AS
+         YmwaGWq6PW04o22jl76gtM155Xo1How4FT1KtfGTEXsmKQYdz5HuXHds3RZHnuUkrFml
+         UFRwUBPvBZKZd5tPas8T6JzwluP4VFA7zuxSTe5D0PXWkry8XAet0UncGqIjUUSBMOy1
+         QJA1ZFYtRB59v+vXopLPpSaTGvrqA6ov+M/b4CzsOrImudTjsNhoQ0m+IGzZ3/KUmVQT
+         j74XyGXBXHzSVfbM1l0hBdUxW52hYUKG9VT5wdt9KMilIH5cK2KADLS0qWD7ly1V7Ooj
+         6bCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8gTUNPmFU6JqhhWVAEfTmLyzd4XCvftAgC/7MEXIaVNYEtiOm+82YpTmliP34p1QGvmpv5E38=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJlhFiKODR6/Y6IYaKzgqCNd8DPJeVSSkQLJn8NoRMwgs8Wmjn
+	mLB74KWnbyIbccVlKMnWy4FETq0WFJRfxBlsRq1qEZQgK+zFUQ6bz/Z0gQb5fvfF0FRK3B6zC80
+	luKOR3azCriEg0TTmOA6MYGOfGZzKyDd5mQTY/ZC4XQ==
+X-Gm-Gg: AeBDiesLopgHniA+hEJUoIPUuFt0lLDC3zMRhXNXHqn16QQejCZ7VovmTwaHqy3+IbD
+	8lC6PEjK3XtjH7jJ7GEI2VFbT3frpgFHPOYC1pEBtbxxzXxr+Vj4RmT3vQT+8bwumFXvqj8rLue
+	iAuTm5b40oD8yJ2OeaoHxtJS8KV5BG8Qv3N2MWkR1r2A93H8yCazzZypblTEvXnCYK5LlA4rOxp
+	SWzprTZXeDXL7xvbGzfUcO1gL6wDWscQiBncFK8XqvyoWpAwz2mqRXVAa33Ae39zG4+XfbRSX5h
+	wmj5bFdNarIrD00ZjQ==
+X-Received: by 2002:a05:690e:e8c:b0:650:2ff9:d660 with SMTP id
+ 956f58d0204a3-65198a7767amr12034664d50.1.1776067115857; Mon, 13 Apr 2026
+ 00:58:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260412165311.2578501-1-lgs201920130244@gmail.com> <adyT6oW0UgvcEQbX@hovoldconsulting.com>
-In-Reply-To: <adyT6oW0UgvcEQbX@hovoldconsulting.com>
+References: <20260412161555.2568840-1-lgs201920130244@gmail.com> <adyd3Ud2Pl_KRl6_@hovoldconsulting.com>
+In-Reply-To: <adyd3Ud2Pl_KRl6_@hovoldconsulting.com>
 From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Mon, 13 Apr 2026 15:55:09 +0800
-X-Gm-Features: AQROBzBvM2t448POngzR85HeuLhzGHKLxNZZ_0ViYHX8H0y7B2Cz5TcbmZhUfog
-Message-ID: <CANUHTR80npU59MrNq=1nYnb-r1ASKv_nG7=NF_G_Ko9-V-XaVw@mail.gmail.com>
-Subject: Re: [PATCH] usb-serial: fix port device refcount leak when
- device_add() fails
+Date: Mon, 13 Apr 2026 15:58:27 +0800
+X-Gm-Features: AQROBzBa2pmk3obezMourkIfU8jvs5w0tQK3bUeHmsgO_W_ALcjIAu_XQYSC2cc
+Message-ID: <CANUHTR9PP4rOK2gdH2KYOcwW58qTJ57W--pqHuC4GJQzriXncQ@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
 To: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alan Stern <stern@rowland.harvard.edu>, 
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Marco Crivellari <marco.crivellari@suse.com>, Ben Hoff <hoff.benjamin.k@gmail.com>, 
+	Yuhao Jiang <danisjiang@gmail.com>, William Wu <william.wu@rock-chips.com>, 
+	Terry Junge <linuxhid@cosmicgizmosystems.com>, 
+	Andrzej Pietrasiewicz <andrzej.p@collabora.com>, John Keeping <john@keeping.me.uk>, Lee Jones <lee@kernel.org>, 
 	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
@@ -122,15 +126,16 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235948-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235950-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,suse.com,gmail.com,rock-chips.com,cosmicgizmosystems.com,collabora.com,keeping.me.uk,kernel.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
@@ -138,54 +143,54 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: E7CFD3E8BDB
+X-Rspamd-Queue-Id: BE2433E8C62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi Johan,
 
-Thanks, you are right.
+Thanks for the review and for pointing that out.
 
-I had missed the disconnect path: usb_serial_disconnect() retrieves the
-serial object from usb_get_intfdata(interface) and then calls
-usb_serial_put(serial), which can eventually release the ports through
-destroy_serial().
+You're right, the correct Fixes tag should be:
 
-So this is deferred cleanup rather than a refcount leak.
+Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
 
-This report came from a static analysis result produced by a tool I am
-developing, and my review of the report here was incomplete.
+I'll send a v2 shortly with that fixed and include your Reviewed-by tag.
 
-Please disregard this patch.
+Reviewed-by: Johan Hovold johan@kernel.org
 
-Best regards,
+Thanks,
 Guangshuo
 
 Johan Hovold <johan@kernel.org> =E4=BA=8E2026=E5=B9=B44=E6=9C=8813=E6=97=A5=
-=E5=91=A8=E4=B8=80 14:57=E5=86=99=E9=81=93=EF=BC=9A
+=E5=91=A8=E4=B8=80 15:40=E5=86=99=E9=81=93=EF=BC=9A
 >
-> On Mon, Apr 13, 2026 at 12:53:11AM +0800, Guangshuo Li wrote:
-> > usb_serial_probe() initializes each port device with
-> > device_initialize() before registering it with device_add().
+> On Mon, Apr 13, 2026 at 12:15:55AM +0800, Guangshuo Li wrote:
+> > hidg_alloc() initializes hidg->dev with device_initialize() before
+> > calling dev_set_name(). If dev_set_name() fails, the function currently
+> > jumps to err_unlock and returns without calling put_device().
 > >
-> > If device_add() fails, the current code only logs an error and
-> > continues, but does not drop the reference acquired by
-> > device_initialize(). This leaves the failed port device referenced
-> > until a later teardown path, if any.
+> > This leaves the device reference unbalanced and prevents hidg_release()
+> > from being called. Calling put_device() here is also safe, since
+> > hidg_release() only frees resources owned by hidg.
+>
+> Good catch.
+>
+> > Route the dev_set_name() failure path through err_put_device so the
+> > device reference is dropped properly.
 > >
-> > Fix it by calling put_device() when device_add() fails. Also clear
-> > serial->port[i] after put_device() so destroy_serial() will not try
-> > to put the same device again.
+> > Fixes: 944fe915d00d ("usb: gadget: f_hid: tidy error handling in hidg_a=
+lloc")
 >
-> Any port that fails to register is released in destroy_serial() which is
-> called when the last reference to the device is dropped (e.g. when the
-> device is disconnected).
+> This isn't the commit that introduced the issue, though. This should be:
 >
-> So there is nothing to fix here.
+> Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
 >
-> Are you using some kind of tool to find these "issues"?
+> With that fixed you can add my:
+>
+> Reviewed-by: Johan Hovold <johan@kernel.org>
 >
 > Johan
 
