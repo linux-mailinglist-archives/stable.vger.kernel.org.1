@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKTkMuoZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:30 +0200
+	id GCzCCFEc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-237019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455603EF14A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22AF3EF76F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 688BC30C154C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D7F423003629
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DCA26E6F8;
-	Mon, 13 Apr 2026 16:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A154730C359;
+	Mon, 13 Apr 2026 16:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEi4q+ir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLlPn4p9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4699E26ED41;
-	Mon, 13 Apr 2026 16:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63480307AC7;
+	Mon, 13 Apr 2026 16:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096893; cv=none; b=XML/fiY5AbK9HVETHs7Ew0sZn6aXS+79xzAB61lD9Rf7E+j0ROtwmWoOGibulszB4O6vNxb1+5+3NGLcTrvQO6sPCEsvILNC7iu3NViNdEulSgGa8rQb/br4hsltUPDyAUwOsOojXWjtYT9COVNjsivh2iPryxBRoZlrrzdmwJQ=
+	t=1776098380; cv=none; b=gwqqeZo+sNPB1/90YRRVtvfjSLGDXWrath/kUJtQPHu3YwomwJ0Y2q2cDlaOUj2jObgewEDnO/kYvkaA7pmbj9jxImlzqOJ6dFc3TO1Zz3M+xAjWw9xEG8x28dglpoy49W7NHeN3c6oF7ub1YKrI2rsziPKIUn2J5ouDsq+Zd4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096893; c=relaxed/simple;
-	bh=uMqKyN6AH9cctWv/YuFVnMrRJgCzYwz2uXDjWrEcrUk=;
+	s=arc-20240116; t=1776098380; c=relaxed/simple;
+	bh=5zPp/xv1CL9yTlOexD+og9QLmCvqwCWikGbuLy+f+Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDCmIE2paOVyZfDh30SpC73jkl3WZsGcEabpx9LIlmoXEk8qsImU72uqUZjR88VbghuiH9qqJjs0a6FXHhIMC7ESEmIy86lQHfGqKPzB0sLm+doNrZfyP/5ERjFCuFMziR6gwXE0lCiSZZUiBmjgvl23Ua4ZFqog4aK8nYJglNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEi4q+ir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E2AC2BCAF;
-	Mon, 13 Apr 2026 16:14:52 +0000 (UTC)
+	 MIME-Version; b=I/RrJXxBJhb3taHobn9Gf1Ctj76qK12EVQD4VgRoaH8GFPRnvHb4pmJRVzhUAUd5b3R6NWo266YQzhVl/mPJAWyAZGDyGKY5Z8f3ONEKyZ6MCbJxexJj4tlSskztsGw4JwCeAHtKGUeYUhEBSVPiQABh30vJC+IRB+FQxZgBntA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLlPn4p9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBC3C2BCAF;
+	Mon, 13 Apr 2026 16:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096892;
-	bh=uMqKyN6AH9cctWv/YuFVnMrRJgCzYwz2uXDjWrEcrUk=;
+	s=korg; t=1776098380;
+	bh=5zPp/xv1CL9yTlOexD+og9QLmCvqwCWikGbuLy+f+Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEi4q+irvSsaChEmQDCe35Tcb94SYoV2uzMDcjFGWdMdizQ/YtjhKs8+teF21lYkp
-	 lMa0/DlHhPi/6pRoA0GGrc3cScNENwiA7Dny6AjHfxELizoipVeN31HV9zdCl+leev
-	 KvqhMjX2LGJe5IMNsrHHYZUuCU0JuFqyfcARH1UE=
+	b=BLlPn4p9ydGqfyQ0oJynrL5csf56PkpaS27/A+lEMIbW/Q3/2iW4oLixm+mltWGbo
+	 IzzIZC4CG4a9UUn/xqgwI4woqCiCxJ+nh94DgR9VLIzZt0FP5q/RdZ1yhviDLvfT91
+	 Y6IdC4IDJi1pZo7YRrKB6IDC5d0F237YS/jSN/gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 05/50] mptcp: fix slab-use-after-free in __inet_lookup_established
+	Taegu Ha <hataegu0826@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 501/570] usb: gadget: f_uac1_legacy: validate control request size
 Date: Mon, 13 Apr 2026 18:00:32 +0200
-Message-ID: <20260413155724.707213903@linuxfoundation.org>
+Message-ID: <20260413155849.221345240@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,135 +65,127 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237019-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236433-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 455603EF14A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C22AF3EF76F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Taegu Ha <hataegu0826@gmail.com>
 
-commit 9b55b253907e7431210483519c5ad711a37dafa1 upstream.
+commit 6e0e34d85cd46ceb37d16054e97a373a32770f6c upstream.
 
-The ehash table lookups are lockless and rely on
-SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
-during RCU read-side critical sections. Both tcp_prot and
-tcpv6_prot have their slab caches created with this flag
-via proto_register().
+f_audio_complete() copies req->length bytes into a 4-byte stack
+variable:
 
-However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
-tcpv6_prot_override during inet_init() (fs_initcall, level 5),
-before inet6_init() (module_init/device_initcall, level 6) has
-called proto_register(&tcpv6_prot). At that point,
-tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
-remains NULL permanently.
+  u32 data = 0;
+  memcpy(&data, req->buf, req->length);
 
-This causes MPTCP v6 subflow child sockets to be allocated via
-kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
-cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
-when these sockets are freed without SOCK_RCU_FREE (which is
-cleared for child sockets by design), the memory can be
-immediately reused. Concurrent ehash lookups under
-rcu_read_lock can then access freed memory, triggering a
-slab-use-after-free in __inet_lookup_established.
+req->length is derived from the host-controlled USB request path,
+which can lead to a stack out-of-bounds write.
 
-Fix this by splitting the IPv6-specific initialization out of
-mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
-from mptcp_proto_v6_init() before protocol registration. This
-ensures tcpv6_prot_override.slab correctly inherits the
-SLAB_TYPESAFE_BY_RCU slab cache.
+Validate req->actual against the expected payload size for the
+supported control selectors and decode only the expected amount
+of data.
 
-Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260406031512.189159-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This avoids copying a host-influenced length into a fixed-size
+stack object.
+
+Signed-off-by: Taegu Ha <hataegu0826@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260401191311.3604898-1-hataegu0826@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    2 ++
- net/mptcp/protocol.h |    1 +
- net/mptcp/subflow.c  |   15 +++++++++------
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/f_uac1_legacy.c |   47 ++++++++++++++++++++++------
+ 1 file changed, 37 insertions(+), 10 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -4301,6 +4301,8 @@ int __init mptcp_proto_v6_init(void)
+--- a/drivers/usb/gadget/function/f_uac1_legacy.c
++++ b/drivers/usb/gadget/function/f_uac1_legacy.c
+@@ -360,19 +360,46 @@ static int f_audio_out_ep_complete(struc
+ static void f_audio_complete(struct usb_ep *ep, struct usb_request *req)
  {
- 	int err;
+ 	struct f_audio *audio = req->context;
+-	int status = req->status;
+-	u32 data = 0;
+ 	struct usb_ep *out_ep = audio->out_ep;
  
-+	mptcp_subflow_v6_init();
-+
- 	mptcp_v6_prot = mptcp_prot;
- 	strcpy(mptcp_v6_prot.name, "MPTCPv6");
- 	mptcp_v6_prot.slab = NULL;
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -746,6 +746,7 @@ static inline void mptcp_subflow_tcp_fal
- void __init mptcp_proto_init(void);
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- int __init mptcp_proto_v6_init(void);
-+void __init mptcp_subflow_v6_init(void);
- #endif
- 
- struct sock *mptcp_sk_clone_init(const struct sock *sk,
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -2092,7 +2092,15 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override.psock_update_sk_prot = NULL;
- #endif
- 
-+	mptcp_diag_subflow_init(&subflow_ulp_ops);
-+
-+	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
-+		panic("MPTCP: failed to register subflows to ULP\n");
-+}
-+
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
-+void __init mptcp_subflow_v6_init(void)
-+{
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
- 	 * structures for v4 and v6 have the same size. It should not changed in
- 	 * the future but better to make sure to be warned if it is no longer
-@@ -2132,10 +2140,5 @@ void __init mptcp_subflow_init(void)
- 	/* Disable sockmap processing for subflows */
- 	tcpv6_prot_override.psock_update_sk_prot = NULL;
- #endif
--#endif
+-	switch (status) {
 -
--	mptcp_diag_subflow_init(&subflow_ulp_ops);
--
--	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
--		panic("MPTCP: failed to register subflows to ULP\n");
- }
-+#endif
+-	case 0:				/* normal completion? */
+-		if (ep == out_ep)
++	switch (req->status) {
++	case 0:
++		if (ep == out_ep) {
+ 			f_audio_out_ep_complete(ep, req);
+-		else if (audio->set_con) {
+-			memcpy(&data, req->buf, req->length);
+-			audio->set_con->set(audio->set_con, audio->set_cmd,
+-					le16_to_cpu(data));
++		} else if (audio->set_con) {
++			struct usb_audio_control *con = audio->set_con;
++			u8 type = con->type;
++			u32 data;
++			bool valid_request = false;
++
++			switch (type) {
++			case UAC_FU_MUTE: {
++				u8 value;
++
++				if (req->actual == sizeof(value)) {
++					memcpy(&value, req->buf, sizeof(value));
++					data = value;
++					valid_request = true;
++				}
++				break;
++			}
++			case UAC_FU_VOLUME: {
++				__le16 value;
++
++				if (req->actual == sizeof(value)) {
++					memcpy(&value, req->buf, sizeof(value));
++					data = le16_to_cpu(value);
++					valid_request = true;
++				}
++				break;
++			}
++			}
++
++			if (valid_request)
++				con->set(con, audio->set_cmd, data);
++			else
++				usb_ep_set_halt(ep);
++
+ 			audio->set_con = NULL;
+ 		}
+ 		break;
 
 
 
