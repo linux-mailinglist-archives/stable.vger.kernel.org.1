@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237469-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GTRCuIY3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:06 +0200
+	id +AlDFQsk3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237469-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58393EEDBA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1E23F0FEB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BCE89310CBF9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BC753027340
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C974230B50F;
-	Mon, 13 Apr 2026 16:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABEB330D23;
+	Mon, 13 Apr 2026 16:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPbB3j5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIIhRlgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC93282F1D;
-	Mon, 13 Apr 2026 16:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA4A329371;
+	Mon, 13 Apr 2026 16:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096547; cv=none; b=sng3gvWB57OD5ZCpoQgHAc/CXTyD09q2yuHsS2zoUXUGIloYcnvQHVD1g4hurBn+EhctsYYQ/eSBK6m17jVz4zXgg2jYCkFFp9WWsG6We/tfEgfmwW6T5Drv+p6xaZGncbYmxXM32zjAs+RTfDslZNkkj9Bdqkt8ORtlgHu0Jh4=
+	t=1776099535; cv=none; b=HsuV3jVuttIz0cZTiROoL2psTszgkqpR3eiPqx42dFWHCYSJqBWGmqRsech5KghTzmJ7iyNMDB4zUMWxiLXWnSMtxowIwWRmYeOjYg8gzDDxnE48qvwlltoEvdPVeT1m2sn5V8RLxDp/po/xkCtlE1FrsjLpsIdrvajK9lZFe5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096547; c=relaxed/simple;
-	bh=tKjNFZrFMn2AVmDbQLSuLeOa3kbPIFF58mJqo7evbsE=;
+	s=arc-20240116; t=1776099535; c=relaxed/simple;
+	bh=UrAO0GGIP2OqdyudOHEFCCYr6DXKvB+0ol3NdEc0U4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhO0vQZx5nJZx8ZDbiG0jHTzmDz2ah0sjqGY5oEQuoQop/DWYd1+25LGtogAQTTEoITtFaJiVMTqRhw3mh3TcoXGvMfPVD0zQ+Ss9PcwCUD/cICwLni46WOrkbQJHabAkgcDuMGNmAiqIGdPzWoRFID0sdmkg0kLTRBDH4LKBc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPbB3j5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23710C2BCAF;
-	Mon, 13 Apr 2026 16:09:06 +0000 (UTC)
+	 MIME-Version; b=c+Dj+b0rxtIgyUkJrMQnmU46OUKRnFYM+e7BqS2m7L0xPoaiiTa0mYnusRL9pFFFJwsQ4FF9YmkjQdqHlHorRWSFE3kMHQrGba/digTw7KUAskx03uM7IRVE2K8iFNJrfm4upKyxEK4NOZ/HoxZzUGOXzISccvI2mLIdkyJejS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIIhRlgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF275C2BCAF;
+	Mon, 13 Apr 2026 16:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096547;
-	bh=tKjNFZrFMn2AVmDbQLSuLeOa3kbPIFF58mJqo7evbsE=;
+	s=korg; t=1776099535;
+	bh=UrAO0GGIP2OqdyudOHEFCCYr6DXKvB+0ol3NdEc0U4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPbB3j5/Clgpu5YshAtnGSXpQvUh944B1BylAk+u476nH48383F0/xwuMgT0K0qLI
-	 LO9ew3TgR+qpZ7Ux4yGhg4oP48mIM8ESgVyJu/Hp6WR0C6Jl5TKgdmA2ffHJOaSy0i
-	 1auLY9F5XhqkMDW9Hu0btg36WfQtfimRE/WJ/nY4=
+	b=jIIhRlghtFxd4hmuMFFFznLK/rTFpdMn8u+HLQfCGIpGWhyADbjgRtR0t097gH2nm
+	 e3yuiza/A8Ak2Ev6R3lb2M1cOAqfzPPybTzV/Ex0++jtzL+YPqNWtRAKevVwVqGVDa
+	 DKcQlbj7Ur8agfyikIAf5Qo1GKqnXlwKetgdZ07c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tyllis Xu <LivelyCarpet87@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 54/83] net: stmmac: fix integer underflow in chain mode
+	Bart Van Assche <bvanassche@acm.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 377/491] Input: synaptics-rmi4 - fix a locking bug in an error path
 Date: Mon, 13 Apr 2026 18:00:22 +0200
-Message-ID: <20260413155733.034325269@linuxfoundation.org>
+Message-ID: <20260413155833.148334001@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236297-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237469-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,acm.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.986];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: D58393EEDBA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DA1E23F0FEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyllis Xu <livelycarpet87@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 51f4e090b9f87b40c21b6daadb5c06e6c0a07b67 upstream.
+commit 7adaaee5edd35a423ae199c41b86bd1ed60ed483 upstream.
 
-The jumbo_frm() chain-mode implementation unconditionally computes
+Lock f54->data_mutex when entering the function statement since jumping
+to the 'error' label when checking report_size fails causes that mutex
+to be unlocked.
 
-    len = nopaged_len - bmax;
+This bug has been detected by the Clang thread-safety checker.
 
-where nopaged_len = skb_headlen(skb) (linear bytes only) and bmax is
-BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
-decides to invoke jumbo_frm() based on skb->len (total length including
-page fragments):
-
-    is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
-
-When a packet has a small linear portion (nopaged_len <= bmax) but a
-large total length due to page fragments (skb->len > bmax), the
-subtraction wraps as an unsigned integer, producing a huge len value
-(~0xFFFFxxxx).  This causes the while (len != 0) loop to execute
-hundreds of thousands of iterations, passing skb->data + bmax * i
-pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
-SoCs (the typical deployment for stmmac), this maps arbitrary kernel
-memory to the DMA engine, constituting a kernel memory disclosure and
-potential memory corruption from hardware.
-
-Fix this by introducing a buf_len local variable clamped to
-min(nopaged_len, bmax).  Computing len = nopaged_len - buf_len is then
-always safe: it is zero when the linear portion fits within a single
-descriptor, causing the while (len != 0) loop to be skipped naturally,
-and the fragment loop in stmmac_xmit() handles page fragments afterward.
-
-Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
+Fixes: 3a762dbd5347 ("[media] Input: synaptics-rmi4 - add support for F54 diagnostics")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223215118.2154194-16-bvanassche@acm.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-Link: https://patch.msgid.link/20260401044708.1386919-1-LivelyCarpet87@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/chain_mode.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/input/rmi4/rmi_f54.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-@@ -20,7 +20,7 @@ static int jumbo_frm(struct stmmac_tx_qu
- 	unsigned int nopaged_len = skb_headlen(skb);
- 	struct stmmac_priv *priv = tx_q->priv_data;
- 	unsigned int entry = tx_q->cur_tx;
--	unsigned int bmax, des2;
-+	unsigned int bmax, buf_len, des2;
- 	unsigned int i = 1, len;
- 	struct dma_desc *desc;
+--- a/drivers/input/rmi4/rmi_f54.c
++++ b/drivers/input/rmi4/rmi_f54.c
+@@ -534,6 +534,8 @@ static void rmi_f54_work(struct work_str
+ 	int error;
+ 	int i;
  
-@@ -31,17 +31,18 @@ static int jumbo_frm(struct stmmac_tx_qu
- 	else
- 		bmax = BUF_SIZE_2KiB;
++	mutex_lock(&f54->data_mutex);
++
+ 	report_size = rmi_f54_get_report_size(f54);
+ 	if (report_size == 0) {
+ 		dev_err(&fn->dev, "Bad report size, report type=%d\n",
+@@ -542,8 +544,6 @@ static void rmi_f54_work(struct work_str
+ 		goto error;     /* retry won't help */
+ 	}
  
--	len = nopaged_len - bmax;
-+	buf_len = min_t(unsigned int, nopaged_len, bmax);
-+	len = nopaged_len - buf_len;
- 
- 	des2 = dma_map_single(priv->device, skb->data,
--			      bmax, DMA_TO_DEVICE);
-+			      buf_len, DMA_TO_DEVICE);
- 	desc->des2 = cpu_to_le32(des2);
- 	if (dma_mapping_error(priv->device, des2))
- 		return -1;
- 	tx_q->tx_skbuff_dma[entry].buf = des2;
--	tx_q->tx_skbuff_dma[entry].len = bmax;
-+	tx_q->tx_skbuff_dma[entry].len = buf_len;
- 	/* do not close the descriptor and do not set own bit */
--	stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum, STMMAC_CHAIN_MODE,
-+	stmmac_prepare_tx_desc(priv, desc, 1, buf_len, csum, STMMAC_CHAIN_MODE,
- 			0, false, skb->len);
- 
- 	while (len != 0) {
+-	mutex_lock(&f54->data_mutex);
+-
+ 	/*
+ 	 * Need to check if command has completed.
+ 	 * If not try again later.
 
 
 
