@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-237007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHmEDzIc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-237007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:14 +0200
+	id oFGZOEAY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78CF3EF736
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7180C3EEBC4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2F6783006171
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F12FE31D6029
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A256D2D8364;
-	Mon, 13 Apr 2026 16:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054E82C11CA;
+	Mon, 13 Apr 2026 16:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AllDHoV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/0y23I6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6437924E4A1;
-	Mon, 13 Apr 2026 16:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE0B2BEFEF;
+	Mon, 13 Apr 2026 16:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098349; cv=none; b=HzsS0O8BPivx5rPgCLl5ZVRJmEamA/R1NiD0AAW0/UYF/5FObmIpftnmcHEGsQzrUw+Qu4t7UteCNcpAxOPAyNElxnIZr5KyDIJjBs/tYaT/B14BWMBuDDmU3qslYWh+TlJBU9UgOoyYl/8kYmSviktYhCT3CIOK3ADYD7kzQc8=
+	t=1776096676; cv=none; b=TDJfymdPWmBMblUPTt7kedS484PEFn4tG50Z5dBYy4iPvJPMF5pr8uBphnBEqfX88cznuvGlJFkij23nU44IKFdSX5jZGWMBZ8QjL+k3aUO+weIB/LmMADtptWt++HNt5vzrkR/rKD2Ij0FE32cnDmxjpBaiCwNE6pOkaAFjjFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098349; c=relaxed/simple;
-	bh=k+QVXL1KjFCvARB3kwk0lP3ZZBQK0sQHKATkqTwQXmg=;
+	s=arc-20240116; t=1776096676; c=relaxed/simple;
+	bh=a2fhjOckhUyeFk3C70d4oZjXDEJrdMbNx3Cc1lFO8Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFGzh0WCVo90l6293b0u0sbPm2X7LP7GhZIg6Vr1IcF2YuE2uj8yh3m4YMOxMz/PriwWFB8tAOJFbPknzFQhoBIsX/jee/h7/TuhqDT04xwbdIUgrgC3xDVbaDYEKRae6pxLubCsoeg9qVxOlOH6Z7xLwAYuuT4cAt96aMTc9Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AllDHoV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE83BC2BCAF;
-	Mon, 13 Apr 2026 16:39:08 +0000 (UTC)
+	 MIME-Version; b=erT+sOXHnDLaUc5+nxpbjfvHCPl0QT5Y6o9hcXCQKrSWtm7SN7wgG2xRlcfEZVwOQSYkb5eTiXnZkuwB7xHb7JYuR0QYfS8b0M9gQ2x86YOzJTEqT1rRZ714jjeGQ/aP8ym12X/7/uOqDBVuU1ukQMQVlaIWlVUtuBIolo8nmyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/0y23I6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52907C2BCAF;
+	Mon, 13 Apr 2026 16:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098349;
-	bh=k+QVXL1KjFCvARB3kwk0lP3ZZBQK0sQHKATkqTwQXmg=;
+	s=korg; t=1776096676;
+	bh=a2fhjOckhUyeFk3C70d4oZjXDEJrdMbNx3Cc1lFO8Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AllDHoV2edm779Afn0MMc5swZDQ+i1x4yw4iQzwjHsHQA7iFJLWAhzILfdr0qIXDw
-	 23VU5NKsCgDqaxTq5zHWlb3rTHW3JBUhmgEXO6ChnANwSCvTEin7s+2u3wbNwe0VGz
-	 azgbEVAMhQjYY/NO63ZeA3VMe+46qhk6kHQvDY/E=
+	b=H/0y23I6pdzMQTIlJC5tXa8r80+L2t59z9jqSh0vIeV4CKx4nGg0K0G2CM0Lg/r1K
+	 5SYPZy4IIIuRzGGOag0nUFzhZ8wACKTQQVQh1jk6wrrzKYrTz17Nms9gRX7KFJYW8Z
+	 x/AldbbQlf9Jo3JmaQGYM/tSnKrd1M6AeTK82YBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YunJe Shin <ioerts@kookmin.ac.kr>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	linux-nvme@lists.infradead.org,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 473/570] nvmet-tcp: fix use-before-check of sg in bounds validation
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 09/70] Input: uinput - take event lock when submitting FF request "event"
 Date: Mon, 13 Apr 2026 18:00:04 +0200
-Message-ID: <20260413155848.182068742@linuxfoundation.org>
+Message-ID: <20260413155728.533915048@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,111 +63,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237007-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236349-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.982];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kookmin.ac.kr:email]
-X-Rspamd-Queue-Id: C78CF3EF736
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7180C3EEBC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cengiz Can <cengiz.can@canonical.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-The stable backport of commit 52a0a9854934 ("nvmet-tcp: add bounds
-checks in nvmet_tcp_build_pdu_iovec") placed the bounds checks after
-the iov_len calculation:
+commit ff14dafde15c11403fac61367a34fea08926e9ee upstream.
 
-    while (length) {
-        u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+To avoid racing with FF playback events and corrupting device's event
+queue take event_lock spinlock when calling uinput_dev_event() when
+submitting a FF upload or erase "event".
 
-        if (!sg_remaining) {    /* too late: sg already dereferenced */
-
-In mainline, the checks come first because C99 allows mid-block variable
-declarations. The stable backport moved the declaration to the top of the
-loop to satisfy C89 declaration rules, but this ended up placing the
-sg->length dereference before the sg_remaining and sg->length guards.
-
-If sg_next() returns NULL at the end of the scatterlist, the next
-iteration dereferences a NULL pointer in the iov_len calculation before
-the sg_remaining check can prevent it.
-
-Fix this by moving the iov_len declaration to function scope and
-keeping the assignment after the bounds checks, matching the ordering
-in mainline.
-
-Fixes: 42afe8ed8ad2 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Link: https://patch.msgid.link/adXkf6MWzlB8LA_s@google.com
 Cc: stable@vger.kernel.org
-Cc: YunJe Shin <ioerts@kookmin.ac.kr>
-Cc: Sagi Grimberg <sagi@grimberg.me>
-Cc: Keith Busch <kbusch@kernel.org>
-Cc: linux-nvme@lists.infradead.org
-Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/misc/uinput.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 8f7984c53f3f2..c6cc1dfef92cf 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -312,7 +312,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- {
- 	struct bio_vec *iov = cmd->iov;
- 	struct scatterlist *sg;
--	u32 length, offset, sg_offset;
-+	u32 length, offset, sg_offset, iov_len;
- 	unsigned int sg_remaining;
- 	int nr_pages;
+--- a/drivers/input/misc/uinput.c
++++ b/drivers/input/misc/uinput.c
+@@ -25,8 +25,10 @@
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/fs.h>
++#include <linux/lockdep.h>
+ #include <linux/miscdevice.h>
+ #include <linux/overflow.h>
++#include <linux/spinlock.h>
+ #include <linux/input/mt.h>
+ #include "../input-compat.h"
  
-@@ -329,8 +329,6 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
+@@ -76,6 +78,8 @@ static int uinput_dev_event(struct input
+ 	struct uinput_device	*udev = input_get_drvdata(dev);
+ 	struct timespec64	ts;
  
- 	while (length) {
--		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
--
- 		if (!sg_remaining) {
- 			nvmet_tcp_fatal_error(cmd->queue);
- 			return;
-@@ -340,6 +338,8 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 			return;
- 		}
- 
-+		iov_len = min_t(u32, length, sg->length - sg_offset);
++	lockdep_assert_held(&dev->event_lock);
 +
- 		iov->bv_page = sg_page(sg);
- 		iov->bv_len = iov_len;
- 		iov->bv_offset = sg->offset + sg_offset;
--- 
-2.53.0
-
+ 	ktime_get_ts64(&ts);
+ 
+ 	udev->buff[udev->head] = (struct input_event) {
+@@ -147,6 +151,7 @@ static void uinput_request_release_slot(
+ static int uinput_request_send(struct uinput_device *udev,
+ 			       struct uinput_request *request)
+ {
++	unsigned long flags;
+ 	int retval = 0;
+ 
+ 	spin_lock(&udev->state_lock);
+@@ -160,7 +165,9 @@ static int uinput_request_send(struct ui
+ 	 * Tell our userspace application about this new request
+ 	 * by queueing an input event.
+ 	 */
++	spin_lock_irqsave(&udev->dev->event_lock, flags);
+ 	uinput_dev_event(udev->dev, EV_UINPUT, request->code, request->id);
++	spin_unlock_irqrestore(&udev->dev->event_lock, flags);
+ 
+  out:
+ 	spin_unlock(&udev->state_lock);
 
 
 
