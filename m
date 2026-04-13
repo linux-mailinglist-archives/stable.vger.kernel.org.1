@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBUsDnMV3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:10:27 +0200
+	id AAfYAqIi3WkYaQkAu9opvQ
+	(envelope-from <stable+bounces-237434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2823EE633
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:10:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EB23F0C0C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC1FD302570D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 669C03181ABF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D2925332E;
-	Mon, 13 Apr 2026 16:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7173375C3;
+	Mon, 13 Apr 2026 16:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM96lgTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iq73lOT9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A43248880;
-	Mon, 13 Apr 2026 16:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F18D328255;
+	Mon, 13 Apr 2026 16:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096220; cv=none; b=ooHCHrnkLGmtw1XtQ1Dc9q4TJUoZQdIEFaMmu3jCg8ZWH9Xw28fx9LaiHQKXurLnkl0HyIpkCdoqe0HWZKLzKbe2QAzvJPrSKx7EQCnrb9HZyJaDg1edoMaDb3reqIVb/mHVe+3SCFosZCf9okC39OiWeVryMHMACAzscplj4qw=
+	t=1776099447; cv=none; b=mWFSfey2CFZcHzi1j6CjOYotYmXOj4G/z1ZhSu7aDV9EpjmRh/YVoAWe8TF7Qv9htMdd+0FUYBUGGG0Q1hG/c8f4iQJhhQAo+T3jZqOc1acCJhrBaaUkazXhQryGrswnsWc3eLgVE2Ygy6v67PkpwaH8QIpG1WsjEMRCIIQOauk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096220; c=relaxed/simple;
-	bh=xABxqRVuOtkFFxBOgx3yv8WP3cuNm6CA3nbJg2SZ3ko=;
+	s=arc-20240116; t=1776099447; c=relaxed/simple;
+	bh=27rknvOs6r6Ei4ETSGt6AC2D0LqTfMmu8QGxEpoNEBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWECnXY0X6u1Pyc+PKNGmGKrCcB3wnWmx/7McbUBWFeg7NeA67MvlHJ0+KgBmUP8rWx8w1Brt0tSge/v6PksBq8+cjqbI8p2wNy7Ff53ghDtrBb/hzi1s4bBS0p7tjuAcu3j5KJINnzHXiAvJiC9RpRL0kuSspf0gITuLqotwMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM96lgTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4261C2BCAF;
-	Mon, 13 Apr 2026 16:03:39 +0000 (UTC)
+	 MIME-Version; b=huQ/idsInCZxu8qQNoOnjgDiLUNTcoj5vhV2/P4qxWU8O0SwRIfBAMkenpw2hhBVCdS+CrrExb8H6odXzWXFctMhPc+NPhotdJ8SOGIFULJeuUU+zsrwlvoc2V0NQDr8fB9gG3VzwwnFSRA0BPiDI98R+3FrQfcwVDsysriOwqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iq73lOT9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142AFC2BCAF;
+	Mon, 13 Apr 2026 16:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096220;
-	bh=xABxqRVuOtkFFxBOgx3yv8WP3cuNm6CA3nbJg2SZ3ko=;
+	s=korg; t=1776099447;
+	bh=27rknvOs6r6Ei4ETSGt6AC2D0LqTfMmu8QGxEpoNEBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MM96lgTXgWGEVXkkWOGvkFfh/qqirOmL6/vCbvhUQhP9r+Y2GS0TqJ6YiTebuo8To
-	 1/ncxTq/PC8nhAliu1KtxLiM/c2ODmco7iR24HFe0lQ6BY4rZUY2I878spzyQrznBd
-	 Zqp0cK3Pf4MSBf3FYxbu6BMUjJvhxzH2foW3YZAQ=
+	b=Iq73lOT9HsZg/ad/p90RKxkvtkyBNA047lxEpzomFisd7ynxmxEC1MtAlXNekvwEU
+	 g2Z2pRs6rmrFLcQCSxZbn0mI4OiUjlqVSsrNR9BWTFuRi3cnLYK4Pp9gb/FkCCA9fC
+	 I4vwrSBj+ThUdF5SmAG+Th9M5drx0fWmaU0w4srU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 14/86] MIPS: mm: Rewrite TLB uniquification for the hidden bit feature
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 5.10 316/491] futex: Clear stale exiting pointer in futex_lock_pi() retry path
 Date: Mon, 13 Apr 2026 17:59:21 +0200
-Message-ID: <20260413155732.105459892@linuxfoundation.org>
+Message-ID: <20260413155830.868557573@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236168-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237434-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,398 +86,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,eb.global:url,orcam.me.uk:email,franken.de:email,ea.global:url]
-X-Rspamd-Queue-Id: 8F2823EE633
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,stgolabs.net:email]
+X-Rspamd-Queue-Id: 70EB23F0C0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-commit 540760b77b8fc49d39d1b2b76196e5ec57711a32 upstream.
+commit 210d36d892de5195e6766c45519dfb1e65f3eb83 upstream.
 
-Before the introduction of the EHINV feature, which lets software mark
-TLB entries invalid, certain older implementations of the MIPS ISA were
-equipped with an analogous bit, as a vendor extension, which however is
-hidden from software and only ever set at reset, and then any software
-write clears it, making the intended TLB entry valid.
+Fuzzying/stressing futexes triggered:
 
-This feature makes it unsafe to read a TLB entry with TLBR, modify the
-page mask, and write the entry back with TLBWI, because this operation
-will implicitly clear the hidden bit and this may create a duplicate
-entry, as with the presence of the hidden bit there is no guarantee all
-the entries across the TLB are unique each.
+    WARNING: kernel/futex/core.c:825 at wait_for_owner_exiting+0x7a/0x80, CPU#11: futex_lock_pi_s/524
 
-Usually the firmware has already uniquified TLB entries before handing
-control over, in which case we only need to guarantee at bootstrap no
-clash will happen with the VPN2 values chosen in local_flush_tlb_all().
+When futex_lock_pi_atomic() sees the owner is exiting, it returns -EBUSY
+and stores a refcounted task pointer in 'exiting'.
 
-However with systems such as Mikrotik RB532 we get handed the TLB as at
-reset, with the hidden bit set across the entries and possibly duplicate
-entries present.  This then causes a machine check exception when page
-sizes are reset in r4k_tlb_uniquify() and prevents the system from
-booting.
+After wait_for_owner_exiting() consumes that reference, the local pointer
+is never reset to nil. Upon a retry, if futex_lock_pi_atomic() returns a
+different error, the bogus pointer is passed to wait_for_owner_exiting().
 
-Rewrite the algorithm used in r4k_tlb_uniquify() then such as to avoid
-the reuse of ASID/VPN values across the TLB.  Get rid of global entries
-first as they may be blocking the entire address space, e.g. 16 256MiB
-pages will exhaust the whole address space of a 32-bit CPU and a single
-big page can exhaust the 32-bit compatibility space on a 64-bit CPU.
+  CPU0			     CPU1		       CPU2
+  futex_lock_pi(uaddr)
+  // acquires the PI futex
+  exit()
+    futex_cleanup_begin()
+      futex_state = EXITING;
+			     futex_lock_pi(uaddr)
+			       futex_lock_pi_atomic()
+				 attach_to_pi_owner()
+				   // observes EXITING
+				   *exiting = owner;  // takes ref
+				   return -EBUSY
+			       wait_for_owner_exiting(-EBUSY, owner)
+				 put_task_struct();   // drops ref
+			       // exiting still points to owner
+			       goto retry;
+			       futex_lock_pi_atomic()
+				 lock_pi_update_atomic()
+				   cmpxchg(uaddr)
+					*uaddr ^= WAITERS // whatever
+				   // value changed
+				 return -EAGAIN;
+			       wait_for_owner_exiting(-EAGAIN, exiting) // stale
+				 WARN_ON_ONCE(exiting)
 
-Details of the algorithm chosen are given across the code itself.
+Fix this by resetting upon retry, essentially aligning it with requeue_pi.
 
-Fixes: 9f048fa48740 ("MIPS: mm: Prevent a TLB shutdown on initial uniquification")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.18+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3ef240eaff36 ("futex: Prevent exit livelock")
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260326001759.4129680-1-dave@stgolabs.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c | 282 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 228 insertions(+), 54 deletions(-)
+ kernel/futex/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 65f0357958fc7..24fe85fa169d1 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -13,6 +13,7 @@
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/memblock.h>
-+#include <linux/minmax.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-@@ -24,6 +25,7 @@
- #include <asm/hazards.h>
- #include <asm/mmu_context.h>
- #include <asm/tlb.h>
-+#include <asm/tlbdebug.h>
- #include <asm/tlbex.h>
- #include <asm/tlbmisc.h>
- #include <asm/setup.h>
-@@ -511,87 +513,259 @@ static int __init set_ntlb(char *str)
- __setup("ntlb=", set_ntlb);
- 
- 
--/* Comparison function for EntryHi VPN fields.  */
--static int r4k_vpn_cmp(const void *a, const void *b)
-+/* The start bit position of VPN2 and Mask in EntryHi/PageMask registers.  */
-+#define VPN2_SHIFT 13
-+
-+/* Read full EntryHi even with CONFIG_32BIT.  */
-+static inline unsigned long long read_c0_entryhi_native(void)
-+{
-+	return cpu_has_64bits ? read_c0_entryhi_64() : read_c0_entryhi();
-+}
-+
-+/* Write full EntryHi even with CONFIG_32BIT.  */
-+static inline void write_c0_entryhi_native(unsigned long long v)
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -2785,9 +2785,9 @@ static int futex_lock_pi(u32 __user *uad
+ 			 ktime_t *time, int trylock)
  {
--	long v = *(unsigned long *)a - *(unsigned long *)b;
--	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
--	return s ? (v != 0) | v >> s : v;
-+	if (cpu_has_64bits)
-+		write_c0_entryhi_64(v);
-+	else
-+		write_c0_entryhi(v);
- }
+ 	struct hrtimer_sleeper timeout, *to;
+-	struct task_struct *exiting = NULL;
+ 	struct rt_mutex_waiter rt_waiter;
+ 	struct futex_hash_bucket *hb;
++	struct task_struct *exiting;
+ 	struct futex_q q = futex_q_init;
+ 	int res, ret;
  
-+/* TLB entry state for uniquification.  */
-+struct tlbent {
-+	unsigned long long wired:1;
-+	unsigned long long global:1;
-+	unsigned long long asid:10;
-+	unsigned long long vpn:51;
-+	unsigned long long pagesz:5;
-+	unsigned long long index:14;
-+};
-+
- /*
-- * Initialise all TLB entries with unique values that do not clash with
-- * what we have been handed over and what we'll be using ourselves.
-+ * Comparison function for TLB entry sorting.  Place wired entries first,
-+ * then global entries, then order by the increasing VPN/ASID and the
-+ * decreasing page size.  This lets us avoid clashes with wired entries
-+ * easily and get entries for larger pages out of the way first.
-+ *
-+ * We could group bits so as to reduce the number of comparisons, but this
-+ * is seldom executed and not performance-critical, so prefer legibility.
-  */
--static void __ref r4k_tlb_uniquify(void)
-+static int r4k_entry_cmp(const void *a, const void *b)
- {
--	int tlbsize = current_cpu_data.tlbsize;
--	bool use_slab = slab_is_available();
--	int start = num_wired_entries();
--	phys_addr_t tlb_vpn_size;
--	unsigned long *tlb_vpns;
--	unsigned long vpn_mask;
--	int cnt, ent, idx, i;
--
--	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
--	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
-+	struct tlbent ea = *(struct tlbent *)a, eb = *(struct tlbent *)b;
-+
-+	if (ea.wired > eb.wired)
-+		return -1;
-+	else if (ea.wired < eb.wired)
-+		return 1;
-+	else if (ea.global > eb.global)
-+		return -1;
-+	else if (ea.global < eb.global)
-+		return 1;
-+	else if (ea.vpn < eb.vpn)
-+		return -1;
-+	else if (ea.vpn > eb.vpn)
-+		return 1;
-+	else if (ea.asid < eb.asid)
-+		return -1;
-+	else if (ea.asid > eb.asid)
-+		return 1;
-+	else if (ea.pagesz > eb.pagesz)
-+		return -1;
-+	else if (ea.pagesz < eb.pagesz)
-+		return 1;
-+	else
-+		return 0;
-+}
+@@ -2800,6 +2800,7 @@ static int futex_lock_pi(u32 __user *uad
+ 	to = futex_setup_timer(time, &timeout, FLAGS_CLOCKRT, 0);
  
--	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
--	tlb_vpns = (use_slab ?
--		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
--		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
--	if (WARN_ON(!tlb_vpns))
--		return; /* Pray local_flush_tlb_all() is good enough. */
-+/*
-+ * Fetch all the TLB entries.  Mask individual VPN values retrieved with
-+ * the corresponding page mask and ignoring any 1KiB extension as we'll
-+ * be using 4KiB pages for uniquification.
-+ */
-+static void __ref r4k_tlb_uniquify_read(struct tlbent *tlb_vpns, int tlbsize)
-+{
-+	int start = num_wired_entries();
-+	unsigned long long vpn_mask;
-+	bool global;
-+	int i;
- 
--	htw_stop();
-+	vpn_mask = GENMASK(current_cpu_data.vmbits - 1, VPN2_SHIFT);
-+	vpn_mask |= cpu_has_64bits ? 3ULL << 62 : 1 << 31;
- 
--	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
--		unsigned long vpn;
-+	for (i = 0; i < tlbsize; i++) {
-+		unsigned long long entryhi, vpn, mask, asid;
-+		unsigned int pagesz;
- 
- 		write_c0_index(i);
- 		mtc0_tlbr_hazard();
- 		tlb_read();
- 		tlb_read_hazard();
--		vpn = read_c0_entryhi();
--		vpn &= vpn_mask & PAGE_MASK;
--		tlb_vpns[cnt] = vpn;
- 
--		/* Prevent any large pages from overlapping regular ones.  */
--		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
--		mtc0_tlbw_hazard();
--		tlb_write_indexed();
--		tlbw_use_hazard();
-+		global = !!(read_c0_entrylo0() & ENTRYLO_G);
-+		entryhi = read_c0_entryhi_native();
-+		mask = read_c0_pagemask();
-+
-+		asid = entryhi & cpu_asid_mask(&current_cpu_data);
-+		vpn = (entryhi & vpn_mask & ~mask) >> VPN2_SHIFT;
-+		pagesz = ilog2((mask >> VPN2_SHIFT) + 1);
-+
-+		tlb_vpns[i].global = global;
-+		tlb_vpns[i].asid = global ? 0 : asid;
-+		tlb_vpns[i].vpn = vpn;
-+		tlb_vpns[i].pagesz = pagesz;
-+		tlb_vpns[i].wired = i < start;
-+		tlb_vpns[i].index = i;
- 	}
-+}
- 
--	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
-+/*
-+ * Write unique values to all but the wired TLB entries each, using
-+ * the 4KiB page size.  This size might not be supported with R6, but
-+ * EHINV is mandatory for R6, so we won't ever be called in that case.
-+ *
-+ * A sorted table is supplied with any wired entries at the beginning,
-+ * followed by any global entries, and then finally regular entries.
-+ * We start at the VPN and ASID values of zero and only assign user
-+ * addresses, therefore guaranteeing no clash with addresses produced
-+ * by UNIQUE_ENTRYHI.  We avoid any VPN values used by wired or global
-+ * entries, by increasing the VPN value beyond the span of such entry.
-+ *
-+ * When a VPN/ASID clash is found with a regular entry we increment the
-+ * ASID instead until no VPN/ASID clash has been found or the ASID space
-+ * has been exhausted, in which case we increase the VPN value beyond
-+ * the span of the largest clashing entry.
-+ *
-+ * We do not need to be concerned about FTLB or MMID configurations as
-+ * those are required to implement the EHINV feature.
-+ */
-+static void __ref r4k_tlb_uniquify_write(struct tlbent *tlb_vpns, int tlbsize)
-+{
-+	unsigned long long asid, vpn, vpn_size, pagesz;
-+	int widx, gidx, idx, sidx, lidx, i;
- 
--	write_c0_pagemask(PM_DEFAULT_MASK);
-+	vpn_size = 1ULL << (current_cpu_data.vmbits - VPN2_SHIFT);
-+	pagesz = ilog2((PM_4K >> VPN2_SHIFT) + 1);
-+
-+	write_c0_pagemask(PM_4K);
- 	write_c0_entrylo0(0);
- 	write_c0_entrylo1(0);
- 
--	idx = 0;
--	ent = tlbsize;
--	for (i = start; i < tlbsize; i++)
--		while (1) {
--			unsigned long entryhi, vpn;
-+	asid = 0;
-+	vpn = 0;
-+	widx = 0;
-+	gidx = 0;
-+	for (sidx = 0; sidx < tlbsize && tlb_vpns[sidx].wired; sidx++)
-+		;
-+	for (lidx = sidx; lidx < tlbsize && tlb_vpns[lidx].global; lidx++)
-+		;
-+	idx = gidx = sidx + 1;
-+	for (i = sidx; i < tlbsize; i++) {
-+		unsigned long long entryhi, vpn_pagesz = 0;
- 
--			entryhi = UNIQUE_ENTRYHI(ent);
--			vpn = entryhi & vpn_mask & PAGE_MASK;
-+		while (1) {
-+			if (WARN_ON(vpn >= vpn_size)) {
-+				dump_tlb_all();
-+				/* Pray local_flush_tlb_all() will cope.  */
-+				return;
-+			}
- 
--			if (idx >= cnt || vpn < tlb_vpns[idx]) {
--				write_c0_entryhi(entryhi);
--				write_c0_index(i);
--				mtc0_tlbw_hazard();
--				tlb_write_indexed();
--				ent++;
--				break;
--			} else if (vpn == tlb_vpns[idx]) {
--				ent++;
--			} else {
-+			/* VPN must be below the next wired entry.  */
-+			if (widx < sidx && vpn >= tlb_vpns[widx].vpn) {
-+				vpn = max(vpn,
-+					  (tlb_vpns[widx].vpn +
-+					   (1ULL << tlb_vpns[widx].pagesz)));
-+				asid = 0;
-+				widx++;
-+				continue;
-+			}
-+			/* VPN must be below the next global entry.  */
-+			if (gidx < lidx && vpn >= tlb_vpns[gidx].vpn) {
-+				vpn = max(vpn,
-+					  (tlb_vpns[gidx].vpn +
-+					   (1ULL << tlb_vpns[gidx].pagesz)));
-+				asid = 0;
-+				gidx++;
-+				continue;
-+			}
-+			/* Try to find a free ASID so as to conserve VPNs.  */
-+			if (idx < tlbsize && vpn == tlb_vpns[idx].vpn &&
-+			    asid == tlb_vpns[idx].asid) {
-+				unsigned long long idx_pagesz;
-+
-+				idx_pagesz = tlb_vpns[idx].pagesz;
-+				vpn_pagesz = max(vpn_pagesz, idx_pagesz);
-+				do
-+					idx++;
-+				while (idx < tlbsize &&
-+				       vpn == tlb_vpns[idx].vpn &&
-+				       asid == tlb_vpns[idx].asid);
-+				asid++;
-+				if (asid > cpu_asid_mask(&current_cpu_data)) {
-+					vpn += vpn_pagesz;
-+					asid = 0;
-+					vpn_pagesz = 0;
-+				}
-+				continue;
-+			}
-+			/* VPN mustn't be above the next regular entry.  */
-+			if (idx < tlbsize && vpn > tlb_vpns[idx].vpn) {
-+				vpn = max(vpn,
-+					  (tlb_vpns[idx].vpn +
-+					   (1ULL << tlb_vpns[idx].pagesz)));
-+				asid = 0;
- 				idx++;
-+				continue;
- 			}
-+			break;
- 		}
- 
-+		entryhi = (vpn << VPN2_SHIFT) | asid;
-+		write_c0_entryhi_native(entryhi);
-+		write_c0_index(tlb_vpns[i].index);
-+		mtc0_tlbw_hazard();
-+		tlb_write_indexed();
-+
-+		tlb_vpns[i].asid = asid;
-+		tlb_vpns[i].vpn = vpn;
-+		tlb_vpns[i].pagesz = pagesz;
-+
-+		asid++;
-+		if (asid > cpu_asid_mask(&current_cpu_data)) {
-+			vpn += 1ULL << pagesz;
-+			asid = 0;
-+		}
-+	}
-+}
-+
-+/*
-+ * Initialise all TLB entries with unique values that do not clash with
-+ * what we have been handed over and what we'll be using ourselves.
-+ */
-+static void __ref r4k_tlb_uniquify(void)
-+{
-+	int tlbsize = current_cpu_data.tlbsize;
-+	bool use_slab = slab_is_available();
-+	phys_addr_t tlb_vpn_size;
-+	struct tlbent *tlb_vpns;
-+
-+	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
-+	tlb_vpns = (use_slab ?
-+		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
-+		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
-+	if (WARN_ON(!tlb_vpns))
-+		return; /* Pray local_flush_tlb_all() is good enough. */
-+
-+	htw_stop();
-+
-+	r4k_tlb_uniquify_read(tlb_vpns, tlbsize);
-+
-+	sort(tlb_vpns, tlbsize, sizeof(*tlb_vpns), r4k_entry_cmp, NULL);
-+
-+	r4k_tlb_uniquify_write(tlb_vpns, tlbsize);
-+
-+	write_c0_pagemask(PM_DEFAULT_MASK);
-+
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
--- 
-2.53.0
-
+ retry:
++	exiting = NULL;
+ 	ret = get_futex_key(uaddr, flags & FLAGS_SHARED, &q.key, FUTEX_WRITE);
+ 	if (unlikely(ret != 0))
+ 		goto out;
 
 
 
