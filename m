@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGCGEOUf3WmsaAkAu9opvQ
-	(envelope-from <stable+bounces-236792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:01 +0200
+	id WNSJJmgl3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:18:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB933F035A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4403F1251
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 721F530F22EC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:30:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BBAE30EC4EB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C18238D27;
-	Mon, 13 Apr 2026 16:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36BD317141;
+	Mon, 13 Apr 2026 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XH2PwOtw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZ4Okxlm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B46225A38;
-	Mon, 13 Apr 2026 16:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53643168EF;
+	Mon, 13 Apr 2026 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097806; cv=none; b=qJnzjElJcPt6shV/wlWIY0Fgp+YKGgB+TI/M3iLqbdLa6gfZnIPujt3LhiNJXuy9S2+sDQAsUfDxd3jAC+wiONHkvssaeuKJyIjxZSZ+lgd7P1rZEkTYykoRqzvU9546O5fwkSnPAC1PsT+OBOwAzWgoOfRDP29ioLqS4TomJXc=
+	t=1776098990; cv=none; b=WEA7G7qCgizRGlGVx7gTWOLc2dgnVRyN5BkkDdaroJ4rl3PIlPmlpEPIEpd3weiKEz6NLOMiR6kH4cJvASO03h8geqDMITORV8Pw8bE8YUMeIe1hkLKS3lUfndyAXj6sPyceljqYpyf76ytpKaBUvVcQBOzm00HoOvaANRlRPvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097806; c=relaxed/simple;
-	bh=lJmQHyxpVXxuRn613MJn6lHoRlLE7HpLjncFwTQlmb0=;
+	s=arc-20240116; t=1776098990; c=relaxed/simple;
+	bh=U3C5BovV19G7Md03wGzAzD/QjWoxj+KV2+v0pXyqv7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndleGqqDox90J2wZHQfEmMa9BUmhZ5TrXbzgNlNsEd1ryrIcRub8sjsQMdaSAJhq+4H2IGmT1wM8klATfw++7289NTBMu/QNgCnVwXauCsC8LpGmumVfdLkAjZwk1j9bhYdkCJ/YMclHQ43RUG+bN4N2f/PMGk1jjxaMOOm7PHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XH2PwOtw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F31C2BCAF;
-	Mon, 13 Apr 2026 16:30:05 +0000 (UTC)
+	 MIME-Version; b=Wlthfn1zCqtpOWApS1Lcsvs5gZt+gzetUtE29pHUSB2PLTSRXVFoj6ORx0D6RR0O4QuJXHCTm9xvYTzqGt9ZCuyN9CEb1SfALi6eStBY18EqSQIu+dDDCFD0Mci8S7p+3yrSFFc8ZzPVCSzwZgsM9cUakM9kYhIfuRYn11lSLr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZ4Okxlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7C1C2BCAF;
+	Mon, 13 Apr 2026 16:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097806;
-	bh=lJmQHyxpVXxuRn613MJn6lHoRlLE7HpLjncFwTQlmb0=;
+	s=korg; t=1776098990;
+	bh=U3C5BovV19G7Md03wGzAzD/QjWoxj+KV2+v0pXyqv7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XH2PwOtw4sHSYHyJRetzH7AXgcmP3km9stciMQZYriBoEsji4qXwPrl5bA/j/ZsmX
-	 f5vRaGQWDK3/SfgPV9txuby2iyJhP3glEMKSM/ftknB04LARYOj7zVuYeA+lWqW6IS
-	 Er4fzgrEak2Fc3bS+Wr9w7IexoqI3OrFKgNhrfow=
+	b=vZ4OkxlmP5YDY9Jfpcsg8OqKRoUMMvAo0WPd4NQWmWlTfdufN9MxjL13COMqRURNQ
+	 KDuWuwuY0ST8p1lGGDksCmDzt5UcsHYvJjRBAjQfFZyPIMyv/uaAcqMx0rrrPd0Z3q
+	 neiGZ5JjCtqiG3FL8X3QZqTwqsv3n76TZUG/u3HY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Natalie Vock <natalie.vock@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 280/570] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
-Date: Mon, 13 Apr 2026 17:56:51 +0200
-Message-ID: <20260413155840.978704808@linuxfoundation.org>
+Subject: [PATCH 5.10 167/491] drm/amd/display: Use GFP_ATOMIC in dc_create_stream_for_sink
+Date: Mon, 13 Apr 2026 17:56:52 +0200
+Message-ID: <20260413155825.293224481@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237257-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,amd.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236792-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: CFB933F035A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0B4403F1251
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+From: Natalie Vock <natalie.vock@gmx.de>
 
-[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
+[ Upstream commit 28dfe4317541e57fe52f9a290394cd29c348228b ]
 
-mvpp2_bm_switch_buffers() unconditionally calls
-mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
-shared buffer pool modes. This function programs CM3 flow control
-registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
-priv->cm3_base without any NULL check.
+This can be called while preemption is disabled, for example by
+dcn32_internal_validate_bw which is called with the FPU active.
 
-When the CM3 SRAM resource is not present in the device tree (the
-third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
-SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
-NULL and priv->global_tx_fc is false. Any operation that triggers
-mvpp2_bm_switch_buffers(), for example an MTU change that crosses
-the jumbo frame threshold, will crash:
+Fixes "BUG: scheduling while atomic" messages I encounter on my Navi31
+machine.
 
-  Unable to handle kernel NULL pointer dereference at
-  virtual address 0000000000000000
-  Mem abort info:
-    ESR = 0x0000000096000006
-    EC = 0x25: DABT (current EL), IL = 32 bits
-  pc : readl+0x0/0x18
-  lr : mvpp2_cm3_read.isra.0+0x14/0x20
-  Call trace:
-   readl+0x0/0x18
-   mvpp2_bm_pool_update_fc+0x40/0x12c
-   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
-   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
-   mvpp2_change_mtu+0x140/0x380
-   __dev_set_mtu+0x1c/0x38
-   dev_set_mtu_ext+0x78/0x118
-   dev_set_mtu+0x48/0xa8
-   dev_ifsioc+0x21c/0x43c
-   dev_ioctl+0x2d8/0x42c
-   sock_ioctl+0x314/0x378
-
-Every other flow control call site in the driver already guards
-hardware access with either priv->global_tx_fc or port->tx_fc.
-mvpp2_bm_switch_buffers() is the only place that omits this check.
-
-Add the missing priv->global_tx_fc guard to both the disable and
-re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
-rest of the driver.
-
-Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
-Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
-Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b42dae2ebc5c84a68de63ec4ffdfec49362d53f1)
+Cc: stable@vger.kernel.org
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 7fa880e62d096..fdfdd55fdb1dc 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5006,7 +5006,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 	if (priv->percpu_pools)
- 		numbufs = port->nrxqs * 2;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -167,7 +167,7 @@ struct dc_stream_state *dc_create_stream
+ 	if (sink == NULL)
+ 		return NULL;
  
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, false);
+-	stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
++	stream = kzalloc(sizeof(struct dc_stream_state), GFP_ATOMIC);
+ 	if (stream == NULL)
+ 		goto alloc_fail;
  
- 	for (i = 0; i < numbufs; i++)
-@@ -5023,7 +5023,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 			mvpp2_open(port->dev);
- 	}
- 
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, true);
- 
- 	return 0;
--- 
-2.51.0
-
 
 
 
