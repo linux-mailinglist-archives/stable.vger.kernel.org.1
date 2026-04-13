@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-236718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMUeJ00h3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-236718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:01 +0200
+	id GFWTJ6Qg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F31B3F07FD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:01:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 109CB3F05E6
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A94913235BD9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:26:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1978A307361F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832E730B508;
-	Mon, 13 Apr 2026 16:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F30D317173;
+	Mon, 13 Apr 2026 16:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOb9ZQPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jugu2oRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4163726CE32;
-	Mon, 13 Apr 2026 16:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1260431717C;
+	Mon, 13 Apr 2026 16:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097615; cv=none; b=InGEK6xOIDIR0WknKLhS55uUxq73qdyiMKwNXjN58HXB6ojcZIgm8mzlK/5zM3fy5/iPatwPWQ2a2yeIrsuYCpvVBcsf050eSkKHi1nAIrByF+uV79ACD/6nBJlOOSeg+m6Ft1wt92zXTmm4HujD1cT78tEGPywiQvbom4P0HhU=
+	t=1776098800; cv=none; b=UcI5TdGMNKeDWOqwt0H6hBTuj0sJk73C+0ZQcCc2hbk9bm0y2Ns9Rov6IsG4vJuhZPMKRkwn8nVOZsZKCfpcdU2QkJNQVJHXkHz0uCBTx/fxowM4BjqvAtdAHO8TcfFiWIBBOIFKMVdgZTa6uP4C4H8JHZW0WGD7EyvtCD0j82U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097615; c=relaxed/simple;
-	bh=LokI41UhS/uoqeOSb/pNToVQtX9QgVrpyhWzAC++BX4=;
+	s=arc-20240116; t=1776098800; c=relaxed/simple;
+	bh=HprQ6oPygh3P2o6sm8BTxqB8Kl+VtTdrkTXtLaTFIcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsS3yzMi64rG2RhOcntOCDRO5awOpzKTlX1qU2pVHSxkECnvR2U6/j+sqZI+h9SF7yt4oM2bw+C3F3/EfaQn6QrrKyScdM6aJndyE7Lk71J/fvrOxLzHVEWLyU1XkB5V12VG5nB5Cu1KWHSpXB/fkaTkLS/XLHQnpfzyardec7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOb9ZQPN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1CDC2BCAF;
-	Mon, 13 Apr 2026 16:26:54 +0000 (UTC)
+	 MIME-Version; b=Vq6bc+mZfMUHmLsyyc36nF3B20F+lYGh8BqGx4cAFEtHiyQIP8qAFYgDb3XhiQ/fH3KZAnBdswvGCR/KMDfBCjMjIT6j/rGyLw5MHCA1+iJz9stpL0NWJ8ZF6vAqN+FMzLFO6A/zUTGVbKWaOdNe6vjITqwOw/eaqT+1tlmZo+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jugu2oRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB33C2BCAF;
+	Mon, 13 Apr 2026 16:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097615;
-	bh=LokI41UhS/uoqeOSb/pNToVQtX9QgVrpyhWzAC++BX4=;
+	s=korg; t=1776098799;
+	bh=HprQ6oPygh3P2o6sm8BTxqB8Kl+VtTdrkTXtLaTFIcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOb9ZQPNqSMeS84cDY8tjW6/UOA/zgQp8Mp5sBRjoTjJ/3Zh6Q4HlHelynKxSSEp4
-	 ealLQqp8uxmj5lW4QAJOw+PwJOoUcNkhP5vrG63pFm72gGiWC81Bir58GjIbNg2mqn
-	 tMB5e6KybnU4Xr2SM2N9t+bVGBEacRS3JNjxdmRk=
+	b=Jugu2oRb3jvGjz8Za+3T6j421LWZv77HxYvBSFQoDsEIdWAe13yyWtwrdnhQ+zOdK
+	 4ApMja6/O5+46tHyAxSdQ7TLvE7UWuiLhpe4SNeSfY8h9wZ1VP2YY+kw1u37VEIgib
+	 VvH1YWWDFRrSbNiGYRgnVhTrjvx9APQ9R8RmGZpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 206/570] mtd: rawnand: cadence: Fix error check for dma_alloc_coherent() in cadence_nand_init()
-Date: Mon, 13 Apr 2026 17:55:37 +0200
-Message-ID: <20260413155838.174580097@linuxfoundation.org>
+	Zilin Guan <zilin@seu.edu.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 093/491] usb: xhci: Fix memory leak in xhci_disable_slot()
+Date: Mon, 13 Apr 2026 17:55:38 +0200
+Message-ID: <20260413155822.527078368@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236718-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237183-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,47 +86,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,bootlin.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1F31B3F07FD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 109CB3F05E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 0410e1a4c545c769c59c6eda897ad5d574d0c865 upstream.
+commit c1c8550e70401159184130a1afc6261db01fc0ce upstream.
 
-Fix wrong variable used for error checking after dma_alloc_coherent()
-call. The function checks cdns_ctrl->dma_cdma_desc instead of
-cdns_ctrl->cdma_desc, which could lead to incorrect error handling.
+xhci_alloc_command() allocates a command structure and, when the
+second argument is true, also allocates a completion structure.
+Currently, the error handling path in xhci_disable_slot() only frees
+the command structure using kfree(), causing the completion structure
+to leak.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Use xhci_free_command() instead of kfree(). xhci_free_command() correctly
+frees both the command structure and the associated completion structure.
+Since the command structure is allocated with zero-initialization,
+command->in_ctx is NULL and will not be erroneously freed by
+xhci_free_command().
+
+This bug was found using an experimental static analysis tool we are
+developing. The tool is based on the LLVM framework and is specifically
+designed to detect memory management issues. It is currently under
+active development and not yet publicly available, but we plan to
+open-source it after our research is published.
+
+The bug was originally detected on v6.13-rc1 using our static analysis
+tool, and we have verified that the issue persists in the latest mainline
+kernel.
+
+We performed build testing on x86_64 with allyesconfig using GCC=11.4.0.
+Since triggering these error paths in xhci_disable_slot() requires specific
+hardware conditions or abnormal state, we were unable to construct a test
+case to reliably trigger these specific error paths at runtime.
+
+Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260304223639.3882398-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2840,7 +2840,7 @@ static int cadence_nand_init(struct cdns
- 						  sizeof(*cdns_ctrl->cdma_desc),
- 						  &cdns_ctrl->dma_cdma_desc,
- 						  GFP_KERNEL);
--	if (!cdns_ctrl->dma_cdma_desc)
-+	if (!cdns_ctrl->cdma_desc)
- 		return -ENOMEM;
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3982,7 +3982,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 	if (state == 0xffffffff || (xhci->xhc_state & XHCI_STATE_DYING) ||
+ 			(xhci->xhc_state & XHCI_STATE_HALTED)) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return -ENODEV;
+ 	}
  
- 	cdns_ctrl->buf_size = SZ_16K;
+@@ -3990,7 +3990,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 				slot_id);
+ 	if (ret) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return ret;
+ 	}
+ 	xhci_ring_cmd_db(xhci);
 
 
 
