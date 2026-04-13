@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-237442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SImnIqgi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:48 +0200
+	id aGPlDd4V3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0846D3F0C28
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1003EE69D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FF483076D4F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95128306034D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6668C330B22;
-	Mon, 13 Apr 2026 16:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6343E24DCF6;
+	Mon, 13 Apr 2026 16:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dALedSor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBLXAkIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A22A32F765;
-	Mon, 13 Apr 2026 16:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262691D6DB5;
+	Mon, 13 Apr 2026 16:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099468; cv=none; b=AE8JX8OZsu3fEBLg4sG2LHNfdPfVUifCHqZk30qi9+RBB4qhSo6bT6u1pEfwZ0oAtBeYKiFUEb7tRetkgkwSIEWblbJBu5HZAmFNnCYSp7UXHONJu2FXXIzD1Llal8dhfjmlJfzixSDp+QJ9btAJR4LShtoBnyPS2BS1sZjqPlQ=
+	t=1776096228; cv=none; b=KwlmCPilCsQyOTO4erfYgWsBJQq4+g2YzBTIBtEmBCz5yG34By8l9m7t3zOH8U/2Kf1n8RkfJUs3nbPPMXCZNAEu9ULtTxcJDa8Nylc74Av6FkLD1UpxiBn3Vxqocmpn0/kkn9647oV4g17kbopYyt2d736QHM4ujYJjKHSjcy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099468; c=relaxed/simple;
-	bh=fuutDTY1MhZaQ+DiAbVEVCk4789OTFGk5vThvwTpRzo=;
+	s=arc-20240116; t=1776096228; c=relaxed/simple;
+	bh=Fsf1Kb4zTZiDJ7lZYR5uXeHOug8n9fDv9iFpI2hBGNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjbXpWl2rbIreS7gMEi97wCelKQAyAJzPwtvcoVzcaZ7OuOC5BhlYOUP/e4+1so1M0YLPDljn4lmyTbRcWDEIe7I62b4jycPvsUs18WFZovBxPb15d98o6C+Bth6ghr0idm1I5F/C6C8QHw+Cxo+ZX2I3gHqEdKDLgRrTVbtGUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dALedSor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE337C2BCAF;
-	Mon, 13 Apr 2026 16:57:47 +0000 (UTC)
+	 MIME-Version; b=fmrjWCdhiiBvBSMNirh8VD0AZAQQQYXgGakibgNhXjwSEx47Tjm3FhAQ5m7SyWekuFuNVPJLIc/vl5paqYWcoMPUL154uMfKj6rrdq/dh6bPUHMMsOdutw+Ov1ZFLsyTjHWI+CyGL+xxYEZnwQCnILIngwdJk2+o4e273iAHYfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBLXAkIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87628C2BCAF;
+	Mon, 13 Apr 2026 16:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099468;
-	bh=fuutDTY1MhZaQ+DiAbVEVCk4789OTFGk5vThvwTpRzo=;
+	s=korg; t=1776096227;
+	bh=Fsf1Kb4zTZiDJ7lZYR5uXeHOug8n9fDv9iFpI2hBGNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dALedSor9jy2jRP27swE1hajy4RSimiZajmhGon/QvoXd7RtL8UYKFsS944+AJeBO
-	 qa5ZGBsTLhmpK8wT4xIBtTS/Ba4cZBWPWYUTuXexCEFAtGzj+X9ZY/tFxOD3w0TIEp
-	 3/5G4OSDtoq6z8H2dfAxju+2qf30dH9h6de7TD74=
+	b=JBLXAkILFtdTBRLAlfKiRz/lmsIK/8XDhd9eebKK/zEPjOt4uNTFsnviHCLKkBBJd
+	 eBONejT2XHGyQGKCkte3IlrGx1p+mgMgBcqXhI7f86OMycc8YOipbBGrxZVsKOik82
+	 tia0soRsua/pWDggyagOsPSIF2Q0fsI2cVFxnTLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 319/491] objtool: Fix Clang jump table detection
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.19 17/86] i2c: imx: zero-initialize dma_slave_config for eDMA
 Date: Mon, 13 Apr 2026 17:59:24 +0200
-Message-ID: <20260413155830.986998201@linuxfoundation.org>
+Message-ID: <20260413155732.222848327@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,69 +77,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237442-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236172-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,arndb.de:email]
-X-Rspamd-Queue-Id: 0846D3F0C28
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9F1003EE69D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Anthony Pighin <anthony.pighin@nokia.com>
 
-[ Upstream commit 4e5019216402ad0b4a84cff457b662d26803f103 ]
+commit 39ed7d89b973329cc5c764b65ba6302b17b1907e upstream.
 
-With Clang, there can be a conditional forward jump between the load of
-the jump table address and the indirect branch.
+commit 66d88e16f204 ("dmaengine: fsl-edma: read/write multiple registers
+in cyclic transactions") causes fsl_edma_fill_tcd() to read
+dst_port_window_size and src_port_window_size when building transfer
+control descriptors.
 
-Fixes the following warning:
+Initialize the structure so unset fields are explicitly zero.
 
-  vmlinux.o: warning: objtool: ___bpf_prog_run+0x1c5: sibling call from callable instruction with modified stack frame
-
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
-Link: https://patch.msgid.link/7d8600caed08901b6679767488acd639f6df9688.1773071992.git.jpoimboe@kernel.org
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 66d88e16f204 ("dmaengine: fsl-edma: read/write multiple registers in cyclic transactions")
+Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
+Cc: <stable@vger.kernel.org> # v6.14+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260331182632.888110-1-anthony.pighin@nokia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-imx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 20ccdd60353be..ac4bd2d4fdda6 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1664,12 +1664,11 @@ static void mark_func_jump_tables(struct objtool_file *file,
- 			last = insn;
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -401,7 +401,7 @@ static void i2c_imx_reset_regs(struct im
+ static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx, dma_addr_t phy_addr)
+ {
+ 	struct imx_i2c_dma *dma;
+-	struct dma_slave_config dma_sconfig;
++	struct dma_slave_config dma_sconfig = {};
+ 	struct device *dev = i2c_imx->adapter.dev.parent;
+ 	int ret;
  
- 		/*
--		 * Store back-pointers for unconditional forward jumps such
-+		 * Store back-pointers for forward jumps such
- 		 * that find_jump_table() can back-track using those and
- 		 * avoid some potentially confusing code.
- 		 */
--		if (insn->type == INSN_JUMP_UNCONDITIONAL && insn->jump_dest &&
--		    insn->offset > last->offset &&
-+		if (insn->jump_dest &&
- 		    insn->jump_dest->offset > insn->offset &&
- 		    !insn->jump_dest->first_jump_src) {
- 
--- 
-2.53.0
-
 
 
 
