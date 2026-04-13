@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFJ2KBcg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:51 +0200
+	id GG5cLNUe3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147843F0415
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:55:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5783EFF3A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 97990305119C
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:45:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA84D32750DE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7A131715D;
-	Mon, 13 Apr 2026 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2493093B2;
+	Mon, 13 Apr 2026 16:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6sY4TGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Naq26md0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1345317141;
-	Mon, 13 Apr 2026 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E02628505E;
+	Mon, 13 Apr 2026 16:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098735; cv=none; b=dtHi8ZKFSi/fbdtNsQSR2l6pYt4jBfYR2jMulBJgxjIL9GYjPV/+SNfStNCzyX+qjaC5IpgfuT9ATdCp37pkUG2p5BMw4gIC9BYTdI+OqHBlH1wx8xsVKMPhgsK5AQZuzw8o5FNrY7wYF6alWvJ1Tils66o7ziwZ5DXawU0xIbA=
+	t=1776097556; cv=none; b=LQPnoqi1ZTNhEN26Zb5x4g91RYdQSBe83xXross8sELPN6a6MJjSqarxjdQ7OPAfB5lo7MifAoUURM/iAbk2MGSqMifgHkhLk5q9cPqPCRR/sn5cpKgD7BizvycsWkhyWQeIS//IYmV9yC24UlG0f2m5cbTrnRXGR3cb+vPSab4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098735; c=relaxed/simple;
-	bh=NlZwtqDok6SdB+0JWkY+CEvBU5O4HTxaHapQXI5eKS4=;
+	s=arc-20240116; t=1776097556; c=relaxed/simple;
+	bh=OV1WwmUMUvtvtNDag4HT7Qo6nSGDm8J3EoUz9ktHJvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jr34r1fq+LfikQeXAHy6CzNN3rhMUHcs4Vv41gh3sbTMP7ttsAmX1DfVnAFSeEgyPWDEuET6lYoy8Q/9LXQeuLiv/rtl23y5ol6iIO8EDOdY9XzKeNEtKiFUlUjffLwaNdZ43ZVrbcSz6aRY6FGiYtK59cPMlrm94ByNTpJFsTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6sY4TGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F7AC2BCB3;
-	Mon, 13 Apr 2026 16:45:35 +0000 (UTC)
+	 MIME-Version; b=P9/I7rhG92bq0qUr0WCx7fsjs2WP4VXupgNcRswTqx/HRyKlIaF83gZk08HCvQYaT5oz/ANIEgg55BgqABbDRf8+zlSAae27NosDpB9Nt/NO6fGrbuCNQ3kKv5/73nt9kPtNMScThLyG8GKe6/QmH3il2b4AwuVGwsFKE+C+Iyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Naq26md0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F86C2BCB6;
+	Mon, 13 Apr 2026 16:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098735;
-	bh=NlZwtqDok6SdB+0JWkY+CEvBU5O4HTxaHapQXI5eKS4=;
+	s=korg; t=1776097556;
+	bh=OV1WwmUMUvtvtNDag4HT7Qo6nSGDm8J3EoUz9ktHJvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6sY4TGjfakav5YECY0tvsfn07l0W3jBupi+86MxWsdmSojnUn1DqJsGzh1RdKimh
-	 5/pe4lN2ny3mgnv0jmQSEqBf91rnwexCVzLz4tUc9x7r+BUfFuPXlm/sgjsE3hYUQm
-	 VS1RXuTBDZrxCXGzG+bLSD1OxtE77ZOxyBUpEMl4=
+	b=Naq26md0aJNdAEt6UNI0sihZeS6jcYKAxnMuKwBYRxxvx5nyyr11ED9N1wYWcnxQt
+	 Ulf5dKQX9NO9vH4oyW14kGB3/ofhVUtC/ZHCoj79cNkRajHgLCVS3EqLZz4pT1gcUU
+	 x7DpwYCbRptOYnInsb9iyt8RkZotBFzktEnC5o6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/491] ASoC: soc-core: move snd_soc_runtime_set_dai_fmt() to upside
-Date: Mon, 13 Apr 2026 17:55:12 +0200
-Message-ID: <20260413155821.555359112@linuxfoundation.org>
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 182/570] iio: dac: ds4424: reject -128 RAW value
+Date: Mon, 13 Apr 2026 17:55:13 +0200
+Message-ID: <20260413155837.274727464@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237157-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236691-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,177 +89,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email]
-X-Rspamd-Queue-Id: 147843F0415
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2D5783EFF3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 4d1a98b5f1abaad0ba7177fdb389a9f78584bc3a ]
+commit 5187e03b817c26c1c3bcb2645a612ea935c4be89 upstream.
 
-This patch moves snd_soc_runtime_set_dai_fmt() to upside.
-This is prepare to support snd_soc_runtime_get_dai_fmt().
+The DS442x DAC uses sign-magnitude encoding, so -128 cannot be represented
+in hardware (7-bit magnitude).
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/r/87im34nc9r.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 95bc5c225513 ("ASoC: soc-core: flush delayed work before removing DAIs and widgets")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Previously, passing -128 resulted in a truncated value that programmed
+0mA (magnitude 0) instead of the expected maximum negative current,
+effectively failing silently.
+
+Reject -128 to avoid producing the wrong current.
+
+Fixes: d632a2bd8ffc ("iio: dac: ds4422/ds4424 dac driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-core.c | 124 +++++++++++++++++++++----------------------
- 1 file changed, 62 insertions(+), 62 deletions(-)
+ drivers/iio/dac/ds4424.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 8620e415f6fce..71219ceea3934 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1055,6 +1055,68 @@ int snd_soc_add_pcm_runtime(struct snd_soc_card *card,
- }
- EXPORT_SYMBOL_GPL(snd_soc_add_pcm_runtime);
+--- a/drivers/iio/dac/ds4424.c
++++ b/drivers/iio/dac/ds4424.c
+@@ -141,7 +141,7 @@ static int ds4424_write_raw(struct iio_d
  
-+/**
-+ * snd_soc_runtime_set_dai_fmt() - Change DAI link format for a ASoC runtime
-+ * @rtd: The runtime for which the DAI link format should be changed
-+ * @dai_fmt: The new DAI link format
-+ *
-+ * This function updates the DAI link format for all DAIs connected to the DAI
-+ * link for the specified runtime.
-+ *
-+ * Note: For setups with a static format set the dai_fmt field in the
-+ * corresponding snd_dai_link struct instead of using this function.
-+ *
-+ * Returns 0 on success, otherwise a negative error code.
-+ */
-+int snd_soc_runtime_set_dai_fmt(struct snd_soc_pcm_runtime *rtd,
-+				unsigned int dai_fmt)
-+{
-+	struct snd_soc_dai *cpu_dai;
-+	struct snd_soc_dai *codec_dai;
-+	unsigned int inv_dai_fmt;
-+	unsigned int i;
-+	int ret;
-+
-+	for_each_rtd_codec_dais(rtd, i, codec_dai) {
-+		ret = snd_soc_dai_set_fmt(codec_dai, dai_fmt);
-+		if (ret != 0 && ret != -ENOTSUPP)
-+			return ret;
-+	}
-+
-+	/*
-+	 * Flip the polarity for the "CPU" end of a CODEC<->CODEC link
-+	 * the component which has non_legacy_dai_naming is Codec
-+	 */
-+	inv_dai_fmt = dai_fmt & ~SND_SOC_DAIFMT_MASTER_MASK;
-+	switch (dai_fmt & SND_SOC_DAIFMT_MASTER_MASK) {
-+	case SND_SOC_DAIFMT_CBM_CFM:
-+		inv_dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
-+		break;
-+	case SND_SOC_DAIFMT_CBM_CFS:
-+		inv_dai_fmt |= SND_SOC_DAIFMT_CBS_CFM;
-+		break;
-+	case SND_SOC_DAIFMT_CBS_CFM:
-+		inv_dai_fmt |= SND_SOC_DAIFMT_CBM_CFS;
-+		break;
-+	case SND_SOC_DAIFMT_CBS_CFS:
-+		inv_dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
-+		break;
-+	}
-+	for_each_rtd_cpu_dais(rtd, i, cpu_dai) {
-+		unsigned int fmt = dai_fmt;
-+
-+		if (cpu_dai->component->driver->non_legacy_dai_naming)
-+			fmt = inv_dai_fmt;
-+
-+		ret = snd_soc_dai_set_fmt(cpu_dai, fmt);
-+		if (ret != 0 && ret != -ENOTSUPP)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(snd_soc_runtime_set_dai_fmt);
-+
- static int soc_init_pcm_runtime(struct snd_soc_card *card,
- 				struct snd_soc_pcm_runtime *rtd)
- {
-@@ -1404,68 +1466,6 @@ static void soc_remove_aux_devices(struct snd_soc_card *card)
- 	}
- }
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		if (val < S8_MIN || val > S8_MAX)
++		if (val <= S8_MIN || val > S8_MAX)
+ 			return -EINVAL;
  
--/**
-- * snd_soc_runtime_set_dai_fmt() - Change DAI link format for a ASoC runtime
-- * @rtd: The runtime for which the DAI link format should be changed
-- * @dai_fmt: The new DAI link format
-- *
-- * This function updates the DAI link format for all DAIs connected to the DAI
-- * link for the specified runtime.
-- *
-- * Note: For setups with a static format set the dai_fmt field in the
-- * corresponding snd_dai_link struct instead of using this function.
-- *
-- * Returns 0 on success, otherwise a negative error code.
-- */
--int snd_soc_runtime_set_dai_fmt(struct snd_soc_pcm_runtime *rtd,
--	unsigned int dai_fmt)
--{
--	struct snd_soc_dai *cpu_dai;
--	struct snd_soc_dai *codec_dai;
--	unsigned int inv_dai_fmt;
--	unsigned int i;
--	int ret;
--
--	for_each_rtd_codec_dais(rtd, i, codec_dai) {
--		ret = snd_soc_dai_set_fmt(codec_dai, dai_fmt);
--		if (ret != 0 && ret != -ENOTSUPP)
--			return ret;
--	}
--
--	/*
--	 * Flip the polarity for the "CPU" end of a CODEC<->CODEC link
--	 * the component which has non_legacy_dai_naming is Codec
--	 */
--	inv_dai_fmt = dai_fmt & ~SND_SOC_DAIFMT_MASTER_MASK;
--	switch (dai_fmt & SND_SOC_DAIFMT_MASTER_MASK) {
--	case SND_SOC_DAIFMT_CBM_CFM:
--		inv_dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
--		break;
--	case SND_SOC_DAIFMT_CBM_CFS:
--		inv_dai_fmt |= SND_SOC_DAIFMT_CBS_CFM;
--		break;
--	case SND_SOC_DAIFMT_CBS_CFM:
--		inv_dai_fmt |= SND_SOC_DAIFMT_CBM_CFS;
--		break;
--	case SND_SOC_DAIFMT_CBS_CFS:
--		inv_dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
--		break;
--	}
--	for_each_rtd_cpu_dais(rtd, i, cpu_dai) {
--		unsigned int fmt = dai_fmt;
--
--		if (cpu_dai->component->driver->non_legacy_dai_naming)
--			fmt = inv_dai_fmt;
--
--		ret = snd_soc_dai_set_fmt(cpu_dai, fmt);
--		if (ret != 0 && ret != -ENOTSUPP)
--			return ret;
--	}
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(snd_soc_runtime_set_dai_fmt);
--
- #ifdef CONFIG_DMI
- /*
-  * If a DMI filed contain strings in this blacklist (e.g.
--- 
-2.51.0
-
+ 		if (val > 0) {
 
 
 
