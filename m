@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-236641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BitINMb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:39 +0200
+	id 2I2cKhIZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5DC3EF699
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECC13EEE62
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D047530C34FD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD1E6302A353
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74C2309DB5;
-	Mon, 13 Apr 2026 16:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787BD2DF12F;
+	Mon, 13 Apr 2026 16:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbiShMLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGERWDoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8A8306B0A;
-	Mon, 13 Apr 2026 16:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B6A2F8BC3;
+	Mon, 13 Apr 2026 16:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097427; cv=none; b=nYUY/xnP1egceU0rRzSVfPPUboyOlU6P9XrVL9xOL1nu297eef/zBqzKBsirGAby3q222LJxjOMeG7WaFTQDRpnWqOU6SugypDwXlcsgbPW/a14dNj2SqsYzGbi23Vr9N2fgYsw2/QaDwaGncXRC13ZdzWdHw7n5iKRzflgt4qE=
+	t=1776097430; cv=none; b=dCE0VlbRcb3+/1/3fv6cxiZ8IylodXDUvOb1GLjwMoOOKZNLY/WaKaYLnb/khiCNQtnZIxzLkigWyACo22kfQXpyuzG6aRIGm7kNa0AY/HdEkuOjk1a9tgq3EzGZu0lC8gTnLOpPLNk3U6EL66IybFp7/dmBl29GQxbZGlw/4Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097427; c=relaxed/simple;
-	bh=iKbN5P+orpP6WXW7QC1LRMZB+URopdZ8DuBOkMB6HjQ=;
+	s=arc-20240116; t=1776097430; c=relaxed/simple;
+	bh=Vc9KChwtCqiwLTxH6/O41xRFos9nqr9A5Iej+KistZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTZ/BlojEZbff/BnSCPcVkv0Jx23UVQS0oNZo5dg/tvac0cihDSsIa/Uq9XAwunNVbGVcSOSV1N0LzGQ8pgyB7jqJmM3/y2L1ASB0AKStq46HlfvX8ltHP8yDASzErBaaxN0Qti7N2WXMN0MEKpFkF02m4H7YzNJaonPc0Yb1MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbiShMLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18596C2BCAF;
-	Mon, 13 Apr 2026 16:23:46 +0000 (UTC)
+	 MIME-Version; b=ID8/nfNdmjTQkUHbU5sulip0M0sTWQypmPbzKZFGQA8w3vWv46pjk+hSwLaz9GXw80QxN3T3NrIaaVfDisWCX10XulMuqvPh04oJxm20scqFGSwsAi9+UNpn0J6O/CsU8bm3TCU8fqa2OHBQForMJkHBv6XgHFKDOsjoHPNQpME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGERWDoO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0956C2BCB0;
+	Mon, 13 Apr 2026 16:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097427;
-	bh=iKbN5P+orpP6WXW7QC1LRMZB+URopdZ8DuBOkMB6HjQ=;
+	s=korg; t=1776097430;
+	bh=Vc9KChwtCqiwLTxH6/O41xRFos9nqr9A5Iej+KistZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbiShMLUJ+0DNvK6I0895ZyM/MMj7QAYQCDIllUfOupJLmhCmK8ERp5wV2PzkQogJ
-	 0R/kh3GzGyLa6HOLvpPPLeG9Q9JL8E/MVDmTvOJ404Ft2uWaFWDxOu6sezz+cc4GlS
-	 Ml1CkQ/lEd2ctEKuMLNJynk/mKnelXsoG3bfhMNU=
+	b=ZGERWDoOsxk9H1iNPcE0Tn8Ual+86empwaoNFDKpjrMKtTh99aQ0vp8wNQyWCtu33
+	 gCpUlPys1vstIPZHgc3DKz3FIUtdIdejpCeMHN6VaeTxwAt4qH2U1Jxt7epFUu/TmK
+	 LtXXDvr/KHrzyhvFOztEdcvN2wTa1VpROfw8qJrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 133/570] net: usb: lan78xx: skip LTM configuration for LAN7850
-Date: Mon, 13 Apr 2026 17:54:24 +0200
-Message-ID: <20260413155835.426166711@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>
+Subject: [PATCH 5.15 134/570] usb/core/quirks: Add Huawei ME906S-device to wakeup quirk
+Date: Mon, 13 Apr 2026 17:54:25 +0200
+Message-ID: <20260413155835.463483855@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236641-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236642-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,pengutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9E5DC3EF699
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tuxedocomputers.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 6ECC13EEE62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,47 +99,37 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit d9cc0e440f0664f6f3e2c26e39ab9dd5f3badba7 upstream.
+commit 0326ff28d56b4fa202de36ffc8462a354f383a64 upstream.
 
-Do not configure Latency Tolerance Messaging (LTM) on USB 2.0 hardware.
+Similar to other Huawei LTE modules using this quirk, this version with
+another vid/pid suffers from spurious wakeups.
 
-The LAN7850 is a High-Speed (USB 2.0) only device and does not support
-SuperSpeed features like LTM. Currently, the driver unconditionally
-attempts to configure LTM registers during initialization. On the
-LAN7850, these registers do not exist, resulting in writes to invalid
-or undocumented memory space.
+Setting the quirk fixes the issue for this device as well.
 
-This issue was identified during a port to the regmap API with strict
-register validation enabled. While no functional issues or crashes have
-been observed from these invalid writes, bypassing LTM initialization
-on the LAN7850 ensures the driver strictly adheres to the hardware's
-valid register map.
-
-Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260305143429.530909-4-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260306172817.2098898-1-wse@tuxedocomputers.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c |    4 ++++
+ drivers/usb/core/quirks.c |    4 ++++
  1 file changed, 4 insertions(+)
 
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2518,6 +2518,10 @@ static void lan78xx_init_ltm(struct lan7
- 	u32 buf;
- 	u32 regs[6] = { 0 };
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -205,6 +205,10 @@ static const struct usb_device_id usb_qu
+ 	/* HP v222w 16GB Mini USB Drive */
+ 	{ USB_DEVICE(0x03f0, 0x3f40), .driver_info = USB_QUIRK_DELAY_INIT },
  
-+	/* LAN7850 is USB 2.0 and does not support LTM */
-+	if (dev->chipid == ID_REV_CHIP_ID_7850_)
-+		return;
++	/* Huawei 4G LTE module ME906S  */
++	{ USB_DEVICE(0x03f0, 0xa31d), .driver_info =
++			USB_QUIRK_DISCONNECT_SUSPEND },
 +
- 	ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
- 	if (buf & USB_CFG1_LTM_ENABLE_) {
- 		u8 temp[2];
+ 	/* Creative SB Audigy 2 NX */
+ 	{ USB_DEVICE(0x041e, 0x3020), .driver_info = USB_QUIRK_RESET_RESUME },
+ 
 
 
 
