@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-236181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236990-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOSMAggW3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:56 +0200
+	id 2LuyLPYe3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236990-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2063EE6F5
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70483EFFA9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC9AF30C11FC
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:04:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E655306F926
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0701248880;
-	Mon, 13 Apr 2026 16:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9308F2D5A19;
+	Mon, 13 Apr 2026 16:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXV9kRpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqT+Y3aT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF624DCF6;
-	Mon, 13 Apr 2026 16:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5636130DD3C;
+	Mon, 13 Apr 2026 16:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096251; cv=none; b=QVgl3Otl9Lrav65snAoBaluDf1XRMLkDkj712/FaiRKVsO/V6jBb4SSGRX6kk73fCcI4CyY+12s+NwHFyBJLfRBli4Ouqn7QyhrrBQmtzmcM3WPlx17in1Uw+zuEOhnZfEdITIbcUDz6NX/kiPk2LV7TM19wYk+PIXenX80ZvjU=
+	t=1776098308; cv=none; b=dVo5Ffc85mxYltfc9yuismf8BR9OkUk+WPTzwqCBuhK1+tD3m5BsvwWHfQiczIhlaO69NNYIRAH5oLBG7RLua5yhS+Qau0KnjtfVAMVcr+AKOCCSdrzy05cL7aJOrnhdrzxAwGXxphpgT76xpqZi5u+vv92lWrdAD0a+TV8JQ6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096251; c=relaxed/simple;
-	bh=ll0qtaeJotfv9NP9LTqdNCkhbwYS/06MTCSbx9pNq1o=;
+	s=arc-20240116; t=1776098308; c=relaxed/simple;
+	bh=ZNHsIWthQiohQTfaOUGis4HxlEE2kXNqM3JGxbs+GpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o7WGqZYeEh0hgVWYx2mbDDqjkjN/tHNm1PdGkY+0XUnX8AMTf9d9GzeyJeL/uGcQxpOEbf6RN3dPnPvUJQ3PRjRh8emoeabwheBBZbqT+9tdsmCKDpdYfsIO/vdwQRUgRqGA6pXroNcHyi4Qk0y5SIn+rJlSgykU95rMUpBClWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXV9kRpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A05AC2BCAF;
-	Mon, 13 Apr 2026 16:04:10 +0000 (UTC)
+	 MIME-Version; b=U1NrzC26G5FOBlh8uA+02y8o35kd2LmX9iYTkqpbX0jvSGMvVvv62JxCmPfl8aqFaZG3NUR8sv5iec3+yf6zKct1EFHIutE7tWsDGiVTLTjr8sGf16NMjSaogEoo7d8kf4e/6LAMlSRXxZ9yMT6M5ycK0WPH79jIgTt1Q2p4Rqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqT+Y3aT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12E0C2BCAF;
+	Mon, 13 Apr 2026 16:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096251;
-	bh=ll0qtaeJotfv9NP9LTqdNCkhbwYS/06MTCSbx9pNq1o=;
+	s=korg; t=1776098308;
+	bh=ZNHsIWthQiohQTfaOUGis4HxlEE2kXNqM3JGxbs+GpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXV9kRpMJ3nHOY+YId7hzt1OGCbpp7wP+bpHTcHgagZeR3AdHA9qLcvrENPVuYdMO
-	 nC2Mv5dGTABd6cVJVeosZH77tVGQ6sRBABsXMsoHdyQ8FubPXuf51VLMSrkuqfh2WO
-	 oft8Qj//+VGB9LRMLRp31Zwuxnau8S7CX4SRQhRE=
+	b=gqT+Y3aTXSDfOsspXAY3HUyzUaFaCQKmDaWoDWIuwlHmG8SQ9HcLB3boLW5VWR/w7
+	 YzTrHO9ZvS29ivWx4qpmAEtIGjPxTvjU4FyQ6g+YwoT70Vby5l+oVJhHyMFFUU3uD3
+	 /oPvaQbssUE+MEpuKAjI5Mq1LZcZf3zS8LAiSuY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Glass <sjg@chromium.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Janne Grunau <j@jannau.net>,
-	Nicolas Schier <nsc@kernel.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 6.19 25/86] kbuild: modules-cpio-pkg: Respect INSTALL_MOD_PATH
-Date: Mon, 13 Apr 2026 17:59:32 +0200
-Message-ID: <20260413155732.512946666@linuxfoundation.org>
+	Vincent Chen <vincent.chen@sifive.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 442/570] riscv: kgdb: fix several debug register assignment bugs
+Date: Mon, 13 Apr 2026 17:59:33 +0200
+Message-ID: <20260413155847.029605333@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +63,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236181-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236990-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,chromium.org:email,linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email]
-X-Rspamd-Queue-Id: 6D2063EE6F5
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sifive.com:email]
+X-Rspamd-Queue-Id: A70483EFFA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Paul Walmsley <pjw@kernel.org>
 
-commit 742de64b62b690a368dbeb846499eb8ac8ceedb9 upstream.
+[ Upstream commit 834911eb8eef2501485d819b4eabebadc25c3497 ]
 
-The modules-cpio-pkg target added in commit 2a9c8c0b59d3 ("kbuild: add
-target to build a cpio containing modules") is incompatible with
-initramfs with merged /lib and /usr/lib directories [1]. "/lib" cannot
-be a link and directory at the same time.
-Respect a non-empty INSTALL_MOD_PATH in the modules-cpio-pkg target so
-that `make INSTALL_MOD_PATH=/usr modules-cpio-pkg` results in the same
-module install location as `make INSTALL_MOD_PATH=/usr modules_install`.
+Fix several bugs in the RISC-V kgdb implementation:
 
-Tested with Fedora distribution initramfs produced by dracut.
+- The element of dbg_reg_def[] that is supposed to pertain to the S1
+  register embeds instead the struct pt_regs offset of the A1
+  register.  Fix this to use the S1 register offset in struct pt_regs.
 
-Link: https://systemd.io/THE_CASE_FOR_THE_USR_MERGE/ [1]
-Fixes: 2a9c8c0b59d3 ("kbuild: add target to build a cpio containing modules")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Glass <sjg@chromium.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Tested-by: Nicolas Schier <nsc@kernel.org>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://patch.msgid.link/20260327-kbuild-modules-cpio-pkg-usr-merge-v3-1-ef507dfa006c@jannau.net
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- The sleeping_thread_to_gdb_regs() function copies the value of the
+  S10 register into the gdb_regs[] array element meant for the S9
+  register, and copies the value of the S11 register into the array
+  element meant for the S10 register.  It also neglects to copy the
+  value of the S11 register.  Fix all of these issues.
+
+Fixes: fe89bd2be8667 ("riscv: Add KGDB support")
+Cc: Vincent Chen <vincent.chen@sifive.com>
+Link: https://patch.msgid.link/fde376f8-bcfd-bfe4-e467-07d8f7608d05@kernel.org
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.package |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/kgdb.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/scripts/Makefile.package
-+++ b/scripts/Makefile.package
-@@ -195,7 +195,7 @@ tar%-pkg: linux-$(KERNELRELEASE)-$(ARCH)
- .tmp_modules_cpio: FORCE
- 	$(Q)$(MAKE) -f $(srctree)/Makefile
- 	$(Q)rm -rf $@
--	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@ modules_install
-+	$(Q)$(MAKE) -f $(srctree)/Makefile INSTALL_MOD_PATH=$@/$(INSTALL_MOD_PATH) modules_install
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 1d83b36967212..eb737c7a563b9 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -194,7 +194,7 @@ struct dbg_reg_def_t dbg_reg_def[DBG_MAX_REG_NUM] = {
+ 	{DBG_REG_T1, GDB_SIZEOF_REG, offsetof(struct pt_regs, t1)},
+ 	{DBG_REG_T2, GDB_SIZEOF_REG, offsetof(struct pt_regs, t2)},
+ 	{DBG_REG_FP, GDB_SIZEOF_REG, offsetof(struct pt_regs, s0)},
+-	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
++	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, s1)},
+ 	{DBG_REG_A0, GDB_SIZEOF_REG, offsetof(struct pt_regs, a0)},
+ 	{DBG_REG_A1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
+ 	{DBG_REG_A2, GDB_SIZEOF_REG, offsetof(struct pt_regs, a2)},
+@@ -263,8 +263,9 @@ sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *task)
+ 	gdb_regs[DBG_REG_S6_OFF] = task->thread.s[6];
+ 	gdb_regs[DBG_REG_S7_OFF] = task->thread.s[7];
+ 	gdb_regs[DBG_REG_S8_OFF] = task->thread.s[8];
+-	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[10];
+-	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[11];
++	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[9];
++	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[10];
++	gdb_regs[DBG_REG_S11_OFF] = task->thread.s[11];
+ 	gdb_regs[DBG_REG_EPC_OFF] = task->thread.ra;
+ }
  
- quiet_cmd_cpio = CPIO    $@
-       cmd_cpio = $(CONFIG_SHELL) $(srctree)/usr/gen_initramfs.sh -o $@ $<
-@@ -265,6 +265,7 @@ help:
- 	@echo '  tarxz-pkg           - Build the kernel as a xz compressed tarball'
- 	@echo '  tarzst-pkg          - Build the kernel as a zstd compressed tarball'
- 	@echo '  modules-cpio-pkg    - Build the kernel modules as cpio archive'
-+	@echo '                        (uses INSTALL_MOD_PATH inside the archive)'
- 	@echo '  perf-tar-src-pkg    - Build the perf source tarball with no compression'
- 	@echo '  perf-targz-src-pkg  - Build the perf source tarball with gzip compression'
- 	@echo '  perf-tarbz2-src-pkg - Build the perf source tarball with bz2 compression'
+-- 
+2.53.0
+
 
 
 
