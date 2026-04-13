@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-236845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKx2Gs8c3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:51 +0200
+	id QGnsI6Ih3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1F23EF860
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5913F08D5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 501F0302D58A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3CAC30AC89F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741E827466A;
-	Mon, 13 Apr 2026 16:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64951317153;
+	Mon, 13 Apr 2026 16:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRzBXrlf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8eyX/Xc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38571238D27;
-	Mon, 13 Apr 2026 16:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250F831619A;
+	Mon, 13 Apr 2026 16:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097940; cv=none; b=N74WjX+IegkkumpNJaHj0yuUhrL6jHVISj9sSLx/dXFXKKqvIlGR0LF5eg12XuynW0R0X3DohovotngqWqPGLrQjc5ZXhZXQ6wA667kQsg4uFIIZpX6PciD9JpvVsh068FrQCoBto+mrqUsWXChMCGdLb6nGxb+xHyfFKi9GHTs=
+	t=1776099037; cv=none; b=ae+x+D7GKNvTmz0H/4s3ZQA9nS3bduDQ+mdhumvOmX4gDxJlw/zD76EnMNKruHWEZLl654eP6zG2stApZwzodryCHu4N3MDV8F/j7QMx+GDWPxHSuSI6197PWSNCC+zqu9StIzYxVXnUzWKk54N2B7jg5iDRofVUWWDPCZGbuIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097940; c=relaxed/simple;
-	bh=rlbAQZ0OvzQcak6ttHdV35YclqqmYVA9YSUmpaJCLz4=;
+	s=arc-20240116; t=1776099037; c=relaxed/simple;
+	bh=2vGt8B9yvo7iD211sqI5qf1UzUmJFjxcqLH79avhmBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rX9hem4bjT6c7oq1I3RavhzF1ZLoLLmbmJAyDWLBUbpluenFjQhOVkO5Ju0i8vG/SbSmTz0v4W3/YthWErHdWqo0Dx/CsyzxN1eNAAoEmJrwSolNxGetBOUF0kucFyAIHx8gHGWFlAlhLKbtA97CcC5ryFL/DVES4O08nS6hzac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRzBXrlf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24D5C2BCAF;
-	Mon, 13 Apr 2026 16:32:19 +0000 (UTC)
+	 MIME-Version; b=oJQuH3D7ICDm8CvfPWFoVYRHOs19SAChDI2BGDquNGP97qMZaUQoSjKIpnO/M2cSMIaIcykenNLpnrj/k7GhMLlzEb6H+NGQosfUTpE42uDCXCPJN/WnDrDyu80Pb3gY50YzHUppznlzKRbFUhWMESzvFLjofFMB7Q9RXvV9qTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8eyX/Xc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0028C2BCAF;
+	Mon, 13 Apr 2026 16:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097940;
-	bh=rlbAQZ0OvzQcak6ttHdV35YclqqmYVA9YSUmpaJCLz4=;
+	s=korg; t=1776099037;
+	bh=2vGt8B9yvo7iD211sqI5qf1UzUmJFjxcqLH79avhmBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRzBXrlf460/l9gR7IMhxBXvyeH9Alr6h7/Aes9Q0CSWvB2+OXS5vr+YP8cwyk+Od
-	 4Xaqnd05T7JJir7lAnpaQRPvtu5F9TV94VqzfKylPVBDcYSzdjS9YZhI9NehVKIXw6
-	 KNE64sDCPYlnbiyQTd2poZk2CDpWAss23yPrgDh0=
+	b=Y8eyX/XceBJSegwXQwG5f82FkMvkonzWddBgNGQsoQv5y/3JIRrAcnXnbaZSAcW0L
+	 eh4TQc16c1UIgo+r/JVdJX3lnbvE0mr7NwXIvalQPNjNroYdeWvervHoToJNm/QOCo
+	 GmF/YhqQW+FKuaJSXCAhqjfZdelXJmE7pkNse1ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leif Skunberg <diamondback@cohunt.app>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kees Cook <kees@kernel.org>,
+	linux-hardening@vger.kernel.org,
+	Finn Thain <fthain@linux-m68k.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 300/570] platform/x86: intel-hid: Enable 5-button array on ThinkPad X1 Fold 16 Gen 1
+Subject: [PATCH 5.10 186/491] mtd: Avoid boot crash in RedBoot partition table parser
 Date: Mon, 13 Apr 2026 17:57:11 +0200
-Message-ID: <20260413155841.738933215@linuxfoundation.org>
+Message-ID: <20260413155826.028841014@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +65,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236845-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237275-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BF1F23EF860
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-m68k.org:email]
+X-Rspamd-Queue-Id: 0F5913F08D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leif Skunberg <diamondback@cohunt.app>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit b38d478dad79e61e8a65931021bdfd7a71741212 ]
+[ Upstream commit 8e2f8020270af7777d49c2e7132260983e4fc566 ]
 
-The Lenovo ThinkPad X1 Fold 16 Gen 1 has physical volume up/down
-buttons that are handled through the intel-hid 5-button array
-interface. The firmware does not advertise 5-button array support via
-HEBC, so the driver relies on a DMI allowlist to enable it.
+Given CONFIG_FORTIFY_SOURCE=y and a recent compiler,
+commit 439a1bcac648 ("fortify: Use __builtin_dynamic_object_size() when
+available") produces the warning below and an oops.
 
-Add the ThinkPad X1 Fold 16 Gen 1 to the button_array_table so the
-volume buttons work out of the box.
+    Searching for RedBoot partition table in 50000000.flash at offset 0x7e0000
+    ------------[ cut here ]------------
+    WARNING: lib/string_helpers.c:1035 at 0xc029e04c, CPU#0: swapper/0/1
+    memcmp: detected buffer overflow: 15 byte read of buffer size 14
+    Modules linked in:
+    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.19.0 #1 NONE
 
-Signed-off-by: Leif Skunberg <diamondback@cohunt.app>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260210085625.34380-1-diamondback@cohunt.app
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+As Kees said, "'names' is pointing to the final 'namelen' many bytes
+of the allocation ... 'namelen' could be basically any length at all.
+This fortify warning looks legit to me -- this code used to be reading
+beyond the end of the allocation."
+
+Since the size of the dynamic allocation is calculated with strlen()
+we can use strcmp() instead of memcmp() and remain within bounds.
+
+Cc: Kees Cook <kees@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: linux-hardening@vger.kernel.org
+Link: https://lore.kernel.org/all/202602151911.AD092DFFCD@keescook/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/hid.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/parsers/redboot.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 6331469ee6585..cbc4ec2f8479b 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -102,6 +102,13 @@ static const struct dmi_system_id button_array_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Tablet Gen 2"),
- 		},
- 	},
-+	{
-+		.ident = "Lenovo ThinkPad X1 Fold 16 Gen 1",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Fold 16 Gen 1"),
-+		},
-+	},
- 	{
- 		.ident = "Microsoft Surface Go 3",
- 		.matches = {
--- 
-2.51.0
-
+--- a/drivers/mtd/parsers/redboot.c
++++ b/drivers/mtd/parsers/redboot.c
+@@ -270,9 +270,9 @@ nogood:
+ 
+ 		strcpy(names, fl->img->name);
+ #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
+-		if (!memcmp(names, "RedBoot", 8) ||
+-		    !memcmp(names, "RedBoot config", 15) ||
+-		    !memcmp(names, "FIS directory", 14)) {
++		if (!strcmp(names, "RedBoot") ||
++		    !strcmp(names, "RedBoot config") ||
++		    !strcmp(names, "FIS directory")) {
+ 			parts[i].mask_flags = MTD_WRITEABLE;
+ 		}
+ #endif
 
 
 
