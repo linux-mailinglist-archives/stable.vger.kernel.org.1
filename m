@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-236360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HceNOIZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:22 +0200
+	id QFheDpEe3WmSaAkAu9opvQ
+	(envelope-from <stable+bounces-237012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2CA3EF117
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:29:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AF43EFE1C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9626030951AE
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 575C0309DF09
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FDA3093B2;
-	Mon, 13 Apr 2026 16:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93177307AC7;
+	Mon, 13 Apr 2026 16:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Puq/e/iT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEOaAO4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C09228CF4A;
-	Mon, 13 Apr 2026 16:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572E724E4A1;
+	Mon, 13 Apr 2026 16:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096705; cv=none; b=F6HLqIvi5u7457K5zc1DmSO8aD6/+iCmSmEpWlFxZA0AnYi1MhHS2yb+74AP6iHbSOlr75BoR2l069h2nt0FzZxsfghZo5hdKai5msGZRpeH2IfWuYrDGFXmNPrygWxRDz10krMcJ3B7fzOLi9Rlu9mtjNdk1nPaK2qRbgLyv1o=
+	t=1776098362; cv=none; b=qzAqMN/E68xgTQ5SDCdD3Xc8mHHoDfquC6lpn81Op1FSjj4CoZakm3cSPTbEdYrTXhN+k4cC7AdVAqQAp6g77qMJ/Ej63vExkIgExkt0v/wKEv3IwrxUWzerhXAzLwRHMKmmWWUOYkCZwokH4optVhykdy3UWXjJmwi1ECqDzY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096705; c=relaxed/simple;
-	bh=FfLj/7tx+lQ01RyL8cbN00iUj+uQuMhSbA7qVyX05Cs=;
+	s=arc-20240116; t=1776098362; c=relaxed/simple;
+	bh=g/Qhh8lpvoOzakLzoZ36koauOmsnUvvE9+wHazlVYjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewgoC0U6otzztzdy5IB7fkXMIPd47X23c+LJNpqjAa3xe99FC3D8ZONV9sE15qCW3JCM57ZnlqhkXwI9KPz0oFKe1mlTufiDzfuJRpVA5f/TGyaqMZwRUYM8tH+gvPE0eALIm0vE8QcoNVKJIy1zU7WBfRmrRU9q8HeRHk7R/GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Puq/e/iT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D0BC2BCB0;
-	Mon, 13 Apr 2026 16:11:44 +0000 (UTC)
+	 MIME-Version; b=Z4sJYqcyARodYoK4ATx/PsS29WjSJ05rR/TJcB15dsn8zKcLtoB+/GZQyNfzwpXGEXj3awYyVn5wIinNGy5jLo6fBOZSksu1633NVwH8erwOSfQCTbGqyYKU60KsB96NYKDJT3ov6C/1+fdLKJUxsrJ+Yr9SP1dBYUzx2edFLdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEOaAO4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11FEC2BCAF;
+	Mon, 13 Apr 2026 16:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096704;
-	bh=FfLj/7tx+lQ01RyL8cbN00iUj+uQuMhSbA7qVyX05Cs=;
+	s=korg; t=1776098362;
+	bh=g/Qhh8lpvoOzakLzoZ36koauOmsnUvvE9+wHazlVYjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Puq/e/iTBgjtNtNGcp8ACgHBn53LW+UsqQcKX6fQ67DY0xgsKwiMARXh7nQHp6l96
-	 aPgzAovUOO74w+CKXrsnzNPo1AYRfSSO4cCyTdhS6DssX1mJiW40bsqC4mE2ovMNL0
-	 K5npwrI3bAgemhAI4S5QkZJpg4h7o2zPkrd2aHZ0=
+	b=oEOaAO4+Jac5e/ghre77kMVDzK8r7AgRUoE4mc5NcCN+Wt0f2J6HpFqIaQKpts7UK
+	 ADiXHJXpDnkLuLNWlmdy19wemBPzYi6zgCoQkbh2MXnbQaI+FFZUKUfrrqMeEoOJeY
+	 s3ukEIKb/ZJjAsRIz3vTqRFQrThxedcOPzBPDtFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuan Do <tuan@calif.io>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.12 31/70] netfilter: nft_ct: fix use-after-free in timeout object destroy
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
+	Johnny Hao <johnny_haocn@sina.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 495/570] fbcon: Set fb_display[i]->mode to NULL when the mode is released
 Date: Mon, 13 Apr 2026 18:00:26 +0200
-Message-ID: <20260413155729.350704276@linuxfoundation.org>
+Message-ID: <20260413155849.000667410@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +70,162 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,suse.de,gmx.de,sina.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237012-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236360-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[calif.io:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ED2CA3EF117
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,gmx.de:email,sina.com:email,syz.xxx:url]
+X-Rspamd-Queue-Id: A9AF43EFE1C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuan Do <tuan@calif.io>
+From: Quanmin Yan <yanquanmin1@huawei.com>
 
-commit f8dca15a1b190787bbd03285304b569631160eda upstream.
+[ Upstream commit a1f3058930745d2b938b6b4f5bd9630dc74b26b7 ]
 
-nft_ct_timeout_obj_destroy() frees the timeout object with kfree()
-immediately after nf_ct_untimeout(), without waiting for an RCU grace
-period. Concurrent packet processing on other CPUs may still hold
-RCU-protected references to the timeout object obtained via
-rcu_dereference() in nf_ct_timeout_data().
+Recently, we discovered the following issue through syzkaller:
 
-Add an rcu_head to struct nf_ct_timeout and use kfree_rcu() to defer
-freeing until after an RCU grace period, matching the approach already
-used in nfnetlink_cttimeout.c.
+BUG: KASAN: slab-use-after-free in fb_mode_is_equal+0x285/0x2f0
+Read of size 4 at addr ff11000001b3c69c by task syz.xxx
+...
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xab/0xe0
+ print_address_description.constprop.0+0x2c/0x390
+ print_report+0xb9/0x280
+ kasan_report+0xb8/0xf0
+ fb_mode_is_equal+0x285/0x2f0
+ fbcon_mode_deleted+0x129/0x180
+ fb_set_var+0xe7f/0x11d0
+ do_fb_ioctl+0x6a0/0x750
+ fb_ioctl+0xe0/0x140
+ __x64_sys_ioctl+0x193/0x210
+ do_syscall_64+0x5f/0x9c0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-KASAN report:
- BUG: KASAN: slab-use-after-free in nf_conntrack_tcp_packet+0x1381/0x29d0
- Read of size 4 at addr ffff8881035fe19c by task exploit/80
+Based on experimentation and analysis, during framebuffer unregistration,
+only the memory of fb_info->modelist is freed, without setting the
+corresponding fb_display[i]->mode to NULL for the freed modes. This leads
+to UAF issues during subsequent accesses. Here's an example of reproduction
+steps:
+1. With /dev/fb0 already registered in the system, load a kernel module
+   to register a new device /dev/fb1;
+2. Set fb1's mode to the global fb_display[] array (via FBIOPUT_CON2FBMAP);
+3. Switch console from fb to VGA (to allow normal rmmod of the ko);
+4. Unload the kernel module, at this point fb1's modelist is freed, leaving
+   a wild pointer in fb_display[];
+5. Trigger the bug via system calls through fb0 attempting to delete a mode
+   from fb0.
 
- Call Trace:
-  nf_conntrack_tcp_packet+0x1381/0x29d0
-  nf_conntrack_in+0x612/0x8b0
-  nf_hook_slow+0x70/0x100
-  __ip_local_out+0x1b2/0x210
-  tcp_sendmsg_locked+0x722/0x1580
-  __sys_sendto+0x2d8/0x320
+Add a check in do_unregister_framebuffer(): if the mode to be freed exists
+in fb_display[], set the corresponding mode pointer to NULL.
 
- Allocated by task 75:
-  nft_ct_timeout_obj_init+0xf6/0x290
-  nft_obj_init+0x107/0x1b0
-  nf_tables_newobj+0x680/0x9c0
-  nfnetlink_rcv_batch+0xc29/0xe00
+[ The context change is due to the commit 2c0c19b681d5
+("fbdev: fbmem: Fix double free of 'fb_info->pixmap.addr'") in v5.16
+which is irrelevant to the logic of this patch. ]
 
- Freed by task 26:
-  nft_obj_destroy+0x3f/0xa0
-  nf_tables_trans_destroy_work+0x51c/0x5c0
-  process_one_work+0x2c4/0x5a0
-
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Tuan Do <tuan@calif.io>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_timeout.h |    1 +
- net/netfilter/nft_ct.c                       |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c | 20 ++++++++++++++++++++
+ drivers/video/fbdev/core/fbmem.c |  2 ++
+ include/linux/fbcon.h            |  2 ++
+ 3 files changed, 24 insertions(+)
 
---- a/include/net/netfilter/nf_conntrack_timeout.h
-+++ b/include/net/netfilter/nf_conntrack_timeout.h
-@@ -14,6 +14,7 @@
- struct nf_ct_timeout {
- 	__u16			l3num;
- 	const struct nf_conntrack_l4proto *l4proto;
-+	struct rcu_head		rcu;
- 	char			data[];
- };
- 
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1002,7 +1002,7 @@ static void nft_ct_timeout_obj_destroy(c
- 	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
--	kfree(priv->timeout);
-+	kfree_rcu(priv->timeout, rcu);
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index f4584681fa43d..7dce023c2fb34 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2797,6 +2797,26 @@ int fbcon_mode_deleted(struct fb_info *info,
+ 	return found;
  }
  
- static int nft_ct_timeout_obj_dump(struct sk_buff *skb,
++static void fbcon_delete_mode(struct fb_videomode *m)
++{
++	struct fbcon_display *p;
++	int i;
++
++	for (i = first_fb_vc; i <= last_fb_vc; i++) {
++		p = &fb_display[i];
++		if (p->mode == m)
++			p->mode = NULL;
++	}
++}
++
++void fbcon_delete_modelist(struct list_head *head)
++{
++	struct fb_modelist *modelist;
++
++	list_for_each_entry(modelist, head, list)
++		fbcon_delete_mode(&modelist->mode);
++}
++
+ #ifdef CONFIG_VT_HW_CONSOLE_BINDING
+ static void fbcon_unbind(void)
+ {
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 3b52ddfe03506..03a7a7e2a670e 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1750,6 +1750,8 @@ static void do_unregister_framebuffer(struct fb_info *fb_info)
+ 	if (fb_info->pixmap.addr &&
+ 	    (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
+ 		kfree(fb_info->pixmap.addr);
++
++	fbcon_delete_modelist(&fb_info->modelist);
+ 	fb_destroy_modelist(&fb_info->modelist);
+ 	registered_fb[fb_info->node] = NULL;
+ 	num_registered_fb--;
+diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
+index 2382dec6d6ab8..fb0fc2736b801 100644
+--- a/include/linux/fbcon.h
++++ b/include/linux/fbcon.h
+@@ -11,6 +11,7 @@ void fbcon_suspended(struct fb_info *info);
+ void fbcon_resumed(struct fb_info *info);
+ int fbcon_mode_deleted(struct fb_info *info,
+ 		       struct fb_videomode *mode);
++void fbcon_delete_modelist(struct list_head *head);
+ void fbcon_new_modelist(struct fb_info *info);
+ void fbcon_get_requirement(struct fb_info *info,
+ 			   struct fb_blit_caps *caps);
+@@ -31,6 +32,7 @@ static inline void fbcon_suspended(struct fb_info *info) {}
+ static inline void fbcon_resumed(struct fb_info *info) {}
+ static inline int fbcon_mode_deleted(struct fb_info *info,
+ 				     struct fb_videomode *mode) { return 0; }
++static inline void fbcon_delete_modelist(struct list_head *head) {}
+ static inline void fbcon_new_modelist(struct fb_info *info) {}
+ static inline void fbcon_get_requirement(struct fb_info *info,
+ 					 struct fb_blit_caps *caps) {}
+-- 
+2.53.0
+
 
 
 
