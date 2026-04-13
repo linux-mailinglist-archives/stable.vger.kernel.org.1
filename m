@@ -1,69 +1,58 @@
-Return-Path: <stable+bounces-236230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJptHOkW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:41 +0200
+	id 2GTRCuIY3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0363EE8AF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:16:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D58393EEDBA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A7D7308D24E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCE89310CBF9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0589B283FD9;
-	Mon, 13 Apr 2026 16:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C974230B50F;
+	Mon, 13 Apr 2026 16:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSrB0du7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPbB3j5/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8932737FC;
-	Mon, 13 Apr 2026 16:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC93282F1D;
+	Mon, 13 Apr 2026 16:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096377; cv=none; b=Una3niDLXFSQHc7z8ejfK7wSEyXAz803GOTmYWn2YlnssJ5gGRMb8alIUfFOg+0YYxVYFDyD4EHpsYY9s7O/DRtsdZaM+VfgNJ+nlFE71MQqtl+9IGxXUM1oDPG8Oh8iAOXdUIT7L4O7nRRYJAc7uikJFaNLY5C0tvprLilyois=
+	t=1776096547; cv=none; b=sng3gvWB57OD5ZCpoQgHAc/CXTyD09q2yuHsS2zoUXUGIloYcnvQHVD1g4hurBn+EhctsYYQ/eSBK6m17jVz4zXgg2jYCkFFp9WWsG6We/tfEgfmwW6T5Drv+p6xaZGncbYmxXM32zjAs+RTfDslZNkkj9Bdqkt8ORtlgHu0Jh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096377; c=relaxed/simple;
-	bh=puRwMATFaWcKOenuR8ACLpOSlLOkP+VFlAeesQ7TkTw=;
+	s=arc-20240116; t=1776096547; c=relaxed/simple;
+	bh=tKjNFZrFMn2AVmDbQLSuLeOa3kbPIFF58mJqo7evbsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQDnl4g1QSjZ3VrBljxId6Bbw7b//g0lUehFNaPCnO/scogjlK+5J95xa1K0m13mr2V8OKRjLZrLt3w/Wzbn09e685kQqTJcyNE6VSEsDiV4VkJ11Wtn49giH8fuzHFpfHnvAuAKdVj6t5PLRC3Yp6fM1RmgguLRlhuuRjhY0Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSrB0du7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2617AC2BCAF;
-	Mon, 13 Apr 2026 16:06:17 +0000 (UTC)
+	 MIME-Version; b=KhO0vQZx5nJZx8ZDbiG0jHTzmDz2ah0sjqGY5oEQuoQop/DWYd1+25LGtogAQTTEoITtFaJiVMTqRhw3mh3TcoXGvMfPVD0zQ+Ss9PcwCUD/cICwLni46WOrkbQJHabAkgcDuMGNmAiqIGdPzWoRFID0sdmkg0kLTRBDH4LKBc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPbB3j5/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23710C2BCAF;
+	Mon, 13 Apr 2026 16:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096377;
-	bh=puRwMATFaWcKOenuR8ACLpOSlLOkP+VFlAeesQ7TkTw=;
+	s=korg; t=1776096547;
+	bh=tKjNFZrFMn2AVmDbQLSuLeOa3kbPIFF58mJqo7evbsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSrB0du7ptN+pPXFvRWFs4s4reGIRKvPd2enOc4lmoe5bqkYS4PXVB++V26RlP976
-	 nzXFTKRc5KL0a9Y2abmeOXQcXdLic1HXDAIDryddXHPY1S8uvZC1J/zmaYnph7zmDZ
-	 Q+SZMS6iXZlVY5b760eHbPuMUUbxBaKcXrgduxvc=
+	b=DPbB3j5/Clgpu5YshAtnGSXpQvUh944B1BylAk+u476nH48383F0/xwuMgT0K0qLI
+	 LO9ew3TgR+qpZ7Ux4yGhg4oP48mIM8ESgVyJu/Hp6WR0C6Jl5TKgdmA2ffHJOaSy0i
+	 1auLY9F5XhqkMDW9Hu0btg36WfQtfimRE/WJ/nY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Yuqi Xu <xuyuqiabc@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
+	Tyllis Xu <LivelyCarpet87@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 75/86] rxrpc: reject undecryptable rxkad response tickets
+Subject: [PATCH 6.18 54/83] net: stmmac: fix integer underflow in chain mode
 Date: Mon, 13 Apr 2026 18:00:22 +0200
-Message-ID: <20260413155734.342592560@linuxfoundation.org>
+Message-ID: <20260413155733.034325269@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,96 +68,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236230-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-236297-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lzu.edu.cn:email,infradead.org:email]
-X-Rspamd-Queue-Id: CD0363EE8AF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: D58393EEDBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyuqiabc@gmail.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit fe4447cd95623b1cfacc15f280aab73a6d7340b2 upstream.
+commit 51f4e090b9f87b40c21b6daadb5c06e6c0a07b67 upstream.
 
-rxkad_decrypt_ticket() decrypts the RXKAD response ticket and then
-parses the buffer as plaintext without checking whether
-crypto_skcipher_decrypt() succeeded.
+The jumbo_frm() chain-mode implementation unconditionally computes
 
-A malformed RESPONSE can therefore use a non-block-aligned ticket
-length, make the decrypt operation fail, and still drive the ticket
-parser with attacker-controlled bytes.
+    len = nopaged_len - bmax;
 
-Check the decrypt result and abort the connection with RXKADBADTICKET
-when ticket decryption fails.
+where nopaged_len = skb_headlen(skb) (linear bytes only) and bmax is
+BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
+decides to invoke jumbo_frm() based on skb->len (total length including
+page fragments):
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-12-dhowells@redhat.com
+    is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
+
+When a packet has a small linear portion (nopaged_len <= bmax) but a
+large total length due to page fragments (skb->len > bmax), the
+subtraction wraps as an unsigned integer, producing a huge len value
+(~0xFFFFxxxx).  This causes the while (len != 0) loop to execute
+hundreds of thousands of iterations, passing skb->data + bmax * i
+pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
+SoCs (the typical deployment for stmmac), this maps arbitrary kernel
+memory to the DMA engine, constituting a kernel memory disclosure and
+potential memory corruption from hardware.
+
+Fix this by introducing a buf_len local variable clamped to
+min(nopaged_len, bmax).  Computing len = nopaged_len - buf_len is then
+always safe: it is zero when the linear portion fits within a single
+descriptor, causing the while (len != 0) loop to be skipped naturally,
+and the fragment loop in stmmac_xmit() handles page fragments afterward.
+
+Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260401044708.1386919-1-LivelyCarpet87@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxkad.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -958,6 +958,7 @@ static int rxkad_decrypt_ticket(struct r
- 	struct in_addr addr;
- 	unsigned int life;
- 	time64_t issue, now;
-+	int ret;
- 	bool little_endian;
- 	u8 *p, *q, *name, *end;
+--- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+@@ -20,7 +20,7 @@ static int jumbo_frm(struct stmmac_tx_qu
+ 	unsigned int nopaged_len = skb_headlen(skb);
+ 	struct stmmac_priv *priv = tx_q->priv_data;
+ 	unsigned int entry = tx_q->cur_tx;
+-	unsigned int bmax, des2;
++	unsigned int bmax, buf_len, des2;
+ 	unsigned int i = 1, len;
+ 	struct dma_desc *desc;
  
-@@ -977,8 +978,11 @@ static int rxkad_decrypt_ticket(struct r
- 	sg_init_one(&sg[0], ticket, ticket_len);
- 	skcipher_request_set_callback(req, 0, NULL, NULL);
- 	skcipher_request_set_crypt(req, sg, sg, ticket_len, iv.x);
--	crypto_skcipher_decrypt(req);
-+	ret = crypto_skcipher_decrypt(req);
- 	skcipher_request_free(req);
-+	if (ret < 0)
-+		return rxrpc_abort_conn(conn, skb, RXKADBADTICKET, -EPROTO,
-+					rxkad_abort_resp_tkt_short);
+@@ -31,17 +31,18 @@ static int jumbo_frm(struct stmmac_tx_qu
+ 	else
+ 		bmax = BUF_SIZE_2KiB;
  
- 	p = ticket;
- 	end = p + ticket_len;
+-	len = nopaged_len - bmax;
++	buf_len = min_t(unsigned int, nopaged_len, bmax);
++	len = nopaged_len - buf_len;
+ 
+ 	des2 = dma_map_single(priv->device, skb->data,
+-			      bmax, DMA_TO_DEVICE);
++			      buf_len, DMA_TO_DEVICE);
+ 	desc->des2 = cpu_to_le32(des2);
+ 	if (dma_mapping_error(priv->device, des2))
+ 		return -1;
+ 	tx_q->tx_skbuff_dma[entry].buf = des2;
+-	tx_q->tx_skbuff_dma[entry].len = bmax;
++	tx_q->tx_skbuff_dma[entry].len = buf_len;
+ 	/* do not close the descriptor and do not set own bit */
+-	stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum, STMMAC_CHAIN_MODE,
++	stmmac_prepare_tx_desc(priv, desc, 1, buf_len, csum, STMMAC_CHAIN_MODE,
+ 			0, false, skb->len);
+ 
+ 	while (len != 0) {
 
 
 
