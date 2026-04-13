@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-236722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLbfCKcZ3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:23 +0200
+	id 0NFtBGMg3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DB53EF02F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908FB3F0513
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B8F80300E007
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:27:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 046033075873
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C858530ACE6;
-	Mon, 13 Apr 2026 16:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75F5314D0D;
+	Mon, 13 Apr 2026 16:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMvQ7I8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXLzhW40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFFE3093B2;
-	Mon, 13 Apr 2026 16:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A221314A6B;
+	Mon, 13 Apr 2026 16:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097625; cv=none; b=Sicoap6cvdLWCuYj8XX+B6dpdh1f+o5K8/HXpCGYmTnXMEj/VkB3s5aeejN6+rd57XU0eT88CFYt5jLG6Dp4vzwR/nZXcs1N4QkS9dW/o8+6yDeHUL1Pcn49V2ILrlhXjdH8lEog9tAbAAnsxvFTAAaOm7FSl3Af886tYdZsjPM=
+	t=1776098807; cv=none; b=bE6/3WO7/5zkflv60oCd4J+3jRZeFaAue0Y57036zkI92FxWF5hPvsKICRp7XU4JcRHYwRpo6kqIlHfuBynyAqFp0gDvhDPJQJI49QxTXevg7vWC0kgGos5jtS8exVNGK2X2O8bYqJwctECVVlN9zqPoSsrXXnZCkXRCkDyA2VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097625; c=relaxed/simple;
-	bh=VSp9Z7Joel7cAInllUSf43fjxNyr8KtejRsOnp0f52E=;
+	s=arc-20240116; t=1776098807; c=relaxed/simple;
+	bh=UgGFxlizCP/rrXBvG1/TQd80E36sqYbuAed2sleg0cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4imI9Rwcg7NAhkpOeHLUwzIkL6YQYfs4Z+UdUbfQtwQuF78wC+FF5RDfi/kztsd9WpQjGZbsUIgxf3ZngOFcnvB8/BxAALEmNpQTt0G3i1txI5AM7UvfRJYuATNWs5H9/BI9qBwHNbP3Czk1ILtHv5gDqzWgtSL03ckIeLdijc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMvQ7I8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EE9C2BCAF;
-	Mon, 13 Apr 2026 16:27:04 +0000 (UTC)
+	 MIME-Version; b=ozQWYnco+P3OvxX1LC2gdv7wJjFYMFVGpal9GwKwfq5uG2ypJ/+EUK31CZ8Whm869B4ViW7Ie4/Pp7O3Ys/5KjX9yxdo6+sX0T5OlpBaYSNLarhvyIYJk/JzBFNoX2Iyyu7nPokmzbzAKLsqICRgnbgZfrNvH9DQ9ZnE100nhvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXLzhW40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20798C2BCAF;
+	Mon, 13 Apr 2026 16:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097625;
-	bh=VSp9Z7Joel7cAInllUSf43fjxNyr8KtejRsOnp0f52E=;
+	s=korg; t=1776098807;
+	bh=UgGFxlizCP/rrXBvG1/TQd80E36sqYbuAed2sleg0cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMvQ7I8Gm45G+D3UmbDw8tc0EO0nL4D51+2BtT+C1gSNmqCPkW0er2qmW7k1dg7uc
-	 z1Kd2p4BDNjEd7SGzpfxgYRStACRzOUYQhpbObwZouj/mVlhoRC4qvzdFbeXHhQnC3
-	 LnMbnAXOTYiUzebLwJsrc9gwW29CPyWTAfaLZJQ4=
+	b=kXLzhW407Su4gm/cx8P3WPxChQbjBgluyI1fUeaFCLQLZLOLIdwGzlADRBg6D/j1M
+	 f7ScvEo5RiWgj3P6852mDMTb6qulKeS2WMLCc3+E5E0iUiyPlxuKCTHuCUMNrOW2Rp
+	 dUqQyj7uez5NWHQKEVbnnKBMzARXCw2Uq87gL1t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Raul E Rangel <rrangel@google.com>
-Subject: [PATCH 5.15 210/570] serial: 8250: Fix TX deadlock when using DMA
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 096/491] usb: core: dont power off roothub PHYs if phy_set_mode() fails
 Date: Mon, 13 Apr 2026 17:55:41 +0200
-Message-ID: <20260413155838.324491566@linuxfoundation.org>
+Message-ID: <20260413155822.638703850@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +65,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237186-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236722-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E4DB53EF02F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 908FB3F0513
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raul E Rangel <rrangel@chromium.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit a424a34b8faddf97b5af41689087e7a230f79ba7 upstream.
+commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
 
-`dmaengine_terminate_async` does not guarantee that the
-`__dma_tx_complete` callback will run. The callback is currently the
-only place where `dma->tx_running` gets cleared. If the transaction is
-canceled and the callback never runs, then `dma->tx_running` will never
-get cleared and we will never schedule new TX DMA transactions again.
+Remove the error path from the usb_phy_roothub_set_mode() function.
+The code is clearly wrong, because phy_set_mode() calls can't be
+balanced with phy_power_off() calls.
 
-This change makes it so we clear `dma->tx_running` after we terminate
-the DMA transaction. This is "safe" because `serial8250_tx_dma_flush`
-is holding the UART port lock. The first thing the callback does is also
-grab the UART port lock, so access to `dma->tx_running` is serialized.
+Additionally, the usb_phy_roothub_set_mode() function is called only
+from usb_add_hcd() before it powers on the PHYs, so powering off those
+makes no sense anyway.
 
-Fixes: 9e512eaaf8f4 ("serial: 8250: Fix fifo underflow on flush")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Raul E Rangel <rrangel@google.com>
-Link: https://patch.msgid.link/20260209135815.1.I16366ecb0f62f3c96fe3dd5763fcf6f3c2b4d8cd@changeid
+Presumably, the code is copy-pasted from the phy_power_on() function
+without adjusting the error handling.
+
+Cc: stable@vger.kernel.org # v5.1+
+Fixes: b97a31348379 ("usb: core: comply to PHY framework")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dma.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/usb/core/phy.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -150,7 +150,22 @@ void serial8250_tx_dma_flush(struct uart
- 	 */
- 	dma->tx_size = 0;
+--- a/drivers/usb/core/phy.c
++++ b/drivers/usb/core/phy.c
+@@ -138,16 +138,10 @@ int usb_phy_roothub_set_mode(struct usb_
+ 	list_for_each_entry(roothub_entry, head, list) {
+ 		err = phy_set_mode(roothub_entry->phy, mode);
+ 		if (err)
+-			goto err_out;
++			return err;
+ 	}
  
-+	/*
-+	 * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
-+	 * holding the uart port spinlock.
-+	 */
- 	dmaengine_terminate_async(dma->txchan);
-+
-+	/*
-+	 * The callback might or might not run. If it doesn't run, we need to ensure
-+	 * that `tx_running` is cleared so that we can schedule new transactions.
-+	 * If it does run, then the zombie callback will clear `tx_running` again
-+	 * and perform a no-op since `tx_size` was cleared above.
-+	 *
-+	 * In either case, we ASSUME the DMA transaction will terminate before we
-+	 * issue a new `serial8250_tx_dma`.
-+	 */
-+	dma->tx_running = 0;
+ 	return 0;
+-
+-err_out:
+-	list_for_each_entry_continue_reverse(roothub_entry, head, list)
+-		phy_power_off(roothub_entry->phy);
+-
+-	return err;
  }
+ EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
  
- int serial8250_rx_dma(struct uart_8250_port *p)
 
 
 
