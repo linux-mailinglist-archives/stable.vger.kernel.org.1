@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-236334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGODOTYY3WnNZwkAu9opvQ
-	(envelope-from <stable+bounces-236334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:14 +0200
+	id uCmxNUcf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCD83EEB94
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:22:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E28063F012B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF3B2307EC95
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9277D3082E88
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF07288C30;
-	Mon, 13 Apr 2026 16:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1E82D5A19;
+	Mon, 13 Apr 2026 16:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="035F8/kF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXt0nlkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D728628C2DD;
-	Mon, 13 Apr 2026 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD2A1A680C;
+	Mon, 13 Apr 2026 16:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096637; cv=none; b=PaFrqN1TlKTpSeILtQLNomNSP53LHawcYeB4Q5TLUPWhMAiBP1pEMUE/Hx50yoE2721M69gh4eyk3AmSc9/16kOQ0hmrtUdDd/544XCsm58pRGLtm52iFZewaACbfQL10X+OaKQi/bn1g1fO9Iadx4DCUmHQhiloK/9DCTPrUAE=
+	t=1776098419; cv=none; b=WOg6wnKix9zo3Cow1av0FMQv02mGe3sTW2Ft33hlECcec6U4LyRRNv4h8BbPHEqGHV5vc/87ThMx6hZ6CudP1fuwKiNe6LbPTGrP2g7GYFFI3L+2RGa1HnjAnUp+2LzvXEFxvv4nUB3YpkLNqLdprDuGL9j8WKdyJweRLnDY+T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096637; c=relaxed/simple;
-	bh=EF0fuT8uJuk+6SVSiCIa8p2r09glF9vsSHQnRuORiZQ=;
+	s=arc-20240116; t=1776098419; c=relaxed/simple;
+	bh=+cuzm4XRWxA7ArxhzJsph/8MZKs9/EXVlx3Mh9d0Qk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acuC96DUA2fyd1BjVjuO0CgeOvL3lyX8eN5mzH2uRB3uiVYwfbrwIieRGWuEoyLO61wLkzRxeaq3w7C91iLeO7AHDnfrQMAuAdd8BBJaa7cJeJLQyBiTYRMopqbffkRakPDbPPnf3hRcozpYNYLRH8kB8pmiGvjyCh3tLKklx2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=035F8/kF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D22C2BCAF;
-	Mon, 13 Apr 2026 16:10:37 +0000 (UTC)
+	 MIME-Version; b=r10jISuYIwpMIujA+l40n/1kLyE6AP0/6yXnwGfwoPYy/nOMbX6RYr532l/iRVVgHxSWfbOjHtYI+W2JhIaU7GzJB1ru5u16axiFKgsZQk3hVIlRnuJLORqaKeiXVkpK4r4cOE+CYaBSTx/o0SAPdmGZ1ofZ53RDe/FyEFlpt64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXt0nlkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB360C2BCB0;
+	Mon, 13 Apr 2026 16:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096637;
-	bh=EF0fuT8uJuk+6SVSiCIa8p2r09glF9vsSHQnRuORiZQ=;
+	s=korg; t=1776098419;
+	bh=+cuzm4XRWxA7ArxhzJsph/8MZKs9/EXVlx3Mh9d0Qk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=035F8/kFlS5qJADvyHtVjy2I/bGOWHY2QTuktT9G0b/p+LJFk8DWL8a8SSEGorNq9
-	 81JgeWAkbChiBZ9T3S/jdAVy+zrK88vT2YNX0MB/GnqkgV6FE6W73etxoVBqUxw9U5
-	 Q2gl6SSEEFQBSqUR8CY8/Dnex72RH2LynrWRPRvw=
+	b=tXt0nlkqnuQfWYVFaN57O9YwzDRhN6ielSTyP9shugPOlM6I95N+gjkPUb6bM2ulc
+	 np2K4UVUXgNehWRTgwyZcdbFJcPj//JP2wmcl68oyFwCkMs/VT7xahovxWgOVFRQt5
+	 CVYK5osF3tjweI9AKMwmAiHKtdtrVAaXihqr9XMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jie Wang <jiewang2024@lzu.edu.cn>,
-	Yang Yang <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 81/83] rxrpc: only handle RESPONSE during service challenge
+	Qualys Security Advisory <qsa@qualys.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 5.15 518/570] apparmor: fix: limit the number of levels of policy namespaces
 Date: Mon, 13 Apr 2026 18:00:49 +0200
-Message-ID: <20260413155734.014725600@linuxfoundation.org>
+Message-ID: <20260413155849.852814254@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,113 +67,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236334-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237034-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,auristor.com:email,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6BCD83EEB94
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,canonical.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E28063F012B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jie <jiewang2024@lzu.edu.cn>
+From: John Johansen <john.johansen@canonical.com>
 
-commit c43ffdcfdbb5567b1f143556df8a04b4eeea041c upstream.
+commit 306039414932c80f8420695a24d4fe10c84ccfb2 upstream.
 
-Only process RESPONSE packets while the service connection is still in
-RXRPC_CONN_SERVICE_CHALLENGING. Check that state under state_lock before
-running response verification and security initialization, then use a local
-secured flag to decide whether to queue the secured-connection work after
-the state transition. This keeps duplicate or late RESPONSE packets from
-re-running the setup path and removes the unlocked post-transition state
-test.
+Currently the number of policy namespaces is not bounded relying on
+the user namespace limit. However policy namespaces aren't strictly
+tied to user namespaces and it is possible to create them and nest
+them arbitrarily deep which can be used to exhaust system resource.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jie Wang <jiewang2024@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-21-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hard cap policy namespaces to the same depth as user namespaces.
+
+Fixes: c88d4c7b049e8 ("AppArmor: core policy routines")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Reviewed-by: Ryan Lee <ryan.lee@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/conn_event.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ security/apparmor/include/policy_ns.h |    2 ++
+ security/apparmor/policy_ns.c         |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -247,6 +247,7 @@ static int rxrpc_process_event(struct rx
- 			       struct sk_buff *skb)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+	bool secured = false;
- 	int ret;
+--- a/security/apparmor/include/policy_ns.h
++++ b/security/apparmor/include/policy_ns.h
+@@ -18,6 +18,8 @@
+ #include "label.h"
+ #include "policy.h"
  
- 	if (conn->state == RXRPC_CONN_ABORTED)
-@@ -262,6 +263,13 @@ static int rxrpc_process_event(struct rx
- 		return ret;
++/* Match max depth of user namespaces */
++#define MAX_NS_DEPTH 32
  
- 	case RXRPC_PACKET_TYPE_RESPONSE:
-+		spin_lock_irq(&conn->state_lock);
-+		if (conn->state != RXRPC_CONN_SERVICE_CHALLENGING) {
-+			spin_unlock_irq(&conn->state_lock);
-+			return 0;
-+		}
-+		spin_unlock_irq(&conn->state_lock);
-+
- 		ret = conn->security->verify_response(conn, skb);
- 		if (ret < 0)
- 			return ret;
-@@ -272,11 +280,13 @@ static int rxrpc_process_event(struct rx
- 			return ret;
+ /* struct aa_ns_acct - accounting of profiles in namespace
+  * @max_size: maximum space allowed for all profiles in namespace
+--- a/security/apparmor/policy_ns.c
++++ b/security/apparmor/policy_ns.c
+@@ -249,6 +249,8 @@ static struct aa_ns *__aa_create_ns(stru
+ 	AA_BUG(!name);
+ 	AA_BUG(!mutex_is_locked(&parent->lock));
  
- 		spin_lock_irq(&conn->state_lock);
--		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING)
-+		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING) {
- 			conn->state = RXRPC_CONN_SERVICE;
-+			secured = true;
-+		}
- 		spin_unlock_irq(&conn->state_lock);
- 
--		if (conn->state == RXRPC_CONN_SERVICE) {
-+		if (secured) {
- 			/* Offload call state flipping to the I/O thread.  As
- 			 * we've already received the packet, put it on the
- 			 * front of the queue.
++	if (parent->level > MAX_NS_DEPTH)
++		return ERR_PTR(-ENOSPC);
+ 	ns = alloc_ns(parent->base.hname, name);
+ 	if (!ns)
+ 		return ERR_PTR(-ENOMEM);
 
 
 
