@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-236174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aD0aIuIV3WkOZQkAu9opvQ
-	(envelope-from <stable+bounces-236174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:18 +0200
+	id wMg9INMj3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0862B3EE6AD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:12:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D5C3F0F58
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A9193063D45
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A23A3078036
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8B1257844;
-	Mon, 13 Apr 2026 16:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E6232FA18;
+	Mon, 13 Apr 2026 16:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhRwxUgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf7HYe73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE761D6DB5;
-	Mon, 13 Apr 2026 16:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5553332ABC0;
+	Mon, 13 Apr 2026 16:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096233; cv=none; b=u+kOj9RE+3eh6EdJgJC7ZxQlU5CmRPa0i2SRY+2vr9KA1TUaXnrI0xp445f2QkEeqmQD/tXbeReX3JkKx8gEhvs0e0h+/Zw+DPm3fhJfDzTt0h9FivGJKZHp2HMGyPJ/Rvpzp7iC2pzIvSyGRiH35QMP2VaBStiVy61iKcj9VWs=
+	t=1776099473; cv=none; b=RkAQe9DaW0I1Q3VyNuWuG8WcMxwLnthPS2v/1vZMlFiXmlUnWgITHioBSNa97zYHFVXadPWPYmoDxGris38V/FahCqDQhD9AgQZ8HaidzdS1VhqyrJrn+0KcuytVOEMQz2Lea8e8mQ6xtujrtFGAir67is60kaBpf4/VB2eHntI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096233; c=relaxed/simple;
-	bh=WBnIb/bfWAH3cb0NpcjPa8NJs00y5//B0BlhYr0mhMI=;
+	s=arc-20240116; t=1776099473; c=relaxed/simple;
+	bh=Mp1ktWPFOfgghCVDTqzkKAUc7IvXi5JL/UL0bX76jJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbuEZCiTRr1GYtnCUSKj5Hsl3VHSYru2VobeloRcHmcFSttu5BcCGstkFf2udnly0KWFj8y4plu1yAoZxejLcRms7JGMYp8ikfkIwi+CHLgGvvVuklnxaStN8oOrzHF5QB+RAZrJeRI9gqiYiFLRJjTc8KkNaYuCHPoMi0ovAZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhRwxUgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79BBC2BCAF;
-	Mon, 13 Apr 2026 16:03:52 +0000 (UTC)
+	 MIME-Version; b=Ii/qfCXqmVTjRU/oKvWOqBOW0eNYlP+IzsVfxqK7ZvlTLGuKQ5M9MxNobWCpxCiOxKRlDa6FLH6EPL9DjOSR+e04QT51sOfbQ2mHKxakAesmr5rTc/gKsJw4oXwNusH05c+zMCNZd+3JizjwqL10bHrvGx5zHgmGvKQd2cwRVFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf7HYe73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B48C2BCAF;
+	Mon, 13 Apr 2026 16:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096233;
-	bh=WBnIb/bfWAH3cb0NpcjPa8NJs00y5//B0BlhYr0mhMI=;
+	s=korg; t=1776099473;
+	bh=Mp1ktWPFOfgghCVDTqzkKAUc7IvXi5JL/UL0bX76jJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DhRwxUgOO6f8K2plrbhlS+9f2Byl1maLw2GPCqsGd735gxkI2Dx9uMb5TF97bD4md
-	 I+K2p/2zLlr4dxZAMRtm4sRXjcyjPHSChkRmnDIntsmS+K6gWRIZQgM9780FNRdOI1
-	 gO05dnBi7mWC4afrxf+unOkwQnfpi3yQq28p4Poc=
+	b=Qf7HYe73mLT6x1Jc2B/J9P+oOnhP7JqFOSF7ezZ3Vak0GFl8xYr91sPGDJO39eMue
+	 rQLdNKltO7WsKulmBqKmC83ufizNWTUZwVK5CeAQaq1A9DVbL0k6cWXuunRiFsoaOo
+	 XxcKPR3le+eSkx+vbQAOPwQhtPNaMbaO8Lqc9e/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Drew Fustini <fustini@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.19 19/86] firmware: thead: Fix buffer overflow and use standard endian macros
+	Norbert Szetei <norbert@doyensec.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 321/491] crypto: af-alg - fix NULL pointer dereference in scatterwalk
 Date: Mon, 13 Apr 2026 17:59:26 +0200
-Message-ID: <20260413155732.296843277@linuxfoundation.org>
+Message-ID: <20260413155831.062046246@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,176 +68,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236174-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237444-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,samsung.com:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0862B3EE6AD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,doyensec.com:email]
+X-Rspamd-Queue-Id: 02D5C3F0F58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wilczynski <m.wilczynski@samsung.com>
+From: Norbert Szetei <norbert@doyensec.com>
 
-commit 88c4bd90725557796c15878b7cb70066e9e6b5ab upstream.
+[ Upstream commit 62397b493e14107ae82d8b80938f293d95425bcb ]
 
-Addresses two issues in the TH1520 AON firmware protocol driver:
+The AF_ALG interface fails to unmark the end of a Scatter/Gather List (SGL)
+when chaining a new af_alg_tsgl structure. If a sendmsg() fills an SGL
+exactly to MAX_SGL_ENTS, the last entry is marked as the end. A subsequent
+sendmsg() allocates a new SGL and chains it, but fails to clear the end
+marker on the previous SGL's last data entry.
 
-1. Fix a potential buffer overflow where the code used unsafe pointer
-   arithmetic to access the 'mode' field through the 'resource' pointer
-   with an offset. This was flagged by Smatch static checker as:
-   "buffer overflow 'data' 2 <= 3"
+This causes the crypto scatterwalk to hit a premature end, returning NULL
+on sg_next() and leading to a kernel panic during dereference.
 
-2. Replace custom RPC_SET_BE* and RPC_GET_BE* macros with standard
-   kernel endianness conversion macros (cpu_to_be16, etc.) for better
-   portability and maintainability.
+Fix this by explicitly unmarking the end of the previous SGL when
+performing sg_chain() in af_alg_alloc_tsgl().
 
-The functionality was re-tested with the GPU power-up sequence,
-confirming the GPU powers up correctly and the driver probes
-successfully.
-
-[   12.702370] powervr ffef400000.gpu: [drm] loaded firmware
-powervr/rogue_36.52.104.182_v1.fw
-[   12.711043] powervr ffef400000.gpu: [drm] FW version v1.0 (build
-6645434 OS)
-[   12.719787] [drm] Initialized powervr 1.0.0 for ffef400000.gpu on
-minor 0
-
-Fixes: e4b3cbd840e5 ("firmware: thead: Add AON firmware protocol driver")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/17a0ccce-060b-4b9d-a3c4-8d5d5823b1c9@stanley.mountain/
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Drew Fustini <fustini@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/thead,th1520-aon.c             |    7 --
- include/linux/firmware/thead/thead,th1520-aon.h |   74 ------------------------
- 2 files changed, 3 insertions(+), 78 deletions(-)
+ crypto/af_alg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/thead,th1520-aon.c
-+++ b/drivers/firmware/thead,th1520-aon.c
-@@ -170,10 +170,9 @@ int th1520_aon_power_update(struct th152
- 	hdr->func = TH1520_AON_PM_FUNC_SET_RESOURCE_POWER_MODE;
- 	hdr->size = TH1520_AON_RPC_MSG_NUM;
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 3d622904f4c3d..5e0fe58f8bdd9 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -515,8 +515,10 @@ static int af_alg_alloc_tsgl(struct sock *sk)
+ 		sg_init_table(sgl->sg, MAX_SGL_ENTS + 1);
+ 		sgl->cur = 0;
  
--	RPC_SET_BE16(&msg.resource, 0, rsrc);
--	RPC_SET_BE16(&msg.resource, 2,
--		     (power_on ? TH1520_AON_PM_PW_MODE_ON :
--				 TH1520_AON_PM_PW_MODE_OFF));
-+	msg.resource = cpu_to_be16(rsrc);
-+	msg.mode = cpu_to_be16(power_on ? TH1520_AON_PM_PW_MODE_ON :
-+					  TH1520_AON_PM_PW_MODE_OFF);
+-		if (sg)
++		if (sg) {
++			sg_unmark_end(sg + MAX_SGL_ENTS - 1);
+ 			sg_chain(sg, MAX_SGL_ENTS + 1, sgl->sg);
++		}
  
- 	ret = th1520_aon_call_rpc(aon_chan, &msg);
- 	if (ret)
---- a/include/linux/firmware/thead/thead,th1520-aon.h
-+++ b/include/linux/firmware/thead/thead,th1520-aon.h
-@@ -97,80 +97,6 @@ struct th1520_aon_rpc_ack_common {
- #define RPC_GET_SVC_FLAG_ACK_TYPE(MESG) (((MESG)->svc & 0x40) >> 6)
- #define RPC_SET_SVC_FLAG_ACK_TYPE(MESG, ACK) ((MESG)->svc |= (ACK) << 6)
- 
--#define RPC_SET_BE64(MESG, OFFSET, SET_DATA)                                \
--	do {                                                                \
--		u8 *data = (u8 *)(MESG);                                    \
--		u64 _offset = (OFFSET);                                     \
--		u64 _set_data = (SET_DATA);                                 \
--		data[_offset + 7] = _set_data & 0xFF;                       \
--		data[_offset + 6] = (_set_data & 0xFF00) >> 8;              \
--		data[_offset + 5] = (_set_data & 0xFF0000) >> 16;           \
--		data[_offset + 4] = (_set_data & 0xFF000000) >> 24;         \
--		data[_offset + 3] = (_set_data & 0xFF00000000) >> 32;       \
--		data[_offset + 2] = (_set_data & 0xFF0000000000) >> 40;     \
--		data[_offset + 1] = (_set_data & 0xFF000000000000) >> 48;   \
--		data[_offset + 0] = (_set_data & 0xFF00000000000000) >> 56; \
--	} while (0)
--
--#define RPC_SET_BE32(MESG, OFFSET, SET_DATA)			    \
--	do {							    \
--		u8 *data = (u8 *)(MESG);			    \
--		u64 _offset = (OFFSET);				    \
--		u64 _set_data = (SET_DATA);			    \
--		data[_offset + 3] = (_set_data) & 0xFF;		    \
--		data[_offset + 2] = (_set_data & 0xFF00) >> 8;	    \
--		data[_offset + 1] = (_set_data & 0xFF0000) >> 16;   \
--		data[_offset + 0] = (_set_data & 0xFF000000) >> 24; \
--	} while (0)
--
--#define RPC_SET_BE16(MESG, OFFSET, SET_DATA)		       \
--	do {						       \
--		u8 *data = (u8 *)(MESG);		       \
--		u64 _offset = (OFFSET);			       \
--		u64 _set_data = (SET_DATA);		       \
--		data[_offset + 1] = (_set_data) & 0xFF;	       \
--		data[_offset + 0] = (_set_data & 0xFF00) >> 8; \
--	} while (0)
--
--#define RPC_SET_U8(MESG, OFFSET, SET_DATA)	  \
--	do {					  \
--		u8 *data = (u8 *)(MESG);	  \
--		data[OFFSET] = (SET_DATA) & 0xFF; \
--	} while (0)
--
--#define RPC_GET_BE64(MESG, OFFSET, PTR)                                      \
--	do {                                                                 \
--		u8 *data = (u8 *)(MESG);                                     \
--		u64 _offset = (OFFSET);                                      \
--		*(u32 *)(PTR) =                                              \
--			(data[_offset + 7] | data[_offset + 6] << 8 |        \
--			 data[_offset + 5] << 16 | data[_offset + 4] << 24 | \
--			 data[_offset + 3] << 32 | data[_offset + 2] << 40 | \
--			 data[_offset + 1] << 48 | data[_offset + 0] << 56); \
--	} while (0)
--
--#define RPC_GET_BE32(MESG, OFFSET, PTR)                                      \
--	do {                                                                 \
--		u8 *data = (u8 *)(MESG);                                     \
--		u64 _offset = (OFFSET);                                      \
--		*(u32 *)(PTR) =                                              \
--			(data[_offset + 3] | data[_offset + 2] << 8 |        \
--			 data[_offset + 1] << 16 | data[_offset + 0] << 24); \
--	} while (0)
--
--#define RPC_GET_BE16(MESG, OFFSET, PTR)                                       \
--	do {                                                                  \
--		u8 *data = (u8 *)(MESG);                                      \
--		u64 _offset = (OFFSET);                                       \
--		*(u16 *)(PTR) = (data[_offset + 1] | data[_offset + 0] << 8); \
--	} while (0)
--
--#define RPC_GET_U8(MESG, OFFSET, PTR)          \
--	do {                                   \
--		u8 *data = (u8 *)(MESG);       \
--		*(u8 *)(PTR) = (data[OFFSET]); \
--	} while (0)
--
- /*
-  * Defines for SC PM Power Mode
-  */
+ 		list_add_tail(&sgl->list, &ctx->tsgl_list);
+ 	}
+-- 
+2.53.0
+
 
 
 
