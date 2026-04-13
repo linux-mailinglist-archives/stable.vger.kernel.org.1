@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CA9tCN8e3WmSaAkAu9opvQ
-	(envelope-from <stable+bounces-236976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:39 +0200
+	id gDS6BFEV3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:09:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8023EFF49
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:50:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C183EE600
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5864E3069EDF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:38:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CDDB7303ABE4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF6E3148A3;
-	Mon, 13 Apr 2026 16:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73103283FD9;
+	Mon, 13 Apr 2026 16:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPPlQQoO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIr3i4w3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8C730C361;
-	Mon, 13 Apr 2026 16:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35154281357;
+	Mon, 13 Apr 2026 16:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098272; cv=none; b=qXacECj9C1/L/+IyPgMlpPwAUPbPtJWR+W28EgPCbkxGyqf6Et3jcRm1AMbv8OYnu4/oS7/8JzPYvzz8u2E0nQe97xQtqXvOKPWElUowTD/yeQI0U4x7n5ZIiy05gGObhVxMYYwMF5dairBC9y+LuvWrebrwTc968RgWN3r4oao=
+	t=1776096300; cv=none; b=YRZ6ckKJRNkA2C6gwEtGo+FKXawUkJ/0GMTF6UreJqJIjVP9KA8PxtDAEFuZmg9pgB8CB6MN77QTjUiHVLVAB4QwyQBH9LAcoRzSFIomvy5PtSykwMb850m1xgAVNUpKw4m1J/DPL3WTsOgpTG0Af39+7Bxzfw6WoNtHsKkMBEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098272; c=relaxed/simple;
-	bh=e/crhs7Z8/RzLHgeA/J/9KH1LmHdK92x8T7k6drX6TU=;
+	s=arc-20240116; t=1776096300; c=relaxed/simple;
+	bh=1wKOuSgGRbA2xZ4fs9t/W8B2E+EbO/tc1qlmEYBKaFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6oWOLuaE4sQ3e0nfY0sT92ZpIPapN5tL2Pw+rMOgm0COy4mPp7LCNn/v93eI6tjQOH7GFGe1+XFDXk7kjZIAXuXTX+uI9SW0B41k0MpbATxJ6urbB0y6/+ScjcxsFmn/KZnC2yv0uYEPNev+7no8Fght0gaiJ6HCNqUEfThEyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPPlQQoO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADA3C2BCB3;
-	Mon, 13 Apr 2026 16:37:51 +0000 (UTC)
+	 MIME-Version; b=WlAiUMq6YZlWLYhCeMRMMn4cTBJATot2PzUduW6UsJLBwbJgiYODmXqlb6JQ6IVsDR1tChqUn96clyCpCP6Xzy4P6KkmQdlSaq0eq8ylmg1kj7ub7KgSBXVOkxTxf5R1CZLhaetspD+yBUVAkOy1RgjFDJQvTJDYr/yy3kG370k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIr3i4w3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD603C2BCB0;
+	Mon, 13 Apr 2026 16:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098272;
-	bh=e/crhs7Z8/RzLHgeA/J/9KH1LmHdK92x8T7k6drX6TU=;
+	s=korg; t=1776096300;
+	bh=1wKOuSgGRbA2xZ4fs9t/W8B2E+EbO/tc1qlmEYBKaFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPPlQQoOUktlP36yXY6mt2+GLbPJjZO+l4g5EVWMV9/4n9YVnU15pZOFmf4iwaM/K
-	 POQd7iCZSUCZUuPi9BgEBeOafMPkzKmmUIqY8ZU8Z6axpay49asmnhBvdLD2mBaucB
-	 J5XBhhaQ2tf00oyuafz6Q4zjN6zBtD2BhmJQDUe4=
+	b=dIr3i4w3jzeoUA24DINerYKYCSHqBXOrjZgCK87tdJPgnt/punyFdy1aBWn7NT5Ne
+	 yS/docBlTCXg9lXKZ4uEWM58cvNB6Viug4Mcv2peStz0dMSMXPMgd/apLKXBdrXqk8
+	 2OvUf8rV3a/HnOt7nFu1TruoI6Sh0tJiXeJTGKvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 460/570] iio: light: vcnl4035: fix scan buffer on big-endian
-Date: Mon, 13 Apr 2026 17:59:51 +0200
-Message-ID: <20260413155847.702386476@linuxfoundation.org>
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.19 45/86] drm/i915/gt: fix refcount underflow in intel_engine_park_heartbeat
+Date: Mon, 13 Apr 2026 17:59:52 +0200
+Message-ID: <20260413155733.249357626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,113 +69,151 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236200-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236976-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1E8023EFF49
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 11C183EE600
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 
-commit fdc7aa54a5d44c05880a4aad7cfb41aacfd16d7b upstream.
+commit 4c71fd099513bfa8acab529b626e1f0097b76061 upstream.
 
-Rework vcnl4035_trigger_consumer_handler() so that we are not passing
-what should be a u16 value as an int * to regmap_read(). This won't
-work on bit endian systems.
+A use-after-free / refcount underflow is possible when the heartbeat
+worker and intel_engine_park_heartbeat() race to release the same
+engine->heartbeat.systole request.
 
-Instead, add a new unsigned int variable to pass to regmap_read(). Then
-copy that value into the buffer struct.
+The heartbeat worker reads engine->heartbeat.systole and calls
+i915_request_put() on it when the request is complete, but clears
+the pointer in a separate, non-atomic step. Concurrently, a request
+retirement on another CPU can drop the engine wakeref to zero, triggering
+__engine_park() -> intel_engine_park_heartbeat(). If the heartbeat
+timer is pending at that point, cancel_delayed_work() returns true and
+intel_engine_park_heartbeat() reads the stale non-NULL systole pointer
+and calls i915_request_put() on it again, causing a refcount underflow:
 
-The buffer array is replaced with a struct since there is only one value
-being read. This allows us to use the correct u16 data type and has a
-side-effect of simplifying the alignment specification.
+```
+<4> [487.221889] Workqueue: i915-unordered engine_retire [i915]
+<4> [487.222640] RIP: 0010:refcount_warn_saturate+0x68/0xb0
+...
+<4> [487.222707] Call Trace:
+<4> [487.222711]  <TASK>
+<4> [487.222716]  intel_engine_park_heartbeat.part.0+0x6f/0x80 [i915]
+<4> [487.223115]  intel_engine_park_heartbeat+0x25/0x40 [i915]
+<4> [487.223566]  __engine_park+0xb9/0x650 [i915]
+<4> [487.223973]  ____intel_wakeref_put_last+0x2e/0xb0 [i915]
+<4> [487.224408]  __intel_wakeref_put_last+0x72/0x90 [i915]
+<4> [487.224797]  intel_context_exit_engine+0x7c/0x80 [i915]
+<4> [487.225238]  intel_context_exit+0xf1/0x1b0 [i915]
+<4> [487.225695]  i915_request_retire.part.0+0x1b9/0x530 [i915]
+<4> [487.226178]  i915_request_retire+0x1c/0x40 [i915]
+<4> [487.226625]  engine_retire+0x122/0x180 [i915]
+<4> [487.227037]  process_one_work+0x239/0x760
+<4> [487.227060]  worker_thread+0x200/0x3f0
+<4> [487.227068]  ? __pfx_worker_thread+0x10/0x10
+<4> [487.227075]  kthread+0x10d/0x150
+<4> [487.227083]  ? __pfx_kthread+0x10/0x10
+<4> [487.227092]  ret_from_fork+0x3d4/0x480
+<4> [487.227099]  ? __pfx_kthread+0x10/0x10
+<4> [487.227107]  ret_from_fork_asm+0x1a/0x30
+<4> [487.227141]  </TASK>
+```
 
-Also fix the endianness of the scan format from little-endian to CPU
-endianness. Since we are using regmap to read the value, it will be
-CPU-endian.
+Fix this by replacing the non-atomic pointer read + separate clear with
+xchg() in both racing paths. xchg() is a single indivisible hardware
+instruction that atomically reads the old pointer and writes NULL. This
+guarantees only one of the two concurrent callers obtains the non-NULL
+pointer and performs the put, the other gets NULL and skips it.
 
-Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15880
+Fixes: 058179e72e09 ("drm/i915/gt: Replace hangcheck by heartbeats")
+Cc: <stable@vger.kernel.org> # v5.5+
+Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/d4c1c14255688dd07cc8044973c4f032a8d1559e.1775038106.git.sebastian.brzezinka@intel.com
+(cherry picked from commit 13238dc0ee4f9ab8dafa2cca7295736191ae2f42)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/vcnl4035.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c |   26 +++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
---- a/drivers/iio/light/vcnl4035.c
-+++ b/drivers/iio/light/vcnl4035.c
-@@ -105,17 +105,23 @@ static irqreturn_t vcnl4035_trigger_cons
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct vcnl4035_data *data = iio_priv(indio_dev);
- 	/* Ensure naturally aligned timestamp */
--	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)]  __aligned(8) = { };
-+	struct {
-+		u16 als_data;
-+		aligned_s64 timestamp;
-+	} buffer = { };
-+	unsigned int val;
- 	int ret;
+--- a/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
+@@ -148,10 +148,12 @@ static void heartbeat(struct work_struct
+ 	/* Just in case everything has gone horribly wrong, give it a kick */
+ 	intel_engine_flush_submission(engine);
  
--	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, (int *)buffer);
-+	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, &val);
- 	if (ret < 0) {
- 		dev_err(&data->client->dev,
- 			"Trigger consumer can't read from sensor.\n");
- 		goto fail_read;
+-	rq = engine->heartbeat.systole;
+-	if (rq && i915_request_completed(rq)) {
+-		i915_request_put(rq);
+-		engine->heartbeat.systole = NULL;
++	rq = xchg(&engine->heartbeat.systole, NULL);
++	if (rq) {
++		if (i915_request_completed(rq))
++			i915_request_put(rq);
++		else
++			engine->heartbeat.systole = rq;
  	}
--	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
--					iio_get_time_ns(indio_dev));
-+
-+	buffer.als_data = val;
-+	iio_push_to_buffers_with_timestamp(indio_dev, &buffer,
-+					   iio_get_time_ns(indio_dev));
  
- fail_read:
- 	iio_trigger_notify_done(indio_dev->trig);
-@@ -378,7 +384,7 @@ static const struct iio_chan_spec vcnl40
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_LE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -392,7 +398,7 @@ static const struct iio_chan_spec vcnl40
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_LE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- };
+ 	if (!intel_engine_pm_get_if_awake(engine))
+@@ -232,8 +234,11 @@ static void heartbeat(struct work_struct
+ unlock:
+ 	mutex_unlock(&ce->timeline->mutex);
+ out:
+-	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine))
+-		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
++	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine)) {
++		rq = xchg(&engine->heartbeat.systole, NULL);
++		if (rq)
++			i915_request_put(rq);
++	}
+ 	intel_engine_pm_put(engine);
+ }
+ 
+@@ -247,8 +252,13 @@ void intel_engine_unpark_heartbeat(struc
+ 
+ void intel_engine_park_heartbeat(struct intel_engine_cs *engine)
+ {
+-	if (cancel_delayed_work(&engine->heartbeat.work))
+-		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
++	if (cancel_delayed_work(&engine->heartbeat.work)) {
++		struct i915_request *rq;
++
++		rq = xchg(&engine->heartbeat.systole, NULL);
++		if (rq)
++			i915_request_put(rq);
++	}
+ }
+ 
+ void intel_gt_unpark_heartbeats(struct intel_gt *gt)
 
 
 
