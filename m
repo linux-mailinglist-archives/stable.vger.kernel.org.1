@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-237477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEZ9IMEm3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:17 +0200
+	id kOfADXgb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758D73F152E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:24:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B53F3EF591
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5CC5D30F7D72
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93F0B31D46AD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4852D326D73;
-	Mon, 13 Apr 2026 16:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911E12C0F7F;
+	Mon, 13 Apr 2026 16:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRsn08H+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCMo2wAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFA83254A3;
-	Mon, 13 Apr 2026 16:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5396229DB64;
+	Mon, 13 Apr 2026 16:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099556; cv=none; b=LuZgtnw9NN0FinzQSLFMeKSxwqszRQyTJj68mFtQHUf2X/GI5JciMdcMpJVwrVHKxio3dXPd/dEQ4zkioHauhrg9WulIieNX76i2oDYb2ouLQGuk6YqijDmdH5FAZm55EvEcXTgHBlv9IEwGyvbVgateCuMobgbsN1gs+flXY0g=
+	t=1776096661; cv=none; b=CfDnAatakNyocdodg/CuCy6Or4ojBMGHH1QbF0wl3e/Njr0OwrOJ16W2MqcP4EYkYVtyDZTJsldDUM42T1rAxwcRUYUYzWB6/KQL++rk5e9xHDB0zVP6ajomQOkOrm1DdRloGS4sSPNc8V6d2zkXJSO0l3pOUNKhSGbc70caNik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099556; c=relaxed/simple;
-	bh=GBfA9Sk9QjIteEXfbnGlwgYPOr07E3ENuH9jLF9q+IE=;
+	s=arc-20240116; t=1776096661; c=relaxed/simple;
+	bh=gM95Y3le6svO3fZhKTRRu/fLtg6X3SjJaMoKEFGrOYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYOxtqnIn0tUBM0Y8gN1rKja3GzeOJsbz5irevNL88vgDQ5hFhxNjS7262WmfiVkiQyqMI/8cpSgUuhqYYojSh+SVDTNITGzIe5Ycit1LhLIoWUWHReZOu/99KO6y16RHMBP67evCD1awFFRMz/NHxSOm0P30Xbh3jbAW1HUFtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRsn08H+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D47C2BCAF;
-	Mon, 13 Apr 2026 16:59:15 +0000 (UTC)
+	 MIME-Version; b=OhsStUSvzYrdyQegTSvUx0NGsrMMnz8hfhVyi1JzhI6HOFciIhQWfdfVdfQuicwLQbt9vCUkbZkhAYF28274QPpAa29T+Brxa+K3JrA11AD5TOy4KXthXA7k8p05EoGrerT3zq82AizYa30Y8jG0TRONuSzU32g+MVB3v/fo5ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCMo2wAU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD41BC2BCAF;
+	Mon, 13 Apr 2026 16:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099555;
-	bh=GBfA9Sk9QjIteEXfbnGlwgYPOr07E3ENuH9jLF9q+IE=;
+	s=korg; t=1776096661;
+	bh=gM95Y3le6svO3fZhKTRRu/fLtg6X3SjJaMoKEFGrOYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRsn08H+RJ68lxA8k/U2xmYZGOe87hbffZrJBJdXQa6RYdnYTrINbXAn3kjBhS5pR
-	 HUYZaxJ+XPdw/yB85mqn/R1Ptwdb9/tU9NAGy7+U/rFSAleMibuhvE9VC3dYoNloVr
-	 f/R2XZ2XWmL6DhFusZ/BbOOP7J6JbGyQnQaj6CPo=
+	b=uCMo2wAUfi7Y2fshLjryXqtRS3z3eRJS2OHSobY8q6Pz1WJ0loxNtKCQ8m5AlTuM/
+	 Qhs+P/uNidiVc7WiNc6cLQ5p77UpNkl8Io1hG12laspUOO6mpEHfqkRiDX/OtBo1MJ
+	 EfECmlaMYwT/3+pC0kaCm8xda2PhTeOb8/rSM7E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 353/491] ipv6: avoid overflows in ip6_datagram_send_ctl()
+	Vishal Thanki <vishalthanki@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 03/70] wifi: rt2x00usb: fix devres lifetime
 Date: Mon, 13 Apr 2026 17:59:58 +0200
-Message-ID: <20260413155832.255070938@linuxfoundation.org>
+Message-ID: <20260413155728.309118514@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+References: <20260413155728.181580293@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,222 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237477-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,wp.pl,intel.com];
+	TAGGED_FROM(0.00)[bounces-236343-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.997];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 758D73F152E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,wp.pl:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8B53F3EF591
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 4e453375561fc60820e6b9d8ebeb6b3ee177d42e ]
+commit 25369b22223d1c56e42a0cd4ac9137349d5a898e upstream.
 
-Yiming Qian reported :
-<quote>
- I believe I found a locally triggerable kernel bug in the IPv6 sendmsg
- ancillary-data path that can panic the kernel via `skb_under_panic()`
- (local DoS).
+USB drivers bind to USB interfaces and any device managed resources
+should have their lifetime tied to the interface rather than parent USB
+device. This avoids issues like memory leaks when drivers are unbound
+without their devices being physically disconnected (e.g. on probe
+deferral or configuration changes).
 
- The core issue is a mismatch between:
+Fix the USB anchor lifetime so that it is released on driver unbind.
 
- - a 16-bit length accumulator (`struct ipv6_txoptions::opt_flen`, type
- `__u16`) and
- - a pointer to the *last* provided destination-options header (`opt->dst1opt`)
-
- when multiple `IPV6_DSTOPTS` control messages (cmsgs) are provided.
-
- - `include/net/ipv6.h`:
-   - `struct ipv6_txoptions::opt_flen` is `__u16` (wrap possible).
- (lines 291-307, especially 298)
- - `net/ipv6/datagram.c:ip6_datagram_send_ctl()`:
-   - Accepts repeated `IPV6_DSTOPTS` and accumulates into `opt_flen`
- without rejecting duplicates. (lines 909-933)
- - `net/ipv6/ip6_output.c:__ip6_append_data()`:
-   - Uses `opt->opt_flen + opt->opt_nflen` to compute header
- sizes/headroom decisions. (lines 1448-1466, especially 1463-1465)
- - `net/ipv6/ip6_output.c:__ip6_make_skb()`:
-   - Calls `ipv6_push_frag_opts()` if `opt->opt_flen` is non-zero.
- (lines 1930-1934)
- - `net/ipv6/exthdrs.c:ipv6_push_frag_opts()` / `ipv6_push_exthdr()`:
-   - Push size comes from `ipv6_optlen(opt->dst1opt)` (based on the
- pointed-to header). (lines 1179-1185 and 1206-1211)
-
- 1. `opt_flen` is a 16-bit accumulator:
-
- - `include/net/ipv6.h:298` defines `__u16 opt_flen; /* after fragment hdr */`.
-
- 2. `ip6_datagram_send_ctl()` accepts *repeated* `IPV6_DSTOPTS` cmsgs
- and increments `opt_flen` each time:
-
- - In `net/ipv6/datagram.c:909-933`, for `IPV6_DSTOPTS`:
-   - It computes `len = ((hdr->hdrlen + 1) << 3);`
-   - It checks `CAP_NET_RAW` using `ns_capable(net->user_ns,
- CAP_NET_RAW)`. (line 922)
-   - Then it does:
-     - `opt->opt_flen += len;` (line 927)
-     - `opt->dst1opt = hdr;` (line 928)
-
- There is no duplicate rejection here (unlike the legacy
- `IPV6_2292DSTOPTS` path which rejects duplicates at
- `net/ipv6/datagram.c:901-904`).
-
- If enough large `IPV6_DSTOPTS` cmsgs are provided, `opt_flen` wraps
- while `dst1opt` still points to a large (2048-byte)
- destination-options header.
-
- In the attached PoC (`poc.c`):
-
- - 32 cmsgs with `hdrlen=255` => `len = (255+1)*8 = 2048`
- - 1 cmsg with `hdrlen=0` => `len = 8`
- - Total increment: `32*2048 + 8 = 65544`, so `(__u16)opt_flen == 8`
- - The last cmsg is 2048 bytes, so `dst1opt` points to a 2048-byte header.
-
- 3. The transmit path sizes headers using the wrapped `opt_flen`:
-
-- In `net/ipv6/ip6_output.c:1463-1465`:
-  - `headersize = sizeof(struct ipv6hdr) + (opt ? opt->opt_flen +
- opt->opt_nflen : 0) + ...;`
-
- With wrapped `opt_flen`, `headersize`/headroom decisions underestimate
- what will be pushed later.
-
- 4. When building the final skb, the actual push length comes from
- `dst1opt` and is not limited by wrapped `opt_flen`:
-
- - In `net/ipv6/ip6_output.c:1930-1934`:
-   - `if (opt->opt_flen) proto = ipv6_push_frag_opts(skb, opt, proto);`
- - In `net/ipv6/exthdrs.c:1206-1211`, `ipv6_push_frag_opts()` pushes
- `dst1opt` via `ipv6_push_exthdr()`.
- - In `net/ipv6/exthdrs.c:1179-1184`, `ipv6_push_exthdr()` does:
-   - `skb_push(skb, ipv6_optlen(opt));`
-   - `memcpy(h, opt, ipv6_optlen(opt));`
-
- With insufficient headroom, `skb_push()` underflows and triggers
- `skb_under_panic()` -> `BUG()`:
-
- - `net/core/skbuff.c:2669-2675` (`skb_push()` calls `skb_under_panic()`)
- - `net/core/skbuff.c:207-214` (`skb_panic()` ends in `BUG()`)
-
- - The `IPV6_DSTOPTS` cmsg path requires `CAP_NET_RAW` in the target
- netns user namespace (`ns_capable(net->user_ns, CAP_NET_RAW)`).
- - Root (or any task with `CAP_NET_RAW`) can trigger this without user
- namespaces.
- - An unprivileged `uid=1000` user can trigger this if unprivileged
- user namespaces are enabled and it can create a userns+netns to obtain
- namespaced `CAP_NET_RAW` (the attached PoC does this).
-
- - Local denial of service: kernel BUG/panic (system crash).
- - Reproducible with a small userspace PoC.
-</quote>
-
-This patch does not reject duplicated options, as this might break
-some user applications.
-
-Instead, it makes sure to adjust opt_flen and opt_nflen to correctly
-reflect the size of the current option headers, preventing the overflows
-and the potential for panics.
-
-This applies to IPV6_DSTOPTS, IPV6_HOPOPTS, and IPV6_RTHDR.
-
-Specifically:
-
-When a new IPV6_DSTOPTS is processed, the length of the old opt->dst1opt
-is subtracted from opt->opt_flen before adding the new length.
-
-When a new IPV6_HOPOPTS is processed, the length of the old opt->dst0opt
-is subtracted from opt->opt_nflen.
-
-When a new Routing Header (IPV6_RTHDR or IPV6_2292RTHDR) is processed,
-the length of the old opt->srcrt is subtracted from opt->opt_nflen.
-
-In the special case within IPV6_2292RTHDR handling where dst1opt is moved
-to dst0opt, the length of the old opt->dst0opt is subtracted from
-opt->opt_nflen before the new one is added.
-
-Fixes: 333fad5364d6 ("[IPV6]: Support several new sockopt / ancillary data in Advanced API (RFC3542).")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAL_bE8JNzawgr5OX5m+3jnQDHry2XxhQT5=jThW1zDPtUikRYA@mail.gmail.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260401154721.3740056-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Vishal Thanki <vishalthanki@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260327113219.1313748-1-johan@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/datagram.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
-index a30ff5d6808aa..d8af31805133f 100644
---- a/net/ipv6/datagram.c
-+++ b/net/ipv6/datagram.c
-@@ -756,6 +756,7 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- {
- 	struct in6_pktinfo *src_info;
- 	struct cmsghdr *cmsg;
-+	struct ipv6_rt_hdr *orthdr;
- 	struct ipv6_rt_hdr *rthdr;
- 	struct ipv6_opt_hdr *hdr;
- 	struct ipv6_txoptions *opt = ipc6->opt;
-@@ -917,9 +918,13 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- 				goto exit_f;
- 			}
- 			if (cmsg->cmsg_type == IPV6_DSTOPTS) {
-+				if (opt->dst1opt)
-+					opt->opt_flen -= ipv6_optlen(opt->dst1opt);
- 				opt->opt_flen += len;
- 				opt->dst1opt = hdr;
- 			} else {
-+				if (opt->dst0opt)
-+					opt->opt_nflen -= ipv6_optlen(opt->dst0opt);
- 				opt->opt_nflen += len;
- 				opt->dst0opt = hdr;
- 			}
-@@ -962,12 +967,17 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- 				goto exit_f;
- 			}
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -830,7 +830,7 @@ int rt2x00usb_probe(struct usb_interface
+ 	if (retval)
+ 		goto exit_free_device;
  
-+			orthdr = opt->srcrt;
-+			if (orthdr)
-+				opt->opt_nflen -= ((orthdr->hdrlen + 1) << 3);
- 			opt->opt_nflen += len;
- 			opt->srcrt = rthdr;
- 
- 			if (cmsg->cmsg_type == IPV6_2292RTHDR && opt->dst1opt) {
- 				int dsthdrlen = ((opt->dst1opt->hdrlen+1)<<3);
- 
-+				if (opt->dst0opt)
-+					opt->opt_nflen -= ipv6_optlen(opt->dst0opt);
- 				opt->opt_nflen += dsthdrlen;
- 				opt->dst0opt = opt->dst1opt;
- 				opt->dst1opt = NULL;
--- 
-2.53.0
-
+-	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
++	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+ 					sizeof(struct usb_anchor),
+ 					GFP_KERNEL);
+ 	if (!rt2x00dev->anchor) {
 
 
 
