@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-236429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMymLSkc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:05 +0200
+	id CGriLYUi3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C7E3EF72F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA023F0BA7
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2DD9303FDC9
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB79F305A476
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F281226E6F8;
-	Mon, 13 Apr 2026 16:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48CB339870;
+	Mon, 13 Apr 2026 17:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0mjXWP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdJytzQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B682C2472A2;
-	Mon, 13 Apr 2026 16:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66900330B3A;
+	Mon, 13 Apr 2026 17:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096882; cv=none; b=bcOZmkOAh6xLdkGnD9YGCxip5ywci5BViKuiqq7kGnxEReV2buuSDOCRKSkQ/tOqL6b1uuIy6pbfbUDcuu0Ai06jiJi1D3JREuWVhL5SHDLzkWLswWzajPmMBkdPGgxyVclW97ZIE/Yw7l9KDLK+JhEjp5CSQAocwsPixb1SVQQ=
+	t=1776099620; cv=none; b=Sb6W0ymGH6bQ4zTdtmLFG3Ec46vzEzQ8vuiaddvNFokriBh1zjYSL5mnKccIK/GmTRsZwCEodgEHolxf74K7YX6H7GrJSb7jpuAM0AMptUrKC3i5wfJQV2Lo2DZqZHCcznp6HNRFJRDxYUZCmxozWMVsXZGrzPu2UYExAp/PDmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096882; c=relaxed/simple;
-	bh=P/e7KeKJ+lQAbJCClnvVdlYV/GkK5W7gR3EH5WVWZL8=;
+	s=arc-20240116; t=1776099620; c=relaxed/simple;
+	bh=GlST++QGQASoBg0z9pQe/NPG2JiZ7AAZ7keINVPGlYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItFWrha2lpNfqQag9DWsSoYrQmwIvKtAy3/xRBf4GWge0AN5elMFVLwo1KGjrXjwFVPBJVj2WFYy4y1jX1yBEEK0ywcQmn+JbOzy9uGDebz7jV7IcDGQVUJ07HWyt9d6LXDfqwhYd8ZGa7hKtEC9DII0UHVfmt8dV1CHrEOkGZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0mjXWP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7AEC2BCAF;
-	Mon, 13 Apr 2026 16:14:42 +0000 (UTC)
+	 MIME-Version; b=YuC99CmzwW+gEdabgj6ogtQFixiG129W4KqwM38CrfDePVansjmgnApS/qU52dwwQrmJ5MAMHVgR0FJPgA8eBIWMuJTjs7tCCWNGnYjrX4oV9DRFJ/MS/HAKn1IVKRpOmsl6Cb+mqod0ddVBmGOMVsFEGlhvfA5WG1gceEyJ+64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdJytzQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4B6C2BCAF;
+	Mon, 13 Apr 2026 17:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096882;
-	bh=P/e7KeKJ+lQAbJCClnvVdlYV/GkK5W7gR3EH5WVWZL8=;
+	s=korg; t=1776099620;
+	bh=GlST++QGQASoBg0z9pQe/NPG2JiZ7AAZ7keINVPGlYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0mjXWP5IFrFxUncvSJbIn+l27uCUQEawHavtpWjsxMJr07sUkkUcPcjpoYH0khWT
-	 EABf3fRL7j475OU2Qb4PrLzAgkSNsqI97nwRIzO6cSTEV67Kl84/cr5WnL7D1qmsxY
-	 Ip+ipu0mgZmSk/aYToSUx+zhKYpurWSNfPvIPJaM=
+	b=xdJytzQzcm2gGSnrpX6O+DxVJOBp2b/e9CJJ4mOc8AjG0t8mTgrdHEVcSGBvrHJIm
+	 Kf0HqWQiqSmq+Hbak6HIZ/BYmjzcc1ckYZslnO5vyODn1LnYeahZaxtYAvTC3Zv9sB
+	 Ktq6PlT+LJvG1yd0snOJg6W/SwLLT+QDtQt05qLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 28/50] nfc: pn533: allocate rx skb before consuming bytes
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 5.10 410/491] usb: gadget: f_rndis: Protect RNDIS options with mutex
 Date: Mon, 13 Apr 2026 18:00:55 +0200
-Message-ID: <20260413155725.563011774@linuxfoundation.org>
+Message-ID: <20260413155834.380566944@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +66,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237502-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236429-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 08C7E3EF72F
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5AA023F0BA7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit c71ba669b570c7b3f86ec875be222ea11dacb352 upstream.
+commit 8d8c68b1fc06ece60cf43e1306ff0f4ac121547e upstream.
 
-pn532_receive_buf() reports the number of accepted bytes to the serdev
-core. The current code consumes bytes into recv_skb and may already hand
-a complete frame to pn533_recv_frame() before allocating a fresh receive
-buffer.
+The class/subclass/protocol options are suspectible to race conditions
+as they can be accessed concurrently through configfs.
 
-If that alloc_skb() fails, the callback returns 0 even though it has
-already consumed bytes, and it leaves recv_skb as NULL for the next
-receive callback. That breaks the receive_buf() accounting contract and
-can also lead to a NULL dereference on the next skb_put_u8().
+Use existing mutex to protect these options. This issue was identified
+during code inspection.
 
-Allocate the receive skb lazily before consuming the next byte instead.
-If allocation fails, return the number of bytes already accepted.
-
-Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Fixes: 73517cf49bd4 ("usb: gadget: add RNDIS configfs options for class/subclass/protocol")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-2-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/pn533/uart.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_rndis.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/nfc/pn533/uart.c
-+++ b/drivers/nfc/pn533/uart.c
-@@ -211,6 +211,13 @@ static int pn532_receive_buf(struct serd
+--- a/drivers/usb/gadget/function/f_rndis.c
++++ b/drivers/usb/gadget/function/f_rndis.c
+@@ -11,6 +11,7 @@
  
- 	del_timer(&dev->cmd_timeout);
- 	for (i = 0; i < count; i++) {
-+		if (!dev->recv_skb) {
-+			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
-+						  GFP_KERNEL);
-+			if (!dev->recv_skb)
-+				return i;
-+		}
-+
- 		if (unlikely(!skb_tailroom(dev->recv_skb)))
- 			skb_trim(dev->recv_skb, 0);
+ /* #define VERBOSE_DEBUG */
  
-@@ -219,9 +226,7 @@ static int pn532_receive_buf(struct serd
- 			continue;
- 
- 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
--		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
--		if (!dev->recv_skb)
--			return 0;
-+		dev->recv_skb = NULL;
++#include <linux/cleanup.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -690,9 +691,11 @@ rndis_bind(struct usb_configuration *c,
+ 		f->os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
  	}
  
- 	return i;
++	mutex_lock(&rndis_opts->lock);
+ 	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
+ 	rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
+ 	rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
++	mutex_unlock(&rndis_opts->lock);
+ 
+ 	/*
+ 	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
 
 
 
