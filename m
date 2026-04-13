@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-236373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237029-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMmwHLsb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:15 +0200
+	id +KbYHqUe3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-237029-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8F43EF62A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:37:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9783EFE89
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 346AE320FF53
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AAA5F30A37BF
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DD1282F1B;
-	Mon, 13 Apr 2026 16:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8572D5A19;
+	Mon, 13 Apr 2026 16:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpvnfQu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eojAnZj5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0F127FB2E;
-	Mon, 13 Apr 2026 16:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9244D1A680C;
+	Mon, 13 Apr 2026 16:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096738; cv=none; b=SQDywA9Q8gXEI9z2x6DjNpuRrRKBC4nbAVVJdzJsBlkqYMUt5DowuNIgw9EG6W3XQPCkpAOyv0qdcbJM/Ntg8X5PpOftc9QTQLWfonnWtaKEinJNZ9nWmQFnl/b4XWhZFxqWmWM5cm2e37DTvF5R/gUFmPBB9qh3DtAuKJJZUDQ=
+	t=1776098406; cv=none; b=q+d91ID98iqYXsC2TSe9HSC2yBtetyLvmogdh7oVi/UID89apEtkBfC8autYQGus5oazQNvawxjXndDfLzywrdSEHRYuFvDMpcott35LuAmEde5vptpNjHNp2sTljEzOwyTRnk91TpAahw30lju9CHTyFQjNXbeLtYkTfv0MVGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096738; c=relaxed/simple;
-	bh=Lydk9yNkWyUI///9uoAldjWOeM3r1U/JzaA/0pMSu8s=;
+	s=arc-20240116; t=1776098406; c=relaxed/simple;
+	bh=ROcgtNs/VxHbJZQ/V5L7nAd8+Bb7WkTpOmueW7T3LsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raSgH35u1I93m+z/NgvwrLyS9XvEdX/IpLYNxGkOfej/PSn3N10rIvkX3lxFZ4awfUt/lV6nhNEv3m3yTC5eHzxxOUFGpdGWy+AhSzd0MSeAzhSAb7Ge2todDjBP/fr/jjMRzXLM7c/2c821TRNUQwnVYXVQdxsNDEMM7C81qOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpvnfQu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D2CC2BCAF;
-	Mon, 13 Apr 2026 16:12:17 +0000 (UTC)
+	 MIME-Version; b=Fn5hGCncdGSypWuvRRqrB8JCcqBcW/+aoZzZBYO4MStTK1sNDfBeW2uA8kqpdUv6LNn1XmgZPIt6RZYWa7AyHMY18dx5S+IOSyq5iMuUF05M7NxnKpm6mZ/pD2BSsmkjvKmO+l+wPIhQ5kREn/haARTlEelyg7PLVOcWyiNK7bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eojAnZj5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27335C2BCAF;
+	Mon, 13 Apr 2026 16:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096738;
-	bh=Lydk9yNkWyUI///9uoAldjWOeM3r1U/JzaA/0pMSu8s=;
+	s=korg; t=1776098406;
+	bh=ROcgtNs/VxHbJZQ/V5L7nAd8+Bb7WkTpOmueW7T3LsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpvnfQu8rgwujAoVQpyn37ZFV8nP38eqB7nclB76c6w5nwjj3U7/snEEkuoDDRS+1
-	 /fsj2vI8h2WnkLXQRvKozbuOafeYdcS4HplffOVKdlmwIRxknJlbyYMyBCrKdK4sts
-	 Q2IOsWN+ff34WaTSOsH2qjzOEBw6Jx+DHohR1dNo=
+	b=eojAnZj5BHK+jfxKym5yDaz83A5R7q/TZ2hst6uq9TTVYVxf62pypTorzLAt3LAso
+	 XYvRnw9FfTME9XNkc/EqjobvZIHFRx1JP9Fy/FjObtnowLAFMCHwoxfCaUbGkbfKG/
+	 QRhtkdrnbP9MUfPRJzWvrkatMDz/Ds274CTixSWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 16/70] btrfs: split waiting from read_extent_buffer_pages(), drop parameter wait
+	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: [PATCH 5.15 480/570] comedi: dt2815: add hardware detection to prevent crash
 Date: Mon, 13 Apr 2026 18:00:11 +0200
-Message-ID: <20260413155728.794973551@linuxfoundation.org>
+Message-ID: <20260413155848.441960324@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,155 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236373-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-237029-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,wdc.com:email]
-X-Rspamd-Queue-Id: CB8F43EF62A
+	NEURAL_HAM(-0.00)[-0.989];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: DA9783EFE89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 248c4ff3935252a82504c55cfd3592e413575bd0 ]
+commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
 
-There are only 2 WAIT_* values left for wait parameter, we can encode
-this to the function name if the waiting functionality is split.
+The dt2815 driver crashes when attached to I/O ports without actual
+hardware present. This occurs because syzkaller or users can attach
+the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 316fb1b3169e ("btrfs: fix incorrect return value after changing leaf in lookup_extent_data_ref()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When no hardware exists at the specified port, inb() operations return
+0xff (floating bus), but outb() operations can trigger page faults due
+to undefined behavior, especially under race conditions:
+
+  BUG: unable to handle page fault for address: 000000007fffff90
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  RIP: 0010:dt2815_attach+0x6e0/0x1110
+
+Add hardware detection by reading the status register before attempting
+any write operations. If the read returns 0xff, assume no hardware is
+present and fail the attach with -ENODEV. This prevents crashes from
+outb() operations on non-existent hardware.
+
+Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
+Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
+Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c   |  2 +-
- fs/btrfs/extent_io.c | 27 +++++++++++++++++----------
- fs/btrfs/extent_io.h |  7 ++++---
- 3 files changed, 22 insertions(+), 14 deletions(-)
+ drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 05e91ed0af197..5de12f3a679df 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -226,7 +226,7 @@ int btrfs_read_extent_buffer(struct extent_buffer *eb,
- 
- 	while (1) {
- 		clear_bit(EXTENT_BUFFER_CORRUPT, &eb->bflags);
--		ret = read_extent_buffer_pages(eb, WAIT_COMPLETE, mirror_num, check);
-+		ret = read_extent_buffer_pages(eb, mirror_num, check);
- 		if (!ret)
- 			break;
- 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 3bcb368c4127e..0d50f3063d346 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -3636,8 +3636,8 @@ static void end_bbio_meta_read(struct btrfs_bio *bbio)
- 	bio_put(&bbio->bio);
- }
- 
--int read_extent_buffer_pages(struct extent_buffer *eb, int wait, int mirror_num,
--			     const struct btrfs_tree_parent_check *check)
-+int read_extent_buffer_pages_nowait(struct extent_buffer *eb, int mirror_num,
-+				    const struct btrfs_tree_parent_check *check)
- {
- 	struct btrfs_bio *bbio;
- 	bool ret;
-@@ -3655,7 +3655,7 @@ int read_extent_buffer_pages(struct extent_buffer *eb, int wait, int mirror_num,
- 
- 	/* Someone else is already reading the buffer, just wait for it. */
- 	if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
--		goto done;
-+		return 0;
- 
- 	/*
- 	 * Between the initial test_bit(EXTENT_BUFFER_UPTODATE) and the above
-@@ -3695,14 +3695,21 @@ int read_extent_buffer_pages(struct extent_buffer *eb, int wait, int mirror_num,
- 		}
- 	}
- 	btrfs_submit_bbio(bbio, mirror_num);
-+	return 0;
-+}
- 
--done:
--	if (wait == WAIT_COMPLETE) {
--		wait_on_bit_io(&eb->bflags, EXTENT_BUFFER_READING, TASK_UNINTERRUPTIBLE);
--		if (!test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))
--			return -EIO;
--	}
-+int read_extent_buffer_pages(struct extent_buffer *eb, int mirror_num,
-+			     const struct btrfs_tree_parent_check *check)
-+{
-+	int ret;
- 
-+	ret = read_extent_buffer_pages_nowait(eb, mirror_num, check);
-+	if (ret < 0)
-+		return ret;
-+
-+	wait_on_bit_io(&eb->bflags, EXTENT_BUFFER_READING, TASK_UNINTERRUPTIBLE);
-+	if (!test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))
-+		return -EIO;
- 	return 0;
- }
- 
-@@ -4434,7 +4441,7 @@ void btrfs_readahead_tree_block(struct btrfs_fs_info *fs_info,
- 		return;
+--- a/drivers/comedi/drivers/dt2815.c
++++ b/drivers/comedi/drivers/dt2815.c
+@@ -176,6 +176,18 @@ static int dt2815_attach(struct comedi_d
+ 		    ? current_range_type : voltage_range_type;
  	}
  
--	ret = read_extent_buffer_pages(eb, WAIT_NONE, 0, &check);
-+	ret = read_extent_buffer_pages_nowait(eb, 0, &check);
- 	if (ret < 0)
- 		free_extent_buffer_stale(eb);
- 	else
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index efface292a595..f21fd8b50abc8 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -261,10 +261,11 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
- 					 u64 start);
- void free_extent_buffer(struct extent_buffer *eb);
- void free_extent_buffer_stale(struct extent_buffer *eb);
--#define WAIT_NONE	0
--#define WAIT_COMPLETE	1
--int read_extent_buffer_pages(struct extent_buffer *eb, int wait, int mirror_num,
-+int read_extent_buffer_pages(struct extent_buffer *eb, int mirror_num,
- 			     const struct btrfs_tree_parent_check *parent_check);
-+int read_extent_buffer_pages_nowait(struct extent_buffer *eb, int mirror_num,
-+				    const struct btrfs_tree_parent_check *parent_check);
++	/*
++	 * Check if hardware is present before attempting any I/O operations.
++	 * Reading 0xff from status register typically indicates no hardware
++	 * on the bus (floating bus reads as all 1s).
++	 */
++	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
++		dev_err(dev->class_dev,
++			"No hardware detected at I/O base 0x%lx\n",
++			dev->iobase);
++		return -ENODEV;
++	}
 +
- static inline void wait_on_extent_buffer_writeback(struct extent_buffer *eb)
- {
- 	wait_on_bit_io(&eb->bflags, EXTENT_BUFFER_WRITEBACK,
--- 
-2.53.0
-
+ 	/* Init the 2815 */
+ 	outb(0x00, dev->iobase + DT2815_STATUS);
+ 	for (i = 0; i < 100; i++) {
 
 
 
