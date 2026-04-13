@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-237366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOXFEWcm3WlcaQkAu9opvQ
-	(envelope-from <stable+bounces-237366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:22:47 +0200
+	id 6P1dL0Qb3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75683F1476
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:22:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3AA3EF516
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE04730CFA31
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:54:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 64DA3301A0AD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE41317173;
-	Mon, 13 Apr 2026 16:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4C3307AC7;
+	Mon, 13 Apr 2026 16:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmGQb3yg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClA9KWPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021EF317153;
-	Mon, 13 Apr 2026 16:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22112EBB8C;
+	Mon, 13 Apr 2026 16:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099269; cv=none; b=WQ9r+SNkF0/wHlrAauW1TIRpaSZqL93mb2h8JMpvh9jqvATFTYkJVDHgVDvc3F89CRZOTmwf8ZFtkRHV96PgSNrcgY1g5g6F0dfLD7BZ/rxXzVnNIqDSxBPK/FuJu2YstTFdMh9fuzM5LEr7oLRhmKHxD6X52QSGYwBWBFVIRvk=
+	t=1776098086; cv=none; b=IEpUUogqpfeLsBIG1sA+uqEmggaUkv6FP6xaba9aH/p+xDO3ha1RVTEUgfIPrnsG1i/fGeJn6a1sVzVu2ZANHt/bg58xXkpTmnoZ4jf3YPmn3Wbkf41hnVpN5vsTMLf3/n8NrhzAGAUb4AaMsQxPW4oNEXTiNEQq8RIR4FPFI/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099269; c=relaxed/simple;
-	bh=tFINk0l43J9lg1nARBYT4FrP1nX8ZCXaDyD4H8owdws=;
+	s=arc-20240116; t=1776098086; c=relaxed/simple;
+	bh=aZNLZUdHZhpAmclKe9YOAO4mIgBeYJKygf57By6KpbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lv19PSiINf6bgjtVS+zc5B3vo368EV+zzWWyhxaFMbhqlfyIj4BJdei3n5g+3zchqkv3QShltsx6SzuphRjod+8cA+UNdWD4f/Y8t1xZyiMUWzhwjjq5tLKT9/YatkyH79pUbAgoDsaoYcvAU1BMSYhnZo+mzlY/xBITWY2pTCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmGQb3yg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8A0C2BCAF;
-	Mon, 13 Apr 2026 16:54:28 +0000 (UTC)
+	 MIME-Version; b=Hb2hmt2hFRjsaCru7H+Cq5epXuf+ajW2Zo9SkzRBkj7G1tCYwaETE4IS70hDv7Br4CsK3hrJfNdh43GTUrH0ZGlGpVXxVEJ154JNPM/7w+KYLqrvDLcm/Bw57qURuEzUPtjTyKjLWt6YgwmpW2JE6P1YByUCj6NNygssGghni/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClA9KWPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B25C2BCAF;
+	Mon, 13 Apr 2026 16:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099268;
-	bh=tFINk0l43J9lg1nARBYT4FrP1nX8ZCXaDyD4H8owdws=;
+	s=korg; t=1776098086;
+	bh=aZNLZUdHZhpAmclKe9YOAO4mIgBeYJKygf57By6KpbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmGQb3ygtcMmxGInFFaFlGzTi/CLOOd5PONd6RdHkyJWN4/WznVjlGfp9OKycLBxC
-	 cYvY3AiK7NPnHed83hWaz/+Qy9RN+M2ltiXrk7fmOp2X7LMRMFir+UqMECWxcJS5Le
-	 e7hEWySgcSJrh+c10Ddvbbc0nLxldUsOn1+A9Gvo=
+	b=ClA9KWPRt0N/KpvgqTEvn0xmHgp6JOC58r1qI8yGOt1dF/fyxPjm84EyJGiDxajdy
+	 xYHchIcmboSuI9hXm6UuKgfW6jdAdZSxFg2lNn0uYf+umZ6pNq0hsSeWdWdZSJj0yf
+	 nSGkNtXWIn0bThxqpaoiyZGD116zMXrm6N/S9a2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Florian Westphal <fw@strlen.de>,
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 274/491] netlink: introduce bigendian integer types
+Subject: [PATCH 5.15 388/570] dmaengine: xilinx: xilinx_dma: Fix dma_device directions
 Date: Mon, 13 Apr 2026 17:58:39 +0200
-Message-ID: <20260413155829.305817387@linuxfoundation.org>
+Message-ID: <20260413155845.010073875@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,251 +68,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237366-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236902-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sipsolutions.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A75683F1476
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nabladev.com:email]
+X-Rspamd-Queue-Id: 8E3AA3EF516
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit ecaf75ffd5f5db320d8b1da0198eef5a5ce64a3f ]
+[ Upstream commit e9cc95397bb7da13fe8a5b53a2f23cfaf9018ade ]
 
-Jakub reported that the addition of the "network_byte_order"
-member in struct nla_policy increases size of 32bit platforms.
+Unlike chan->direction , struct dma_device .directions field is a
+bitfield. Turn chan->direction into a bitfield to make it compatible
+with struct dma_device .directions .
 
-Instead of scraping the bit from elsewhere Johannes suggested
-to add explicit NLA_BE types instead, so do this here.
-
-NLA_POLICY_MAX_BE() macro is removed again, there is no need
-for it: NLA_POLICY_MAX(NLA_BE.., ..) will do the right thing.
-
-NLA_BE64 can be added later.
-
-Fixes: 08724ef69907 ("netlink: introduce NLA_POLICY_MAX_BE")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://lore.kernel.org/r/20221031123407.9158-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8f15b5071b45 ("netfilter: ctnetlink: use netlink policy range checks")
+Fixes: 7e01511443c3 ("dmaengine: xilinx_dma: Set dma_device directions")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316221728.160139-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netlink.h       | 19 +++++++++--------
- lib/nlattr.c                | 41 ++++++++++++++-----------------------
- net/netfilter/nft_payload.c |  6 +++---
- 3 files changed, 28 insertions(+), 38 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netlink.h b/include/net/netlink.h
-index 9d5d6aa690c56..fed93bd3424ff 100644
---- a/include/net/netlink.h
-+++ b/include/net/netlink.h
-@@ -181,6 +181,8 @@ enum {
- 	NLA_S64,
- 	NLA_BITFIELD32,
- 	NLA_REJECT,
-+	NLA_BE16,
-+	NLA_BE32,
- 	__NLA_TYPE_MAX,
- };
- 
-@@ -231,6 +233,7 @@ enum nla_policy_validation {
-  *    NLA_U32, NLA_U64,
-  *    NLA_S8, NLA_S16,
-  *    NLA_S32, NLA_S64,
-+ *    NLA_BE16, NLA_BE32,
-  *    NLA_MSECS            Leaving the length field zero will verify the
-  *                         given type fits, using it verifies minimum length
-  *                         just like "All other"
-@@ -261,6 +264,8 @@ enum nla_policy_validation {
-  *    NLA_U16,
-  *    NLA_U32,
-  *    NLA_U64,
-+ *    NLA_BE16,
-+ *    NLA_BE32,
-  *    NLA_S8,
-  *    NLA_S16,
-  *    NLA_S32,
-@@ -349,7 +354,6 @@ struct nla_policy {
- 		struct netlink_range_validation_signed *range_signed;
- 		struct {
- 			s16 min, max;
--			u8 network_byte_order:1;
- 		};
- 		int (*validate)(const struct nlattr *attr,
- 				struct netlink_ext_ack *extack);
-@@ -374,6 +378,8 @@ struct nla_policy {
- 	(tp == NLA_U8 || tp == NLA_U16 || tp == NLA_U32 || tp == NLA_U64)
- #define __NLA_IS_SINT_TYPE(tp)						\
- 	(tp == NLA_S8 || tp == NLA_S16 || tp == NLA_S32 || tp == NLA_S64)
-+#define __NLA_IS_BEINT_TYPE(tp)						\
-+	(tp == NLA_BE16 || tp == NLA_BE32)
- 
- #define __NLA_ENSURE(condition) BUILD_BUG_ON_ZERO(!(condition))
- #define NLA_ENSURE_UINT_TYPE(tp)			\
-@@ -387,6 +393,7 @@ struct nla_policy {
- #define NLA_ENSURE_INT_OR_BINARY_TYPE(tp)		\
- 	(__NLA_ENSURE(__NLA_IS_UINT_TYPE(tp) ||		\
- 		      __NLA_IS_SINT_TYPE(tp) ||		\
-+		      __NLA_IS_BEINT_TYPE(tp) ||	\
- 		      tp == NLA_MSECS ||		\
- 		      tp == NLA_BINARY) + tp)
- #define NLA_ENSURE_NO_VALIDATION_PTR(tp)		\
-@@ -394,6 +401,8 @@ struct nla_policy {
- 		      tp != NLA_REJECT &&		\
- 		      tp != NLA_NESTED &&		\
- 		      tp != NLA_NESTED_ARRAY) + tp)
-+#define NLA_ENSURE_BEINT_TYPE(tp)			\
-+	(__NLA_ENSURE(__NLA_IS_BEINT_TYPE(tp)) + tp)
- 
- #define NLA_POLICY_RANGE(tp, _min, _max) {		\
- 	.type = NLA_ENSURE_INT_OR_BINARY_TYPE(tp),	\
-@@ -424,14 +433,6 @@ struct nla_policy {
- 	.type = NLA_ENSURE_INT_OR_BINARY_TYPE(tp),	\
- 	.validation_type = NLA_VALIDATE_MAX,		\
- 	.max = _max,					\
--	.network_byte_order = 0,			\
--}
--
--#define NLA_POLICY_MAX_BE(tp, _max) {			\
--	.type = NLA_ENSURE_UINT_TYPE(tp),		\
--	.validation_type = NLA_VALIDATE_MAX,		\
--	.max = _max,					\
--	.network_byte_order = 1,			\
- }
- 
- #define NLA_POLICY_MASK(tp, _mask) {			\
-diff --git a/lib/nlattr.c b/lib/nlattr.c
-index 8825ad4f45bfe..440beb1626be3 100644
---- a/lib/nlattr.c
-+++ b/lib/nlattr.c
-@@ -125,10 +125,12 @@ void nla_get_range_unsigned(const struct nla_policy *pt,
- 		range->max = U8_MAX;
- 		break;
- 	case NLA_U16:
-+	case NLA_BE16:
- 	case NLA_BINARY:
- 		range->max = U16_MAX;
- 		break;
- 	case NLA_U32:
-+	case NLA_BE32:
- 		range->max = U32_MAX;
- 		break;
- 	case NLA_U64:
-@@ -160,31 +162,6 @@ void nla_get_range_unsigned(const struct nla_policy *pt,
- 	}
- }
- 
--static u64 nla_get_attr_bo(const struct nla_policy *pt,
--			   const struct nlattr *nla)
--{
--	switch (pt->type) {
--	case NLA_U16:
--		if (pt->network_byte_order)
--			return ntohs(nla_get_be16(nla));
--
--		return nla_get_u16(nla);
--	case NLA_U32:
--		if (pt->network_byte_order)
--			return ntohl(nla_get_be32(nla));
--
--		return nla_get_u32(nla);
--	case NLA_U64:
--		if (pt->network_byte_order)
--			return be64_to_cpu(nla_get_be64(nla));
--
--		return nla_get_u64(nla);
--	}
--
--	WARN_ON_ONCE(1);
--	return 0;
--}
--
- static int nla_validate_range_unsigned(const struct nla_policy *pt,
- 				       const struct nlattr *nla,
- 				       struct netlink_ext_ack *extack,
-@@ -198,9 +175,13 @@ static int nla_validate_range_unsigned(const struct nla_policy *pt,
- 		value = nla_get_u8(nla);
- 		break;
- 	case NLA_U16:
-+		value = nla_get_u16(nla);
-+		break;
- 	case NLA_U32:
-+		value = nla_get_u32(nla);
-+		break;
- 	case NLA_U64:
--		value = nla_get_attr_bo(pt, nla);
-+		value = nla_get_u64(nla);
- 		break;
- 	case NLA_MSECS:
- 		value = nla_get_u64(nla);
-@@ -208,6 +189,12 @@ static int nla_validate_range_unsigned(const struct nla_policy *pt,
- 	case NLA_BINARY:
- 		value = nla_len(nla);
- 		break;
-+	case NLA_BE16:
-+		value = ntohs(nla_get_be16(nla));
-+		break;
-+	case NLA_BE32:
-+		value = ntohl(nla_get_be32(nla));
-+		break;
- 	default:
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index ba5850ca39ddd..e2adc33631ca3 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -2862,7 +2862,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
  		return -EINVAL;
  	}
-@@ -335,6 +322,8 @@ static int nla_validate_int_range(const struct nla_policy *pt,
- 	case NLA_U64:
- 	case NLA_MSECS:
- 	case NLA_BINARY:
-+	case NLA_BE16:
-+	case NLA_BE32:
- 		return nla_validate_range_unsigned(pt, nla, extack, validate);
- 	case NLA_S8:
- 	case NLA_S16:
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index f59ad5fb42575..ae0c4cd2dd1c5 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -119,10 +119,10 @@ static const struct nla_policy nft_payload_policy[NFTA_PAYLOAD_MAX + 1] = {
- 	[NFTA_PAYLOAD_SREG]		= { .type = NLA_U32 },
- 	[NFTA_PAYLOAD_DREG]		= { .type = NLA_U32 },
- 	[NFTA_PAYLOAD_BASE]		= { .type = NLA_U32 },
--	[NFTA_PAYLOAD_OFFSET]		= NLA_POLICY_MAX_BE(NLA_U32, 255),
--	[NFTA_PAYLOAD_LEN]		= NLA_POLICY_MAX_BE(NLA_U32, 255),
-+	[NFTA_PAYLOAD_OFFSET]		= NLA_POLICY_MAX(NLA_BE32, 255),
-+	[NFTA_PAYLOAD_LEN]		= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_PAYLOAD_CSUM_TYPE]	= { .type = NLA_U32 },
--	[NFTA_PAYLOAD_CSUM_OFFSET]	= NLA_POLICY_MAX_BE(NLA_U32, 255),
-+	[NFTA_PAYLOAD_CSUM_OFFSET]	= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_PAYLOAD_CSUM_FLAGS]	= { .type = NLA_U32 },
- };
  
+-	xdev->common.directions |= chan->direction;
++	xdev->common.directions |= BIT(chan->direction);
+ 
+ 	/* Request the interrupt */
+ 	chan->irq = irq_of_parse_and_map(node, chan->tdest);
 -- 
-2.51.0
+2.53.0
 
 
 
