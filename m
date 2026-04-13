@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-237431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDkkOMwk3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:56 +0200
+	id qABlH5YW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7C73F112D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:15:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E023EE80F
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C9EF930CECE8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 096C2307AF6D
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC9B327BEC;
-	Mon, 13 Apr 2026 16:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DBB273D77;
+	Mon, 13 Apr 2026 16:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0/8y9CL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/htytE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C596B335091;
-	Mon, 13 Apr 2026 16:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AD127FB2E;
+	Mon, 13 Apr 2026 16:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099439; cv=none; b=Ik4N4LYT9jVBvjyP1XSz8GdlV22n6RrDkd+f91QNwVyiD+FhDPIcBZatXQ2ZpCXABSCjFx84mTVKnFwnHKjV9G8v+6+V0V79osgFJH7oc9YpeQrQ6Nm8DnBCWu3ixuNVX91nP2bfoQJHQ91O0UGZeGQMEiput0OfuwVRYWVjTL8=
+	t=1776096367; cv=none; b=cSIDcg3GB7whN9bPXD2sG1nv+xDpxQUCt4+SInc0o+KET/hbHhDimN0hM159hGi6NW1P4Elu3SIjD/slsPHzrHXYwwiVsOnJMafhPQ6NYNMT57Asl+dr8Wpl6XaUYLnn5nL3+l4BSZ0uIcniOVcHlyV0Sqg/ik1s06hsYLoug80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099439; c=relaxed/simple;
-	bh=/ScK9EcsLFL6chDFjiCc7/avsU6+peAEv2itSwyNYwA=;
+	s=arc-20240116; t=1776096367; c=relaxed/simple;
+	bh=TFPpvnxej/Yy+VJeJfJafF1AV4t2k4/rqBf2+uYQztc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sphaLzdXiPYvM86o9VFAyRPBwGJR0D9jCNiX/adePwbZ9uYlxu2D6ZZvB9gDU00kRlx4KSAjhKDGizMzcX0cuZo5RCf/KWr8DxeZqu3Ya02H4wVIwRC48Ryml5qzhqeKrpi9VSoTZVxeXIV6OnSVGCIENOacioMik7e4ICksQdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0/8y9CL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B84EC2BCAF;
-	Mon, 13 Apr 2026 16:57:19 +0000 (UTC)
+	 MIME-Version; b=o+hH36RKqQL8OgkL+UfrAir1PQsFu265+xq9mUaNq+G+1yAYjSMfv44DxK4AnPa/Nz8ZnlCdZHf6Nnm1wDhgxziuNTS4FjjDr7rYc3RKamXEFU7zJbI/ZYxReYDSBMXrmYWNGMTycTIkoj2l9jXOLkh1Yun/FSc9ePPtN8fO+UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/htytE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17BBC2BCAF;
+	Mon, 13 Apr 2026 16:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099439;
-	bh=/ScK9EcsLFL6chDFjiCc7/avsU6+peAEv2itSwyNYwA=;
+	s=korg; t=1776096367;
+	bh=TFPpvnxej/Yy+VJeJfJafF1AV4t2k4/rqBf2+uYQztc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0/8y9CLsGHF+TUJWMjuz55YVlyYDLzL6ug/0hx2ByZJcFBV0e/rMNq4TBmQbExtX
-	 JyIIjjANEcG75gN6I+Tvwl3EhGEFBMd+MGSKumeAUf97Is8nebB2gb54qGJSlS93aD
-	 pBsqw6ezwgROovLSYUQ/NXBekp1pT+gIigDSPy0o=
+	b=y/htytE7Id5enaTmZDcwU3yUNnjsariAMZsKAIGzbGInz6lcFwafm4CP4WwRlZLqB
+	 s5lBpoBru2sSZ9NiScxZy1KrQxwIzfiAvL6VVUXI9hGCGRGvUufHAgrFcPnGKM3kML
+	 Qn5XDywRE+n0lWHDQk1L2dPLUXcXvqgFDFz+oZY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 340/491] netfilter: nf_conntrack_helper: pass helper to expect cleanup
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.19 38/86] nfc: pn533: allocate rx skb before consuming bytes
 Date: Mon, 13 Apr 2026 17:59:45 +0200
-Message-ID: <20260413155831.769090550@linuxfoundation.org>
+Message-ID: <20260413155732.990535157@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +67,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nwl.cc,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237431-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-236226-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nwl.cc:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CF7C73F112D
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 69E023EE80F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit a242a9ae58aa46ff7dae51ce64150a93957abe65 ]
+commit c71ba669b570c7b3f86ec875be222ea11dacb352 upstream.
 
-nf_conntrack_helper_unregister() calls nf_ct_expect_iterate_destroy()
-to remove expectations belonging to the helper being unregistered.
-However, it passes NULL instead of the helper pointer as the data
-argument, so expect_iter_me() never matches any expectation and all
-of them survive the cleanup.
+pn532_receive_buf() reports the number of accepted bytes to the serdev
+core. The current code consumes bytes into recv_skb and may already hand
+a complete frame to pn533_recv_frame() before allocating a fresh receive
+buffer.
 
-After unregister returns, nfnl_cthelper_del() frees the helper
-object immediately.  Subsequent expectation dumps or packet-driven
-init_conntrack() calls then dereference the freed exp->helper,
-causing a use-after-free.
+If that alloc_skb() fails, the callback returns 0 even though it has
+already consumed bytes, and it leaves recv_skb as NULL for the next
+receive callback. That breaks the receive_buf() accounting contract and
+can also lead to a NULL dereference on the next skb_put_u8().
 
-Pass the actual helper pointer so expectations referencing it are
-properly destroyed before the helper object is freed.
+Allocate the receive skb lazily before consuming the next byte instead.
+If allocation fails, return the number of bytes already accepted.
 
-  BUG: KASAN: slab-use-after-free in string+0x38f/0x430
-  Read of size 1 at addr ffff888003b14d20 by task poc/103
-  Call Trace:
-   string+0x38f/0x430
-   vsnprintf+0x3cc/0x1170
-   seq_printf+0x17a/0x240
-   exp_seq_show+0x2e5/0x560
-   seq_read_iter+0x419/0x1280
-   proc_reg_read+0x1ac/0x270
-   vfs_read+0x179/0x930
-   ksys_read+0xef/0x1c0
-  Freed by task 103:
-  The buggy address is located 32 bytes inside of
-   freed 192-byte region [ffff888003b14d00, ffff888003b14dc0)
-
-Fixes: ac7b84839003 ("netfilter: expect: add and use nf_ct_expect_iterate helpers")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nfc/pn533/uart.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index 89174c91053ed..24f3f8d5e6998 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -468,7 +468,7 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
- 	 */
- 	synchronize_rcu();
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -211,6 +211,13 @@ static size_t pn532_receive_buf(struct s
  
--	nf_ct_expect_iterate_destroy(expect_iter_me, NULL);
-+	nf_ct_expect_iterate_destroy(expect_iter_me, me);
- 	nf_ct_iterate_destroy(unhelp, me);
+ 	timer_delete(&dev->cmd_timeout);
+ 	for (i = 0; i < count; i++) {
++		if (!dev->recv_skb) {
++			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
++						  GFP_KERNEL);
++			if (!dev->recv_skb)
++				return i;
++		}
++
+ 		if (unlikely(!skb_tailroom(dev->recv_skb)))
+ 			skb_trim(dev->recv_skb, 0);
  
- 	/* Maybe someone has gotten the helper already when unhelp above.
--- 
-2.53.0
-
+@@ -219,9 +226,7 @@ static size_t pn532_receive_buf(struct s
+ 			continue;
+ 
+ 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
+-		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
+-		if (!dev->recv_skb)
+-			return 0;
++		dev->recv_skb = NULL;
+ 	}
+ 
+ 	return i;
 
 
 
