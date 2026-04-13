@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-237209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LceBPUg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:33 +0200
+	id KFlCMhEi3WndaAkAu9opvQ
+	(envelope-from <stable+bounces-237210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDF33F06E3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC68A3F0A36
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 631243014435
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3D2EF3043973
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72FD313E10;
-	Mon, 13 Apr 2026 16:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853E6313E10;
+	Mon, 13 Apr 2026 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiH+Vx4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sl8N4Kjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABFF223DCE;
-	Mon, 13 Apr 2026 16:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4651223E342;
+	Mon, 13 Apr 2026 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098866; cv=none; b=ZvS/MyUwnkN8Fs6XMZILMjbFIXRrnW73odoHtugbbiuy4Qtr87ieVMlphkN4YIFow2KHhRJchKDPWZfzPQcWsO78nOSnTgyEUiqrCo89Zu6dDuVg/1zwOt0hS1VVfBOSx6VZe6a2BoXYxcOcm4PpXzc1qtZV6CDrpDiUZRZDhQw=
+	t=1776098869; cv=none; b=q82oRi8kqWRQQvxN62dGqOlcHHDBBBAo5VNO8tuSAcphuv8V2JaDL2FnrnBfTech87CFSTX+teTXhytgq7MGGQYCnbidfYfB1IYn88fgMEiPq8dLfFq4PGKul+K9x7/4uSvANkpy9rzPUYJUVg0m4nkaPZO6LSQgo24WEANBrX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098866; c=relaxed/simple;
-	bh=ZzLWsPI95kF4W+hgneDvSUZxIZo2WpSc3O4mSn8YRj4=;
+	s=arc-20240116; t=1776098869; c=relaxed/simple;
+	bh=+2WIqjjkn03Hk31t1ekkzTh4O4rXXLcOdUCbWOAZqJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4l9K0dwBdGoWMMPug4k3d46LYN7lKDcvFi7Wt/2s1OZFtvDM0pZV2TOf0OkyP9o0qLKsxRD4Qkc4xYuAEj3SdRP+QM0nA2NtNazNabegqun6cagVAvHU+qlusxgr8vCNF5SSgmIkPEsOCTtBENfSOk1+E99+IzSjO1fl8vWPWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiH+Vx4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411A9C2BCAF;
-	Mon, 13 Apr 2026 16:47:46 +0000 (UTC)
+	 MIME-Version; b=DICWn9IbQ53NFnd5l/REWFIOfB/kX7eNZFqZbj/Hjx1UmN7a3AlJ+PNhypuBO/GQXa8G/b2KKp0NMhVZ8W9vR0J7LssqG7sbiuyT1n3c1lSgtHaYR0yrhL7jTjh66CRhf1VVc24dINg71q5f39GoDFzSfZvzKAEA/XtK/OpEBe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sl8N4Kjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF91FC2BCAF;
+	Mon, 13 Apr 2026 16:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098866;
-	bh=ZzLWsPI95kF4W+hgneDvSUZxIZo2WpSc3O4mSn8YRj4=;
+	s=korg; t=1776098869;
+	bh=+2WIqjjkn03Hk31t1ekkzTh4O4rXXLcOdUCbWOAZqJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UiH+Vx4zBCv0NBhWg1lPP8D6EYjwBiCeZWPHQ+rFXoBSracVoR5JocGh8nSYVS7Uz
-	 VryNWzW6uDO0NuHtdyYdfgS2WracwNR7d0oW+RMWCc8qYNKeb+QOsulGAU+SLnvjlS
-	 ykqmVk1LxtVY0aKTQTHySrJa8GEFakjL8VzUcDhs=
+	b=Sl8N4Kjmf7eaFrl525x19N7m400tZ5OdA1q35aAFkL103gjBHoRYv0jsFKYhhzhJx
+	 FYpeKOdJNy76kclOW3uW2csB3Bxt2LnBCGV6oPoQkdXpYDQQPobJzW2vuOC0M4W1QU
+	 xv0YRdy6/v+AFXbaYl57ATTeKVGYrRW/H+7UwqeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Fan Wu <fanwu01@zju.edu.cn>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 120/491] net: ncsi: fix skb leak in error paths
-Date: Mon, 13 Apr 2026 17:56:05 +0200
-Message-ID: <20260413155823.534787336@linuxfoundation.org>
+Subject: [PATCH 5.10 121/491] net: ethernet: arc: emac: quiesce interrupts before requesting IRQ
+Date: Mon, 13 Apr 2026 17:56:06 +0200
+Message-ID: <20260413155823.571990470@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
 References: <20260413155819.042779211@linuxfoundation.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237209-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237210-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bytedance.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 7BDF33F06E3
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,zju.edu.cn:email]
+X-Rspamd-Queue-Id: CC68A3F0A36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,86 +98,54 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit 5c3398a54266541610c8d0a7082e654e9ff3e259 upstream.
+commit 2503d08f8a2de618e5c3a8183b250ff4a2e2d52c upstream.
 
-Early return paths in NCSI RX and AEN handlers fail to release
-the received skb, resulting in a memory leak.
+Normal RX/TX interrupts are enabled later, in arc_emac_open(), so probe
+should not see interrupt delivery in the usual case. However, hardware may
+still present stale or latched interrupt status left by firmware or the
+bootloader.
 
-Specifically, ncsi_aen_handler() returns on invalid AEN packets
-without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
-when failing to resolve the NCSI device, response handler, or
-request, leaving the skb unfreed.
+If probe later unwinds after devm_request_irq() has installed the handler,
+such a stale interrupt can still reach arc_emac_intr() during teardown and
+race with release of the associated net_device.
 
-CC: stable@vger.kernel.org
-Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
-Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Link: https://patch.msgid.link/20260305060656.3357250-1-zhangjian.3032@bytedance.com
+Avoid that window by putting the device into a known quiescent state before
+requesting the IRQ: disable all EMAC interrupt sources and clear any
+pending EMAC interrupt status bits. This keeps the change hardware-focused
+and minimal, while preventing spurious IRQ delivery from leftover state.
+
+Fixes: e4f2379db6c6 ("ethernet/arc/arc_emac - Add new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260309132409.584966-1-fanwu01@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-aen.c |    3 ++-
- net/ncsi/ncsi-rsp.c |   16 ++++++++++++----
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/arc/emac_main.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_pri
- 	if (!nah) {
- 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
- 			    h->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto out;
- 	}
+--- a/drivers/net/ethernet/arc/emac_main.c
++++ b/drivers/net/ethernet/arc/emac_main.c
+@@ -935,6 +935,17 @@ int arc_emac_probe(struct net_device *nd
+ 	/* Set poll rate so that it polls every 1 ms */
+ 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
  
- 	ret = ncsi_validate_aen_pkt(h, nah->payload);
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1146,8 +1146,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	/* Find the NCSI device */
- 	nd = ncsi_find_dev(orig_dev);
- 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
--	if (!ndp)
--		return -ENODEV;
-+	if (!ndp) {
-+		ret = -ENODEV;
-+		goto err_free_skb;
-+	}
- 
- 	/* Check if it is AEN packet */
- 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
-@@ -1169,7 +1171,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	if (!nrh) {
- 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
- 			   hdr->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto err_free_skb;
- 	}
- 
- 	/* Associate with the request */
-@@ -1177,7 +1180,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	nr = &ndp->requests[hdr->id];
- 	if (!nr->used) {
- 		spin_unlock_irqrestore(&ndp->lock, flags);
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto err_free_skb;
- 	}
- 
- 	nr->rsp = skb;
-@@ -1231,4 +1235,8 @@ out_netlink:
- out:
- 	ncsi_free_request(nr);
- 	return ret;
++	/*
++	 * Put the device into a known quiescent state before requesting
++	 * the IRQ. Clear only EMAC interrupt status bits here; leave the
++	 * MDIO completion bit alone and avoid writing TXPL_MASK, which is
++	 * used to force TX polling rather than acknowledge interrupts.
++	 */
++	arc_reg_set(priv, R_ENABLE, 0);
++	arc_reg_set(priv, R_STATUS, RXINT_MASK | TXINT_MASK | ERR_MASK |
++		    TXCH_MASK | MSER_MASK | RXCR_MASK |
++		    RXFR_MASK | RXFL_MASK);
 +
-+err_free_skb:
-+	kfree_skb(skb);
-+	return ret;
- }
+ 	ndev->irq = irq;
+ 	dev_info(dev, "IRQ is %d\n", ndev->irq);
+ 
 
 
 
