@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-237381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MN+IF3kg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:29 +0200
+	id +G+YBJ0j3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-236953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F048B3F056A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:57:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCC43F0E99
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A4813028826
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:55:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADF193062C31
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9FF3203B6;
-	Mon, 13 Apr 2026 16:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47971D5AD4;
+	Mon, 13 Apr 2026 16:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nH8Y/qQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fX2wv0nG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BD83290A1;
-	Mon, 13 Apr 2026 16:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662C02EBB8C;
+	Mon, 13 Apr 2026 16:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099309; cv=none; b=nGZvdJ85SMIZrMmsP6OPSnhm98RWLVKm14qGfPagrn82V/Wgen3dq5SE7SsHG7VNKohE3H0vrICAGhRBymrQsryw3I+5a+jYsHMPNeFktnOfoi3a4Rm04BKaZpUpn/3sxttmQBaCSZD634i4d6IJy3/ubrEyCfpS6UbKgBQ7wAU=
+	t=1776098215; cv=none; b=X6uBy6OTDWj2jXdh3lUzwix54AMjMt6Po/dyZRdEp1rlPKSQYm+F4rObco41P8dbhT2OVhEmsg9Wc4Q1up3TOu++c1gzo28Nah2GgCwhnKhnIyf8c93c3PjDIFV3MLYVDeyEMxdObqpVlpEWkfu+H/GtGqt7A9fjMaKtxhKrX5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099309; c=relaxed/simple;
-	bh=FoSOcDAxmxQHBJh79W1RM3yMWOMvfLvIg0QvsE3vaoM=;
+	s=arc-20240116; t=1776098215; c=relaxed/simple;
+	bh=My6aRlAnli32urWgKBQ6IaNclPqlPkJs7E8+k2ujQKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNkJ8SA3KWXGAINMmMHLgLToCXqQm9jH6R+uBLzL2Sft1GbMsMZtmOn9Dr7ejgpVj0Va7W5QcKCq0am2IMPmfjpJY0EoBEFszKe1nYaLZZnst+XrevgbXUeoeYELWH82pwWRRZzMSsuYnAA4Gmd5m2p1iyFbZifjUh7NMSq2GE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nH8Y/qQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417EFC2BCAF;
-	Mon, 13 Apr 2026 16:55:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O1w3ET74q0cZ8uDJ3B0Zb4yDSBSCA+Eiw8KDwpglVFQdytOb9Vo9e5AsQuXfy2BuYWhHLKHWei7JfyW6sZsCF5iELL/ObfVTm6Opq9Ywtom5oomjQ3Q2LauGYmpvr+PsG/8NBqjQR9ay0B/tpAaPSIdLx56dQjDnQGBDzL41sdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fX2wv0nG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CC0C2BCAF;
+	Mon, 13 Apr 2026 16:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099308;
-	bh=FoSOcDAxmxQHBJh79W1RM3yMWOMvfLvIg0QvsE3vaoM=;
+	s=korg; t=1776098215;
+	bh=My6aRlAnli32urWgKBQ6IaNclPqlPkJs7E8+k2ujQKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nH8Y/qQ9O0XY1Kx+3BFYiLtZjgBvb4u/Qwyw4CBfKg8ifJ+xOm8rjMJyMRmv4VATn
-	 ZMBcXIo7/t6y8CP4OxsSw2Nf7MkiJqbOQ1FcAGdv/4WqlJdBLotYQ30LCGOK+wwKg2
-	 SXJoY2n9cKKzIdb3PWcvN6aAL7O5cK7cLOP+1D3k=
+	b=fX2wv0nGk8ujiYT0hYS/34BXxWaXa7tzahYT3AUq8DzT0wUIIwf8eWT4Yuvpo6K/k
+	 sfS4kK/xAZmhv55QSAGGzn86WyNj9Tei0LFNnHCauZTk1X2nyb0nF2WlmfA2ftUC4q
+	 XoM0KZGLq3BKHkhZ1y7qsIqASh8yjRWVV9KUvlqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+006987d1be3586e13555@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 291/491] ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()
-Date: Mon, 13 Apr 2026 17:58:56 +0200
-Message-ID: <20260413155829.938827721@linuxfoundation.org>
+Subject: [PATCH 5.15 406/570] net: qrtr: replace qrtr_tx_flow radix_tree with xarray to fix memory leak
+Date: Mon, 13 Apr 2026 17:58:57 +0200
+Message-ID: <20260413155845.676825165@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +65,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-237381-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236953-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: F048B3F056A
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,006987d1be3586e13555];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shopee.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8FCC43F0E99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit f6484cadbcaf26b5844b51bd7307a663dda48ef6 ]
+[ Upstream commit 2428083101f6883f979cceffa76cd8440751ffe6 ]
 
-When ec_install_handlers() returns -EPROBE_DEFER on reduced-hardware
-platforms, it has already started the EC and installed the address
-space handler with the struct acpi_ec pointer as handler context.
-However, acpi_ec_setup() propagates the error without any cleanup.
+__radix_tree_create() allocates and links intermediate nodes into the
+tree one by one. If a subsequent allocation fails, the already-linked
+nodes remain in the tree with no corresponding leaf entry. These orphaned
+internal nodes are never reclaimed because radix_tree_for_each_slot()
+only visits slots containing leaf values.
 
-The caller acpi_ec_add() then frees the struct acpi_ec for non-boot
-instances, leaving a dangling handler context in ACPICA.
+The radix_tree API is deprecated in favor of xarray. As suggested by
+Matthew Wilcox, migrate qrtr_tx_flow from radix_tree to xarray instead
+of fixing the radix_tree itself [1]. xarray properly handles cleanup of
+internal nodes — xa_destroy() frees all internal xarray nodes when the
+qrtr_node is released, preventing the leak.
 
-Any subsequent AML evaluation that accesses an EC OpRegion field
-dispatches into acpi_ec_space_handler() with the freed pointer,
-causing a use-after-free:
-
- BUG: KASAN: slab-use-after-free in mutex_lock (kernel/locking/mutex.c:289)
- Write of size 8 at addr ffff88800721de38 by task init/1
- Call Trace:
-  <TASK>
-  mutex_lock (kernel/locking/mutex.c:289)
-  acpi_ec_space_handler (drivers/acpi/ec.c:1362)
-  acpi_ev_address_space_dispatch (drivers/acpi/acpica/evregion.c:293)
-  acpi_ex_access_region (drivers/acpi/acpica/exfldio.c:246)
-  acpi_ex_field_datum_io (drivers/acpi/acpica/exfldio.c:509)
-  acpi_ex_extract_from_field (drivers/acpi/acpica/exfldio.c:700)
-  acpi_ex_read_data_from_field (drivers/acpi/acpica/exfield.c:327)
-  acpi_ex_resolve_node_to_value (drivers/acpi/acpica/exresolv.c:392)
-  </TASK>
-
- Allocated by task 1:
-  acpi_ec_alloc (drivers/acpi/ec.c:1424)
-  acpi_ec_add (drivers/acpi/ec.c:1692)
-
- Freed by task 1:
-  kfree (mm/slub.c:6876)
-  acpi_ec_add (drivers/acpi/ec.c:1751)
-
-The bug triggers on reduced-hardware EC platforms (ec->gpe < 0)
-when the GPIO IRQ provider defers probing. Once the stale handler
-exists, any unprivileged sysfs read that causes AML to touch an
-EC OpRegion (battery, thermal, backlight) exercises the dangling
-pointer.
-
-Fix this by calling ec_remove_handlers() in the error path of
-acpi_ec_setup() before clearing first_ec. ec_remove_handlers()
-checks each EC_FLAGS_* bit before acting, so it is safe to call
-regardless of how far ec_install_handlers() progressed:
-
-  -ENODEV  (handler not installed): only calls acpi_ec_stop()
-  -EPROBE_DEFER (handler installed): removes handler, stops EC
-
-Fixes: 03e9a0e05739 ("ACPI: EC: Consolidate event handler installation code")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260324165458.1337233-2-bestswngs@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[1] https://lore.kernel.org/all/20260225071623.41275-1-jiayuan.chen@linux.dev/T/
+Reported-by: syzbot+006987d1be3586e13555@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000bfba3a060bf4ffcf@google.com/T/
+Fixes: 5fdeb0d372ab ("net: qrtr: Implement outgoing flow control")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324080645.290197-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/qrtr/af_qrtr.c | 31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 1d7e7e47ea0e4..aaf0add0dc081 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1636,6 +1636,8 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index c7a8260fa6ddb..431fd1f2b80c1 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -116,7 +116,7 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
+  * @ep: endpoint
+  * @ref: reference count for node
+  * @nid: node id
+- * @qrtr_tx_flow: tree of qrtr_tx_flow, keyed by node << 32 | port
++ * @qrtr_tx_flow: xarray of qrtr_tx_flow, keyed by node << 32 | port
+  * @qrtr_tx_lock: lock for qrtr_tx_flow inserts
+  * @rx_queue: receive queue
+  * @item: list item for broadcast list
+@@ -127,7 +127,7 @@ struct qrtr_node {
+ 	struct kref ref;
+ 	unsigned int nid;
  
- 	ret = ec_install_handlers(ec, device, call_reg);
- 	if (ret) {
-+		ec_remove_handlers(ec);
-+
- 		if (ec == first_ec)
- 			first_ec = NULL;
+-	struct radix_tree_root qrtr_tx_flow;
++	struct xarray qrtr_tx_flow;
+ 	struct mutex qrtr_tx_lock; /* for qrtr_tx_flow */
  
+ 	struct sk_buff_head rx_queue;
+@@ -170,6 +170,7 @@ static void __qrtr_node_release(struct kref *kref)
+ 	struct qrtr_tx_flow *flow;
+ 	unsigned long flags;
+ 	void __rcu **slot;
++	unsigned long index;
+ 
+ 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
+ 	/* If the node is a bridge for other nodes, there are possibly
+@@ -187,11 +188,9 @@ static void __qrtr_node_release(struct kref *kref)
+ 	skb_queue_purge(&node->rx_queue);
+ 
+ 	/* Free tx flow counters */
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
+-		radix_tree_iter_delete(&node->qrtr_tx_flow, &iter, slot);
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		kfree(flow);
+-	}
++	xa_destroy(&node->qrtr_tx_flow);
+ 	kfree(node);
+ }
+ 
+@@ -226,9 +225,7 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
+ 
+ 	key = remote_node << 32 | remote_port;
+ 
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock(&flow->resume_tx.lock);
+ 		flow->pending = 0;
+@@ -267,12 +264,13 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
+ 		return 0;
+ 
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (!flow) {
+ 		flow = kzalloc(sizeof(*flow), GFP_KERNEL);
+ 		if (flow) {
+ 			init_waitqueue_head(&flow->resume_tx);
+-			if (radix_tree_insert(&node->qrtr_tx_flow, key, flow)) {
++			if (xa_err(xa_store(&node->qrtr_tx_flow, key, flow,
++					    GFP_KERNEL))) {
+ 				kfree(flow);
+ 				flow = NULL;
+ 			}
+@@ -324,9 +322,7 @@ static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
+ 	unsigned long key = (u64)dest_node << 32 | dest_port;
+ 	struct qrtr_tx_flow *flow;
+ 
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock_irq(&flow->resume_tx.lock);
+ 		flow->tx_failed = 1;
+@@ -594,7 +590,7 @@ int qrtr_endpoint_register(struct qrtr_endpoint *ep, unsigned int nid)
+ 	node->nid = QRTR_EP_NID_AUTO;
+ 	node->ep = ep;
+ 
+-	INIT_RADIX_TREE(&node->qrtr_tx_flow, GFP_KERNEL);
++	xa_init(&node->qrtr_tx_flow);
+ 	mutex_init(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_assign(node, nid);
+@@ -622,6 +618,7 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 	struct qrtr_tx_flow *flow;
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
++	unsigned long index;
+ 	void __rcu **slot;
+ 
+ 	mutex_lock(&node->ep_lock);
+@@ -644,10 +641,8 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 
+ 	/* Wake up any transmitters waiting for resume-tx from the node */
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		wake_up_interruptible_all(&flow->resume_tx);
+-	}
+ 	mutex_unlock(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_release(node);
 -- 
 2.53.0
 
