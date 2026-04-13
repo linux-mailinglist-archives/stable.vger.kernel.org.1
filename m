@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-237208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OABpNgsi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:11 +0200
+	id UEG0Mpcf3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35663F0A27
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F2A3F0226
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C615C3033950
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:47:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B3693247446
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ACE314A8E;
-	Mon, 13 Apr 2026 16:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E119630C368;
+	Mon, 13 Apr 2026 16:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8oVIFtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/9ewhsg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DC123E342;
-	Mon, 13 Apr 2026 16:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50DF22A7F0;
+	Mon, 13 Apr 2026 16:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098864; cv=none; b=SZCqMgo96VATcug1NSRAThdsKVlFjpSRmAENvH1cFoYFFC3PupX5kWzSWkHdt3mR/1pQ9CgLLe0H3yHHoBWWnc5c/grESHkN6vGgLH/E8+3ALR/bxAGUHnrcBnnhtjFZZxXViA2dSeBNTMYeo8EfDICWWxxLKeDIn96HM3bqrAU=
+	t=1776097769; cv=none; b=PysUyIKbelUkeeUHwpH1+frAa3A9GO+1SDtpQtss8rhlgekqU0iZZs2ooFLdjzeWahEHXYQ1kSKzcLN7ZjH2FO5b2aw+cTEcUDRBnu0+eEWQCxooUT8a5FHooEQql8gsczcg0SvvGDQ1jVVdtmCP1DhYAYWrQQv3hSxUJIkhuhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098864; c=relaxed/simple;
-	bh=8PrrE83LOEEf+Qo8C2klwqfu+ExX0f1vdMGUF8HjaYE=;
+	s=arc-20240116; t=1776097769; c=relaxed/simple;
+	bh=vpbOT2MT/KHboGbMU5fhmdNIQZl1gr0+WOW4nVHmCNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhQM8FXAR5PAeoKZHbcjEDybO0AA6K1Ot95ZOHX1UPmBGn5dxOswScqJw1qwGbQxIjnY2JOd/iRAUcNK8wNpckIzkWyxKCIFaF/9OE7tddiuHNba7a/sMVuikyuOuQ2oBa7tNjYrT5lcsn9hAQw8eg8XY4cDOydBLRwQlhjSsrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8oVIFtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD61BC2BCB0;
-	Mon, 13 Apr 2026 16:47:43 +0000 (UTC)
+	 MIME-Version; b=tWN4V9JCZjLZfiHbuF9AsvHLZsS6Vqq97+mftwip79kiXS+M0L4Im547neGg32R5ezkmV18KxVaIpO718gNZWUPdn/6C4X0V8ZHcG0S2cvppI3/OkKt0lpRo7wFEOn+901IzTv6mHfs8E7cC/utWQPsUsUXp+OPmMp9UGKMr13I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/9ewhsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316E9C2BCAF;
+	Mon, 13 Apr 2026 16:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098864;
-	bh=8PrrE83LOEEf+Qo8C2klwqfu+ExX0f1vdMGUF8HjaYE=;
+	s=korg; t=1776097769;
+	bh=vpbOT2MT/KHboGbMU5fhmdNIQZl1gr0+WOW4nVHmCNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8oVIFtEiBWlHcIbDQYS9xaqYz3BDvPZxuBmn4mquLGD16tElvXuP0SVVojrZM5Oh
-	 ghbU0xD2Fg9g8E3LygrOn+GnP9YYMGl6+HY+d1qF7r/oCKiDPWAyLO3KbZk8eEBT9A
-	 Cvp/al14z995eEFCNKWvpdOv7FeQpPuTlm9epKO4=
+	b=e/9ewhsgt2Geqqf56SlZ5hggxPqa7NtUwmADS82eVkcSGzeHq291gpdrPbynQ/0xv
+	 /chMRuSeh7hS24/MZOnst+LTcZcxYGxF/8hCe2lYfgr4QASJWrtvHs1+ADGM14eJkn
+	 v+yCxytHsvgNVyChnqAm1j0lZCX4qsGZAZiClGeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 119/491] parisc: Fix initial page table creation for boot
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 233/570] wifi: cfg80211: move scan done work to wiphy work
 Date: Mon, 13 Apr 2026 17:56:04 +0200
-Message-ID: <20260413155823.496441058@linuxfoundation.org>
+Message-ID: <20260413155839.191459666@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +65,126 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237208-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236778-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.de:email]
-X-Rspamd-Queue-Id: F35663F0A27
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 66F2A3F0226
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 8475d8fe21ec9c7eb2faca555fbc5b68cf0d2597 upstream.
+[ Upstream commit fe0af9fe54d0ff53aa49eef390c8962355b274e2 ]
 
-The KERNEL_INITIAL_ORDER value defines the initial size (usually 32 or
-64 MB) of the page table during bootup. Up until now the whole area was
-initialized with PTE entries, but there was no check if we filled too
-many entries.  Change the code to fill up with so many entries that the
-"_end" symbol can be reached by the kernel, but not more entries than
-actually fit into the initial PTE tables.
+Move the scan done work to the new wiphy work to
+simplify the code a bit.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 767d23ade706 ("wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/head.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/wireless/core.c |    3 +--
+ net/wireless/core.h |    4 ++--
+ net/wireless/scan.c |   14 ++++----------
+ 3 files changed, 7 insertions(+), 14 deletions(-)
 
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -55,6 +55,7 @@ ENTRY(parisc_kernel_start)
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -525,7 +525,7 @@ use_default_name:
+ 	spin_lock_init(&rdev->bss_lock);
+ 	INIT_LIST_HEAD(&rdev->bss_list);
+ 	INIT_LIST_HEAD(&rdev->sched_scan_req_list);
+-	INIT_WORK(&rdev->scan_done_wk, __cfg80211_scan_done);
++	wiphy_work_init(&rdev->scan_done_wk, __cfg80211_scan_done);
+ 	INIT_DELAYED_WORK(&rdev->dfs_update_channels_wk,
+ 			  cfg80211_dfs_channels_update_work);
+ #ifdef CONFIG_CFG80211_WEXT
+@@ -1104,7 +1104,6 @@ void wiphy_unregister(struct wiphy *wiph
+ 	/* this has nothing to do now but make sure it's gone */
+ 	cancel_work_sync(&rdev->wiphy_work);
  
- 	.import __bss_start,data
- 	.import __bss_stop,data
-+	.import __end,data
+-	flush_work(&rdev->scan_done_wk);
+ 	cancel_work_sync(&rdev->conn_work);
+ 	flush_work(&rdev->event_work);
+ 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -75,7 +75,7 @@ struct cfg80211_registered_device {
+ 	struct sk_buff *scan_msg;
+ 	struct list_head sched_scan_req_list;
+ 	time64_t suspend_at;
+-	struct work_struct scan_done_wk;
++	struct wiphy_work scan_done_wk;
  
- 	load32		PA(__bss_start),%r3
- 	load32		PA(__bss_stop),%r4
-@@ -148,7 +149,11 @@ $cpu_ok:
- 	 * everything ... it will get remapped correctly later */
- 	ldo		0+_PAGE_KERNEL_RWX(%r0),%r3 /* Hardwired 0 phys addr start */
- 	load32		(1<<(KERNEL_INITIAL_ORDER-PAGE_SHIFT)),%r11 /* PFN count */
--	load32		PA(pg0),%r1
-+	load32		PA(_end),%r1
-+	SHRREG		%r1,PAGE_SHIFT,%r1  /* %r1 is PFN count for _end symbol */
-+	cmpb,<<,n	%r11,%r1,1f
-+	copy		%r1,%r11	/* %r1 PFN count smaller than %r11 */
-+1:	load32		PA(pg0),%r1
+ 	struct genl_info *cur_cmd_info;
  
- $pgt_fill_loop:
- 	STREGM          %r3,ASM_PTE_ENTRY_SIZE(%r1)
+@@ -445,7 +445,7 @@ bool cfg80211_valid_key_idx(struct cfg80
+ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+ 				   struct key_params *params, int key_idx,
+ 				   bool pairwise, const u8 *mac_addr);
+-void __cfg80211_scan_done(struct work_struct *wk);
++void __cfg80211_scan_done(struct wiphy *wiphy, struct wiphy_work *wk);
+ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
+ 			   bool send_message);
+ void cfg80211_add_sched_scan_req(struct cfg80211_registered_device *rdev,
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1079,16 +1079,9 @@ void ___cfg80211_scan_done(struct cfg802
+ 		nl80211_send_scan_msg(rdev, msg);
+ }
+ 
+-void __cfg80211_scan_done(struct work_struct *wk)
++void __cfg80211_scan_done(struct wiphy *wiphy, struct wiphy_work *wk)
+ {
+-	struct cfg80211_registered_device *rdev;
+-
+-	rdev = container_of(wk, struct cfg80211_registered_device,
+-			    scan_done_wk);
+-
+-	wiphy_lock(&rdev->wiphy);
+-	___cfg80211_scan_done(rdev, true);
+-	wiphy_unlock(&rdev->wiphy);
++	___cfg80211_scan_done(wiphy_to_rdev(wiphy), true);
+ }
+ 
+ void cfg80211_scan_done(struct cfg80211_scan_request *request,
+@@ -1114,7 +1107,8 @@ void cfg80211_scan_done(struct cfg80211_
+ 	}
+ 
+ 	request->notified = true;
+-	queue_work(cfg80211_wq, &wiphy_to_rdev(request->wiphy)->scan_done_wk);
++	wiphy_work_queue(request->wiphy,
++			 &wiphy_to_rdev(request->wiphy)->scan_done_wk);
+ }
+ EXPORT_SYMBOL(cfg80211_scan_done);
+ 
 
 
 
