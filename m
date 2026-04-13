@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJCHGrkj3WkzaQkAu9opvQ
-	(envelope-from <stable+bounces-237423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:21 +0200
+	id gCGoC9wT3WkOZQkAu9opvQ
+	(envelope-from <stable+bounces-236167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:03:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3453F0EEA
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 544E53EE466
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2647D313AF3D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:57:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E4FE301D940
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDCB330B3A;
-	Mon, 13 Apr 2026 16:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0586A258EF3;
+	Mon, 13 Apr 2026 16:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5AkPlon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nk7cYdN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2098233065C;
-	Mon, 13 Apr 2026 16:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9DC25332E;
+	Mon, 13 Apr 2026 16:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099419; cv=none; b=JrYpwMmqLeceRyjnkNKmDUMo8F4C2oY7sgkOYX8R+1kGKtQ11SdgvGxDFYos8KFzFVYyIsri43Xpe5f9fSVeGjCa7VlA0Gevg5ujCU6BkAM5qVdDCoI2FV7w7D2Blhi1sq/V9hlQw3eYm8ibeXabr4lGGLd+V+xkCyIvmqUMnKM=
+	t=1776096217; cv=none; b=hbbCml07f6T/PWcoZh+IMW+Jt5xRAAklfcr4QEwhtIe9XJl28G/kK9X1RX9Nbbh6pn37lmzA7SCl4EpVVJgcoGb6wvT6p+Ei1Uin7qdqS/tY6pilGNqWBEQPZHwe/RggrsgQC/LT3SjdkHf2LDQNJwkeckZF93Jgojoc6RUI2Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099419; c=relaxed/simple;
-	bh=pPNJPZmvVHQYsuEc7tWjQs2OsyQtKE6r3Aw0ezmu8A0=;
+	s=arc-20240116; t=1776096217; c=relaxed/simple;
+	bh=j4gWz/bcNxV9BofQZfSBLmYxuPDTnSbLawkcXHB90OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7bz1hn012VGLwOGbkPwYatr7YhijFj3g532rabJdqmnDrTF+UyZBLphfxtNkCxNS5BKNxbjP6OBYkxSX0vBKD6hdBq0r84TGA3t8dNsEQR3wAALhou8HyCPnCrvr9hzBgqpEbV2gtM53tw7nRPDsvs1W3kqrKE2i8Chw8+e3Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5AkPlon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A6EC2BCAF;
-	Mon, 13 Apr 2026 16:56:58 +0000 (UTC)
+	 MIME-Version; b=Q23NCCkR+NjOw7WDkNPUAMhmHv8zWe7nENCO/JQigZHNHwwZEOx0CtCf694n7sjJAGlRGaax3yXTWDUvMh+mIipYpHum8NldU9qJ1UZarSO+l6TVLqTxErttKhUHN3wA6SHISWDgAsNwAK0pRiUP2qaiyMgvu0/VwAFchSytixo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nk7cYdN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220FAC2BCAF;
+	Mon, 13 Apr 2026 16:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099419;
-	bh=pPNJPZmvVHQYsuEc7tWjQs2OsyQtKE6r3Aw0ezmu8A0=;
+	s=korg; t=1776096217;
+	bh=j4gWz/bcNxV9BofQZfSBLmYxuPDTnSbLawkcXHB90OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5AkPlon3aR6lVW669pPpGCWczEJnLtpmpNnFfWEVGvmr6glIav21LPEsQCCDGrnr
-	 QiPgV03r1YepUmJAgabog8X+hkiShCXCR8Yny/A29TfJ40A+l9loZH5Is0HPp9HC8n
-	 bupNmdtzCm6y/YlaiVYxcPxeM6TfWZkHu2cDNess=
+	b=nk7cYdN3RGwjgaTrpdhLOcM5YeEhzf7mlc91e7B2c59CrIKKPcY3BlT0/tfmUS3mF
+	 YY3NuAFilXgABOPTeh6pWzx3Sq1B/G2RnuDQUlJuF2DfmZBMAF9klni1+FLTai8Lo0
+	 EeCuA8j7029sYd3M7atTNPVLKJ+pqcD2Bvus1l2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 315/491] dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA
+Subject: [PATCH 6.19 13/86] MIPS: mm: Suppress TLB uniquification on EHINV hardware
 Date: Mon, 13 Apr 2026 17:59:20 +0200
-Message-ID: <20260413155830.832116015@linuxfoundation.org>
+Message-ID: <20260413155732.069045212@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237423-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236167-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,104 +90,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ideasonboard.com:email]
-X-Rspamd-Queue-Id: CD3453F0EEA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,orcam.me.uk:email,franken.de:email]
+X-Rspamd-Queue-Id: 544E53EE466
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit a17ce4bc6f4f9acf77ba416c36791a15602e53aa ]
+commit 74283cfe216392c7b776ebf6045b5b15ed9dffcd upstream.
 
-A single AXIDMA controller can have one or two channels. When it has two
-channels, the reset for both are tied together: resetting one channel
-resets the other as well. This creates a problem where resetting one
-channel will reset the registers for both channels, including clearing
-interrupt enable bits for the other channel, which can then lead  to
-timeouts as the driver is waiting for an interrupt which never comes.
+Hardware that supports the EHINV feature, mandatory for R6 ISA and FTLB
+implementation, lets software mark TLB entries invalid, which eliminates
+the need to ensure no duplicate matching entries are ever created.  This
+feature is already used by local_flush_tlb_all(), via the UNIQUE_ENTRYHI
+macro, making the preceding call to r4k_tlb_uniquify() superfluous.
 
-The driver currently has a probe-time work around for this: when a
-channel is created, the driver also resets and enables the
-interrupts. With two channels the reset for the second channel will
-clear the interrupt enables for the first one. The work around in the
-driver is just to manually enable the interrupts again in
-xilinx_dma_alloc_chan_resources().
+The next change will also modify uniquification code such that it'll
+become incompatible with the FTLB and MMID features, as well as MIPSr6
+CPUs that do not implement 4KiB pages.
 
-This workaround only addresses the probe-time issue. When channels are
-reset at runtime (e.g., in xilinx_dma_terminate_all() or during error
-recovery), there's no corresponding mechanism to restore the other
-channel's interrupt enables. This leads to one channel having its
-interrupts disabled while the driver expects them to work, causing
-timeouts and DMA failures.
+Therefore prevent r4k_tlb_uniquify() from being used on EHINV hardware,
+as denoted by `cpu_has_tlbinv'.
 
-A proper fix is a complicated matter, as we should not reset the other
-channel when it's operating normally. So, perhaps, there should be some
-kind of synchronization for a common reset, which is not trivial to
-implement. To add to the complexity, the driver also supports other DMA
-types, like VDMA, CDMA and MCDMA, which don't have a shared reset.
-
-However, when the two-channel AXIDMA is used in the (assumably) normal
-use case, providing DMA for a single memory-to-memory device, the common
-reset is a bit smaller issue: when something bad happens on one channel,
-or when one channel is terminated, the assumption is that we also want
-to terminate the other channel. And thus resetting both at the same time
-is "ok".
-
-With that line of thinking we can implement a bit better work around
-than just the current probe time work around: let's enable the
-AXIDMA interrupts at xilinx_dma_start_transfer() instead.
-This ensures interrupts are enabled whenever a transfer starts,
-regardless of any prior resets that may have cleared them.
-
-This approach is also more logical: enable interrupts only when needed
-for a transfer, rather than at resource allocation time, and, I think,
-all the other DMA types should also use this model, but I'm reluctant to
-do such changes as I cannot test them.
-
-The reset function still enables interrupts even though it's not needed
-for AXIDMA anymore, but it's common code for all DMA types (VDMA, CDMA,
-MCDMA), so leave it unchanged to avoid affecting other variants.
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
-Link: https://patch.msgid.link/20260311-xilinx-dma-fix-v2-1-a725abb66e3c@ideasonboard.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ arch/mips/mm/tlb-r4k.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 7b3c47e442c15..ff7fda42b5ca2 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -1190,14 +1190,6 @@ static int xilinx_dma_alloc_chan_resources(struct dma_chan *dchan)
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 645f77e09d5b8..65f0357958fc7 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -640,7 +640,8 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
  
- 	dma_cookie_init(dchan);
+ 	/* From this point on the ARC firmware is dead.	 */
+-	r4k_tlb_uniquify();
++	if (!cpu_has_tlbinv)
++		r4k_tlb_uniquify();
+ 	local_flush_tlb_all();
  
--	if (chan->xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
--		/* For AXI DMA resetting once channel will reset the
--		 * other channel as well so enable the interrupts here.
--		 */
--		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
--			      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
--	}
--
- 	if ((chan->xdev->dma_config->dmatype == XDMA_TYPE_CDMA) && chan->has_sg)
- 		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
- 			     XILINX_CDMA_CR_SGMODE);
-@@ -1566,6 +1558,7 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
- 			     head_desc->async_tx.phys);
- 	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
- 	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
-+	reg |= XILINX_DMA_DMAXR_ALL_IRQ_MASK;
- 	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
- 
- 	xilinx_dma_start(chan);
+ 	/* Did I tell you that ARC SUCKS?  */
 -- 
 2.53.0
 
