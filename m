@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-236840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ON0kKoka3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:09 +0200
+	id uBIlC4si3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5169C3EF2CD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2879A3F0BC4
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AAF51300E2AB
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:32:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E830F30630A8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777F227FD4F;
-	Mon, 13 Apr 2026 16:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20536317141;
+	Mon, 13 Apr 2026 16:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQbzCIfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhyoO4Mn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B75B2472B6;
-	Mon, 13 Apr 2026 16:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55633161BF;
+	Mon, 13 Apr 2026 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097927; cv=none; b=Q1X01FqZc7hRyNTKihsVqq8gtgim+eAoW9B106Sx35chUKji+QnZPeawlDjLa4uIyZTs/mffrJCrfC94pYxbgc+DSLPuJNiTUQYbfhCfrgC99r8Iaj37uZ0XObZblpMCoknWNIllkMRLtqwQDi1bmH7AjDdnt04s4/uqn+QBPA8=
+	t=1776099034; cv=none; b=Op7gWX9l/Zf+5fNZyvSeTuem6jE+oNtfQVvkLrveSpQJ2ad+XD5jRXvrAzFuvBCGbyLA856PxLe9X4d7XAR9U4aFDTY0FpZJ4uhLSGATwcoaAmZ9++RMYFJCalf5Hg0OjLtzCHn+UodJboqh4jhubQ5HhhIHYI+zJVLJKTtzuPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097927; c=relaxed/simple;
-	bh=qeKZBoHuWdo80oECOXDMrN/4a7TQo+2w7JtWdz6x7ao=;
+	s=arc-20240116; t=1776099034; c=relaxed/simple;
+	bh=BTB2l3NXFp0AjC1GXaHE+ZUFu9TAhkpMCzO4bx5JoFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPf+0Z9qAcdovxByDtj+Sp5HTnVK1N7zP3/VnJKdyl26y6xL94Q2/Dzh55GmQxgxXCxD7c4C9nsPEna0vVt6C8YAizW0DGj+RCoFlwq6SY5v2iq3m7BIV/yyiGx71kvFEhpkZyt8fmniJCmKOLqkGl13BiNUehhoHQHE6aHg83s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQbzCIfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63DDC2BCAF;
-	Mon, 13 Apr 2026 16:32:06 +0000 (UTC)
+	 MIME-Version; b=c2BCUP3e4FmezWzVkWD2/3fh1Ck+Iwcwh+nDgmVBSRG/S1Rj71WSFxUYlmgV9EUk3MQaHzlhkP27LE95cLyDhjbKnzlidkdS5f2s42dOSni0I0QPzwv5AnSGBEYsNstCi4vlAR+jsz8S6Vn4ID939feF/T2YBQsLc3Gba/siPWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhyoO4Mn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFAEC2BCAF;
+	Mon, 13 Apr 2026 16:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097927;
-	bh=qeKZBoHuWdo80oECOXDMrN/4a7TQo+2w7JtWdz6x7ao=;
+	s=korg; t=1776099034;
+	bh=BTB2l3NXFp0AjC1GXaHE+ZUFu9TAhkpMCzO4bx5JoFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQbzCIfeuTQ4KkRN2cXiYpvRvqCtUuJRsRLKOvPNdjUSsfP2qrSzepz3UMEtK1V/U
-	 Cj7t6pgGt7Unl+tPnLtVQuINJEzRztmwNjIGjVpKrMXgornxNJfxxB4bicgYD+NhmF
-	 1ERE7ZZd+XqVDZznohrmS928f1pFhdjpP1euvmRo=
+	b=lhyoO4MnX7e7/58fci+pvEpvw1sj3wFIw8QPNtdb/tK9gde8eJa24X8XalVcUvaBu
+	 9Zy48G4bkBzHpd7I6W0B5T6FsR156TsNbRDpdtl+jF1xj5xKDcxtRBGxGIetdocPSl
+	 H3dRvjrSI3byQjm0EwkZ1itk1QbAEchR5mvNjj8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Corentin Labbe <clabbe@baylibre.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 299/570] nvme-pci: cap queue creation to used queues
+Subject: [PATCH 5.10 185/491] mtd: partitions: redboot: fix style issues
 Date: Mon, 13 Apr 2026 17:57:10 +0200
-Message-ID: <20260413155841.702597166@linuxfoundation.org>
+Message-ID: <20260413155825.990247919@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236840-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237274-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,60 +86,214 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,samsung.com:email]
-X-Rspamd-Queue-Id: 5169C3EF2CD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,bootlin.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email]
+X-Rspamd-Queue-Id: 2879A3F0BC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Corentin Labbe <clabbe@baylibre.com>
 
-[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
+[ Upstream commit eb1765c40530ccc8690b9dad88cec6aaa6bfb498 ]
 
-If the user reduces the special queue count at runtime and resets the
-controller, we need to reduce the number of queues and interrupts
-requested accordingly rather than start with the pre-allocated queue
-count.
+This patch fixes easy checkpatch issues.
 
-Tested-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20210520114851.1274609-2-clabbe@baylibre.com
+Stable-dep-of: 8e2f8020270a ("mtd: Avoid boot crash in RedBoot partition table parser")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mtd/parsers/redboot.c |   69 ++++++++++++++++++++----------------------
+ 1 file changed, 34 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 04cccbb05372a..c4a33e9d2c717 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2306,7 +2306,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	dev->nr_write_queues = write_queues;
- 	dev->nr_poll_queues = poll_queues;
+--- a/drivers/mtd/parsers/redboot.c
++++ b/drivers/mtd/parsers/redboot.c
+@@ -17,15 +17,15 @@
+ #include <linux/module.h>
  
--	nr_io_queues = dev->nr_allocated_queues - 1;
-+	/*
-+	 * The initial number of allocated queue slots may be too large if the
-+	 * user reduced the special queue parameters. Cap the value to the
-+	 * number we need for this round.
-+	 */
-+	nr_io_queues = min(nvme_max_io_queues(dev),
-+			   dev->nr_allocated_queues - 1);
- 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
- 	if (result < 0)
- 		return result;
--- 
-2.51.0
-
+ struct fis_image_desc {
+-    unsigned char name[16];      // Null terminated name
+-    uint32_t	  flash_base;    // Address within FLASH of image
+-    uint32_t	  mem_base;      // Address in memory where it executes
+-    uint32_t	  size;          // Length of image
+-    uint32_t	  entry_point;   // Execution entry point
+-    uint32_t	  data_length;   // Length of actual data
+-    unsigned char _pad[256-(16+7*sizeof(uint32_t))];
+-    uint32_t	  desc_cksum;    // Checksum over image descriptor
+-    uint32_t	  file_cksum;    // Checksum over image data
++	unsigned char name[16];      // Null terminated name
++	u32	  flash_base;    // Address within FLASH of image
++	u32	  mem_base;      // Address in memory where it executes
++	u32	  size;          // Length of image
++	u32	  entry_point;   // Execution entry point
++	u32	  data_length;   // Length of actual data
++	unsigned char _pad[256 - (16 + 7 * sizeof(u32))];
++	u32	  desc_cksum;    // Checksum over image descriptor
++	u32	  file_cksum;    // Checksum over image data
+ };
+ 
+ struct fis_list {
+@@ -91,12 +91,12 @@ static int parse_redboot_partitions(stru
+ 
+ 	parse_redboot_of(master);
+ 
+-	if ( directory < 0 ) {
++	if (directory < 0) {
+ 		offset = master->size + directory * master->erasesize;
+ 		while (mtd_block_isbad(master, offset)) {
+ 			if (!offset) {
+-			nogood:
+-				printk(KERN_NOTICE "Failed to find a non-bad block to check for RedBoot partition table\n");
++nogood:
++				pr_notice("Failed to find a non-bad block to check for RedBoot partition table\n");
+ 				return -EIO;
+ 			}
+ 			offset -= master->erasesize;
+@@ -114,8 +114,8 @@ static int parse_redboot_partitions(stru
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+-	printk(KERN_NOTICE "Searching for RedBoot partition table in %s at offset 0x%lx\n",
+-	       master->name, offset);
++	pr_notice("Searching for RedBoot partition table in %s at offset 0x%lx\n",
++		  master->name, offset);
+ 
+ 	ret = mtd_read(master, offset, master->erasesize, &retlen,
+ 		       (void *)buf);
+@@ -151,14 +151,13 @@ static int parse_redboot_partitions(stru
+ 			     && swab32(buf[i].size) < master->erasesize)) {
+ 				int j;
+ 				/* Update numslots based on actual FIS directory size */
+-				numslots = swab32(buf[i].size) / sizeof (struct fis_image_desc);
++				numslots = swab32(buf[i].size) / sizeof(struct fis_image_desc);
+ 				for (j = 0; j < numslots; ++j) {
+-
+ 					/* A single 0xff denotes a deleted entry.
+ 					 * Two of them in a row is the end of the table.
+ 					 */
+ 					if (buf[j].name[0] == 0xff) {
+-				  		if (buf[j].name[1] == 0xff) {
++						if (buf[j].name[1] == 0xff) {
+ 							break;
+ 						} else {
+ 							continue;
+@@ -185,8 +184,8 @@ static int parse_redboot_partitions(stru
+ 	}
+ 	if (i == numslots) {
+ 		/* Didn't find it */
+-		printk(KERN_NOTICE "No RedBoot partition table detected in %s\n",
+-		       master->name);
++		pr_notice("No RedBoot partition table detected in %s\n",
++			  master->name);
+ 		ret = 0;
+ 		goto out;
+ 	}
+@@ -205,7 +204,7 @@ static int parse_redboot_partitions(stru
+ 			break;
+ 
+ 		new_fl = kmalloc(sizeof(struct fis_list), GFP_KERNEL);
+-		namelen += strlen(buf[i].name)+1;
++		namelen += strlen(buf[i].name) + 1;
+ 		if (!new_fl) {
+ 			ret = -ENOMEM;
+ 			goto out;
+@@ -214,13 +213,13 @@ static int parse_redboot_partitions(stru
+ 		if (data && data->origin)
+ 			buf[i].flash_base -= data->origin;
+ 		else
+-			buf[i].flash_base &= master->size-1;
++			buf[i].flash_base &= master->size - 1;
+ 
+ 		/* I'm sure the JFFS2 code has done me permanent damage.
+ 		 * I now think the following is _normal_
+ 		 */
+ 		prev = &fl;
+-		while(*prev && (*prev)->img->flash_base < new_fl->img->flash_base)
++		while (*prev && (*prev)->img->flash_base < new_fl->img->flash_base)
+ 			prev = &(*prev)->next;
+ 		new_fl->next = *prev;
+ 		*prev = new_fl;
+@@ -240,7 +239,7 @@ static int parse_redboot_partitions(stru
+ 		}
+ 	}
+ #endif
+-	parts = kzalloc(sizeof(*parts)*nrparts + nulllen + namelen, GFP_KERNEL);
++	parts = kzalloc(sizeof(*parts) * nrparts + nulllen + namelen, GFP_KERNEL);
+ 
+ 	if (!parts) {
+ 		ret = -ENOMEM;
+@@ -249,23 +248,22 @@ static int parse_redboot_partitions(stru
+ 
+ 	nullname = (char *)&parts[nrparts];
+ #ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
+-	if (nulllen > 0) {
++	if (nulllen > 0)
+ 		strcpy(nullname, nullstring);
+-	}
+ #endif
+ 	names = nullname + nulllen;
+ 
+-	i=0;
++	i = 0;
+ 
+ #ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
+ 	if (fl->img->flash_base) {
+-	       parts[0].name = nullname;
+-	       parts[0].size = fl->img->flash_base;
+-	       parts[0].offset = 0;
++		parts[0].name = nullname;
++		parts[0].size = fl->img->flash_base;
++		parts[0].offset = 0;
+ 		i++;
+ 	}
+ #endif
+-	for ( ; i<nrparts; i++) {
++	for ( ; i < nrparts; i++) {
+ 		parts[i].size = fl->img->size;
+ 		parts[i].offset = fl->img->flash_base;
+ 		parts[i].name = names;
+@@ -273,17 +271,17 @@ static int parse_redboot_partitions(stru
+ 		strcpy(names, fl->img->name);
+ #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
+ 		if (!memcmp(names, "RedBoot", 8) ||
+-				!memcmp(names, "RedBoot config", 15) ||
+-				!memcmp(names, "FIS directory", 14)) {
++		    !memcmp(names, "RedBoot config", 15) ||
++		    !memcmp(names, "FIS directory", 14)) {
+ 			parts[i].mask_flags = MTD_WRITEABLE;
+ 		}
+ #endif
+-		names += strlen(names)+1;
++		names += strlen(names) + 1;
+ 
+ #ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
+-		if(fl->next && fl->img->flash_base + fl->img->size + master->erasesize <= fl->next->img->flash_base) {
++		if (fl->next && fl->img->flash_base + fl->img->size + master->erasesize <= fl->next->img->flash_base) {
+ 			i++;
+-			parts[i].offset = parts[i-1].size + parts[i-1].offset;
++			parts[i].offset = parts[i - 1].size + parts[i - 1].offset;
+ 			parts[i].size = fl->next->img->flash_base - parts[i].offset;
+ 			parts[i].name = nullname;
+ 		}
+@@ -297,6 +295,7 @@ static int parse_redboot_partitions(stru
+  out:
+ 	while (fl) {
+ 		struct fis_list *old = fl;
++
+ 		fl = fl->next;
+ 		kfree(old);
+ 	}
 
 
 
