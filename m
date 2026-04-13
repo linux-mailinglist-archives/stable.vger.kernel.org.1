@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-236396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAfwB64Z3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:30 +0200
+	id wKqJKRwZ3WnoZwkAu9opvQ
+	(envelope-from <stable+bounces-236454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19E23EF046
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:28:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303193EEE84
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5925E30A6834
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:13:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCFA03077E1C
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1092820A9;
-	Mon, 13 Apr 2026 16:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8162526CE32;
+	Mon, 13 Apr 2026 16:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgZlL/lg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yesutup+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11B524E4AF;
-	Mon, 13 Apr 2026 16:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416761DDC37;
+	Mon, 13 Apr 2026 16:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096797; cv=none; b=PBLZmb396Q6I94oiMP2iiTPRVqXulf+BpFl1ZUCnrFmklGRG9OPS+Qbc/gi6ymgJ8yZgmiB3v0XCuQnytGz9YslT+mJEc8LUEwTgrGHygnUxS7Z4FUy7CnPsKB50c2F7/XgrQDAouErrJLefhmlrWBmPaIFcDbmwaeDYE4PRHTc=
+	t=1776096947; cv=none; b=nFyMlWsRUKceY0yHMZmBDGCrnyUiqsgdH5epMFawYEDz1Kp71Dpgtc25NX+/sTpDj+AkdsuMXrjqkvm+g6AUWaxRxRg7b+GvIEE/ju37v/XaBssrLfAaO8XfFoODKOWlZxbcTivfb+rOPxI6ff3qcnf0EOII50/a+fR+q2oDkT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096797; c=relaxed/simple;
-	bh=wewvOOR0OBU1UCk0h4HJ9HbBjlBkOxqXc7d0576EtZ4=;
+	s=arc-20240116; t=1776096947; c=relaxed/simple;
+	bh=1TSvwZuhbhh1owLYSNkQVwSAaNkz3o1MDDi83GzOqho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnxYrzhZkATUFSVHKxrUka2JoC7QP33BSPwrl11SsBtLVFHNPmlus6kzLlVV9Fy01QvarFQh1NWr0MRNf4bnIBrfFpSCnzUtqQBzF3VHpgd3Q4AUBBry/JK6l9/UUbX1SpRWtj0YZ2DRWo4rySff0CM9nJZcxt/bcXeOJx3t+Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgZlL/lg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689CAC2BCAF;
-	Mon, 13 Apr 2026 16:13:17 +0000 (UTC)
+	 MIME-Version; b=myFnp3V77pVxfibbCMlWGc92png5cpYTkb4C0KcLo1cuiANmrNseGClvZlqpbFLk0Wn7GpwF+eYZaW4BeyAabRXKQu0mSBlz8d35ZjjMiH1Xbwjy5mIXUksSqcfCpbLBqQ/Usbph7JHGS9Vr5eHJ2o1tA6pFR7NbwsSw3W6UgKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yesutup+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F636C2BCAF;
+	Mon, 13 Apr 2026 16:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096797;
-	bh=wewvOOR0OBU1UCk0h4HJ9HbBjlBkOxqXc7d0576EtZ4=;
+	s=korg; t=1776096946;
+	bh=1TSvwZuhbhh1owLYSNkQVwSAaNkz3o1MDDi83GzOqho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgZlL/lgJW6f19BAMK4tPkb+A02ny4SlOktjSqf5kAgGrASF7KMccoX8DF7S55HYg
-	 PvvFc8BBbJ7SoGlOic0jP4EaceDP0aJ2EtiMAuw0bxBy+2I4Nq8N6vwGKDl95F6fvP
-	 AGD49tgnhIky6qvTK0YtN+GY6ePm5niMaiFd0ieQ=
+	b=yesutup+KFcPe+mjBrdZbE37EoEVKsDySqPsEeRpAHszm9Crdr1Xd1lDvXAXzeO+V
+	 s94gCcC9shOYtU9idGp3z9mQlyflA5cx4fxa3X4YGPt2xp8QQpBMQ9tdEgA+MzDpZL
+	 d72CigktXXnJLtDbVusF1iPuIeTe9ctc6YlFGF/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 67/70] rxrpc: Fix key/keyring checks in setsockopt(RXRPC_SECURITY_KEY/KEYRING)
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.6 35/50] drm/i915/gt: fix refcount underflow in intel_engine_park_heartbeat
 Date: Mon, 13 Apr 2026 18:01:02 +0200
-Message-ID: <20260413155730.678900421@linuxfoundation.org>
+Message-ID: <20260413155725.822880926@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-References: <20260413155728.181580293@linuxfoundation.org>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+References: <20260413155724.497323914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,122 +67,153 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236396-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,auristor.com,allelesecurity.com,gmail.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236454-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,auristor.com:email,allelesecurity.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,infradead.org:email]
-X-Rspamd-Queue-Id: B19E23EF046
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 303193EEE84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 
-commit 2afd86ccbb2082a3c4258aea8c07e5bb6267bc2f upstream.
+commit 4c71fd099513bfa8acab529b626e1f0097b76061 upstream.
 
-An AF_RXRPC socket can be both client and server at the same time.  When
-sending new calls (ie. it's acting as a client), it uses rx->key to set the
-security, and when accepting incoming calls (ie. it's acting as a server),
-it uses rx->securities.
+A use-after-free / refcount underflow is possible when the heartbeat
+worker and intel_engine_park_heartbeat() race to release the same
+engine->heartbeat.systole request.
 
-setsockopt(RXRPC_SECURITY_KEY) sets rx->key to point to an rxrpc-type key
-and setsockopt(RXRPC_SECURITY_KEYRING) sets rx->securities to point to a
-keyring of rxrpc_s-type keys.
+The heartbeat worker reads engine->heartbeat.systole and calls
+i915_request_put() on it when the request is complete, but clears
+the pointer in a separate, non-atomic step. Concurrently, a request
+retirement on another CPU can drop the engine wakeref to zero, triggering
+__engine_park() -> intel_engine_park_heartbeat(). If the heartbeat
+timer is pending at that point, cancel_delayed_work() returns true and
+intel_engine_park_heartbeat() reads the stale non-NULL systole pointer
+and calls i915_request_put() on it again, causing a refcount underflow:
 
-Now, it should be possible to use both rx->key and rx->securities on the
-same socket - but for userspace AF_RXRPC sockets rxrpc_setsockopt()
-prevents that.
+```
+<4> [487.221889] Workqueue: i915-unordered engine_retire [i915]
+<4> [487.222640] RIP: 0010:refcount_warn_saturate+0x68/0xb0
+...
+<4> [487.222707] Call Trace:
+<4> [487.222711]  <TASK>
+<4> [487.222716]  intel_engine_park_heartbeat.part.0+0x6f/0x80 [i915]
+<4> [487.223115]  intel_engine_park_heartbeat+0x25/0x40 [i915]
+<4> [487.223566]  __engine_park+0xb9/0x650 [i915]
+<4> [487.223973]  ____intel_wakeref_put_last+0x2e/0xb0 [i915]
+<4> [487.224408]  __intel_wakeref_put_last+0x72/0x90 [i915]
+<4> [487.224797]  intel_context_exit_engine+0x7c/0x80 [i915]
+<4> [487.225238]  intel_context_exit+0xf1/0x1b0 [i915]
+<4> [487.225695]  i915_request_retire.part.0+0x1b9/0x530 [i915]
+<4> [487.226178]  i915_request_retire+0x1c/0x40 [i915]
+<4> [487.226625]  engine_retire+0x122/0x180 [i915]
+<4> [487.227037]  process_one_work+0x239/0x760
+<4> [487.227060]  worker_thread+0x200/0x3f0
+<4> [487.227068]  ? __pfx_worker_thread+0x10/0x10
+<4> [487.227075]  kthread+0x10d/0x150
+<4> [487.227083]  ? __pfx_kthread+0x10/0x10
+<4> [487.227092]  ret_from_fork+0x3d4/0x480
+<4> [487.227099]  ? __pfx_kthread+0x10/0x10
+<4> [487.227107]  ret_from_fork_asm+0x1a/0x30
+<4> [487.227141]  </TASK>
+```
 
-Fix this by:
+Fix this by replacing the non-atomic pointer read + separate clear with
+xchg() in both racing paths. xchg() is a single indivisible hardware
+instruction that atomically reads the old pointer and writes NULL. This
+guarantees only one of the two concurrent callers obtains the non-NULL
+pointer and performs the put, the other gets NULL and skips it.
 
- (1) Remove the incorrect check rxrpc_setsockopt(RXRPC_SECURITY_KEYRING)
-     makes on rx->key.
-
- (2) Move the check that rxrpc_setsockopt(RXRPC_SECURITY_KEY) makes on
-     rx->key down into rxrpc_request_key().
-
- (3) Remove rxrpc_request_key()'s check on rx->securities.
-
-This (in combination with a previous patch) pushes the checks down into the
-functions that set those pointers and removes the cross-checks that prevent
-both key and keyring being set.
-
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Anderson Nascimento <anderson@allelesecurity.com>
-cc: Luxiao Xu <rakukuip@gmail.com>
-cc: Yuan Tan <yuantan098@gmail.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-16-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15880
+Fixes: 058179e72e09 ("drm/i915/gt: Replace hangcheck by heartbeats")
+Cc: <stable@vger.kernel.org> # v5.5+
+Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/d4c1c14255688dd07cc8044973c4f032a8d1559e.1775038106.git.sebastian.brzezinka@intel.com
+(cherry picked from commit 13238dc0ee4f9ab8dafa2cca7295736191ae2f42)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/af_rxrpc.c |    6 ------
- net/rxrpc/key.c      |    2 +-
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c |   26 +++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
---- a/net/rxrpc/af_rxrpc.c
-+++ b/net/rxrpc/af_rxrpc.c
-@@ -681,9 +681,6 @@ static int rxrpc_setsockopt(struct socke
- 			goto success;
+--- a/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
+@@ -144,10 +144,12 @@ static void heartbeat(struct work_struct
+ 	/* Just in case everything has gone horribly wrong, give it a kick */
+ 	intel_engine_flush_submission(engine);
  
- 		case RXRPC_SECURITY_KEY:
--			ret = -EINVAL;
--			if (rx->key)
--				goto error;
- 			ret = -EISCONN;
- 			if (rx->sk.sk_state != RXRPC_UNBOUND)
- 				goto error;
-@@ -691,9 +688,6 @@ static int rxrpc_setsockopt(struct socke
- 			goto error;
+-	rq = engine->heartbeat.systole;
+-	if (rq && i915_request_completed(rq)) {
+-		i915_request_put(rq);
+-		engine->heartbeat.systole = NULL;
++	rq = xchg(&engine->heartbeat.systole, NULL);
++	if (rq) {
++		if (i915_request_completed(rq))
++			i915_request_put(rq);
++		else
++			engine->heartbeat.systole = rq;
+ 	}
  
- 		case RXRPC_SECURITY_KEYRING:
--			ret = -EINVAL;
--			if (rx->key)
--				goto error;
- 			ret = -EISCONN;
- 			if (rx->sk.sk_state != RXRPC_UNBOUND)
- 				goto error;
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -452,7 +452,7 @@ int rxrpc_request_key(struct rxrpc_sock
+ 	if (!intel_engine_pm_get_if_awake(engine))
+@@ -228,8 +230,11 @@ static void heartbeat(struct work_struct
+ unlock:
+ 	mutex_unlock(&ce->timeline->mutex);
+ out:
+-	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine))
+-		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
++	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine)) {
++		rq = xchg(&engine->heartbeat.systole, NULL);
++		if (rq)
++			i915_request_put(rq);
++	}
+ 	intel_engine_pm_put(engine);
+ }
  
- 	_enter("");
+@@ -243,8 +248,13 @@ void intel_engine_unpark_heartbeat(struc
  
--	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->securities)
-+	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->key)
- 		return -EINVAL;
+ void intel_engine_park_heartbeat(struct intel_engine_cs *engine)
+ {
+-	if (cancel_delayed_work(&engine->heartbeat.work))
+-		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
++	if (cancel_delayed_work(&engine->heartbeat.work)) {
++		struct i915_request *rq;
++
++		rq = xchg(&engine->heartbeat.systole, NULL);
++		if (rq)
++			i915_request_put(rq);
++	}
+ }
  
- 	description = memdup_sockptr_nul(optval, optlen);
+ void intel_gt_unpark_heartbeats(struct intel_gt *gt)
 
 
 
