@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-236539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCeNFKoa3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:42 +0200
+	id AAMNHZUX3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4A33EF33B
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:32:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1907D3EE9ED
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B2C7305A45A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:19:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A92A300DF51
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C2B2FFFBE;
-	Mon, 13 Apr 2026 16:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A46C24DCF6;
+	Mon, 13 Apr 2026 16:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWhcRt3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqpqCjqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098492EBB8C;
-	Mon, 13 Apr 2026 16:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A0226CE32;
+	Mon, 13 Apr 2026 16:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097167; cv=none; b=qIYP/oTTR5IFIs7tmZk+WtA59ivlblFL8KPuC8zHj9IG1VeQNpgTGycF43Qpwy7JDB4WXDciQshsFyERqi/15SoCHdAjilZvdEjcwpNE/xo7VL1DP2ss95qEAOzT4q472SgEFtnQtDs1VesouCiYb5NXtdaggomC+5x7ygTjVzA=
+	t=1776097169; cv=none; b=QQnY0LCrgOtmAgtKDVnNayVOpmiAriWXT0zHg8+QnrkxFgobjLur9P3uIicOOKBdg/ds0X/sQz3xI5ivxb4Fe/7wtKw+kUmMjhdPi/tQE4gGcS2WA93v8cMXqIXw+vn2fnfk/hq9Ep/SLdenmiF/Pm1/HbH/v+/9GGXJdZsBvxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097167; c=relaxed/simple;
-	bh=m2+QFmW0jlqMaXs+LGpTYkaYPk0HaOdCxMFJA9PvQik=;
+	s=arc-20240116; t=1776097169; c=relaxed/simple;
+	bh=g+WOp4iLMT4Ug78szhFe/WybikLhVfLEoBi+40N9tcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeB1HwtbcaeZ0/tl01O+thFoEnFkuqrohy16Hz6IbmE8hYpQqimSrurMIsf7t5tvldBQd6/+ITxP9eAeSmiczMXLF1aBQgBOGyrc7xoeASIeake4JkxHQbmtSUX8XDhueViX4I6PTneK56HzFotgRJ8nFnHaYOcFC41cKXLt4P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWhcRt3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E09C2BCAF;
-	Mon, 13 Apr 2026 16:19:26 +0000 (UTC)
+	 MIME-Version; b=UkVe/rEJZ9cNltj4NFjCDbYKTKXSyRQOzYZK4vPpwz05CRW+7HzquKyzsL4OAfNqmlCzcPxRTswLwUMNXhMI0d7r0RNfSDl8DwyLl8f7Mn1Iu62ExHYEQ5o2kAAzKP8f2pvG8TIGUAXVz+jfauX+/42eC4jeltdTf/AneEEi9YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqpqCjqY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDCCC2BCAF;
+	Mon, 13 Apr 2026 16:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097166;
-	bh=m2+QFmW0jlqMaXs+LGpTYkaYPk0HaOdCxMFJA9PvQik=;
+	s=korg; t=1776097169;
+	bh=g+WOp4iLMT4Ug78szhFe/WybikLhVfLEoBi+40N9tcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWhcRt3pXMmkrLmSTApIHdnH+qmpd5xhICH6GWzUdBIwmQM8+K7eGRjRwEKC1IbdF
-	 t/goOn/OpTgipFA0Gdo+h37PpCqcRVaDfVWZDT1UqZOgds3iOgvmwvgVRa7HEXfWHU
-	 I3HTT68+GtWfIBrdM+QML/dReF2Y6o9tVBUz6qt4=
+	b=OqpqCjqYi2WTH4bkTbJtPKJkBrZSpluX9IflmribjABfe8pL99UW713ydFV7B0+fY
+	 DorQy1e5uDy7925BL2sEl6iPnXlMtpb56dt3vK4xJsdWHsKJ2jfnPmIaYe/y1onfim
+	 hvn/U+/qA7/pouEmsRjt6Y7y2fPhbdOqHHo2caz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/570] ALSA: hda/conexant: Add quirk for HP ZBook Studio G4
-Date: Mon, 13 Apr 2026 17:52:43 +0200
-Message-ID: <20260413155831.626313076@linuxfoundation.org>
+Subject: [PATCH 5.15 033/570] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race
+Date: Mon, 13 Apr 2026 17:52:44 +0200
+Message-ID: <20260413155831.663456521@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
 References: <20260413155830.386096114@linuxfoundation.org>
@@ -67,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,decadent.org.uk,gmail.com,roeck-us.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-236540-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236539-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CE4A33EF33B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1907D3EE9ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,35 +101,103 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 1585cf83e98db32463e5d54161b06a5f01fe9976 ]
+[ Upstream commit 007be4327e443d79c9dd9e56dc16c36f6395d208 ]
 
-It was reported that we need the same quirk for HP ZBook Studio G4
-(SSID 103c:826b) as other HP models to make the mute-LED working.
+Simply copying shared data to a local variable cannot prevent data
+races. The compiler is allowed to optimize away the local copy and
+re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
+issue if the data changes between the check and the usage.
 
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/64d78753-b9ff-4c64-8920-64d8d31cd20c@gmail.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221002
-Link: https://patch.msgid.link/20260207131324.2428030-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+To enforce the use of the local variable, use READ_ONCE() when reading
+the shared data and WRITE_ONCE() when updating it. Apply these macros to
+the three identified locations (curr_sense, adc, and fault) where local
+variables are used for error validation, ensuring the value remains
+consistent.
+
+Reported-by: Ben Hutchings <ben@decadent.org.uk>
+Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20260203121443.5482-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/max16065.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 59f6d70689dfc..9a2b945a25d0a 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1099,6 +1099,7 @@ static const struct snd_pci_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x826b, "HP ZBook Studio G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index f72b0ab7c784e..48e6e242f13eb 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -151,27 +151,27 @@ static struct max16065_data *max16065_update_device(struct device *dev)
+ 		int i;
+ 
+ 		for (i = 0; i < data->num_adc; i++)
+-			data->adc[i]
+-			  = max16065_read_adc(client, MAX16065_ADC(i));
++			WRITE_ONCE(data->adc[i],
++				   max16065_read_adc(client, MAX16065_ADC(i)));
+ 
+ 		if (data->have_current) {
+-			data->adc[MAX16065_NUM_ADC]
+-			  = max16065_read_adc(client, MAX16065_CSP_ADC);
+-			data->curr_sense
+-			  = i2c_smbus_read_byte_data(client,
+-						     MAX16065_CURR_SENSE);
++			WRITE_ONCE(data->adc[MAX16065_NUM_ADC],
++				   max16065_read_adc(client, MAX16065_CSP_ADC));
++			WRITE_ONCE(data->curr_sense,
++				   i2c_smbus_read_byte_data(client, MAX16065_CURR_SENSE));
+ 		}
+ 
+ 		for (i = 0; i < 2; i++)
+-			data->fault[i]
+-			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
++			WRITE_ONCE(data->fault[i],
++				   i2c_smbus_read_byte_data(client, MAX16065_FAULT(i)));
+ 
+ 		/*
+ 		 * MAX16067 and MAX16068 have separate undervoltage and
+ 		 * overvoltage alarm bits. Squash them together.
+ 		 */
+ 		if (data->chip == max16067 || data->chip == max16068)
+-			data->fault[0] |= data->fault[1];
++			WRITE_ONCE(data->fault[0],
++				   data->fault[0] | data->fault[1]);
+ 
+ 		data->last_updated = jiffies;
+ 		data->valid = 1;
+@@ -185,7 +185,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int val = data->fault[attr2->nr];
++	int val = READ_ONCE(data->fault[attr2->nr]);
+ 
+ 	if (val < 0)
+ 		return val;
+@@ -203,7 +203,7 @@ static ssize_t max16065_input_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int adc = data->adc[attr->index];
++	int adc = READ_ONCE(data->adc[attr->index]);
+ 
+ 	if (unlikely(adc < 0))
+ 		return adc;
+@@ -216,7 +216,7 @@ static ssize_t max16065_current_show(struct device *dev,
+ 				     struct device_attribute *da, char *buf)
+ {
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int curr_sense = data->curr_sense;
++	int curr_sense = READ_ONCE(data->curr_sense);
+ 
+ 	if (unlikely(curr_sense < 0))
+ 		return curr_sense;
 -- 
 2.51.0
 
