@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-236244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePN3Er0a3WknaAkAu9opvQ
-	(envelope-from <stable+bounces-236244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:01 +0200
+	id aGzVBd8h3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3ED33EF361
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:33:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D503F09A8
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26C2A31FC416
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 764F23076C37
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E2A29D27A;
-	Mon, 13 Apr 2026 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7D631F9BC;
+	Mon, 13 Apr 2026 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVMSx1QZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRaeqB92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E7F29B22F;
-	Mon, 13 Apr 2026 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0BD3203B6;
+	Mon, 13 Apr 2026 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096413; cv=none; b=LG0njnZ2BT0SACyaeMltd++js9/vUxg+sRdP+g7UeA/1kUXb6SfzMvMcMYck/bksc6fAP0o/7tVbIZ+Y9sYi5sgT8jaD7WtbCsGOAqE8KKYu72FEBl+QjKM+0r0rJsWSLKYIaso7h1oMkOAub9RGr9F0klqOxHtW9BW9qrxTdq4=
+	t=1776099517; cv=none; b=CVxzvy+qwGRLmg13tczu3XSHhfUjsEPHHqu2fYv2Yq4Qopfv45KrhhfGyhYbQBkj7LfnC17tTQ3tJ4L4Sw9ke/zQFALVrWH0+9qPNp6ndoDbkiLgfkHL1KkGeIKMrrourZVKq4z8CBEoY43FzyGJm2Z7FCTNnWmczFDwKg/7E7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096413; c=relaxed/simple;
-	bh=KufDdCGvjaI0O5+fgoaVg4PllarQ4G7MFFX651lwqDE=;
+	s=arc-20240116; t=1776099517; c=relaxed/simple;
+	bh=Tz/vq7bP0R9nFccLtcBqJyPlDfJk+2WxkpNQ1YoP2J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhhWnhbFBcoM7DqkuRd/7WAixhPVkq6MYMfasMo3pWeGNqq1KVkHE7uP11+G4XDwTGQsWD3Amp9ISstIskqAewEW3xntRyCnOW5FSW71EUZ7boBfI+Fd9cnWe5RR6v7FwIJfOLIQy92Q+X+BMYZIpOD3RlRPGmAELmw+bDbTQvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVMSx1QZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB0CC2BCAF;
-	Mon, 13 Apr 2026 16:06:53 +0000 (UTC)
+	 MIME-Version; b=CgQICIVnnG+kHEnO99jEo/PZm6pcHofrj7/yh+aSHOOrXAvyE89ShPOTJnv6KGPzPnw3FmX9Q6lzzTcy3/y0m+XoCRI6ooLvGcKuwcYUznr5WjpV85fcweRPIaEaADhom4tzKHb5+dYvBzFqp24HBQxyiHaIWH4yW335SbZ//0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRaeqB92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFFAC2BCAF;
+	Mon, 13 Apr 2026 16:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096413;
-	bh=KufDdCGvjaI0O5+fgoaVg4PllarQ4G7MFFX651lwqDE=;
+	s=korg; t=1776099517;
+	bh=Tz/vq7bP0R9nFccLtcBqJyPlDfJk+2WxkpNQ1YoP2J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVMSx1QZ1wcSPZDKfWlqjx8ZCIqMxEQUK8gyi8mwbxtZNecTF57TloW6+A7of4q1u
-	 5rdoJgWa+6PZJTMLaMpisvBgiBoQcnstUKTeSU2pSP8HNVMBEu0+/ovJH2cpIyG/tV
-	 cxB9VwecQnB4R/Q6Ix/Y5GWOr5uX2DuN7XvzP8VY=
+	b=RRaeqB92wtFtaQbnHOohRfnkKG4UIFfnh1MqKlxDog5Ah3psZXm3xuuwxNM/TRFYX
+	 hZKXMFjstfkHdeFV/hpEXUBVpa9n7RG031fCbFo2egx8G8VqCk4dnFGmWdMSJvCjtd
+	 sPWKQn1h4Z27fEaluIAyevVB41f3ZtMf42U5arBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 68/86] rxrpc: Fix call removal to use RCU safe deletion
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Oleh Konko <security@1seal.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 370/491] Bluetooth: SMP: force responder MITM requirements before building the pairing response
 Date: Mon, 13 Apr 2026 18:00:15 +0200
-Message-ID: <20260413155734.090025373@linuxfoundation.org>
+Message-ID: <20260413155832.885827407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,137 +64,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236244-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237461-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,1seal.org,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.978];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,auristor.com:email]
-X-Rspamd-Queue-Id: B3ED33EF361
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,1seal.org:email]
+X-Rspamd-Queue-Id: F1D503F09A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Oleh Konko <security@1seal.org>
 
-commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 upstream.
+commit d05111bfe37bfd8bd4d2dfe6675d6bdeef43f7c7 upstream.
 
-Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
-rather than list_del_init() to prevent stuffing up reading
-/proc/net/rxrpc/calls from potentially getting into an infinite loop.
+smp_cmd_pairing_req() currently builds the pairing response from the
+initiator auth_req before enforcing the local BT_SECURITY_HIGH
+requirement. If the initiator omits SMP_AUTH_MITM, the response can
+also omit it even though the local side still requires MITM.
 
-This, however, means that list_empty() no longer works on an entry that's
-been deleted from the list, making it harder to detect prior deletion.  Fix
-this by:
+tk_request() then sees an auth value without SMP_AUTH_MITM and may
+select JUST_CFM, making method selection inconsistent with the pairing
+policy the responder already enforces.
 
-Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
-are unexpectedly still on the list.  Limiting the number of steps means
-there's no need to call cond_resched() or to remove calls from the list
-here, thereby eliminating the need for rxrpc_put_call() to check for that.
+When the local side requires HIGH security, first verify that MITM can
+be achieved from the IO capabilities and then force SMP_AUTH_MITM in the
+response in both rsp.auth_req and auth. This keeps the responder auth bits
+and later method selection aligned.
 
-rxrpc_put_call() can then be fixed to unconditionally delete the call from
-the list as it is the only place that the deletion occurs.
-
-Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2b64d153a0cc ("Bluetooth: Add MITM mechanism to LE-SMP")
+Cc: stable@vger.kernel.org
+Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Signed-off-by: Oleh Konko <security@1seal.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/rxrpc.h |    2 +-
- net/rxrpc/call_object.c      |   24 +++++++++---------------
- 2 files changed, 10 insertions(+), 16 deletions(-)
+ net/bluetooth/smp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -347,7 +347,7 @@
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
- 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
--	E_(rxrpc_call_see_zap,			"SEE zap     ")
-+	E_(rxrpc_call_see_still_live,		"SEE !still-l")
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1818,7 +1818,7 @@ static u8 smp_cmd_pairing_req(struct l2c
+ 	if (sec_level > conn->hcon->pending_sec_level)
+ 		conn->hcon->pending_sec_level = sec_level;
  
- #define rxrpc_txqueue_traces \
- 	EM(rxrpc_txqueue_await_reply,		"AWR") \
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -654,11 +654,9 @@ void rxrpc_put_call(struct rxrpc_call *c
- 	if (dead) {
- 		ASSERTCMP(__rxrpc_call_state(call), ==, RXRPC_CALL_COMPLETE);
+-	/* If we need MITM check that it can be achieved */
++	/* If we need MITM check that it can be achieved. */
+ 	if (conn->hcon->pending_sec_level >= BT_SECURITY_HIGH) {
+ 		u8 method;
  
--		if (!list_empty(&call->link)) {
--			spin_lock(&rxnet->call_lock);
--			list_del_init(&call->link);
--			spin_unlock(&rxnet->call_lock);
--		}
-+		spin_lock(&rxnet->call_lock);
-+		list_del_rcu(&call->link);
-+		spin_unlock(&rxnet->call_lock);
- 
- 		rxrpc_cleanup_call(call);
+@@ -1826,6 +1826,10 @@ static u8 smp_cmd_pairing_req(struct l2c
+ 					 req->io_capability);
+ 		if (method == JUST_WORKS || method == JUST_CFM)
+ 			return SMP_AUTH_REQUIREMENTS;
++
++		/* Force MITM bit if it isn't set by the initiator. */
++		auth |= SMP_AUTH_MITM;
++		rsp.auth_req |= SMP_AUTH_MITM;
  	}
-@@ -730,24 +728,20 @@ void rxrpc_destroy_all_calls(struct rxrp
- 	_enter("");
  
- 	if (!list_empty(&rxnet->calls)) {
--		spin_lock(&rxnet->call_lock);
-+		int shown = 0;
- 
--		while (!list_empty(&rxnet->calls)) {
--			call = list_entry(rxnet->calls.next,
--					  struct rxrpc_call, link);
--			_debug("Zapping call %p", call);
-+		spin_lock(&rxnet->call_lock);
- 
--			rxrpc_see_call(call, rxrpc_call_see_zap);
--			list_del_init(&call->link);
-+		list_for_each_entry(call, &rxnet->calls, link) {
-+			rxrpc_see_call(call, rxrpc_call_see_still_live);
- 
- 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
- 			       call, refcount_read(&call->ref),
- 			       rxrpc_call_states[__rxrpc_call_state(call)],
- 			       call->flags, call->events);
- 
--			spin_unlock(&rxnet->call_lock);
--			cond_resched();
--			spin_lock(&rxnet->call_lock);
-+			if (++shown >= 10)
-+				break;
- 		}
- 
- 		spin_unlock(&rxnet->call_lock);
+ 	key_size = min(req->max_key_size, rsp.max_key_size);
 
 
 
