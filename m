@@ -1,59 +1,69 @@
-Return-Path: <stable+bounces-237489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Ak9JA8i3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:15 +0200
+	id kDa1MwAY3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241453F0A2E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330A13EEAFA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65B93301C5D7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 033D73033A85
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B0D318ED2;
-	Mon, 13 Apr 2026 16:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BC9308F36;
+	Mon, 13 Apr 2026 16:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQ08KunM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3uS6vxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE3531F9BC;
-	Mon, 13 Apr 2026 16:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9E53074B1;
+	Mon, 13 Apr 2026 16:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099586; cv=none; b=MDVkXTHObaVJnO0JEvNwWbo6IVTgyMd4N8mcK+rHGiVadOCKEhbDaoX7qyWKx5bBomPXeAFibZiDU22ekNZlj0TP33kSeyeeRJu0cCfud7sKpuqMqKAnqg+hE4sb0tJERtF1Rs0mINlL6JqxCE8rjHcpE7NbvYG4Sbw+ZwNTxKs=
+	t=1776096607; cv=none; b=uEgjXlpzEvpxkBaje/iJW4D1u9+wODRezxR8pfyHx2kv9g5bIXngSp4iGkpPeFsSlU+O72/51WsBn/ocQGJbK+AlA7wKoZYLwXLnUzzj/jbv/wfYZhoClmFWQksnWfPwgYM/yc9fl19aUNfeNW67TyKrN8q3L9Fiem0xEpF/JcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099586; c=relaxed/simple;
-	bh=bNfAoYWBpgnbZVhlMi/rNaMde0cDun92lmDxMAuq/oQ=;
+	s=arc-20240116; t=1776096607; c=relaxed/simple;
+	bh=U43mrNS2iBSa3zazBrfT2MHgV85ZF2oSbq8lWK3nC4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7OIswvc658S8Qe/5dj9FuCcXjzCWURdp+D2qlR6cJCmtEY+f0BaRWtLq86T/jjOmAQcV7YM5mPAZVDjYq7yS33EpSHrdsruseHpAqEHhiVE7UXEaB+T2DrstErGq4yQjSJBmrKgNSY0LKXa08vwKhwcTN6eSAImlrB3vz/6jjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQ08KunM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338AAC2BCAF;
-	Mon, 13 Apr 2026 16:59:46 +0000 (UTC)
+	 MIME-Version; b=DuB461egY/jxpJUVq5EBlYUlraOfXaXvNbcMx6IWA1cRkOTe6jHtf5wT8ocZhktX9aQED3u5ybJDFbLcw6Tc8bytapJEX2Z0dcV8TC3eodsT8jiMclVBhuDmhO6IJwrtJgQ6YUVuldWvvhFE11JrACxoKNfKwrI9foQXZ7pQT9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3uS6vxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD6FC2BCB0;
+	Mon, 13 Apr 2026 16:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776099586;
-	bh=bNfAoYWBpgnbZVhlMi/rNaMde0cDun92lmDxMAuq/oQ=;
+	s=korg; t=1776096606;
+	bh=U43mrNS2iBSa3zazBrfT2MHgV85ZF2oSbq8lWK3nC4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQ08KunMj27/BG9eEW04E8N6IJ/kgpkYDlDCoSfumYZDvjDlj2heINZKbNEsh0CZu
-	 adO/5ozNnOgTnR008sL/m4a6CKFJ2zhrec9RzHfKQK37ZTA3uB6Pz1Ss8rgh3MdtPa
-	 RTQgsK6UReudVo/CaXfeiDLeRtZT6ynrcltAHCxs=
+	b=k3uS6vxuqmbsuW2i+BTcQHbN2lLz26A0cTcDCiPYqTschukVNc/j+4p0jprUiZOV4
+	 WN/19IHCWlNc+4LXU4wAgTxZO9LRD2suAowtIy2qFRnvK0edr3/yaeWSg0NCc+9ccG
+	 yP3qlht1vuD5aV0xuhaf1ALyyb6m+JmNuNNufxCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 398/491] comedi: Reinit dev->spinlock between attachments to low-level drivers
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 75/83] rxrpc: fix reference count leak in rxrpc_server_keyring()
 Date: Mon, 13 Apr 2026 18:00:43 +0200
-Message-ID: <20260413155833.933440741@linuxfoundation.org>
+Message-ID: <20260413155733.797068091@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +74,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237489-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236322-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cc9f7f4a7df09f53c4a4];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,syzkaller.appspot.com:url,msgid.link:url]
-X-Rspamd-Queue-Id: 241453F0A2E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,auristor.com:email,infradead.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 330A13EEAFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-commit 4b9a9a6d71e3e252032f959fb3895a33acb5865c upstream.
+commit f125846ee79fcae537a964ce66494e96fa54a6de upstream.
 
-`struct comedi_device` is the main controlling structure for a COMEDI
-device created by the COMEDI subsystem.  It contains a member `spinlock`
-containing a spin-lock that is initialized by the COMEDI subsystem, but
-is reserved for use by a low-level driver attached to the COMEDI device
-(at least since commit 25436dc9d84f ("Staging: comedi: remove RT
-code")).
+This patch fixes a reference count leak in rxrpc_server_keyring()
+by checking if rx->securities is already set.
 
-Some COMEDI devices (those created on initialization of the COMEDI
-subsystem when the "comedi.comedi_num_legacy_minors" parameter is
-non-zero) can be attached to different low-level drivers over their
-lifetime using the `COMEDI_DEVCONFIG` ioctl command.  This can result in
-inconsistent lock states being reported when there is a mismatch in the
-spin-lock locking levels used by each low-level driver to which the
-COMEDI device has been attached.  Fix it by reinitializing
-`dev->spinlock` before calling the low-level driver's `attach` function
-pointer if `CONFIG_LOCKDEP` is enabled.
-
-Reported-by: syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cc9f7f4a7df09f53c4a4
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260225132427.86578-1-abbotti@mev.co.uk
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-15-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/drivers.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/rxrpc/server_key.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/staging/comedi/drivers.c
-+++ b/drivers/staging/comedi/drivers.c
-@@ -1000,6 +1000,14 @@ int comedi_device_attach(struct comedi_d
- 		ret = -EIO;
- 		goto out;
- 	}
-+	if (IS_ENABLED(CONFIG_LOCKDEP)) {
-+		/*
-+		 * dev->spinlock is for private use by the attached low-level
-+		 * driver.  Reinitialize it to stop lock-dependency tracking
-+		 * between attachments to different low-level drivers.
-+		 */
-+		spin_lock_init(&dev->spinlock);
-+	}
- 	dev->driver = driv;
- 	dev->board_name = dev->board_ptr ? *(const char **)dev->board_ptr
- 					 : dev->driver->driver_name;
+--- a/net/rxrpc/server_key.c
++++ b/net/rxrpc/server_key.c
+@@ -125,6 +125,9 @@ int rxrpc_server_keyring(struct rxrpc_so
+ 
+ 	_enter("");
+ 
++	if (rx->securities)
++		return -EINVAL;
++
+ 	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
+ 		return -EINVAL;
+ 
 
 
 
