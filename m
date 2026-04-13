@@ -1,153 +1,135 @@
-Return-Path: <stable+bounces-236044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOoLOK3k3GnBXwkAu9opvQ
-	(envelope-from <stable+bounces-236044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:42:21 +0200
+	id +LqID2bg3GlkXwkAu9opvQ
+	(envelope-from <stable+bounces-236041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:24:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761D23EC265
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:42:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C333EBE40
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 14:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D776D3008246
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:42:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDE2E302D0AD
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 12:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4643BE164;
-	Mon, 13 Apr 2026 12:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7833C4542;
+	Mon, 13 Apr 2026 12:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cl87R7ns"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="jE8R4+iY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821553A9D9E
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF933C454B
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776084139; cv=none; b=jmfQ+0dz53f4vtD92ImkIP4mZKkO4gDdRqMVkdZaO9oMT4lIPW6yKPfSpW5hHrfYTR3JFLch9zeY4BEeWRKQyBkwfjpjGlt1oqhFBzSkQhL6Cs4Z/VDsO2H1EtE3OJ3l9d8D8GkRrIz67xaO2AwUwlhDp/5ph1tdA5KEZU+iu5g=
+	t=1776082987; cv=none; b=ljSHwk7WnQy5ih181zb1WBytxqXhOpjOHCMCMIcMvtRaDbe8h9u77jBbJKgel1slgilGLESy9c8fUqodVNpA0l64m1NXsXzrMAFV5CuicA1fxc8G2G6tmZK3E86M3HT1/NwGMm19yEcDxvtjjYuB6zJBzLsUL+8Bp+qnCMvEqRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776084139; c=relaxed/simple;
-	bh=kYDuWgtnQtnU6haK7hB1F/DUbP2028Zye06gLj1sPz4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n9SAjDf+kqIO/NTBn2dk5VbUlPEziqnMzruVKxm8HP1pys0yMTFEnA3NkxAP5x0WSjI4g2vfeezSd11qFUuhRudiakzMyXIN213QarLOa/DtSeA8VthEM1SeBm8cXwfeRaXy3r7QKO5/4kX5jHOAfzsP+8z2RXh6ctLDh5Letg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cl87R7ns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABB4C2BCAF;
-	Mon, 13 Apr 2026 12:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776084139;
-	bh=kYDuWgtnQtnU6haK7hB1F/DUbP2028Zye06gLj1sPz4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Cl87R7nsz7VPvDi8d/HIv4GoD0w86xuxSmkLvG43lKkBFDXPQMoeRk5Nt1SmsomKH
-	 J7AZjB2WTukGyXl1y38dQvQg8J48RzGr+Ebc50TA9V5QDQSMB0xFD9QAk4yIEoE9Uk
-	 JTcWLno30tkmvkAMH8czt6xB6eztfy5Ggv2njR/A=
-Subject: FAILED: patch "[PATCH] xfrm: clear trailing padding in build_polexpire()" failed to apply to 5.10-stable tree
-To: yasuakitorimaru@gmail.com,horms@kernel.org,leitao@debian.org,steffen.klassert@secunet.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Apr 2026 14:21:32 +0200
-Message-ID: <2026041332-delivery-deplete-1461@gregkh>
+	s=arc-20240116; t=1776082987; c=relaxed/simple;
+	bh=BBkzYw2zsCOt65g0/czwmFam61bS0fD+YbV9/bZ3PTc=;
+	h=In-Reply-To:Cc:Message-Id:To:Content-Type:Mime-Version:References:
+	 From:Subject:Date; b=gt63UV4u/o2MqqdW8lFN24wCSKpjPKqfXmJSaYPYxjcT2Oe/5h6/fe2RZ3zsbaZJ5KoF4p104+t4ScUKIi6yuHZb0rfhvVIOqS52jllKyROI9yTzKnGOLqKtbifn1BZW9Si7DAzCoUSHzFgbCFKEcYTKcfLO4PerNQj+9nw7D3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=jE8R4+iY; arc=none smtp.client-ip=209.127.230.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1776082981; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=BBkzYw2zsCOt65g0/czwmFam61bS0fD+YbV9/bZ3PTc=;
+ b=jE8R4+iYADVxS7UvGT4SGVzHU136YhJtExmhVQInByWqxUfKy08yVE9/LajSXBG98uOT9F
+ wnEVKXl8cul+u4nzck33Cv11ogqUP7Z9c3Ea8tcXVWpVE/ZkXa7dhdMCZy+zYKosEgOgvX
+ 9PpT9jDZpOpdt4RK/ZyHl3nJZsne77E7P8DndrRq1W/KAtYYLsfyq2KGym0vyaX4J2eqOO
+ Ww5ZQ1rADuDkuLS1uki4C2CHMVHgfRm9C3kO67OsBBvP4qyk86YyoYCXAz5v1hhwoQol5o
+ mOze6xCBwe5HVelLVSDEX6oRHhWpF3YepEttOTMxgdS1hSeVRQHHdbPYaZj6rg==
+In-Reply-To: <20260413101759.6323fb68@pumpkin>
+X-Mailer: git-send-email 2.17.1
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	=?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	"Jinhui Guo" <guojinhui.liam@bytedance.com>, 
+	"Jason Wang" <jasowang@redhat.com>, "Jiri Pirko" <jiri@resnulli.us>, 
+	"Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, <linux-kernel@vger.kernel.org>, 
+	<stable@vger.kernel.org>, <virtualization@lists.linux.dev>
+Message-Id: <20260413122244.534-1-guojinhui.liam@bytedance.com>
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+To: "David Laight" <david.laight.linux@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+269dce023+9f30b6+vger.kernel.org+guojinhui.liam@bytedance.com>
+References: <20260413101759.6323fb68@pumpkin>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+Subject: Re: [PATCH] virtio_pci_modern: Use GFP_ATOMIC with spin_lock_irqsave held in virtqueue_exec_admin_cmd()
+Date: Mon, 13 Apr 2026 20:22:44 +0800
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-236041-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-236044-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,debian.org,secunet.com];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guojinhui.liam@bytedance.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 761D23EC265
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bytedance.com:dkim,bytedance.com:mid]
+X-Rspamd-Queue-Id: B1C333EBE40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon, Apr 13, 2026 at 10:17:59 +0100, David Laight wrote:
+> Or do the allocate before acquiring the lock (and free it not used
+> in the error path).
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hi David,
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Thanks for the suggestion.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 71a98248c63c535eaa4d4c22f099b68d902006d0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026041332-delivery-deplete-1461@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Pre-allocating the memory outside the lock is indeed a good practice,
+but unfortunately it doesn't work in this specific virtqueue context.
 
-Possible dependencies:
+The kmalloc() in question is not happening at the virtqueue_exec_admin_cmd()
+level. Instead, it is deeply embedded inside virtqueue_add_sgs()
+(specifically, in functions like alloc_indirect_split() or
+virtqueue_add_indirect_packed()) to allocate indirect descriptors when
+multiple SG elements are provided.
 
+As a caller, we have no mechanism to pre-allocate this indirect descriptor
+memory and pass it down to virtqueue_add_sgs(). Furthermore, virtqueue_add_sgs()
+needs to atomically check the queue's num_free status, allocate the indirect
+table if necessary, and update the queue pointers. All these operations
+must be protected by admin_vq->lock to prevent concurrent admin command
+submissions from corrupting the virtqueue state.
 
+Therefore, allocating before acquiring the lock isn't feasible here, and
+replacing GFP_KERNEL with GFP_ATOMIC (with a proper sleepable retry upon
+failure) seems to be the more viable fix.
 
-thanks,
+Does this make sense?
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 71a98248c63c535eaa4d4c22f099b68d902006d0 Mon Sep 17 00:00:00 2001
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Date: Thu, 26 Mar 2026 14:58:00 +0900
-Subject: [PATCH] xfrm: clear trailing padding in build_polexpire()
-
-build_expire() clears the trailing padding bytes of struct
-xfrm_user_expire after setting the hard field via memset_after(),
-but the analogous function build_polexpire() does not do this for
-struct xfrm_user_polexpire.
-
-The padding bytes after the __u8 hard field are left
-uninitialized from the heap allocation, and are then sent to
-userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
-leaking kernel heap memory contents.
-
-Add the missing memset_after() call, matching build_expire().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 1656b487f833..5d59c11fc01e 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3960,6 +3960,8 @@ static int build_polexpire(struct sk_buff *skb, struct xfrm_policy *xp,
- 		return err;
- 	}
- 	upe->hard = !!hard;
-+	/* clear the padding bytes */
-+	memset_after(upe, 0, hard);
- 
- 	nlmsg_end(skb, nlh);
- 	return 0;
-
+Thanks,
+Jinhui
 
