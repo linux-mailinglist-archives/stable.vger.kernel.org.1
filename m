@@ -1,232 +1,162 @@
-Return-Path: <stable+bounces-237637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHEWOLs93WmqbAkAu9opvQ
-	(envelope-from <stable+bounces-237637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:02:19 +0200
+	id OIk5FBc/3WkubQkAu9opvQ
+	(envelope-from <stable+bounces-237638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:08:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5083F2603
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:02:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8AAD3F2756
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 21:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 859AB3028356
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:59:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A892A301DCEC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15283909B8;
-	Mon, 13 Apr 2026 18:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08B6390239;
+	Mon, 13 Apr 2026 19:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJVZxaqN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BveXdg4S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850B338B142
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 18:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6C638D6A4
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 19:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776106750; cv=none; b=U8oO+dkkLhc67O+Bnkl8f4JwiQBFsSJ0TcLPDUQmUzqCRLblOLiiHerWLT3rw3fQ14Z4shfy8OFp2AaSfNU9heYctFZvruy/hBu+v8z9gnmEV+Ic+JPVqi1/35lSpJvcZX/Y2HpAVWZnSP5CSCYO6kxozXYcstvtYQ+xX1pg1dQ=
+	t=1776106926; cv=none; b=uwWYX6JX0LF9M9ndYGKqTzNl30W4MjcUNd1ReUu7Nc34wW617rFtPgO3LDdzoQ3i3Iy9mhZCyBbQm5NWaHr/6ynIhKZIQMVqBEnzWWmD6flkX0xAGfsAgLjQIRYmvkwihoaA+nF6n8lK86dp8FARFHOT2dX2SvarwM4rq9p/bAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776106750; c=relaxed/simple;
-	bh=+MF+uycJGDWtaXNsob49SbpYy5eQNT6omCa12XzwnOs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NO00ZGbAM007YCsmVNFlK6+5V/JZ8cyrB3pWt30VuUTUqQK5pREOyTdt3lQqePzZB8y+ZSBp5qUrgtDzMTWjChwaqdiKurqKcv6PCUNIoug9aRsrp2gXHrWVFjJIDF9SoYHlYZdMHd+wshnEc4arzT+rsxFz3X9xm569qjPM8NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJVZxaqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6E3C2BCB0;
-	Mon, 13 Apr 2026 18:59:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776106750;
-	bh=+MF+uycJGDWtaXNsob49SbpYy5eQNT6omCa12XzwnOs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJVZxaqNG9xg2S8jFANMKs0EPGUCa0/DwY8RugDmW4FKIkn7z5ASsrJxICAW3IsCV
-	 a+VfY4u2v/qqr0VggjQ11kF1iUgxCNmkEYW8thMcAuX8neW5PqVWZyxWTNoeg81b5I
-	 Tbyz8nfFwDhKyfiKhlI8zhZdH8LtKWfkaSN7ACTUz1gIav8hiaRaUPMtxW6dzWq0yy
-	 UYJBw2IPrgJc6bCtPDYEGphilebTdnjEPoTtUUvPCLRkpJjwPFeJz/tdF5ZBZbsH+u
-	 nDQI+A8r+8O1UM8NCyiBOpwYVi6r9/6OJzcI+Bow+axTU4oG+oVghIy9mfHFhk78hK
-	 2DQ5kDSv9ktyA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Emil Tantilov <emil.s.tantilov@intel.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Ray Zhang <sgzhang@google.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
-Date: Mon, 13 Apr 2026 14:59:06 -0400
-Message-ID: <20260413185906.3429937-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413185906.3429937-1-sashal@kernel.org>
-References: <2026041354-trowel-buggy-c7ca@gregkh>
- <20260413185906.3429937-1-sashal@kernel.org>
+	s=arc-20240116; t=1776106926; c=relaxed/simple;
+	bh=FYLXt6nBIjV7qo8LTQfcO69fMqnwEzdpKkwxeYgMW8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EQnGqioE+y6ag9UEXgYbw7qt4UwjfXGGmdhFzGVyxXcHW9mNqSyky77c6ZREGLZIxafQ0RpuZz1CZ+kBhTBFfQbG1Dxhk+luHKCmDzmq5uD20hwkdeoP/NUEDSO8mnavI2cO3Mzx7tCOxugZ4bXbMhEiaUiJ8/a5gcpKe96+FWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BveXdg4S; arc=none smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b6b0500e06so8898634eec.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 12:02:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776106924; x=1776711724; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YWbV91gJHTrmHWm4pr/s2+bLQmWIv1BQANB6LkVTVZQ=;
+        b=BveXdg4S3449w4ewe6nwr6hratH1nsXZzxQHU6d+NJJXwS7jXoql/cNQ63WpCUoUXF
+         5xmxECgsPt19PBK7cYiksWlLPZgkJekZvzMq+CNYd8k1Je9STAADjYgd614n+n4gJzdm
+         aWfBB2ua/FaU97NNJyDD+jFSX8543O2XnZZcUS1x+9m8L7mwX5akMhBcoU+IRnq7aH4a
+         Orbh9G3q/WbAJJZV3cUWNsCbJ47YBT4LfSXAlNm6qEnKe561pxT5ABmbFMfBvAGj0iqT
+         Uyz6rmC4LlXYtInOr9QrAK++INygFcxTcb5EnvcXmh71GWHPifL4HcJWQHMw16082byf
+         ra1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776106924; x=1776711724;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YWbV91gJHTrmHWm4pr/s2+bLQmWIv1BQANB6LkVTVZQ=;
+        b=dkRVzOIz1HamATdE5Dxy71GNCoEKcwb150DIabK8Q1mym0uhn9rA+jStnqp793Aoom
+         e5lGupq+K6kDjyiZ3jpvh5pq+TEcKxTjLUMA9l2IWo0znUObzVVF7nym0so7rjBx2kjH
+         0gpwcV79gnguLI9/uMN/ksj44+ffT7lP8qAEOSBTGIV0og86B39KyJXQ/YxQ7ZzKY0R9
+         iGWEwerHULAoba/hJxYRvKfcM4+P7PLy8B7B9WRFyJc0WGIBxLo3r9hKDEdv/UZ7JK4x
+         7gLyTl7wQRJujBMDM+Vxh6GKTsXxNc90nTQpLIhrfzD39fC9HXum3UMw+8MfvJUz6ia5
+         Ojag==
+X-Forwarded-Encrypted: i=1; AFNElJ/BMPUPPyawtbowpluHW26r73buK7KZUOwsSLLr7xNEwdVuDzyZYHM1xOI5zgLeWBgqaoY2jl8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSHrNvsnnM3l9MZWG3b7nT7XDiCKi9Lbsr/+gRTr1TxA79ZSOM
+	uUO8KBfPZ1eLEMkL/n+z9mzhcPKmiz5jx4CwQ1mnm3z7z7+4ziu1bm7n
+X-Gm-Gg: AeBDieu/8RVmmcPv9M6FhpyxzHTDS6cPcUzEpZyBKXCZzJVRZjjcrj0Am+GYWahs9lB
+	72OGNgEsR9RJq5iHJQtaqZgfTJN0QuShVI1bQSpZgcqAaGu0hjyCb25ZqIhsy0KATnxLUoCWNCc
+	EMPKpJa18WhBA2WFANST3UX5IeDuj9bAL3z3RaXIHafd4LdEMLDTET8jVu0bdfSkF8rJQNTr2Us
+	HyO8K1+IOtN624Nds1yNUNgTMV81DXzTb9lq/4UV4267mxpVDHOQ91agGk20fZYyIAHeEfaSEfQ
+	G5Jpm55ZriUPgAvzvvYT4gGiFTp5TfR/1MEoATrYOKnPFoeeim800utGMOGFxLPBv4brevake9S
+	TsZhnG1zvSqWKJOvWEkWKw0tvX1LApcyxScZvi0sbTKMOMeb35FUJBjtHk3r6UxNXd5xac8KQzQ
+	RKum92CzVtWq94LQ1CYdgQNVvgoOmZb+ERO9h6DZ1k61HL8UqQLQ==
+X-Received: by 2002:a05:7300:7316:b0:2d0:239a:23cb with SMTP id 5a478bee46e88-2d5891766c4mr7776032eec.16.1776106924287;
+        Mon, 13 Apr 2026 12:02:04 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55faa556esm21000010eec.8.2026.04.13.12.02.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 12:02:03 -0700 (PDT)
+Message-ID: <c67f8b22-7bf3-43d6-895c-3ff7492a1c02@gmail.com>
+Date: Mon, 13 Apr 2026 12:02:00 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 00/70] 6.12.82-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260413155728.181580293@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237638-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237637-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:email]
-X-Rspamd-Queue-Id: 4F5083F2603
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: B8AAD3F2756
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+On 4/13/26 08:59, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.82 release.
+> There are 70 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.82-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit 591478118293c1bd628de330a99eb1eb2ef8d76b ]
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Switch from using the completion's raw spinlock to a local lock in the
-idpf_vc_xn struct. The conversion is safe because complete/_all() are
-called outside the lock and there is no reason to share the completion
-lock in the current logic. This avoids invalid wait context reported by
-the kernel due to the async handler taking BH spinlock:
-
-[  805.726977] =============================
-[  805.726991] [ BUG: Invalid wait context ]
-[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
-[  805.727026] -----------------------------
-[  805.727038] kworker/u261:0/572 is trying to lock:
-[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727099] other info that might help us debug this:
-[  805.727111] context-{5:5}
-[  805.727119] 3 locks held by kworker/u261:0/572:
-[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
-[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
-[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
-[  805.727218] stack backtrace:
-...
-[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
-[  805.727247] Call Trace:
-[  805.727249]  <TASK>
-[  805.727251]  dump_stack_lvl+0x77/0xb0
-[  805.727259]  __lock_acquire+0xb3b/0x2290
-[  805.727268]  ? __irq_work_queue_local+0x59/0x130
-[  805.727275]  lock_acquire+0xc6/0x2f0
-[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727284]  ? _printk+0x5b/0x80
-[  805.727290]  _raw_spin_lock_bh+0x38/0x50
-[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
-[  805.727317]  process_one_work+0x226/0x730
-[  805.727322]  worker_thread+0x19e/0x340
-[  805.727325]  ? __pfx_worker_thread+0x10/0x10
-[  805.727328]  kthread+0xf4/0x130
-[  805.727333]  ? __pfx_kthread+0x10/0x10
-[  805.727336]  ret_from_fork+0x32c/0x410
-[  805.727345]  ? __pfx_kthread+0x10/0x10
-[  805.727347]  ret_from_fork_asm+0x1a/0x30
-[  805.727354]  </TASK>
-
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
-Cc: stable@vger.kernel.org
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reported-by: Ray Zhang <sgzhang@google.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 14 +++++---------
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.h |  5 +++--
- 2 files changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 946aca7a07681..d760d4585c1c3 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -230,26 +230,21 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
- 	return err;
- }
- 
--/* API for virtchnl "transaction" support ("xn" for short).
-- *
-- * We are reusing the completion lock to serialize the accesses to the
-- * transaction state for simplicity, but it could be its own separate synchro
-- * as well. For now, this API is only used from within a workqueue context;
-- * raw_spin_lock() is enough.
-- */
-+/* API for virtchnl "transaction" support ("xn" for short). */
-+
- /**
-  * idpf_vc_xn_lock - Request exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_lock(xn)			\
--	raw_spin_lock(&(xn)->completed.wait.lock)
-+	spin_lock(&(xn)->lock)
- 
- /**
-  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_unlock(xn)		\
--	raw_spin_unlock(&(xn)->completed.wait.lock)
-+	spin_unlock(&(xn)->lock)
- 
- /**
-  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
-@@ -281,6 +276,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
- 		xn->state = IDPF_VC_XN_IDLE;
- 		xn->idx = i;
- 		idpf_vc_xn_release_bufs(xn);
-+		spin_lock_init(&xn->lock);
- 		init_completion(&xn->completed);
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index 77578206badab..a8e5f72e90f43 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -41,8 +41,8 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
-  * struct idpf_vc_xn - Data structure representing virtchnl transactions
-  * @completed: virtchnl event loop uses that to signal when a reply is
-  *	       available, uses kernel completion API
-- * @state: virtchnl event loop stores the data below, protected by the
-- *	   completion's lock.
-+ * @lock: protects the transaction state fields below
-+ * @state: virtchnl event loop stores the data below, protected by @lock
-  * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
-  *	      truncated on its way to the receiver thread according to
-  *	      reply_buf.iov_len.
-@@ -57,6 +57,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
-  */
- struct idpf_vc_xn {
- 	struct completion completed;
-+	spinlock_t lock;
- 	enum idpf_vc_xn_state state;
- 	size_t reply_sz;
- 	struct kvec reply;
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.53.0
-
+Florian
 
