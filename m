@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI/0Hgkb3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:17 +0200
+	id 0CIgLu4i3Wn9aAkAu9opvQ
+	(envelope-from <stable+bounces-237341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EC23EF458
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:34:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A202A3F0CCB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7BC873013B92
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:34:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE3D03091275
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AB02EBB8C;
-	Mon, 13 Apr 2026 16:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A0E317141;
+	Mon, 13 Apr 2026 16:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0PcXNLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyiubq7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A5C2D0C7E;
-	Mon, 13 Apr 2026 16:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEC1313298;
+	Mon, 13 Apr 2026 16:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098048; cv=none; b=DYjNuXELYi+6UR4DnPhloeRz0Buv+OIADHVCBh2EC0qOjwV8saDuFHBkVO1aopxmPYTSaKbztavdRa/KeQxk8qHLrRIC7zfrzUkQqsZ2SAcY+ifNH/PZiD9qhbb7oXGcCoebjq2qrBNmAlxMzRXzWgIoLPGpOZ/FnH7uhYM74II=
+	t=1776099204; cv=none; b=ncJYpcl9GDw8vWfeAlGyklK4R9MAwAIV3ocvd/s/xdMHJ7WnsIP2LZ4jsA4Ur7x6hRESXmClkbPvq6oLH1/8Ksy5+GmzSUy2/5wvIpIaIBLYU8eyMxQdx0h4UakfBO2UoiehUemSGex3A9iAGQSfwCxsU5amlS5fE8fHQ/ltdlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098048; c=relaxed/simple;
-	bh=ORECXZWhrKB+s3OPOACK92WNpC8xh0VMmlFLQQ0L2rw=;
+	s=arc-20240116; t=1776099204; c=relaxed/simple;
+	bh=y/Pei4WQ33S0qTMMRMcfhT0eruF+3qXDnlmxKkthC7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvFhoXiVrStr4586DXa+NFehkZ7WqfXGATaV0xOespgzP/3xUtxB7R78r84PFrtvgCZfoFB4mlxHkVP5efgP/4tRa4FmWZs0ztOv7Ql+d3qWErMEGJA/pZdOvjG1aGcZHv7kmyQLoeRQ+0tziwY4HKW3LGBKRZyjoZBBnW7h9ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0PcXNLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC86DC2BCAF;
-	Mon, 13 Apr 2026 16:34:07 +0000 (UTC)
+	 MIME-Version; b=cRompKh5iWCj8hkEoyEDX8BuTcMUC0Fe5BaBeaO2wlMRgPxd8+VElMyT75DeStTihNtW3Dpgf80v/o3dsYSvoYA2fIf/7lgAMWqUsGEvd5ePdH3zwoKr41w5wJ+Gub7VEz1XqBMecXW/4NHQehToO6EppNhcK60696Uj8uNVZZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyiubq7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22062C2BCAF;
+	Mon, 13 Apr 2026 16:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098048;
-	bh=ORECXZWhrKB+s3OPOACK92WNpC8xh0VMmlFLQQ0L2rw=;
+	s=korg; t=1776099204;
+	bh=y/Pei4WQ33S0qTMMRMcfhT0eruF+3qXDnlmxKkthC7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0PcXNLXsVoDQ4Avrh+6yQ8eoTxnUHdso2yfrpivqnlA4kQk0uD9y7EOykfMxSAcf
-	 HCfFCfClH6ZnnpGrHvbKsoHg6wGlUKZ7mS3pYehEmU+fttBBdE9hxtjK0Ybn2M40BX
-	 1qDpgAUOlXpjRnQbMqC9db2NFTmkaEZM5YNBsVb0=
+	b=eyiubq7KNHXjrTXULy1pc9MadqoxXWiOwsF3x35UBKPTYEwO+ggKyld8CKkGw6cTj
+	 tKA5YxOpjtH7Qj3raDAz2HcCwHoSJIz69jMg6/agdqb5PyxKKhZuQAkrsyBsXFkFRK
+	 ATufESjG13Q2s9yNHXfjo+xIRIGpyb2b7ut44eHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 330/570] net: enetc: fix the output issue of ethtool --show-ring
-Date: Mon, 13 Apr 2026 17:57:41 +0200
-Message-ID: <20260413155842.856864604@linuxfoundation.org>
+Subject: [PATCH 5.10 217/491] net: usb: aqc111: Do not perform PM inside suspend callback
+Date: Mon, 13 Apr 2026 17:57:42 +0200
+Message-ID: <20260413155827.189499621@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +65,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236887-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237341-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,48dc1e8dfc92faf1124c];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 37EC23EF458
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A202A3F0CCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit 70b439bf06f6a12e491f827fa81a9887a11501f9 ]
+[ Upstream commit 069c8f5aebe4d5224cf62acc7d4b3486091c658a ]
 
-Currently, enetc_get_ringparam() only provides rx_pending and tx_pending,
-but 'ethtool --show-ring' no longer displays these fields. Because the
-ringparam retrieval path has moved to the new netlink interface, where
-rings_fill_reply() emits the *x_pending only if the *x_max_pending values
-are non-zero. So rx_max_pending and tx_max_pending to are added to
-enetc_get_ringparam() to fix the issue.
+syzbot reports "task hung in rpm_resume"
 
-Note that the maximum tx/rx ring size of hardware is 64K, but we haven't
-added set_ringparam() to make the ring size configurable. To avoid users
-mistakenly believing that the ring size can be increased, so set
-the *x_max_pending to priv->*x_bd_count.
+This is caused by aqc111_suspend calling
+the PM variant of its write_cmd routine.
 
-Fixes: e4a1717b677c ("ethtool: provide ring sizes with RINGS_GET request")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20260320094222.706339-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The simplified call trace looks like this:
+
+rpm_suspend()
+  usb_suspend_both() - here udev->dev.power.runtime_status == RPM_SUSPENDING
+    aqc111_suspend() - called for the usb device interface
+      aqc111_write32_cmd()
+        usb_autopm_get_interface()
+          pm_runtime_resume_and_get()
+            rpm_resume() - here we call rpm_resume() on our parent
+              rpm_resume() - Here we wait for a status change that will never happen.
+
+At this point we block another task which holds
+rtnl_lock and locks up the whole networking stack.
+
+Fix this by replacing the write_cmd calls with their _nopm variants
+
+Reported-by: syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=48dc1e8dfc92faf1124c
+Fixes: e58ba4544c77 ("net: usb: aqc111: Add support for wake on LAN by MAGIC packet")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Link: https://patch.msgid.link/20260313141643.1181386-1-zlatistiv@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/aqc111.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index d62c188c87480..89234613ef806 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -566,6 +566,8 @@ static void enetc_get_ringparam(struct net_device *ndev,
- {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index ab9431ea295ad..7d38ce2e77017 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1400,14 +1400,14 @@ static int aqc111_suspend(struct usb_interface *intf, pm_message_t message)
+ 		aqc111_write16_cmd_nopm(dev, AQ_ACCESS_MAC,
+ 					SFR_MEDIUM_STATUS_MODE, 2, &reg16);
  
-+	ring->rx_max_pending = priv->rx_bd_count;
-+	ring->tx_max_pending = priv->tx_bd_count;
- 	ring->rx_pending = priv->rx_bd_count;
- 	ring->tx_pending = priv->tx_bd_count;
+-		aqc111_write_cmd(dev, AQ_WOL_CFG, 0, 0,
+-				 WOL_CFG_SIZE, &wol_cfg);
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write_cmd_nopm(dev, AQ_WOL_CFG, 0, 0,
++				      WOL_CFG_SIZE, &wol_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
+ 	} else {
+ 		aqc111_data->phy_cfg |= AQ_LOW_POWER;
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
  
+ 		/* Disable RX path */
+ 		aqc111_read16_cmd_nopm(dev, AQ_ACCESS_MAC,
 -- 
 2.51.0
 
