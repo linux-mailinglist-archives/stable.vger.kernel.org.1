@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-236497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wxV7KNgc3WlUaAkAu9opvQ
-	(envelope-from <stable+bounces-236497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:42:00 +0200
+	id 2IdLDp0n3WlpaQkAu9opvQ
+	(envelope-from <stable+bounces-237524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:27:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E652C3EF88A
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:41:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70253F16FB
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E65F2319DE6D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:17:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70B013183883
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 17:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029743093CF;
-	Mon, 13 Apr 2026 16:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2F0345CD0;
+	Mon, 13 Apr 2026 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXMMmIkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eamiW5ib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95882F8BC3;
-	Mon, 13 Apr 2026 16:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DC733C536;
+	Mon, 13 Apr 2026 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097054; cv=none; b=Sawyx8/d6AY5/x95PMtSh3Y3O1Uan7Gl4Ir5mPSJMHAfhB2+bSs1Bk4QXoqWaOem/Lz2NPCuKKwBToDePo+9IWu8xrowaG4k3WmgYLYlACYlqyIhrzFIk4+OrC2VbxY4Oln/uCN9sx+AVewG2OyL5/Mz+0Ph0hxQ5zeqi3Mq3dA=
+	t=1776099679; cv=none; b=oDhQe08YNkAGCdzcJc6ZY4Ii1JjSpBKxHO8fFzVB3KpMeeA7MyhPYXVB64CHLyksBRO+O1nOBanP46IMQbhwUM/53TFqmtdBkFzZ6PeddQ0pSXNL3rMjwLFYyYjVQPJOZYLCTOT16UhB4FnSt4SZXF96JijybD+EMGHedwU7Qqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097054; c=relaxed/simple;
-	bh=U006km7u3X1SLgUdMwrprAhC0JjUeHlsH2kIqzxMf3c=;
+	s=arc-20240116; t=1776099679; c=relaxed/simple;
+	bh=G0SdyRhGxKPfV9hIt9y7c9TX471Of8masXoY3zNSwHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHowd+iU60Fme8wUdW2VJQmCvaVeSfuokEFH43sBRqR3oMubJzXsSm+WPxLRoVXWza/UouY1Wpx8YuGUQu2glfBmsWIBBeq9SU/mfqGVUtALEPsm/FAQzTva6I6S7hupAHQ6YlqwWGHG06MeRzemlw0NgKsTvmgfoyFVQMTquEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXMMmIkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E20C2BCAF;
-	Mon, 13 Apr 2026 16:17:34 +0000 (UTC)
+	 MIME-Version; b=hN34CKeV969k2ooQHJbaGSARG1I4cIZRX6JJvt6h9C0UQEuKBcEAe685WKityX7RXLjZSANDoJe39I/bGPV5VnQdDiuA9F+U3A5qsxpx2eIwy/w37xw4dOfoyE7HDrU3RyWW8LRCTRGT9RacXS7HdQm1FYP1zzXnBjmZCaW2tqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eamiW5ib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CDAC2BCB0;
+	Mon, 13 Apr 2026 17:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776097054;
-	bh=U006km7u3X1SLgUdMwrprAhC0JjUeHlsH2kIqzxMf3c=;
+	s=korg; t=1776099679;
+	bh=G0SdyRhGxKPfV9hIt9y7c9TX471Of8masXoY3zNSwHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXMMmIkXuRw193aVscCNrrvfzdU5BAOiuHU7Uj5tclBnBfaSlZJP3K1i0vxOL19hI
-	 mUfsXQc5LHmBO9zdWHkE3aNbFE2++7oKg8ZwJLSgCavbz2Sv/lga2goiavnKv7oAit
-	 hG1XRhY6iGNelZJlWhrhlw3Tj5Q69zMW1D13TsXo=
+	b=eamiW5ib8VeGtJjoE60ddkgG/bJubP8TVy1lYo9JcRnss4tXpBtpAnBpbrlwNKcNO
+	 6wwb2Nsv1a0jTOiA56ITPTs271G6P7fNxmi5Xi+6xp8/xxHxJ0uMJefmdUV9yTCijY
+	 3pVXZkYbi41c5D6uCR8IIj9/mIlEyGMYi8Y+CvGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 44/55] EDAC/mc: Fix error path ordering in edac_mc_alloc()
+	Qualys Security Advisory <qsa@qualys.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 5.10 433/491] apparmor: fix: limit the number of levels of policy namespaces
 Date: Mon, 13 Apr 2026 18:01:18 +0200
-Message-ID: <20260413155726.476645559@linuxfoundation.org>
+Message-ID: <20260413155835.239306457@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-References: <20260413155724.820472494@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237524-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236497-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alien8.de:email]
-X-Rspamd-Queue-Id: E652C3EF88A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B70253F16FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: John Johansen <john.johansen@canonical.com>
 
-commit 51520e03e70d6c73e33ee7cbe0319767d05764fe upstream.
+commit 306039414932c80f8420695a24d4fe10c84ccfb2 upstream.
 
-When the mci->pvt_info allocation in edac_mc_alloc() fails, the error path
-will call put_device() which will end up calling the device's release
-function.
+Currently the number of policy namespaces is not bounded relying on
+the user namespace limit. However policy namespaces aren't strictly
+tied to user namespaces and it is possible to create them and nest
+them arbitrarily deep which can be used to exhaust system resource.
 
-However, the init ordering is wrong such that device_initialize() happens
-*after* the failed allocation and thus the device itself and the release
-function pointer are not initialized yet when they're called:
+Hard cap policy namespaces to the same depth as user namespaces.
 
-  MCE: In-kernel MCE decoding enabled.
-  ------------[ cut here ]------------
-  kobject: '(null)': is not initialized, yet kobject_put() is being called.
-  WARNING: lib/kobject.c:734 at kobject_put, CPU#22: systemd-udevd
-  CPU: 22 UID: 0 PID: 538 Comm: systemd-udevd Not tainted 7.0.0-rc1+ #2 PREEMPT(full)
-  RIP: 0010:kobject_put
-  Call Trace:
-   <TASK>
-   edac_mc_alloc+0xbe/0xe0 [edac_core]
-   amd64_edac_init+0x7a4/0xff0 [amd64_edac]
-   ? __pfx_amd64_edac_init+0x10/0x10 [amd64_edac]
-   do_one_initcall
-   ...
-
-Reorder the calling sequence so that the device is initialized and thus the
-release function pointer is properly set before it can be used.
-
-This was found by Claude while reviewing another EDAC patch.
-
-Fixes: 0bbb265f7089 ("EDAC/mc: Get rid of silly one-shot struct allocation in edac_mc_alloc()")
-Reported-by: Claude Code:claude-opus-4.5
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260331121623.4871-1-bp@kernel.org
+Fixes: c88d4c7b049e8 ("AppArmor: core policy routines")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Reviewed-by: Ryan Lee <ryan.lee@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/edac_mc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ security/apparmor/include/policy_ns.h |    2 ++
+ security/apparmor/policy_ns.c         |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/edac/edac_mc.c
-+++ b/drivers/edac/edac_mc.c
-@@ -369,13 +369,13 @@ struct mem_ctl_info *edac_mc_alloc(unsig
- 	if (!mci->layers)
- 		goto error;
+--- a/security/apparmor/include/policy_ns.h
++++ b/security/apparmor/include/policy_ns.h
+@@ -18,6 +18,8 @@
+ #include "label.h"
+ #include "policy.h"
  
-+	mci->dev.release = mci_release;
-+	device_initialize(&mci->dev);
-+
- 	mci->pvt_info = kzalloc(sz_pvt, GFP_KERNEL);
- 	if (!mci->pvt_info)
- 		goto error;
++/* Match max depth of user namespaces */
++#define MAX_NS_DEPTH 32
  
--	mci->dev.release = mci_release;
--	device_initialize(&mci->dev);
--
- 	/* setup index and various internal pointers */
- 	mci->mc_idx = mc_num;
- 	mci->tot_dimms = tot_dimms;
+ /* struct aa_ns_acct - accounting of profiles in namespace
+  * @max_size: maximum space allowed for all profiles in namespace
+--- a/security/apparmor/policy_ns.c
++++ b/security/apparmor/policy_ns.c
+@@ -249,6 +249,8 @@ static struct aa_ns *__aa_create_ns(stru
+ 	AA_BUG(!name);
+ 	AA_BUG(!mutex_is_locked(&parent->lock));
+ 
++	if (parent->level > MAX_NS_DEPTH)
++		return ERR_PTR(-ENOSPC);
+ 	ns = alloc_ns(parent->base.hname, name);
+ 	if (!ns)
+ 		return ERR_PTR(-ENOMEM);
 
 
 
