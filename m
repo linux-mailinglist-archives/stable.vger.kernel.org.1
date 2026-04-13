@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-237019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCzCCFEc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-237019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:45 +0200
+	id wH9NDvsX3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22AF3EF76F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:39:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EBB3EEAF2
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D7F423003629
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:39:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB2433073C03
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A154730C359;
-	Mon, 13 Apr 2026 16:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0DA3033F5;
+	Mon, 13 Apr 2026 16:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLlPn4p9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uvp4MQB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63480307AC7;
-	Mon, 13 Apr 2026 16:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EC1279334;
+	Mon, 13 Apr 2026 16:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098380; cv=none; b=gwqqeZo+sNPB1/90YRRVtvfjSLGDXWrath/kUJtQPHu3YwomwJ0Y2q2cDlaOUj2jObgewEDnO/kYvkaA7pmbj9jxImlzqOJ6dFc3TO1Zz3M+xAjWw9xEG8x28dglpoy49W7NHeN3c6oF7ub1YKrI2rsziPKIUn2J5ouDsq+Zd4Q=
+	t=1776096576; cv=none; b=VY0+25hI80aAx+Xc8MHiA43sXJZWfcdLCs47SYKWvF6FeKaepRMaENHFVT0XLHJVdEs9OmH89e0lnTO2sUVNOIlqtZYmU/KwA9Ox14SUfBKGBRDYfRMpest1TvpxcbKQAwDa207RD46Vs/+YzkjNLpAi6qo5FvbR4P/x31Q98H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098380; c=relaxed/simple;
-	bh=5zPp/xv1CL9yTlOexD+og9QLmCvqwCWikGbuLy+f+Jw=;
+	s=arc-20240116; t=1776096576; c=relaxed/simple;
+	bh=8rVVvj2DSIBPMlUNnGmKKG+yntv4L7JUWNlwjMoVyuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/RrJXxBJhb3taHobn9Gf1Ctj76qK12EVQD4VgRoaH8GFPRnvHb4pmJRVzhUAUd5b3R6NWo266YQzhVl/mPJAWyAZGDyGKY5Z8f3ONEKyZ6MCbJxexJj4tlSskztsGw4JwCeAHtKGUeYUhEBSVPiQABh30vJC+IRB+FQxZgBntA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLlPn4p9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBC3C2BCAF;
-	Mon, 13 Apr 2026 16:39:39 +0000 (UTC)
+	 MIME-Version; b=tP9CjJ5WN/PCMOimTZnrWSKa4NqR+PNpaPVyDk/7PtLIfSSx+2EcVL5DrrxQOsSaJ4+SSVUty7lmmCaeizLfVhEKVD9Re2Qqn05D2H/vNixoVFGGvc1pTcOq6nMja4a5s34q1JIdUjnvLY3A2bL5QRN+63TliE9t++qsf64XITY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uvp4MQB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FA1C2BCAF;
+	Mon, 13 Apr 2026 16:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098380;
-	bh=5zPp/xv1CL9yTlOexD+og9QLmCvqwCWikGbuLy+f+Jw=;
+	s=korg; t=1776096575;
+	bh=8rVVvj2DSIBPMlUNnGmKKG+yntv4L7JUWNlwjMoVyuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLlPn4p9ydGqfyQ0oJynrL5csf56PkpaS27/A+lEMIbW/Q3/2iW4oLixm+mltWGbo
-	 IzzIZC4CG4a9UUn/xqgwI4woqCiCxJ+nh94DgR9VLIzZt0FP5q/RdZ1yhviDLvfT91
-	 Y6IdC4IDJi1pZo7YRrKB6IDC5d0F237YS/jSN/gc=
+	b=Uvp4MQB3DooeobKCTB/poJCvXk967QxV+fOxWRaFC923vuPH0ZzGAyg1mzWrdBU/a
+	 o10cGY30qnTeDBslrViEXyaQY0NUcIn2hwrcwprF2ompyQwqRl36sebzZsbnkykd2T
+	 pQGKvaRA8v6ICLjFOf1oI7VVQVN6AsPLh1xNVLto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taegu Ha <hataegu0826@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 501/570] usb: gadget: f_uac1_legacy: validate control request size
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 64/83] rxrpc: Fix anonymous key handling
 Date: Mon, 13 Apr 2026 18:00:32 +0200
-Message-ID: <20260413155849.221345240@linuxfoundation.org>
+Message-ID: <20260413155733.397630874@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
-References: <20260413155830.386096114@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,127 +70,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237019-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236309-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C22AF3EF76F
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,infradead.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A6EBB3EEAF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taegu Ha <hataegu0826@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 6e0e34d85cd46ceb37d16054e97a373a32770f6c upstream.
+commit 6a59d84b4fc2f27f7b40e348506cc686712e260b upstream.
 
-f_audio_complete() copies req->length bytes into a 4-byte stack
-variable:
+In rxrpc_new_client_call_for_sendmsg(), a key with no payload is meant to
+be substituted for a NULL key pointer, but the variable this is done with
+is subsequently not used.
 
-  u32 data = 0;
-  memcpy(&data, req->buf, req->length);
+Fix this by using "key" rather than "rx->key" when filling in the
+connection parameters.
 
-req->length is derived from the host-controlled USB request path,
-which can lead to a stack out-of-bounds write.
+Note that this only affects direct use of AF_RXRPC; the kAFS filesystem
+doesn't use sendmsg() directly and so bypasses the issue.  Further,
+AF_RXRPC passes a NULL key in if no key is set, so using an anonymous key
+in that manner works.  Since this hasn't been noticed to this point, it
+might be better just to remove the "key" variable and the code that sets it
+- and, arguably, rxrpc_init_client_call_security() would be a better place
+to handle it.
 
-Validate req->actual against the expected payload size for the
-supported control selectors and decode only the expected amount
-of data.
-
-This avoids copying a host-influenced length into a fixed-size
-stack object.
-
-Signed-off-by: Taegu Ha <hataegu0826@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260401191311.3604898-1-hataegu0826@gmail.com
+Fixes: 19ffa01c9c45 ("rxrpc: Use structs to hold connection params and protocol info")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-4-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_uac1_legacy.c |   47 ++++++++++++++++++++++------
- 1 file changed, 37 insertions(+), 10 deletions(-)
+ net/rxrpc/sendmsg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_uac1_legacy.c
-+++ b/drivers/usb/gadget/function/f_uac1_legacy.c
-@@ -360,19 +360,46 @@ static int f_audio_out_ep_complete(struc
- static void f_audio_complete(struct usb_ep *ep, struct usb_request *req)
- {
- 	struct f_audio *audio = req->context;
--	int status = req->status;
--	u32 data = 0;
- 	struct usb_ep *out_ep = audio->out_ep;
- 
--	switch (status) {
--
--	case 0:				/* normal completion? */
--		if (ep == out_ep)
-+	switch (req->status) {
-+	case 0:
-+		if (ep == out_ep) {
- 			f_audio_out_ep_complete(ep, req);
--		else if (audio->set_con) {
--			memcpy(&data, req->buf, req->length);
--			audio->set_con->set(audio->set_con, audio->set_cmd,
--					le16_to_cpu(data));
-+		} else if (audio->set_con) {
-+			struct usb_audio_control *con = audio->set_con;
-+			u8 type = con->type;
-+			u32 data;
-+			bool valid_request = false;
-+
-+			switch (type) {
-+			case UAC_FU_MUTE: {
-+				u8 value;
-+
-+				if (req->actual == sizeof(value)) {
-+					memcpy(&value, req->buf, sizeof(value));
-+					data = value;
-+					valid_request = true;
-+				}
-+				break;
-+			}
-+			case UAC_FU_VOLUME: {
-+				__le16 value;
-+
-+				if (req->actual == sizeof(value)) {
-+					memcpy(&value, req->buf, sizeof(value));
-+					data = le16_to_cpu(value);
-+					valid_request = true;
-+				}
-+				break;
-+			}
-+			}
-+
-+			if (valid_request)
-+				con->set(con, audio->set_cmd, data);
-+			else
-+				usb_ep_set_halt(ep);
-+
- 			audio->set_con = NULL;
- 		}
- 		break;
+--- a/net/rxrpc/sendmsg.c
++++ b/net/rxrpc/sendmsg.c
+@@ -637,7 +637,7 @@ rxrpc_new_client_call_for_sendmsg(struct
+ 	memset(&cp, 0, sizeof(cp));
+ 	cp.local		= rx->local;
+ 	cp.peer			= peer;
+-	cp.key			= rx->key;
++	cp.key			= key;
+ 	cp.security_level	= rx->min_sec_level;
+ 	cp.exclusive		= rx->exclusive | p->exclusive;
+ 	cp.upgrade		= p->upgrade;
 
 
 
