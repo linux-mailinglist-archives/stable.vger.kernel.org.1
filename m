@@ -1,199 +1,199 @@
-Return-Path: <stable+bounces-235933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNEaMOOR3Gl9TAkAu9opvQ
-	(envelope-from <stable+bounces-235933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:49:07 +0200
+	id qL26FvmR3Gl9TAkAu9opvQ
+	(envelope-from <stable+bounces-235937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:49:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A9E3E7EB8
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:49:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E353E7EC0
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E24073012C7F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 06:48:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 06B3030058E3
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 06:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043231FC101;
-	Mon, 13 Apr 2026 06:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F62366057;
+	Mon, 13 Apr 2026 06:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bschu.de header.i=@bschu.de header.b="da6eBM9Z"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="aK6RbiWl"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012052.outbound.protection.outlook.com [52.101.53.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD632D063E;
-	Mon, 13 Apr 2026 06:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776062930; cv=none; b=tCZOyKhpjBPxw7rM2Jt3K8aze7hrSMoFkF5A2JgENXip95v2l7dTFz7ChdL+fObWOJMT3PGOZn4QhNaBGrpuhN4DkQg/OPI66j3gH9/FyRXKqrIEuFUIc5ZeXcEk55aN12TQ/vEJJ3ZipNzfJDKSYmP1E4hxmCak3YIHkv/Xu1o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776062930; c=relaxed/simple;
-	bh=G00sfWvgnFmN1RJzoAP+P1viqnzTx6BVSPm1ly9IT6o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=na6ImNXlQ2TvpAkn3U1v44x0A7QrFtid8aIaUuBEjZcMp3sTA0nGcxMhvUAlCqvLhHrVAHAVal8ZG0lZHHNLZuwQ0KlLyfHNt1fCtuPEp9HINvjKafItf7po240MgPubTvw6VVPfAFQnQMPJtF/wN8fpPPThZej7RURr/oUc2k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bschu.de; spf=pass smtp.mailfrom=bschu.de; dkim=pass (2048-bit key) header.d=bschu.de header.i=@bschu.de header.b=da6eBM9Z; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bschu.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bschu.de
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4fvJ063q3Yz9tf6;
-	Mon, 13 Apr 2026 08:48:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bschu.de; s=MBO0001;
-	t=1776062918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=G00sfWvgnFmN1RJzoAP+P1viqnzTx6BVSPm1ly9IT6o=;
-	b=da6eBM9ZniPnguDp4JbzYSHsekDfOXVF6aNgLqReNr9Z2jq4jVUz2wUL+TEOreaNk3tnzB
-	cFYHEtFtQ5RQN8PWKysp/7n2BDPcbuQqa6EO4y4bUDKlh05HKBpUa5LFexNR7c33LYP/RO
-	AarHlPo5qXLbdp8q3Zn59r/KL8d6cwewgSsF7v3WgU1QMhdZKNFu7b+UTaaIlTNYveKImn
-	sz3suGsbH0k88ZNv/j4GoPdNi9yWtzAo3NkHC8OqATDv57kTE7J5oOQiQisBgRuY05eaZG
-	sXZA85YbpD0W3jUXSsvqqtIML7eM0WPPBsJilOV6X9GKUBlfeahnEGbdYogSQg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of bernd@bschu.de designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=bernd@bschu.de
-Message-ID: <286f43aba56ab3052e5e9412625387d07afb802d.camel@bschu.de>
-Subject: Re: Bug#1131025: [6.12.y regression] Regression with 58130e7ce6cb
- ("PCI/ERR: Ensure error recoverability at all times"): echo vfio-pci
- >driver_override does not work for DVB Adapter
-From: Bernd Schumacher <bernd@bschu.de>
-To: Lukas Wunner <lukas@wunner.de>, "Alexandre N." <an.tech@mailo.com>
-Cc: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@debian.org>, 
-	1131025@bugs.debian.org, Salvatore Bonaccorso <carnil@debian.org>, Bjorn
- Helgaas	 <bhelgaas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Mario Limonciello <mario.limonciello@amd.com>, regressions@lists.linux.dev,
- stable@vger.kernel.org, 	linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, Alex Williamson	 <alex@shazbot.org>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?=	 <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 13 Apr 2026 08:48:33 +0200
-In-Reply-To: <adxlr9lWBTZIQMev@wunner.de>
-References: <aclRwznwq6KpA2qA@wunner.de>
-	 <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
-	 <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
-	 <ac0Y85OShbK6mHEV@monoceros>
-	 <8275e5b86696dec133889713258c2e158a443496.camel@bschu.de>
-	 <ac19pxEZKvQuQwFV@wunner.de>
-	 <7173609c404c5444e634dd3ab26f55f2788d82e4.camel@bschu.de>
-	 <ac_VqcBbKRDkHp69@wunner.de>
-	 <79618160f928d7ed4ba0a84f3ab420427c5b8d10.camel@bschu.de>
-	 <dd3c3358-de0f-4a56-9c81-04aceaab4058@mailo.com>
-	 <adxlr9lWBTZIQMev@wunner.de>
-Autocrypt: addr=bernd@bschu.de; prefer-encrypt=mutual;
- keydata=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
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-47JS6f+aPw6OLQPftc97"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417AC2D063E;
+	Mon, 13 Apr 2026 06:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776062964; cv=fail; b=Hbi1NXZTZhQ8uO2q3jeQlDbuwkaF0aCVt9Ap2LZqWX5+Jq5NGMCg68/Wl9V61Q3TT+xeHyLwPNuqdsykBAxjRHC68fQUYl1znfDoL4IwBwAhXue3KqRzJbGPImB7BvzdFsWgJVtl3QLc2kPV+KCC6wqONhDuq2Hf7PP+5WfR+HQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776062964; c=relaxed/simple;
+	bh=xcldgEKE7bVwhwQ5omotLXA/yCQQGHsxtjGs7HCZ5K4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dS2pJ2DI76vIObqrMCWtsHCWdLWJB5c2Yv8ykcyClZruEPeAYu1JrGzYS5qlVCdkDyjhncCrK7u5f7xG1i/LR3Fk8UmU78DzPoywdgJJm5lAH2oZseKSk2SX0VsT2kDiOwpad12OUhCUVokWFN2VMlMqlFfNMIcHjhVds/c/0do=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=aK6RbiWl; arc=fail smtp.client-ip=52.101.53.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vgAgCzAs46xgL//oylh5s8nf1fymP5Cr+FY7xrdMrQNeg5L71dLxU5OXshpuPcnuHIdZKpO7Q8hUg+V/c65WJtPRze+TsHNgRg+r9ryYRmuxqmTF16oPcmBStw8sYqcQIZoMJeo3tD8rMuP1qtiwLStYDZP/WZVcucKX/2eXM+bYokCbd35n0TI8b6DMYuesMCG9qGSbD11/BV1pEqeYKkhWUgbdhXBvUnVbDwhX2FeQ4e0Jkd1kxKr2uIuw/PVFm6bIokZipJDiaixk4h1xwn3xdPI9VKKNlBmOtzvZjHOoHvk0GkpwJP2+DyOjiGDaQAsHVqGODQpDFbrIIoOyow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o8vi2XvuWsUXS14e2c2BRo4eE23R7SK/MQ3LDkwDdCI=;
+ b=L27LeY/G2w4KSuTBDi3K/Dymvq6HbijMERReUC/NoeP+QGthlJyUggMKP4pZ82HObPclyFhGzJsBSGZ+1s0z7DC75LClcj1ab75ukNjVww+2DMQOQaMZYOCS79xPWJ5gWiSTElTpuQ/jmPXu9ZSaLsAEHlRAZqBoP4Ki0aF2AvewN3sOa8LesEJJl9cPiBQs5E/t+9kOgzvDRcjbt3OwLQ9nTJJfYAuVmGK+c+dqFkzOdBwuxKgDACGZ74nnRfBxmPNYkMcYo5+41l1rvB+Ux/ElvhQFsWdLuiISNfCZ+EvWEbJiXODh3IMEnjGynGS1SMqXH3Y2UlCexArhl/eOGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o8vi2XvuWsUXS14e2c2BRo4eE23R7SK/MQ3LDkwDdCI=;
+ b=aK6RbiWl08D2cWcF8WtXvQBMYem5YgYxKC3OMSP4/MXEHMgzwl4D+2ifOucO1tSpE3d0e6OYC4dQYlyLYNW+x9X0h0A0T9EbgKe43KtcRdVv0/XA6j8F0u9x3OCZ4Z6FQfJTjoDKpz4dO1uQq3rOiZT5Cgc/h5L3WhZ7fzMN5/I=
+Received: from PH8PR02CA0009.namprd02.prod.outlook.com (2603:10b6:510:2d0::22)
+ by CO1PR10MB4403.namprd10.prod.outlook.com (2603:10b6:303:9a::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Mon, 13 Apr
+ 2026 06:49:17 +0000
+Received: from MW1PEPF00016159.namprd21.prod.outlook.com
+ (2603:10b6:510:2d0:cafe::67) by PH8PR02CA0009.outlook.office365.com
+ (2603:10b6:510:2d0::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.48 via Frontend Transport; Mon,
+ 13 Apr 2026 06:49:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ MW1PEPF00016159.mail.protection.outlook.com (10.167.249.84) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.0 via Frontend Transport; Mon, 13 Apr 2026 06:49:16 +0000
+Received: from DLEE207.ent.ti.com (157.170.170.95) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 13 Apr
+ 2026 01:49:13 -0500
+Received: from DLEE203.ent.ti.com (157.170.170.78) by DLEE207.ent.ti.com
+ (157.170.170.95) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 13 Apr
+ 2026 01:49:13 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE203.ent.ti.com
+ (157.170.170.78) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Mon, 13 Apr 2026 01:49:12 -0500
+Received: from toolbox.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.73.74])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 63D6nALO1598785;
+	Mon, 13 Apr 2026 01:49:11 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <nm@ti.com>, <ssantosh@kernel.org>
+CC: <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <srk@ti.com>, <s-vadapalli@ti.com>
+Subject: [PATCH] soc: ti: k3-ringacc: Fix access mode for k3_ringacc_ring_pop_tail_io()
+Date: Mon, 13 Apr 2026 12:21:14 +0530
+Message-ID: <20260413065125.627180-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bschu.de,none];
-	R_DKIM_ALLOW(-0.20)[bschu.de:s=MBO0001];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW1PEPF00016159:EE_|CO1PR10MB4403:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54e7ddf2-3c37-453f-9286-08de9928c803
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ijL/G6eOfrJOCKV6A/Lc0wOcEHrHrLEIryXR3+fwDEOBp5zJdMcNoufUp+DWus/GJloXNeIgpVivgrO/4ppnUxwZjlR992DURjedk5qoboAY60A7d2ciHJQclEgd9k4YYRrlxM8x4NM2LNjQkL/7UYiE7uzlSuKepMtBrakZ+z9WQf3ZmqyOCQbzCZr8vfKCUylrfPPkGfowYeVoMJhgifOvs/3n4hMQDcQ9mUVmYjQbMrmCnIUhcU5t8hyzTHW/KP+RiU1yk8yANCgAufhahxC0Rwt+Ae2Y7yGnhNv+fsdAv80E/UvH4H5hJjTQiQs5bVUViR0bP3adXtTHJcQqVZn4v6WhAt0Yb+S5JZ/7ZguUi4zhXapFrOnav+ds6RjQje36bG7UAeHDXclV44M08mmZ2Sw1yVSgh2fuqZWSPxUj25wr8ypXbyIlQ5/Wjo5pdOe+TsLzE50iwHeUtefco5BAGssINmYPq8Yjx5ka/C1g9a+yUXtEy2Kz99f8tMTbKGw0zO6Mwp4O0ksC+7Z47YGnJKNrsPRItv0Tblwz5ymatUyZ3MDEKEG59PNBmf3LwVt77E857CeMvNIc4dhby6bDiajmpCIW+Rqm38tWl3x9tGG0WgXY9MB68Vka7cZtazt2tdDwWyah1qP4JlMeF6j/DjMZzk/LhHfo+E5/mtu9lSDv7YWbvlC8PluQCigWz8Muzs35/NM+iclXLD89l+HN9iO2zydk5/vOXiHBALa47nkFl1jc19aKG8eMlSlO03JJqTo6iYyv8mr9KbzW7Q==
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ECAE6eN75HzoZwo9g5tx69qalM/9rRhegknDxga3LcUxkihaLCKXcSzcAgQGV9HFR0CvEwIBg8v77xaHfr3mPo9iedJ4c/FEkTvcZxBOFbtP1sHY8qtUiE1YXwh1S7zMJKN7+btHIlCIAZZCFvExthNkf95wdNc0gXvqeS/izAdaRL75YFejQenOL9gbDjlmR/UaQcDe5fviZy7/OiIcrjrRlhBYKSQZd7kxQSuVsrcYVjMUE2lnDGmsZqJgLSjQqL96gNLntExSZEpxGg8sQSGGCfn/iq1A26+RiX3LYqP3wkUIdWBxlzl1pRgJ9KS7DzWkvZ+8n1aVgQ0CvpeUD3jl2RrSjVBeHp8HEzVROcz6QXLjyVcfBkbWuJppXx8LJjV6Re/LOMSJWomPBTBzMi3nyA4MH4cO5t1VvFZOnKqgJNNSSF+c+dkYDDAPxDeZ
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2026 06:49:16.5324
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54e7ddf2-3c37-453f-9286-08de9928c803
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MW1PEPF00016159.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4403
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235933-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[bschu.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[s-vadapalli@ti.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bernd@bschu.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235937-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[ti.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bschu.de:dkim,bschu.de:mid]
-X-Rspamd-Queue-Id: 28A9E3E7EB8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 99E353E7EC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+k3_ringacc_ring_pop_tail_io() invokes k3_ringacc_ring_access_io() with the
+access mode incorrectly set to K3_RINGACC_ACCESS_MODE_POP_HEAD instead of
+K3_RINGACC_ACCESS_MODE_POP_TAIL. Fix this.
 
---=-47JS6f+aPw6OLQPftc97
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Fixes: 3277e8aa2504 ("soc: ti: k3: add navss ringacc driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
 
-Am Montag, dem 13.04.2026 um 05:40 +0200 schrieb Lukas Wunner:
-> Could both of you, Alexandre and Bernd, give that patch a spin
-> to see if it fixes the issue?
-I confirm, the patch applied to 6.12.73 works for me.
-I also have saved the dmesg (if you need it, please ask for it)
-Thanks!
-Bernd
+Hello,
 
---=-47JS6f+aPw6OLQPftc97
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+This patch is based on commit
+028ef9c96e96 Linux 7.0
+of Mainline Linux.
 
------BEGIN PGP SIGNATURE-----
+I noticed (visually) the incorrect access mode while working on:
+https://lore.kernel.org/r/20260325123850.638748-1-s-vadapalli@ti.com/
 
-iQIzBAABCAAdFiEEx5NNNf+H1Sb3l9vqxRmiDRIUYfcFAmnckcEACgkQxRmiDRIU
-Yfckaw/8Dc0j7px+O86wzLK/jBFxi92XGrOBvD4stVbVz0mQtbLRKwg3ZYrgbMcr
-jskcuxVjpYRyjXXiAZ3Rnx1QMGtWYPv94a+JY+L43tsBjQATki5ipbLOPixbQXF7
-CQmqtDkheW5mU5lhJaOiiaSd4nHHvsF/0tlF6oOHZncy2ajfDNj1Z58uJRonvwSC
-tZKaA+zSJWdu3D9tc1/O39Nm46CoBNVk88VDvUBH7MOKpvxIWqt+cbVXJJY2BfM0
-0/5v3smuwfKAheeEyPGQMt4z8pdurN8YSKhNzf7w1To6pvPKFKTEobQXC4Tz1gJF
-Yl/EqZKDHi/KuKgmMcJid9peKdubRH2QmhfxPD4IBLuz01QpA4HZFq3R8eC9G9s7
-hz6B7hXEl/kG2qQQVVPoV50bJPlAnOaOUWwU31HXMjk5cgnuFF3guJkLfQidXRix
-DQ0I/m57DvO3He8+RG1uQ9IQDbpTThNPXtienECuD0GBPVLLYbvNKUGyqso+GM56
-Rlkf9bRN0bhY7NbZPg4QhOJQzyG1pjoH6QgZeOJTQeOL8UziGevNhHvW/WlDimBl
-rWfiZ3w5gLIFpdTozTDBd/016T5P7J6BraxLoF3TuXstNxBtqesXloSA47CdN9Wd
-/QoD7LHrbJzLiGYZaYwRtSvylc9tNQ1XBhbo6iJceSX7c5UFRhY=
-=z7J+
------END PGP SIGNATURE-----
+Regards,
+Siddharth.
 
---=-47JS6f+aPw6OLQPftc97--
+ drivers/soc/ti/k3-ringacc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/soc/ti/k3-ringacc.c b/drivers/soc/ti/k3-ringacc.c
+index 7602b8a909b0..24f658e8c1dc 100644
+--- a/drivers/soc/ti/k3-ringacc.c
++++ b/drivers/soc/ti/k3-ringacc.c
+@@ -1083,7 +1083,7 @@ static int k3_ringacc_ring_pop_io(struct k3_ring *ring, void *elem)
+ static int k3_ringacc_ring_pop_tail_io(struct k3_ring *ring, void *elem)
+ {
+ 	return k3_ringacc_ring_access_io(ring, elem,
+-					 K3_RINGACC_ACCESS_MODE_POP_HEAD);
++					 K3_RINGACC_ACCESS_MODE_POP_TAIL);
+ }
+ 
+ /*
+-- 
+2.51.1
+
 
