@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-236231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDaNMVsW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:19 +0200
+	id MB2QIjwl3WkzaQkAu9opvQ
+	(envelope-from <stable+bounces-237471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7303EE7B2
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A0B3F11F9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BDFF3303A9C3
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BEAA73069610
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A91285CAA;
-	Mon, 13 Apr 2026 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D758131F9BC;
+	Mon, 13 Apr 2026 16:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcaHTytl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eq0Mc61j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F472820A9;
-	Mon, 13 Apr 2026 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A22F31E857;
+	Mon, 13 Apr 2026 16:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096380; cv=none; b=PnM89jwvhl9YuHJMKOUOPKMdks0FYVpVvwmNVCMXNPRTN4wwtseEm9hQvSQxTEcI3365B1P8GgbmYfogIKpJAvAu4xWjQgAi1+nj847qo1+HQN4OqjgA8jcTygmBorfmS+zQPPpjSmNz7aV/RsV036+45lUNYAsR2/g0SViX9Cw=
+	t=1776099540; cv=none; b=ehuxrO5mGrxIQ6Or8GThOb/lxjZcY6hORmNoEtHHAIcGoZJinRgEcUuIB4S8pQIrvRVr7/pW1Tio7lozJINejLvSZqPeQF4asehjGOWfqoGyiDXdp5ARLp2lZG2YX/UkVmdJSrkRrcweAeK1SujnDRSR1evj6XfneZOZJKDTcfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096380; c=relaxed/simple;
-	bh=tS66S6ybClZbiBjtVuxfkqmyo/pHpLam95aK/zG/Ftc=;
+	s=arc-20240116; t=1776099540; c=relaxed/simple;
+	bh=bcmRsnVkiLmvzsUwC1Xp2spDK9mk5eIX6kvLCwjk5Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbzXOnGt6j2qsntq9rk+7N0MSGoENs8qdka8dIXJqKbBKlhnXm/xwln6PSHCC8de/mcL0Ld1zTOscQWeFoJSkJs0jDu3QqGPUh7ns2c7D84MKRG/A3M3COeGrPWfem0RYDlN4py34zxLEQc1DA8qFxoYNBhvkp7RilbxTH0Qkv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcaHTytl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3A6C2BCAF;
-	Mon, 13 Apr 2026 16:06:19 +0000 (UTC)
+	 MIME-Version; b=edb1tST9OkVG8cpt34jtJpKbaSbzeNBSUMXhUfBO7LYR0F6gJhtd7t0XKM7f92iOsENEvPMS9a15wFia2dvOKOR4/8ANg1hVmDiALkpWOEpTDPhm4Vn8t1ajQJpHotYBefvv7JYFhAXAbu4cNIwUKJ0mAUuSTN05sKlj+APTChs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eq0Mc61j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E312AC2BCAF;
+	Mon, 13 Apr 2026 16:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096380;
-	bh=tS66S6ybClZbiBjtVuxfkqmyo/pHpLam95aK/zG/Ftc=;
+	s=korg; t=1776099540;
+	bh=bcmRsnVkiLmvzsUwC1Xp2spDK9mk5eIX6kvLCwjk5Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcaHTytlz9SHj8aPf5NpwV2466dchLpBI5PCPrMryQIHaNXlCO4hrpdFPCHZPo2EK
-	 a+1CpD3bIfqDA9uNqJ3OYPN9kEVXdEqYhjuhWNHfQzi9AufAOBaNgp7XH+13GySGKd
-	 6KyP0ALuFh3ejHc7DFTz9VTU0eq9bVOXvw/nP844=
+	b=Eq0Mc61j7xDMgb1Yvkxy9REESrLZlyeugvoM4YZY1moxl51MWfG9JnzdTjc8hE3TG
+	 8mBEPXZSGtYQJTELghL9Z+KIXzJp9mQWJaOamd3ZIm6Q+qZQp1fCAfhvor2Wq3KCd5
+	 dvhkySmrrlzeMHauf1eG6Hc+ZmrvHiUfplhKv5pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	Willy Tarreau <w@1wt.eu>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 76/86] rxrpc: fix RESPONSE authenticator parser OOB read
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 378/491] Input: i8042 - add TUXEDO InfinityBook Max 16 Gen10 AMD to i8042 quirk table
 Date: Mon, 13 Apr 2026 18:00:23 +0200
-Message-ID: <20260413155734.379594155@linuxfoundation.org>
+Message-ID: <20260413155833.185691984@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,110 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,kernel.org,1wt.eu,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-236231-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,1wt.eu:email]
-X-Rspamd-Queue-Id: 2E7303EE7B2
+	TAGGED_FROM(0.00)[bounces-237471-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedo.de,tuxedocomputers.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.990];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tuxedocomputers.com:email]
+X-Rspamd-Queue-Id: 92A0B3F11F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit 3e3138007887504ee9206d0bfb5acb062c600025 upstream.
+commit 5839419cffc7788a356428d321e3ec18055c0286 upstream.
 
-rxgk_verify_authenticator() copies auth_len bytes into a temporary
-buffer and then passes p + auth_len as the parser limit to
-rxgk_do_verify_authenticator(). Since p is a __be32 *, that inflates the
-parser end pointer by a factor of four and lets malformed RESPONSE
-authenticators read past the kmalloc() buffer.
+The device occasionally wakes up from suspend with missing input on the
+internal keyboard and the following suspend attempt results in an instant
+wake-up. The quirks fix both issues for this device.
 
-Decoded from the original latest-net reproduction logs with
-scripts/decode_stacktrace.sh:
-
-BUG: KASAN: slab-out-of-bounds in rxgk_verify_response()
-Call Trace:
- dump_stack_lvl() [lib/dump_stack.c:123]
- print_report() [mm/kasan/report.c:379 mm/kasan/report.c:482]
- kasan_report() [mm/kasan/report.c:597]
- rxgk_verify_response()
-   [net/rxrpc/rxgk.c:1103 net/rxrpc/rxgk.c:1167
-    net/rxrpc/rxgk.c:1274]
- rxrpc_process_connection()
-   [net/rxrpc/conn_event.c:266 net/rxrpc/conn_event.c:364
-    net/rxrpc/conn_event.c:386]
- process_one_work() [kernel/workqueue.c:3281]
- worker_thread()
-   [kernel/workqueue.c:3353 kernel/workqueue.c:3440]
- kthread() [kernel/kthread.c:436]
- ret_from_fork() [arch/x86/kernel/process.c:164]
-
-Allocated by task 54:
- rxgk_verify_response()
-   [include/linux/slab.h:954 net/rxrpc/rxgk.c:1155
-    net/rxrpc/rxgk.c:1274]
- rxrpc_process_connection()
-   [net/rxrpc/conn_event.c:266 net/rxrpc/conn_event.c:364
-    net/rxrpc/conn_event.c:386]
-
-Convert the byte count to __be32 units before constructing the parser
-limit.
-
-Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: Willy Tarreau <w@1wt.eu>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-13-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260223142054.50310-1-wse@tuxedocomputers.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxgk.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -1164,7 +1164,8 @@ static int rxgk_verify_authenticator(str
- 	}
- 
- 	p = auth;
--	ret = rxgk_do_verify_authenticator(conn, krb5, skb, p, p + auth_len);
-+	ret = rxgk_do_verify_authenticator(conn, krb5, skb, p,
-+					   p + auth_len / sizeof(*p));
- error:
- 	kfree(auth);
- 	return ret;
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1189,6 +1189,13 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "X6KK45xU_X6SP45xU"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
