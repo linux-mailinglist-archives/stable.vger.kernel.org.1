@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-236306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDECDwEZ3WnoZwkAu9opvQ
-	(envelope-from <stable+bounces-236306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:37 +0200
+	id 0ElrFmQW3WmXZwkAu9opvQ
+	(envelope-from <stable+bounces-236237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C4A3EEE0D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D87333EE7CE
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 680C83072A88
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:10:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49132303B5FA
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A726D302756;
-	Mon, 13 Apr 2026 16:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39478271443;
+	Mon, 13 Apr 2026 16:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wryHEMaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhiKTNTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0753016F5;
-	Mon, 13 Apr 2026 16:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F106425332E;
+	Mon, 13 Apr 2026 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096568; cv=none; b=GjnLhzb8KbF4XYKydJ3c6xn+QqllbYk83nYhm0BTFKvPE1CKhWxhBhBlH0YPAzYhVYqUv+pcb2ZkTJ8TZxWiU7ttO2LZt9vhQ2iULGbqW2gIBLn3LYwkWUZ1I1U55jqlTcK/9T8SsWRcYB23C4Rn+cWs+y6wFtIBpUCMyDnrgoI=
+	t=1776096396; cv=none; b=FkLj4ifyxYQyOEKcxA6EoxHZXUP1G5rq+XNAs6/iJnP5O8darBysSHIrcIcnOFSvntQIK4TJ2SIHD24ljOPkidwC0fxXnmbGCA7Crc0NypUPjPKK6YIZw/jBwcd3utN8P0P3Q51IWxuLYnprE5liF/CFKA0aEPAJV2Y+Mp0MV0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096568; c=relaxed/simple;
-	bh=TAN6qjPmGkFIbhvhjNOPWpRZKKV193LP6CRFIpMLtt8=;
+	s=arc-20240116; t=1776096396; c=relaxed/simple;
+	bh=r3giP86m/T+JpKKl9Uu/nylHpi+5KoRv7jKa/6Wav3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rs/MqoDJo8PLZHWELH/2HsKSyYL6xGZMvrkouBUfg2b4Xzl7G1OY9DVdJVgRtNjYR3maceQFpMOd6xj8NlcYWD9cRMEw3ONIz6HZW3RMw2iSMpMOYGyftbS1wZTGqrWP6mPd7k3/iGhKQ6WAScgX5ETK2Hl10kx9Tu3WneqodL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wryHEMaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3CBC2BCAF;
-	Mon, 13 Apr 2026 16:09:27 +0000 (UTC)
+	 MIME-Version; b=AVKxtSh7+yIrLY5Dp5PPx3/Runfkg2Hkc8C6DaQqFym6ebZgIcJly5IF+Tl5lxZ6tGu4C8FGI0MBpB85tpEy9UsDA20jAdpemkrU0fqOxnS6JJbx1Nj2N/dfrPFEkRpuoEP/DEhxPwlF1zaoIGQPA9IVSyo5KtkqL4ztY6a37AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhiKTNTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F776C2BCAF;
+	Mon, 13 Apr 2026 16:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096568;
-	bh=TAN6qjPmGkFIbhvhjNOPWpRZKKV193LP6CRFIpMLtt8=;
+	s=korg; t=1776096395;
+	bh=r3giP86m/T+JpKKl9Uu/nylHpi+5KoRv7jKa/6Wav3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wryHEMaBs4Kx3EInwyssMvK0syAGG23l3piA+jzoe/4s3VatwrlM8CoM3YnMXO2bV
-	 uvf2PBUoVwAiKzkSvmV9x8sGLz3U2Hvdv1loUMYFDQDI2vkmsI2j2vOGL2Kf8s4cqF
-	 2bwS9ynC3gIf3EfLa4I6ow0wJEGp6DWUqLzqRpVY=
+	b=xhiKTNTvVab9gUD4xrVDllt5ktXlnJjBPusPrlZeV/kDwjOtiRqs3nxso1MIXE20w
+	 qOdjf3+cGQKDwCwSJHpXI+MqQ1zcRVRC4l//kNqd9ltTtkJphXQD4+h8wMHmBlr60t
+	 1jnW/9CXMZMHcQGbZCbuB0rq/9ZEyIRgMoq13tnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 61/83] net: lan966x: fix use-after-free and leak in lan966x_fdma_reload()
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 82/86] rxrpc: Fix leak of rxgk context in rxgk_verify_response()
 Date: Mon, 13 Apr 2026 18:00:29 +0200
-Message-ID: <20260413155733.288161489@linuxfoundation.org>
+Message-ID: <20260413155734.598192289@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
-References: <20260413155731.019638460@linuxfoundation.org>
+In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
+References: <20260413155731.568515178@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +70,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-236306-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-236237-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B4C4A3EEE0D
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,auristor.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D87333EE7CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 59c3d55a946cacdb4181600723c20ac4f4c20c84 upstream.
+commit 7e1876caa8363056f58a21d3b31b82c2daf7e608 upstream.
 
-When lan966x_fdma_reload() fails to allocate new RX buffers, the restore
-path restarts DMA using old descriptors whose pages were already freed
-via lan966x_fdma_rx_free_pages(). Since page_pool_put_full_page() can
-release pages back to the buddy allocator, the hardware may DMA into
-memory now owned by other kernel subsystems.
+Fix rxgk_verify_response() to clean up the rxgk context it creates.
 
-Additionally, on the restore path, the newly created page pool (if
-allocation partially succeeded) is overwritten without being destroyed,
-leaking it.
-
-Fix both issues by deferring the release of old pages until after the
-new allocation succeeds. Save the old page array before the allocation
-so old pages can be freed on the success path. On the failure path, the
-old descriptors, pages and page pool are all still valid, making the
-restore safe. Also ensure the restore path re-enables NAPI and wakes
-the netdev, matching the success path.
-
-Fixes: 89ba464fcf54 ("net: lan966x: refactor buffer reload function")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260405055241.35767-4-devnexen@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Closes: https://sashiko.dev/#/patchset/20260401105614.1696001-10-dhowells@redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-19-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c |   21 +++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ net/rxrpc/rxgk.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -813,9 +813,15 @@ static int lan966x_qsys_sw_status(struct
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -1270,16 +1270,18 @@ static int rxgk_verify_response(struct r
+ 	if (ret < 0) {
+ 		rxrpc_abort_conn(conn, skb, RXGK_SEALEDINCON, ret,
+ 				 rxgk_abort_resp_auth_dec);
+-		goto out;
++		goto out_gk;
+ 	}
  
- static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
- {
-+	struct page *(*old_pages)[FDMA_RX_DCB_MAX_DBS];
- 	struct page_pool *page_pool;
- 	struct fdma fdma_rx_old;
--	int err;
-+	int err, i, j;
-+
-+	old_pages = kmemdup(lan966x->rx.page, sizeof(lan966x->rx.page),
-+			   GFP_KERNEL);
-+	if (!old_pages)
-+		return -ENOMEM;
+ 	ret = rxgk_verify_authenticator(conn, krb5, skb, auth_offset, auth_len);
+ 	if (ret < 0)
+-		goto out;
++		goto out_gk;
  
- 	/* Store these for later to free them */
- 	memcpy(&fdma_rx_old, &lan966x->rx.fdma, sizeof(struct fdma));
-@@ -826,7 +832,6 @@ static int lan966x_fdma_reload(struct la
- 	lan966x_fdma_stop_netdev(lan966x);
- 
- 	lan966x_fdma_rx_disable(&lan966x->rx);
--	lan966x_fdma_rx_free_pages(&lan966x->rx);
- 	lan966x->rx.page_order = round_up(new_mtu, PAGE_SIZE) / PAGE_SIZE - 1;
- 	lan966x->rx.max_mtu = new_mtu;
- 	err = lan966x_fdma_rx_alloc(&lan966x->rx);
-@@ -834,6 +839,11 @@ static int lan966x_fdma_reload(struct la
- 		goto restore;
- 	lan966x_fdma_rx_start(&lan966x->rx);
- 
-+	for (i = 0; i < fdma_rx_old.n_dcbs; ++i)
-+		for (j = 0; j < fdma_rx_old.n_dbs; ++j)
-+			page_pool_put_full_page(page_pool,
-+						old_pages[i][j], false);
-+
- 	fdma_free_coherent(lan966x->dev, &fdma_rx_old);
- 
- 	page_pool_destroy(page_pool);
-@@ -841,12 +851,17 @@ static int lan966x_fdma_reload(struct la
- 	lan966x_fdma_wakeup_netdev(lan966x);
- 	napi_enable(&lan966x->napi);
- 
--	return err;
-+	kfree(old_pages);
-+	return 0;
- restore:
- 	lan966x->rx.page_pool = page_pool;
- 	memcpy(&lan966x->rx.fdma, &fdma_rx_old, sizeof(struct fdma));
- 	lan966x_fdma_rx_start(&lan966x->rx);
- 
-+	lan966x_fdma_wakeup_netdev(lan966x);
-+	napi_enable(&lan966x->napi);
-+
-+	kfree(old_pages);
- 	return err;
- }
- 
+ 	conn->key = key;
+ 	key = NULL;
+ 	ret = 0;
++out_gk:
++	rxgk_put(gk);
+ out:
+ 	key_put(key);
+ 	_leave(" = %d", ret);
 
 
 
