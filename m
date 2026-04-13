@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-237120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGunDsAg3WndaAkAu9opvQ
-	(envelope-from <stable+bounces-237120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:40 +0200
+	id GJ1dLokc3WkJaAkAu9opvQ
+	(envelope-from <stable+bounces-236653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6773F0653
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:58:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62783EF7E9
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 277613075EF0
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:44:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6FE6D301CA89
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF4C1A680C;
-	Mon, 13 Apr 2026 16:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C378E2FFFBE;
+	Mon, 13 Apr 2026 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW0VkG65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSX076G+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A1E2D8364;
-	Mon, 13 Apr 2026 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8625428505E;
+	Mon, 13 Apr 2026 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098640; cv=none; b=cOknlLDKWh7XJC2xJQVfnatIv8/s+K/Jz+Igdy0vaZh/iS9UcNEJobsPpYc0hwUtpn2YndBZ1fU6tYWPfybQe8//r/4C/3Gni4+Ia4HE2OhTzDAEf0sWdr/T1ASFb9tJnp1Bx/RPIcBDnvb0Pzw1vDgIvrOXofSQJTwxX7eKhGM=
+	t=1776097458; cv=none; b=NNkXyowQPrN9NLa7yEaId0JnQN3kvI6yUUxtLGn1Zl+3AitZ8IBie32zpazD3xjDiYZckPdhEIHAcaCEYl+g+Y+EaFhkAU+eu70q8iblGV/mrHxPPROlveVv9FGeUb7VlrQJhAELB65GW64SbM9BGjsaWOrqf/jr8HGvyqZgKrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098640; c=relaxed/simple;
-	bh=Nz7VrJQJKl/+uozBkHDmXAx3qKrI7vhIdbab43kE6To=;
+	s=arc-20240116; t=1776097458; c=relaxed/simple;
+	bh=1AUal/0501TvLxmU552EEXzDgzBvn6WzrlrKNMwtE3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fT6hFrzbKQ3/xaUlFC1BEhKS3kTU/3z6pZGnjGJAL7haMtvggSajKN/rZUenP9jjRZIzk1JkHLoiCrt0uAecYuDYZVyaxOnuAT9B6D3zG7t4O11kUYThHEE3qsWh2vtNHEsuVM7hU+9my34azV8/e37im630Ej+5sGaxXily+x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW0VkG65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E30CC2BCAF;
-	Mon, 13 Apr 2026 16:43:59 +0000 (UTC)
+	 MIME-Version; b=Ekcd6k/FSwQM4kQwKG8wYaK4GFNQvfd8wpMBaJOXz9q7NLzaN6kw1Kh/4RqPsQha0LC//NwJbSR18Gk4hM211GKeNu/iPoJnQ/pvdNPhZW8i5QfAYSxjhtHXRA9iJc7QP2GJHchiBr1GgV4lASNswBDw+ocICj+i1Y15ICRBync=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSX076G+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D54DC2BCAF;
+	Mon, 13 Apr 2026 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098639;
-	bh=Nz7VrJQJKl/+uozBkHDmXAx3qKrI7vhIdbab43kE6To=;
+	s=korg; t=1776097458;
+	bh=1AUal/0501TvLxmU552EEXzDgzBvn6WzrlrKNMwtE3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SW0VkG65ooInNeCMx3DQc3jrJ3SSrILD+eGY6NPi65mVfD6Y5hTkS7sA+MaPs+Uu3
-	 Z2fbDPVR5mK2x/s1s/IYTTyXXPtBNecu4XWgIFlmeTibjptUEbyM1dDJf5HL1z2eKh
-	 EaMLNu2W6IdvhT0c2tzUXsRgYBCrxgKmHMBWu1Fk=
+	b=fSX076G++1yO+Yd/s5YHGjBl1elJp1KAfMmTLJ4+5s41KRcNLCayBmUwOQsWOm8bz
+	 JscqvZWzg8JLiRMUJXW/ZgmaIcH0op2NTP2fCszcm1HfjpztzqG+DvKAcdH+r6nzwT
+	 0TG2GZnq8vA2yj+2igqJ99zF6DqFZaSIzdnlo/g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.10 030/491] IB/mthca: Add missed mthca_unmap_user_db() for mthca_create_srq()
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Fan Wu <fanwu01@zju.edu.cn>
+Subject: [PATCH 5.15 144/570] usb: renesas_usbhs: fix use-after-free in ISR during device removal
 Date: Mon, 13 Apr 2026 17:54:35 +0200
-Message-ID: <20260413155820.180451344@linuxfoundation.org>
+Message-ID: <20260413155835.837190443@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237120-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-236653-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,62 +87,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 6B6773F0653
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C62783EF7E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit 117942ca43e2e3c3d121faae530989931b7f67e1 upstream.
+commit 3cbc242b88c607f55da3d0d0d336b49bf1e20412 upstream.
 
-Fix a user triggerable leak on the system call failure path.
+In usbhs_remove(), the driver frees resources (including the pipe array)
+while the interrupt handler (usbhs_interrupt) is still registered. If an
+interrupt fires after usbhs_pipe_remove() but before the driver is fully
+unbound, the ISR may access freed memory, causing a use-after-free.
 
-Cc: stable@vger.kernel.org
-Fixes: ec34a922d243 ("[PATCH] IB/mthca: Add SRQ implementation")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://patch.msgid.link/2-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fix this by calling devm_free_irq() before freeing resources. This ensures
+the interrupt handler is both disabled and synchronized (waits for any
+running ISR to complete) before usbhs_pipe_remove() is called.
+
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Cc: stable <stable@kernel.org>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260303073344.34577-1-fanwu01@zju.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mthca/mthca_provider.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/infiniband/hw/mthca/mthca_provider.c
-+++ b/drivers/infiniband/hw/mthca/mthca_provider.c
-@@ -436,6 +436,8 @@ static int mthca_create_srq(struct ib_sr
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -804,6 +804,15 @@ static void usbhs_remove(struct platform
  
- 	if (context && ib_copy_to_udata(udata, &srq->srqn, sizeof(__u32))) {
- 		mthca_free_srq(to_mdev(ibsrq->device), srq);
-+		mthca_unmap_user_db(to_mdev(ibsrq->device), &context->uar,
-+				    context->db_tab, ucmd.db_index);
- 		return -EFAULT;
- 	}
- 
-@@ -444,6 +446,7 @@ static int mthca_create_srq(struct ib_sr
- 
- static int mthca_destroy_srq(struct ib_srq *srq, struct ib_udata *udata)
- {
-+	mthca_free_srq(to_mdev(srq->device), to_msrq(srq));
- 	if (udata) {
- 		struct mthca_ucontext *context =
- 			rdma_udata_to_drv_context(
-@@ -454,8 +457,6 @@ static int mthca_destroy_srq(struct ib_s
- 		mthca_unmap_user_db(to_mdev(srq->device), &context->uar,
- 				    context->db_tab, to_msrq(srq)->db_index);
- 	}
--
--	mthca_free_srq(to_mdev(srq->device), to_msrq(srq));
- 	return 0;
- }
- 
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+ 	reset_control_assert(priv->rsts);
++
++	/*
++	 * Explicitly free the IRQ to ensure the interrupt handler is
++	 * disabled and synchronized before freeing resources.
++	 * devm_free_irq() calls free_irq() which waits for any running
++	 * ISR to complete, preventing UAF.
++	 */
++	devm_free_irq(&pdev->dev, priv->irq, priv);
++
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
 
 
 
