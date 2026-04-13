@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-237221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGyjFzMi3Wn9aAkAu9opvQ
-	(envelope-from <stable+bounces-237221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:51 +0200
+	id uNNgIj4f3WmsaAkAu9opvQ
+	(envelope-from <stable+bounces-236757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523FA3F0A8E
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:04:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CA13F00DC
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81A37305C1BF
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:48:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B0B8311B177
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C129A31619A;
-	Mon, 13 Apr 2026 16:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CEB22A7F0;
+	Mon, 13 Apr 2026 16:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oO+fFU5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ue8CLawy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85982223DCE;
-	Mon, 13 Apr 2026 16:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9548649620;
+	Mon, 13 Apr 2026 16:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776098897; cv=none; b=YG1JsAHA6axN2OIIXY7jPNz09ucTxVwGofuPfjASdFE749JZSo2ON0UjgFi33pKoCP5y8livEtZZIW7f9Ti3l4tXWeM+rvl1EeqS8gzAuQXfJOky2hrwRV0N9MAehAd5UMMjz4HiZiiJwA28p/WwBiR8hVWZXitc+QUhbmsfVU0=
+	t=1776097715; cv=none; b=r/E/8uEP78U1CiQA0mTLNQkkF+LdEvGwtRNKacusqoZ3KFsllf0E/lS+S8dOO+2zVtb0RO4yeLCwHm70f169/Rp8lEmW6eUzmMegV1e2LDCp4J601DAGWAiXJchrFb1nSx2Gq642vUHeQzU1BTKx3i4dclDxOhAFCwKw0cCnE28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776098897; c=relaxed/simple;
-	bh=f/S5vZ+1AHFL1VjpK+PZXO1hnrdaUSazPl/zny4GbVc=;
+	s=arc-20240116; t=1776097715; c=relaxed/simple;
+	bh=rD82cV8IyQOa2AUnn/T3havtlqgFUMo/R9lLfPJ4Dug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afGWC8tOz7OJYt/BxRmqZpylLlFGXIxV9kQ6wH1sjjyxAhyKpxr7goUmxiAJl6lyZG4yqbwf8x4GOKjqbXoFUgdT38KvGN7q7FQrTZnY6mil/88txSHmZLL/NrwTUcrE9gXALOl1pKoiXRu847Yn/0rNDbCebBeFTunAs8KPeP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oO+fFU5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEBAC2BCAF;
-	Mon, 13 Apr 2026 16:48:16 +0000 (UTC)
+	 MIME-Version; b=DWKQPbpv7P/k3CiZ5ybQ5gtYep07w3N8zkheqHgQVb5zPUwVmFjLwl7FHe5aNj3JMOjfYyZdmi7P/IJF8QvQzMz709JIJ566AI+uoBJSCLc/RmdfLTYJTDPtBINvthuDxbF/OaDVFsk/S3gGrharx916BUaM00YnLo+Xz89GqK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ue8CLawy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CFAC2BCAF;
+	Mon, 13 Apr 2026 16:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776098897;
-	bh=f/S5vZ+1AHFL1VjpK+PZXO1hnrdaUSazPl/zny4GbVc=;
+	s=korg; t=1776097715;
+	bh=rD82cV8IyQOa2AUnn/T3havtlqgFUMo/R9lLfPJ4Dug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oO+fFU5mbGOT6s5LlSpOvcDdp1zpeefKIUP+mRMlVaGTqn0TUD0XqMO4PRdHFxk7R
-	 OS/OtiNp4I9bpM3yyHnqMpDEL4fKxeYh0QDDbyMt6YXa4CqAVFN8kzF1YqOuOHHE6/
-	 DKh9URftYffIpccB3DGbfZFLd4AYFnnS12fXlkGk=
+	b=Ue8CLawyhidX3pDX+eRXLPbTgv2c1RLndXp6ZRP0tuDtR9ckq2z4FKL74LbdthdYP
+	 eBndn458k/xWERGH+Dx3VmdU4BH9Klue/Luu1ss+oUN3WIFz5vSjdd8rBPu7klRhEN
+	 OKYSHC2aAGcwcXggjNdFN6hJNvE2sJJqlqvZLzcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Spencer <spencercw@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 131/491] iio: chemical: bme680: Fix measurement wait duration calculation
+	Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 245/570] wifi: cfg80211: cancel pmsr_free_wk in cfg80211_pmsr_wdev_down
 Date: Mon, 13 Apr 2026 17:56:16 +0200
-Message-ID: <20260413155823.946704262@linuxfoundation.org>
+Message-ID: <20260413155839.646448299@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+References: <20260413155830.386096114@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237221-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-236757-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 523FA3F0A8E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,intel.com:email]
+X-Rspamd-Queue-Id: 17CA13F00DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Spencer <spencercw@gmail.com>
+From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 
-commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
+[ Upstream commit 6dccbc9f3e1d38565dff7730d2b7d1e8b16c9b09 ]
 
-This function refers to the Bosch BME680 API as the source of the
-calculation, but one of the constants does not match the Bosch
-implementation. This appears to be a simple transposition of two digits,
-resulting in a wait time that is too short. This can cause the following
-'device measurement cycle incomplete' check to occasionally fail, returning
-EBUSY to user space.
+When the nl80211 socket that originated a PMSR request is
+closed, cfg80211_release_pmsr() sets the request's nl_portid
+to zero and schedules pmsr_free_wk to process the abort
+asynchronously. If the interface is concurrently torn down
+before that work runs, cfg80211_pmsr_wdev_down() calls
+cfg80211_pmsr_process_abort() directly. However, the already-
+scheduled pmsr_free_wk work item remains pending and may run
+after the interface has been removed from the driver. This
+could cause the driver's abort_pmsr callback to operate on a
+torn-down interface, leading to undefined behavior and
+potential crashes.
 
-Adjust the constant to match the Bosch implementation and resolve the EBUSY
-errors.
+Cancel pmsr_free_wk synchronously in cfg80211_pmsr_wdev_down()
+before calling cfg80211_pmsr_process_abort(). This ensures any
+pending or in-progress work is drained before interface teardown
+proceeds, preventing the work from invoking the driver abort
+callback after the interface is gone.
 
-Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
-Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
-Signed-off-by: Chris Spencer <spencercw@gmail.com>
-Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
+Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260305160712.1263829-3-peddolla.reddy@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/pmsr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -548,7 +548,7 @@ static int bme680_wait_for_eoc(struct bm
- 	 * + heater duration
- 	 */
- 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
--			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   data->oversampling_humid) * 1963) + (477 * 4) +
- 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index 65fa39275f73f..92c62d36e9525 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -642,6 +642,7 @@ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev)
+ 	}
+ 	spin_unlock_bh(&wdev->pmsr_lock);
  
- 	usleep_range(wait_eoc_us, wait_eoc_us + 100);
++	cancel_work_sync(&wdev->pmsr_free_wk);
+ 	if (found)
+ 		cfg80211_pmsr_process_abort(wdev);
+ 
+-- 
+2.51.0
+
 
 
 
