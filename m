@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-236226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qABlH5YW3WmXZwkAu9opvQ
-	(envelope-from <stable+bounces-236226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:18 +0200
+	id ELpzCNIk3WlSaQkAu9opvQ
+	(envelope-from <stable+bounces-237432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E023EE80F
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 899323F113A
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 19:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 096C2307AF6D
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:07:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3D4BE30ECB60
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DBB273D77;
-	Mon, 13 Apr 2026 16:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C643368B5;
+	Mon, 13 Apr 2026 16:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/htytE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XClEGc1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AD127FB2E;
-	Mon, 13 Apr 2026 16:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5817E332621;
+	Mon, 13 Apr 2026 16:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096367; cv=none; b=cSIDcg3GB7whN9bPXD2sG1nv+xDpxQUCt4+SInc0o+KET/hbHhDimN0hM159hGi6NW1P4Elu3SIjD/slsPHzrHXYwwiVsOnJMafhPQ6NYNMT57Asl+dr8Wpl6XaUYLnn5nL3+l4BSZ0uIcniOVcHlyV0Sqg/ik1s06hsYLoug80=
+	t=1776099442; cv=none; b=T4O172n/0f528u4W1oAVBdpo/d4Ci4Zc1IRHR6o6M1eF9esqySZe367hHBC8jPO89iGxXiXUhCF52993kxzzZqLZ1M+Dr9FSc6vBYzRyhCnkP76wO0KyKgs7e+Ma6V3S4NcrOSbZwKcOoJzsdZlnCUMdXIcKDlm4FHT70WZvzM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096367; c=relaxed/simple;
-	bh=TFPpvnxej/Yy+VJeJfJafF1AV4t2k4/rqBf2+uYQztc=;
+	s=arc-20240116; t=1776099442; c=relaxed/simple;
+	bh=M1m9Gq0GkKBo6XP8y2HGSOaZ5fbQ8x3SridUWdWW5aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+hH36RKqQL8OgkL+UfrAir1PQsFu265+xq9mUaNq+G+1yAYjSMfv44DxK4AnPa/Nz8ZnlCdZHf6Nnm1wDhgxziuNTS4FjjDr7rYc3RKamXEFU7zJbI/ZYxReYDSBMXrmYWNGMTycTIkoj2l9jXOLkh1Yun/FSc9ePPtN8fO+UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/htytE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17BBC2BCAF;
-	Mon, 13 Apr 2026 16:06:06 +0000 (UTC)
+	 MIME-Version; b=IO/9ONKXU8Oe+imK/gMSyX/82AHHCCzzzfMQqK+5Cwui4o8TLTaOQjwlqE4layVX+FcMvhpJYKEaDpfOLhQukGFSOmAOW3I8pSpVjsYla/FeLdxBb1JXWnlWIJD3GHbQjwKISEkttvZZ31bK+BS59h47U6O2Y5k+9GzXfdBfIkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XClEGc1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3143C2BCAF;
+	Mon, 13 Apr 2026 16:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096367;
-	bh=TFPpvnxej/Yy+VJeJfJafF1AV4t2k4/rqBf2+uYQztc=;
+	s=korg; t=1776099442;
+	bh=M1m9Gq0GkKBo6XP8y2HGSOaZ5fbQ8x3SridUWdWW5aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/htytE7Id5enaTmZDcwU3yUNnjsariAMZsKAIGzbGInz6lcFwafm4CP4WwRlZLqB
-	 s5lBpoBru2sSZ9NiScxZy1KrQxwIzfiAvL6VVUXI9hGCGRGvUufHAgrFcPnGKM3kML
-	 Qn5XDywRE+n0lWHDQk1L2dPLUXcXvqgFDFz+oZY4=
+	b=XClEGc1FYF6VquA80zrC1n7jbQx0mEczU0uxhcsiYfi6GiPEWEFzI1UryqClAa5dJ
+	 +yupOwtAEfNjUzBvA4mP9dW1TLDO9WX6UGa0VndpuQ7QqdEy8VlTZXGCV/oU9cuVQF
+	 zBvNwF+T2q94QfLK4xFuEsRGm00uGB86OP8HfcQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.19 38/86] nfc: pn533: allocate rx skb before consuming bytes
-Date: Mon, 13 Apr 2026 17:59:45 +0200
-Message-ID: <20260413155732.990535157@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 341/491] netfilter: ctnetlink: zero expect NAT fields when CTA_EXPECT_NAT absent
+Date: Mon, 13 Apr 2026 17:59:46 +0200
+Message-ID: <20260413155831.806285285@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-References: <20260413155731.568515178@linuxfoundation.org>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,86 +74,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-237432-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236226-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 69E023EE80F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,intel.com:email]
+X-Rspamd-Queue-Id: 899323F113A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Qi Tang <tpluszz77@gmail.com>
 
-commit c71ba669b570c7b3f86ec875be222ea11dacb352 upstream.
+[ Upstream commit 35177c6877134a21315f37d57a5577846225623e ]
 
-pn532_receive_buf() reports the number of accepted bytes to the serdev
-core. The current code consumes bytes into recv_skb and may already hand
-a complete frame to pn533_recv_frame() before allocating a fresh receive
-buffer.
+ctnetlink_alloc_expect() allocates expectations from a non-zeroing
+slab cache via nf_ct_expect_alloc().  When CTA_EXPECT_NAT is not
+present in the netlink message, saved_addr and saved_proto are
+never initialized.  Stale data from a previous slab occupant can
+then be dumped to userspace by ctnetlink_exp_dump_expect(), which
+checks these fields to decide whether to emit CTA_EXPECT_NAT.
 
-If that alloc_skb() fails, the callback returns 0 even though it has
-already consumed bytes, and it leaves recv_skb as NULL for the next
-receive callback. That breaks the receive_buf() accounting contract and
-can also lead to a NULL dereference on the next skb_put_u8().
+The safe sibling nf_ct_expect_init(), used by the packet path,
+explicitly zeroes these fields.
 
-Allocate the receive skb lazily before consuming the next byte instead.
-If allocation fails, return the number of bytes already accepted.
+Zero saved_addr, saved_proto and dir in the else branch, guarded
+by IS_ENABLED(CONFIG_NF_NAT) since these fields only exist when
+NAT is enabled.
 
-Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Confirmed by priming the expect slab with NAT-bearing expectations,
+freeing them, creating a new expectation without CTA_EXPECT_NAT,
+and observing that the ctnetlink dump emits a spurious
+CTA_EXPECT_NAT containing stale data from the prior allocation.
+
+Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/pn533/uart.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/nfc/pn533/uart.c
-+++ b/drivers/nfc/pn533/uart.c
-@@ -211,6 +211,13 @@ static size_t pn532_receive_buf(struct s
- 
- 	timer_delete(&dev->cmd_timeout);
- 	for (i = 0; i < count; i++) {
-+		if (!dev->recv_skb) {
-+			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
-+						  GFP_KERNEL);
-+			if (!dev->recv_skb)
-+				return i;
-+		}
-+
- 		if (unlikely(!skb_tailroom(dev->recv_skb)))
- 			skb_trim(dev->recv_skb, 0);
- 
-@@ -219,9 +226,7 @@ static size_t pn532_receive_buf(struct s
- 			continue;
- 
- 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
--		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
--		if (!dev->recv_skb)
--			return 0;
-+		dev->recv_skb = NULL;
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 8d35e17a0f7e7..befc9d2bc0b52 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3568,6 +3568,12 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 						 exp, nf_ct_l3num(ct));
+ 		if (err < 0)
+ 			goto err_out;
++#if IS_ENABLED(CONFIG_NF_NAT)
++	} else {
++		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
++		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
++		exp->dir = 0;
++#endif
  	}
- 
- 	return i;
+ 	return exp;
+ err_out:
+-- 
+2.53.0
+
 
 
 
