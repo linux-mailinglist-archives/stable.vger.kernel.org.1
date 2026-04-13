@@ -1,99 +1,99 @@
-Return-Path: <stable+bounces-235928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oO/lIIaR3Gl9TAkAu9opvQ
-	(envelope-from <stable+bounces-235928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:47:34 +0200
+	id KO/dFIqR3Gl9TAkAu9opvQ
+	(envelope-from <stable+bounces-235927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:47:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9EC3E7E67
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:47:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06EB3E7E84
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 08:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C457D30058FD
+	by tor.lore.kernel.org (Postfix) with ESMTP id 206C530120F9
 	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 06:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43598366057;
-	Mon, 13 Apr 2026 06:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4A23644D0;
+	Mon, 13 Apr 2026 06:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="MJBCRK6O"
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="LpQUIAls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A351F1E7660
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 06:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6C435DA49
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 06:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776062851; cv=none; b=HXSQMSm9js496ZP0nM3KheQHmeUjO9MK7USRBIUr3gqjXcP3aV6kw7NcoSb7ymehdkay3Oj+BUo8DubUQgCp8BQkiEMvR1BBiExf+uUr4Q+pWUchuxfgFbM1vwYWxTJ3nFAifZkfaa2UlLiqIUUlxNiYH6Sce3f73rsKj9FwPKo=
+	t=1776062850; cv=none; b=Jge0u9qDlS7wfaRwHesJdcNZ3t5ytJnlLJMNlYNA9mUiuFok9NeYzK79LSiQp96SzDI40/ID6pc+LDIi24Cz3cT7qlDanc7S6hH2eWgpWr9NbzQGNadQUVs710Rvam4PFBHgSlv9EvG528Y+E9mpzRNCNUDzNyLbRvx2DsyJYEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776062851; c=relaxed/simple;
-	bh=Uv76UbxLCtHLXW7zFwCRuXTy2ICJgdbYIk8MFy6DaAE=;
+	s=arc-20240116; t=1776062850; c=relaxed/simple;
+	bh=p6UosFiRqD6sFEDs6jCahznpbFna00P+/rlL6Z3ShR4=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M1hzH/vlLoKHx91+PZwxG15RkpBHQ8IJEULZ/xOHczNRH7jdnTgZPhhhanpnI4SDSLXq981QTp+sUJ6ztcMK2Mbpfl0+IG4Q+oGW/cth6FK7SS9mrgq40voNWCEd2Uwlnm6pbZ+58Yjz1WQKOCbMPVaGxEqcwiMbMuxndudmCG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=MJBCRK6O; arc=none smtp.client-ip=185.125.188.122
+	 MIME-Version; b=S1lM9j0UMamLvTy7VpnqiAAjupWTkHRiWZ73waysVQ2fncoNyamKhDb6a9zlwyHPjUZ1KX9fffwW15vK9qbTPA8WrZxKT7WF/nhJTqWNkuBgf1VcltrL0ifQ+CSdgHhFErQNjHM7NxwLjuu3ASokh7bghlpoFrCD6QFcpO1m6j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=LpQUIAls; arc=none smtp.client-ip=185.125.188.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 87A913F1C0
-	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 06:47:28 +0000 (UTC)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id A56843F213
+	for <stable@vger.kernel.org>; Mon, 13 Apr 2026 06:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1776062848;
-	bh=jRimhRSeNz4PqjerWU+ZkoLNJUjW9NBVcj09LqruSng=;
+	s=20251003; t=1776062847;
+	bh=icFo0tU0N3Ryw9hKkjO+hJT8J48lQkdcz2rTPktTYYg=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version;
-	b=MJBCRK6ODJSi/CsaguYzRsa3Hja2uRpb6KSZcaRHjcNUzOZSQzEHVOF02uLuCqCtn
-	 +xCo4APwWgIKZAcgkTwinrY/2DUiIh4YrUgR8kVaiIUGc3j6sjM7cyAIaKXyjySBle
-	 E73N+iqK5bb1Ij7OvccM3ltqu5XgVU4UoTbfZf/oIeUWhq72Bec5WUYjd5mi0V2pf4
-	 Na833GonoCyBYO6cN+jwnyw4FxChHYO54GIHs6GrR7/YAWitMfupuihrmXdKTsA8SG
-	 PKScs58wvbaDF6FAZJfzseeBxhpIUR5twf/3qye4zRB+Burha+zTpl3EdBm/rLsNC4
-	 pkOa04kw6nHQt18o26RNV5cTsMn7YkVeLp4CekH0lNXMlIFlfsQXjpq3vwVbEi7X9/
-	 u3hUs+l/U1KTu2A0+jKVRybNV24Ud0CSrZjtNFK9joFY4EC6JJQd8AbsitYjSLMCV6
-	 Da91zGSh6tIXRgTu+iWgRjA65bNC9zsAMCk7QMd5Um+6jMvzr4RxRzq9QtaRxg82mf
-	 PI79xHYta7Mtgh57zppEqyQPni5Aml805E/URMTUcn2k7bnZ2pwWH5szG/dCGZym/4
-	 gCjqdqr/eX6z6OaKRKU6t/AEf2NMHTluvvrq055oEL3IUg3jeFA8syP5uNGPaVxlJ9
-	 v6HLQv6tv3Z85eE7gkUWkp+0=
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-35da97f6a6dso4390100a91.0
-        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 23:47:28 -0700 (PDT)
+	b=LpQUIAlspGjAOcS30SbkarT3rvXaKgMMiFyiJZN8B3NAjV5SLdNob8iAmsFKQVN0q
+	 AnsJ/mIemZh6ewIzfO6YrdbmEWZTSpMS/tU9ICXayfF0oKh/lFWexiE20J9Gh6nIx6
+	 M0WH1teMzvmiWyMPLW++6s5v+LKFoq+eqnvk5dIFw+El21ELsQpMZSwmOmIaLieQJt
+	 qR7LqJb1HKwC4Nb4WRXv9fuf3Xn0HSRaUBn6+FGtIoHSjZsjirtz1H4beNJvfdPHG7
+	 K9TMWYGzRuJxuynW2Evj6SCXy8oFVydd97zGIeGgMDACqm0NtZneaFZGxIrsSP+ZlV
+	 gOAJ0+d8HX7FKIMnwuXXXCnCGbyRpCIFnqDl8+tMZ5K8Al32gseZ6z6iP0P8bpFvG4
+	 0ZoSlB3H21pLUY/gsqql8MKk/PspVVt2UA4TN/sKG/YG/fti8n4BfKnWhWVaHLAvPN
+	 4T2Req5jPPMVOQoRup1ZbddoWeUPevPtTWCbtNLJny0rRBtNEnkXnwWyGhb4Y0cYZG
+	 V14eWCrM5pOg+0Jx5Z0rqV9PlY+QTo7OGwgOOrntHk8HxLQJcIZpEqAS1kdQL0Ty1P
+	 hiuDEgFVT3ajmh3NWXveAPfYME6H/qbKQ8AO/BLDZKz/gIEBnGmZ4pDXA15271QPLI
+	 sdqdKqjnsgDZzJAymOb+QRek=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2b24e9b4d82so32298665ad.1
+        for <stable@vger.kernel.org>; Sun, 12 Apr 2026 23:47:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776062847; x=1776667647;
+        d=1e100.net; s=20251104; t=1776062846; x=1776667646;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=jRimhRSeNz4PqjerWU+ZkoLNJUjW9NBVcj09LqruSng=;
-        b=P/yladFPIovY9iADyOpJS5i7Xd5CXOAu5uVEBfd33PPG9ZOxCvJza3BFz6GZBd8yxr
-         Qbwj34au/6Po3BHWF7hwMPydM8zgW8+f1RRDqpLbJH/uTWCfVCjVho5pzinN67p412ig
-         q4UlBmGKqKfVc5FyzapODdjbg8uCjQokSxS3Iu97a/VLGxfv6XrLvlTW0jTQ/KEigdj9
-         k6dy6fJ3TbJqhqld22a8H260SKwTL4S2qmsdaL1/DIQXP+d1NrxzBP5JXPtmMqu38MmY
-         3jTy/nML4hE2EnPXTAUmRyawhk51XC0FyhrCXRgWEy7ayQnYyNvNcYTdanavN4tP4t8y
-         SKjg==
-X-Gm-Message-State: AOJu0YzovAJa57pXiiRcpgUWPchh2wxYyyaTOWnvGJWKA1cBaho8NYte
-	dsmFNEzm4lgcOXl5oVpfVVPoOiQ/RRuIcN3BBZVR9wnZ7eABkV042QDNxhDtXnNGG/IfbEEahxd
-	E0TNgpmHTn0x3na3En9wEzAzDslCbQ/WkzgtrMSXNgOcBkClgsDqJvNL9G5KSNXOpcnpzVyydlV
-	I38s81Tw==
-X-Gm-Gg: AeBDievAA7SHJzgktFCqzQwlwmFgRf4Uw++k2QkxdZisyZFcr824NwgE+FA6uBtk51B
-	4IaVtTlvvAuFTVzTA+A9oX0vF/u9ezuESlHJtZVnHmyiMkMfqR6vo/e8CAOP+TFGS7Ha71yAwTB
-	p6dUSUPTfdH1OLoMuUkr888enb9xrFrg0xwxUK1LiMcZzJCsif4Mn08EBW7f6+E3imPE3EJ4bWE
-	WZbUsJhl9OMPenzEaRLq0l9prmXwkfzg7lPQ/eSOPD94XBOrMlffbMYnxvOIHqDUYHK+3QQqYsn
-	0NHSCS1GD9KFZi+4Nc6ScjylY+P0KSgpCg+9sNpZHdY+D7e07E1BXnYmlXkdzCLMTY/GtlOZXaT
-	O3/MZP5XeJP7LPsonnrudfEAh8wk=
-X-Received: by 2002:a17:90a:ec86:b0:35a:cf:64a6 with SMTP id 98e67ed59e1d1-35e42874998mr12283380a91.23.1776062845275;
-        Sun, 12 Apr 2026 23:47:25 -0700 (PDT)
-X-Received: by 2002:a17:90a:ec86:b0:35a:cf:64a6 with SMTP id 98e67ed59e1d1-35e42874998mr12283363a91.23.1776062844878;
-        Sun, 12 Apr 2026 23:47:24 -0700 (PDT)
+        bh=icFo0tU0N3Ryw9hKkjO+hJT8J48lQkdcz2rTPktTYYg=;
+        b=gN9WT1f7fWIOMO+ng5UExAzNCZWO8roLAQRJyRh9usvEmLgUTG5MA99Q2px0FNI2uK
+         9OOnbN/ynZ9yKB1fKTsKlAsvV4Ek0APRHlmYAvSwysog1sADgXh6Ohnc8y8mXzyWyXKc
+         HPqpMIlOMZrEucRRMCAFDJ9HFUA+cqzTm7h10f2OyEX/VkX1hFcR0oWBPij4Hj8YPM1A
+         cm5yhV2URZSnWPDhQ9YI8ZyFbOfLPsaEFUosa2g6jo4oU+MN4AUW952gQHhzanL495WH
+         +qcjJwrvyBHTdo4/rn0osIo2c0vXxVSDAkhjC5RSvKH2r+XlYVoakQbMRBUR1zvhDOfD
+         K/mw==
+X-Gm-Message-State: AOJu0YxKkuDyxkqkNtG37jKieimZSXrU+VdHvkukVaQ3twMccJOWmTtW
+	g0yfXRz0tz4wmf7lJuNpw43J3264NkiMmHeU0qtwSm5butNbC3HStJCeGNzkyZHvoeSSEgp5LP7
+	KHv0Z6E5boAOYQgLa80xSB92uVNLYKAx0KlkN7WeJep5Qbb0n7gCnpqE5KGDRs0VE3JBpSD9v4r
+	h3XbXpLA==
+X-Gm-Gg: AeBDievlB0bdvZuRPqzWCxPfrFNTfcPkRrcZJ1k/henDAODGcZ15csiJuQVaEmmkW4X
+	ZH6RsI/dZFqPSnYRuRZKE5mDbGqMnjYir/lax9zDlzrNuxMQjlGInb0euxPRn9ML8HHAPJq1VNi
+	70U9hcItVu5mLb9ugeXiqOwgp+Azp+717GEzCXYqEfKmMltaz1qwLagZ5vlJbL+D7bAHoQqpuGU
+	PQDHnwB2e+941bIonBfd2nSfE4KiP75jn/0cPNifDjqEI4VGNRAp2N/2/AcjvtlhSjSgS4xx+xL
+	hLGw/SZ7VtxotDyjuzOL5GZ0auMmkqei2vBMLDklf59ZJGgPLKiZ1I24tJ+SCXvuUTFgcw8Hb8V
+	HNOepa9bRGpSmDoR+MOLSMW3mMrA=
+X-Received: by 2002:a17:903:38c4:b0:2b2:4f43:b49a with SMTP id d9443c01a7336-2b2d5d8ab1bmr112534135ad.22.1776062846378;
+        Sun, 12 Apr 2026 23:47:26 -0700 (PDT)
+X-Received: by 2002:a17:903:38c4:b0:2b2:4f43:b49a with SMTP id d9443c01a7336-2b2d5d8ab1bmr112534005ad.22.1776062846050;
+        Sun, 12 Apr 2026 23:47:26 -0700 (PDT)
 Received: from localhost ([50.47.147.90])
-        by smtp.googlemail.com with UTF8SMTPSA id 98e67ed59e1d1-35e41bca6e9sm4880733a91.0.2026.04.12.23.47.24
+        by smtp.googlemail.com with UTF8SMTPSA id d9443c01a7336-2b315c0b5d9sm40384685ad.11.2026.04.12.23.47.25
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 23:47:24 -0700 (PDT)
+        Sun, 12 Apr 2026 23:47:25 -0700 (PDT)
 From: John Johansen <john.johansen@canonical.com>
 To: stable@vger.kernel.org
-Subject: [PATCH 06/11] apparmor: fix missing bounds check on DEFAULT table in verify_dfa()
-Date: Sun, 12 Apr 2026 23:46:31 -0700
-Message-ID: <20260413064712.1581137-7-john.johansen@canonical.com>
+Subject: [PATCH 07/11] apparmor: Fix double free of ns_name in aa_replace_profiles()
+Date: Sun, 12 Apr 2026 23:46:32 -0700
+Message-ID: <20260413064712.1581137-8-john.johansen@canonical.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260413064712.1581137-1-john.johansen@canonical.com>
 References: <20260413064712.1581137-1-john.johansen@canonical.com>
@@ -109,12 +109,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[canonical.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[canonical.com:s=20251003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235928-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235927-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
@@ -128,100 +128,55 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[canonical.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:dkim,canonical.com:email,canonical.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D9EC3E7E67
+	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:dkim,canonical.com:email,canonical.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E06EB3E7E84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+commit 5df0c44e8f5f619d3beb871207aded7c78414502 upstream.
 
-commit d352873bbefa7eb39995239d0b44ccdf8aaa79a4 upstream.
+if ns_name is NULL after
+1071         error = aa_unpack(udata, &lh, &ns_name);
 
-The verify_dfa() function only checks DEFAULT_TABLE bounds when the state
-is not differentially encoded.
+and if ent->ns_name contains an ns_name in
+1089                 } else if (ent->ns_name) {
 
-When the verification loop traverses the differential encoding chain,
-it reads k = DEFAULT_TABLE[j] and uses k as an array index without
-validation. A malformed DFA with DEFAULT_TABLE[j] >= state_count,
-therefore, causes both out-of-bounds reads and writes.
+then ns_name is assigned the ent->ns_name
+1095                         ns_name = ent->ns_name;
 
-[   57.179855] ==================================================================
-[   57.180549] BUG: KASAN: slab-out-of-bounds in verify_dfa+0x59a/0x660
-[   57.180904] Read of size 4 at addr ffff888100eadec4 by task su/993
+however ent->ns_name is freed at
+1262                 aa_load_ent_free(ent);
 
-[   57.181554] CPU: 1 UID: 0 PID: 993 Comm: su Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
-[   57.181558] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   57.181563] Call Trace:
-[   57.181572]  <TASK>
-[   57.181577]  dump_stack_lvl+0x5e/0x80
-[   57.181596]  print_report+0xc8/0x270
-[   57.181605]  ? verify_dfa+0x59a/0x660
-[   57.181608]  kasan_report+0x118/0x150
-[   57.181620]  ? verify_dfa+0x59a/0x660
-[   57.181623]  verify_dfa+0x59a/0x660
-[   57.181627]  aa_dfa_unpack+0x1610/0x1740
-[   57.181629]  ? __kmalloc_cache_noprof+0x1d0/0x470
-[   57.181640]  unpack_pdb+0x86d/0x46b0
-[   57.181647]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181653]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181656]  ? aa_unpack_nameX+0x1a8/0x300
-[   57.181659]  aa_unpack+0x20b0/0x4c30
-[   57.181662]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181664]  ? stack_depot_save_flags+0x33/0x700
-[   57.181681]  ? kasan_save_track+0x4f/0x80
-[   57.181683]  ? kasan_save_track+0x3e/0x80
-[   57.181686]  ? __kasan_kmalloc+0x93/0xb0
-[   57.181688]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181693]  ? aa_simple_write_to_buffer+0x54/0x130
-[   57.181697]  ? policy_update+0x154/0x330
-[   57.181704]  aa_replace_profiles+0x15a/0x1dd0
-[   57.181707]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181710]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181712]  ? aa_loaddata_alloc+0x77/0x140
-[   57.181715]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181717]  ? _copy_from_user+0x2a/0x70
-[   57.181730]  policy_update+0x17a/0x330
-[   57.181733]  profile_replace+0x153/0x1a0
-[   57.181735]  ? rw_verify_area+0x93/0x2d0
-[   57.181740]  vfs_write+0x235/0xab0
-[   57.181745]  ksys_write+0xb0/0x170
-[   57.181748]  do_syscall_64+0x8e/0x660
-[   57.181762]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   57.181765] RIP: 0033:0x7f6192792eb2
+and then again when freeing ns_name at
+1270         kfree(ns_name);
 
-Remove the MATCH_FLAG_DIFF_ENCODE condition to validate all DEFAULT_TABLE
-entries unconditionally.
+Fix this by NULLing out ent->ns_name after it is transferred to ns_name
 
-Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
+Fixes: 145a0ef21c8e9 ("apparmor: fix blob compression when ns is forced on a policy load
+")
 Reported-by: Qualys Security Advisory <qsa@qualys.com>
 Tested-by: Salvatore Bonaccorso <carnil@debian.org>
 Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
 Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
 Signed-off-by: John Johansen <john.johansen@canonical.com>
 ---
- security/apparmor/match.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ security/apparmor/policy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index ae07fe81b47f..f70e5f769ef0 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -204,9 +204,10 @@ static int verify_dfa(struct aa_dfa *dfa)
- 	if (state_count == 0)
- 		goto out;
- 	for (i = 0; i < state_count; i++) {
--		if (!(BASE_TABLE(dfa)[i] & MATCH_FLAG_DIFF_ENCODE) &&
--		    (DEFAULT_TABLE(dfa)[i] >= state_count))
-+		if (DEFAULT_TABLE(dfa)[i] >= state_count) {
-+			pr_err("AppArmor DFA default state out of bounds");
- 			goto out;
-+		}
- 		if (BASE_TABLE(dfa)[i] & MATCH_FLAGS_INVALID) {
- 			pr_err("AppArmor DFA state with invalid match flags");
- 			goto out;
+diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
+index 6130811edb94..40a2fc50eea1 100644
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -917,6 +917,7 @@ ssize_t aa_replace_profiles(struct aa_ns *policy_ns, struct aa_label *label,
+ 				goto fail;
+ 			}
+ 			ns_name = ent->ns_name;
++			ent->ns_name = NULL;
+ 		} else
+ 			count++;
+ 	}
 -- 
 2.51.0
 
