@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-236414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-236320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFoCEgIc3WkJaAkAu9opvQ
-	(envelope-from <stable+bounces-236414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:26 +0200
+	id UNo/Iu0X3WnNZwkAu9opvQ
+	(envelope-from <stable+bounces-236320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36293EF6E7
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 088CA3EEAD5
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 18:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07E2D30F2ABD
-	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:14:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11BDF319BF7B
+	for <lists+stable@lfdr.de>; Mon, 13 Apr 2026 16:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCCA27466A;
-	Mon, 13 Apr 2026 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9386C24E4AF;
+	Mon, 13 Apr 2026 16:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xkyop+IH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5uj8AiX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5290826E6F8;
-	Mon, 13 Apr 2026 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E241271443;
+	Mon, 13 Apr 2026 16:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776096844; cv=none; b=g1DzxkNJNGrufyf5k5mm0FmSDFtUWT3fAkAMVOK2uEZ1nxwdabAbXAp8GVWwuGjZUomr3VwZ/9EGmUWNsrzK/xCcPWDTxYfUedqCxgdtoaWhyXp2Dpwerbg0yQkoo6WGVxiud1arfq66aI1wJRcLUMxf4fFtitPKTX3OJpzezNE=
+	t=1776096604; cv=none; b=EHSenRk2nLF3XpisyfD0ExtZFFbCBBehFwZ021pzpb4LWu+7hOhY4j1PiBjs8YCydR6NSocfhA1FkUV3gVwkNFLc2pqkG2d71SrIh/ocsSGZozUbFZXlOtUA3ag4RWIrrIfucUK8ZKY7ibCPZBqbSka/0c2SnBbUAk2qcTZje+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776096844; c=relaxed/simple;
-	bh=l72kAaygBvKjrg4L0g+bhUecASpFhDaKdQMmFOU6diQ=;
+	s=arc-20240116; t=1776096604; c=relaxed/simple;
+	bh=sIDkZwJcLE2C2+UtN1UkMljPsJFwQvMIxF6gkonzsmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVbDjIHsMmx7ZBxY+gqBqJLGMOrRxHr+RhcaA1gNT9HLlccmAg4Km/T0XoMIImndp07m+Ly7pq2TqprP8rUmD3CHBaHIKcGqNvK13HpZpriCls4EgQn79hHVHEGO+hzUGY/cXUB71LH1xVjmg0WhCfGiueu/FsGfPsxAO469hPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xkyop+IH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1C6C2BCAF;
-	Mon, 13 Apr 2026 16:14:03 +0000 (UTC)
+	 MIME-Version; b=GK/1BvlF3uDWe2KwVfw/SGNE4RMP0dv3xueswNFhITjndIHJIZDassCcp+Bb6KrjaXuoj8BHIt6LvymUinwUQEenkYT+eoAIa5ICIgHG4MLZGyXjigeoES/Ya1Gipp7p1vjkTgFn0URIQLy6tIxju0JGpqi7DU8uowQMcDShj5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5uj8AiX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91FBC2BCAF;
+	Mon, 13 Apr 2026 16:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776096844;
-	bh=l72kAaygBvKjrg4L0g+bhUecASpFhDaKdQMmFOU6diQ=;
+	s=korg; t=1776096604;
+	bh=sIDkZwJcLE2C2+UtN1UkMljPsJFwQvMIxF6gkonzsmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xkyop+IH731bLF/60Me4tNcFll/YaJ5j3x1iyFAgl6K/gn6v0LWuML6lCu7kxUgJZ
-	 hPxTUHFfB4VhX2zUT7ey6Wku9o981Na+RqGmiweJthbr7ZSUpuoqstqGStZf0zpJPi
-	 DYCEQIU9DNAGu7JnaWADnVdeU9lcx+GDSELiTOuc=
+	b=b5uj8AiX5Lpfe2MIJP0kOukC90+zIR0s14Mu6H9TdJr1UW1sNfptTAz6tXBywEWvP
+	 6WJiAP59RWEUX07APeknKxmG736JZkVZgh0/uIjf3OQbd6dO7NNzKZQFMg+V03mbIr
+	 jcznFW/qqEMrlHixcm18siTCvwMrcyKYK+wt13zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiasong <lixiasong1@huawei.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Keenan Dong <keenanat2000@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	Willy Tarreau <w@1wt.eu>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 14/50] mptcp: fix soft lockup in mptcp_recvmsg()
-Date: Mon, 13 Apr 2026 18:00:41 +0200
-Message-ID: <20260413155725.042518976@linuxfoundation.org>
+Subject: [PATCH 6.18 74/83] rxrpc: fix oversized RESPONSE authenticator length check
+Date: Mon, 13 Apr 2026 18:00:42 +0200
+Message-ID: <20260413155733.761065289@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-References: <20260413155724.497323914@linuxfoundation.org>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+References: <20260413155731.019638460@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,154 +73,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,kernel.org,1wt.eu,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-236320-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-236414-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: A36293EF6E7
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,infradead.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1wt.eu:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 088CA3EEAD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Xiasong <lixiasong1@huawei.com>
+From: Keenan Dong <keenanat2000@gmail.com>
 
-commit 5dd8025a49c268ab6b94d978532af3ad341132a7 upstream.
+commit a2567217ade970ecc458144b6be469bc015b23e5 upstream.
 
-syzbot reported a soft lockup in mptcp_recvmsg() [0].
+rxgk_verify_response() decodes auth_len from the packet and is supposed
+to verify that it fits in the remaining bytes. The existing check is
+inverted, so oversized RESPONSE authenticators are accepted and passed
+to rxgk_decrypt_skb(), which can later reach skb_to_sgvec() with an
+impossible length and hit BUG_ON(len).
 
-When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
-removed from the sk_receive_queue. This causes sk_wait_data() to always
-find available data and never perform actual waiting, leading to a soft
-lockup.
+Decoded from the original latest-net reproduction logs with
+scripts/decode_stacktrace.sh:
 
-Fix this by adding a 'last' parameter to track the last peeked skb.
-This allows sk_wait_data() to make informed waiting decisions and prevent
-infinite loops when MSG_PEEK is used.
-
-[0]:
-watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
-Modules linked in:
-CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_wait_data+0x15/0x190
-Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
-RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
-RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
-R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
-R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
-FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
+RIP: __skb_to_sgvec()
+  [net/core/skbuff.c:5285 (discriminator 1)]
 Call Trace:
- <TASK>
- mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
- inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
- sock_recvmsg+0x94/0xc0 net/socket.c:1100
- __sys_recvfrom+0xb2/0x130 net/socket.c:2256
- __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
- do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
-RIP: 0033:0x7f6e386a4a1d
-Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
-RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
-RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
-R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+ skb_to_sgvec() [net/core/skbuff.c:5305]
+ rxgk_decrypt_skb() [net/rxrpc/rxgk_common.h:81]
+ rxgk_verify_response() [net/rxrpc/rxgk.c:1268]
+ rxrpc_process_connection()
+   [net/rxrpc/conn_event.c:266 net/rxrpc/conn_event.c:364
+    net/rxrpc/conn_event.c:386]
+ process_one_work() [kernel/workqueue.c:3281]
+ worker_thread()
+   [kernel/workqueue.c:3353 kernel/workqueue.c:3440]
+ kthread() [kernel/kthread.c:436]
+ ret_from_fork() [arch/x86/kernel/process.c:164]
 
-Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260330120335.659027-1-lixiasong1@huawei.com
+Reject authenticator lengths that exceed the remaining packet payload.
+
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: Willy Tarreau <w@1wt.eu>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-14-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, because commit bc68b0efa1bf ("mptcp: move the
-  whole rx path under msk socket lock protection") and commit
-  d88b2127b242 ("mptcp: add eat_recv_skb helper") (with some
-  dependences) are not in this version. These conflicts were in the
-  context, and not related to this fix. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/rxrpc/rxgk.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1960,7 +1960,7 @@ static int __mptcp_recvmsg_mskq(struct m
- 				struct msghdr *msg,
- 				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
--				int *cmsg_flags)
-+				int *cmsg_flags, struct sk_buff **last)
- {
- 	struct sk_buff *skb, *tmp;
- 	int total_data_len = 0;
-@@ -1976,6 +1976,7 @@ static int __mptcp_recvmsg_mskq(struct m
- 			/* skip already peeked skbs */
- 			if (total_data_len + data_len <= copied_total) {
- 				total_data_len += data_len;
-+				*last = skb;
- 				continue;
- 			}
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -1224,7 +1224,7 @@ static int rxgk_verify_response(struct r
  
-@@ -2016,6 +2017,8 @@ static int __mptcp_recvmsg_mskq(struct m
- 			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
- 			__skb_unlink(skb, &msk->receive_queue);
- 			__kfree_skb(skb);
-+		} else {
-+			*last = skb;
- 		}
- 
- 		if (copied >= len)
-@@ -2237,10 +2240,12 @@ static int mptcp_recvmsg(struct sock *sk
- 		cmsg_flags = MPTCP_CMSG_INQ;
- 
- 	while (copied < len) {
-+		struct sk_buff *last = NULL;
- 		int err, bytes_read;
- 
- 		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags,
--						  copied, &tss, &cmsg_flags);
-+						  copied, &tss, &cmsg_flags,
-+						  &last);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
-@@ -2298,7 +2303,7 @@ static int mptcp_recvmsg(struct sock *sk
- 
- 		pr_debug("block timeout %ld\n", timeo);
- 		mptcp_cleanup_rbuf(msk, copied);
--		err = sk_wait_data(sk, &timeo, NULL);
-+		err = sk_wait_data(sk, &timeo, last);
- 		if (err < 0) {
- 			err = copied ? : err;
- 			goto out_err;
+ 	auth_offset	= offset;
+ 	auth_len	= ntohl(xauth_len);
+-	if (auth_len < len)
++	if (auth_len > len)
+ 		goto short_packet;
+ 	if (auth_len & 3)
+ 		goto inconsistent;
 
 
 
