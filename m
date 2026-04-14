@@ -1,180 +1,216 @@
-Return-Path: <stable+bounces-237860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aL18HIQ13mkRpQkAu9opvQ
-	(envelope-from <stable+bounces-237860-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:39:32 +0200
+	id KI23JIA23mkRpQkAu9opvQ
+	(envelope-from <stable+bounces-237861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:43:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E601F3FA0E6
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:39:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F0B3FA158
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CBD773017502
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:39:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B155F30160C3
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3F63E6397;
-	Tue, 14 Apr 2026 12:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76D53E639D;
+	Tue, 14 Apr 2026 12:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h822cIK1"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XaoKwOYU";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CqYKbcTj";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XaoKwOYU";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CqYKbcTj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262043DB629
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604AA3E5ECE
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776170352; cv=none; b=ozVDtkopcDiwJgrDtdjVLP7m1IXZxegKJD45ZnEmirZHGlW2J//E4VyiwQSOwlb43PIRclKHAn0CBiHD6E1/HmhNd9XIsN8jHKs04js8akm0lyNLEm1PXMIh0TGOQTDg7S9yTpFVXRYfGC2/J6uRsQDkQlbtbQgIZmSQfwMGGcc=
+	t=1776170618; cv=none; b=gSCluECd+enIx3b3FP3TIZ1reThRbMZ/Kq/FeerNCIkLKOITF59d5ksUxKHwAU59tKg0Oh6RkphtWkXNS3zK7wES4+kXQxxXq5V/tX6AqSHde5Tw/I8eoShErWS4l426+l2gHenh//xbSC0Kus8bhbLgqxDaWfNnWm7ZtvkQIso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776170352; c=relaxed/simple;
-	bh=lNn5jvrxlKSG0/5B/U0tSygzuJ+RkoFr9+I8Xu5aVQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f1tk1X3OPuNsOJCWq8MxF2mNhCA6Mi4Kef/bQ5k4L+rqg8k1LydNcg2ENCYjb6GnLVn5D9U0Is+FwiSMnwH6zV6cSWwbZ+A+mA7hpqikrUE9JrV+SY9NKpxG8SEqeKrraIF0TFuEyOHh/aY1euNeRRv98lmCsvBgwYIPTXwK86E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h822cIK1; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ad9516a653so27245595ad.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 05:39:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776170350; x=1776775150; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LqWzHM9f5XbHVj9TeBcnNeNR71vENRDJp955u8OEAcw=;
-        b=h822cIK1k4F3eiz+mJo8fjedaC3pWXPCEdGjKfzrbS4PknOIpBU+cVVx4yj/J01wuT
-         tZT1Q1wCCQa2TJXgBZWe9JP32HnTITLbOOM9D6iOOQAxecp0rAGTxywiNH7iq4U6wVD6
-         KpYWadKD26DVSw+zM2hVvpDrKhyK/tQT5NULB9qAe+Kp/a/A+qdHvL8SF2tyo8D3HEja
-         AxAvkhn19HXItFJC54MwqR9Qg2sOb1Bv4yXAMju9rpFDCknsQJ2sogoxzN9ZVlJ8grVE
-         RhHn7+FoLU+4B2Nq8ODuxUn5vgyr1zUIBP9d28SqFKfoDuXFmeimFcbpOgmFJKAhFqtA
-         9l6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776170350; x=1776775150;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LqWzHM9f5XbHVj9TeBcnNeNR71vENRDJp955u8OEAcw=;
-        b=X+ubQAzA2RRGfCHPj4pvJBSzN8VcxbrF8ZNpRPIqym7zegjVkOc8YpNBWM4kZfHx8i
-         FQuGJ7azfMPqk9VBvql13pCVQl2/veo4MFeGjEm97UtO5A8aalyx7ca6bQnHwcANf/jM
-         iWkqc96BDh40A5EVCrbDLNQvBtwzJWCj1FQYX0xq5kMrmHlxwDTm0il8FuxTp+UQrGif
-         lFJVjNp3E9bYbHZnNknZ4flO1Ms5pIox3OjYBgXGx5piTBlZMruobtu5L0mQ79f354lw
-         LLFz3XUdDLvkzBC9JoNzR7hLeoG01pPJgQPwiIFGAp2D4AYaezDxbjyCfyFkdxfInX+5
-         drWw==
-X-Gm-Message-State: AOJu0YzPTpGOoCxBo+BBaIKZvLs+CUiIkVHAOsblnSRvEb6Jqanlh2Uh
-	jv1oAjj351HBq16F7usIkOjvrDRBRW0VEB83qoQp5GUgcut/9hXuH9q4
-X-Gm-Gg: AeBDietI7WojWKAfy7jkC++IVJu5ItZ5jgAUHsxqhiG9ECkBfvq85Uy0BGnTh16lEKj
-	3cYn2AlRAb551UCtBi2fUHEOjRN+a4jGxatJgpHpVQVsn30xXgj8Beaekpktr7GeKR9hNP5o2JF
-	poU5BBHOyuNFB6gE/oHuCvnnuduUHS8NudCNQ+1tuWJRu9nj+tyHHZzvniuEHRu+4OWBJ8LNhAH
-	zApagTUP5nnl+dXqf6GGnirvgf5OYYUwnxN3lJ2fB5Rla2lB5t5IM9EA/+u7aMBWrSSM0MOIVah
-	VRuimTWzLgqv4i+Zl9kC0ttiBRHl3fVcc19CGxm+LIP2NGCcsr17Di2EVc8Udv4FlbQdcOLwpXq
-	eXxYU5A2dZAGHVxqPXcrVG/NIMEEx2bzf8q2kqgWngT0dE23TAKJqVrCXFm+eGP/44hZPC4TUoT
-	rvF6Oe9PLNbeUwpEpoe5vRKg==
-X-Received: by 2002:a17:903:3c2f:b0:2ad:d0ff:2ed4 with SMTP id d9443c01a7336-2b2d591b8cbmr174221755ad.6.1776170350383;
-        Tue, 14 Apr 2026 05:39:10 -0700 (PDT)
-Received: from lgs.. ([112.224.67.108])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dd610esm145281365ad.20.2026.04.14.05.39.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 05:39:09 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Lukasz Bartosik <lbartosik@marvell.com>,
-	Suheil Chandran <schandran@marvell.com>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] crypto: octeontx2: fix IRQ vector leak in otx2_cptpf_probe()
-Date: Tue, 14 Apr 2026 20:38:57 +0800
-Message-ID: <20260414123857.3162673-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1776170618; c=relaxed/simple;
+	bh=qnK7k6IHrNCSTDNTQUKwGDOjgyfhjHYpvqF0dYs5OXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rb4qkMp3vEBHXUKoSMw5ZQsjyy81pRt8lIADIIXUbYyzmwuChONy6G9mRcmV0x0MBfpPbQTHplqLfMFQPoVGVy0zSQSlRINolXIxf35ESHbsMAtlatB7lH+6TaFvyIr5oD2Kl1wT+Wu5XnknMdVtBcU/3WUXm7AE3qADVjQSKMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XaoKwOYU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CqYKbcTj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XaoKwOYU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CqYKbcTj; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B772B6A900;
+	Tue, 14 Apr 2026 12:43:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1776170615; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
+	b=XaoKwOYU5/HTTMesQ0qlJoQxwhhL6Nonr/Z2TomSx2+uJWALChsNVs4PKxw7SPs/b+M7wh
+	RWHWq4C1heTK55F9+ugEezkyhKIioLINDXEUpdUtgaLCjOJHsy5A9Kbn8Vkm6PdB6RUvD3
+	4DkOLeMw3e+gUvzEHgKSbdhV17h/EKM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1776170615;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
+	b=CqYKbcTj3CCzefsZdBeVROoqnk+amXk5EWaAObY1EbMjIfo+casGg6JeXzYMUo4H176Jps
+	OhGZ8OGx1rhMi+BQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1776170615; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
+	b=XaoKwOYU5/HTTMesQ0qlJoQxwhhL6Nonr/Z2TomSx2+uJWALChsNVs4PKxw7SPs/b+M7wh
+	RWHWq4C1heTK55F9+ugEezkyhKIioLINDXEUpdUtgaLCjOJHsy5A9Kbn8Vkm6PdB6RUvD3
+	4DkOLeMw3e+gUvzEHgKSbdhV17h/EKM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1776170615;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
+	b=CqYKbcTj3CCzefsZdBeVROoqnk+amXk5EWaAObY1EbMjIfo+casGg6JeXzYMUo4H176Jps
+	OhGZ8OGx1rhMi+BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF35A4B453;
+	Tue, 14 Apr 2026 12:43:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NLS/Knc23mkHEwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 14 Apr 2026 12:43:35 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 6E622A0B66; Tue, 14 Apr 2026 14:43:31 +0200 (CEST)
+Date: Tue, 14 Apr 2026 14:43:31 +0200
+From: Jan Kara <jack@suse.cz>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Jan Kara <jack@suse.com>, linux-fsdevel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] udf: reject descriptors with oversized CRC length
+Message-ID: <7sphdwp54fokevos7ppeq2iaydltdq2uxxt6iqamjwtycs2a34@yt53i7nyvwc3>
+References: <20260413211240.853662-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413211240.853662-1-michael.bommarito@gmail.com>
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-237860-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-237861-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[marvell.com,gondor.apana.org.au,davemloft.net,linux.dev,gmail.com,kernel.org,vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	DMARC_NA(0.00)[suse.cz];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E601F3FA0E6
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 09F0B3FA158
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-otx2_cptpf_probe() allocates MSI-X vectors with pci_alloc_irq_vectors()
-before initializing the AF-PF mailbox, registering mailbox interrupts
-and setting up the PF device.
+On Mon 13-04-26 17:12:40, Michael Bommarito wrote:
+> udf_read_tagged() skips CRC verification when descCRCLength +
+> sizeof(struct tag) exceeds the block size.  A crafted UDF image can
+> set descCRCLength to an oversized value to bypass CRC validation
+> entirely; the descriptor is then accepted based solely on the 8-bit
+> tag checksum, which is trivially recomputable.
+> 
+> Reject such descriptors instead of silently accepting them.  A
+> legitimate single-block descriptor should never have a CRC length that
+> exceeds the block.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: Codex:gpt-5-4
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 
-When cptpf_afpf_mbox_init(), cptpf_register_afpf_mbox_intr(),
-cptpf_device_init(), cn10k_cptpf_lmtst_init(),
-otx2_cpt_init_eng_grps(), sysfs_create_group() or
-otx2_cpt_register_dl() fails after IRQ vectors have been allocated
-successfully, the function unwinds mailbox, interrupt and engine group
-state, but fails to free the allocated IRQ vectors.
+Thanks for the fix! It looks good to me. I'll merge it into my tree later
+this week once the pull requests for the merge window are done.
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review. Add a dedicated error path to call
-pci_free_irq_vectors() after pci_alloc_irq_vectors() succeeds.
+								Honza
 
-Fixes: 83ffcf78627f ("crypto: octeontx2 - add mailbox communication with AF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
-index 346d1345f11c..059f702dbf5c 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
-@@ -783,7 +783,7 @@ static int otx2_cptpf_probe(struct pci_dev *pdev,
- 	/* Initialize AF-PF mailbox */
- 	err = cptpf_afpf_mbox_init(cptpf);
- 	if (err)
--		goto clear_drvdata;
-+		goto free_irq_vectors;
- 	/* Register mailbox interrupt */
- 	err = cptpf_register_afpf_mbox_intr(cptpf);
- 	if (err)
-@@ -826,6 +826,8 @@ static int otx2_cptpf_probe(struct pci_dev *pdev,
- 	cptpf_disable_afpf_mbox_intr(cptpf);
- destroy_afpf_mbox:
- 	cptpf_afpf_mbox_destroy(cptpf);
-+free_irq_vectors:
-+	pci_free_irq_vectors(pdev);
- clear_drvdata:
- 	pci_set_drvdata(pdev, NULL);
- 	return err;
+> ---
+> Found during a filesystem security audit.  The CRC validation
+> condition in udf_read_tagged() uses OR logic: the first arm
+> (descCRCLength too large) short-circuits the second arm (CRC
+> comparison), so an oversized descCRCLength causes the function to
+> return the buffer head without verifying the CRC.  The descriptor
+> is accepted based solely on the 8-bit tag checksum.
+> 
+> A crafted UDF image with descCRCLength set to blocksize (e.g. 2048
+> on a 2048-byte-block filesystem, vs the 2032 limit) in both the
+> main and reserve Volume Descriptor Sequences mounts successfully
+> with corrupted descriptor bodies.
+> 
+> Reproduced on UML (ARCH=um, KASAN-enabled v7.0-rc7) with a
+> mkudffs-generated 20 MiB image, both LVD copies patched to
+> descCRCLength=2040, CRC left stale, body byte flipped, tag
+> checksum recomputed.  Mount succeeds (MOUNT=0) with the corrupt
+> LVD accepted.  With this patch applied, mount fails with EINVAL
+> and the new "CRC length ... exceeds block size" error is logged.
+> 
+> Reproducer details and UML console logs available on request.
+> 
+>  fs/udf/misc.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/udf/misc.c b/fs/udf/misc.c
+> index 0788593b6a1d..6928e378fbbd 100644
+> --- a/fs/udf/misc.c
+> +++ b/fs/udf/misc.c
+> @@ -230,8 +230,12 @@ struct buffer_head *udf_read_tagged(struct super_block *sb, uint32_t block,
+>  	}
+>  
+>  	/* Verify the descriptor CRC */
+> -	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize ||
+> -	    le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
+> +	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize) {
+> +		udf_err(sb, "block %u: CRC length %u exceeds block size\n",
+> +			block, le16_to_cpu(tag_p->descCRCLength));
+> +		goto error_out;
+> +	}
+> +	if (le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
+>  					bh->b_data + sizeof(struct tag),
+>  					le16_to_cpu(tag_p->descCRCLength)))
+>  		return bh;
+> -- 
+> 2.53.0
+> 
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
