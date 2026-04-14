@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-237688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCmPNgWM3Wn5fQkAu9opvQ
-	(envelope-from <stable+bounces-237688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:36:21 +0200
+	id EH0+FguN3Wn5fQkAu9opvQ
+	(envelope-from <stable+bounces-237689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:40:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4294F3F4917
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1B43F4987
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F11830EC4ED
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 00:29:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73247306967B
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 00:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213EF256C61;
-	Tue, 14 Apr 2026 00:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E90175A6E;
+	Tue, 14 Apr 2026 00:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="upKsnv6a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSBVzRIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A9C224AF1
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 00:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958673770B
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 00:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776126590; cv=none; b=g86BeqQJwKsL2tSqGAZ476ybyrVIPjtML3Ok+hYlagy73Atigk399eMkVniOwiQdST9i5bZau6Uq3wde2TMR+McrAmy1MgSKOv8p+cz696Faq6On+kSwvCY+aW0bWqBgGtgxpPp8zYiBxJHwpIRqD5p9AQm+zkqZNodnNsBYplo=
+	t=1776126835; cv=none; b=QtupA9Rn43UXeL0hNphZgPZK+BKij4RtXuC/vjhwWBfbw1HA6r/3QDxS0R7fCdmidifGhgb42ghmNdmIGc+IkHz48LXo75hzunzYPQCUUntjERt+EcNpjgTb2FZKBJi52q5VI9rhDtBdl7ZHmhjvJwh2pAjXrEFeYSDxXQoyEHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776126590; c=relaxed/simple;
-	bh=i3IvQ5y1Zc2KQc4bJ28xi7r0nHVoKCh0w5KVhEXUom4=;
+	s=arc-20240116; t=1776126835; c=relaxed/simple;
+	bh=Qm748jvzmFkVjLh9RorB4FZfNGWD2EOHvcUKfTVDEzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2qw5zbUEz2ZaB7sMgEyT8ZexjUeJPqyNTgwIkj7REeeyYUPTgNfEE5DdFIRoRQUapRqJKTYMQTF2yG+jZwExGSx/0PmxT9bZL1sSktglSDzNM8awd49Oh0nePDVVazNQLpvJWVSmIon9k/+e7WneJVoZO2BLk+eKl0QzgSubxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=upKsnv6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26DDC2BCAF;
-	Tue, 14 Apr 2026 00:29:49 +0000 (UTC)
+	 MIME-Version; b=TY5KcAB0UO0lUbokaT1uSA21dQuwuru3ReimqCXKkKpDHCHIwIMk7/RUb7zLna4pSX4VjE+M8IRejfQMW9LX5GzabtH0ctSK5SatWt35wYhGefo+RC/RGUVQWkOYYb1ShmpjAdA9PP12oKzTPHxGczTt5S8rM8oEBAhx2jqIRJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSBVzRIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860BDC2BCAF;
+	Tue, 14 Apr 2026 00:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776126590;
-	bh=i3IvQ5y1Zc2KQc4bJ28xi7r0nHVoKCh0w5KVhEXUom4=;
+	s=k20201202; t=1776126835;
+	bh=Qm748jvzmFkVjLh9RorB4FZfNGWD2EOHvcUKfTVDEzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=upKsnv6a3myqmZTeFXhgLJ4gVDxNkgg67eoi62dP6ga90stZISreEaQMh7/6OlCTX
-	 bMzApLDWyiyfbsfgtL0WB5mGEIw/Hy+IBqgsJ5d6ZKFz13kMd2AwgWKbR87GFIlXKj
-	 WRtPejUWjVD0l7E3IdJFo4OETp/I9basix5tOUO+RsOOnIZsI6UXDvUFZRXz/GJlBw
-	 QP2916Nx2V6elXSjO4ukBsfxWx46TlHkXp6T5qk6DhCyzuHlBdJ+ekFjUVzZLwKbsk
-	 PxnhT4NFaBaRF2XUbsaX+X7mDYewWMrJOO2L5bjmz9TTKKX4FqAukFUiZfdS4NE+Z4
-	 d3eLNUnYj4DLA==
+	b=WSBVzRILlj9z0FP0msrYZcBclr75o656dIwzim8yMFV1QE1poBjzXhyy+h6YOuZvc
+	 yb+gMNlxIjCiTYzjZQCLU+bhB34rnVY/d+9l//7qdzM0n1+wY5TsDfQQ0wyeLBVJ6E
+	 CK2KiEXqtpMZA2sXL5st+JcFZGxSCIMhqNWup0oc7iyzqM0eovRvAjAvHN3skAfo6Z
+	 GY+Z+JDli14S4ILwRtk8sYcxvmebd+j9yvIiutCotozlor6wWRNrUptysu2CP9vqxa
+	 8n+4e2T+KzuhGxXblodCqEM6hrMEPKucax7Q8GGNOqNOM+zwPMNwDoH1k7aQS97WVS
+	 Hbww8usXk7Pkg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -54,12 +54,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] rxrpc: Fix key quota calculation for multitoken keys
-Date: Mon, 13 Apr 2026 20:29:48 -0400
-Message-ID: <20260414002948.3802454-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] rxrpc: Fix anonymous key handling
+Date: Mon, 13 Apr 2026 20:33:53 -0400
+Message-ID: <20260414003353.3804085-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041337-chummy-habitual-b416@gregkh>
-References: <2026041337-chummy-habitual-b416@gregkh>
+In-Reply-To: <2026041311-botch-harpist-8043@gregkh>
+References: <2026041311-botch-harpist-8043@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237688-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237689-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
@@ -94,22 +94,31 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sashiko.dev:url,auristor.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 4294F3F4917
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
+X-Rspamd-Queue-Id: AD1B43F4987
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit bdbfead6d38979475df0c2f4bad2b19394fe9bdc ]
+[ Upstream commit 6a59d84b4fc2f27f7b40e348506cc686712e260b ]
 
-In the rxrpc key preparsing, every token extracted sets the proposed quota
-value, but for multitoken keys, this will overwrite the previous proposed
-quota, losing it.
+In rxrpc_new_client_call_for_sendmsg(), a key with no payload is meant to
+be substituted for a NULL key pointer, but the variable this is done with
+is subsequently not used.
 
-Fix this by adding to the proposed quota instead.
+Fix this by using "key" rather than "rx->key" when filling in the
+connection parameters.
 
-Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
+Note that this only affects direct use of AF_RXRPC; the kAFS filesystem
+doesn't use sendmsg() directly and so bypasses the issue.  Further,
+AF_RXRPC passes a NULL key in if no key is set, so using an anonymous key
+in that manner works.  Since this hasn't been noticed to this point, it
+might be better just to remove the "key" variable and the code that sets it
+- and, arguably, rxrpc_init_client_call_security() would be a better place
+to handle it.
+
+Fixes: 19ffa01c9c45 ("rxrpc: Use structs to hold connection params and protocol info")
 Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
@@ -117,44 +126,26 @@ cc: Jeffrey Altman <jaltman@auristor.com>
 cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
 cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-2-dhowells@redhat.com
+Link: https://patch.msgid.link/20260408121252.2249051-4-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ dropped hunk for rxrpc_preparse_xdr_yfs_rxgk() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/key.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/rxrpc/sendmsg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
-index 979338a64c0ca..024dc28b61666 100644
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -108,7 +108,7 @@ static int rxrpc_preparse_xdr_rxkad(struct key_preparsed_payload *prep,
- 		return -EKEYREJECTED;
+diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
+index 71e40f91dd398..b03d93d8b69d0 100644
+--- a/net/rxrpc/sendmsg.c
++++ b/net/rxrpc/sendmsg.c
+@@ -624,7 +624,7 @@ rxrpc_new_client_call_for_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg,
  
- 	plen = sizeof(*token) + sizeof(*token->kad) + tktlen;
--	prep->quotalen = datalen + plen;
-+	prep->quotalen += datalen + plen;
- 
- 	plen -= sizeof(*token);
- 	token = kzalloc(sizeof(*token), GFP_KERNEL);
-@@ -718,6 +718,7 @@ static int rxrpc_preparse(struct key_preparsed_payload *prep)
- 	memcpy(&kver, prep->data, sizeof(kver));
- 	prep->data += sizeof(kver);
- 	prep->datalen -= sizeof(kver);
-+	prep->quotalen = 0;
- 
- 	_debug("KEY I/F VERSION: %u", kver);
- 
-@@ -755,7 +756,7 @@ static int rxrpc_preparse(struct key_preparsed_payload *prep)
- 		goto error;
- 
- 	plen = sizeof(*token->kad) + v1->ticket_length;
--	prep->quotalen = plen + sizeof(*token);
-+	prep->quotalen += plen + sizeof(*token);
- 
- 	ret = -ENOMEM;
- 	token = kzalloc(sizeof(*token), GFP_KERNEL);
+ 	memset(&cp, 0, sizeof(cp));
+ 	cp.local		= rx->local;
+-	cp.key			= rx->key;
++	cp.key			= key;
+ 	cp.security_level	= rx->min_sec_level;
+ 	cp.exclusive		= rx->exclusive | p->exclusive;
+ 	cp.upgrade		= p->upgrade;
 -- 
 2.53.0
 
