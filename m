@@ -1,200 +1,194 @@
-Return-Path: <stable+bounces-237829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAqcNgop3mmSoQkAu9opvQ
-	(envelope-from <stable+bounces-237829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:46:18 +0200
+	id 8Np6I4Up3mmSoQkAu9opvQ
+	(envelope-from <stable+bounces-237830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:48:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EB23F98D6
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:46:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3703F9968
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DBD1A30195FA
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:44:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5145130BEA30
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8AA3E0C49;
-	Tue, 14 Apr 2026 11:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF323E1CFD;
+	Tue, 14 Apr 2026 11:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QijGMksl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2lOd7DQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACE53E0224
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776167068; cv=pass; b=dVOR+HqXJW2uAsbM4709NB+ivtTiIpLh2WI4RX/x/tHjdWscWU8U7DcrAXtxYF+dn877zKzeaakv7hj44+A44/egdQuXNuf3r13+XKfJ8+xSrwF9iOAO3M/avXPc66OYlol8HOrnp6XnzPpOZ3dr9uT6GeJ8MCzwJgjsN/7zx6M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776167068; c=relaxed/simple;
-	bh=2D+4ijjnwuc1tvEXWl4yl2BJD4fo5wLmMkmr6m/nUMM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vFaiZ/69BkB9Q1I6YkFH3Xj1hTWb+iAxDlspvmhzwBgEuIXWSGW5JlVdUPMvEXckHyw8zfi24bZnSmxy/3ckIbpt3v8ys6RZ+eWNL4Ta8/b6q0tHP4Lh5KWOIfnYf0pgp/EvDB999ruz7Eu1916TIGOvXXFd9AXfRTdrobG65NQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QijGMksl; arc=pass smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79853c0f5b9so73077307b3.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:44:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776167066; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LmwUtEiVVtyhnWRM45BYrmdS0p/4W0ggfx5PSS3DVb8XQMXusnOo474EosEJ4yNQJN
-         DdRN6D14OzMjKI47XHHxsOzhCedJZ2jOBGGM7uPMc7/rfthjmbQ0fA1H93Z8UAvc9+Wz
-         ae7nm7iAU0V4FZMfz3AlBcAsylwp6HtBRYie7EY+1TIHVK+O9ylZJcUR1P0SswVsAr/H
-         Enk4j2+F5/T10wSomb3WFXbfJ+8sFe/UMXFCzNjt+C2uG7YX2ZV5AYJbfMUGosUZ9vd1
-         whtkSnRDpDFpeCmo427zEQkF6t7Q7HYP2zzCDLxVW2uqQ4hAvQnuVrwnexhZF4ri6S6o
-         YOkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=zQ9r39RFYNLQtni9+zz7YlrKwdJf7Gv2tJLgwx8RCXk=;
-        fh=0oMQpvkI7Iklh80L4dWhSPkXhhx1KMyVyCWYXxB/hjM=;
-        b=MOlmL4offqPoLubk46QcqhJLdQkDtEnkvFVTjSLUMUY3Qxi+s90RiOxXecS9jXzqMn
-         Kzsvr8p+LoqBj41CcqTJWry9f/HtSIHEMkXw4g8GrJ549KurDZ7A0ax6cUJAYplxdP26
-         zevzdD7ptf/4AhlAEzmB6cFU86hD9G70QXDjM6g7F+Umyaj3xDhWA5o2C9ZcgszWhDdd
-         JtKXqQpURDyPTMFn1sEZctb/K7I43W5fBnUi7cDvJJMRNIREas9AoTFR01ttJG/FXnrD
-         wSpnw7nw5dnR6NBn8cjkCDNBwAd5voxynqM2dgEe/LneRwibdJfHW0VpICenj/WHqd+W
-         afDg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776167066; x=1776771866; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zQ9r39RFYNLQtni9+zz7YlrKwdJf7Gv2tJLgwx8RCXk=;
-        b=QijGMksl08PZzMO8zXWa1KVR9PyvFgeLvdz8hXRI2t83+X20rKtSZMwxAW3flobKQ4
-         Hd3t9N7NqgIbPLOQzf0lpMOcrE8vGfWHQY2fjYhWGLx/2wB6Gkmr0xM1usdT7i3+xoj7
-         ozsUidTOMaeKuHpYij/JScOEn8btS0Rg9OvjXW8A6qvyZBHIwLxTDRR7bjWQZJmwq5Qs
-         oWg2MHjK/uM4blvYerg0uG7nFFgJr6RiMRUClSyOXmdnjFAhQxs649kA59rFwR6tWphy
-         Dlc0fwz5tNZ3NMsY2WYHL6HUssjhUgUX2rstOsFKGi8wViVKDaIyqZix1AXvnxYU+YEJ
-         Ov7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776167066; x=1776771866;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zQ9r39RFYNLQtni9+zz7YlrKwdJf7Gv2tJLgwx8RCXk=;
-        b=LZNkYM9rLYquDyzLSNSaVU8jFYsYap8Ug7izBfgn5GLe+HdvSEvvM8UXfoN4noxmFH
-         v/DJfNHSoGFjJIgG5aQtHQ1Av3KOwsXV4C9KhaGvwoobeLvl0PkAJ4svt/wPKaNb1Sml
-         2YQcTP0DP0IlDDaZRurlMECKNvxQV3SkVJ9J+rFqkrhKZLSOQ5UvH2Ucm23gdJK6tqkD
-         ZNosJauaYog+eI7sGYhR7bf2qICmEze8GO4kCkLo8cvFhfTiAvpXvgLY3acRUqrW2Etz
-         y/zqJ4xmJCzA0yHr6ZN5HU+syOBOc01wJahqKnjMvexg0ib7MuOewrTDLN2ojfj0iI2j
-         CH4A==
-X-Forwarded-Encrypted: i=1; AFNElJ9NJWCw58DPVy/ONi7DLeL4FABa5b993KdG3xuXwiJFWdV9nrLhbgHEZd6fxSr3kGr/lgxqLC4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTKokuNCe7/Zd5ZapmNxFDdk+HJnDY3qx3qLB0M2f3cZT2H9rl
-	CrJ7ys4C8fqpo0mR6/oJGj4jC5EhHiFtweFk5tJOJvvCMdV31ckl9NWmgE8mWEdA6UEkZjyYLE2
-	xRwPXwKEvJIpUvdiBK7E1joIerLyHzJM=
-X-Gm-Gg: AeBDiesr98CidI5a+l5ofQk8JEMXZkgNPTvaBcgg548i8oSnWtv2MqtZKiVmwcMaAnk
-	+YxNl4QJe4FYGDg5H/MjeaH24kckB9l3J8KrjhOpykmVy/s5C+Z2pOba+AYiGQbwVauefJb9Bv4
-	jdZW9KqvjfGsw5oozoImFhubHQdnEtGH7JXRAGgWNvtKzyOXJbfYt/Dq6M2FNeZwwzVJB/ZXleZ
-	ujvgg9SUDERJhJiiQyHIVotP7PHXJmo2t6HK2xsJUWwwyUaTpf5l0PiDpCOVyBwqYhuNFR4p/Ob
-	WyFf9cm19A==
-X-Received: by 2002:a53:ac86:0:b0:652:541e:9685 with SMTP id
- 956f58d0204a3-652541ea003mr1312802d50.19.1776167066077; Tue, 14 Apr 2026
- 04:44:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAE83E1CEB
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776167133; cv=none; b=H7LGUcIKdrDi+Y0IJdTl1+ouH1EZQDryJDEMHN5B/ZXXtd7HUH2zb19tutO2ORTAUNpo34dQUctqawrcS9AaCbWJnUizfsWG7V4v6JghVSjwTlyvx+sUriwA1nYoDBCSP9f/2BKbNodpqayIIK/QcdLWwEVrTR27gce5pBJE988=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776167133; c=relaxed/simple;
+	bh=yV7k8BaLQHTvZnyy5R6NOwARz6C0CTCj7rFP+xzkRg0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dpkg4E4ZaNjdOxyZAMElS8YP3y42IH+aHg5WiGfu4um0GuVy2XmOhbVcXY+WOh3y0B2yyBj9ICA7bqhVf/RnUkgaX4DEJduoIAWA9phbhDk2RgJ1EaJa2fucxr87QY61kOC9hBBxxDh0GZLQqXiDXr1enzIZBHUROIQQ53RYXbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2lOd7DQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45558C19425;
+	Tue, 14 Apr 2026 11:45:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776167132;
+	bh=yV7k8BaLQHTvZnyy5R6NOwARz6C0CTCj7rFP+xzkRg0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=g2lOd7DQMUfwZePvwy39wmFBpUKyCcmmeYQsRP3kjEdinsuE7Kawc9eNDRSJPkNWQ
+	 vQOW8AHLve3cjty1lcKQsh4W35fHVaIYZHReWQC1rwVqdP71MZy+neoan3g9/7vOvb
+	 TKbt5XaHQRzEaSiEDE/++T094KNFQTM0YQCC3pVdgk9IgiL6TQE3kUI2xfrbIJWMME
+	 ElpPKHz9bfTjVy6wRJnMY5qmoMJo9195+pepw8PgKnKxTSnfRIQ2TZZzwQAlJi5l7y
+	 FLaCjM6mXd/8/leBx1uNV7Ccaj/1tmBM03/Ft3z+jpXVJ5EeO9aXceDjyqqd/5v58q
+	 sbi2xlzj6g8Dw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Wang Jie <jiewang2024@lzu.edu.cn>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yang Yang <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] rxrpc: only handle RESPONSE during service challenge
+Date: Tue, 14 Apr 2026 07:45:29 -0400
+Message-ID: <20260414114529.521040-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041311-economy-duckling-8a60@gregkh>
+References: <2026041311-economy-duckling-8a60@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413143643.3002454-1-lgs201920130244@gmail.com> <ad0d5fIAkjblQcIt@redhat.com>
-In-Reply-To: <ad0d5fIAkjblQcIt@redhat.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Tue, 14 Apr 2026 19:44:18 +0800
-X-Gm-Features: AQROBzDRON2GSvR6gFet_WamV1u2nq3FGC-LPKOrKn-jHgvhjSChOhLjzs7CCmU
-Message-ID: <CANUHTR8JCPLMAPfdjXX95tcPTqHWBy7k3GwOo7=BcjRxfMSavg@mail.gmail.com>
-Subject: Re: [PATCH v3] clk: starfive: jh7110: fix memory leak in
- jh7110_reset_controller_register() error path
-To: Brian Masney <bmasney@redhat.com>
-Cc: Emil Renner Berthing <kernel@esmil.dk>, Hal Feng <hal.feng@starfivetech.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Conor Dooley <conor.dooley@microchip.com>, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237829-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lzu.edu.cn,gmail.com,redhat.com,auristor.com,kernel.org,lists.infradead.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237830-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E0EB23F98D6
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,auristor.com:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: DD3703F9968
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Brian,
+From: Wang Jie <jiewang2024@lzu.edu.cn>
 
-Thanks for reviewing.
+[ Upstream commit c43ffdcfdbb5567b1f143556df8a04b4eeea041c ]
 
-On Tue, 14 Apr 2026 at 00:46, Brian Masney <bmasney@redhat.com> wrote:
+Only process RESPONSE packets while the service connection is still in
+RXRPC_CONN_SERVICE_CHALLENGING. Check that state under state_lock before
+running response verification and security initialization, then use a local
+secured flag to decide whether to queue the secured-connection work after
+the state transition. This keeps duplicate or late RESPONSE packets from
+re-running the setup path and removes the unlocked post-transition state
+test.
 
-> There's actually another leak in the error path for
-> auxiliary_device_add(). I think this code should be
-> converted to devm_kzalloc().
->
-> There is no devm_kzalloc_obj() yet, however according to [1] that should
-> be coming soon.
->
-> [1] https://lore.kernel.org/lkml/20260330154108.GA3389518@killaraus.ideasonboard.com/
->
-> Brian
->
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Jie Wang <jiewang2024@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-21-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted to spin_lock_bh usage, 3-arg verify_response(), and direct rxrpc_call_is_secure() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/rxrpc/conn_event.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-I may be missing something, but I think the auxiliary_device_add() error
-path is already handled here:
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 5d91ef562ff78..293922df2a891 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -293,6 +293,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 			       u32 *_abort_code)
+ {
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
++	bool secured = false;
+ 	__be32 wtmp;
+ 	u32 abort_code;
+ 	int loop, ret;
+@@ -337,6 +338,13 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 							    _abort_code);
+ 
+ 	case RXRPC_PACKET_TYPE_RESPONSE:
++		spin_lock_bh(&conn->state_lock);
++		if (conn->state != RXRPC_CONN_SERVICE_CHALLENGING) {
++			spin_unlock_bh(&conn->state_lock);
++			return 0;
++		}
++		spin_unlock_bh(&conn->state_lock);
++
+ 		ret = conn->security->verify_response(conn, skb, _abort_code);
+ 		if (ret < 0)
+ 			return ret;
+@@ -348,17 +356,18 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 
+ 		spin_lock(&conn->bundle->channel_lock);
+ 		spin_lock_bh(&conn->state_lock);
+-
+ 		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING) {
+ 			conn->state = RXRPC_CONN_SERVICE;
+-			spin_unlock_bh(&conn->state_lock);
++			secured = true;
++		}
++		spin_unlock_bh(&conn->state_lock);
++
++		if (secured) {
+ 			for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
+ 				rxrpc_call_is_secure(
+ 					rcu_dereference_protected(
+ 						conn->channels[loop].call,
+ 						lockdep_is_held(&conn->bundle->channel_lock)));
+-		} else {
+-			spin_unlock_bh(&conn->state_lock);
+ 		}
+ 
+ 		spin_unlock(&conn->bundle->channel_lock);
+-- 
+2.53.0
 
-ret = auxiliary_device_add(adev);
-if (ret) {
-        auxiliary_device_uninit(adev);
-        return ret;
-}
-
-The embedded auxiliary_device has:
-
-adev->dev.release = jh7110_reset_adev_release;
-
-and the release callback does:
-
-static void jh7110_reset_adev_release(struct device *dev)
-{
-        struct auxiliary_device *adev = to_auxiliary_dev(dev);
-        struct jh71x0_reset_adev *rdev = to_jh71x0_reset_adev(adev);
-
-        kfree(rdev);
-}
-
-So my understanding was that after a successful auxiliary_device_init(),
-the auxiliary_device_add() failure path should be cleaned up through
-auxiliary_device_uninit(), which would eventually call the release
-callback and free rdev.
-
-The leak I was trying to fix is only the auxiliary_device_init() failure
-path, where the function returns directly before that cleanup mechanism is
-available.
-
-Please let me know if I overlooked something.
-
-Thanks,
-Guangshuo
 
