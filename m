@@ -1,79 +1,81 @@
-Return-Path: <stable+bounces-237886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGslO+hI3mkzqAkAu9opvQ
-	(envelope-from <stable+bounces-237886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:02:16 +0200
+	id 2IzcDkZI3mn+pwkAu9opvQ
+	(envelope-from <stable+bounces-237887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:59:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522AE3FAD53
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:02:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C803FACEF
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16224300CBC3
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBA513025A4E
 	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760933E5EF8;
-	Tue, 14 Apr 2026 13:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6991C3E63A2;
+	Tue, 14 Apr 2026 13:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2HG51rP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JzNxhYC+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298F038B7A5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C59344031
 	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 13:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776175171; cv=none; b=aT64z278GtuOYTNoes2haHAwQ/oJh4G7B2AkwvwhqlniGX0Ue+6C+xVsnWEuVwF5a24E+9C+Ya+IZwWru3vub6tVJTWg+u6f1POenCYaQgeSDHDaBftaE2Zpa/OGKZ88omqp+PCTnMCCTm9aL/QHmGEwT8F2aZ++oZCyY3l9qoo=
+	t=1776175172; cv=none; b=dxkuTKqt0PSWbf1NeceRy/q0CMW+Q5X+0Z+kB6UdzQdtapBTDKwYnHaf5R1eB7CNwg4mwQtVR6USK+JlaZWB2olwQ0Og4+J3MYkmRibChdty9MuRhNV1f/NHRqkPka/CYmlDjGIE6B7hf5unGKsdIrGjxhZhMFAD87eW/h9nhx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776175171; c=relaxed/simple;
-	bh=i7moRks1Em5xSeDJRGmHijtRZlYJUx95CBNBVmpOReA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zch4mH9LJA82DFVCceUaCtJeWe495BRo0/IN8GfHWMHRMGQpyQkyIbfyV9PoqgGRkER58CNoWvLAlbw+9KK6bidU44XEoXZytul5KWrC5r/RK9UAr2tw760oMuKyxTp43/5iG68qg+lPoO5cYT758P3peKXLDa26v1RVeKZpOxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2HG51rP; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1776175172; c=relaxed/simple;
+	bh=0HL5ZEFnxyEbq7XV4UUOrpynXy9ORh0SIFW4oCxfPLg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ab+O1dAne39AiXo/3WBLW5Q4Fw2XX0GiH8d//yybobTDAxCWA8Idid2tq719yZagUJ8UL1Wpp2YlVLN2HdWCwVV2uMuZWG4YJm7wEWrUUTnLOj0EQMkZFIkdibtPdeTRGtan/NsDOd0fuz20cp/I32q3/nNTDxW3r2D4aHhckXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JzNxhYC+; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aae4816912so37223255ad.2
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:59:29 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b299b3c739so23988165ad.3
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776175169; x=1776779969; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AoTQHgaXiOjxnBKbofO+VMkVOBU/6hoNuKav6Pyb85M=;
-        b=M2HG51rPy/tDYN43P64USexx+GaoGqzvjrq4ZoT9lXF+0jUiLsWtvEBXC5yeV1XDnk
-         0WfwFbAfvcbDEzboxANxSyK25U1yH6REzpL6QfKW95mSPeKCtKeC5KvCbQTOfxcpm46E
-         uGbdVHbXEHN3+w2gghNT90hgZ6zO5PqAO7n40fqSGpHxJmtxfcFyNCFGl3HiKw7d642o
-         Z1/8vjHWWvaq+Hk/YzPd7AUNYhOTkpPApAbKIwrYV1SvU+gAIxKDk7T0xPN2ZCtebfA7
-         ruHMzrw9Z6wn5UqFGBIfqblt7UUMFy2qQpwHO8uBtvrCdYXqrprsl09kX63vhmZ5MIY0
-         qH5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776175169; x=1776779969;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776175170; x=1776779970; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AoTQHgaXiOjxnBKbofO+VMkVOBU/6hoNuKav6Pyb85M=;
-        b=S/KFPRUQ51bL2bozZld2KORUwUmAX9F4ESqEXCLlUojcRRzBLftJ0JMGPHV8uCjpJi
-         4dCgOlElYSlgs9GA2T81hWzdjnUvKaiGcu+dQVnkDxcECZhgMwuy9466AQMwXJYCZBw1
-         pEPwjo1DtDdyacJOcLl4z2B1FtqaNNBLlTePc0xrO+H96uHHbb+haQNsKfzWokUUwjR3
-         wFqLi8GtA5tskpdwiS/lxencsyN/iT3SHuxGz/I3gyvcSgsiqOcqvCooSHtISWd20Dq3
-         aJgbEIfn664VWhhXU+NY68FTZpS7oGXyX27iDjEtDnwhLmiGJeL1qVu2gwoz06wXj8sI
-         Peyg==
-X-Forwarded-Encrypted: i=1; AFNElJ91iPGd24FO7XvDid/lwWQuLd37d1YjnorC5DWpx/IRF2j370pY1eClnElSAVfRxt4LAyhwx4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxecqTx4triIGhQUBHxNHtGAkMlZLCRfsXr3xMzIgzgj8E1otcV
-	aNsjXM9cG7nKLrKY3tV/TJ2qhU3HSJyLN+FpkT6jS+3H8OKttPLA0sM2
-X-Gm-Gg: AeBDieu0srcDbCKnHV0miQ0lmkJF+bciAtzuaJyUj8QDewoK8AvCczpy3E0+pYqGroj
-	nM82Y0Pko+eakUXpy9hPWQUrjWF530/SEHpCUuq6ghJ2RgKcDcy3m7uzlIqcpkFqFketaqANNRw
-	rHoywPZyAT3EL6n7xrPJxyowvyxNah+FyRfjfQ0GUWzEOV91CRzM4n26b35qdp/3vaT2QDnWCUy
-	k+FxjNZrIrKvgpGYADuxTafTnfCa9XVhS2vg7yXLGOfAaYpMmk2e/bNT88spqPtpdG5LPsTLGcX
-	p+yHjpV9in05+PSGG7q0pXhAsFAfd0umBI4vR3LZU8QnK4scFAyZEAKLkqqDLnpSt2k4owTaCRB
-	XZeyBGDwheByG8eIsFrdwXf0eyePOr1CgmkSx2GAG1IyNNABoyqQLytDxKwWmz6vI9bVK6KdB3y
-	wDlhUftyYSz7xRd0d0/zAA7btFu7b5VmHZfA6X8IUU6G6yAICHH9A+vCj0JFCdFtE=
-X-Received: by 2002:a17:903:3c30:b0:2b4:5f69:715d with SMTP id d9443c01a7336-2b45f697b4bmr82943705ad.25.1776175169402;
-        Tue, 14 Apr 2026 06:59:29 -0700 (PDT)
+        bh=KPwOpTfrLZUEPYuYw9st6aLdCBfwnzGfzeTwyPnHP84=;
+        b=JzNxhYC+nJ1DGmjQCh8UvcRuS33G/s/dDNb0eIECWrcuRWLEL5y+8h7DBHDwnTv8ly
+         IDfoVCExlGrCUeSwMWihBIaYF+x+P4TPvQow4F2VL17dwd9jLCflMCMXEN66FUOEcyjA
+         JlgEEO60ut2XwNXiCq+qPnamV/PTly7StkqmzTUYpsRawTyxkGdrdgy+2hSBkUvIl0He
+         h24/Qz06a0giTm8PG5wC/8nMqjTkRhoTlszN+AoHAHsFtXC/SQvXDpYtjCzzKi9LVJfU
+         XVoiiObBa36mFFDt+1EBefyQL4pErpRetzaKYhkA7EVbpEdfH87Ia1N6cZ0UNRmVNlN/
+         zmUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776175170; x=1776779970;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KPwOpTfrLZUEPYuYw9st6aLdCBfwnzGfzeTwyPnHP84=;
+        b=M/GL7IRQSZ5eOpyiawP32muk0qjWs6TojWSYwNQddPNKY4A89D6VjNivQ4KD6AiuKh
+         c5BEgEr2aiZY80Xv4cz9z8yYTJ7ZMgK0WBR/KqRlAsa5D57jQFIxvH6xdY3LypZWjCNk
+         nwu7xFQD7MUr5zmcY7dzB1kd9iEewn6R+LAKIe1dPMOiC3lj+RAVc0QucDIXU3zQHnBa
+         ZmwAZh+sCXJDn0S5QiZ9sXDX9Yjt5LuC1HSwnXS7xoJLGhMrz2Xu4ofQJm2z8biQEtLQ
+         v0jfxQ1MaY91prlg9LnbFtOfw7bdmoNeB/0jz7xoKrGxpuxWsZ/65R58nvVAkM6xAZhk
+         uo2A==
+X-Forwarded-Encrypted: i=1; AFNElJ/80wNx5F5+1IZgaMNtkCb4jkOPlZqN5atsFQscQy1/ssr5J0mEphCowSlr873cHhGQxKSKjiY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKIM5i3ihLITrcDMUY2pjpJQG9WroY0vnCWd28rVPKTNo4Bfxh
+	nz9fQ+r+j+ojVFnx/lWOoN2qov/J6756aR34yjWmu31GyZ1ua1K6BDbm
+X-Gm-Gg: AeBDiet2yIzRCp+3IKu1IyzcqO8jcJz7fDUBhvHsIe7BHoA8FlSrlIi+Liz/RW45cri
+	pExzZylZvrTEME77w66n54arf2UGP2PJaMm8sATLHazxKepPcULbKGMhiBeYK0vDDAUXCfpdxse
+	92fJ2/0afRaqNLVRTcbBp0Yx7w4Ny5xbE1S6oWgMGV8uuHz2EYHtauJwnfKWWZKMxBAKoUoBxeo
+	4+4uwIGRow58ZDWZ6Yj1eqg5CeJ/GuQLfIOnoBgk3Beeuj0rk5z6hyVqtT/ckXibaEi093fbGnM
+	sQTcqj3X3Tn0UlUqUzRnK8dRl3p4wzKPbqBa+DTipdg8iaNmTd89M8+FM8w6ra/8jI2scRun6H6
+	4oGGnRmzipt7SowoGPbKQhQyJRTBR//I15yTWkqy3e2uWmujSC4chhsAzKQnsQ4Zx89xnCJfNAD
+	MOTGl0ICO+yjZvnWCNXVULUR+PK02hcVvAER8oLuFF4SfDWrgNf5la
+X-Received: by 2002:a17:903:943:b0:2b4:5f83:a9d6 with SMTP id d9443c01a7336-2b45f83adecmr84289345ad.34.1776175170450;
+        Tue, 14 Apr 2026 06:59:30 -0700 (PDT)
 Received: from sprasad-dev1.corp.microsoft.com ([167.220.110.184])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4612e60dasm59779895ad.38.2026.04.14.06.59.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4612e60dasm59779895ad.38.2026.04.14.06.59.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 06:59:28 -0700 (PDT)
+        Tue, 14 Apr 2026 06:59:29 -0700 (PDT)
 From: nspmangalore@gmail.com
 X-Google-Original-From: sprasad@microsoft.com
 To: linux-cifs@vger.kernel.org,
@@ -85,10 +87,12 @@ To: linux-cifs@vger.kernel.org,
 	ematsumiya@suse.de
 Cc: Shyam Prasad N <sprasad@microsoft.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/7] cifs: change_conf needs to be called for session setup
-Date: Tue, 14 Apr 2026 19:29:12 +0530
-Message-ID: <20260414135918.279802-1-sprasad@microsoft.com>
+Subject: [PATCH 2/7] cifs: abort open_cached_dir if we don't request leases
+Date: Tue, 14 Apr 2026 19:29:13 +0530
+Message-ID: <20260414135918.279802-2-sprasad@microsoft.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260414135918.279802-1-sprasad@microsoft.com>
+References: <20260414135918.279802-1-sprasad@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,11 +105,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237886-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237887-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,manguebit.com,microsoft.com,redhat.com,suse.com,suse.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -113,7 +117,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -123,54 +127,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 522AE3FAD53
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C2C803FACEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Shyam Prasad N <sprasad@microsoft.com>
 
-Today we skip calling change_conf for negotiates and session setup
-requests. This can be a problem for mchan as the immediate next call
-after session setup could be due to an I/O that is made on the
-mount point. For single channel, this is not a problem as
-there will be several calls after setting up session.
+It is possible that SMB2_open_init may not set lease context based
+on the requested oplock level. This can happen when leases have been
+temporarily or permanently disabled. When this happens, we will have
+open_cached_dir making an open without lease context and the response
+will anyway be rejected by open_cached_dir (thereby forcing a close to
+discard this open). That's unnecessary two round-trips to the server.
 
-This change enforces calling change_conf for the last session setup
-response, so that echoes and oplocks are not disabled before the
-first request to the server. So if that first request is an open,
-it does not need to disable requesting leases.
+This change adds a check before making the open request to the server
+to make sure that SMB2_open_init did add the expected lease context
+to the open in open_cached_dir.
 
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 ---
- fs/smb/client/smb2ops.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/smb/client/cached_dir.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 509fcea28a429..3625030d1912f 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -111,10 +111,19 @@ smb2_add_credits(struct TCP_Server_Info *server,
- 				      cifs_trace_rw_credits_zero_in_flight);
- 	}
- 	server->in_flight--;
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index 04bb95091f498..e9917e5204b00 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -286,6 +286,13 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 			    &rqst[0], &oplock, &oparms, utf16_path);
+ 	if (rc)
+ 		goto oshr_free;
 +
-+	/*
-+	 * Rebalance credits when an op drains in_flight. For session setup,
-+	 * do this only when the server actually granted positive credits (>2) so a
-+	 * newly established secondary channel can reserve echo/oplock credits.
-+	 */
- 	if (server->in_flight == 0 &&
- 	   ((optype & CIFS_OP_MASK) != CIFS_NEG_OP) &&
- 	   ((optype & CIFS_OP_MASK) != CIFS_SESS_OP))
- 		rc = change_conf(server);
-+	else if (server->in_flight == 0 &&
-+		 ((optype & CIFS_OP_MASK) == CIFS_SESS_OP) && add > 2)
-+		rc = change_conf(server);
- 	/*
- 	 * Sometimes server returns 0 credits on oplock break ack - we need to
- 	 * rebalance credits in this case.
++	if (oplock != SMB2_OPLOCK_LEVEL_II) {
++		rc = -EINVAL;
++		cifs_dbg(FYI, "unexpected oplock level %d for cached directory\n", oplock);
++		goto oshr_free;
++	}
++
+ 	smb2_set_next_command(tcon, &rqst[0]);
+ 
+ 	memset(&qi_iov, 0, sizeof(qi_iov));
 -- 
 2.43.0
 
