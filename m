@@ -1,92 +1,92 @@
-Return-Path: <stable+bounces-237731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IQiO7bi3WnrkgkAu9opvQ
-	(envelope-from <stable+bounces-237731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:46:14 +0200
+	id eM8RJADj3WnrkgkAu9opvQ
+	(envelope-from <stable+bounces-237732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:47:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D393F634F
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:46:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A123F63A5
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DCE4303FAA2
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 06:39:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39A4A3068D7F
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 06:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D15E370D63;
-	Tue, 14 Apr 2026 06:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6DB36EAB9;
+	Tue, 14 Apr 2026 06:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Eu6URQhC"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Ti2EBGoj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f100.google.com (mail-qv1-f100.google.com [209.85.219.100])
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7D536E470
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FF736E465
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776148744; cv=none; b=XXzyI24zUC2d56yGWzeF+adcVR2i31z8V3o4PziON34su/uqrNubspOayXQdUfC1Cq3o+PLvFVTfVvr3B+oW1LhZWQ6gRewzlWkOyBCCymicpSM+So4ZrKwwSONqs+/x9gXFLC9r3GxBCO+4Hhl7HsKc7zGXPbrKgR8Ps2C3Hf4=
+	t=1776148818; cv=none; b=lXucwwshqtInimhCrNXXTd2OzNNTdukpWdHgtqbVS/d7fHHO9fmJ4o2yPd6LLeJ+skRBwXU4GXVoddN5Bx2ymoQUX4NTIMdjiDxBLaClHvnsft+sZUkW6uYQVKzT9U05AzcvfqoDMcQW0qjorUrI+WyIyMFluAZs9U8vFczxFH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776148744; c=relaxed/simple;
-	bh=5ww9EE9Omd+lxTQKlJOWj/4hV3jbfueaHdGT5uwPtjc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k3ZiuUiLcifVL2p7e/iOUfWOhjpEJDnxXSFaelkkyG0u/gamWA1NGU0YbMMS+AUsCkeVjXDy54Doidz2cuZL8fSZp9X/Jms1ojO3o8t8Bn5+TMGuJ64jMchC7cTWMiLqzJR/bXys9snUuBNT2r3lTec6eGXngICimOsG6ukSKUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Eu6URQhC; arc=none smtp.client-ip=209.85.219.100
+	s=arc-20240116; t=1776148818; c=relaxed/simple;
+	bh=eUByrnPJ2nona1QXhiPKoFAJ4ou5D+Pn4Dg2jpFDt6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PGfsius9L8SsrGUFTNdXtPablRKT2AM2C50zhN2ksykitEjyeHd7Bltm1qFk5rPLe+D4xlqQNPC1CIoawkCqWMrUyuXG2Me24Pk4Xjw9wMranaP53vB4+NNQcPmkMNLhLSzVRZ0637OUOGfPe7pC9oHD3XDsP89BBfAsOIgGaO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Ti2EBGoj; arc=none smtp.client-ip=209.85.216.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qv1-f100.google.com with SMTP id 6a1803df08f44-8a50968fd07so6485606d6.0
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 23:39:02 -0700 (PDT)
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-35daa02ea08so571168a91.2
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 23:40:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776148742; x=1776753542;
+        d=1e100.net; s=20251104; t=1776148816; x=1776753616;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GYL2a3cReHZZ5YSJ0wmm3zCuDsPFAtU2gKvk7jCr2V0=;
-        b=PEFNcC0RnOVxUsXmAieI3yPIRG+kUqXBL4NRo1f8HFdBds1uSjo1mAxJ1ZF7awXcv+
-         FaCjWFFisxxcv/QBOOxpDgpZZadWvtxnki5wJ1VBlN+vUAYtYDUx3IBJKUVQUIqUaUGw
-         LK4NRLHzSH1D82UqX58ijrDid0rQAltYQqXZ9ockVSyRUXgBNl+MaW06DbPXjCXbx+3n
-         UDRs/ce57aHaKPPPg4YxwmfB1IpEpb0o7THTbkikdrXI1vRVs/bZ5zJ80hjAKG6KFppS
-         Byjl3RdhdZPu2FpvC6odG+oOEOzae0ERVX3z2/qGkMaVKwpKyDf6JAIDOpepqYcTi3jj
-         Pv8A==
-X-Gm-Message-State: AOJu0YzTFtY7yHairExbgNlBqDJhaJvIRdIMv/0tyR3cCpas42u59+qt
-	zWyXBOl1L2OZqQmX/7jLbXs6Ryb2fILhXpj8Y2I8lTvDyTV1Fm453YBbiZp0nWsnGWdzKgFG55p
-	mxCddt8/6xDaWac9T+I013CpMuVhtOZwm/krF8LrsX/Ffw7D+vrbZ3G1odQ5w8E9LtdJXkAhQUg
-	OgC6AUJhV+iq0nZZmOS9GotNtDoeHSzleKTp2GzxFzoAzVY3U1nQDxBdolyJDtbYphhqeDuIoV6
-	6JxS1TxniavaQBz3oQfFVI6H7pPlA0=
-X-Gm-Gg: AeBDieuqRY5OXYCHjRu+x24KLDdMQfc5yBezrJg4x7B3v4myxD5+RYPXupn7rR3onn4
-	bCwhxzZkPDO90/54UzTEE0OIFEV64DhgtBWodVo17ZkMFIOe+8ADUjbCehDUT3dTsXvYzBkAQt+
-	x8HlVQmLSv7Nx4xPok+Rcyl35CBMbdMxBehg+K0tVegBFWv72uKq/ttSeGDxake5ZT/SfMInZ1W
-	HIPGskrNo12mCxV2Ol5bHtV6jWvonpOIud7rElB6JX/eAvqlCBtcHP9ZBqNZIJnrENrYsxHyoQR
-	hNY4Zhjd1OvUteDrSDNfD8hiduVtHangAwnp9FPy6LB2kTbpvOqjOyHTnCSzREQSNwJTUDKEFul
-	1QFX/X8DZaWNmvqRFcePzisrkPeVozp0e03/k34+lRg1v1qTi7KA4pye3dSmz/DuxCHKXxK3pY3
-	QOyPlvBfW7aSUWzCpD6GLgucM1bFFyB2+LnbBH6+tWuJ9e14NXBDlzOMWFzXc9aULOjVyw1yVtz
-	dYRd2CMPPG3
-X-Received: by 2002:a05:622a:4c06:b0:50d:9138:3322 with SMTP id d75a77b69052e-50dd82ba5aemr170244971cf.7.1776148741700;
-        Mon, 13 Apr 2026 23:39:01 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
-        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-50e06df140esm1480221cf.2.2026.04.13.23.39.01
+        bh=2l7i8vnpUJQTdJaWwY66SR5P0SKGOILNorZy9BBZKRQ=;
+        b=Ve7wC5YN79d1xL9ve1EZVv0HH/hQqKqdQg4o//8aqflHsQO6rETxl6bYBvJcfQ0cxo
+         5nfKImiohp8gaNfzeAYxqEaznnPYhF6vwRUKLdXZ+/II2Jgqt25GC8wr/PjoaS2YSLNZ
+         9lDsviLuJrAGWltaRqHWyb5IuSNxJxC65S9+nHRwsby/Xq3+19uMhKm+qWJI1zxE6oF2
+         kbwVMJDlUMxv7K2sBIFUexA7NP5O4Y+lEUiyN5XXpRTBUVOhG9q8tfTfYEXbEuZ+4g7f
+         WwSK56ShUhEMdckn3KJNaFCAi+a5nFKRyIDDCgNj8F2aK6MEM9Ezo8XRSaJrw5AQd7o+
+         dVjw==
+X-Gm-Message-State: AOJu0YwmF1WLL+E4rQoMo1gILJ5WtLBjq54voMFQmYISxNHmPIgyB31d
+	7d7JmS0qZS5p9HKriKq7lA6GV4Su+Uvz/vUpJgptxzhgwWg1a0zP1kPFgJf3aNjyXKB3wngcJf9
+	OsiURu0cquBhF0Cz1dHjOst5DHPLrbWLMlTs5WLrifxz4Rct8YBx/S+bcKeXtCjDEBU9k4mQXER
+	NbbAsUu2q7MqkoGQ8tWznT1NEr0Ovel2HvXwhRftDXQunfl6+a9IkI72cIoNmHyp8zjcrOWOLTg
+	Fr+XLuRqTU75eo7LutSYNnheI3GWks=
+X-Gm-Gg: AeBDieuiPmxnBqvJh3Qg3x0E1xc4XodEfUIk50r/Vr2eLb5IxjAFHpx1nC/Ohgu0dSK
+	y9qxdX3NflWM8VdN5ktdYRkloJUdxpq+3aYISHtldEp00F427wQR5Gh0fPxVu++kZTqm0tnXrma
+	sKPG0sbCshRadSrLRkw9rQZ8ErDXBqXvimUL8+x6pkatQiU/lDfaoVuAovdBXWj4YVWiIcsphBN
+	ZvSBVuzBbAnohUfUlA0J8E5BCUqvOvj5+LjvT/1Sydutbm5KVTOrpqDCsocAXBq2TKxYJQl2Xmg
+	Xnv/OnGdY9sfh7rGTBcqIr2UlV0Hk8kz1jkloawC7lXER6KpeNq2oj4GCGszZi4WTBrrH6S/ekT
+	Bca2VJ9cwd3HdiaSsgIJJQfN+PZgf0PnDKhfNvSKe4lBIrZuivnGhHRoR/pyU8Pew0gd/9hlkQB
+	fY7kHa48wUnCS8CSqDrSjcVEORWEH8Ge90Fc/v09XwwSZcYCj5GhYujVsQ8EPNZpBG0xZ/LRGHr
+	5VR9XtIw6am
+X-Received: by 2002:a05:6a00:3002:b0:81f:453d:1ab9 with SMTP id d2e1a72fcca58-82f0ed10d84mr9661228b3a.3.1776148816438;
+        Mon, 13 Apr 2026 23:40:16 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-15.dlp.protect.broadcom.com. [144.49.247.15])
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-82f0c2ff0fasm937941b3a.2.2026.04.13.23.40.16
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 Apr 2026 23:39:01 -0700 (PDT)
+        Mon, 13 Apr 2026 23:40:16 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-12714223a5cso656506c88.0
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 23:39:01 -0700 (PDT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8d45ebdbc9fso104170085a.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 23:40:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1776148740; x=1776753540; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1776148814; x=1776753614; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GYL2a3cReHZZ5YSJ0wmm3zCuDsPFAtU2gKvk7jCr2V0=;
-        b=Eu6URQhC3iV+FnxPjArmO6tA160eauufzD4dJrNcAGsjIEKmhoPe+M155F533tudRM
-         aBOuuIHfTDbnk8XaO/rMhC9jeTdykKu+Ucy+WjyTaeH0N2oaKJTwr+K3CmD26fAPv1cB
-         AXqdps3MPyjfegbB4WX8ZDl9c+6tZqCxukoAA=
-X-Received: by 2002:a05:693c:300d:b0:2bd:d8e6:90a0 with SMTP id 5a478bee46e88-2d5c39f6544mr3735056eec.3.1776148739985;
-        Mon, 13 Apr 2026 23:38:59 -0700 (PDT)
-X-Received: by 2002:a05:693c:300d:b0:2bd:d8e6:90a0 with SMTP id 5a478bee46e88-2d5c39f6544mr3735024eec.3.1776148739232;
-        Mon, 13 Apr 2026 23:38:59 -0700 (PDT)
+        bh=2l7i8vnpUJQTdJaWwY66SR5P0SKGOILNorZy9BBZKRQ=;
+        b=Ti2EBGojhCEoCjHxHmHkv1o2ejoAfa6151Jh1Nh6c07CljOglc3Gg6ilw9iYl3JpGB
+         MyCp2ORQ054YiPpwIYlIglO58Sqv24PC0plyxkj0v9j+V8Xu5h4yyx0afm3nrrgikHhv
+         YJOtXhgylpAmOE1lrjxoGAuNW8CdR6HZ2Z9N4=
+X-Received: by 2002:a05:620a:44d1:b0:8cf:c757:f1e8 with SMTP id af79cd13be357-8ddec1f0d27mr1636848285a.7.1776148814461;
+        Mon, 13 Apr 2026 23:40:14 -0700 (PDT)
+X-Received: by 2002:a05:620a:44d1:b0:8cf:c757:f1e8 with SMTP id af79cd13be357-8ddec1f0d27mr1636845685a.7.1776148813891;
+        Mon, 13 Apr 2026 23:40:13 -0700 (PDT)
 Received: from keerthanak-ph5-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d5630ac330sm19396261eec.29.2026.04.13.23.38.57
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8aca5222c8esm71566416d6.28.2026.04.13.23.40.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 23:38:58 -0700 (PDT)
+        Mon, 13 Apr 2026 23:40:13 -0700 (PDT)
 From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -110,9 +110,9 @@ Cc: pablo@netfilter.org,
 	Mukul Sikka <mukul.sikka@broadcom.com>,
 	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>,
 	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH v2 v5.15-v6.1] netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR
-Date: Tue, 14 Apr 2026 06:31:31 +0000
-Message-ID: <20260414063131.4054234-1-keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v5.10] netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR
+Date: Tue, 14 Apr 2026 06:32:43 +0000
+Message-ID: <20260414063243.4062926-1-keerthana.kalyanasundaram@broadcom.com>
 X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -127,15 +127,15 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237731-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237732-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[22];
@@ -146,10 +146,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[broadcom.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 69D393F634F
+X-Rspamd-Queue-Id: 25A123F63A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -175,28 +175,24 @@ moves that `src->rules > (INT_MAX / ...)` check inside the new
 `if (src->rules > 0)` block]
 Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 ---
-Changes in v2:
-- Fixed patch apply failure
-
-v1: https://lore.kernel.org/all/20260413043247.3327855-1-keerthana.kalyanasundaram@broadcom.com/
-
- net/netfilter/nft_set_pipapo.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 863162c82330..2072c89a467d 100644
+index a4fdd1587bb3..83606dfde033 100644
 --- a/net/netfilter/nft_set_pipapo.c
 +++ b/net/netfilter/nft_set_pipapo.c
-@@ -525,6 +525,8 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+@@ -524,6 +524,9 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 	struct nft_pipapo_field *f;
  	int i;
  
- 	m = priv->clone;
 +	if (m->bsize_max == 0)
 +		return ret;
- 
++
  	res_map = kmalloc_array(m->bsize_max, sizeof(*res_map), GFP_ATOMIC);
  	if (!res_map) {
-@@ -1365,14 +1367,20 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 		ret = ERR_PTR(-ENOMEM);
+@@ -1363,14 +1366,20 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
  		       src->bsize * sizeof(*dst->lt) *
  		       src->groups * NFT_PIPAPO_BUCKETS(src->bb));
  
@@ -205,15 +201,15 @@ index 863162c82330..2072c89a467d 100644
 +		if (src->rules > 0) {
 +			if (src->rules > (INT_MAX / sizeof(*src->mt)))
 +				goto out_mt;
-+
-+			dst->mt = kvmalloc_array(src->rules, sizeof(*src->mt),
-+						 GFP_KERNEL);
-+			if (!dst->mt)
-+				goto out_mt;
  
 -		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL);
 -		if (!dst->mt)
 -			goto out_mt;
++			dst->mt = kvmalloc_array(src->rules, sizeof(*src->mt),
++						 GFP_KERNEL);
++			if (!dst->mt)
++				goto out_mt;
++
 +			memcpy(dst->mt, src->mt, src->rules * sizeof(*src->mt));
 +		} else {
 +			dst->mt = NULL;
