@@ -1,405 +1,176 @@
-Return-Path: <stable+bounces-237734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id a+kGMsjj3WnskwkAu9opvQ
-	(envelope-from <stable+bounces-237734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:50:48 +0200
+	id ELTvMrbn3WmulAkAu9opvQ
+	(envelope-from <stable+bounces-237735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 09:07:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F47F3F642F
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:50:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 743473F6641
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 09:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 886A1308EA37
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 06:46:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C8A48301AA94
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864C9331A61;
-	Tue, 14 Apr 2026 06:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DE735DA6C;
+	Tue, 14 Apr 2026 07:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="LyDzYp2/"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xe2Uwdhv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y9TzgUo5";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xe2Uwdhv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y9TzgUo5"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF5631327A;
-	Tue, 14 Apr 2026 06:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F38B35B651
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 07:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776149166; cv=none; b=RHiKH12JETM2jqynGyrL581XNe1xHePRzDQnvCTzKjBGDZQLDvRaFPCGYr1XiK4sAQdyL2CN/jv+4PlnaOHm6ER85+vln3/6HqiR3VsI/jCDzSa6R2xDHLhLDaodI4Avj4QBP8BVh2zT/qrFonlGpWZDRop+8JfRYvqsXZ1BWL8=
+	t=1776150397; cv=none; b=nMPFhhqAabwWIwBmWZ2Awe59pOoHMZwMbkFcRSHY+F4oq+ZPC9lZYgQxz4PGtX6X913yqxXKQVbzmGuiNsbds+WW/P/drN4QVwH4csF5Pt8aZvg1u49FV/u1ASjzXzRaXcVlUHPvAvGEXuBDNEoz5S0emRTx0x6e/7RkXx8UepU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776149166; c=relaxed/simple;
-	bh=DpZCdQs4b8+LwP5vOJC4yNhUFG0XN7Mekxfml7YimkM=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=eGnVFKGoYIl5L5mM7GMdYDteHSyljGqEuAnJt5JcEGtLCN1TGWvFAth+lfuicv2rYLY2ec0RLXvqHpuh6VF49aI0iDDFHED+FlX2B2S9poUfk3tc8Hzhys8dIncj6fvH9yxJEwFQsTchmtCV9vHwCFThsZ4ykadtm7XYGB/2IzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=LyDzYp2/; arc=none smtp.client-ip=162.62.57.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1776149157; bh=WwN0f6XKuujjTb0gJTYkPaL3YR7Zj7pYP0YCfeToHmM=;
-	h=From:To:Cc:Subject:Date;
-	b=LyDzYp2/qnniIqlQutalDnANRc+cIsTvp97b0vDKcdKwQZ8ArSHYAB82Vb7fvwFSA
-	 U94/6A2EoB455+dUOsggCEkqk/Te+BZaWo6d2tPiIyFXG55m/3q10sqttIS92kDW+k
-	 9yHOECmK1ANmz2dfJhP24a8ytl4MyAb9GBVTWp3Q=
-Received: from NTT-kernel-dev ([60.247.85.88])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id B75018D0; Tue, 14 Apr 2026 14:45:53 +0800
-X-QQ-mid: xmsmtpt1776149153trz5913pw
-Message-ID: <tencent_B4E5A4D17E67F7C7096F7BF8A4C701223008@qq.com>
-X-QQ-XMAILINFO: NVJuObMcvoCvI7KlUgVHao/m62b+xO7xT4B6qbN2gQn4HfCZ9e92aJPs0t7VQB
-	 vKjtNIwr2fVXevhyoun5GPYxJyKtTdNqaClLInwtoWmugGrXT728H6ZUeFweVfwWWx56JIvS10eZ
-	 zbVRLrQ4I4nZnTgXwrc22HWRsu2YpFHfia5/Jmx6aH9WTHGtok6ugz6knvCxTrmwOvaD0c5A/ray
-	 ijxqZopytqR5N7cO1VtMTM/XdLjrM1/ELtMRdb1R0IbwY+jatmIh5cqkNZ/LtgbfFt6s6Il6GqTD
-	 HAyWfL8tc7gj8eYvzr4dIu8A+q+SwjLGj1b7to77QhwFl28PxwwBZazhlGrAIDX5kit1XDpRwkQ5
-	 vV8xXON6YvEwCws5Rj/SsHd8eLu3JAFG+yiVbSN7HEPm4rhgr55gSP8198HLpGbk1+Kamz6xqbeu
-	 oRPH0qtcfCZva7toVlrfZsUKC+3dTlwqqTYwYNQVdUkDaLyyoAJpm9bHVcbZRgBNU1Am5cIOnH//
-	 lM1KBEyNUFcjUJpG3eRbx6VW2fHDZJmh11zmaWf4mSwoyBI0R97bisJtH98AJljm/klWsFIkLW0R
-	 9eYPf19YGOdfT3fKGdMUHRNeAgUlNb7SQLKArZnJj5rlLrTdH9fiLg1DqYqFnnPG6qNFUbV8xXbp
-	 oMvtwb0FQQsiT4EM2NbVRxLSRjXEWcfEdVdIouJuX1wrFlI1vfCksj2tgsXJHYKqueW/C1NqjGCW
-	 dzhJq+ISVcpSP31MnIYZZINyzsnLprUoACnY+g7Hnf+hevLh5t+j76yh9e4ufGdEt4X1N0QFV9ue
-	 bRt4negeBEbhQGgc69AL6YgjKVITN3YgHDWMgBJg1fB1HdoMKjOi8udJ0I/xAymRuijKAgnK4CvH
-	 dTacAVvR9hZcY00kF9GIJxRG71ixz2W/q9aiPGk2NczcYR33Gm9mVqJtMESSLxRLhyuo9NEKq5xU
-	 D3yiS9y4+GEv6dEszyOMGn86Rbe94nK0tpHhqwMwMWVkhVYlYGpTHw9X6W3K5xpC+mqAyp4PCmub
-	 FyapwFkwpug+kqQw9zwmXr4QxAqGrxFXEVvBKkX0xQuDHSDXovY/DxJy9l2XXlsMFu/A5qvSn3zd
-	 CG3rq5
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Fang Wang <32840572@qq.com>
-To: maudspierings@gocontroll.com,
-	gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	dimitri.fedrau@liebherr.com,
-	markus.koeniger@liebherr.com,
-	andy@kernel.org,
-	linux-iio@vger.kernel.org,
-	Jonathan.Cameron@huawei.com
-Subject: [PATCH 6.6.y] iio: common: st_sensors: Fix use of uninitialize device structs
-Date: Tue, 14 Apr 2026 14:45:53 +0800
-X-OQ-MSGID: <20260414064553.151857-1-32840572@qq.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1776150397; c=relaxed/simple;
+	bh=oPgDQtOkwfxiI17Ey2l76gGFzq/NqW+sFdVxHUpRGeI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EWbL/li7Mt4qx3lRypapn1l/vocTbAYiFR5BiP7UicocHMa8no3w+3vQiHktIDtShboQ43uRiF6tqAEtYOQBgSryFefQR9qsY9lwL3ldS6kryOKzJ5i3vbbMYH8Cq2RPWEJh1QkGwrggC2aJp9PwLSNC4qVpHM8SXLJIWWX8nw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xe2Uwdhv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y9TzgUo5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xe2Uwdhv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y9TzgUo5; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E46B5BE4F;
+	Tue, 14 Apr 2026 07:06:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776150388; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZA8IyOK7SlJ5v4aciSYNIbHX1SFlOykm6dpYCMhiRA=;
+	b=xe2UwdhvXOI0sanPbCaiJ+frOomL4U9yBDKkTqMjDUI3SRBV+t0zge8EsFrp7NpSHPBvp+
+	RrmpSnmJBQGUKCQ7yjXH6bvk9xLaAkBWoAuRVi3yrutYrRfNHBFVZRaC6Gh4KBiNkxmDIu
+	JcbX1ZZJq+03GcimaSFybocpFXhUVZQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776150388;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZA8IyOK7SlJ5v4aciSYNIbHX1SFlOykm6dpYCMhiRA=;
+	b=y9TzgUo5SncIm1yKKsL2Vt39DlQxqdqsB6E9TPAqBEJed1bwePe+Q1OiQaYkYe55SsYgMS
+	I1cyNIJPGaXxm7DQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xe2Uwdhv;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=y9TzgUo5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776150388; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZA8IyOK7SlJ5v4aciSYNIbHX1SFlOykm6dpYCMhiRA=;
+	b=xe2UwdhvXOI0sanPbCaiJ+frOomL4U9yBDKkTqMjDUI3SRBV+t0zge8EsFrp7NpSHPBvp+
+	RrmpSnmJBQGUKCQ7yjXH6bvk9xLaAkBWoAuRVi3yrutYrRfNHBFVZRaC6Gh4KBiNkxmDIu
+	JcbX1ZZJq+03GcimaSFybocpFXhUVZQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776150388;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZA8IyOK7SlJ5v4aciSYNIbHX1SFlOykm6dpYCMhiRA=;
+	b=y9TzgUo5SncIm1yKKsL2Vt39DlQxqdqsB6E9TPAqBEJed1bwePe+Q1OiQaYkYe55SsYgMS
+	I1cyNIJPGaXxm7DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 463E94B300;
+	Tue, 14 Apr 2026 07:06:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ozbdD3Tn3WliOwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 14 Apr 2026 07:06:28 +0000
+Date: Tue, 14 Apr 2026 09:06:27 +0200
+Message-ID: <878qaqt40c.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Eric Naim <dnaim@cachyos.org>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	stable@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for Legion S7 15IMH
+In-Reply-To: <ed4dae33-7c4e-4ccc-82c1-fa1aee137bcd@cachyos.org>
+References: <20260413154818.351597-1-dnaim@cachyos.org>
+	<87ik9uua4a.wl-tiwai@suse.de>
+	<ed4dae33-7c4e-4ccc-82c1-fa1aee137bcd@cachyos.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237734-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237735-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[32840572@qq.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[qq.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[qq.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,gocontroll.com:email,qq.com:dkim,qq.com:email,qq.com:mid]
-X-Rspamd-Queue-Id: 2F47F3F642F
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,cachyos.org:email]
+X-Rspamd-Queue-Id: 743473F6641
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+On Tue, 14 Apr 2026 05:28:00 +0200,
+Eric Naim wrote:
+> 
+> On 4/13/26 11:56 PM, Takashi Iwai wrote:
+> > On Mon, 13 Apr 2026 17:48:17 +0200,
+> > Eric Naim wrote:
+> >>
+> >> Fix speaker output on the Lenovo Legion S7 15IMH05.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Eric Naim <dnaim@cachyos.org>
+> > 
+> > Thanks, applied now.
+> > 
+> > 
+> > Takashi
+> 
+> Sorry Takashi, can you remove this from your tree? I seem to have gotten the
+> PID wrong for this device. I'll follow up with a v2 or fixup once I've
+> confirmed I got the correct PID. Let me know which of the two resolutions you
+> prefer.
 
-[ Upstream commit 9f92e93e257b33e73622640a9205f8642ec16ddd ]
+As the tree was published, could you rather a correction patch on the
+top?  Put Fixes tag for pointing to the corrected commit.
 
-Throughout the various probe functions &indio_dev->dev is used before it
-is initialized. This caused a kernel panic in st_sensors_power_enable()
-when the call to devm_regulator_bulk_get_enable() fails and then calls
-dev_err_probe() with the uninitialized device.
 
-This seems to only cause a panic with dev_err_probe(), dev_err(),
-dev_warn() and dev_info() don't seem to cause a panic, but are fixed
-as well.
+thanks,
 
-The issue is reported and traced here: [1]
-
-Link: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/ [1]
-Cc: stable@vger.kernel.org
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://... [1]
-Link: https://patch.msgid.link/20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Fang Wang <32840572@qq.com>
----
- drivers/iio/accel/st_accel_core.c             | 10 +++---
- .../iio/common/st_sensors/st_sensors_core.c   | 36 +++++++++----------
- .../common/st_sensors/st_sensors_trigger.c    | 20 +++++------
- 3 files changed, 31 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 51d8de18e6d6..45d2268e042e 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1342,6 +1342,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	union acpi_object *ont;
- 	union acpi_object *elements;
- 	acpi_status status;
-+	struct device *parent = indio_dev->dev.parent;
- 	int ret = -EINVAL;
- 	unsigned int val;
- 	int i, j;
-@@ -1360,7 +1361,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	};
- 
- 
--	adev = ACPI_COMPANION(indio_dev->dev.parent);
-+	adev = ACPI_COMPANION(parent);
- 	if (!adev)
- 		return -ENXIO;
- 
-@@ -1369,8 +1370,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	if (status == AE_NOT_FOUND) {
- 		return -ENXIO;
- 	} else if (ACPI_FAILURE(status)) {
--		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
--			 status);
-+		dev_warn(parent, "failed to execute _ONT: %d\n", status);
- 		return status;
- 	}
- 
-@@ -1446,12 +1446,12 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	}
- 
- 	ret = 0;
--	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
-+	dev_info(parent, "computed mount matrix from ACPI\n");
- 
- out:
- 	kfree(buffer.pointer);
- 	if (ret)
--		dev_dbg(&indio_dev->dev,
-+		dev_dbg(parent,
- 			"failed to apply ACPI orientation data: %d\n", ret);
- 
- 	return ret;
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index c77d7bdcc121..78f5728417d5 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(struct iio_dev *indio_dev, unsigned int fs)
- 	return err;
- 
- st_accel_set_fullscale_error:
--	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
-+	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
- 	return err;
- }
- 
-@@ -231,8 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
- 					     ARRAY_SIZE(regulator_names),
- 					     regulator_names);
- 	if (err)
--		return dev_err_probe(&indio_dev->dev, err,
--				     "unable to enable supplies\n");
-+		return dev_err_probe(parent, err, "unable to enable supplies\n");
- 
- 	return 0;
- }
-@@ -241,13 +240,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable, IIO_ST_SENSORS);
- static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 
- 	/* Sensor does not support interrupts */
- 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
- 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
- 		if (pdata->drdy_int_pin)
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
- 				 pdata->drdy_int_pin);
- 		return 0;
-@@ -256,29 +256,27 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 	switch (pdata->drdy_int_pin) {
- 	case 1:
- 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT1 not available.\n");
-+			dev_err(parent, "DRDY on INT1 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 1;
- 		break;
- 	case 2:
- 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT2 not available.\n");
-+			dev_err(parent, "DRDY on INT2 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 2;
- 		break;
- 	default:
--		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
-+		dev_err(parent, "DRDY on pdata not valid.\n");
- 		return -EINVAL;
- 	}
- 
- 	if (pdata->open_drain) {
- 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
- 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"open drain requested but unsupported.\n");
- 		else
- 			sdata->int_pin_open_drain = true;
-@@ -336,6 +334,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, IIO_ST_SENSORS);
- int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 	struct st_sensors_platform_data *of_pdata;
- 	int err = 0;
-@@ -343,7 +342,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 	mutex_init(&sdata->odr_lock);
- 
- 	/* If OF/DT pdata exists, it will take precedence of anything else */
--	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-+	of_pdata = st_sensors_dev_probe(parent, pdata);
- 	if (IS_ERR(of_pdata))
- 		return PTR_ERR(of_pdata);
- 	if (of_pdata)
-@@ -370,7 +369,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 		if (err < 0)
- 			return err;
- 	} else
--		dev_info(&indio_dev->dev, "Full-scale not possible\n");
-+		dev_info(parent, "Full-scale not possible\n");
- 
- 	err = st_sensors_set_odr(indio_dev, sdata->odr);
- 	if (err < 0)
-@@ -405,7 +404,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
- 		}
- 
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "set interrupt line to open drain mode on pin %d\n",
- 			 sdata->drdy_int_pin);
- 		err = st_sensors_write_data_with_mask(indio_dev, addr,
-@@ -594,21 +593,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, IIO_ST_SENSORS);
- int st_sensors_verify_id(struct iio_dev *indio_dev)
- {
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
-+	struct device *parent = indio_dev->dev.parent;
- 	int wai, err;
- 
- 	if (sdata->sensor_settings->wai_addr) {
- 		err = regmap_read(sdata->regmap,
- 				  sdata->sensor_settings->wai_addr, &wai);
- 		if (err < 0) {
--			dev_err(&indio_dev->dev,
--				"failed to read Who-Am-I register.\n");
--			return err;
-+			return dev_err_probe(parent, err,
-+					     "failed to read Who-Am-I register.\n");
- 		}
- 
- 		if (sdata->sensor_settings->wai != wai) {
--			dev_err(&indio_dev->dev,
--				"%s: WhoAmI mismatch (0x%x).\n",
--				indio_dev->name, wai);
-+			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
-+				 indio_dev->name, wai);
- 			return -EINVAL;
- 		}
- 	}
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index a0df9250a69f..b900acd471bd 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
- 					     indio_dev->name);
- 	if (sdata->trig == NULL) {
--		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
-+		dev_err(parent, "failed to allocate iio trigger.\n");
- 		return -ENOMEM;
- 	}
- 
-@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	case IRQF_TRIGGER_FALLING:
- 	case IRQF_TRIGGER_LOW:
- 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
- 			if (irq_trig == IRQF_TRIGGER_FALLING)
- 				irq_trig = IRQF_TRIGGER_RISING;
-@@ -156,21 +156,19 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
- 			if (err < 0)
- 				return err;
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "interrupts on the falling edge or active low level\n");
- 		}
- 		break;
- 	case IRQF_TRIGGER_RISING:
--		dev_info(&indio_dev->dev,
--			 "interrupts on the rising edge\n");
-+		dev_info(parent, "interrupts on the rising edge\n");
- 		break;
- 	case IRQF_TRIGGER_HIGH:
--		dev_info(&indio_dev->dev,
--			 "interrupts active high level\n");
-+		dev_info(parent, "interrupts active high level\n");
- 		break;
- 	default:
- 		/* This is the most preferred mode, if possible */
--		dev_err(&indio_dev->dev,
-+		dev_err(parent,
- 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
- 		irq_trig = IRQF_TRIGGER_RISING;
- 	}
-@@ -179,7 +177,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	if (irq_trig == IRQF_TRIGGER_FALLING ||
- 	    irq_trig == IRQF_TRIGGER_RISING) {
- 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"edge IRQ not supported w/o stat register.\n");
- 			return -EOPNOTSUPP;
- 		}
-@@ -214,13 +212,13 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 					sdata->trig->name,
- 					sdata->trig);
- 	if (err) {
--		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
-+		dev_err(parent, "failed to request trigger IRQ.\n");
- 		return err;
- 	}
- 
- 	err = devm_iio_trigger_register(parent, sdata->trig);
- 	if (err < 0) {
--		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
-+		dev_err(parent, "failed to register iio trigger.\n");
- 		return err;
- 	}
- 	indio_dev->trig = iio_trigger_get(sdata->trig);
--- 
-2.34.1
-
+Takashi
 
