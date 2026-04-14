@@ -1,68 +1,53 @@
-Return-Path: <stable+bounces-237780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uD2ENdUX3mlBmwkAu9opvQ
-	(envelope-from <stable+bounces-237780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:32:53 +0200
+	id 8I5FJygZ3mmFnAkAu9opvQ
+	(envelope-from <stable+bounces-237781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:38:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE083F8BE6
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:32:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4F53F8D28
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6320E30B824C
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:26:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67C17301ECE0
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E18E3D5658;
-	Tue, 14 Apr 2026 10:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D3A3D3CF2;
+	Tue, 14 Apr 2026 10:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iD8YaJT4"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="WkHVGH+j"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AD13D4137
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 10:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35743D5258;
+	Tue, 14 Apr 2026 10:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776162399; cv=none; b=ZoOlid0gYK2jx/EAiCRLLAz0ry5DGE1Q6/LuxTQkqAVGOqyolQe3czXspsy5Lw/ThxeCLNARqaeVHiwJnHZfA4l3uOC24RlY4KYDRS0wU/dYBWURB3TOeIx3IQiNvRuqk3/4efwxycSwelAX0XRYwpr3macnh6Rn/5oWU8AF7wg=
+	t=1776162415; cv=none; b=rn7bW8ybLWpEjV6tYnGb05xvk5klfevPcFpc99ufo2EG+otBG/AL/MUfyK5GinBatyQCXpRdJNe2a+HrLMZqtictGRc1+5ecnhM92vWJy68KEOeYjHnFLuzja91CseoWi/kxYWG4CdeejnUxP2uE9uGKE0c+RN3NnKVznvUMj0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776162399; c=relaxed/simple;
-	bh=ryBPjDFBhZHxlXdVvV7eSlw6JpC9aOy6QBbU9DuWzSw=;
+	s=arc-20240116; t=1776162415; c=relaxed/simple;
+	bh=ZfFf+Xb9PptclsHbGofHnbDruAIXwhUSQ+T+mgmk3Qo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jTI8Fk9ITLvy7tLyeL4ES9ZBeUoZXFwO2vT9RGq32UignSqV0kV/olFwB+lC67xtqZhIaLhUvNoSslKCFEzS+uueHXOgKAwYwXhAnxguRiFRhBb3DE41KkVNQrZYEYSUAIVVr5rOWPsc1JQzBYVCh8q9dQspSIFb39W1z+4U5/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iD8YaJT4; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776162395; x=1807698395;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ryBPjDFBhZHxlXdVvV7eSlw6JpC9aOy6QBbU9DuWzSw=;
-  b=iD8YaJT4n/nA4uq/MEYfOua+wsLy9UZ9IlFokX5p2KcxR0GtguL6osce
-   9lcT0hDVHv/jjmqRfOYfkmCiidRkZMjpdJ6boZJjaVL5A4qZheZ9u3k9j
-   jPpWeebggHtAWejzkzyRGnSGp1UVHLss612XbvjUmFm/MFpyfUcqrwu22
-   p4NpuVrRt07e6evM3X6u3jGZk8qpgFcAG3lXr//5t5JZYjXnIp8a/43Ie
-   cfYL4YI5tSPXricFVLtNmMv/GUiC0nU5lRUnb/epz/kOrYvYuhbmCKILr
-   SlFh16K7HFa3ntLAfNCs0BSZtpNZmm7xp8jcT/K35COGzcq9pXHm3SK5o
-   w==;
-X-CSE-ConnectionGUID: xv+6djADTGGgnxIxfMLKkg==
-X-CSE-MsgGUID: ipmaOYHFT2KqwdHQV/K1MA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="102571117"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="102571117"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 03:26:32 -0700
-X-CSE-ConnectionGUID: n9zZ52jyRge4c+1ydhqnBQ==
-X-CSE-MsgGUID: /5s86mPoRu+RAs9ZvIH8Tw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="253279076"
-Received: from avbakuno-mobl.ccr.corp.intel.com (HELO [10.246.16.61]) ([10.246.16.61])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 03:26:30 -0700
-Message-ID: <9efe2c87-fbe4-4adc-ae15-7acb3c8fe26a@linux.intel.com>
-Date: Tue, 14 Apr 2026 12:26:28 +0200
+	 In-Reply-To:Content-Type; b=GYOdicx91ZebKe9z0wEQznAhqEBN+i8AWxULbruGIhFnolGbSUC6xhj4Dk3sjhS7o0Aoq60aS8Rn+KnZ2rkgjckeG75EGMxmz0HeVA6FdkUHpTEauWZ4vfuBLYzvQJGPc5RsvVLNIiu1fNK1s+JguHajAR2QBi5IAfCpkLmtCBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=WkHVGH+j; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9296510CE86;
+	Tue, 14 Apr 2026 12:26:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1776162404;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=QUw1GVmNa8Tm46eOKkaFDELo/gPbvua9u5RkS9ks50Q=;
+	b=WkHVGH+jj8fht7LcddhRDZghm6vajSldF7jCuPPld8XaJDmTaavEKLjPoyAyiSo++KUoeB
+	yY6lRuBcEQxo02s6xWZd2oP88iW/C9ZeUYfQElpKoQq6jIbpSGEJXAWXpZUsVll3RdYw/K
+	z6BusZnCnsxCW3891oKe2Dv+Yo02pJL3mhCPPQiCtgjPYkXCJ0sl/vWA8DNsQohqqACxN9
+	fAg1LL7BanNxdvRBXbnxQ3L2cfOENpERevQTsStSd+PtfepD8mRGDARaXkuRlCQjNkqjot
+	j+m+QXBfJXMu5IQox2zqitdZoPEG+Xwzgp6Icb9hjcr2WZJ6fzL5Pm9hwanYjQ==
+Message-ID: <a3a1333b-5b08-4f18-8bce-6d83408d915e@nabladev.com>
+Date: Tue, 14 Apr 2026 12:26:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,78 +55,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] i40e: Cleanup PTP pins on
- probe failure
-To: Matt Vollrath <tactii@gmail.com>, intel-wired-lan@osuosl.org
-Cc: Kohei Enju <kohei@enjuk.jp>, stable@vger.kernel.org
-References: <20260407161447.43645-1-tactii@gmail.com>
-Content-Language: pl, en-US
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20260407161447.43645-1-tactii@gmail.com>
+Subject: Re: [net,PATCH v2] net: ks8851: Reinstate disabling of BHs around IRQ
+ handler
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>, Paolo Abeni <pabeni@redhat.com>,
+ Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui <yiconghui@gmail.com>,
+ linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>
+References: <20260408162535.98108-1-marex@nabladev.com>
+ <20260412090141.21bf1534@kernel.org>
+ <2558832d-c821-436d-898d-b708c5e0a228@nabladev.com>
+ <20260412105125.48f0c58f@kernel.org> <20260413125744.TVKkZcEK@linutronix.de>
+ <16fdeec9-9208-4c9b-b228-d6c6e045e116@nabladev.com>
+ <20260413160336.GQCaw-1d@linutronix.de>
+ <20260414085556.SJSDwbpW@linutronix.de>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260414085556.SJSDwbpW@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237780-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,osuosl.org];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237781-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,davemloft.net,lunn.ch,google.com,tipi-net.de,redhat.com,raritan.com,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawid.osuchowski@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nabladev.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,linux.intel.com:mid]
-X-Rspamd-Queue-Id: 4DE083F8BE6
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:dkim,nabladev.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8F4F53F8D28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 2026-04-07 6:14 PM, Matt Vollrath wrote:
-> PTP pin structs are allocated early in probe, but never cleaned up.
+On 4/14/26 10:55 AM, Sebastian Andrzej Siewior wrote:
+> On 2026-04-13 18:03:38 [+0200], To Marek Vasut wrote:
+>> On 2026-04-13 17:31:34 [+0200], Marek Vasut wrote:
+>>>> I don't see why it needs to disable interrupts.
+>>>
+>>> Because when the lock is held, the PAR code shouldn't be interrupted by an
+>>> interrupt, otherwise it would completely mess up the state of the KS8851
+>>> MAC. The spinlock does not protect only the IRQ handler, it protects also
+>>> ks8851_start_xmit_par() and ks8851_write_mac_addr() and
+>>> ks8851_read_mac_addr() and ks8851_net_open() and ks8851_net_stop() and other
+>>> sites which call ks8851_lock()/ks8851_unlock() which cannot be executed
+>>> concurrently, but where BHs can be enabled.
+>>
+>> I need check this once brain is at full power again. But which
+>> interrupt? Your interrupt is threaded. So that should be okay.
 > 
-> Fix this by calling i40e_ptp_free_pins in the error path.
-> 
-> To support this, i40e_ptp_free_pins is added to the header and
-> pin_config is correctly nullified after being freed.
-> 
-> This has been an issue since i40e_ptp_alloc_pins was introduced.
-> 
-> Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
-> Reported-by: Kohei Enju <kohei@enjuk.jp>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matt Vollrath <tactii@gmail.com>
-> ---
+> I don't understand. There is no point in using spin_lock_irqsave() in
+> ks8851_lock_par(). You don't protect against interrupts because none of
+> the user actually run in an interrupt. As far as I can see, the
+> interrupt is threaded and the mdio phy link checks should come from the
+> workqueue.
 
-Hey Matt,
+Ha, now that the IRQ handler is indeed only threaded, I can use 
+spin_lock_bh() indeed. I will send a V3 like that.
 
-I wrote a comment on your "[PATCH iwl-net v2] e1000e: Unroll PTP in 
-probe error handling" submission about the changelog positioning and 
-CCing stable.
-
-For this patch right here I see the Cc: tag is added correctly to the 
-commit msg body, but the changelog is inserted in the same way as in the 
-submission I mentioned above.
-
-Not a blocker by any means, but just wanted to let you know for future 
-submissions to take this into account.
-
-Thanks
-~Dawid
+> What is wrong is that the ndo_start_xmit callback can be invoked from a
+> softirq and such you must disable BHs while acquiring a lock which can
+> be accessed from both contexts. Therefore spin_lock() is not sufficient,
+> it needs the _bh() and _irq() brings no additional value here.
 
