@@ -1,244 +1,227 @@
-Return-Path: <stable+bounces-237916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH/KE/1m3mmxDgAAu9opvQ
-	(envelope-from <stable+bounces-237916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:10:37 +0200
+	id ML9uOGZn3mmxDgAAu9opvQ
+	(envelope-from <stable+bounces-237917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:12:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F503FC608
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:10:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EB03FC669
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A92730E07A0
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:03:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4778A30B8DD1
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31063ECBCC;
-	Tue, 14 Apr 2026 16:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA0A3EC2FD;
+	Tue, 14 Apr 2026 16:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="q2oHU+Kp";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="q2oHU+Kp"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rnYlTJQy"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010064.outbound.protection.outlook.com [52.101.69.64])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010029.outbound.protection.outlook.com [52.101.85.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1716C3E959D
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 16:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.64
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776182603; cv=fail; b=RRTx6bLVXwzw3f1wDyfQwU8i53/PflI0n9Qrw3WX150dbbcQmJThZVmWi+a9M9GYYZIqycAZRwvzr+uNg4HgKjLMRKvXRerdGDjCwKzs7V8uuLTOhAWOXMK5EXkh4bajAfEXmglme47Sgz0vIqRRi5DfBzwGrpptrOZ9HLSBd+w=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776182603; c=relaxed/simple;
-	bh=B2V7zPz2Hr4xf8UT31dR2oI+RU04on1RmEwxLyBAG/k=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EragCRRgivG5cIC25YYbxaySHtowsAu2xO+ZfnME2ojXd8e0MvLthB4XjrT/OAtGISd2CpWa5zY751oIGLR+g71KgZJUfKgHipB6UoQb1zjmBIiL0Grl2oh4j639cXwWtlunXmnzilUqk3BqYuA6DmZWAD2AceWTSl3koadMlbU=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=q2oHU+Kp; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=q2oHU+Kp; arc=fail smtp.client-ip=52.101.69.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=SKFInbCptNLxDtkvey6OirUfFytkTBkssDX6V0Tbe9t9/OCJEBU6SeBMZRSY2Pe60U9rRUIlU3MbrOIeGZYofs3q1QAYfo9owSPfcwVlzwI+QoOgIGxqczAouJIq+NkBAppgArjphKOPMfkEvdMj/NUnGBpo/XNDTZ4T2OxtoyiLZ2uWErxlBxyZrXLsbZtXncsNk6A4GM9PzavW8LGMIdaf+KNpjHe/ullIAHVYIH03UUeOlNFPiJkcqt60ucS7rTpBwyjVoakJjmPmEq/4drn6G8Mmh4wkLK8jtMPaRH/XJqDgI1LN0X8yXymEwrvYlKWdQjSX0V/PMJO2m/ERSQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kjHmdJac7YFqaFLcGgZhI3gVvlxr8kPtZnsacGdjQ7A=;
- b=sMW2bKTfHa0AwTENiW/jhi200ZuZxgBFRWm6zfqwyLqwlWGLPe1U8KKST88thfbJ/StdjVDvZXJAV7mNT8Fkqnbsgk8PABOtmhGZWfpxr5fY5ASA3aWl4DTn6y4jvSoVm5uCBen3eTPjubhCfzzC4hXf3v9dC0lL1W+hlqKthuyAIKvV8Z5UDal0f2hWzPxd71+UtjaHu5NfnKka4yfjnb6LsTgHzgP9RzatH9PRuUClQHyLv8l4uoEQyKU+rG1A7J2vqMJPd7ceP2prFpslFtYEHs7KnTgh2SGQsoPcnxBLY7hP6XpZoMdX+XuHrhYxGb53tuaJEA4C8U3oCepvMg==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=gmail.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kjHmdJac7YFqaFLcGgZhI3gVvlxr8kPtZnsacGdjQ7A=;
- b=q2oHU+KpmBKBxB7+ZPA+wYWRNd5kFi6paY/lI/4laISbAtQmK2dw5m9eha2lSkER3sO59fSPREh6zYm/HNbVKbUXitQwrMhm7r227I36m60qgpVjq6Ko3/CoJ4PYIqkyfvpvlss/EW0aNhlfLDqjzLvsonG/hI7qIhyUY3QUTok=
-Received: from AM6PR10CA0047.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:209:80::24)
- by VI0PR08MB10758.eurprd08.prod.outlook.com (2603:10a6:800:1b9::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Tue, 14 Apr
- 2026 16:03:14 +0000
-Received: from AM4PEPF00025F9C.EURPRD83.prod.outlook.com
- (2603:10a6:209:80:cafe::44) by AM6PR10CA0047.outlook.office365.com
- (2603:10a6:209:80::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.48 via Frontend Transport; Tue,
- 14 Apr 2026 16:03:14 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM4PEPF00025F9C.mail.protection.outlook.com (10.167.16.11) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.0
- via Frontend Transport; Tue, 14 Apr 2026 16:03:13 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AE03E5EF8;
+	Tue, 14 Apr 2026 16:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776182800; cv=fail; b=AXQYZVLhmopVdL7r6LqI2lIZHyY4CvfpHNH8Hr2Aq380JYmk1y/qexCCuOe5XFFNIOfDewMrj0nbplhs+QNw6y394ZqulNBnRzJ/y6oI+Ac6oBMz3Kgo50ssE63t8vOjcXM5TLuWhBunPevUWZ1SbTboktOsaIZSP3L71B7QT94=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776182800; c=relaxed/simple;
+	bh=bWlMjiyGJ+1DEeQkIwc8CEMLgLpsM+v1YfyjigVuyoo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=nF6gZVx2YL2qhpQ/mpJI6K+BOrz5I0+iUJ5i4Zi4V7/m6Bf2/Evk1yT2Cj0qDOdeMAOSg7T9hS948SQrryXOTwUEpkNZPqD7ZqS4V+N6QIVzUUfSQ5A9nqzRhflK/oukRAPtROYprxG6G1CokWcQ5P47yCTBURKez3DtRjd7dqQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rnYlTJQy; arc=fail smtp.client-ip=52.101.85.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wmj+Zpkzz2xqaXeuiCP4IsnHrYjLCwS2pRqcPyuczrPJ3haZJpDBVO3g+/Wunhv9yiz2LnO1trw8ovcytipNztQ0QurCfC9ViMxK47lfz+z1U2aRy6mH2prxFKpOSuH+8HdsTgp7qiRhSvCxl6ZfIS6WOQaxp+xFK/+jgnVJ324Fyjd8RpxnAPGErcxZQvh67n8SDvSUaKjosxreGKnP0rxWrDKFCHOvimwFRRXh5DN8CNaZO9OqGLljStdbxjsbFXrlIumb3P1yDNlsuzcoxgZcBmx1hPgeFQHJ6YVz64byJGh+c3L603/SlAfyTjDhVQ8ZY2xYpHrLvlZRLdMkig==
+ b=jG/WcDZYw/hWymd//1CptO5UbVcrfpfLD3/TjzAvw3XnMNEUBwA91/y0+yWr8k4WgCLSWTI0cUzst5KH55rDdvt3Ildn1krcgNNwPgNRuqKinbDMjnjyjpXNoHk74IFY18GBPBRxRDWviomlOvIV3+BWUd3ehDdAA/7en6Dboy/Irs6fkzIfJhaiv5IMFkFSuODWfETxueCQHySa0S8LqDysamIjO4aqc8MoMAMTlD7TqOcIyPX4VOEkl3Z51d3OX+3HFkxHguHwbK4NqgvJ5yj/grrMPGZkNHDooMvoOaJOKnNwiEan5zPqjmdiwaa4Jx1wRYVx/vQ7I5ykBcW9Pg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kjHmdJac7YFqaFLcGgZhI3gVvlxr8kPtZnsacGdjQ7A=;
- b=KhvNUevOtXeEbASFhN2GLpIIoY/2Ni26mGEnh/qHI89+seB/KFEqdNl3c9ZIsTV4kcFUjXFhZcHwWyfRPXyc6j08PYNXSLhvo6P/S9bwJn+xK9qroFoNS+dhVO4u8dlp2E0HpZMU+HkqZGZ2avDn4g7UmGOr2Evv75M/sDjClPhjXUExQXGo+qPcikg6uNK6Xf9c1mtfKKNbO/fR2c5T9RlDgcSKpOHLBERJBJ82qkq01IhajGbaaSrMFkfKmyQW/0vzXZFoWY6f3zbPwTKQUWbPxpUrEVpXzJbaft1WoUuYji/vBViNPkIHkUPLEEdDiooBZiX1V0uSfFlGgjgFNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ bh=Q/pSACup/E0uBP29P7d5OCo1T9iPVsWqYlnpAsNUk2E=;
+ b=MIhsjYrM6yXRNnc9PJ6EqDhwHQ0cD4IHQ4+czX2KAaG5JSDazDJcFOU3YvR/M/CUvs5ANwLJbNgzY08oxuqZRERowOHXa7A4vejkrHR8hXT7tGfY4+4grl3hpx11158+RR6Vw0mNE4BQZGUY1U3/7J8DMGBnBrCpm6Pe1dgfE5bDCHyFKPvjqOrnZ67QxI/PgiRPgbcUarQb9lxiDkgbQ25qRPVPVBPUHZalx860DB3OZ2asMBc5yvawaAOvDNHn/J/SQwnKtexPrMqC6T3/pRq/n3aBkFbBfL/xfybsoroHUVvf9htB9T7uDrQfHohuaEoxM35mYG4+gM4JNyOu2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kjHmdJac7YFqaFLcGgZhI3gVvlxr8kPtZnsacGdjQ7A=;
- b=q2oHU+KpmBKBxB7+ZPA+wYWRNd5kFi6paY/lI/4laISbAtQmK2dw5m9eha2lSkER3sO59fSPREh6zYm/HNbVKbUXitQwrMhm7r227I36m60qgpVjq6Ko3/CoJ4PYIqkyfvpvlss/EW0aNhlfLDqjzLvsonG/hI7qIhyUY3QUTok=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from AM0PR08MB11733.eurprd08.prod.outlook.com
- (2603:10a6:20b:740::16) by VI0PR08MB11711.eurprd08.prod.outlook.com
- (2603:10a6:800:312::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Tue, 14 Apr
- 2026 16:02:08 +0000
-Received: from AM0PR08MB11733.eurprd08.prod.outlook.com
- ([fe80::29d7:e9ba:ff69:a0c3]) by AM0PR08MB11733.eurprd08.prod.outlook.com
- ([fe80::29d7:e9ba:ff69:a0c3%3]) with mapi id 15.20.9769.046; Tue, 14 Apr 2026
- 16:02:08 +0000
-Message-ID: <2a90ad52-4a9f-451b-acb9-b9b576fb348a@arm.com>
-Date: Tue, 14 Apr 2026 18:02:07 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: nfs: fix buffer overflow in nfs_readlink_reply()
-To: Sebastian Alba Vives <sebasjosue84@gmail.com>, u-boot@lists.denx.de
-Cc: trini@konsulko.com, jerome.forissier@linaro.org, stable@vger.kernel.org,
- nd@arm.com
-References: <20260409164440.323405-1-sebasjosue84@gmail.com>
-Content-Language: en-US
-From: Jerome Forissier <jerome.forissier@arm.com>
-In-Reply-To: <20260409164440.323405-1-sebasjosue84@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO6P123CA0021.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:313::12) To AM0PR08MB11733.eurprd08.prod.outlook.com
- (2603:10a6:20b:740::16)
+ bh=Q/pSACup/E0uBP29P7d5OCo1T9iPVsWqYlnpAsNUk2E=;
+ b=rnYlTJQyisofcCs3A0Gg/Q9bDwwEUeWsr50JOlXI4OPc0ar19grJUaCyQ2AVhx/3cxcuPlAIb5DQ7yzzil2TzoGlQdlx60cuSBLdHT6bP12OOpG8m3Kwv6I2BRge1stLvUceJCv6DKeGgnCm2rc+XlvbA2UjmAj7pARgMlmyHuM=
+Received: from BYAPR07CA0038.namprd07.prod.outlook.com (2603:10b6:a03:60::15)
+ by SA0PR12MB4351.namprd12.prod.outlook.com (2603:10b6:806:71::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Tue, 14 Apr
+ 2026 16:06:27 +0000
+Received: from SJ1PEPF00002327.namprd03.prod.outlook.com
+ (2603:10b6:a03:60:cafe::76) by BYAPR07CA0038.outlook.office365.com
+ (2603:10b6:a03:60::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.49 via Frontend Transport; Tue,
+ 14 Apr 2026 16:06:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ1PEPF00002327.mail.protection.outlook.com (10.167.242.90) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Tue, 14 Apr 2026 16:06:27 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 14 Apr
+ 2026 11:06:27 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 14 Apr
+ 2026 11:06:27 -0500
+Received: from [172.19.71.207] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 14 Apr 2026 11:06:26 -0500
+Message-ID: <4b7a0492-6ebb-e0a9-ca48-f2da6002d3e9@amd.com>
+Date: Tue, 14 Apr 2026 09:06:26 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	AM0PR08MB11733:EE_|VI0PR08MB11711:EE_|AM4PEPF00025F9C:EE_|VI0PR08MB10758:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68387a9d-6da0-4bd2-7999-08de9a3f5576
-x-checkrecipientrouted: true
-NoDisclaimer: true
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] accel/amdxdna: fix IRQ vector leak in aie2_init()
+Content-Language: en-US
+To: Guangshuo Li <lgs201920130244@gmail.com>, Min Ma <mamin506@gmail.com>,
+	Oded Gabbay <ogabbay@kernel.org>, Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	George Yang <George.Yang@amd.com>, Narendra Gutta
+	<VenkataNarendraKumar.Gutta@amd.com>, <dri-devel@lists.freedesktop.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>
+References: <20260414121024.3142118-1-lgs201920130244@gmail.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
+In-Reply-To: <20260414121024.3142118-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002327:EE_|SA0PR12MB4351:EE_
+X-MS-Office365-Filtering-Correlation-Id: c1bfa495-2faa-4ef3-d86f-08de9a3fc8d5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|376014|1800799024|366016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info-Original:
- oahiRIAkzS2CBxes1MjfT/0QshgMO1bw3JnmQYC1ZSoejPxrM2HTPSigT5323WStbAZnp6Mp64SVf3ac+EU58FnCcrbUBdPuqIF4SUAkuV/f353W5nvN5d2UHgetQ0cBPHMPFvOoCZmE3sSK3mTPdPRgx8a2tKt6DbjW461g90UhNrC1YpJ2GrpN7mN23X2WMQMuCLosZZYENW44tF5FxgTh9puAjDISlhqdNhF/xP65Cp9R21VgfBrcrAF7/EmUL7A+3x9tWmcyq/a6BpDi8QwjJTbnEVdKWZ7GvZ+zhtojGTdkXnYP7Pi6Qfn0/HSFmpg8yv3xUjpUJxj/TmJYDJI5XR8d58I2s9/Oqauhu+OvAlmlHRMTCRdhY0JtQKZ66k+6UwDcVDbnlnOK9BY2MZPaug/gsCxdAIcVtXZ/A9ZufCH5YlfJB0dRK3qJEXCCfy+VjOiT2RMR3MGiXnk0wnm72ONpLClrVXEvmWSw+A2VGCdSaPciMkQAqXPzYozAIPAZf/bJPrT9sL7yMvhrIOhXX6y5iBpWDwn39ix+45jW7WG8iAW+kjUrBL7LZy754VnyfmESNOrBcBoTj/kbOEfU86gAOgjzhZv0D0XB3osWenkY59mAPBnzStTvJwB6IVtmYEkq2epjAnDiN50Xbl7VlCaldXKIZ0ymIJk2FiX3IzbizgLWBW5n/16BOaZE+SjjWHudzXxF3XWezC+d84Dqzjpy6VDnJ+NBZkNuVn4=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB11733.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- IAYz8jgCufXBKxclH0we3LNr2Dt8DYTo1RmaEP0rkdXIglKHlOKE5lTgkUgDWtWhsZv0gjku32qCpoT0eNTAVRVTGs6pgOdrHCnl1mi8/zi6dwDAwcKCfAGlNAy4o2rXs3nI9czpornPeaJhJRMRxL4SxtNtEg1z2sJNbFPxjjH/2Qdg2zWEWAfQxzepvnU9ZtvV7HiRZuYh9Hj4WjGlt8e1/7XnLxRJwbHSChKYmu2eTQ9VWm/Eu+tPzTFdiEdNxLsjtBZgGBhogjveAopj2KvWobU96OW0/vMB2csk96xuze4OcLqarvFCZLuLfUwxqccdyt4Z3B2nMgMsaqArKw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11711
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM4PEPF00025F9C.EURPRD83.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	daff798e-bd35-426a-964b-08de9a3f2e5c
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|1800799024|376014|36860700016|82310400026|14060799003|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	mkkQDXjp5VPDIM0lpGYGuS6A7S/MJi6rADZSiy1S+3XKoUMqp2k6hCALpbtGQebH9+E41hxluSAO5/fd6RxwvZcj371TzHHA4B9xGIpK0UNYa/JxDUuf85SM+ZjCoX7KV/fJ+2M1odLDa/IHIO9b02MBv9e/e4Ps83OYBzFw65EwJ5czLJW09ltK+AT/+jiUl6nWyh0Nv6Mogn9yBfEghLbtkPrEugYdJO0UYEC8cGKZ97o9N1NzAL6wjH80fa+5j2DOzKXvNPxBpF+IUObtU/fLw9wjbBTFZXiTE2+9cM1Kx1xmXuIFipGn0eYKnm2PwTs0FhqMTDvc2EIkrcM2qgQPTiRGL0XTL9NV1ADSzQ46+syH2hCa4WzuZNxXApL5qf52j3vSHf4pTaR0IPeM1nsVZTtZStDYLXZQrppRnqAH3llkPYBbtpGHUlqMMjcShMyQir554+KprwnpknO1FwSeqYqUre8Bz4Jey7uJKZIfJreTr4U5WlxPqq1SVmITWSOAb6c6+ZUmgXFoP4PHEp0yldVsZaYBV+tezJLCcBXKboPOoySA1m3Agv+KeI4nG/feLIDgrivIqCahhqOucZEOlO3nEcn4dQPaVrXyxpUAkaUPoYPQhGUJ6IW7hbVlxpi/XCbzoNUm84rEtLWotbOh8daPd+erAbUGBcp8StkdY+gAs6Giujgt2sAd/u9EJWxAedl1hd+gqikMUnX/QI4+TrQySfEX7Z/d8LfhMk87WNi6nURe7iIagOD8Ay7qViXnER5nVMwMejDmc1PENQ==
+	/DkzKZcSSi2Xez1QsxwlCxwsDGOPkSyCneq6LBV/Md99rV1ZQcytk6wuNSUUbWBX+1xDrn20gk/d7CgW65ZsKWFWMXxkzo7+73q2DrxNCVCrJwWHLWk6zT75Q7/YPY2akEzOqZPa/K+3rl34yufMRiG68qG5tJMC/6KVuW+Jl1C6UBlOgh4SjRgdjzN5SDVOpPZIkHRezZ2Usq6oERI1tWUuUGziA6FsUWhqX3RsejUG3bvaJXRBySiYyx0/+9S3nE2NHHHN+UbXn/5UIby6c/cRLKK/JZiX//Mts5SRcxppRdnAikY7Vds5saOx1iNWW4WXqEIusBCxKwTdHnZqXX4wjI8KJMlwiJzLfgzSpjd+eo4ncFQOoXzdSpGZZOxq4PWu6ODOT0Xmr0h4JTzPjPXsJ9bH9mBUOYcHUwGvyjGj7TJjJGSltK2NSX/55zUh54/1eOHNVXCcXOEXgQ/3Q5FKqqyPR70GZqdU2TzHkapn0mo4mxf5jsmp3JncSB+FXOMhYIZud63auLOBOGdIPU0tlRsvRxGu2XLlaYgAJbqJ8REVqYIjasA8uNfEV6QBx0mg7MCOv9x2rBDROaUM/zCNgj+ZXyldXvcDG8BVp9529U4WG6H843eggHlkecZ8uGlItLmNTM+ilF/pvFjZY3WdXhLvCGAGxHqpnitOTScm2IXhBXL/Aek4cVEg6USIVsfAdwi97eRfbgbDGI2NWjkGpAFqXBm670w+r3UM8uEw18IsGUMy3wCkGsDC9+hLBukDapvtoJRrG4HJj5UIxA==
 X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(1800799024)(376014)(36860700016)(82310400026)(14060799003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	R+3sRaB0fjGQfefzp7BkDRK/6C5Z950fpU8SQgKcm/ervzVYKUGUMHE4aCqXS8BMrn1JuNGiV70uX/DhVKYvHyeGhBFlFukKgcRWGU/vM9jJzmOCMcaGq9+HXlbp2UXybZv8wjj9lpp00QiAI57JeZunJW5gEbn6W8+lkrbc0UW+v3xiDw7F+II+Nt9i2a5VIdtxYW366Ios06Fg5NvXLsE9ltglrfAC+NtwPwGOlWm4BQ46/LxilXuK2i2aBtxJiaee3+KQ/4tDnF8U6B8Zre155hgZZIZvtoLzgt2fRvg/vuB1bKkxhs6w4h2gWzuv8cy5Qa0uF54DeGfzx07tetsAwAI1GK10/cBiHzouHEw1NtMS9HiwyvVRqdMgBckCmMO/lbf7FJM9X6bPEVoab/ZS4aiiOfBhrKm0y0qJlcuxcky+KF8ERQh/VLgOwIby
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 16:03:13.9712
+	g29Em9y6Tz5q5kNyYoo/HWAopg2hUmCgESf/m+8lb6Se9PeEWSsG2QyEtbkBNCbbw/cmyPZOG1ZPJyg3KuXpb4F2udLMUmQk9xYjirIi1EvYO1k8Uhdm1Ia/XErOJx/Ve7PRv+l4Sug7roOg8XCjianbt9un8v0+NCMdjdOZER7brI0lxa21AHXEdN9NBo7kEOumUuDUr7U5+IqhTpbJ/G5iWrPgpN3LJWRMQEu0fxXDwlUC6fj64gRi8v3gk3jXhFiv3Erc7FYyVaxxBV/565z1GN7gRbJND7DIEFoMhcJUxK91xPHXVLccBRsOmGmLqGj7jdwox2ublGQBTXy1St0hqBLZQ/yK3K0RBvIr2I0zSQkVmfenqiJCZ2msoIUuARVEeX/2Z/DLPgErtFuSHpCszTeKEnM8eHg7bjFs5zAT2HzWgXux5DpjzXN4+GLf
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 16:06:27.5170
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68387a9d-6da0-4bd2-7999-08de9a3f5576
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: c1bfa495-2faa-4ef3-d86f-08de9a3fc8d5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	AM4PEPF00025F9C.EURPRD83.prod.outlook.com
+	SJ1PEPF00002327.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB10758
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4351
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=3];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237916-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lists.denx.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,arm.com:dkim,arm.com:mid];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237917-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,oss.qualcomm.com,amd.com,lists.freedesktop.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[amd.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:mid,aka.ms:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jerome.forissier@arm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lizhi.hou@amd.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: A4F503FC608
+	REDIRECTOR_URL(0.00)[aka.ms];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 42EB03FC669
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 09/04/2026 18:44, Sebastian Alba Vives wrote:
-> From: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
-> 
-> nfs_readlink_reply() validates rlen only against the incoming packet
-> length (inherited from CVE-2019-14195), but not against the destination
-> buffer nfs_path_buff[2048]. A malicious NFS server can send a valid
-> READLINK reply where pathlen + rlen exceeds sizeof(nfs_path_buff),
-> overflowing the BSS buffer into adjacent memory.
-> 
-> The recent fix in fd6e3d34097f addressed the same overflow class in
-> net/lwip/nfs.c but left the legacy path in net/nfs-common.c unpatched.
-> 
-> Add bounds checks before both memcpy calls in nfs_readlink_reply():
-> - relative path branch: reject if pathlen + rlen >= sizeof(nfs_path_buff)
-> - absolute path branch: reject if rlen >= sizeof(nfs_path_buff)
-> 
-> Fixes: cf3a4f1e86 ("net: nfs: Fix CVE-2019-14195")
+
+On 4/14/26 05:10, Guangshuo Li wrote:
+> [You don't often get email from lgs201920130244@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>
+> aie2_init() allocates MSI-X vectors with pci_alloc_irq_vectors() before
+> creating the PSP handle, starting the hardware and initializing the
+> resolver.
+>
+> When aie2m_psp_create(), aie2_hw_start() or xrsm_init() fails after IRQ
+> vectors have been allocated successfully, the function releases the
+> firmware and unwinds hardware state, but fails to free the allocated
+> IRQ vectors.
+
+aie2_init enables device via pcim_enable_device(), which sets managed 
+device. Thus the vectors are automatically cleanup. So NAK.
+
+
+Lizhi
+
+>
+> The issue was identified by a static analysis tool I developed and
+> confirmed by manual review. Add a dedicated error path to free the IRQ
+> vectors after pci_alloc_irq_vectors() succeeds.
+>
+> Fixes: 8c9ff1b181ba ("accel/amdxdna: Add a new driver for AMD AI Engine")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 > ---
->  net/nfs-common.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/net/nfs-common.c b/net/nfs-common.c
-> index 4fbde67a..72d8fd82 100644
-> --- a/net/nfs-common.c
-> +++ b/net/nfs-common.c
-> @@ -674,11 +674,15 @@ static int nfs_readlink_reply(uchar *pkt, unsigned int len)
->  
->  		strcat(nfs_path, "/");
->  		pathlen = strlen(nfs_path);
-> +		if (pathlen + rlen >= sizeof(nfs_path_buff))
-> +			return -NFS_RPC_DROP;
->  		memcpy(nfs_path + pathlen,
->  		       (uchar *)&rpc_pkt.u.reply.data[2 + nfsv3_data_offset],
->  		       rlen);
->  		nfs_path[pathlen + rlen] = 0;
->  	} else {
-> +		if (rlen >= sizeof(nfs_path_buff))
-> +			return -NFS_RPC_DROP;
->  		memcpy(nfs_path,
->  		       (uchar *)&rpc_pkt.u.reply.data[2 + nfsv3_data_offset],
->  		       rlen);
-
-Reviewed-by: Jerome Forissier <jerome.forissier@arm.com>
-
-Added to my net queue, thanks!
-
--- 
-Jerome
+>   drivers/accel/amdxdna/aie2_pci.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/accel/amdxdna/aie2_pci.c b/drivers/accel/amdxdna/aie2_pci.c
+> index 4924a9da55b6..f05f49f691b5 100644
+> --- a/drivers/accel/amdxdna/aie2_pci.c
+> +++ b/drivers/accel/amdxdna/aie2_pci.c
+> @@ -591,14 +591,14 @@ static int aie2_init(struct amdxdna_dev *xdna)
+>          if (!ndev->psp_hdl) {
+>                  XDNA_ERR(xdna, "failed to create psp");
+>                  ret = -ENOMEM;
+> -               goto release_fw;
+> +               goto free_irq_vectors;
+>          }
+>          xdna->dev_handle = ndev;
+>
+>          ret = aie2_hw_start(xdna);
+>          if (ret) {
+>                  XDNA_ERR(xdna, "start npu failed, ret %d", ret);
+> -               goto release_fw;
+> +               goto free_irq_vectors;
+>          }
+>
+>          xrs_cfg.clk_list.num_levels = ndev->max_dpm_level + 1;
+> @@ -623,6 +623,8 @@ static int aie2_init(struct amdxdna_dev *xdna)
+>
+>   stop_hw:
+>          aie2_hw_stop(xdna);
+> +free_irq_vectors:
+> +       pci_free_irq_vectors(pdev);
+>   release_fw:
+>          release_firmware(fw);
+>
+> --
+> 2.43.0
+>
 
