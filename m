@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-237881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id e1RcLyhF3mnlpwkAu9opvQ
-	(envelope-from <stable+bounces-237881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:46:16 +0200
+	id 0COPGExG3mn+pwkAu9opvQ
+	(envelope-from <stable+bounces-237878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:51:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887E43FAABB
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:46:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83113FABE7
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5E8DA3013B92
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:45:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC0F7306B2C8
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33083E717D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93583E714C;
 	Tue, 14 Apr 2026 13:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2xBDosP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0vKlASY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5F53E63BB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481263E5EF9;
 	Tue, 14 Apr 2026 13:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776174341; cv=none; b=er9brAbxP/+5P/+k2qYe7YYiOLW4X0wUU/Tn7a2hQrQCyP6fdHtlMVf5NE9hiPkcM82r/ROSnBXpFmlxnHEO6o40u9nOJtr8kIR8MhtYib/jGSnzz0rHS0vJ8XJ7d4A16V2qIbgxSzZYOPeTTvyc0o4LPQp+EOfFkqekdAv0H/k=
+	t=1776174341; cv=none; b=QNTCCrVgZBphskVDRrKMiJaUX6Vre651j7KM9S1o9mrgU2hDBwHEB2ikgSooQ8Ao6Wjo3KXX/zFt5i4u+JXQ/cwo6t8GuKcMQvDNuhWZZmGgpOft6hJuq3U4BgarorLlSEPberT7wgoQ0lwKdxtprUZXcXwOEV2CJhgV+ji7zcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776174341; c=relaxed/simple;
-	bh=UtOj4j3/A/CiozTGbEOHTVtFSRrKzLJQIHHCs2pbwTY=;
+	bh=53ad1irEqhAo43vfv6Y2SIlO3JtmIiRbHZrk6q58rDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egieM72aB3j/GvrqJPPwz02eNYWjFs0COaz3xV4qeHet4f/th7NglKznHOMEHhtFFcOY0Anu8Y5ou+Nozd7IhUVuM3xZhMI69Z4EaSz69P8kf7ucpyjAotdYFGc8wyTvbZaWvyihLHCYxJHWty47JbxN1rv8oB/2mvLe99r5zdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2xBDosP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1F3C2BCC7;
+	 MIME-Version; b=jK8KzGKsmSsFabJ2Qpi5hPXDrAMcaYV7FV+IzryTIJPiKmPBbtqb6sM6eLBO8mDEYbh+T334iB8hrTTiVvvwaXNAksoYJJ+I+VjT0lBaRnG0BW7Kzs2/rnEMzIL4EzJRMiIqd6MbDE1nQ/xC+BHtq02NG+O2pWTLtiKufbaLbqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0vKlASY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D80C19425;
 	Tue, 14 Apr 2026 13:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776174341;
-	bh=UtOj4j3/A/CiozTGbEOHTVtFSRrKzLJQIHHCs2pbwTY=;
+	bh=53ad1irEqhAo43vfv6Y2SIlO3JtmIiRbHZrk6q58rDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2xBDosPgyhJW/SH/UsOa0ug2Wt7aMi4SogWEpYvHwDnCY00mDNaGZGXHIPanIYoY
-	 hGLFKJsIIkH3r23B8LZ6W5O9rWhEILx8PAJNwKTZMdpSiQJsGY5AUrXk0rfUO++rgS
-	 N6jso5sqVrDyR0YtJToauEgxLk/GMbbFdHuPHZof+A8ztsXRQETgruZQ6p6Bkg6Ncf
-	 syrU9p0R8hkBBLbavc8RaFamiYiSGTE+JqAxTbXsEOTVSe1GbV0eDHcvaEt0LhSrO7
-	 vD1A34ynu9jG2jgcpTAc7Lz8c10UawvCCNa/i1zbacFda0JiCe+JGhGVT9LLTdA5wY
-	 T/bI4qZK5f+JQ==
+	b=R0vKlASYt5MrluAcsCDwACVQRViUES3piVCU9s0N75u+9xbRml39UEMnjpEMZOotY
+	 3R18npY4LEe+cOIBMGysxDBDv7azKJe4S6Zouu1qog/Ye8jJFkxH+f0hGp7+ME8IaC
+	 FAVI9D3p59ZKgwSHqvVUPq0K24JwqCZn64yUjRswPxTdI24kDymXkro1u7zbAEPbuy
+	 cCzTGrPlzr9sjZSvT5L9tyjqOUWU+ckgRYGiZ1cNHOv2Vi7iaq4lXfGO4ujo/7l73x
+	 xhSwJzsVaeseuB2PRPsQGJsqi1Qv8U2G2Rxec8NG5e0maPn2HvE51KlY3gm9GJQuba
+	 +KUzjdJy0uCzw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wCe5C-000000046W4-39YT;
+	id 1wCe5C-000000046W6-3Bq0;
 	Tue, 14 Apr 2026 15:45:38 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -54,10 +54,10 @@ Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Masayuki Ohtake <masa-korg@dsn.okisemi.com>
-Subject: [PATCH 7/8] spi: topcliff-pch: fix controller deregistration
-Date: Tue, 14 Apr 2026 15:43:18 +0200
-Message-ID: <20260414134319.978196-8-johan@kernel.org>
+	Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Subject: [PATCH 8/8] spi: topcliff-pch: fix use-after-free on unbind
+Date: Tue, 14 Apr 2026 15:43:19 +0200
+Message-ID: <20260414134319.978196-9-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260414134319.978196-1-johan@kernel.org>
 References: <20260414134319.978196-1-johan@kernel.org>
@@ -73,13 +73,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237881-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237878-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
@@ -92,49 +92,48 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 887E43FAABB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[okisemi.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D83113FABE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Make sure to deregister the controller before disabling and releasing
-underlying resources like interrupts and DMA during driver unbind.
+Give the driver a chance to flush its queue before releasing the DMA
+buffers on driver unbind
 
-Fixes: e8b17b5b3f30 ("spi/topcliff: Add topcliff platform controller hub (PCH) spi bus driver")
-Cc: stable@vger.kernel.org	# 2.6.37
-Cc: Masayuki Ohtake <masa-korg@dsn.okisemi.com>
+Fixes: c37f3c2749b5 ("spi/topcliff_pch: DMA support")
+Cc: stable@vger.kernel.org	# 3.1
+Cc: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-topcliff-pch.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index cae2dcefabea..c120436434d0 100644
+index c120436434d0..14d11450e86d 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1406,6 +1406,10 @@ static void pch_spi_pd_remove(struct platform_device *plat_dev)
- 	dev_dbg(&plat_dev->dev, "%s:[ch%d] irq=%d\n",
- 		__func__, plat_dev->id, board_dat->pdev->irq);
+@@ -1410,9 +1410,6 @@ static void pch_spi_pd_remove(struct platform_device *plat_dev)
  
-+	spi_controller_get(data->host);
-+
-+	spi_unregister_controller(data->host);
-+
- 	if (use_dma)
- 		pch_free_dma_buf(board_dat, data);
+ 	spi_unregister_controller(data->host);
  
-@@ -1433,7 +1437,8 @@ static void pch_spi_pd_remove(struct platform_device *plat_dev)
+-	if (use_dma)
+-		pch_free_dma_buf(board_dat, data);
+-
+ 	/* check for any pending messages; no action is taken if the queue
+ 	 * is still full; but at least we tried.  Unload anyway */
+ 	count = 500;
+@@ -1436,6 +1433,9 @@ static void pch_spi_pd_remove(struct platform_device *plat_dev)
+ 		free_irq(board_dat->pdev->irq, data);
  	}
  
- 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
--	spi_unregister_controller(data->host);
++	if (use_dma)
++		pch_free_dma_buf(board_dat, data);
 +
-+	spi_controller_put(data->host);
- }
- #ifdef CONFIG_PM
- static int pch_spi_pd_suspend(struct platform_device *pd_dev,
+ 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
+ 
+ 	spi_controller_put(data->host);
 -- 
 2.52.0
 
