@@ -1,243 +1,252 @@
-Return-Path: <stable+bounces-237907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEFlBepc3mlfCQAAu9opvQ
-	(envelope-from <stable+bounces-237907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:27:38 +0200
+	id CMwVBxdd3mn0CQAAu9opvQ
+	(envelope-from <stable+bounces-237908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:28:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A725C3FBCA0
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702353FBD62
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8EAE305FC15
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:26:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECBAD306EB46
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CD83EAC87;
-	Tue, 14 Apr 2026 15:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366223E9296;
+	Tue, 14 Apr 2026 15:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="JtlOgXr7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfTBBDGx"
 X-Original-To: stable@vger.kernel.org
-Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010072.outbound.protection.outlook.com [52.103.72.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C03E9F96;
-	Tue, 14 Apr 2026 15:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776180374; cv=fail; b=Cbva+id97Anf6riIb9uaQtW449HZI8/ESAmnjUu4jNEh5f+ZBe9OGXiHw7y0Jr0num8tgkebAyMYRBmCth20eIGxPYTR0ZuJcQNfSmfh5S6TEoloaIPatjrwaKwdxDHtRytkLbVBhLtpy7j6dqIwaNdCglhePXJlJMIuXNMdx+M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776180374; c=relaxed/simple;
-	bh=kfEG5G2d0e2/QfgT2mxpGj7FrkdwlvkavB26E5y/T9o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=HdFmZXaSj08QaxhlzseNc5nj+GGxPxvpFbEGl24Z5F+yebezBZbi9ciGhtRKP+l4lcrycDXMI6mj7mWe0PSAxDk7w+Quq/8UVsfFtXgu7kFLq7FpR4qEvfk4fGXZbnT50k3a7Z12+VflybTFcAohdLcOE5zCccximu8c45BgFjo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=JtlOgXr7; arc=fail smtp.client-ip=52.103.72.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iD9dcx5wFDmAsFQh4z3Sb3iFR2RdFgGCrBe5YD7AUg0xmPkO/b9OyUi00jIH1rwTyRpNCGGgyhopM/BPc8loVp9dErogeU4Y7hXAhYjFaSNOIGlrGXV6ZNhkKnBKLuwVx1LWVx3IwdJbDROWK5Em2AuQF3nvLw2K7jlSkjbKOyDi6+5pYJISXzex2FkmFc3xrWC2gE1D8gZGgYWj/OWy5xiQxe05K8LSD1Uh0CUE1qt5NNn8lhW7WvJs1K7w0LZgZv592CC2awTJ191NjqxGfyw1c5mSxhkjkpi0mbFYMyop5D23nDtKUFuAJlqA/UAToFPmJSzO+0gyaDiBhwKWkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9dmHj49x0JNEOiaKg4QUmb0TUedA39+Ktq6MDdV74/Y=;
- b=OGhLAd4Ajp/vs8/AgJT3D7HuNE+HKdORn8LrcoQZ0XdfteHIX01piRX9PxCG2ZpQo/jvDGhensX4BDnI0n7cxsdKMENiGw4BVu6zTalIiRl9xLFQYjq56lrlV4KSCbUexpsVxSKxx7tS+O3MNjtFsvquqazz6ip9DTfUAYNr9h8chxbfDRv7T3fZajpU15j/qnjkK9IaVOAZDYg64ceik7/eAYEcWZf9NshaqdI2b9Tse0WTnRdHInNKtGeU1YZErHFD/S89ogVE+f+avtVok4TPc8VLz7YbklLGkGgcXH6ojHfBhvkptBuQboGm5PtyjBEebbarTDfkCZe9JKfttQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9dmHj49x0JNEOiaKg4QUmb0TUedA39+Ktq6MDdV74/Y=;
- b=JtlOgXr7MkdtKpBLjeHAXi0ZTOc4tRCDSUp2UUBK5AXcxMqljl/1y6iyg7f68MocC+hHR55VAkNDnTOSi+Y2b+Pas7oIuWKNqRodLUQSmRhMGUPJ1oGWWHLfsFDh/ySyZdFJ6QyYJYy4qSTeDu+vROJzbOhNojM5LDDag0hQfZwtLVS4YHhDQGOBXgTSdMysZSJpJ2pZDHwBNOgf2n7R7LMyjnUteAZB8rdepad505c3N6ibVyS42Jyzy0a8+atTImsE6tKGInGrNDYP7rehww2fgmMnzxUA6NZhuTFemjJcAYk+8kqK+nM8Ha6FAwrqBIhzNzepynCJGbMjfal1gg==
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
- by ME6PR01MB10662.ausprd01.prod.outlook.com (2603:10c6:220:25f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Tue, 14 Apr
- 2026 15:26:05 +0000
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9769.046; Tue, 14 Apr 2026
- 15:26:05 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-To: Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu
-	<zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
-	<dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo
-	<guochunhai@vivo.com>, Miao Xie <miaoxie@huawei.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: "linux-erofs@lists.ozlabs.org" <linux-erofs@lists.ozlabs.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Yuhao Jiang
-	<danisjiang@gmail.com>
-Subject: Re: [PATCH] erofs: validate nameoff for all dirents in
- erofs_fill_dentries()
-Thread-Topic: [PATCH] erofs: validate nameoff for all dirents in
- erofs_fill_dentries()
-Thread-Index: AQHczCKRV3XTc0wIBE2oNAF7Tel8ArXerbGA
-Date: Tue, 14 Apr 2026 15:26:04 +0000
-Message-ID: <A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com>
-References:
- <SYBPR01MB78819C794EC3532E5E7FCB3CAF252@SYBPR01MB7881.ausprd01.prod.outlook.com>
-In-Reply-To:
- <SYBPR01MB78819C794EC3532E5E7FCB3CAF252@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SYBPR01MB7881:EE_|ME6PR01MB10662:EE_
-x-ms-office365-filtering-correlation-id: 6d079a2c-4ce7-4a88-a45f-08de9a3a24ce
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8062599012|8060799015|15080799012|41001999006|461199028|19110799012|51005399006|31061999003|24121999003|22091999003|440099028|3412199025|26121999003|102099032|40105399003;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?1ypcpDzCX/MSEua0yQhqzJKa3aQ8zJf8FsEluouGlP5ZgWF1Q31hRgSEeKbm?=
- =?us-ascii?Q?JAGnRBCeLXAhhJxFK0/5LRjIhNv+Zdi+X6HKsH6ZsT1NJCXeVZJgD0X1jsVC?=
- =?us-ascii?Q?nl26ndJcmKvuRf50w/jUAIJ18Urot+LN/e/Kv+WLFsumhXTjrJA+WzXeNFOD?=
- =?us-ascii?Q?l4R9yi243HGgLEBZ2zQZehXVtDdEns79GDlF36vBQlQxgFM57YnGQh7OV/lk?=
- =?us-ascii?Q?QXrRaOjJ0TcfzxAGLF7ZwSaAQzSh9X/Fzxn1iEGr2D6P0tUlTNE5HCKB7ASn?=
- =?us-ascii?Q?X52yegWaMk1MlMEYnahAG111c6h1IAolby0NJURpaEEd3Bs3TJgKVt8yZR98?=
- =?us-ascii?Q?t+7AreicYNMMt7VBhnNhdIO8BmSxfl2Z+IzJnXx80ucGi9ENk2WnM/ez/uso?=
- =?us-ascii?Q?sdwvtPmfWJvQ+yr0flcSZNWW4cxuS02bfB/4fmigZLfXCVnlebwMv58cHVrY?=
- =?us-ascii?Q?w199Vwcu7CgTLP/nApeO7K9A9SuB3STGAQ3KJbDEU6V7UoYHsUFkoxENxnqx?=
- =?us-ascii?Q?Vw/wsOXGLqYEWfebFAqMwlmUnVkBfRP1/NUEV+SKE5Vpt+dIly/N64Y7+wn3?=
- =?us-ascii?Q?M9T1P/k9GqbLyZYp28q2MHzeeozD2rkmfB270IqXq5Vg2yh8LWe8IxJ5hBpN?=
- =?us-ascii?Q?58plgZrv0u0Pb1NZkHbYsSWDkYx2XvJP6bI8GrKxOfS2EpssxIeMU5N9gdl8?=
- =?us-ascii?Q?GxW4TP/dBrv8O7c6UL4HdvL06E+iix2iQMRCwgun7rs5nfd3Ukbp/9aA2BL/?=
- =?us-ascii?Q?TWahXHFTMREAm8Cq1RUmksqOk1ex20AgiUCaqG0Yjp0FuBwS7ljN3T6apyrn?=
- =?us-ascii?Q?4lIHEtQTP5NZHYPr9YnV5KcF1AFmzNatl19CLl/mxtCW/oLlFdHiYBhvmZVj?=
- =?us-ascii?Q?Ptf9RsIF/7J0MXR16mhO+QTTF6zvitSNZ2xMk+4+oBNsnI+TmbeUitQYBMrj?=
- =?us-ascii?Q?vBm8EINMzIDuQYMGqZ6lliPu/XKQyHsTSXJSdeTFNLlABRiDvYQ7VJLWtAk6?=
- =?us-ascii?Q?fp/DV3FF7ZAVzZkMv9O9lBp2/zK2pjFOK6hTcWLgO1Vsqv0=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?skrCUkN1RQBJStYMYCAnAc/e1bVetQgVgLxociXLMIWKPN8SaeXi6frq0VIe?=
- =?us-ascii?Q?FjtnT8qYx0Vh2xjBRhqpuJGVU4sikUKWPUHB3KRpm37XJYnxniVibcXw0JUc?=
- =?us-ascii?Q?kb8uHTnmegFim5/djC3c2fVrvhK82vyr4foRrXWAYcjW/TK7Oj2ku97sJejh?=
- =?us-ascii?Q?hHte+ccRe06xIezJ5E1TsXLE1noDCGdPmIoRnNpZWv3gWN0VXObzJq/a+b1A?=
- =?us-ascii?Q?a+nSWNRs9qmxhXgoZtNo0nmRzc3VMk67LqIosux3dl+8WcunuGELh1FwPhtr?=
- =?us-ascii?Q?1Dq2l4OQztGOK3ixGmsVjCMg8FSrA2JoYFsd8od5hDD7VJ45WfTMysvHCcq7?=
- =?us-ascii?Q?gLM/qwzXONfHJw6HVkIaO7YX030RgPsPPqkkcqm07PGufRS9SUUm5qXEqbPW?=
- =?us-ascii?Q?KKXSeiZkiLn51nUaqLfWKQ4eAA2hnaWuUB2aUv+TKrpvitNLo3Tx6ufvRKqJ?=
- =?us-ascii?Q?lGimO1yGlVWuAN6QIqJQXZ8TDhkplVS+4tU+qvSEHndQWoW97wUyRYWr6zhT?=
- =?us-ascii?Q?IgDMln2BvJeIRtfDul599LXW+c5NxEw3plyC4dcOUVK4BO1aXhUj6oki0fS1?=
- =?us-ascii?Q?2x/VSDWQE0xfwhEQcOVgcaMPpIgdFBE9rEwA3KHgFVNrzwtMXSCsWCGy3uVx?=
- =?us-ascii?Q?IZQgQzSlJXM2klHL8XoSRzHRLNKgNAMcfTUGGuiTTrpDqRmevPTiKYzxFfPh?=
- =?us-ascii?Q?0D+mrPTt0Gc/hYFasNNXTvUaCgGQeeiRh7NwNJWvUjFCAxYGgQSO/Hm53tMb?=
- =?us-ascii?Q?geBb3VVJixy0wIbSf+0hrLtZlbVYKI3xUu+0RLtzNvFRjkfq153qbdUry0IX?=
- =?us-ascii?Q?V7Svl22YRIVmxpUuSyFrbEkSobz8wHj5LutGFEhFGS5eNlr4qqTRyEGtpRf1?=
- =?us-ascii?Q?o7OJa3G0yllAiggcgP2m4IAzOQitdLtZQ34FDtmgeyaykiexXcPKoztAOR9g?=
- =?us-ascii?Q?j4fLsexRUM/FjeipywutxFlkctsZLSEB5dUVUXqQTBfcsyEbY/SApXAHR+xC?=
- =?us-ascii?Q?NobWMDuHbfBFuVwgwY5BP4U4e5dxVF1YoQSDuoHdLTNkM85NBYCy68RV63Rw?=
- =?us-ascii?Q?9HZOCpc9vOtGzwIDQQMBnZSsqVfJwhS6q/4GA+CwqMoIqxT6thQYDE+b9pFZ?=
- =?us-ascii?Q?msp8J+sEhQcDmgmqBrZ56vcIWhfwYOrVa/IB43AZWX23EqzSdtxSlNZYvGzW?=
- =?us-ascii?Q?MT/CSr0DJXsUBSgga9KBPfSH8vVL+9ZmJC6AQCDYEkj8l5jKfDqCqUJ/VyYj?=
- =?us-ascii?Q?YTUNy89EdyvgpnWFeKUxzFdg4jMtzbAD1X2Uy8XS/EG5PSFXeuCVH4fii+VS?=
- =?us-ascii?Q?v1zKH66EQ698nIbKT8vIvsraE2hNnsFjQiIQ1sUZYrEm0pwKDWMp7YEu2vpT?=
- =?us-ascii?Q?ZVInn15uSe4yaN6sSaGx+A6y8Z5v+z2EcNKziNRTXEFILRSUxQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <F550CE3300D9AB4ABD42F395E2F95F3E@ausprd01.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDBA312837
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 15:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776180395; cv=none; b=rHxol50YLkUKvcK7QvPs0jBQ8moSXscNECvCBcdYC+oL/xKr03UDeVGFbJatF36tygYx6qLbtYkKqtugA9iaaZd96nDB7MA1oRbr6yM3xDBsL6Mb3Hn+moRsuf6ulnQAMmb+PeCiqOysbiC8qQVYecBbG0IvKqvy1/IQQqPgzzA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776180395; c=relaxed/simple;
+	bh=zGFA1W9m3Wn9/ldmpMlVr8lY0H41TPFxR7c+HGVAMmk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hI7GURtjLfD5Wk1G6fSjw0dOdHrPO5fKGQKYR/CkC/LQa42ejv7jeg2jO3/YPyYs34yZDqh/OcYp4MKUdQ1ZIIfwGPyMu/NTHXlYBbDKXppqivlDU0KeIi6taFRaK7MB5xXfdLcAosgGmWSXHzcaQYK9/MeLA+TTD3oh+Hky3DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfTBBDGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83723C2BCB6;
+	Tue, 14 Apr 2026 15:26:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776180394;
+	bh=zGFA1W9m3Wn9/ldmpMlVr8lY0H41TPFxR7c+HGVAMmk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OfTBBDGxE2FbXOGyLz7WzjhE3PkmOKMQ5qGDFXFWs60NrIq/QZXW87+WfxBNVJfvy
+	 nSWv5aYNoSclr+99lCInSeqUcheyrHS/HX8gkssZFHWuORcan2Q3CsxNYQW/zBLHOX
+	 T1S8mPNHsmLr+E/yKayRFJ0DsAxy6qH0uO85gab0YAXhBf0DQLPfafO9m9+v118Mes
+	 lH4I8yReOxwe4jaYNW69At7qTa1/OURvUwPi9IlHHLsEMIYWMx2GKCsrCFv9REqxTs
+	 YnjEoeOQcPatJMdx7QhF9nFB2eGnmOkpa2hqFMsf7FpmeK8rihKI0TvQyglmCHqW1W
+	 4s7LM4tEzRjdg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] rxrpc: proc: size address buffers for %pISpc output
+Date: Tue, 14 Apr 2026 11:26:31 -0400
+Message-ID: <20260414152632.863735-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041329-payable-barmaid-1f71@gregkh>
+References: <2026041329-payable-barmaid-1f71@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d079a2c-4ce7-4a88-a45f-08de9a3a24ce
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2026 15:26:04.9081
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME6PR01MB10662
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237907-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linux.alibaba.com,google.com,huawei.com,vivo.com,linuxfoundation.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-237908-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[outlook.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,outlook.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A725C3FBCA0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: 702353FBD62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Here is a reproducer for the issue fixed by this patch.
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-Creates a 3-block (12KB) minimal EROFS image:
-- Block 0: superblock
-- Block 1: two compact inodes (root dir + dummy file)
-- Block 2: directory data with 4 dirents
+[ Upstream commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 ]
 
-  de[0]: nameoff=3D48  FT_DIR "."
-  de[1]: nameoff=3D49  FT_DIR ".."
-  de[2]: nameoff=3D51  FT_REG "f1"
-  de[3]: nameoff=3D0xFFFF FT_REG
+The AF_RXRPC procfs helpers format local and remote socket addresses into
+fixed 50-byte stack buffers with "%pISpc".
 
-Reproducible image (base64-encoded gzipped blob):
+That is too small for the longest current-tree IPv6-with-port form the
+formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
+dotted-quad tail not only for v4mapped addresses, but also for ISATAP
+addresses via ipv6_addr_is_isatap().
 
-H4sIALRA3mkCA+3XwQmDQBAF0HW95mAlSyQVpJn0YS8Wpt5z9GwGwkICNqC+BwOfZU//NJMScFX=
-L
-vE4132Lyzp82plEVAACcwvsZW3/3zXln1x+H/5esMgAAADik+89V30euF/8jUs3b1qRSyqtXFwA=
-A
-ABzKB5GqxlwAMAAA
+As a result, a case such as
 
-Trigger
+  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
 
-```
-  #define _GNU_SOURCE
-  #include <fcntl.h>
-  #include <stdio.h>
-  #include <unistd.h>
-  #include <errno.h>
-  #include <sys/syscall.h>
+is possible with the current formatter. That is 50 visible characters, so
+51 bytes including the trailing NUL, which does not fit in the existing
+char[50] buffers used by net/rxrpc/proc.c.
 
-  int main(int argc, char *argv[]) {
-      const char *p =3D argc > 1 ? argv[1] : "/mnt";
-      char buf[4096];
-      int fd =3D open(p, O_RDONLY | O_DIRECTORY);
-      if (fd < 0) { perror("open"); return 1; }
+Size the buffers from the formatter's maximum textual form and switch the
+call sites to scnprintf().
 
-      /* skip to de[3] at byte 36 */
-      lseek(fd, 36, SEEK_SET);
-      int n =3D syscall(SYS_getdents64, fd, buf, sizeof(buf));
-      printf("getdents64=3D%d errno=3D%d\n", n, errno);
-      close(fd);
-  }
-```
-=09
-$ gcc -static -o trigger trigger.c
-$ mount -t erofs -o loop image.erofs /mnt
-$ ./trigger /mnt
+Changes since v1:
+- correct the changelog to cite the actual maximum current-tree case
+  explicitly
+- frame the proof around the ISATAP formatting path instead of the earlier
+  mapped-v4 example
 
-output (kernel 7.0-rc6, CONFIG_KASAN=3Dy):
+Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted address accessors and variable declarations ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/rxrpc/proc.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-  BUG: KASAN: slab-out-of-bounds in strnlen+0x74/0x80
-  Read of size 1 at addr ffff888008828fff by task trigger/76
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 8967201fd8e54..67553dfe6a3e4 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -10,6 +10,10 @@
+ #include <net/af_rxrpc.h>
+ #include "ar-internal.h"
+ 
++#define RXRPC_PROC_ADDRBUF_SIZE \
++	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
++	 sizeof(":12345"))
++
+ static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
+ 	[RXRPC_CONN_UNUSED]			= "Unused  ",
+ 	[RXRPC_CONN_CLIENT]			= "Client  ",
+@@ -61,7 +65,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	unsigned long timeout = 0;
+ 	rxrpc_seq_t tx_hard_ack, rx_hard_ack;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->calls) {
+ 		seq_puts(seq,
+@@ -78,7 +82,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	if (rx) {
+ 		local = READ_ONCE(rx->local);
+ 		if (local)
+-			sprintf(lbuff, "%pISpc", &local->srx.transport);
++			scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 		else
+ 			strcpy(lbuff, "no_local");
+ 	} else {
+@@ -87,7 +91,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = call->peer;
+ 	if (peer)
+-		sprintf(rbuff, "%pISpc", &peer->srx.transport);
++		scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 	else
+ 		strcpy(rbuff, "no_connection");
+ 
+@@ -158,7 +162,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_connection *conn;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->conn_proc_list) {
+ 		seq_puts(seq,
+@@ -177,9 +181,9 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 		goto print;
+ 	}
+ 
+-	sprintf(lbuff, "%pISpc", &conn->params.local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->params.local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &conn->params.peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->params.peer->srx.transport);
+ print:
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %4x %08x %s %3u"
+@@ -216,7 +220,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_peer *peer;
+ 	time64_t now;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -229,9 +233,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = list_entry(v, struct rxrpc_peer, hash_link);
+ 
+-	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+@@ -341,7 +345,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
+ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_local *local;
+-	char lbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -352,7 +356,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ 
+ 	local = hlist_entry(v, struct rxrpc_local, link);
+ 
+-	sprintf(lbuff, "%pISpc", &local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %3u %3u\n",
+-- 
+2.53.0
 
 
