@@ -1,157 +1,145 @@
-Return-Path: <stable+bounces-237853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNTwAGkw3mnxogkAu9opvQ
-	(envelope-from <stable+bounces-237853-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:17:45 +0200
+	id mCH0Gvkw3mnxogkAu9opvQ
+	(envelope-from <stable+bounces-237855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:20:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1823F9EB2
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:17:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1D63F9F13
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CBD030EEA63
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:11:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B369A3053BDC
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54D93E0C5F;
-	Tue, 14 Apr 2026 12:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2SL2e3O"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FEE3E5EF8;
+	Tue, 14 Apr 2026 12:18:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779423E0224
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAA3390CA9;
+	Tue, 14 Apr 2026 12:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.226.244.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776168689; cv=none; b=ucTkkYBwtH1sqfzU/ZRDCVWmuWrHXGoBioIFLrj+OHiyuZ/lOLu3+8ntIg+aETUm6G+re4BirvHyhLu5DaHUavkytPGCARHJHjXB6yWBXhmGVZ9FCYzi+/Jwvihe0LgrJKhBeVU826kcQLdlFCbT6Sb+oqc+IzeCbkvouHBcl8k=
+	t=1776169116; cv=none; b=kzlAL9r4hruAlmj/30Xycii5KqNAgY9cGaUBpd0gU9yUmc5qAP9Uz0bu0zQb8J20oF7/cJsElOxjz40ss+ZFi4LHRU4+XJXm+cS9Nxn8bFKh68BOxPrQsEldmzTZ2LVVddM0Q/8gdx7lvkOXVb1J94aJmHXtmdGQwtyR4kPHoYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776168689; c=relaxed/simple;
-	bh=gdRZ0gfxmF+yQ4JngZdqQUNOsFnWzE74ZzfaV9LqRHQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZSAwJr5m0P7Kw/ahugO2BYWuwKWyCo5E/ghrapQ7OOQAo6XErqRE/m9ObnYayFql0WrzM3o1DPbwjykX5e/39AVYInrn1Iu/EX5qzpiM8xZdq+Fm3odnxpgJpMnfau4ibW805iiTwvbRcGu92oOuPiYluZd+JdNuR/khVprXes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2SL2e3O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4B0C2BCB0;
-	Tue, 14 Apr 2026 12:11:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776168689;
-	bh=gdRZ0gfxmF+yQ4JngZdqQUNOsFnWzE74ZzfaV9LqRHQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2SL2e3Ooow6zvzADgm3KighTQoOcGg3jLskMdc7oVAzNObA7g8nb09dJsBfAb/Ue
-	 qEUwMlNC2/LsuzG4l4DOm7kjSPDIaAbjurgS1sgf7MXMv7LeU5fIR/3RLlDXIF0+L5
-	 iB5koCk8NUR0CTcCplczr8VTuRrwyWbek3C/4DQiJKFga9eGwtLggMO9FjSy+Pf4jV
-	 9mGYsuMC7GJAZXZ22OHYht7b8Kh+cyBZICWgDwMhLZqehWT9o+SCiPuqaQfU2nC/D+
-	 7QywvDDoW+6PvySf+ddlMqWOWbxj8nq+J1zZYaGt89QBfzO150zaWSONty/w4wy9UN
-	 tpfSguVMDLfRw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Antonius <antonius@bluedragonsec.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] net: skb: fix cross-cache free of KFENCE-allocated skb head
-Date: Tue, 14 Apr 2026 08:11:26 -0400
-Message-ID: <20260414121126.588364-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041339-celery-ribbon-dc62@gregkh>
-References: <2026041339-celery-ribbon-dc62@gregkh>
+	s=arc-20240116; t=1776169116; c=relaxed/simple;
+	bh=6o1+bTIpGHTw7bkmfAkAG1sdQDF9myb5dXUiMp5dlWQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PFAStdPrmX+OoYXIvoWbIyZLc67ekh3AWNS3gxojUu8Te2enXHUiLV5PG6Ht6IJG+4w9kN0me0GXGsemFA9TiONv1OPuAYPqz4iXDbTGSsM580DNhn112XfxwDs2nCo+tHbpdfg5MEm8c4xuanYm8i7OuPeDB1XbYMTZtfOLmHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com; spf=pass smtp.mailfrom=xiaomi.com; arc=none smtp.client-ip=207.226.244.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaomi.com
+X-CSE-ConnectionGUID: QrivI3FPTjidUcPX8Tk92g==
+X-CSE-MsgGUID: ivuZY/OlRwu0SVqQmA7klw==
+X-IronPort-AV: E=Sophos;i="6.23,179,1770566400"; 
+   d="scan'208";a="172792398"
+From: Ziqing Chen <chenziqing@xiaomi.com>
+To: <tiwai@suse.com>, <perex@perex.cz>
+CC: <linux-sound@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Ziqing Chen <chenziqing@xiaomi.com>
+Subject: [RESEND PATCH] ALSA: control: Validate buf_len before strnlen() in snd_ctl_elem_init_enum_names()
+Date: Tue, 14 Apr 2026 20:18:14 +0800
+Message-ID: <20260414121814.221126-1-chenziqing@xiaomi.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260414090542.151447-1-chenziqing@xiaomi.com>
+References: <20260414090542.151447-1-chenziqing@xiaomi.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: BJ-MBX05.mioffice.cn (10.237.8.125) To BJ-MBX03.mioffice.cn
+ (10.237.8.123)
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[xiaomi.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237853-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-237855-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenziqing@xiaomi.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.978];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 4E1823F9EB2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CF1D63F9F13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+snd_ctl_elem_init_enum_names() advances pointer p through the names
+buffer while decrementing buf_len. If buf_len reaches zero but items
+remain, the next iteration calls strnlen(p, 0).
 
-[ Upstream commit 0f42e3f4fe2a58394e37241d02d9ca6ab7b7d516 ]
+While strnlen(p, 0) returns 0 and would hit the existing name_len =3D=3D 0
+error path, CONFIG_FORTIFY_SOURCE's fortified strnlen() first checks
+maxlen against __builtin_dynamic_object_size(). When Clang loses track
+of p's object size inside the loop, this triggers a BRK exception panic
+before the return value is examined.
 
-SKB_SMALL_HEAD_CACHE_SIZE is intentionally set to a non-power-of-2
-value (e.g. 704 on x86_64) to avoid collisions with generic kmalloc
-bucket sizes. This ensures that skb_kfree_head() can reliably use
-skb_end_offset to distinguish skb heads allocated from
-skb_small_head_cache vs. generic kmalloc caches.
+Add a buf_len =3D=3D 0 guard at the loop entry to prevent calling fortified
+strnlen() on an exhausted buffer.
 
-However, when KFENCE is enabled, kfence_ksize() returns the exact
-requested allocation size instead of the slab bucket size. If a caller
-(e.g. bpf_test_init) allocates skb head data via kzalloc() and the
-requested size happens to equal SKB_SMALL_HEAD_CACHE_SIZE, then
-slab_build_skb() -> ksize() returns that exact value. After subtracting
-skb_shared_info overhead, skb_end_offset ends up matching
-SKB_SMALL_HEAD_HEADROOM, causing skb_kfree_head() to incorrectly free
-the object to skb_small_head_cache instead of back to the original
-kmalloc cache, resulting in a slab cross-cache free:
+Found by kernel fuzz testing through Xiaomi Smartphone.
 
-  kmem_cache_free(skbuff_small_head): Wrong slab cache. Expected
-  skbuff_small_head but got kmalloc-1k
-
-Fix this by always calling kfree(head) in skb_kfree_head(). This keeps
-the free path generic and avoids allocator-specific misclassification
-for KFENCE objects.
-
-Fixes: bf9f1baa279f ("net: add dedicated kmem_cache for typical/small skb->head")
-Reported-by: Antonius <antonius@bluedragonsec.com>
-Closes: https://lore.kernel.org/netdev/CAK8a0jxC5L5N7hq-DT2_NhUyjBxrPocoiDazzsBk4TGgT1r4-A@mail.gmail.com/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260403014517.142550-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted variable names ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8d448162bda5 ("ALSA: control: add support for ENUMERATED user space =
+controls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ziqing Chen <chenziqing@xiaomi.com>
 ---
- net/core/skbuff.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ sound/core/control.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 4c28954f915fa..c81ef99d39b04 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -943,10 +943,7 @@ static bool skb_pp_recycle(struct sk_buff *skb, void *data, bool napi_safe)
- 
- static void skb_kfree_head(void *head, unsigned int end_offset)
- {
--	if (end_offset == SKB_SMALL_HEAD_HEADROOM)
--		kmem_cache_free(skb_small_head_cache, head);
--	else
--		kfree(head);
-+	kfree(head);
- }
- 
- static void skb_free_head(struct sk_buff *skb, bool napi_safe)
--- 
-2.53.0
+diff --git a/sound/core/control.c b/sound/core/control.c
+index 0ddade871b52..6ceb5f977fcd 100644
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1574,6 +1574,10 @@ static int snd_ctl_elem_init_enum_names(struct user_=
+element *ue)
+        /* check that there are enough valid names */
+        p =3D names;
+        for (i =3D 0; i < ue->info.value.enumerated.items; ++i) {
++               if (buf_len =3D=3D 0) {
++                       kvfree(names);
++                       return -EINVAL;
++               }
+                name_len =3D strnlen(p, buf_len);
+                if (name_len =3D=3D 0 || name_len >=3D 64 || name_len =3D=
+=3D buf_len) {
+                        kvfree(names);
+--
+2.52.0
 
+#/******=B1=BE=D3=CA=BC=FE=BC=B0=C6=E4=B8=BD=BC=FE=BA=AC=D3=D0=D0=A1=C3=D7=
+=B9=AB=CB=BE=B5=C4=B1=A3=C3=DC=D0=C5=CF=A2=A3=AC=BD=F6=CF=DE=D3=DA=B7=A2=CB=
+=CD=B8=F8=C9=CF=C3=E6=B5=D8=D6=B7=D6=D0=C1=D0=B3=F6=B5=C4=B8=F6=C8=CB=BB=F2=
+=C8=BA=D7=E9=A1=A3=BD=FB=D6=B9=C8=CE=BA=CE=C6=E4=CB=FB=C8=CB=D2=D4=C8=CE=BA=
+=CE=D0=CE=CA=BD=CA=B9=D3=C3=A3=A8=B0=FC=C0=A8=B5=AB=B2=BB=CF=DE=D3=DA=C8=AB=
+=B2=BF=BB=F2=B2=BF=B7=D6=B5=D8=D0=B9=C2=B6=A1=A2=B8=B4=D6=C6=A1=A2=BB=F2=C9=
+=A2=B7=A2=A3=A9=B1=BE=D3=CA=BC=FE=D6=D0=B5=C4=D0=C5=CF=A2=A1=A3=C8=E7=B9=FB=
+=C4=FA=B4=ED=CA=D5=C1=CB=B1=BE=D3=CA=BC=FE=A3=AC=C7=EB=C4=FA=C1=A2=BC=B4=B5=
+=E7=BB=B0=BB=F2=D3=CA=BC=FE=CD=A8=D6=AA=B7=A2=BC=FE=C8=CB=B2=A2=C9=BE=B3=FD=
+=B1=BE=D3=CA=BC=FE=A3=A1 This e-mail and its attachments contain confidenti=
+al information from XIAOMI, which is intended only for the person or entity=
+ whose address is listed above. Any use of the information contained herein=
+ in any way (including, but not limited to, total or partial disclosure, re=
+production, or dissemination) by persons other than the intended recipient(=
+s) is prohibited. If you receive this e-mail in error, please notify the se=
+nder by phone or email immediately and delete it!******/#
 
