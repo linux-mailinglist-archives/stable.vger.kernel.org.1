@@ -1,195 +1,162 @@
-Return-Path: <stable+bounces-237962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Z47mGSWX3mnsGAAAu9opvQ
-	(envelope-from <stable+bounces-237962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 21:36:05 +0200
+	id CI8tHXSX3mkIGQAAu9opvQ
+	(envelope-from <stable+bounces-237963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 21:37:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E493FE0C6
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 21:36:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC313FE0D8
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 21:37:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB0E63033F9E
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 19:36:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 18CD63012596
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 19:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157882773CA;
-	Tue, 14 Apr 2026 19:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCE9214812;
+	Tue, 14 Apr 2026 19:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="oYxJ4eFL"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A74214812;
-	Tue, 14 Apr 2026 19:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A8C23A562
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 19:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776195361; cv=none; b=i6xAE+gKQV/f6y5fyLoiRZ1A0ALuS7jf9ejHgF+ARYhHuUP2Vmagpj9xWGA/0SJieVWhb52mQmzxag8U/ZyQGr+LY8v/8qlI1Dem/CtuNThuzgFH/RXd5xcHxKNLtcGsfKTw69ArTBDHjS1B22CjU1cWIdRww73KF4L5vcUiCG0=
+	t=1776195435; cv=none; b=SGJmaRuT/AK47I1qXpYEq+nwlGr7sDuRnDDB63UPaSYEDaJWXLVZqMsLCkkEUhV7FVZkSGnj6lREiqBl5WxAyvTXwyxzTLHHDoHLKecXiYOLydxtCfYMOBgb+HhtUjFGNDTomkG/Qifm5aqE8NDeUHBBzNDXcAgzMu+tUv0rAm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776195361; c=relaxed/simple;
-	bh=/DEajXtpJCB3hOLSeweENEo1/sf1r0lzizWCu1QCoqQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ghiHGOGoslWWq4Nlp5liu2IPeyUqfgwbWilqxULfbbRJGK5MgxakA1f+geTWI0WT8zKXlaNKd6LCmq4yAqgKuiab/bp1Im6IfkFfbtnmqNNyk9PBW1VaWyvYoQRpKkmkz3VE1g+jGk29rF7gGngTAvDjmYSKhKdQDZt0cjPPPHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCjYE-004t9a-2I;
-	Tue, 14 Apr 2026 19:35:57 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCjYC-000000038s3-1fmc;
-	Tue, 14 Apr 2026 21:35:56 +0200
-Message-ID: <7c68cd425998a64761b95585f84d3a09b929a372.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 012/491] bus: omap-ocp2scp: Convert to platform
- remove callback returning void
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
-	 <u.kleine-koenig@pengutronix.de>, Sasha Levin <sashal@kernel.org>
-Date: Tue, 14 Apr 2026 21:35:51 +0200
-In-Reply-To: <20260413155819.511284969@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
-	 <20260413155819.511284969@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-cXEFg2QdTvJwlQI/StV6"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1776195435; c=relaxed/simple;
+	bh=zGSNTWJTYjbMiGssao9p1xIyMc+rhrZek7a0GPsDJ6g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M+BG0JOV9I/T9DS2UbuiGbz5VHeasSvnVVvu1V+DIinWn5eSKRU3+Akxjm4KhSs9cAf85OpQVjxfp7mrigufwEc4r9EhaAxF6p4hle1BCX6+F/tJFuZKy0MawRsk399HEWzaYrmSF9G/UKnG9Pjl95BLxxNePi8pc3u9GcwXXDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=oYxJ4eFL; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488af96f6b2so79043385e9.0
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:37:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1776195433; x=1776800233; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wDeSAiwIMC4uRwXkLzxrSw2LWZMPVa4L0Md9dCJm6PA=;
+        b=oYxJ4eFLc76obDMHCoiRXmkUGKdnvC7psgav76yjdNChIH9nPJzeezPmSIIqLqiSBb
+         1PwPn6XWQYDyTb88k9OhS3UYOx11bKyl6FCHOvzK7JN9qvrbMsTt26IFCkAg1gaBpLvu
+         QrO/Ql1pwyg8dIggrbbupQkIGHeHB4X6MGKfOCKidlogMNAtGcKHbszWnV3EE7eEzbFa
+         6egAg5MPSHTtJCwXVLejV01IuvkHW46r5cevIOKYf8D4NVeE18PBUqHv3IbyqkvOJE2C
+         5Jj6HaqoHzkZCyVPRSouI/9QZ4c/jcZDWOIRpenI38RlkIDAqIrIiM+McYX4nUW84f7K
+         ISGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776195433; x=1776800233;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wDeSAiwIMC4uRwXkLzxrSw2LWZMPVa4L0Md9dCJm6PA=;
+        b=eKE3rIacXqozAYb3qTlgisaY2AID54Hq3s+jtKh2BYsSetVsYvl3jnizJxCQkN0286
+         U78z/lQR7WHoTbN5D/i2L0+zAu3Nzy8NhPPLAUif06CsGlUk5j0CK2riBPd9XmAWuPSw
+         g2s4vzSNaeAuWIMh8cBPMsU+KYOclKZWOWBT8ACQpeYwCEE2AQIhagaUWTXBFCOBNYrL
+         4OWusQDjsZ1OkZlVcHnLgJfkM7jkYpKQmDNeqi9bLJ5n9UdG3r3thoPdMOMHvUFbxr0v
+         9aWDfUTv6RWOxMwTU6Li3r3zBOhL5ACRKXxnNMU8ttZxtbiH2bAJaJ33hniCf/GhD1Yh
+         ePNw==
+X-Forwarded-Encrypted: i=1; AFNElJ/qoSOQhCa2ziMIaUtBF+aHHDxNN7QgxnJoqph55FXxfhlAhJJ5VnmdEag2yQtlmVh02RqtvRg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxj5df8dDMZfmFru97tM0selCxU33RMgEmaZtb79i1OYymgpvaV
+	QsEloOdvWC0vfnE/thOYU3Qef7y+KHC9gwPTF+Qfap8ogQA29pmieQk=
+X-Gm-Gg: AeBDies63ddLDRN5zoZBsK/gqK4wmjoBquQSA1QyBz93oaLIKCj2PQHc2J0BBtyAZC+
+	lRyz9FRNX9aldxXzMmPBZaxr+kxZy6s6jSJM5qBvsDxQ/hKuNRDLjgKWcbESERnH5eC2dssnDRe
+	D8V2cI2OC7J2qstaLQo9ef71gXX98PRi1eUB/s0KNi0DH7sp1zxX1+FMHT8lUAeYrmMyx+Vgzkk
+	40VOzGj8JuWi0P/kj0jWXxaWRAyqwUt92HHm0SjNde1ranrCpW3Iqo+liDFMet4vp8Sel+6WOq7
+	nbttSRjQ4LbBTWQTW5wSNU/TbuCjEPcyGl3BWcD+hzbBNrTYRxC6jjr5EH3Yx5RBeQDPQXBKxk5
+	y6lncrDGpTZSUpOHwC8wRD+oboYnA+U2XJq9PK8PHxp0t0F7fyigTGqIELYDiJdMFy4B+5jUrnM
+	G+/lcWBBI7iJ+JgdyZ0t/V3slCxOtX3oKWB3PI9ltdYUXJTnQfnA6eQXj0rjRzWKU6USx3Ppx1h
+	i4=
+X-Received: by 2002:a05:600c:820a:b0:488:81b1:ae36 with SMTP id 5b1f17b1804b1-488d688688fmr261645175e9.23.1776195432464;
+        Tue, 14 Apr 2026 12:37:12 -0700 (PDT)
+Received: from [192.168.1.3] (p5b05757c.dip0.t-ipconnect.de. [91.5.117.124])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ede1e826sm143417485e9.6.2026.04.14.12.37.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Apr 2026 12:37:12 -0700 (PDT)
+Message-ID: <554e6039-c7eb-4d1a-bc14-2c84bca188c7@googlemail.com>
+Date: Tue, 14 Apr 2026 21:37:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.18 00/83] 6.18.23-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260413155731.019638460@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260413155731.019638460@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237962-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237963-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[decadent.org.uk];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: 73E493FE0C6
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailvelope.com:url,googlemail.com:dkim,googlemail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6FC313FE0D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Am 13.04.2026 um 17:59 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.18.23 release.
+> There are 83 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
---=-cXEFg2QdTvJwlQI/StV6
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-On Mon, 2026-04-13 at 17:54 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
->=20
-> [ Upstream commit 854f89a5b56354ba4135e0e1f0e57ab2caee59ee ]
->=20
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is ignored (apart
-> from emitting a warning) and this typically results in resource leaks.
->=20
-> To improve here there is a quest to make the remove callback return
-> void. In the first step of this quest all drivers are converted to
-> .remove_new(), which already returns void. Eventually after all drivers
-> are converted, .remove_new() will be renamed to .remove().
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-But platform_driver::remove_new doesn't exist in 5.10 so this breaks the
-build.
 
-Ben.
+Beste Grüße,
+Peter Schneider
 
-> Trivially convert this driver from always returning zero in the remove
-> callback to the void returning variant.
->=20
-> Link: https://lore.kernel.org/r/20231109202830.4124591-3-u.kleine-koenig@=
-pengutronix.de
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> Stable-dep-of: 5eb63e9bb65d ("bus: omap-ocp2scp: fix OF populate on drive=
-r rebind")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/bus/omap-ocp2scp.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/bus/omap-ocp2scp.c b/drivers/bus/omap-ocp2scp.c
-> index e02d0656242b8..7d7479ba0a759 100644
-> --- a/drivers/bus/omap-ocp2scp.c
-> +++ b/drivers/bus/omap-ocp2scp.c
-> @@ -84,12 +84,10 @@ static int omap_ocp2scp_probe(struct platform_device =
-*pdev)
->  	return ret;
->  }
-> =20
-> -static int omap_ocp2scp_remove(struct platform_device *pdev)
-> +static void omap_ocp2scp_remove(struct platform_device *pdev)
->  {
->  	pm_runtime_disable(&pdev->dev);
->  	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
-> -
-> -	return 0;
->  }
-> =20
->  #ifdef CONFIG_OF
-> @@ -103,7 +101,7 @@ MODULE_DEVICE_TABLE(of, omap_ocp2scp_id_table);
-> =20
->  static struct platform_driver omap_ocp2scp_driver =3D {
->  	.probe		=3D omap_ocp2scp_probe,
-> -	.remove		=3D omap_ocp2scp_remove,
-> +	.remove_new	=3D omap_ocp2scp_remove,
->  	.driver		=3D {
->  		.name	=3D "omap-ocp2scp",
->  		.of_match_table =3D of_match_ptr(omap_ocp2scp_id_table),
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
---=20
-Ben Hutchings
-73.46% of all statistics are made up.
-
---=-cXEFg2QdTvJwlQI/StV6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnelxcACgkQ57/I7JWG
-EQmw0xAArSYPJ+O8BofzOrtVIlgZ5dSagMP8N97Q1CwZscF9vaVgADaRk3QrHA9Z
-h62IhxfJjftvuRX1fu809xk7WyOC9FqyESOM8532vHlQ0XsfuJqBbiaef0EaGevv
-Xpd+wvvwRHRKaRngVuWj3RUCQ8uKAXY52R8Z7fsMHvuRa54JDmpYSYhbpFn50AN3
-eiLzMuY9FoUvjCe4xG3nbOj0gd94xu+XcFwYw7OD48Oy9DSmdUqIKWrJfEdocw4K
-9H9S1mpli+hUQ4ud7HRUGbhbYNAmzTY5dDjf4oU7k305t3c8wEd4SQZpvzBx0WRt
-NQepVvoew+U568UVJ4woGVtX1UvUvwj9ayKvXZsqwFqZ+3j1YMWyGflPjXG2GukO
-9GzwnZQRduARIEM1vQQAbnxSHD6gO5TukAf7uAwZ4EJq3chDjX/q6ZASNE/M635A
-XRuRcFqFRi3Z37DuD9fX2tvoiFyZAWQIMm2DAL1pSt1qfWeqvo5abn59Vk5CBE3v
-G1B1LimCT7ELZSD7ZAtDEpPFnsyhQazDwBzoVDiYIlKvods6jPT78wudBvbSgWXo
-r6EjuTsed5hq79nz4wspcl1ugcqPNtULj4qsZhJzr698m8NJqGACLNWKmPkhfBgY
-KN8WSiiO4JkKH9t+P4FyChGY2GA28PtdouaY1jnwvKg53TTGojI=
-=FsSj
------END PGP SIGNATURE-----
-
---=-cXEFg2QdTvJwlQI/StV6--
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
