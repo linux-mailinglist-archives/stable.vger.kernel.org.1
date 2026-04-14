@@ -1,202 +1,243 @@
-Return-Path: <stable+bounces-237906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJdJOINc3mlACQAAu9opvQ
-	(envelope-from <stable+bounces-237906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:25:55 +0200
+	id kEFlBepc3mlfCQAAu9opvQ
+	(envelope-from <stable+bounces-237907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:27:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08AC3FBC3C
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:25:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A725C3FBCA0
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1FFBB300BEA1
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:24:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8EAE305FC15
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD6E3E6DF3;
-	Tue, 14 Apr 2026 15:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CD83EAC87;
+	Tue, 14 Apr 2026 15:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="JtlOgXr7"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4E63E95A8;
-	Tue, 14 Apr 2026 15:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776180288; cv=none; b=g2slzkrusUhg0LpJh4OFmyz/aRsuSi+UF6vwQkUi0G45hNVeujM0eRZomXmWmBfBdEIcX5/dwnu/vjOeQi4FnmDarz6aaLYI5xAde24Cm1JrxrBiUhgGGiDWueXI/8RHiXrKLqGcwsP9vjK3zdAgQPFasDFnpMCnHCE5aglDc78=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776180288; c=relaxed/simple;
-	bh=+oWKlpvzRKdJ5pgReYZcQfHf1GcKqwjmRSjQsWb9xHU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q0l/pDvleNquf1dNpaZnrwd6ksdc8KbnRd9BACkWX5d3pKlkJqFOnbOlhkwOZyPsqmU1txkAVFswX91KYHeG9JW1DdDV3NmPLt78FoV2oba27W2cdpo4dOE8/Fyp9JXjGI0C7ovo7XBnzC/d21MQ5ttxWXOBwruoSqxYt5rrPjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id F357672C8CC;
-	Tue, 14 Apr 2026 18:24:38 +0300 (MSK)
-Received: from altlinux.org (unknown [193.43.10.9])
-	by imap.altlinux.org (Postfix) with ESMTPSA id DCFF436D00D0;
-	Tue, 14 Apr 2026 18:24:38 +0300 (MSK)
-Date: Tue, 14 Apr 2026 18:24:38 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>, 
-	Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	gregkh@linuxfoundation.org, regressions@lists.linux.dev, 
-	Matt Roper <matthew.d.roper@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: [regression] Re: Linux 6.12.75
-Message-ID: <ad5ZsSwNM42pa10J@altlinux.org>
-References: <20260304131402.83200-1-sashal@kernel.org>
- <20260304131402.83200-2-sashal@kernel.org>
- <ac4lw9tTNn4baO_h@altlinux.org>
- <c54a0b91-cfbf-463e-964d-bf9a2e524189@leemhuis.info>
- <adz2d7M3DKb-6jm9@altlinux.org>
- <ad2G46EyDs8LBoH_@altlinux.org>
- <ad5Gsd1YoS3607UI@altlinux.org>
+Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010072.outbound.protection.outlook.com [52.103.72.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C03E9F96;
+	Tue, 14 Apr 2026 15:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776180374; cv=fail; b=Cbva+id97Anf6riIb9uaQtW449HZI8/ESAmnjUu4jNEh5f+ZBe9OGXiHw7y0Jr0num8tgkebAyMYRBmCth20eIGxPYTR0ZuJcQNfSmfh5S6TEoloaIPatjrwaKwdxDHtRytkLbVBhLtpy7j6dqIwaNdCglhePXJlJMIuXNMdx+M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776180374; c=relaxed/simple;
+	bh=kfEG5G2d0e2/QfgT2mxpGj7FrkdwlvkavB26E5y/T9o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HdFmZXaSj08QaxhlzseNc5nj+GGxPxvpFbEGl24Z5F+yebezBZbi9ciGhtRKP+l4lcrycDXMI6mj7mWe0PSAxDk7w+Quq/8UVsfFtXgu7kFLq7FpR4qEvfk4fGXZbnT50k3a7Z12+VflybTFcAohdLcOE5zCccximu8c45BgFjo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=JtlOgXr7; arc=fail smtp.client-ip=52.103.72.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iD9dcx5wFDmAsFQh4z3Sb3iFR2RdFgGCrBe5YD7AUg0xmPkO/b9OyUi00jIH1rwTyRpNCGGgyhopM/BPc8loVp9dErogeU4Y7hXAhYjFaSNOIGlrGXV6ZNhkKnBKLuwVx1LWVx3IwdJbDROWK5Em2AuQF3nvLw2K7jlSkjbKOyDi6+5pYJISXzex2FkmFc3xrWC2gE1D8gZGgYWj/OWy5xiQxe05K8LSD1Uh0CUE1qt5NNn8lhW7WvJs1K7w0LZgZv592CC2awTJ191NjqxGfyw1c5mSxhkjkpi0mbFYMyop5D23nDtKUFuAJlqA/UAToFPmJSzO+0gyaDiBhwKWkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9dmHj49x0JNEOiaKg4QUmb0TUedA39+Ktq6MDdV74/Y=;
+ b=OGhLAd4Ajp/vs8/AgJT3D7HuNE+HKdORn8LrcoQZ0XdfteHIX01piRX9PxCG2ZpQo/jvDGhensX4BDnI0n7cxsdKMENiGw4BVu6zTalIiRl9xLFQYjq56lrlV4KSCbUexpsVxSKxx7tS+O3MNjtFsvquqazz6ip9DTfUAYNr9h8chxbfDRv7T3fZajpU15j/qnjkK9IaVOAZDYg64ceik7/eAYEcWZf9NshaqdI2b9Tse0WTnRdHInNKtGeU1YZErHFD/S89ogVE+f+avtVok4TPc8VLz7YbklLGkGgcXH6ojHfBhvkptBuQboGm5PtyjBEebbarTDfkCZe9JKfttQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9dmHj49x0JNEOiaKg4QUmb0TUedA39+Ktq6MDdV74/Y=;
+ b=JtlOgXr7MkdtKpBLjeHAXi0ZTOc4tRCDSUp2UUBK5AXcxMqljl/1y6iyg7f68MocC+hHR55VAkNDnTOSi+Y2b+Pas7oIuWKNqRodLUQSmRhMGUPJ1oGWWHLfsFDh/ySyZdFJ6QyYJYy4qSTeDu+vROJzbOhNojM5LDDag0hQfZwtLVS4YHhDQGOBXgTSdMysZSJpJ2pZDHwBNOgf2n7R7LMyjnUteAZB8rdepad505c3N6ibVyS42Jyzy0a8+atTImsE6tKGInGrNDYP7rehww2fgmMnzxUA6NZhuTFemjJcAYk+8kqK+nM8Ha6FAwrqBIhzNzepynCJGbMjfal1gg==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by ME6PR01MB10662.ausprd01.prod.outlook.com (2603:10c6:220:25f::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Tue, 14 Apr
+ 2026 15:26:05 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9769.046; Tue, 14 Apr 2026
+ 15:26:05 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+To: Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu
+	<zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
+	<dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo
+	<guochunhai@vivo.com>, Miao Xie <miaoxie@huawei.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: "linux-erofs@lists.ozlabs.org" <linux-erofs@lists.ozlabs.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Yuhao Jiang
+	<danisjiang@gmail.com>
+Subject: Re: [PATCH] erofs: validate nameoff for all dirents in
+ erofs_fill_dentries()
+Thread-Topic: [PATCH] erofs: validate nameoff for all dirents in
+ erofs_fill_dentries()
+Thread-Index: AQHczCKRV3XTc0wIBE2oNAF7Tel8ArXerbGA
+Date: Tue, 14 Apr 2026 15:26:04 +0000
+Message-ID: <A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com>
+References:
+ <SYBPR01MB78819C794EC3532E5E7FCB3CAF252@SYBPR01MB7881.ausprd01.prod.outlook.com>
+In-Reply-To:
+ <SYBPR01MB78819C794EC3532E5E7FCB3CAF252@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SYBPR01MB7881:EE_|ME6PR01MB10662:EE_
+x-ms-office365-filtering-correlation-id: 6d079a2c-4ce7-4a88-a45f-08de9a3a24ce
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|8062599012|8060799015|15080799012|41001999006|461199028|19110799012|51005399006|31061999003|24121999003|22091999003|440099028|3412199025|26121999003|102099032|40105399003;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?1ypcpDzCX/MSEua0yQhqzJKa3aQ8zJf8FsEluouGlP5ZgWF1Q31hRgSEeKbm?=
+ =?us-ascii?Q?JAGnRBCeLXAhhJxFK0/5LRjIhNv+Zdi+X6HKsH6ZsT1NJCXeVZJgD0X1jsVC?=
+ =?us-ascii?Q?nl26ndJcmKvuRf50w/jUAIJ18Urot+LN/e/Kv+WLFsumhXTjrJA+WzXeNFOD?=
+ =?us-ascii?Q?l4R9yi243HGgLEBZ2zQZehXVtDdEns79GDlF36vBQlQxgFM57YnGQh7OV/lk?=
+ =?us-ascii?Q?QXrRaOjJ0TcfzxAGLF7ZwSaAQzSh9X/Fzxn1iEGr2D6P0tUlTNE5HCKB7ASn?=
+ =?us-ascii?Q?X52yegWaMk1MlMEYnahAG111c6h1IAolby0NJURpaEEd3Bs3TJgKVt8yZR98?=
+ =?us-ascii?Q?t+7AreicYNMMt7VBhnNhdIO8BmSxfl2Z+IzJnXx80ucGi9ENk2WnM/ez/uso?=
+ =?us-ascii?Q?sdwvtPmfWJvQ+yr0flcSZNWW4cxuS02bfB/4fmigZLfXCVnlebwMv58cHVrY?=
+ =?us-ascii?Q?w199Vwcu7CgTLP/nApeO7K9A9SuB3STGAQ3KJbDEU6V7UoYHsUFkoxENxnqx?=
+ =?us-ascii?Q?Vw/wsOXGLqYEWfebFAqMwlmUnVkBfRP1/NUEV+SKE5Vpt+dIly/N64Y7+wn3?=
+ =?us-ascii?Q?M9T1P/k9GqbLyZYp28q2MHzeeozD2rkmfB270IqXq5Vg2yh8LWe8IxJ5hBpN?=
+ =?us-ascii?Q?58plgZrv0u0Pb1NZkHbYsSWDkYx2XvJP6bI8GrKxOfS2EpssxIeMU5N9gdl8?=
+ =?us-ascii?Q?GxW4TP/dBrv8O7c6UL4HdvL06E+iix2iQMRCwgun7rs5nfd3Ukbp/9aA2BL/?=
+ =?us-ascii?Q?TWahXHFTMREAm8Cq1RUmksqOk1ex20AgiUCaqG0Yjp0FuBwS7ljN3T6apyrn?=
+ =?us-ascii?Q?4lIHEtQTP5NZHYPr9YnV5KcF1AFmzNatl19CLl/mxtCW/oLlFdHiYBhvmZVj?=
+ =?us-ascii?Q?Ptf9RsIF/7J0MXR16mhO+QTTF6zvitSNZ2xMk+4+oBNsnI+TmbeUitQYBMrj?=
+ =?us-ascii?Q?vBm8EINMzIDuQYMGqZ6lliPu/XKQyHsTSXJSdeTFNLlABRiDvYQ7VJLWtAk6?=
+ =?us-ascii?Q?fp/DV3FF7ZAVzZkMv9O9lBp2/zK2pjFOK6hTcWLgO1Vsqv0=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?skrCUkN1RQBJStYMYCAnAc/e1bVetQgVgLxociXLMIWKPN8SaeXi6frq0VIe?=
+ =?us-ascii?Q?FjtnT8qYx0Vh2xjBRhqpuJGVU4sikUKWPUHB3KRpm37XJYnxniVibcXw0JUc?=
+ =?us-ascii?Q?kb8uHTnmegFim5/djC3c2fVrvhK82vyr4foRrXWAYcjW/TK7Oj2ku97sJejh?=
+ =?us-ascii?Q?hHte+ccRe06xIezJ5E1TsXLE1noDCGdPmIoRnNpZWv3gWN0VXObzJq/a+b1A?=
+ =?us-ascii?Q?a+nSWNRs9qmxhXgoZtNo0nmRzc3VMk67LqIosux3dl+8WcunuGELh1FwPhtr?=
+ =?us-ascii?Q?1Dq2l4OQztGOK3ixGmsVjCMg8FSrA2JoYFsd8od5hDD7VJ45WfTMysvHCcq7?=
+ =?us-ascii?Q?gLM/qwzXONfHJw6HVkIaO7YX030RgPsPPqkkcqm07PGufRS9SUUm5qXEqbPW?=
+ =?us-ascii?Q?KKXSeiZkiLn51nUaqLfWKQ4eAA2hnaWuUB2aUv+TKrpvitNLo3Tx6ufvRKqJ?=
+ =?us-ascii?Q?lGimO1yGlVWuAN6QIqJQXZ8TDhkplVS+4tU+qvSEHndQWoW97wUyRYWr6zhT?=
+ =?us-ascii?Q?IgDMln2BvJeIRtfDul599LXW+c5NxEw3plyC4dcOUVK4BO1aXhUj6oki0fS1?=
+ =?us-ascii?Q?2x/VSDWQE0xfwhEQcOVgcaMPpIgdFBE9rEwA3KHgFVNrzwtMXSCsWCGy3uVx?=
+ =?us-ascii?Q?IZQgQzSlJXM2klHL8XoSRzHRLNKgNAMcfTUGGuiTTrpDqRmevPTiKYzxFfPh?=
+ =?us-ascii?Q?0D+mrPTt0Gc/hYFasNNXTvUaCgGQeeiRh7NwNJWvUjFCAxYGgQSO/Hm53tMb?=
+ =?us-ascii?Q?geBb3VVJixy0wIbSf+0hrLtZlbVYKI3xUu+0RLtzNvFRjkfq153qbdUry0IX?=
+ =?us-ascii?Q?V7Svl22YRIVmxpUuSyFrbEkSobz8wHj5LutGFEhFGS5eNlr4qqTRyEGtpRf1?=
+ =?us-ascii?Q?o7OJa3G0yllAiggcgP2m4IAzOQitdLtZQ34FDtmgeyaykiexXcPKoztAOR9g?=
+ =?us-ascii?Q?j4fLsexRUM/FjeipywutxFlkctsZLSEB5dUVUXqQTBfcsyEbY/SApXAHR+xC?=
+ =?us-ascii?Q?NobWMDuHbfBFuVwgwY5BP4U4e5dxVF1YoQSDuoHdLTNkM85NBYCy68RV63Rw?=
+ =?us-ascii?Q?9HZOCpc9vOtGzwIDQQMBnZSsqVfJwhS6q/4GA+CwqMoIqxT6thQYDE+b9pFZ?=
+ =?us-ascii?Q?msp8J+sEhQcDmgmqBrZ56vcIWhfwYOrVa/IB43AZWX23EqzSdtxSlNZYvGzW?=
+ =?us-ascii?Q?MT/CSr0DJXsUBSgga9KBPfSH8vVL+9ZmJC6AQCDYEkj8l5jKfDqCqUJ/VyYj?=
+ =?us-ascii?Q?YTUNy89EdyvgpnWFeKUxzFdg4jMtzbAD1X2Uy8XS/EG5PSFXeuCVH4fii+VS?=
+ =?us-ascii?Q?v1zKH66EQ698nIbKT8vIvsraE2hNnsFjQiIQ1sUZYrEm0pwKDWMp7YEu2vpT?=
+ =?us-ascii?Q?ZVInn15uSe4yaN6sSaGx+A6y8Z5v+z2EcNKziNRTXEFILRSUxQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <F550CE3300D9AB4ABD42F395E2F95F3E@ausprd01.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=koi8-r
-Content-Disposition: inline
-In-Reply-To: <ad5Gsd1YoS3607UI@altlinux.org>
-X-Spamd-Result: default: False [-1.46 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d079a2c-4ce7-4a88-a45f-08de9a3a24ce
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2026 15:26:04.9081
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME6PR01MB10662
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DMARC_NA(0.00)[altlinux.org];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237906-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237907-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linux.alibaba.com,google.com,huawei.com,vivo.com,linuxfoundation.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vt@altlinux.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,altlinux.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: E08AC3FBC3C
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,outlook.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A725C3FBCA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Thorsten, Sasha,
+Here is a reproducer for the issue fixed by this patch.
 
-On Tue, Apr 14, 2026 at 04:57:38PM +0300, Vitaly Chikunov wrote:
-> On Tue, Apr 14, 2026 at 03:17:38AM +0300, Vitaly Chikunov wrote:
-> > On Mon, Apr 13, 2026 at 05:17:30PM +0300, Vitaly Chikunov wrote:
-> > > On Mon, Apr 13, 2026 at 01:33:18PM +0200, Thorsten Leemhuis wrote:
-> > > > On 4/2/26 10:44, Vitaly Chikunov wrote:
-> > > > > 
-> > > > > 1. I cannot find this commit posted on lore.kernel.org to report to
-> > > > > exact patch.
-> > > > > 
-> > > > > | From: Matt Roper <matthew.d.roper@intel.com>
-> > > > > | Date: Tue, 10 Sep 2024 16:47:29 -0700
-> > > > > | Subject: [PATCH 6.12/sisyphus] drm/xe: Switch MMIO interface to take xe_mmio
-> > > > > |  instead of xe_gt
-> > > > > | 
-> > > > > | [ Upstream commit a84590c5ceb354d2e9f7f6812cfb3a9709e14afa ]
-> > > > > | 
-> > > > > | Since much of the MMIO register access done by the driver is to non-GT
-> > > > > | registers, use of 'xe_gt' in these interfaces has been a long-standing
-> > > > > | design flaw that's been hard to disentangle.
-> > > > > [...]
-> > > > > 
-> > > > > 2. After this patch applied to 6.12.75 there is kernel NULL pointer
-> > > > > dereference BUG on MSI MAG H670 12th Gen Intel(R) Core(TM) i5-12600K
-> > > > > with ASRock Intel Arc B580 Challenger [Alchemist], 12GB:
-> > > > > [...]
-> > > > > The commit is found not by a git bisect (since it's reported by end
-> > > > > user and I cannot reproduce it on my hardware) but (by analyzing dmesg)
-> > > > > with:
-> > > > > [...]
-> > > > > Then finding the suspecting commit:
-> > > > > 
-> > > > >   $ git log --oneline -G'XE_LUNARLAKE' v6.12.74..v6.12.75
-> > > > >   26a40327c25c drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt
-> > > > > 
-> > > > > 6.18 and above are not affected by the bug. Also, they have another commit
-> > > > > modifying the line which is not present in 6.12 branch:
-> > > > > [...]
-> > > > > Related drm/xe bug report https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7661
-> > > > Nobody reacted to this and it seems the gitlab ticket is stalled, too.
-> > > > So let me ask: can this be resolved by reverting 26a40327c25c in 6.12.y?
-> > 
-> > It's turned out these two commits are revertible together:
-> > 
-> >   8f6848b2f6ea ("drm/xe/mmio: Avoid double-adjust in 64-bit reads")
-> >   26a40327c25c ("drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt")
-> > 
-> > I am going to ask the users to test this.
-> 
-> After testing revert of these two commits, users report that regress
-> does not appear, kernel boots without panic and there is no video artifacts.
+Creates a 3-block (12KB) minimal EROFS image:
+- Block 0: superblock
+- Block 1: two compact inodes (root dir + dummy file)
+- Block 2: directory data with 4 dirents
 
-After analyzing the problem slightly deeper, it seems that there is
-uninitialized mmio.tile issue. Which is fixed in mainline commit
+  de[0]: nameoff=3D48  FT_DIR "."
+  de[1]: nameoff=3D49  FT_DIR ".."
+  de[2]: nameoff=3D51  FT_REG "f1"
+  de[3]: nameoff=3D0xFFFF FT_REG
 
-  58548b91101f ("drm/xe: Defer gt->mmio initialization until after multi-tile setup")
+Reproducible image (base64-encoded gzipped blob):
 
-The commit also have tag:
+H4sIALRA3mkCA+3XwQmDQBAF0HW95mAlSyQVpJn0YS8Wpt5z9GwGwkICNqC+BwOfZU//NJMScFX=
+L
+vE4132Lyzp82plEVAACcwvsZW3/3zXln1x+H/5esMgAAADik+89V30euF/8jUs3b1qRSyqtXFwA=
+A
+ABzKB5GqxlwAMAAA
 
-  Fixes: fa599b8c95a7 ("drm/xe: Populate GT's mmio iomap from tile during init")
+Trigger
 
-The commit fa599b8c95a7 is picked into 6.12.75 as 0b433e086b9f, but the
-fix is not. Piking it may be the better way to fix the regression than
-the revert of the two aforementioned commits.
+```
+  #define _GNU_SOURCE
+  #include <fcntl.h>
+  #include <stdio.h>
+  #include <unistd.h>
+  #include <errno.h>
+  #include <sys/syscall.h>
 
-I will try to pick the fix, test, and report if it resolves the regress.
+  int main(int argc, char *argv[]) {
+      const char *p =3D argc > 1 ? argv[1] : "/mnt";
+      char buf[4096];
+      int fd =3D open(p, O_RDONLY | O_DIRECTORY);
+      if (fd < 0) { perror("open"); return 1; }
 
-Thanks,
+      /* skip to de[3] at byte 36 */
+      lseek(fd, 36, SEEK_SET);
+      int n =3D syscall(SYS_getdents64, fd, buf, sizeof(buf));
+      printf("getdents64=3D%d errno=3D%d\n", n, errno);
+      close(fd);
+  }
+```
+=09
+$ gcc -static -o trigger trigger.c
+$ mount -t erofs -o loop image.erofs /mnt
+$ ./trigger /mnt
 
+output (kernel 7.0-rc6, CONFIG_KASAN=3Dy):
 
-> 
-> So, I kindly ask to revert them from 6.12.y branch if they aren't
-> critical.
-> 
-> Thanks,
-> 
-> > 
-> > Thanks,
-> > 
-> > > 
-> > > As of me, this is not easy to revert, as it depends on many other
-> > > commits, and git does not have tooling to determine all dependant
-> > > commits for revert. I hope someone from drm subsystem notices this to
-> > > work on it, or Sasha can pull missing commits or revert this (obviously,
-> > > he have tooling for this, but I was unable to find it). [I found
-> > > obsolete references to deps but is seems not used for years and Python
-> > > git-deps tool seems broken.]
-> > > 
-> > > What I found is, offending commit is picked due to
-> > > 
-> > >   Stable-dep-of: 4a9b4e1fa52a ("drm/xe/mmio: Avoid double-adjust in 64-bit reads")
-> > > 
-> > > Which, perhaps, needs to be reverted.
-> > > 
-> > > Offending commit 26a40327c25c is not tracked in lore.
-> > > It's part of 9 piece patchset, perhaps they are logically dependent too,
-> > > so need to be reverted together.
-> > > 
-> > > The possible fix is part of 6 piece patchset, which does not cherry-pick
-> > > easily due to conflicts.
-> > > 
-> > > If someone can produce correct fix we can participate in the tests.
-> > > 
-> > > Thanks,
-> > > 
-> > > > 
-> > > > Ciao, Thorsten
+  BUG: KASAN: slab-out-of-bounds in strnlen+0x74/0x80
+  Read of size 1 at addr ffff888008828fff by task trigger/76
+
 
