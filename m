@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-237775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDJaLiYS3mkomwkAu9opvQ
-	(envelope-from <stable+bounces-237775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:08:38 +0200
+	id QPapC7MS3mkomwkAu9opvQ
+	(envelope-from <stable+bounces-237776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:10:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C8D3F86EC
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:08:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8425E3F8799
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60B42303FCC2
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:04:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAB22305DF23
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFBE39768E;
-	Tue, 14 Apr 2026 10:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B3039768E;
+	Tue, 14 Apr 2026 10:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rthLquy6"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="J3baarwV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1303CAE9C;
-	Tue, 14 Apr 2026 10:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44813B583D;
+	Tue, 14 Apr 2026 10:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776161036; cv=none; b=j/S/R2kdQKbY0QamS7swOfFr7P7mCtbl65IiSzFTwyUA/dKuqhMFjv1aIcTe09IfANpvWdfzQA6Ljt0p2K+ZKgOfR+SrcEOBQiTwamEiWvHvM1skED9s1blo9g8PcIzjrqcvQiygCH+hCgcd/amCmNuSt3ptEcxIItp55zCY9Gk=
+	t=1776161228; cv=none; b=mEWsS4aQAkJBMLrqnXvB4t2GSM+cFNe4d5Dcn2GoPsfmW2v2JzpELT5PgcQVUSEzFlxE279WIAyvEGM6L1R8boB6IIJ9BcjgyTDOZHhaLk42hyD2uYJkG4X/DxYBpquI73P9AtGsxwHgvqvhfYc2wMwvQA4KeJ+B3uyGry0WOf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776161036; c=relaxed/simple;
-	bh=d7Ka3ZwFK5TaT/G34YVREMh7Kh+Pq8BGRtgE7VObM7g=;
+	s=arc-20240116; t=1776161228; c=relaxed/simple;
+	bh=U7B3hY316QCp8VRZPEC0bI58dj4yGY1dZwbddcBFGx0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kIlVmfX5LowZxVg/ae+gJv5hCUqgcE+5HykHXx7I8PIAyzJWq79MWWlb0M/SdbhO8LfAVpXA+HVuwwAW8SXrjU92/PGOxxVyI4GrnMPi4gljb9YdNlb+wG0M8V5NPPyfxAwQJFaFmbM3AadfqUQVOG2fqYEef0MQRdqF+WVXzHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rthLquy6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73F6C19425;
-	Tue, 14 Apr 2026 10:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776161035;
-	bh=d7Ka3ZwFK5TaT/G34YVREMh7Kh+Pq8BGRtgE7VObM7g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rthLquy6W53yHNuN+7q251v/1l3BpGX8+ooM+J87fE6F/2U/akcUF5t4rjtORXFrZ
-	 DKPMipf2EzngqgemkhGuBy3Y6RM+mqf0Ic3LI6F9XIMLL4BpnvGwDCJBZBJayqxQSa
-	 jga+QaOC1AOb3IVj9B39Vt5yDe+1oW/d4EYqw2oAl55C32ia/DicbvzE+FbAvY3Ud1
-	 xCu6dH0d6aDE/4X7BEI4b2TcUtKbqPmYx/6a46hBeQDt9kpLGth+D1P8s729tCl9ey
-	 +CArWDiBpPVZV5In/nuaYU1JxYYp12wk97GGwyOjKteNdsXQi70YOH4lkb8PXrvQsU
-	 FWlRam0asLlPQ==
-Message-ID: <2c0c00aa-7fb2-4d7b-90b3-0309c13468ce@kernel.org>
-Date: Tue, 14 Apr 2026 12:03:49 +0200
+	 In-Reply-To:Content-Type; b=BOHS69ROluQUYx9itNNMDK0Jes8i8H7FFX9VM3ak/Rq0g+y90/zrLuWj5dip0RAhwwpJoXrad9cTNgMg5f7Jy7iffxEaC4NbUoa6BnBeO8V2OoM+mgswPPv3gz/qBhK7MtLVAc9GXetZ/VZ4ZdZMpbqwrGbz0AdW4fW6+QjbORg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=J3baarwV; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5EC2010CE86;
+	Tue, 14 Apr 2026 12:07:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1776161224;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=nDSQ1qVAQDKVPu+EdG4A07GNZkzB7xDnGkIuGtvgKU4=;
+	b=J3baarwVurbP1YVzghseAT6rMJMudngQIBweegx/JTJmBHZWfLV71D6xr+DoiDZIiqZqUv
+	1l2JCdzxdbdk3aU754Zh8/ek0ZshytkJnBjnFHXvu/lsI+1Z5Y4SAyvZ8teH18VG97AAq2
+	m2xhe//rcd8hCUiUG9ZnTKcaKpCKEJj1B7tKb80vWtQJJoF9DZGk9O4NSbsjpTkiyp/fTE
+	T8ErdEdNML+flLwpph1HdjbWp8yU8Hm5iid3YfuvtALAPvKQR0CQ02fyTS5mje5HcDOKVj
+	5iY5BatTvP35UfyGurPx41QyDgJ2p8aYXw62E7mYEEZ8tIvyIE/5TQVMFlei0w==
+Message-ID: <e2956a79-8f26-45f4-84e2-16932b4542cd@nabladev.com>
+Date: Tue, 14 Apr 2026 12:07:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,134 +55,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: fix double unlock
-To: Sunny Patel <nueralspacetech@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260413211559.20969-1-nueralspacetech@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [net,PATCH v2] net: ks8851: Reinstate disabling of BHs around IRQ
+ handler
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>, Paolo Abeni <pabeni@redhat.com>,
+ Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui <yiconghui@gmail.com>,
+ linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>
+References: <20260408162535.98108-1-marex@nabladev.com>
+ <20260412090141.21bf1534@kernel.org>
+ <2558832d-c821-436d-898d-b708c5e0a228@nabladev.com>
+ <20260412105125.48f0c58f@kernel.org> <20260413125744.TVKkZcEK@linutronix.de>
+ <20260413084445.59fe28d6@kernel.org> <20260413161000.P_SLxmZl@linutronix.de>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260413211559.20969-1-nueralspacetech@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260413161000.P_SLxmZl@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237775-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237776-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,kvack.org,vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,tipi-net.de,redhat.com,raritan.com,gmail.com,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nabladev.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C4C8D3F86EC
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8425E3F8799
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/13/26 23:15, Sunny Patel wrote:
-> migrate_vma_collect_huge_pmd() calls spin_unlock(ptl) after
-> softleaf_entry_wait_on_locked(), which already releases the ptl.
+On 4/13/26 6:10 PM, Sebastian Andrzej Siewior wrote:
+
+>> TBH changing the driver feels like a workaround / invitation for a
+>> whack-a-mole game. I'd prefer to fix the skb allocation.
 > 
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> The problem is that _irq() implicitly disables bh processing but this
+> does not happen. Forcing this is possible but expensive.
+> However, I did remove lock from bh_disable() on RT.
 > 
-> Cc: stable@vger.kernel.org
-> 
-> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
-> ---
->  mm/migrate_device.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 8079676c8f1f..7eb2f87ea39d 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -177,7 +177,6 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
->  
->  		if (softleaf_is_migration(entry)) {
->  			softleaf_entry_wait_on_locked(entry, ptl);
-> -			spin_unlock(ptl);
->  			return -EAGAIN;
->  		}
->  
+> Marek: from which kernel version was this backtrace?
+That was v6.12.79-rt17-rebase where it was easy to trigger , here is a 
+fresh one from next-20260413 with b44596ffe1b4 ("ARM: Allow to enable 
+RT") from stable-rt added on top:
 
-As raised by Matthew, the entire code block is dead code:
+"
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu:     Tasks blocked on level-0 rcu_node (CPUs 0-1): P127/5:b..l
+rcu:     (detected by 1, t=2102 jiffies, g=-503, q=1 ncpus=2)
+task:irq/68-eth1     state:D stack:0     pid:127   tgid:127   ppid:2 
+  task_flags:0x4208040 flags:0x00000000
+Call trace:
+  __schedule from schedule_rtlock+0x1c/0x34
+  schedule_rtlock from rtlock_slowlock_locked+0x548/0x904
+  rtlock_slowlock_locked from rt_spin_lock+0x60/0x9c
+  rt_spin_lock from ks8851_start_xmit_par+0x74/0x1a8
+  ks8851_start_xmit_par from netdev_start_xmit+0x20/0x44
+  netdev_start_xmit from dev_hard_start_xmit+0xd0/0x188
+  dev_hard_start_xmit from sch_direct_xmit+0xb8/0x25c
+  sch_direct_xmit from __qdisc_run+0x1f8/0x4ec
+  __qdisc_run from qdisc_run+0x1c/0x28
+  qdisc_run from net_tx_action+0x1f0/0x268
+  net_tx_action from handle_softirqs+0x1a4/0x270
+  handle_softirqs from __local_bh_enable_ip+0xcc/0xe0
+  __local_bh_enable_ip from __alloc_skb+0xd8/0x128
+  __alloc_skb from __netdev_alloc_skb+0x3c/0x19c
+  __netdev_alloc_skb from ks8851_irq+0x388/0x4d4
+  ks8851_irq from irq_thread_fn+0x24/0x64
+  irq_thread_fn from irq_thread+0x178/0x28c
+  irq_thread from kthread+0x12c/0x138
+  kthread from ret_from_fork+0x14/0x28
+Exception stack(0xf4c99fb0 to 0xf4c99ff8)
+9fa0:                                     00000000 00000000 00000000 
+00000000
+9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000
+9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+"
 
-https://lore.kernel.org/linux-mm/20260212014611.416695-1-dave@stgolabs.net/
-
-And I even Ack'ed it /facepalm
-
-So we should take that (cleanup) patch instead. Thanks!
-
--- 
-Cheers,
-
-David
 
