@@ -1,180 +1,140 @@
-Return-Path: <stable+bounces-237761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHWRL3T63WlTlwkAu9opvQ
-	(envelope-from <stable+bounces-237761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:27:32 +0200
+	id gI8MG9P53WnJlwkAu9opvQ
+	(envelope-from <stable+bounces-237760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:24:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AEAD3F7426
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C09E53F7384
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D7A1302A6D0
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:20:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85A50304D425
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D203A5E84;
-	Tue, 14 Apr 2026 08:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A424C3A0E81;
+	Tue, 14 Apr 2026 08:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sjz5IEUl"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="j4N+rUvo"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E8A3A1A4C
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 08:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A4F39F17C;
+	Tue, 14 Apr 2026 08:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776154830; cv=none; b=lDav/UDbRJjkVz6QKSvspSsjOCAPZH8Tj5MkDRdAQpyRaFCRh4434fdqeFeo0Wxwt7yR9yFXAXBXVUs5bxZqVEk4ihqQeKevurocFC6GSp9CMychidCIvjDRzfPXa5Gk5yUKA0GXTtgyW08bt6oSxrYLygPq2myyhVWLCdeqE08=
+	t=1776154813; cv=none; b=bzBmWv5srU+jQQAaAuPj/BhtjRumCnQDmZ1vcyOjsSu4QjZoPCqHrb5OUKij7EUKsdFAY/21th2VHs7dvY+YuNL0pNHQcV/Whx0A0EkKYi+W3rIlY75/hLuojUPSIb8h7gd/qnGs7Wupr/iTJEtEOk5VjL+Ry9uMjq/pckeIN+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776154830; c=relaxed/simple;
-	bh=S62t+upgojIYhz1p6dALu+kyrentByS35lQhzLSLXbY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Td1jy2tbpDqLjEDgNdNLhfzb3DvaQboip5rmvSbbgazpTbCvTOG9/iYbu9PMFR3PXWiDVOq2yLSiQKuHbLXANzQ4QYe1zoZvYGR+ZZ8pEnjMineD0vXy0mX1yG9Q0apZJZKXQHiaOnRRrsr1lCDakAt+wqg0e+ceSDmyNFjtD5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sjz5IEUl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776154828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0M8NeyGOtxqcK9n3lFvZBV03uT/fzw4I/4MxBJJ99Zo=;
-	b=Sjz5IEUlmecx5OQp0UYyyTJduTuBdtZPfrQQhirZJz2HkxxPBBv5o/Z2kn9mmzyLl+Oc+A
-	lN0eM0yUpy4GeJkRW9JGA8Gzc+raKLxK34lcUxhmQehfvxMcyOg9ft0duclCj20+Ffdn1P
-	pr0HJbqe8O9l5R2URKJWyiB87T9gq70=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-heacoSwaPWixRL0MJVs81g-1; Tue,
- 14 Apr 2026 04:20:23 -0400
-X-MC-Unique: heacoSwaPWixRL0MJVs81g-1
-X-Mimecast-MFC-AGG-ID: heacoSwaPWixRL0MJVs81g_1776154822
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47AEC1955DAE;
-	Tue, 14 Apr 2026 08:20:22 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.34.160])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B0C241800451;
-	Tue, 14 Apr 2026 08:20:18 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Xiaoli Feng <xifeng@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/7] netfs: fix error handling in netfs_extract_user_iter()
-Date: Tue, 14 Apr 2026 09:19:58 +0100
-Message-ID: <20260414082004.3756080-3-dhowells@redhat.com>
-In-Reply-To: <20260414082004.3756080-1-dhowells@redhat.com>
-References: <20260414082004.3756080-1-dhowells@redhat.com>
+	s=arc-20240116; t=1776154813; c=relaxed/simple;
+	bh=oykHXkpjROeyIB1neFhOSiBFwyB0JQ5MRgug3dnx6Cs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hey/F/egD8M9anm+f2Xud9MRF20AqW8aCEle/8MiWcJDhdQqKszKP0SXtsfiUYsUj8mX6d5N1VN64ncamO9EubEvSOHditDSbU434hGfkJA7InGCkQ3Et+zRNzc0VHP+sFyPKnwv4iy9mqxUvNjTGiY1RG3pKamJtOQZ3xahiRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=j4N+rUvo; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A0E071058FA;
+	Tue, 14 Apr 2026 10:20:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1776154808;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=llJPZZ83E1q0kMIBn6Sh1qcdCsI4+Icrr2Epz1J1pCs=;
+	b=j4N+rUvoWwiJTyxCLVZGJOH0MVgk+aqCDBkBo6aT07cKGV+d6NqCYlYe8CDEHwNbyRYK5R
+	B/5qsRRU3Ay3RkGuAwDmpWkfFPWtQw1zIl46djeV51zdIcosz/l8wtCPdNkxXpGFu25602
+	Gijxg5g6AlG2jcrmCjbAS0a13dlk+6NsEOG6A8xKwDsS5th+D762BIJTij/mb+ZPXv2SqO
+	QwkmtzymREu6XGnulCkPDY32/z8t3eDZG6+Z7erP0yaMIiA37mfKzZapftWJEhf3Zkq96l
+	Og3N9LiBUHEcqJUH0Pawnvcxk9b6PG+wulqvtxfJ8ya7UPYJBT+RuuQO0O+tew==
+Date: Tue, 14 Apr 2026 10:20:04 +0200
+From: Pavel Machek <pavel@nabladev.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 00/55] 6.1.169-rc1 review
+Message-ID: <ad34tP_TcEYadIsu@duo.ucw.cz>
+References: <20260413155724.820472494@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="e6A9JHHX0cMICXD0"
+Content-Disposition: inline
+In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237761-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-237760-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,manguebit.org:email]
-X-Rspamd-Queue-Id: 6AEAD3F7426
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nabladev.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[duo.ucw.cz:mid,nabladev.com:dkim,nabladev.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C09E53F7384
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Paulo Alcantara <pc@manguebit.org>
 
-In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
-extract user pages, bail out on -ENOMEM, otherwise return the error
-code only if @npages == 0, allowing short DIO reads and writes to be
-issued.
+--e6A9JHHX0cMICXD0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This fixes mmapstress02 from LTP tests against CIFS.
+Hi!
 
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Reported-by: Xiaoli Feng <xifeng@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Cc: netfs@lists.linux.dev
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/iterator.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+> This is the start of the stable review cycle for the 6.1.169 release.
+> There are 55 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 154a14bb2d7f..adca78747f23 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -22,7 +22,7 @@
-  *
-  * Extract the page fragments from the given amount of the source iterator and
-  * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to disposed of.
-+ * the original iterator to be disposed of.
-  *
-  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-  * allowed on the pages extracted.
-@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		ret = iov_iter_extract_pages(orig, &pages, count,
- 					     max_pages - npages, extraction_flags,
- 					     &offset);
--		if (ret < 0) {
--			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
-+		if (unlikely(ret <= 0)) {
-+			ret = ret ?: -EIO;
- 			break;
- 		}
- 
-@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		npages += cur_npages;
- 	}
- 
-+	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
-+		for (i = 0; i < npages; i++)
-+			unpin_user_page(bv[i].bv_page);
-+		kvfree(bv);
-+		return ret;
-+	}
-+
- 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
- 	return npages;
- }
+CIP testing did not find any problems here:
 
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.19.y
+
+Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
+
+Best regards,
+                                                                Pavel
+
+
+--e6A9JHHX0cMICXD0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCad34tAAKCRAw5/Bqldv6
+8loHAJ0bYnXf6orETPe7AWatbrnRcs1N5QCbB90wICPoITpbetflraY9cfwB+ts=
+=UVxO
+-----END PGP SIGNATURE-----
+
+--e6A9JHHX0cMICXD0--
 
