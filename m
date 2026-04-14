@@ -1,186 +1,130 @@
-Return-Path: <stable+bounces-237968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id NkabJ7yo3mmHHAAAu9opvQ
-	(envelope-from <stable+bounces-237968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 22:51:08 +0200
+	id aLDbEOSp3mmHHAAAu9opvQ
+	(envelope-from <stable+bounces-237969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 22:56:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F343FE74F
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 22:51:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2046A3FE78D
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 22:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0289D30595A4
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 20:49:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 126E83022BB8
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 20:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6892472A2;
-	Tue, 14 Apr 2026 20:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26FE372B45;
+	Tue, 14 Apr 2026 20:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oseNf73+"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30056372B50;
-	Tue, 14 Apr 2026 20:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAB8372689
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 20:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776199740; cv=none; b=rDTvMlPWG0Lx0nhCzWyD91hl5NB9V42topHOwfEQnvPCMQFaJH0fr0QH+W+ko47yZxDUzTGm8KST54BUpt/DLlwfjdZnbWTC1YaMk9LwuLwzAHDwQCXWwBAT4nHYn9n1S8s8hv3hMCj8pb6xRpPxZeyL85Gj5dX+VKq8Y2Y/S/4=
+	t=1776200156; cv=none; b=lOkN0zs1nDail9G7ooGPHIlXEccGn3TZHHWPnhaYGcG+Z9N3atbGsKvbXOBTbHW8EAWBuxYq/wM71n9c6mCVAADbRFcAvnFlhT1vOEhLjnF4xL0NaBw/fYE6xcBPMp2to8PcAWudmYVMA5yRw6fZGVLsxJyuM5Y1Y40wQkwQ3E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776199740; c=relaxed/simple;
-	bh=FZhVmZDmoc+e4tnw/rUsAPvhn+Fv1Ql1ghdXUhYNQMs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zf0/sPKNuYzYe7ztELYT2A/d8e/xGDN4KMFdWTZbvvEJW9g7IrPsiE4sRdJNmD401V3JFNLMa+8o63R3m960ZDnxHXgPUgNX1gJA6afa9wqttX5QILB8y6f2z/9YfFHM6ScFqh1FOzD3rdc7Gezg41VFDB586FuPQMDalbdYK/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCkgc-004tdR-0j;
-	Tue, 14 Apr 2026 20:48:41 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCkgZ-00000003JXJ-22TJ;
-	Tue, 14 Apr 2026 22:48:39 +0200
-Message-ID: <408661f69f263266b028713e1412ba36d457e63d.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 040/491] wifi: cw1200: Fix locking in error paths
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Bart Van Assche
-	 <bvanassche@acm.org>, Johannes Berg <johannes.berg@intel.com>
-Cc: patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>, stable
-	 <stable@vger.kernel.org>
-Date: Tue, 14 Apr 2026 22:48:34 +0200
-In-Reply-To: <20260413155820.553917826@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
-	 <20260413155820.553917826@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-3XcIgO2PhS3b5fJ4IWpi"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1776200156; c=relaxed/simple;
+	bh=9DFPAVujpGC2GbzOGPxwNbfZ04jWH6d6SPDB/WPoKNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=roxF94wc2TkGsHIfegQ7mFCs+vtUOQ0aOUv2Rx3DDmY6nkK3TKra1ZnXNIhj5dETGcnBxdTt6QZ1Eyikg8AocFo93FumklzWJ79KrVYuZjis7Fbxkbpg3E3j+cWbUrrD1RLINyMTETEB+j+tjAcPV5JYoePBF1KMWtT6d8W277g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oseNf73+; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776200151;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r6P0nneaaLMO0SWxip7riotnZ1csgytFAw0HMmy3OdA=;
+	b=oseNf73+SKpQHNvMZ8YKgRenLVDRdLN2Oz8hqXGRhfANwfNce3TpX62R5NYaDxumesQuxQ
+	OBB7jryuyrZmiHWJDqAhrSD2VlOeTUpShfNnpRNULCW/KykOlyQQcsdZLUj1Njfng/X1Ui
+	WzdfU3dPRA7PSbDNbwqPPYJ1XL2Fsc0=
+From: luka.gejak@linux.dev
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Luka Gejak <luka.gejak@linux.dev>,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Dan Carpenter <error27@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] staging: rtl8723bs: fix null pointer deref in rtw_check_bcn_info
+Date: Tue, 14 Apr 2026 22:55:20 +0200
+Message-ID: <20260414205520.157861-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237968-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237969-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.dev,lists.linux.dev,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[decadent.org.uk];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,acm.org:email,msgid.link:url,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: D1F343FE74F
+	NEURAL_HAM(-0.00)[-0.989];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid]
+X-Rspamd-Queue-Id: 2046A3FE78D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Luka Gejak <luka.gejak@linux.dev>
 
---=-3XcIgO2PhS3b5fJ4IWpi
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+When parsing beacon or probe response frames, if the ap does not provide
+a valid ssid ie, rtw_get_ie() returns NULL. The code then blindly
+performs a memcpy() using the returned NULL pointer (p + 2), resulting
+in a kernel oops or kernel panic due to a NULL pointer dereference.
 
-On Mon, 2026-04-13 at 17:54 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Bart Van Assche <bvanassche@acm.org>
->=20
-> [ Upstream commit d98c24617a831e92e7224a07dcaed2dd0b02af96 ]
->=20
-> cw1200_wow_suspend() must only return with priv->conf_mutex locked if it
-> returns zero. This mutex must be unlocked if an error is returned. Add
-> mutex_unlock() calls to the error paths from which that call is missing.
+Fix this by moving the memcpy() inside the if (p) block so it is only
+executed when a valid ssid ie is actually found.
 
-These error paths already call cw1200_wow_resume() which unlocks
-conf_mutex.  So this is introducing and not fixing a locking bug.=20
-Please drop this from all stable queues and revert it upstream.
+Fixes: 370730894bec ("Staging: rtl8723bs: rtw_wlan_util: Add size check of SSID IE")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+---
+ drivers/staging/rtl8723bs/core/rtw_wlan_util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> This has been detected by the Clang thread-safety analyzer.
+diff --git a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
+index 6a7c09db4cd9..2a8aec37d9b0 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
++++ b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
+@@ -1204,8 +1204,8 @@ int rtw_check_bcn_info(struct adapter *Adapter, u8 *pframe, u32 packet_len)
+ 		ssid_len = *(p + 1);
+ 		if (ssid_len > NDIS_802_11_LENGTH_SSID)
+ 			ssid_len = 0;
++		memcpy(bssid->ssid.ssid, (p + 2), ssid_len);
+ 	}
+-	memcpy(bssid->ssid.ssid, (p + 2), ssid_len);
+ 	bssid->ssid.ssid_length = ssid_len;
+ 
+ 	if (memcmp(bssid->ssid.ssid, cur_network->network.ssid.ssid, 32) ||
+-- 
+2.53.0
 
-A bug report against that analyser may also be in order!
-
-Ben.
-
->=20
-> Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLA=
-N chipsets")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> Link: https://patch.msgid.link/20260223220102.2158611-25-bart.vanassche@l=
-inux.dev
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/net/wireless/st/cw1200/pm.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/st/cw1200/pm.c b/drivers/net/wireless/s=
-t/cw1200/pm.c
-> index a20ab577a3644..212b6f2af8de4 100644
-> --- a/drivers/net/wireless/st/cw1200/pm.c
-> +++ b/drivers/net/wireless/st/cw1200/pm.c
-> @@ -264,12 +264,14 @@ int cw1200_wow_suspend(struct ieee80211_hw *hw, str=
-uct cfg80211_wowlan *wowlan)
->  		wiphy_err(priv->hw->wiphy,
->  			  "PM request failed: %d. WoW is disabled.\n", ret);
->  		cw1200_wow_resume(hw);
-> +		mutex_unlock(&priv->conf_mutex);
->  		return -EBUSY;
->  	}
-> =20
->  	/* Force resume if event is coming from the device. */
->  	if (atomic_read(&priv->bh_rx)) {
->  		cw1200_wow_resume(hw);
-> +		mutex_unlock(&priv->conf_mutex);
->  		return -EAGAIN;
->  	}
-> =20
-
---=20
-Ben Hutchings
-73.46% of all statistics are made up.
-
---=-3XcIgO2PhS3b5fJ4IWpi
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmneqCMACgkQ57/I7JWG
-EQlvLw/+JL+dXnWLRtJ34u60t+0cVAdpyArua8EZRhk0AsLOLB6r6Ea6uReGeXCp
-Q17Ah6wrQ3MjLcUwABJ9STD2H6VuLIoeuEdLlE16pqo+r08py9gxjB5pdayGOVaR
-jam8Kyp2lhkn1Z2jyAPC3lytF2hXxrzfuZ1WL6EkE7sTq+3x2XDZjpflCt65OWi5
-kk57PzchgBRm9j9F2vbN4fdQckczCHymm0DaxDN2A6wZxdZJ8NJ7ap/lhXpaXpN7
-Gv38pPVzRrcZvYXxTyx6I/P8OSTDvmE3gwnt37+8H5a0wKsCcU2ZHapWupMxE4t4
-vnHiyeN9m7g3szc3d6uQKzqGkvGGFEHDsdeEdgWRmQYiPddzzG3iuGGhhljooJB8
-nEvYHLCgD2dv+GKVS+8fwoWW+b7yV2EMR/G1h2AtlHoCiY64cg+kg7r6nEqohUo2
-ICKKVWXyc+DzrhKeKjc6w8pWJV/aZI2BW9y5A87jrIHpkkOqnRO4GBnUXomaPdUp
-sik0W4i5sXASs36TJ7xqBB6uL14enm6Z/S2HR/8P9ac9nEMMwMJbfIfp+0qlsxHN
-6/qfswnYgKJAjQOvZ+IZIpqkUtvWVGIg8OM+EUDtVIElcfcAzR5xUIC4QumYgnPd
-Kr6wy/0Q+7/Z6GS8lESAr27W9wf5YFM0/y+sM/0gFkCaAxHrU8A=
-=W5Jd
------END PGP SIGNATURE-----
-
---=-3XcIgO2PhS3b5fJ4IWpi--
 
