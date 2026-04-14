@@ -1,234 +1,170 @@
-Return-Path: <stable+bounces-237736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKBVK7jq3WmulAkAu9opvQ
-	(envelope-from <stable+bounces-237736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 09:20:24 +0200
+	id qJudAPrq3WmulAkAu9opvQ
+	(envelope-from <stable+bounces-237737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 09:21:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3DC3F68A1
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 09:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 129943F68C8
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 09:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 56EF3301A6A1
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:12:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 07499302FF84
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53FC35E943;
-	Tue, 14 Apr 2026 07:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48BE370D63;
+	Tue, 14 Apr 2026 07:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hqhpidqE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ltlS0kZT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5F035E93D
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 07:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262C83603F7
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 07:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776150736; cv=none; b=Sh60EGiZPUbSUTSq//ruMJKXNmHC4q68WffvTsr+W9VxHpgfYLYhMsaXj0rATeU72LB4GntELBMz2tzL5zkgwizs64d+W7QGYx9N5WSAiwoWtbe8hF5OrwTfSD/KsB0ijwlFGiqWAoZorPUsbD4oxrwjFRVgwmT+G6XfGdRFP6g=
+	t=1776150808; cv=none; b=VPsgtyOS10VUHI/TOzy4RE2O3Z48EEyCNP1djkEAtNapshKM+1Z1jSO5TlgQoCrIG3hsCxxD89anhWLWDjl9FYVbQoYesjkxPWAMyOq/h5D2fD7SSvuQaoeIdsbn2zyUnbUtleiA63mtQ2D8taGOzQUciy7XyJv9I6WyEt8Oqdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776150736; c=relaxed/simple;
-	bh=pc/khuUTh7M50Gs774pXFPkfuOHJz9HSjhJ8TEeqTrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u+HiMh8Ghlu/bIXwR1W0PIDe9UjtlynM+mpuZRcukKun5KIGtg/YKwjJOHtmxk5XrNg+cY1zhBuqHEAGJypWQ0OpOBpRFT9exCnazu22/hxwfechYdyCz/fCSd1HV1GJgCmCE7/w1iFfWPl7GRct0sSVWT6N0WN2FUCX0SOqnAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hqhpidqE; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1776150808; c=relaxed/simple;
+	bh=RrspV2M3q1YMPaUF6NAuszBGY+gIKbsLaOiFuToNw3Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nlglinRq4LunXkAK0GGGC0TWY+RwSK0NIjRyMDMdTtzx2V7p71gFDTxMY+gmyrylMkV8WmY+AfEYFZgpfjDxBATyFc4TMs2RtBEPClsWIc/bGYaLvfyZAPz4Psm1xU6DbFXao4TJ//caNRrrOvY36VlT2FP5vRvp+sA0Pjl7MY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ltlS0kZT; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488ad135063so49960555e9.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 00:12:14 -0700 (PDT)
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82c70e4654eso2285773b3a.2
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 00:13:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776150733; x=1776755533; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LhanaccIGc9hiLH1UN6IYI4Y2aihOg0AcpAQfiO+8sc=;
-        b=hqhpidqEStwT0NwwL1oD+WcInDKRiVbovXaKZd8SMkJDGlFEm9ku1lf2KZ+r4sFHac
-         8nc+YTRKPweh/Mf2gfPY6b6XhwLHfdLnqEcLtJtn4EA2+z5Gzf1i/7Upcvo3obKOg2MN
-         qX5fUzhyRyKfJjTjJWD7x7hYDIXF3GE5Y73EoYXN/8zek5VJtTL4QWRtlD3HPwwlGSTr
-         /zv6UZ8ba8b1iM83IVYpgOCEuUHyis2mLR2jbf4Tt7kZbkYwl9uT8Sdr+h9FF0z8wFE9
-         MFD+tNWnq7SPz5Q4VHjNzaC/WWQoDWXKH1TDrnxes4wG9eAeb10Hd86iGOAef01cSRde
-         NSjg==
+        d=gmail.com; s=20251104; t=1776150805; x=1776755605; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3ZR5ZSEZp74pl3SVnEkbEOwwj/yRKz7BitznZw1sh5s=;
+        b=ltlS0kZTR9RXOmax5ag2pon1pcI6NpXbpv58fJCWq26yTqXvNkagRRqZ7VGt7iRnSd
+         dGdUzMG/hihbx71ZdHfU65oTnKjRwM5GNOQwHQQXltvpHcbkZEhFkTq+KnH8WCVDf0le
+         w9dFLF7QTbvt1js9BSVvsyGQA/LoOliuBwRMzHFmpH3Vv9Ia1HjwOTHEl21ZCUE5ejdw
+         RZoZAHAZ4Y/JCg2ZVeNtJ4MAgYocoo/CGijc0AlcMeI7JQegIwI1M/LCGBHYjXVHHPJ5
+         BDDpES9RP/1AcBOjv1rkRLvJSP7efo3RNJFnRAlPvtUZhd8qpXSszjZ1vRLMyk6XdGjp
+         M6Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776150733; x=1776755533;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LhanaccIGc9hiLH1UN6IYI4Y2aihOg0AcpAQfiO+8sc=;
-        b=gTETOZRyctqmyFmOlJwptgr3saZDda/nX0nHbWF0RH6idTqnD9mGDfaOFbYGuKYfbK
-         IPmwVyDpDdNtu2uKTK+k1tjwGJPHXX0CE4dzY2wKUhbYyic1LwoDvDoz+EcLIu5iiHNi
-         +rhoef6i8wnsuvHOiDwqFNeptjDvu4yM5mCo6H5XP2IrHXiM02xk0xokFrkbRgoeLZY+
-         bsT+1ul4Z7dDx83dXRvchSyAg08iyPQUxfjpdyRGIrvjPfqqDc12KQRHaIF1vMKK5Ms5
-         et+2+dOc8c1HuJmPyvjuBLbLi0tF/0VCSTqVV1UtRL/XjHhrXbOg9qBvQ0CBwbg4KvjD
-         04Nw==
-X-Forwarded-Encrypted: i=1; AFNElJ9oEHF8W1UBUPrIsv38CHuTcnQAxinlz3dBI6gRYP8sTTabxr273OlJwpXw+OXfWrGiJrimGAA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxdv/naDu0aVUt0WuuncihHVisqcN/xvNOCqIn36gCCdrTDZNjN
-	mwpNSR5eJq9coRyY5TRBtCyM9P4bibSV+2k02ZqDkJMZKEA9DCw3xvrY
-X-Gm-Gg: AeBDiev8LG8I4gHZeZDj+N2bjpN62ww4anRHGBlyUEwoICEUEwkKpIVrv2Udqtfihz0
-	OgxZQFSBPeNLhrf09zh8LvtPgKS9Jg3M6HcNJ4v1I8IjRODRoD+61dzKA1UxzelvCCLjHV8BGLa
-	vP3wvdzn9FZyLq62urDJFYjczj1zX8LAuaNTHnKgoxSzxgiKHHzN6AOcRwAPNsI4swB8FlI6udh
-	IhOWh7RqGS9VEMmrpCbGrY5g3lw1dol9Jw19Js8Ian7lpZeB7Y0LOJpK1DrchFWZjljqB+Cv4l9
-	QzE84gVAoHwIricXruTmMICKFZF4V/4I3hA8DtA2O5zbCmacFbEhgpgmaX30VDG2ueDg9z3rRDV
-	LSPEZbcj+OqvEV0K+WWfHh9zz+3lWMf2eUk/ez6xEDnkhq6vqO5wW3fhfgOgeaxn1NnJBiSvWM8
-	VNRyxpKugSr+25u72nQNfp/GTiROrk5STL8r2g9hHnVmliliQJuLZqjFPS2HpIGmcI
-X-Received: by 2002:a05:600c:8b27:b0:488:af7f:775f with SMTP id 5b1f17b1804b1-488d68766c7mr208172865e9.18.1776150733023;
-        Tue, 14 Apr 2026 00:12:13 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a53sm38049692f8f.5.2026.04.14.00.12.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 00:12:12 -0700 (PDT)
-Date: Tue, 14 Apr 2026 08:12:10 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>, linux-scsi@vger.kernel.org,
- martin.petersen@oracle.com, sathya.prakash@broadcom.com,
- chandrakanth.patil@broadcom.com, stable@vger.kernel.org, Mira Limbeck
- <m.limbeck@proxmox.com>, Keith Busch <kbusch@kernel.org>
-Subject: Re: [PATCH v3] mpt3sas: Limit NVMe request size to 2 MiB
-Message-ID: <20260414081210.2b63e350@pumpkin>
-In-Reply-To: <5ecd8d50-d7dc-43a3-b157-8717c6fc02d4@kernel.org>
-References: <20260413180003.76489-1-ranjan.kumar@broadcom.com>
-	<20260413213335.4010d8f2@pumpkin>
-	<5ecd8d50-d7dc-43a3-b157-8717c6fc02d4@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20251104; t=1776150805; x=1776755605;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3ZR5ZSEZp74pl3SVnEkbEOwwj/yRKz7BitznZw1sh5s=;
+        b=pPNTj7vGfpj17wjn4D8P51sfjX3xzu3cevdlqFpTu8t9pHHRBYYZ73hmHcQn1vpmQM
+         ipjb3Zp0QsYicO3a5ZlI7uLbZU1wzWIy1OfOsxPW7yaEY5aE+PqEo3nFhh49AhoIfyJL
+         U83YwgeZqF2AFJ03uFkSVFf2khDG3DrZc8Em8wg5BZiclKqhCJ4E8earoQbcGdrh5tax
+         13XsO83kZalCkBBtI/dtWvUO2AUAPnVqDrsI/UA/CbTYGuarhw5Dgg1Nag8m6tSgZBk9
+         bujy2+/CnG83PonQ7vLEqs1gMyQnCFqJIPMZy+/Y3iuncYpS+opiXM6xVJnvMPNGiPDS
+         AXbA==
+X-Forwarded-Encrypted: i=1; AFNElJ90Ngjadt0btSv0BvOMRhcEFiwAXWXKvq0mUCoj87uPC7o8uR4QJn89iELfkEeyFCB2xwqEUrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbSjxxpAo/R7pNraSFfyu5f28gA1doDIOuJfYLs4Jc39rP10DA
+	b/EQkwUYnXuq90wVQ03XfVFw7h6ht0Hvh6A2YhVw63DRsf5qj+oaHUX4
+X-Gm-Gg: AeBDievVP6Z+Xb9Hick1nregnVDGJTCq7NAUPM3EAJHoxTYFK/OjAQ2pY3NwQXU802r
+	HISe+lgORaHKU8G39n7Evbwdu8nSwqAz6IeqFcuPjPTVh8UtKc+PXfSSmFXaBGtRCESklcu/1DO
+	eV4VPRsEysGl12NXsNbnMbgfbd+u+F/pRO5mMZxUN+fxa7pWK0LhCV+JijhRetWCga4ouI+OFz0
+	0D7zALHuY0fXRulXSZDWvcyjTPgwQLBAQxpzBdjAHiV9hDzWxtbX71LUxLMKdjJZtroOFZS/+Hl
+	EVIfjFzjPfrv5MyYRDT42OtOPS7zwdwMdwxJLSeTS1SNDVr/8mYLZXlYRYwm2dgIJKCUrnHhb6h
+	hshnVHuJEYuLvoUWZSA5LeYuNVTnNhUOWDDXvXoRa7C+0vNLKnzqBh3iUYbK7L1wrRIm+h3dcuO
+	QpFQhgG70NernJqA3JiMmhFnoscdrca3GyZ8lzZqaoWzTYNnF6ox5MYoHGmP25SEjHMv6vDAlhK
+	nQeFMVImULb4Vbpt/DqN7hznGWyKA==
+X-Received: by 2002:a05:6a00:140f:b0:82c:dd31:b844 with SMTP id d2e1a72fcca58-82f0c316a23mr16607277b3a.40.1776150805492;
+        Tue, 14 Apr 2026 00:13:25 -0700 (PDT)
+Received: from localhost.localdomain ([2601:600:8d02:27d0:15f3:5e9a:ad7d:22d1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c506150sm13172519b3a.52.2026.04.14.00.13.24
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 14 Apr 2026 00:13:25 -0700 (PDT)
+From: Gaurav Sharma <sgaurav00719@gmail.com>
+X-Google-Original-From: Gaurav Sharma <mgsharm@amazon.com>
+To: linux-perf-users@vger.kernel.org
+Cc: acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Gaurav Sharma <mgsharm@amazon.com>
+Subject: [PATCH] libperf: fix parallel build race with header install
+Date: Tue, 14 Apr 2026 00:12:42 -0700
+Message-ID: <20260414071242.95637-1-mgsharm@amazon.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237736-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-237737-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sgaurav00719@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,proxmox.com:email]
-X-Rspamd-Queue-Id: AE3DC3F68A1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 129943F68C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 14 Apr 2026 05:41:59 +0200
-Damien Le Moal <dlemoal@kernel.org> wrote:
+When perf is built with high parallelism (-j128), there is a race
+condition between the install_headers and libperf.a targets in the
+libperf sub-build. Both are invoked as targets of a single make
+invocation from Makefile.perf:
 
-> On 2026/04/13 22:33, David Laight wrote:
-> > On Mon, 13 Apr 2026 23:30:03 +0530
-> > Ranjan Kumar <ranjan.kumar@broadcom.com> wrote:
-> >   
-> >> The HBA firmware reports NVMe MDTS values based on the underlying drive
-> >> capability. However, due to the 4K PRP page size and a limit of
-> >> 512 entries, the driver supports a maximum I/O transfer size of 2 MiB.
-> >>
-> >> Limit max_hw_sectors to the smaller of the reported MDTS and the
-> >> 2 MiB driver limit to prevent issuing oversized I/O that may lead
-> >> to a kernel oops.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP")
-> >> Reported-by: Mira Limbeck <m.limbeck@proxmox.com>
-> >> Closes: https://lore.kernel.org/r/291f78bf-4b4a-40dd-867d-053b36c564b3@proxmox.com
-> >> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9b8b84879d4a
-> >> Suggested-by: Keith Busch <kbusch@kernel.org>
-> >> Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-> >> ---
-> >>  drivers/scsi/mpt3sas/mpt3sas_scsih.c | 14 +++++++++++++-
-> >>  1 file changed, 13 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> >> index 6ff788557294..44dd439e6f17 100644
-> >> --- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> >> +++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> >> @@ -2738,8 +2738,20 @@ scsih_sdev_configure(struct scsi_device *sdev, struct queue_limits *lim)
-> >>  				pcie_device->enclosure_level,
-> >>  				pcie_device->connector_name);
-> >>  
-> >> +		/*
-> >> +		 * The HBA firmware passes the NVMe drive's MDTS
-> >> +		 * (Maximum Data Transfer Size) up to the driver. However,
-> >> +		 * the driver hardcodes a 4K page size for the PRP list,  
-> >                                              ^ buffer ?   
-> >> +		 * accommodating at most 512 entries. This strictly limits
-> >> +		 * the maximum supported NVMe I/O transfer to 2 MiB.  
-> > 
-> > Doesn't that make max_fw_entries 4096/8.  
-> 
-> What is max_fw_entries ?
+  $(MAKE) -C $(LIBPERF_DIR) ... $@ install_headers
 
-A mistype for max_hw_sectors :-(
+The perf tool's exported CFLAGS includes -I$(LIBPERF_OUTPUT)/include
+which points to the header install destination. The coreutils install
+command creates the destination file (truncated) before writing content.
+If the compiler runs between file creation and content write, it
+includes an empty header, causing incomplete type and missing prototype
+errors in the libperf source files.
 
-> What the above explains is that a single NVMe page (4K) can store 512 (4096/8)
-> PRP entries, each pointing at a 4K nvme page, so 512*4096=2M maximum size.
-> 
-> > Assuming 4096 byte sectors the longest transfer is then 4096/8*4096.  
-> 
-> Yes, that's the SZ_2M Bytes.
+Fix this by making the libperf compilation target depend on
+install_headers, ensuring all headers are fully installed before any
+source files are compiled.
 
-So write it as (4096/8)*4096
+Fixes: 91009a3a9913 ("perf build: Install libperf locally when building")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gaurav Sharma <mgsharm@amazon.com>
+---
+ tools/lib/perf/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> > So none of this has anything to to with SECTOR_SHIFT.  
-> 
-> Apparently, nvme_mdts is in bytes, even though the documentation in
-> mpt3sas_base.h does not mention anything about its unit. So yes, we need a
-> SECTOR_SHIFT to convert that to 512B sectors unit.
-
-It is all very confusing because of the 4k and 512 byte sectors and there
-being another 512 constant.
-Perhaps the best expression is:
-	(4096 /* NVMe page */ / 8) * (4096 /* hw sector size */ >> SECTOR_SIZE)
-
-
-> 
-> >   
-> >> +		 *
-> >> +		 * Cap max_hw_sectors to the smaller of the drive's reported
-> >> +		 * MDTS or the 2 MiB driver limit to prevent kernel oopses.
-> >> +		 */
-> >> +		lim->max_hw_sectors = SZ_2M >> SECTOR_SHIFT;
-> >>  		if (pcie_device->nvme_mdts)
-> >> -			lim->max_hw_sectors = pcie_device->nvme_mdts / 512;
-> >> +			lim->max_hw_sectors = min_t(u32, lim->max_hw_sectors,
-> >> +					pcie_device->nvme_mdts >> SECTOR_SHIFT);  
-> > 
-> > Why min_t() ?  
-> 
-> max_hw_sectors is unsigned int and nvme_mdts is u32. Not sure if that bothers
-> min(). Worth trying.
-
-It doesn't bother it (any more).
-
-	David
-
-> 
-> > 
-> > David
-> >   
-> >>  
-> >>  		pcie_device_put(pcie_device);
-> >>  		spin_unlock_irqrestore(&ioc->pcie_device_lock, flags);  
-> >   
-> 
-> 
+diff --git a/tools/lib/perf/Makefile b/tools/lib/perf/Makefile
+index 32301a1d8f0c..8372cd9919b7 100644
+--- a/tools/lib/perf/Makefile
++++ b/tools/lib/perf/Makefile
+@@ -99,7 +99,7 @@ $(LIBAPI)-clean:
+ 	$(call QUIET_CLEAN, libapi)
+ 	$(Q)$(MAKE) -C $(LIB_DIR) O=$(OUTPUT) clean >/dev/null
+ 
+-$(LIBPERF_IN): FORCE
++$(LIBPERF_IN): install_headers FORCE
+ 	$(Q)$(MAKE) $(build)=libperf
+ 
+ $(LIBPERF_A): $(LIBPERF_IN)
+-- 
+2.50.1 (Apple Git-155)
 
 
