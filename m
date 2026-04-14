@@ -1,162 +1,178 @@
-Return-Path: <stable+bounces-237930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMUIIct03mkqEgAAu9opvQ
-	(envelope-from <stable+bounces-237930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 19:09:31 +0200
+	id yAKJKVN13mkqEgAAu9opvQ
+	(envelope-from <stable+bounces-237931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 19:11:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C603FCDA8
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 19:09:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E49A3FCE31
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 19:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C1CE3013D45
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:08:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46456300539B
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2652EC0B0;
-	Tue, 14 Apr 2026 17:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0AF2EC08C;
+	Tue, 14 Apr 2026 17:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="PbvobxTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/Lrg3Ro"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5732DA75C
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 17:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E841230ACE3;
+	Tue, 14 Apr 2026 17:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776186518; cv=none; b=niZncXDWOpJDKtcuUd8hr3DRimwJQ1gCq2U4qjN7QFbNgtjKuMPhgteNzE5dMXblFwpa7wYVXsOfeuxi6m86Y9IOD38xQ95ZA2Unse1zvNV3utMMFmLt9FCdZ12I0EZ8hJFJAVCzGFJu5QPMSZn/5X6qiJHXkRYJwjVrxY09/5g=
+	t=1776186552; cv=none; b=rwzNr2sCwV6C6/GpZ8qXleyO7gY6N74sKe+hkvrJIRfpfrSfgF9iJxbuNnVOZygkW02UsJQ62PBum6QcIVYhsBSh3AxfAxi3DFhn+ka3PHDW/ogdvvSNPU/s6FqVUQ3apaPUdcvxrzl3ThAoEGpWXWqgCgNku/CEA6aT1nsImi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776186518; c=relaxed/simple;
-	bh=OP/OVI7CpjABgfPZIm/5UIMSYTQVF56moQLOB3pRF+Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ehs3AY3BYiTjWt+eVjhncs2DAGAwtBkBjAccan92OpV8RTq86wRdAZ8soISMjJ/7hiuY848UDLTOxnllrjYIi/nezf0xKHqeX/VQSQhk4Pc+7wsbN8MRR3l5hHYFpZzaB0SitpXivTD06kyulZbQdkG1iBCUVUSIxXxnvOoVBuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=PbvobxTR; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488a041eae5so43423885e9.1
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 10:08:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1776186515; x=1776791315; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ClnSBgyPlKTv0h1k+yhtne+Q9CmigaF9v1JIRJbgCE0=;
-        b=PbvobxTREdzBSSTXC0P5kbRp7Qi3TOwkbFdM0xrmnJM6KKvZDmsZoJT0SKOdidYyYH
-         5MY0ms+Q+VBkCcqpi9Tbjh58Sm3t8gRLVPxqDUWuBVfZKFvAp6RJVjVT8OSz49K9GDyd
-         K/KhgndAEECxOjZS2pQKUy0uaKk7uKJEY2lEVI17zPKvcEZw2qyBNWZO6o1VWpt410w6
-         ljW/NRmTm8rXVOKgpkmIQEJuP+Cbi1kr0ih000i/BEy8FO8uwyxtq3MkzgXQFD0J/f1D
-         41mBTrPDQZz98gFMCqcQMGw3fetl8e/8ti3A0AsREzmW/jwgDOHFY5Z9OXDAkBQDlQD7
-         iypg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776186515; x=1776791315;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ClnSBgyPlKTv0h1k+yhtne+Q9CmigaF9v1JIRJbgCE0=;
-        b=dvTs2lfijw/+8yXRzxlWvOohxp3oVOSSPbx/R17n4O0A5KWB1sdAU3/AVF3rg5zuma
-         80u6hjukK9/DoCCgdSuUWLKHjdQ5z7Csi/I6jR0STyCQnh5iJqDRgeBHrmCT0BFJ8J7Q
-         YFupF7gtptdw4zFLy7tdrT73rnLnlNt9W+vi5xZO3W9PIHdJC0lgUvEwgY529qEzvlMn
-         8XmfHZ7/RycegIjcyGKJJzI1terpX/cUz4alLxvS/+qshGQHyGfK2qp6XdyNhNffXD1w
-         ZzFStSZamWV35j9Q+hN0jlnpo+QfHOWEsUCcDI6BDpzFRf4VQLCsTNELHBK3kd8XfCne
-         1jhw==
-X-Forwarded-Encrypted: i=1; AFNElJ8lSUFreTIlDzyyuJoBxrT9xHaPwHCrylcQp7jO8pSuMe89+Nbr36VUdrEVv0KOBU/vOJr2d4Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQG5w1WJTjVY7D4L9f4DVRwlprT5MfHf+6HXO6zxWR27JlTVpN
-	jNG8aKTLHQ8HfrDpRISe/8AFUr2BF1pooJcvc3zJ/7l7PsXQQiAiof8=
-X-Gm-Gg: AeBDiesgYm26WkaZIyxtD0bmXd7e4l34cykq7D7AMdg8ZaoE1BNSFQafoeRbsB+dzQV
-	nY5eKt+1UPqwoD2HwD+TRGEP+x4xf0h1yxQTDuUo/5R3rCKYVF6mOwFQY71sNoLUroksSHcqLCs
-	xkZIB1UH/TiSLKAZ4Mz6lfOlMTMgBJ4BAxPBYAwKkKiphjrZJqH83sHTeE3n8IrBwbZ2R/9rxHb
-	VV3U5n08lyzqwm20VLE/EG9UZh2N4lZ4MHJ/m8BWP8Yz7p5GQ5Ni2DKuHKYHKH2LneGSEKlWpvH
-	93N9wM1ptApoBUPm53dJHHDUTHHYqCXYSNUJK/IScbwijfw4GW2zxFvAdNQLFZK3XqyveuKY82H
-	KE0yFWaXx0EdEYA7lAIIz4u1THb9SHQlbEG8wpV1oYKYCRJUCfjw6pg5uuOtPKjhEaRUNOOT/kO
-	P3W1RUxdXEigyTXDbv70bSoqAtpMIAhgpDGdS5aapw1HvDp2i6qwkxWuJYiDe6c1ogrCvcqLHAD
-	08=
-X-Received: by 2002:a5d:5d83:0:b0:43d:50c:6f18 with SMTP id ffacd0b85a97d-43d64270334mr26098011f8f.11.1776186515163;
-        Tue, 14 Apr 2026 10:08:35 -0700 (PDT)
-Received: from [192.168.1.3] (p5b05757c.dip0.t-ipconnect.de. [91.5.117.124])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e5061fsm44756685f8f.30.2026.04.14.10.08.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Apr 2026 10:08:34 -0700 (PDT)
-Message-ID: <93076064-0987-4b5a-b151-f77880f43db1@googlemail.com>
-Date: Tue, 14 Apr 2026 19:08:33 +0200
+	s=arc-20240116; t=1776186552; c=relaxed/simple;
+	bh=SQbCja9Bx3nlfZfmvXhTXp/zRmdVjX6BlUmQahqQ/NI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TqvvKARzrnwQi6HBRBH5zpi8laBiZsESF1Jjkihm970OEjONI5uEL6fDmoHOaEm3XSsqIGVfrmSMY0qWBf+OCle0iTrhFGs+J7JN9NWYlLPnTzSvUJDHjtlKCbvEUfxk4rR/kMX7hSkOs342JcmgIum1VGxYW0XLb4I9JJCA1hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/Lrg3Ro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE1DC2BCF5;
+	Tue, 14 Apr 2026 17:09:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776186551;
+	bh=SQbCja9Bx3nlfZfmvXhTXp/zRmdVjX6BlUmQahqQ/NI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j/Lrg3RoFRzU167ZAZtpbRuYOLNJYcmeGPom3DyHhop3q+kqgSQcwPhfJ0mexcQpS
+	 gbZGH201zk70bYMlkKCabpmMvCOQ0pf1Yw/oxDjxeiHDdIoFS+bbLdMpgjZ2VQuZhM
+	 v7PgTBdTgKAUY/sb+FRv6BPa69eFLxgt0rXqlMOs=
+Date: Tue, 14 Apr 2026 19:08:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alexandru Hossu <hossu.alexandru@gmail.com>
+Cc: linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	dan.carpenter@linaro.org, hansg@kernel.org, stable@vger.kernel.org,
+	Dan Carpenter <error27@gmail.com>
+Subject: Re: [PATCH v2] staging: rtl8723bs: fix missing frame length checks
+ in OnAuthClient
+Message-ID: <2026041427-revisable-snipping-0fe9@gregkh>
+References: <20260413202824.740653-1-hossu.alexandru@gmail.com>
+ <20260414145350.903996-1-hossu.alexandru@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 00/70] 6.12.82-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260413155728.181580293@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260413155728.181580293@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.65 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414145350.903996-1-hossu.alexandru@gmail.com>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237930-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237931-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linaro.org,kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid]
-X-Rspamd-Queue-Id: D1C603FCDA8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1E49A3FCE31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Am 13.04.2026 um 17:59 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.82 release.
-> There are 70 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Apr 14, 2026 at 04:53:50PM +0200, Alexandru Hossu wrote:
+> OnAuthClient() accesses pframe without first verifying that pkt_len is
+> large enough to contain a valid 802.11 management frame header:
+> 
+> - get_da(pframe) reads bytes 4-9, requiring pkt_len >= 10
+> - GetPrivacy(pframe) reads the FC field at bytes 0-1
+> 
+> Additionally, when pkt_len < WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_ the
+> unsigned subtraction passed to rtw_get_ie() wraps around, causing it
+> to scan well past the end of the buffer.
+> 
+> Add an early check against WLAN_HDR_A3_LEN before any pframe access,
+> and a second check against WLAN_HDR_A3_LEN + offset + 6 after computing
+> offset to guard the seq/status reads and the rtw_get_ie() call.
+> 
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
+> ---
+>  drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> index 90f27665667a..884cd39ec756 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> @@ -860,6 +860,9 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
+>  	u8 *pframe = precv_frame->u.hdr.rx_data;
+>  	uint pkt_len = precv_frame->u.hdr.len;
+>  
+> +	if (pkt_len < WLAN_HDR_A3_LEN)
+> +		goto authclnt_fail;
+> +
+>  	/* check A1 matches or not */
+>  	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
+>  		return _SUCCESS;
+> @@ -869,6 +872,9 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
+>  
+>  	offset = (GetPrivacy(pframe)) ? 4 : 0;
+>  
+> +	if (pkt_len < WLAN_HDR_A3_LEN + offset + 6)
+> +		goto authclnt_fail;
+> +
+>  	seq	= le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 2));
+>  	status	= le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 4));
+>  
+> -- 
+> 2.53.0
+> 
+> 
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+Hi,
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-Beste Grüße,
-Peter Schneider
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+thanks,
+
+greg k-h's patch email bot
 
