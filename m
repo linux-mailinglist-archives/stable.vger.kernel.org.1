@@ -1,185 +1,178 @@
-Return-Path: <stable+bounces-237898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AINoLYVV3mmsqgkAu9opvQ
-	(envelope-from <stable+bounces-237898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:56:05 +0200
+	id 2ItPKcBW3mmsqgkAu9opvQ
+	(envelope-from <stable+bounces-237899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:01:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828C13FB83D
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:56:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E003FB8D0
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F2A83019056
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:55:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 46A7D301A3DB
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5F33D9DCD;
-	Tue, 14 Apr 2026 14:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03982D8DC3;
+	Tue, 14 Apr 2026 15:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlDEIMaY"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="rAlBPcEf";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gTTxlyPg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6ED34253B
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 14:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B6340DFC3;
+	Tue, 14 Apr 2026 15:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776178523; cv=none; b=PE+96GwlTM5GOkrOkUYrkqOAufuMWV1vJjO3preAwKBImiJOub8MdpmtL1mSOLcqnN/JRKnEIIZmmYc9nVyqhSkCH72H8qWUm2xLUc+ValLpYmgi81X5Wq1nbIvUg12sv0cPS0wD8DSuu74l3IbZ0aZAIDcyghivGb270zB+O8Q=
+	t=1776178870; cv=none; b=ddgCUu6yNNvaFl+IjO2QjUMudbknCitqBX4r68Lhw6rzMts+uUN93fbNO+lqGr9dQ9sSK826oaEdiu8m1jtOtmi28QU5IwtdZi9/TfCMN4QQU4k4kAWGcPNRBR4BXoD+pOBKkryHmrDBADiLa3+B2p1xpRD+kSaWWAkJgQFCktE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776178523; c=relaxed/simple;
-	bh=/MwhrxoIu5RZNhD80qK+rDFnDRJTEReJvh+FoxmXEK8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PmTcHmck07JdaktFZoHH/FGFoHGOlU/9YX6ENrTKG6ejwdF+1cmSJY/ObXoasTrVA8s2t6I56wa6HaMXTuibeInU07utwFZjpnZXXYn7Y0gvpA0npaSEc5B6X5IAk6IApeJM1Krdq8GcMqvmAflJqzGRaAPRPELICmIwlrRb5hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlDEIMaY; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b9bfcbaa81eso864336766b.1
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 07:55:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776178520; x=1776783320; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/AI6lzRoh3NUnk5S17bU5XB84Xw0u3q8VYePy9hi7D8=;
-        b=YlDEIMaYrA8vSW3Z+49mCbvE0+vhGKJZ5H/h9w+MB0Kfy+UYSfpzrXtBZFESC4TeZ6
-         AIId99f1fBogj8bLvDeSG0xCkGB/GTWQLm8sJDOSptpvC9RTZRRGlXCAJBHLsLQClvOR
-         RcQ0Yr8qnxuYzMkAxSU0B+rMi/Rsr8ZHoxbpLvtpehSUMiIa7XcU3fo1UhwBkQtGWum6
-         K5G/TOwOIkMBe0/7jg8gLEu7W3yE7g6l9m5qTKIBlS/XWefnkjkQdRjXAH0haMWZndrf
-         JAoRCDYuit/iJZq4QJeNCF+5BM/LcSD9uKgbkOkHQ0jU6EK0Ah9qSdiEugkjvB0ekg/s
-         /v7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776178520; x=1776783320;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/AI6lzRoh3NUnk5S17bU5XB84Xw0u3q8VYePy9hi7D8=;
-        b=W9eyPCo+M5RMEpkqKxzTS2OIIOm/K0dTuyg30tPlgFwnV8MehLPsgQelZmMB/Ub02q
-         87X/rULr8iYpPLTmk8/OwJRedmBVXzDCniRgh8CVOuzXRE/lO67lvQbKOZRiThZ5Hmo9
-         Y3pHRaf+Lk/UkeHJxEpKkYyK3NdwqoTlM4na2pYpZr+OYCovZc4NbNSU4ESJy3YiO5He
-         qzq4BlLg6fPf5zLOdA09jvg52t2SLhQKHvk+wQEw3f0S4elikFTMITFHvYLMoEBemn5t
-         wEzEn424vhdNjE/G7K7MturD7vH3/KXTYzSu7zEa5ssGIjFLI5Q3eQIpnsmvnsDC/Da8
-         3K+w==
-X-Forwarded-Encrypted: i=1; AFNElJ8M9cnWQWsfVdX7DUvu0t2QL5AF/hcG5b8qVgtZeeRALlhoimWpLd1T8wQBgviqeWNJyZiYens=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9MHvhBbdlQJNnWwEnTa+FgzCzRH/xw0Kv5e5oeZU5gwiTm5XR
-	eRiEn6+Mbg/TvwNrtHwG60HBYKn+8kQUzMJfjgjuBPmaViO7+/dq/WRV
-X-Gm-Gg: AeBDieuTZ1327ix6oUHURVsT+laReNRyYNTII2yGefBKQABNkaXV7p2HQXhR/FG/g3e
-	bKPSB/+2hfTWuqL4PJwu8Om+VWw8LLd5RMK2pd07ckvpj8qQsTifFOtlb1SUYKgqdXQzm0tK0w4
-	upqjgPWOj/LRB34QE/VdOyw40viJ36wTOyOqsTpgu0hvLEyKKWOyq2tpHM3QvkB/ffALLZTKdrz
-	TKRx5wn7j2Sb2z7pmJhC6DiQyj4pYXsRW4HuOGmP8UHVdP+T8SGxxix2na1gazScoP7/NS9A3s7
-	Dpvb1NAR0PlQZFbN3yJAnN8xT86skgd01Z/L71mg2rARux5OhxE1rh4XcoX9fIzbQCXJ9AKkB9H
-	OKj8CMWMrMA469Teof55G9FX3658oy71Ot2ojZRVo+gLzmtqTxqy63E7gHcDibPsqzj2aJUn7Up
-	0FXEXw7Jim2YzrPtcrDoefCf53t7D6BTbb/ewifPIAx2UHwkbqI0gtl6wAHj7GWHDP+yiL0Ylj6
-	GEBLlfAxVpMLiGWiNcjFNWtXZIqbQdxG/+HwqdZ2Dub6QxupZI1w7IgKMsBdQng+gWL
-X-Received: by 2002:a17:907:c312:b0:b94:1224:c61e with SMTP id a640c23a62f3a-b9d72792e67mr951642366b.14.1776178520284;
-        Tue, 14 Apr 2026 07:55:20 -0700 (PDT)
-Received: from ahossu.byod.tudelft.net ([145.94.221.163])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba0574b41aesm10101166b.24.2026.04.14.07.55.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 07:55:19 -0700 (PDT)
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	dan.carpenter@linaro.org,
-	hansg@kernel.org,
-	stable@vger.kernel.org,
-	hossu.alexandru@gmail.com,
-	Dan Carpenter <error27@gmail.com>
-Subject: [PATCH v2] staging: rtl8723bs: fix missing frame length checks in OnAuthClient
-Date: Tue, 14 Apr 2026 16:53:50 +0200
-Message-ID: <20260414145350.903996-1-hossu.alexandru@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413202824.740653-1-hossu.alexandru@gmail.com>
-References: <20260413202824.740653-1-hossu.alexandru@gmail.com>
+	s=arc-20240116; t=1776178870; c=relaxed/simple;
+	bh=oC8kp4HEOJDiZQ1SXyOv4MljxUBKcl2v6FTYpSmmLrA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GAI5lGyLzOK1a4S0wG8oWX1lNwuElkv/FUvPc9qw1kCbQGBCVHZOXEisbOMyHJi7RKh2Zzz0bQJ8xICsYYthPUn4VmlX5Vwrjb9TLWPHQ7l3AGtk3JopfQiZeAVoFVNW5jPgjCzGnHMM5LlhsY51xLGHB2AjVFa7vo2sntJ8VJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=rAlBPcEf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gTTxlyPg; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 7E1E77A02B3;
+	Tue, 14 Apr 2026 11:01:07 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-10.internal (MEProxy); Tue, 14 Apr 2026 11:01:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776178867;
+	 x=1776265267; bh=MO0TcXTuzfDHSdv6o5fdNwYcQkAamLu4y8ZHaInjdEI=; b=
+	rAlBPcEfBbo2iJsanIptgoTThltJKEUtzoIsbGGUlfXJK1BtgjgpBLFRx616NTNw
+	gHVJFFmChj1yB/tKVLKePQaoyG216MMr6vkk38z18IbZY/hAERz1aQYGZ2TQxIgU
+	VFEeLu25PucAwKv2dkCox7nzuEynScJr9ou6/sMqCx7aeNLXduH9SgRMmqtgW+c7
+	9SrIeSYpduscnIiwy3DrbBcsyeG7YXiFIKNTazEbfWO24Ua4Q4+EPgsoiAVDFHxg
+	kQktSAOgueudGVhKODvVtMo9bhYdXcUMWMVcd92R81Kvv/qAy+rBLlRCwl8Dq1ya
+	4Bctfu0UMW6+HXfDc6xBPw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776178867; x=
+	1776265267; bh=MO0TcXTuzfDHSdv6o5fdNwYcQkAamLu4y8ZHaInjdEI=; b=g
+	TTxlyPgS4eRIUvXm1pfyDI9mmrwufpJoX1lYNjaDYcuRLxDY0d88EeTy6yw1VJ1t
+	IDZE8mqwPXOsXxlRbQns3/8J8rpvW5ZXQOWO8n16T2RhmWtWtDStB7AIvzBmlnwf
+	Eqi8yM66TQ0n51McNhjZ832rRPcErF5SPsPfv2TY204eEUlnfpqSMNUPY/ITQGuy
+	K+RJSjSP1A4euURNIlu5RPDcWU3XfWEgXTj6qe5+J3A0qnrXp7fNleVPews8SJSz
+	5F6rfrJHjBEsRAwSIlnwHMXUphtRV3KYJkhEF0WXWXaQqUc5+fC5tP+utdCnoTRl
+	BAAt7Fgwhvuj0aX3o4KIA==
+X-ME-Sender: <xms:slbeaTtxlivtEgmKzUtlH7AnBeG8TsE60-tlMr8awv4mOiNXL7W1fQ>
+    <xme:slbeaQWHMCF70P3TKO9PlZ1EhnezRicbU2HjFSkbaqFTa_heIneBZjQinEOushiMo
+    3pqALr9DibYFBMj1xP-YwfIftRayqDIRbL_CFjvL2dnQtfMrwZZwd4>
+X-ME-Received: <xmr:slbeaSTip5Kp2eYBtNddsmwy7aLuJrBLHyQT1X9YAkxnIrMpQoIru9aS0YDgQEZiDceJ1mqmmg4SDDoTf9yHDyBhksIw1vNf>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudegiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
+    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
+    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
+    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
+    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
+    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
+X-ME-Proxy: <xmx:slbeaWKLSkvE_bbS9ECLYjlRowLlkPo4ynOnvw7jtxIlmiH8JYHfAw>
+    <xmx:slbeab0du_0F3mBE9mc1qJfUruHVETEDrD9SUqCp5xVipnC_JsE-5Q>
+    <xmx:slbeaRIO-zXXP6HktPZVd0XWZmhSImmlnR6Dy12KkuqINZW4WEzB7Q>
+    <xmx:slbeaTlL6yggogK60XpTfKE0bjWOsCC3KjwgW6LzzjRaYnLXE8FQrg>
+    <xmx:s1beaeCwekOjelwl6Cgv_vHWKFBW0HZ7gHwNrBnNJgKfRYPFS2MvRqdt>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Apr 2026 11:01:04 -0400 (EDT)
+Message-ID: <2b218a72-341b-46f7-8006-0944e42bd91a@pobox.com>
+Date: Tue, 14 Apr 2026 08:01:02 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 00/50] 6.6.135-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260413155724.497323914@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-237899-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237898-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linaro.org,kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 828C13FB83D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,pobox.com:dkim,pobox.com:email,pobox.com:mid]
+X-Rspamd-Queue-Id: 71E003FB8D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-OnAuthClient() accesses pframe without first verifying that pkt_len is
-large enough to contain a valid 802.11 management frame header:
+On 4/13/26 09:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.135 release.
+> There are 50 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.135-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-- get_da(pframe) reads bytes 4-9, requiring pkt_len >= 10
-- GetPrivacy(pframe) reads the FC field at bytes 0-1
+Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well, no
+regressions observed.
 
-Additionally, when pkt_len < WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_ the
-unsigned subtraction passed to rtw_get_ie() wraps around, causing it
-to scan well past the end of the buffer.
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Add an early check against WLAN_HDR_A3_LEN before any pframe access,
-and a second check against WLAN_HDR_A3_LEN + offset + 6 after computing
-offset to guard the seq/status reads and the rtw_get_ie() call.
-
-Reported-by: Dan Carpenter <error27@gmail.com>
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
----
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index 90f27665667a..884cd39ec756 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -860,6 +860,9 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
- 	u8 *pframe = precv_frame->u.hdr.rx_data;
- 	uint pkt_len = precv_frame->u.hdr.len;
- 
-+	if (pkt_len < WLAN_HDR_A3_LEN)
-+		goto authclnt_fail;
-+
- 	/* check A1 matches or not */
- 	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
- 		return _SUCCESS;
-@@ -869,6 +872,9 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
- 
- 	offset = (GetPrivacy(pframe)) ? 4 : 0;
- 
-+	if (pkt_len < WLAN_HDR_A3_LEN + offset + 6)
-+		goto authclnt_fail;
-+
- 	seq	= le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 2));
- 	status	= le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 4));
- 
 -- 
-2.53.0
-
+-Barry K. Nathan  <barryn@pobox.com>
 
