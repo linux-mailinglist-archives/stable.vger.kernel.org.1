@@ -1,122 +1,171 @@
-Return-Path: <stable+bounces-237710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHG+JoW13WlRiAkAu9opvQ
-	(envelope-from <stable+bounces-237710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:33:25 +0200
+	id ELioGyC13WlRiAkAu9opvQ
+	(envelope-from <stable+bounces-237711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:31:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080483F546A
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:33:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146E43F5458
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6569301184F
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:28:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 30E043017247
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D352F1FE3;
-	Tue, 14 Apr 2026 03:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59944335BDB;
+	Tue, 14 Apr 2026 03:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="nbJUaWan"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="2JObPNQj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D432DAFAF;
-	Tue, 14 Apr 2026 03:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABEB40DFB7;
+	Tue, 14 Apr 2026 03:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776137309; cv=none; b=DFtw2gjZsaH2P0rqz7Nu/zDMXJwfhtA9ab/4E5LpwJ+MJ1fhxn56qNEX5WNJRSPwJsdzzAQZETJiUTIeGP2afW7D3vp6+o0xjW80QurNaF5T1K4A/JSa2g8W5JqGlvyAmecjzTcbqUBjM2KOKEIKjARZMmplFqwCjx2MHuZ2lt0=
+	t=1776137498; cv=none; b=BLYLvh3E6ob6salvpZvPpcu4hg10jC1wskleRsLPQAN2wZz4IcJQyd1vJOanTQz8zVE5vbY1s04YhhQntUbDJT8e2l8YJhN1h82IsNPlYGbjQIjxkKu+fvB+i1xFCYVUSEKvLYZM+6UAsom3Fy9lCWBgJk05yAazai2oYu+QrzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776137309; c=relaxed/simple;
-	bh=WzhR8ac3yEOp2zMvKKyzvfq8XePXKu+s53T0x3Lpx6M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mtWSVhwJ6DNSi5zwDnSpNtbL7eEsAKSumLH/VqEunMonqybbGdjvamcHh1w61MxKjKMiAavq2bIU4SNjT77LjAP4bhD42j/vzRQlYK1tIhF49J40GV7pVq66xF5Hg0V45ZTIdyGBjHg/5HaXSqAsizZY2zNO3P5aRZAu06+jkws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=nbJUaWan; arc=none smtp.client-ip=202.61.224.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3CE632856E4;
-	Tue, 14 Apr 2026 05:28:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
-	t=1776137305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+D5nLW1GDhAKo/Bk9OvKuvEeFOedb91kQLUeJlpesFI=;
-	b=nbJUaWanKFfPKbjWVcWEEGzfDtxCeSrdUY0fhdxkDgImTFHacmCJG6aA13d7zfIEUY2XZJ
-	jHCK6i72RiTdgZBL+9sPb/HDjrPjcV758yO/EfvwE8WqRVG4qvlZw2vlcxdXULCL/fqnwv
-	gsRQVLbUVY6SB9rgdIZUr+26SnacS7Oj9KppZCbs5YLu+50AyQqePI9p2lZIe1T9j1yPEn
-	w9BpausCnQBgB0rmgAPuZmjwbXA2awKz7zPXoG+AWL2rreP3Ha/U2mS92lpJYmAdfTtlVe
-	ZCAdnp2Tcpq32uihQuBEMJnzW1l5L0eGoNfzE7jxOm/WfIP5XxjWW964pUdaaQ==
-Message-ID: <ed4dae33-7c4e-4ccc-82c1-fa1aee137bcd@cachyos.org>
-Date: Tue, 14 Apr 2026 03:28:00 +0000
+	s=arc-20240116; t=1776137498; c=relaxed/simple;
+	bh=w2HqWKBJG+xmo7xipW/PndQPguK0Fdy9+MwndF5BBi8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DK4kMWlM9TKYTatBW7Hd6jS5m+O4h+3070qNM9VMDvLbPwKaZRX1cPfd34Bd48oxo236tpjCSyc6Z7Hu7A+FO3KRfow4SVGYd/oNKxUmEaDrWKj8NEJ8cuc+7pWiDUZeuTRzLdCm4xSbnXaC+rnNn6QImkYgalzG3gueI8w+FHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=2JObPNQj; arc=none smtp.client-ip=120.232.169.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=2JObPNQjsDdIbeFWqE2ZObxopjGdiI5HT/kFUXWqoI2olQ5KXf0kEvTVtrOPS29GWxPlfTm5pyYjN
+	 OVns3pk7zm5bjXYnNoxY2v3oNPX+hRZgd2SBd+K723RVnwH+H3DZOKEtApJyfDbnD/M7Jbov5ziBFS
+	 ad4C7/zhjvhNcaDE=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-01-12079 (RichMail) with SMTP id 2f2f69ddb50be9a-00eab;
+	Tue, 14 Apr 2026 11:31:30 +0800 (CST)
+X-RM-TRANSID:2f2f69ddb50be9a-00eab
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	fw@strlen.de
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	pablo@netfilter.org,
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kaber@trash.net,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: [PATCH 6.18.y] netfilter: conntrack: add missing netlink policy validations
+Date: Tue, 14 Apr 2026 11:31:29 +0800
+Message-Id: <20260414033129.48460-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for Legion S7 15IMH
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- stable@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260413154818.351597-1-dnaim@cachyos.org>
- <87ik9uua4a.wl-tiwai@suse.de>
-From: Eric Naim <dnaim@cachyos.org>
-In-Reply-To: <87ik9uua4a.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[cachyos.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[cachyos.org:s=dkim];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237710-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,netfilter.org,davemloft.net,google.com,kernel.org,redhat.com,trash.net,gmail.com];
+	TAGGED_FROM(0.00)[bounces-237711-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DMARC_NA(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[cachyos.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dnaim@cachyos.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cachyos.org:dkim,cachyos.org:email,cachyos.org:mid]
-X-Rspamd-Queue-Id: 080483F546A
+	NEURAL_SPAM(0.00)[0.724];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,139.com:email,139.com:mid,strlen.de:email]
+X-Rspamd-Queue-Id: 146E43F5458
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/13/26 11:56 PM, Takashi Iwai wrote:
-> On Mon, 13 Apr 2026 17:48:17 +0200,
-> Eric Naim wrote:
->>
->> Fix speaker output on the Lenovo Legion S7 15IMH05.
->>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Eric Naim <dnaim@cachyos.org>
-> 
-> Thanks, applied now.
-> 
-> 
-> Takashi
+From: Florian Westphal <fw@strlen.de>
 
-Sorry Takashi, can you remove this from your tree? I seem to have gotten the
-PID wrong for this device. I'll follow up with a v2 or fixup once I've
-confirmed I got the correct PID. Let me know which of the two resolutions you
-prefer.
+[ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
 
+Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
+
+These attributes are used by the kernel without any validation.
+Extend the netlink policies accordingly.
+
+Quoting the reporter:
+  nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
+  value directly to ct->proto.sctp.state without checking that it is
+  within the valid range. [..]
+
+  and: ... with exp->dir = 100, the access at
+  ct->master->tuplehash[100] reads 5600 bytes past the start of a
+  320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
+  UBSAN.
+
+Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
+Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ net/netfilter/nf_conntrack_netlink.c    | 2 +-
+ net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 879413b9fa06..2bb9eb2d25fb 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3465,7 +3465,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
+ 
+ #if IS_ENABLED(CONFIG_NF_NAT)
+ static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
+-	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
++	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
+ 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
+ };
+ #endif
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index 7c6f7c9f7332..645d2c43ebf7 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -582,7 +582,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
+ }
+ 
+ static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
+-	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
++	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
++							 SCTP_CONNTRACK_HEARTBEAT_SENT),
+ 	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
+ 	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
+ };
 -- 
-Regards,
-  Eric
+2.34.1
+
+
 
