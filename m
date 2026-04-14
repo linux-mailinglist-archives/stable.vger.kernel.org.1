@@ -1,172 +1,192 @@
-Return-Path: <stable+bounces-237912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAoFA2Zh3mn+CQAAu9opvQ
-	(envelope-from <stable+bounces-237912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:46:46 +0200
+	id sJ8BMbRg3mn+CQAAu9opvQ
+	(envelope-from <stable+bounces-237913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48753FC197
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:46:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299113FC114
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EE8E30B520E
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:40:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC65E30821C4
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406FD3EC2E0;
-	Tue, 14 Apr 2026 15:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9973EC2E7;
+	Tue, 14 Apr 2026 15:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="dPXEwOuX"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YT3VkFT7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001793E959D;
-	Tue, 14 Apr 2026 15:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FC63E8C46
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 15:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776181202; cv=none; b=IT4AVnco9XvSVRRWUUp4Tt8erMIssOfdSqcRKnORSR63oTR8jo7VxtOjFrWamMej3zmPbB9aFEEfcHX3GZ4g9k+HCYWfMKcf+/RXdm+vRGeipZQCRF8/AjEy4Aplr0e/cco6xR6R9uxJbUnY1ejQOoxwhwdmKugHnO7xeDgTJ38=
+	t=1776181292; cv=none; b=RnjdIFJi2Ow1+3rbn+MywyCdJ/un/aRK2rub7LLQgLrGxaiMgPcI9B70QjQt4yKox84Fi/3gfXlciRezjfZ3MEdrIwkubIh4G0hM9CXp/5xwKV4E4WsLRgZ95o+nmdNUq1iIyFyDvdvEJqlumAZlSImBIVTxgWIS87JOePFVKs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776181202; c=relaxed/simple;
-	bh=g9XpWWz1SxVgb0pf9yHfFzddWuvrZobpuA6QIzfLLWg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKZhLCNZLbmslHsu2MP1RQFzVXdlGuYuz7umvW/aXlvv8CVIqGAF6MJe5yJ22NHbYhiZscTpX4+5SU1gM406+8eE1AFMljztM+Q3BekEVHXxrf2IxqKq+1juT5BY8zO0dV91oprdkeuQ/RJ8QKwSTG//eF+3+WjaLt/2Qzngxns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=dPXEwOuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9EDC19425;
-	Tue, 14 Apr 2026 15:40:00 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="dPXEwOuX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1776181199;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1OD9H9fIMPiOoqvYQ6ai2yEsDn71I8Os81Ip4a3JthM=;
-	b=dPXEwOuXVjKNIr+HKgbWP1iCVk1plqJU7/aK+doi02LwHMdWaXPFrmfm//88fGiRYuaMNM
-	dtu90IMV95YIYE9w8DyDCqPMUNWvWf+7cNR748odHshi8sVRCKgl3snq8k16jVJPFuKIbh
-	FHCF5eikD9JcmkVYYxEryfoN6w4xT+8=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c3676861 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 14 Apr 2026 15:39:59 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Shardul Bankar <shardul.b@mpiricsoftware.com>,
-	syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com,
-	stable@vger.kernel.org,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH net-next 4/4] wireguard: device: use exit_rtnl callback instead of manual rtnl_lock in pre_exit
-Date: Tue, 14 Apr 2026 17:39:44 +0200
-Message-ID: <20260414153944.2742252-5-Jason@zx2c4.com>
-In-Reply-To: <20260414153944.2742252-1-Jason@zx2c4.com>
-References: <20260414153944.2742252-1-Jason@zx2c4.com>
+	s=arc-20240116; t=1776181292; c=relaxed/simple;
+	bh=MR0HLXOfqwtxrES6xusGzWLrOVp3fQekqgEqt5AqHLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jYMPLwOmEWys5UQNINPG7uo3syTbZpnQ64OcEMWp6IZ0pnM7t1QD82JBwq/GqSmenjQvVEsPnlLFJ9gF+dpR993ipDyNpc4gnjRha627HQnmaO6HNX3WfQb+stSDL2gcbeX4tXE2oGgsczky+NAePzgDVeUaV0ie9scRR1P7Mh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YT3VkFT7; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43d734223e4so1689791f8f.0
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 08:41:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1776181288; x=1776786088; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PkLwsWawNgSidPsvnjshuNEBTeOMWcXEl4V0Yhhn+Wk=;
+        b=YT3VkFT7anSmFQs9KPj3e0RhFl5QZErig4GKhZiO8w3PvL6RsT+Truqvd6AVaWff8I
+         gT59gTHxzRFhq+rsHJROqKrY2S02rRAIWnhmUOg9agVnQ+7o6VmaTSZXmAzszeA5aaYR
+         tyic9vDjBYY6p/HmwGA8WZkYF/CldE0BrvS05kfIV3LjdsniXkfqpH4xiEX+ccAeVhLC
+         717nm9SxYui1Y0qH5mjmiAFVfkyNPKjUPgtthHh4ve3I9LpD1cKJwXMznwr0GSMtKjgM
+         Zq7vh3a6rzPNI1GSjR24ZbzaBbRkwsNp7tPmisP+ZzHhGdyt85ff6sXbqfaB6Zk+YDTV
+         f+2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776181288; x=1776786088;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PkLwsWawNgSidPsvnjshuNEBTeOMWcXEl4V0Yhhn+Wk=;
+        b=VUAb9SWfXgL2G1IUvIVCMnSG0F7/QxQm0I9PMYr9ycbEd8NyvDOtxssUq10OUNwzFE
+         YiX4UsQe0WfZMI9XmqBmA1lPTP0UPe1zfIxmz3mH+6AV5hu24SOmcuiwTYO0/pssiYL7
+         zkupmZ/+J9pgah9SLB9okSjEI671Y0S8IG3wYzMs0z5mYsDiQaxzTrq8BgIz1XqCHQU3
+         yJ/LiCKlP83mmsopxGGfm8ojpz0AtTZj4ZCf8Nexmft54EGQLkXkYBNYupmuirDh+UmV
+         GLFlhvoeZwd1d2m57TCyaZZg61OusnhgehGJyH0FYq7gBfMG83m6qX+WwXBJf98WkCqc
+         ZeWg==
+X-Forwarded-Encrypted: i=1; AFNElJ9/G3TEKMAzqtdKOElc4+bba+J98qxG50lkqoHadFD1fdmyjcAbK+ySAKYAUc9IfTcgZTJpMYA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywky5vPNGK2FznvH5G+vC5NuWF+tIWYNcrXv9eqQT7dQBwvR28a
+	nmV4eTg25D2d3zdlB6g/Bd3lRt4cLO0Ec10HxzUtYLdzVVgUsBqqLKWYGboWczZ/VRI=
+X-Gm-Gg: AeBDies2yH0loVBv7MRPOPPlI+SFgh7kTB3aaDyZsAn3x7UwDLJlXvfDZH8pxO4rTIC
+	zHlz3yFVeeF0+HFhaBXbLrQIclQ1DfjFtuv7LK/+upPdNN3IHEmTAYqGfpJjbGvADohG+49/wsd
+	Hmijo+Mnk3Kq5cjbIzAQvdXNVfHx6gMeW9DIkFRq2DIs3i7kWD/rXP701tmGPfHzbHNS6e+N9Sk
+	h6rvMSGjkej35DWF5BaNyBfZzcJ6IPqPun+1lvTHdoupJqTtM9d75CUFV+Bj3HUs1hiQyCZOwIM
+	fXTBeG9R6EB90J3ZQGuPp8ORTxKrWcEcPerDqKgPzZ1sip376QoI7xnXZFclA03PHlCmAw0e8s1
+	oU7np59bxicoA6NxctDI78FvbZiL7ZzPt0wpUZQ7kawU/lCGxuF3b6I3O2qmohcDHK0Rm2RppeJ
+	HER+3Ju87m+7iXaa1SK4Dh++vGYQ==
+X-Received: by 2002:a05:6000:40ce:b0:43d:6df0:c7f6 with SMTP id ffacd0b85a97d-43d6df0c862mr17241543f8f.18.1776181287839;
+        Tue, 14 Apr 2026 08:41:27 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d76eeb2d1sm22799682f8f.22.2026.04.14.08.41.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 08:41:27 -0700 (PDT)
+Date: Tue, 14 Apr 2026 17:41:24 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH v3] printf: Compile the kunit test with
+ DISABLE_BRANCH_PROFILING DISABLE_BRANCH_PROFILING
+Message-ID: <ad5gJAX9f6dSQluz@pathway.suse.cz>
+References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
+ <20260406111531.779571d7@gandalf.local.home>
+ <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
+ <20260406123232.3dacbe94@gandalf.local.home>
+ <adTqIepV2W6M_Q2o@pathway.suse.cz>
+ <CAJ-ks9nPvGaYPKj5Py0OPrU1E8JgDrLNM29d+iwc3c2U6KZ0kg@mail.gmail.com>
+ <adYAsnyZMykg3y9f@pathway.suse.cz>
+ <CAJ-ks9ni9bth243ciTynDXGWG20sSbz52jSYHPsiVdxixkncPQ@mail.gmail.com>
+ <adZJ41Cdvfv3-dWJ@pathway.suse.cz>
+ <CAJ-ks9mNv7pefcS9iVZfMpqpkXGHNiPP4fCD5s1ZtUxRHo0XJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJ-ks9mNv7pefcS9iVZfMpqpkXGHNiPP4fCD5s1ZtUxRHo0XJA@mail.gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[zx2c4.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[zx2c4.com:s=20210105];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Jason@zx2c4.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237912-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[zx2c4.com:+];
+	TAGGED_FROM(0.00)[bounces-237913-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,f2fbf7478a35a94c8b7c];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,zx2c4.com:email,zx2c4.com:dkim,zx2c4.com:mid,mpiricsoftware.com:email]
-X-Rspamd-Queue-Id: B48753FC197
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:dkim,suse.com:email,pathway.suse.cz:mid,intel.com:email]
+X-Rspamd-Queue-Id: 299113FC114
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+GCC < 12.1 can miscompile printf_kunit's errptr() test when branch
+profiling is enabled. BUILD_BUG_ON(IS_ERR(PTR)) is a constant false
+expression, but CONFIG_TRACE_BRANCH_PROFILING and
+CONFIG_PROFILE_ALL_BRANCHES make the IS_ERR() path side-effectful.
+GCC's IPA splitter can then outline the cold assert arm into
+errptr.part.* and leave that clone with an unconditional
+__compiletime_assert_*() call, causing a false build failure.
 
-wg_netns_pre_exit() manually acquires rtnl_lock() inside the
-pernet .pre_exit callback.  This causes a hung task when another
-thread holds rtnl_mutex - the cleanup_net workqueue (or the
-setup_net failure rollback path) blocks indefinitely in
-wg_netns_pre_exit() waiting to acquire the lock.
+This started showing up after test_hashed() became a macro and moved its
+local buffer into errptr(), which changed GCC's inlining and splitting
+decisions enough to expose the compiler bug.
 
-Convert to .exit_rtnl, introduced in commit 7a60d91c690b ("net:
-Add ->exit_rtnl() hook to struct pernet_operations."), where the
-framework already holds RTNL and batches all callbacks under a
-single rtnl_lock()/rtnl_unlock() pair, eliminating the contention
-window.
+Workaround the problem by disabling the branch profiling for
+printf_kunit.o. It is a straightforward and acceptable solution.
 
-The rcu_assign_pointer(wg->creating_net, NULL) is safe to move
-from .pre_exit to .exit_rtnl (which runs after synchronize_rcu())
-because all RCU readers of creating_net either use maybe_get_net()
-- which returns NULL for a dying namespace with zero refcount - or
-access net->user_ns which remains valid throughout the entire
-ops_undo_list sequence.
+The workaround can be removed once the minimum GCC includes commit
+76fe49423047 ("Fix tree-optimization/101941: IPA splitting out
+function with error attribute"), which first shipped in GCC 12.1.
 
-Reported-by: syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=cb64c22a492202ca929e18262fdb8cb89e635c70
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-[ Jason: added __net_exit and __read_mostly annotations that were missing. ]
-Fixes: 900575aa33a3 ("wireguard: device: avoid circular netns references")
+Fixes: 9bfa52dac27a ("printf: convert test_hashed into macro")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604030636.NqjaJvYp-lkp@intel.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 ---
- drivers/net/wireguard/device.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Changes against v2:
 
-diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
-index 46a71ec36af87..67b07ee2d6600 100644
---- a/drivers/net/wireguard/device.c
-+++ b/drivers/net/wireguard/device.c
-@@ -411,12 +411,11 @@ static struct rtnl_link_ops link_ops __read_mostly = {
- 	.newlink		= wg_newlink,
- };
- 
--static void wg_netns_pre_exit(struct net *net)
-+static void __net_exit wg_netns_exit_rtnl(struct net *net, struct list_head *dev_kill_list)
- {
- 	struct wg_device *wg;
- 	struct wg_peer *peer;
- 
--	rtnl_lock();
- 	list_for_each_entry(wg, &device_list, device_list) {
- 		if (rcu_access_pointer(wg->creating_net) == net) {
- 			pr_debug("%s: Creating namespace exiting\n", wg->dev->name);
-@@ -429,11 +428,10 @@ static void wg_netns_pre_exit(struct net *net)
- 			mutex_unlock(&wg->device_update_lock);
- 		}
- 	}
--	rtnl_unlock();
- }
- 
--static struct pernet_operations pernet_ops = {
--	.pre_exit = wg_netns_pre_exit
-+static struct pernet_operations pernet_ops __read_mostly = {
-+	.exit_rtnl = wg_netns_exit_rtnl
- };
- 
- int __init wg_device_init(void)
+  + Added info about gcc version and commit where the miscompilation
+    was fixed. (Tamir)
+
+Changes against v1:
+
+  + Disable the branch profiling for the whole printf_kunit.o
+    instead of using "noinline".
+
+lib/tests/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/lib/tests/Makefile b/lib/tests/Makefile
+index 05f74edbc62b..7e9c2fa52e35 100644
+--- a/lib/tests/Makefile
++++ b/lib/tests/Makefile
+@@ -40,6 +40,8 @@ obj-$(CONFIG_MEMCPY_KUNIT_TEST) += memcpy_kunit.o
+ obj-$(CONFIG_MIN_HEAP_KUNIT_TEST) += min_heap_kunit.o
+ CFLAGS_overflow_kunit.o = $(call cc-disable-warning, tautological-constant-out-of-range-compare)
+ obj-$(CONFIG_OVERFLOW_KUNIT_TEST) += overflow_kunit.o
++# GCC < 12.1 can miscompile errptr() test when branch profiling is enabled.
++CFLAGS_printf_kunit.o += -DDISABLE_BRANCH_PROFILING
+ obj-$(CONFIG_PRINTF_KUNIT_TEST) += printf_kunit.o
+ obj-$(CONFIG_RANDSTRUCT_KUNIT_TEST) += randstruct_kunit.o
+ obj-$(CONFIG_SCANF_KUNIT_TEST) += scanf_kunit.o
 -- 
 2.53.0
-
 
