@@ -1,224 +1,168 @@
-Return-Path: <stable+bounces-237921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +B39LfNo3mmxDgAAu9opvQ
-	(envelope-from <stable+bounces-237921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:18:59 +0200
+	id iLKbAb5q3mmxDgAAu9opvQ
+	(envelope-from <stable+bounces-237922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:26:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D503FC74E
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:18:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3513FC8C3
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 44C4F301D4A4
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:18:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C5263013D4C
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB673ED5A0;
-	Tue, 14 Apr 2026 16:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E33E6396;
+	Tue, 14 Apr 2026 16:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="niREzWpP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jycQq3du"
 X-Original-To: stable@vger.kernel.org
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04C12FF160
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 16:18:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.51.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10615386446;
+	Tue, 14 Apr 2026 16:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776183517; cv=none; b=pgKGA7ArkFj/Z67W2CTVUHkZKaE2p7bLCjS5ITYbqOCmnRCmSDRDXvfs/HhFDqwyYZ5FObj6mikeyhgXQnTzLWSHJavik3qaeMTxzdShsK/QpMfhNu8B09DW1gFQbM7oH//26iAdOFOxZjEFgAOdHZY+F1aomXjfOmv15Vx2uXc=
+	t=1776183640; cv=none; b=sqicl6AwR4ioPpINeRcNgFFItTlWg9GDuWYcKIuRkznHiQ+trkUrHvQ0nB7B6mbsFkUKc+D+OIUUw6kAKAdtfJLdXEWKwQb50cYznNk5wzJlGyaAaVUFG5UJhylH8CjD+5EjgxtswM2A+20O3pvUVtQzfLS+tr6a7xCJJRv4/Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776183517; c=relaxed/simple;
-	bh=108jA9l62jkTmLRyhDlFFkBzQIQcu60S1NHHpB0HwJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bOLbStXtx/rE37b2Ge0QxE/5u2Gih7u+RESiU8cpnVC6FJzCpxz2AyM1zkU+4EsabXFQaCM9NpzxuGg3N4k4EII3dsuABd+09115UkwO2qcgfyUSLigV9GmgP5vA+3kJxRhSEFbLS1CGLM/2K6GWZKDa2TvYfBdq7ifX/+O1d5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.51.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 15 Apr 2026 01:18:31 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 15 Apr 2026 01:18:31 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: DaeMyung Kang <charsyam@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>, Len Brown <lenb@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, linux-mm@kvack.org,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PM: hibernate: preserve uswsusp swap pin across
- SNAPSHOT_SET_SWAP_AREA re-set failures
-Message-ID: <ad5o1z1hSzLtUxMo@yjaykim-PowerEdge-T330>
-References: <20260414143200.1267932-1-charsyam@gmail.com>
+	s=arc-20240116; t=1776183640; c=relaxed/simple;
+	bh=Uv0aP9gCVayIC0/H2A4hF8SRhOWQloeCyjee52GmJyw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=R2e7OhwuXL6S+JTl1PPbzwIGf3yimCRWYW0PN3TRIzxAI0psGug6XdUh4bhxBGddMT27+EYH74z51sZJ4uYRCTHgARkO18eb3dKLG9e79oY85SvDQddn969yTiFI+DOLQ4Z7FZincaopOEy20iQkLJ1DL/FZtl74H6+OTyM+YA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=niREzWpP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jycQq3du; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 91F3F7A011E;
+	Tue, 14 Apr 2026 12:20:37 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-05.internal (MEProxy); Tue, 14 Apr 2026 12:20:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776183637;
+	 x=1776270037; bh=qcYlcBKMocC1Ezo583l9MC3Jydp+KBfbQyv6M9e11O0=; b=
+	niREzWpP5eXbveXz5bshzJZl4DWeuDw8BSgOdOGRkcjgZ8TrHM0C19B/r8EMWEzT
+	zyZX2ocwIMz24o7DwC0FTqeSHChMaaSveRXE+tXip6FJu1Xt0VQyVH+IHhPC4gQj
+	EriVdwRdCsNqksPXgP7qtP+mLKWITm7SALlSDxUJX3RNWbPPxvObmZhsPCzIYqTD
+	RgRMUBZcn52B5zBSeYYJnG2IZ3YOUIrdmo5RT5V0tORmeSnpSVSTonZQRF8j3DmS
+	1LYF7AA9euQMSR8khcHCvNqguqlbPdujGGhOUaVj2BnQmGPEfg6d/bVsNsrDOEpV
+	9qmi3kvR1yDrhjv0cO3Vzg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776183637; x=
+	1776270037; bh=qcYlcBKMocC1Ezo583l9MC3Jydp+KBfbQyv6M9e11O0=; b=j
+	ycQq3duG+NehVW5KV07cBdVUitkNy2h/Eh3pbTczdMr09HgGVyTGxhxtV3Ps7MIq
+	rr/CNXXanwDdNENnIPgghKmNPoBpH3pJ8jDeqDhR0M3mS24slgJlCOeuQDc8wTBt
+	SrK1PgmpI4F7NzXpe12GRlTzGLsXt/7aFOgDv4bYu97FYt6+7yAJWZH9IGbOQgsO
+	rEJxK5T/kiAX6cNCeU1LWCmFo5ubEozRSQiwRw4OnoOAttbpFv1G3z1KppfFPnzG
+	S85DfRe0DDg+Q2eaHnIFJkx9E4KjWH05VQs14pnYmJRcyU0b2ggjZoD1ZEsCy8en
+	fyv2EUBgFFxlyvTMHWs5A==
+X-ME-Sender: <xms:VGneaSxvF3p5-hUPrWBjdWD1BaP_h2p1Opmh6peaxoZmoEgH5-m6eA>
+    <xme:VGneaaIsb4rgTwDlZOrSJWwKXh4zREMVGl5Vwbs-qOoVTwBj7kEI2VcDeZ_2NdxvA
+    8yo9BnKqX8Yka_2Xt8bpDLjxL7GkyVDlMAWI6oMfQo7PvTUlp35ZA>
+X-ME-Received: <xmr:VGneaf1z2306f7kLPdC5Qurvo331fuZlbGzM6wQ_b-xmOeN0EyBFAI5XiKixT7OIr5lZjznR6I-5__LThFCvvzSQTN79rBhk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudeivdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuhffvvehfjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepuddukedvieeuvdduvdeglefhledtudfgtdfghfdvkeeuteegvdefjeet
+    kedvueelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsggrrhhrhihnsehpohgsohigrdgtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrth
+    hiohhnrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepphgrthgthhgvsheslhhishhtshdrlhhinhhugidruggvvhdprh
+    gtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
+    hgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigsehrohgvtghkqdhushdrnhgvthdprhgtphhtthhopehshh
+    hurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvghssehkvghrnhgv
+    lhgtihdrohhrgh
+X-ME-Proxy: <xmx:VGneaceaVGeaA0YLnxCN-ZAqaQYerrm_8_b4JG9PResZWnNZZTkF2g>
+    <xmx:VGneab5p9L4hCtFbVcSgSGfZeCi8M53a4IOeEFDz2FY_HyDkMZ-I5A>
+    <xmx:VGneaX9QleT-bGsXCws_lX3sVu_-FeVuuFRCFjITF-aXBzlh3YVcZw>
+    <xmx:VGneaaKBw9oRZjybhz7G3MuEWLxXM4dhhVRHl4rOIgpkXixHhRL0WA>
+    <xmx:VWneaTksJ3R6Z3l7_400CF0j7QdJGSarFW6SOu9aZFaw_3qJ_TbmUnD_>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Apr 2026 12:20:34 -0400 (EDT)
+Message-ID: <310172c6-91ab-4dfa-92ed-6be05ae78132@pobox.com>
+Date: Tue, 14 Apr 2026 09:20:33 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414143200.1267932-1-charsyam@gmail.com>
-X-Spamd-Result: default: False [-0.86 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Thanks for AppArmor fixes (was Re: [PATCH 6.1 000/312] 6.1.168-rc1
+ review)
+From: "Barry K. Nathan" <barryn@pobox.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260408175933.715315542@linuxfoundation.org>
+ <be550d5f-a5bc-4cab-aa75-1c7481ba39c8@pobox.com>
+Content-Language: en-US
+In-Reply-To: <be550d5f-a5bc-4cab-aa75-1c7481ba39c8@pobox.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[lge.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-237922-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237921-lists,stable=lfdr.de];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[youngjun.park@lge.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,tencent.com,huaweicloud.com,gmail.com,redhat.com,kvack.org,vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 03D503FC74E
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 4A3513FC8C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 14, 2026 at 11:32:00PM +0900, DaeMyung Kang wrote:
+On 4/10/26 01:29, Barry K. Nathan wrote:
+> However, I'm curious about what's happening with 6.1.y and the "CrackArmor"
+> AppArmor fixes. As far as I can tell, they're still not in 6.1.168-rc1
+> (and presumably won't be in 6.1.168). Assuming it's not too early to talk
+> about it in public yet, where does this stand? Is it just a matter of
+> waiting a bit longer for stuff to happen behind the scenes (or for other
+> bugs/patches to be dealt with first), or is there something else going on
+> (such as a specific problem blocking it that needs to be resolved first)?
 
-Hi Daemyung :)
+I see that these are now in 6.1.169-rc1 (also 5.15.203-rc1 and
+5.10.253-rc1). Thanks!
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
-> Commit 5b2b0c6e4577 ("mm/swap, PM: hibernate: fix swapoff
-> race in uswsusp by pinning swap device") introduced
-> SWP_HIBERNATION so that the swap device chosen via
-> /dev/snapshot is held against swapoff for the entire uswsusp
-> session. The intended invariant is: from the first successful
-> SNAPSHOT_SET_SWAP_AREA until the /dev/snapshot fd is closed,
-> exactly one swap device is pinned.
->
-> snapshot_set_swap_area() breaks that invariant on the re-set
-> path:
->
->       unpin_hibernation_swap_type(data->swap);
->       data->swap = pin_hibernation_swap_type(swdev, offset);
->       if (data->swap < 0)
->               return swdev ? -ENODEV : -EINVAL;
->
-> The unpin happens unconditionally before the new pin is
-> attempted. If the new pin fails (e.g. user space supplies an
-> offset/device that is not an active swap area), the session
-> continues with no swap device pinned, reopening exactly the
-> swapoff race the original commit was meant to close. A
-> subsequent swapoff on the previously selected device now
-> succeeds where it would have been blocked with EBUSY.
-
-Hmm.. This was actually intentional.  The API semantic
-is that a second SNAPSHOT_SET_SWAP_AREA abandons the
-previous pin.  If the new pin fails, the ioctl returns
-an error and userspace is responsible for aborting the
-session -- proceeding without a pinned device makes no
-sense.
-
-The only benefit of preserving the old pin on failure
-would be protecting against userspace that ignores the
-error.  But even in that case, the session has no valid
-swap target, so the hibernation image write itself
-would fail before swapoff becomes a concern.  I think
-this is an edge case rather than a bug.
-
-IOW, Looking at your test case, I think this part is
-userspace's responsibility:
-
->       ret = snapshot_set_swap_area(fd, bogus_dev, 0);
->       if (!ret) {
->               fprintf(stderr,
->                       "step6: bogus SNAPSHOT_SET_SWAP_AREA unexpectedly succeeded\n");
->               close(fd);
->               return 2;
->       }
-
-The ioctl has already returned an error here.  Userspace
-should close /dev/snapshot and stop, not continue and
-expect the old pin to still be in place.
-
-(BTW, the tests are well written and easy to follow.
-Thanks!)
-
-For this patch to have real value, there should be
-something that concretely breaks after the swapoff
-succeeds.  But since the session has no valid swap
-target at that point, is there any actual broken
-behavior that follows?
-
->       if (!buggy) {
->               if (swapoff(swap_path_2) < 0) {
->                       fprintf(stderr,
->                               "step8: swapoff(%s) after close failed: %s\n",
->                               swap_path_2, strerror(errno));
->                       return 2;
->               }
->               printf("step8: swapoff succeeded after closing /dev/snapshot\n");
->       }
-
-If you still see concrete value, I would be happy to
-take this as an improvement (without Fixes: and
-Cc: stable) -- see my suggestion below for a lighter
-approach.
-
-> Reordering pin/unpin in the caller cannot fix this
-> cleanly. Each of pin_hibernation_swap_type() /
-> unpin_hibernation_swap_type() acquires swap_lock
-> independently, so any two-call sequence leaves a window
-> in which swapoff can observe an inconsistent pin state.
-> The same-area re-set case (type == old_type) also cannot
-> be expressed with pin+unpin without either toggling the
-> bit (racy) or returning EBUSY (a false error).
->
-> Introduce repin_hibernation_swap_type(), which performs
-> the transition atomically under a single swap_lock
-> acquisition:
-
-I understand the intent.  If you still see enough value
-in preserving the pin on failure, I would suggest a
-lighter approach -- see below.
-
-> -     unpin_hibernation_swap_type(data->swap);
-> -
-> -     data->swap = pin_hibernation_swap_type(swdev, offset);
-> -     if (data->swap < 0)
-> +     swap = repin_hibernation_swap_type(data->swap, swdev,
-> +                                        offset);
-> +     if (swap < 0)
->               return swdev ? -ENODEV : -EINVAL;
-> +     data->swap = swap;
-
-Would it be simpler to use find_hibernation_swap_type()
-to look up the new type first, and if it differs from
-data->swap, call pin_hibernation_swap_type() on the new
-one?  If pin succeeds, unpin the old one.  If it returns
--EBUSY, just keep the existing pin.
-
-If swapoff sneaks in between find and pin, pin will
-simply fail -- I don't think the kernel needs to
-guarantee atomicity for that window.  This does acquire
-swap_lock multiple times, but SNAPSHOT_SET_SWAP_AREA is
-an extremely rare operation, so the extra lock
-round-trips should be negligible.
-
-Reusing the existing helpers seems preferable to adding
-a new function with this much code for a single call
-site.
-
-How do you think?
-
-Thanks again!
-Youngjun Park
 
