@@ -1,145 +1,210 @@
-Return-Path: <stable+bounces-237919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KI28OONn3mmxDgAAu9opvQ
-	(envelope-from <stable+bounces-237919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:14:27 +0200
+	id YPxUMARq3mmxDgAAu9opvQ
+	(envelope-from <stable+bounces-237920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:23:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423D23FC6C4
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FA03FC836
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC4453013A47
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:08:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BF103096381
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CAA3EC2DE;
-	Tue, 14 Apr 2026 16:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396763ED135;
+	Tue, 14 Apr 2026 16:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PENMDaEz"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="f4SzBNob"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1EA3E5EF8
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 16:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DF6314B73;
+	Tue, 14 Apr 2026 16:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776182917; cv=none; b=kux4dfnD9vtqrF2ajO0jNIEVufD0fOxqTJW1RtXb2EFHH0aXcZX5nXtBGCxdC4nei6laQ0IG1PF+OuTkdYISXPMXb6Xh4L7+g50js67pfXvK030thVHuFWTOg3sGH7EEg3emwri8UsuEvA2JbE4EGQSYSwAK6JEuZ2LCFjJH4qI=
+	t=1776183498; cv=none; b=PTJOLB4ml+BcjCuMFSAYYJaWL+2kwnaUELVmmQYY11fiMNt1vx/5J3SWJ3ssCsrLc5qoCR/jnf02JVc0UhRBa4gw8w5HH9WE1R8Ffq4nVtF1sPBTilwqeIue9pSiVu7fX3snPtmXqk7N+BGakZaBxpK8cIrXZVN6YJnUSRcNMH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776182917; c=relaxed/simple;
-	bh=WfuiAm+GxtxCSHl63EibPi/fcCftHC/UuzSmwI+8K+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nrpIMSW3j/WPp5yv8YYdTV3hqB+fVnwYEn6R4jCERgwF549301C/Jw2qoZFva+aQYdqITKRgWDpO+uo/1sVDyqhqPlWFMut2MhKwCZ1RqULsSaa1pzHNesStmp11TAkhR30ERSYen4TWyRBb+v0mzkOi7krZUIPnj7Dhz/U6uow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PENMDaEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D14C2BCB6
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 16:08:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776182917;
-	bh=WfuiAm+GxtxCSHl63EibPi/fcCftHC/UuzSmwI+8K+Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PENMDaEznpQfsoNKlbxTwL2ImThQowol1pynlehGWLtqxjW4FNpzPhgtHFApJANHZ
-	 1JwUuqFnOpSQit8XzVf/b4uFQj6cWmR0+gGvM1JF9FWyFDQ5akASLSfF1e+47ME2qT
-	 Mv9Ucnk2nupMcyZmXQRemJG4WuB3PsBl+rxF88dKXZ6EIkDheYHfcwZ4Whn+L0BoUQ
-	 0x3CelyN12wcZzpGQwIbXpTF5Vu7fe1war4q2JST5Xbp8pEoD9H2mSt2zBfqnSGy4k
-	 AP9wSrsNWhWJ4CwPTV3KZBuAzTN8gzUQp3nQNNMUQs2aXYAhd6HpJRR8P0fuq+C437
-	 xeQCk6rTA10bw==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a4053964e3so1346988e87.2
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 09:08:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8HQMepxGPMC5IfBnMXbQwZZbBxTNB3l5/8OD7a861D1Llm0Jqw9arV+vyJs92VFUjJY/PsXho=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws0i58/tX+7j/oOql0rOL8wS+tsgsYkRjcyk2Yw/PjYo70mcJe
-	58zmLohedIurTUKl80ZQnvpUPh++uQqUlN11kifwSyMZecd7x4rlKmpAo8dnkm0t6JfoQCWH4EE
-	nXtLy8V8QztNaJq6cNqoxvliFwp6J6fI=
-X-Received: by 2002:a05:6512:1295:b0:5a4:30:9c66 with SMTP id
- 2adb3069b0e04-5a400309da0mr2338847e87.32.1776182915718; Tue, 14 Apr 2026
- 09:08:35 -0700 (PDT)
+	s=arc-20240116; t=1776183498; c=relaxed/simple;
+	bh=chQ/ir+f8fr+PMHwcqj8Du2QS0Gx+whnUQ2tb4QJSz8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Ju5PH86+Y979We5kjgN9ZHuCtHUs24e/36OaA1Vn7eOAQUJwJKeLUq8BMqlKQ/TO8+qxbOqnfz4AnBk6zdoRgY4g8Tb34S8MfOw0A3JjJnuozdO90d3rwCIY0ENKyHXT1nLbUgDYejuqDJCcl7uu+0XZ8JJQv16SlailS5VgHAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=f4SzBNob; arc=none smtp.client-ip=115.124.30.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776183486; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=aRCg1Ohq04OYnRp+wabVrBC782Swic30XU0PY1//jLQ=;
+	b=f4SzBNobOD+mdcnHkZ8WKk1+UvhvZPaFcXLg3PPDoQWh0BCGGQ1TBz2p/XH6KuoJl9KX/hv8jww44AM441IdWYaB6p2w0om/n8cq5189WXduvRrPthHIGSXDNgTIEW3st/TesXEjq0IlSqQLvORcTBP2BDmIxor6cD4V5N9o6+A=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X11tIPm_1776183485;
+Received: from 30.41.54.139(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X11tIPm_1776183485 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 00:18:06 +0800
+Message-ID: <9599562c-fcc8-4990-99e6-85b6db2f5c7b@linux.alibaba.com>
+Date: Wed, 15 Apr 2026 00:18:04 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
- <20260406111531.779571d7@gandalf.local.home> <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
- <20260406123232.3dacbe94@gandalf.local.home> <adTqIepV2W6M_Q2o@pathway.suse.cz>
- <CAJ-ks9nPvGaYPKj5Py0OPrU1E8JgDrLNM29d+iwc3c2U6KZ0kg@mail.gmail.com>
- <adYAsnyZMykg3y9f@pathway.suse.cz> <CAJ-ks9ni9bth243ciTynDXGWG20sSbz52jSYHPsiVdxixkncPQ@mail.gmail.com>
- <adZJ41Cdvfv3-dWJ@pathway.suse.cz> <CAJ-ks9mNv7pefcS9iVZfMpqpkXGHNiPP4fCD5s1ZtUxRHo0XJA@mail.gmail.com>
- <ad5gJAX9f6dSQluz@pathway.suse.cz>
-In-Reply-To: <ad5gJAX9f6dSQluz@pathway.suse.cz>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 14 Apr 2026 12:07:59 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9=NzPjb=eW=7GA2On8Lzv=R1wOBVpyuH+pqNZhG1u9uUg@mail.gmail.com>
-X-Gm-Features: AQROBzCCp_uZtTMr22VgqG3X0G4pcz5BWsBBXcrKGC7ururiPA0UxUWYIA-pnhw
-Message-ID: <CAJ-ks9=NzPjb=eW=7GA2On8Lzv=R1wOBVpyuH+pqNZhG1u9uUg@mail.gmail.com>
-Subject: Re: [PATCH v3] printf: Compile the kunit test with
- DISABLE_BRANCH_PROFILING DISABLE_BRANCH_PROFILING
-To: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] erofs: validate nameoff for all dirents in
+ erofs_fill_dentries()
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+ Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+ Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+ Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
+ Chunhai Guo <guochunhai@vivo.com>, Miao Xie <miaoxie@huawei.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <SYBPR01MB78819C794EC3532E5E7FCB3CAF252@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <d373198b-d32a-49f4-9044-63c7b474f2ea@linux.alibaba.com>
+In-Reply-To: <d373198b-d32a-49f4-9044-63c7b474f2ea@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237920-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237919-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,gmail.com,kernel.org,linux.alibaba.com,google.com,huawei.com,vivo.com,linuxfoundation.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 423D23FC6C4
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,linux.alibaba.com:dkim,linux.alibaba.com:mid]
+X-Rspamd-Queue-Id: 21FA03FC836
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 14, 2026 at 11:41=E2=80=AFAM Petr Mladek <pmladek@suse.com> wro=
-te:
->
-> GCC < 12.1 can miscompile printf_kunit's errptr() test when branch
-> profiling is enabled. BUILD_BUG_ON(IS_ERR(PTR)) is a constant false
-> expression, but CONFIG_TRACE_BRANCH_PROFILING and
-> CONFIG_PROFILE_ALL_BRANCHES make the IS_ERR() path side-effectful.
-> GCC's IPA splitter can then outline the cold assert arm into
-> errptr.part.* and leave that clone with an unconditional
-> __compiletime_assert_*() call, causing a false build failure.
->
-> This started showing up after test_hashed() became a macro and moved its
-> local buffer into errptr(), which changed GCC's inlining and splitting
-> decisions enough to expose the compiler bug.
->
-> Workaround the problem by disabling the branch profiling for
-> printf_kunit.o. It is a straightforward and acceptable solution.
->
-> The workaround can be removed once the minimum GCC includes commit
-> 76fe49423047 ("Fix tree-optimization/101941: IPA splitting out
-> function with error attribute"), which first shipped in GCC 12.1.
->
-> Fixes: 9bfa52dac27a ("printf: convert test_hashed into macro")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202604030636.NqjaJvYp-lkp@i=
-ntel.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
 
-Acked-by: Tamir Duberstein <tamird@kernel.org>
+
+On 2026/4/15 00:00, Gao Xiang wrote:
+> Hi Junrui,
+> 
+> On 2026/4/14 23:20, Junrui Luo wrote:
+>> erofs_readdir() validates de[0].nameoff before calling
+>> erofs_fill_dentries(), but subsequent dirents are used without
+>> validation. The loop computes `maxsize - nameoff` as an unsigned int
+>> to bound strnlen().
+> 
+> The issue is true, but I don't think the description is valid.
+> 
+> I think what we missed is to check the last dirent nameoff vs
+> maxsize.
+> 
+> BTW, please don't "To" too many people (especially Miao Xie
+> and Greg), basically I think you only need to post to people
+> according to `./checkpoint.pl` but leave indivudual person
+> into "Cc" instead.
+> 
+>>
+>> If a crafted EROFS image has a dirent with nameoff >= maxsize, the
+>> subtraction underflows, causing strnlen() to read past the block
+>> buffer.
+>>
+>> Fix by validating each entry's nameoff at the top of the loop: it
+>> must be >= nameoff0 and <= maxsize.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+>> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+>> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+>> ---
+>>   fs/erofs/dir.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/fs/erofs/dir.c b/fs/erofs/dir.c
+>> index e5132575b9d3..2efa16fa162f 100644
+>> --- a/fs/erofs/dir.c
+>> +++ b/fs/erofs/dir.c
+>> @@ -19,6 +19,13 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+>>           const char *de_name = (char *)dentry_blk + nameoff;
+>>           unsigned int de_namelen;
+>> +        if (nameoff < nameoff0 || nameoff > maxsize) {
+>> +            erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+>> +                  EROFS_I(dir)->nid);
+>> +            DBG_BUGON(1);
+>> +            return -EFSCORRUPTED;
+>> +        }
+> 
+> I think the only thing we need is the following diff:
+> 
+> [The reason why nameoff < nameoff0 is unneeded, since
+>   `de_namelen > EROFS_NAME_LEN` ensures the nameoff delta
+>   won't be negative (so nameoff will increase.)
+> 
+>   and `nameoff + de_namelen > maxsize` implies
+>   `nameoff > maxsize` so `nameoff > maxsize` is unneeded too.]
+
+A even better diff is as below:
+
+diff --git a/fs/erofs/dir.c b/fs/erofs/dir.c
+index e5132575b9d3..2b8375c7d523 100644
+--- a/fs/erofs/dir.c
++++ b/fs/erofs/dir.c
+@@ -19,20 +19,18 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+  		const char *de_name = (char *)dentry_blk + nameoff;
+  		unsigned int de_namelen;
+
+-		/* the last dirent in the block? */
+-		if (de + 1 >= end)
+-			de_namelen = strnlen(de_name, maxsize - nameoff);
+-		else
++		/* non-trailing dirent in the directory block? */
++		if (de + 1 < end)
+  			de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
++		else if (maxsize <= nameoff)
++			goto err_bogus;
++		else
++			de_namelen = strnlen(de_name, maxsize - nameoff);
+
+  		/* a corrupted entry is found */
+-		if (nameoff + de_namelen > maxsize ||
+-		    de_namelen > EROFS_NAME_LEN) {
+-			erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+-				  EROFS_I(dir)->nid);
+-			DBG_BUGON(1);
+-			return -EFSCORRUPTED;
+-		}
++		if (!clamp(de_namelen, 1, EROFS_NAME_LEN) ||
++		    nameoff + de_namelen > maxsize)
++			goto err_bogus;
+
+  		if (!dir_emit(ctx, de_name, de_namelen,
+  			      erofs_nid_to_ino64(EROFS_SB(dir->i_sb),
+@@ -42,6 +40,10 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+  		ctx->pos += sizeof(struct erofs_dirent);
+  	}
+  	return 0;
++err_bogus:
++	erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
++	DBG_BUGON(1);
++	return -EFSCORRUPTED;
+  }
+
+  static int erofs_readdir(struct file *f, struct dir_context *ctx)
 
