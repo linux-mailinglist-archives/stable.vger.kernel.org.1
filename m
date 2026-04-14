@@ -1,95 +1,108 @@
-Return-Path: <stable+bounces-237797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBqWLsge3mk1ngkAu9opvQ
-	(envelope-from <stable+bounces-237797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:02:32 +0200
+	id +DynNz0i3mkIoAkAu9opvQ
+	(envelope-from <stable+bounces-237800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:17:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3934B3F913D
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:02:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445DF3F9393
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A3D50301A50C
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:01:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8004B30570F1
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9A03D646A;
-	Tue, 14 Apr 2026 11:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005F83D9DB0;
+	Tue, 14 Apr 2026 11:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Fsk/88ip"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hbcH5sjM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-ot1-f99.google.com (mail-ot1-f99.google.com [209.85.210.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5B73939A4
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A62342AA9
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776164516; cv=none; b=JGi6rTIV15/uJeJ3gg8iKV4hSFMQFgKGqNz8DIJ/Epy9qdD71jWqvZLtGWiuuTyh2PtteSVM4zX83Ov6JmFDDejA9OkdzB4rPhesUNsJKNXtceG6rpnFBPUeFxq/pnxy857dtJwBcW87DNXv5rMjpwwy8ssfPryzUAuY/BUreaw=
+	t=1776165307; cv=none; b=L2LT6WD+8BnuuBR6uFnrhiVUe3bjCDUjWHKey69Lego9Pxa1xUmMkQa8ZVmcGKNbH3z+QhoUHb6d9g3gxeCOsKZDpa2RP0VdBCSo/vVlt2EejgjiXvn9E2KJLHVbx8cAT+3KGw7GGS0D38tIgZLSX7mtZ2Y8xS/ffUQqG0i5KgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776164516; c=relaxed/simple;
-	bh=ev3wB14Q4uCalMGQjQkAPFGk9xIkjP6c1t5VM1fAs54=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzUPyJP0dsFQMi4TVchZnfdUH4V/XFLlTqY5omzJ72b4vgYW7fy03L7mtG4ImvWs9BUF7VzQS3azk+7CT7AbboMQacKlk3yx1UhfP0DcFxEpH7l61Z8zPsYcdJVaBcCZ8negigCQU0nr86bITPrCD8j8V6lm352owWBXKvpTrwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Fsk/88ip; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38e7bd07656so15665161fa.1
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:01:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1776164512; x=1776769312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ayvNAStYCw6+oE4lA2sn5i1gEt6Ll+Z8bF4kMpq/BUM=;
-        b=Fsk/88ipOB24pA9n3UQ/WgkPQk91RNSLoGU0AecKo3CjTD8Hf/gerDTlda4oBdYp15
-         JIypeLc7bsf7l1pCy+ogXB/08fmeeZxpaDA3mrnrMfHpilxFInYprwh3dVwRJhrzTeKO
-         LVV+5tzdPo+FLNVy6JHUjXSkn/G3AUVrIwI2Y=
+	s=arc-20240116; t=1776165307; c=relaxed/simple;
+	bh=iXwYiToNDzVFSYqHR9hmBiK6ONF7EQLGiFPMcdUmh20=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aOaURW9v52i5TTchtHQi+dU1JkKBeCfZzgfdD7zzB1vWNqOATKODScsa7Jh+4KrN33sMLj2M7yATgO5UCHBY2zQxKUSx4pC27Rj/QIENJKan8/Wuo02md2yhEMfTs06Y1atarqB6UraS7ELigBFEwV5jkzCJez1AviCQTTAYg5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hbcH5sjM; arc=none smtp.client-ip=209.85.210.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ot1-f99.google.com with SMTP id 46e09a7af769-7d9bba96f7dso2893684a34.1
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:15:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776164512; x=1776769312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ayvNAStYCw6+oE4lA2sn5i1gEt6Ll+Z8bF4kMpq/BUM=;
-        b=mNijPBALLEE0Y2XmPIkPl7gLzclZrkoaU9Inqnfb1tmKVQZKBqTccqS6wkSut4Do2e
-         n5jf7rycuOdhh2Qx8CsAmLN2gK0yM7qPLmrYCAj8eeN+06NCsvU0aRjZ+Rn2vaxwksJ7
-         aiS21uKFaoi5XUhBaAKasXXJ7c5rFEjD0KgIphaNdb6/N6FPafvBM/vlkYioBL9gAbh8
-         7NvSPZ+lToqOfZP/r52xrwEGnRcypfu2vnCXsogSMLyJCgnyfEr2Wi1uIFdkkylwKMv9
-         P8WP9QERspmyK3N9dCitdnQIb1cWI1iD772su9lopFa2Ndh82o+P0ZgpdQuzWofIPTj7
-         rnog==
-X-Gm-Message-State: AOJu0Yw7fbwWR2VuSBQRZViTAZLgJYzAmcMVEkW+f0JtWTG8QI+wmBMA
-	RnGN3sa2rifbTPTuMZaJL0/ae5WuwRIYaMZSNDuWrWhaexn1eT0s64YzfsgFXvTmYRgqgHLQ7Ma
-	rP8bupM49o1g=
-X-Gm-Gg: AeBDieust+L7MDsoDHNL4helhdF4LjaLDxVXHstV2sqj0QkxfgMWucbtvTSznjPfmnb
-	TxsnESAlSWJKfVhvVDxrRr/+Ea+pEV22Yok22tSUJQ6F9dB3rIxQ+XtAY3/oS93xVCoVSqBZdh4
-	oMS9EQJof0Htuah+HVrXxwWwc8+/3Ay2lrfhNS3hADd04ZRBIkmlhOb2slB953z73opvECkPYg9
-	48PMMKIypHpsIgQGWcsVg0/6nPgzPEzbWzReiJ6V1eANRYT564Cf2sYVnunPu/MMDSzjmlES5vO
-	UssPh+R0c02T/wwQjavkA07g3O/TBAPX2KMIsur6zG2bbQr5pfuJ6hkiFBW/8kiEHcTo2wGQ6TO
-	uYfYXvYd5Oq4sc6yyOlx8/0UWWF1nixKDrfWC8Yxj702G17TIFkXj43DEti1ZGPuAYiASPMTz/N
-	ORYUNsqTF82uY0ei8TY2bj5QrmMYY0KOwxNAsKs1EKPtnbKwqzW13BiyvNAaktEYS+HRyjIpP/P
-	3DCElj81QmlI4VvA1xXtf0=
-X-Received: by 2002:a05:651c:4188:b0:38b:e464:f047 with SMTP id 38308e7fff4ca-38e4be29293mr47817681fa.12.1776164512447;
-        Tue, 14 Apr 2026 04:01:52 -0700 (PDT)
-Received: from ribalda.c.googlers.com.com (52.163.228.35.bc.googleusercontent.com. [35.228.163.52])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38e495ae96fsm28055261fa.39.2026.04.14.04.01.51
+        d=1e100.net; s=20251104; t=1776165305; x=1776770105;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wBJhofTzUvusJZHQm/kAL1AM7X3RPqZ3DbYLT/nOXsE=;
+        b=r8WfmGdFUuI34SJ5QDDxhOLtrLulbJf2cJt2WaCY28xIVwtU/fYZ7cTfMbz3UztaTp
+         7tzgpNuODc2Wh5VFPlHHZ5LhBntATFHzdaW+PMdHi+EIlnRBpfqsLu0KwccHHPj+6cKB
+         oqMJMCfdOjJYMn5cfFymbsAvORBW4RB2+5jx2o2Dp/BTEi9521ug2OkDzCmPrNqE4wXO
+         k36rKYTa02mIt2dvCSgkS3pNxWJWyHOnlsGhAOZv40Yiw1fX4UqI2K/Um2+44o7z91je
+         foJ/d+uA/KSbr11IO43lSbo9bscyu+emPUtj+GW5Erq4VxMBJPGS4lK+ffC4SqI8atht
+         DJPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9RbDXFxH+t98aHnQazKxxTEcAEpZrjiL6uNVDblxStF/CortzFov5sOwQsg5YmtYTAc6VwZAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcgCh+YTKGKWg++90NYGEZO1jjzUVjoexMNFeXceRZC4lqZiAD
+	fne10+6DiKMWM9QJjqLt62Vz0lR/6HX65xwVJaVdIrEX/WpsECIlpc6vFovgPqA9MdvituJw4zL
+	FQp93//dtzhapGLV2ugomAvMsG5OCBI2gfEVpnYKOUOqajM/sYeLVDdVfJpDDIY1+aivfWYHXgn
+	MkZy2kbULAp94DNjieQZr9Xehe1SO0P6lUpaPNpYy/iXc4rXkpgxUQcrkVelSDHgQHK2xwSRDbV
+	ypzKuSUk1o=
+X-Gm-Gg: AeBDietUk4b1/GF6cGAaHonZYe456G1tJuFP6UCyQ8TWMwknNVNC5Rc+rqvkDvtW70a
+	AmI0Y1lZI9GWssP035FXAuLM8bS03pKmTsnKhL4ruylGTdr5VWlr+90N4DC68C25LaUxYDHzb69
+	90t/0iWsvC1bzZv8mJ2sMgyt9S3wMTSx4wZDqHmyl4wKCxkCpFWrZk2uzypE3QAF6GdI0gOwZHs
+	5KkmmFgPl+skXhhNcd5DVjQq0A7Eu3viQVwskG2rFMSnxpTvzhZT3txbFmP9Ebxg6TuPGW9Ag9f
+	FJhLPPzXkIfnQy1+m/H79jw0qzyETeanP6jAhTqFUVw4mxqCAbwQxRvaFOvb/MwBHV0sypLKfJz
+	PW+tBMPFHhqtmhurvPCYZBvo5MgzRuesaPpuyxbpkRCh3jhslathnveg2NnwXlw9v7QH2gS0E4G
+	ZSut3uFn99SOMYw/jLd9KSaMb3AVfdu3udQCAezZFEM5aNjCaycrV3eMbO
+X-Received: by 2002:a05:6820:4c14:b0:67f:ac04:6b55 with SMTP id 006d021491bc7-68be5b5ab8dmr8039672eaf.10.1776165305305;
+        Tue, 14 Apr 2026 04:15:05 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id 006d021491bc7-68bca5f8551sm894898eaf.17.2026.04.14.04.15.04
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 14 Apr 2026 04:15:05 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2b24a00d12cso56385905ad.1
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:15:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1776165303; x=1776770103; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wBJhofTzUvusJZHQm/kAL1AM7X3RPqZ3DbYLT/nOXsE=;
+        b=hbcH5sjMI3mmIYvVY+VS5AkLpZVYzJyYbHdCrQ/VdaRh68eUpMQ95urFeglLG3k4gP
+         h0WNr9ztb2oAirpT0wzQBjwzqDNxRedqRqRNyPTat2UmKwDA8I+p2mMpA/TKFNC1nEYI
+         b4psyxFt68tuw4gtAepLLJSq78ciPAXk7Kp7E=
+X-Forwarded-Encrypted: i=1; AFNElJ/wI028qw9b61o/Zxfg4YTm4MJBF4c8uW2z11PiI6sq/sH7OVUbMB3c+VctOx2oW9BqwAPHvoA=@vger.kernel.org
+X-Received: by 2002:a17:903:2acb:b0:2b2:527d:103 with SMTP id d9443c01a7336-2b2d5a5dcc0mr160781295ad.43.1776165302977;
+        Tue, 14 Apr 2026 04:15:02 -0700 (PDT)
+X-Received: by 2002:a17:903:2acb:b0:2b2:527d:103 with SMTP id d9443c01a7336-2b2d5a5dcc0mr160780975ad.43.1776165302502;
+        Tue, 14 Apr 2026 04:15:02 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f39ccbsm179722255ad.77.2026.04.14.04.14.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 04:01:51 -0700 (PDT)
-From: Ricardo Ribalda <ribalda@chromium.org>
-To: stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Cc: Ben Hutchings <ben@decadent.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Angel4005 <ooara1337@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10.y 3/3] media: uvcvideo: Use heuristic to find stream entity
-Date: Tue, 14 Apr 2026 11:01:13 +0000
-Message-ID: <20260414110113.319219-3-ribalda@chromium.org>
-X-Mailer: git-send-email 2.54.0.rc0.605.g598a273b03-goog
-In-Reply-To: <20260414110113.319219-1-ribalda@chromium.org>
-References: <20260413223308.3760836-1-sashal@kernel.org>
- <20260414110113.319219-1-ribalda@chromium.org>
+        Tue, 14 Apr 2026 04:15:01 -0700 (PDT)
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+To: linux-scsi@vger.kernel.org,
+	martin.petersen@oracle.com
+Cc: sathya.prakash@broadcom.com,
+	chandrakanth.patil@broadcom.com,
+	dlemoal@kernel.org,
+	david.laight.linux@gmail.com,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	stable@vger.kernel.org,
+	Mira Limbeck <m.limbeck@proxmox.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH v4] mpt3sas: Limit NVMe request size to 2 MiB
+Date: Tue, 14 Apr 2026 16:38:11 +0530
+Message-ID: <20260414110811.85156-1-ranjan.kumar@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,94 +110,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[decadent.org.uk,linuxfoundation.org,chromium.org,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[broadcom.com,kernel.org,gmail.com,vger.kernel.org,proxmox.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237797-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-237800-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[ranjan.kumar@broadcom.com,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[chromium.org:+];
+	DKIM_TRACE(0.00)[broadcom.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-0.991];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:dkim,chromium.org:email,chromium.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3934B3F913D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 445DF3F9393
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[ Upstream commit 758dbc756aad429da11c569c0d067f7fd032bcf7 ]
+The HBA firmware reports NVMe MDTS values based on the underlying drive
+capability. However, because the driver allocates a fixed 4K buffer for
+the PRP list, accommodating at most 512 entries, the driver supports a
+maximum I/O transfer size of 2 MiB.
 
-Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
-descriptor where multiple entities share the same ID, this is invalid
-and makes it impossible to make a proper entity tree without heuristics.
+Limit max_hw_sectors to the smaller of the reported MDTS and the
+2 MiB driver limit to prevent issuing oversized I/O that may lead
+to a kernel oops.
 
-We have recently introduced a change in the way that we handle invalid
-entities that has caused a regression on broken devices.
-
-Implement a new heuristic to handle these devices properly.
-
-Reported-by: Angel4005 <ooara1337@gmail.com>
-Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HFTYnqH5+GJhd6cYsNLT=DaA@mail.gmail.com/
-Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP")
+Reported-by: Mira Limbeck <m.limbeck@proxmox.com>
+Closes: https://lore.kernel.org/r/291f78bf-4b4a-40dd-867d-053b36c564b3@proxmox.com
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9b8b84879d4a
+Suggested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 34e3f04340a2..20a18caf7717 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -442,13 +442,26 @@ static struct uvc_entity *uvc_entity_by_reference(struct uvc_device *dev,
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+index 6ff788557294..12caffeed3a0 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -2738,8 +2738,20 @@ scsih_sdev_configure(struct scsi_device *sdev, struct queue_limits *lim)
+ 				pcie_device->enclosure_level,
+ 				pcie_device->connector_name);
  
- static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
- {
--	struct uvc_streaming *stream;
-+	struct uvc_streaming *stream, *last_stream;
-+	unsigned int count = 0;
++		/*
++		 * The HBA firmware passes the NVMe drive's MDTS
++		 * (Maximum Data Transfer Size) up to the driver. However,
++		 * the driver hardcodes a 4K buffer size for the PRP list,
++		 * accommodating at most 512 entries. This strictly limits
++		 * the maximum supported NVMe I/O transfer to 2 MiB.
++		 *
++		 * Cap max_hw_sectors to the smaller of the drive's reported
++		 * MDTS or the 2 MiB driver limit to prevent kernel oopses.
++		 */
++		lim->max_hw_sectors = SZ_2M >> SECTOR_SHIFT;
+ 		if (pcie_device->nvme_mdts)
+-			lim->max_hw_sectors = pcie_device->nvme_mdts / 512;
++			lim->max_hw_sectors = min(lim->max_hw_sectors,
++					pcie_device->nvme_mdts >> SECTOR_SHIFT);
  
- 	list_for_each_entry(stream, &dev->streams, list) {
-+		count += 1;
-+		last_stream = stream;
- 		if (stream->header.bTerminalLink == id)
- 			return stream;
- 	}
- 
-+	/*
-+	 * If the streaming entity is referenced by an invalid ID, notify the
-+	 * user and use heuristics to guess the correct entity.
-+	 */
-+	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
-+		dev_warn(&dev->intf->dev,
-+			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
-+		return last_stream;
-+	}
-+
- 	return NULL;
- }
- 
+ 		pcie_device_put(pcie_device);
+ 		spin_unlock_irqrestore(&ioc->pcie_device_lock, flags);
 -- 
-2.54.0.rc0.605.g598a273b03-goog
+2.47.3
 
 
