@@ -1,140 +1,174 @@
-Return-Path: <stable+bounces-237727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DJ+J6/V3WkekAkAu9opvQ
-	(envelope-from <stable+bounces-237727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:50:39 +0200
+	id YL6sKqLc3WlwkQkAu9opvQ
+	(envelope-from <stable+bounces-237728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:20:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DAC3F5CDC
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:50:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258B43F5E4D
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:20:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D66D3033A97
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:50:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA0C830143F0
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 06:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514B62F6911;
-	Tue, 14 Apr 2026 05:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247543254AE;
+	Tue, 14 Apr 2026 06:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VI8dW1Gg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z/1zMhUi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DB42264D9
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 05:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096C72FFF88
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776145831; cv=none; b=WmdiZ/TXCeIM6quKZrv5KGUwLt3ujBUCQ5eDef5GXL4sVLCQHMVkw4Kb1absGG0B861FFSvl1AePrP0BoL7OBiNAgVh6DXiPddW0LUVR7qxukXX61YhcsKnmgGGu2Y/H/NaGg0PaX2oI9F6NzPkMeujtYhug/rb6mot4hbUB5R8=
+	t=1776147597; cv=none; b=AHBPGzoVD9wsjmPaTq+Y6O7r60rO/4Mgi8vRa0UOT54QaLg/9x/MA6U0IRcH4AHmDBWyOsSSBzt4HU5K3XQaLXBNuyuR78DasaUsbRqveCCTMsBbb07Pu2+LWg0ZimWgvW203MuM7w6us0td8qit1MSLe6shj2IHTwTSOMyVxEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776145831; c=relaxed/simple;
-	bh=EO6dYTjceUlFmPDZvwvnjlhudlIzL5CQnQmzqEBRskM=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References; b=DSFWVyCixYtzZDhkav0wJYPkHbRK1GucMl/0L7/dLhhVx23z6/lQfkzJLM0cnMxCC7lvfkKVcMvImox5lQ81Z1Vb9xvgMnjr+HGFlpdEElW+jpm1K0X4jMmO6lUxyeUl2rwptv4DIshuzsbSNWsWmEOGZN40nRvXMpiht4G5u0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VI8dW1Gg; arc=none smtp.client-ip=209.85.222.181
+	s=arc-20240116; t=1776147597; c=relaxed/simple;
+	bh=4Au1vWYJQM/cCNLFocF4rxkQ5SdzGdbWeMDXgvcfb0Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uec9Kf3TXzNuCWg6dgOJrYrysWW474P6g2h0zhZCQP+MsMGAVa6a5HUvAZz2czVhfL6chSDSNkk7WTAPdbLCnoIHLv9VSqYf78EJbY/SQG7RJhzRZSP96aNM0OsoaJ5YEk9iNr+YXyx9q1lyO/Rk51uBwBGtqnLw8/s1sn9nDfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z/1zMhUi; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8d933da14f0so571489285a.2
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 22:50:29 -0700 (PDT)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so3301557f8f.3
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 23:19:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776145829; x=1776750629; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EO6dYTjceUlFmPDZvwvnjlhudlIzL5CQnQmzqEBRskM=;
-        b=VI8dW1GgeP3wucEEByK0yRF3BGcRZAPLs+Q88rYtOMm+nDvC+lhrKC2LUJENJOCmoF
-         sG1kXEBirtMxEdnSn5qsNUJzElAs9RyQSqxqg8mTnz20VHhexI14EJVvgh9svf/dPCkG
-         D9bhkoKzWbu3E+u4aBPYUiMoO+iKlG5ak/OgjtCyf3VILnPAMRwMrVevQhQek95NEf5J
-         dlVeAXuXJ0ZGJXxcGYNuRSQLsiCygdT3KAl5GVo2As8m+ruO6ulCSiwwb/LC9a5B80Ml
-         C+FuPECzlXUpsiaIDEKAhuWzpU0DQJkLibI3Jzour89kZIQ1O+07u6dKlwjbDXfra7KH
-         kPrQ==
+        d=gmail.com; s=20251104; t=1776147594; x=1776752394; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZrvVMoJ7yb4IwANqTPw15SzHZNBEW/67dLCXkZ79KHk=;
+        b=Z/1zMhUi7x9PI+YhaJoMwNXofl7okJyvWHd0oZvckkaqnM4TJYnSIZPz/5RNLUWpTE
+         qIiyBnAbSXPCnsjSGiPnSF88rc1iy8sbIXMuBbo6nN6BFpJ6pnIRaZai5wXOzK+pWSwa
+         416QvRANIGrXfVsqd8qLEy9WaRxHPQoisPPZu69q6zfGvO0uN1B4nlkbE7yewhWWS6SE
+         5otGHyYfqzDh16Z8thsqlSSG77RqBZRagce2icvd/llY77s6BtJnIc9vbcYCwL+rXDQf
+         DWkiRNA3FTHciyAH4ukSiKscBPGPh1J+MCmkxvBRtoVtwZBwQTTanhrVROagIT2I/Ftp
+         LGjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776145829; x=1776750629;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EO6dYTjceUlFmPDZvwvnjlhudlIzL5CQnQmzqEBRskM=;
-        b=T7XSmRRiqFkbpL8GtI79RQKydroNNRxgTiQI/Je5zNAKw7UHzMYagv+qPlEG8Z9aUm
-         Ki4HqvfY8GWLBE/ixUjOR4HC7X/GvotIrphiDAPpTtT8zFthnjs81JJvBkhwN1axQQ8a
-         iqR+hLc0v2ZDSIoM4qUySyR519JXi88E7eP1HQBt8BWvhUZadsYybOznXbXyCd8MTeGF
-         nlcXjFQp7NvqZU6UF763IUzF5v0B+ptQaMVR+ctMqwWOJD+cKrEQMHSb1GZQ6AwfGMbz
-         Ry4QNPoXuyBSN5hDftLhdHi2VWMkXuCAxYf088ijNtdnC3cgYbB8nu0Rq9+1cbAh1V+O
-         cuxw==
-X-Forwarded-Encrypted: i=1; AFNElJ/qGHWKx0hZl3IDiLgd5KM0xdAEdgU9lncM8n/zt+Oph+sWG+y/uMLwUk03CAcyZyw0VExzzQw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBai1C1r6IOV9oK9UK4DYEMxR6npECb6R1NJgMmKCVGr21g3tp
-	RuM6ChLzZgYNDdFW6psJoVhdZuB3BbswGXGhIfoNWubT6T+xi7eYDwzUCrMWYbai
-X-Gm-Gg: AeBDiesWXZkm2jVjBT4b7R48ytcDjJzGaiHg5hnf5wluTJym4zmVmj9x2+WUg0vv19g
-	TzlTxYQnmI+ml6v6e3uDWK7BHegSDVBy+KtiTmVZI124jPZdDdQx5u+Cwuh+tNp0B19gGMWg7AV
-	IWK/ZuwNmswfs70QWfYclqxyNEBmn5p3vKkYNeIOfoZUngxMgNO0aFDZgijv5RHP6NpueoJis0Y
-	9umKllU+FuDsQV3BlsT1u1Zwb3oSlt+RpPdJWQQUGR/1EikxJkMh9DTBKcI/keNxo2FsgnOgRkX
-	WMAeGPhgjj5onUmU7lhz+Sjbm4kg97W0L+4wjrhGCzj0XYXbPjLKaslIpbABgyjidGJ8ojBmez1
-	7wBRuZ1bsTiZYJc9rJZSBXeF/BiF8oAQ27JI3mAXauYRkU6LjLEiGMZm9I7EvWlzFfn3yihdOvu
-	usQGts/GXcGy0Bm5NyFvjtGUH0Uahm79AHixOQWs+BFt9otDvLjW73B1lj+3lHGjaGLNoC6YM=
-X-Received: by 2002:a05:620a:2905:b0:8cd:9bf2:60e8 with SMTP id af79cd13be357-8ddd0591fa8mr2511603985a.59.1776145828730;
-        Mon, 13 Apr 2026 22:50:28 -0700 (PDT)
-Received: from tdc4045031631.internal.cloudapp.net ([20.63.37.123])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb934dcd3sm1067773285a.34.2026.04.13.22.50.28
+        d=1e100.net; s=20251104; t=1776147594; x=1776752394;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZrvVMoJ7yb4IwANqTPw15SzHZNBEW/67dLCXkZ79KHk=;
+        b=Yuz5r3yNpaZ7dBRLSsqz8B0x3Yzzcw8NqXGjIJPPQ0v5KcKd6Ya2VrAoqWGASz6P2n
+         JBYrJU4W4XVgeAtNAZztJjKMOybjSLM3bFOc8Zs/42ECo28eWxp+d+Ui586MT7izqFw1
+         8KjiPNto9XAeKwzXkg04PE6p1uzJQJi07JdrWf5oC+E8XUTPP8lrx/Zc9WzPpCgkjWEz
+         rjsBFqmTd59buLssVPdekD5d4k24pmcxKPPwBbWsxmtGCPK5pjs+z0TpxJZoHnsTrb9R
+         g8JwMHEtHDXOyuI2Smqbld0kZoM7q2uTN2el9Uoy8KlfdUzU/UO+4coBz7OhT3uKLO2V
+         g8ZA==
+X-Forwarded-Encrypted: i=1; AFNElJ85+90K22mj9Q8Ltl8eZNjG6kRe6TPvz3mLgh+DsiffLH9nNTpfZFWajVpk/YxEKT0iTo/6nwg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzG/Lx/GvcyGNAnTOptbCI+9F9h7aA2BzzjqnrRWhyKr1K4NghX
+	CJycEUjWuyQAjkTC49NfCInTKnR1fWiWOdX4m7xLAoq30Dp/RFqhq7kV
+X-Gm-Gg: AeBDiesipAQNsnJ7cruxFRPPJLQhJqxFLqHLAT3/0JwEsZqj1S1aAhs6lkehKYWZJvJ
+	GcAf9NMk7KnvJNPkSwQeo7vgs1r1BGI25OxTriKNYpfY+WAuHUGLMYkCM3vdtzNG0RFfJ23MLOP
+	RKvh6hi9UcKMH3hsTucl7RwJKJhJv9tNmWZlJjSEq76P2t+7dT+gfu8mt+0XdZ0OyEZWB4x81SO
+	qZugkm6SwIbFKzzaQ0m0+5PMOJF5JoG2K4qSrb3hYrT5hoykg3wYmFBr+HBG9rdcBrnwE5kmMlc
+	IR8ZBR+huFsFHclzM2HnnYCyt0gR0/tuRnmt/LPFAVLD5IfqY5bjc/bdzM3drt76DJj8SCzLxL7
+	aGxx4vtKNSJY2MHAAnnvfA+OhV+r/JqLSUd1GeQMbwIUAbSo+eTW3Psygej1wp3wPlWv7ykxfzD
+	Qfk3f4woBAFGnW7um5
+X-Received: by 2002:a05:6000:40dd:b0:43d:7e5b:928c with SMTP id ffacd0b85a97d-43d7e5b9a32mr4274358f8f.47.1776147594334;
+        Mon, 13 Apr 2026 23:19:54 -0700 (PDT)
+Received: from localhost ([41.210.143.51])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d7794cce5sm16097713f8f.9.2026.04.13.23.19.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 22:50:28 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 13 Apr 2026 23:19:53 -0700 (PDT)
+Date: Tue, 14 Apr 2026 09:19:47 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Alexandru Hossu <hossu.alexandru@gmail.com>
+Cc: gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org, dan.carpenter@linaro.org,
+	hansg@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] staging: rtl8723bs: fix heap overflow in OnAuthClient
+ shared key path
+Message-ID: <ad3cgzGxPVYLiJbe@stanley.mountain>
+References: <20260413202824.740653-1-hossu.alexandru@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
-To: mcanal@igalia.com
-Cc: dri-devel@lists.freedesktop.org, itoral@igalia.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/v3d: Limit ioctl extension chain depth to prevent infinite loop
-Date: Tue, 14 Apr 2026 05:50:27 -0000
-Message-ID: <177614582755.3604322.4429889371712210858@gmail.com>
-In-Reply-To: <616c212a-067d-485c-802c-c1375094c53e@igalia.com>
-References: <616c212a-067d-485c-802c-c1375094c53e@igalia.com>
-X-Spamd-Result: default: False [-2.06 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413202824.740653-1-hossu.alexandru@gmail.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237727-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237728-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 07DAC3F5CDC
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[stanley.mountain:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 258B43F5E4D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-SGkgTWHDrXJhLAoKT24gNC8xMy8yNiAxMzo1OCwgTWHDrXJhIENhbmFsIHdyb3RlOgo+IFRoZSBw
-cm9ibGVtIEkgc2VlIGlzIG1haW50YWluYWJpbGl0eS4gV2Ugd2lsbCBuZWVkIHRvIGtlZXAgdXBk
-YXRpbmcgdGhpcwo+IG1hY3JvIGFzIHRoZSBudW1iZXIgb2YgZXh0ZW5zaW9ucyBpbmNyZWFzZS4g
-U28gZmFyLCBhbGwgdGhlIGV4dGVuc2lvbnMKPiB3ZSBoYXZlIGNhbiBvbmx5IGJlIGFkZGVkIG9u
-Y2UsIHNvIHdlIGNhbiBndWFyYW50ZWUgdGhhdCBwZXItZXh0ZW5zaW9uLgo+Cj4gSSdkIHByZWZl
-ciB0byBjaGVjayB0aGUgbXVsdGlzeW5jIGV4dGVuc2lvbiBhbmQgbWFrZSBzdXJlIHRoYXQgYSBz
-aW5nbGUKPiBvbmUgbm9uLWVtcHR5IGlzIGFkZGVkLgoKVGhhdCBpcyBhIGdyZWF0IHBvaW50IC0g
-SSBoYWQgbm90IGNvbnNpZGVyZWQgdGhlIG1haW50YWluYWJpbGl0eSBhbmdsZS4KQWdyZWVkLCB0
-aGUgcGVyLWV4dGVuc2lvbiBndWFyYW50ZWUgaXMgdGhlIHJpZ2h0IHBsYWNlIHRvIGVuZm9yY2Ug
-dGhpcy4KCkkgaGF2ZSBzZW50IHYzIHdpdGggdGhlIGVtcHR5LW11bHRpc3luYyBjaGVjayBpbgp2
-M2RfZ2V0X211bHRpc3luY19zdWJtaXRfZGVwcygpIGFzIHlvdSBzdWdnZXN0ZWQuCgpUaGFua3Mg
-Zm9yIHRoZSBndWlkYW5jZS4KCkJlc3QgcmVnYXJkcywKQXNodXRvc2g=
+On Mon, Apr 13, 2026 at 10:28:24PM +0200, Alexandru Hossu wrote:
+> rtw_get_ie() returns the raw IE length from the received frame, which
+> can be up to 255. This length is used directly in memcpy() into
+> chg_txt[128] with no bounds check, allowing a heap overflow of up to
+> 127 bytes when a rogue AP sends an Auth seq=2 frame with a Challenge
+> Text IE longer than 128 bytes.
+> 
+> IEEE 802.11 mandates the Challenge Text element carries exactly 128
+> bytes of challenge data. Reject any element whose length field does not
+> match sizeof(pmlmeinfo->chg_txt) (128).
+> 
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
+
+Looks good.
+
+Reviewed-by: Dan Carpenter <error27@gmail.com>
+
+> ---
+>  drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> index 5f00fe282d1b..90f27665667a 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> @@ -891,7 +891,7 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
+>  			p = rtw_get_ie(pframe + WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_, WLAN_EID_CHALLENGE, (int *)&len,
+                                       ^^^^^^
+Do we know that pframe has enough data?
+
+KTODO: check if pframe is large enough in OnAuthClient()
+
+regards,
+dan carpenter
+
+>  				pkt_len - WLAN_HDR_A3_LEN - _AUTH_IE_OFFSET_);
+>  
+> -			if (!p)
+> +			if (!p || len != sizeof(pmlmeinfo->chg_txt))
+>  				goto authclnt_fail;
+
 
