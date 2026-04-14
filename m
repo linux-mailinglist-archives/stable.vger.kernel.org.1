@@ -1,250 +1,191 @@
-Return-Path: <stable+bounces-237695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id toF9F6qY3WmWgQkAu9opvQ
-	(envelope-from <stable+bounces-237695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:30:18 +0200
+	id uBmGDM2Z3WmqgQkAu9opvQ
+	(envelope-from <stable+bounces-237697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:35:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D502B3F4CBB
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:30:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A390B3F4CEB
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEC083036D50
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 01:30:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4650A3027331
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 01:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C02212FAD;
-	Tue, 14 Apr 2026 01:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD695242D9B;
+	Tue, 14 Apr 2026 01:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="qVinjA+G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XY9GJMXb"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5703270545
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 01:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A110F18A6CF
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 01:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776130213; cv=none; b=s+ZyzFUDcZKVpI62+dLAJGHEAr2+Dx/VHIyAy1ITCw2B3TmslI0upQzxo73tbbXWvFphhR9e51s9qrnns7qafUyFRqU4s39WWUdpefd5hjx8cXHmj3f6tqEpk3Fe39yawaTAJQ94mtdT6erB7kcHfOrdcYBhoO8ZtotPGw6xZz4=
+	t=1776130505; cv=none; b=BhMNJoy+ACu52Vht3sdkLtI97eb7THDgUcn1iEV95z4MoO4CkR2cj5NYxxE46uoU3bj17pljS0q4raf9E51Jx3SiITKM+6Cz1FsCN3Z1H1ALhESysiK4V62HFt5TH4gGav9wQyPgpLgS0ZmzGdFMLOYHZEhwiqaccisxNRMhvdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776130213; c=relaxed/simple;
-	bh=5d55Sby67zAEYxk/ZlCGmEDM6wEznQfAbF+exNlILNQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XvW9vO85/rdJGFhXu3FB1X441gWbT40NBZ6dLdEjhytcuS7ugB8vjP7BIlaWXU2D5KQ+cGf9Bu5wtAxvHKUwxF/9U7kay1I/dWwf/ZJeifaZ4dkg4ca9YaGYfpBd+h2LpyTGP9cgQOdAdOBt2DA9D+FJ+UX4uKLD45AYL4CK+Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=qVinjA+G; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=a2lsAbL/CAN5MRMomF38fQZ/Gb6tGyKqmrVF9Fctvfs=;
-	b=qVinjA+G0DIiCayRAsJTmi3Vz9GSSya5RFuqY4oi91XLDrdGb/p/eELTzkvS61swnLkSJfyZh
-	sw/NGaYts3AK9eJXchfUicPqsh6+LpqiNmxe0zMWtd/EOftP0n1LYcYcg2WFTPxJbHRDFkOvV7I
-	R7G00SngLzUb/jmjnoxXQ0c=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fvml104gtzpSvH;
-	Tue, 14 Apr 2026 09:23:57 +0800 (CST)
-Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
-	by mail.maildlp.com (Postfix) with ESMTPS id 272364056E;
-	Tue, 14 Apr 2026 09:30:07 +0800 (CST)
-Received: from [10.174.178.79] (10.174.178.79) by
- kwepemj500018.china.huawei.com (7.202.194.48) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Apr 2026 09:30:06 +0800
-Message-ID: <52ea906c-0953-4d2c-98ee-b873ecc6a075@huawei.com>
-Date: Tue, 14 Apr 2026 09:30:06 +0800
+	s=arc-20240116; t=1776130505; c=relaxed/simple;
+	bh=CG41oxMu97RRpy6MVKyEVcoyecZ5qolgl5ckqP4J020=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D1lWcEYeUvmgX/fz4gdL40TSdufu88Jq8o83belzKU1d0CBkU/6E0JxasVbsYrEMmjqigC+Ag30J6X2z9TkobW8Sz1nmTRlIqSC7KUHtZlGm+JfXVtLvnquStmyuwSHzGhpYZ6U71ugYzCJXhVMvICMmOSbHxmtJ5KKQAVxFaog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XY9GJMXb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B61C2BCAF;
+	Tue, 14 Apr 2026 01:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776130505;
+	bh=CG41oxMu97RRpy6MVKyEVcoyecZ5qolgl5ckqP4J020=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XY9GJMXbtYcXVqJpEyjAwsWdpej3ws10X4rysVy3uKejJFpKxatG3beHhKLm8srAC
+	 3t+GgIVg/UO/UUkcTCePyntDGt8l5F7eQviAXgtfaqi8TBVnJ1GQurHwP/TeNahcER
+	 SDFNWkObwIdQO1isK+LXglYG4/+46AZA6+1zyVpgxDPJBPOSrCorgtkgtPAN3h4eJJ
+	 ROc/0uqsLdkUzlhQvpuvFo11fXBlV8cIHGDv8uMogjZFf+WVtB/SVp+n5GaDW5y2c2
+	 qugf83QZmPWuy3Q286V7QKCn+mOss0wjciJ/YST0wnixHhG08I8X38y6AGpZlsHTog
+	 E2CPIWN7UPLCA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] rxrpc: Fix call removal to use RCU safe deletion
+Date: Mon, 13 Apr 2026 21:35:02 -0400
+Message-ID: <20260414013502.3857050-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026041333-uncoated-appendix-fea5@gregkh>
+References: <2026041333-uncoated-appendix-fea5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 14/50] mptcp: fix soft lockup in mptcp_recvmsg()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <patches@lists.linux.dev>, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, <stable@vger.kernel.org>,
-	<zhangchangzhong@huawei.com>, <weiyongjun1@huawei.com>,
-	<yuehaibing@huawei.com>
-References: <20260413155724.497323914@linuxfoundation.org>
- <20260413155725.042518976@linuxfoundation.org>
-From: Li Xiasong <lixiasong1@huawei.com>
-In-Reply-To: <20260413155725.042518976@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemj500018.china.huawei.com (7.202.194.48)
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237695-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237697-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lixiasong1@huawei.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:dkim,huawei.com:email,huawei.com:mid]
-X-Rspamd-Queue-Id: D502B3F4CBB
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,auristor.com:email,sashiko.dev:url,linux-foundation.org:email]
+X-Rspamd-Queue-Id: A390B3F4CEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg,
+From: David Howells <dhowells@redhat.com>
 
-On 4/14/2026 12:00 AM, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
-> 
+[ Upstream commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 ]
 
-Sorry for the delayed reply. Please drop this patch from 6.6.y - the fix
-targets mptcp_recvmsg() soft lockup, but the receive queue handling differs
-between mainline and 6.6:
+Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
+rather than list_del_init() to prevent stuffing up reading
+/proc/net/rxrpc/calls from potentially getting into an infinite loop.
 
-  - Mainline: both MSG_PEEK data access and sk_wait_data use
-sk->sk_receive_queue
-  - 6.6.y: MSG_PEEK data access uses msk->receive_queue, while sk_wait_data
-           waits on sk->sk_receive_queue
+This, however, means that list_empty() no longer works on an entry that's
+been deleted from the list, making it harder to detect prior deletion.  Fix
+this by:
 
-This structural difference means the fix is not applicable to 6.6.y.
+Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
+are unexpectedly still on the list.  Limiting the number of steps means
+there's no need to call cond_resched() or to remove calls from the list
+here, thereby eliminating the need for rxrpc_put_call() to check for that.
 
-Note that the soft lockup issue still exists in 6.6. A different approach
-may be needed for this branch.
+rxrpc_put_call() can then be fixed to unconditionally delete the call from
+the list as it is the only place that the deletion occurs.
 
-Thanks,
-Li Xiasong
+Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Linus Torvalds <torvalds@linux-foundation.org>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted to older API ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/rxrpc/call_object.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
-> ------------------
-> 
-> From: Li Xiasong <lixiasong1@huawei.com>
-> 
-> commit 5dd8025a49c268ab6b94d978532af3ad341132a7 upstream.
-> 
-> syzbot reported a soft lockup in mptcp_recvmsg() [0].
-> 
-> When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
-> removed from the sk_receive_queue. This causes sk_wait_data() to always
-> find available data and never perform actual waiting, leading to a soft
-> lockup.
-> 
-> Fix this by adding a 'last' parameter to track the last peeked skb.
-> This allows sk_wait_data() to make informed waiting decisions and prevent
-> infinite loops when MSG_PEEK is used.
-> 
-> [0]:
-> watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
-> Modules linked in:
-> CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-> RIP: 0010:sk_wait_data+0x15/0x190
-> Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
-> RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
-> RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
-> RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
-> RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
-> R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
-> R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
-> FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
-> Call Trace:
->  <TASK>
->  mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
->  inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
->  sock_recvmsg+0x94/0xc0 net/socket.c:1100
->  __sys_recvfrom+0xb2/0x130 net/socket.c:2256
->  __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
->  do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
-> RIP: 0033:0x7f6e386a4a1d
-> Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-> RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-> RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
-> RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
-> RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
-> R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
->  </TASK>
-> 
-> Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
-> Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Link: https://patch.msgid.link/20260330120335.659027-1-lixiasong1@huawei.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> [ Conflicts in protocol.c, because commit bc68b0efa1bf ("mptcp: move the
->   whole rx path under msk socket lock protection") and commit
->   d88b2127b242 ("mptcp: add eat_recv_skb helper") (with some
->   dependences) are not in this version. These conflicts were in the
->   context, and not related to this fix. ]
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  net/mptcp/protocol.c |   11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -1960,7 +1960,7 @@ static int __mptcp_recvmsg_mskq(struct m
->  				struct msghdr *msg,
->  				size_t len, int flags, int copied_total,
->  				struct scm_timestamping_internal *tss,
-> -				int *cmsg_flags)
-> +				int *cmsg_flags, struct sk_buff **last)
->  {
->  	struct sk_buff *skb, *tmp;
->  	int total_data_len = 0;
-> @@ -1976,6 +1976,7 @@ static int __mptcp_recvmsg_mskq(struct m
->  			/* skip already peeked skbs */
->  			if (total_data_len + data_len <= copied_total) {
->  				total_data_len += data_len;
-> +				*last = skb;
->  				continue;
->  			}
->  
-> @@ -2016,6 +2017,8 @@ static int __mptcp_recvmsg_mskq(struct m
->  			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
->  			__skb_unlink(skb, &msk->receive_queue);
->  			__kfree_skb(skb);
-> +		} else {
-> +			*last = skb;
->  		}
->  
->  		if (copied >= len)
-> @@ -2237,10 +2240,12 @@ static int mptcp_recvmsg(struct sock *sk
->  		cmsg_flags = MPTCP_CMSG_INQ;
->  
->  	while (copied < len) {
-> +		struct sk_buff *last = NULL;
->  		int err, bytes_read;
->  
->  		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags,
-> -						  copied, &tss, &cmsg_flags);
-> +						  copied, &tss, &cmsg_flags,
-> +						  &last);
->  		if (unlikely(bytes_read < 0)) {
->  			if (!copied)
->  				copied = bytes_read;
-> @@ -2298,7 +2303,7 @@ static int mptcp_recvmsg(struct sock *sk
->  
->  		pr_debug("block timeout %ld\n", timeo);
->  		mptcp_cleanup_rbuf(msk, copied);
-> -		err = sk_wait_data(sk, &timeo, NULL);
-> +		err = sk_wait_data(sk, &timeo, last);
->  		if (err < 0) {
->  			err = copied ? : err;
->  			goto out_err;
-> 
-> 
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index 6401cdf7a6246..33165080f4685 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -634,11 +634,9 @@ void rxrpc_put_call(struct rxrpc_call *call, enum rxrpc_call_trace op)
+ 		_debug("call %d dead", call->debug_id);
+ 		ASSERTCMP(call->state, ==, RXRPC_CALL_COMPLETE);
+ 
+-		if (!list_empty(&call->link)) {
+-			spin_lock_bh(&rxnet->call_lock);
+-			list_del_init(&call->link);
+-			spin_unlock_bh(&rxnet->call_lock);
+-		}
++		spin_lock_bh(&rxnet->call_lock);
++		list_del_rcu(&call->link);
++		spin_unlock_bh(&rxnet->call_lock);
+ 
+ 		rxrpc_cleanup_call(call);
+ 	}
+@@ -709,24 +707,20 @@ void rxrpc_destroy_all_calls(struct rxrpc_net *rxnet)
+ 	_enter("");
+ 
+ 	if (!list_empty(&rxnet->calls)) {
+-		spin_lock_bh(&rxnet->call_lock);
++		int shown = 0;
+ 
+-		while (!list_empty(&rxnet->calls)) {
+-			call = list_entry(rxnet->calls.next,
+-					  struct rxrpc_call, link);
+-			_debug("Zapping call %p", call);
++		spin_lock_bh(&rxnet->call_lock);
+ 
++		list_for_each_entry(call, &rxnet->calls, link) {
+ 			rxrpc_see_call(call);
+-			list_del_init(&call->link);
+ 
+ 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
+ 			       call, refcount_read(&call->ref),
+ 			       rxrpc_call_states[call->state],
+ 			       call->flags, call->events);
+ 
+-			spin_unlock_bh(&rxnet->call_lock);
+-			cond_resched();
+-			spin_lock_bh(&rxnet->call_lock);
++			if (++shown >= 10)
++				break;
+ 		}
+ 
+ 		spin_unlock_bh(&rxnet->call_lock);
+-- 
+2.53.0
+
 
