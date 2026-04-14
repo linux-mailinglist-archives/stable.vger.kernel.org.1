@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-237849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLegASUv3mnxogkAu9opvQ
-	(envelope-from <stable+bounces-237849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:12:21 +0200
+	id gNZ/MyYv3mnxogkAu9opvQ
+	(envelope-from <stable+bounces-237850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:12:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC75A3F9DBD
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABEBC3F9DC4
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 035F63092658
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:08:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 51134309302F
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5E53E51F8;
-	Tue, 14 Apr 2026 12:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071BB3E5592;
+	Tue, 14 Apr 2026 12:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u05Sk4qB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tCMW+K14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBE71FC8
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4633D812C
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776168511; cv=none; b=P+mP/rq8CcFbhCf19C4LIeQvvMPEyNmdOOINFbh+FUl2pHKlfTGqxwXSmzBX8D4A1ATbqm56652WBoY4sz/7GGCIzb7o9Ywui2TcV9TFYEzkeBFefCosDXySrqsq5UaT2LYXUnt608eSgRyf/raZkx0Y5eLGypj9T/jQ4kXTs0E=
+	t=1776168514; cv=none; b=ZCvM+B+fXbO2/Ty5r0fxxbAiZ1Jzg/ErRa2CncHw3Y7LPupDJBYGDeC81HV63qkJFvPqQ+MuuaOgfmbCqvlTPaAM8p7/9ozegDn+qIjPs7JMiDC6yWTOKw0aooCk5jhXvQqomMjLIlEGTdHVzZu8k6xmbcjFKbyq+eTB00pNayQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776168511; c=relaxed/simple;
-	bh=aVVSplgAhHlpyN1juasgkCoCXwiCqmpIPdIgPmJp5eU=;
+	s=arc-20240116; t=1776168514; c=relaxed/simple;
+	bh=Jr7+GNK4q6d51uujab2w4tfo3B9OBpIPI0ry1BJQbOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SuD4D5XAhodpiL74HHnf0NJ1OLK/fP8OgjK0+OVsryWEpT8WLfT4+E0kzNnHoaS7nMyOaqiON9e7h6UAkBgijh7B1NYTpuDx7amGYPHkHi30Dhb9sGlU0eCvBAjpOvQ4CE9r9BNvG5rjDi0m9PKdRj9OjjZJtlQjoPaRVd+heAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u05Sk4qB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EB8C19425;
-	Tue, 14 Apr 2026 12:08:30 +0000 (UTC)
+	 MIME-Version; b=J62bkZHkgg15KaYJDVdFoDGliFafYlTStaOi9lm5hU5qNH/baIOSSKO04ucFrOuRTHtxKDjAwh+ndPfMJLjrKnfxPyFgiIljPd9eDTF2h3Gid14B7y4dbghVEMM8IkRhvIVOPT4wvzbfGRu5eCWAThlcCHB4z9dmTpnq23ZSvEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tCMW+K14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CC4C2BCB5;
+	Tue, 14 Apr 2026 12:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776168511;
-	bh=aVVSplgAhHlpyN1juasgkCoCXwiCqmpIPdIgPmJp5eU=;
+	s=k20201202; t=1776168514;
+	bh=Jr7+GNK4q6d51uujab2w4tfo3B9OBpIPI0ry1BJQbOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u05Sk4qB3q4LlbU/wQDqddYmcDYNJhRsFuGsxlzCQd4+dioOjTXRRWztpXanUDPev
-	 puqerDuSQzp64UB0fPqvbAL8HBdITKo6ZKP9Yt/xSYZx+902YRThWDY1ZvqJ5nDeX1
-	 46SUxjeVcGrTSkQphPb4KsEd3FhoY5/VYhMuu7ndpdg/6pwXN5Xn4qNuRPCfDJSqNK
-	 8G/ojssHvaGwNMIaAatF3Y8+zsC5pxizbHz9NfbNPX8sqv7EOCu6KLxuwOyzXqZHm2
-	 1LHSbb/2eXUuP8NdBIgukCKoCm+DGJ/0bMtfuaYLQ9i6lXpxpQ7ZM+TEZrDiniYTW5
-	 n2Ott1P/e0dmw==
+	b=tCMW+K14QJabcvKhxWQpv8158DXJZ0WXW2bFjuih2fYrWkFsj5PiGQDtmlxUlc7nf
+	 qQxyDvhE8oVfDeikM6wbXOFs4PV9hpEyOkj5baB0IdFlwQSiwoj7xYaOlwMTPrVdkk
+	 OattZn8c1i+OGn80vXG6XtTD20JqH8iR90ExwQdSsKKoFihoIqqh0zIGIkubc2Wyu8
+	 iN5TxH31OlQIAdCu0vOH3DqnxoA7EvyGOXShf2vyA/GqnvaztlRbvRKPCvNhRDag8a
+	 bOFPCt3otRqefPt7mqyhhL/DgFAJQK8I80fEvuQVbrfzMaEZlUFFha6ZqlVLMjwzN8
+	 N1QfD8GCjXEkg==
 From: Sasha Levin <sashal@kernel.org>
 To: Li Xiasong <lixiasong1@huawei.com>
 Cc: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
 	matttbe@kernel.org,
 	kuba@kernel.org
-Subject: Re: [PATCH 6.6 14/50] mptcp: fix soft lockup in mptcp_recvmsg()
-Date: Tue, 14 Apr 2026 08:08:29 -0400
-Message-ID: <20260414160000.mptcp-drop-6.6@kernel.org>
+Subject: Re: [PATCH 6.12 28/70] mptcp: fix soft lockup in mptcp_recvmsg()
+Date: Tue, 14 Apr 2026 08:08:32 -0400
+Message-ID: <20260414160000.mptcp-drop-6.12@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <52ea906c-0953-4d2c-98ee-b873ecc6a075@huawei.com>
-References: <20260413155724.497323914@linuxfoundation.org> <20260413155725.042518976@linuxfoundation.org> <52ea906c-0953-4d2c-98ee-b873ecc6a075@huawei.com>
+In-Reply-To: <14313177-4f06-4666-9c74-7dd3ca797744@huawei.com>
+References: <20260413155728.181580293@linuxfoundation.org> <20260413155729.239617101@linuxfoundation.org> <14313177-4f06-4666-9c74-7dd3ca797744@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237849-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237850-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,14 +90,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BC75A3F9DBD
+X-Rspamd-Queue-Id: ABEBC3F9DC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 14 Apr 2026 09:30:06 +0800, Li Xiasong wrote:
-> Please drop this patch from 6.6.y - the fix targets mptcp_recvmsg()
-> soft lockup, but the receive queue handling differs between mainline
-> and 6.6.
+On Tue, 14 Apr 2026 09:52:25 +0800, Li Xiasong wrote:
+> Same issue as 6.6.y - queue mismatch in mptcp_recvmsg()
+> (msk->receive_queue vs sk->sk_receive_queue), so the fix is not
+> applicable to 6.12.y either.
 
-Dropped from the 6.6 and 6.12 queues, thanks.
+Dropped from the 6.12 and 6.6 queues, thanks.
 
