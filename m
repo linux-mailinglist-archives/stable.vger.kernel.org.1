@@ -1,165 +1,145 @@
-Return-Path: <stable+bounces-237725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CutM5LU3WnfjwkAu9opvQ
-	(envelope-from <stable+bounces-237725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:45:54 +0200
+	id OMP0D5XU3WnfjwkAu9opvQ
+	(envelope-from <stable+bounces-237726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:45:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DFC3F5CA3
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:45:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE563F5CB1
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 07:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAAC43019509
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:44:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 16B79300DCD5
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6EB303A07;
-	Tue, 14 Apr 2026 05:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ii3wWGIe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51FB324B23;
+	Tue, 14 Apr 2026 05:45:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [144.76.133.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DE12609EE
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 05:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3467B282F1B;
+	Tue, 14 Apr 2026 05:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.133.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776145489; cv=none; b=XMjYZSm2Ay050MGgbiBhgMCILyjdhnTbwfIYLxP8U4tesnKLC7J/g7L8EXMVT1SW6IOCrhBhFYAffOjM+ktQc0BroV3LrA8XOJmdMzbebQnynpSYh7pDqSmm5Sdlem9gycx9VNWXZxxNUUL0+t2sBRf5OGNaLtZGGhdCItB1hzk=
+	t=1776145549; cv=none; b=IXAMaN86RY/wN5QIlfUfx3791br7TfY9mXHdGIT7sVT2yES7NMg9Bx71Y1dRBRy9Nm1QUZf3rSNTrE1pe6cF5Jx1qpLZfuAaDD5YMGWZ/8qsLwqvTb9CldsN6h8jofwdCnJ2qBbQpQXr827VfXr7UXvzCIFTVfAfzBrTSI8Ib1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776145489; c=relaxed/simple;
-	bh=aDm5Kil0HXsnjHv6GNGtwXDhX9a19psMf0K9NXnVpWM=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:Date:Message-ID; b=j6ynVRDw+mfQYXWWVO7IAbWuYwHWvAF4eMkLMmmirIu5WlUkecDVu7nICrrObqQg8Hj+8VRI5GdGuxRXZtQIn4KVlJ7U581ySUWUMVcHF2J0m06YwyIMJy23pRbzLSDqnXt9o/OJPXJFRLIZtXjBvnedUmpGwojus63zjkFkDnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ii3wWGIe; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8acb09ddbf6so21629336d6.2
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 22:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776145486; x=1776750286; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:content-transfer-encoding
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDm5Kil0HXsnjHv6GNGtwXDhX9a19psMf0K9NXnVpWM=;
-        b=Ii3wWGIexNcvthzIuddEfYyY5O7lpSX6Z2hspZrD36w/S0qNDTUG0+tKCddj/NjOzc
-         f+AYYcqpcvKm3y10oVn2qUzcFMOsKu/KCtROqLExJSpODA7q55+ZZVPa8HWyPAQF6leJ
-         RybLD5ON3/h2Vrv9fBlwf/fU0EzTl2pFm02SK1fHq2cdNRXjWPxkKP0FD5Zb0A2Z7qLW
-         sjRg1rpn4JixLxUhms5I9ut8cTguWagkrvBhC5nkTVqIF6ipD8OuQGk0k6FtisaG0ZWo
-         xaGv74GVRhPnyjH6AT69YX+B5wi0Kqp7eMmzKiisH4EsoYb/3FAIQKjz/KQ523F/0adD
-         A0Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776145486; x=1776750286;
-        h=message-id:date:subject:cc:to:from:content-transfer-encoding
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aDm5Kil0HXsnjHv6GNGtwXDhX9a19psMf0K9NXnVpWM=;
-        b=bWLqRA5hsm6mZcpiyh8iiUNF44FqjyhO6pA3XF1VklcyKelyJKaoKdAwf6TGKhb3a6
-         zwIAP5V5yyjQv6u9cKHXoYMcfuiqao2DePtE5p4UstLLCUBMy42mEBhRe1DT57UPjtLk
-         mhXOjODSs4YtYL5+p9jCy7+yZvqnQXJbrUpqwsV0g/baqXp19NQbWcdDkfWBojD9+OnU
-         JcjC++2eE9amDga6GhCNPWHey96bVvX0LMdvQp2PFyqbw+mh9eiQcXVotV7YPten7MYD
-         2cXUY5zpCcofiN44ghzuvvugYVhAr290DoDAFfgP+YV++Sa/Ylb1bbr+eRYNLDKalU/U
-         QeIA==
-X-Forwarded-Encrypted: i=1; AFNElJ9L0PkEXbVlDJwvUbBYpV7BRENVJvN73Lglq4wcaX4vRASXR4gtyvf8ySBw4dIiNbpdzmGcZxg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYp5wFBcUYa3+v1zxe+IxrKP/o4yJIDeBDnn6KPReGwryIjFSt
-	sb8pwfFTHZmfNftO660YYamiPAwNE0umHnncnRKf1icFiPxMS9T9DoawPPuaboIi08ndMQ==
-X-Gm-Gg: AeBDieuA+E6nwj+VRr3iT6/pj5hwjAEop2fDx699tKkxMn+eIxg8buuQpxOGFV3b7OX
-	PkeNJte0WbaN7roxahAz0T/NcWDjMzrU4hyRUFmTh35sBWEKOrN710tRupw7RwSj58SDrCCLYcz
-	zJdwsDvKzJC3Dr6CxZI1Df6PsevzVfZaxJ36KInJREU9MgLoeglfxpOOGf1lTZzNxgRRrtLbhMR
-	g0roHCkHNIkacSS3oJPQBJPrbbyhFMBWZhZf6jX4bfp46XHmDmDYAEy7sNlkIs7Ld4PsY4Y+CFI
-	HPUZInB3iE093HxkH2+JTi6E1Y4kH8BfZB45upu4key2DJW4+net6NXYrsr4dvftO1pIitpOD4q
-	kGC2tdRBnl04wv2AYn1csItOoQUdg30L87ZLvV9ntBY6IH4bpdIBD3XPqJnFuAJt13u4O8uOOM9
-	kzBInsh0XHES7dqANewx6zbrSOWSe8fFUwHjhIKvv32wVrtDZ82TDNIq/dIHR/4gUwd45EjzNiA
-	Lvpy/1ToQ==
-X-Received: by 2002:ad4:574d:0:b0:89c:df61:7a06 with SMTP id 6a1803df08f44-8ac862f56c6mr262396686d6.48.1776145486489;
-        Mon, 13 Apr 2026 22:44:46 -0700 (PDT)
-Received: from tdc4045031631.internal.cloudapp.net ([20.63.37.123])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8acb925d457sm22924196d6.45.2026.04.13.22.44.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 22:44:46 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1776145549; c=relaxed/simple;
+	bh=h/0SmEXZ0QK4rok0JqrXdt5TO0dmhnBhwH0/E32rHqk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZbEXBjBXrEWsps9OyM8H6BURqdAxidcDJ3lPaqlM35RlX2MNmVs9FOHGzlw1OANkDbeA3P2H1yD6rNJ+kPnWkfm6eJgTSIs2qXtZM7hMK+IpFFfLKUPBJbxRkotlNr6Dui2IXMzgZTGHU6OoOWbS+yMuszVOYErDGt58qzuP6qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=144.76.133.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout3.hostsharing.net (Postfix) with ESMTPS id 81E87C2B;
+	Tue, 14 Apr 2026 07:45:39 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 44B32600B21B; Tue, 14 Apr 2026 07:45:39 +0200 (CEST)
+Date: Tue, 14 Apr 2026 07:45:39 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: "Alexandre N." <an.tech@mailo.com>
+Cc: Bernd Schumacher <bernd@bschu.de>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@debian.org>,
+	1131025@bugs.debian.org, Salvatore Bonaccorso <carnil@debian.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	regressions@lists.linux.dev, stable@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alex Williamson <alex@shazbot.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: Bug#1131025: [6.12.y regression] Regression with 58130e7ce6cb
+ ("PCI/ERR: Ensure error recoverability at all times"): echo vfio-pci
+ >driver_override does not work for DVB Adapter
+Message-ID: <ad3Ug9NK3bgStlE4@wunner.de>
+References: <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
+ <ac0Y85OShbK6mHEV@monoceros>
+ <8275e5b86696dec133889713258c2e158a443496.camel@bschu.de>
+ <ac19pxEZKvQuQwFV@wunner.de>
+ <7173609c404c5444e634dd3ab26f55f2788d82e4.camel@bschu.de>
+ <ac_VqcBbKRDkHp69@wunner.de>
+ <79618160f928d7ed4ba0a84f3ab420427c5b8d10.camel@bschu.de>
+ <dd3c3358-de0f-4a56-9c81-04aceaab4058@mailo.com>
+ <adxlr9lWBTZIQMev@wunner.de>
+ <f55cb406-4a49-462d-b933-48303b32c014@mailo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
-To: dri-devel@lists.freedesktop.org
-Cc: mcanal@igalia.com, itoral@igalia.com, stable@vger.kernel.org
-Subject: [PATCH v3] drm/v3d: Reject empty multisync extension to prevent infinite loop
-Date: Tue, 14 Apr 2026 05:44:45 -0000
-Message-ID: <177614548527.3603641.5360701002746181082@gmail.com>
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f55cb406-4a49-462d-b933-48303b32c014@mailo.com>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237725-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237726-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 33DFC3F5CA3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,wunner.de:mid]
+X-Rspamd-Queue-Id: CAE563F5CB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-djNkX2dldF9leHRlbnNpb25zKCkgd2Fsa3MgYSB1c2Vyc3BhY2UtcHJvdmlkZWQgc2luZ2x5LWxp
-bmtlZCBsaXN0IG9mCmlvY3RsIGV4dGVuc2lvbnMgd2l0aG91dCBhbnkgYm91bmQgb24gdGhlIGNo
-YWluIGxlbmd0aC4gQSBsb2NhbCB1c2VyCmNhbiBjcmFmdCBhIHNlbGYtcmVmZXJlbnRpYWwgZXh0
-ZW5zaW9uIChleHQtPm5leHQgPT0gJmV4dCkgd2l0aCB6ZXJvCmluX3N5bmNfY291bnQgYW5kIG91
-dF9zeW5jX2NvdW50LCB3aGljaCBieXBhc3NlcyB0aGUgZXhpc3RpbmcgZHVwbGljYXRlLQpleHRl
-bnNpb24gZ3VhcmQ6CgogICAgaWYgKHNlLT5pbl9zeW5jX2NvdW50IHx8IHNlLT5vdXRfc3luY19j
-b3VudCkKICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7CgpUaGUgZ3VhcmQgbmV2ZXIgZmlyZXMg
-YmVjYXVzZSB2M2RfZ2V0X211bHRpc3luY19wb3N0X2RlcHMoKSByZXR1cm5zCmltbWVkaWF0ZWx5
-IHdoZW4gY291bnQgaXMgemVybywgbGVhdmluZyBib3RoIGZpZWxkcyBhdCB6ZXJvIG9uIGV2ZXJ5
-Cml0ZXJhdGlvbi4gVGhlIHJlc3VsdCBpcyBhbiBpbmZpbml0ZSBsb29wIGluIGtlcm5lbCBjb250
-ZXh0LCBibG9ja2luZwp0aGUgY2FsbGluZyB0aHJlYWQgYW5kIHBlZ2dpbmcgYSBDUFUgY29yZSBp
-bmRlZmluaXRlbHkuCgpGaXggdGhpcyBieSByZWplY3RpbmcgYSBtdWx0aXN5bmMgZXh0ZW5zaW9u
-IHdoZXJlIGJvdGggaW5fc3luY19jb3VudAphbmQgb3V0X3N5bmNfY291bnQgYXJlIHplcm8gaW4g
-djNkX2dldF9tdWx0aXN5bmNfc3VibWl0X2RlcHMoKS4gQW4KZW1wdHkgbXVsdGlzeW5jIGNhcnJp
-ZXMgbm8gc3luY2hyb25pemF0aW9uIGluZm9ybWF0aW9uIGFuZCBzZXJ2ZXMgbm8KdXNlZnVsIHB1
-cnBvc2UsIHNvIHJldHVybmluZyAtRUlOVkFMIGZvciBzdWNoIGFuIGV4dGVuc2lvbiBpcyB0aGUK
-Y29ycmVjdCBkZWZlbnNlIGFnYWluc3QgdGhpcyBhdHRhY2sgdmVjdG9yLgoKRml4ZXM6IDkwMzJk
-NWY2MzNlZCAoImRybS92M2Q6IERldGFjaCBqb2Igc3VibWlzc2lvbnMgSU9DVExzIHRvIGEgbmV3
-IHNwZWNpZmljIGZpbGUiKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpTaWduZWQtb2ZmLWJ5
-OiBBc2h1dG9zaCBEZXNhaSA8YXNodXRvc2hkZXNhaTk5M0BnbWFpbC5jb20+Ci0tLQpWMiAtPiBW
-MzogZHJvcCBkZXB0aCBjb3VudGVyOyBpbnN0ZWFkIHJlamVjdCBlbXB0eSBtdWx0aXN5bmMKICAg
-ICAgICAgIChpbl9zeW5jX2NvdW50ID09IDAgJiYgb3V0X3N5bmNfY291bnQgPT0gMCkgaW4KICAg
-ICAgICAgIHYzZF9nZXRfbXVsdGlzeW5jX3N1Ym1pdF9kZXBzKCkKVjEgLT4gVjI6IGNoYW5nZSBj
-YXAgZnJvbSAxNiB0byBWM0RfTUFYX0VYVEVOU0lPTlMgKDcpLCBhZGQgI2RlZmluZQoKdjI6IGh0
-dHBzOi8vbG9yZS5rZXJuZWwub3JnL2RyaS1kZXZlbC8yMDI2MDQxMzA1NTIzMC4zMzQ5MTE0LTEt
-YXNodXRvc2hkZXNhaTk5M0BnbWFpbC5jb20vCnYxOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9k
-cmktZGV2ZWwvMjAyNjA0MTAwMTM5MDcuMjQwNDE3NS0xLWFzaHV0b3NoZGVzYWk5OTNAZ21haWwu
-Y29tLwoKIGRyaXZlcnMvZ3B1L2RybS92M2QvdjNkX3N1Ym1pdC5jIHwgNSArKysrKwogMSBmaWxl
-IGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS92
-M2QvdjNkX3N1Ym1pdC5jIGIvZHJpdmVycy9ncHUvZHJtL3YzZC92M2Rfc3VibWl0LmMKaW5kZXgg
-MThmMmJmMWZlODlmLi5mYzc0MzUxZWZhZDUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvZ3B1L2RybS92
-M2QvdjNkX3N1Ym1pdC5jCisrKyBiL2RyaXZlcnMvZ3B1L2RybS92M2QvdjNkX3N1Ym1pdC5jCkBA
-IC0zOTMsNiArMzkzLDExIEBAIHYzZF9nZXRfbXVsdGlzeW5jX3N1Ym1pdF9kZXBzKHN0cnVjdCBk
-cm1fZmlsZSAqZmlsZV9wcml2LAogaWYgKG11bHRpc3luYy5wYWQpCiAgLUVJTlZBTDsKIAoraWYg
-KCFtdWx0aXN5bmMuaW5fc3luY19jb3VudCAmJiAhbXVsdGlzeW5jLm91dF9zeW5jX2NvdW50KSB7
-Citkcm1fZGJnKCZ2M2QtPmRybSwgIkVtcHR5IG11bHRpc3luYyBleHRlbnNpb24KIik7CityZXR1
-cm4gLUVJTlZBTDsKK30KKwogcmV0ID0gdjNkX2dldF9tdWx0aXN5bmNfcG9zdF9kZXBzKGZpbGVf
-cHJpdiwgc2UsIG11bHRpc3luYy5vdXRfc3luY19jb3VudCwKIG11bHRpc3luYy5vdXRfc3luY3Mp
-OwogaWYgKHJldCkKLS0gCjIuMzQuMQ==
+On Mon, Apr 13, 2026 at 11:01:17PM +0200, Alexandre N. wrote:
+> On 4/13/26 05:40, Lukas Wunner wrote:
+> > Could both of you, Alexandre and Bernd, give that patch a spin
+> > to see if it fixes the issue?
+> 
+> I confirm that your last patch alone applied to 6.19.11
+> works in my case! (no need for 4d4c10f763d7 nor 907a7a2e5bf4)
+> 
+> Now my host and guest behave like on 6.18.9, including removing the
+> pci-stub.ids line from my kernel command line since the automatic
+> handover between ahci <--> vfio-pci is working again.
+
+Thanks a lot, glad to hear that.
+
+I'm curious what you did so that 4d4c10f763d7 wasn't sufficient
+to fix the issue.  I'd be grateful if you could provide full dmesg
+output for analysis of a non-working kernel with this debug patch
+applied:
+
+  https://lore.kernel.org/all/acvIfI3naoGsOpFE@wunner.de/
+
+and with the following added to the kernel command line
+
+  log_buf_len=16M dyndbg="file drivers/pci/* +p"
+
+and with this option enabled in .config:
+
+  CONFIG_DYNAMIC_DEBUG=y
+
+That would allow me to amend the commit message of the patch with
+a better explanation why simply backporting 4d4c10f763d7 is not
+sufficient as a fix.
+
+Thanks!
+
+Lukas
 
