@@ -1,273 +1,236 @@
-Return-Path: <stable+bounces-237835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFj+IUsq3mmSoQkAu9opvQ
-	(envelope-from <stable+bounces-237835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:51:39 +0200
+	id 0LwBIXcq3mmSoQkAu9opvQ
+	(envelope-from <stable+bounces-237836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26C53F99D1
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:51:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863AC3F99E0
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FA403044A55
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:50:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C981130086AB
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB6C3DDDB1;
-	Tue, 14 Apr 2026 11:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED283E51F4;
+	Tue, 14 Apr 2026 11:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=verivus.ai header.i=@verivus.ai header.b="BxOY93Tg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tdwna6hw"
 X-Original-To: stable@vger.kernel.org
-Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazon11022097.outbound.protection.outlook.com [40.107.40.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EA83D5640;
-	Tue, 14 Apr 2026 11:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.40.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34D53939D3
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776167450; cv=fail; b=f929LNK/N+L2zZn00dOuidhj9cB//5WbopSV4EQfUqf8+3v+8pxI+D5d3fopnH44HgrlLwGgTSrh4QWXbhxsxagCSTi0XjA/Durl399aJ9/4Ob1tzD7bAHTaF222AjnaGFhZiE9D7OPtL46aoWzL1SXWdJXtZusyeR0vCoLSdAI=
+	t=1776167513; cv=pass; b=ojrLqxOq7tVr6inu45+KQn/7+aJQSLfeG83m6KsBND8SPuJvneevndDLQJAeSQLF7WNQfE2+GQ0Xc1oNOZIqXjkBppgYCEZ+mynk+Op7+sQJ8CsdEsUVYGUXXlM9NtW/5pzyVx8FCXSozO8YvuRaghtdCMtQOC6WmRA5bWWUB4k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776167450; c=relaxed/simple;
-	bh=FnktY08WLfdJpqcpBfJW9P7G/X9/aFH7An5y+1EIrNI=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=CC4fsYwMM7exnWHTAy0i67C+2456hSeFHVLT8c1b5D/aHBpvizTaHjA6pNv0L5kzw9k3pvdN6i1zPN3EY1Lq1wZGKXWb9VpbNBol9aMbGyKqzDTRj7dilU0tKKHOgwx/45XC8zYMAbg/fq+SBHap3HniMbtGo7l5zg9h+wcES7M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=verivus.ai; spf=pass smtp.mailfrom=verivus.ai; dkim=fail (2048-bit key) header.d=verivus.ai header.i=@verivus.ai header.b=BxOY93Tg reason="signature verification failed"; arc=fail smtp.client-ip=40.107.40.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=verivus.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verivus.ai
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dCH1EJoOwfIcTxLGbwZ+ymF1p7U7te/d5vghovDFvJpeQIJSAwHWu9manJ9OxHB0FKn91ogYX1MFymJWk3pFC79Hv0Z/1zgKQEeWBxGb9WzFdY/TWlPh6TxAg5VDraZog4vxoiSccpMVuPK3VRPjloNXfPcnqRvp9ynlbGTB2OkSxIPINOUdrOmE0+tNfqm4Abk60FoC7RIdXbFDmx+g3bdvWy735jOo/LiK7Uu+vBlO/MfQ6xI36nBpriZ0bcC9tzZeK6FkRHCkYDNBNqqvnMVWheDHJapoGfjYuifK4LotFGFUjhEOOmQAMfcXyIWJ4fP6TaeCssW6c0Ps+jUjHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Whuk5+gObE0bX9e1/WH4sL4w0oz9E2Ng4M10DL9N2w8=;
- b=g01yP5GakI5VY5aO6V6bh4SwcnZ8vbGMkDpx3jhAyK4RFJIDgc3w+jweQx0HQ9TDJ21aNBk7L2ZzDlOmT7+5mnYxayeGhEyGWDIdObGieiCuz+o1L+J4XVr+r3mQX8drAOHMBy5LtbdMIIkXmeRHG3daf12GJK+SXIG4FKZ/naRBrzG8BWz+WNPJgStXk4Sim5Th3ruUhrSUwHJLBejHZA1kYsxOYp22jXRvm2xPx9U82LGxjkF2fgp0YiaIGdgtZUBea6ZuauHletWeXBH9uvdKrJcuvAY9RBllWOpjqYMFdCEKw4lDpJ3lAUNSHGTW/nV++8I4tkI/jPsio/dKwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=verivus.ai; dmarc=pass action=none header.from=verivus.ai;
- dkim=pass header.d=verivus.ai; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verivus.ai;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Whuk5+gObE0bX9e1/WH4sL4w0oz9E2Ng4M10DL9N2w8=;
- b=BxOY93Tga5j82DyXLqY5MARvLHJupVxkNWK+mwVtAl4x2PLZM/ZhxzNDT8kwemOoyd8SNA2E5Go9Pr1bb0sM+eLGV3z+43t/KghW6YzB0qj+xAtRAB6Ym1UMhNi/mBrAPpRBzg10cAll91BXyX/o+uvUT9PlwP5bO60TsRiZ9e2gmIKSlLouJulcfUG1HHLJD8Lx/TgIrycRJbpmNaMaG1vxhZjrVWBhXNb8KNiB0uJHuBV6fqNm/5MLVBplrQUHFBZyUR0h4zRNHOs0UiZqiKynK+tirNYu5wRBCG5kXLtQ3D5P7DL0sCiizDTsFIB1k8Cx0rt8bYt5ajfA40a26Q==
-Received: from ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM (2603:10c6:220:22a::5)
- by SY2PPF495465E43.AUSP300.PROD.OUTLOOK.COM (2603:10c6:18::397) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Tue, 14 Apr
- 2026 11:50:43 +0000
-Received: from ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM
- ([fe80::1e3f:9cb9:4a95:b5a2]) by ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM
- ([fe80::1e3f:9cb9:4a95:b5a2%5]) with mapi id 15.20.9818.017; Tue, 14 Apr 2026
- 11:50:42 +0000
-From: Werner Kasselman <werner@verivus.ai>
-To: "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>
-CC: "sfrench@samba.org" <sfrench@samba.org>, "pc@manguebit.org"
-	<pc@manguebit.org>, "ronniesahlberg@gmail.com" <ronniesahlberg@gmail.com>,
-	"sprasad@microsoft.com" <sprasad@microsoft.com>, "tom@talpey.com"
-	<tom@talpey.com>, "bharathsm@microsoft.com" <bharathsm@microsoft.com>,
-	"samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Werner
- Kasselman <werner@verivus.ai>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH] smb: client: fix OOB read in symlink error response parsing
-Thread-Topic: [PATCH] smb: client: fix OOB read in symlink error response
- parsing
-Thread-Index: AQHczATrjU+iZC/b2kiYDmi/0MRytg==
-Date: Tue, 14 Apr 2026 11:50:42 +0000
-Message-ID: <20260414115040.552945-1-werner@verivus.com>
-Accept-Language: en-AU, en-AT, en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: git-send-email 2.43.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=verivus.ai;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ME0P300MB0853:EE_|SY2PPF495465E43:EE_
-x-ms-office365-filtering-correlation-id: 79f1b76c-cc27-43ae-fed7-08de9a1c0e50
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700021|56012099003|18002099003;
-x-microsoft-antispam-message-info:
- mnR8RqILLZh/6peOoeRsn6WODVYT3ar7Jmtj1chHGzC5J79j2OXSR1HwASWxFOn4o5V3PCRmMFOZhsBDPbQIWe9a3ieOn8z746upI3t4266vu99i9GtDK0jm2bFal8+VjctGxKOufXMPmyV3fFXOtJtKJTbtUOGmh4VBjhJjbqozomo2O393cHlQKaUV+dCwiDfU190P4y3khEgD0WqPAmxMpIrpgFN9Xs6utEoCoEVpMI4MmOd9w31W0o9zzju+JBduKvptMg2+W3aOZ6mmWTHr5Cf8hd3vL/s4JRmEZHmNAH0Wn+SGhDin/NZ6cVPFPT3khfYB53SLM9GA6FUEBzsJu8OAkgFblaNb3/LTD/RpWmBPBquqIzCak5mu4+NT5Gua/d3xW1hIPg5d9PfgZcWUs4PaG/zZxD5guhaaZAmgkCBIVERTt37HUgfjy8FRzTxb0kD87Ilc26s2mAsfTs6sQ4BmoZkG02dvHaZTvUNKAjtglBuh60XzFP0nJGUh5ELyrT5bDDDEK2ssU/5WIpz8yqp7nMz1SwT7GhkBb/2y0avqBTmVTA6Xcwtjl1QFC18dq4qrWA1b/lP0CmqwtnWIwzD0hrTxevI3cL7waa+GgxMC7NLbRloVvwWCodAxkpeJofOi3uv6ppVVuJoOJ4a8xAgqQRtdLtYppKxsEFnxw4jT14o10BxxNIz4mgqA/a3jFEDXsvnmAB6OWI0AYPkCtQrpw7jowa3Z70V62Sbfnx/Yr0LO+gwfRMKFD0eQ6QrSq/9xy8DqUr5hvniQzh+ri1SWivmQhBaoP2PmP/I=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700021)(56012099003)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?MB4xuIYfFkLG64anHb7VBTSKZjri6FrUhwpUCraIFn3bHZJ4hDfSLzzJNe?=
- =?iso-8859-1?Q?kj40M5qUygFbrk39lCjJG1s5K6EQnimhQmutlqNjfNoeEBbEVkueuHs58e?=
- =?iso-8859-1?Q?oPeRc4yMZGfaLoVc1QEQsxrxKZMPcWM0CDWutqLA8MxCn1z6US+7IsoJ4v?=
- =?iso-8859-1?Q?RvfzEM1pTRwATW3N2UXlFITjMnkwMYXNcbPLFBlt310iBcD3RuL8QRKgFA?=
- =?iso-8859-1?Q?7V3a+g+baOSCg/HxQ8/I0NmZtvdaAfqvtXSI61Gpan85wjiEiYiBAZ0G8Z?=
- =?iso-8859-1?Q?7bGtpaTaw3RxCOpChncFfb0MBNYA7B58iWibZyqz0hfd82PgDY65r2oNNM?=
- =?iso-8859-1?Q?vZxfPOoNrvHPRSfK2MPUPYUdo66eqmTCwoX4VaOKvMYW7dpj+pTn0FRONd?=
- =?iso-8859-1?Q?SxoxTgx13XBjinO8pH3IxNjgWseNB6bT720aXVV+lc6MgpD59sbV/bz6BY?=
- =?iso-8859-1?Q?i2nfm548xlEMrM6gAdtsoM4QFSOjgh9BYRhgPhj+KRmMwz3uwZzLQWFEip?=
- =?iso-8859-1?Q?i0n+c0tSzwiSma4CD/oy2SMoAbYIv2MotdloYpWQNxU+EZXzS5cqZ1T6VA?=
- =?iso-8859-1?Q?U79Rt6uLy7iVoLoWt15hKd6cvyHaEu0E9E3I/CxcEvsA9E25r7tusx79TP?=
- =?iso-8859-1?Q?HEAiWlqMIsuZ/CKSPT5QjZ+dYYuZw0hkN6lAZVS2fUeBO+KLT4u2gQlGF3?=
- =?iso-8859-1?Q?yWbFW8YvzsM3pJZK7nDghw8vG7HwzIYTUXub7hTYrmg8uzOBXI7wJY1sYq?=
- =?iso-8859-1?Q?dV+bS30BZ3lcx9GYSwe0PBE57heM3+bo8D+CeCrpm7jNWreTe08dwxe/cE?=
- =?iso-8859-1?Q?ZNLYlfshhNz76i0xFtTtctlCvBEkkyrO8o1oFbs0Nkle0tICDhh35TuyJi?=
- =?iso-8859-1?Q?E1Ojuq1t/6PPJe94jRs4tt22rnUGAL8zinXLZ1c1/NsXgGWm87z3QtqinT?=
- =?iso-8859-1?Q?DL5sKnm8S189EtAHhFK+PHt53rQafw62kcJg7rS8kqhgPZqiz+9MkTFv7i?=
- =?iso-8859-1?Q?UI1OyIdki+5PAjFQFdrxHkNVdBsDlFE1xKeWwqREL8t4N9PcDHOR79w04T?=
- =?iso-8859-1?Q?9x7+2eMN+Oggx5KpS9yRPtYA+DrNqG+ufiG5ijFzP7QAfoAqneVpp3fSNg?=
- =?iso-8859-1?Q?KqxSeSwK9ZZFuFwxdcYoT+PM4vIlN5YeQHNz2hP8WoAl2Otji8Drr5mn8t?=
- =?iso-8859-1?Q?d+fg5HOaqSC1DLK35Z4yklthLg7oLHsRE5qji1kpE+lTMWJo32F6t+KVU/?=
- =?iso-8859-1?Q?nUrUmn8QPL8Z0Va+xY2q1k8+DWUQEJxmQsHIVXNpWkA5R5gCJuc//9Xr6i?=
- =?iso-8859-1?Q?jRf5xZJWYY8V1PjVGbdHupgogIc3oRRUFRzl+F0lBtNDPpewPh7o/jfceL?=
- =?iso-8859-1?Q?/RpbCBcap2klKbIZh6g3NOp0UrRXlFh4cPSGE2WfEeDVJz4mvnWvdHcHz4?=
- =?iso-8859-1?Q?n5H65UfXSV1x1SrwixfihzyJuCyAhFx7pYK3K/p3UruhIk/5jvaJg0477O?=
- =?iso-8859-1?Q?G9B1EzL6uKGvbgBM1NKJxYwRF/Oyx34q8YrQRPuSUsBy/k3QlXBRbzh9MH?=
- =?iso-8859-1?Q?+V1vygyVie6LLBM5KV1eCmVBJzULQ/HIBwSXj3pu111ogvPcVnDbdQCWa8?=
- =?iso-8859-1?Q?INEC3jJlwOjtk90+Oe0Gvauxj+LLWk5gfAxh8ebAHCAWiOuVhHTTCF2P0o?=
- =?iso-8859-1?Q?ZHOvVxKcvaUtIV/xVnOag2cboKitnXfPQM+vQVTVCSvS6cakE1XT4xyvYy?=
- =?iso-8859-1?Q?tIyfJVwGSBZSS6wj7sOR1ctMLhZZrKs8toBYT2nXEsMgQIgVi/z0UUSzEU?=
- =?iso-8859-1?Q?ud86cSR6IA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1776167513; c=relaxed/simple;
+	bh=MSQdTqohWprHSSGxPUw63cRNJJ4jH1n4U88mAvfhB0Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=srXne3fg0zLgDTQwO9S8zd2wtHDZwpjeXIU1HmZuqr9hhtzlVPRsq/lIXdRG5w7BbOH+4fKQePYg4eAXOZi+ItPZ/KGwN7yJ6N+KgLSZfbMdPBHi6UNp4HKLYgGAuJe6inMEuEeZY8pYw0CI0jLgKkI2luyEyFq9TCki70cbP0g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tdwna6hw; arc=pass smtp.client-ip=74.125.224.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-650221149e2so5142012d50.0
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:51:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776167511; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FrnU0U0SIY4DO4rj/cbeNFzzBGfgFurwe65o+gCT+lEZUrUbDsiz9E6lxKrgb934lr
+         QWsew02P2JTGUQoqbbPkOD8/G+RxVjgwZM6XdDZE23/hxfFvIDSTew5EZbahkdkC990/
+         P0mQvUOUvDBoHpPaPA5iq0iELkAAn23/+xkW2XbNqRW7GX3kyuiMFPhjVzoKfffMG5VF
+         JyRyAeuXuYdxDjTp95hnMxwDPhULFZKSZz+e3sNSXNC/zWtTpKvEIFL7c7FIHaodoPKG
+         xyDrsOpTM7TMjzw0ZpTvGyD8+ELCe4lTtzFAni49FHTLl09ac6rfN66ArVj+RgcYKCJN
+         lVKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nsoXP8uz7XDMohejorwTrPXwgpEvvkD5CIJw+jNU9jE=;
+        fh=c9RAc0HB6CNEoZUf1Pbw2mqGswA77sGDGiLhNaRUgW0=;
+        b=EuudKFPnJvbpSC+H16wCzih27FNg7uLbHDuTuf/f0w79r1y/qAa3ij5PaYBTK0XhN9
+         CcCXZAT50/bGJ/qsqUlWBy79D11OJEDfEwrPo0NriVtf+nuK+Yjf2DFaE39LPUys0Rim
+         mf+X4ZH2xqfesA2Rs9ggg6YXxDH2xjtco5RFaSd0SDKGxOXOQop7uzHUugLiuUzkA1bd
+         VBoxMKXPozDyDY/FBcCKADG4k3ppnJoH6SRzq0zqc7TjLoJWwVtX1V4idNI/Xy34tZcL
+         cqqhu3u3IghMFLdmG1fgffqLGku+PwEgJ8akt0spvN3UXqVJ+TxAtbGhljfsamUL/90r
+         OzZw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776167511; x=1776772311; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nsoXP8uz7XDMohejorwTrPXwgpEvvkD5CIJw+jNU9jE=;
+        b=Tdwna6hwYAIB8yoLcNRMbiiVtVJiErO5uglUlLXPyiUNW+lGyjuzeT2AIUl0AGATGh
+         v8enquRi6EoviLglLBQO8Zcvcm0Spv+kFQNHYuYe7tOJHZa5KUmZ5Cmy2/RLbXZ/Nk97
+         6o/MbSVIKIU+v02JsWO1F8tHGnzj8RP376KRWTSV9xUBj0scFAxXKzh10kxtU13Puhz2
+         2aFnpqIM7U8DQWeiEX8Fiv9U1IMv+twmlW4zTpppI+S28PyBUkSG7TKN9ojQ5KRu0Qjm
+         T+I7YMcVigs6DPmOC43xrHv0aiEJEWPxCMFBvQyRZVgg9E8HokCIMxcp+wbTe35NcAFy
+         tBVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776167511; x=1776772311;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nsoXP8uz7XDMohejorwTrPXwgpEvvkD5CIJw+jNU9jE=;
+        b=dCIFEQYwKYWyAujldgUO8pXG6gSBxN0zNbxtdVa4eRjDrs78ETJ9H/kPN5kyohpT5P
+         a85K9zplRv9BbBXM7/MY2oM38sPVDgjqOB8SRgsb4VQ3NLJPJhyzWya+4rQFxflXk5ZQ
+         SPOLFG3KsxDOOqJZ0HfVHFlF1Ezgc80G7eiQfjjKSxSFfqCUOY3ojIko3B9D5UMw5dy0
+         AmhfigSA3dXkOKYFP1ifAR1aUV7k+yd7R59FC14TwoaHrB6mU8Bua2qRFzccS8PPykxo
+         lK68roaiotRPzH2Lev1YRHZrvGVRkRyygSNOTL/bJJMbRGZ94uzIMGFGk0wCPqP4P3GH
+         MhQA==
+X-Forwarded-Encrypted: i=1; AFNElJ/zj1nONHU2k2zm5SXJEeG2MeH2vJaLEhjWm+5uZrR5bEDkYnPZO9T49B7WCNnZL6q8+b6TG+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTrqQOk5c3viE3M2JgIA6JQqEfRBwbWOTVgffUJEL4AeNMni7o
+	s0sKcoqkPo8tZWEdOESWYj2OUBxjqPUwA4qMJqvx/7JYrTiI3TBRNmdMWk9LYh5TZ82CVYL1Cdn
+	4d5bx9C5p7i2VcDzdsZRu/a+psevBwW4=
+X-Gm-Gg: AeBDiesh95298ajBZ8iIPpcigRvfzLA99tQHNWEwRKPoTbkin36SBUthCmD9rKCuP4U
+	rfGUZ7xQgnrfjwRwzgKerppHAJkoccILhRRnbVRph9wV3E5kjVMwhSaS0+jn5K+VeIlh2btB6i0
+	poUKLD+nABvz/oIHROF3lJolOf9Qq9Qk+p3mefblG5UCKgfzKC2gz2fp8SNwNt9rh2edvKBjasl
+	k1yu7cKI3RKxW6c7I2KKOTmKNgAlpF94x476KH3S7mpZeTz1uJ81lYREy7ukMj2ro4KK3R4qd92
+	4/yHBO2ik/oZVXxtm3lW
+X-Received: by 2002:a05:690e:12c9:b0:651:d0a5:ce2 with SMTP id
+ 956f58d0204a3-651d0a52b0emr5661070d50.60.1776167511068; Tue, 14 Apr 2026
+ 04:51:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: verivus.ai
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79f1b76c-cc27-43ae-fed7-08de9a1c0e50
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2026 11:50:42.2679
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: ccdcedb0-4edc-4cc8-9791-c44ee6610030
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: H2CyRyOpY99/YuQNcBDaYFqUont95g++4FWnB3U3edT+YdFVpNmJYzP7RR+JGzQzJDthL/y52cwt9TSkGRuBWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY2PPF495465E43
-X-Spamd-Result: default: False [1.64 / 15.00];
-	R_DKIM_REJECT(1.00)[verivus.ai:s=selector1];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <20260412124247.2494971-1-lgs201920130244@gmail.com> <DHRVDETB559R.1J1MUGSZ0VVEX@bootlin.com>
+In-Reply-To: <DHRVDETB559R.1J1MUGSZ0VVEX@bootlin.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Tue, 14 Apr 2026 19:51:42 +0800
+X-Gm-Features: AQROBzCY4aPdRp-vnBolaOekj7WjGOydLpVV0P-0ovLpEH5T-_12fQUc1CoHGng
+Message-ID: <CANUHTR-+Dn0uSn8ian_COzX-8=BajnkopK9iUiFNcvurh=CkLg@mail.gmail.com>
+Subject: Re: [PATCH v2] clk: eyeq: fix memory leak in eqc_auxdev_create()
+ error path
+To: =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>
+Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+	Gregory CLEMENT <gregory.clement@bootlin.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[verivus.ai : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237835-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237836-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,lists.samba.org,vger.kernel.org,verivus.ai];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[werner@verivus.ai,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[verivus.ai:-];
-	NEURAL_HAM(-0.00)[-0.480];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E26C53F99D1
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 863AC3F99E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-symlink_data() walks server-supplied SMB2 error contexts to locate the=0A=
-smb2_symlink_err_rsp before returning it to smb2_parse_symlink_response().=
-=0A=
-When ErrorContextCount is non-zero, sym can land at an attacker-chosen=0A=
-offset past the smb2_err_rsp header, bounded only by iov_len.=0A=
-=0A=
-Reads of p->ErrorId and p->ErrorDataLength in the walk loop occur=0A=
-without checking that the smb2_error_context_rsp header fits in the=0A=
-response buffer, and sym is dereferenced for SymLinkErrorTag/ReparseTag=0A=
-without checking that sym itself fits.  A context header placed near=0A=
-iov_end produces an OOB read.=0A=
-=0A=
-The bounds check in smb2_parse_symlink_response() uses the compile-time=0A=
-SMB2_SYMLINK_STRUCT_SIZE as the base for SubstituteName and PrintName=0A=
-ranges.  That only matches the fixed layout when ErrorContextCount is=0A=
-zero; with contexts, the actual PathBuffer offset in iov is larger, and=0A=
-the read of sym->PathBuffer + sub_offs for sub_len bytes can extend=0A=
-past iov_len into adjacent slab memory.  The copied bytes reach=0A=
-userspace via readlink() on data->symlink_target.=0A=
-=0A=
-STATUS_STOPPED_ON_SYMLINK responses are served from the 448-byte small=0A=
-buffer pool, so the overread reliably crosses the slab object boundary.=0A=
-=0A=
-Bound each context header during the walk, verify sym fits in the=0A=
-response before dereferencing its length fields, and compute the=0A=
-PathBuffer bound from sym->PathBuffer's actual offset into iov.=0A=
-=0A=
-Fixes: 76894f3e2f71 ("cifs: improve symlink handling for smb2+")=0A=
-Cc: stable@vger.kernel.org=0A=
-Signed-off-by: Werner Kasselman <werner@verivus.com>=0A=
----=0A=
- fs/smb/client/smb2file.c | 22 +++++++++++++++++-----=0A=
- 1 file changed, 17 insertions(+), 5 deletions(-)=0A=
-=0A=
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c=0A=
-index ed651c946251..6fda8ec7fe9b 100644=0A=
---- a/fs/smb/client/smb2file.c=0A=
-+++ b/fs/smb/client/smb2file.c=0A=
-@@ -41,6 +41,8 @@ static struct smb2_symlink_err_rsp *symlink_data(const st=
-ruct kvec *iov)=0A=
- 		p =3D (struct smb2_error_context_rsp *)err->ErrorData;=0A=
- 		end =3D (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);=0A=
- 		do {=0A=
-+			if ((u8 *)p + sizeof(*p) > (u8 *)end)=0A=
-+				return ERR_PTR(-EINVAL);=0A=
- 			if (le32_to_cpu(p->ErrorId) =3D=3D SMB2_ERROR_ID_DEFAULT) {=0A=
- 				sym =3D (struct smb2_symlink_err_rsp *)p->ErrorContextData;=0A=
- 				break;=0A=
-@@ -56,9 +58,15 @@ static struct smb2_symlink_err_rsp *symlink_data(const s=
-truct kvec *iov)=0A=
- 		sym =3D (struct smb2_symlink_err_rsp *)err->ErrorData;=0A=
- 	}=0A=
- =0A=
--	if (!IS_ERR(sym) && (le32_to_cpu(sym->SymLinkErrorTag) !=3D SYMLINK_ERROR=
-_TAG ||=0A=
--			     le32_to_cpu(sym->ReparseTag) !=3D IO_REPARSE_TAG_SYMLINK))=0A=
--		sym =3D ERR_PTR(-EINVAL);=0A=
-+	if (IS_ERR(sym))=0A=
-+		return sym;=0A=
-+=0A=
-+	if ((u8 *)sym + sizeof(*sym) > (u8 *)err + iov->iov_len)=0A=
-+		return ERR_PTR(-EINVAL);=0A=
-+=0A=
-+	if (le32_to_cpu(sym->SymLinkErrorTag) !=3D SYMLINK_ERROR_TAG ||=0A=
-+	    le32_to_cpu(sym->ReparseTag) !=3D IO_REPARSE_TAG_SYMLINK)=0A=
-+		return ERR_PTR(-EINVAL);=0A=
- =0A=
- 	return sym;=0A=
- }=0A=
-@@ -115,6 +123,7 @@ int smb2_parse_symlink_response(struct cifs_sb_info *ci=
-fs_sb, const struct kvec=0A=
- 	struct smb2_symlink_err_rsp *sym;=0A=
- 	unsigned int sub_offs, sub_len;=0A=
- 	unsigned int print_offs, print_len;=0A=
-+	size_t pathbuf_off;=0A=
- =0A=
- 	if (!cifs_sb || !iov || !iov->iov_base || !iov->iov_len || !path)=0A=
- 		return -EINVAL;=0A=
-@@ -128,8 +137,11 @@ int smb2_parse_symlink_response(struct cifs_sb_info *c=
-ifs_sb, const struct kvec=0A=
- 	print_len =3D le16_to_cpu(sym->PrintNameLength);=0A=
- 	print_offs =3D le16_to_cpu(sym->PrintNameOffset);=0A=
- =0A=
--	if (iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + sub_offs + sub_len ||=0A=
--	    iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + print_offs + print_len)=0A=
-+	pathbuf_off =3D (const u8 *)sym->PathBuffer - (const u8 *)iov->iov_base;=
-=0A=
-+=0A=
-+	if (pathbuf_off > iov->iov_len ||=0A=
-+	    iov->iov_len - pathbuf_off < sub_offs + sub_len ||=0A=
-+	    iov->iov_len - pathbuf_off < print_offs + print_len)=0A=
- 		return -EINVAL;=0A=
- =0A=
- 	return smb2_parse_native_symlink(path,=0A=
--- =0A=
-2.43.0=0A=
-=0A=
+Hi Th=C3=A9o,
+
+Thank you for the review, and sorry for the confusion here.
+
+On Mon, 13 Apr 2026 at 16:04, Th=C3=A9o Lebrun <theo.lebrun@bootlin.com> wr=
+ote:
+>
+
+> Subject is:
+>
+> > Subject: [PATCH v2] clk: eyeq: fix memory leak in eqc_auxdev_create()
+> >          error path
+>
+> I cannot find a public V1?
+> https://lore.kernel.org/lkml/?q=3Ds%3Aeyeq+f%3AGuangshuo
+
+This was my mistake: I did not send a public V1 and sent this directly as V=
+2.
+
+> I have a guess this is LLM generated?
+> Are you missing the Assisted-by trailer?
+> https://docs.kernel.org/process/coding-assistants.html#attribution
+
+This issue was found by a static analysis tool I developed.
+
+That said, the changelog was clearly too brief and did not explain the
+actual situation well enough, which likely caused the confusion.
+
+> The patch could be in theory useful.
+> In practice however, it's a different story.
+>
+>  - Comit message says "Since the release callback is only expected to
+>    handle cleanup after successful initialization, adev should be freed
+>    explicitly in this path".
+>
+>    Two things are wrong here:
+>
+>    1. the driver cannot be removed so there is no "release
+>       callback" (guessing you mean driver remove?).
+>
+>    2. this text seems to imply eqc_auxdev_create() makes probe fail,
+>       which it doesn't. It only generates a warning and keeps probing.
+>
+>  - This driver cannot be built as module (will always be probed at boot)
+>    and cannot be removed. So the "leak" we are talking about is
+>    2 * sizeof(struct auxiliary_device)
+>
+>    But in no sensible case it can occur. The platforms that use this
+>    driver probably cannot boot if our auxiliary drivers aren't present.
+>    So if eqc_auxdev_create() fails then the warning is here to be nice
+>    but you probably will fail booting afterwards.
+>
+>    My guess is: you might succeed booting without the reset driver but
+>    if you fail the pinctrl one then you won't have a UART. Anyway in no
+>    world do you have a sensible EyeQ kernel config that leads to
+>    clk-eyeq probing but not its auxdevs.
+>
+>  - If you fix this then there are other resources cleanup to "fix".
+>
+>     - ioremap() in eqc_probe()
+>     - kzalloc of cells in eqc_probe()
+>     - probably others
+>
+>    But, same as above, "fixing" those will only be useful in kernels
+>    that will panic in a few milliseconds.
+>
+What I intended to express with:
+
+"Since the release callback is only expected to handle cleanup after
+successful initialization, adev should be freed explicitly in this
+path"
+
+was more specifically this:
+
+eqc_auxdev_release() is the callback that eventually frees adev, but
+this path is only reachable after auxiliary_device_init() has
+succeeded. For example, when auxiliary_device_add() fails,
+auxiliary_device_uninit() can lead to that release path. By contrast,
+if auxiliary_device_init() itself fails, the function returns
+directly, and adev is not explicitly freed in that path.
+
+So the point I meant to describe was only the missing explicit free in
+the auxiliary_device_init() failure path.
+
+Sorry again for the misunderstanding caused by the previous changelog.
+
+Thanks,
+Guangshuo
 
