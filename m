@@ -1,192 +1,147 @@
-Return-Path: <stable+bounces-237820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GlcMcEk3mm5oAkAu9opvQ
-	(envelope-from <stable+bounces-237820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:28:01 +0200
+	id IPmZAUgl3mmMoAkAu9opvQ
+	(envelope-from <stable+bounces-237821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:30:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2A53F9561
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:28:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D633F95DF
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEC17301F98C
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:26:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E90163015305
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD55A3D9DBC;
-	Tue, 14 Apr 2026 11:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601E43DB621;
+	Tue, 14 Apr 2026 11:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="njagFLoL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9QpkSDE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4F22BEFEE
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776165996; cv=pass; b=LI9P3+ztxl5JQ04dSukP+j4FYJvRBysfckwSlln5hwVfQcGnSA1cNT69Z6t3oTu/qGhyxM22J8TlNgbNy9sBlyzZBMi1n27HxnEtmOGsDzM9zSS++Du1FAaS1V9s+3tyNgzQVOc9BfiG86aK1fdcxX8DNh8ZVTQOUwYgryOMC4I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776165996; c=relaxed/simple;
-	bh=U87Ve3F+slIiDwwj/zfGyU5acKLqTAX+27VOZ4zryEI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jti9t8DWRLEAh/94zqksEwev3TbuS7/wobgEOPog6k8RvKkC6ew5mqFY5zqntFQgO/bROGkseV5PiWvbuB4RO/NPmwahVxX5btr8nhJJvbHPUNnR4hBC0fbcNMgspZ+gbcpsKX8dnkNmUF85IQE8ACf/Pf1B/Vis5i9Li4A/mtU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=njagFLoL; arc=pass smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-12c1fcce8f8so10308108c88.1
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:26:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776165994; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bOBWsJZ+kbUwnNwusmHf/dgW/ZZNx1Y6ZMLIZyAgu2vYHC0NSCmSemlfFGei6P6dKP
-         +TuQY0jJWF5taTIhNZaRysBPAd5HmChlzibI3S8W7BDdp3o+74JXDjwOAMaChHskw4h6
-         4OXzh09HekbUtg2/D50iVYKbBpqvWgncH2hT1+nV7hy8CoYvO9l0veGr21oTs+fqMQ3j
-         wZrjBqX49nrjW66SYQma8lLurVczKINoJAF9JLYVZ9RT6+hIZ12Izke+c1rAZr4m1UIn
-         PZeUz+WLlLkNF8Eq9SKV2B1XfWtsoWruabRD84DAEUC0zFsxxVziRCiSPaslNU39VQL/
-         xJlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IZ2t8Ae1TdyBWLVMYN0Qww4hRu4fpS7X7Z7GGfCKD04=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=NI8qwjF3L2zMbIs7vePmxuMVdzMvIQohwAlQEhCzvmCIZCaIqgiABnl+BVxf5NKMhE
-         Bb510jSz3G0jlwAzkY09Jt5qqLzG8LJGPN0ILFygKDLokHiezjzgozcQ57ZM6aADm14s
-         hZLGTCbN35t5/K9LBaRuxETVSe8x5xd/EYXSlzOwBJPK15pr9iZiNCtMBUIcNzOQqoly
-         KeasluUYxmDyAFJxHlIcGlqaTjf3AajvRGP/QrsNxU60u6ravaNzKhh93APoWM6532I5
-         +8BO8IjD53kAbNMpllg5BehQOerQLjEsHLQblPaS4V0aiu/eRtY3JpExMi7zvO7BSv0V
-         ZFYw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1776165994; x=1776770794; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IZ2t8Ae1TdyBWLVMYN0Qww4hRu4fpS7X7Z7GGfCKD04=;
-        b=njagFLoL+MxsUztgftXLDDVnHFnALHvx6h2S4w9KtERkdgVHYOSFyDuCZEYuhLd8nC
-         ne31QyHWNqVyAr0fKWILttXYKVkXT/JVySK0NnFUlcjwt3KxoxcAqgIv3jhDT8naeagX
-         tGHD1Ma2ZMsO+KuwrhSi6ryjE7Na4SSILb0rhCXJFZK/DY6BFB+GR+LTTnLkGZn42gBN
-         epczBNQLJMprjnu5vyyt6fwARfKIrNNc+m1iMCAkEduLdYevstdmmQzctFXGJlZ0g637
-         6EPkyqZ8TkCm5h/GH5M+7AtNzM2Tokuzuph24AfqrNDCyi4tcahYUXSDrsMbBrqfRe3x
-         gjmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776165994; x=1776770794;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IZ2t8Ae1TdyBWLVMYN0Qww4hRu4fpS7X7Z7GGfCKD04=;
-        b=CUnVCqove/LObI65Zv7qGEs3jI3Vpy/ZjkbKw8LkLLiI5Uw9xEaMJhzssSnFBOq/QC
-         QMzfpE0qVlxDlZAllbNWaoTB237SO7g2LTb/59ZLuFuO/TMm7FmRA8R4gc/SA+SFSuuw
-         gu9gfffpPwXzHTgWY1XxUXvmcxwjReqrB318zcS+dAoTqmLtd9naZwy4RCptIj+VTNUW
-         sJ0uEVl1KNWEaJaGbXS3KOVxEVrWlEkcJsjwMuVmlNPcL3h7y5kR5THodHmS0OyEzP+f
-         +9SyIMWO8kfQF5o/TghXzI735wFSKdrXTstC3RcalxAk6RBJWHauVKl36SOu6Mr6+hhO
-         U5Lw==
-X-Gm-Message-State: AOJu0Yyp6fmUewE5hLEPQiXU8IiSP0Xvrl7B/HEOBFKiOvz6P/pnyQSh
-	csXWilpDzs3nBtt5n9KBwefipOv8EJO2hTUpvBN8PgNTqaFvuecH2FiekanIVEpZo5EYVtS7U80
-	C5iy2S0x5Q2FMnzvbImv6Hknfx8uN7xJadlW1QWEb+Q==
-X-Gm-Gg: AeBDievGevQJ9zFNdKLVmcPwbYnq/8c9+uyJ4czRsiCulQA4HWB7ntfyODaqn6276n3
-	tOBMy5J+U4EiRbdwuLhXa0uiVqa7C2D8g2rwdKkuGL3UJ+9xi9Ky8qlmAC0HCVe38ckxxFiq82S
-	Vj9r8QpvHiQCCoY5Bh+ktR2f7h/Bz2qo4TZekkYclzI1xawXuCU1FTKD1oKGHmMQk5J8Ia2rYI0
-	vwIY2U1VEFuVqRSIbbLxpgUfFuDVMJKV8U9n2wv9aYjV9p1k8ctyyMTHdCqGAIxGGLwDrAdHjsL
-	UWvHcSQn
-X-Received: by 2002:a05:7022:60a0:b0:128:d51a:5161 with SMTP id
- a92af1059eb24-12c34eeb884mr8941610c88.27.1776165994246; Tue, 14 Apr 2026
- 04:26:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7613D9DB0;
+	Tue, 14 Apr 2026 11:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776166196; cv=none; b=qDW7sXm6bE8y21x5TqsIGBtJUcghWH12m+StcgqaiaNiIkEdIdVFSryaOZ1WyPq9XZ//HY+IQeuqaWaZZROXR48V13oJMQHiH6imrj933njSYsqmYZ7ln+pz16HAyQGcXRchdYXQcnta8VXYqqAvUuJW1eLJgg4twArc9WQztY4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776166196; c=relaxed/simple;
+	bh=y5RqzwqGCOp6MOPA0v+0gXwKnYP7j3g4YU/R6L65eU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PV4A9j4p19gMJYk15vvT95yKNvwRzuHvaEuMiSJbGBe7zSSynEJ1T06P/mkuqqNEoinbVicj9FYj/X4rjGXRtQkuVPMew8fSjB2IcNAb7dEg1b82XUWPDv8YuzCFiBDuh15dv5Z6w/GvRX5mWFcrQI+By2eBSrjcVPGRC7lqlNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9QpkSDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFF9C19425;
+	Tue, 14 Apr 2026 11:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776166195;
+	bh=y5RqzwqGCOp6MOPA0v+0gXwKnYP7j3g4YU/R6L65eU4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B9QpkSDELOlqTiY4srJXIcyld3VzkskOLRoQFO6cIOU4AKQOOvzR4OBjGEqbAfDv1
+	 uqABgHlLIwhJPSckFu6dToCTmNoLnjOA/o1E5rOTp9GBrXAgik24dcayvHIISrsK1E
+	 EfBBXLcYYOTHYGpbcsWDnY7oiFUMi/1qRLEtN3Ho89J3PTPbKvHTkhu+xIdF9tp0At
+	 fB/8Hfotc/WmvQFhlkttpk2k1rgjN+aXzQ2OO1x4qApIb1bgOauEJDQ6FmsH9+RrS2
+	 QiUVWTR2cUcN2G0wO2jx4saC5RYAVyVum5/q+SeODCpLDISIqhv25hUQJQX6ugTDXB
+	 jXJbM+vqcZd2g==
+Date: Tue, 14 Apr 2026 12:29:51 +0100
+From: Simon Horman <horms@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Kangzheng Gu <xiaoguai0992@gmail.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, kees@kernel.org,
+	thorsten.blum@linux.dev, arnd@arndb.de,
+	sjur.brandeland@stericsson.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5] net: caif: fix stack out-of-bounds write in
+ cfctrl_link_setup()
+Message-ID: <20260414112951.GD469338@kernel.org>
+References: <0f9e9d4e-8083-4297-91d3-10d0f614c87c@redhat.com>
+ <20260408125333.38489-1-xiaoguai0992@gmail.com>
+ <20260412135743.GK469338@kernel.org>
+ <255224dc-0a55-4a0c-95f3-b84d4c6b3897@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413155731.568515178@linuxfoundation.org>
-In-Reply-To: <20260413155731.568515178@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 14 Apr 2026 20:26:18 +0900
-X-Gm-Features: AQROBzCxrSiw-mnC-3e-VB4zdM2rQE4hYWXDBBBLHtPC6QAKGrRqP97m9UDgQUU
-Message-ID: <CAKL4bV7Uec+rF_21MuQEpGcX9i9LVeBpqVR-HX3J5LUR88mzuw@mail.gmail.com>
-Subject: Re: [PATCH 6.19 00/86] 6.19.13-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[futuring-girl.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[futuring-girl.com:s=google];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <255224dc-0a55-4a0c-95f3-b84d4c6b3897@redhat.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237820-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,google.com,kernel.org,linux.dev,arndb.de,stericsson.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-237821-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[takeshi.ogasawara@futuring-girl.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[futuring-girl.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[futuring-girl.com:dkim,futuring-girl.com:email,linuxfoundation.org:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6C2A53F9561
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[utility.name:url]
+X-Rspamd-Queue-Id: 06D633F95DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg
+On Mon, Apr 13, 2026 at 11:30:53AM +0200, Paolo Abeni wrote:
+> On 4/12/26 3:57 PM, Simon Horman wrote:
+> > I am wondering if it would be best to follow the pattern for
+> > writing linkparam.u.utility.name elsewhere in this function.
+> > That:
+> > 1. Uses a somewhat more succinct loop control structure
+> > 2. Silently truncates input without updating cmdrsp if overrun would occur
+> > 
+> > Something like this (compile tested only!):
+> > 
+> > diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
+> > index c6cc2bfed65d..ba184c11386e 100644
+> > --- a/net/caif/cfctrl.c
+> > +++ b/net/caif/cfctrl.c
+> > @@ -15,6 +15,7 @@
+> >  #include <net/caif/cfctrl.h>
+> >  
+> >  #define container_obj(layr) container_of(layr, struct cfctrl, serv.layer)
+> > +#define RFM_VOLUME_LEN 20
+> >  #define UTILITY_NAME_LENGTH 16
+> >  #define CFPKT_CTRL_PKT_LEN 20
+> >  
+> > @@ -414,10 +415,11 @@ static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp
+> >  		 */
+> >  		linkparam.u.rfm.connid = cfpkt_extr_head_u32(pkt);
+> >  		cp = (u8 *) linkparam.u.rfm.volume;
+> > -		for (tmp = cfpkt_extr_head_u8(pkt);
+> > -		     cfpkt_more(pkt) && tmp != '\0';
+> > -		     tmp = cfpkt_extr_head_u8(pkt))
+> > +		caif_assert(sizeof(linkparam.u.rfm.volume) >= RFM_VOLUME_LEN);
+> > +		for(i = 0; i < RFM_VOLUME_LEN - 1 && cfpkt_more(pkt); i++) {
+> > +			tmp = cfpkt_extr_head_u8(pkt);
+> >  			*cp++ = tmp;
+> > +		}
+> >  		*cp = '\0';
+> >  
+> >  		if (CFCTRL_ERR_BIT & cmdrsp)
+> 
+> I agree that the code suggested by Simon is clearer. Note that AFAICS it
+> lacks an additional `tmp!= '\0'` check to break the loop, but even with
+> that added it should be preferable.
 
-On Tue, Apr 14, 2026 at 1:07=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.19.13 release.
-> There are 86 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.19.13-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
-
-6.19.13-rc1 tested.
-
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-[    0.000000] Linux version 6.19.13-rc1rv-g425b22d9f3ed
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20260209, GNU ld (GNU
-Binutils) 2.46) #1 SMP PREEMPT_DYNAMIC Tue Apr 14 19:32:50 JST 2026
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Sorry, I left out the `tmp!= '\0' check.
+That was unintentional and I agree it should be there.
 
