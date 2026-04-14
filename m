@@ -1,168 +1,189 @@
-Return-Path: <stable+bounces-237922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLKbAb5q3mmxDgAAu9opvQ
-	(envelope-from <stable+bounces-237922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:26:38 +0200
+	id mEKqGwxq3mmxDgAAu9opvQ
+	(envelope-from <stable+bounces-237923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:23:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3513FC8C3
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:26:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1066C3FC83D
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 18:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C5263013D4C
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:20:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 77E283012E57
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 16:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E33E6396;
-	Tue, 14 Apr 2026 16:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA683ED12B;
+	Tue, 14 Apr 2026 16:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="niREzWpP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jycQq3du"
+	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="GmH2UP0S"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10615386446;
-	Tue, 14 Apr 2026 16:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133AC2FF160;
+	Tue, 14 Apr 2026 16:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776183640; cv=none; b=sqicl6AwR4ioPpINeRcNgFFItTlWg9GDuWYcKIuRkznHiQ+trkUrHvQ0nB7B6mbsFkUKc+D+OIUUw6kAKAdtfJLdXEWKwQb50cYznNk5wzJlGyaAaVUFG5UJhylH8CjD+5EjgxtswM2A+20O3pvUVtQzfLS+tr6a7xCJJRv4/Wo=
+	t=1776183815; cv=none; b=F1e3110v7wExYSfU75bLCQm0Oz1W7uRcvvioUvzdXcJ3AYjbtMYYsybgTp6XCPAmPZcfkS866NKDNsAdoDF44PUReGZJ2Q9bYlGPUDTeLvhhSEU+jzYIOfrD0aB+XY1r5SRXpHVER43sscZz9Z27zHNQGgecTZhKNmSI3yLDeXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776183640; c=relaxed/simple;
-	bh=Uv0aP9gCVayIC0/H2A4hF8SRhOWQloeCyjee52GmJyw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=R2e7OhwuXL6S+JTl1PPbzwIGf3yimCRWYW0PN3TRIzxAI0psGug6XdUh4bhxBGddMT27+EYH74z51sZJ4uYRCTHgARkO18eb3dKLG9e79oY85SvDQddn969yTiFI+DOLQ4Z7FZincaopOEy20iQkLJ1DL/FZtl74H6+OTyM+YA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=niREzWpP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jycQq3du; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 91F3F7A011E;
-	Tue, 14 Apr 2026 12:20:37 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-05.internal (MEProxy); Tue, 14 Apr 2026 12:20:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776183637;
-	 x=1776270037; bh=qcYlcBKMocC1Ezo583l9MC3Jydp+KBfbQyv6M9e11O0=; b=
-	niREzWpP5eXbveXz5bshzJZl4DWeuDw8BSgOdOGRkcjgZ8TrHM0C19B/r8EMWEzT
-	zyZX2ocwIMz24o7DwC0FTqeSHChMaaSveRXE+tXip6FJu1Xt0VQyVH+IHhPC4gQj
-	EriVdwRdCsNqksPXgP7qtP+mLKWITm7SALlSDxUJX3RNWbPPxvObmZhsPCzIYqTD
-	RgRMUBZcn52B5zBSeYYJnG2IZ3YOUIrdmo5RT5V0tORmeSnpSVSTonZQRF8j3DmS
-	1LYF7AA9euQMSR8khcHCvNqguqlbPdujGGhOUaVj2BnQmGPEfg6d/bVsNsrDOEpV
-	9qmi3kvR1yDrhjv0cO3Vzg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776183637; x=
-	1776270037; bh=qcYlcBKMocC1Ezo583l9MC3Jydp+KBfbQyv6M9e11O0=; b=j
-	ycQq3duG+NehVW5KV07cBdVUitkNy2h/Eh3pbTczdMr09HgGVyTGxhxtV3Ps7MIq
-	rr/CNXXanwDdNENnIPgghKmNPoBpH3pJ8jDeqDhR0M3mS24slgJlCOeuQDc8wTBt
-	SrK1PgmpI4F7NzXpe12GRlTzGLsXt/7aFOgDv4bYu97FYt6+7yAJWZH9IGbOQgsO
-	rEJxK5T/kiAX6cNCeU1LWCmFo5ubEozRSQiwRw4OnoOAttbpFv1G3z1KppfFPnzG
-	S85DfRe0DDg+Q2eaHnIFJkx9E4KjWH05VQs14pnYmJRcyU0b2ggjZoD1ZEsCy8en
-	fyv2EUBgFFxlyvTMHWs5A==
-X-ME-Sender: <xms:VGneaSxvF3p5-hUPrWBjdWD1BaP_h2p1Opmh6peaxoZmoEgH5-m6eA>
-    <xme:VGneaaIsb4rgTwDlZOrSJWwKXh4zREMVGl5Vwbs-qOoVTwBj7kEI2VcDeZ_2NdxvA
-    8yo9BnKqX8Yka_2Xt8bpDLjxL7GkyVDlMAWI6oMfQo7PvTUlp35ZA>
-X-ME-Received: <xmr:VGneaf1z2306f7kLPdC5Qurvo331fuZlbGzM6wQ_b-xmOeN0EyBFAI5XiKixT7OIr5lZjznR6I-5__LThFCvvzSQTN79rBhk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudeivdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuhffvvehfjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
-    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
-    grthhtvghrnhepuddukedvieeuvdduvdeglefhledtudfgtdfghfdvkeeuteegvdefjeet
-    kedvueelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsggrrhhrhihnsehpohgsohigrdgtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrth
-    hiohhnrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepphgrthgthhgvsheslhhishhtshdrlhhinhhugidruggvvhdprh
-    gtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdp
-    rhgtphhtthhopehlihhnuhigsehrohgvtghkqdhushdrnhgvthdprhgtphhtthhopehshh
-    hurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvghssehkvghrnhgv
-    lhgtihdrohhrgh
-X-ME-Proxy: <xmx:VGneaceaVGeaA0YLnxCN-ZAqaQYerrm_8_b4JG9PResZWnNZZTkF2g>
-    <xmx:VGneab5p9L4hCtFbVcSgSGfZeCi8M53a4IOeEFDz2FY_HyDkMZ-I5A>
-    <xmx:VGneaX9QleT-bGsXCws_lX3sVu_-FeVuuFRCFjITF-aXBzlh3YVcZw>
-    <xmx:VGneaaKBw9oRZjybhz7G3MuEWLxXM4dhhVRHl4rOIgpkXixHhRL0WA>
-    <xmx:VWneaTksJ3R6Z3l7_400CF0j7QdJGSarFW6SOu9aZFaw_3qJ_TbmUnD_>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 12:20:34 -0400 (EDT)
-Message-ID: <310172c6-91ab-4dfa-92ed-6be05ae78132@pobox.com>
-Date: Tue, 14 Apr 2026 09:20:33 -0700
+	s=arc-20240116; t=1776183815; c=relaxed/simple;
+	bh=6uDb7kejujBqUUB9ZxrJQJb7QoGJK8VBUq9D7VjAZx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qHXu/NQKyRHD2CxlLBkkDW33Qadw52ARpI3j8EKAam/sGGfxteZuPfBa3zNi+DvWg5oU7947txl2J9vUwbiAAeBRMFyr/07kaWM5pfW51xIYGCXDnKaI6b4rO8hOgoEeX8wpRAI2t5FOu+nRKZpGa5mRscwA4u35fFaHXmFLS8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=GmH2UP0S; arc=none smtp.client-ip=51.159.59.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
+	t=1776183800; bh=A9w41jfbeBcNMsPNcn43GbwXzCi67ge8k9Gp5bHo37k=;
+	h=From:Message-ID:From;
+	b=GmH2UP0S4F7NTFLQSPWUt+Y5+qVp/NHGAtFg4tdsJhORGacHG5wIrP2H3n0G6qrhA
+	 asVFgL6ZDuexsnNfzXdP3DhXk2ZLSPsICUhm0e5W70m+gHbNYdyxlh39Nobyhdma8Y
+	 bX+SSXby8ukWX0KhRqRJ4GXrFbxrnkp+CXl7YADs=
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by mta1.formilux.org (Postfix) with ESMTP id 0EAD9C2E94;
+	Tue, 14 Apr 2026 18:23:20 +0200 (CEST)
+Date: Tue, 14 Apr 2026 18:23:09 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: Pavitra Jha <jhapavitra98@gmail.com>
+Cc: pabeni@redhat.com, chandrashekar.devegowda@intel.com,
+        linux-wwan@lists.linux.dev, netdev@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: wwan: t7xx: validate port_count against message
+ length in t7xx_port_enum_msg_handler
+Message-ID: <ad5p7XlSOKoaQC5D@1wt.eu>
+References: <ad4-bTbjtxbUXDU9@1wt.eu>
+ <20260414153201.1633720-1-jhapavitra98@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Thanks for AppArmor fixes (was Re: [PATCH 6.1 000/312] 6.1.168-rc1
- review)
-From: "Barry K. Nathan" <barryn@pobox.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260408175933.715315542@linuxfoundation.org>
- <be550d5f-a5bc-4cab-aa75-1c7481ba39c8@pobox.com>
-Content-Language: en-US
-In-Reply-To: <be550d5f-a5bc-4cab-aa75-1c7481ba39c8@pobox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414153201.1633720-1-jhapavitra98@gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
+	DMARC_POLICY_ALLOW(-0.50)[1wt.eu,none];
+	R_DKIM_ALLOW(-0.20)[1wt.eu:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-237922-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237923-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[w@1wt.eu,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[1wt.eu:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 4A3513FC8C3
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,1wt.eu:dkim,1wt.eu:mid]
+X-Rspamd-Queue-Id: 1066C3FC83D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/10/26 01:29, Barry K. Nathan wrote:
-> However, I'm curious about what's happening with 6.1.y and the "CrackArmor"
-> AppArmor fixes. As far as I can tell, they're still not in 6.1.168-rc1
-> (and presumably won't be in 6.1.168). Assuming it's not too early to talk
-> about it in public yet, where does this stand? Is it just a matter of
-> waiting a bit longer for stuff to happen behind the scenes (or for other
-> bugs/patches to be dealt with first), or is there something else going on
-> (such as a specific problem blocking it that needs to be resolved first)?
+Hello,
 
-I see that these are now in 6.1.169-rc1 (also 5.15.203-rc1 and
-5.10.253-rc1). Thanks!
--- 
--Barry K. Nathan  <barryn@pobox.com>
+On Tue, Apr 14, 2026 at 11:31:56AM -0400, Pavitra Jha wrote:
+> t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
+> a loop bound over port_msg->data[] without checking that the message buffer
+> contains sufficient data. A modem sending port_count=65535 in a 12-byte
+> buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
+> 
+> Add a struct_size() check after extracting port_count and before the loop.
+> Pass msg_len to t7xx_port_enum_msg_handler() and use it to validate
+> the message size before accessing port_msg->data[].
+> Pass msg_len from both call sites: skb->len at the DPMAIF path after
+> skb_pull(), and the captured rt_feature->data_len at the handshake path.
+> 
+> Fixes: 39d439047f1d ("net: wwan: t7xx: Add control DMA interface")
+> Cc: stable@vger.kernel.org
+> Reported-by: Pavitra Jha <jhapavitra98@gmail.com>
+> Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
 
+Please note that you don't need the Reported-by tag when it's the same
+as the Signed-off-by one.
+
+Also, I'm noticing a few empty-line removals out of context below:
+
+> diff --git a/drivers/net/wwan/t7xx/t7xx_modem_ops.c b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+> index 7968e208d..d0559fe16 100644
+> --- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+> +++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+> @@ -453,25 +453,25 @@ static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_inf
+>  {
+>  	enum mtk_feature_support_type ft_spt_st, ft_spt_cfg;
+>  	struct mtk_runtime_feature *rt_feature;
+> +	size_t feat_data_len;
+>  	int i, offset;
+>  
+>  	offset = sizeof(struct feature_query);
+>  	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
+>  		rt_feature = data + offset;
+> -		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
+> -
+> +		feat_data_len = le32_to_cpu(rt_feature->data_len);
+> +		offset += sizeof(*rt_feature) + feat_data_len;
+>  		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
+>  		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
+>  			continue;
+> -
+
+here
+
+>  		ft_spt_st = FIELD_GET(FEATURE_MSK, rt_feature->support_info);
+>  		if (ft_spt_st != MTK_FEATURE_MUST_BE_SUPPORTED)
+>  			return -EINVAL;
+> -
+
+Here, the original author probably left the line to highlight the return
+statement.
+
+> -		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM)
+> -			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
+> +		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM) {
+> +			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
+> +						   feat_data_len);
+> +		}
+>  	}
+> -
+
+Here, why?
+
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+> index ae632ef96..d984a688d 100644
+> --- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+> +++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+> @@ -154,7 +161,6 @@ int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
+>  
+>  	return 0;
+>  }
+> -
+
+This one as well.
+
+>  static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
+>  {
+>  	const struct t7xx_port_conf *port_conf = port->port_conf;
+
+Better leave them untouched, it will keep the code as readable as it
+previously was and reduce the overall review effort.
+
+thanks,
+willy
 
