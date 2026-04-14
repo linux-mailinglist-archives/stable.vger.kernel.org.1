@@ -1,62 +1,67 @@
-Return-Path: <stable+bounces-237845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIBKHlQv3mnxogkAu9opvQ
-	(envelope-from <stable+bounces-237845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:13:08 +0200
+	id KHNQKH0t3mnxogkAu9opvQ
+	(envelope-from <stable+bounces-237846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:05:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C7D3F9DFF
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:13:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415D03F9C5C
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E43F305EAA9
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:05:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 92F86300B5A1
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D37B3E51EF;
-	Tue, 14 Apr 2026 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53473E5596;
+	Tue, 14 Apr 2026 12:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EShSWokf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Skg125TB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413213E0C69
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A143E5580
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776168314; cv=none; b=hBEHNNa2Va6lvk25OmpJfAzKRRuTDEMfkWimHyfl5cCZZSKrZdJVVX02y9e8Ck/m2GYyhwhpF3RCpUCF2L43HZiQ4/Vj1HnMv+6nND96g8p5OGkJi7PNAYZkFST6wOCbWJ0IDv25tFAUwQKljIak+xeXdBKwRGgIkbT5Dx1QcVw=
+	t=1776168315; cv=none; b=OiVTaRL0Kp7/tqO12ed/ppIJedKyP0tT8IpsZg2V9u7OQwL/31YpOM+Np2QlHBtPd8MtbCqidFnjYzqL4Bdbn2Kk6vdDCUEfpRvH/9ogYvptPcN4jvTT5BX2HyUXih+LwQeRBpHEJ91phJ/SUH82eIdFR1FGP8p44Y4vvdLznz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776168314; c=relaxed/simple;
-	bh=S469/39aj++J5wlplXdi+uQ2FVXcE7M/B9i/gORyu+g=;
+	s=arc-20240116; t=1776168315; c=relaxed/simple;
+	bh=tyKvrl0io2czTBBZxu4F8knA1tkYb1In460cUWxgK6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avRLzTkO+hgOarNA/SvWy37it4DJk7tMeleiDIQ7YXD4WmcOIS+IOwPkhNT32KQLQqCR5WxsdmmPwYbLUnJ1f98DGrOr8Z8qP7vCDA/dpmTZLkCqUCNacNm3AEhBKLt31TTYKvI05J4K5Tg/e1wnidy7rs9UQ8bfqkrPVIGd6bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EShSWokf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CF4C2BCB0;
-	Tue, 14 Apr 2026 12:05:13 +0000 (UTC)
+	 MIME-Version; b=iY0TC6mBLltVCJJxJfOqdLdMZi3Eqgc2LwFz5wKBoaw/XhoJqd/m14wz55qHmXPt5Tfn+AW0Qv7pLMMwj+2q5TN+h3SYtxIub07jVFvLDgVhxSi/+iHEg3QX2t6hWMaE9oPMHzuHDAS1ZWXGiCnnFqEuMlnYth/X6kqu6cTVocE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Skg125TB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3BAC19425;
+	Tue, 14 Apr 2026 12:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776168314;
-	bh=S469/39aj++J5wlplXdi+uQ2FVXcE7M/B9i/gORyu+g=;
+	s=k20201202; t=1776168315;
+	bh=tyKvrl0io2czTBBZxu4F8knA1tkYb1In460cUWxgK6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EShSWokf8MAu/qQhWQ4f83KjQTU0E+JNdP84iXneFnHLUmD0EFy1y1YTtef3tTRCg
-	 U1DYqLjrjKUcz4GpaBhy+mNvJvpalDAUJC2+QsJDMqw3KVRf6EO1fq5zhQtGhRT6YN
-	 NOc1oi2jJHN2BjL4nZ9oqHdN1hYpV+1tx9TRGbSxYe6Z8dnN5DijprhuduTXTX46j+
-	 xc/89eFIX5pWHiCPGXd6/wpXyEhnMITIdkXRmbv7r78X6QAymgdrjoLR62KnfMfm36
-	 +GWFAwK+nST5S+lRRh2SAYnXrA/hTTmBr9X/iwebiPaVmGIjL/WaYfV3CFFED0velc
-	 gbknDaCryk8hg==
+	b=Skg125TB4JOsJiw+FJE5Ow61UYXhTxV2ktBY2Pn4/zReleQqiQPdqDT9EaahX9Zfw
+	 o+HBPpYbI3QtJp/qo6PeTkCb1erIDBpX/W3Z7Sd+fO5MowDdx2um2Dj79Wjuw48pzP
+	 pL3QtxFeE9sgtpxy7a42cvU+ulFL6sA9HFFBuB2kG/udOVl0JhnjzXVQ7RMACXgIXP
+	 FNqOpyt4A+1I5yyBIKXk0WbViWV/+vR6MbSarLZi7f1Mn61/odL1XtmL8U/vXUsNtz
+	 7EBbtgZxiBMmOQWu46xXwjCExNOXEhI75WDWfHOc/8W3bUl414LWumsnWoQE3gYR0l
+	 dCT93rV8DnPaw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	David Howells <dhowells@redhat.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
+	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] rxrpc: Don't need barrier for ->tx_bottom and ->acks_hard_ack
-Date: Tue, 14 Apr 2026 08:05:10 -0400
-Message-ID: <20260414120511.569429-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] rxrpc: proc: size address buffers for %pISpc output
+Date: Tue, 14 Apr 2026 08:05:11 -0400
+Message-ID: <20260414120511.569429-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041327-hydroxide-proofread-7f9e@gregkh>
+In-Reply-To: <20260414120511.569429-1-sashal@kernel.org>
 References: <2026041327-hydroxide-proofread-7f9e@gregkh>
+ <20260414120511.569429-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,113 +70,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237845-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237846-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,infradead.org:email,auristor.com:email]
-X-Rspamd-Queue-Id: B9C7D3F9DFF
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,allelesecurity.com:email,infradead.org:email,auristor.com:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 415D03F9C5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: David Howells <dhowells@redhat.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 6396b48ac0a77165f9c2c40ab03d6c8188c89739 ]
+[ Upstream commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 ]
 
-We don't need a barrier for the ->tx_bottom value (which indicates the
-lowest sequence still in the transmission queue) and the ->acks_hard_ack
-value (which tracks the DATA packets hard-ack'd by the latest ACK packet
-received and thus indicates which DATA packets can now be discarded) as the
-app thread doesn't use either value as a reference to memory to access.
-Rather, the app thread merely uses these as a guide to how much space is
-available in the transmission queue
+The AF_RXRPC procfs helpers format local and remote socket addresses into
+fixed 50-byte stack buffers with "%pISpc".
 
-Change the code to use READ/WRITE_ONCE() instead.
+That is too small for the longest current-tree IPv6-with-port form the
+formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
+dotted-quad tail not only for v4mapped addresses, but also for ISATAP
+addresses via ipv6_addr_is_isatap().
 
-Also, change rxrpc_check_tx_space() to use the same value for tx_bottom
-throughout.
+As a result, a case such as
 
+  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
+
+is possible with the current formatter. That is 50 visible characters, so
+51 bytes including the trailing NUL, which does not fit in the existing
+char[50] buffers used by net/rxrpc/proc.c.
+
+Size the buffers from the formatter's maximum textual form and switch the
+call sites to scnprintf().
+
+Changes since v1:
+- correct the changelog to cite the actual maximum current-tree case
+  explicitly
+- frame the proof around the ISATAP formatting path instead of the earlier
+  mapped-v4 example
+
+Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20241204074710.990092-18-dhowells@redhat.com
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a44ce6aa2efb ("rxrpc: proc: size address buffers for %pISpc output")
+[ adapted buffer size changes ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/sendmsg.c | 8 +++++---
- net/rxrpc/txbuf.c   | 4 ++--
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ net/rxrpc/proc.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index b9f2f12281b33..3feace069cd20 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -93,9 +93,11 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
-  */
- static bool rxrpc_check_tx_space(struct rxrpc_call *call, rxrpc_seq_t *_tx_win)
- {
-+	rxrpc_seq_t tx_bottom = READ_ONCE(call->tx_bottom);
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 55a95f064df08..f698796976c50 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -10,6 +10,10 @@
+ #include <net/af_rxrpc.h>
+ #include "ar-internal.h"
+ 
++#define RXRPC_PROC_ADDRBUF_SIZE \
++	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
++	 sizeof(":12345"))
 +
- 	if (_tx_win)
--		*_tx_win = call->tx_bottom;
--	return call->tx_prepared - call->tx_bottom < 256;
-+		*_tx_win = tx_bottom;
-+	return call->tx_prepared - tx_bottom < 256;
- }
+ static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
+ 	[RXRPC_CONN_UNUSED]			= "Unused  ",
+ 	[RXRPC_CONN_CLIENT_UNSECURED]		= "ClUnsec ",
+@@ -54,7 +58,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	enum rxrpc_call_state state;
+ 	unsigned long timeout = 0;
+ 	rxrpc_seq_t acks_hard_ack;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
  
- /*
-@@ -137,7 +139,7 @@ static int rxrpc_wait_for_tx_window_waitall(struct rxrpc_sock *rx,
- 		rtt = 2;
+ 	if (v == &rxnet->calls) {
+ 		seq_puts(seq,
+@@ -69,11 +73,11 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
  
- 	timeout = rtt;
--	tx_start = smp_load_acquire(&call->acks_hard_ack);
-+	tx_start = READ_ONCE(call->acks_hard_ack);
+ 	local = call->local;
+ 	if (local)
+-		sprintf(lbuff, "%pISpc", &local->srx.transport);
++		scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 	else
+ 		strcpy(lbuff, "no_local");
  
- 	for (;;) {
- 		set_current_state(TASK_UNINTERRUPTIBLE);
-diff --git a/net/rxrpc/txbuf.c b/net/rxrpc/txbuf.c
-index d43be85123864..84d067fbc2fd1 100644
---- a/net/rxrpc/txbuf.c
-+++ b/net/rxrpc/txbuf.c
-@@ -112,14 +112,14 @@ void rxrpc_shrink_call_tx_buffer(struct rxrpc_call *call)
+-	sprintf(rbuff, "%pISpc", &call->dest_srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &call->dest_srx.transport);
  
- 	while ((txb = list_first_entry_or_null(&call->tx_buffer,
- 					       struct rxrpc_txbuf, call_link))) {
--		hard_ack = smp_load_acquire(&call->acks_hard_ack);
-+		hard_ack = call->acks_hard_ack;
- 		if (before(hard_ack, txb->seq))
- 			break;
+ 	state = rxrpc_call_state(call);
+ 	if (state != RXRPC_CALL_SERVER_PREALLOC) {
+@@ -144,7 +148,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 	struct rxrpc_connection *conn;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	const char *state;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
  
- 		if (txb->seq != call->tx_bottom + 1)
- 			rxrpc_see_txbuf(txb, rxrpc_txbuf_see_out_of_step);
- 		ASSERTCMP(txb->seq, ==, call->tx_bottom + 1);
--		smp_store_release(&call->tx_bottom, call->tx_bottom + 1);
-+		WRITE_ONCE(call->tx_bottom, call->tx_bottom + 1);
- 		list_del_rcu(&txb->call_link);
+ 	if (v == &rxnet->conn_proc_list) {
+ 		seq_puts(seq,
+@@ -163,8 +167,8 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 		goto print;
+ 	}
  
- 		trace_rxrpc_txqueue(call, rxrpc_txqueue_dequeue);
+-	sprintf(lbuff, "%pISpc", &conn->local->srx.transport);
+-	sprintf(rbuff, "%pISpc", &conn->peer->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->local->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->peer->srx.transport);
+ print:
+ 	state = rxrpc_is_conn_aborted(conn) ?
+ 		rxrpc_call_completions[conn->completion] :
+@@ -205,7 +209,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_peer *peer;
+ 	time64_t now;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -218,9 +222,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = list_entry(v, struct rxrpc_peer, hash_link);
+ 
+-	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+@@ -330,7 +334,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
+ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_local *local;
+-	char lbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -341,7 +345,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ 
+ 	local = hlist_entry(v, struct rxrpc_local, link);
+ 
+-	sprintf(lbuff, "%pISpc", &local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %3u %3u %3u\n",
 -- 
 2.53.0
 
