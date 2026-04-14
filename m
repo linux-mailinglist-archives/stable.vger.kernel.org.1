@@ -1,74 +1,94 @@
-Return-Path: <stable+bounces-237711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELioGyC13WlRiAkAu9opvQ
-	(envelope-from <stable+bounces-237711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:31:44 +0200
+	id CA2JNAa43WnciAkAu9opvQ
+	(envelope-from <stable+bounces-237714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:44:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146E43F5458
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:31:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FF63F5546
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 05:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 30E043017247
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:31:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C47543037E52
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59944335BDB;
-	Tue, 14 Apr 2026 03:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C73731326C;
+	Tue, 14 Apr 2026 03:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="2JObPNQj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TaeDvez/"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABEB40DFB7;
-	Tue, 14 Apr 2026 03:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F0883F
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 03:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776137498; cv=none; b=BLYLvh3E6ob6salvpZvPpcu4hg10jC1wskleRsLPQAN2wZz4IcJQyd1vJOanTQz8zVE5vbY1s04YhhQntUbDJT8e2l8YJhN1h82IsNPlYGbjQIjxkKu+fvB+i1xFCYVUSEKvLYZM+6UAsom3Fy9lCWBgJk05yAazai2oYu+QrzI=
+	t=1776138170; cv=none; b=I/zaSa7ZKf+Tj3/JrdkheHjSrYxKWBipxnPoDLOsgoSBPUfGEtDy6AbUXcOcDYeU3vbF49OMVH4dtG32sdxq6fYdaHwx2rR9HUcVVE8yz6y1DRqG+c1gyHByvZ308ZkRn7HGCOISPVEQ26sGAj6t+n/jrd/Q0lypTAEq/PC2/o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776137498; c=relaxed/simple;
-	bh=w2HqWKBJG+xmo7xipW/PndQPguK0Fdy9+MwndF5BBi8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DK4kMWlM9TKYTatBW7Hd6jS5m+O4h+3070qNM9VMDvLbPwKaZRX1cPfd34Bd48oxo236tpjCSyc6Z7Hu7A+FO3KRfow4SVGYd/oNKxUmEaDrWKj8NEJ8cuc+7pWiDUZeuTRzLdCm4xSbnXaC+rnNn6QImkYgalzG3gueI8w+FHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=2JObPNQj; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1776138170; c=relaxed/simple;
+	bh=G1zkKB5J/ZwwzO57UPK0AFrN20hSeHo66GZs4YUYlKw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rgSPSQ6/hxwYW1t8Pxqe7wPkKbWlqxJyJBWQxBf1+VUi9BY12s8FkNxgA78GXwkk08ilO0hfBdiUMDQOWsJBYL6S1aiGgc4RKY6HqBrsK6K7radA/9Xa5AbOyBdayQXXoPp/QkuQ69dBYMsgGzZjWcpjpNkDYKI9rXLCu/4Hmo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TaeDvez/; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2adbfab4501so21667195ad.2
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 20:42:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=2JObPNQjsDdIbeFWqE2ZObxopjGdiI5HT/kFUXWqoI2olQ5KXf0kEvTVtrOPS29GWxPlfTm5pyYjN
-	 OVns3pk7zm5bjXYnNoxY2v3oNPX+hRZgd2SBd+K723RVnwH+H3DZOKEtApJyfDbnD/M7Jbov5ziBFS
-	 ad4C7/zhjvhNcaDE=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-01-12079 (RichMail) with SMTP id 2f2f69ddb50be9a-00eab;
-	Tue, 14 Apr 2026 11:31:30 +0800 (CST)
-X-RM-TRANSID:2f2f69ddb50be9a-00eab
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	fw@strlen.de
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	pablo@netfilter.org,
-	kadlec@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kaber@trash.net,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: [PATCH 6.18.y] netfilter: conntrack: add missing netlink policy validations
-Date: Tue, 14 Apr 2026 11:31:29 +0800
-Message-Id: <20260414033129.48460-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+        d=gmail.com; s=20251104; t=1776138168; x=1776742968; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bxcVRDBQYoEvUjV/D/PMX40SNzPhQnuxj7fjLILYmjM=;
+        b=TaeDvez/GmrmfSWFW3V/GjcP2XU9KuVw3/oeBDDh4qIwoY14//41gQpW65X0sD1oBh
+         UDaIe8fCiSGJ+ElO/6ejZVSA8nQXsMy6EHU3PG8xiY+otbYDJL+/rcwx2tV0aEi/eCj3
+         gnwzAeOKwpO42r3mGlz+plFKwALfWRZZoKtQ8xjM8mZJ0dNiE/Ebh+Le7C7Au7dbldJb
+         5kVhCkB4Eun1cA22p0nBbNQKzCprkuvpveWaE0G8X8j+NxONWa6JTXXouUS9QnF9TMX5
+         ZCy+mlOvcbfDzMRZCu43NXxdl9VseMMk4t9otQYW2qzQiTOn73AtGb4jhqc5SS+7YyEC
+         bcOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776138168; x=1776742968;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bxcVRDBQYoEvUjV/D/PMX40SNzPhQnuxj7fjLILYmjM=;
+        b=XJKWYTFK/OmZh4btlKTwQi8kQwfEBe0FdELZdjEH4waR0uPeZ3fFRPzt2Q2HOTU+xk
+         tajAU+9DnUDDJb+IWP5Q/bZGcLuOq/hMk+NHkpxoaC/nXpPAcNDmzRMVN+PHIs0URu9a
+         40uC4FFrrK/XDIT/C+8KmeIW/dXz2fwRMzPTNYXeA0WpnlJdBFSVuOjTWsI4iCNiqu30
+         B/4GgxI2IxhTkcG01d2QwBYBBVgs3h4LQQSjptvhVnGvrxu7GkU5B2TdqyBoVDsYh0Nv
+         e2gyZpB8BB1qrYgKVnxsQa0fQpGwKZsG83kj6Lmm+AL9liPm5kJ0/o2D3OccePANV8gM
+         qDyw==
+X-Forwarded-Encrypted: i=1; AFNElJ81jkBIDt1Qib9lKqfOvHijtdVN+mNIAw/j3Qx8ws7TkJK29+kXgxl+VomLfJ11q3AhP9hJyGc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLnd3V1Qmk8zWD3t8CCw8luPjftl92AjZDb7aCpN2kW63PaycU
+	QTeLd1IIcnkIalEE9WkUrVPr0lHVaCgt13SsxonbgJ/3mY2EFuZiMJgH
+X-Gm-Gg: AeBDievWHsJ8WB7YldJUWCLIdK+dAtUnyCpecZZ1BRMgWd5bmyo7azvemOTNFShzBq8
+	d/oQP6ri1gyTI9s6LGluFOXbycGxJQ6p0LrMJNDuuPy0oQf60Z1o5S2H3i9INFrwKOhssVCMH88
+	OBVnANZdsMZ36PUOFhLoEHkCXILjpaGRL9zcH1GCd5wfs6yvzDRJ7luRapafDfpGuf/DoEPlNyQ
+	7MfWvUrnGvIpCUdZDSBgnIQPrBnwzUphVgc3335h1ffwFsiEc9VSHooL6F/k737hmifBpGImJQy
+	sjsZLfwej9xsJp5whEeat8WGzR7IiYzMCOWu7b4QhCn8Xj7/HGv0UFrq1rod1SQ47wOaOsCAcAK
+	OWI1bj8iKALLmXpZv4v9Dtix98J2qzKKlMW2WqcN7DLXdwMokhUz+AZoc5lpP9cXKHzzN934Da9
+	q9gOAUTkhcf7pGbKn/XzIerS88GbYP
+X-Received: by 2002:a17:903:2286:b0:2b2:dca5:101b with SMTP id d9443c01a7336-2b2dca51487mr136688535ad.12.1776138168289;
+        Mon, 13 Apr 2026 20:42:48 -0700 (PDT)
+Received: from zenbook ([159.196.5.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b45e949464sm63079895ad.24.2026.04.13.20.42.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 20:42:48 -0700 (PDT)
+From: Wilfred Mallawa <wilfred.opensource@gmail.com>
+To: linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Hans Holmberg <hans.holmberg@wdc.com>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] xfs: fix memory leak on error in xfs_alloc_zone_info()
+Date: Tue, 14 Apr 2026 13:41:51 +1000
+Message-ID: <20260414034149.1116281-3-wilfred.opensource@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,96 +96,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,netfilter.org,davemloft.net,google.com,kernel.org,redhat.com,trash.net,gmail.com];
-	TAGGED_FROM(0.00)[bounces-237711-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237714-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_SPAM(0.00)[0.724];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,139.com:email,139.com:mid,strlen.de:email]
-X-Rspamd-Queue-Id: 146E43F5458
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wilfredopensource@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wdc.com:email]
+X-Rspamd-Queue-Id: 57FF63F5546
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Florian Westphal <fw@strlen.de>
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-[ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
+Currently, the 0th index of the zi_used_bucket_bitmap array is not freed on
+error due to the pre-decrement then evaluate semantic of this while loop used
+in xfs_alloc_zone_info(). Fix it by allowing for the i == 0 case to be covered.
 
-Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
-
-These attributes are used by the kernel without any validation.
-Extend the netlink policies accordingly.
-
-Quoting the reporter:
-  nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
-  value directly to ct->proto.sctp.state without checking that it is
-  within the valid range. [..]
-
-  and: ... with exp->dir = 100, the access at
-  ct->master->tuplehash[100] reads 5600 bytes past the start of a
-  320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
-  UBSAN.
-
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Fixes: 080d01c41d44 ("xfs: implement zoned garbage collection")
+Cc: stable@vger.kernel.org
 ---
- net/netfilter/nf_conntrack_netlink.c    | 2 +-
- net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_zone_alloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 879413b9fa06..2bb9eb2d25fb 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3465,7 +3465,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
+diff --git a/fs/xfs/xfs_zone_alloc.c b/fs/xfs/xfs_zone_alloc.c
+index a851b98143c0..c64f9ab743a6 100644
+--- a/fs/xfs/xfs_zone_alloc.c
++++ b/fs/xfs/xfs_zone_alloc.c
+@@ -1217,7 +1217,7 @@ xfs_alloc_zone_info(
+ 	return zi;
  
- #if IS_ENABLED(CONFIG_NF_NAT)
- static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
--	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
-+	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
- 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
- };
- #endif
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 7c6f7c9f7332..645d2c43ebf7 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -582,7 +582,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
- }
- 
- static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
--	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
-+	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
-+							 SCTP_CONNTRACK_HEARTBEAT_SENT),
- 	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
- 	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
- };
+ out_free_bitmaps:
+-	while (--i > 0)
++	while (--i >= 0)
+ 		kvfree(zi->zi_used_bucket_bitmap[i]);
+ 	kfree(zi);
+ 	return NULL;
 -- 
-2.34.1
-
+2.53.0
 
 
