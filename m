@@ -1,252 +1,208 @@
-Return-Path: <stable+bounces-237791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LeJLKwd3mk1ngkAu9opvQ
-	(envelope-from <stable+bounces-237791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:57:48 +0200
+	id +PuMEK8d3mk1ngkAu9opvQ
+	(envelope-from <stable+bounces-237792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:57:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0404E3F903D
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:57:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E153F904B
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE29630115B3
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:53:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1AE6B303EE83
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 10:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB1D26A0A7;
-	Tue, 14 Apr 2026 10:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EBF3D7D7B;
+	Tue, 14 Apr 2026 10:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tceiYj4t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xp3AmOSE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FB13939D3
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 10:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776164016; cv=pass; b=jqQrBLHOQLBPmyHTSC/z2zpFrAkcy4nK42PwhVt3kbLBCoCv/IOvYIJN3JdqVH/zk+ddzigdkMP8wcZRP/9Edn1MvTKjECi6ptRCe+LwO/0FMrqCZBHSlyfo51uvlEpHfpdTExMtLaJna/x0ZKQeg0zEHo2ncmupcvuDn51g2pM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776164016; c=relaxed/simple;
-	bh=3Mq7kU0ij9LNAekgyk28BMaUIZSuE1bTDnMCbACGw2s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e+R/9SbQgyUo60vbEMVv6TaNwlE5+ve8MPaIOm7yDBCemwfnnVPzNr3HBKUjwrZBbjWnQEhODitr/ZO06Nwtb0nONWuTFHR0mZfmXmnhYPheca05tnvyRoeSP+lEpRlypHGob2TmVfoz051j8GQA3ZXWlf5W8bK3wJxFFW8/Hw4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tceiYj4t; arc=pass smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a2beae348eso5904027e87.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 03:53:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776164012; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cGk434nJ5iSmDUoyFK28VX7wptH7cmyVjKZoBvq4x30JgVU87EmPA6kcUQKuJ7VSnH
-         gXSacArA0ScZnkza4Oi5KVPRhUdp3znApi8pmaIFyRzZPUrA1TYxqIGi5bac+C6IdkGz
-         nWxSCxSh/C7/xRXOnWBNaUPwARHnsRkcWY6BrvtB5jEpgTdY8mLa3TstAieognyRw1RK
-         FkMmTUXJi7sdYJwPlSbUEjSMxyPur96N2CiZand3TYXgdUfh9P1vUUwqDqkkWSYuWftf
-         fJa6FPxXzKXmDuA6GEHIYJfnDSs8veXM/Pze13EZA4qORMVyM9sJ+kpu8DtHWKMruYnb
-         VnLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=E41YxX1sAguGiwh6zEbSng5G2cnuAQxPK/F52SLRHFc=;
-        fh=IIGo1vzLuUNCutvYdy6xDNKYp81nDcrYC8YtPWW/b2c=;
-        b=PnqzLUtEHuaxW60Fwti00Z8taHW4Cy7yWttALBk4dzCXfjbWw2kGneUQu1XaeYVfA0
-         JoOj4EOG6+Dm2tXWteGRlwlig+5EBbif0FKEAucu26V6UME/BRFaVtokDLyjaNV3nvcu
-         CUouKTOOoqG4bYgZ+FyreHDEjHKXg7uwfck4DraRjlq4OkHt1lprXT2QuzlTTFuH1IeD
-         PgbUxEN5TBYCPmKZuCkBTHnGeuO4rcDs9CalRuNYS1bfVbKH5tTBviaqV5JXQLOtj/3e
-         EoINOdRBcD7Hlvxh+wJkPyrAHeCPwd0dz7rRCKAthfvg2INzIonEfTt2bYHe5uGImYyr
-         2sjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7419C395D9D
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 10:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776164148; cv=none; b=e0Rk+qw8kyuVbrh6pyG0mRKsPV94AQaCPc4nSx2NNldvSjbqrmD+KQIMNjWd4G2KDgP5pObqtHz+Rh3bUDTNvm2p0X8VvWUziT0R+oB5joIwH5IyHBGVJjrn4rtNAO7j5BJBhUcPX4kJusJPVY9YbftjtsvZKOx8l1ZkUu2LMfs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776164148; c=relaxed/simple;
+	bh=iNWhPNItulE/yamjmhuZz6amkOuetrKt/LOC7KGreC4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Na0q6aZupc65znXbC2iVjbBg+v3qkrJ84gloDvhQE2DPfwDZF3gEjOFUDDNdbFR9HP30URw/WJjGD2hsG9h6JZssWmDTHTJaZ+Y+DNPNWTW8gMNwxzlsBSB4FIfKXX8K0p/sIqBbsQqBmqV4vuRUshxdlgQyAIiBrNNrepWqlEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xp3AmOSE; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a283c44478so8364901e87.3
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 03:55:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776164012; x=1776768812; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=E41YxX1sAguGiwh6zEbSng5G2cnuAQxPK/F52SLRHFc=;
-        b=tceiYj4t1zQ6azuPwkobKSFa26BGx30DAH/t1bF0tabJKYVVuRZbBN7Jn304ihyRWY
-         zDhHcWLTtrckcaxKGqVLa8snywySNfr1IJ5/IvlVNf3jUZhSluqQaiSbBDooNquTIuZB
-         Z7MDZmtwYa4ANUau7nzCNI45LDQJUdXp/gHlxq8UyKYcQ03Wn5wjjpj8anxO+IzHt8LN
-         lcNBiICOVBGNQXG6iF3Sj5eCVfMogMtbopykz5I9avvqbTX8iJMdUZ4jQlXLWEfbMbjO
-         h2vXMCvwKHf2/rZzK7hJ+y08+cwPw62tcxUR3cnVRLUI+WuUuFIwqYhG8XGMCLUk0LAE
-         +0GA==
+        d=gmail.com; s=20251104; t=1776164143; x=1776768943; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W12ofF4X1Wo2C6qvMXRei9SFctcqIrL5xbkSvEXmBW4=;
+        b=Xp3AmOSENn2xzKZ0offYhz0mllghwUuvSAFLPxIIziuhb4GkgAazS5jnKASLs4CfDb
+         82mo1NWlijrfFzASR/ti3Al718dn4J7mflBJkMK8E8DO7UIHbGR31GWxC5co5/edM/Hu
+         5w+E4nX25y48xE0gtIIwTTXz37VscMsVwQrn7+8zJi7orI3UUZngNRB077Kq5mhC8hHE
+         Evt1deb0aiSyKUX9DCxc58VCBqdhCIq05q5Z2vCl91tSNaHG8zDAEd+TqyaPUI4nSe+T
+         oB6Io7yX5PULNG5awaN0jVttJKsCgIYYZxXKX23vojOparSnThT7tI8hqIVu0o7efCGR
+         Q1qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776164012; x=1776768812;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1776164143; x=1776768943;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E41YxX1sAguGiwh6zEbSng5G2cnuAQxPK/F52SLRHFc=;
-        b=BL/2Ayg7DqX65xHct/VtXGCjiTkZpCe78Ih1WQYsIXa5Ik5c5k5K5MrhoBiMuG0wAx
-         CQpSkoWpGK2CA7iokWrAt7RV36JbcKGsbcVBdLBd5qHEcAUSz2PteT7bRFMBjEYfw7Ga
-         xOTXtYlozGUSfXANesfAwdyW16gVVM2wPLZm5FPU9WCWQxiGR+64mmy6/tYRUNMqJ7Gc
-         vBhB7B66Ntk9QHNqF6qcG5/XgooAi7OslZNZrt+XhHWad8UAUokQMJlonkPLshQbNHSO
-         3Wn0lnRDxBK5Uu8A5+m96LBu/WcE0Q1cUY02OqnciPDgC/gp7Et3rp5M2RRsl5JzGiUW
-         MJSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/ga5HyAaxzYI/VdtbswznJH77UhdKxgts2d83SrLqZDEieAy2+Smh1eqPvwFTFVVtsCZ/QWq4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOg1gQSNkG2iyBqzwo/4/IlP/9QN19l0od7xISXpUkD+bitf3s
-	u09SU0uzB8HOjqBME+ksUusKR118FABg63mukC5/yFWgEbV/uDEXUqC/ICrQDHp58WlxO1WE3kl
-	Fjc/bjJ2rITeXFrGbsMjdRXsGquNRRXfNLenPcAkcAKT5jlH6GgLE
-X-Gm-Gg: AeBDieu97gmOm5SiG1h5VEqiXjPU0E6YlbCoUhZC9Jq6tZocEKrLJutKQFHE1lZJrUI
-	ACmTs3FG+uoyoQUTgtshQXIWlcHurRbseQDZuco7wG5VTH9T4r/Vd7ejKCtfC5SCHIagWJi+L+2
-	7ZZlovmzaagXuDb3jbM2T0oFJCSVbYqT7wVK2CMBi9CoudeynGaJQvVDuDI7C9uJD8uxSvpRRfX
-	dLifZjWyszPZtZNQoMhwQPlsVoibf8ZZwP65S2DSY8Lpn1FEMrpInBaPjmeFZ65KKouZX4zR6TP
-	sK+7cMCL
-X-Received: by 2002:a05:6512:39c6:b0:5a3:cc81:efdb with SMTP id
- 2adb3069b0e04-5a3efb8ba02mr5334362e87.21.1776164012025; Tue, 14 Apr 2026
- 03:53:32 -0700 (PDT)
+        bh=W12ofF4X1Wo2C6qvMXRei9SFctcqIrL5xbkSvEXmBW4=;
+        b=eZWo2rcVHvYRVr0FHgH3zFth0E4zZbdIRr56EGGFC2doutX0DANsdFv5XfcKe+Sh3d
+         aM6H8Y1EYWctbgeAOImUdzsIkGRYTgURh9taAmS9eYChE/Ssd84Q4hiZczTlviM456JS
+         +cE1DErKdIAQmMg0vNXkdYST70VbtThvSvGjSv6ZzIbHQGah7NYH1dm5O2Jqpr3AN1a4
+         b20pX1knnbFBqY4lkgeE8c7c1yrWyAvKgv7Zzgu/ukQh23UAqymmdiNPgyFqBtKpt0GF
+         cm+EewCrViVidYW7Mt5CXup21Giue9IYzKby+eXMtmSTTG5EpRa7beynGOnJOqlQNbQy
+         kRyA==
+X-Forwarded-Encrypted: i=1; AFNElJ8iz3hDdLfNCiXE/Bori5FmbPnmV60KYSyppYP7tOF1GyobwFTVmw9XNTYkrbTt9ItsbVIbbYs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHikj4CBDitvF5Xp5ZT1u13dxSXLYcel0ldS/zAFvtLK1EN5XG
+	hTwOt5jeGj7xf/G5aqptSsU/0cAFEShmldvfDOPEwn5qJINqhUWgELLa
+X-Gm-Gg: AeBDievXqLBC5O/MHNVvCP7CxxHBJRA5B2guQHns5fO+hJ96CQdLO2gmMRfmz1HSSIT
+	blRSpqL6ZRVeF40btc7SsoAGfiVSkslNnfSaHgayjMh3mqwz4PR78+4N3Mz2m6Vzy4Vdr9zcNun
+	gfKSPdZCj7fNPIWhrMa24Dh30c9Uk82kF1/ZZ5mKB7gDr7COOcTaKiRatMuExxYEYoltJIhaswQ
+	Vzf6Jm4oqadtCJyqvjpJrqFDWRNZWo4zuZx2Ncz+hqnWUo9c7QTTyfWOCb61YW8SSMEAu9Xfbnx
+	E/eInux8zYd0/FXeKq0KvWYSoSFxLBdfBpw7htbJX1nWfhy0wuzfyod4UxRtKqQ8QHShnFZ0kCz
+	V48hag4A7CFlGQt5QHH4bbAfH/ntTw7J79Cdu8pLaKBOCF2vvRktes6/QXQ9NkVaFlYtphGIlZT
+	QWoWSNKcfr/UqctuTP+izcinfWl3LxI1JoZzZEMb3ZAxajoxoCTVOkUxuuwQ==
+X-Received: by 2002:a05:6512:a94:b0:5a2:bf05:be77 with SMTP id 2adb3069b0e04-5a3efb283fbmr5981911e87.23.1776164142993;
+        Tue, 14 Apr 2026 03:55:42 -0700 (PDT)
+Received: from ghost-mint-vmk.cs.msu.ru (wifi.cs.msu.ru. [188.44.42.48])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a3eeee12fesm3177645e87.40.2026.04.14.03.55.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 03:55:42 -0700 (PDT)
+From: popov.nkv@gmail.com
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Vladimir Popov <popov.nkv@gmail.com>,
+	bcm-kernel-feedback-list@broadcom.com,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Deepak Rawat <drawat@vmware.com>,
+	Sinclair Yeh <syeh@vmware.com>,
+	Thomas Hellstrom <thellstrom@vmware.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH 15901/15901] drm/vmwgfx: fix NULL pointer dereference in vmw_validation_bo_fence()
+Date: Tue, 14 Apr 2026 13:55:27 +0300
+Message-ID: <20260414105529.9883-1-popov.nkv@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413155819.042779211@linuxfoundation.org> <20260413155836.794775290@linuxfoundation.org>
- <65cd5a0b7c68af467b8b13b4fbce51cc2febb5ad.camel@decadent.org.uk>
-In-Reply-To: <65cd5a0b7c68af467b8b13b4fbce51cc2febb5ad.camel@decadent.org.uk>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 14 Apr 2026 12:52:56 +0200
-X-Gm-Features: AQROBzB8UduscqLXoj3HY1wGSVAb7et8WKMiE9PyT9lKdB3KXH6kPAKVBpwdnvk
-Message-ID: <CAPDyKFo1DWRbidKrMg+DkwOxsdzDrfF5+YVhjjzGZzkAC7=Yfg@mail.gmail.com>
-Subject: Re: [PATCH 5.10 474/491] mmc: core: Drop superfluous validations in mmc_hw|sw_reset()
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>, 
-	Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,broadcom.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org,amd.com,vmware.com,lists.freedesktop.org,vger.kernel.org,lists.linaro.org,linuxtesting.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-237792-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237791-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NO_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[popovnkv@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,decadent.org.uk:email]
-X-Rspamd-Queue-Id: 0404E3F903D
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url]
+X-Rspamd-Queue-Id: D8E153F904B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 13 Apr 2026 at 23:10, Ben Hutchings <ben@decadent.org.uk> wrote:
->
-> On Mon, 2026-04-13 at 18:01 +0200, Greg Kroah-Hartman wrote:
-> > 5.10-stable review patch.  If anyone has any objections, please let me know.
-> >
-> > ------------------
-> >
-> > From: Ulf Hansson <ulf.hansson@linaro.org>
-> >
-> > [ Upstream commit fefdd3c91e0a7b3cbb3f25925d93a57c45cb0f31 ]
-> >
-> > The mmc_hw|sw_reset() APIs are designed to be called solely from upper
-> > layers, which means drivers that operates on top of the struct mmc_card,
-> > like the mmc block device driver and an SDIO functional driver.
-> >
-> > Additionally, as long as the struct mmc_host has a valid pointer to a
-> > struct mmc_card, the corresponding host->bus_ops pointer stays valid and
-> > assigned.
-> >
-> > For these reasons, let's drop the superfluous reference counting and the
-> > redundant validations in mmc_hw|sw_reset().
->
-> Is this reasoning still correct for older branches such as 5.10?
+From: Vladimir Popov <popov.nkv@gmail.com>
 
-Yes, I think it should be fine.
+If vmw_execbuf_fence_commands() call fails in
+vmw_kms_helper_validation_finish(), it sets *p_fence = NULL. If 
+ctx->bo_list is not empty, the caller, vmw_kms_helper_validation_finish(),
+passes the fence through a chain of functions to dma_fence_is_array(),
+which causes a NULL pointer dereference in dma_fence_is_array():
 
->
-> And if so, do they also need commit 406e14808ee6 ("mmc: block: Remove
-> error check of hw_reset on reset"), which claims to fix this one?  I
-> don't really follow the explanation in its commit message.
+vmw_kms_helper_validation_finish() // pass NULL fence
+  vmw_validation_done()
+    vmw_validation_bo_fence()
+      ttm_eu_fence_buffer_objects() // pass NULL fence
+        dma_resv_add_fence()
+          dma_fence_is_container()
+            dma_fence_is_array() // NULL deref
 
-Yes, good point, this commit is needed as well!
+Fix this by adding a NULL check in vmw_validation_bo_fence(): if the fence
+is NULL, fall back to ttm_eu_backoff_reservation()to safely release
+the buffer object reservations without attempting to add a NULL fence to
+dma_resv. This is safe because when fence is NULL, vmw_fallback_wait()
+has already been called inside vmw_execbuf_fence_commands() to synchronize
+the GPU.
 
-Kind regards
-Uffe
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
->
-> Ben.
->
-> >
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-> > Link: https://lore.kernel.org/r/20210212131532.236775-1-ulf.hansson@linaro.org
-> > Stable-dep-of: 901084c51a0a ("mmc: core: Avoid bitfield RMW for claim/retune flags")
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  drivers/mmc/core/block.c |    2 +-
-> >  drivers/mmc/core/core.c  |   21 +--------------------
-> >  2 files changed, 2 insertions(+), 21 deletions(-)
-> >
-> > --- a/drivers/mmc/core/block.c
-> > +++ b/drivers/mmc/core/block.c
-> > @@ -987,7 +987,7 @@ static int mmc_blk_reset(struct mmc_blk_
-> >       md->reset_done |= type;
-> >       err = mmc_hw_reset(host);
-> >       /* Ensure we switch back to the correct partition */
-> > -     if (err != -EOPNOTSUPP) {
-> > +     if (err) {
-> >               struct mmc_blk_data *main_md =
-> >                       dev_get_drvdata(&host->card->dev);
-> >               int part_err;
-> > --- a/drivers/mmc/core/core.c
-> > +++ b/drivers/mmc/core/core.c
-> > @@ -2096,18 +2096,7 @@ int mmc_hw_reset(struct mmc_host *host)
-> >  {
-> >       int ret;
-> >
-> > -     if (!host->card)
-> > -             return -EINVAL;
-> > -
-> > -     mmc_bus_get(host);
-> > -     if (!host->bus_ops || host->bus_dead || !host->bus_ops->hw_reset) {
-> > -             mmc_bus_put(host);
-> > -             return -EOPNOTSUPP;
-> > -     }
-> > -
-> >       ret = host->bus_ops->hw_reset(host);
-> > -     mmc_bus_put(host);
-> > -
-> >       if (ret < 0)
-> >               pr_warn("%s: tried to HW reset card, got error %d\n",
-> >                       mmc_hostname(host), ret);
-> > @@ -2120,18 +2109,10 @@ int mmc_sw_reset(struct mmc_host *host)
-> >  {
-> >       int ret;
-> >
-> > -     if (!host->card)
-> > -             return -EINVAL;
-> > -
-> > -     mmc_bus_get(host);
-> > -     if (!host->bus_ops || host->bus_dead || !host->bus_ops->sw_reset) {
-> > -             mmc_bus_put(host);
-> > +     if (!host->bus_ops->sw_reset)
-> >               return -EOPNOTSUPP;
-> > -     }
-> >
-> >       ret = host->bus_ops->sw_reset(host);
-> > -     mmc_bus_put(host);
-> > -
-> >       if (ret)
-> >               pr_warn("%s: tried to SW reset card, got error %d\n",
-> >                       mmc_hostname(host), ret);
-> >
-> >
->
-> --
-> Ben Hutchings
-> When in doubt, use brute force. - Ken Thompson
+Fixes: 038ecc503236 ("drm/vmwgfx: Add a validation module v2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vladimir Popov <popov.nkv@gmail.com>
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.h | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.h b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.h
+index 353d837907d8..fc04555ca505 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.h
+@@ -127,16 +127,23 @@ vmw_validation_bo_reserve(struct vmw_validation_context *ctx,
+  * vmw_validation_bo_fence - Unreserve and fence buffer objects registered
+  * with a validation context
+  * @ctx: The validation context
++ * @fence: Fence with which to fence all buffer objects taking part in the
++ * command submission.
+  *
+  * This function unreserves the buffer objects previously reserved using
+- * vmw_validation_bo_reserve, and fences them with a fence object.
++ * vmw_validation_bo_reserve, and fences them with a fence object if the
++ * given fence object is not NULL.
+  */
+ static inline void
+ vmw_validation_bo_fence(struct vmw_validation_context *ctx,
+ 			struct vmw_fence_obj *fence)
+ {
+-	ttm_eu_fence_buffer_objects(&ctx->ticket, &ctx->bo_list,
+-				    (void *) fence);
++	/* fence is able to be NULL if vmw_execbuf_fence_commands() fails */
++	if (fence)
++		ttm_eu_fence_buffer_objects(&ctx->ticket, &ctx->bo_list,
++					    (void *)fence);
++	else
++		ttm_eu_backoff_reservation(&ctx->ticket, &ctx->bo_list);
+ }
+ 
+ /**
+-- 
+2.43.0
+
 
