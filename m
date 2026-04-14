@@ -1,223 +1,312 @@
-Return-Path: <stable+bounces-237730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEeLIdzf3WmDkgkAu9opvQ
-	(envelope-from <stable+bounces-237730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:34:04 +0200
+	id UKEXC6ri3WnrkgkAu9opvQ
+	(envelope-from <stable+bounces-237733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:46:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C043F602E
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:34:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 685D33F6329
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 08:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 615FF303E8DA
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 06:33:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16119300F97A
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 06:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3A536D51B;
-	Tue, 14 Apr 2026 06:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CECA36DA1F;
+	Tue, 14 Apr 2026 06:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AhAqGbNh";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kCxpMacH"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mpVvfKuh";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gBZO+ndt"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC5B36D510
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E6036E48B
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776148418; cv=none; b=jtjJdnFfip1DhzHy/4w4e1yMQYFeA5PVseuNeNSXOJJzBFeW0/OVBpYAHX2g/iodw5vg09FkvFfTCGciyszBsApuaAI7VOWxWJfvmINU0XrX+nM0k1B6SrCd+HUaO0IbQpF4fZoXq7IPACVCkmdzeZRV+fhIyxaKkNdefJYZDRQ=
+	t=1776149001; cv=none; b=uZbFNfE4rWXcSr1qiqOtAHYTyr6WJVA+bQOTxkF46pQnRUz+Is0z8Eemjxvan2SXyvswgwjpC0aTpDRpVuNjH/SsgtHaz2eakQOrQANBq1LY0ygCZjsULVXQbBupLwc3D9qhiCJrK4aMWlPSMGed7brbYdDFktPxkC5x9s4m9PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776148418; c=relaxed/simple;
-	bh=y1K+LaRyhz93aZWp+gZtDUUqtVcO3IOvlsscpo93Plo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FvfbNANRJ+KiofvQaicWU2Z+uMiYOvUXKjh4gwpW+3nF7O5TuS5GtxejYPIK1SpEXTNjiF3f+pcEnr7vQ4Qkg7bAqw2bdYpFARqWuZd4bKIw8ONjQxeA5Gh36IxNFW16cF0hvOuRRLtuTgezIoporhCALel9hsxtZeX6GIyjmcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AhAqGbNh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kCxpMacH; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1776149001; c=relaxed/simple;
+	bh=qGYM0IN/IE6gIXEcNZAdzWaCFRZ9g7FY1bYZKtfP26w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YL/gWr3NFmZhEb/Y4zHNd4uO0uUxittIWOLZdLu0vuTL5QLZJWpxz0BB7iF61UyhXyGznOMj7WXBUgliKEO3SDmcy10ZS22cwjsiomisrOwq9gidH3MCSc3iBJHxaHq6lKCu5IERkwNu+d+Z5csqItC82PglZIm7RrVI79tJoBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mpVvfKuh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gBZO+ndt; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63E6RITL280834
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:33:36 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DLCau5967261
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:43:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=kiBHEicgBcwVfHpBg7CCiYin
-	nWHa6rAo+LKmoWMOeFo=; b=AhAqGbNhMZ2GwitpEGbeVgi2jnydxT42avO5ZwSS
-	7rmpJQZwelKyMxwIYvfAlS3rs+EhBTn0wtmQDGlfofkzNtr2BLiv6ybCCwlWO34b
-	gsyh0atIipinzGL45rw728cAlYgCtq3y68tOqDNVJFT2ukTiElgwHktj5FPrC8m2
-	5p6HSvoSI2e0C5enq/EZ2kwkFiqBJ4jTV9WNcO5F2ptbkpIpZ9lf29pQDwJ8LtZU
-	cp7TUp+w+gYq5H6PemUan4qtXZ8ZdrdGsDTZ7UcbuOagXjBclRRC1qZAXKa096OS
-	IkS23r4ig4wpoOrMJc1LLhsPxSgqwevbXRbmo2TcbPtE9Q==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dh86vhbqg-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ooS24x9VLICMx3FC4zHZJS9uTNKsD8j0SzaYRsjwM84=; b=mpVvfKuhiMoV1xr+
+	gyS2yoqIG5S8QlXYoSHSQPuKMSieUydQ3HMx6rZe3j86+4wxHNKjK7MYGkr2VuKg
+	JImjLBEVO2vdJP3WlvOhp+QLQcJmegAyBasWFUsCnoupY/xSBr6YSGnRKba9QwSM
+	AMra+lGsYunteNB3/SeN+g9PseX2u79cV1ZcXq79zLfTbBrQL3it6rKqbTwUzPUD
+	nC71v7qzg1rBg9B+ZxOK9vqFRTQ1m+VDQXHXt/T2NMq3mzLkkDLkWAxTkEEg97wG
+	eHi41YrOcBZBj6ZDXX52fwwFUhfihnO7XHl7gcRrl7kUuW6B6Vj3qTBqLOHI51wG
+	ULqnSg==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dh86v1c07-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:33:35 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c76bb22a8ceso5465005a12.2
-        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 23:33:35 -0700 (PDT)
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:43:19 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2b24e9b4d82so42697485ad.1
+        for <stable@vger.kernel.org>; Mon, 13 Apr 2026 23:43:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776148415; x=1776753215; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kiBHEicgBcwVfHpBg7CCiYinnWHa6rAo+LKmoWMOeFo=;
-        b=kCxpMacH/BdDl92DTMvGvrpC3ah9fz52/4ADyZw2YvMfI+vXLD9y6g9pNLs5Kt8gRH
-         96nzha9PKN0Rx/2p4wZhGQ1HJUYUY4Wkraz0c2KCO4n+KkAhk+4ydBz6jzdnYXLLqWdQ
-         OwH/E/n/McIXSmrVPpY++Ndp+B8rIToBxnSOgK4JA3kCPtKKUJssi0BUwL3hNdK3/EIM
-         k7cGD+X68EXpxCdFZQyEN1+InlmDdFcShbb8+P0FUzEXCEZLtZCWpWRvJqeftQxSiKKP
-         X2f3oa5t89bL0/vLSIpe2zXJ7AFlBhwfWjALnt5hVJvhk3MmnUdhFQ3B/8neEF8Uwofr
-         Gkmw==
+        d=oss.qualcomm.com; s=google; t=1776148998; x=1776753798; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ooS24x9VLICMx3FC4zHZJS9uTNKsD8j0SzaYRsjwM84=;
+        b=gBZO+ndtUgIab1shgPCi0DlY/gzJLz/ikA0V/ih6zT8W8f2recxHaLh1wKry32u5FK
+         4Am9vGEGJLSL7JCbUuzOWW6AhNppT/s2z9jklIROVmGC8ysOBCB38Oj7VGrc7LU9yIYY
+         SKvNX8ZTZwgRJTR6LaD97YFLcjNYB18q3o9ULei5QM4Z3x2Bs9bQGkVTRBwG8tTXObEA
+         gVu3d8K6VBp+Qd1ocTXXiRYlZkKhSpKFsNdgdJUt9Qc3n0RWagjiUn75IOJO0IUBsHnm
+         CrZ48+MGw+KVcmaW4dft9hZD9P61M+OOKAmmnGo4EeZZrPBmKuIcvgFhkMfe1jEfZApf
+         0dLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776148415; x=1776753215;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kiBHEicgBcwVfHpBg7CCiYinnWHa6rAo+LKmoWMOeFo=;
-        b=I3A38y6lqXA6VJ2beGqw2d5LtUyjeHkyEOeO1LvfbekO27A4Qw4nrQEahd+aLyncVI
-         9WzXkYIs89Brf8nNvnEoYyz6B8ehryh5HpFT7q+0vpZetFjpTu4dSwc83mgzlTmZSdj0
-         0QXK+saL8INeuedHsh6M7B4O1gtrwcg6I7VLWuM4pY+8SI0auim8zFcBJmwJIm9s4HY4
-         KY4RrEybpH3qMLlzPZdi/kX2gh2ShhcOtXdCLUP0CH4LMDfEdXX9CY9401EKqr66rytF
-         y+29ybPJ1b1v9YFljxO18T2RNhw5uZD5bF6N3dy9yTD1jBhSDsyWULpnUTdA9obn3wCi
-         dg/w==
-X-Forwarded-Encrypted: i=1; AFNElJ8cnCC4kpYMSAQ9MsTLyX+BM4pu0xp6lLFVWcCgm08fsF3Kwex3UiXDWEUpaXe966AxUwVAtQw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBDq7Nkow0/aMiF0dCH6+iMZ+kfi94yztrQfbnl/YOmCh/HvHT
-	qNAvLGVgscF2kPrc2Bze3T+gyovwcqvxsIg4ZX1Si7wuMHrTmrwmU5YJigEwHcb7rp97WtdnRZt
-	1Hm8pc7+t0Gy1qHVgXhWi1py8jv7KGXEIuNRPAA5vxBC7iSGS2ypxfu4EqSI=
-X-Gm-Gg: AeBDieu5RMW/leWcho/fw6eq6BxUEJOh4JydtSsR68mqLPHJ19QLubXinZJnrmK/WL6
-	JPZuxJX7U89Rn4r0ZqigkJGUrqEZPmrvzWrCmTF/yu3FIiPdcz/yUukWQCFSdeOKEWDknC2ItSA
-	OESspOL1Dmf4kVdpfq+lIyolIgYZR9cn0bkh96X1L5Or2FhzqlXjyspwAgLbn+n3m/a7hrGL9QK
-	u8pqpS9hK7xf606JJD6owUWicV2OCwFTkeq+vOWLKXw5mfH4ZeX3MCA7XWsZ2T+rD9wX4PJOSvs
-	fsF6WB2+QYUKb0qjXylEV8AzH049d9OtXa8qAkn2fBGNlpdpBIGI9NTykXttS3flu7H+vL3SAD/
-	AGetVn3y1LURNVdFrElOZyJPK0VbV5DN0IutxZ+doxawWEdq1
-X-Received: by 2002:a05:6a00:2985:b0:827:4372:dd15 with SMTP id d2e1a72fcca58-82f0c2c2096mr15363505b3a.40.1776148414789;
-        Mon, 13 Apr 2026 23:33:34 -0700 (PDT)
-X-Received: by 2002:a05:6a00:2985:b0:827:4372:dd15 with SMTP id d2e1a72fcca58-82f0c2c2096mr15363469b3a.40.1776148414225;
-        Mon, 13 Apr 2026 23:33:34 -0700 (PDT)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c377318sm12699558b3a.26.2026.04.13.23.33.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 23:33:33 -0700 (PDT)
-Date: Tue, 14 Apr 2026 12:03:25 +0530
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-Cc: Bryan O'Donoghue <bod@kernel.org>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Stefan Schmidt <stefan.schmidt@linaro.org>,
-        Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 06/11] media: iris: Fix VM count passed to firmware
-Message-ID: <20260414063325.f3yag6gnmaysddkp@hu-mojha-hyd.qualcomm.com>
-References: <20260414-glymur-v1-0-7d3d1cf57b16@oss.qualcomm.com>
- <20260414-glymur-v1-6-7d3d1cf57b16@oss.qualcomm.com>
+        d=1e100.net; s=20251104; t=1776148998; x=1776753798;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ooS24x9VLICMx3FC4zHZJS9uTNKsD8j0SzaYRsjwM84=;
+        b=pnUyvzsxB19ZTUlKsSYVOsb242Vi19faYy//WWIRmf6uZHDXQrVjBabMOEUvvvbpax
+         JgrcRWwPR5uSY/TbDqtplr4szQsyqORlHfak9CWpN6EB1JDs4qMPRWGaHawnclQnzqLl
+         AJ7wyNPv4Q/FIODUBTmit3YO5ocMPVlufRtxr0xPPt57c3kuGGVuFIqRXXSvyqza4H2+
+         uAy+a4O9q3zRzcchFqUGOX8BSb/mzkAhLFPki1M3xW9TuO3RCIvmEfae5+Z99/cPJeu+
+         kOomRDrgAhtxxHlggvrHAgkazsoFYyFg22teexr2AJbJNc1judt8jo1/585QsJLnCUii
+         csMQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9sbIMqp+VJsbfJa1pc+BQB5IY+A9ydtM4M7he9lwlbiDd0DjEqhtwe4RA1HtK7EFay4N/4f1Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyipMxoc4jelqn0JgRXyr9vWdhHkf+W2pE1/U1hG9s+l7Az+4j9
+	KP4Ft8dKuzlLiyu1chKpivmACvjVfkuEbtAHUrlAG8GJ7a8pBTXeA20T6YwkvcKMPmMsHXg43gU
+	GcKG+tcNF3EMV6eBNvytErUuSsEw8Dxtuae4bsQQjeAL+Iirs4OVIyof3AXQ=
+X-Gm-Gg: AeBDietlv8FQ2Si8J7QqKnyLJugua20xcORjlUwjuOAqUQf2nkXgMbItb4TfQY5BHSj
+	1tIPlB/tU7NSlRfnTnMCm8B/ptALt3WiqY+UaNUpckmJdKci0LgSbSeEYV6L+DHEUESF7LLJpqt
+	VutDX+g1qYrtvkmmtoscqtN/8jntV9rL4+Am+qhpFFv845G+wPnJLuZtX59A0GBfipnLsKHn8tp
+	23u5Cq14dZHH4OuH2fmCMSa53t4c1MY0H0mwib1xOXYyskmbnMvIuyfh2WT7g0A6OAHPBxhNLw9
+	PBzRvlm2RpqOQ52BqIki4OeQ5vnkPVMwb0APbme3kl3WKG1YDQ5a2CpF7wVAMGwcRhtWPAExE/S
+	XxZK6dU+J5C1XKBkq0Bg8Ov1k9uwGPCvkqMlEO613zgWmuDLaa3iLrEUCuvcFYe+qvr9oXx+V77
+	MTso9EB97JIUsaSD6BJQqCGu43Z4Ks5A==
+X-Received: by 2002:a05:6a21:328e:b0:39b:897c:6f84 with SMTP id adf61e73a8af0-39fe440ebb3mr15043050637.2.1776148998327;
+        Mon, 13 Apr 2026 23:43:18 -0700 (PDT)
+X-Received: by 2002:a05:6a21:328e:b0:39b:897c:6f84 with SMTP id adf61e73a8af0-39fe440ebb3mr15043028637.2.1776148997793;
+        Mon, 13 Apr 2026 23:43:17 -0700 (PDT)
+Received: from [10.133.33.118] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7921a1d0d2sm10359483a12.27.2026.04.13.23.43.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 23:43:17 -0700 (PDT)
+Message-ID: <ba4d194b-6d31-4d8a-a6a6-da116f9f56ac@oss.qualcomm.com>
+Date: Tue, 14 Apr 2026 14:43:13 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414-glymur-v1-6-7d3d1cf57b16@oss.qualcomm.com>
-X-Proofpoint-GUID: YMMobKqqFanDUJMeyCaH5rlERHYFAk63
-X-Authority-Analysis: v=2.4 cv=cffiaHDM c=1 sm=1 tr=0 ts=69dddfbf cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=oTq01oph0ifE-MoszjAA:9 a=CjuIK1q_8ugA:10
- a=3WC7DwWrALyhR5TkjVHa:22
-X-Proofpoint-ORIG-GUID: YMMobKqqFanDUJMeyCaH5rlERHYFAk63
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDA1OSBTYWx0ZWRfX0La31UaXJauO
- C9cnPMn95D7ZGzdYZF17uUEpesYVfRDE2/jZsE+lnUeMlzjvHTujtePhk4fmdLsS3mCv3TI8hj9
- 6YdqzrieeE2UH1L7UYkfKCJCwwSTf9zfXmXv0WuUB55oyisTWzCUZjuTla00vkzNnDLwPfvy18t
- j+hbqUeSHQXOU36EGQif8UuR4ciuyWwP5AIWJfDnHJ6SyVcLjVUFEv8tUePcUYo7ile9n9SzGWq
- /rgidNp5zr5nkYM6IQXV5DZ5qFn7UkLuHzSvcwuvTv705CsXvJY8u+OYrhOhf/1XvGSKYJ+QV/K
- kjhdcSb+/WPM6vMNFEGEGevmHKy2ZEg1wSjHIYpholQIM2dXYIjrNlMojMaILWvbmnd+nAMr9oK
- UGm90ey5gMad9UmPImTT1Vx3CFoFxcGPJtaeyNFnkgmY+ejacHC/zdi6Aipqfudqfp4DaEXAzhc
- BsjvE0o/a6knQShXUTg==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath11k: apply existing PM quirk to ThinkPad P14s
+ Gen 5 AMD
+To: Kyle Farnung <kfarnung@gmail.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+        Baochen Qiang <quic_bqiang@quicinc.com>,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260330-p14s-pm-quirk-v2-1-ef18ce07996b@gmail.com>
+ <082b3d13-6fb1-4041-a187-fddec3b013e4@oss.qualcomm.com>
+ <CAOPSVF0VHR4BQsmfWFeFnANsQYBw-x7fHxH2JFNO=oWjgeS66Q@mail.gmail.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <CAOPSVF0VHR4BQsmfWFeFnANsQYBw-x7fHxH2JFNO=oWjgeS66Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDA2MSBTYWx0ZWRfX3+04gNBwgw1+
+ 2IBW/CONs8z3rQE+PJ672Zxg8O2Sd9UDrlFs4T0C6Z6q5u5KkVSvqY8dTWX7OmwMyx3D+Z6Xen2
+ dqKDXTl5EKZEDd16KXzJzZQWME/rFk5knHlQi86bUHF3F7eiaKGx5G1uJBaNm6QtHs69zYllOlN
+ ckW39xGpfTNnsiDSBiBLNrYzrPmYxZoxmuHR5zsXdkbSxI4RqkKy585SGGI8cmDIT+l5qehvtJ+
+ 0bOHTwa8TshpUjI2T4TK9nklq9BSYQCvNibNxj/NgKfxe4AdjEUD8bBzWsCwc5wNHSnCLd/GiMg
+ 9LigHNjFnpHDyXFhHrbPUKoRtPeDTVVBfll6VXnN+pCl98DFH+yazWY/joZefSOm+BgPRiPlNvG
+ oO94TXR8VMzAaaT+XBqlXetucV7T8rwz1ZsuFnrFpitCQMGrTPkJYvUygETabxcJ205cGM4XSAC
+ VcI2Tin/BHtbWTBtzIw==
+X-Proofpoint-ORIG-GUID: FmMyEmbxIHLDTZT4EMxr2TdjqKcC9Tp8
+X-Authority-Analysis: v=2.4 cv=Iowutr/g c=1 sm=1 tr=0 ts=69dde207 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=VwQbUJbxAAAA:8 a=8k6WQxmsAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=4Wa1Ze30II_mXCYJOSIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: FmMyEmbxIHLDTZT4EMxr2TdjqKcC9Tp8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-14_01,2026-04-13_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 lowpriorityscore=0 suspectscore=0 spamscore=0 phishscore=0
+ suspectscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ spamscore=0 phishscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140059
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140061
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237730-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,hu-mojha-hyd.qualcomm.com:mid];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-237733-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lenovo.com:url];
+	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mukesh.ojha@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,dt];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 18C043F602E
+X-Rspamd-Queue-Id: 685D33F6329
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 14, 2026 at 10:30:02AM +0530, Vishnu Reddy wrote:
-> On Glymur, firmware interprets the value written to CPU_CS_SCIACMDARG3 as
-> the number of virtual machines (VMs) and internally adds 1 to it. Writing
-> 1 causes firmware to treat it as 2 VMs. Since only one VM is required,
-> remove this write to leave the register at its reset value of 0. This does
-> not affect other platforms as only Glymur firmware uses this register,
-> earlier platform firmwares ignore it.
-> 
-> Fixes: abf5bac63f68a ("media: iris: implement the boot sequence of the firmware")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
 
-If this is a fix, should be the first patch in the series., so that it
-can be applied independently.
 
-> ---
->  drivers/media/platform/qcom/iris/iris_vpu_common.c | 1 -
->  1 file changed, 1 deletion(-)
+On 4/1/2026 11:48 AM, Kyle Farnung wrote:
+> On Tue, Mar 31, 2026 at 7:08 PM Baochen Qiang
+> <baochen.qiang@oss.qualcomm.com> wrote:
+>>
+>>
+>>
+>> On 3/31/2026 2:32 PM, Kyle Farnung via B4 Relay wrote:
+>>> From: Kyle Farnung <kfarnung@gmail.com>
+>>>
+>>> Some ThinkPad P14s Gen 5 AMD systems experience suspend/resume
+>>> reliability issues similar to those reported in [1]. These platforms
+>>
+>> how similar it is? can you describe the issue in details?
 > 
-> diff --git a/drivers/media/platform/qcom/iris/iris_vpu_common.c b/drivers/media/platform/qcom/iris/iris_vpu_common.c
-> index 548e5f1727fd..bfd1e762c38e 100644
-> --- a/drivers/media/platform/qcom/iris/iris_vpu_common.c
-> +++ b/drivers/media/platform/qcom/iris/iris_vpu_common.c
-> @@ -78,7 +78,6 @@ int iris_vpu_boot_firmware(struct iris_core *core)
->  	iris_vpu_setup_ucregion_memory_map(core);
->  
->  	writel(ctrl_init, core->reg_base + CTRL_INIT);
-> -	writel(0x1, core->reg_base + CPU_CS_SCIACMDARG3);
->  
->  	while (!ctrl_status && count < max_tries) {
->  		ctrl_status = readl(core->reg_base + CTRL_STATUS);
+> The issue is that intermittently after suspend my WiFi adapter connects
+> successfully for a few minutes and then drops. It will then keep trying to
+> reconnect in a loop but never succeed. A reboot will fix it, but eventually
+> I found that reloading the module also resolves the issue
+> (modprobe -r ath11k_pci && modprobe ath11k_pci). Based on some searching, I
+> did try adding "ath11k_pci.disable_idle_ps=1" to my kernel arguments. At
+> first it looked like maybe it worked, but then I hit the same problem
+> again. At that point I decided to try building a custom module with the
+> ATH11K_PM_WOW override and so far I'm two days and 10 suspends in without
+> issue.
 > 
-> -- 
-> 2.34.1
+> Looking through kernel logs, the issue appears to have started with kernel
+> version 6.17.4. It looks like my Fedora install jumped from 6.16.10 to
+> 6.17.4 on October 22, 2025 and I started seeing the issue two days later.
 > 
+> Here are the logs from the most recent occurrence (filtered for brevity):
+> 
+> Mar 29 15:26:24 kjfp14sg5 kernel: PM: suspend exit
+> Mar 29 15:26:24 kjfp14sg5 kernel: ath11k_pci 0000:02:00.0: chip_id
+> 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
+> Mar 29 15:26:24 kjfp14sg5 kernel: ath11k_pci 0000:02:00.0: fw_version
+> 0x11088c35 fw_build_timestamp 2024-04-17 08:34 fw_build_id
+> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> Mar 29 15:26:30 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=COUNTRY alpha2=US
+> Mar 29 15:26:30 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=COUNTRY alpha2=US
+> Mar 29 15:26:30 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=COUNTRY alpha2=US
+> Mar 29 15:26:35 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-CONNECTED - Connection to 68:d7:9a:2a:94:f8 completed [id=0
+> id_str=]
+> Mar 29 15:26:49 kjfp14sg5 wpa_supplicant[2373]: wlp2s0: CTRL-EVENT-BEACON-LOSS
 
--- 
--Mukesh Ojha
+this is the reason to your disconnection
+
+> Mar 29 15:26:55 kjfp14sg5 kernel: ath11k_pci 0000:02:00.0: failed to
+> flush transmit queue, data pkts pending 9
+> Mar 29 15:26:55 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-DISCONNECTED bssid=68:d7:9a:2a:94:f8 reason=4
+> locally_generated=1
+> Mar 29 15:27:00 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-DISCONNECTED bssid=80:2a:a8:98:26:3e reason=6
+> Mar 29 15:27:05 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-DISCONNECTED bssid=74:ac:b9:df:54:36 reason=6
+> Mar 29 15:27:09 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-DISCONNECTED bssid=68:d7:9a:2a:94:f8 reason=2
+> Mar 29 15:27:09 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
+> CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="Batman" auth_failures=1
+> duration=10 reason=CONN_FAILED
+
+and the bssid is disabled so association to this AP won't happen in a period.
+
+Anyway, although it works, using the PM quirk seems not the right fix. As you mentioned it
+seems like a regression starting to show in 6.17.4, can you do regression test to locate
+the issue commit?
+
+> 
+>>
+>>> were not previously included in the ath11k PM quirk table.
+>>>
+>>> Add DMI matches for product IDs 21ME and 21MF to apply the existing
+>>> ATH11K_PM_WOW override, improving suspend/resume behavior on these
+>>> systems.
+>>>
+>>> Tested on a ThinkPad P14s Gen 5 AMD (21ME) running 6.19.9.
+>>>
+>>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+>>> [2] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/thinkpad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/
+>>>
+>>> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
+>>> ---
+>>> Changes in v2:
+>>> - Fix missing mailing list recipients (linux-wireless, ath11k, linux-kernel)
+>>> - Link to v1: https://lore.kernel.org/r/20260330-p14s-pm-quirk-v1-1-cf2fa39cc2d5@gmail.com
+>>> ---
+>>>  drivers/net/wireless/ath/ath11k/core.c | 14 ++++++++++++++
+>>>  1 file changed, 14 insertions(+)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+>>> index 3f6f4db5b7ee1aba79fd7526e5d59d068e0f4a2e..21d366224e75904feeae6cb9c93d9ef692d127fe 100644
+>>> --- a/drivers/net/wireless/ath/ath11k/core.c
+>>> +++ b/drivers/net/wireless/ath/ath11k/core.c
+>>> @@ -1041,6 +1041,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+>>>                       DMI_MATCH(DMI_PRODUCT_NAME, "21D5"),
+>>>               },
+>>>       },
+>>> +     {
+>>> +             .driver_data = (void *)ATH11K_PM_WOW,
+>>> +             .matches = { /* P14s G5 AMD #1 */
+>>> +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+>>> +                     DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
+>>> +             },
+>>> +     },
+>>> +     {
+>>> +             .driver_data = (void *)ATH11K_PM_WOW,
+>>> +             .matches = { /* P14s G5 AMD #2 */
+>>> +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+>>> +                     DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
+>>> +             },
+>>> +     },
+>>>       {}
+>>>  };
+>>>
+>>>
+>>> ---
+>>> base-commit: dbd94b9831bc52a1efb7ff3de841ffc3457428ce
+>>> change-id: 20260330-p14s-pm-quirk-0a51ba19235f
+>>>
+>>> Best regards,
+>>
+
 
