@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-237689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EH0+FguN3Wn5fQkAu9opvQ
-	(envelope-from <stable+bounces-237689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:40:43 +0200
+	id gG3QHi6M3Wn5fQkAu9opvQ
+	(envelope-from <stable+bounces-237690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:37:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1B43F4987
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:40:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81793F491F
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 02:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73247306967B
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 00:33:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF35C3022922
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 00:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E90175A6E;
-	Tue, 14 Apr 2026 00:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BAD19DF4F;
+	Tue, 14 Apr 2026 00:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSBVzRIL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZPvs/i/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958673770B
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 00:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8791019ABC6
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 00:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776126835; cv=none; b=QtupA9Rn43UXeL0hNphZgPZK+BKij4RtXuC/vjhwWBfbw1HA6r/3QDxS0R7fCdmidifGhgb42ghmNdmIGc+IkHz48LXo75hzunzYPQCUUntjERt+EcNpjgTb2FZKBJi52q5VI9rhDtBdl7ZHmhjvJwh2pAjXrEFeYSDxXQoyEHc=
+	t=1776127019; cv=none; b=R2dwxVzkQWGS9kXRKAg9XXPFOt6eKcVTz6pTv8gBqDG5jmKbC/4Cynrij44jKoqR2Isz+wXXNJdoHukmlJwav71iGXTrpglycoNnRh8ZOp/8zwgFZaXZwwHdInWN/z4QALn1v/liHIj1hKSNiQ+gQdgNA2w4JPGKk9kmmSzUZQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776126835; c=relaxed/simple;
-	bh=Qm748jvzmFkVjLh9RorB4FZfNGWD2EOHvcUKfTVDEzo=;
+	s=arc-20240116; t=1776127019; c=relaxed/simple;
+	bh=Y/hMCEVr7NR8VAN6n0eJihV0Hi0DNVigCnyhzvu6OiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TY5KcAB0UO0lUbokaT1uSA21dQuwuru3ReimqCXKkKpDHCHIwIMk7/RUb7zLna4pSX4VjE+M8IRejfQMW9LX5GzabtH0ctSK5SatWt35wYhGefo+RC/RGUVQWkOYYb1ShmpjAdA9PP12oKzTPHxGczTt5S8rM8oEBAhx2jqIRJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSBVzRIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860BDC2BCAF;
-	Tue, 14 Apr 2026 00:33:54 +0000 (UTC)
+	 MIME-Version; b=kMFTCnT6M56ybx1xyvVRwdsO+jWzQqqCvGhXThJaEh3V3rYltRPDgSxGNqjzuuazcEyaSNpo7vtsUYnpTyw8TjBNGF7BYpZuMej46OT6cyLoZdgtxLtMkikpnkw08qkShnGSvoxXopxL/YE3aqXZbkrjj4jLSrmdF6sCZ4L9Vak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZPvs/i/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300A7C2BCAF;
+	Tue, 14 Apr 2026 00:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776126835;
-	bh=Qm748jvzmFkVjLh9RorB4FZfNGWD2EOHvcUKfTVDEzo=;
+	s=k20201202; t=1776127019;
+	bh=Y/hMCEVr7NR8VAN6n0eJihV0Hi0DNVigCnyhzvu6OiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSBVzRILlj9z0FP0msrYZcBclr75o656dIwzim8yMFV1QE1poBjzXhyy+h6YOuZvc
-	 yb+gMNlxIjCiTYzjZQCLU+bhB34rnVY/d+9l//7qdzM0n1+wY5TsDfQQ0wyeLBVJ6E
-	 CK2KiEXqtpMZA2sXL5st+JcFZGxSCIMhqNWup0oc7iyzqM0eovRvAjAvHN3skAfo6Z
-	 GY+Z+JDli14S4ILwRtk8sYcxvmebd+j9yvIiutCotozlor6wWRNrUptysu2CP9vqxa
-	 8n+4e2T+KzuhGxXblodCqEM6hrMEPKucax7Q8GGNOqNOM+zwPMNwDoH1k7aQS97WVS
-	 Hbww8usXk7Pkg==
+	b=QZPvs/i/It97AUoCNfPy3OVGYaAYuqQ0jyhfNKyJO1yT9a3GyoqtM1Mi8mKuj5Dv4
+	 r0nJdcjLeJzVG0ZHftgFPRyEIlA2YZ29AGUMogQu0TBeMDFp8inkuBnFgdoyiBJgJy
+	 Z5wEEPT3ofqH0hJVNzeJBCItDkMJY45LoNPy7leSb8g/FCZYM7jJIABr4s5LgWVu2a
+	 qmaf4RWhPdFWpJuIKdsU/+MUZ+mieog3rbkxc7UfPyLb+n+vvTKAFu9EH/gX6CAAcN
+	 tMPP/yX6qyZoUeDgDM5tic5ta37ntnsUuDNtuP6J7fPx+BvpICJxmZnpY+nDtpXRYn
+	 z3Ayla+b7g+3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -54,12 +54,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] rxrpc: Fix anonymous key handling
-Date: Mon, 13 Apr 2026 20:33:53 -0400
-Message-ID: <20260414003353.3804085-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] rxrpc: Fix anonymous key handling
+Date: Mon, 13 Apr 2026 20:36:56 -0400
+Message-ID: <20260414003656.3806621-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041311-botch-harpist-8043@gregkh>
-References: <2026041311-botch-harpist-8043@gregkh>
+In-Reply-To: <2026041312-iphone-tattoo-12b6@gregkh>
+References: <2026041312-iphone-tattoo-12b6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,18 +73,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237689-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-237690-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -94,8 +94,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
-X-Rspamd-Queue-Id: AD1B43F4987
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sashiko.dev:url,auristor.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E81793F491F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -134,10 +134,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index 71e40f91dd398..b03d93d8b69d0 100644
+index 1882fea719035..0b24d09637252 100644
 --- a/net/rxrpc/sendmsg.c
 +++ b/net/rxrpc/sendmsg.c
-@@ -624,7 +624,7 @@ rxrpc_new_client_call_for_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg,
+@@ -641,7 +641,7 @@ rxrpc_new_client_call_for_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg,
  
  	memset(&cp, 0, sizeof(cp));
  	cp.local		= rx->local;
