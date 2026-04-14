@@ -1,93 +1,99 @@
-Return-Path: <stable+bounces-237795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCyICMEe3mk1ngkAu9opvQ
-	(envelope-from <stable+bounces-237795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:02:25 +0200
+	id GDSoGsUe3mk1ngkAu9opvQ
+	(envelope-from <stable+bounces-237796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:02:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD103F912F
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8217B3F9136
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 064273012CEC
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:01:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D0B92301842A
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BAF399356;
-	Tue, 14 Apr 2026 11:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A6339935B;
+	Tue, 14 Apr 2026 11:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Evvp346P"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Ipc8aw0+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E8A3D6685
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E0B36C5BB
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776164511; cv=none; b=Dx9zQRjhUUICmlHCIeG0EsYJEJ7YAOLzgV8a4IVwwBFH4CLGirGmvGlHNcl03qrD7nPXAKu/nsmBlvBmcIFspnNuyZWiaWBMMaf64v3nwEzvzY5QuktQxnk0QQT+3qUAsvXbgcsgpry4tjwhCyEQEp/82b3I301OveaUGEWwmFo=
+	t=1776164515; cv=none; b=c06TNVpcnpy0n2PRex/iYKC2Bro//23btDGjTy1uBHh7HVlK73P7ZSnktvl2FiSN5AZ4ybyyOpos2qJxb/PVJiYFuXYaE+BQuAD5VKlbvJmpy2Xegh52iJPU6ulKEivrP1BWf3tgU7v98yZUuWyBDZvPiHLth1wEgeBmviZLofc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776164511; c=relaxed/simple;
-	bh=09CSSN7RXTHbVTooPnkKL8N42ACW4WU8ALZckPLvQfs=;
+	s=arc-20240116; t=1776164515; c=relaxed/simple;
+	bh=e5UNgps6jOiPRQc0axFVI+a1FhF7DI1Vifj97c2MmhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqG11Re7CW0bU6s7b+dDwrmY6NRYHJnpPdCDoJxPQAbxDvk9zNuRbK6AJewRpg5+neAD949Nj3RK8VHQ1qIlqHlkNfftfrQdZec2ktq8wRY8qhXeKDw4SNs193Hy1GK9etL4fJydzGq9qVsbME0rmliAKjk7KT8wJzxOk0mCqDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Evvp346P; arc=none smtp.client-ip=209.85.208.182
+	 MIME-Version; b=IDQuvniHB/Vr3Wih7cUVYUzBw8Nt+J6bjBOgN5mUkDABhYx08rjXc+BNAqYk3JhgzIB/1eNcA9I2oCs4GlWH4feKiW/PXMEbic4YhPmkta1/W4aYodu4iBt8O2SZUbFI95OFGiskjktj60UgE0rP6l09ESg6j0vZj+1Dv0kavwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Ipc8aw0+; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-38ddd8d3b7fso39510171fa.3
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:01:49 -0700 (PDT)
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38e7fc3c419so13197991fa.0
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 04:01:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1776164506; x=1776769306; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1776164511; x=1776769311; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZOGZ5PgT7bKnm42QHRpfyT3u/Mi5orJjibUzxYtv58g=;
-        b=Evvp346PzwEbv9DKkkjItM6l5qJMCffa6hDPSpTUIA5DpexhtfNEe1NDQtO4Uk2pbu
-         aY7pRamPzJSq7fiDhwMwXfSTg1HRe5rZV9ftFjCCji9JXKM2Z64todeswd8E4en5KOd1
-         G0KlHl+Zwulndqy9C9uMjsNcajUL/G9byf2es=
+        bh=QVDSspEq7l4amFNc0kuaYG8nYxWXZjV01sN9rif2b/c=;
+        b=Ipc8aw0+OSL0a54VjfnqOurA+YSZdA3UCBpwlE0d4z9heHlfFtlP346Ygth5PIW29N
+         PriVTNlesA/+UhmYSauvAN9VZ04I+tv+fs5BK2kGep2XnlOAxaUnYVgsdEPWW++CmwAO
+         b2uujqps6nffH2F8eWUMF95x047NHTMlpIrJQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776164506; x=1776769306;
+        d=1e100.net; s=20251104; t=1776164511; x=1776769311;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ZOGZ5PgT7bKnm42QHRpfyT3u/Mi5orJjibUzxYtv58g=;
-        b=EspC6ART1JtsaN6wt1gHOsxJqqY/OkbsqT2M3h2q/3cMgjk8YbxH3ArwZ/SESB8W39
-         t63zn9BVGGjquCrB3KI3T05co+gaSk/fPAlg70iH8K+LrXNirq7SuyCcLg2IYjauTjV1
-         ZSLIJJqZdS3vVk8K4c7E8hxoiPBW9OrPEwBp52+fUCbM+vFYY5UVKlZ4u2u2AADK52C6
-         KvPaEf1CxlwhEGsiP2XeKm67joJq5kyqmAG0HlHyRHPhdvy8OqQQm8DyoLbo9JlUM1sO
-         jhwUjLwV3nePQw3/3Uw/LKQdlNeT0aKG9y2tTJ/GjatFWjPHq4haIfCIJWwY/NnLcGM+
-         d5BQ==
-X-Gm-Message-State: AOJu0YyFcnDDzaE/jdqFkFhvnKFiCrkkePa2nA0bVTv1c/zZaNENLFuB
-	Zy9evBMnWtjwrESXYjy/BgYkl0P+/HuOKQR+ROyRJnIFZdslhhRt7OzCppUV/UA6lbaTwy5KTNK
-	3RrQFZA==
-X-Gm-Gg: AeBDiesb5Syq3ZAPKDWzr8N7O9+M3ehlQJpjIKVf7uwhPUHTNLLZtEKBWJCrfMwud7a
-	AzCsCfXaVvjNzkzCk2LLUlCI3cZh/ZonlXw/jp2CTIDOnWH64Npp52QRSvDMjaRo6A8DgNiIy4m
-	29gXwoHyrdT4FecIyjNFUBroYuv4ZKGFCHymdG/HzvDkkmIehPqteDEfJeCzKhuhytHptlkZWzb
-	aLkdc051VnyWUIWHlE8VeWQXO+9J59iSDS53BNEeJhL3Mb7kG4xJRFAL47JIFKdLdw4DjGoJO5q
-	AzCA23G6646lhguxKBd4cGsFWBjEQNxT/HrPTP/tAWxKC33R/eUOBTv0WnP7Y9FJ1EJXIFqEbWk
-	a7/Y3POXczlldiNVC/8HJIlHif44aGDXjmj1Y8wfylanp+UUAlDm1ZSCjNIpZ/pEfaOLTcC1VSK
-	+rHlUNUKsEKxRBsXjZKsiP03gqjm9fC3FTgwxNsz5M8cY7TBlT8QKKJTAUkplzsjl5ucHNzxjtK
-	lGv74INXPK/wRZB4fMnyIY=
-X-Received: by 2002:a05:651c:420e:b0:38e:b6:f335 with SMTP id 38308e7fff4ca-38e4bdca9fcmr47536101fa.3.1776164506479;
-        Tue, 14 Apr 2026 04:01:46 -0700 (PDT)
+        bh=QVDSspEq7l4amFNc0kuaYG8nYxWXZjV01sN9rif2b/c=;
+        b=ezz+dn5H/cZo2k7EUhb8mo7q4iezfjV+NELb0GSYUuGCijkuVouF+lWgVG4klZVhSb
+         8KUxFkwRPYNOdf66tEnowKK7Y1mEO8+3YC9YvoY0ow1+iIGSy2c9GILxCC4X7TPlbl/J
+         fkS+ZTcpnLl4wtq4Ocmz46HBKIBNG8EhxkkAPyr0NqDU4mVXAVNxuSKSUOI9iCQcKCh2
+         DAphQkXZ10XE+MPRQ+wiQwF/+pYkByjSBpfooUA+gsPXNw3vOHIiw+tpnDC8ejqB4HqT
+         izJH2j7xGryCGGVfOk9z6WIo2iORG/J4dZDYi6V2EhWFlXYoZMV0QrMHT6v196mqJDku
+         PLNA==
+X-Gm-Message-State: AOJu0YyAdNgT1JJFZJ1QV1qaLmzmbnDfcBGykSaj0r+YpiESBwfsapXj
+	43+TpYuS4PX8VryxaCxpVnPQP0ak2i4dR0NetMU7DWOq8/yX/lCUOqHHnVGd2gfuOePoVT+8GJg
+	uMt0nHhBQ8SQ=
+X-Gm-Gg: AeBDietd2dWjOjmaglrsjvtLIqG7Xb2gu4rOEBPJypDY2Fz0Ya7EGP5bkmnP9QIy4M2
+	414RWhfTuzhXuJZ0Tlzl3EScXbH4h+l1adniiiSW1+k2zd+p3I8f1mxhznLweEn/tgmtGhw4n8N
+	Uxbgkq0sH+89dXdMqsL4o6z+LvTjjpGmtPp8Sq5vpWGshrZYs23zx1x3FZ6wajepgQ51Wf1K+4q
+	1pTG97L24DM+OQvgF/P5QUCOIhuWY17nMiui7Q30+RFgR0ZRsMteUINhFuMOjvb3Xba9UUaPcgv
+	hg5AzCawMFW6gsBeCw56Gf3cueszKnQGvQbxKR2jjnFPb0N2AniB2hGWCdLPTt1bfxcVNrlQWs5
+	u0pat0wFO/TsSwqRj2HPsKdsp4hIlsOg+7IAe+S3ScJb4h+RMxtYFVEB0Cb496oU7cADrifzf1+
+	rjH2E9ZWW8/AVdYs6isxtTYLPax4FtGwq1r0qGBiXRPtdsY1pi3zdr0iJ3YiPSbtXN3Sv+JH3Lt
+	P9g+DeEzl+s
+X-Received: by 2002:a05:651c:1442:b0:38d:d954:b6a8 with SMTP id 38308e7fff4ca-38e4bf545cfmr48249251fa.27.1776164510977;
+        Tue, 14 Apr 2026 04:01:50 -0700 (PDT)
 Received: from ribalda.c.googlers.com.com (52.163.228.35.bc.googleusercontent.com. [35.228.163.52])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38e495ae96fsm28055261fa.39.2026.04.14.04.01.44
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38e495ae96fsm28055261fa.39.2026.04.14.04.01.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 04:01:45 -0700 (PDT)
+        Tue, 14 Apr 2026 04:01:49 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
 To: stable@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
 Cc: Ben Hutchings <ben@decadent.org.uk>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com,
+	syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com,
+	Youngjun Lee <yjjuny.lee@samsung.com>,
 	Ricardo Ribalda <ribalda@chromium.org>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10.y 1/3] media: uvcvideo: Allow extra entities
-Date: Tue, 14 Apr 2026 11:01:11 +0000
-Message-ID: <20260414110113.319219-1-ribalda@chromium.org>
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.10.y 2/3] media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID
+Date: Tue, 14 Apr 2026 11:01:12 +0000
+Message-ID: <20260414110113.319219-2-ribalda@chromium.org>
 X-Mailer: git-send-email 2.54.0.rc0.605.g598a273b03-goog
-In-Reply-To: <20260413223308.3760836-1-sashal@kernel.org>
+In-Reply-To: <20260414110113.319219-1-ribalda@chromium.org>
 References: <20260413223308.3760836-1-sashal@kernel.org>
+ <20260414110113.319219-1-ribalda@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,82 +105,327 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-237796-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237795-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable,0584f746fde3d52b4675,dd320d114deb3f5bb79b,cisco];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:dkim,chromium.org:email,chromium.org:mid]
-X-Rspamd-Queue-Id: ACD103F912F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,ideasonboard.com:email,samsung.com:email,syzkaller.appspot.com:url,chromium.org:dkim,chromium.org:email,chromium.org:mid,igalia.com:email]
+X-Rspamd-Queue-Id: 8217B3F9136
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[ Upstream commit cae79e50d1222010fde8c522410c315f74d35c40 ]
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-Increase the size of the id, to avoid collisions with entities
-implemented by the driver that are not part of the UVC device.
+[ Upstream commit 0e2ee70291e64a30fe36960c85294726d34a103e ]
 
-Entities exposed by the UVC device use IDs 0-255, extra entities
-implemented by the driver (such as the GPIO entity) use IDs 256 and
-up.
+Per UVC 1.1+ specification 3.7.2, units and terminals must have a non-zero
+unique ID.
 
+```
+Each Unit and Terminal within the video function is assigned a unique
+identification number, the Unit ID (UID) or Terminal ID (TID), contained in
+the bUnitID or bTerminalID field of the descriptor. The value 0x00 is
+reserved for undefined ID,
+```
+
+If we add a new entity with id 0 or a duplicated ID, it will be marked
+as UVC_INVALID_ENTITY_ID.
+
+In a previous attempt commit 3dd075fe8ebb ("media: uvcvideo: Require
+entities to have a non-zero unique ID"), we ignored all the invalid units,
+this broke a lot of non-compatible cameras. Hopefully we are more lucky
+this time.
+
+This also prevents some syzkaller reproducers from triggering warnings due
+to a chain of entities referring to themselves. In one particular case, an
+Output Unit is connected to an Input Unit, both with the same ID of 1. But
+when looking up for the source ID of the Output Unit, that same entity is
+found instead of the input entity, which leads to such warnings.
+
+In another case, a backward chain was considered finished as the source ID
+was 0. Later on, that entity was found, but its pads were not valid.
+
+Here is a sample stack trace for one of those cases.
+
+[   20.650953] usb 1-1: new high-speed USB device number 2 using dummy_hcd
+[   20.830206] usb 1-1: Using ep0 maxpacket: 8
+[   20.833501] usb 1-1: config 0 descriptor??
+[   21.038518] usb 1-1: string descriptor 0 read error: -71
+[   21.038893] usb 1-1: Found UVC 0.00 device <unnamed> (2833:0201)
+[   21.039299] uvcvideo 1-1:0.0: Entity type for entity Output 1 was not initialized!
+[   21.041583] uvcvideo 1-1:0.0: Entity type for entity Input 1 was not initialized!
+[   21.042218] ------------[ cut here ]------------
+[   21.042536] WARNING: CPU: 0 PID: 9 at drivers/media/mc/mc-entity.c:1147 media_create_pad_link+0x2c4/0x2e0
+[   21.043195] Modules linked in:
+[   21.043535] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.11.0-rc7-00030-g3480e43aeccf #444
+[   21.044101] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+[   21.044639] Workqueue: usb_hub_wq hub_event
+[   21.045100] RIP: 0010:media_create_pad_link+0x2c4/0x2e0
+[   21.045508] Code: fe e8 20 01 00 00 b8 f4 ff ff ff 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 0f 0b eb e9 0f 0b eb 0a 0f 0b eb 06 <0f> 0b eb 02 0f 0b b8 ea ff ff ff eb d4 66 2e 0f 1f 84 00 00 00 00
+[   21.046801] RSP: 0018:ffffc9000004b318 EFLAGS: 00010246
+[   21.047227] RAX: ffff888004e5d458 RBX: 0000000000000000 RCX: ffffffff818fccf1
+[   21.047719] RDX: 000000000000007b RSI: 0000000000000000 RDI: ffff888004313290
+[   21.048241] RBP: ffff888004313290 R08: 0001ffffffffffff R09: 0000000000000000
+[   21.048701] R10: 0000000000000013 R11: 0001888004313290 R12: 0000000000000003
+[   21.049138] R13: ffff888004313080 R14: ffff888004313080 R15: 0000000000000000
+[   21.049648] FS:  0000000000000000(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
+[   21.050271] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   21.050688] CR2: 0000592cc27635b0 CR3: 000000000431c000 CR4: 0000000000750ef0
+[   21.051136] PKRU: 55555554
+[   21.051331] Call Trace:
+[   21.051480]  <TASK>
+[   21.051611]  ? __warn+0xc4/0x210
+[   21.051861]  ? media_create_pad_link+0x2c4/0x2e0
+[   21.052252]  ? report_bug+0x11b/0x1a0
+[   21.052540]  ? trace_hardirqs_on+0x31/0x40
+[   21.052901]  ? handle_bug+0x3d/0x70
+[   21.053197]  ? exc_invalid_op+0x1a/0x50
+[   21.053511]  ? asm_exc_invalid_op+0x1a/0x20
+[   21.053924]  ? media_create_pad_link+0x91/0x2e0
+[   21.054364]  ? media_create_pad_link+0x2c4/0x2e0
+[   21.054834]  ? media_create_pad_link+0x91/0x2e0
+[   21.055131]  ? _raw_spin_unlock+0x1e/0x40
+[   21.055441]  ? __v4l2_device_register_subdev+0x202/0x210
+[   21.055837]  uvc_mc_register_entities+0x358/0x400
+[   21.056144]  uvc_register_chains+0x1fd/0x290
+[   21.056413]  uvc_probe+0x380e/0x3dc0
+[   21.056676]  ? __lock_acquire+0x5aa/0x26e0
+[   21.056946]  ? find_held_lock+0x33/0xa0
+[   21.057196]  ? kernfs_activate+0x70/0x80
+[   21.057533]  ? usb_match_dynamic_id+0x1b/0x70
+[   21.057811]  ? find_held_lock+0x33/0xa0
+[   21.058047]  ? usb_match_dynamic_id+0x55/0x70
+[   21.058330]  ? lock_release+0x124/0x260
+[   21.058657]  ? usb_match_one_id_intf+0xa2/0x100
+[   21.058997]  usb_probe_interface+0x1ba/0x330
+[   21.059399]  really_probe+0x1ba/0x4c0
+[   21.059662]  __driver_probe_device+0xb2/0x180
+[   21.059944]  driver_probe_device+0x5a/0x100
+[   21.060170]  __device_attach_driver+0xe9/0x160
+[   21.060427]  ? __pfx___device_attach_driver+0x10/0x10
+[   21.060872]  bus_for_each_drv+0xa9/0x100
+[   21.061312]  __device_attach+0xed/0x190
+[   21.061812]  device_initial_probe+0xe/0x20
+[   21.062229]  bus_probe_device+0x4d/0xd0
+[   21.062590]  device_add+0x308/0x590
+[   21.062912]  usb_set_configuration+0x7b6/0xaf0
+[   21.063403]  usb_generic_driver_probe+0x36/0x80
+[   21.063714]  usb_probe_device+0x7b/0x130
+[   21.063936]  really_probe+0x1ba/0x4c0
+[   21.064111]  __driver_probe_device+0xb2/0x180
+[   21.064577]  driver_probe_device+0x5a/0x100
+[   21.065019]  __device_attach_driver+0xe9/0x160
+[   21.065403]  ? __pfx___device_attach_driver+0x10/0x10
+[   21.065820]  bus_for_each_drv+0xa9/0x100
+[   21.066094]  __device_attach+0xed/0x190
+[   21.066535]  device_initial_probe+0xe/0x20
+[   21.066992]  bus_probe_device+0x4d/0xd0
+[   21.067250]  device_add+0x308/0x590
+[   21.067501]  usb_new_device+0x347/0x610
+[   21.067817]  hub_event+0x156b/0x1e30
+[   21.068060]  ? process_scheduled_works+0x48b/0xaf0
+[   21.068337]  process_scheduled_works+0x5a3/0xaf0
+[   21.068668]  worker_thread+0x3cf/0x560
+[   21.068932]  ? kthread+0x109/0x1b0
+[   21.069133]  kthread+0x197/0x1b0
+[   21.069343]  ? __pfx_worker_thread+0x10/0x10
+[   21.069598]  ? __pfx_kthread+0x10/0x10
+[   21.069908]  ret_from_fork+0x32/0x40
+[   21.070169]  ? __pfx_kthread+0x10/0x10
+[   21.070424]  ret_from_fork_asm+0x1a/0x30
+[   21.070737]  </TASK>
+
+Reported-by: syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0584f746fde3d52b4675
+Reported-by: syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dd320d114deb3f5bb79b
+Reported-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Fixes: a3fbc2e6bb05 ("media: mc-entity.c: use WARN_ON, validate link pads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Co-developed-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
 Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 2 +-
- drivers/media/usb/uvc/uvcvideo.h   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 66 +++++++++++++++++++-----------
+ drivers/media/usb/uvc/uvcvideo.h   |  2 +
+ 2 files changed, 44 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 419fbdbb7a3b..c2adc6854c54 100644
+index c2adc6854c54..34e3f04340a2 100644
 --- a/drivers/media/usb/uvc/uvc_driver.c
 +++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -1032,7 +1032,7 @@ static int uvc_parse_streaming(struct uvc_device *dev,
+@@ -412,6 +412,9 @@ struct uvc_entity *uvc_entity_by_id(struct uvc_device *dev, int id)
+ {
+ 	struct uvc_entity *entity;
+ 
++	if (id == UVC_INVALID_ENTITY_ID)
++		return NULL;
++
+ 	list_for_each_entry(entity, &dev->entities, list) {
+ 		if (entity->id == id)
+ 			return entity;
+@@ -1032,14 +1035,27 @@ static int uvc_parse_streaming(struct uvc_device *dev,
  	return ret;
  }
  
--static struct uvc_entity *uvc_alloc_entity(u16 type, u8 id,
-+static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
- 		unsigned int num_pads, unsigned int extra_size)
+-static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
+-		unsigned int num_pads, unsigned int extra_size)
++static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
++					       u16 id, unsigned int num_pads,
++					       unsigned int extra_size)
  {
  	struct uvc_entity *entity;
+ 	unsigned int num_inputs;
+ 	unsigned int size;
+ 	unsigned int i;
+ 
++	/* Per UVC 1.1+ spec 3.7.2, the ID should be non-zero. */
++	if (id == 0) {
++		dev_err(&dev->intf->dev, "Found Unit with invalid ID 0\n");
++		id = UVC_INVALID_ENTITY_ID;
++	}
++
++	/* Per UVC 1.1+ spec 3.7.2, the ID is unique. */
++	if (uvc_entity_by_id(dev, id)) {
++		dev_err(&dev->intf->dev, "Found multiple Units with ID %u\n", id);
++		id = UVC_INVALID_ENTITY_ID;
++	}
++
+ 	extra_size = roundup(extra_size, sizeof(*entity->pads));
+ 	if (num_pads)
+ 		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
+@@ -1049,7 +1065,7 @@ static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
+ 	     + num_inputs;
+ 	entity = kzalloc(size, GFP_KERNEL);
+ 	if (entity == NULL)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	entity->id = id;
+ 	entity->type = type;
+@@ -1120,10 +1136,10 @@ static int uvc_parse_vendor_control(struct uvc_device *dev,
+ 			break;
+ 		}
+ 
+-		unit = uvc_alloc_entity(UVC_VC_EXTENSION_UNIT, buffer[3],
+-					p + 1, 2*n);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, UVC_VC_EXTENSION_UNIT,
++					    buffer[3], p + 1, 2 * n);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->extension.guidExtensionCode, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
+@@ -1234,10 +1250,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		term = uvc_alloc_entity(type | UVC_TERM_INPUT, buffer[3],
+-					1, n + p);
+-		if (term == NULL)
+-			return -ENOMEM;
++		term = uvc_alloc_new_entity(dev, type | UVC_TERM_INPUT,
++					    buffer[3], 1, n + p);
++		if (IS_ERR(term))
++			return PTR_ERR(term);
+ 
+ 		if (UVC_ENTITY_TYPE(term) == UVC_ITT_CAMERA) {
+ 			term->camera.bControlSize = n;
+@@ -1293,10 +1309,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return 0;
+ 		}
+ 
+-		term = uvc_alloc_entity(type | UVC_TERM_OUTPUT, buffer[3],
+-					1, 0);
+-		if (term == NULL)
+-			return -ENOMEM;
++		term = uvc_alloc_new_entity(dev, type | UVC_TERM_OUTPUT,
++					    buffer[3], 1, 0);
++		if (IS_ERR(term))
++			return PTR_ERR(term);
+ 
+ 		memcpy(term->baSourceID, &buffer[7], 1);
+ 
+@@ -1317,9 +1333,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, 0);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
++					    p + 1, 0);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->baSourceID, &buffer[5], p);
+ 
+@@ -1341,9 +1358,9 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_entity(buffer[2], buffer[3], 2, n);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3], 2, n);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->baSourceID, &buffer[4], 1);
+ 		unit->processing.wMaxMultiplier =
+@@ -1372,9 +1389,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, n);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
++					    p + 1, n);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->extension.guidExtensionCode, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
 diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 60a8749c97a9..a83995276170 100644
+index a83995276170..46ec07ef1ef5 100644
 --- a/drivers/media/usb/uvc/uvcvideo.h
 +++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -302,7 +302,12 @@ struct uvc_entity {
- 					 * chain. */
- 	unsigned int flags;
+@@ -170,6 +170,8 @@
+ 	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
  
--	u8 id;
-+	/*
-+	 * Entities exposed by the UVC device use IDs 0-255, extra entities
-+	 * implemented by the driver (such as the GPIO entity) use IDs 256 and
-+	 * up.
-+	 */
-+	u16 id;
- 	u16 type;
- 	char name[64];
  
++#define UVC_INVALID_ENTITY_ID          0xffff
++
+ /* ------------------------------------------------------------------------
+  * Driver specific constants.
+  */
 -- 
 2.54.0.rc0.605.g598a273b03-goog
 
