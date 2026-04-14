@@ -1,234 +1,202 @@
-Return-Path: <stable+bounces-237904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBw1MOdb3mlACQAAu9opvQ
-	(envelope-from <stable+bounces-237904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:23:19 +0200
+	id eJdJOINc3mlACQAAu9opvQ
+	(envelope-from <stable+bounces-237906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:25:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D713FBB59
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:23:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08AC3FBC3C
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 17:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8689F30235A8
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:22:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FFBB300BEA1
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFF93E6396;
-	Tue, 14 Apr 2026 15:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uD2Obgv0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WTQEUfVl";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uD2Obgv0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WTQEUfVl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD6E3E6DF3;
+	Tue, 14 Apr 2026 15:24:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D12942AA9
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 15:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4E63E95A8;
+	Tue, 14 Apr 2026 15:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776180168; cv=none; b=Bg+Xe9mPBUy/xzrC8/5tcDIq/lSnQpI9n9KW9WhLopJAwNDYx8KELmtF7Bu2dAAKLF90ZOvEGb9YROdfG5Cn/jV0ZMnGWPvDkbmQ1lSK0vnLhiFJakbr5wZCcz7Qrxx+O3Gnj3bTqnJkbpMJEHF7JjA2OYAFzhoRjHbCpUeFx1g=
+	t=1776180288; cv=none; b=g2slzkrusUhg0LpJh4OFmyz/aRsuSi+UF6vwQkUi0G45hNVeujM0eRZomXmWmBfBdEIcX5/dwnu/vjOeQi4FnmDarz6aaLYI5xAde24Cm1JrxrBiUhgGGiDWueXI/8RHiXrKLqGcwsP9vjK3zdAgQPFasDFnpMCnHCE5aglDc78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776180168; c=relaxed/simple;
-	bh=0kQ5uJtoBuLN0fIMVLFqIbC3QFm6h/7AJ+bjztIpBC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eip7ntV1+m2aHEz+9h7I4fvnLgNG3whjxdustaDRh8DquxJly5Y/RrKz7NhUeQe7mBo5obUNzpECxLJsW7kn+uUYg25y97l169JeULNs70jIFPGoi+alfABWMvKpr0Eyi80BMlMMyPpuzPjdRf1IvyZ0xu+kBBf18VE2gpTYXo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uD2Obgv0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WTQEUfVl; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uD2Obgv0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WTQEUfVl; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6E3BA5BD20;
-	Tue, 14 Apr 2026 15:22:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776180163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L6rGnheeTDpxVR2X+a8HXYFuLJSPXwJxQPLPnAygMiQ=;
-	b=uD2Obgv0K1m2PUgWfhyP0GAJdXS+SY5SBuM8+qncRRF1J+evDeNzNvu1NTIovVFFvafdZf
-	7zZYCxU0gsoZx7yA2fItB556xYdAorRqGsl+cclmPZeryERDh6NVG9FdQ5z8wA8igRP3TP
-	QUWGWDMY1/qmJKDTWlMLabd45CYGNmA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776180163;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L6rGnheeTDpxVR2X+a8HXYFuLJSPXwJxQPLPnAygMiQ=;
-	b=WTQEUfVluTqwcr4wXgIAvsU1Z0kJ3UElf9KiaMH7rfkSheNKVVuAH5DbLA3CmsmXJWUlzn
-	WZRa/Jhx8VllK+Cg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uD2Obgv0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WTQEUfVl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776180163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L6rGnheeTDpxVR2X+a8HXYFuLJSPXwJxQPLPnAygMiQ=;
-	b=uD2Obgv0K1m2PUgWfhyP0GAJdXS+SY5SBuM8+qncRRF1J+evDeNzNvu1NTIovVFFvafdZf
-	7zZYCxU0gsoZx7yA2fItB556xYdAorRqGsl+cclmPZeryERDh6NVG9FdQ5z8wA8igRP3TP
-	QUWGWDMY1/qmJKDTWlMLabd45CYGNmA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776180163;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L6rGnheeTDpxVR2X+a8HXYFuLJSPXwJxQPLPnAygMiQ=;
-	b=WTQEUfVluTqwcr4wXgIAvsU1Z0kJ3UElf9KiaMH7rfkSheNKVVuAH5DbLA3CmsmXJWUlzn
-	WZRa/Jhx8VllK+Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 263444B4F1;
-	Tue, 14 Apr 2026 15:22:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1ldqB8Nb3mnrMwAAD6G6ig
-	(envelope-from <jdelvare@suse.de>); Tue, 14 Apr 2026 15:22:43 +0000
-Date: Tue, 14 Apr 2026 17:22:39 +0200
-From: Jean Delvare <jdelvare@suse.de>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-i2c@vger.kernel.org, Xiang Mei <xmei5@asu.edu>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: stub: Reject I2C block transfers exceeding
- I2C_SMBUS_BLOCK_MAX
-Message-ID: <20260414172239.7e98a0ae@endymion>
-In-Reply-To: <20260329164126.820797-2-bestswngs@gmail.com>
-References: <20260329164126.820797-2-bestswngs@gmail.com>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
+	s=arc-20240116; t=1776180288; c=relaxed/simple;
+	bh=+oWKlpvzRKdJ5pgReYZcQfHf1GcKqwjmRSjQsWb9xHU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q0l/pDvleNquf1dNpaZnrwd6ksdc8KbnRd9BACkWX5d3pKlkJqFOnbOlhkwOZyPsqmU1txkAVFswX91KYHeG9JW1DdDV3NmPLt78FoV2oba27W2cdpo4dOE8/Fyp9JXjGI0C7ovo7XBnzC/d21MQ5ttxWXOBwruoSqxYt5rrPjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id F357672C8CC;
+	Tue, 14 Apr 2026 18:24:38 +0300 (MSK)
+Received: from altlinux.org (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id DCFF436D00D0;
+	Tue, 14 Apr 2026 18:24:38 +0300 (MSK)
+Date: Tue, 14 Apr 2026 18:24:38 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	gregkh@linuxfoundation.org, regressions@lists.linux.dev, 
+	Matt Roper <matthew.d.roper@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: Re: [regression] Re: Linux 6.12.75
+Message-ID: <ad5ZsSwNM42pa10J@altlinux.org>
+References: <20260304131402.83200-1-sashal@kernel.org>
+ <20260304131402.83200-2-sashal@kernel.org>
+ <ac4lw9tTNn4baO_h@altlinux.org>
+ <c54a0b91-cfbf-463e-964d-bf9a2e524189@leemhuis.info>
+ <adz2d7M3DKb-6jm9@altlinux.org>
+ <ad2G46EyDs8LBoH_@altlinux.org>
+ <ad5Gsd1YoS3607UI@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=koi8-r
+Content-Disposition: inline
+In-Reply-To: <ad5Gsd1YoS3607UI@altlinux.org>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237904-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DMARC_NA(0.00)[altlinux.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jdelvare@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-237906-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: C2D713FBB59
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vt@altlinux.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,altlinux.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: E08AC3FBC3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Weiming,
+Thorsten, Sasha,
 
-On Mon, 30 Mar 2026 00:41:27 +0800, Weiming Shi wrote:
-> The I2C_SMBUS_I2C_BLOCK_DATA case in stub_xfer() uses data->block[0]
-> as the transfer length. The existing check only clamps it to avoid
-> overrunning the chip->words[256] register array, but does not validate
-> it against I2C_SMBUS_BLOCK_MAX (32), which is the limit of the union
-> i2c_smbus_data.block buffer (34 bytes total). The driver is a
-> development/test tool (CONFIG_I2C_STUB=m, not built by default)
-> that must be loaded with a chip_addr= parameter.
+On Tue, Apr 14, 2026 at 04:57:38PM +0300, Vitaly Chikunov wrote:
+> On Tue, Apr 14, 2026 at 03:17:38AM +0300, Vitaly Chikunov wrote:
+> > On Mon, Apr 13, 2026 at 05:17:30PM +0300, Vitaly Chikunov wrote:
+> > > On Mon, Apr 13, 2026 at 01:33:18PM +0200, Thorsten Leemhuis wrote:
+> > > > On 4/2/26 10:44, Vitaly Chikunov wrote:
+> > > > > 
+> > > > > 1. I cannot find this commit posted on lore.kernel.org to report to
+> > > > > exact patch.
+> > > > > 
+> > > > > | From: Matt Roper <matthew.d.roper@intel.com>
+> > > > > | Date: Tue, 10 Sep 2024 16:47:29 -0700
+> > > > > | Subject: [PATCH 6.12/sisyphus] drm/xe: Switch MMIO interface to take xe_mmio
+> > > > > |  instead of xe_gt
+> > > > > | 
+> > > > > | [ Upstream commit a84590c5ceb354d2e9f7f6812cfb3a9709e14afa ]
+> > > > > | 
+> > > > > | Since much of the MMIO register access done by the driver is to non-GT
+> > > > > | registers, use of 'xe_gt' in these interfaces has been a long-standing
+> > > > > | design flaw that's been hard to disentangle.
+> > > > > [...]
+> > > > > 
+> > > > > 2. After this patch applied to 6.12.75 there is kernel NULL pointer
+> > > > > dereference BUG on MSI MAG H670 12th Gen Intel(R) Core(TM) i5-12600K
+> > > > > with ASRock Intel Arc B580 Challenger [Alchemist], 12GB:
+> > > > > [...]
+> > > > > The commit is found not by a git bisect (since it's reported by end
+> > > > > user and I cannot reproduce it on my hardware) but (by analyzing dmesg)
+> > > > > with:
+> > > > > [...]
+> > > > > Then finding the suspecting commit:
+> > > > > 
+> > > > >   $ git log --oneline -G'XE_LUNARLAKE' v6.12.74..v6.12.75
+> > > > >   26a40327c25c drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt
+> > > > > 
+> > > > > 6.18 and above are not affected by the bug. Also, they have another commit
+> > > > > modifying the line which is not present in 6.12 branch:
+> > > > > [...]
+> > > > > Related drm/xe bug report https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7661
+> > > > Nobody reacted to this and it seems the gitlab ticket is stalled, too.
+> > > > So let me ask: can this be resolved by reverting 26a40327c25c in 6.12.y?
+> > 
+> > It's turned out these two commits are revertible together:
+> > 
+> >   8f6848b2f6ea ("drm/xe/mmio: Avoid double-adjust in 64-bit reads")
+> >   26a40327c25c ("drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt")
+> > 
+> > I am going to ask the users to test this.
 > 
-> A local user with access to /dev/i2c-* can issue an I2C_SMBUS ioctl
-> with I2C_SMBUS_I2C_BLOCK_DATA and data->block[0] > 32, causing
-> stub_xfer() to read or write past the end of the union
-> i2c_smbus_data.block buffer:
-> 
->  BUG: KASAN: stack-out-of-bounds in stub_xfer (drivers/i2c/i2c-stub.c:223)
->  Read of size 1 at addr ffff88800abcfd92 by task exploit/81
->  Call Trace:
->   <TASK>
->   stub_xfer (drivers/i2c/i2c-stub.c:223)
->   __i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:593)
->   i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:536)
->   i2cdev_ioctl_smbus (drivers/i2c/i2c-dev.c:391)
->   i2cdev_ioctl (drivers/i2c/i2c-dev.c:478)
->   __x64_sys_ioctl (fs/ioctl.c:583)
->   do_syscall_64 (arch/x86/entry/syscall_64.c:94)
->   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
->   </TASK>
-> 
-> The bug exists because i2c-stub implements .smbus_xfer directly,
-> bypassing the I2C_SMBUS_BLOCK_MAX validation in
-> i2c_smbus_xfer_emulated(). The I2C_SMBUS_BLOCK_DATA case in the same
-> function correctly validates against I2C_SMBUS_BLOCK_MAX, but the
-> I2C_SMBUS_I2C_BLOCK_DATA case does not.
+> After testing revert of these two commits, users report that regress
+> does not appear, kernel boots without panic and there is no video artifacts.
 
-Thank you for the excellent analysis and detailed description. I agree
-with everything you wrote above.
+After analyzing the problem slightly deeper, it seems that there is
+uninitialized mmio.tile issue. Which is fixed in mainline commit
 
-> Fix by rejecting oversized transfers with -EINVAL when
-> data->block[0] exceeds I2C_SMBUS_BLOCK_MAX, consistent with both
-> the I2C_SMBUS_BLOCK_DATA case in the same function and the
-> I2C_SMBUS_I2C_BLOCK_DATA validation in i2c_smbus_xfer_emulated().
+  58548b91101f ("drm/xe: Defer gt->mmio initialization until after multi-tile setup")
 
-Would it make sense to also reject len == 0? That's what the i2c-stub
-driver does in the I2C_SMBUS_BLOCK_DATA case, so it would seem
-consistent to do the same for the I2C_SMBUS_I2C_BLOCK_DATA case.
+The commit also have tag:
+
+  Fixes: fa599b8c95a7 ("drm/xe: Populate GT's mmio iomap from tile during init")
+
+The commit fa599b8c95a7 is picked into 6.12.75 as 0b433e086b9f, but the
+fix is not. Piking it may be the better way to fix the regression than
+the revert of the two aforementioned commits.
+
+I will try to pick the fix, test, and report if it resolves the regress.
+
+Thanks,
+
 
 > 
-> Fixes: 4710317891e4 ("i2c-stub: Implement I2C block support")
-> Cc: stable@vger.kernel.org
-> Reported-by: Xiang Mei <xmei5@asu.edu>
-
-If there any public link to that report? If so, it should be mentioned
-here with a Closes: tag.
-
-> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> ---
->  drivers/i2c/i2c-stub.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> So, I kindly ask to revert them from 6.12.y branch if they aren't
+> critical.
 > 
-> diff --git a/drivers/i2c/i2c-stub.c b/drivers/i2c/i2c-stub.c
-> index fbb0db41b10e1..349ef9fb2fdbc 100644
-> --- a/drivers/i2c/i2c-stub.c
-> +++ b/drivers/i2c/i2c-stub.c
-> @@ -214,6 +214,10 @@ static s32 stub_xfer(struct i2c_adapter *adap, u16 addr, unsigned short flags,
->  		 * We ignore banks here, because banked chips don't use I2C
->  		 * block transfers
->  		 */
-> +		if (data->block[0] > I2C_SMBUS_BLOCK_MAX) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
->  		if (data->block[0] > 256 - command)	/* Avoid overrun */
->  			data->block[0] = 256 - command;
->  		len = data->block[0];
-
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-
--- 
-Jean Delvare
-SUSE L3 Support
+> Thanks,
+> 
+> > 
+> > Thanks,
+> > 
+> > > 
+> > > As of me, this is not easy to revert, as it depends on many other
+> > > commits, and git does not have tooling to determine all dependant
+> > > commits for revert. I hope someone from drm subsystem notices this to
+> > > work on it, or Sasha can pull missing commits or revert this (obviously,
+> > > he have tooling for this, but I was unable to find it). [I found
+> > > obsolete references to deps but is seems not used for years and Python
+> > > git-deps tool seems broken.]
+> > > 
+> > > What I found is, offending commit is picked due to
+> > > 
+> > >   Stable-dep-of: 4a9b4e1fa52a ("drm/xe/mmio: Avoid double-adjust in 64-bit reads")
+> > > 
+> > > Which, perhaps, needs to be reverted.
+> > > 
+> > > Offending commit 26a40327c25c is not tracked in lore.
+> > > It's part of 9 piece patchset, perhaps they are logically dependent too,
+> > > so need to be reverted together.
+> > > 
+> > > The possible fix is part of 6 piece patchset, which does not cherry-pick
+> > > easily due to conflicts.
+> > > 
+> > > If someone can produce correct fix we can participate in the tests.
+> > > 
+> > > Thanks,
+> > > 
+> > > > 
+> > > > Ciao, Thorsten
 
