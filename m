@@ -1,71 +1,62 @@
-Return-Path: <stable+bounces-237830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Np6I4Up3mmSoQkAu9opvQ
-	(envelope-from <stable+bounces-237830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:48:21 +0200
+	id iKiaOYYq3mmSoQkAu9opvQ
+	(envelope-from <stable+bounces-237831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:52:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3703F9968
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:48:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86133F99FF
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5145130BEA30
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:45:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0AF803068F74
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 11:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF323E1CFD;
-	Tue, 14 Apr 2026 11:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0EC3E1CF9;
+	Tue, 14 Apr 2026 11:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2lOd7DQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZipMPXk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAE83E1CEB
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E67B3E1230
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 11:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776167133; cv=none; b=H7LGUcIKdrDi+Y0IJdTl1+ouH1EZQDryJDEMHN5B/ZXXtd7HUH2zb19tutO2ORTAUNpo34dQUctqawrcS9AaCbWJnUizfsWG7V4v6JghVSjwTlyvx+sUriwA1nYoDBCSP9f/2BKbNodpqayIIK/QcdLWwEVrTR27gce5pBJE988=
+	t=1776167162; cv=none; b=getKIBtpb8Iz/dItHxZ9u+YITu/qYi5XKkGydYlapJCLtwQiuteM9jOyWpqDPa5Q7CxE/zv9KopoZ5MoCKoP2e0erbEQkv/h7UCYNametC6wqZbSCWLsTAAUX90bMMcDUSTlkBhA3LQ8PzhhZVILr0PBbefCoJhJJnfhZKKgsrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776167133; c=relaxed/simple;
-	bh=yV7k8BaLQHTvZnyy5R6NOwARz6C0CTCj7rFP+xzkRg0=;
+	s=arc-20240116; t=1776167162; c=relaxed/simple;
+	bh=9+ToLVbZDhRajmPnJAScaOLFzS3FRwLHAVgUs+uDB8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpkg4E4ZaNjdOxyZAMElS8YP3y42IH+aHg5WiGfu4um0GuVy2XmOhbVcXY+WOh3y0B2yyBj9ICA7bqhVf/RnUkgaX4DEJduoIAWA9phbhDk2RgJ1EaJa2fucxr87QY61kOC9hBBxxDh0GZLQqXiDXr1enzIZBHUROIQQ53RYXbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2lOd7DQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45558C19425;
-	Tue, 14 Apr 2026 11:45:31 +0000 (UTC)
+	 MIME-Version; b=HGxnvW9xL2wlJtrNg8xccljNn5r+m9LPxxh4+nViMzw7gW6fy9WpZjnGq29F4e5uJeNg+YogG1faZ23DhOTWz7ADFJOnAut50h8c4ooxhOAEG/aFbKMtfNp2epsxMiwrSFy4csU3BlRorHa+TXbFvEgwseYgHydScO/t2guAtsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZipMPXk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294FAC19425;
+	Tue, 14 Apr 2026 11:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776167132;
-	bh=yV7k8BaLQHTvZnyy5R6NOwARz6C0CTCj7rFP+xzkRg0=;
+	s=k20201202; t=1776167161;
+	bh=9+ToLVbZDhRajmPnJAScaOLFzS3FRwLHAVgUs+uDB8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2lOd7DQMUfwZePvwy39wmFBpUKyCcmmeYQsRP3kjEdinsuE7Kawc9eNDRSJPkNWQ
-	 vQOW8AHLve3cjty1lcKQsh4W35fHVaIYZHReWQC1rwVqdP71MZy+neoan3g9/7vOvb
-	 TKbt5XaHQRzEaSiEDE/++T094KNFQTM0YQCC3pVdgk9IgiL6TQE3kUI2xfrbIJWMME
-	 ElpPKHz9bfTjVy6wRJnMY5qmoMJo9195+pepw8PgKnKxTSnfRIQ2TZZzwQAlJi5l7y
-	 FLaCjM6mXd/8/leBx1uNV7Ccaj/1tmBM03/Ft3z+jpXVJ5EeO9aXceDjyqqd/5v58q
-	 sbi2xlzj6g8Dw==
+	b=ZipMPXk19dM88AV/iWBtq7Lg5tkA/KZZU7Y8Fddddq3ldFhTg1V1T4a6cH2+XnAjJ
+	 bAMUB1d5ynSCRMHkD1yL7t7njr0kMoazyOG5JfS3TIkDynKhMSTRugII6NRbuu54Zj
+	 X0moTZDI8GtEMWDJdXVQFsknGJtxe/pe8i+s8noeyNgDFtPvlPYf1sJavUvXDUcCgv
+	 mea9yhtZMILW41+zPn+ghyO9zlx4LpOtNLPcsd5vV3IyaiJ23ApFfP9cFWRs7H883P
+	 aJZl1gXdejmiXHjE5WueMboyRlGyg+RubNfH59HmA7vfSkTqmK82T4hlxag9hvdYvM
+	 rNS7dtYvnqn+w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Wang Jie <jiewang2024@lzu.edu.cn>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yang Yang <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
+Cc: David Howells <dhowells@redhat.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
-	stable@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] rxrpc: only handle RESPONSE during service challenge
-Date: Tue, 14 Apr 2026 07:45:29 -0400
-Message-ID: <20260414114529.521040-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] rxrpc: Don't need barrier for ->tx_bottom and ->acks_hard_ack
+Date: Tue, 14 Apr 2026 07:45:58 -0400
+Message-ID: <20260414114559.523551-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041311-economy-duckling-8a60@gregkh>
-References: <2026041311-economy-duckling-8a60@gregkh>
+In-Reply-To: <2026041326-engaged-snowbird-df74@gregkh>
+References: <2026041326-engaged-snowbird-df74@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,116 +69,109 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lzu.edu.cn,gmail.com,redhat.com,auristor.com,kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-237831-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-237830-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,auristor.com:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: DD3703F9968
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A86133F99FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Wang Jie <jiewang2024@lzu.edu.cn>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit c43ffdcfdbb5567b1f143556df8a04b4eeea041c ]
+[ Upstream commit 6396b48ac0a77165f9c2c40ab03d6c8188c89739 ]
 
-Only process RESPONSE packets while the service connection is still in
-RXRPC_CONN_SERVICE_CHALLENGING. Check that state under state_lock before
-running response verification and security initialization, then use a local
-secured flag to decide whether to queue the secured-connection work after
-the state transition. This keeps duplicate or late RESPONSE packets from
-re-running the setup path and removes the unlocked post-transition state
-test.
+We don't need a barrier for the ->tx_bottom value (which indicates the
+lowest sequence still in the transmission queue) and the ->acks_hard_ack
+value (which tracks the DATA packets hard-ack'd by the latest ACK packet
+received and thus indicates which DATA packets can now be discarded) as the
+app thread doesn't use either value as a reference to memory to access.
+Rather, the app thread merely uses these as a guide to how much space is
+available in the transmission queue
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jie Wang <jiewang2024@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Change the code to use READ/WRITE_ONCE() instead.
+
+Also, change rxrpc_check_tx_space() to use the same value for tx_bottom
+throughout.
+
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-21-dhowells@redhat.com
+Link: https://patch.msgid.link/20241204074710.990092-18-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to spin_lock_bh usage, 3-arg verify_response(), and direct rxrpc_call_is_secure() ]
+Stable-dep-of: a44ce6aa2efb ("rxrpc: proc: size address buffers for %pISpc output")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_event.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ net/rxrpc/sendmsg.c | 8 +++++---
+ net/rxrpc/txbuf.c   | 4 ++--
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 5d91ef562ff78..293922df2a891 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -293,6 +293,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 			       u32 *_abort_code)
+diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
+index 154f650efb0ab..2f2c2fe739ffc 100644
+--- a/net/rxrpc/sendmsg.c
++++ b/net/rxrpc/sendmsg.c
+@@ -93,9 +93,11 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
+  */
+ static bool rxrpc_check_tx_space(struct rxrpc_call *call, rxrpc_seq_t *_tx_win)
  {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+	bool secured = false;
- 	__be32 wtmp;
- 	u32 abort_code;
- 	int loop, ret;
-@@ -337,6 +338,13 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 							    _abort_code);
- 
- 	case RXRPC_PACKET_TYPE_RESPONSE:
-+		spin_lock_bh(&conn->state_lock);
-+		if (conn->state != RXRPC_CONN_SERVICE_CHALLENGING) {
-+			spin_unlock_bh(&conn->state_lock);
-+			return 0;
-+		}
-+		spin_unlock_bh(&conn->state_lock);
++	rxrpc_seq_t tx_bottom = READ_ONCE(call->tx_bottom);
 +
- 		ret = conn->security->verify_response(conn, skb, _abort_code);
- 		if (ret < 0)
- 			return ret;
-@@ -348,17 +356,18 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 	if (_tx_win)
+-		*_tx_win = call->tx_bottom;
+-	return call->tx_prepared - call->tx_bottom < 256;
++		*_tx_win = tx_bottom;
++	return call->tx_prepared - tx_bottom < 256;
+ }
  
- 		spin_lock(&conn->bundle->channel_lock);
- 		spin_lock_bh(&conn->state_lock);
--
- 		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING) {
- 			conn->state = RXRPC_CONN_SERVICE;
--			spin_unlock_bh(&conn->state_lock);
-+			secured = true;
-+		}
-+		spin_unlock_bh(&conn->state_lock);
-+
-+		if (secured) {
- 			for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
- 				rxrpc_call_is_secure(
- 					rcu_dereference_protected(
- 						conn->channels[loop].call,
- 						lockdep_is_held(&conn->bundle->channel_lock)));
--		} else {
--			spin_unlock_bh(&conn->state_lock);
- 		}
+ /*
+@@ -137,7 +139,7 @@ static int rxrpc_wait_for_tx_window_waitall(struct rxrpc_sock *rx,
+ 		rtt = 2;
  
- 		spin_unlock(&conn->bundle->channel_lock);
+ 	timeout = rtt;
+-	tx_start = smp_load_acquire(&call->acks_hard_ack);
++	tx_start = READ_ONCE(call->acks_hard_ack);
+ 
+ 	for (;;) {
+ 		set_current_state(TASK_UNINTERRUPTIBLE);
+diff --git a/net/rxrpc/txbuf.c b/net/rxrpc/txbuf.c
+index c3913d8a50d34..a63e10fcd11c4 100644
+--- a/net/rxrpc/txbuf.c
++++ b/net/rxrpc/txbuf.c
+@@ -216,14 +216,14 @@ void rxrpc_shrink_call_tx_buffer(struct rxrpc_call *call)
+ 
+ 	while ((txb = list_first_entry_or_null(&call->tx_buffer,
+ 					       struct rxrpc_txbuf, call_link))) {
+-		hard_ack = smp_load_acquire(&call->acks_hard_ack);
++		hard_ack = call->acks_hard_ack;
+ 		if (before(hard_ack, txb->seq))
+ 			break;
+ 
+ 		if (txb->seq != call->tx_bottom + 1)
+ 			rxrpc_see_txbuf(txb, rxrpc_txbuf_see_out_of_step);
+ 		ASSERTCMP(txb->seq, ==, call->tx_bottom + 1);
+-		smp_store_release(&call->tx_bottom, call->tx_bottom + 1);
++		WRITE_ONCE(call->tx_bottom, call->tx_bottom + 1);
+ 		list_del_rcu(&txb->call_link);
+ 
+ 		trace_rxrpc_txqueue(call, rxrpc_txqueue_dequeue);
 -- 
 2.53.0
 
