@@ -1,191 +1,172 @@
-Return-Path: <stable+bounces-237694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 69e5DliY3WmFgQkAu9opvQ
-	(envelope-from <stable+bounces-237694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:28:56 +0200
+	id 9MYWNbmb3Wk1ggkAu9opvQ
+	(envelope-from <stable+bounces-237696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:43:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E7A3F4CAC
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:28:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DE53F4D3F
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 03:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 03784300E199
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 01:28:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F5EF3034DFF
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 01:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90E92C1594;
-	Tue, 14 Apr 2026 01:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEE2282F3F;
+	Tue, 14 Apr 2026 01:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gq5P0grW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=damenly.org header.i=@damenly.org header.b="dupXwnHV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta238.mxroute.com (mail-108-mta238.mxroute.com [136.175.108.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8D4286D70
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 01:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCAA18A6CF
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 01:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776130130; cv=none; b=Qv4iZ/7UWN99epTLR45iJMTkDI8tF0uzxoa3zUZB7jIg5Fu6lpIyLoYyorD9MWceyqAcD6hOQ//VV8+y4hfJnpJJBo75mHeNp6GcGGhug26dpuglHhui6jn9bymbwQFmOnf/wInnRRqP7NQesQinV/6V+WgnqM51Rs8MQxd4QAs=
+	t=1776130451; cv=none; b=qj2WiLI+TLAjnONHbokrROpKe+fzNpF4wFjxMEztrd4xMMICIBrSxvla6x7VtweHisnsAFZjrLn2K19DMc1qzL2oVAWyJl1tZVyUPr39FM6m2FWfi384VqBsYBF2HOvMTFL9GtHTym56k6qEcniWey7vHvXQW0TRsvQP1WZOmt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776130130; c=relaxed/simple;
-	bh=CG41oxMu97RRpy6MVKyEVcoyecZ5qolgl5ckqP4J020=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4XR4MIr/EkqQDCcxipHotbmQXPuVPzjMhaxbq+IkmkHs/yCq0PqVufWslgvR0/rgwjHGfGiCS0+73W/xOQrZxh3qpc7LsPsIwAWrR5yiiHrL/tx7hbfmf/1Wwi5xbE3C/PyacBUlcIEZLBNHbOd2xWeQlPrGoOqtMFkCoa07wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gq5P0grW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5D0C2BCAF;
-	Tue, 14 Apr 2026 01:28:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776130130;
-	bh=CG41oxMu97RRpy6MVKyEVcoyecZ5qolgl5ckqP4J020=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gq5P0grWxDYSpLKzgLZpwuVC9xWY/JrvxCUeh/cIb8sdKiXVCKHfHqleCo0LUxFzm
-	 XQAgTAhRqyk5OKiqNTZ85taAgpTWEgpfF64Z/ltySsikjo55BEQpSbad1PFA/afXr8
-	 cY9jfg0NGfXJ4ecnOT1o3BiKhwHzCGMu6WO7TgF3xnMncxzu2bMlmbO2BYinn+kLug
-	 5MeDk88WnJZ1Wa8A1bax7jyP3e8y6DpRFMZyFXC5A97YeYJWU9RAT3LcBbDmBol7BN
-	 ubEky5MfMoISiRnXpRQHTCHpbyic5bHocR6C74eTKyrtpZluiz88mszqIxd+LZt+pn
-	 CQvsF3vmhu1LQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] rxrpc: Fix call removal to use RCU safe deletion
-Date: Mon, 13 Apr 2026 21:28:47 -0400
-Message-ID: <20260414012847.3835878-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026041332-thimble-aftermost-285c@gregkh>
-References: <2026041332-thimble-aftermost-285c@gregkh>
+	s=arc-20240116; t=1776130451; c=relaxed/simple;
+	bh=65wyp3E473q3cPWKhu0d8QdZ1vasYZilIoTTRWFWu2w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RpbSuNcMJJXqEou04EViyGqZwFmRTNuXws+JnHfLpSfkIT5rl37oF7w9mFQear8vFp6gXuEBch4nbMCTePHxatuDsuEXD5yJcuHf+YHhbe11b42kIeCuCBrgZMq4BuDLCQSLehqXJ6PJHYfxPS3RvvU7d2Jc+bt7I1nG8i6ldM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=damenly.org; spf=pass smtp.mailfrom=damenly.org; dkim=pass (2048-bit key) header.d=damenly.org header.i=@damenly.org header.b=dupXwnHV; arc=none smtp.client-ip=136.175.108.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=damenly.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=damenly.org
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta238.mxroute.com (ZoneMTA) with ESMTPSA id 19d899b1e7a00032bf.007
+ for <stable@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Tue, 14 Apr 2026 01:28:57 +0000
+X-Zone-Loop: 67d596c5fe9af7c7c812f96f96b459a90fb5e9c6f260
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=damenly.org
+	; s=x; h=Content-Type:MIME-Version:Message-ID:Date:References:In-Reply-To:
+	Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=bwKl389HggphIjcNcM0l3ZnumC07Nc1a7tFYVzaVGD4=; b=dupXwnHVPDfUgYYKtZExWs/t+M
+	x8XdqKgQld1eaqbj9iu0tFsdQxlZgdl3sHfj+QV9HhCQ6ieVdWM8YOPJP3zw/l+YFubTmv6U9SMJ5
+	L4KnsUdo8LCIIcs52KS+081V2G1Vv8o1tUCp/6z2htNdC3/uKyDdKGITEqXFZBo2qjnBJS3n9ZXyb
+	Z5h2WdYif6twu44J/KvIa/FKdyGuBKQohFWcl2lA0ZjNLhSPsPHqxVuOLsovyTV6xdrmyDC9q/gfv
+	esU7BbHkSIy0su5lsq5UfVB2aQBWrSjUEh+HeFnExiibC0SvO3nXn8OysU8I27VDb50+hcQHe2zyL
+	9rbLitjw==;
+From: Su Yue <l@damenly.org>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Song Liu <song@kernel.org>,  Yu Kuai <yukuai@fnnas.com>,  Greg
+ Kroah-Hartman <gregkh@suse.de>,  linux-raid@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Subject: Re: [PATCH v2] md: fix kobject reference leak in md_import_device()
+In-Reply-To: <20260413141759.2970973-1-lgs201920130244@gmail.com> (Guangshuo
+	Li's message of "Mon, 13 Apr 2026 22:17:59 +0800")
+References: <20260413141759.2970973-1-lgs201920130244@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Tue, 14 Apr 2026 09:28:48 +0800
+Message-ID: <fr4y8h4f.fsf@damenly.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+Content-Type: text/plain; format=flowed
+X-Authenticated-Id: l@damenly.org
+X-Spamd-Result: default: False [8.84 / 15.00];
+	URIBL_BLACK(7.50)[damenly.org:mid];
+	R_DKIM_REJECT(1.00)[damenly.org:s=x];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-237696-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237694-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[damenly.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	GREYLIST(0.00)[pass,body];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[damenly.org:-];
+	NEURAL_SPAM(0.00)[0.142];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[l@damenly.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,auristor.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,infradead.org:email]
-X-Rspamd-Queue-Id: 16E7A3F4CAC
-X-Rspamd-Action: no action
+	DBL_BLOCKED_OPENRESOLVER(0.00)[damenly.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 28DE53F4D3F
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-From: David Howells <dhowells@redhat.com>
+On Mon 13 Apr 2026 at 22:17, Guangshuo Li 
+<lgs201920130244@gmail.com> wrote:
 
-[ Upstream commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 ]
+> md_import_device() initializes rdev->kobj with kobject_init() 
+> before
+> checking the device size and loading the superblock.
+>
+> When one of the later checks fails, the error path still frees 
+> rdev
+> directly with kfree(). This bypasses the kobject release path 
+> and leaves
+> the kobject reference unbalanced.
+>
+> The issue was identified by a static analysis tool I developed 
+> and
+> confirmed by manual review.
+>
+> After kobject_init(), release rdev through kobject_put() instead 
+> of
+> kfree().
+>
+> Fixes: f9cb074bff8e ("Kobject: rename kobject_init_ng() to 
+> kobject_init()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+> v2:
+>   - note that the issue was identified by my static analysis 
+>   tool
+>   - and confirmed by manual review
+>
+>  drivers/md/md.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/md/md.c b/drivers/md/md.c
+> index 6d73f6e196a9..4ce7512dc834 100644
+> --- a/drivers/md/md.c
+> +++ b/drivers/md/md.c
+> @@ -3871,6 +3871,9 @@ static struct md_rdev 
+> *md_import_device(dev_t newdev, int super_format, int supe
+>
+>  out_blkdev_put:
+>  	fput(rdev->bdev_file);
+> +	md_rdev_clear(rdev);
+> +	kobject_put(&rdev->kobj);
+> +	return ERR_PTR(err);
+>
+Why not just:
 
-Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
-rather than list_del_init() to prevent stuffing up reading
-/proc/net/rxrpc/calls from potentially getting into an infinite loop.
+out_blkdev_put:
+	kobject_put(&rdev->kobj);
+	fput(rdev->bdev_file);
+out_clear_rdev:
+	md_rdev_clear(rdev);
+out_free_rdev:
+	kfree(rdev);
+	return ERR_PTR(err);
 
-This, however, means that list_empty() no longer works on an entry that's
-been deleted from the list, making it harder to detect prior deletion.  Fix
-this by:
-
-Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
-are unexpectedly still on the list.  Limiting the number of steps means
-there's no need to call cond_resched() or to remove calls from the list
-here, thereby eliminating the need for rxrpc_put_call() to check for that.
-
-rxrpc_put_call() can then be fixed to unconditionally delete the call from
-the list as it is the only place that the deletion occurs.
-
-Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to older API ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/rxrpc/call_object.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
-
-diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index 6401cdf7a6246..33165080f4685 100644
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -634,11 +634,9 @@ void rxrpc_put_call(struct rxrpc_call *call, enum rxrpc_call_trace op)
- 		_debug("call %d dead", call->debug_id);
- 		ASSERTCMP(call->state, ==, RXRPC_CALL_COMPLETE);
- 
--		if (!list_empty(&call->link)) {
--			spin_lock_bh(&rxnet->call_lock);
--			list_del_init(&call->link);
--			spin_unlock_bh(&rxnet->call_lock);
--		}
-+		spin_lock_bh(&rxnet->call_lock);
-+		list_del_rcu(&call->link);
-+		spin_unlock_bh(&rxnet->call_lock);
- 
- 		rxrpc_cleanup_call(call);
- 	}
-@@ -709,24 +707,20 @@ void rxrpc_destroy_all_calls(struct rxrpc_net *rxnet)
- 	_enter("");
- 
- 	if (!list_empty(&rxnet->calls)) {
--		spin_lock_bh(&rxnet->call_lock);
-+		int shown = 0;
- 
--		while (!list_empty(&rxnet->calls)) {
--			call = list_entry(rxnet->calls.next,
--					  struct rxrpc_call, link);
--			_debug("Zapping call %p", call);
-+		spin_lock_bh(&rxnet->call_lock);
- 
-+		list_for_each_entry(call, &rxnet->calls, link) {
- 			rxrpc_see_call(call);
--			list_del_init(&call->link);
- 
- 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
- 			       call, refcount_read(&call->ref),
- 			       rxrpc_call_states[call->state],
- 			       call->flags, call->events);
- 
--			spin_unlock_bh(&rxnet->call_lock);
--			cond_resched();
--			spin_lock_bh(&rxnet->call_lock);
-+			if (++shown >= 10)
-+				break;
- 		}
- 
- 		spin_unlock_bh(&rxnet->call_lock);
--- 
-2.53.0
-
+--
+Su
 
