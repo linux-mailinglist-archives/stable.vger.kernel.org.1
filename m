@@ -1,102 +1,91 @@
-Return-Path: <stable+bounces-237861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-237864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KI23JIA23mkRpQkAu9opvQ
-	(envelope-from <stable+bounces-237861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:43:44 +0200
+	id O5YjNUQ73mnipgkAu9opvQ
+	(envelope-from <stable+bounces-237864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:04:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F0B3FA158
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 14:43:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882F03FA451
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 15:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B155F30160C3
-	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 12:43:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 74E99306B135
+	for <lists+stable@lfdr.de>; Tue, 14 Apr 2026 13:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76D53E639D;
-	Tue, 14 Apr 2026 12:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FCC3E6DDB;
+	Tue, 14 Apr 2026 13:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XaoKwOYU";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CqYKbcTj";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XaoKwOYU";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CqYKbcTj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0MTee/e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604AA3E5ECE
-	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 12:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D9B3E6DD5
+	for <stable@vger.kernel.org>; Tue, 14 Apr 2026 13:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776170618; cv=none; b=gSCluECd+enIx3b3FP3TIZ1reThRbMZ/Kq/FeerNCIkLKOITF59d5ksUxKHwAU59tKg0Oh6RkphtWkXNS3zK7wES4+kXQxxXq5V/tX6AqSHde5Tw/I8eoShErWS4l426+l2gHenh//xbSC0Kus8bhbLgqxDaWfNnWm7ZtvkQIso=
+	t=1776171769; cv=none; b=qdTZiFfNR2425Z4RIMosJ7eZJ/McO+u59VBEGivL0GaHea1IUITMjgwrCaUypqL0/0b5b8Pfa+H/YQC9lw2D0j9kwZQzRRSUZTZEqbcp4vs6iuihw6TpOgTUJxT8Adh9VaLRSu/eh1fyMcdeYkzcSZyjH1CwR2h+68qYHjhAJLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776170618; c=relaxed/simple;
-	bh=qnK7k6IHrNCSTDNTQUKwGDOjgyfhjHYpvqF0dYs5OXE=;
+	s=arc-20240116; t=1776171769; c=relaxed/simple;
+	bh=AW468umSoMxfQZuO3i3oPBw2NNfhkyDeqV5TDwGam/Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rb4qkMp3vEBHXUKoSMw5ZQsjyy81pRt8lIADIIXUbYyzmwuChONy6G9mRcmV0x0MBfpPbQTHplqLfMFQPoVGVy0zSQSlRINolXIxf35ESHbsMAtlatB7lH+6TaFvyIr5oD2Kl1wT+Wu5XnknMdVtBcU/3WUXm7AE3qADVjQSKMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XaoKwOYU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CqYKbcTj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XaoKwOYU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CqYKbcTj; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B772B6A900;
-	Tue, 14 Apr 2026 12:43:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776170615; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
-	b=XaoKwOYU5/HTTMesQ0qlJoQxwhhL6Nonr/Z2TomSx2+uJWALChsNVs4PKxw7SPs/b+M7wh
-	RWHWq4C1heTK55F9+ugEezkyhKIioLINDXEUpdUtgaLCjOJHsy5A9Kbn8Vkm6PdB6RUvD3
-	4DkOLeMw3e+gUvzEHgKSbdhV17h/EKM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776170615;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
-	b=CqYKbcTj3CCzefsZdBeVROoqnk+amXk5EWaAObY1EbMjIfo+casGg6JeXzYMUo4H176Jps
-	OhGZ8OGx1rhMi+BQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776170615; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
-	b=XaoKwOYU5/HTTMesQ0qlJoQxwhhL6Nonr/Z2TomSx2+uJWALChsNVs4PKxw7SPs/b+M7wh
-	RWHWq4C1heTK55F9+ugEezkyhKIioLINDXEUpdUtgaLCjOJHsy5A9Kbn8Vkm6PdB6RUvD3
-	4DkOLeMw3e+gUvzEHgKSbdhV17h/EKM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776170615;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RxarUO4lk7LF8B8XC/HDZwn/7Us9hb+n9d6wW16auuY=;
-	b=CqYKbcTj3CCzefsZdBeVROoqnk+amXk5EWaAObY1EbMjIfo+casGg6JeXzYMUo4H176Jps
-	OhGZ8OGx1rhMi+BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF35A4B453;
-	Tue, 14 Apr 2026 12:43:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NLS/Knc23mkHEwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 14 Apr 2026 12:43:35 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6E622A0B66; Tue, 14 Apr 2026 14:43:31 +0200 (CEST)
-Date: Tue, 14 Apr 2026 14:43:31 +0200
-From: Jan Kara <jack@suse.cz>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: Jan Kara <jack@suse.com>, linux-fsdevel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] udf: reject descriptors with oversized CRC length
-Message-ID: <7sphdwp54fokevos7ppeq2iaydltdq2uxxt6iqamjwtycs2a34@yt53i7nyvwc3>
-References: <20260413211240.853662-1-michael.bommarito@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JxMvp5FHX+82whhVUUlBwJ6fPLzlAK5WT4mstEsWLfKpV2ezFw5CB+sFlzi8onxYI/TovKVQBcE57zZ8t2ov6uDSIr14TIabfVw6LJDo3yCjbhgrVXWmNMtwILVdYbiQvpzAE8ZMN4SY0bIxD922iVI2ffXgjlB70spzuvBdTAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0MTee/e; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488b00ed86fso57758185e9.3
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 06:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776171764; x=1776776564; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=696EAWx7+IwRQtEykEd8+V1n8vDOpq5v6LhBAVHyZ/Y=;
+        b=Q0MTee/eaLXzZU8rurmwcJSlxaTVbOjtBT55BQajSlTfuwurP++YXLAkW2MN9DeZ6m
+         cOoIQOXmsVFQzQKdYvAQZtRnLG/Punnd8mJEYE0nD6wKhPTD5+h63VBVOFsTb1knUhU+
+         IiCMipT63wc/bAilRfxq1vt1bqsJxMkOJElcOw//Ldyzy9fmepAmTwRYwRK3qZMZq0x6
+         maCCPqcxk6PWf5BOqj8yyaz51VpEyh5XBURwXpcr7rAEU7x37rrOU0+WJBQOCOQfmiCw
+         DF1VaRYCalphhj/hEGqSwNuK/jhQR4ABZQvVolCO3NBOR7EXmIe5sN8RVEx44pegvtTX
+         4jKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776171764; x=1776776564;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=696EAWx7+IwRQtEykEd8+V1n8vDOpq5v6LhBAVHyZ/Y=;
+        b=o1w3vib7SEIMiqeBx6h0pkH5Y/QlEm/7BCo79VLRaIp68aZyEsf9b4I2Y6zf+HoEoU
+         LkL1pD9bGOlChQ/gYqnTAubvvoA3t5WkuqFkqC/4woToPbdn4Z6Hcikn3fq+bSVHuIpz
+         tryCenEBtZHcnxbmKhsGxrBFVmDuVqkNDGIJoPmfKIbMsNMBLRuCuKyMFqyrFN1st6S8
+         i0qjC0zM8kxgAyrLavyRdSJBueiY5maF0Wmn8f3ZqXcaEKRuTOUPK1NAranAe8eqDx4l
+         9wTTsd1YXskWyD6+vp/Wrmdd4X8GEF3NpnHAVy/1C8qSPjqjZB3hUuWhqLPce+8QjfWj
+         fxmA==
+X-Forwarded-Encrypted: i=1; AFNElJ+Xj/ZScQM+StjgcXB4acjbINPPIH587ZkOG0THhCyFSGf7VuFf8SspcLs5iSyOe+sP+U3IzMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywCBtAunuwQc7W9Dte53PG1BCM/6YZHfTZYQYZDdnjeGwutDx8
+	9Qu/52YFLqFkicNtBxhJPOMREGpRULvr+0UjS300LCMNOcbFfB9NUZzC
+X-Gm-Gg: AeBDiesOgYQMlndKEwumuPqsgW6+kRSMLa9t4LJo49wjkBr05KHLVeCg9wLCT6X9bbn
+	NKfR8ICVxakKxCzgLrC2aFLA4c4fN/M6Su2dmhq3L5tBmOQB14V4tbwgE46Y6WKQ1rRCg1Xkp1Z
+	5Elx3QqhujtVUBjns/D/tyChQUTEUWnhY5rGHrqt1Ww60rZyEPfcjx7fxfJraHkaQslOwEFwr3V
+	rq4GlJu24dRylbOeJn0MUuiXjRkGQAzxkTU0w9Fcf74zq4Ef1ey3LwOzcb7XFjGI9qOhaCh80id
+	y73On+tlllufaZ1n8l2kZjKGASuh3pKAYT2wVHXEhUYTboZlR3MC+0X6c+WUKpA1jg3GRYxIaPY
+	FgAuYWUrJLehx8U9TXRgvurjz78CId/A62Kbq197muaGmemgP2+e0ShAXzP13dwnN37FvZPsCn7
+	Rcepg33CwscmXkEVUUbv09hbOstX60bNwd1Nzs
+X-Received: by 2002:a05:600c:45c9:b0:488:869c:edaa with SMTP id 5b1f17b1804b1-488d67e269amr237317035e9.7.1776171763810;
+        Tue, 14 Apr 2026 06:02:43 -0700 (PDT)
+Received: from localhost (hf33.n1.ips.mtn.co.ug. [41.210.143.51])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ede1e05bsm82588805e9.6.2026.04.14.06.02.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 06:02:42 -0700 (PDT)
+Date: Tue, 14 Apr 2026 15:48:55 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Alexandru Hossu <hossu.alexandru@gmail.com>
+Cc: gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org, dan.carpenter@linaro.org,
+	hansg@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] staging: rtl8723bs: fix frame length underflow in
+ OnAuthClient
+Message-ID: <ad43t8KkI0BBc-co@stanley.mountain>
+References: <20260413202824.740653-1-hossu.alexandru@gmail.com>
+ <20260414100804.871764-1-hossu.alexandru@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,112 +94,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260413211240.853662-1-michael.bommarito@gmail.com>
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.16 / 15.00];
+In-Reply-To: <20260414100804.871764-1-hossu.alexandru@gmail.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-237861-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	DMARC_NA(0.00)[suse.cz];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-237864-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 09F0B3FA158
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[stanley.mountain:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 882F03FA451
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon 13-04-26 17:12:40, Michael Bommarito wrote:
-> udf_read_tagged() skips CRC verification when descCRCLength +
-> sizeof(struct tag) exceeds the block size.  A crafted UDF image can
-> set descCRCLength to an oversized value to bypass CRC validation
-> entirely; the descriptor is then accepted based solely on the 8-bit
-> tag checksum, which is trivially recomputable.
+On Tue, Apr 14, 2026 at 12:08:04PM +0200, Alexandru Hossu wrote:
+> If pkt_len is less than WLAN_HDR_A3_LEN + offset + 6, the reads of
+> the seq and status fields go beyond the frame buffer. Additionally,
+> when pkt_len < WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_ (30 bytes), the
+> subtraction passed to rtw_get_ie() wraps around since pkt_len is
+> unsigned, causing rtw_get_ie() to scan well past the end of the buffer.
 > 
-> Reject such descriptors instead of silently accepting them.  A
-> legitimate single-block descriptor should never have a CRC length that
-> exceeds the block.
+> Add a minimum length check after computing offset to reject frames
+> that are too short before any fixed field access.
 > 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 > Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-6
-> Assisted-by: Codex:gpt-5-4
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-
-Thanks for the fix! It looks good to me. I'll merge it into my tree later
-this week once the pull requests for the merge window are done.
-
-								Honza
-
+> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
 > ---
-> Found during a filesystem security audit.  The CRC validation
-> condition in udf_read_tagged() uses OR logic: the first arm
-> (descCRCLength too large) short-circuits the second arm (CRC
-> comparison), so an oversized descCRCLength causes the function to
-> return the buffer head without verifying the CRC.  The descriptor
-> is accepted based solely on the 8-bit tag checksum.
+>  drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> A crafted UDF image with descCRCLength set to blocksize (e.g. 2048
-> on a 2048-byte-block filesystem, vs the 2032 limit) in both the
-> main and reserve Volume Descriptor Sequences mounts successfully
-> with corrupted descriptor bodies.
-> 
-> Reproduced on UML (ARCH=um, KASAN-enabled v7.0-rc7) with a
-> mkudffs-generated 20 MiB image, both LVD copies patched to
-> descCRCLength=2040, CRC left stale, body byte flipped, tag
-> checksum recomputed.  Mount succeeds (MOUNT=0) with the corrupt
-> LVD accepted.  With this patch applied, mount fails with EINVAL
-> and the new "CRC length ... exceeds block size" error is logged.
-> 
-> Reproducer details and UML console logs available on request.
-> 
->  fs/udf/misc.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/udf/misc.c b/fs/udf/misc.c
-> index 0788593b6a1d..6928e378fbbd 100644
-> --- a/fs/udf/misc.c
-> +++ b/fs/udf/misc.c
-> @@ -230,8 +230,12 @@ struct buffer_head *udf_read_tagged(struct super_block *sb, uint32_t block,
->  	}
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> index 90f27665667a..6b0ac54ad3d4 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> @@ -869,6 +869,9 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
 >  
->  	/* Verify the descriptor CRC */
-> -	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize ||
-> -	    le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
-> +	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize) {
-> +		udf_err(sb, "block %u: CRC length %u exceeds block size\n",
-> +			block, le16_to_cpu(tag_p->descCRCLength));
-> +		goto error_out;
-> +	}
-> +	if (le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
->  					bh->b_data + sizeof(struct tag),
->  					le16_to_cpu(tag_p->descCRCLength)))
->  		return bh;
+>  	offset = (GetPrivacy(pframe)) ? 4 : 0;
+                             ^^^^^^
+Do we know for sure that this is within bounds?  And there is earlier
+code which pokes in pframe as well.  This code is quite complicated.
+
+I looked at how to do bounds checking but it all seems pretty
+complicated to me and I haven't investigated this enough to know the
+right answers.
+
+regards,
+dan carpenter
+
+>  
+> +	if (pkt_len < WLAN_HDR_A3_LEN + offset + 6)
+> +		goto authclnt_fail;
+> +
+>  	seq	= le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 2));
+>  	status	= le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 4));
+>  
 > -- 
 > 2.53.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
