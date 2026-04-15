@@ -1,218 +1,233 @@
-Return-Path: <stable+bounces-238046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKenLZsn32nmPQAAu9opvQ
-	(envelope-from <stable+bounces-238046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:52:27 +0200
+	id aJEXNfQm32nmPQAAu9opvQ
+	(envelope-from <stable+bounces-238042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:49:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D104009CC
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:52:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D46040094B
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59B1230F3021
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:49:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD29B30565A7
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D03384246;
-	Wed, 15 Apr 2026 05:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B1E361DD2;
+	Wed, 15 Apr 2026 05:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VUw5L1xk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RuhvW9lz"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06283822A2;
-	Wed, 15 Apr 2026 05:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776232173; cv=none; b=TFJae8fuh1srw+toGJZ1jJZwZGH7gWp8mbkwWPtCMkTpSaT8JgLPwJhr43u1i2oADCN42MkGes0V5w6lh+oeRJoQDxzybIX+3lxSP4E0xJPg6/nLT0CQWEjtfTGHgLlOz0DFq0urfWjfSCr+jAG+anGvndTOKrIPD3Ovd8O+KFI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776232173; c=relaxed/simple;
-	bh=yylnSyoy2vb9MC5HPtFLylRSJRn2BAIxwtX240Vv/CY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eUy7IiHpg+lvSNLEwGDkoDvD8sbubVwHczfdq67BcylnP8qhi/2FtV1yUC0Q3N6GL3hMFtUHipADiI77HdF1abBDyhkfM2uuB5CPL/muDZHOib1nKT55VpyJNEwbZDSmi6iRApkIKHUogyW/c4srp9tkg28nVmuCnmiWLLvDiGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VUw5L1xk; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776232172; x=1807768172;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=yylnSyoy2vb9MC5HPtFLylRSJRn2BAIxwtX240Vv/CY=;
-  b=VUw5L1xkLHuZSNBxIk0O4C6NGmG19Zl7TqbqPWgfMRemRyXlOqPyl2Yl
-   tfnLiKMiTkHPyXr0LyUH7GsR66EqE6fprBwoD7LlUtafihE1++ZJ1OgRm
-   dYFXvoMdfBo1HtP9+EuSG46eoKVRpBSM6+tG2eVl/v2dHQnilwKvxbR/z
-   kAxuyE1V6K21pqccsxDBJYmZVtolzZoQZOB6olhtyeQYqKRWgysdk0Mit
-   TyzpmkSa4N4IABtSrguO9ZRQs5BCaTSIG8PAXlapaatWI01QpcbVggZc/
-   yXf7yZmAQWnt+7Sbq+cgd/Xend2GW59a6fat5r8yfA9CKUyDDGVHdPjyp
-   w==;
-X-CSE-ConnectionGUID: cNumwFZOR7u0AX1MyjyY8g==
-X-CSE-MsgGUID: mwDm8tkuSIy0idY92SiLuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77105986"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="77105986"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 22:49:27 -0700
-X-CSE-ConnectionGUID: ZKhsJSPaQc6I9gUsCsvMSg==
-X-CSE-MsgGUID: hTBIRkQ8R/6ii5W+xSZe2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="253714828"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 22:49:26 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 14 Apr 2026 22:48:07 -0700
-Subject: [PATCH net 12/13] idpf: fix xdp crash in soft reset error path
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079433372A
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776232159; cv=pass; b=qKFYwUEPVlfyVn16euIu4EttnfqmlAFlm3bfPyrJg7vC/9mQ6Zjh6Xa8VRotDnXHV9NZ3tCeHpLWdzaW/T5y5Q6FeMbFEfnyku0flndrQ9TmIZYYjDwF/ZtggSlDpB5dAdnYRIZcjYElQtmYxoj9Qe8Yhv4Vwnzh9oT0/SjjNc0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776232159; c=relaxed/simple;
+	bh=0Ko4VIiZxkI/O2taJ+3DwN8b1cZwadpXOzMv+Q9JyHg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z1v7nrtC788zEldY015VRKW88wztu+GvOLh3rnGPz8hqIGrs5j47Ca1x3UOqqOumeO7cxJGAS7PJHRuhz5pPWOv7pMxXDgLz3iQy626457/rvc8L+xoRFKG2+oneQ8m90Jcrrlb/wX+1exD2Dtf+loyp+If0sEuzCSBgjdNfGx0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RuhvW9lz; arc=pass smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8a08fa355a1so89983966d6.0
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 22:49:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776232156; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZEX1j8oPI5bpjmyScC5WNtz/jKM4jR5q6U2Z+s82me7eBesclgprcl878NM70j5D5W
+         mC9z2+6q3/cEoT6HFb/ypm7rRG+L0I2Un4KPK5wuMEuyBUtPaJEnlBQeH7lnnvO+TS9o
+         y5KBsl1JSNEfHEErZO8twCuWg4rvnybS/WOB+oclFEqb/L0Ce9zI+QXEdxAja5Lil7et
+         IDQdhwfqkZicnhp+BYujMAye2Mzpgci/8RukHRWlo7N45YAVSlEVYCJqwJ7tEVgmWHdc
+         JQhvZrOkJZD/RMpye2zP2zihoJQolmTZ5+IWA2kCP2wKYoO7Zf0sEF9fbh0gbc6QFRii
+         FW8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g7jC+e6yTEY26VnAI6j6zPGlJNJqrM6o2NkoHZehI4k=;
+        fh=7PKVmLKk5+mLulDtIfoe3G6K4k3i5PMwDhhAOwZsBWY=;
+        b=Hi6WnPmr/NW/dNINHBzbphBkQTomscQ4Jmcn4k15WbXPheGYNJIJawVYURSJZ9ufMZ
+         8SrODyzX8dNz0MwPqUJYZusbKoIQ1qqtyI3eaua52e8mBYe98svy+TohT+t3Q9yp4lYT
+         2PB2ZxPJg8/o9vgJ420rPt4v9ok8RLXI1uT15a62UW58pqreSylol8Le+nKn/npq8hfH
+         2ooaxn/IqSLhH7OiAVZ9DsKo937fQcRGcqf5tjoqtw3WvnUUefXiiFGwmz0SXozCe/6W
+         AhjH0XzoQkjDvmbwxZYLN4BwGRKXwMYue/9L9t8zZUBBSF8Q4P1P41WcJnWYL7hVbElI
+         4FDQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1776232156; x=1776836956; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g7jC+e6yTEY26VnAI6j6zPGlJNJqrM6o2NkoHZehI4k=;
+        b=RuhvW9lzGi8NVZMQeDUAv0UwK0MZ2CHqskH8gB1dDso8n+Qza5GJSBt2aYbTCjP1LR
+         rYyOYVAAjiWF6Vqfe81TYEkvNyuFajW7LkviqvSQyuWF1Hkb/1664pVjx3nLXu55egkY
+         /cAlqlRhhozmBnRhHiHKUcJol+1mgIjgk7rWzTN50MYw9NT+J1xzbERTThuhJyVn24Nm
+         mc+ZW0cK8i7UtRdcPNVx7U07ncVsdkIIoBuwHjhgOXPnBsllocrG4XellS11hrxjDFBx
+         5gIPvU7RoaAKFIufsyxXZ1p+fNwKAY3dkkzZB9sKHiF56tiOdctEPL46WBR/Z9x265+b
+         AaBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776232156; x=1776836956;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=g7jC+e6yTEY26VnAI6j6zPGlJNJqrM6o2NkoHZehI4k=;
+        b=a2tJmD/NFq2NFT/oXoz9r5OEazb4uwMpF29svS7DxogkXTIxQ2+Tt/WIF0mQLzoUki
+         0oYg31d6txhh8BGRoJRLSWEKKQVVKUnbl+f2kCeJbFia/QABYgToFFCuOlfVjjH4JFWD
+         RoxInGVewrgRdS78YUlJcFuYYF71fZ9FvY4BHUMXZXbfl7db+iIKJQClhA+5AvG5N2Z0
+         yevMX9/S92HX839k6kDkvVxHiaoUNBUMI+lWwA3U/VwMLs/+xIsXiVujsSGmxToeTat2
+         KDvOBgcbS1UgB/wPg14MXm7iqxD1ee4J//ixVvdibHs/Ln9tBJJtdoNMs+0pfOIjiniS
+         ZeGA==
+X-Forwarded-Encrypted: i=1; AFNElJ8sDJaYUrWFiguTRqW//dOmME4tJ7PAn5CrBt+DGP41WUv9P/0h6J7MmQ9tN/yvTle1qv6IZZc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPbAmBJhyyFMJFPio3vt6U1hynZcQc+COnbCAn08L+GO7Wm38g
+	PNc/mIB4hspKkMHi1JGB2fZ8yYMVDaFWokHxZCO7aHf+asyKUL/1XeJiDQBnwZdct0Q7qO4x2et
+	v2jSBtCW2W8CRCAILv8eR8D9EnF00h5NZw+oydZge
+X-Gm-Gg: AeBDiet66054cuaPABnbKpy5jPfD9P4rafIzJDE+ySsmth23JIUnupWxmkkzca5ZlEl
+	trNa6a4iQpQqdgSnTDkb8skRpyf0hukhgY5teGEIPnboe3r7oJk9j+yb/BztQhPr2xd/YoroA95
+	p5VdJHxr/h+nfocf670VxgcN23D65PQOAOKZfMhrGJ4llPm1GYKDhtzmO+uVT7os3So28FPDq4O
+	AcbYGQw66sIQa2IOH44l++qn2EedMiniOoN+yONca2QPM0KsomwBQIjwXuUxpo0bjFLxQmSXnwM
+	gSN2ihXNfmZj+8rrgZR7YnI8LbBAoXHz6mJVW7kNfYI8sj5ctqjTmhWqJ1UZBg8NZfQh9vg=
+X-Received: by 2002:ad4:5bc7:0:b0:8ac:ae56:b493 with SMTP id
+ 6a1803df08f44-8acae56b656mr198973546d6.40.1776232155593; Tue, 14 Apr 2026
+ 22:49:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260414-iwl-net-submission-2026-04-14-v1-12-852f38e7da39@intel.com>
-References: <20260414-iwl-net-submission-2026-04-14-v1-0-852f38e7da39@intel.com>
-In-Reply-To: <20260414-iwl-net-submission-2026-04-14-v1-0-852f38e7da39@intel.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Emil Tantilov <emil.s.tantilov@intel.com>, stable@vger.kernel.org, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Patryk Holda <patryk.holda@intel.com>
-X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3628;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=0rFTHH78tj3yvm8U7Wl3/2ldPCaGQCnR2UKx8LzBER4=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsz7ao8/+1e/2rCPm5MpQ/Jx5vE5MyJTtZNS59wVPLBNu
- vS9s+uVjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACbyvoWR4SKLWURbl53GnbP2
- tmcTFbQ4ivxOWflt27jMX8xTiC3DgeF/hdhsj81dFcpnEv61B4jIRZ2aM29f837Zrm9HZ27lY41
- hAgA=
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+References: <20260413155819.042779211@linuxfoundation.org> <39e878af-7418-4538-9e1f-8b62de3d1e3f@nvidia.com>
+ <ad30ns8QQDzk0h72@duo.ucw.cz>
+In-Reply-To: <ad30ns8QQDzk0h72@duo.ucw.cz>
+From: Ben Copeland <ben.copeland@linaro.org>
+Date: Wed, 15 Apr 2026 06:49:04 +0100
+X-Gm-Features: AQROBzBEqY4mG6hUOd2h2ReML6KwVLMY91sTJvZDNC4GxKeXzWsyi3AnMxmOomg
+Message-ID: <CAL0q8a65x5mK2K+X8bY3sPrG8JMhbN7uDMje7JJNvvmzaR_SiQ@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/491] 5.10.253-rc1 review
+To: Pavel Machek <pavel@nabladev.com>
+Cc: Jon Hunter <jonathanh@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de, 
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
+	sr@sladewatkins.com, 
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238046-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238042-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[nvidia.com,linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 38D104009CC
+	FROM_NEQ_ENVFROM(0.00)[ben.copeland@linaro.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,linaro.org:dkim,gitlab.com:url,kernelci.org:url,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email]
+X-Rspamd-Queue-Id: 4D46040094B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+On Tue, 14 Apr 2026 at 09:03, Pavel Machek <pavel@nabladev.com> wrote:
+>
+> On Mon 2026-04-13 19:52:08, Jon Hunter wrote:
+> > Hi Greg,
+> >
+> > On 13/04/2026 16:54, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 5.10.253 release=
+.
+> > > There are 491 patches in this series, all will be posted as a respons=
+e
+> > > to this one.  If anyone has any issues with these being applied, plea=
+se
+> > > let me know.
+> > >
+> > > Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
+> > > Anything received after that time might be too late.
+> > >
+> > > The whole patch series can be found in one patch at:
+> > >     https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.253-rc1.gz
+> > > or in the git tree and branch at:
+> > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> > > and the diffstat can be found below.
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> > >
+> > > -------------
+> > > Pseudo-Shortlog of commits:
+> >
+> > ...
+> > > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> > >      bus: omap-ocp2scp: Convert to platform remove callback returning=
+ void
+> >
+> >
+> > I am seeing the following build error due to the above change on ARM pl=
+atforms ...
+> >
+> > drivers/bus/omap-ocp2scp.c:95:10: error: 'struct platform_driver' has n=
+o member named 'remove_new'; did you mean 'remove'?
+> >    95 |         .remove_new     =3D omap_ocp2scp_remove,
+> >       |          ^~~~~~~~~~
+> >       |          remove
+> > drivers/bus/omap-ocp2scp.c:95:27: error: initialization of 'int (*)(str=
+uct platform_device *)' from incompatible pointer type 'void (*)(struct pla=
+tform_device *)' [-Werror=3Dincompatible-pointer-types]
+> >    95 |         .remove_new     =3D omap_ocp2scp_remove,
+> >       |                           ^~~~~~~~~~~~~~~~~~~
+> >
+>
+> We see that one, too:
+>
+> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/1390=
+1155305
+> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines=
+/2450043152
+>
+> Best regards,
 
-NULL pointer dereference is reported in cases where idpf_vport_open()
-fails during soft reset:
+This was also observed on KernelCI:
 
-./xdpsock -i <inf> -q -r -N
+https://dashboard.kernelci.org/tree/stable-rc/linux-5.10.y/0abb5988a311f0e6=
+17615aa4b08c90b3ade85c25?df%7Ca%7Carm=3Dtrue
 
-[ 3179.186687] idpf 0000:83:00.0: Failed to initialize queue ids for vport 0: -12
-[ 3179.276739] BUG: kernel NULL pointer dereference, address: 0000000000000010
-[ 3179.277636] #PF: supervisor read access in kernel mode
-[ 3179.278470] #PF: error_code(0x0000) - not-present page
-[ 3179.279285] PGD 0
-[ 3179.280083] Oops: Oops: 0000 [#1] SMP NOPTI
-...
-[ 3179.283997] Workqueue: events xp_release_deferred
-[ 3179.284770] RIP: 0010:idpf_find_rxq_vec+0x17/0x30 [idpf]
-...
-[ 3179.291937] Call Trace:
-[ 3179.292392]  <TASK>
-[ 3179.292843]  idpf_qp_switch+0x25/0x820 [idpf]
-[ 3179.293325]  idpf_xsk_pool_setup+0x7c/0x520 [idpf]
-[ 3179.293803]  idpf_xdp+0x59/0x240 [idpf]
-[ 3179.294275]  xp_disable_drv_zc+0x62/0xb0
-[ 3179.294743]  xp_clear_dev+0x40/0xb0
-[ 3179.295198]  xp_release_deferred+0x1f/0xa0
-[ 3179.295648]  process_one_work+0x226/0x730
-[ 3179.296106]  worker_thread+0x19e/0x340
-[ 3179.296557]  ? __pfx_worker_thread+0x10/0x10
-[ 3179.297009]  kthread+0xf4/0x130
-[ 3179.297459]  ? __pfx_kthread+0x10/0x10
-[ 3179.297910]  ret_from_fork+0x32c/0x410
-[ 3179.298361]  ? __pfx_kthread+0x10/0x10
-[ 3179.298702]  ret_from_fork_asm+0x1a/0x30
+The two issues:
 
-Fix the error handling of the soft reset in idpf_xdp_setup_prog() by
-restoring the vport->xdp_prog to the old value. This avoids referencing
-the orphaned prog that was copied to vport->xdp_prog in the soft reset
-and prevents subsequent false positive by idpf_xdp_enabled().
+https://dashboard.kernelci.org/issue/maestro%3A67d434ff5d6b71886d45efe758ca=
+00ff45cb969a?iv=3D1
+https://dashboard.kernelci.org/issue/maestro%3Ac970827f049cfd67124148e3c19a=
+be1d4aa8347a?iv=3D1
 
-Update the restart check in idpf_xsk_pool_setup() to use IDPF_VPORT_UP bit
-instead of netif_running(). The idpf_vport_stop/start() calls will not
-update the __LINK_STATE_START bit, making this test a false positive
-should the soft reset fail.
+Regards
 
-Fixes: 3d57b2c00f09 ("idpf: add XSk pool initialization")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
- drivers/net/ethernet/intel/idpf/xdp.c | 1 +
- drivers/net/ethernet/intel/idpf/xsk.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+Ben
 
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index cbccd4546768..18a6e7062863 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -488,6 +488,7 @@ static int idpf_xdp_setup_prog(struct idpf_vport *vport,
- 				   "Could not reopen the vport after XDP setup");
- 
- 		cfg->user_config.xdp_prog = old;
-+		vport->xdp_prog = old;
- 		old = prog;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
-index d95d3efdfd36..3d8c430efd2b 100644
---- a/drivers/net/ethernet/intel/idpf/xsk.c
-+++ b/drivers/net/ethernet/intel/idpf/xsk.c
-@@ -553,6 +553,7 @@ int idpf_xskrq_poll(struct idpf_rx_queue *rxq, u32 budget)
- 
- int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- {
-+	const struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
- 	struct xsk_buff_pool *pool = bpf->xsk.pool;
- 	u32 qid = bpf->xsk.queue_id;
- 	bool restart;
-@@ -568,7 +569,8 @@ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- 		return -EINVAL;
- 	}
- 
--	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
-+	restart = idpf_xdp_enabled(vport) &&
-+		  test_bit(IDPF_VPORT_UP, np->state);
- 	if (!restart)
- 		goto pool;
- 
-
--- 
-2.53.0.1066.g1eceb487f285
-
+>                                                                          =
+       Pavel
 
