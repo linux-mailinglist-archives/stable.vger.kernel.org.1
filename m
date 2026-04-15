@@ -1,133 +1,139 @@
-Return-Path: <stable+bounces-238090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OU3tIZBl32kuSgAAu9opvQ
-	(envelope-from <stable+bounces-238090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:16:48 +0200
+	id QCroG7Rl32kuSgAAu9opvQ
+	(envelope-from <stable+bounces-238091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:17:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0426403305
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B7E403324
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F113300BD96
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:16:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7983D300F538
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CEF30C615;
-	Wed, 15 Apr 2026 10:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14C633CE8A;
+	Wed, 15 Apr 2026 10:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kL3kDtWH"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="z7BxtvyT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9535A29408;
-	Wed, 15 Apr 2026 10:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A9226ED41;
+	Wed, 15 Apr 2026 10:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776248204; cv=none; b=kFQ5KpClno/MjkB7N6Gm4i+3tNICj1J2zyCEM8fybm4lLHRHyKYcBC9DDx+q/B3uR4hXlsKz72WMS46MUWx4QkmptmtiNIh3tmMQtlhHMLG9ZuWXQAxAabiusUO1RWNb8pP5TnZVAubjTvJFETMqTq9+Q+AUiufNuv34rUC+0I4=
+	t=1776248222; cv=none; b=Ewo7ZCBduowK3wLx1dTNqqAA7jx0CeLOTLtogyC9vp+lN81E4doh2fjtCRu8NLBeojxz0YNaX1hIgp8aGwqliGHc/gksq6HbsXhnAE7GSyx0LaXr/TZvXY1gdkCKZkt6Z47lmzhg8mYydgZTSTdXXjDIKWt636OoF9GBfGttfX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776248204; c=relaxed/simple;
-	bh=SdtinQhntMuvRPSxzTe5Z68hfpujzRJOaClR3VLGMAA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kgn5st3/RSq8PcYaSUSRZxAR7nbOlqRBRu67Gk0Vg0nOeAA8n+s6vjkVZPK2IK+tfz0B3nAKpdftTN6Snc8WgxNrk1/yXxWrMCyHRQJW/P6Yi1MSZNfOXC3cjRt9WUQ/t8B6ws1o2HAnC+/xHN7GbFPQXly1k6hBy/zwXztbSWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kL3kDtWH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7DAC19424;
-	Wed, 15 Apr 2026 10:16:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776248204;
-	bh=SdtinQhntMuvRPSxzTe5Z68hfpujzRJOaClR3VLGMAA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kL3kDtWHbm3rKWP3pQQUgfkwOAHDNy72y1/xfnyqj29oHhg4eN6u3X8pOCkeyHAAf
-	 IP7TdqFoLJwReSlMOoM1mIWPpMgwKavtiSS8nzywVKpWGzOmyNyHk40fMbfiZAeqoZ
-	 NiOuGOXM40hFXNe6fj5+8HtoLCAr6GfjkzFkO0iSbXsFdXnnLPegSdNzI7hdGe/tFq
-	 qtbk/mA5iVf/jJCuyDcaLEhBdcFj006OlmDVG1g40lfOZsuXyaiGCG/N3wcw9i4EWv
-	 ytvREIy3s9sdfGZjrhQ+BJgAjDtfMTFGxCSJ9c88mVwqbSu0KqLO/OMDB+x6wN6lW+
-	 Z7Nilit56BlcA==
-Date: Wed, 15 Apr 2026 11:16:38 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 00/50] 6.6.135-rc1 review
-Message-ID: <7226b550-7a93-4551-a751-d6f1de977484@sirena.org.uk>
-References: <20260413155724.497323914@linuxfoundation.org>
+	s=arc-20240116; t=1776248222; c=relaxed/simple;
+	bh=PuEO4ZoVkmXf0em8c7zUPljUqT2SuX0LSSreZblwqK4=;
+	h=Date:To:From:Subject:Message-Id; b=qdZ6axYjn6XzX+qyGfa/H70KEwBMcTIng0QQnP5N//nAnbm+Pl++xVTBGyGZT4Wakeu5FXYm9XrzNU1iaKefRw2221HVMbP1o311QouRwWQW/SPFeEmzzl9lFPgj4kYw1MU8rz5KLI12KOQGXAqXYr3PWYUiyx4W90nSmium4+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=z7BxtvyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1FBC19424;
+	Wed, 15 Apr 2026 10:17:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776248222;
+	bh=PuEO4ZoVkmXf0em8c7zUPljUqT2SuX0LSSreZblwqK4=;
+	h=Date:To:From:Subject:From;
+	b=z7BxtvyToTNfiVFHn7wj6xLgR3rLx47Ed/Kkfgeu8h8Vha9hjA9sv5S9y9rw6ehhf
+	 RVwG0yZE6krZLeWT57pJOkKfvKCewqIUTcu9kPPHF/XH6V023fudYxkjoCdrVmRS3F
+	 eSdJLh1fCdZCij9DvL8WcQb1oMXr8uAH4RRRNJFU=
+Date: Wed, 15 Apr 2026 03:16:56 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,peterx@redhat.com,aarcange@redhat.com,gourry@gourry.net,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] userfaultfd-preserve-write-protection-across-uffdio_move.patch removed from -mm tree
+Message-Id: <20260415101701.2D1FBC19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cFYbj4Z2TXT5n60H"
-Content-Disposition: inline
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-X-Cookie: Non-sequiturs make me eat lampshades.
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238090-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-238091-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid]
-X-Rspamd-Queue-Id: D0426403305
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E5B7E403324
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---cFYbj4Z2TXT5n60H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The quilt patch titled
+     Subject: userfaultfd: preserve write protection across UFFDIO_MOVE
+has been removed from the -mm tree.  Its filename was
+     userfaultfd-preserve-write-protection-across-uffdio_move.patch
 
-On Mon, Apr 13, 2026 at 06:00:27PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.135 release.
-> There are 50 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+This patch was dropped because an updated version will be issued
 
-Tested-by: Mark Brown <broonie@kernel.org>
+------------------------------------------------------
+From: Gregory Price <gourry@gourry.net>
+Subject: userfaultfd: preserve write protection across UFFDIO_MOVE
+Date: Thu, 9 Apr 2026 11:28:22 -0400
 
---cFYbj4Z2TXT5n60H
-Content-Type: application/pgp-signature; name="signature.asc"
+move_present_ptes() unconditionally makes the destination PTE writable,
+dropping uffd-wp write-protection from the source PTE.
 
------BEGIN PGP SIGNATURE-----
+The original intent was to follow mremap() behavior, but mremap()'s
+move_ptes() preserves the source write state unconditionally.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnfZYUACgkQJNaLcl1U
-h9DTaAf+IXQXru9I8UY3R1a9TUKBaCevAo0Zgg81uBuzHzmgxxfi2rSiijov2YP0
-l6HToW5FcOuj6xjCHs+CswDY0DOl6qIYx5Y9EAAsePPf3jI6uty1ozRlLA0DwzOo
-f0Rf3J1QRRNoxIwBbCRBe+/U3Le0ujeS2RdnfzmhyAfksi9uqKh7x9JUeJkQMccw
-m3WxhQTqpRcisLaJVEvmERX/131T7actgSEBJ78A9YhkEzViyOW2vf7/4dCCsgjM
-W+7JQcgmJkTJkfTUZnRPyeAiwAZ3KiW/PkuqUrwpUofD8nA3TVtc+bLgq4981r8q
-1NDQpXInoLNn20jgb8dDOMj1pUapRA==
-=6BrX
------END PGP SIGNATURE-----
+Modify uffd to preserve the source write state and check the uffd-wp
+condition of the source before setting writable on the destination.
 
---cFYbj4Z2TXT5n60H--
+Link: https://lkml.kernel.org/r/20260409152822.1073083-1-gourry@gourry.net
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/userfaultfd.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+--- a/mm/userfaultfd.c~userfaultfd-preserve-write-protection-across-uffdio_move
++++ a/mm/userfaultfd.c
+@@ -1123,7 +1123,10 @@ static long move_present_ptes(struct mm_
+ 			orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+ 		if (pte_dirty(orig_src_pte))
+ 			orig_dst_pte = pte_mkdirty(orig_dst_pte);
+-		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		if (pte_write(orig_src_pte))
++			orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		if (pte_uffd_wp(orig_src_pte))
++			orig_dst_pte = pte_mkuffd_wp(orig_dst_pte);
+ 		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ 
+ 		src_addr += PAGE_SIZE;
+_
+
+Patches currently in -mm which might be from gourry@gourry.net are
+
+
 
