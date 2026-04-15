@@ -1,180 +1,160 @@
-Return-Path: <stable+bounces-238095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gE8WKS9t32kzSwAAu9opvQ
-	(envelope-from <stable+bounces-238095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:49:19 +0200
+	id QOSTJMtu32nqSwAAu9opvQ
+	(envelope-from <stable+bounces-238096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:56:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BED40368C
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:49:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBEB403727
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7274E3035371
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:49:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57A3E3046F05
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A03C346FA0;
-	Wed, 15 Apr 2026 10:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7FA33FE1F;
+	Wed, 15 Apr 2026 10:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oqlTHCBA"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gEwwa1xK"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D533F33A029;
-	Wed, 15 Apr 2026 10:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA21F54774
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 10:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776250154; cv=none; b=GVkbAri3pxmvLPtE74foqM5bKl3DSLLC0hiFuzwwdy02ms1JacU5druwJ+CsxaUX1eoDztxcq1qpV5zaJyXRWuGzXjj/LFNQ9ONnT8SoYlHc37RngDoqjaqSzdd483Dl29+aGtuQAY5wpduxF5Z5n6fB6lQRS/xrQpIDycWU0Fs=
+	t=1776250566; cv=none; b=V9dzyh1kMQbKv7DV4wBJywOMX5+XzyowfAjjeDYYFaDW6ko/qwEe/2SkzgnY9AQlg+ivmM7+MYsfuTgIOEHGa0ZstpwfMh+CyYeDuJRU4ZIM9ledreS82z8KvBJfuiVreIN7EZpgPO7uFB3AYotZ7OFQ51oGevLBSDv/z+4y2Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776250154; c=relaxed/simple;
-	bh=uyJxzmVKZYjm7UoqvEgdpvtymOMnz4JzEZ+bexIHW58=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VSUz/T1QRX/2YpQNBpNpjP0FF4LXn7b9UgQkbeXRE0uJzxaIinV/CGlR+sVuAbzS/2K96hJpPK/bop7ayipPbSlJJqzjfXXI7cA4YdKQhHMxiKM6ONtKU7MpSyk7ObYmevVvG018K7tB+cHEiVFb4Q58joRiyt6sTJZF3WYaKlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oqlTHCBA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F9x5Cm1701751;
-	Wed, 15 Apr 2026 10:49:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=IaFZ/jUtQskyYUrB3PlnQwqoEyTQvXvwAD7
-	+flNMQ0c=; b=oqlTHCBA7t2XPKa/dB22XrbxtI96oL1v1MfyGGdegY30c0qGZWB
-	phaVe9Xp1lB8fCJsW52HMdSKRtuhls8bLF4pfnTaK7DTuAlqaLhMDvERo+INVmXf
-	xIAsOztCpLgxTFSom7Ygv8j2yOPKZ+MXco9zyQGdxqNKAUmWcsSgcreOXnaKvU47
-	lFiFLy/D6dqid1PJ1wEn1b5R1yJTM1NfOt7H1GmxUDhBLN9rybg0PWgC67YLzz+q
-	HmyXRVVNA9SOffVD0z88uKuHEuoPnfVNmsG6nYbKLFjqiWMxZsLDtW15EMBb5WCD
-	fid0ymr2PvAhT9YXwq2+3pkk2cS7R/7P0kA==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dht56twbb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 10:49:04 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.7/8.18.1.7) with ESMTP id 63FAn1Gw016427;
-	Wed, 15 Apr 2026 10:49:01 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 4dg5d11btb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 10:49:01 +0000 (GMT)
-Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 63FAn0ta016417;
-	Wed, 15 Apr 2026 10:49:00 GMT
-Received: from hu-devc-hyd-u22-c.qualcomm.com ([10.213.101.157])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 63FAn0UJ016415
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 10:49:00 +0000 (GMT)
-Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 2342877)
-	id C1C5A5F0; Wed, 15 Apr 2026 16:18:59 +0530 (+0530)
-From: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-To: vkoul@kernel.org, neil.armstrong@linaro.org,
-        konrad.dybcio@oss.qualcomm.com, dmitry.baryshkov@oss.qualcomm.com,
-        mani@kernel.org, abel.vesa@oss.qualcomm.com
-Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Nitin Rawat <nitin.rawat@oss.qualcomm.com>, stable@vger.kernel.org
-Subject: [PATCH] phy: qcom-qmp-ufs: Fix kaanapali PHY PLL lock failure after SM8650 G4 fix
-Date: Wed, 15 Apr 2026 16:18:51 +0530
-Message-Id: <20260415104851.2763238-1-nitin.rawat@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1776250566; c=relaxed/simple;
+	bh=6ZA2LcSk3QReERFIlOsuFJ0xn3JrVBgbFbT8X+w75Cs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=dnLPrxPfFXw8sc6XMof5YXc2VuKYiMtl/dmpht1uj7EisIdwaOzY0bUzJN6JOcxvdc+YtJPnAYPAyGttAvb+PdnhAGBLzfqLr3f6o4sTzDCMePK4vZ3Iliv2xQrK/f/cOUmMhVNoC/iH3Uh97bUf+I7vMeWZTV6KA37e9jgcYgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gEwwa1xK; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-ORIG-GUID: VaDh0r7muCZ5B-hP0R8PE6ROCim5d6of
-X-Proofpoint-GUID: VaDh0r7muCZ5B-hP0R8PE6ROCim5d6of
-X-Authority-Analysis: v=2.4 cv=K9gS2SWI c=1 sm=1 tr=0 ts=69df6d20 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=3WHJM1ZQz_JShphwDgj5:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=XlGZrpHi-DB37YRDZ8oA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDA5OSBTYWx0ZWRfXxjvJKeXvBW7K
- Cpya/QTkDp1q308W5imIci+VWyif3zP5yZ47lJOYUalU+/8vnh6dh0TMFgzdRbMXsYIUs9NIX2w
- bOg3ufs2qLeEF/DGvn0DyN122/akw2Pzn2eSrdqLVCqG5AeQrKOga6+xA9jBhrNv5LdUlfmsVjG
- Ivlo+eKQAj1skTzluY57NCUVxc22CeT22ZOrlKkq8TJJnaSSK7zpf39yQr4pg7Rafwu97wVrFZk
- 7MjlTY4g4vXMR4BLHlgnJocVj5flM1yHrwEi+7iGQnT/g2GaH8qieutQLeV9TbmaFD2z1sjwbwd
- LdmeMJ3Fw7CVqr0AtmxUvnWUfFEmkKH+2yE+tbujJm5IJrgEK1H8iebzo0JS1C0NRWvzgAB9vS3
- E314os0vFdSrxQw9EBKGe7bDqFNZPDg2SD7qirU/UjDnG/Ia4nJkqVxC4xV1mvexg1MuArMY/cU
- wKw+g6e9wQ5EhRXHTrA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- priorityscore=1501 spamscore=0 clxscore=1011 phishscore=0 bulkscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604150099
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776250553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fPLefkgOLZaU5Vrj9t+NYCjOZkZjnCgC8OJdP8PSA+g=;
+	b=gEwwa1xK1kon4vxC10jYEPEeFqdMQWcmBsUu9dDf5j4+GADPqZYaBNmySRvAwPTcMWM3LQ
+	/rLMxbYWWjAKbIpX4gFh0jD9YkPzo8TW+jxN4B9DsCEtSEW6XEgHtoMWQAUjDK4aZtGwGM
+	JbicM5Ayy221JgxwxFjJYAZWCW7Dxr4=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 Apr 2026 12:55:48 +0200
+Message-Id: <DHTO9P2GULIP.2VT8AWTTKPL8W@linux.dev>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <linux-staging@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] staging: rtl8723bs: fix remote heap information
+ disclosure in issue_assocreq
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Luka Gejak" <luka.gejak@linux.dev>
+To: "Dan Carpenter" <error27@gmail.com>, <luka.gejak@linux.dev>
+References: <20260415050302.9934-1-luka.gejak@linux.dev>
+ <ad9TKjTLxDRwDyIy@stanley.mountain>
+In-Reply-To: <ad9TKjTLxDRwDyIy@stanley.mountain>
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238095-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oss.qualcomm.com:mid];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238096-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,linux.dev];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nitin.rawat@oss.qualcomm.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[qualcomm.com:+];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 48BED40368C
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid]
+X-Rspamd-Queue-Id: 6DBEB403727
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
-moved QPHY_V6_PCS_UFS_PLL_CNTL register configuration from the shared
-sm8650_ufsphy_g5_pcs table to the SM8650-specific sm8650_ufsphy_pcs base
-table to fix Gear 4 operation on SM8650.
+On Wed Apr 15, 2026 at 10:58 AM CEST, Dan Carpenter wrote:
+> On Wed, Apr 15, 2026 at 07:03:02AM +0200, luka.gejak@linux.dev wrote:
+>> From: Luka Gejak <luka.gejak@linux.dev>
+>>=20
+>> When building an association request frame, the driver copies the
+>> ht capability ie using the attacker-controlled pIE->length from the
+>> ap's beacon. If the ap provides a length greater than the size of
+>> struct HT_caps_element (26 bytes), it causes an out-of-bounds read
+>> of the adjacent heap memory (HT_info and network structures).
+>> This uninitialized or sensitive memory is then transmitted over the air,
+>> resulting in a remote heap information disclosure.
+>>=20
+>> Fix this by clamping the length passed to rtw_set_ie() to the actual
+>> size of struct HT_caps_element.
+>>=20
+>> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+>> ---
+>> ---
+>> Changes in v2:
+>> - Refactored rtw_set_ie() alignment to follow "open parenthesis" style.
+>> - Allowed the line length to exceed 100 characters for better readabilit=
+y as requested by Greg KH.
+>>=20
+>>  drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/sta=
+ging/rtl8723bs/core/rtw_mlme_ext.c
+>> index 5f00fe282d1b..08e597bc0345 100644
+>> --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+>> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+>> @@ -2954,7 +2954,9 @@ void issue_assocreq(struct adapter *padapter)
+>>  			if (padapter->mlmepriv.htpriv.ht_option) {
+>>  				if (!(is_ap_in_tkip(padapter))) {
+>>  					memcpy(&(pmlmeinfo->HT_caps), pIE->data, sizeof(struct HT_caps_ele=
+ment));
+>> -					pframe =3D rtw_set_ie(pframe, WLAN_EID_HT_CAPABILITY, pIE->length,=
+ (u8 *)(&(pmlmeinfo->HT_caps)), &(pattrib->pktlen));
+>> +					pframe =3D rtw_set_ie(pframe, WLAN_EID_HT_CAPABILITY,
+>> +							    min_t(uint, pIE->length, sizeof(struct HT_caps_element)),
+>> +							    (u8 *)&pmlmeinfo->HT_caps, &pattrib->pktlen);
+>
+> You're being conservative and trying to work around the invalid
+> pIE->length, but in the case where the original code corrupts memory,
+> we're allow to just give up and return a failure.
+>
+> There are two other cases where we trust pIE->length in this function
+> and those need to be fixed as well.
+>
+> regards,
+> dan carpenter
 
-However, this change inadvertently broke kaanapali and SM8750 SoCs
-which also rely on the shared sm8650_ufsphy_g5_pcs table for Gear 5
-configuration but use their own sm8750_ufsphy_pcs base table. After the
-change, kaanapali PHYs are left without the required PLL_CNTL = 0x33
-setting, causing the PHY PLL to remain at its hardware reset default
-value, preventing PLL lock and resulting in DME_LINKSTARTUP timeouts.
-
-Fix this by adding the missing QPHY_V6_PCS_UFS_PLL_CNTL = 0x33 entry
-to the sm8750_ufsphy_pcs table, mirroring what the original commit
-already did for sm8650_ufsphy_pcs.
-
-Cc: stable@vger.kernel.org # v6.19.12
-Fixes: 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
-Signed-off-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
----
- drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-index 771bc7c2ab50..b87314c8379d 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-@@ -1112,6 +1112,7 @@ static const struct qmp_phy_init_tbl sm8750_ufsphy_pcs[] = {
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0x40),
-+	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
---
-2.34.1
-
+Hi Dan,
+should I keep my approach as is or just return failure. I will fix other=20
+cases as well with whatever approach you consider correct.
+Best regards,
+Luka Gejak
 
