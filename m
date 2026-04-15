@@ -1,178 +1,209 @@
-Return-Path: <stable+bounces-238112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKLwLY+B32mcUQAAu9opvQ
-	(envelope-from <stable+bounces-238112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:16:15 +0200
+	id gEpcGn6E32nSUgAAu9opvQ
+	(envelope-from <stable+bounces-238114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:28:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2545A404298
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:16:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFD94043EB
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 173D23023E11
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:15:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3CD19306E8CD
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DA554654;
-	Wed, 15 Apr 2026 12:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QbRy8jZ5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6E927AC31;
+	Wed, 15 Apr 2026 12:28:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9073C1E515
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 12:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06D21CFBA;
+	Wed, 15 Apr 2026 12:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776255308; cv=none; b=Ysv5HkcJPbyLYPYbhEnzoS8sYii/DwPQ/n/ZJJPFCHCyXGTMjxeaxDRBt1AWdVritKC2CcRO+ZG/boVWCZ9jStFqz648VACBPfQqxjQMmu57Ng1hbezQjfPi3wQA5FCk89Udr+zTMack5nP0jP7kzzDCWFfIhanOaF0k2RGAgtQ=
+	t=1776256115; cv=none; b=VLCj4iy06LLwdmTuc8wbHioetL+IdM9KpT+QyNBN2SJMA4I81BYYvn30C3+qSnKO+7Aen+rGuqJf9OqG2CLv6w7cju/qx6DABnh5aQTyadysp7zM6cO5kJRb4lYy8kEfbYMc+ZRrb+7aJEwMFknhhRif0QBWcrj1Oos1EqFyb3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776255308; c=relaxed/simple;
-	bh=XVwY6PmwvfRm+MrqjaTcSzgwzTO6ZRD5DBuaCXCbY0U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aQHjGAJxxWDujSFLBAGTv9SeFWl6TiAgpSsBgdI+PlghB0hjTSI3Y7f0pVBXAesTFhqRJ2ZnaHaOM/WN3dLE9A4feNR4kybdggcUiH/ywIpa9n+Q9V/LN6Hj1Ymk5KvyFyO9iKvfD2XWAUslOOFb6MEdKoBdb0CQnX9/ivhvtWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QbRy8jZ5; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776255307; x=1807791307;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XVwY6PmwvfRm+MrqjaTcSzgwzTO6ZRD5DBuaCXCbY0U=;
-  b=QbRy8jZ5N0IsQEep54HEB53sA3NsxwT2R3o7BI584WeS83+0jMa/elbj
-   Ac9R6ql0S2zB5hIMdh6b/mBdt6wRc/GAnvNqDIeQOLA/cL6Q9MFxY3Zg9
-   gBtQMCvhZz98SG1/arI0u+GsclabDrtGrOhJxN9/jArecgy3s9WyC3OKm
-   Zk19PRKqCvzUQ9WaqJLL6vj9dSHli27evBlVpHehXq/A8ook0bfUV+DaX
-   NSDvvAB/G5lvKNB7AGSMjCXJZDes4wJHTdxbWaT4ewShP1NDC/K8/Xchy
-   QUJWgBmTaEawasGiY7d951sTdKES3Ykjt/5GavTZyoSwycAEXpUephNZ0
-   g==;
-X-CSE-ConnectionGUID: Fe2N/BjCSmeN2XFBmbc4fg==
-X-CSE-MsgGUID: uWXHEq8sSuuSLFvHDlzyXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="87853501"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="87853501"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 05:15:07 -0700
-X-CSE-ConnectionGUID: vGuuNXZYQOW3P1xqpETZFA==
-X-CSE-MsgGUID: GebHZkpnRJeQ8EBJw7nr6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="223902153"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.244.112]) ([10.245.244.112])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 05:15:05 -0700
-Message-ID: <c9962533-d9a4-40bb-b42a-7e7855c271d0@intel.com>
-Date: Wed, 15 Apr 2026 13:15:03 +0100
+	s=arc-20240116; t=1776256115; c=relaxed/simple;
+	bh=WhMRwHxqrUmLB1iTZPrhNMa7cyGhlCwbvs9D5uo4/7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UsjUX8kW/WJaqhU4V7IWhLqtSMtq3knZIpJRHR0EgK6kpX4rCP3aATu1olyduTX8yKOg+7ldic257emCC93h+ZNAaBE3jSe6zzADAI4TAh7f/6iwQLIecOf6LIAF+lNQo03fplXrZBMuxa6TC0GQ1BO6CousT7KiLD7dJSI9Q00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 28ED172C8CC;
+	Wed, 15 Apr 2026 15:24:03 +0300 (MSK)
+Received: from altlinux.org (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id 1B06E36D00D0;
+	Wed, 15 Apr 2026 15:24:03 +0300 (MSK)
+Date: Wed, 15 Apr 2026 15:24:02 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	gregkh@linuxfoundation.org, regressions@lists.linux.dev, 
+	Matt Roper <matthew.d.roper@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: Re: [regression] Re: Linux 6.12.75
+Message-ID: <ad-C6HWDbu9ZMRS3@altlinux.org>
+References: <20260304131402.83200-1-sashal@kernel.org>
+ <20260304131402.83200-2-sashal@kernel.org>
+ <ac4lw9tTNn4baO_h@altlinux.org>
+ <c54a0b91-cfbf-463e-964d-bf9a2e524189@leemhuis.info>
+ <adz2d7M3DKb-6jm9@altlinux.org>
+ <ad2G46EyDs8LBoH_@altlinux.org>
+ <ad5Gsd1YoS3607UI@altlinux.org>
+ <ad5ZsSwNM42pa10J@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/2] drm/xe: Reject coh_none PAT index for
- CPU_ADDR_MIRROR
-To: Jia Yao <jia.yao@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org, Shuicheng Lin <shuicheng.lin@intel.com>,
- Mathew Alwin <alwin.mathew@intel.com>,
- Michal Mrozek <michal.mrozek@intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-References: <20260129000147.339361-1-jia.yao@intel.com>
- <20260415061951.427699-1-jia.yao@intel.com>
- <20260415061951.427699-3-jia.yao@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20260415061951.427699-3-jia.yao@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=koi8-r
+Content-Disposition: inline
+In-Reply-To: <ad5ZsSwNM42pa10J@altlinux.org>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238112-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238114-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[altlinux.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2545A404298
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vt@altlinux.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: BBFD94043EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 15/04/2026 07:19, Jia Yao wrote:
-> Add validation in xe_vm_bind_ioctl() to reject PAT indices
-> with XE_COH_NONE coherency mode when used with
-> DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR.
-> 
-> CPU address mirror mappings use system memory that is CPU
-> cached, which makes them incompatible with COH_NONE PAT
-> indices. Allowing COH_NONE with CPU cached buffers is a
-> security risk, as the GPU may bypass CPU caches and read
-> stale sensitive data from DRAM.
-> 
-> Although CPU_ADDR_MIRROR does not create an immediate
-> mapping, the backing system memory is still CPU cached.
-> Apply the same PAT coherency restrictions as
-> DRM_XE_VM_BIND_OP_MAP_USERPTR.
-> 
-> v2:
-> - Correct fix tag
-> 
-> v6:
-> - No change
-> 
-> v7:
-> - Correct fix tag
-> 
-> v8:
-> - Rebase
-> 
-> Fixes: b43e864af0d4 ("drm/xe/uapi: Add DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR")
-> Cc: stable@vger.kernel.org # v6.18
-> Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-> Cc: Mathew Alwin <alwin.mathew@intel.com>
-> Cc: Michal Mrozek <michal.mrozek@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Jia Yao <jia.yao@intel.com>
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-> ---
->   drivers/gpu/drm/xe/xe_vm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-> index 2408b547ca3d..619a22fa9abe 100644
-> --- a/drivers/gpu/drm/xe/xe_vm.c
-> +++ b/drivers/gpu/drm/xe/xe_vm.c
-> @@ -3657,7 +3657,7 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
->   		    XE_IOCTL_DBG(xe, obj &&
->   				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
->   		    XE_IOCTL_DBG(xe, coh_mode == XE_COH_NONE &&
-> -				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
-> +				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR || is_cpu_addr_mirror)) ||
+Thorsten, Sasha,
 
-Chatted to Michal, and it looks like on dgpu an incoherent index is 
-being used with cpu_addr_mirror, so this will cause regressions. I think 
-for both patches we need to limit this change to igpu, where coherent 
-index is fortunately already being used.
+On Tue, Apr 14, 2026 at 06:24:38PM +0300, Vitaly Chikunov wrote:
+> On Tue, Apr 14, 2026 at 04:57:38PM +0300, Vitaly Chikunov wrote:
+> > On Tue, Apr 14, 2026 at 03:17:38AM +0300, Vitaly Chikunov wrote:
+> > > On Mon, Apr 13, 2026 at 05:17:30PM +0300, Vitaly Chikunov wrote:
+> > > > On Mon, Apr 13, 2026 at 01:33:18PM +0200, Thorsten Leemhuis wrote:
+> > > > > On 4/2/26 10:44, Vitaly Chikunov wrote:
+> > > > > > 
+> > > > > > 1. I cannot find this commit posted on lore.kernel.org to report to
+> > > > > > exact patch.
+> > > > > > 
+> > > > > > | From: Matt Roper <matthew.d.roper@intel.com>
+> > > > > > | Date: Tue, 10 Sep 2024 16:47:29 -0700
+> > > > > > | Subject: [PATCH 6.12/sisyphus] drm/xe: Switch MMIO interface to take xe_mmio
+> > > > > > |  instead of xe_gt
+> > > > > > | 
+> > > > > > | [ Upstream commit a84590c5ceb354d2e9f7f6812cfb3a9709e14afa ]
+> > > > > > | 
+> > > > > > | Since much of the MMIO register access done by the driver is to non-GT
+> > > > > > | registers, use of 'xe_gt' in these interfaces has been a long-standing
+> > > > > > | design flaw that's been hard to disentangle.
+> > > > > > [...]
+> > > > > > 
+> > > > > > 2. After this patch applied to 6.12.75 there is kernel NULL pointer
+> > > > > > dereference BUG on MSI MAG H670 12th Gen Intel(R) Core(TM) i5-12600K
+> > > > > > with ASRock Intel Arc B580 Challenger [Alchemist], 12GB:
+> > > > > > [...]
+> > > > > > The commit is found not by a git bisect (since it's reported by end
+> > > > > > user and I cannot reproduce it on my hardware) but (by analyzing dmesg)
+> > > > > > with:
+> > > > > > [...]
+> > > > > > Then finding the suspecting commit:
+> > > > > > 
+> > > > > >   $ git log --oneline -G'XE_LUNARLAKE' v6.12.74..v6.12.75
+> > > > > >   26a40327c25c drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt
+> > > > > > 
+> > > > > > 6.18 and above are not affected by the bug. Also, they have another commit
+> > > > > > modifying the line which is not present in 6.12 branch:
+> > > > > > [...]
+> > > > > > Related drm/xe bug report https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7661
+> > > > > Nobody reacted to this and it seems the gitlab ticket is stalled, too.
+> > > > > So let me ask: can this be resolved by reverting 26a40327c25c in 6.12.y?
+> > > 
+> > > It's turned out these two commits are revertible together:
+> > > 
+> > >   8f6848b2f6ea ("drm/xe/mmio: Avoid double-adjust in 64-bit reads")
+> > >   26a40327c25c ("drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt")
+> > > 
+> > > I am going to ask the users to test this.
+> > 
+> > After testing revert of these two commits, users report that regress
+> > does not appear, kernel boots without panic and there is no video artifacts.
+> 
+> After analyzing the problem slightly deeper, it seems that there is
+> uninitialized mmio.tile issue. Which is fixed in mainline commit
+> 
+>   58548b91101f ("drm/xe: Defer gt->mmio initialization until after multi-tile setup")
 
->   		    XE_IOCTL_DBG(xe, xe_device_is_l2_flush_optimized(xe) &&
->   				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR ||
->   				  is_cpu_addr_mirror) &&
+Applying this commit to v6.12.81 does not resolve the regress. Thus, I
+would suggest reverting commits 26a40327c25c and 8f6848b2f6ea.
 
+Thanks,
+
+> 
+> The commit also have tag:
+> 
+>   Fixes: fa599b8c95a7 ("drm/xe: Populate GT's mmio iomap from tile during init")
+> 
+> The commit fa599b8c95a7 is picked into 6.12.75 as 0b433e086b9f, but the
+> fix is not. Piking it may be the better way to fix the regression than
+> the revert of the two aforementioned commits.
+> 
+> I will try to pick the fix, test, and report if it resolves the regress.
+> 
+> Thanks,
+> 
+> 
+> > 
+> > So, I kindly ask to revert them from 6.12.y branch if they aren't
+> > critical.
+> > 
+> > Thanks,
+> > 
+> > > 
+> > > Thanks,
+> > > 
+> > > > 
+> > > > As of me, this is not easy to revert, as it depends on many other
+> > > > commits, and git does not have tooling to determine all dependant
+> > > > commits for revert. I hope someone from drm subsystem notices this to
+> > > > work on it, or Sasha can pull missing commits or revert this (obviously,
+> > > > he have tooling for this, but I was unable to find it). [I found
+> > > > obsolete references to deps but is seems not used for years and Python
+> > > > git-deps tool seems broken.]
+> > > > 
+> > > > What I found is, offending commit is picked due to
+> > > > 
+> > > >   Stable-dep-of: 4a9b4e1fa52a ("drm/xe/mmio: Avoid double-adjust in 64-bit reads")
+> > > > 
+> > > > Which, perhaps, needs to be reverted.
+> > > > 
+> > > > Offending commit 26a40327c25c is not tracked in lore.
+> > > > It's part of 9 piece patchset, perhaps they are logically dependent too,
+> > > > so need to be reverted together.
+> > > > 
+> > > > The possible fix is part of 6 piece patchset, which does not cherry-pick
+> > > > easily due to conflicts.
+> > > > 
+> > > > If someone can produce correct fix we can participate in the tests.
+> > > > 
+> > > > Thanks,
+> > > > 
+> > > > > 
+> > > > > Ciao, Thorsten
 
