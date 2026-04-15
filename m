@@ -1,203 +1,221 @@
-Return-Path: <stable+bounces-238207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMbQH2Tt32kCagAAu9opvQ
-	(envelope-from <stable+bounces-238207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 21:56:20 +0200
+	id qJFFCH7u32kCagAAu9opvQ
+	(envelope-from <stable+bounces-238208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 22:01:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C4D40775C
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 21:56:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220F7407824
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 22:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D230930268BD
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:56:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9F7BE3050453
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD35386C0F;
-	Wed, 15 Apr 2026 19:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30C3388E56;
+	Wed, 15 Apr 2026 19:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bvl8VI2y"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WRxrdmIs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78525386442
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 19:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A4A3876C3;
+	Wed, 15 Apr 2026 19:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776282973; cv=none; b=grThu+ze6tMupxJDRvuZKXyQLzD9rYtd9+7JbU1trDzWWQ6uifX7awYi/kYjLtAvXRs0sVBrQ83ICBxQrV27SuCmPlRHwCOeCzBWKhs85bfw0tT//fSUJYNCHO2GOpWOVO2Cdj4bV6WfBCdedF+NqwX5LI1OkMKOlwOEPeghy6A=
+	t=1776283105; cv=none; b=MJewEnMzZKq3okRfGMiJVEvyvHge5h5awfpOoFDhx5clXmHsj/XnxXKxAn6VXFOoXm5JSnJg807Y+twFlpO60p9mSbkf7Zt4HMKLHeQzWi5vADVggFnxUnrDt4kz6b7TmmRhtCunuvI2BBDOG+NhoYrRNwqdZ7ATKfa6aq0SzTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776282973; c=relaxed/simple;
-	bh=W1LTulubr9TL/UfwjdegdwUx5akyKQxeDDaubGeE7mo=;
+	s=arc-20240116; t=1776283105; c=relaxed/simple;
+	bh=Rn5TAguSbnyTq+0PpWIsZFRjn2Op8EOl6HKkVRq/1TE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IbnLw3DYvF2tirheFKg3jKVKloyzgz2mCvdlH0U/HJldL2xbW8WlTLGmdADXkTz/s8hJAyPImKZ7lF+JVgTA6FBtXy9mxrptYVKRKH7dELZKVqYh8NSU719QHJQawmgzJZbqu0YvKiB+dSL8te60JjClmDzazN8KR9+UceVMr7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bvl8VI2y; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488c2690057so73086435e9.0
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 12:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776282971; x=1776887771; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tEl2OJLVmeUKNE3lrILu4jNBkDcCdXL1nw4osbZOHXw=;
-        b=Bvl8VI2yys1H7B9OkObbi3hado56F7k6mjQD3ebmSxQS8/6fsNmNBUJhgr6ue8xKuB
-         dx91kGeHSDr3Pvavk+9QWJFE/WgTy5Sexhhf3UEarTorhOY9sPFmozts5GVxXa0gqgCD
-         c1VNTQQ9GPejYM4Hhtu4JxUqxGLWlW1zDOefuwJY8Bo++sPhdWeiAbfSp+RQhG2W2vzZ
-         oK+zFLfusir4NZEmNa7U3O6YSwbSNLeUwA+U1w792/FvFMKWmYNMgtRierKfhKIKR/wG
-         pz8TxH5K2Q50rFLAgH3AJk7IT7G7doUWITN9ZBISIlmULFoS7hrB80N8J6uQIevhtLea
-         AzEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776282971; x=1776887771;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tEl2OJLVmeUKNE3lrILu4jNBkDcCdXL1nw4osbZOHXw=;
-        b=R1/yLLwwtPxr5OK9nXsxmhBVhBOgPkaCK/cIq0wwF6B+fsr7v9UxYLgOZl2eM/VG6m
-         /YZMhtHojljGC8dzMOTD9vAFchnKGJGULGUOT+K6OBGSEzyX2z4T6YlWPvyxN/hfzEwA
-         YcW6QMKs7k41O6BfaO0pS4hEW2rhuZ4c8kD8I43aLEOKBqbkfyhmLFu01uj/ERmboN09
-         ONxSgLhqjKaNBYb32Ij8synttfKTElcYnWMoMslde0rwxOXYfMgL3aHuFAAPyM4cPJOf
-         QkEaJsUEHm9TCmQFVzmGl+JBC4sau2tmoH7Cke22xwsUiwflkfVOVSkV1SU40bWVmPPf
-         9o7A==
-X-Forwarded-Encrypted: i=1; AFNElJ9yQhux0Xl9GuRk+X/Fl1yKk+46SuygVVDgFXUVRXymbMsQf+GDaeQ6z4VP1hxVM39WOeggQRQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWIgXRPraXUwSgUgj4mqiB+wjqlttljX3ZDveou7o/9/vEBjaI
-	sibSgD2RcbhtZoV7f235lwk44jcAcq+yVGm8DqDuKn8AZ1HDTjwEWTyL
-X-Gm-Gg: AeBDies+Zv/synTkEjG4PZpVWRuTMfoa248tzOKhqTE8imwVenbPwCnW1TGggZ5zqQw
-	HgLrgPdpjvFDKYcyCcFc/PtMMHIpTpxlkkc5uXSyO4EAqkiT1B1+sr13olq1JQkrjp6vIuC2GL/
-	ZIKcbQtfRxFG5SV9Hs6w8s7I/rMRyN+8F6QaEvqT7Ip7D9a8Pcgdfb0g16TwHCsJSucxJe12B/3
-	KRki+mlz760FsECjfxiPkntXvS7iMfxItR1fY7SJK/Xn4y901unIsBPQw959taB+1tIp7OGyiT7
-	M1mh9nbxof/o2c5//hZyQqv3YMyhceTLKQDJah6HP19aPji4k9iXLhvLgs70/ZL7LwRlCvZoBaB
-	2OKcgdMiXaAGIFJsK9bmGbFebsIDbFdljUm+2g4PPtrlVjUa0EuHCZ9Q+0O/k6e0u1yL4AbqRMe
-	ldnGkxsdeyAizoIzmnu1YRV77Desi36A==
-X-Received: by 2002:a05:6000:4203:b0:43d:9bb5:bd9a with SMTP id ffacd0b85a97d-43d9bb5bfbfmr14140449f8f.23.1776282970578;
-        Wed, 15 Apr 2026 12:56:10 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3d5fd6sm7761528f8f.24.2026.04.15.12.56.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 12:56:10 -0700 (PDT)
-Date: Wed, 15 Apr 2026 22:56:06 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Delene Tchio Romuald <delenetchior1@gmail.com>
-Cc: gregkh@linuxfoundation.org, dan.carpenter@linaro.org,
-	luka.gejak@linux.dev, hansg@kernel.org,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=eYWZGftz3/SNj99IxUr7aWQtsrNyUNutAw51VaSuJKKVdvT6DYWd8LtLnKgOVSzUuyp7Zhyu2PlbreU20ZW6zwXoEVo/MmWcQrVbbu1B4AZroawBfoaAJZTijmk0EP96EVYgsoCvh6I28H1uAQLSk9aHiHMWTRl+g7VXEwP9f2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=WRxrdmIs; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=zzfItcPbm51n9sUCqPS3pMEdP67XndcXm/lQ9tFu+D0=; b=WRxrdmIsc4eRiptzsUaHuJhBKe
+	+UVOxQ0GJxULMlm3Gx+I9D42waGwzfpRMjNhf4nurL3eYPd1HdhdlvmLK71QFhp0NqOqCtdkcrrqZ
+	KAQhYz+iCGUUYGP4vm66y5hr6xtILN/vce8MNQ5ihZahNRmB90D3K3p5wokjUq1X27a42va07e2AE
+	VbYPoGKiDBDRBJXwHicnFlufKVEmimawsz2detW0wGLMlD5hmTaefp64z1J/ORfEQDff6kEnmuVOV
+	aEbLNlCkIXAzRAWynK05SMR4CFYa9jXTmb6kqUCBaFr9jIU0r5fFUjp2Xw0tQMYWxTGtQE2QtPVcz
+	H6quAEaA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40820)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1wD6NJ-000000002SU-0s9z;
+	Wed, 15 Apr 2026 20:58:13 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1wD6NG-000000002VN-0Po4;
+	Wed, 15 Apr 2026 20:58:10 +0100
+Date: Wed, 15 Apr 2026 20:58:09 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] staging: rtl8723bs: fix heap buffer overflow in
- recvframe_defrag()
-Message-ID: <ad_tVr0Pyz9ws01I@stanley.mountain>
-References: <20260415185501.440492-1-delenetchior1@gmail.com>
- <20260415185501.440492-2-delenetchior1@gmail.com>
+Subject: Re: [PATCH net v5] net: stmmac: Prevent NULL deref when RX memory
+ exhausted
+Message-ID: <ad_t0aOKdC6f5Ja8@shell.armlinux.org.uk>
+References: <20260415023947.7627-1-CFSworks@gmail.com>
+ <ad-LAB08-_rpmMzK@shell.armlinux.org.uk>
+ <ad-8q4OrOm-VtGrO@shell.armlinux.org.uk>
+ <CAH5Ym4gy6g8d88-vGhe1zxoV7jNH_fXHsDSdDWC4x00H7s-3=w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260415185501.440492-2-delenetchior1@gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5Ym4gy6g8d88-vGhe1zxoV7jNH_fXHsDSdDWC4x00H7s-3=w@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spamd-Result: default: False [1.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_REJECT(1.00)[armlinux.org.uk:s=pandora-2019];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[armlinux.org.uk : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238207-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238208-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,foss.st.com,bootlin.com,renesas.com,nxp.com,tkos.co.il,st.com,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[armlinux.org.uk:-];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[linux@armlinux.org.uk,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-0.061];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,get_maintainer.pl:url]
-X-Rspamd-Queue-Id: E8C4D40775C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:url,armlinux.org.uk:email,shell.armlinux.org.uk:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 220F7407824
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 07:54:57PM +0100, Delene Tchio Romuald wrote:
-> In recvframe_defrag(), a memcpy() copies fragment data into the
-> reassembly buffer before validating that the buffer has sufficient
-> space. If the total reassembled payload exceeds the receive buffer
-> capacity, this results in a heap buffer overflow.
+On Wed, Apr 15, 2026 at 10:53:15AM -0700, Sam Edwards wrote:
+> On Wed, Apr 15, 2026 at 9:28 AM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> >
+> > On Wed, Apr 15, 2026 at 01:56:32PM +0100, Russell King (Oracle) wrote:
+> > > Locally, while debugging my issues, I used this to prevent cur_rx
+> > > catching up with dirty_rx:
+> > >
+> > >                 status = stmmac_rx_status(priv, &priv->xstats, p);
+> > >                 /* check if managed by the DMA otherwise go ahead */
+> > >                 if (unlikely(status & dma_own))
+> > >                         break;
+> > >
+> > >                 next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+> > >                                                priv->dma_conf.dma_rx_size);
+> > >                 if (unlikely(next_entry == rx_q->dirty_rx))
+> > >                         break;
+> > >
+> > >                 rx_q->cur_rx = next_entry;
+> > >
+> > > If we care about the cost of reloading rx_q->dirty_rx on every
+> > > iteration, then I'd suggest that the cost we already incur reading and
+> > > writing rx_q->cur_rx is something that should be addressed, and
+> > > eliminating that would counter the cost of reading rx_q->dirty_rx. I
+> > > suspect, however, that the cost is minimal, as cur_tx and dirty_rx are
+> > > likely in the same cache line.
 > 
-> Additionally, the return values of recvframe_pull() and
-> recvframe_pull_tail() were ignored. On failure those helpers revert
-> their pointer updates and return NULL; continuing past such a
-> failure would leave pfhdr->rx_tail at its pre-strip value, so the
-> subsequent bounds check against rx_end - rx_tail would operate on
-> stale pointers.
+> No, no, I like your approach better. :) It also removes the need for
+> the `limit` clamp at the top of the function, so later code can assume
+> limit==budget.
 > 
-> An attacker within WiFi radio range can exploit this by sending
-> crafted 802.11 fragmented frames. No authentication is required.
+> > > It looks like any fix to stmmac_rx() will also need a corresponding
+> > > fix for stmmac_rx_zc().
 > 
-> Check the return values of recvframe_pull() and recvframe_pull_tail(),
-> then verify that the fragment payload fits within the remaining
-> buffer space before the memcpy().
-> 
-> Found by reviewing memory operations in the driver and tracing
-> buffer pointer manipulation through rtw_recv.h inline helpers.
-> Not tested on hardware.
-> 
-> Fixes: 554c0a3abf216 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Delene Tchio Romuald <delenetchior1@gmail.com>
-> ---
-> v4: check return values of recvframe_pull() and recvframe_pull_tail();
->     drop unnecessary (uint) cast; add Fixes: tag and Cc: stable
->     (Dan Carpenter). Luka Gejak's Reviewed-by dropped because the
->     code changed.
-> v3: rebased on staging-next; sent as numbered series with proper
->     Cc from get_maintainer.pl.
-> v2: rebased on staging-next (v1 was based on v7.0-rc6 and did not
->     apply).
-> 
->  drivers/staging/rtl8723bs/core/rtw_recv.c | 20 +++++++++++++++++---
->  1 file changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/staging/rtl8723bs/core/rtw_recv.c b/drivers/staging/rtl8723bs/core/rtw_recv.c
-> index f78194d508dfc..a739c2bada2a1 100644
-> --- a/drivers/staging/rtl8723bs/core/rtw_recv.c
-> +++ b/drivers/staging/rtl8723bs/core/rtw_recv.c
-> @@ -1127,12 +1127,26 @@ static union recv_frame *recvframe_defrag(struct adapter *adapter,
->  
->  		wlanhdr_offset = pnfhdr->attrib.hdrlen + pnfhdr->attrib.iv_len;
->  
-> -		recvframe_pull(pnextrframe, wlanhdr_offset);
-> +		if (!recvframe_pull(pnextrframe, wlanhdr_offset)) {
-> +			rtw_free_recvframe(prframe, pfree_recv_queue);
-> +			rtw_free_recvframe_queue(defrag_q, pfree_recv_queue);
-> +			return NULL;
+> I agree that stmmac_rx_zc() is likely also broken (in a similar way,
+> but not similar enough to permit a "corresponding" fix), but I don't
+> agree that there's a dependency relationship here. This patch is
+> addressing #221010, which affects the generic/non-ZC codepath; I'm
+> afraid the ZC codepath warrants its own investigation.
 
-We have four blocks now that do exactly this...  Add a cleanup at the
-end of the function:
+The code structure is identical. The only difference is what happens
+to the packets.
 
-	return pframe;
+Both paths take the NAPI limit. Both paths process up to that limit of
+descriptors. The state saving / restoring is similar. The read_again
+label is the same, the condition after is the same.
 
-out_err:
-	rtw_free_recvframe(prframe, pfree_recv_queue);
-	rtw_free_recvframe_queue(defrag_q, pfree_recv_queue);
-	return NULL;
+The ZC path differs at this point in that it will attempt to refill
+every 16 descriptors that have been processed.
 
-Btw, I'm planning to review the other patches in the series so hold off a
-day before resending.  If I haven't reviewed them by End Of Day on
-Thursday, then I have gotten busy and feel free to resend at that point.
+Both paths then read the descriptor and check the ownership.
+Both paths then increment cur_rx to point to the next entry around
+the ring.
+Both paths then get the following descriptor pointer and prefetch
+it.
+Both paths then get the extended status if we're using extended
+descriptors.
+Both paths then handle frame discard.
+Both paths then jump back to read_again if this isn't the last
+segment and we have an error.
+Both paths then check for error.
+... and so it goes on.
 
-regards,
-dan carpenter
+The ZC path to me looks like a copy-paste-and-tweak approach to
+adding support. The difference seems to be centered only around
+the handling of the data buffers in the descriptors. The overall
+mechanism of processing the descriptors follows the same layout
+in both functions.
 
+> > I have some further information, but a new curveball has just been
+> > chucked... and I've no idea what this will mean at this stage. Just
+> > take it that I won't be responding for a while.
+> 
+> I think I follow your meaning. Good luck getting it straightened out!
+
+It looks like further curveballs have been thrown as a result,
+destroying all "plans" for the next days/week. I have aboslutely
+no ideas how much time or when I'll be able to look at anything
+at the moment, so don't assume that because I find an opportunity
+to send an email, everthing is back to normal.
+
+I'll also note that over the last two days I've written several
+emails on this, spent many hours on them, only to discard them
+as other ideas/research and maybe even the passage of time means
+they're no longer appropriate to send.
+
+Jakub: sorry, I just *can't* review stuff on netdev with everything
+that is going on, not when .... cna't complete this.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
