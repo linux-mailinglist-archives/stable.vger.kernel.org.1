@@ -1,165 +1,220 @@
-Return-Path: <stable+bounces-238210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIv6NP/532ntbAAAu9opvQ
-	(envelope-from <stable+bounces-238210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 22:50:07 +0200
+	id EKIpFUH632ntbAAAu9opvQ
+	(envelope-from <stable+bounces-238211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 22:51:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57139407B69
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 22:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1818407B87
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 22:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A33E30C33DC
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 20:49:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA41D30C103C
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 20:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C1838C2C8;
-	Wed, 15 Apr 2026 20:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AF638B7C9;
+	Wed, 15 Apr 2026 20:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DhTGujyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvRAq16f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C938E387569
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 20:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D6738B129
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 20:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776286148; cv=none; b=oMWWtBFVUV1A+BJxnwMP027i0p3a47TKg7/4H0ksspt7oOJm4im0W/WVfx29OaMrCV+HEOgxSZ7E7o8cWV1FZ8ESNTk1QQHjX4RQp2KjgmqijaPOZ7U8qXpS9s9yUY4Srn6OIZfp1rtLOSvrTEJQVoTDAYNe8b2r1rC25ANaypY=
+	t=1776286202; cv=none; b=to72uZSOd4yGMPF3Fu1GRrDJFb3U+Q9EbxqrDz31B30QRcChX1bJbSb4AOpPIHI7KYs+Tv+I4KVCdGVMEhmbBVJnII6cxFw+OUVFXQasyuKkkDk4CmLPJcjvc5Mgek9tvHPT0R+nxMLeNLPvlDt18vzqS3oufg5QWHCTHsWikDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776286148; c=relaxed/simple;
-	bh=jaHsYdGbpYEYbhaKRJDxVaFvTJCn06yxrg2fJlh+JU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqc63nqoMRzHbA6uFRTlLkUd2KLstkdFfVxnV5QjFS0rs8BlePWpgpy/sF/jpD/ARlQ9zkDilK6DGJ4K+E70N+o7Pvx5P0q1PpnkuccGJC2OuE5MWdN/8YEN9pW5DJoW/jQG3J2KOJcLQKDRC2hRRxd7vv15N80XUaUd9V1WMyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DhTGujyu; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488a4bc360bso40391285e9.0
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:49:06 -0700 (PDT)
+	s=arc-20240116; t=1776286202; c=relaxed/simple;
+	bh=XPyATpRpP6Fw9JKvgIKVLeMTg5EY/XceYweZor7TSdg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qcR0XE3KS4OUmmVhmmVe5Ol3iUtgaJB+5XGgfw4U7E4ajlOP/DrimILXms5t5hrP4RthfeIbcS+iMuf60YQbRhA8So810KnSoIvmtLie0F4hH2hj6hdv4ddsSlsFnMznJz35NoezVQxtFelbVWgZyrZZDWJ99w8ufDO49dKIYuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvRAq16f; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7d86eb7c854so3601228a34.3
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776286145; x=1776890945; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zUcXYrAHaFcSZpGG6Or5FD6LmBv6L/glEjP9yZLQ6B4=;
-        b=DhTGujyuwfKiK1pVz3Rhe/Y4mVw2moOtSuBL7h1xGW+nS96sNBU+YEibYLIS177txH
-         cUM2oXdUjjB6XlhYjra5bGWtrVvBRpjTHCj4BiekJZMB6Yiu2JEmdp8ER/MEF8d9bV86
-         nZvCCKLANx/LA6NwWK8YMUE+/qTHx/VUPtrdVDy81bKh1frcDs+7a7LCiv0St21fHWAR
-         tAIeXECUYs01ZT+FwE1PsRe0vPhlaqQXAWZoMc1IJKLlJ37plmFDtNkFESRUrO2eCY8o
-         cM6gMFWRVGHvB9xqoFVXBcirAjjs02DkMTzvgM1XIB0wfpjWqfJ1QRbHwM48bQTZhIBk
-         zywA==
+        d=linuxfoundation.org; s=google; t=1776286198; x=1776890998; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fXRmZFUi3/NUGdrIU0HiWh6hUGnEEJ0BOLVJoZTzlo4=;
+        b=dvRAq16feIyt2mDV03XY9P99ydpDN+LnSgdDiu9LzSOVQYjkv8M+2Zh4CSGX03tki5
+         GZ9ItndsswpCd4JWi37rzpFQK3Wp9xG98LETDEpwcKbfE9e9IV+KM8sYgPEKZd/yhhtO
+         RQTxkPnXXE7dgnHiTjKGa+OrdeMcrYPxRLwZM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776286145; x=1776890945;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zUcXYrAHaFcSZpGG6Or5FD6LmBv6L/glEjP9yZLQ6B4=;
-        b=AfLMj/GiwyUXKCZz2dfsANeZzI6kqun/9Z9bfQCYaHEZOa6aeS9QdcFJk1DyZMshpP
-         2KpRQbAmcEQUQIH4FIn8h+MCarc7xP4TojIAEg/Izr8vYRmc8FEHYkqpGoFJfqf5Eiyn
-         g/lkuN/hb4td8S9fKf0++7/+UnLHV7320OVPAUcaS2txxROYRVD7QgzOg/MpcjQqkaIf
-         lCr1RFoQBlARIB6c84nZ3+oxf8M/v6Fema+pBb9wnSsG0KI48fLZdWzGQCG1AM9U/GfA
-         XqAJI7Ax5DbLSwMecjtGUJK6GbZTlrEQFbFmifiN3jX+jwoc/sIL48cd1gwh65uAAMLI
-         1Ang==
-X-Forwarded-Encrypted: i=1; AFNElJ+SxEDwk7oOp9AQ8vnNRN2w0ftzVaoEycjAT1PV8Ubp9cRscldoxbCgkBEuAdc5bgop9xai0A8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCUhbsD+yL53ofMn+S0dz74JBNbG2EJT8R4WCeUMFe5vP7RHv4
-	ExcygZFhP9wuiNu1lceg2/U6rXAyKKAReoDGG2OXXX+7TkOTbelT12W/VBHNKX/LrMhKjBbf9Fy
-	LEtUzW/0=
-X-Gm-Gg: AeBDieusn/BoDsuDO80XkTf0JTbhaUXT5iFuHDnON/MkLMCiYLTIp9ZXPQSwT9+flZI
-	JeW7hgSfvwfVz2htVYnvUaRWf9iTgAGI+IVATabuf3LP/SmR/HzWCMU+2pP1PReSZkvzyrRK4ad
-	kRmR+PrlcW5YyWQ8iGoqUAdYI1C4/kY9e7vzFAs3jhxkW7JXaTi2IAS8Vx1AznKZG3xmEOK2M9V
-	iVEw5x1VQAUskp96W8hJKwUAZBVfMG6yhesWQeW3BSWjnOdwBSAZEiv2YDMuVcS0GBLTlabhPjS
-	OHOvqZc9hnd3qzkxjFIxFny7FSc8Cq1EPclscvWUWWppTtt2DWQtRWyAXrIpU70ebR0KUQzKkzj
-	F4sLeqPyZ7LWkATv8puSmQ8gFN1yzjAxLI/T8FAPsdSfmc9/lrC6cqI44bmsDXS7TFpYl8+zpNm
-	Gc6/g3DgikRllioj6zZdXU+JDLQTvFGFV6PgI7b3QB/E8xm/l7CIlA2Sf6WIRmQfCd6a1IgRQYB
-	FFctc/1cCUu1r4PGgCKm2lg
-X-Received: by 2002:a05:600c:460a:b0:488:a824:fdff with SMTP id 5b1f17b1804b1-488e00fdbc3mr152534465e9.22.1776286145008;
-        Wed, 15 Apr 2026 13:49:05 -0700 (PDT)
-Received: from localhost (p200300de374a06005c73df0aad605173.dip0.t-ipconnect.de. [2003:de:374a:600:5c73:df0a:ad60:5173])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-488f1e945d0sm92777675e9.12.2026.04.15.13.49.04
+        d=1e100.net; s=20251104; t=1776286198; x=1776890998;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fXRmZFUi3/NUGdrIU0HiWh6hUGnEEJ0BOLVJoZTzlo4=;
+        b=tRaVLKegF2UtLeK0UetZBYLb/zdpX62MbZFMFLF5eDArdTN9AZmCdW5R82sJzrp3rT
+         VmDSBZv3A+rbNTiLWu9IjevKpHcMPFIAhbrynHi3QRlKM+iFMw5k7z2WS6PncAv27Cug
+         3gC/VFOsa/0DMnNWNVVYMdsn999PdcnvPrc0aDYI2FQh9RijRkVVnaawl/vYHwb3zgZp
+         e4N0iXEi3tsc3CvQvUMhx0zy5t7/jcQgfSWhJ5bN6VrzGmCxYANf+vVIFJoyVxVOKIWG
+         U0NJE2/gfTYCzJd5d2xV+OXi274l189JVmLDrtOm3TrGV/4tp7U6T2GI/tsxDKr2engq
+         gdkA==
+X-Forwarded-Encrypted: i=1; AFNElJ/Oa4FKVXYh3ttKcLawJDOL/AzKVahh1JjFl1LbPSbXEwG+DOwrejwmE+6f+eSUggu46W2eU20=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziBZ2tSy2wVyHpnTgGCoOslWZma2Aa13tlttBL/9b+CcfzzHHX
+	f0fsf5bGfAfvHLDWXy8mmnmyj5Eq+Un+vpHEK34luLvoxJow4pkcfXi48pPkw6kX2UQ=
+X-Gm-Gg: AeBDietHEHREk3SsJXJXf7wQB2pKZYVazUE0CfHSxGG4bhkoX/zsDcort66/WfqEvf6
+	MUB4Ye+CyUtxcRyld5OF+8pPwfNn+TSEy/SXCaKckbh3YB2XXVMzPUUcP3wkY4JwJKoJuSu988O
+	E5WXj0R3kaioJbxlHv23IuEsE+9BTJchlohOZ71E6RHyB9VZnZbneTBeR768lVO1Sad7VpLIU1I
+	JqhRM8dm1fpjCk+rAVWFGcnc5KGTrgfbMKOyMNp1YlS66645r9qmG/WzUJsM73UJblO5TaoVB91
+	Jrmy7nKou3Qtze3k6HtjzywtD0jggbW784hLDfIEvedMGx+H3xgqypHZaHbARdmBn0VL6skXQ0D
+	rhhgue0CkskzzJSlC1+ZJ+xpRxfSuE3fsAjvOTMdqkXnt5yiOMj9UBIO8LCh0eCWEGHC0tWzVpV
+	8CkLKtK5xv1m5ce5FXuyoj9gtQQOrzzVc=
+X-Received: by 2002:a05:6820:168c:b0:681:22fd:a589 with SMTP id 006d021491bc7-68be5a636d6mr12796440eaf.11.1776286198589;
+        Wed, 15 Apr 2026 13:49:58 -0700 (PDT)
+Received: from [192.168.1.14] ([38.15.57.99])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42689699dc8sm2210443fac.14.2026.04.15.13.49.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Apr 2026 13:49:04 -0700 (PDT)
-From: Martin Wilck <martin.wilck@suse.com>
-X-Google-Original-From: Martin Wilck <mwilck@suse.com>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Don Brace <don.brace@microchip.com>
-Cc: linux-scsi@vger.kernel.org,
-	Hannes Reinecke <hare@suse.de>,
-	Lee Duncan <lduncan@suse.com>,
-	Martin Wilck <mwilck@suse.com>,
-	storagedev@microchip.com,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] scsi: smartpqi: use shost_to_hba() in pqi_scan_finished()
-Date: Wed, 15 Apr 2026 22:48:49 +0200
-Message-ID: <20260415204850.799431-2-mwilck@suse.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260415204850.799431-1-mwilck@suse.com>
-References: <20260415204850.799431-1-mwilck@suse.com>
+        Wed, 15 Apr 2026 13:49:56 -0700 (PDT)
+Message-ID: <a189c5e7-9119-43ad-8a90-b96cc40fed06@linuxfoundation.org>
+Date: Wed, 15 Apr 2026 14:49:56 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: vimc: fix reference leak on failed device
+ registration
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil@kernel.org>,
+ Dafna Hirschfeld <dafna.hirschfeld@collabora.com>,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <20260415154537.3451732-1-lgs201920130244@gmail.com>
+ <75275f6e-8314-4dd6-a54e-95320c2224e2@linuxfoundation.org>
+ <CANUHTR9j8-wHB8rE1zGLaUw4ZyNh2Mq3njFerBoUcVPWAh7w6A@mail.gmail.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <CANUHTR9j8-wHB8rE1zGLaUw4ZyNh2Mq3njFerBoUcVPWAh7w6A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238210-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[martin.wilck@suse.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-238211-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 57139407B69
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: E1818407B87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-shost_to_hba() is used everywhere except to obtain pqi_ctrl_info
-from shosti, except in pqi_scan_finished(), where shost_priv() is used.
-This causes one pointer dereference to be missed, as shost->hostdata
-is a pointer in smartpqi. Fix it.
+On 4/15/26 10:56, Guangshuo Li wrote:
+> Hi Shuah,
+> 
+> Thanks for reviewing.
+> 
+> On Thu, 16 Apr 2026 at 00:01, Shuah Khan <skhan@linuxfoundation.org> wrote:
+>>
+> 
+>>
+>> Can you share your manual review?
+>>
+>> Can other static analysis tools for example scripts/coccinelle support
+>> your findings?
+>>
 
-Fixes: 6c223761eb54 ("smartpqi: initial commit of Microsemi smartpqi driver")
-Signed-off-by: Martin Wilck <mwilck@suse.com>
-Cc: Don Brace <don.brace@microchip.com>
-Cc: storagedev@microchip.com
-Cc: stable@vger.kernel.org
----
- drivers/scsi/smartpqi/smartpqi_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Did you try other static analysis tools in the kernel?
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index b4ed991..65ff509 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -2642,7 +2642,7 @@ static int pqi_scan_finished(struct Scsi_Host *shost,
- {
- 	struct pqi_ctrl_info *ctrl_info;
- 
--	ctrl_info = shost_priv(shost);
-+	ctrl_info = shost_to_hba(shost);
- 
- 	return !mutex_is_locked(&ctrl_info->scan_mutex);
- }
--- 
-2.51.0
+>>>
+>>> Fixes: 4babf057c143f ("media: vimc: allocate vimc_device dynamically")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+>>> ---
+>>>    drivers/media/test-drivers/vimc/vimc-core.c | 1 +
+>>>    1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/drivers/media/test-drivers/vimc/vimc-core.c b/drivers/media/test-drivers/vimc/vimc-core.c
+>>> index 15167e127461..fee0c7a09c4f 100644
+>>> --- a/drivers/media/test-drivers/vimc/vimc-core.c
+>>> +++ b/drivers/media/test-drivers/vimc/vimc-core.c
+>>> @@ -421,6 +421,7 @@ static int __init vimc_init(void)
+>>>        if (ret) {
+>>>                dev_err(&vimc_pdev.dev,
+>>>                        "platform device registration failed (err=%d)\n", ret);
+>>> +             platform_device_put(&vimc_pdev);
+>>
+>> Where does platform_device_get() happen when platform_device_register() fails?
+>>
+>> thanks,
+>> -- Shuah
+> 
+> My manual review was based on the platform_device_register() call
+> chain and its documented lifetime rules.
+> 
+> The relevant code path is:
+> 
+> ret = platform_device_register(&vimc_pdev);
+> if (ret) {
+> dev_err(&vimc_pdev.dev,
+> "platform device registration failed (err=%d)\n", ret);
+> return ret;
+> }
+> 
+> and
+> 
+> int platform_device_register(struct platform_device *pdev)
+> {
+> device_initialize(&pdev->dev);
+> setup_pdev_dma_masks(pdev);
+> return platform_device_add(pdev);
+> }
+> 
+> If platform_device_add() fails, platform_device_register() returns an
+> error, but the reference initialized by device_initialize() is still
+> owned by the caller. The API documentation for platform_device_register()
+> also explicitly says:
+> 
+> "Never directly free @pdev after calling this function, even if it
+> returned an error! Always use platform_device_put() to give up the
+> reference initialised in this function instead."
+> 
+> So there is no matching platform_device_get() on the failure path.
+> The reference comes from device_initialize(), and platform_device_put()
+> is needed to drop that initial reference when registration fails.
+> 
+> That was also how I manually confirmed the issue after the tool report:
+> I checked the platform_device_register() / platform_device_add()
+> implementation and verified that the vimc failure path returns directly
+> without calling platform_device_put().
+> 
+> I found this issue using a tool I recently developed. The scan was run
+> on kernel version v7.0-1262-g4fa12523f7bc.
 
+There are several calls to platform_device_register() all over the kernel.
+Did your tool find all other cases or just this one?
+
+thanks,
+-- Shuah
 
