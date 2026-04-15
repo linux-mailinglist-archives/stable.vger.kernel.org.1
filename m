@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-238038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ObNfHhsg32mJPAAAu9opvQ
-	(envelope-from <stable+bounces-238038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:20:27 +0200
+	id mIcGKrcg32mJPAAAu9opvQ
+	(envelope-from <stable+bounces-238039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:23:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF86E4006FB
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:20:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323E240072F
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A57E8304019C
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:19:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B59E23037DE4
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A23C318EC9;
-	Wed, 15 Apr 2026 05:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503A5318EF6;
+	Wed, 15 Apr 2026 05:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LycqxEl1"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mgBfTpis"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA8014AD20
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987F32773CA
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776230355; cv=none; b=RPSi/ijMdu6jxNZ452YwxBOu+Qonz+HrmpvE0wDhvGpMpuV3hIzymuG+T/0Apf+4HueyjxA5Mw2L96X6E6g5ezCIBDHa6awq7EukrLUL358DANg9y1p0evk0Q6NjCZhKmMGGxkfR8h60STZqppH4o1rNzJoYhRoxldcfm1HD75c=
+	t=1776230581; cv=none; b=uVcrJmE9hxfQ8w0HE5/GG7GfihcGJsJ29kQfj9T+o+Bq1unDKYa5cQnKyfYcOo+6fSERP8n9t3BJVXfO2OW7G+Rv+fogmmSWb8efE8oXb5tEayN2cJSw/iYsM5p0H/OMqVVyPeIn0WXOuNbETp3wMglkUGKsQio+f6xnZXkUA3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776230355; c=relaxed/simple;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 In-Reply-To; b=oY5CSwMrYnV2t6NUeXBWibdQ6D4oKjQFAEZxkpiIZvn0pv20KxbQTHsFfh6Rq+pJ60pRHV9UDkbavqQz1bzw2rhNjHjk+1V4C7MrUbonCFIlZQFg7yPDPFb+fQC2Q5LJSxlVXpWprP2ECncVObwCD5vLQe2WQGGHiTZ4qR3djyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LycqxEl1; arc=none smtp.client-ip=91.218.175.188
+	s=arc-20240116; t=1776230581; c=relaxed/simple;
+	bh=/efp6yRw/jDQ6sXHjhW+nvuV4O/U6xG7TmI78pQuTOM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=sdmXcYMKFOZ+uOkJeUxgqxWeVGz5GiqdPpijJxV6S0QLd3MyGB4kcrR3ecpWKDlmnUYjogipyIiiy989FLHmQWb29o9K3t3u35nTXtnQ9R0iB4E0pTd2m1lfa4PQZ6ZnNvBvv0l6WtOoQC7znZMjMU2eYGGY2tOubjKDUM+w4iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mgBfTpis; arc=none smtp.client-ip=95.215.58.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
@@ -41,60 +41,68 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776230341;
+	t=1776230577;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:  in-reply-to:in-reply-to;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=LycqxEl1L4mLli4s7IZRv9w5gruiadYZJrYcSYfnvQCFjs31KcunCvLNVLUlhH/EEKVVod
-	5MOBnLi7B4aFv+UGRIGF6PfzOEpD4i3gGghRL/8CT1g7rNZli80B+xT4ScBjq8jsCFubQy
-	RikUkMXCxFXxVx0pdJkwxoBMwi+80NQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/efp6yRw/jDQ6sXHjhW+nvuV4O/U6xG7TmI78pQuTOM=;
+	b=mgBfTpisD+KZxsj7EdmMsUp9r7OSo5eUVvJfRMuuzxRhNUUHhshTBqIuXrPU0H8K9dq8lW
+	qdzzgjYnnaGPsF4WL9O2hJf1FIUu6NW1Rh/NeBI6FlrKKWGlCXIIzSZinyE/or8cW99EdB
+	iK6nnSu9fY1Afq8FddFwkMucqg9ihGY=
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 Apr 2026 07:18:51 +0200
-Message-Id: <DHTH3PLMFNK6.24NLM1U01XPKJ@linux.dev>
+Date: Wed, 15 Apr 2026 07:22:53 +0200
+Message-Id: <DHTH6SPDQ037.2W1FBRA030J1V@linux.dev>
+Cc: <error27@gmail.com>, <hossu.alexandru@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <linux-staging@lists.linux.dev>,
+ <stable@vger.kernel.org>
 Subject: Re: [PATCH v2] staging: rtl8723bs: fix missing frame length checks
  in OnAuthClient
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Luka Gejak" <luka.gejak@linux.dev>
-To: <gregkh@linuxfoundation.org>
-Cc: <error27@gmail.com>, <hossu.alexandru@gmail.com>,
- <linux-kernel@vger.kernel.org>, <linux-staging@lists.linux.dev>,
- <stable@vger.kernel.org>
-In-Reply-To: <2026041526-resonate-overpower-e45f@gregkh>
+To: "Luka Gejak" <luka.gejak@linux.dev>, <gregkh@linuxfoundation.org>
+References: <2026041526-resonate-overpower-e45f@gregkh>
+ <DHTH3PLMFNK6.24NLM1U01XPKJ@linux.dev>
+In-Reply-To: <DHTH3PLMFNK6.24NLM1U01XPKJ@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [1.84 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238039-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lists.linux.dev];
-	TAGGED_FROM(0.00)[bounces-238038-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	SINGLE_SHORT_PART(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
-X-Rspamd-Queue-Id: DF86E4006FB
+X-Rspamd-Queue-Id: 323E240072F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed Apr 15, 2026 at 7:18 AM CEST, Luka Gejak wrote:
+>
+
+Ignore this email, aerc(my email client) is having quirks.
+Best regards,
+Luka Gejak
 
