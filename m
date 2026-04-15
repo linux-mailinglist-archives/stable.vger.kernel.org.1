@@ -1,196 +1,178 @@
-Return-Path: <stable+bounces-238111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHg7HmKA32mcUQAAu9opvQ
-	(envelope-from <stable+bounces-238111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:11:14 +0200
+	id qKLwLY+B32mcUQAAu9opvQ
+	(envelope-from <stable+bounces-238112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:16:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D49F40422F
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:11:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2545A404298
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60FC8301259F
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:11:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 173D23023E11
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB32343216;
-	Wed, 15 Apr 2026 12:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DA554654;
+	Wed, 15 Apr 2026 12:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QbRy8jZ5"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16103382CB;
-	Wed, 15 Apr 2026 12:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9073C1E515
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 12:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776255069; cv=none; b=oR12hYIBjEoqlhxCIcMmtlKWOtrntSbvCHH47Xl7zPM2Qri/sccn6vc8eHuofXai6JfIkmIhy3hmGlyRpXRHNUH1JY+JN2zD5hS2OfOGu/VnVMhn3vItKeU0W2CGCDpmcT+Q/M5VwFHVYjvRZ+frn6/283lLOa6P4TVjgqxNz7o=
+	t=1776255308; cv=none; b=Ysv5HkcJPbyLYPYbhEnzoS8sYii/DwPQ/n/ZJJPFCHCyXGTMjxeaxDRBt1AWdVritKC2CcRO+ZG/boVWCZ9jStFqz648VACBPfQqxjQMmu57Ng1hbezQjfPi3wQA5FCk89Udr+zTMack5nP0jP7kzzDCWFfIhanOaF0k2RGAgtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776255069; c=relaxed/simple;
-	bh=YPsCldXH4MVx6lVVeFCbqASGiP/XgmRzqYdJ0PDJuNY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=URHmz3XuJY0mMO05cvVKxjMdxdPXW6ISUp5L/lnUgKOixr3v8KmXNpIDta9EdoMmIE22V0pGIZzoEwskefSqOR/9anySZWVCO+Ycx4fuVeoPW/3P6OBIcXDTYmDxImENpwNO4YTDr6ud/gB7m3ZFsbZui2S9SdkvUsJu22oJt3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCz5G-004yV6-2Q;
-	Wed, 15 Apr 2026 12:11:05 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCz5E-00000003cr6-0j70;
-	Wed, 15 Apr 2026 14:11:04 +0200
-Message-ID: <9e1d8d13f872acab49ac25ccf6d18b3a2698d421.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 191/491] can: gs_usb: gs_can_open(): always
- configure bitrates before starting device
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>, Sasha
- Levin <sashal@kernel.org>
-Date: Wed, 15 Apr 2026 14:10:57 +0200
-In-Reply-To: <20260413155826.219285216@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
-	 <20260413155826.219285216@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-A8/X/vPOLnoV27P0DlDK"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1776255308; c=relaxed/simple;
+	bh=XVwY6PmwvfRm+MrqjaTcSzgwzTO6ZRD5DBuaCXCbY0U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aQHjGAJxxWDujSFLBAGTv9SeFWl6TiAgpSsBgdI+PlghB0hjTSI3Y7f0pVBXAesTFhqRJ2ZnaHaOM/WN3dLE9A4feNR4kybdggcUiH/ywIpa9n+Q9V/LN6Hj1Ymk5KvyFyO9iKvfD2XWAUslOOFb6MEdKoBdb0CQnX9/ivhvtWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QbRy8jZ5; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776255307; x=1807791307;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XVwY6PmwvfRm+MrqjaTcSzgwzTO6ZRD5DBuaCXCbY0U=;
+  b=QbRy8jZ5N0IsQEep54HEB53sA3NsxwT2R3o7BI584WeS83+0jMa/elbj
+   Ac9R6ql0S2zB5hIMdh6b/mBdt6wRc/GAnvNqDIeQOLA/cL6Q9MFxY3Zg9
+   gBtQMCvhZz98SG1/arI0u+GsclabDrtGrOhJxN9/jArecgy3s9WyC3OKm
+   Zk19PRKqCvzUQ9WaqJLL6vj9dSHli27evBlVpHehXq/A8ook0bfUV+DaX
+   NSDvvAB/G5lvKNB7AGSMjCXJZDes4wJHTdxbWaT4ewShP1NDC/K8/Xchy
+   QUJWgBmTaEawasGiY7d951sTdKES3Ykjt/5GavTZyoSwycAEXpUephNZ0
+   g==;
+X-CSE-ConnectionGUID: Fe2N/BjCSmeN2XFBmbc4fg==
+X-CSE-MsgGUID: uWXHEq8sSuuSLFvHDlzyXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="87853501"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="87853501"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 05:15:07 -0700
+X-CSE-ConnectionGUID: vGuuNXZYQOW3P1xqpETZFA==
+X-CSE-MsgGUID: GebHZkpnRJeQ8EBJw7nr6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="223902153"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.244.112]) ([10.245.244.112])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 05:15:05 -0700
+Message-ID: <c9962533-d9a4-40bb-b42a-7e7855c271d0@intel.com>
+Date: Wed, 15 Apr 2026 13:15:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] drm/xe: Reject coh_none PAT index for
+ CPU_ADDR_MIRROR
+To: Jia Yao <jia.yao@intel.com>, intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org, Shuicheng Lin <shuicheng.lin@intel.com>,
+ Mathew Alwin <alwin.mathew@intel.com>,
+ Michal Mrozek <michal.mrozek@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>
+References: <20260129000147.339361-1-jia.yao@intel.com>
+ <20260415061951.427699-1-jia.yao@intel.com>
+ <20260415061951.427699-3-jia.yao@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260415061951.427699-3-jia.yao@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238111-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238112-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[decadent.org.uk];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: 6D49F40422F
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2545A404298
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 15/04/2026 07:19, Jia Yao wrote:
+> Add validation in xe_vm_bind_ioctl() to reject PAT indices
+> with XE_COH_NONE coherency mode when used with
+> DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR.
+> 
+> CPU address mirror mappings use system memory that is CPU
+> cached, which makes them incompatible with COH_NONE PAT
+> indices. Allowing COH_NONE with CPU cached buffers is a
+> security risk, as the GPU may bypass CPU caches and read
+> stale sensitive data from DRAM.
+> 
+> Although CPU_ADDR_MIRROR does not create an immediate
+> mapping, the backing system memory is still CPU cached.
+> Apply the same PAT coherency restrictions as
+> DRM_XE_VM_BIND_OP_MAP_USERPTR.
+> 
+> v2:
+> - Correct fix tag
+> 
+> v6:
+> - No change
+> 
+> v7:
+> - Correct fix tag
+> 
+> v8:
+> - Rebase
+> 
+> Fixes: b43e864af0d4 ("drm/xe/uapi: Add DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR")
+> Cc: stable@vger.kernel.org # v6.18
+> Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+> Cc: Mathew Alwin <alwin.mathew@intel.com>
+> Cc: Michal Mrozek <michal.mrozek@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Jia Yao <jia.yao@intel.com>
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> ---
+>   drivers/gpu/drm/xe/xe_vm.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+> index 2408b547ca3d..619a22fa9abe 100644
+> --- a/drivers/gpu/drm/xe/xe_vm.c
+> +++ b/drivers/gpu/drm/xe/xe_vm.c
+> @@ -3657,7 +3657,7 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
+>   		    XE_IOCTL_DBG(xe, obj &&
+>   				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
+>   		    XE_IOCTL_DBG(xe, coh_mode == XE_COH_NONE &&
+> -				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
+> +				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR || is_cpu_addr_mirror)) ||
 
---=-A8/X/vPOLnoV27P0DlDK
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Chatted to Michal, and it looks like on dgpu an incoherent index is 
+being used with cpu_addr_mirror, so this will cause regressions. I think 
+for both patches we need to limit this change to igpu, where coherent 
+index is fortunately already being used.
 
-On Mon, 2026-04-13 at 17:57 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Marc Kleine-Budde <mkl@pengutronix.de>
->=20
-> [ Upstream commit 2df6162785f31f1bbb598cfc3b08e4efc88f80b6 ]
-[...]
-> --- a/drivers/net/can/usb/gs_usb.c
-> +++ b/drivers/net/can/usb/gs_usb.c
-> @@ -413,9 +413,8 @@ static void gs_usb_receive_bulk_callback
->  	}
->  }
-> =20
-> -static int gs_usb_set_bittiming(struct net_device *netdev)
-> +static int gs_usb_set_bittiming(struct gs_can *dev)
->  {
-> -	struct gs_can *dev =3D netdev_priv(netdev);
->  	struct can_bittiming *bt =3D &dev->can.bittiming;
->  	struct usb_interface *intf =3D dev->iface;
->  	int rc;
-> @@ -445,7 +444,7 @@ static int gs_usb_set_bittiming(struct n
->  	kfree(dbt);
-> =20
->  	if (rc < 0)
-> -		dev_err(netdev->dev.parent, "Couldn't set bittimings (err=3D%d)",
-> +		dev_err(dev->netdev->dev.parent, "Couldn't set bittimings (err=3D%d)",
->  			rc);
-> =20
->  	return (rc > 0) ? 0 : rc;
-> @@ -675,6 +674,13 @@ static int gs_can_open(struct net_device
->  	if (ctrlmode & CAN_CTRLMODE_3_SAMPLES)
->  		flags |=3D GS_CAN_MODE_TRIPLE_SAMPLE;
-> =20
-> +	rc =3D gs_usb_set_bittiming(dev);
-> +	if (rc) {
-> +		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
-> +		kfree(dm);
+>   		    XE_IOCTL_DBG(xe, xe_device_is_l2_flush_optimized(xe) &&
+>   				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR ||
+>   				  is_cpu_addr_mirror) &&
 
-This error path leaks the URBs allocated above (but the upstream version
-does not have this problem).
-
-I think it would make sense to backport commit 2603be9e8167 ("can:
-gs_usb: gs_can_open(): improve error handling") before this one.
-
-Ben.
-
-> +		return rc;
-> +	}
-> +
->  	/* finally start device */
->  	dev->can.state =3D CAN_STATE_ERROR_ACTIVE;
->  	dm->mode =3D cpu_to_le32(GS_CAN_MODE_START);
-> @@ -888,7 +894,6 @@ static struct gs_can *gs_make_candev(uns
->  	dev->can.state =3D CAN_STATE_STOPPED;
->  	dev->can.clock.freq =3D le32_to_cpu(bt_const->fclk_can);
->  	dev->can.bittiming_const =3D &dev->bt_const;
-> -	dev->can.do_set_bittiming =3D gs_usb_set_bittiming;
-> =20
->  	dev->can.ctrlmode_supported =3D 0;
-> =20
->=20
->=20
-
---=20
-Ben Hutchings
-The obvious mathematical breakthrough [to break modern encryption]
-would be development of an easy way to factor large prime numbers.
-                                                           - Bill Gates
-
---=-A8/X/vPOLnoV27P0DlDK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnfgFEACgkQ57/I7JWG
-EQkEVQ//cJH7FsLT5P9J5VlHsVlX3GIncFn1KyW6OLEHdYKR/SdJ0ggjaaMR3vNk
-f+zcx1HicSyoNvNWV5yAptNpgBpW22OaQMqsBU138LEIUQchpTRZKu48Li7NFnGY
-kv8gf5ulpV3BN6Swy3kLV/o4647rjEZNI8sZV4gF51F9oH1WSRPCj7EZqYu4c5mL
-AoIahbzR+Yzo8X6nPm/wsp0JsYNLoTxS7QnJSyVOwJd8gyEBiYap3rcRKMQsEhr4
-COzrc5OMceDIMIqM6PDjPXIsPvuITGwAparyyCtg3dVrBpRTuXD4MlC+UH/fQrdK
-H792DTLYZZ/aN4fKH6e/j77JAsOjvHq14d+4lYgoSZQekHOldfTQBqv0R8eJkv6l
-vQYEKNuWQaoDHYtmzq8OO7AaZHK0V71F3WCrhRjJBZtBt4esN5196buS/s/fOvyL
-DuSuELPOoL1uQ92KHeOFKVTCa1NcppuQl6R01qjN0afnInRd1u3QSbjW71dcUI9a
-f3G6EI+fjyYI8JBq8AAyLdfq3k7bFD7W5u4Ouybt1wtMlBQzcD7P2+MWWHtsxdXQ
-XD4TRMjPdthxGB8L3SNULlA8scFu3AUQZ7qns4WEo6Iw7iaVFpqpejLY/Lm/x6eD
-NY6hKcfaaByIrmRqGAnCZp5X7Mb/edIWTPIIv0XJSyC1lUNLHZ4=
-=i+9Q
------END PGP SIGNATURE-----
-
---=-A8/X/vPOLnoV27P0DlDK--
 
