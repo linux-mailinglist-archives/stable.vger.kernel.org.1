@@ -1,149 +1,176 @@
-Return-Path: <stable+bounces-238174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAoSEWLO32m4ZAAAu9opvQ
-	(envelope-from <stable+bounces-238174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:44:02 +0200
+	id IOK3Dg7Q32m4ZAAAu9opvQ
+	(envelope-from <stable+bounces-238175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:51:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF71B406E2E
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:44:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5882406E93
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22792303479C
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:43:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6BC72302802D
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654B13DFC98;
-	Wed, 15 Apr 2026 17:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9725F3D649D;
+	Wed, 15 Apr 2026 17:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jV3x9tcA"
 X-Original-To: stable@vger.kernel.org
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A52C31AF31;
-	Wed, 15 Apr 2026 17:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E803DEAD8
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 17:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776275022; cv=none; b=aKrYIbtO8zKHODJ4XPiYzxOd8d8s8jyx0cxSVhX6l/19yYnHBwWK8/kyC49APwuTUZvPBjCwy/Lrf0TIhmZDjE/2AEWkkY7oDjAcxz9QrpDyryt89POG4+CCV3FRGfvMCaQhtxmtaq/UBPASy2uf78UIsRubvjd0ow1Wy38xE7w=
+	t=1776275459; cv=none; b=QcHo8LvrGrINS4dvxxs0jZ8pECKVS+MudjdQARRRxhop4AvdDDLpA+4cYb1LVuRF1XTENtIKcMg4bJ9b2HToep0TzODPuRGrsPzedSfsAB5/G4RtWgKCXRahSLsyWezpSVDT6E6EqnPeNZnFCitNokj2xxWJrXGqZeMnRhPIn6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776275022; c=relaxed/simple;
-	bh=/3zEDoYFYX455X/Av9FJo5SyA5HyQk+/indW93haVN0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hp9JLWCyCgoQxM5HkxgtswCVhVkKgqf/I4uTGkg6AIJ0rR6P96Mtwt2/gPugOmFmQ5KdeICT/s03UVToCcvTrQ+elQZ5LfgbOWsp91pmMQ2TykJTxlGZQgv0M7B+3UH2JBe8nOy6jBaWnYY560jjyJ+/RvZBKmA1vez2irReGB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E6A6487457;
-	Wed, 15 Apr 2026 19:43:31 +0200 (CEST)
-Message-ID: <596fba41-38be-47bb-b436-bc74b7237816@proxmox.com>
-Date: Wed, 15 Apr 2026 19:43:30 +0200
+	s=arc-20240116; t=1776275459; c=relaxed/simple;
+	bh=q9TGLRe1UVqxWGYdLDq7YnNCc4SCxzhTB9OScxICR6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U7jX+x7ZmD6h1+kkZ9+dW16jrp35X0uFZ3DWzitbinFOTp5/PTg3usv9XZHM+l9X5vuMRkevvRPRz2bBGNlUomsAb5mYa8e7UgHP5s8vrz8mPdn7D3fpbvT98tqTiiAErBPLNOykTRmA9Sn6PCLpM/2NnjzywqTAy9cHtNpu1NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jV3x9tcA; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ad21f437eeso42447435ad.0
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 10:50:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776275456; x=1776880256; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gjx41/oJzSzCxjCOcBWOIoSBA7KLlVfstVe2P4xKOAc=;
+        b=jV3x9tcACRpUKRbQdmJbBUqji3OcwLPq6G7gLJUxOjgQFslkRgeLvJHk6LxMI6E3nr
+         DHBW8hf3ZtnNs7LQARdF2Nvpi2x2koOnwO/zQnZU2SQDVM17i+yu5xoC/ROtIlzNh/Rm
+         A522ppbngH9ENS88kgAAtDXSv/MAzpwMUbFseTNJi7ks+hvCeIEK7MLvVOyXVfLOMddW
+         kXeuNaMhJkdK8Dp3+Ujv6+r8nK/5EmjmWHSmQ/M+IAMZ6eXWdAbuby5lIZ75umDeFzKh
+         Lp8O5m/6rs6qDfaZIVUnJ7bcKoJswqv+ePfZCl+4bCQ3MNtcRKAANcG1XoKVEePXOoAM
+         /PBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776275456; x=1776880256;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gjx41/oJzSzCxjCOcBWOIoSBA7KLlVfstVe2P4xKOAc=;
+        b=N5/xAnIwb0gNe5vhjOHAlyrwa6hPog5Tx7+b/I4QZFDO1xgjCqIPiv+LZYNQEEvgbL
+         hKM2GRWVN/0CfombIaadhoXLKSA9UlAUD+gOcZgLPB//Cah3Yg/TKhkn59JJfFtwGMxf
+         cZgmWBax6ktqUyKrosh+G1nJ13gDj3Zz3aprrR0IWIkOA6dMBURgA+xqPfTIvr7koPvN
+         OobpbeaEbu1c52P2tam4n9cuLvA0ueJRHpclMGQcgAkkjnJE02B8iGPLN1CgKcpjFujP
+         x563nDvklZLkIX9z/8yQL0M2y8w1NzVAjF0qQ0qWceglmmVYtXK7o9kT14QHZAi9lm9A
+         p9wQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/ll2a9XtOCJnpZ98h3abgjZyzhW87JmQ51TvtAGmt/N8VuI9M8e8/IZYj/DiNuynz0QOY+h3Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6Q81OWk7sPv3RNpj0aBHdwIMRIoff7vt+J1ugVOAiDmzvVvTH
+	xCh8xo9FJwaq8Xcwa4FwN78bbEvlaw1H5htnh/81dI92Z/TB9uYijBJM
+X-Gm-Gg: AeBDiesAB5kZSIELxvhM7E0m2ieQQ8jWx2Gr2d1CpTbF48Tac7l/xNIQU//lFyMD8kt
+	JVYVaSd5v2JFWhMvLRUsq89j0O6wwxFIkj/BaKLlxe48AHLWDtH8y6uDcwskeF1/9cwmGKtVz8D
+	vmktHBFKVrwT7yPeNmNDVIbdmBprMvEh2jVBff+3FDNlCe+viXV78pFzu65F11bUM7OyLmwsY4J
+	7ynwuFTgzM6v92rsfNIGZeCY7ikB1AZvzh/KvcAx5rBg2V37oozrezyJvkqXQuZlpi9WoXiOS3p
+	0ESLvLVWLlbZ4nuUrlMBfGh+bS0TW/v7ID6oLI5UmHAyRFNQSxINC8NeiXcnnWdgD0Q1/R/sUdX
+	V8d9/vQNNyPubqcrJBVwHJYJ6qFvN8ngzS0/V1vRDWJ71nJ2jvutWHwhZGBQQRFoUv9LgBBHlF4
+	irFsJx8bq9nMDrQATGwtYHCfjXaGHfnuegAvvu
+X-Received: by 2002:a17:903:3c6d:b0:2b2:4bbc:14b0 with SMTP id d9443c01a7336-2b5eab05edamr3733145ad.20.1776275456476;
+        Wed, 15 Apr 2026 10:50:56 -0700 (PDT)
+Received: from lgs.. ([2409:893d:1171:10e2:48dd:8f21:beaa:cec8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b47826e248sm26728185ad.47.2026.04.15.10.50.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 10:50:55 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Olof Johansson <olof@lixom.net>,
+	chrome-platform@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] platform/chrome: fix reference leak on failed device registration
+Date: Thu, 16 Apr 2026 01:50:38 +0800
+Message-ID: <20260415175038.3633384-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mpt3sas: Limit NVMe request size to 2 MiB
-To: Ranjan Kumar <ranjan.kumar@broadcom.com>, linux-scsi@vger.kernel.org,
- martin.petersen@oracle.com
-Cc: sathya.prakash@broadcom.com, chandrakanth.patil@broadcom.com,
- dlemoal@kernel.org, david.laight.linux@gmail.com, stable@vger.kernel.org,
- Keith Busch <kbusch@kernel.org>, Friedrich Weber <f.weber@proxmox.com>
-References: <20260414110811.85156-1-ranjan.kumar@broadcom.com>
-Content-Language: en-US
-From: Mira Limbeck <m.limbeck@proxmox.com>
-In-Reply-To: <20260414110811.85156-1-ranjan.kumar@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1776274933153
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238174-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[broadcom.com,kernel.org,gmail.com,vger.kernel.org,proxmox.com];
-	DMARC_NA(0.00)[proxmox.com];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238175-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.limbeck@proxmox.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,proxmox.com:mid,proxmox.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EF71B406E2E
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C5882406E93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/14/26 1:13 PM, Ranjan Kumar wrote:
-> The HBA firmware reports NVMe MDTS values based on the underlying drive
-> capability. However, because the driver allocates a fixed 4K buffer for
-> the PRP list, accommodating at most 512 entries, the driver supports a
-> maximum I/O transfer size of 2 MiB.
-> 
-> Limit max_hw_sectors to the smaller of the reported MDTS and the
-> 2 MiB driver limit to prevent issuing oversized I/O that may lead
-> to a kernel oops.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP")
-> Reported-by: Mira Limbeck <m.limbeck@proxmox.com>
-> Closes: https://lore.kernel.org/r/291f78bf-4b4a-40dd-867d-053b36c564b3@proxmox.com
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9b8b84879d4a
-> Suggested-by: Keith Busch <kbusch@kernel.org>
-> Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-> ---
->  drivers/scsi/mpt3sas/mpt3sas_scsih.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> index 6ff788557294..12caffeed3a0 100644
-> --- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> +++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-> @@ -2738,8 +2738,20 @@ scsih_sdev_configure(struct scsi_device *sdev, struct queue_limits *lim)
->  				pcie_device->enclosure_level,
->  				pcie_device->connector_name);
->  
-> +		/*
-> +		 * The HBA firmware passes the NVMe drive's MDTS
-> +		 * (Maximum Data Transfer Size) up to the driver. However,
-> +		 * the driver hardcodes a 4K buffer size for the PRP list,
-> +		 * accommodating at most 512 entries. This strictly limits
-> +		 * the maximum supported NVMe I/O transfer to 2 MiB.
-> +		 *
-> +		 * Cap max_hw_sectors to the smaller of the drive's reported
-> +		 * MDTS or the 2 MiB driver limit to prevent kernel oopses.
-> +		 */
-> +		lim->max_hw_sectors = SZ_2M >> SECTOR_SHIFT;
->  		if (pcie_device->nvme_mdts)
-> -			lim->max_hw_sectors = pcie_device->nvme_mdts / 512;
-> +			lim->max_hw_sectors = min(lim->max_hw_sectors,
-> +					pcie_device->nvme_mdts >> SECTOR_SHIFT);
->  
->  		pcie_device_put(pcie_device);
->  		spin_unlock_irqrestore(&ioc->pcie_device_lock, flags);
+When platform_device_register() fails in chromeos_pstore_init(), the
+embedded struct device in chromeos_ramoops has already been initialized
+by device_initialize(), but the failure path returns the error without
+dropping the device reference for the current platform device:
 
-Thank you for providing this patch.
+  chromeos_pstore_init()
+    -> platform_device_register(&chromeos_ramoops)
+       -> device_initialize(&chromeos_ramoops.dev)
+       -> setup_pdev_dma_masks(&chromeos_ramoops)
+       -> platform_device_add(&chromeos_ramoops)
 
-We tested it on our test machine on top of 7.0-rc7.
-Without the patch, we saw the same call traces as before. With this patch applied no such call traces were logged.
-So looks like it fixes the issue in our case.
+This leads to a reference leak when platform_device_register() fails.
+Fix this by calling platform_device_put() before returning the error.
 
-I can't say much to the patch itself, but I can provide a tested-by.
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
 
-Tested-by: Mira Limbeck <m.limbeck@proxmox.com>
+Fixes: 9742e127cd0dd ("platform/chrome: Add pstore platform_device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/platform/chrome/chromeos_pstore.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/platform/chrome/chromeos_pstore.c b/drivers/platform/chrome/chromeos_pstore.c
+index a6eed99507d4..9e6d14dbb1c2 100644
+--- a/drivers/platform/chrome/chromeos_pstore.c
++++ b/drivers/platform/chrome/chromeos_pstore.c
+@@ -127,8 +127,13 @@ static int __init chromeos_pstore_init(void)
+ 	/* First check ACPI for non-hardcoded values from firmware. */
+ 	acpi_dev_found = chromeos_check_acpi();
+ 
+-	if (acpi_dev_found || dmi_check_system(chromeos_pstore_dmi_table))
+-		return platform_device_register(&chromeos_ramoops);
++	if (acpi_dev_found || dmi_check_system(chromeos_pstore_dmi_table)) {
++		ret = platform_device_register(&chromeos_ramoops);
++		if (ret)
++			platform_device_put(&chromeos_ramoops);
++
++		return ret;
++	}
+ 
+ 	return -ENODEV;
+ }
+-- 
+2.43.0
 
 
