@@ -1,148 +1,181 @@
-Return-Path: <stable+bounces-238024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePhsLN4K32n3NwAAu9opvQ
-	(envelope-from <stable+bounces-238024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:49:50 +0200
+	id EEx5EeUR32mtOQAAu9opvQ
+	(envelope-from <stable+bounces-238025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:19:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF46400216
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CAA400337
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9063330A1F79
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 03:49:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 635C930693DA
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D77534FF4F;
-	Wed, 15 Apr 2026 03:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A0D346776;
+	Wed, 15 Apr 2026 04:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="FEP5uXvY"
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="MqwVyfEg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.mr.icloud.com (p-west2-cluster1-host2-snip4-10.eps.apple.com [57.103.68.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABAB32C94A
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 03:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD9730AD00
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 04:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.68.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776224984; cv=none; b=J+lVfNLsqHAt18YHV0LmzlYGSD9+HvFb+QLTjXcLOmSkv1CrnFePU9pR9ner8N/xuUfdge8DviAumXm522HWmRb6gvbNYEt1ADQQUWgXgn41LZsLVc21f/HTpbqX049Vw884t4yJ5M7GnoVfGL9GMCV78YuWgpmdXkct8bCCn/g=
+	t=1776226774; cv=none; b=W3IgbzJ13efEiTG27C7cN8uqacBcYedy3oBtZYXWMtf70BW2k/R1zwtV7op9aVpQpupamY2TBsObj/nXiRZgoghw9DQChe3NADnQylYV7k0fNr1dK+XpKxw+uCSz0sDVThXFG6WmzgdaisSbpl0Ald2t0l1FGEHCev//g0YEgBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776224984; c=relaxed/simple;
-	bh=ZijUqXMpRQ33RknbmDmD059T52xA36aGwzSZGewDrxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDAUUSDYiu2wmNPRiUXcFm9U4OOvZ5u3kmjCibk9dgdypxNx3FV2BWbdwYWbk3x3qmGOXhl81sjwfWfrruI/V3Y5JOLXaA06Uvin3zaIPDhZsc+LjzzaS7bWsWGpI++0FwEvVXYw8x+PP4PbLJAf+IMVkpS32IecpK2T5dJq/Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=FEP5uXvY; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso63810375e9.1
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 20:49:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776224977; x=1776829777; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eGOvI5OHYbBtjjKEbHS0QOhfaoIWVWTKqWQFyvcz2QI=;
-        b=FEP5uXvYdc0DAnwTOGB2APgnvJubEdzr1ZnqzOV8BOmut0zHcKbg/odTn3xvnmSsMC
-         o3RWvWbU3pXZLGXHU1Yf1JdKWHQ7wQeVtDWmJ/u7p98G99syWZSnC0nCiEtQ01pCQ9QJ
-         q5cO6mbWOr8leDT1+H1fZAacz4IyabzlK1WP5CJenaq5oPjVvHd8pcIkpTC/YqjQzN13
-         w+YhHOqCbIbLFO01UihQN47EEhYC+BlXWntbBGuuD3aaXYZXFf3f04Yg8e5Y0qVM1DIK
-         UcUr2k3VsjxPMk9f/y57N7eArNsawgDtNY8x8h5Xzb+nCkdt2qymMb/Np6ZJN2N/auZt
-         mWRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776224977; x=1776829777;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eGOvI5OHYbBtjjKEbHS0QOhfaoIWVWTKqWQFyvcz2QI=;
-        b=G8LlYzOjf+8nIcMLCEGT01TDJaa0ovjeYORfLwkaFdf261RmgPv/DmcUOSRpwvw5Az
-         zSteJtlbZcIoaNKQnfPOV+0WVxr5FPJ8u7n3CejH+GreLjp3BK0J05ZmS4ou4xkstHU9
-         XpRcH5Nj4A6ifiXZzOXxCOXa2hI2BmpLL4ITwPEFzMqd/kPA246C9ufjuit2oq3n/3GK
-         RmTOXjSazZpMLaaab8Fsd/OndRlNq2KNgOpGT2E7LGXACSGMsVspFNAqjsX+hOPzcUz4
-         kDlUcq7+vEmzYEPiUN2TOhGdJtcEU9vIjaQtZTYnJoJLh/GEmEQn3InoAfIx9kSpWYVj
-         MLVQ==
-X-Gm-Message-State: AOJu0YzaRHr3Aj4MstYOz9k336xpY3DMn0RimdkQmWjUW2MY0ogOLgnO
-	Vo5hnLsfEyBC7XygdgxkDMTSXibdXhdGVk2qAfivnMDuSLO+tQ71IcZtSMhxFnM0IW8=
-X-Gm-Gg: AeBDieumHWdrg50OkU6ODN3oZX65ZLG0g3DajbLsmEOM68bLRFf7kWqcV0gwMCIbL5u
-	7Qf/CzdB0i3YcB1wcyTSgufDKGwDLDqBZyHAOkdh21sgBfDE8EUsmNEbZvrUzsQskpAHwWeB/lq
-	zxJYljt6oppB5+IQLTl8syAPIyLslRthEzyxK34sRENLZjYc+jgDcYQFf4XsbpGvG81GiNxnUUF
-	9LTXu9MQuowT27zNdPDhrs/k8XE9NpPDe3MSwrLfPPhZt4DcfZcNRAPiKTOCsT61sig7qsFy154
-	YQ0lZYEinjCbJEfohyzfE9StDNx2pm3eXlD2T4Ao/Sr+81CtaO9WojgKo+9L5zQqcspXsW7UGOo
-	G680ffom8A234YiAKRCb5sCfFaa1NKxzkUthzNZOgpXM2bpDSxfOa1ViqT23EpjwX/6yskZUp9S
-	2MR42GfjPbuNipUgEeXU/47A5+2uJAp8P3ArCEzugzkiWigMkTKJo=
-X-Received: by 2002:a05:600c:49a1:b0:488:a502:8955 with SMTP id 5b1f17b1804b1-488cd4f4a9bmr228282245e9.4.1776224977392;
-        Tue, 14 Apr 2026 20:49:37 -0700 (PDT)
-Received: from u94a (27-51-0-223.adsl.fetnet.net. [27.51.0.223])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2de8eb8443csm926559eec.14.2026.04.14.20.49.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 20:49:36 -0700 (PDT)
-Date: Wed, 15 Apr 2026 11:49:28 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 00/50] 6.6.135-rc1 review
-Message-ID: <g4kr2vhnsgtnnurn7cjwqe2louy4joys5pv6fmvqbdbj7illtv@u7ze2ovcaplc>
-References: <20260413155724.497323914@linuxfoundation.org>
+	s=arc-20240116; t=1776226774; c=relaxed/simple;
+	bh=yBfDJg4Je8fhZI+cFGFISTAHj+UGEnNOeDrf0TjXHk8=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=lWjYZLNNmcHVliHda7TfoExj4rfhwEETegCyJScjRmhW7Hdier4f3xNoZfsICWnkx2IOSaE52hl8DwqBsrAHfZsjWwYx49hPcrsbJPmV9lZzJkwxAJyft/ab2xEE/3HA605+y8tAPCpK1ILjtIKpzGb2oyLzBuD3oL7jQXTfVt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=MqwVyfEg; arc=none smtp.client-ip=57.103.68.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPS id E36C418001BC;
+	Wed, 15 Apr 2026 04:19:31 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai; t=1776226773; x=1778818773; bh=LiGwpFh+xaHAcQorriM2S7b5r7H/pgOR0wZTAK5jIPY=; h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To:x-icloud-hme; b=MqwVyfEgXGXQR0UzkENnX5FtpkXZ0nGh3hQ8E40Nh7ZMnGfR9pkqtDVfxXiuRPYr56r0ptYQQhSYhcgQSidx8dHdiDRvl+FFQA88TpSjQZ+AuA3zstxUX8uwkZetaLEifsukSJsOyQr+CpJ7BnibsXNWOiAqHe0TgPu6aaiTJhvq9kt1oQ6ffbPzSBU43GGbvNgB70xWRpL0jPRWyIYvbRPSeDvKyNDE4dcZRNXHcgOFnHmwgeJYRRH/Xcbvun8k0Hv3nCfAXGhsbW92ruZSPATBuxKVI3XSrF4NBIHIUyKCxcnZCVuLNZ+1oEb02Pd+FPHhvTDwxTY74ZEp4j24kg==
+Received: from smtpclient.apple (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-6 (Postfix) with ESMTPSA id 5E08D1800094;
+	Wed, 15 Apr 2026 04:19:31 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Tobias Gaertner <tob.gaertner@me.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413155724.497323914@linuxfoundation.org>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH 0/2] ntfs3: fix OOB read and integer overflow in run_unpack()
+Date: Tue, 14 Apr 2026 21:19:15 -0700
+Message-Id: <00E5BF40-413C-4E55-BD58-2CCFC455F96D@me.com>
+References: <f888b1b3-9bf7-4174-beef-3f954bafa175@paragon-software.com>
+Cc: ntfs3@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, security@kernel.org, info@tiefgangsecuritylabs.com
+In-Reply-To: <f888b1b3-9bf7-4174-beef-3f954bafa175@paragon-software.com>
+To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+X-Mailer: iPhone Mail (23D8133)
+X-Proofpoint-GUID: UcBCVj02WbUi5rhHV8wbDYd51-Oq1Rsq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDAzNyBTYWx0ZWRfXxeztlqzn2q5Y
+ vbCgEH4ny4nIngS9rDIqVg8yH3YxZsAM0zlDSj6S4NOASDiFh4INNcUlEDBvIyRWARienppgtkr
+ hXpCCCMKk3R/0i4V6fHqZVA6AfjAUYc34Sy1nPkMNDWZlscW7Z5awnW7D/Tsxsuv5jkgAuqr0We
+ OiwZLvKoHDQFqbbp8r4u/D0ftsYuPG9eb2R4yUADKtHOiLQBU/n2tyWRwe4CbuDyclExHfRuH5P
+ k0JkHCuzhXBl9j61Ob68igsEc9C8lZKkYr95NZNlWlErGdOx63UPRyLezcvOIo0nefs+4CrERD2
+ YpuoIWILjfyRTXUoZtPUM7myvDUKUSnnKv7f5sg4sUDX6zmA/dAQieOvxg5XeI=
+X-Proofpoint-ORIG-GUID: UcBCVj02WbUi5rhHV8wbDYd51-Oq1Rsq
+X-Authority-Info-Out: v=2.4 cv=L9IQguT8 c=1 sm=1 tr=0 ts=69df11d4
+ cx=c_apl:c_pps:t_out a=9OgfyREA4BUYbbCgc0Y0oA==:117
+ a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
+ a=x7bEGLp0ZPQA:10 a=C3-SEi6G3EkA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=_EeEMxcBAAAA:8 a=jqnDqIDVAAAA:8 a=GFCt93a2AAAA:8 a=HHGDD-5mAAAA:8
+ a=cVXv3vqcopnhoFBAprYA:9 a=QEXdDO2ut3YA:10 a=czjwGCTIUPoA:10
+ a=gUhktecex-mOjuHs2jr2:22 a=0UNspqPZPZo5crgNHNjb:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 phishscore=0 mlxscore=0
+ clxscore=1011 adultscore=0 mlxlogscore=999 suspectscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2604150037
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL_FRESH15(3.00)[tiefgangsecuritylabs.com:email];
+	SUSPICIOUS_URL_IN_SUSPICIOUS_MESSAGE(1.00)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238024-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[me.com,quarantine];
+	TAGGED_FROM(0.00)[bounces-238025-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[me.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	R_DKIM_ALLOW(0.00)[me.com:s=1a1hai];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[me.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	APPLE_IOS_MAILER_COMMON(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6AF46400216
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[tob.gaertner@me.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.803];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	REDIRECTOR_URL(0.00)[aka.ms];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[me.com:email,me.com:dkim,me.com:mid,aka.ms:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A5CAA400337
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 13, 2026 at 06:00:27PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.135 release.
-> There are 50 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-> Anything received after that time might be too late.
+Hi Konstantin,
 
-test_progs, test_progs-no_alu32, test_progs-cpuv4, test_maps,
-test_verifier in BPF selftests all passes[1] on x86_64.
+Great news!=20
 
-Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Will I get a CVE for that memory leak?=20
 
-1: https://github.com/shunghsiyu/libbpf/actions/runs/24418242274/job/71333106580
+Can you credit the patch and CVE to =E2=80=9CTiefgang Security Labs=E2=80=9D=
+?=20
 
-[...]
+info@tiefgangsecuritylabs.com
+
+Cheers,
+
+Tobias
+
+
+> On Apr 7, 2026, at 10:19, Konstantin Komarov <almaz.alexandrovich@paragon-=
+software.com> wrote:
+>=20
+> =EF=BB=BFOn 3/29/26 13:17, tobgaertner wrote:
+>=20
+>> [You don't often get email from tob.gaertner@me.com. Learn why this is im=
+portant at https://aka.ms/LearnAboutSenderIdentification ]
+>>=20
+>> From: Tobias Gaertner <tob.gaertner@me.com>
+>>=20
+>> Two bugs in run_unpack() found by fuzzing with a source-patched harness
+>> (LibAFL + QEMU ARM64 system-mode):
+>>=20
+>> Patch 1: run_unpack() checks `run_buf < run_last` at the loop top but
+>> then reads size_size and offset_size bytes via run_unpack_s64() without
+>> verifying they fit in the remaining buffer.  A crafted NTFS image with
+>> truncated run data triggers a heap OOB read of up to 15 bytes on mount.
+>>=20
+>> Patch 2: The volume boundary check `lcn + len > sbi->used.bitmap.nbits`
+>> uses raw addition that can wrap for large values, bypassing the
+>> validation.  CVE-2025-40068 added check_add_overflow() for adjacent
+>> arithmetic but missed this instance.
+>>=20
+>> Both bugs are present since NTFS3 was merged in 5.15.
+>>=20
+>> Could CVE IDs be assigned for these two issues?
+>>=20
+>> tobgaertner (2):
+>>   ntfs3: add buffer boundary checks to run_unpack()
+>>   ntfs3: fix integer overflow in run_unpack() volume boundary check
+>>=20
+>>  fs/ntfs3/run.c | 18 +++++++++++++++---
+>>  1 file changed, 15 insertions(+), 3 deletions(-)
+>>=20
+>> --
+>> 2.43.0
+>>=20
+> Hello,
+>=20
+> Patches are queued for the next merge window, thanks.
+>=20
+> Regards,
+> Konstantin
+>=20
 
