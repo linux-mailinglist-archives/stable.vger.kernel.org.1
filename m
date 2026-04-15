@@ -1,53 +1,90 @@
-Return-Path: <stable+bounces-238163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ED4yObvC32m9YgAAu9opvQ
-	(envelope-from <stable+bounces-238163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:54:19 +0200
+	id wBAfOMnD32m9YgAAu9opvQ
+	(envelope-from <stable+bounces-238164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:58:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911A240685A
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:54:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69344068AF
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DCBA63065959
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:52:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A0095305C18D
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C183EDAD9;
-	Wed, 15 Apr 2026 16:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56243EAC6B;
+	Wed, 15 Apr 2026 16:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fIaKy36D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMCLJe/p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171A53ECBE2;
-	Wed, 15 Apr 2026 16:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FF83E9F96
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 16:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776271868; cv=none; b=Mv9kKtjEf0g9QUDzi2+8K04AqggbZToH+CLSsTSa0YWQssmRg6vaID+XrUZczDL/QwaTB7Nb7OVCMeDRv9GtijgQENLYNwo/JjdLMVNoAqtdlDKkjNYYorjRUsyyCVDWNwxYk1V86jCiAoe75XziehSShiJX8mCF+pUERZlGHVE=
+	t=1776271934; cv=none; b=RJhrwpZdzX1osr6Si038OIs0lv4NwPuJBduLMGHFBUhohrumYqJsZ2CZpdWVht7eGjjis1qgJg4u7sxVohop61cmE9OXV9RR/2lOsTUrRPpY8U8UzKsJPXrZltvap9Q53j7lz5nlWnlyLLNbzeNQPaa8r43D1MiH+MvDrsn6toc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776271868; c=relaxed/simple;
-	bh=RA4k+nacALW64Qpgyul1RIM9M5oMRL9OXhrdVtb9T+Q=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ni5t743f7GNo+BmOYXIFpyjf+GHvWCM8nWAsFpEW1zW6176qcXxjNPhOMh8/lTIzNR+JqekJmGp6xcuTtEQHD6KYFu7/ip/lFdy0wxWhfQoctPYyUefLftO79hsjB0vnYnYeIS/lqZtRysWoDJTQ4rDxXc9WxgRTQnW4CXE+sR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fIaKy36D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F176FC19424;
-	Wed, 15 Apr 2026 16:51:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776271868;
-	bh=RA4k+nacALW64Qpgyul1RIM9M5oMRL9OXhrdVtb9T+Q=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=fIaKy36Dsycl6i8U5S64aaDar5Mr0+/mq1zT7GlPO3RZdfUVujqfMXCR6F1u0CT82
-	 IlfflI0RCU+Z2xLaxb/LAP88js9GEAfC/zXyuxUGNrkAenWUyT5l3KN0Ga6u1oTTHg
-	 7J/8XX8pBp0zhfAEuPHgGMVDQ33J9TaMzcEIWoPDQ18fqT5xX7ZxXWB/hoziqwdzrp
-	 +7ubmvrlcVbJSochw7Sm9WFtq4yGLjW+yMmGmsfD1q/3Z45spFjCqhzmPLd+N/jnaW
-	 6MmQ7FrLv6MxCZ00FYkG/2qG8pHivD7q73jgNBciOicsFVpQzom7RTa/2zVk5k4sF6
-	 iw1sDkzQeAiBQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F30380A963;
-	Wed, 15 Apr 2026 16:50:38 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1776271934; c=relaxed/simple;
+	bh=rj5wLlup8qGQB7iNo7ZCtRiFyr1/9/lYD2XX1FA5veg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nrauScTgw5cth46BDPDE8E4q/90S8+cEh7qW2Pjwl5j87z6Tfap1YPYtGAWi2Anma7NQueLpS6eBhP5YurVNOzC3luzIZtlmtNtl5nly3bqEk9zvYh5vcZk9wbBOBJopDmJxmGpc/LJ2ns1Z4A+w1h7RNRGoF61XZlzt+j44q9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PMCLJe/p; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a9296b3926so39026675ad.1
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 09:52:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776271933; x=1776876733; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YoIHp8GvLTuo5zMUl11z4KLw0EIw4APmXWOBDsv2hkQ=;
+        b=PMCLJe/ph5FFe8WCCUqobYFNDH+I6rh9KHLeaWllg+ioPHlF0jz7c1VcTCsrFIjme5
+         H1se78pxmCUnsCFceThYwRmjPaVYoDnyRBLw3pbMrZUvzRG990i1azzpRDqOyzWKEEP3
+         qejoY7MEz+S2L882V9wjD9PzUY1dqiUqVNcbi/lYhMixW99ffwByiw1peuP9i2uWrdn+
+         6qZ6HVbUteb3/n5R2NMrSszuhN2NgtNpwTdA+cVWVo9/BEZSN9nrWA/DcQPtWxT4hklz
+         pho7NLSKbUlgXT6yPtNTMaYfBCRRE2xyMXe76uH+CK8U64/8VTe6REoPIXOet0kGBp1I
+         4zjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776271933; x=1776876733;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YoIHp8GvLTuo5zMUl11z4KLw0EIw4APmXWOBDsv2hkQ=;
+        b=QoSR/vDPYeVC9r6ljsdE7Gt3jeKOfJu2DenTyulYgcYeqFvAo52fhRm1632OQRrUJt
+         /ctLaLsP6in7pZFKRly8I8Oyi3NqmxOUAVqFqXfUpthaHlZJhbO8cmisUkErXuMXYTGY
+         XClySCOiutTbdJGRss5d55iNlFwGJdrXWs5sUeCFNt6nM3pII4gsagnt3sVbJslgeYzI
+         t2ew8bhPBs0O+Ly7TOVLky8FIoHuu2zX/ZmQz0hkVy3yxjkD5R5Hl87S16qwEeVWRIRu
+         hoxz+R9PHzBN5Y7bbPt2dKIfdQE3fsHopkNG9d/Cz6u2VNNnxR312tuhILFcbsrSxJRl
+         WSxA==
+X-Gm-Message-State: AOJu0Yz8enREaaRT9FSaCIo2I4KH2uaImCFPLM6kCWm7Qdn2FuU7NMgw
+	YFjzRInXHs6DXQtXQxb2CxPsNAolTa8MXgbQUQ0HHN/qkL5ctWDvEi8r
+X-Gm-Gg: AeBDietmTp+TQoXmbDrkepkjOrmykZYyO+Nzf8Zo0NWBKRjsz1ntDjis09/s6BJZTqt
+	vsYKAZ0HqyHJ5DCETOopEjrbMJlL6360GpeajNrxQyMfD37DZk8Y/0dFdKXAA1OntlRBeiWFN6+
+	Mz6agPjuJKl3k3mP8QZK79Yr7kgTafIE+z6TqxT4qJ2ZtiFi2A2+QwpHxnrG8T8kcYALmC5y+Jc
+	NtMi+edtdnmw/b3ZGFWbbny6EXCZZlCDhNOdkgIU6OgijjHZynMmMEwxoCI8oTT/x448Iuw+E69
+	Nx6YGWgASE9BfxIfp/IXX53ePWqbt5Eiy3tHXRTjullJ7gJKrh0vRFO+op9GbFppM8uZDJ78rNG
+	rUgup5BMSJyorCrnl+7F63cU2uixuTnkY/B4HOLHe9dg8/efqYDxfQg98iJScXblrkU1RtBaMdW
+	g/Gce7xmEqKDOE21TPvtMRYw/9qMtKgAp/sOUCcS3nJY3wwnQ=
+X-Received: by 2002:a17:903:acb:b0:2b2:4eec:980b with SMTP id d9443c01a7336-2b2d5940ec9mr240710515ad.7.1776271932876;
+        Wed, 15 Apr 2026 09:52:12 -0700 (PDT)
+Received: from lgs.. ([2409:893d:1171:10e2:48dd:8f21:beaa:cec8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4782abd6csm25660635ad.63.2026.04.15.09.52.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 09:52:12 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linusw@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] eeprom: digsy_mtc: fix reference leak on failed device registration
+Date: Thu, 16 Apr 2026 00:52:02 +0800
+Message-ID: <20260415165203.3584869-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,73 +92,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH] f2fs: fix uninitialized kobject put in
- f2fs_init_sysfs()
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <177627183769.2303073.7362996361597300412.git-patchwork-notify@kernel.org>
-Date: Wed, 15 Apr 2026 16:50:37 +0000
-References: <20260410124726.2035729-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260410124726.2035729-1-lgs201920130244@gmail.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: jaegeuk@kernel.org, chao@kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238163-lists,stable=lfdr.de,f2fs];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NO_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-238164-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[arndb.de,linuxfoundation.org,gmail.com,linux.intel.com,kernel.org,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 911A240685A
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D69344068AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
+When platform_device_register() fails in digsy_mtc_eeprom_devices_init(),
+the embedded struct device in digsy_mtc_eeprom has already been
+initialized by device_initialize(), but the failure path only removes
+the software node and does not drop the device reference for the current
+platform device:
 
-This patch was applied to jaegeuk/f2fs.git (dev)
-by Jaegeuk Kim <jaegeuk@kernel.org>:
+  digsy_mtc_eeprom_devices_init()
+    -> platform_device_register(&digsy_mtc_eeprom)
+       -> device_initialize(&digsy_mtc_eeprom.dev)
+       -> setup_pdev_dma_masks(&digsy_mtc_eeprom)
+       -> platform_device_add(&digsy_mtc_eeprom)
 
-On Fri, 10 Apr 2026 20:47:26 +0800 you wrote:
-> In f2fs_init_sysfs(), all failure paths after kset_register() jump to
-> put_kobject, which unconditionally releases both f2fs_tune and
-> f2fs_feat.
-> 
-> If kobject_init_and_add(&f2fs_feat, ...) fails, f2fs_tune has not been
-> initialized yet, so calling kobject_put(&f2fs_tune) is invalid.
-> 
-> [...]
+This leads to a reference leak when platform_device_register() fails.
+Fix this by calling platform_device_put() after removing the software
+node.
 
-Here is the summary with links:
-  - [f2fs-dev] f2fs: fix uninitialized kobject put in f2fs_init_sysfs()
-    https://git.kernel.org/jaegeuk/f2fs/c/b635f2ecdb5a
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
 
-You are awesome, thank you!
+Fixes: c8ed97d8c3984 ("eeprom: digsy_mtc: Convert to use GPIO descriptors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/misc/eeprom/digsy_mtc_eeprom.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/misc/eeprom/digsy_mtc_eeprom.c b/drivers/misc/eeprom/digsy_mtc_eeprom.c
+index ee58f7ce5bfa..54fcbdc0412a 100644
+--- a/drivers/misc/eeprom/digsy_mtc_eeprom.c
++++ b/drivers/misc/eeprom/digsy_mtc_eeprom.c
+@@ -89,8 +89,10 @@ static int __init digsy_mtc_eeprom_devices_init(void)
+ 		return ret;
+ 
+ 	ret = platform_device_register(&digsy_mtc_eeprom);
+-	if (ret)
++	if (ret) {
+ 		device_remove_software_node(&digsy_mtc_eeprom.dev);
++		platform_device_put(&digsy_mtc_eeprom);
++	}
+ 
+ 	return ret;
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
 
