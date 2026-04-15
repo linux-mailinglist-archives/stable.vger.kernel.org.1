@@ -1,173 +1,152 @@
-Return-Path: <stable+bounces-238152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDJVLMC432mOYQAAu9opvQ
-	(envelope-from <stable+bounces-238152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:11:44 +0200
+	id wPa4JiC632mOYQAAu9opvQ
+	(envelope-from <stable+bounces-238153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:17:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 389BB4064A3
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:11:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DBF40651D
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF07D3080A4E
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:10:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5D2A3017C00
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BA13DE452;
-	Wed, 15 Apr 2026 16:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A8730FC33;
+	Wed, 15 Apr 2026 16:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l9ENnJDl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+kJeeA4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F0E3DBD70
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 16:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ACD40DFA7;
+	Wed, 15 Apr 2026 16:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776269417; cv=none; b=TrENOuDLmp4sK8c7XJ27jSVk62Q/XnnK8UIiLTHHFzaeN7e5LIBi3G1zU7PVifaVYgtmw1OmpdnATDSkNmXwHIC5+GL6n7+19GG+IglbEOF7CG+9wYTJqfik4ycIO/Sdlk4ufRUzWwN8foNW+QGTxnz5447y41GQIbBPE1a5uPE=
+	t=1776269845; cv=none; b=UoOY4eRN8kAwvYcWZmBMErUwjoyRMa3R0b1EZA0j7/Lifu/BtTTeZHkirvSt5oVYN7Ur6fN/uBycc9MQGevLGiNfuKTO8IPJCtGS7Q2urgk2wQcVIkMnqSMUiAkyFvC6S97iBgpzk+xW9CB7UlNSVOXcf7YUUUsIp+2q8EXUBHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776269417; c=relaxed/simple;
-	bh=2w3KOA8yk7Qww0r6vlP8QuGutHFJJRfR+W+DcVcyKkY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y0HIzHWveYXIJz7KkGtWLgjiR75f/+hUWKdSKi2FuuQ0myCVSId3H3tKjgSD7nsL2z2tVGxh94udRUcT6fjLm7K4edrI9CEnCU2yDdeVEqfc14rwzpmMXwJBAWQ91Nr4NJGZA/66oJ8wOU+/rznZ5BY6LqHEK+hago9OVRKfQEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l9ENnJDl; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-35d9c7bf9a1so6181594a91.3
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 09:10:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776269416; x=1776874216; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uvfnqSOHR6vjb0scxZvmU791071WtEtmpn2rGjggRIE=;
-        b=l9ENnJDlYOLhjEW9ONq6JooYpp1H+dEyNuUxtBaddg+FP469OA9Vzqlk6GlpKl37iv
-         w3V1VIvC9dBqZCOAVGtpat2g5p5rdvQWbzCMUoOuXCguOLsWUbCXwrBaOqH8R6+5tQaO
-         PUj4VSNWaohkuG5hu03t0z5yzlNv6RCbrgKcXg+t153cjhPt2jiu78OLs51z2GCElgXW
-         1mh53WLjrww0I/KWKlNpFtRBkOhHqMn75Cu+BPJAT57vhedxI4CMX3PU3tLZAbSe4p4w
-         Meu6/fZnceN1Pr/bsp6pcxUWUOzi9ceZxQxMkBilRQ6fzEKFMXwjnrkH0bd1d+dIyDqs
-         1syA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776269416; x=1776874216;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uvfnqSOHR6vjb0scxZvmU791071WtEtmpn2rGjggRIE=;
-        b=iSowQb2WC2Lg6P+E7smzU6YAvIsOo4fzFW/prdP1vnz7jT5CvQq0FJLUDvyQVznbQj
-         R3JEypMmSt9g2+IxB208k+DSPj47GG+0gvGE2eR2k50K0RsGFcDTdxVOfVRhVtmo9k3N
-         11W7HciDkr+8gNIdOxg/oSa/s6AET8KXIFR9pba44IcUWETNF0KQB45TJDHTXoF/9WCu
-         FNf+tdK9GlYUFX17zQH2IQexE+S3BiAm9wiXFOYxVXKfUkDKGwTSaxSO+nZKv9Hijh6p
-         yeOj01w/I6eyhIWiuw60is0yk1R5jy+qygf8CZSO5CbYjDE7l+9p3tBhJUe+1PAQWTOk
-         Z3KA==
-X-Forwarded-Encrypted: i=1; AFNElJ+pie3gpal23nZMfXY7bCBjvXaI5Gg2IZZbP6o3MGQDiUM1GxfOHkWNB5VdePSEMUxMXLL7etU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRrUjqDt1Jt1Se1tYXpRcYSRxFU60rNflc+xIjdqiyKgvX9T6e
-	Ek512pezRlDKTxQNV6K8I9Pc6WMfPbj5mEl26XMoHQp03jDsWi2HsOch
-X-Gm-Gg: AeBDiestmeggVEfnanGZjnnFOyU37oDY+Xe25rqprFFSX1Nb0VRDeCnJTpe3T1gwvSp
-	o+1KliXFzDKvJGi1/jRKt/215LxI80RONthXhQ7XDqVW09xEiK5jN1Y5BrTdXepMRgzbrJ7PGxy
-	AzkcP4IVtXDvKBsR4QTkJAkGuMHHY43UmYo9Zxwfu4fRGwACvXL64CScOl0pvJpOkyfEucFREm7
-	gPpKWErG2fTAfomLGiA4MpyhlHyZNBN3t6ywlqkXk27AL+BlIRL3NvxeWUVre10tEv2disVtX+t
-	rtbUhN2AnfH+w2AfxOoIgZ6fpvD42qLU1EsyEvM5sLuhD2WPaqRKgvSsphptlr7HPT9c2V7H6hQ
-	qPHPNiiAL97RbIPXCLbaDsUUWdvqPhnDUmgRHCQVEhGzIobEk8JmtJrlV7AUKAbc3u9iTL/mplL
-	d2negD3Pl3otRjhzE3JSojMC03zFLuzZxelOEh
-X-Received: by 2002:a17:90b:28cc:b0:35d:aeb2:25b2 with SMTP id 98e67ed59e1d1-35e428cda1bmr22964275a91.27.1776269415554;
-        Wed, 15 Apr 2026 09:10:15 -0700 (PDT)
-Received: from lgs.. ([2409:893d:1171:10e2:3836:7c38:e5c1:4b6b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fce8d7cd2sm1066496a91.4.2026.04.15.09.10.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 09:10:14 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	linux-media@vger.kernel.org,
+	s=arc-20240116; t=1776269845; c=relaxed/simple;
+	bh=ObP4Q43FL+RVMu+5SHEP0abI1ltYtBb2y+YqFs2GNog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GOkc2Gl2yyeOIdDtTFOETC+kqkVwGEaE5aaWkRq+wUPJlYhTs0mVICyCytwSE8+iEnrLfBqVAMHaylEVIMTEPW4A4enRblKHNzzaqZyI62XvKM93UoVkwl/tSM55clbE+VB5GJC+GSgzQMByZGVFybsQ0rUh+7CfY+u0tx2BGfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+kJeeA4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9425C19424;
+	Wed, 15 Apr 2026 16:17:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776269845;
+	bh=ObP4Q43FL+RVMu+5SHEP0abI1ltYtBb2y+YqFs2GNog=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W+kJeeA4kRw6T6Xd5VUPhpj+GBA6M+PwTxrEsPI6gmd8rrwSgPfC2wqw3hPwG3Pox
+	 fzaxnFfveEjcbMGKJMZVYE8HdniTTwCAhpTIsaNNagQ8VVFqIJadE3BKtBm3KeRZj2
+	 zOB1yCfqRULFsaeBiQRktKEajgJXnASbWFqfLX1KSN2LZNH8frOAq8+JMOrINW1fbM
+	 sfBKq2fhACstl3pAZA+QYGETa2ywRCTBGgGLkFTwa/ZvdVfzlWpyIAFLukm1i2jA3b
+	 iuYSv9QmKvV5AIkF94KpBXTymzCdgJvaQJ9w/6GecXPgvYoopmNl3aRmHrEe6+NEq2
+	 yp4gE3oI6ATuA==
+Date: Wed, 15 Apr 2026 17:17:20 +0100
+From: Simon Horman <horms@kernel.org>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: visl: fix reference leak on failed device registration
-Date: Thu, 16 Apr 2026 00:10:04 +0800
-Message-ID: <20260415161004.3542108-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH net] ixgbevf: fix use-after-free in VEPA multicast source
+ pruning
+Message-ID: <20260415161720.GN772670@horms.kernel.org>
+References: <20260413182427.298513-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260413182427.298513-1-michael.bommarito@gmail.com>
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238152-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-238153-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 389BB4064A3
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[horms.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 09DBF40651D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When platform_device_register() fails in visl_init(), the embedded
-struct device in visl_pdev has already been initialized by
-device_initialize(), but the failure path returns the error without
-dropping the device reference for the current platform device:
+On Mon, Apr 13, 2026 at 02:24:27PM -0400, Michael Bommarito wrote:
+> ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
+> own address (VEPA multicast workaround) by freeing the skb and
+> continuing to the next descriptor:
+> 
+>     dev_kfree_skb_irq(skb);
+>     continue;
+> 
+> The skb pointer is declared outside the while loop and persists across
+> iterations.  Because the continue skips the "skb = NULL" reset at the
+> bottom of the loop, the next iteration enters the "else if (skb)" path
+> and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
+> skb_shinfo(skb)->nr_frags — a use-after-free in NAPI softirq context.
+> 
+> The sibling driver iavf already handles this correctly by nulling the
+> pointer before continuing.  Apply the same pattern here.
+> 
+> I do not have ixgbevf hardware; the bug was found by static analysis
+> (scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
+> corroboration with the highest score in the scan).  The UAF was confirmed
+> under KASAN by loading a test module that reproduces the exact code
+> pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
+> 
+>   BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
+>   Read of size 8 at addr 000000006163ae78 by task insmod/30
+>   freed 208-byte region [000000006163adc0, 000000006163ae90)
+> 
+> QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
+> driver does not include the VEPA source pruning path, so a full
+> end-to-end reproduction with emulated hardware was not possible.
+> 
+> Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: Codex:gpt-5-4
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 
-  visl_init()
-    -> platform_device_register(&visl_pdev)
-       -> device_initialize(&visl_pdev.dev)
-       -> setup_pdev_dma_masks(&visl_pdev)
-       -> platform_device_add(&visl_pdev)
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-This leads to a reference leak when platform_device_register() fails.
-Fix this by calling platform_device_put() before returning the error.
+Sashiko flags a number of issues in the same function that
+do not seem related to your patch.
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
+I'd suggest looking over them if you are interested in
+follow-up work in this area.
 
-Fixes: 0c078e310b6d1 ("media: visl: add virtual stateless decoder driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/media/test-drivers/visl/visl-core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/media/test-drivers/visl/visl-core.c b/drivers/media/test-drivers/visl/visl-core.c
-index 127ab18bce99..15e4f05d5ec9 100644
---- a/drivers/media/test-drivers/visl/visl-core.c
-+++ b/drivers/media/test-drivers/visl/visl-core.c
-@@ -558,8 +558,11 @@ static int __init visl_init(void)
- 	int ret;
- 
- 	ret = platform_device_register(&visl_pdev);
--	if (ret)
-+	if (ret) {
-+		platform_device_put(&visl_pdev);
- 		return ret;
-+	}
-+
- 
- 	ret = platform_driver_register(&visl_pdrv);
- 	if (ret)
--- 
-2.43.0
-
+...
 
