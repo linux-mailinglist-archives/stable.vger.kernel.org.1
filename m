@@ -1,233 +1,185 @@
-Return-Path: <stable+bounces-238042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJEXNfQm32nmPQAAu9opvQ
-	(envelope-from <stable+bounces-238042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:49:40 +0200
+	id gJEpJAUp32lpPgAAu9opvQ
+	(envelope-from <stable+bounces-238047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:58:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D46040094B
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:49:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DCD400A9A
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD29B30565A7
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:49:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A8C123051901
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B1E361DD2;
-	Wed, 15 Apr 2026 05:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654E13624C5;
+	Wed, 15 Apr 2026 05:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RuhvW9lz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TlW0yCkL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079433372A
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776232159; cv=pass; b=qKFYwUEPVlfyVn16euIu4EttnfqmlAFlm3bfPyrJg7vC/9mQ6Zjh6Xa8VRotDnXHV9NZ3tCeHpLWdzaW/T5y5Q6FeMbFEfnyku0flndrQ9TmIZYYjDwF/ZtggSlDpB5dAdnYRIZcjYElQtmYxoj9Qe8Yhv4Vwnzh9oT0/SjjNc0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776232159; c=relaxed/simple;
-	bh=0Ko4VIiZxkI/O2taJ+3DwN8b1cZwadpXOzMv+Q9JyHg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z1v7nrtC788zEldY015VRKW88wztu+GvOLh3rnGPz8hqIGrs5j47Ca1x3UOqqOumeO7cxJGAS7PJHRuhz5pPWOv7pMxXDgLz3iQy626457/rvc8L+xoRFKG2+oneQ8m90Jcrrlb/wX+1exD2Dtf+loyp+If0sEuzCSBgjdNfGx0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RuhvW9lz; arc=pass smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8a08fa355a1so89983966d6.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 22:49:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776232156; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZEX1j8oPI5bpjmyScC5WNtz/jKM4jR5q6U2Z+s82me7eBesclgprcl878NM70j5D5W
-         mC9z2+6q3/cEoT6HFb/ypm7rRG+L0I2Un4KPK5wuMEuyBUtPaJEnlBQeH7lnnvO+TS9o
-         y5KBsl1JSNEfHEErZO8twCuWg4rvnybS/WOB+oclFEqb/L0Ce9zI+QXEdxAja5Lil7et
-         IDQdhwfqkZicnhp+BYujMAye2Mzpgci/8RukHRWlo7N45YAVSlEVYCJqwJ7tEVgmWHdc
-         JQhvZrOkJZD/RMpye2zP2zihoJQolmTZ5+IWA2kCP2wKYoO7Zf0sEF9fbh0gbc6QFRii
-         FW8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g7jC+e6yTEY26VnAI6j6zPGlJNJqrM6o2NkoHZehI4k=;
-        fh=7PKVmLKk5+mLulDtIfoe3G6K4k3i5PMwDhhAOwZsBWY=;
-        b=Hi6WnPmr/NW/dNINHBzbphBkQTomscQ4Jmcn4k15WbXPheGYNJIJawVYURSJZ9ufMZ
-         8SrODyzX8dNz0MwPqUJYZusbKoIQ1qqtyI3eaua52e8mBYe98svy+TohT+t3Q9yp4lYT
-         2PB2ZxPJg8/o9vgJ420rPt4v9ok8RLXI1uT15a62UW58pqreSylol8Le+nKn/npq8hfH
-         2ooaxn/IqSLhH7OiAVZ9DsKo937fQcRGcqf5tjoqtw3WvnUUefXiiFGwmz0SXozCe/6W
-         AhjH0XzoQkjDvmbwxZYLN4BwGRKXwMYue/9L9t8zZUBBSF8Q4P1P41WcJnWYL7hVbElI
-         4FDQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D48346E64
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776232696; cv=none; b=oAAPnNKyUX3SEH8UwUXta0c+md3g+uEomituveZZCEormVgpfoy9up+iyw6Gg4KYd/hpjYITwAvbPHWev5MecSsBBDyjZpiMvQKHy37MZPgapZU11yCT3+w/CcRTtuk15rPAIcMWfe1uRC5yCD1MAPHSxsrDqM5DExLBBQ9fxmI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776232696; c=relaxed/simple;
+	bh=YJk7HFFywOAvglX29zYP4iiLAIOHUmcE1zceWMyjEtA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jbZWYJxDbZEZY7XhT/B45O81OpcfPUzk/rrA/o6VLxLdMJBRGJntbg3XbVbKn9kYlZd5JgVyxsd3k1bwcouhqg6F8yPlmxEwwnG86JoeDVh4VvOuQkGosRplhrONwGwBTYcWly21hcRw4uigpHJH+W5ualFuQK3+P1EGr0XGj84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TlW0yCkL; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-79a7109f568so75158397b3.1
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 22:58:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776232156; x=1776836956; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g7jC+e6yTEY26VnAI6j6zPGlJNJqrM6o2NkoHZehI4k=;
-        b=RuhvW9lzGi8NVZMQeDUAv0UwK0MZ2CHqskH8gB1dDso8n+Qza5GJSBt2aYbTCjP1LR
-         rYyOYVAAjiWF6Vqfe81TYEkvNyuFajW7LkviqvSQyuWF1Hkb/1664pVjx3nLXu55egkY
-         /cAlqlRhhozmBnRhHiHKUcJol+1mgIjgk7rWzTN50MYw9NT+J1xzbERTThuhJyVn24Nm
-         mc+ZW0cK8i7UtRdcPNVx7U07ncVsdkIIoBuwHjhgOXPnBsllocrG4XellS11hrxjDFBx
-         5gIPvU7RoaAKFIufsyxXZ1p+fNwKAY3dkkzZB9sKHiF56tiOdctEPL46WBR/Z9x265+b
-         AaBQ==
+        d=gmail.com; s=20251104; t=1776232693; x=1776837493; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J7Qu+iufcZ9jYk8S+wuxRjUaOgj3R8vJUSvzid2gdM4=;
+        b=TlW0yCkLIUBrvRuZTGswlI+GJHBMFFyVA1SRcXn5BMqV9Ujb5FhwfPEBoGmxCR3hL2
+         CdF3kooUryWPabs6wKdosOsBxrtCE/SHio/Ii8HtuUCZ6f2fE8c0RDM/Yo9zoNIR8nj2
+         6J4YDpN9TZfWhspbIOohqeDLPw4aHcwBv3uS4WZ96GhkdsqtCTQr4OR/PXvZXPpoFkbB
+         e4NgD0w08T7n76l5FEOK53jFB4lYGJp0rLQiYW+UaFk9A1q24Xc9GWDRZwIyy0fcmaIm
+         XEQ0b718Xvn4SYcubqmyq4A6lk703CF/FEtdUNMmHJuIIERo3wYNFpLCyM0QV6528Gvn
+         CDOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776232156; x=1776836956;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=g7jC+e6yTEY26VnAI6j6zPGlJNJqrM6o2NkoHZehI4k=;
-        b=a2tJmD/NFq2NFT/oXoz9r5OEazb4uwMpF29svS7DxogkXTIxQ2+Tt/WIF0mQLzoUki
-         0oYg31d6txhh8BGRoJRLSWEKKQVVKUnbl+f2kCeJbFia/QABYgToFFCuOlfVjjH4JFWD
-         RoxInGVewrgRdS78YUlJcFuYYF71fZ9FvY4BHUMXZXbfl7db+iIKJQClhA+5AvG5N2Z0
-         yevMX9/S92HX839k6kDkvVxHiaoUNBUMI+lWwA3U/VwMLs/+xIsXiVujsSGmxToeTat2
-         KDvOBgcbS1UgB/wPg14MXm7iqxD1ee4J//ixVvdibHs/Ln9tBJJtdoNMs+0pfOIjiniS
-         ZeGA==
-X-Forwarded-Encrypted: i=1; AFNElJ8sDJaYUrWFiguTRqW//dOmME4tJ7PAn5CrBt+DGP41WUv9P/0h6J7MmQ9tN/yvTle1qv6IZZc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPbAmBJhyyFMJFPio3vt6U1hynZcQc+COnbCAn08L+GO7Wm38g
-	PNc/mIB4hspKkMHi1JGB2fZ8yYMVDaFWokHxZCO7aHf+asyKUL/1XeJiDQBnwZdct0Q7qO4x2et
-	v2jSBtCW2W8CRCAILv8eR8D9EnF00h5NZw+oydZge
-X-Gm-Gg: AeBDiet66054cuaPABnbKpy5jPfD9P4rafIzJDE+ySsmth23JIUnupWxmkkzca5ZlEl
-	trNa6a4iQpQqdgSnTDkb8skRpyf0hukhgY5teGEIPnboe3r7oJk9j+yb/BztQhPr2xd/YoroA95
-	p5VdJHxr/h+nfocf670VxgcN23D65PQOAOKZfMhrGJ4llPm1GYKDhtzmO+uVT7os3So28FPDq4O
-	AcbYGQw66sIQa2IOH44l++qn2EedMiniOoN+yONca2QPM0KsomwBQIjwXuUxpo0bjFLxQmSXnwM
-	gSN2ihXNfmZj+8rrgZR7YnI8LbBAoXHz6mJVW7kNfYI8sj5ctqjTmhWqJ1UZBg8NZfQh9vg=
-X-Received: by 2002:ad4:5bc7:0:b0:8ac:ae56:b493 with SMTP id
- 6a1803df08f44-8acae56b656mr198973546d6.40.1776232155593; Tue, 14 Apr 2026
- 22:49:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776232693; x=1776837493;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J7Qu+iufcZ9jYk8S+wuxRjUaOgj3R8vJUSvzid2gdM4=;
+        b=AOpr9uKT+PZM61/BrrKuCD0TBRHrNStM0f3cZyQq7F2gCbgepUespY4zJvqO838omZ
+         VO0tx0MeCcpFqDsfEzJx6CfIF8d0Ci83wdL+jzOaGDN2MAdQr4LoM9OwbL6jftkohDaz
+         XLkocUjJ72Yy/5unRkipj3NPdlg31Zqpffkh5ddafFLNWCrLR7hXJYDYPcXhtxEdKIFJ
+         yc+r8HTpzVUAqVWmLgB+x8NeMXE5Sv8HIO3MABaEQPfNbHgsJ0zN2PMs8x1ywP7lPLkJ
+         /u1s02y9bGQFVGpEyCnNG47PLUKdN1ISfbrvL6ERU2//Ep9EG+xxM87Q/5YQT9II/BGn
+         g0Dw==
+X-Forwarded-Encrypted: i=1; AFNElJ9IF1IxZI6oUGF2dNuHjUqiD6vHNRUJjSnQpo+egH3E0Czs8H4sGGh6vEv0JTr5eDqI/5WY0A4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwO33ruqqcX3oFmKwzUk8KSdgPCDBAb78GkYo0a9stxQKwC3hcV
+	j5TwdLCSDZfusTqUhxaLlRV4WYXIw91NNY1o8a2f3byU0RLy+altZcF3
+X-Gm-Gg: AeBDievpPaKcBNbzVAXddZy63AM6Rm9uAf/+QON+OouEurw+HZQtqlnElKsPdz7Df30
+	fJ0L2qL2AyPRb4Z8I3dp2Cob6Irl1jrRU9gjXuRJjSsZKAzdUyTuTmV1VrYro94IOhOrrAUx//n
+	YLMF2pIQ/HzEwCWm5SfaaqvzIWWtj/5LPm2cHTH8bCTSWdmy+P5aNlL/Tsm22h8jBM4lMPpQLTJ
+	xDzzBCG+e9aagh8n+rorm9XMTsqQLxUEc7SgjlPjsqIXmdslJwWce6Anp2oZFGvDPgONvKRBEy/
+	I5RiwYGdYjugB61RXG0LSWLYw7qvgV004HvRcMJ/LE1vGSEMM+Pj+PHII55l/D0eH9QV2zbA99F
+	LzX+qcQaJcrbjwDTcNUyhRFeriF4CnH4mcmQ6zkSmD1W7gPuEHu5QPCp2Wxi06UjBIo0KTbinYO
+	7X9IGPljajftUVNFvHmBV9mYNno0FQ/EqgyceOGP23PRSMhm4EO3RKqtAIslzljQKZryJAC4l/9
+	P/8BdtH/ZlfnTqpk3F0XUR4WWqkNvnpHxbRax8=
+X-Received: by 2002:a05:690c:85:b0:7a2:f14d:5a1 with SMTP id 00721157ae682-7af7252df6emr209920057b3.49.1776232693315;
+        Tue, 14 Apr 2026 22:58:13 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7b768d387eesm4440177b3.29.2026.04.14.22.58.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 22:58:12 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-hams@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v3 net] rose: fix OOB reads on short CLEAR REQUEST frames
+Date: Wed, 15 Apr 2026 05:57:56 +0000
+Message-Id: <20260415055756.3825584-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413155819.042779211@linuxfoundation.org> <39e878af-7418-4538-9e1f-8b62de3d1e3f@nvidia.com>
- <ad30ns8QQDzk0h72@duo.ucw.cz>
-In-Reply-To: <ad30ns8QQDzk0h72@duo.ucw.cz>
-From: Ben Copeland <ben.copeland@linaro.org>
-Date: Wed, 15 Apr 2026 06:49:04 +0100
-X-Gm-Features: AQROBzBEqY4mG6hUOd2h2ReML6KwVLMY91sTJvZDNC4GxKeXzWsyi3AnMxmOomg
-Message-ID: <CAL0q8a65x5mK2K+X8bY3sPrG8JMhbN7uDMje7JJNvvmzaR_SiQ@mail.gmail.com>
-Subject: Re: [PATCH 5.10 000/491] 5.10.253-rc1 review
-To: Pavel Machek <pavel@nabladev.com>
-Cc: Jon Hunter <jonathanh@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de, 
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
-	sr@sladewatkins.com, 
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238042-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[nvidia.com,linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-238047-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben.copeland@linaro.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,linaro.org:dkim,gitlab.com:url,kernelci.org:url,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email]
-X-Rspamd-Queue-Id: 4D46040094B
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 49DCD400A9A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 14 Apr 2026 at 09:03, Pavel Machek <pavel@nabladev.com> wrote:
->
-> On Mon 2026-04-13 19:52:08, Jon Hunter wrote:
-> > Hi Greg,
-> >
-> > On 13/04/2026 16:54, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 5.10.253 release=
-.
-> > > There are 491 patches in this series, all will be posted as a respons=
-e
-> > > to this one.  If anyone has any issues with these being applied, plea=
-se
-> > > let me know.
-> > >
-> > > Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >     https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.10.253-rc1.gz
-> > > or in the git tree and branch at:
-> > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.10.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > >
-> > > -------------
-> > > Pseudo-Shortlog of commits:
-> >
-> > ...
-> > > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > >      bus: omap-ocp2scp: Convert to platform remove callback returning=
- void
-> >
-> >
-> > I am seeing the following build error due to the above change on ARM pl=
-atforms ...
-> >
-> > drivers/bus/omap-ocp2scp.c:95:10: error: 'struct platform_driver' has n=
-o member named 'remove_new'; did you mean 'remove'?
-> >    95 |         .remove_new     =3D omap_ocp2scp_remove,
-> >       |          ^~~~~~~~~~
-> >       |          remove
-> > drivers/bus/omap-ocp2scp.c:95:27: error: initialization of 'int (*)(str=
-uct platform_device *)' from incompatible pointer type 'void (*)(struct pla=
-tform_device *)' [-Werror=3Dincompatible-pointer-types]
-> >    95 |         .remove_new     =3D omap_ocp2scp_remove,
-> >       |                           ^~~~~~~~~~~~~~~~~~~
-> >
->
-> We see that one, too:
->
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/1390=
-1155305
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines=
-/2450043152
->
-> Best regards,
+rose_process_rx_frame() calls rose_decode() which reads skb->data[2]
+without any prior length check. For CLEAR REQUEST frames the state
+machines then read skb->data[3] and skb->data[4] as the cause and
+diagnostic bytes.
 
-This was also observed on KernelCI:
+A crafted 3-byte ROSE CLEAR REQUEST frame passes the minimum length
+gate in rose_route_frame() and reaches rose_process_rx_frame(), where
+rose_decode() reads one byte past the header and the state machines
+read two bytes past the valid buffer. A remote peer can exploit this
+to leak kernel memory contents or trigger a kernel panic.
 
-https://dashboard.kernelci.org/tree/stable-rc/linux-5.10.y/0abb5988a311f0e6=
-17615aa4b08c90b3ade85c25?df%7Ca%7Carm=3Dtrue
+Add a pskb_may_pull(skb, 3) check before rose_decode() to cover its
+skb->data[2] access, and a pskb_may_pull(skb, 5) check afterwards for
+the CLEAR REQUEST path to cover the cause and diagnostic reads.
 
-The two issues:
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+---
+V2 -> V3: drop kfree_skb() calls to fix double-free; add end-user
+          visible symptom to commit log; use [net] subject prefix
+V1 -> V2: switch skb->len check to pskb_may_pull; add pskb_may_pull(skb, 3)
+          before rose_decode() to cover its skb->data[2] access
 
-https://dashboard.kernelci.org/issue/maestro%3A67d434ff5d6b71886d45efe758ca=
-00ff45cb969a?iv=3D1
-https://dashboard.kernelci.org/issue/maestro%3Ac970827f049cfd67124148e3c19a=
-be1d4aa8347a?iv=3D1
+v2: https://lore.kernel.org/netdev/177614667427.3606651.8700070406932922261@gmail.com/
+v1: https://lore.kernel.org/netdev/20260409013246.2051746-1-ashutoshdesai993@gmail.com/
 
-Regards
+ net/rose/rose_in.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Ben
+diff --git a/net/rose/rose_in.c b/net/rose/rose_in.c
+index 0276b393f0e5..8e60dc562b4a 100644
+--- a/net/rose/rose_in.c
++++ b/net/rose/rose_in.c
+@@ -269,8 +269,14 @@ int rose_process_rx_frame(struct sock *sk, struct sk_buff *skb)
+ 	if (rose->state == ROSE_STATE_0)
+ 		return 0;
+ 
++	if (!pskb_may_pull(skb, 3))
++		return 0;
++
+ 	frametype = rose_decode(skb, &ns, &nr, &q, &d, &m);
+ 
++	if (frametype == ROSE_CLEAR_REQUEST && !pskb_may_pull(skb, 5))
++		return 0;
++
+ 	switch (rose->state) {
+ 	case ROSE_STATE_1:
+ 		queued = rose_state1_machine(sk, skb, frametype);
+-- 
+2.34.1
 
->                                                                          =
-       Pavel
 
