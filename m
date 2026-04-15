@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-237999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id A76dM5zm3mk5MQAAu9opvQ
-	(envelope-from <stable+bounces-237999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 03:15:08 +0200
+	id k8t6LS3n3mlxMQAAu9opvQ
+	(envelope-from <stable+bounces-238000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 03:17:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF633FF766
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 03:15:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282083FF770
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 03:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3183C307C452
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 01:15:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC456301CFF7
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 01:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B202D73B6;
-	Wed, 15 Apr 2026 01:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002471E5B88;
+	Wed, 15 Apr 2026 01:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2ZVOaoJq"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eH1k7P0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304CC2C1595;
-	Wed, 15 Apr 2026 01:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB77625;
+	Wed, 15 Apr 2026 01:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776215702; cv=none; b=cbeOhFvr1xU32mCeVXrEtyyGrbf3DtgC2bubCn8Prgp3t3quToECrGsG5MTvY1m1K1Fotz5JsoW56xjhifIJEc1Ecku4dQS7tshtmfx6veLR0/8tm2lGdOceFiNWO1lcSiSQbH+uaG05MHBJHz6YaWSP41saosvajZeS8nSdPL0=
+	t=1776215850; cv=none; b=qOjsQo8VlHeDXBAM+mKXP7ezhgQmMul6xzKOxfz7bXyLFfLR/9LIzWEPRUC9DFsZCfen3sa9BcvfPZOjgFzoO+qaG/P7h0vVJcjr7Ic9OhIHg5TEL1qTUYjssSdmuNqpqJ2omLBJAsFopyXRY5OmkPbQwUbZDCys/q872kh+f6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776215702; c=relaxed/simple;
-	bh=zN8meoFlbPFkB/1NvjW+rIGOo+gAkht+/oBYFBE0QXo=;
-	h=Date:To:From:Subject:Message-Id; b=rjCbxgtE75eckCNErXBjiAuosjYaahLBTU+b5YPoOUmGphSokuDJVTW1DmNWR4l5IUm6uF8Ez+Nzvw/rQO13LALkhoLylhxwQ33MOaaFvpIKUjaAGWxcFihOGMkSnRSQXj3aOgVOVG91l6yRnJCpZJbDs/gbAHvzn8FS+hqqiMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2ZVOaoJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61ABC19425;
-	Wed, 15 Apr 2026 01:15:00 +0000 (UTC)
+	s=arc-20240116; t=1776215850; c=relaxed/simple;
+	bh=TQd7G15SrjbobkzvLyUfO3cmOh63ieOEZ2KwsuO5jmk=;
+	h=Date:To:From:Subject:Message-Id; b=cEJ1mWtjZ4rvPl0dZZRqU0n4FRaO4YDSzkeReTqBcJ5tbx+xrVvNdmaKT1UPlh6FYdCYc4fcU1d5H5UueKtG/l66uv/b03aSFqr4flvjXu+H1w8LxA1PIpUMM69zV0HiRgYbm3+lvMDGEMOmZiu7Sfu7xvP2gHCJAdb2/9i7QW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eH1k7P0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7835C19425;
+	Wed, 15 Apr 2026 01:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776215701;
-	bh=zN8meoFlbPFkB/1NvjW+rIGOo+gAkht+/oBYFBE0QXo=;
+	s=korg; t=1776215850;
+	bh=TQd7G15SrjbobkzvLyUfO3cmOh63ieOEZ2KwsuO5jmk=;
 	h=Date:To:From:Subject:From;
-	b=2ZVOaoJqZWYq4F0698dNDIopiFUaXIWoO3PD5WHPp235m8qfXWGrGMhg2mcO4K27Q
-	 QIlz/ho0rlJVGDR7wbUUcpydkDb/mjzRO2W9/oSZY4jvyWBUL0XYf6mA+4TwrxrjMS
-	 3OPA5fiJbaMIFVB2snqWHtKQgUGp2i7TnSz9ytVc=
-Date: Tue, 14 Apr 2026 18:14:57 -0700
+	b=eH1k7P0PigpuQdTuzArh5GkUkz7cDDw/BQIfH2G/4KKqaSSyhpFvEBb6yqrQBL4dM
+	 1VCGQBkZ1YmZQYUxccskEJwv4wc1PGh7e5RAEvOjAuQS0ptBqHwjmB3/noLtgO7+SF
+	 2SjKMWR5+Ibyb/rU3ykCmIMWkeFaK07d7jPllW+E=
+Date: Tue, 14 Apr 2026 18:17:26 -0700
 To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,rakie.kim@sk.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,gourry@gourry.net,david@kernel.org,byungchul@sk.com,balbirs@nvidia.com,apopple@nvidia.com,nueralspacetech@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-migrate_device-fix-double-unlock.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260415011500.E61ABC19425@smtp.kernel.org>
+Subject: [obsolete] mm-migrate_device-fix-double-unlock.patch removed from -mm tree
+Message-Id: <20260415011729.D7835C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,19 +55,19 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-237999-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238000-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.alibaba.com,sk.com,intel.com,gmail.com,gourry.net,kernel.org,linux-foundation.org];
 	DMARC_NA(0.00)[linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
@@ -75,37 +75,21 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,intel.com:email,nvidia.com:email,smtp.kernel.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3AF633FF766
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,nvidia.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,smtp.kernel.org:mid,linux-foundation.org:dkim,linux-foundation.org:email,sk.com:email]
+X-Rspamd-Queue-Id: 282083FF770
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch titled
+The quilt patch titled
      Subject: mm/migrate_device: fix double unlock
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+has been removed from the -mm tree.  Its filename was
      mm-migrate_device-fix-double-unlock.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-migrate_device-fix-double-unlock.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+This patch was dropped because it is obsolete
 
 ------------------------------------------------------
 From: Sunny Patel <nueralspacetech@gmail.com>
@@ -149,6 +133,5 @@ _
 
 Patches currently in -mm which might be from nueralspacetech@gmail.com are
 
-mm-migrate_device-fix-double-unlock.patch
 
 
