@@ -1,180 +1,202 @@
-Return-Path: <stable+bounces-238134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BiOFcSX32nXWQAAu9opvQ
-	(envelope-from <stable+bounces-238134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:51:00 +0200
+	id WGSKIkKZ32nXWQAAu9opvQ
+	(envelope-from <stable+bounces-238135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:57:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C99405011
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:50:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E199405106
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 345FA3062A06
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:50:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8810930B123D
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974693CBE63;
-	Wed, 15 Apr 2026 13:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6240B3CF03F;
+	Wed, 15 Apr 2026 13:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O+TVCkY0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9wON2fC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822A230C631
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776261029; cv=none; b=gVWyfgwkvEuww9LCPQfFttOhHZN5K2e59/DlBowyzM3jwGmBn1mgk/KZqqI9JO7eBIfEilTTGeSWvYNJfo5pi+3ahIkHqOFouK3U2bM8VVbb/87HBnYP9f78NBtieJFMNlP3/qyG9T7AcW+Qz3uc90YS3zjoiyX77qgi/lS83MQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776261029; c=relaxed/simple;
-	bh=eVNrw32cdCvsLSD61G9JKcU5GmtqCrVfszu08tUS68k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HY60Oc2HgMDjFgqQIhIONsYl1k9s+JdI8mguOPvKnsNuib84fTFs959LsEjxCYXYvqQJVoVFRp3NV99tCVh9Vt64l8Awxq7xdU89l+pSpkQ+8j3ucP/gKJk0kjivO6kOiIESiuqfOpIy1xybxOgj1r8ZeGw/Bd2Ner1HJ4a9HEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O+TVCkY0; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4AB3B3BFE
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776261278; cv=pass; b=ZUeX53S2QUIr20Ob8B5Ytd8P+zH62Y1NpxE7E1WF6fuP5wp/O+5q0NK+jbvI5ZaBn+CN7b4aZTMwHAv3v2a6DOTVGe1VvYDjkxdm5CH/+rA+gTtL1uR1QsU+A5JwyfUKZWg1vGCm3nIXlvAV65Du+maUhTx8BgsqZ9TjdABwbSc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776261278; c=relaxed/simple;
+	bh=jjLEeyfM7aLe72MtknknZ7JoDQX1kZPS4u5VhFIwQr4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PziRSROHR39kcsSzkKFL7Swk2gYdzkCSMszfbEHsRn3CSOfIkOXPcgYfa7qUYcGs0MbSX+5yn69hklS3mJRjoZvtNmBd6nNgswlYxIssr01M9TSVxqUAoFaVi2PjMvXQXfM75cSFru5qdfI7mJVeKZCmioPeOVNbnpySDmposPg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9wON2fC; arc=pass smtp.client-ip=74.125.224.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488c2690057so68939295e9.0
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:50:27 -0700 (PDT)
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-651cfaa21e6so3056163d50.0
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:54:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776261276; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aWC47JhvlTagYw/UxQHYSbsZFXYjJS8Kh/n9aqZqxC5n+EvuJn09oRkIf1yTKeI3+L
+         AQBLQLELAnMor/rh21lWwoQ8bkbAvOs1ddi9RyMGI4QrTi0KoXaMvSNEfBZLEfJ50zFf
+         OjGiO/3fGLfoQJy0aF7ybt1x4BBwthZYZepSvDTLcBXD2fgIEhW5hatjdFwmHA/wH0XG
+         mJaH7QX0cpintRp4vgbV0QyF3b0skqbmf81x2iXxxDlrnqzelvyqjlTh3khp+c4KpV5G
+         jBWdfmNF+pcbJ5Z97YWGqeVKnneOBz1iJ4Ali6qv1ZD78n5E7l6oHHe4UeQHjaub6ftK
+         sOLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=eiU5+/o+Dy2k6wBYHFotkArhw04FNZIcBj1PufHtM34=;
+        fh=/eCcu2KkxbI1L3lBPHHsB7Fq1IIvLhrPF8X8r7bKUO4=;
+        b=hbUQbce3+GWbCO7FqvlT3j4KBIdmFm6RA5Tp7q/C/ikZo9oQ81GwYhKcSc5kQbP7tv
+         61jNuMByg2zkupaVCIC8uIYQQbktvoJ6D9fnnQhwtqsuLvj6UDnxKaALPf6TkmWgpb8J
+         4xejAVoKKrlObV1IdQTb0FsL387EfJr85IRPrF93qRsv9MgJNfQBEDhwwjQcuIl30p1o
+         9W3yFWb3rVWf5waAug16W8h3/EMflVyNNYJH6dZwmg0xlWNkUa6nxKS0rtVCjCChgZx5
+         yUTs60WXDoi3VzqGMabu8z9EBJZz/1dsD7Ii/etcs36GuUhSD6eKZwhLmel80MNzOewC
+         FqYA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776261026; x=1776865826; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g79BUYEA9YLVd9gvOkb8IdbY0UtoN0HAYMseG9etvGg=;
-        b=O+TVCkY0NtumX0MrCWOhjfrFhpTT7saaAOe06NIJg5zDdL+44/3sZWckhduzZgI/WY
-         VFxdjfrWd7J3uXz6bEw+LsCGxQQfVsMevNY4KcHiwcwa5NQWcHZ8UDOLeFB90tD8TNYz
-         UX43NNIk7pNYfPwQzxpAo7RuZbNPlhvcVRxgxxG/KTSxaWu/09nSsj9c9BDs0aGikJQd
-         1NeYnXPWuCgPwEA3EP89pqywPve2vXvkbxMJRU6yygrHwwZZEUrb28wLqYemXNKDwgqN
-         xhjEXat0mKGNk5V9eKP2WgstFfQZFDuADOSGsNsZ/MKvO1iJWa1POErPkuIvIc1aXGyy
-         kmpQ==
+        d=gmail.com; s=20251104; t=1776261276; x=1776866076; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eiU5+/o+Dy2k6wBYHFotkArhw04FNZIcBj1PufHtM34=;
+        b=T9wON2fCDPGw9DksWKXifsoSol4P1ve9Qeo8Q/3XaynYrD69yJOQiWDOa1QXujuVNP
+         RVrnZ7CFU4vf8FILQMXZO6OMK4skmaQ4K4Nnj7oEr5TodBylZVJDGPREhn23u7Cfc7Ud
+         udq1NCY/mDLSBYnYLx9x6yFvOMYyuXvUzwcDr7sb6cMygCb7rCEFOMMZ1bZTTCSyhPMO
+         PaIUq6KJklraoXCygtGp23pCDKWltZ8No2aNMIXvc6hhYOIOEMt7G4nujMEGR4wFfSeF
+         Ge2BXVDmNny5O8K53Ybkdc16iXnohJty0+LfzCFX1PwFBD0W4MTPqTkWFxl66kCplqVS
+         NH8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776261026; x=1776865826;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g79BUYEA9YLVd9gvOkb8IdbY0UtoN0HAYMseG9etvGg=;
-        b=Q+0gvjnmEhFSRBs8qnG6c4/lIoqHKBsbww7fq8N9d2n21saMZ8IklYN0IuD9FgAzXc
-         +IyEBTo/Vw/qIztUUqxskPNIYo35oDQn1KcCoa/5p03cD71jnaOV8CjVgu4Y6fOwiwN1
-         d8Bso4SOwnD7v3DmmnmRdSSAwXSAXrgNTf1+9R5610YqbcqnyS05L5Ly0VkA+1tXrFb2
-         q8xGw22PTP8L5AiSOajl75rOYuFNIXLhMB5CDR3FZFKlQg6Tg9rYt7IZWitDV0t+KcIY
-         XPuUDq8zEM9owsC2+WdGLUykhu7tbwmY9kOdfGu/itZuur6GYkSCsFO3ebGAVnQ5GE0K
-         qF5Q==
-X-Forwarded-Encrypted: i=1; AFNElJ81H/ztJgJ28qB45jbBU8yiMz8cMOnvCsPBMskrWh4QEDoDKuOcHFV01scuZ4L8NPc8529VHJE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEQrcl9zp9ThAUPAYRktHpRaSDiBxonAwjYJgoelw9Xaf8f7QA
-	TRipfOML24E6fwUEoyV3u+qFF/+Kavujtg7TZYwRwOh7o96Q7EYW9jFx
-X-Gm-Gg: AeBDievdseZAKoIyRUzG9tIkGFVWf1V6ETWBtLmT0NSE2XejQ6Tyt/8ESudceKe9v9x
-	QL7aWvLlII2k5FAScNm2qQp/n7s5viAu+AONh0oAOmxOI73qYAb5jNnizk52tnfpBri+TVgPR4G
-	LOgM1t1SlJvX8PR7RHaiOVpaX5j0le1ZmTyXQhwSaw0zG6RxE1NvO8QazrvijkOfMN+GP+UUhD/
-	AmsKsOUgKS2lODzybJTWi0puNRVuPcRhL2ZgkJLx5xiqjY/+DgkSbg+g589BXmPdVJtX/frKby/
-	6FbhzgKVAodn3sbKN9EV6C1pgTYHTM41NkKOBNehuB9A+Lccpacb7mvcMfSfK3bFiUhq4UxCI5V
-	T2lA7tjlgztZAREkHubulJF7jSKYOB4Mt3MAQUHYBMg9eXNdbkUywns1cTpB1BFdA5KdAr+wxmG
-	rtFnzjLro9W9gZjCjwz44jBtg7pPiE3g==
-X-Received: by 2002:a05:600c:8591:b0:488:a824:fe04 with SMTP id 5b1f17b1804b1-488d6abe9e4mr219085585e9.26.1776261025568;
-        Wed, 15 Apr 2026 06:50:25 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0ec6d2dsm20410085e9.30.2026.04.15.06.50.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 06:50:24 -0700 (PDT)
-Date: Wed, 15 Apr 2026 16:50:21 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: luka.gejak@linux.dev
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] staging: rtl8723bs: fix remote heap info disclosure
- and OOB reads
-Message-ID: <ad-Xnciuuz6wqAVq@stanley.mountain>
-References: <20260415133726.23515-1-luka.gejak@linux.dev>
+        d=1e100.net; s=20251104; t=1776261276; x=1776866076;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eiU5+/o+Dy2k6wBYHFotkArhw04FNZIcBj1PufHtM34=;
+        b=TG0Op3MFC/NVgp5oByhC/1YPoMvs0Zz5zuMvbV99ohzUO3A6JxDLawJQEPRzqXp0Tt
+         BYB6FBsMEn9G6ybUEMtZCF0D7TnV237bOFHqiPi+TB+zp6hOSMqejpIXqQhRKxzE6Zoe
+         bzCwIZzoYnSueB89kENdmx3U44fTTvuOzyP0EyjgDS6ZqKfupGS6GcemIwDqAGCzQNBY
+         2WncGqneJI9yjOvK4O4LSIOvqkXsZk4/oCPLlqMKW4+7DLWbsUNNGUrDdpZ0fYSDXF0Z
+         ZbDf198YTKxFF7gb3JtRODZt+Md27WeVXNZLjj7hfoKYfkspwQr9R1f1897MgC/VdMWC
+         o0uw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Q3teLHqv+xcSs/DIIgZb2Rgje8llXc2AMymy64hnGfGLoZguWsQvaiDfvBne2XKvJeCtEJ0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuXYqL8XyUIW0h+4Eu58O9DrmK4d8NX+wqRuijCsgkbWidve6a
+	RE29nVXIhvm3HJzvDqHQuOVWsbG4nZAJDHcHQ1213/XrjwuU3DqV/cSsrlDq9omis1DW2xi6uyv
+	9TBACvCusrRGt+kjn6AmhGeOsTf0VVuA=
+X-Gm-Gg: AeBDieuqje/+S37dJ72SVx2jbN1KDsWONwBug7hV0SE6kISKWdqoTH1TVA+P/AIvtoz
+	UICYU1b2BEZLYDWo+YAZExJ6PpruQZ8Chf8dEzm3pPKr8epmxmDXWMcAGBWIHHx3M4ymVklNID4
+	t4Tm/TtHtcSUGnJgFKDSI9CUymXdcl0s9EpjIt4ny0GwHlGAsLBDX9vanP6YCsqPjQSfnr6Lhj+
+	h0AXH8V7avJpQZ0XpJqU4v80Js0AYgJo2Rosx2rmFSjd5yOcIeuiiH7QN8+GAemjRUXfCvtHZKA
+	UyijtpUAwhkGlMjZkHOM
+X-Received: by 2002:a05:690e:11cc:b0:64a:d3b2:d3a2 with SMTP id
+ 956f58d0204a3-65199096b59mr16518933d50.27.1776261276068; Wed, 15 Apr 2026
+ 06:54:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415133726.23515-1-luka.gejak@linux.dev>
+References: <20260413153114.3040093-1-lgs201920130244@gmail.com> <8afc6b6b-399e-4f77-82e8-3c0e717f765e@linux.com>
+In-Reply-To: <8afc6b6b-399e-4f77-82e8-3c0e717f765e@linux.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Wed, 15 Apr 2026 21:54:21 +0800
+X-Gm-Features: AQROBzDx705EQfjAt7PwyLxjDvSpfcDpFcg8DPIUUm7RnvZjSrOx98S0HD6UZyA
+Message-ID: <CANUHTR9MQ8GGpgtGDgRCmjQL_D0jW4E-2OER4Q784xbGd+nJSw@mail.gmail.com>
+Subject: Re: [PATCH] floppy: fix reference leak on platform_device_register() failure
+To: efremov@linux.com
+Cc: Jens Axboe <axboe@kernel.dk>, Greg Kroah-Hartman <gregkh@suse.de>, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238134-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238135-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,stanley.mountain:mid]
-X-Rspamd-Queue-Id: 02C99405011
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2E199405106
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 03:37:26PM +0200, luka.gejak@linux.dev wrote:
-> From: Luka Gejak <luka.gejak@linux.dev>
-> 
-> When building an association request frame, the driver iterates over
-> the ies received from the ap. In three places, the driver trusts the
-> attacker-controlled pIE->length without validating that it meets the
-> minimum expected size for the respective ie.
-> 
-> For WLAN_EID_HT_CAPABILITY, this causes an oob read of adjacent heap
-> memory which is then transmitted over the air (remote heap information
-> disclosure). For WLAN_EID_VENDOR_SPECIFIC, it causes two separate oob
-> reads: one when checking the 4-byte oui, and another when copying the
-> 14-byte wps ie.
-> 
-> Fix these issues by adding explicit length checks and returning a
-> failure if the length is insufficient. For HT_CAPABILITY, also clamp
-> the length passed to rtw_set_ie() to the struct size.
-> 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-> ---
-> Changes in v3:
-> - Switched to fail-fast handling for malformed IEs in issue_assocreq().
-> - Fixed HT capability path to use structure-sized output length in rtw_set_ie().
-> - Updated commit message to reflect all oob read cases.
-> 
-> Changes in v2:
-> - Refactored rtw_set_ie() alignment to follow "open parenthesis" style.
-> - Allowed the line length to exceed 100 characters for better readability as requested by Greg KH.
-> 
->  drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-> index 5f00fe282d1b..3d44bc36532d 100644
-> --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-> @@ -2929,6 +2929,9 @@ void issue_assocreq(struct adapter *padapter)
->  
->  		switch (pIE->element_id) {
->  		case WLAN_EID_VENDOR_SPECIFIC:
-> +			if (pIE->length < 4)
-> +				goto exit;
+Hi Denis,
 
-Oh huh.  I was more thinking about an upper bound, but yeah we need a
-both.  Anyway, what should the upper bound be?
+Thank you for the review.
 
-regards,
-dan carpenter
+On Wed, 15 Apr 2026 at 21:00, Denis Efremov (Oracle) <efremov@linux.com> wrote:
+>
+> 1. Let's use platform_device_put()
+>
+> >                       goto out_remove_drives;
+> > +             }
+> >
+> >               registered[drive] = true;
+> >
 
+My understanding is:
+
+For the platform_device_register() failure case, we should use
+platform_device_put() instead of put_device(), so the failure path
+would look like:
+
+err = platform_device_register(&floppy_device[drive]);
+if (err) {
+        platform_device_put(&floppy_device[drive]);
+        goto out_remove_drives;
+}
+registered[drive] = true;
+
+>                 err = device_add_disk(&floppy_device[drive].dev,
+>                                       disks[drive][0], NULL);
+>                 if (err)
+>                         goto out_remove_drives;
+>
+> 2. We also need to fix this case.
+>
+> platform_device_unregister()
+> registered[drive] = false;
+> goto ...
+>
+> Thanks,
+> Denis
+We also need to handle the device_add_disk() failure case for the
+current drive, since out_remove_drives only cleans up previously
+registered drives. So this path should explicitly unregister the
+current platform device before jumping to the common cleanup path, for
+example:
+
+err = device_add_disk(&floppy_device[drive].dev, disks[drive][0], NULL);
+if (err) {
+        platform_device_unregister(&floppy_device[drive]);
+        registered[drive] = false;
+        goto out_remove_drives;
+}
+
+
+Is my understanding correct? If so, I will prepare and send a v2
+following this pattern.
+
+Thanks,
+Guangshuo
 
