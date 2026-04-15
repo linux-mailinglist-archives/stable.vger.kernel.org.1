@@ -1,164 +1,190 @@
-Return-Path: <stable+bounces-238014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLZbEHr93mlINQAAu9opvQ
-	(envelope-from <stable+bounces-238014-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:52:42 +0200
+	id sG5JFcX/3mn3NQAAu9opvQ
+	(envelope-from <stable+bounces-238015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:02:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6A63FFDA1
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:52:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F291D3FFE36
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E33EE304B2A6
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 02:52:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1F4B8302FF8C
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 03:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1C73128C6;
-	Wed, 15 Apr 2026 02:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AC6313E03;
+	Wed, 15 Apr 2026 03:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="tBTq3uwi"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="MeBGDzCp";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B1OtOjVw"
 X-Original-To: stable@vger.kernel.org
-Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B0E313532
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 02:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D796B313E3F;
+	Wed, 15 Apr 2026 03:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776221558; cv=none; b=VCrXUjXKwsC0G4iXNv13tlTijXhZeQM3rzE6SHRRZUpoxC+4qDMGpFObskSJ8AeG4hEgMvvaeobQpDsiD9XyM46P0KPPefuvifsMhcylDggz1KL9MPhE8Lve9JE24KimQl3wxIDI+hfu/rsVDU7c+2LKPSyMfuitWAKs/WmRuRE=
+	t=1776222117; cv=none; b=GvOh183NP4kRgOg+8iNP+j7KGx3triU4aUA4wVsi1Z1YeR/PXZDrrrpl4Y8fJRiqCMQXH+xOaX/vJxs/jwExKkSw/Rhu9n6gH5IptlVszMQuD7EzGttUhOqFLzbcpYnl6gue/vSy42EglDKl9WvXja0waROahUw/FvOo+2G4Ez4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776221558; c=relaxed/simple;
-	bh=haA4kYFbvqtiqFuCHUW5iCmkV1x3Oma+LWqgQLmvkUA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pArS0yWPUPJNv1SrWv5+9pqgDh5774aSFakWwUs8LlckTp0REw3fMpeTLdsdTa7+T8T5IUYGyqvIBYZsTgEiol4OwSgaRumi8XFMKXg3srDgat5+87Hbb2Q2oIGg+9OXw4ouwBWyGHaipq+X1u15KYe7Mxj6ZUsNctXLqWNlMgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=tBTq3uwi; arc=none smtp.client-ip=49.212.198.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
-Received: from ms-a2 (92.192.13.160.dy.iij4u.or.jp [160.13.192.92])
-	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63F2qSsp035194
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 15 Apr 2026 11:52:28 +0900 (JST)
-	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=3+5pFTC9L4TcAgd/RnB8ZvQWCS/U/+fZRKbBPq/6RR8=;
-        c=relaxed/relaxed; d=enjuk.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20251215; t=1776221548; v=1;
-        b=tBTq3uwiwD5z03dO8vqZL864WNI/kPy8x1eH0MmgDZvWKMwbMaoArTJhH5akHj6G
-         h9MxXMI8bXFLK0LoRSQ2y2SG1CSrfoDeWBKqQ5/VuRdyxDXoAqOKWOb8u/UkoASl
-         5egcH5Wzpcth3LEeVwSQNetM7QoUip/zexFeGD6UuyDEiae69wzl0FB6op7GRmnV
-         zZIKS0lYc4SNbXwOhcpBqYw6rMH57ISlnWrH7YjWkSMeBtVs1xanAcKBGzdAUo5/
-         W0LEIhjWVXIbd80x8mC1UGUPZITzlv9kxqVCvwqWv4DASI9i5VWMtO2J4t7wIgx5
-         AKIyR5dHuxP2fz++0I7h7g==
-From: Kohei Enju <kohei@enjuk.jp>
-To: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-        kohei.enju@gmail.com, Kohei Enju <kohei@enjuk.jp>,
-        stable@vger.kernel.org
-Subject: [PATCH iwl-net v2] igc: fix potential skb leak in igc_fpe_xmit_smd_frame()
-Date: Wed, 15 Apr 2026 02:52:18 +0000
-Message-ID: <20260415025226.114115-1-kohei@enjuk.jp>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1776222117; c=relaxed/simple;
+	bh=W/jUTGUj+n30/wzQ4L0pWC4NbyR5tp4hDb2ScG6NO58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jy4sFIKJ0iTddLqEylUMcSrIZsYitc+B+0l04np0BX8P8BfG6rccK883IoiAe1Llj2i7I4p5Tw0+INvGU5OTOTB8Mj1qHhhvwlPiaE92wcg6ivqVGjWw1BDu03sC0OePqetckJT6BiXU1UOGetGQb+z56Izj41LT9CKi/mBjjo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=MeBGDzCp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B1OtOjVw; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 144181400112;
+	Tue, 14 Apr 2026 23:01:54 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-07.internal (MEProxy); Tue, 14 Apr 2026 23:01:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776222114;
+	 x=1776308514; bh=X3tBxvSzTizskPq8QDhlPpCMkzL6YpeRfY33RE4VTb8=; b=
+	MeBGDzCpZosYXj7BtVmR5a/bd/m9i1HqKsaPlC76BZdK43CdQIp+C2WVnXG6aMIj
+	G3tTpnS/KER8++ZLE6HHOEr71k8Lr0nUMEAFvDTTYIiDjMW8lflITm6C4kPsc22k
+	JpHeA+Q0byQ88Nl5SdO+MslNsnIh2purn5YU/JySrzFqVTJU9c/wLEmQixQsVwGR
+	m+TzGS/chWxsE5W6o9uj0j7GlBinC+KQqMoxL6broTIwSfSCWJnjY11UHTQWma3W
+	PHWEtCz3IvN5yTRJu1KZF21B0WNaZ3prDMDkrUoVQZzpr2Ua4eqEZ/lutUoXWApj
+	JG9QCEsS4eGtMGNIslQAeQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776222114; x=
+	1776308514; bh=X3tBxvSzTizskPq8QDhlPpCMkzL6YpeRfY33RE4VTb8=; b=B
+	1OtOjVw18ogCwfebvKeUfDCM/rGxAVGgRKZ/RyWYvnYKdGstU566FL3NkqAn30cK
+	joGwJZObSZLKYM78RFxZajrselxXAtz/q9QQEjIxF58G1Q7/W6Engh/9RlSJJoER
+	F1dimu3Nm1zPhXxcggthB7ze8ce35th1rCvHyu/m3dWXL4Q2MHxUeEWPa8Feoo6o
+	8SiXVG2PsJG40fLX8UZbefhGGh5MLTsQhj6TUPz0K1aLncEwU1so3aZwqYFOyNcK
+	KJj/SuEP9dhRHbg7zkKwDaGfpoldME6x3hW0cuFlDzcUOccrjEOdqGg7fWv7+QKF
+	cYHPEl7wrrUW3mgLFJDpQ==
+X-ME-Sender: <xms:of_eafoxdLfHpGWOxokw3CRWWPi857XCWlJvnnUhiw1o16yYPZ_rNw>
+    <xme:of_eaVgy2ztuGCpL7o69R2YqnAQV31fHlJdaAIYEmN2W6uNJzQwTgKg3aCaZfMeGi
+    oULRYHrP9GnNI3cJvExwtXQoSYSx3vXLyq4j1U0UBgKqBMaNEPutNGa>
+X-ME-Received: <xmr:of_eaXtmwy0fED1dxp7MMaxcQX8gBSAOaBQo9N2D-KnAhV6-A5VmsGz7Y_J9mkf_SLbRDn2LclyXwSMp1e0DaTGUCSvTsceO>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegvdelgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
+    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
+    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
+    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
+    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
+    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
+X-ME-Proxy: <xmx:of_eaW0OHIFilJGbo2GyeuVZOTWbXVhZUE0HB7r4zqkDEVSnHEdXbw>
+    <xmx:of_eaWzLz3vDumvk5FGGYNjoCRKRuIVbgBOUM2i-J3YcYXThAODWNQ>
+    <xmx:of_eaZU7KFiiVE_forxmFsSADmyCtvPnMXrWoSE8y7gVoYBNPV6sgg>
+    <xmx:of_eaQBez9vQIwS--33HytLlVK_yv_a8lIkX44xF-8IByqfeSLS8yA>
+    <xmx:ov_eaQ-3wiAsHTMK2gBXMMcByC0GfOEQYY_bg54tFwY6k4mMDRxRy5Xq>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Apr 2026 23:01:51 -0400 (EDT)
+Message-ID: <b7ea27db-de73-4f06-9acd-bafcd0fb7a25@pobox.com>
+Date: Tue, 14 Apr 2026 20:01:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/491] 5.10.253-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260413155819.042779211@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260413155819.042779211@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[enjuk.jp,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[enjuk.jp:s=rs20251215];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,linux.intel.com,gmail.com,enjuk.jp,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-238014-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-238015-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kohei@enjuk.jp,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[enjuk.jp:+];
-	NEURAL_HAM(-0.00)[-0.992];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,enjuk.jp:email,enjuk.jp:dkim,enjuk.jp:mid]
-X-Rspamd-Queue-Id: 9B6A63FFDA1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,messagingengine.com:dkim,pobox.com:email,pobox.com:dkim,pobox.com:mid]
+X-Rspamd-Queue-Id: F291D3FFE36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When igc_fpe_init_tx_descriptor() fails, no one takes care of an
-allocated skb, leaking it. [1]
-Use dev_kfree_skb_any() on failure.
+On 4/13/26 08:54, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.253 release.
+> There are 491 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.253-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Tested on an I226 adapter with the following command, while injecting
-faults in igc_fpe_init_tx_descriptor() to trigger the error path.
- # ethtool --set-mm $DEV verify-enabled on tx-enabled on pmac-enabled on
+I took the 5.10 stable-queue as of commit
+586b5ceef9af2e2148a3811f0c4814688b38b85c
+("drop 4 mmc patches from queue-5.10 based on RC review feedback"),
+and applied it on top of 5.10.252. This is up to date with most of the
+patch drops after 5.10.253-rc1. I then tested the resulting kernel on my
+Lenovo ThinkPad T14 Gen 1. It works well and I have not observed any
+regressions.
 
-[1]
-unreferenced object 0xffff888113c6cdc0 (size 224):
-...
-  backtrace (crc be3d3fda):
-    kmem_cache_alloc_node_noprof+0x3b1/0x410
-    __alloc_skb+0xde/0x830
-    igc_fpe_xmit_smd_frame.isra.0+0xad/0x1b0
-    igc_fpe_send_mpacket+0x37/0x90
-    ethtool_mmsv_verify_timer+0x15e/0x300
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
----
-Changes:
-  v2:
-    - change to idiomatic style with goto (Simon)
-    - add Cc to stable (Alex)
-    - add reprodunction steps (Alex)
-  v1: https://lore.kernel.org/all/20260329145122.126040-1-kohei@enjuk.jp/
----
- drivers/net/ethernet/intel/igc/igc_tsn.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+(As of this writing, stable-queue is now up to commit
+e84a934b1e8f2f35890b51c6521a7b8678ebdc8f
+("drop 1 patch from queue-5.15 and queue-5.10 based on RC review feedback")
+and a few more patches were dropped from cw1200 and omap-ocp2scp. However,
+the config I used for testing does not build either of those drivers,
+so I don't think it really changes anything compared to what I tested.)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 8a110145bfee..02dd9f0290a3 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -109,10 +109,16 @@ static int igc_fpe_xmit_smd_frame(struct igc_adapter *adapter,
- 	__netif_tx_lock(nq, cpu);
- 
- 	err = igc_fpe_init_tx_descriptor(ring, skb, type);
--	igc_flush_tx_descriptors(ring);
-+	if (err)
-+		goto err_free_skb_any;
- 
-+	igc_flush_tx_descriptors(ring);
- 	__netif_tx_unlock(nq);
-+	return 0;
- 
-+err_free_skb_any:
-+	__netif_tx_unlock(nq);
-+	dev_kfree_skb_any(skb);
- 	return err;
- }
- 
 -- 
-2.51.0
-
+-Barry K. Nathan  <barryn@pobox.com>
 
