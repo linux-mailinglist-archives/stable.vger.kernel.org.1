@@ -1,181 +1,221 @@
-Return-Path: <stable+bounces-238171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDTtOunG32kmYwAAu9opvQ
-	(envelope-from <stable+bounces-238171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:12:09 +0200
+	id EBFbKbzM32lwZAAAu9opvQ
+	(envelope-from <stable+bounces-238172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:37:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71581406ACF
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12230406D81
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 525A53034A2B
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:09:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94EDB30263E5
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A78C3E3D9A;
-	Wed, 15 Apr 2026 17:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD533E3D9A;
+	Wed, 15 Apr 2026 17:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GtYo5oxl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vjx5rT3R"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E03E3A75B7
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 17:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A72637268D
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 17:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776272977; cv=none; b=XmqG9GVCPi3k+8/zootG50pmpLr0kh2LfyY8AQTg7ncUK/vaHnE0z465NC4WrDDEnCVhI53wqDK1XZyksP7b8jF77+bsPU6gaF5YAR/xxHwYUOqB99Q+Nl6nFGx6BAsnieOr18T0UxiX6j6WghG5eFkg43viWLGLfIkdM+ltrW4=
+	t=1776274617; cv=none; b=ojtJnrVHnGh346hQi1WOYrk3CRpzPzxhXNya+bt4tYPnypKzUyrI4kPMhPdSdUFPyhVSZcNq8SiI1Q5vZyGhI1eU6aJbnmnFatbnccNP5/qb4ylAlykq5nUTgGDchbjvwkB66WMuCIuilBCiF2uTOaRAvSWyPbfxCMil5N6U+yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776272977; c=relaxed/simple;
-	bh=evVNg2mwISfuua7/LnejCpCCTdzRjZGYd06vxhXutik=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QvcLC+IuGivRsDIH/2AKind3MkHMpdKuf4brsMFJkxu7VKYBAzY1tUDZUaevjJ2SOD/IlXofCyIvMKU7vJkAMyyAqEed/Y90iiObzqfcF6r0klYIrqWnybthgHFQOqmc4XuqCpyGa2cEnmINf7w6lgUPIbNcL30g3ZXoPvN+LsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GtYo5oxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E81C2BCB4
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 17:09:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776272977;
-	bh=evVNg2mwISfuua7/LnejCpCCTdzRjZGYd06vxhXutik=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GtYo5oxlzi2OTkkiIr3LNPAfjPcB0PQ5zyBAnx9FlB7f1lRAOIG/HJAxBvlyLRPF7
-	 bc6g+O+gb/Z6QRskbK/ZGfLWaLLEu2RzxYCFPDBxc8Jzj9P30MaShDuKId/VhcTo6W
-	 1guwM70bIWKW7f++dE9e5DA86IWvvFc3sJ4i8E7f6h8ljukshHt2KlyMkZlDaSvicy
-	 8adLQajM+6NURJXF5NfoLl72GRrcLV7Eul+RGdHqorOvbxTzvzq5acBiGAOWGHRLHA
-	 tmtnvw1rjQxvlIQ+hNZD2QKlnzp5lLXoeZEyoJSd5Ss+C/W+aH53TafPeixlYlhfWt
-	 Ig5Fp8N5VJthA==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7dbdcb85067so5903808a34.1
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 10:09:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9SzE3WnsBGgTodYLL7DLEI6QZKLxUX0YDe9UlCKv2o/Ryk4pNfqWC0m/iWN595OekdYIe4eJ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkeH98HumphO2wqqyoBJZ79bXPKoJ/Mexb/UOyNEz4Dw3OzuKD
-	F7/tN83ZcllKkLIbJtKTQKSyx4/3OVTyjNus8JGXV4kbDX+0rfXilytCzly+OLatT5OhKUfdBSx
-	g7XEAVrhIRWt6ZeilxjhBfRv+zxBpMlU=
-X-Received: by 2002:a05:6820:1f07:b0:67e:160c:36ab with SMTP id
- 006d021491bc7-68be6624f57mr11276879eaf.26.1776272976075; Wed, 15 Apr 2026
- 10:09:36 -0700 (PDT)
+	s=arc-20240116; t=1776274617; c=relaxed/simple;
+	bh=bA0YOmRdTf8lHrEqsCcgLCiC6Qt/bbKa5pnwwqjZpqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ixiotwqg2Q7eVIFGcCuDJ+xi8mLjHS14rwKi168Py2Qbv0+9UUENybHelHkh391lN7XoiP0ZSaEx8oLfI3lMGgTOOj1mqPYnD/qXPP5GxY0dMfntAYZo59BK9sTmDVWeF08RecpPXT7RqvSPZcPVy8niGS3H0pS94XqyeTVCV30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vjx5rT3R; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82f1f6103afso2250796b3a.1
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 10:36:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776274614; x=1776879414; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H/+TVnN1GkzXWBQnr1PT9tBUGuFu3f8nhPggRnsX4wE=;
+        b=Vjx5rT3Rcl7o62BI1MYke7TIn6RnkyEJPSkdvv4lD94IjTGJfYV5hJeRK+V2lGXi83
+         7GaR9vhglsUWWr3hABBQChM+DHh0B+u/9IP5OWgQoUPRIgxgDi7xPRjKYVOu6fgdpcc5
+         JIub/MjkA4mky32jHZG++doLfRyP5hPTX/oBTmZbCUzxWE2rYxhFPe1vT/LKMZWeJc1B
+         BlE4HkXSJXyoa/5VdI+wwIR4G47bmGgHC0vGdoigmSBmdgA6XVsSEiLWTxTMMREhzZzJ
+         XMfGaD6nKrrWgdiLydgwYaqwq4dCt1kpTo9G4xvcpy/G3WmV+zw9ilK2fR2kYrxESUii
+         w0Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776274614; x=1776879414;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H/+TVnN1GkzXWBQnr1PT9tBUGuFu3f8nhPggRnsX4wE=;
+        b=Spx1YtpLux95cT9C5YZ64v0TePMZL41vM4u5B2riC5npc/sL6hqjMcGxrA/EYy7MDu
+         3iorN+kHWFaPIC28STJUB1P2sAk+lZi9lf27elVP5f4Lr9G7S4d7xWjGqY2WO2mZvAFm
+         uW/eTwXn/FIAHPz5eTm27s11pibdPxTm28CsM/20At4p8u5EUENlPjen2wLozCahX70M
+         fY7qll3GaN7HoV+m8xVrx5+mj25vBRTvnpx1WRTAKTYvwdzhMgogmRnNYxaO5t+/69vR
+         KiS+O4RmpL3XTe/QEMvhgWQNOr0gxSMry+GJwlS6NfDZNczFWgaS/5SUMWqozo8fB5ig
+         9dKQ==
+X-Gm-Message-State: AOJu0Yywm40hVzSPBSOO5V/t764hjha/8UiRA+F3xsE0j1GMwBWTGMan
+	N8ZlVlgL+NXp+rJ6FrtNns6+le4uXDedSJyDXGwsbKZjYzb0EW8bpSRu
+X-Gm-Gg: AeBDietZwfdez95S3UuIu8JX873NbPRu/Ge2trXOhC+bJ2mDdgOrmmrqxDP7NPTM51k
+	IF6KsHfGxFaAwn4a+N5JmdsX4FNn43NnwTDp3yo5LFB5F3QieAvUaNgm2GMUM2eiV1otkI5vTUH
+	xCJvAarHHNIPDk5ekMy0k4cDDdSnkdEO4s/IVTHOllBEaozskMIT0Ai93nMbnFEIzLOAXVOBSBR
+	nPGdzP2Cm836vCgws+o8qnYM4Awhi7J9GqMWD4b05mr0CT8oW+PRceCVbAVUJWA1o6nnIIrY6Uc
+	moZK2+nyzoQp9tnswx2Pedkiy4FpNViJEkfwv2z3J91l3wX3pTUlITNaF/B9XuiggisYw8CPRgK
+	CLZkYcuh/FgTcNvVeerBKlNQzJddWcy8zXI+V7hMEAtyhhxM2dFEH7pBkqKDNt+dkEEABG1RZ69
+	zKg62NKZ9NhL3uWqCf9b3YSiHGAIizLrGZZnPQ
+X-Received: by 2002:a05:6a00:10d1:b0:829:8cfb:df45 with SMTP id d2e1a72fcca58-82f0c29ed5dmr20427786b3a.15.1776274614586;
+        Wed, 15 Apr 2026 10:36:54 -0700 (PDT)
+Received: from lgs.. ([2409:893d:1171:10e2:48dd:8f21:beaa:cec8])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f6703631dsm2739863b3a.3.2026.04.15.10.36.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 10:36:54 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Dominik Brodowski <linux@dominikbrodowski.net>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] pcmcia: tcic: fix init_tcic() error handling
+Date: Thu, 16 Apr 2026 01:36:42 +0800
+Message-ID: <20260415173642.3619223-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413135343.2884481-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260413135343.2884481-1-lgs201920130244@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 15 Apr 2026 19:09:24 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0i4j4T_O67_xRXNV75bwGrPTbUrpPjBA-jepz+MGoseQw@mail.gmail.com>
-X-Gm-Features: AQROBzC96gVUmjkZescl7wYhARDhHqJnwbrTvvAyPF5nojbA3e097dTNTeoA8wk
-Message-ID: <CAJZ5v0i4j4T_O67_xRXNV75bwGrPTbUrpPjBA-jepz+MGoseQw@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: scan: Use acpi_dev_put() in object add error paths
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Lin Ming <ming.m.lin@intel.com>, 
-	Hugh Dickins <hugh.dickins@tiscali.co.uk>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,intel.com,tiscali.co.uk,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238171-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238172-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[dominikbrodowski.net,gmail.com,vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 71581406ACF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 12230406D81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 13, 2026 at 3:54=E2=80=AFPM Guangshuo Li <lgs201920130244@gmail=
-.com> wrote:
->
-> After acpi_init_device_object(), the lifetime of struct acpi_device is
-> managed by the driver core through reference counting.
->
-> Both acpi_add_power_resource() and acpi_add_single_object() call
-> acpi_init_device_object() and then invoke acpi_device_add(). If that
-> fails, their error paths call the release callback directly instead of
-> dropping the device reference through acpi_dev_put().
->
-> This bypasses the normal device lifetime rules and frees the object
-> without releasing the reference acquired by device_initialize(), which
-> may lead to a refcount leak.
->
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review.
->
-> Fix both error paths by using acpi_dev_put() and let the release
-> callback handle the final cleanup.
->
-> Fixes: 781d737c7466 ("ACPI: Drop power resources driver")
-> Fixes: 718fb0de8ff88 ("ACPI: fix NULL bug for HID/UID string")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v3:
->   - Note that the issue was identified by my static analysis tool
->   - and confirmed by manual review
->
-> v2:
->   - Use acpi_dev_put() instead of put_device()
->   - Fix acpi_add_single_object() together with acpi_add_power_resource()
->   - Update the subject and commit message accordingly
->
->  drivers/acpi/power.c | 2 +-
->  drivers/acpi/scan.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-> index 361a7721a6a8..542e182f94f1 100644
-> --- a/drivers/acpi/power.c
-> +++ b/drivers/acpi/power.c
-> @@ -991,7 +991,7 @@ struct acpi_device *acpi_add_power_resource(acpi_hand=
-le handle)
->         return device;
->
->   err:
-> -       acpi_release_power_resource(&device->dev);
-> +       acpi_dev_put(device);
->         return NULL;
->  }
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 416d87f9bd10..5124ed02debc 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1910,7 +1910,7 @@ static int acpi_add_single_object(struct acpi_devic=
-e **child,
->                 result =3D acpi_device_add(device);
->
->         if (result) {
-> -               acpi_device_release(&device->dev);
-> +               acpi_dev_put(device);
->                 return result;
->         }
->
+When platform_device_register() fails in init_tcic(), the embedded
+struct device in tcic_device has already been initialized by
+device_initialize(), but the failure path does not drop the device
+reference for the current platform device:
 
-Applied as 7.1-rc material, thanks!
+  init_tcic()
+    -> platform_device_register(&tcic_device)
+       -> device_initialize(&tcic_device.dev)
+       -> setup_pdev_dma_masks(&tcic_device)
+       -> platform_device_add(&tcic_device)
 
-> --
-> 2.43.0
->
+This leads to a reference leak when platform_device_register() fails.
+
+The reference leak was identified by a static analysis tool I developed
+and confirmed by manual review. While reviewing the code, I also found
+that init_tcic() continues to use tcic_device.dev as the parent for
+registered sockets even if platform device registration fails, and that
+the pcmcia_register_socket() failure path only unregisters the first
+socket instead of rolling back all previously registered sockets.
+
+Fix all of these issues by checking the return value from
+platform_device_register(), calling platform_device_put() on failure,
+stopping the initialization immediately, and properly unwinding already
+registered sockets and other resources on later failures.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/pcmcia/tcic.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/pcmcia/tcic.c b/drivers/pcmcia/tcic.c
+index 060aed0edc65..43bda9930645 100644
+--- a/drivers/pcmcia/tcic.c
++++ b/drivers/pcmcia/tcic.c
+@@ -362,6 +362,7 @@ static int __init init_tcic(void)
+ {
+     int i, sock, ret = 0;
+     u_int mask, scan;
++	bool irq_registered = false;
+ 
+     if (platform_driver_register(&tcic_driver))
+ 	return -1;
+@@ -464,8 +465,10 @@ static int __init init_tcic(void)
+ 	for (i = 15; i > 0; i--)
+ 	    if ((cs_mask & (1 << i)) &&
+ 		(request_irq(i, tcic_interrupt, 0, "tcic",
+-			     tcic_interrupt) == 0))
++				tcic_interrupt) == 0)) {
++		irq_registered = true;
+ 		break;
++		}
+ 	cs_irq = i;
+ 	if (cs_irq == 0) poll_interval = HZ;
+     }
+@@ -486,20 +489,33 @@ static int __init init_tcic(void)
+     /* jump start interrupt handler, if needed */
+     tcic_interrupt(0, NULL);
+ 
+-    platform_device_register(&tcic_device);
++	ret = platform_device_register(&tcic_device);
++	if (ret) {
++		platform_device_put(&tcic_device);
++		goto out_cleanup;
++	}
+ 
+     for (i = 0; i < sockets; i++) {
+ 	    socket_table[i].socket.ops = &tcic_operations;
+ 	    socket_table[i].socket.resource_ops = &pccard_nonstatic_ops;
+ 	    socket_table[i].socket.dev.parent = &tcic_device.dev;
+ 	    ret = pcmcia_register_socket(&socket_table[i].socket);
+-	    if (ret && i)
+-		    pcmcia_unregister_socket(&socket_table[0].socket);
++		if (ret)
++			goto out_unregister_sockets;
+     }
+     
+     return ret;
+ 
+-    return 0;
++out_unregister_sockets:
++	while (i--)
++		pcmcia_unregister_socket(&socket_table[i].socket);
++	platform_device_unregister(&tcic_device);
++out_cleanup:
++	if (irq_registered)
++		free_irq(cs_irq, tcic_interrupt);
++	release_region(tcic_base, 16);
++	platform_driver_unregister(&tcic_driver);
++	return ret;
+     
+ } /* init_tcic */
+ 
+-- 
+2.43.0
+
 
