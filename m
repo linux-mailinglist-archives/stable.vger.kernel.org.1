@@ -1,225 +1,189 @@
-Return-Path: <stable+bounces-238159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EFCFru932mOYQAAu9opvQ
-	(envelope-from <stable+bounces-238159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:32:59 +0200
+	id +Nf2Key+32lOYgAAu9opvQ
+	(envelope-from <stable+bounces-238160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:38:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0544A40667B
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DB34066A4
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CDB33011F3C
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:31:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95F883013A63
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8088C3E3C67;
-	Wed, 15 Apr 2026 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DB13E3DA5;
+	Wed, 15 Apr 2026 16:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lyKO9KY5"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qwe1Fhqq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122733E3C7E
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 16:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776270659; cv=pass; b=cPI7DCMG/AWzpUgWCMjysleQgVcYcHllrB2Vhi8RlEOCryLmNVueenQ2xVouNFNAcqAR7uFXDKfEhAJ5uH0128gfO7TA+6nC3WVrcckmpRLmgGEb/BaA3fp3S6DcUMbnUdFrET7b/cdpxK4STdumc9FmqQ9rwYKpEiWNLpY6etc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776270659; c=relaxed/simple;
-	bh=ICxNKX7qGv+Uf3H7xRWu5USDtER79xTLXqJUWpJ0IX8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PiL6mYukYahSwwvFKsglmam82ocD+l5kGSJpIbp5mThCsCZtZhoIurBuqZKWCX2PfRwkRhOyFUBtoWdrDP/eyQONhNtFdNjMUU30q5iiG664XRQ3GkZXzcQ5CfVSzo37YLwPApQ2rO11Z7ViOkix+Mcf/A4iW6vnY96phO0aCfc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lyKO9KY5; arc=pass smtp.client-ip=74.125.224.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-64eaf8aa893so5988685d50.3
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 09:30:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776270657; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PLQRQ3Ujl01n9n2m4E2/nc3KuNxqq7fqM19lKJuJ5RD8RDoKXy/N6CnOraN/SLRT2k
-         Wh3I09v8NWuv8b8kp3WL2/1vNJojiQsEci4f+cJ+i++53nctrBYuq8jsY2KyFw3bOjFl
-         mFYZO8bHXyJMmZOmnoQP4j+kYCbz4pY5XB8moOW367JyHO4lY4p+DDHF/EW7tYDgLx6t
-         8oE11EWA3BwmWBcIZoHtwgNaIkL+q/qm3X9USCj9ZcpJciPQB6UViKMy9KjVf7w/l7n2
-         38EnPd6s7Nt/5za45Y5vQTIfJeHdYBcbcP63sda3YMqRKsm7R4E1kVg8mZilIzuTKG95
-         ShZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VBirzWvSR4/3IaGGAFPOCNOFJSU2QwGIXQOrszvzBn8=;
-        fh=3yDnw+o/Zdi7reSedQ8GDN+pVAg8EGrruwYz/lmFaFU=;
-        b=KsBCHxeZDNk0CHDilVlr/kP/xgABGzOld6bebOm6CoXzwTy9kIgVp2keZjzyiZHAm1
-         RieeRQWvE3IPdtYSjZdw3bx2cLCqLT8nQ7g7euXlI13xNGA+Mb/w5GiHc52Y5TL+Yi7T
-         3HCqpPuObqURtdbVSU13DUF5d2bjdmijH+m31+8PsANaG6ZkSh/aXVgTiW1inLhbLz5j
-         GShQ9FprxhL2eZH27P34ZaewWRdk3oKuYuYQ1pCYUf8CqyuuIGvRhL4dFnIpIcZNwfXJ
-         zWfmgzpwuXNeMigCH2kMJInkueXXuOue9Qx4gb6AWgDYmBpH5aQFpFgbjed7Ui1dgz+5
-         3ecQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776270657; x=1776875457; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VBirzWvSR4/3IaGGAFPOCNOFJSU2QwGIXQOrszvzBn8=;
-        b=lyKO9KY5xPXj9Kx0yZeRv3Bx6+mqRoqin6KCB6q19bEYuEMAU3v1JWG/LXxNnW6WNW
-         Borax+ZrEblfE4NnQ5D9qBCO5f0aRMxTqvGR/NS8ZXstxwP8yJ13QDqH5A3C75OZyqr9
-         6VVS3Y1Ngj93hQoaDDeKk4iltjj14Gsu5kWJo48nQQToRiYh+s3/q/3GYpAr4a32oP2f
-         grMcxYpMqCRGKLmj1gV4i1rytI+hAi9GG79j6JEtenJBDGzz0CpbilyrgKItN8lqjHt0
-         ts2MhMSittHI27QJTgL9lDUSW1fGaUEPJhoR6DWxxwQ41Bf4cpbp97tob0wzpg23cKUU
-         JOlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776270657; x=1776875457;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VBirzWvSR4/3IaGGAFPOCNOFJSU2QwGIXQOrszvzBn8=;
-        b=foK3PxEjgfPQS5JN38ypvQhjIfZVezzsv8FyeFJ0QTOOWfFcfbqcg9K5Je3Vk4/6fP
-         ciO7ntq5C6fZDl75ZtUffNOnGYqw+ugceA8UoQ2LZtkRd0KIHfgQdfTIHZ7i6mgbJC6q
-         VZGDEKn4E90xJHX9kKRYfeDZbEJ+zYrAIw0xnnroLt0WzGQaoZb/WNDARIje+jSRCTRF
-         Z00oWO4NNjmrFD0rZ9H7GwKVAbHxkZNuhHX/3WLVB8fyJqoIIyx/PU5fO1zmO+GURFWG
-         i/sMZEOC4T/fwXAnYtPYJlXWCbzfV/QVkSR0DaK2dcw3Z6UVPkCWLAFiv5OZ6xJQQrgL
-         Zsnw==
-X-Forwarded-Encrypted: i=1; AFNElJ98QNpRjVW5N1cjc6wXeM5hcDGaYkPdN9k/Hq9BEUh2r4mG1SFLWn5XZ514PXLPS/gUDnoWmRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCiLexqCh2lYEOE0HzPFm9P9IonuJ7d1CHzLjyLkILbgJHa5k/
-	5MyvyE/TCo/9RrMGINdEDpGzMy826FF4WoREhGBs4jhAP8MP9/WNAZ+P/izDLnv0EIYnXKvKxmK
-	4ixsrh5/R1I4YVdI+WH5bz/7FUnrRJHg=
-X-Gm-Gg: AeBDieujFDsS1yAU7dnUX2xN5dolAW3YQHYMR0TkOE12aWJt83Q4q3Wwr132DvTWDRP
-	yfH9sJzD8zatF/61r7QeBxiDo7cP26wGdu214aYgJIlX9wkKCYgZX4uJWzoJ1YmBCTqb8LZTsoh
-	ZQKoCIYZFOPUp5raEw4Rf2yxLFSJveN7pnPKrXm6s/04puT9HNtx8LCprFig7JhWJ3jy0kGlUuC
-	dpZrWRom8AxK7S3mleXuOrEX7CB2Tb6gbhHmnd6pQh6a0Ki/t4AVO51m7bYnuinzwHlroO+zmoC
-	le12RoHbTXNCLNyCppLfDkJgsK6jIRfd/cBnl1RWhMSA2QM=
-X-Received: by 2002:a05:690e:1699:b0:651:bb90:714d with SMTP id
- 956f58d0204a3-651bb9071f9mr15120885d50.32.1776270657069; Wed, 15 Apr 2026
- 09:30:57 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E373E3C7E
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 16:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776270863; cv=none; b=NEw8q2te9RF0Inb+sOrQaG3lUIskBt3mrzcLlaMzB2WncJT7TMZpGwZdMoXvdp0wCYY21SovzVYwKcEM6+OY7IZOENPjSVGOZwGndiAOtAmV3+iFJRktJiXjgcQFt5XMsNa5B+L6ETzzIcjeb4J15Sw3eapYdw/iqfqkY4IiHu0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776270863; c=relaxed/simple;
+	bh=BvgwX0Kixv06gv1D+xvgtwmqP0epM+duq0sIiCTkQnw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Acq3svq2XXOQiwzN8xS995PXNthnT6A7YMW1OOkQr+AVEq76tZtv5eyXYdMVWe0g8IJUj5fepcWX9p5llkX1tN6yEQyppaxYNkPLk8aplka2na3E1FhFmGv+hPQuKQNwWq7APEWzduygoyYIbgXp8TSdf7Ebp0K9QQYU6JlpajI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qwe1Fhqq; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776270849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pBq1Q6Ow5wSMRcimcwMcZX84aCssngkOPJwRUeKJoXM=;
+	b=qwe1FhqqKL7pPcxiLCor7gPr7Q5yEC5+wQqQ35uWEqsJcVRckHtghi5Ocmgn0wuvY5blgl
+	I2Y0zM3YlXgiVWJYRhqfC3m1yAdVD4FdHJ6SKiMnuP8ybwnNS0x0LF6+09ECCDsa5U4Fo5
+	4miEH+5kYrlSx+UARBhNTvY481D4TXk=
+From: luka.gejak@linux.dev
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Luka Gejak <luka.gejak@linux.dev>,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Dan Carpenter <error27@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] staging: rtl8723bs: fix remote heap info disclosure and OOB reads
+Date: Wed, 15 Apr 2026 18:33:22 +0200
+Message-ID: <20260415163322.42682-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413182427.298513-1-michael.bommarito@gmail.com> <20260415161720.GN772670@horms.kernel.org>
-In-Reply-To: <20260415161720.GN772670@horms.kernel.org>
-From: Michael Bommarito <michael.bommarito@gmail.com>
-Date: Wed, 15 Apr 2026 12:30:45 -0400
-X-Gm-Features: AQROBzBJ7VPEuVDr74gDATAW33m2tupUjmRHD1ATtbA3VSrDaDdMAX-O608I1JE
-Message-ID: <CAJJ9bXwQyd-cZ0h_FCNj29GZYpXyCBu444VhLGLZkf1bWYqoKQ@mail.gmail.com>
-Subject: Re: [PATCH net] ixgbevf: fix use-after-free in VEPA multicast source pruning
-To: Simon Horman <horms@kernel.org>
-Cc: intel-wired-lan@lists.osuosl.org, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238160-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.dev,lists.linux.dev,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238159-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cancel_work.cocci:url,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,scan_drop_continue_loops.py:url,null_after_free.cocci:url]
-X-Rspamd-Queue-Id: 0544A40667B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:dkim,linux.dev:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E7DB34066A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 12:17=E2=80=AFPM Simon Horman <horms@kernel.org> wr=
-ote:
-> Sashiko flags a number of issues in the same function that
-> do not seem related to your patch.
->
-> I'd suggest looking over them if you are interested in
-> follow-up work in this area.
+From: Luka Gejak <luka.gejak@linux.dev>
 
-Sure, I'd be happy to keep going here if you're open to more hardening
-patches.
+When building an association request frame, the driver iterates over
+the ies received from the ap. In three places, the driver trusts the
+attacker-controlled pIE->length without validating that it meets the
+minimum expected size for the respective ie.
 
-Two Qs for you:
+For WLAN_EID_HT_CAPABILITY, this causes an oob read of adjacent heap
+memory which is then transmitted over the air (remote heap information
+disclosure). For WLAN_EID_VENDOR_SPECIFIC, it causes two separate oob
+reads: one when checking the 4-byte oui, and another when copying the
+14-byte wps ie.
 
-1. Do you want smaller patches for each or bigger method-level patches?
+Fix these issues by adding upper-bound checks at the start of the loop
+to ensure the ie fits within the buffer, and explicit lower-bound
+checks to return a failure if the length is insufficient. For
+HT_CAPABILITY, also clamp the length passed to rtw_set_ie() to the
+struct size.
 
-2. Anything on my list below that you would *not* want me touching?
-I'll combine with anything I can find from your Sashiko items
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+---
+Changes in v4:
+- Added upper-bound checks at the start of the loop to ensure the ie
+fits within the received buffer, as pointed out by Dan.
+- Updated commit message to reflect the addition of upper-bound checks.
 
-    1. line 104
-       rule:   semgrep bug-on-in-net-code (CWE-617)
-       match:  BUG_ON(!test_bit(__IXGBEVF_SERVICE_SCHED,
-&adapter->state))
-       where:  ixgbevf_service_event_schedule()
-       status: untriaged
+Changes in v3:
+- Switched to fail-fast handling for malformed IEs in issue_assocreq().
+- Fixed HT capability path to use structure-sized output length in rtw_set_ie().
+- Updated commit message to reflect all oob read cases.
 
-    2. lines 1219-1225
-       rule:   net-drop-continue-in-loop + scan_drop_continue_loops.py
-       match:  VEPA multicast pruning kfree_skb + continue (UAF)
-       where:  ixgbevf_clean_rx_irq()
-       status: SHIPPED as commit ca62ac02b30d (this patch)
+Changes in v2:
+- Refactored rtw_set_ie() alignment to follow "open parenthesis" style.
+- Allowed the line length to exceed 100 characters for better readability as requested by Greg KH.
 
-    3. line 2769
-       rule:   semgrep signed-int-as-size-param-kmalloc
-       match:  q_vector =3D kzalloc(size, GFP_KERNEL)  (signed size)
-       status: untriaged
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 20 ++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-    4. line 3452
-       rule:   semgrep signed-int-as-size-param-kmalloc
-       match:  tx_ring->tx_buffer_info =3D vmalloc(size)  (signed size)
-       status: untriaged
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+index 5f00fe282d1b..1e85a230e2f3 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+@@ -2925,10 +2925,19 @@ void issue_assocreq(struct adapter *padapter)
+ 
+ 	/* vendor specific IE, such as WPA, WMM, WPS */
+ 	for (i = sizeof(struct ndis_802_11_fix_ie); i < pmlmeinfo->network.ie_length;) {
++		if (i + 2 > pmlmeinfo->network.ie_length)
++			goto exit;
++
+ 		pIE = (struct ndis_80211_var_ie *)(pmlmeinfo->network.ies + i);
+ 
++		if (pIE->length > pmlmeinfo->network.ie_length - i - 2)
++			goto exit;
++
+ 		switch (pIE->element_id) {
+ 		case WLAN_EID_VENDOR_SPECIFIC:
++			if (pIE->length < 4)
++				goto exit;
++
+ 			if ((!memcmp(pIE->data, RTW_WPA_OUI, 4)) ||
+ 					(!memcmp(pIE->data, WMM_OUI, 4)) ||
+ 					(!memcmp(pIE->data, WPS_OUI, 4))) {
+@@ -2940,6 +2949,9 @@ void issue_assocreq(struct adapter *padapter)
+ 					 * extensions information to AP
+ 					 */
+ 
++					if (pIE->length < 14)
++						goto exit;
++
+ 					vs_ie_length = 14;
+ 				}
+ 
+@@ -2953,8 +2965,14 @@ void issue_assocreq(struct adapter *padapter)
+ 		case WLAN_EID_HT_CAPABILITY:
+ 			if (padapter->mlmepriv.htpriv.ht_option) {
+ 				if (!(is_ap_in_tkip(padapter))) {
++					if (pIE->length < sizeof(struct HT_caps_element))
++						goto exit;
++
+ 					memcpy(&(pmlmeinfo->HT_caps), pIE->data, sizeof(struct HT_caps_element));
+-					pframe = rtw_set_ie(pframe, WLAN_EID_HT_CAPABILITY, pIE->length, (u8 *)(&(pmlmeinfo->HT_caps)), &(pattrib->pktlen));
++					pframe = rtw_set_ie(pframe, WLAN_EID_HT_CAPABILITY,
++							    sizeof(struct HT_caps_element),
++							    (u8 *)&pmlmeinfo->HT_caps,
++							    &pattrib->pktlen);
+ 				}
+ 			}
+ 			break;
+-- 
+2.53.0
 
-    5. line 3530
-       rule:   semgrep signed-int-as-size-param-kmalloc
-       match:  rx_ring->rx_buffer_info =3D vmalloc(size)  (signed size)
-       status: untriaged
-
-    6. line 4114
-       rule:   semgrep narrow-accumulator-overflow
-       match:  i +=3D tx_ring->count;
-       status: untriaged
-
-    7. line 4189
-       rule:   semgrep narrow-accumulator-overflow
-       match:  count +=3D TXD_USE_COUNT(skb_frag_size(frag));
-       status: untriaged
-
-    8. line 4192
-       rule:   semgrep narrow-accumulator-overflow
-       match:  count +=3D skb_shinfo(skb)->nr_frags;
-       status: untriaged
-
-    9. line 4695
-       rule:   coccinelle cancel_work.cocci
-       match:  INIT_WORK(&adapter->service_task, ixgbevf_service_task)
-               with no matching cancel_work_sync on teardown path
-       status: untriaged
-
-   10. line 4752
-       rule:   coccinelle null_after_free.cocci
-       where:  ixgbevf_probe() err_dma path
-       status: untriaged
-
-   11. line 4795
-       rule:   coccinelle null_after_free.cocci
-       where:  ixgbevf_remove()
-       status: untriaged
 
