@@ -1,139 +1,166 @@
-Return-Path: <stable+bounces-238027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ED/EMroU32kvOgAAu9opvQ
-	(envelope-from <stable+bounces-238027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:31:54 +0200
+	id wH2JC4EY32n+OgAAu9opvQ
+	(envelope-from <stable+bounces-238028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:48:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C6A400380
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:31:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0F74003EE
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEE45301AB91
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:31:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1F25301F5EE
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD35320CCF;
-	Wed, 15 Apr 2026 04:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655FB35BDCA;
+	Wed, 15 Apr 2026 04:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfYTki7P"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DV5ve2dW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1CD29E0E5
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 04:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9092B2D5926
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 04:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776227509; cv=none; b=mVBkXtvfUBeLayigZntY96W/+m0/39lKIBlC0xeqvZ5fz9IR9oCsv29mxnfzvQHCfeVhwRBVaUzyGLgwhT6z8DlAlnSt3ffL0Vi+WpdZ+2nOvHN4wrmKv2ZffQghLgxw1HsoU+xyGK4dtZEAMc+CYI2WMMYNkNTZM9sVAxOZcVo=
+	t=1776228477; cv=none; b=JVfjxTvP7xYDreiN8aSGE5JAFGfBuriU56ieehaQxX71e98HOxaNnq6lDrHV8PCkEBBSAmr1eNMOdxSx9wwdJqzH5+hnHCG2wTxo4DfnohN0RBKqUR8QtpAGXlcXg5VO+XdC9lg8zKFmPMncR5M3HkJKNk9TIBJZfq1BhzUmdFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776227509; c=relaxed/simple;
-	bh=NVd9v9s8jT3l9T5KQpB/av/FH682cJCjX0WUmhnM4D4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DhzHeTLdMbWkj7R1F5TcRpptzVfoj0Lw3WJu525oTnSK5oI81+zQkMjEFiPKTre4uZ9BLEfIuVUmS7CxxccBB/GEHttyUOi5GYcnBLg8g8RB53N1RLXzRpak6uPceOQX0GDp6oe52uewagyZ9jQMf/N4L4rVZhyDSk7nxTBcQGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfYTki7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDE7C2BCB8
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 04:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776227509;
-	bh=NVd9v9s8jT3l9T5KQpB/av/FH682cJCjX0WUmhnM4D4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PfYTki7PPLAxf1RZyN2A+eZzXq5Qb8LRo7DTr3aZ8kJELBs3XWTI6EjR7gDGvMouK
-	 3PZ97IKjz1UZ840LbZl1l8fhzNdh0NVGC1GcKOE0l2MKAnOhOepogODAxBtqLuZYoL
-	 yfGGnhHWb57QYBgHAlrqjWhWv1sS3Nn+cMtPCQ7aOMbbMTl2605d0C0TXn9lTWhg8B
-	 KXYvmDFbUA9ulOBs1OjCCTYIzw3UlNB5IXkSuExIEPOdI6Hk+er8SboPfSOaeGU45s
-	 uCjLLQ/oZo836RlxayGncvi3SsGSfOaTplTYlCry1epU2CgT7FsCAbFxxfUxKjloUV
-	 LFIZNkJFjb4LA==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b9825ba7f9dso914846266b.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 21:31:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+3wLatovIggkjMwC0FkgOwHoSNSY5giDg8xfwhpyrQUoyAABJJUE7gNLrQJDx8pIAuwOErOSA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuD396+9v91XlhoEYRUsBYmv5pojSKZiQtYLvKA7JZz/C64vzo
-	uq27jOu9rOlVFN22MCEQ78oxOG+wLLJ8OHIbbuDt1VJ/4Jq6c4IzPJgP198oNCy3RfW8IgZZpKX
-	WcHZlQNlh+biwuJrTWp61bi4txo9dmYA=
-X-Received: by 2002:a17:907:7f9f:b0:b98:654:d9eb with SMTP id
- a640c23a62f3a-b9d46264c9cmr1092114466b.22.1776227507586; Tue, 14 Apr 2026
- 21:31:47 -0700 (PDT)
+	s=arc-20240116; t=1776228477; c=relaxed/simple;
+	bh=V4tWRgfrZHqFRIp8Iloxse17iPng/gnEL8wg0RiELes=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=qlNBx57aCcCqJqibKmUrd9yFfaZqUoZvZGX0BQ6Bi2fQIzTqWOmWED4rJta0fHTlRqjnpHAYVW1GjJ5LbgjAsDrfm0M5ASWXs6aRxaI4cQcZTNMmtXFpS3mt8KN28h8rZF9q7/kZQaVj74keRo8U8Rmuz04RHYtFdTmTeyKS7u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DV5ve2dW; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260414191533.1467353-1-michael.bommarito@gmail.com>
- <20260414191533.1467353-3-michael.bommarito@gmail.com> <CAKYAXd-pXiJy4S05C_s6sqz6FtnCeCh6Q2c4B7tPuHseA94mkQ@mail.gmail.com>
- <20260415023531.2659989-1-michael.bommarito@gmail.com>
-In-Reply-To: <20260415023531.2659989-1-michael.bommarito@gmail.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 15 Apr 2026 13:31:34 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8B78Gde_7+Ph0cSL998k4qqs_okB0jky0m5h8i25_AGQ@mail.gmail.com>
-X-Gm-Features: AQROBzCrk-7V7-V-wpd68dsUjlrrrYyEbWlnp6E7AbFp-N-nxdzfyMQMqteAERw
-Message-ID: <CAKYAXd8B78Gde_7+Ph0cSL998k4qqs_okB0jky0m5h8i25_AGQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] ksmbd: reject negative ngroups in ksmbd_alloc_user()
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: linux-cifs@vger.kernel.org, Steve French <smfrench@gmail.com>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Tom Talpey <tom@talpey.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776228463;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cr4IcaatDSq2o82btypoJMqcFwPBKgoNsLuXtTkdZ1M=;
+	b=DV5ve2dWahbmepJavofCzLXOiUSwlEZidf/R2s7+wgflEKOfJ/nK9Il6BFzhCm+MgZMpqa
+	zeb8wWZi+RTbsShSgLiyIgzfB2S9sSD++ogWD5RNU8ngCN404ejb+yXk74CtVNesa3NMQC
+	k1Eq7/a1krkfSEC981mNLf82d2BV3EE=
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 Apr 2026 06:47:35 +0200
+Message-Id: <DHTGFRNBOT79.2SLRPIN3GFMMV@linux.dev>
+Subject: Re: [PATCH v2] staging: rtl8723bs: fix missing frame length checks
+ in OnAuthClient
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Luka Gejak" <luka.gejak@linux.dev>
+To: "Alexandru Hossu" <hossu.alexandru@gmail.com>,
+ <gregkh@linuxfoundation.org>
+Cc: <linux-staging@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <error27@gmail.com>, <stable@vger.kernel.org>
+References: <20260414213959.1028301-1-hossu.alexandru@gmail.com>
+In-Reply-To: <20260414213959.1028301-1-hossu.alexandru@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238027-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-238028-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,chromium.org,talpey.com];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 75C6A400380
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2D0F74003EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 11:35=E2=80=AFAM Michael Bommarito
-<michael.bommarito@gmail.com> wrote:
+On Tue Apr 14, 2026 at 11:39 PM CEST, Alexandru Hossu wrote:
+> OnAuthClient() accesses pframe without first verifying that pkt_len is
+> large enough to contain a valid 802.11 management frame header:
 >
-> On Wed, Apr 15, 2026 at 11:05:45AM +0900, Namjae Jeon wrote:
-> > With the previous patch ("ksmbd: cap response sizes in
-> > ipc_validate_msg()"), negative ngroups is now rejected early in IPC
-> > validation.
-> > However, ksmbd_alloc_user() still needs an explicit negative check ?
+> - get_da(pframe) reads bytes 4-9, requiring pkt_len >=3D 10
+> - GetPrivacy(pframe) reads the FC field at bytes 0-1
 >
-> Yup, good point.  I originally wrote the tests and fixes independently
-> and missed the overlap, so if you accept the cap in patch 1, then we
-> can skip it.
+> Additionally, when pkt_len < WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_ the
+> unsigned subtraction passed to rtw_get_ie() wraps around, causing it
+> to scan well past the end of the buffer.
 >
-> Two Qs:
+> Add an early check against WLAN_HDR_A3_LEN before any pframe access,
+> and a second check against WLAN_HDR_A3_LEN + offset + 6 after computing
+> offset to guard the seq/status reads and the rtw_get_ie() call.
 >
-> 1. Should I add a comment in case someone refactors the flow to
-> emphasize that a check would be needed here if not covered earlier?
-Yes, since ipc_validate_msg() now checks ngroups early, the same check
-in ksmbd_alloc_user() has become redundant. So please remove the
-ngroup check from ksmbd_alloc_user(). And we can also move pr_err
-message to ipc_validate_msg() so that the error is reported earlier.
+> Suggested-by: Dan Carpenter <error27@gmail.com>
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
+> ---
+> Changes in v2:
+> - Replace incorrect Reported-by tag with Suggested-by: Dan spotted the
+>   missing length check during code review of the heap overflow fix; he
+>   did not file a separate bug report
+> - Add missing version changelog (the initial submission was incorrectly
+>   labeled v2; no v1 was ever sent to the list)
 >
-> 2. Do you want me to fold this into 1/3 above?
-Please fold this change into patch 1/3.
+>  drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/stag=
+ing/rtl8723bs/core/rtw_mlme_ext.c
+> index 90f27665667a..884cd39ec756 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+> @@ -860,6 +860,9 @@ unsigned int OnAuthClient(struct adapter *padapter, u=
+nion recv_frame *precv_fram
+>  	u8 *pframe =3D precv_frame->u.hdr.rx_data;
+>  	uint pkt_len =3D precv_frame->u.hdr.len;
+> =20
+> +	if (pkt_len < WLAN_HDR_A3_LEN)
+> +		goto authclnt_fail;
+> +
+>  	/* check A1 matches or not */
+>  	if (memcmp(myid(&(padapter->eeprompriv)), get_da(pframe), ETH_ALEN))
+>  		return _SUCCESS;
+> @@ -869,6 +872,9 @@ unsigned int OnAuthClient(struct adapter *padapter, u=
+nion recv_frame *precv_fram
+> =20
+>  	offset =3D (GetPrivacy(pframe)) ? 4 : 0;
+> =20
+> +	if (pkt_len < WLAN_HDR_A3_LEN + offset + 6)
+> +		goto authclnt_fail;
+> +
+>  	seq	=3D le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + of=
+fset + 2));
+>  	status	=3D le16_to_cpu(*(__le16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN +=
+ offset + 4));
+> =20
 
-Thanks.
->
-> Thanks,
-> Mike
+LGTM.
+Reviewed-by: Luka Gejak <luka.gejak@linux.dev>
+Best regards,
+Luka Gejak
 
