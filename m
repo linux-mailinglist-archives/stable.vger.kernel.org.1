@@ -1,178 +1,195 @@
-Return-Path: <stable+bounces-238128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJaLCRCM32l5VAAAu9opvQ
-	(envelope-from <stable+bounces-238128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:01:04 +0200
+	id oCqjLQ6N32l5VAAAu9opvQ
+	(envelope-from <stable+bounces-238129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:05:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADB64049D0
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB60404A54
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CAB8300336E
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:00:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 821FD3008246
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4693838A728;
-	Wed, 15 Apr 2026 13:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB2138C2AE;
+	Wed, 15 Apr 2026 13:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FFJI0OG3";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VhRoc0TV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB15638B120
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABA338B7C3
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776258048; cv=none; b=PdVVYjBPjaylYSTuuYfxsfD8SonBUdotLl6Dwvde113zjK8zU7L2ayzUaAYc9JQGtFR1nQXctkYaFN+UJ4DQWb+sFkUKgBu1J6niTL2PA1mWKxmnx37FUUm8RmzCzXnZdv8FPAKOb2+R3Z//XflTAnZAy8FWJR1Vn8ZkhUvrK60=
+	t=1776258313; cv=none; b=t5b4e+fCLI6aHjf9KdJeVqjeDY5EW1Li7p/6k1b3yj6Nj5LMLUbVKlUE/iAWHWJSep72dTCKbW9bbdInaq0wNxmruPzGqnzP3YNiDZ8lFSisY5bnOqNO5KUmM4msi+Knn9a/uoZvJFubvnbBSDujdln3ukYdIE5KMLWmATlq7dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776258048; c=relaxed/simple;
-	bh=35BPFHRsAyeryQP2wvqeIo4z1K6AcrSpVNIQgcBWGjA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k3/Jp4Ice33aLvrouIKeH7DGo6ViWRzPlvZZTZhucAAv/iVgMDvt6KNioYNyaAPg5mtQYjnHepcibzUJLrCTeArdCMkrGC00vpi9nkwu0vRtr6aql91Sz29BjkoNvfuvEoa9iN15svNROtfpXiMlr4z2inTrN26M+jycRmgStEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38e97e73234so11969301fa.1
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:00:46 -0700 (PDT)
+	s=arc-20240116; t=1776258313; c=relaxed/simple;
+	bh=Mtcv4O+SsioZzYTwCA8bJTfBJVkqokYIJCvhBtq48UM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pUd9eh+oZ0RrhfrIQx+yBT6eVpFNOyo9NN8jhzQEs4Zs1ieb4fhwgjVzKAeBopzT878XMcWfhIenL4EM4ktvRb+J8/bUeUhgLTsu33Ipm3BoVlOYLFMIoKr50x9x9+PgQOqLScqVF0uz5eqbYihz59mwB/qib5C1nxkxmUrff9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FFJI0OG3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VhRoc0TV; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FCjUIl2772603
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:05:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=rJK3tyKKPOULevLlFyeKOFJs
+	OKc285YnQNkfp8+aIFA=; b=FFJI0OG38YpgrJUdDdk1yuBxodWj08weax6fL3Wj
+	f1vn7gUC3O9ItNaTMp0gtqQ7ZSwCS9201JNGYRGv9c/ZYcWrmVwSyMGykl1KQ02e
+	nDtUOU0BwW9pHeXiLFvy9X4QI3rGii410vapi7WyetCOQO3Zu2mNgy2OQxS9dHdp
+	BW/L2ThIubeaxSSxia1IOnAiLC8PE29fh43Mn2ePKGrzCTYMj6bFECx/TvNQz1MY
+	CnSRlIngzreW6id4yZQQskC6Em3ns7mCEjH/pumw4SdRE9kRQ3DThunVyUIUVaeE
+	c+dGaWXAEZYpNi0lVR48LrijfArsH3Ys7VvyLmJVUEws4A==
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dj50v1fum-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 13:05:11 +0000 (GMT)
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-467e8ec004dso9342569b6e.0
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:05:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776258311; x=1776863111; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rJK3tyKKPOULevLlFyeKOFJsOKc285YnQNkfp8+aIFA=;
+        b=VhRoc0TV+vO2VcrKPiaOFuWOGncE/QBeT172X81HJChw1MHQ4J8SafZz2VvqRlugj/
+         2jmVt3o2a0g7JUfUvpZxqAX64jV1Nbz2Y4hlej7KQefls4Quys1ZChKzhfTJ1I5wRDdD
+         U7y8qNnA6Pc0YwegNKPoCcEzvavh3uXsjE67eBeghLtaZkEHODa9wnbnjyNN5+guTSFx
+         xsjvQidvGZcKRZlCtZfWWXcDu2zMPQbGViaJr4K70S2BvYk4PUuyhtqOP2EBonn2UBeK
+         Et3jsRwSdeosSCVA+1X8M/0UJ0dQ9dvWkJSU8C1SKJbivy7YvK28BpJuHtKL3/jGTOva
+         YkXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776258045; x=1776862845;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QgomoS20HLCqI2HEt2xjHn1d0Vkw6fKblazGndW4B0c=;
-        b=q1YiVI6nfxH3cTxiOu6KngM3qhYhK5Yanj1ci04LMJuSilT3tuwQO8JmHQwx2iOmS3
-         m0rRGwqmunuGQMZtTU+/SObtd1oz1Rw8/9gIPPzNaBSq6AKJXdXg3K2cUUTCJmRVWBD5
-         t9uhsf9Q9DNPiG98PK3YkGPXjyR7qI5yS9wVX5g/Xo/zwkam5VNjkCVvom4mcQ5J/kzH
-         3nuwfiMnoXEy3HIm4rEYffoVFar78ywPGiFKKTwLpPY5Pj196gynEFKuYnrjOHCpYfWu
-         b/l/jtu+ju7PZHaDoiRMPNse3WNAMpf1QJLNGsGMRs5wJKMGXd5q2NRSylizTNMy2WQM
-         LplQ==
-X-Gm-Message-State: AOJu0YxOyBGmY9W4lZjiL3X/amHuC/XcXV6fv/7ZOl/rlK+WZS+FZwIn
-	3sef52LlloP8Hv+vzS+LKvKMS2oTwG7mUL8Y5tO2deiDbXJQLFL6FC32
-X-Gm-Gg: AeBDiev+9I3FRhrL/33c28OtBDOMXnSqdplX1L6UpEZX3TkOZsMVwx6efsmiUSf0Lcs
-	eSbg/Utl6LiToeVT4mGCUd+A8uxClu1ACiwmhJHnJTkamJgkue51fLWySu5DSyLXZiRBFtMNA6U
-	qmdnAjKOQDv3MVLk5jtzYmLSAM8vSl19oPqz2I+3fLJTqd2oQQa6J9sWsooCbBArqrh/N0g1t0B
-	RMkldceXX3kJW0dinlSCv7OhcINeoQgYbhbflrdFW9L+Wcok+aYXwEH3A5+3mD59ieKo1UnwM/k
-	XwuDF7zWwqACkk0UMBZWvTSZwBZhpzjzLFHA0CDU5qpfmkBasyEfeykmxnSbF0h1CmTqdYAhjwk
-	zkhddT7BiQOCjHOPIt1UtA++K5BD+mh99f4xwn13fMh82t0QsV7Tkyy29P8P1FWxbh5dopZcFBt
-	QyHMjdrar0GFt/3Nj/F63SfACx5b2GQpCOxU8nfG7ZwmMU5nQmfnogMQkyNLG56clTnzPD
-X-Received: by 2002:a2e:9fcb:0:b0:385:9b50:91a8 with SMTP id 38308e7fff4ca-38e4beea127mr72404191fa.15.1776258044331;
-        Wed, 15 Apr 2026 06:00:44 -0700 (PDT)
-Received: from [10.68.32.41] (bba-86-97-226-202.alshamil.net.ae. [86.97.226.202])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38e9e9b83f4sm4070891fa.9.2026.04.15.06.00.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Apr 2026 06:00:43 -0700 (PDT)
-Message-ID: <8afc6b6b-399e-4f77-82e8-3c0e717f765e@linux.com>
-Date: Wed, 15 Apr 2026 17:00:39 +0400
+        d=1e100.net; s=20251104; t=1776258311; x=1776863111;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rJK3tyKKPOULevLlFyeKOFJsOKc285YnQNkfp8+aIFA=;
+        b=sJdUTjtavGuPoKozz9AGlBrtZTHuWSaDFmxurQjerOrmYNxXsZmU5HaHPz2qzE3Ouo
+         zlMLOMutBe8A+TUJKbk5tDc8f2PbdqKoa7YaDD2rVhL/VZphlyFJ6vn4xSS0W+hdebFf
+         9f0zAi2k3cwwQBdOtLz6wUohl7o+pW2RCUZs6cS9UG6G8wJfBfSsmAaQqS3eTvKSQQoC
+         krS6BlpRW9mQn4oX1+8OBgasC8hMKN1R7/QcdQMcs/skL9Frw1tUwcUiBtRb44pY0Epv
+         o+/CnFHJrx/y1p2LzP494n1vf4RLNhbrU/WMY4c3SsPBfT7XRwmx1/9yxfbcW3vMdi/5
+         ycvA==
+X-Forwarded-Encrypted: i=1; AFNElJ+LtLsyczmn7mGnRAAecDWChoNwoq9jzbGz+R5VtxS5/LDNY+sHHYonMji4uOPrvu0xQoGHgis=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm+JEmBwtS9ioPl87OfFI1kaoYnl7aEuUibD/zam65lwp2BUyH
+	uLCQRMAnxkxLTUD96eWe9Uae+YNxU/eCaFoSMI5oUj2tMJtZroUUteC6cAIXIQLJlxRm3fnS7e+
+	pd5j1VUJBFAPpaOt+i0iiuFzxKujKx2mDT1bo1jHUg17OHhFukQ3fqP+qe7akgoHZnSk=
+X-Gm-Gg: AeBDies20TXdDf8v9bSZsu68zcK1PMg29RVdwa7U1PEyt4xtuG5mwhq4U4fvb5RdXC3
+	muXGFjM5U4TKV0bS8yfT/JQ1ytE574YNaxxB/YCDpSsW5jflWDY2fOGjusiGjtKPfvwYycRLOf5
+	sJu14UM56UmE5A8bvtqUcOWZ8/DThMVdPDe6Okg0OZvujSB4+lmbEEJMOybO6Uc1fY22TjLnafA
+	vTm1tfd86UaNUDLD4SLXDI7c0YCvjZ4pJjRReKBLCYkXvVOiR2ANP7c6qwxQB/EkQA4L4EZX5Nz
+	SDVIac3kACnvunF7o+t/u5h6s4Te/tvgEI/KK/magLKbXp9/hOSydw2nPoaB53OHpKWKUH3gWWa
+	bzSZnkq1DeqE2tb0xnxec/b16e6Rj7P5MadDuHTkIoA==
+X-Received: by 2002:a05:6808:3084:b0:45e:a52c:e4cd with SMTP id 5614622812f47-4789e91f174mr13198762b6e.27.1776258310652;
+        Wed, 15 Apr 2026 06:05:10 -0700 (PDT)
+X-Received: by 2002:a05:6808:3084:b0:45e:a52c:e4cd with SMTP id 5614622812f47-4789e91f174mr13198735b6e.27.1776258310101;
+        Wed, 15 Apr 2026 06:05:10 -0700 (PDT)
+Received: from oss.qualcomm.com ([5.12.73.26])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ede1e05bsm217099215e9.6.2026.04.15.06.05.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 06:05:09 -0700 (PDT)
+Date: Wed, 15 Apr 2026 16:05:07 +0300
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+To: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+Cc: vkoul@kernel.org, neil.armstrong@linaro.org,
+        konrad.dybcio@oss.qualcomm.com, dmitry.baryshkov@oss.qualcomm.com,
+        mani@kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] phy: qcom-qmp-ufs: Fix kaanapali PHY PLL lock failure
+ after SM8650 G4 fix
+Message-ID: <mzqcgnu3cvqvhnuhmy4fdx6rj5tjzm6dzndpg64g64ykcuug5r@scx56dj3pqju>
+References: <20260415104851.2763238-1-nitin.rawat@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: efremov@linux.com
-Subject: Re: [PATCH] floppy: fix reference leak on platform_device_register()
- failure
-To: Guangshuo Li <lgs201920130244@gmail.com>, Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@suse.de>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260413153114.3040093-1-lgs201920130244@gmail.com>
-Content-Language: en-US, ru-RU
-From: "Denis Efremov (Oracle)" <efremov@linux.com>
-In-Reply-To: <20260413153114.3040093-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.36 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415104851.2763238-1-nitin.rawat@oss.qualcomm.com>
+X-Proofpoint-GUID: ufwsenXdOaZGAStrGznWWgCmeMG5bOmq
+X-Authority-Analysis: v=2.4 cv=eLMjSnp1 c=1 sm=1 tr=0 ts=69df8d07 cx=c_pps
+ a=AKZTfHrQPB8q3CcvmcIuDA==:117 a=ub0iOiB/G/eXZwGovfl9ow==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=IGLtpV1Bqx4y0bnjnHsA:9 a=CjuIK1q_8ugA:10
+ a=pF_qn-MSjDawc0seGVz6:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDEyMSBTYWx0ZWRfX7Vrc9aPgFoaG
+ nNc7l7yWM3l61elhshcdMg7bWPY+8njnhbGkXv9WnGjQ0GnJoiHDJ1zGi21EEi8lWYhjTLMXY2/
+ dOkgMConNE5Eao6ttwVIoQqjbndSKHadZF03vtH8iZ7N8x84RI8kWci0DbpNThTlMyFz2wOD5yv
+ aRCxMXC+lXzUTZ009kuFQHdQBtU/DQw3HqHx8FjAj7jWRjc2fynykWDfg0Lsjy3nF4VjmjGrKBk
+ R8WdkUXcFufa5/rS/3GxNg7PewALIIS5IhZTVto8TwJPVCCV4GbJVCfoaEJzBXhtJZ2jsqQre1J
+ WWS/+agSYa1rLx6wjmIAdZRR/2XQogNpc442Vf31S/uEztIP/CdnHGWHyBFW9oic4KEWb1rSQ36
+ ZNg5dLTCk+vTLJowRSZmDTMl9vvK6T6EH1Q1AGDg8Tumt4mWxYerNlTy/i4FKk9eAbMkbzx6A0a
+ 4AnZ1PvdHcWPOpDdBOw==
+X-Proofpoint-ORIG-GUID: ufwsenXdOaZGAStrGznWWgCmeMG5bOmq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-15_01,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 malwarescore=0 priorityscore=1501 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150121
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[linux.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238128-lists,stable=lfdr.de];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.dk,suse.de,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.com:replyto,linux.com:mid];
-	RCPT_COUNT_FIVE(0.00)[6];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[efremov@linux.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238129-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[abel.vesa@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	HAS_REPLYTO(0.00)[efremov@linux.com]
-X-Rspamd-Queue-Id: 3ADB64049D0
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 4AB60404A54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
-
-Thank you for the patch,
-
-On 13/04/2026 19:31, Guangshuo Li wrote:
-> When platform_device_register() fails in do_floppy_init(), the embedded
-> struct device in floppy_device[drive] has already been initialized by
-> device_initialize(), but the failure path jumps to out_remove_drives
-> without dropping the device reference for the current drive.
+On 26-04-15 16:18:51, Nitin Rawat wrote:
+> Commit 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
+> moved QPHY_V6_PCS_UFS_PLL_CNTL register configuration from the shared
+> sm8650_ufsphy_g5_pcs table to the SM8650-specific sm8650_ufsphy_pcs base
+> table to fix Gear 4 operation on SM8650.
 > 
-> Previously registered floppy devices are cleaned up in out_remove_drives,
-> but the device for the drive that fails registration is not, leading to
-> a reference leak.
+> However, this change inadvertently broke kaanapali and SM8750 SoCs
+> which also rely on the shared sm8650_ufsphy_g5_pcs table for Gear 5
+> configuration but use their own sm8750_ufsphy_pcs base table. After the
+> change, kaanapali PHYs are left without the required PLL_CNTL = 0x33
+> setting, causing the PHY PLL to remain at its hardware reset default
+> value, preventing PLL lock and resulting in DME_LINKSTARTUP timeouts.
 > 
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review. Fix this by calling put_device() for the
-> current floppy device before jumping to the common cleanup path.
+> Fix this by adding the missing QPHY_V6_PCS_UFS_PLL_CNTL = 0x33 entry
+> to the sm8750_ufsphy_pcs table, mirroring what the original commit
+> already did for sm8650_ufsphy_pcs.
 > 
-> Fixes: 94fd0db7bfb4a ("[PATCH] Floppy: Add cmos attribute to floppy driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/block/floppy.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
-> index c28786e0fe1c..d9afe495d5c2 100644
-> --- a/drivers/block/floppy.c
-> +++ b/drivers/block/floppy.c
-> @@ -4724,8 +4724,10 @@ static int __init do_floppy_init(void)
->  		floppy_device[drive].dev.groups = floppy_dev_groups;
->  
->  		err = platform_device_register(&floppy_device[drive]);
-> -		if (err)
-> +		if (err) {
-> +			put_device(&floppy_device[drive].dev);
+> Cc: stable@vger.kernel.org # v6.19.12
+> Fixes: 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
+> Signed-off-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
 
-1. Let's use platform_device_put()
-
->  			goto out_remove_drives;
-> +		}
->  
->  		registered[drive] = true;
->  
-
-                err = device_add_disk(&floppy_device[drive].dev,
-                                      disks[drive][0], NULL);
-                if (err)
-                        goto out_remove_drives;
-
-2. We also need to fix this case.
-
-platform_device_unregister()
-registered[drive] = false;
-goto ...
-
-Thanks,
-Denis
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
 
