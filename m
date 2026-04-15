@@ -1,315 +1,200 @@
-Return-Path: <stable+bounces-238120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LFZOymG32nSUgAAu9opvQ
-	(envelope-from <stable+bounces-238120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:35:53 +0200
+	id eOPlDk2H32nSUgAAu9opvQ
+	(envelope-from <stable+bounces-238121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:40:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6262B4044D5
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:35:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235054045B4
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 14:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A294830F6F63
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:32:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 63A5C300460D
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CBF3161BE;
-	Wed, 15 Apr 2026 12:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pcqa7Pwj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34F92DEA95;
+	Wed, 15 Apr 2026 12:39:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432A8271450
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 12:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2752C15AA
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 12:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776256354; cv=none; b=i4nACxyLBpOs5Z0EHkyMDkccOksqptWXnJscGohJ3P19CtZFqAFYVKyFaDo5DOnqjdU72IYuQsfaBALJYNy6gLy3mukhcu2p/yuIZNozEPOT0vFymQd/KLjFvLqZ+pOL2vZ+SdICDtXnPgB1mYjNG8OqU5QkaFYQLVVF/nWmftU=
+	t=1776256796; cv=none; b=JkHqE1B3rNWAEnuq3/a3GHgGDRUltWwXmUAieqqcXClbi7fHr9mvgYJyqvHiyr5q8oPJvGIJcggM10KgpENsgFbOuvOTFrbsWQoEu9QaiV47zXalm0BWj+VaizcHUPH5K2sd5J8jt+n1QMWXm6yPs+g2GjkVywQH+gT7xp6qQdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776256354; c=relaxed/simple;
-	bh=1l1cR5VAlx5dYOZdHqtWbaulDQgqIiBgksHXnCKMkfs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fata2U2lSNkFIYrToQ2zUuwBKcJDTWxtb9j9f8bM34V/4Ztj14B08AgedxdOWIe8dgrnoqE9CUC4gUwYz7FJ63qxtDCNOkB5UqE69IQg3cSn4nh94B4FZ0IA85wshe9p5J4Ye+h/fbSP3vK/2M2Utpgc0OIBhiGUUbGT+6cG9FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pcqa7Pwj; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50d8da3e656so64014571cf.1
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:32:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776256351; x=1776861151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vbvHAqDnj9FXaNRW0EKEP6rCGAhHRS/crPKa3pni2fo=;
-        b=pcqa7PwjdoDlpQQwtix7b4biwESJAexwOb5Eqlx8QHmWXx7r5dpfC9OCXJZhcJkylF
-         Y/aRxJbmgYF80u7udoSOT+8r9rt6fLr3L3twcShTFL9EFJlTl7koLCVV2RKQHyYqWHO/
-         3rzba7QskLYeryHW3WuiNHbLzs0yGyVuhMnNfnwe3ABg50UjEdf7miNDrk9vWMxbAwxe
-         q2pPrMZa2GyT3QlbgVQCsiFXMe5p8Qc0IyFNxmta/HTI9iGaj5UP3HtXgECjnoQ88Hfs
-         UPlVbQcY36x0TWjXL6KimKNGjGTw4SFejnyDIP9CZlszdRokEVzt0pig4ieCfa7d25EK
-         nzgQ==
+	s=arc-20240116; t=1776256796; c=relaxed/simple;
+	bh=2TNqqtfZzwk4Q3+MGNL4tZZFPOezZtPOfc8fLHTjesI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=hW6yIK9BtTic5Wso3cPJhUet8c0ROmO2wmmzLGBDMngz7LgAkraTp9Vmw/8INOOS6tIHaOgaoX2RZpXf4aHwlsSY1zIl3VOweIwwIRXp1jnMTDtF7Splv+kDat/tdGEpPYoiE7tBaoZR5lqxNrA37SaJwfFRBXn4Zj63rADq2UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7dbb6b95836so16622464a34.3
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:39:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776256351; x=1776861151;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vbvHAqDnj9FXaNRW0EKEP6rCGAhHRS/crPKa3pni2fo=;
-        b=Kvtb7j+jKtVcO1lTSb6M1fvXinlYnJDSqB/304molakWgWmvdftr6/fQQywT2UqV5m
-         c0tx1C7RmrmWawHUxht094WD7h7GNglrWDSSSeIhBFd6lRHx6i/YnfkRskgJfcZ5CQKV
-         yoxocHvYbAJakUmaPDKAgjVBbPr8wAGC2C0Y84w8dVg8z85GaIVxkXduao41gE+D9az2
-         dTGzZsDJf7T4GI5fdthwPFIF1f9hBIe6SlTlaaXMQ+uEKzq67WqdZXxdGxtCKMCDUWfG
-         21vrS2wHWhLAT2DF1kEFNF/l6ErwDcKW3LbScTLh9zDfFPioCYy2CVui1+9ZfXQd3JuX
-         q2Ig==
-X-Forwarded-Encrypted: i=1; AFNElJ+2BxcrUYxjJcXS8205gUFkMa/ec7ASanNGIMWpWwgdjuaigpUtQE0w4HJIkHTozj2mifXOPh8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgD7HyOtcYmKCrzOfhIgclHdw5XpIPhB/dtXN3o7V3oh63fM1H
-	l2/9nR+mPEm9tCMbD1JrrQJOn6cU6b40lboqo926bNzM1CiTpDhzMyyH
-X-Gm-Gg: AeBDietFoamljude8AI67eH/W1OVGVDVC2LTSMVd9ounSdG6h1tzgcoHyctqmWJJkss
-	i9xTNP8WPRMgRoxqo77mcZQQYNInPryulOjpnpVMtrKg1nSHAKSRbYg3P8OzFRJFnx3+fJpDH+d
-	5JXG75RRDOPLjAsbLpGh9IsmoM5yef/8Yb+etA7lj9AjSsEEYj9oYsOGzGHJuez9EalQBCAFcNo
-	w9p7UgZY4xi70D/tMop0i6mqxfLURnlAPn2JpZp5RhGJjNKnnDbpxc6Qs/34lCEeAJ1Vq5AnAVh
-	Imhk+3IQttmM7YByp5uE0yPdf8n1HU4jKG+OXEaIIsDMwLaTGE9ha6QSGVhwvdnOV9CJDKMFQM/
-	YOmZN3mo9BZIDfbSiK90iB7rFCz/PEKAvYo4KzSpCorlKUN/4Ul/itl8zJ+TFnZB7R0dOzFMK0D
-	dwjD+sWsL9iudT7tvangdB1ig/AEkx68XRxaPCOoCpq4XObqXI/ZyLMPCmYrJsUxXlWgpE/gY0H
-	LoovBj1BfsfJJRgKo3456FlrJTpyf5zjjV76OL0nyA0K3CyljAIYsZSXmOBugEd
-X-Received: by 2002:ac8:7c41:0:b0:50d:7f91:6bd8 with SMTP id d75a77b69052e-50dd5aef77emr311172841cf.28.1776256351143;
-        Wed, 15 Apr 2026 05:32:31 -0700 (PDT)
-Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e1af9dc5fsm11747771cf.16.2026.04.15.05.32.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 05:32:30 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: linux-usb@vger.kernel.org,
-	Mika Westerberg <westeri@kernel.org>
-Cc: Andreas Noever <andreas.noever@gmail.com>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/4] thunderbolt: test: add KUnit regression tests for XDomain property parser
-Date: Wed, 15 Apr 2026 08:32:20 -0400
-Message-ID: <20260415123221.225149-5-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260415123221.225149-1-michael.bommarito@gmail.com>
-References: <20260415032335.2826412-1-michael.bommarito@gmail.com> <20260415045246.GR3552@black.igk.intel.com>
- <20260415123221.225149-1-michael.bommarito@gmail.com>
+        d=1e100.net; s=20251104; t=1776256794; x=1776861594;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i8Te8xad6g0TwUkLXSSTn+m9+c6JyVc1hrfw+QrXB3E=;
+        b=mhxBgBzcSvF0zfJNCf63xE68QIOWORIJdSRar2ctddevcNBE164+jy7Qaf+1NJF07Z
+         LX8imyHyVmq/6tUkQPNMD3WULf/qZ3UIRQoA9CANMHNlxvAyqSL4pSs2e5i6VPsSUQff
+         3dn2CItIeahjq+w/aGA93WgEyRglCLnxhfYt3eoItW8ilKdkJq7j5kGV9PPVXvTkZI21
+         Z6/y2Mu3nMc/HCm7t5KOiNEz7jG4S7hq9nc+AGeBdfnbPN3Ttcz2qcwj7ZyT2b4bwNvt
+         36xKXLch/pDEdt1fFR+y1yKsG4UKXpFyOrCZTPl+jS5rhg79Qt431KAe/GHu33Slwbfw
+         yWfg==
+X-Forwarded-Encrypted: i=1; AFNElJ+bqlzw8ZV8fOwcDkqnPYgTG4pKjbcyvy53RtzsHIXQr6Tix4SEhB8H3qQVNSV9Ul3RvCouK8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkZGCPx4DNX6oUFMnAsPcn4L2ZxofnY00tRz7yF4+szEhP6LlH
+	oUkXXyNF0gktRLgucapSFkarD/dR0GPyV88ApEOeVLq2ytxliLIKW/pBuQ3705VN22zamTPtFq1
+	ilw7eKvZ9MBCJIAS7LfXizZPh24CT5rph4vS7G5gTApIqKp3ESnxmSM0bbPA=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Received: by 2002:a05:6820:780f:b0:688:6d55:17b with SMTP id
+ 006d021491bc7-68be89e55bemr7059638eaf.51.1776256794253; Wed, 15 Apr 2026
+ 05:39:54 -0700 (PDT)
+Date: Wed, 15 Apr 2026 05:39:54 -0700
+In-Reply-To: <20260415061211.45530-1-95986478+SnailSploit@users.noreply.github.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69df871a.a70a0220.259bc5.000b.GAE@google.com>
+Subject: [syzbot ci] Re: [PATCH net] tipc: fix UAF race in tipc_mon_peer_up/down/remove_peer
+ vs bearer teardown
+From: syzbot ci <syzbot+ci2d44e407aec2bd60@syzkaller.appspotmail.com>
+To: jmaloy@redhat.com, kai.aizen.dev@gmail.com, kuba@kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, ying.xue@windriver.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [0.14 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238120-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,linuxfoundation.org,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[redhat.com,gmail.com,kernel.org,vger.kernel.org,lists.sourceforge.net,windriver.com];
+	TAGGED_FROM(0.00)[bounces-238121-lists,stable=lfdr.de,ci2d44e407aec2bd60];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.983];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6262B4044D5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email,appspotmail.com:email,syzbot.org:url,googlesource.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 235054045B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add three KUnit cases that exercise the defects fixed by the sibling
-commits in this series by feeding crafted XDomain property blocks to
-tb_property_parse_dir():
+syzbot ci has tested the following series
 
-  tb_test_property_parse_u32_wrap - entry->value = 0xFFFFFF00 and
-    entry->length = 0x100 so their u32 sum 0x100000000 wraps to 0
-    under the block_len guard; without the fix the subsequent
-    parse_dwdata() reads attacker-directed OOB memory.
+[v1] [PATCH net] tipc: fix UAF race in tipc_mon_peer_up/down/remove_peer vs bearer teardown
+https://lore.kernel.org/all/20260415061211.45530-1-95986478+SnailSploit@users.noreply.github.com
+* [PATCH] [PATCH net] tipc: fix UAF race in tipc_mon_peer_up/down/remove_peer vs bearer teardown
 
-  tb_test_property_parse_recursion - two DIRECTORY entries pointing
-    at each other, driving __tb_property_parse_dir() recursion;
-    without the fix the kernel stack is exhausted.
+and found the following issue:
+WARNING: suspicious RCU usage in tipc_mon_delete
 
-  tb_test_property_parse_dir_len_underflow - a DIRECTORY entry with
-    length < 4 so non-root content_len = dir_len - 4 wraps size_t;
-    without the fix nentries is huge and the entry walk runs OOB.
+Full report is available here:
+https://ci.syzbot.org/series/6267bc07-4172-4821-b3e5-dac381479d9d
 
-Each test asserts tb_property_parse_dir() returns NULL on the
-crafted input.  With CONFIG_KASAN=y, running these on the pre-fix
-kernel reproduces an oops inside __tb_property_parse_dir (KASAN
-shadow-memory fault for the u32_wrap case, stack-guard trip for
-recursion, OOB read past block for dir_len underflow).  Post-fix
-they pass cleanly.
+***
 
-Run with:
-  ./tools/testing/kunit/kunit.py run --arch=x86_64 \\
-    --kconfig_add CONFIG_PCI=y --kconfig_add CONFIG_NVMEM=y \\
-    --kconfig_add CONFIG_USB4=y --kconfig_add CONFIG_USB4_KUNIT_TEST=y \\
-    --kconfig_add CONFIG_KASAN=y 'thunderbolt.tb_test_property_parse_*'
+WARNING: suspicious RCU usage in tipc_mon_delete
 
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      35c2c39832e569449b9192fa1afbbc4c66227af7
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/a29dabe7-96d8-4072-bc2c-d798a349301e/config
+syz repro: https://ci.syzbot.org/findings/f144d75a-7c29-41a1-988e-09892a89baa1/syz_repro
+
+tipc: Disabling bearer <eth:syzkaller0>
+=============================
+WARNING: suspicious RCU usage
+syzkaller #0 Not tainted
+-----------------------------
+net/tipc/monitor.c:108 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz.2.19/5962:
+ #0: ffffffff8fbcba48 (rtnl_mutex){+.+.}-{4:4}, at: tun_detach drivers/net/tun.c:634 [inline]
+ #0: ffffffff8fbcba48 (rtnl_mutex){+.+.}-{4:4}, at: tun_chr_close+0x3e/0x1c0 drivers/net/tun.c:3438
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 5962 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
+ tipc_monitor_rcu_bh+0xf5/0x110 net/tipc/monitor.c:108
+ get_self net/tipc/monitor.c:209 [inline]
+ tipc_mon_delete+0x10b/0x4d0 net/tipc/monitor.c:704
+ tipc_l2_device_event+0x370/0x680 net/tipc/bearer.c:-1
+ notifier_call_chain+0x1be/0x400 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2287 [inline]
+ call_netdevice_notifiers net/core/dev.c:2301 [inline]
+ unregister_netdevice_many_notify+0x17a5/0x22c0 net/core/dev.c:12464
+ unregister_netdevice_many net/core/dev.c:12527 [inline]
+ unregister_netdevice_queue+0x31f/0x360 net/core/dev.c:12337
+ unregister_netdevice include/linux/netdevice.h:3427 [inline]
+ __tun_detach+0x6d9/0x15d0 drivers/net/tun.c:621
+ tun_detach drivers/net/tun.c:637 [inline]
+ tun_chr_close+0x10a/0x1c0 drivers/net/tun.c:3438
+ __fput+0x44f/0xa70 fs/file_table.c:469
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ __exit_to_user_mode_loop kernel/entry/common.c:67 [inline]
+ exit_to_user_mode_loop+0xed/0x480 kernel/entry/common.c:98
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
+ do_syscall_64+0x32d/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f7b26d9c819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffec30cee78 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+RAX: 0000000000000000 RBX: 00007ffec30cef60 RCX: 00007f7b26d9c819
+RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+RBP: 0000000000011900 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000001b2e520000 R11: 0000000000000246 R12: 00007ffec30cefa0
+R13: 00007f7b27015fac R14: 000000000001193b R15: 00007f7b27015fa0
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
- drivers/thunderbolt/test.c | 127 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 127 insertions(+)
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/thunderbolt/test.c b/drivers/thunderbolt/test.c
-index 1f4318249c22..22f4107fcb8d 100644
---- a/drivers/thunderbolt/test.c
-+++ b/drivers/thunderbolt/test.c
-@@ -2852,7 +2852,134 @@ static void tb_test_property_copy(struct kunit *test)
- 	tb_property_free_dir(src);
- }
- 
-+/*
-+ * Reproducers for three memory-safety defects in
-+ * drivers/thunderbolt/property.c reached from a crafted XDomain
-+ * PROPERTIES_RESPONSE payload.  Without the fix these trip KASAN or
-+ * smash the kernel stack; with the fix each returns NULL cleanly.
-+ */
-+static void tb_test_property_parse_u32_wrap(struct kunit *test)
-+{
-+	u32 *block = kunit_kzalloc(test, 500 * sizeof(u32), GFP_KERNEL);
-+	struct tb_property_dir *dir;
-+	struct {
-+		u32 key_hi, key_lo;
-+		u16 length;
-+		u8 reserved;
-+		u8 type;
-+		u32 value;
-+	} *e;
-+
-+	/* Root header: magic + length=6 (single entry body of 4 dwords +
-+	 * 2 slack, keeps walk within block[]). */
-+	block[0] = 0x55584401;
-+	block[1] = 6;
-+
-+	/* Crafted DATA entry at block[2..5]: value = 0xFFFFFF00 and
-+	 * length = 0x100 are u32/u16 such that the u32 sum 0x100000000
-+	 * wraps to 0, passing the sum <= block_len guard even though
-+	 * the real offset is block + 0xFFFFFF00 * 4 (~16 GiB past the
-+	 * block).  The subsequent parse_dwdata() at property.c:132
-+	 * copies entry->length*4 = 1024 bytes from that wild address
-+	 * into a fresh kcalloc buffer.
-+	 */
-+	e = (void *)&block[2];
-+	e->key_hi = 0x61616161;
-+	e->key_lo = 0x61616161;
-+	e->length = 0x100;
-+	e->type   = 0x64;		/* TB_PROPERTY_TYPE_DATA */
-+	e->value  = 0xFFFFFF00;
-+
-+	dir = tb_property_parse_dir(block, 500);
-+	/* With the fix this returns NULL; without it, KASAN splats in
-+	 * be32_to_cpu_array() / memcpy reading block + value*4 out of
-+	 * bounds.  Assert on the safe outcome: a NULL dir. */
-+	KUNIT_EXPECT_NULL(test, dir);
-+	tb_property_free_dir(dir);
-+}
-+
-+static void tb_test_property_parse_recursion(struct kunit *test)
-+{
-+	u32 *block = kunit_kzalloc(test, 500 * sizeof(u32), GFP_KERNEL);
-+	struct tb_property_dir *dir;
-+	struct entry {
-+		u32 key_hi, key_lo;
-+		u16 length;
-+		u8 reserved;
-+		u8 type;
-+		u32 value;
-+	} *e, *child_e;
-+
-+	block[0] = 0x55584401;
-+	block[1] = 4;		/* rootdir length = one entry */
-+
-+	/* DIRECTORY entry pointing at dir_offset=2 with length=16.
-+	 * When parsed as non-root: content_offset = 6, content_len = 12,
-+	 * nentries = 3.  The child's first entry at block[6] is also
-+	 * DIRECTORY pointing at 2, so the recursion oscillates between
-+	 * two dir_offsets until the kernel stack is exhausted.
-+	 */
-+	e = (void *)&block[2];
-+	e->key_hi = 0x61616161;
-+	e->key_lo = 0x61616161;
-+	e->length = 16;
-+	e->type   = 0x44;		/* TB_PROPERTY_TYPE_DIRECTORY */
-+	e->value  = 2;
-+
-+	child_e = (void *)&block[6];
-+	child_e->key_hi = 0x62626262;
-+	child_e->key_lo = 0x62626262;
-+	child_e->length = 16;
-+	child_e->type   = 0x44;
-+	child_e->value  = 2;
-+
-+	dir = tb_property_parse_dir(block, 500);
-+	/* With the fix this returns NULL at TB_PROPERTY_MAX_DEPTH (8).
-+	 * Without it, the kernel stack-guard fires ~50-80 frames in
-+	 * and the kunit thread oopses. */
-+	KUNIT_EXPECT_NULL(test, dir);
-+	tb_property_free_dir(dir);
-+}
-+
-+static void tb_test_property_parse_dir_len_underflow(struct kunit *test)
-+{
-+	u32 *block = kunit_kzalloc(test, 500 * sizeof(u32), GFP_KERNEL);
-+	struct tb_property_dir *dir;
-+	struct entry {
-+		u32 key_hi, key_lo;
-+		u16 length;
-+		u8 reserved;
-+		u8 type;
-+		u32 value;
-+	} *e;
-+
-+	block[0] = 0x55584401;
-+	block[1] = 4;
-+
-+	/* DIRECTORY entry with length=3.  When parsed as non-root,
-+	 * content_len = dir_len - 4 underflows size_t to ~SIZE_MAX,
-+	 * nentries = SIZE_MAX/4.  The for-loop walks entries past the
-+	 * block, reading OOB on each iteration.
-+	 */
-+	e = (void *)&block[2];
-+	e->key_hi = 0x61616161;
-+	e->key_lo = 0x61616161;
-+	e->length = 3;
-+	e->type   = 0x44;
-+	e->value  = 6;
-+
-+	dir = tb_property_parse_dir(block, 500);
-+	/* With the fix: NULL.  Without: KASAN splat on
-+	 * block[content_offset + i*4] for i > 124 (past the 500-dword
-+	 * block). */
-+	KUNIT_EXPECT_NULL(test, dir);
-+	tb_property_free_dir(dir);
-+}
-+
- static struct kunit_case tb_test_cases[] = {
-+	KUNIT_CASE(tb_test_property_parse_u32_wrap),
-+	KUNIT_CASE(tb_test_property_parse_recursion),
-+	KUNIT_CASE(tb_test_property_parse_dir_len_underflow),
- 	KUNIT_CASE(tb_test_path_basic),
- 	KUNIT_CASE(tb_test_path_not_connected_walk),
- 	KUNIT_CASE(tb_test_path_single_hop_walk),
--- 
-2.53.0
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
 
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
