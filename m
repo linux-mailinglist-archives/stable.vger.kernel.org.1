@@ -1,263 +1,333 @@
-Return-Path: <stable+bounces-238109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBTRMiF932lAUAAAu9opvQ
-	(envelope-from <stable+bounces-238109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:57:21 +0200
+	id yLSnJit032mFTAAAu9opvQ
+	(envelope-from <stable+bounces-238101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:19:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF26A40414B
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:57:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E1C403AE6
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F55F303E0D5
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:55:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9888D30FC949
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C12237AA8B;
-	Wed, 15 Apr 2026 11:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF8B37998A;
+	Wed, 15 Apr 2026 11:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b="gmt0lluC"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CPrb3p8i";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="g+CO/UR2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-8fa9.mail.infomaniak.ch (smtp-8fa9.mail.infomaniak.ch [83.166.143.169])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E163264EA
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 11:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776254118; cv=none; b=qbu+at6cD6pu/ago4QbjsIvh3syMG4Ee2y5orvuVZDlxf3sfhgwLZbghI51GWPt8F41+kEadVacpQdq691LQpAzWQBupSO5c36pYb6Sjq2P4CaKo8YUi+yoTOzvdW8pBER/vYbxCNilElP3GwDW8Qm3hzPjQiAz6c2aecBqP6Jg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776254118; c=relaxed/simple;
-	bh=2JbAD/DSNBNfRE24tbvNZj/0IfyRuIUOcjNQsNfyiZw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MQ5iF7ehyhixAawWCSbkCZYSx8XPjOB7qS8LE0mMpafO7PXDInfIcHg4DcX0fge9VZ/aYJK7ojCGst83rpfm1WLtSn3fCeb0wUxtCYQb4EmKpixnM7HVPSvzqTusaPsE8mtND2W8iZmpULodZ2ydcIqWE2A7dmvIUhGZBqeZqvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=gmt0lluC; arc=none smtp.client-ip=83.166.143.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0leil.net
-Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fwdqs5853zyTB;
-	Wed, 15 Apr 2026 13:16:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1776251769;
-	bh=yfWCJrrXvC+OtV0W0WCKQPC1fpYnvPmsr7D+XYucFmY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gmt0lluCphkmSE2abwtDdfupMf8+4KqSVto9p7MkRdKDt6HvEtLcXmwNMDZWOkTKd
-	 ApnXYc7oQmVdmVwNVUsm4Cxj/v7Gba5QNpOOlqAMv8abd44BF4fq2JMt4jlQzb4QNS
-	 WgoYXy6Jd4AoFMks5EUsoqywMPzRX0e3fRU2FSbHVamJ8BWJRFYYkANTSfNts75mLj
-	 6j0Q6UgaHihJpsVm+8POxRS6kUGnYm3yRGe68yGvsewctLlLwTESxbxmCPBDBVeE+Y
-	 3PBW9E0Kl2g6478aQgjdl/kX6fyoSplXsHWqyxUvqrqTvF58uYGSbnQZHPlsA2Q5k3
-	 pzuWGypY3CkEw==
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fwdqr6Jzwzw5F;
-	Wed, 15 Apr 2026 13:16:08 +0200 (CEST)
-From: Quentin Schulz <foss+kernel@0leil.net>
-Date: Wed, 15 Apr 2026 13:15:41 +0200
-Subject: [PATCH 6.12.y 2/2] gpiolib: fix race condition for gdev->srcu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F801379991
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 11:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776251790; cv=fail; b=iwjzHemc6VZeorU9+zLkgCpmpg3FIkEX+aOXTUoc7XDX13rla/3dvMslrHYsIQDjmq+w4uzfaQm4r0GVsoqEQBJDsrbgb3im6HXJf0eLQKlHL5ev62aMIyjxHd+u3TdnkFtnX0o/AtZcUajSqXWL5AcdgRR4QDSY1tgD9kGv7T8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776251790; c=relaxed/simple;
+	bh=ZGwl3hmGIatZfbLkp76bK6fi2fVj9kIj29rfZ9NL6QU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HndQ1IOUVMZd3zNif9d6K1md0YAIULSjzLiwn9m65tJjq0YY7wM4OmvxZZeToaYQucOkYPRdTZAQBaiTi7xEJo+53AMRr/KT5yKgP0ndxZw1RrjuGAm1meZ8+crtGdrObX7cbBvCvJjKuJSh1/r5QaxKScmyz3xavzUUd+Hri1I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CPrb3p8i; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=g+CO/UR2; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F9C0j1270823;
+	Wed, 15 Apr 2026 11:16:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=NcyKGGG4a9oHZz3FxLLrr0j2To0SOrm1d7sUvFsV2sk=; b=
+	CPrb3p8irw0Sq3wmWt/3/XG51R1T8awryzuE840ZFKJpsVmoGvEymo7LAzugTLMg
+	eyXmYUjJ/dtk5frAveShsQV50+Z+ZInQDJe7gqGHVEw10abfNjucGSfhwt7MbWyg
+	ewCF3rkl0M00HnsS7gtXNVnlhhxMYXuwi2fPqyWKuorkzzTQsQJ5MGruS8wHAt56
+	2wqYNvom4sRIG+cchPQWQ2NygRlFZZRnIWQVHo4fNNimLE6XPHsZqOdy2FZh9W3z
+	J34STEiOYsquOf4or12cnChLQ3vCDwpE3pt9tbRVNdIBN6Eoq/92l7Tvdxd9gQVK
+	3rPhqaO0CBHLyqHV4TePCw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dh87h4tgk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Apr 2026 11:16:00 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 63FBEOqa007923;
+	Wed, 15 Apr 2026 11:15:59 GMT
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012046.outbound.protection.outlook.com [52.101.43.46])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dh7nmgt7j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Apr 2026 11:15:59 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QStt74/yI2utWAYg+8plx2WNqLPydDjagSoBggH4kK/nDeWgBdWN4ZpkKaGAAKvHTDdwlB7osF+W/kZmTpCH+wD+5A2smlf1UMYDkcaR25fx6oG+w7A7Erc8EcNWchYlA1Pn6UaaQ1YpJr86tE1CeLKkVQ+XsHeJ2XGdPfYL0CH/ivB0zyeYOv3yvFVeQ8DCL8Kniv1FMkBF2ByM8orgrdOoXNlg/ObY0zd/vvzSoaMiJ0nJwfLLI4nymJY04b+OgEQSu5sJE0kEMumyzEBgHz7IkDTC5o2SXBBPEWEvUKP86+FynfF5M0QdjTCCVfAqaBhd70uwp96Ke6YEJQwh1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NcyKGGG4a9oHZz3FxLLrr0j2To0SOrm1d7sUvFsV2sk=;
+ b=bM3xX5irkRwnfW6k1xWyIbtSHNLJGIe2rRIImMKbvhfTC/AAD3g39QwqYmEkWvu1OWMBUczwJtXTpXC1CDYUQSeRV6EYXZUIbLae4fYAh4vCmln1TPydWQSnfSUUSjYTY7pYC6QS8y9S02Xah7PwWbrWBQFcvb5oe/PBcprYw1ksJHBSBsvw7yfcKj7a75oEOrxJAMkCREHt1K+UWenCFkyVOSsupNhyKnT5Hs8K0BkczV5kt0XIAPLOdfEf9dN8BpJWbBYyX8KTVSHC5KhLpNjkerFimxwz1s+D7vlXGA/6IHCI6Gl9hOj5RHUgk+iq/GCr3fJstyy3s5oo6oInLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NcyKGGG4a9oHZz3FxLLrr0j2To0SOrm1d7sUvFsV2sk=;
+ b=g+CO/UR2fTVFGxcWrnb/qbwXi983yH1NTD+E9S9wzQ6YK7OW85pswVm/1J0lBR7re6u24+mw7Uzwyssdpb+QRCYRVgEACApybXfxYvd4tytKCT9QKsGeEe36JDgJtzz8fKkiPVwY5Wers6rZdYQrV7t9Lok1uJbw5sFwzZZxZso=
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
+ by CO1PR10MB4675.namprd10.prod.outlook.com (2603:10b6:303:93::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Wed, 15 Apr
+ 2026 11:15:56 +0000
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a%7]) with mapi id 15.20.9818.017; Wed, 15 Apr 2026
+ 11:15:55 +0000
+Message-ID: <18260c94-4eca-434d-8a54-e556bc2057c9@oracle.com>
+Date: Wed, 15 Apr 2026 16:45:49 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 336/570] netfilter: nf_conntrack_expect: skip
+ expectations in other netns via proc
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Vegard Nossum <vegard.nossum@oracle.com>
+References: <20260413155830.386096114@linuxfoundation.org>
+ <20260413155843.080326747@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20260413155843.080326747@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0574.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:276::12) To DS3PR10MB997700.namprd10.prod.outlook.com
+ (2603:10b6:8:347::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260415-6-12-gpiolib-cve-2026-22986-v1-2-3a7a6de332eb@cherry.de>
-References: <20260415-6-12-gpiolib-cve-2026-22986-v1-0-3a7a6de332eb@cherry.de>
-In-Reply-To: <20260415-6-12-gpiolib-cve-2026-22986-v1-0-3a7a6de332eb@cherry.de>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Heiko Stuebner <heiko.stuebner@cherry.de>, stable@vger.kernel.org, 
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- Quentin Schulz <quentin.schulz@cherry.de>, 
- =?utf-8?q?Pawe=C5=82_Narewski?= <pawel.narewski@nokia.com>, 
- Jakub Lewalski <jakub.lewalski@nokia.com>, 
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: b4 0.15-dev-47773
-X-Infomaniak-Routing: alpha
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[0leil.net,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[0leil.net:s=20231125];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|CO1PR10MB4675:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83b1ce38-e6eb-462c-198d-08de9ae05cc9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	l7ukRntqwFa/2kK9iv9EDBY3BWx8aOK/lGigQ/LE0pJuqfbVNo7aN7K/CxR++hGFdczJ5LXvWwNiam4rqFvvYqajfT1jd/juQHycE0BhYnp8Cb3KSprBQZyYKm+b/Vzuye3kLOHr+NLB2LEaqGngl/Z84WHWF7afT/KmlfwvnWE684Nc7RQ1G/PMUqhtUL/B8k14Qz6d6dYPXUOZlsdCPTS9QmV4itPSdHyL0pRRZJqXY33vYJD+S+fKl2Qgc9pPJYC7yo/6j7Wv/jX2I3gSkLxeNz7G78m7MwmyABTnDm9mEsuY/r29tFULhT0Ye/m3/Hc31iJeskdkYNAsXIBk3L1j5LZEluqKdnjxDrjDaebkPMVsKwoXLVsDM+24eUBEi5Qi42CLm2Wgawr8jrKFbf6swWZEIQCaKj8eCe3aUpgdlVzqUk7/FX8xBOEMcz+ktKybG8Kz1SSlqRQeB1t5I67rnsFNaAvAz0V+dUPc5iC9+e7tFoKJYxLbNFERzOEM7qMYZdl0g8X5ZRwCzlXkpeUXgMtrkym1py+SHJFTxzQ2fSs2SGGtaQmLOF2SQjlCaAuCgqck9gMBOyPVMgOf1jpDfRD/ROhAN09zT9lYUT4tSQTGzfRRMCluODfytSvGWnm1BhK/Zm7dIjz4mu+6WMDbNToKefKPhoO1JLkPg8W+MlTUELJK+MxaDIyXqQsUjEwGnmo57U2sFRDytzLyrBEJRQZggo2v3DjkNMgsvO8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RFpzakpKYjhZSXhiZjFDNWlyWXR6QUc5OG5XWUxrOVdSc2NWbFVFZjRzNURD?=
+ =?utf-8?B?a0JZU2ZEdWFqU1dpQWtOc3pIVzRmLyt0b3VpNEV3Q2V1NHVoZTlTbmg1STRE?=
+ =?utf-8?B?Q3NaUHRiYjVxbUpQUXl2RVFUWkJndjFueklxc3QxNW85aW5NZFIrNnlrMVlO?=
+ =?utf-8?B?NGM0dGNBNXRwaExXSlhwVFA4RmNXRFRHcUFkTysveFJTcGN5akQ5QnA4M3FI?=
+ =?utf-8?B?bWRaS1FBLzlEZFpleDdLb2JzV2diZU1EN2MydlFRTU5NUWp1cGVOdjE4MzJ1?=
+ =?utf-8?B?bC84RjFoRTdybm4vYWpidWM4bWlWZnZOY0tEZFpwRXRFY0dTcm96VmtZSWJQ?=
+ =?utf-8?B?eEFPWmxUcUFEV3Bjbi9HTmN4aUZtWlFpeTMyM1l5eG5vcnp2S3hZUGEvVXJn?=
+ =?utf-8?B?Rkxjb1hzVnNkK3liT2FzQno0ZjM0NjhzamVVTGgzY01UZGtoeVVCV2xYWnlQ?=
+ =?utf-8?B?VGd6UjA2QVBMUW1MNVBjdHUxbHlFSjFVMzR2akJ6VWJHMU9LY2Q5NjJnK2cy?=
+ =?utf-8?B?MFVGdUFBa05YemtLKzhzdlV6empNVE1Rb2pDcW92NUNFVkRrbEYxZ1NrZXQ1?=
+ =?utf-8?B?N0pKU3QwRzd4ZDBsNDNuckk0OVp0K0QzVEZUZ0tKckNhblg5bkhkRGNCMkhO?=
+ =?utf-8?B?c3VkcmVxWStVYk85UUl5ZlU2UllQUEJwVGoyQWFiMFJBZFhmOXBrWitKbHlQ?=
+ =?utf-8?B?SGZuVkRGd0dqZzd3dUdMUS9RUVV0SEdCVzlPWDRkckk2eDVibWNOekNkTGZV?=
+ =?utf-8?B?NDdSMmVjdzJML3V3RWdOUTRJbkQyMzRHV2dBeWpNVGJoejdjbUxnTy96TDZX?=
+ =?utf-8?B?UHpaMkwvdzN1NU9uTGd2Wk10OEk1TFVRU1JwN2tNcUdnMWRndUNsWWJ1blpv?=
+ =?utf-8?B?alVyeVYrRmZYVWZNQmszaHZTZDhpNUFLdjVVNDAzblBsTy9ZSlpjSFcrUDBE?=
+ =?utf-8?B?UU1LbTN1MHVueC9YMko3aXJZUkZLVVl4QUd2U21NMVg0RVA3NUJ5Q3NwOFY4?=
+ =?utf-8?B?Tng4NVZkQUJRUUorcXJIS1hNTFU2cmM3MXk5MVQ4N2daUk1WR3FKa2o5TUx5?=
+ =?utf-8?B?NVdsTW5GN0o0dXpkSUJsYnN3MVZPbi9sOGZEcy9HTUh6SlJVbXhKMUYrZDRo?=
+ =?utf-8?B?NS95MHdLMmlqRnhrVDVjUDFrTmVQQnYrL09BT3grTnNWcUlLREc0M3dXYXBQ?=
+ =?utf-8?B?VjgwbEJaMXhRcG1pUXh6TW9tV0IyS21kQ3QzWS9GY2xZZjR5WTlvWGZpaXdK?=
+ =?utf-8?B?c1dGVlZZUUxpNnQ5dmZ4bGlESGVTZm0zNXluNDYwWUxqS2pwRE94SkFyQmtC?=
+ =?utf-8?B?Z1BpTDlJY2F4NXRUTVNBRW1ONXNtUG5oVnFlc1pYNmsxTk13ZDNjdExEdHl1?=
+ =?utf-8?B?ajdYU1VZcFhmYkxNMndNZHgydHVvczEzWi9NN2VCeS9jblJ2RnhJbUNDdkNn?=
+ =?utf-8?B?UXpjVHpwODgxcTA5Vzl6OEs1TWR2ZGJEWVVSSXhNMXJuTHBkMlNIOFFSRzF1?=
+ =?utf-8?B?R2ZjTDRFNmdzVG1uNkdpbzVnN2VXQmZwVFFCRy9TNFptKzA4NU0zZVllV1Rv?=
+ =?utf-8?B?ZUhQOUtyaE9EK2VMOFlKeHdFNWp3WXc5QSs2K251eW1INXdIaVlGSy96akdm?=
+ =?utf-8?B?bFBMNFA5YW42bUEydUZSUDJwbUhGcWI2ZjRxVkdqYVIxUUVxdzI3cmRrNUxV?=
+ =?utf-8?B?M0JDYkgyejRGNDdxSVNUMU5Fc1R2VnJCb3UvV3VkNGszTjRoNk5rOFJoSEdU?=
+ =?utf-8?B?NFFIL1ZpVzV5NG9GL2N4MU1jaDdEYlFlcy9CMjQ0NzlyMlpkNllkaHB2SU1x?=
+ =?utf-8?B?Rnd2WVM1Q1lyV2phbEdvMnNrNXZlU2FiQ2xuc0QxbC9UMkIzWFdmQW94R212?=
+ =?utf-8?B?dTJMVmJsVUFYY2JlUzh6bkw2RWVZQXl3TUdYblBETHVXaS9JM0RhUm1LcktS?=
+ =?utf-8?B?WEVlZ0ZaOEpqME1Xdk80RzRPQ000L3NGZWtEbFRDNGxycURKcjh6WDFVQXR0?=
+ =?utf-8?B?Q1Y4eEdKczZLRC9ENTFvaFd5RFYvY3JFbU9qQzVtb0ZRa3gwN2wzaWZDNjYz?=
+ =?utf-8?B?VmlSYWd3SytjSGlKYWE2TEJaUy93TUZhK1RBa0FYQlZxOTA3MnR0Zm9UMWli?=
+ =?utf-8?B?eXpvb0t0N3RJbnRTWWJxN21kUjZQbXp5ZGFuQnZBY0MxODJmQkpoZnJlRmNV?=
+ =?utf-8?B?Y0V2QU94ZE1SRW1ON3czckdtU2xkNktDTkFSc2pYV2FvTEZVZEZ0djBWbHY4?=
+ =?utf-8?B?a0ZCMTZBSXg1WmQyeDhTRzNJa0p2dDI0VFJFbDdiU2ZXVHFUaWhOMEZpUkZX?=
+ =?utf-8?B?K28vMGNCdGFXWWFWZUhVeTJuOWtsei9xMEFyeXFUdmlNUVI0aHAza0xMMzVy?=
+ =?utf-8?Q?X0vQqQE2LSNFYZTQU8USfQyAzVa2LaL5Od2x1?=
+X-Exchange-RoutingPolicyChecked:
+	cWxoo06bBc1dhHU/7E7FFQsmxdsQ79a2J9XahQKk6G7yq5jHP8jW2HTVCZPUSTk/yvVsMPRihBavcr0BJ0ViEqfhEi53J0D3mjRiSKj72/evFk5HeeyAmXqVrrueOlMUxUSZQO0Q23fnpuiKhBDfUBhjfem2cfW7uqqK82Wj2+/EAbEG+DaYSLdQUJF/SYmH1/IJBAkiXRBlH5H6E5VBab39/DisBbjUWdmHvZWfmBqz7AM+bQHCwBncYyO/DdxVvLvdk9BARwwJgXuxI6gDef/q8zV67sNtozCl/lAYVPDccohpkW3yT/MPUWEfW0BlMujz8Zjig4evYlmWgF99BA==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	mYU9HBhMt0K4Z2oEcfA3p5FyU5mW8Qpn2R9tLD0s8gdA6bPBoz/x+Dap1CkS6aJvRxeMtLT4WiRbw2w5FcRpgL3K5fO+oMo7lrnCZ1gqX9EkvW+ST2XG0KfQHxgZrSaMTUeSmjVx6asw9YQmWT1Poy01i+jsJclmvdO/JaxSfB9UuG8x6FjtAuZXsCs8g+BDtqe5T3AMbBEoaz0oBxdvilRDYKIGJjsXhmHx7Yt0ZTGHL/jtXrMrJk50d0SGPons11b51DgmZ3nzuKOQZ5MkZnRbwHC2R9ApyFAvW9e8fvdtIe5Hxq+ZP3kjhkEbWSCWTbEJcy6PPPm0O8s70DS1NkDxY6/jEQIbi6JpCkM/z0yyb629bxxND/AXqSZLIe8ySKvc3bdanE6DMlNmRhb8xPbO+05rPj3BNPvidvuFVsfV9M0KRq1DAv4zXQaakM1AUP2nazKPNYH2uaJQU2bJQHtwzd5KXewl7dFZ1EXUdwCDuQjuQ52lQUNlFZjfaKCJP72+d2vLGISQJZhdSbLR2tFi3HCGY8qs9uxY5Tif0Qz1BXfcenYYNaA/Eua6SqimAK86SJLpF6SaDl38oOkaVR/rAkLz4ae6wymdq9YcpVU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83b1ce38-e6eb-462c-198d-08de9ae05cc9
+X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 11:15:55.5173
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VZtHpBTalm6VHhWgi0KnUF9mf1z1B1X8GjRzyChxTRlFLlUeJPfwHpjQk7jqfKyQUCpXBKOomyNmQiLhpsuzC0RdQJmeNh5sdNrReyW9APjwytPChOxOhY40YcKutsor
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4675
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 mlxlogscore=999 spamscore=0 adultscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2604070000 definitions=main-2604150104
+X-Authority-Analysis: v=2.4 cv=eJUjSnp1 c=1 sm=1 tr=0 ts=69df7370 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=EIcjfB9IiI4px24ztqRk:22 a=VwQbUJbxAAAA:8
+ a=3HDBlxybAAAA:8 a=Idi4wqZkM-yIAAPqshAA:9 a=QEXdDO2ut3YA:10
+ a=laEoCiVfU_Unz3mSdgXN:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDEwNCBTYWx0ZWRfXyzl0jaUvvDkq
+ Vtyqstl9uawmqF520Z7R7x9nlm36PXJwOKX18+fdSFTnaL8bLm0BQ9HDz1HHNFA4bTS8u93J94v
+ ohdZpfHzvN+VkP+mq1DY27hz8NJzNkBnA34GGChmzKl/cGBMtxG0D04dE80jZClkdOhtgfVUdOa
+ j/AxGq86UmzrkbhBDjcLqQHdlXfk+lxUWEsmPbTwNrSnHiZEZ5p0XucpCeffs/dNxpISv+KT5WT
+ zEIxX42pDt2wwOLuh5jbSqn8ZxdzJGUXFhlkB44ZKGap0QmH5L55EsSGXEGT2yEyBwPTjn2hX4P
+ 4I90uGghTlBiLrVHPdCfNhv2gBzcq8t4QRZxNWRrR+VUmZctoQfe+1HkVWq6vsvezTy2M7YNu0/
+ Co5niYjK5MvXAjJZ3OSl0ijI8KIG7KGSqXD0unA/can9mmxEL0HwJ741NYjCIfzR/e2jh9PB9TA
+ ghjfeuhMzmFWu292tmQ==
+X-Proofpoint-ORIG-GUID: TOQ7GktOa3geA0Q_DnTV-ScK3efKQPxE
+X-Proofpoint-GUID: TOQ7GktOa3geA0Q_DnTV-ScK3efKQPxE
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238109-lists,stable=lfdr.de,kernel];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238101-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[0leil.net:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,netfilter.org:email,oracle.com:dkim,oracle.com:mid,oracle.onmicrosoft.com:dkim];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[foss@0leil.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nokia.com:email,qualcomm.com:email,cherry.de:mid,cherry.de:email,0leil.net:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CF26A40414B
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 01E1C403AE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Paweł Narewski <pawel.narewski@nokia.com>
+Hi,
 
-[ Upstream commit a7ac22d53d0990152b108c3f4fe30df45fcb0181 ]
+On 13/04/26 21:27, Greg Kroah-Hartman wrote:
+> 5.15-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Pablo Neira Ayuso <pablo@netfilter.org>
+> 
+> [ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
+> 
+> Skip expectations that do not reside in this netns.
+> 
+> Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
+> conntrack entries via proc").
+> 
 
-If two drivers were calling gpiochip_add_data_with_key(), one may be
-traversing the srcu-protected list in gpio_name_to_desc(), meanwhile
-other has just added its gdev in gpiodev_add_to_list_unlocked().
-This creates a non-mutexed and non-protected timeframe, when one
-instance is dereferencing and using &gdev->srcu, before the other
-has initialized it, resulting in crash:
+AI assisted review spotted a probable issue: I have gone through the 
+analysis and the summary is:
 
-[    4.935481] Unable to handle kernel paging request at virtual address ffff800272bcc000
-[    4.943396] Mem abort info:
-[    4.943400]   ESR = 0x0000000096000005
-[    4.943403]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    4.943407]   SET = 0, FnV = 0
-[    4.943410]   EA = 0, S1PTW = 0
-[    4.943413]   FSC = 0x05: level 1 translation fault
-[    4.943416] Data abort info:
-[    4.943418]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[    4.946220]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    4.955261]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    4.955268] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000038e6c000
-[    4.961449] [ffff800272bcc000] pgd=0000000000000000
-[    4.969203] , p4d=1000000039739003
-[    4.979730] , pud=0000000000000000
-[    4.980210] phandle (CPU): 0x0000005e, phandle (BE): 0x5e000000 for node "reset"
-[    4.991736] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-...
-[    5.121359] pc : __srcu_read_lock+0x44/0x98
-[    5.131091] lr : gpio_name_to_desc+0x60/0x1a0
-[    5.153671] sp : ffff8000833bb430
-[    5.298440]
-[    5.298443] Call trace:
-[    5.298445]  __srcu_read_lock+0x44/0x98
-[    5.309484]  gpio_name_to_desc+0x60/0x1a0
-[    5.320692]  gpiochip_add_data_with_key+0x488/0xf00
-    5.946419] ---[ end trace 0000000000000000 ]---
+I think this fix relies on commit: 02a3231b6d82 ("netfilter: 
+nf_conntrack_expect: store netns and zone in expectation")
 
-Move initialization code for gdev fields before it is added to
-gpio_devices, with adjacent initialization code.
-Adjust goto statements  to reflect modified order of operations
+This references commit explicitly states:
+"  This patch is required by the follow up fix not to dump expectations 
+that do not belong
+   to this netns." which is this patch.
 
-Fixes: 47d8b4c1d868 ("gpio: add SRCU infrastructure to struct gpio_device")
-Reviewed-by: Jakub Lewalski <jakub.lewalski@nokia.com>
-Signed-off-by: Paweł Narewski <pawel.narewski@nokia.com>
-[Bartosz: fixed a build issue, removed stray newline]
-Link: https://lore.kernel.org/r/20251224082641.10769-1-bartosz.golaszewski@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-[missing commit fcc8b637c542 ("gpiolib: switch the line state notifier
- to atomic"), commit dcb73cbaaeb3 ("gpio: cdev: use raw notifier for
- line state events") and commit d4f335b410dd ("gpiolib: rename GPIO chip
- printk macros") in 6.12.y.
- Both notifiers as well as both srcu inits are moved before the
- scoped_guard, following same logic as in a7ac22d53d09.
- Rest is changes to git context only.]
-Cc: stable@vger.kernel.org # 6.12
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
----
- drivers/gpio/gpiolib.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 3f9019cc832ac..5c8cd81656963 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -988,6 +988,17 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	gdev->ngpio = gc->ngpio;
- 	gdev->can_sleep = gc->can_sleep;
- 
-+	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
-+	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
-+
-+	ret = init_srcu_struct(&gdev->srcu);
-+	if (ret)
-+		goto err_free_label;
-+
-+	ret = init_srcu_struct(&gdev->desc_srcu);
-+	if (ret)
-+		goto err_cleanup_gdev_srcu;
-+
- 	scoped_guard(mutex, &gpio_devices_lock) {
- 		/*
- 		 * TODO: this allocates a Linux GPIO number base in the global
-@@ -1002,7 +1013,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 			if (base < 0) {
- 				ret = base;
- 				base = 0;
--				goto err_free_label;
-+				goto err_cleanup_desc_srcu;
- 			}
- 
- 			/*
-@@ -1022,21 +1033,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 		ret = gpiodev_add_to_list_unlocked(gdev);
- 		if (ret) {
- 			chip_err(gc, "GPIO integer space overlap, cannot add chip\n");
--			goto err_free_label;
-+			goto err_cleanup_desc_srcu;
- 		}
- 	}
- 
--	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
--	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
--
--	ret = init_srcu_struct(&gdev->srcu);
--	if (ret)
--		goto err_remove_from_list;
--
--	ret = init_srcu_struct(&gdev->desc_srcu);
--	if (ret)
--		goto err_cleanup_gdev_srcu;
--
- #ifdef CONFIG_PINCTRL
- 	INIT_LIST_HEAD(&gdev->pin_ranges);
- #endif
-@@ -1046,11 +1046,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 
- 	ret = gpiochip_set_names(gc);
- 	if (ret)
--		goto err_cleanup_desc_srcu;
-+		goto err_remove_from_list;
- 
- 	ret = gpiochip_init_valid_mask(gc);
- 	if (ret)
--		goto err_cleanup_desc_srcu;
-+		goto err_remove_from_list;
- 
- 	for (desc_index = 0; desc_index < gc->ngpio; desc_index++) {
- 		struct gpio_desc *desc = &gdev->descs[desc_index];
-@@ -1117,10 +1117,6 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	of_gpiochip_remove(gc);
- err_free_valid_mask:
- 	gpiochip_free_valid_mask(gc);
--err_cleanup_desc_srcu:
--	cleanup_srcu_struct(&gdev->desc_srcu);
--err_cleanup_gdev_srcu:
--	cleanup_srcu_struct(&gdev->srcu);
- err_remove_from_list:
- 	scoped_guard(mutex, &gpio_devices_lock)
- 		list_del_rcu(&gdev->list);
-@@ -1130,6 +1126,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 		gpio_device_put(gdev);
- 		goto err_print_message;
- 	}
-+err_cleanup_desc_srcu:
-+	cleanup_srcu_struct(&gdev->desc_srcu);
-+err_cleanup_gdev_srcu:
-+	cleanup_srcu_struct(&gdev->srcu);
- err_free_label:
- 	kfree_const(gdev->label);
- err_free_descs:
+Also part of patch series 4 and 5: 
+https://lore.kernel.org/all/20260320125947.305117-5-pablo@netfilter.org/
 
--- 
-2.53.0
+Given that we haven't taken 02a3231b6d82 ("netfilter: 
+nf_conntrack_expect: store netns and zone in expectation") to 5.15.y 
+should we drop this ?
+
+Why ? Without it, the 5.15 backport still uses master-conntrack-derived 
+context instead of expectation-owned stored netns/zone state
+
+i.e Upstream has:
+
+possible_net_t net;
+
+static inline struct net *nf_ct_exp_net(struct nf_conntrack_expect *exp)
+{
+       return read_pnet(&exp->net);
+}
+
+Downstream has:
+
+static inline struct net *nf_ct_exp_net(struct nf_conntrack_expect *exp)
+{
+       return nf_ct_net(exp->master);
+}
+
+
+I don't know the internals of this fully, but looks like we might not 
+want to take this fix without 02a3231b6d82 ("netfilter: 
+nf_conntrack_expect: store netns and zone in expectation")
+
+
+Thanks,
+Harshit
+
+
+
+
+
+
+> Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
+> Signed-off-by: Florian Westphal <fw@strlen.de>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   net/netfilter/nf_conntrack_expect.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+> index 6d056ebba57c6..10d4dfbdde226 100644
+> --- a/net/netfilter/nf_conntrack_expect.c
+> +++ b/net/netfilter/nf_conntrack_expect.c
+> @@ -627,11 +627,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
+>   {
+>   	struct nf_conntrack_expect *expect;
+>   	struct nf_conntrack_helper *helper;
+> +	struct net *net = seq_file_net(s);
+>   	struct hlist_node *n = v;
+>   	char *delim = "";
+>   
+>   	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
+>   
+> +	if (!net_eq(nf_ct_exp_net(expect), net))
+> +		return 0;
+> +
+>   	if (expect->timeout.function)
+>   		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
+>   			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
 
 
