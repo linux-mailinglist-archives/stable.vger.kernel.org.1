@@ -1,93 +1,67 @@
-Return-Path: <stable+bounces-238148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLojI86y32lCXwAAu9opvQ
-	(envelope-from <stable+bounces-238148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:46:22 +0200
+	id EKp7FUW132lCXwAAu9opvQ
+	(envelope-from <stable+bounces-238149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2F340610B
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008D940625A
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6954F302BE9D
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:45:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DA293027103
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 15:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAF93E3141;
-	Wed, 15 Apr 2026 15:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2E83E3C6B;
+	Wed, 15 Apr 2026 15:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lL3gIjWB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QV/84CX3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A09E3E2771
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 15:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F46C3E3C5E;
+	Wed, 15 Apr 2026 15:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776267952; cv=none; b=RXITve35gR+41xFDDyLqgMUHpjtjVNR7NJ+8ttBtHM4PtXiR15V9muu0zBQ4/5Wy2qqEAaIVnAT5IS7q9X+qx5gui6Nj6OhdJCWNs3aWxqaKprIMbzVLWP9TJ997KgWkfCYwtHI4NKTDmxvcDHqWzkPyrfMTpsdA9BEnBKFmfCg=
+	t=1776268604; cv=none; b=SdapKcD0q0E9S46civvmJF/mNKxwrW+Osx+icFTOc3LelwovSKr16BPTDq80wwtbkxQmOhPiajze7S4ipjaA51V6FtBJPmkZZP5cyEO+LJBSXxfxmeYNql+5PA1elJbHuhLyO0XXLgeiFxR+kStlAFOROHHVxPQTijk6YVqxd4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776267952; c=relaxed/simple;
-	bh=gh7C2dUIZG4hFmy7cefMS/4bTu2pI3aYjrPn6rlC3xE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nRAidcMvtl89JAwAECi6bPA5PhjRBH55jpD+NmLlZCr1IhHaP5UzEFdsJNi7ctVQsQwG85ZFLxJBcLMqcEp4ZuSxRBdhQnINtrdodInlcfR/FzTGnvAqXEBuFAj2YmnqAFxYu9twzTknrJeVgOyEPQOxaU23y2hcqT86itjlcy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lL3gIjWB; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-82f68b3aaf7so340910b3a.0
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 08:45:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776267951; x=1776872751; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TnIFZObf5ErHGAi6LOPmajn+8u0D4ZmRXDoAcGE05pE=;
-        b=lL3gIjWBeTBIX8TUGQVxde2jhgDTUpaf4MFozRqkyLw+KlwQUwhtugkpqln+ZHXzb0
-         pgPrdUYyF1KQdQ7chAMkIfA4cWid1L5V+nax/GEzAt8ZLl6e3mGiQ2KchPekhfbTh2ww
-         fWFyIQusrnZxdkAOHvdhGYupPweWN96JT3gZ3ZGPn5HRMVZpFevjDDE05hj45Yg8mBNI
-         aMns8yQmHY98n+xU0zY2MZG2LmdAUNgF+brDbSWhDp/73gdYWs97/fVW8qWKizPa2Q/8
-         8MZOtZxPE051JrpGc30lgb0mKnU7dW+gp5zoMwQiPkiTD5bdlGgDhorBhy34nQvm47eJ
-         Ahyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776267951; x=1776872751;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TnIFZObf5ErHGAi6LOPmajn+8u0D4ZmRXDoAcGE05pE=;
-        b=aTfpf41WQ/FiDMDpPf3LrtbVheMPJxoA/n55vWKMwGo4xe6cDdIZbbdWbrJeQsfjIl
-         kqGxF8DIWZCVQG0Qk/5Mass/zMloSRhvSlU48O5hjsQMHUGUDHLinRTnwxfWHksep8q2
-         5uiqlgKUVrjF2TMT6CEyO4tyPl5ini3JaqQftqImSBYLe8Qls6R9sUUwFgyo82/8IqV+
-         q2FVJ66pRfVCEagdA5p2Hv4fR9/ffluGMo0vASzkj5l57dZ7HushiEgah3ymrS63mxrs
-         J5FjWOfWdRfPzjZBYMNGiuo/PtdHCNmoaMC/ismVxlj1KEpdSniRbEjRes6baAakGOPQ
-         Lp2w==
-X-Forwarded-Encrypted: i=1; AFNElJ98Eq+un4beQjN6WqGZlBqP0LwNxdU0yZxdaYJsOl1TclrPFfN7Y35HuhNiI3t0Yz4mVFEmk64=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxa3bMYVEcDGQK9CkTieu8SfO+bnzPZel2ei+/s4UJOGApikA2A
-	CWEVlECBW4fGYlfkYReRhoFiBWnf06n0mDViYyFgO0MYxLizFFe8zt1D
-X-Gm-Gg: AeBDieuZDfQYOqCgZy+uZwmFMxtVc2TnrN+i/Tp2wJ6B4fgqdmy2Z34/KIIGzrJ1kOV
-	foVNF9r9dSr5RQEnp3X73/oFcIen1ISWoeFDmaVusEWfaERZnTFb//TsYEziMu3R+T3EMYMbMPg
-	4EB+orrXzZhQ9eA7Ly6oG2yef/eoO5s9JU6H9OeRjuwcdcX7YYS5qadlj7vef+9FP8tnZuaX/XZ
-	7GeRfCl/0V40TmL9ydEBfpT1NxJH8mFNmXlWXOTG37oy17Ma2Hi+ASB3XvoYYjPQS+m2ka0TH7a
-	U0aLLbtVMW4aSjF5UwJaVXxmnifE7cI9SL8dlEe1Gc4OpeoZAWL0Fg+U7oOXIfyLZQJTOuUqWkg
-	gt6RTpdqEwdDTPQa80yhQdwAHIDEwP5jr1EXkzK24by6soWC7mLZCMPWnsxSO2yWCpYYfQxNLVW
-	qOpcViXWZD0iV++vptpP2Ny0iUlNfPvJGp
-X-Received: by 2002:a05:6a00:1ad3:b0:82f:6be8:6c0e with SMTP id d2e1a72fcca58-82f6be878e3mr2380350b3a.45.1776267950573;
-        Wed, 15 Apr 2026 08:45:50 -0700 (PDT)
-Received: from lgs.. ([112.224.67.108])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f67476a5fsm2506233b3a.60.2026.04.15.08.45.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 08:45:49 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Shuah Khan <skhan@linuxfoundation.org>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Dafna Hirschfeld <dafna.hirschfeld@collabora.com>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	s=arc-20240116; t=1776268604; c=relaxed/simple;
+	bh=3U/D4UJ1AZ9cCh8oZwiYyTzVpVp39NmKWBMFwFLnlzo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eiNy6+RQjKR8RiivrGfOcIe0fnPJ1uXOXL4wBkfW1qdIF1aeuqAbwq6SfP9hxe7omfSCF+I8AbX12swWEL/iu8bVb6V8jhWQ9bjIHrINIfYuvtLn4JF8WxjTAbpaztkyPZliflGEfVwJU/vps94fw3rmf7pm4HStN72ieADf0Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QV/84CX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581D0C19424;
+	Wed, 15 Apr 2026 15:56:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776268603;
+	bh=3U/D4UJ1AZ9cCh8oZwiYyTzVpVp39NmKWBMFwFLnlzo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QV/84CX3NyG5jxXjtSz99+7b5OTHRS6jNngo1dhG0kVggGlohmtFEOkQ2f/GA3gQl
+	 dzfSAKjc7EvwV83P/sCfhESNbBJq8DNej/jEoBGPmVBXptUgcHJ9PcWxaPrpMQl3rw
+	 cZ0Ropt7TzzuAzuSZ7zYaGMm/6tCg9AvDTH75/nk/FKikfKrK1+HbFSsBeJ1XbVgRr
+	 +GFaDLXxDFOoiLGJS0xU3m5Nxw3eQgIqRb+DfqlPJ+bPBvBVJMiTYg+29AuOnSgutB
+	 7H/vDnT/67IIewRYqkDhv/PRzAMilTVmewChPAWbtF3UWL90/DVtfbWGiQT+w6SDdR
+	 0flumdLzU3Gmw==
+From: Simon Horman <horms@kernel.org>
+To: mashiro.chen@mailbox.org
+Cc: 'Simon Horman' <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jreuter@yaina.de,
+	linux-hams@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] media: vimc: fix reference leak on failed device registration
-Date: Wed, 15 Apr 2026 23:45:37 +0800
-Message-ID: <20260415154537.3451732-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH net] net: ax25: fix integer overflow in ax25_rx_fragment()
+Date: Wed, 15 Apr 2026 16:56:17 +0100
+Message-ID: <20260415155616.826085-2-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260408172521.281365-1-mashiro.chen@mailbox.org>
+References: <20260408172521.281365-1-mashiro.chen@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,73 +72,134 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238148-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-238149-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DE2F340610B
+X-Rspamd-Queue-Id: 008D940625A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When platform_device_register() fails in vimc_init(), the embedded
-struct device in vimc_pdev has already been initialized by
-device_initialize(), but the failure path returns the error without
-dropping the device reference for the current platform device:
+From: 'Simon Horman' <horms@kernel.org>
 
-  vimc_init()
-    -> platform_device_register(&vimc_pdev)
-       -> device_initialize(&vimc_pdev.dev)
-       -> setup_pdev_dma_masks(&vimc_pdev)
-       -> platform_device_add(&vimc_pdev)
-
-This leads to a reference leak when platform_device_register() fails.
-Fix this by calling platform_device_put() before returning the error.
-
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
-
-Fixes: 4babf057c143f ("media: vimc: allocate vimc_device dynamically")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 ---
- drivers/media/test-drivers/vimc/vimc-core.c | 1 +
- 1 file changed, 1 insertion(+)
+net: ax25: fix integer overflow in ax25_rx_fragment()
 
-diff --git a/drivers/media/test-drivers/vimc/vimc-core.c b/drivers/media/test-drivers/vimc/vimc-core.c
-index 15167e127461..fee0c7a09c4f 100644
---- a/drivers/media/test-drivers/vimc/vimc-core.c
-+++ b/drivers/media/test-drivers/vimc/vimc-core.c
-@@ -421,6 +421,7 @@ static int __init vimc_init(void)
- 	if (ret) {
- 		dev_err(&vimc_pdev.dev,
- 			"platform device registration failed (err=%d)\n", ret);
-+		platform_device_put(&vimc_pdev);
- 		return ret;
- 	}
- 
--- 
-2.43.0
+This commit addresses an integer overflow in the ax25_cb fragmentation
+reassembly accumulator. It adds a check to ensure the combined payload
+of fragments does not exceed USHRT_MAX. If the limit is exceeded, the
+fragment queue is purged to prevent allocating a tiny buffer that leads
+to a panic.
 
+> Every skb_put() call in the copy loop
+> that follows writes far beyond the allocated headroom, corrupting
+> the kernel heap.
+
+Is this description accurate?
+
+skb_put() explicitly performs strict bounds checking and triggers a
+deterministic kernel panic via skb_over_panic() if exceeded, rather than
+silently corrupting the heap.
+
+> Fix mirrors the identical bug fixed in NET/ROM (nr_in.c):
+
+This isn't a bug, but is this the correct file reference? The check for
+USHRT_MAX actually appears to exist in X.25 (x25_in.c), not NET/ROM.
+
+> diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+> index d75b3e9ed93de..68202c19b19e3 100644
+> --- a/net/ax25/ax25_in.c
+> +++ b/net/ax25/ax25_in.c
+> @@ -41,6 +41,11 @@ static int ax25_rx_fragment(ax25_cb *ax25, struct sk_buff *skb)
+>  				/* Enqueue fragment */
+>  				ax25->fragno = *skb->data & AX25_SEG_REM;
+>  				skb_pull(skb, 1);	/* skip fragno */
+> +				if ((unsigned int)ax25->fraglen + skb->len > USHRT_MAX) {
+
+Is there a race condition with ax25->fraglen here?
+
+If fragments for the same connection arrive concurrently on different CPUs,
+both could evaluate this bounds check as safe and then concurrently add
+their lengths.
+
+> +					skb_queue_purge(&ax25->frag_queue);
+> +					ax25->fragno = 0;
+> +					return 1;
+
+Does this code leak the skb?
+
+When returning 1 here, the caller might skip freeing the skb because it
+assumes the packet was successfully consumed or queued.
+
+Could we explicitly call kfree_skb(skb) before returning 1, or return 0 to
+instruct the caller to free it?
+
+> +				}
+>  				ax25->fraglen += skb->len;
+>  				skb_queue_tail(&ax25->frag_queue, skb);
+
+[ ... ]
+
+>  					/* Copy data from the fragments */
+>  					while ((skbo = skb_dequeue(&ax25->frag_queue)) != NULL) {
+>  						skb_copy_from_linear_data(skbo,
+>  							  skb_put(skbn, skbo->len),
+>  									  skbo->len);
+
+Could this read past the end of the skbo->data buffer if the fragment is
+non-linear?
+
+If the skb has paged data, skbo->len exceeds the linearly mapped data size,
+which might trigger a panic or leak adjacent memory into the reassembled
+packet.
+
+Should this use skb_copy_bits() instead?
+
+[ ... ]
+
+>  	} else {
+>  		/* First fragment received */
+>  		if (*skb->data & AX25_SEG_FIRST) {
+>  			skb_queue_purge(&ax25->frag_queue);
+>  			ax25->fragno = *skb->data & AX25_SEG_REM;
+>  			skb_pull(skb, 1);		/* skip fragno */
+>  			ax25->fraglen = skb->len;
+
+Is there a possibility of truncating the length here?
+
+Since ax25->fraglen is an unsigned short, if a first fragment arrives with
+skb->len > USHRT_MAX, it might be silently truncated.
+
+Subsequent continuation fragments will be validated against this artificially
+small fraglen, bypassing the new USHRT_MAX check.
+
+Should the bounds check be applied to the first fragment as well?
+
+>  			skb_queue_tail(&ax25->frag_queue, skb);
+>  			return 1;
+>  		}
+>  	}
 
