@@ -1,178 +1,233 @@
-Return-Path: <stable+bounces-238054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PNyEB8y32lqQAAAu9opvQ
-	(envelope-from <stable+bounces-238054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:37:19 +0200
+	id IODVEAA232lqQAAAu9opvQ
+	(envelope-from <stable+bounces-238055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:53:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE124400E16
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:37:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392F54011AF
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 301A5304D643
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:37:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03B1C305F778
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCC139021F;
-	Wed, 15 Apr 2026 06:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D523921C8;
+	Wed, 15 Apr 2026 06:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LzME5p3c"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ceDU4Daj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEBD38AC76
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24FF3921E3
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776235036; cv=none; b=dRvJwn9uvzfjH6T34QclYWmMwsOOg67ybW6o3M4Mnt/J/vYowo92Cg9ZBmx1gOnyojBRGGGZOwRYiIfWPUMRklRDU//ndrTIVD8B5tDnddxnOeUUDqrIk57wDkESdW1neQkhKI4egWAU/FwbEwu5o8mdb8esMPAk0wVDOPcBlkU=
+	t=1776236026; cv=none; b=Qz45NHdAYt8L+94Hi2D6MjvpIKfOx8VoLRjU3gq4KwUJLREUysKrpbXa3WAcqk6I06XibfKv6Qi7XNdt35hDuhPVysSRM0XdamdYdwy4ZT/wASsJ4bMOWVWxAXI0+7i5baJgtJgZDZJ/7EPVXPEvcZf4PBl2HHhXMG/8iBKqg60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776235036; c=relaxed/simple;
-	bh=yJ9CzZdh0ITtrg/Qg4Whi7FTsOhB5NFwZmHZHk5gvDQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XyRSVEiaG/I9UOVErPXWU9qw/ysYZhyRFvyGOfY5RnyNtwlNBx4UjNd5N1eiaeK9j60SxPrvzraW1sK/D9wTC9MV/6T/wAknTwCd0/Vlke3o+q/Xrf31FrlBt4i4pt6ZUvV+O5R4f3IDc/Bv7irZkeSBgB8mnV4xSKlb+CPQ5Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LzME5p3c; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50d58c513dbso46770881cf.2
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 23:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776235034; x=1776839834; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rrC9vNrM6E6rzZeBaqxVv48Wut0j5e/JM27h9uWS1lQ=;
-        b=LzME5p3cZ//ZOSu7QCVtD6m3PnoYyPtXmpsibWdgflbxsNBCfy2GRVPZNtdXHqqI09
-         9wjUKpf+PObtTmjsiMfPiWuoVqIMwf/xCf3ghGfEYCmF5/4dUhH1ojyedtqPzaGptyU/
-         pyA3mkEhLMSfpIBlkbt7FGp3+Kejsix0vVXOKilLFDxmvBjbY46Ujf48/4d2XkoZo6fQ
-         Fr2qiob10hzpVyUmkek0gYKDiMo/tVcEsKSlNeZYB1un9G+Rjb/g8id3kFkjZWWtP2Td
-         z2Q1xN9aZtsTMMWHpVDYBnZ+uYfehu5FMFAyOpfEDUgPSJxBPfQTpJbFOcq19HFTI7jK
-         o8KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776235034; x=1776839834;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rrC9vNrM6E6rzZeBaqxVv48Wut0j5e/JM27h9uWS1lQ=;
-        b=L9imBDJoUZ6uxlF60IPbadXG/SNu6vzb3doAs5zEhtoW1vMi5s90BsIJGu75xCQVNH
-         wrki57zBbX130z9wPJa97rtLlYWzLU996VQDyBDqjZo7zEVfLf/3g3n9O0ntU7uf3dY5
-         2qW3A43DpAj5kDsdvp36ejwoqhbqVe/+hDpoWxOlXJjEQndhxPRQBBAcmU0nNXUDCv+9
-         lcMHdeC7DS1rBd9uutw6ni1wzpce+uM93c4YsgKJnAsRldhnAHtQsPAkJhoCxjLa7zIS
-         8UqSIaSb+Ig4KSHA8vPhiTEh5x7k3fO1OGAuz9OmgR6HAnxaZLoyT6RVyHwYdOSkIIr4
-         dWCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8GyOl9FcqJQNR17X6yLnNPLPFK0YxIjAO2NSBrPyFE08S9b91ybKfmdpjvkPifzFhdAZX0SEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVfGYbl1I50Xr0nnJb6tdyHDBqWJmuAj02mQ6Asi9/12PFnTgq
-	oMyH3ojLABvHIW6Euc4r7vYQYpCYLwxNWvgOLKEM+PnxIOhM/Ls4/R0h
-X-Gm-Gg: AeBDietR6EJ/CmYzL3Rx8PF+CGtevP30lUUC7NwRNFJhXfXud4iipF8cHcIrTqMksfT
-	+fsFWqqERvENqAVxAQotPUJkTCq9PlROAr3CfNLBlC0DSZbIfzyJlGl4xTsLJcNHkj5UxD7JcnF
-	5dZSxESW6nl+37sKRgc/qzA1VGJLjtcVkjfCuXtixeGXUkkgeQ/GxoE2/VjLMsrjwyGoKsPHU8s
-	hAPXb+PfvsNxOO9e0gdTId7i8RnKxUKIAH9x3DY13gAfC9KmnBygDwK/+QrZxlEU3809kBZzPBo
-	z4oEJgBKshWNk/8edAg9Sdp8c+SzaJDFlOOmnKLN4SIRYO9VzF5tQ53ZdlErLm1hFbZhNAEpmUM
-	wMh4/Oq4iYxp66HlfETvEsHti7w4wJ4G/OYwzs6Ylje8JEtB8rwsfCGNgqQ1y3ToVP4EFp3AuPj
-	ie1buuv7ga27Luyvd4Q2QgCXDfYg4i9o4ejgYHsFAooHUpTzeYrGqxTEaWEFS8hzz0TtXtelGGf
-	JQqyXmOPY5pGvfpbOeKdxdavKMO5Swrq8A+n3M=
-X-Received: by 2002:a05:622a:134c:b0:50d:82ca:7c9c with SMTP id d75a77b69052e-50dd5adaf18mr314133561cf.14.1776235033794;
-        Tue, 14 Apr 2026 23:37:13 -0700 (PDT)
-Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e1afebd48sm6222121cf.26.2026.04.14.23.37.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 23:37:13 -0700 (PDT)
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-hams@vger.kernel.org,
-	jreuter@yaina.de,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Subject: [PATCH v3 net] ax25: fix OOB read after address header strip in ax25_rcv()
-Date: Wed, 15 Apr 2026 06:36:54 +0000
-Message-Id: <20260415063654.3831353-1-ashutoshdesai993@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1776236026; c=relaxed/simple;
+	bh=h06io7gcIU78lOPpiwU/zAiBmWgRW7eARf65dBcgVI8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=QGFRNr6yPyFwSgHZZvHcFQ4I/STtiqxo8xxiA/7i5oBoOH5RH75p0vusQylGx6QHdyWR3ks2oPCqh56NOwyYiWCn21/6kZZOCK67AlUCiQAr54lm/Jcc9fKRCQoO+G8ZGfssOyJK506bMYh/KGtN/6jFSkhd4E5/dE9MafKBtFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ceDU4Daj; arc=none smtp.client-ip=203.254.224.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20260415065336epoutp038b776b32b6153f5267be9fb6fda374ee~mdT8FWDf72549225492epoutp03S
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:53:36 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20260415065336epoutp038b776b32b6153f5267be9fb6fda374ee~mdT8FWDf72549225492epoutp03S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1776236016;
+	bh=A2Oe+K6G+so/eNF7+ZZwIvrKnrLwucXjD0QcuG1eQEs=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=ceDU4DajGDypaXxcPwkaRQaj5Pc+xvQ4HdZ7TkWqhbsPFKnPDSpYgZTgNqspQ2vxo
+	 1W5zl4gVzOo1lFA30Ydex0Mpren4gOWwhBpxuJToivwDQ6AzSMkujhpXGMJhsfuWGg
+	 rgIdurnX3W1ABjnRolt/SiINeibUsG1TCm0H/7WM=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260415065335epcas5p1921d6dbdf504c8df78b9d53d2cf52023~mdT7YQFHv1005610056epcas5p1C;
+	Wed, 15 Apr 2026 06:53:35 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.89]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4fwX0t4pwXz6B9m6; Wed, 15 Apr
+	2026 06:53:34 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20260415065334epcas5p3ccec0106ebbf98ae036feab1b762bf9a~mdT52vxcV1892218922epcas5p3Z;
+	Wed, 15 Apr 2026 06:53:34 +0000 (GMT)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260415065331epsmtip1ab8cbeb56395313abb9076b4a268a4c1~mdT3kVRLg0303303033epsmtip1d;
+	Wed, 15 Apr 2026 06:53:31 +0000 (GMT)
+Message-ID: <242b06d2-7785-4728-8286-ff79a8dfaaa6@samsung.com>
+Date: Wed, 15 Apr 2026 12:23:29 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: dwc3: Fix GUID register programming order
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"paulz@synopsys.com" <paulz@synopsys.com>, "balbi@ti.com" <balbi@ti.com>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"jh0801.jung@samsung.com" <jh0801.jung@samsung.com>, "akash.m5@samsung.com"
+	<akash.m5@samsung.com>, "h10.kim@samsung.com" <h10.kim@samsung.com>,
+	"alim.akhtar@samsung.com" <alim.akhtar@samsung.com>, "thiagu.r@samsung.com"
+	<thiagu.r@samsung.com>, "muhammed.ali@samsung.com"
+	<muhammed.ali@samsung.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <20260415014620.mjmlt6w3ttlzosr3@synopsys.com>
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-CMS-MailID: 20260415065334epcas5p3ccec0106ebbf98ae036feab1b762bf9a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260410070245epcas5p49355581dcb9f629641c9914ce4ce80ec
+References: <CGME20260410070245epcas5p49355581dcb9f629641c9914ce4ce80ec@epcas5p4.samsung.com>
+	<20260410064735.515-1-selvarasu.g@samsung.com>
+	<20260414010532.sxciijnzak3ldw35@synopsys.com>
+	<d2be3f54-5375-4f1b-ab4b-e2ff81c43630@samsung.com>
+	<20260415014620.mjmlt6w3ttlzosr3@synopsys.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[samsung.com:+];
+	TAGGED_FROM(0.00)[bounces-238055-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,yaina.de,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-238054-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AE124400E16
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[selvarasu.g@samsung.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: 392F54011AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-A remote station can send a crafted KISS frame that is just long enough
-to pass ax25_addr_parse() (minimum 14 address bytes) but carries no
-control or PID bytes. After ax25_kiss_rcv() strips the KISS framing
-byte and ax25_rcv() strips the address header with skb_pull(), skb->len
-drops to zero. The subsequent reads of skb->data[0] (control byte) and
-skb->data[1] (PID byte) are then out of bounds, which can crash the
-kernel or leak heap memory to a remote attacker.
 
-Use pskb_may_pull(skb, 2) after the skb_pull() to ensure both bytes
-are in the linear area before reading them. Discard malformed frames
-that carry no control/PID pair.
+On 4/15/2026 7:16 AM, Thinh Nguyen wrote:
+> On Tue, Apr 14, 2026, Selvarasu Ganesan wrote:
+>> On 4/14/2026 6:35 AM, Thinh Nguyen wrote:
+>>> On Fri, Apr 10, 2026, Selvarasu Ganesan wrote:
+>>>> The Linux Version Code is currently written to the GUID register before
+>>>> dwc3_core_soft_reset() is executed. Since the core soft reset clears the
+>>>> GUID register back to its default value, the version information is
+>>>> subsequently lost.
+>>> This is not right. Soft reset should not clear the GUID register.
+>>> Something else must have cleared it. Did you assert Vcc reset (hard
+>>> reset) during phy reset/initialization?
+>>>
+>>> BR,
+>>> Thinh
+>> Hi Thinh,
+>>
+>> Thank you for the clarification. Yes, you are correct, this issue is not
+>> related to a dwc3 core soft reset. Instead, the GUID value reverts to
+>> its default state when the PHY link_sw_reset completes during PHY init
+>> sequence.
+>>
+>> We are using the Synopsys eUSB PHY, this reset is triggered from our
+>> downstream driver during the PHY init sequence (invoked through
+>> |dwc3_core_init|).
+>>
+>> Could you please suggest the best way to retrieve the correct linux
+>> version information from the GUID?
+>> Additionally, would it be feasible to update the GUID register after the
+>> PHY init sequence (triggered by |dwc3_core_init|) completes?
+>>
+> Yes. Just fix up the changelog to properly describe the problem and
+> solution.
+>
+> BR,
+> Thinh
+Hi Thinh,
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Thanks for the confirmation. I have modified the changelog as shown 
+below, please review it once then i will post updated patchset.
+
+
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Date: Thu, 9 Apr 2026 18:34:03 +0530
+Subject: [PATCH v2] usb: dwc3: Move GUID programming after PHY 
+initialization
+
+The Linux Version Code is currently written to the GUID register before
+PHY initialization. Certain PHY implementations (such as Synopsys eUSB
+PHY performing link_sw_reset) clear the GUID register to its default
+value during initialization, causing the kernel version information to
+be lost.
+
+Move the GUID register programming to occur after PHY initialization
+completes to ensure the Linux version information persists.
+
+Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our 
+GUID register")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 ---
-V2 -> V3: remove incorrect Suggested-by; add symptom, Fixes, Cc stable
-V1 -> V2: use pskb_may_pull(skb, 2) instead of skb->len < 2
+  drivers/usb/dwc3/core.c | 12 ++++++------
+  1 file changed, 6 insertions(+), 6 deletions(-)
 
-v2: https://lore.kernel.org/netdev/20260409152400.2219716-1-ashutoshdesai993@gmail.com/
-v1: https://lore.kernel.org/netdev/20260409012235.2049389-1-ashutoshdesai993@gmail.com/
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 161a4d58b2cec..8b9e9d3e9589a 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1341,12 +1341,6 @@ int dwc3_core_init(struct dwc3 *dwc)
 
- net/ax25/ax25_in.c | 5 +++++
- 1 file changed, 5 insertions(+)
+         hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
 
-diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-index d75b3e9ed93d..6a71dea876a1 100644
---- a/net/ax25/ax25_in.c
-+++ b/net/ax25/ax25_in.c
-@@ -217,6 +217,11 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
- 	 */
- 	skb_pull(skb, ax25_addr_size(&dp));
- 
-+	if (!pskb_may_pull(skb, 2)) {
-+		kfree_skb(skb);
-+		return 0;
-+	}
+-       /*
+-        * Write Linux Version Code to our GUID register so it's easy to 
+figure
+-        * out which kernel version a bug was found.
+-        */
+-       dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
+-
+         ret = dwc3_phy_setup(dwc);
+         if (ret)
+                 return ret;
+@@ -1374,6 +1368,12 @@ int dwc3_core_init(struct dwc3 *dwc)
+         if (ret)
+                 goto err_exit_ulpi;
+
++       /*
++        * Write Linux Version Code to our GUID register so it's easy to 
+figure
++        * out which kernel version a bug was found.
++        */
++       dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
 +
- 	/* For our port addresses ? */
- 	if (ax25cmp(&dest, dev_addr) == 0 && dp.lastrepeat + 1 == dp.ndigi)
- 		mine = 1;
--- 
+         ret = dwc3_core_soft_reset(dwc);
+         if (ret)
+                 goto err_exit_phy;
+--
 2.34.1
 
+Thanks,
+Selva
 
