@@ -1,95 +1,94 @@
-Return-Path: <stable+bounces-238065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKn5D2tR32nLRgAAu9opvQ
-	(envelope-from <stable+bounces-238065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:50:51 +0200
+	id aAoPBpJR32nLRgAAu9opvQ
+	(envelope-from <stable+bounces-238066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:51:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6B940225C
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:50:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC49402273
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91474302590C
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:49:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 410C8300C6C1
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB023D47B2;
-	Wed, 15 Apr 2026 08:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8032E372EEF;
+	Wed, 15 Apr 2026 08:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eSjKUm7d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rCgpz6WG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF1307AE3
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 08:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283AE37E2F9
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 08:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776242977; cv=none; b=psEAeROo99FHil45c6PFU3qhfhYSXhgwws+ebp7kfYNEuvygweYX3CJ5gPht2zVgwIXsg/RXwQQtNnz4PrHLP7Kw5i/vWc05FLq8S3CSPRC7nSiGwMy7M+CIUlhJhWw7k4m/Bdg43Tm9Dlz5TXBGmRP+umVIxfBNwZxaRJnrXGc=
+	t=1776243083; cv=none; b=ICUIC3ye8wr6/bwXbQzeH0eniElbYgI+ORw2tbsTxCwrirg0ge7jqGLKjcHZ1TehRRL6SiFKkHVZPBdk5MkN6vJwq79/91qZ4FEYxpc4VyfhJH+YYGSK4xKd4uoYUZXJPXwHSRHdahvZgV6OD9DtJakrO/UI/+/48CBPa8Nb7mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776242977; c=relaxed/simple;
-	bh=MnPayftqVi09a3drMg0t4qocs6aUdLqOEGb/ORTQOB0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scukZHh2eNoCbjZEx9i5ObB78f/ApxQexHpuUlO1DXiGAaQt2fQCD+v/1f8pmcOayxFzuh0DduD9wzyOxokqBZCUI235F2vlsfc0n/9WnBLOjU1Yyrmr/zm/wc0yRGPQjhKicwT2VHyuQykgyoCDASP58F3bo24tuBZ3zbvCIwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eSjKUm7d; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1776243083; c=relaxed/simple;
+	bh=NzkOE0XXojEPsLDp5AjW4nUeVXuWbIOFyVsKkxFSCVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tu7y9Ng+4Xeym+6Lu84fwprs3ayI9EamVFFrk6gqX/AiE/L/zWHzS3o6wrvEeVHb8QQRXFJ4HaeDHqE98+7OlUKSd1JkrN2ajsECiBkI212yw4ik8nPNnx4apCsjqItd6S8fQk3fwaHnD6J0xb5f/3MLEzanGuFPsJTPxYUeIlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rCgpz6WG; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aae4d2d215so6625605ad.2
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 01:49:34 -0700 (PDT)
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35d9c7bf9a1so5781955a91.3
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 01:51:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776242974; x=1776847774; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DBagG6nPdWPH/FpnMTW4SeLjEl1Kaw67bUgUq4EnXws=;
-        b=eSjKUm7dsGebnmPXytVIxQwt/PXAmeoo9EViyJJzaR4zi0CDjGKU/jQf4KH2cBF3yZ
-         mmJpzT0mNk1HTEJ0Oesm4yVUnxY2Y03DkGWGwwf6CVW/FiHGcHyfc5urtVEIgi5xw1lG
-         Jx8Y17wLENmfA81zVJRIKGeVrzQ0wE5HApOBBjErXklhTtoeAUXltoiz4FNsAhKCfFPk
-         yJm+3wvvVLArGoplxxf75ntiFB+MCCLm2ZVRzHFM46+svKuGIdmeFqqVvAf2GeFWbPMI
-         J64rMU2v9lFs11wBGI/6B+8w20qXXkT9x7WfsUV/lomfd5ttke3lD9QZ8AvS1W9P7iB6
-         c+Zw==
+        d=gmail.com; s=20251104; t=1776243081; x=1776847881; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NuPGq2uQWBcQ6iaTKDT1PjU7pmFyo/WHC6ytQGe/UTQ=;
+        b=rCgpz6WGTSZ3or3WaGoLlQWfVaDJBLJtSk49gj/CyfDnkICOTbj+UjOnOQRLDXRGsQ
+         m04NO4VatYv2qhsSrQn6dIz7FwOl9UHGHKOhCsj42kTQtpYGoi7i+7NGk+RU71XV2qWw
+         k8lOcnbrQZ9yLYkQB720vOmrRkjW54ODr3QVPXSAX7+lgXZrzIDc0rysvrdY6byezoQH
+         5JqnADjK8R5G/8xopRhxtJXXZY8XMqSvZnDwhXTS7G91ycpwBh7OmKFlwzcefIJjBjq/
+         f4fbULEZICguAXhlglHf/dKD8F7bpdD9lB9fxptaqw1C3jrSkg2WLnWseBqJfrY1zRtM
+         JE/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776242974; x=1776847774;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DBagG6nPdWPH/FpnMTW4SeLjEl1Kaw67bUgUq4EnXws=;
-        b=jBLhFI58X+NmWK/s2d/l9UoHXuQQsveGEoji5SypXJurs87KPXr4wkLgfgUBroF0aI
-         zrlwfyQ6EBCHAuWjR5KCqw5q+g3isfzlrkEAOWEdaqE4Ng/rE4laTwUcmEQbWwz8B0qC
-         RF4l8dctceCYAsZxhX7h1tHdIDKgY/NVeeX2uDvT8qo98oo2pRS8/DxsN84IefrqJA2G
-         riBdJj/ASB4aWJ744/l6atPhmt6zi07gLlkXUHhRx+gvMjJLF8S/TbkwkKHe6RA+rly7
-         xMb41GeZ1cpwsVbI073Uod+ZHXQRMAx91ChvMcENZcRSCHPsiuNBCE4YoEd/Wn74fpqi
-         29nQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9KGyeWhX2pJd7WNTndOiwxbn7J7lNJa4fS3n9/waUAcotg17mhd9x1d6SERcygqWlTFy2a650=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8Jzg8foXu7cgmzBbUKvX1+L0R/Qmfxd6wLdDgiUauGrudifyj
-	NHhQ2jWsgpaRMeSwOodcJOEm9iXr8QhRq10qSDNsGxbFoaoLSKjyWD7m
-X-Gm-Gg: AeBDievLjhU88Ila8yHgmS+rmIKHsv5cFqe3kzLhGg8w8PQ712GHxJqUiLY76TgjQX8
-	mMqzXrVcoDo+hbpHhPObROzb6DR4uquqi9Q66E1Bba6IC2RphRZPUGyyg1axbTZFy5DC1snx39v
-	747pSq17ce9jVmyg0OOmFMQNxx4nLoQBVHpHUYbtqqtxiy9cwF6QTIekwafNxqVuNx8S76wInf0
-	FippRNU9YQIbJUMAMMflMqzf3UCRhmcTIkUU6dc1ASXl3mcdJmqJ5qBxIGX+QsITlEXtbDeRB0G
-	SHwvBtcePOYtwGRpfFM6uctMWs1UXP8xcYUgHA76rFby6UKGv5QGoKsDg0WGdn/AuyfXfePo99r
-	+Cdj24Oh8N3mDW+Z4AoO9mhpqUhSJvBf73BX8YoHj2zhDI+BR90vaJiyBw8upbfHGE/5gSeNIPu
-	mnBIhatkA7JeZYW156deRLYpoB58ey
-X-Received: by 2002:a17:902:8e8b:b0:2ae:464f:fe3e with SMTP id d9443c01a7336-2b4775b794bmr7402045ad.5.1776242974047;
-        Wed, 15 Apr 2026 01:49:34 -0700 (PDT)
-Received: from kali ([2402:e280:3d7c:a2:536a:b505:93f5:9d5d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4782ac324sm18807255ad.65.2026.04.15.01.49.31
+        d=1e100.net; s=20251104; t=1776243081; x=1776847881;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NuPGq2uQWBcQ6iaTKDT1PjU7pmFyo/WHC6ytQGe/UTQ=;
+        b=BOHHEeqkEAmf4dFdDitTsW6T0DVUY0gSFGBMd7e1TBV4JhvoluRnIKSFqYX3oJjpQs
+         oRF0zqf1N3aeebhe16IokX1Pvi23+WaziMl9RqLE1OvE88A8MNYt29E2f/Mp4mb7ti0I
+         hPTBeFXKCug5zYI2V7DRYVxHsyE0Wh96/I75w/XpzX4vg0eYc4cRQMoGKcv38X2serYh
+         fWUr0j5GY5+cHnhhvKiLfVpv6MeVdOJpNK/VfgkRoXSyk2dcQ7LVOjs7BykzMs5pTxen
+         kdtmlflG+CrX7iObzjViyBnCE/fwOnj5tBUr6CkyQ0qK2xH8T6dOUULidttgnucn4DvZ
+         PYrA==
+X-Forwarded-Encrypted: i=1; AFNElJ9FgL/aLJ17cDO+671ckliuFrzObtoKK+INiwQkxITt+R8QkLWUfkj80E8vPD9g6ROlAFtbV2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2PzgbMv1sJdEV5HF8pngoWesvvSqe13oMOvsS5LEk8v8WExO/
+	xOqnLDB4OfIUiaQm+QnpnyQA8cihRGGUdFYHRz3d21OF4wUAqUH0Nkn/
+X-Gm-Gg: AeBDietSI2Bvtw0jbG9QLu0IctF1qAo/5g5nbUbAZL7Z5auld5LVgkCMuJCQyaPUxJR
+	yQmpN9YZqydM6m0y+py4Dh9KAtgO3P6QCRrTmfJr8gSdOgr28mWP+N7LU9IZ/KjwB/7jbADlWWH
+	RYhlyf4qdGrTmBH2fx61/cCkXCbPEYfy/23rVQiqIE9NFdnv2seOudHpFrBZO8q9rdCfmywOoo7
+	S7BZODK6+OTtMboonMLN2M+ZU3VAwW/PZsQ657RoX1bcDtGL1pFA2VAEls0zc3HKZ6SLzwAYnnt
+	ZgCW5sReBet0OFQkge7ljQhO/6GuaLtxKqxAUkA/6RlxURLEjoNQRW1QgKnTju7Vsmkoh3dJi1g
+	CHmBYhIHL8zAukcguYTkjHvF5X09pjzmGL8tnWXuqjnPOFF73iJsUsjXRc82TjQHrK/EAJbgQi4
+	G2E/QHzTFhpsdEmyLKxJeTEIUiPHjxBh1I
+X-Received: by 2002:a17:90b:288f:b0:35b:9b77:d7c with SMTP id 98e67ed59e1d1-35e4285338cmr21700928a91.14.1776243081584;
+        Wed, 15 Apr 2026 01:51:21 -0700 (PDT)
+Received: from lgs.. ([112.224.67.108])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fd3074758sm1274513a91.1.2026.04.15.01.51.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 01:49:33 -0700 (PDT)
-From: Pavitra Jha <jhapavitra98@gmail.com>
-To: w@1wt.eu
-Cc: pabeni@redhat.com,
-	chandrashekar.devegowda@intel.com,
-	linux-wwan@lists.linux.dev,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Pavitra Jha <jhapavitra98@gmail.com>
-Subject: [PATCH v3] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
-Date: Wed, 15 Apr 2026 04:47:28 -0400
-Message-ID: <20260415084728.1709824-1-jhapavitra98@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <ad5p7XlSOKoaQC5D@1wt.eu>
-References: <ad5p7XlSOKoaQC5D@1wt.eu>
+        Wed, 15 Apr 2026 01:51:21 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Tianfei zhang <tianfei.zhang@intel.com>,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] firmware_loader: fix device reference leak in firmware_upload_register()
+Date: Wed, 15 Apr 2026 16:51:09 +0800
+Message-ID: <20260415085109.3267323-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,148 +101,75 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,intel.com,lists.linux.dev,vger.kernel.org,gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238065-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238066-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8D6B940225C
+X-Rspamd-Queue-Id: 2DC49402273
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
-a loop bound over port_msg->data[] without checking that the message buffer
-contains sufficient data. A modem sending port_count=65535 in a 12-byte
-buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
+firmware_upload_register()
+  -> fw_create_instance()
+     -> device_initialize()
 
-Add a struct_size() check after extracting port_count and before the loop.
-Pass msg_len to t7xx_port_enum_msg_handler() and use it to validate
-the message size before accessing port_msg->data[].
-Pass msg_len from both call sites: skb->len at the DPMAIF path after
-skb_pull(), and the captured rt_feature->data_len at the handshake path.
+After fw_create_instance() succeeds, the lifetime of the embedded struct
+device is expected to be managed through the device core reference
+counting, since fw_create_instance() has already called
+device_initialize().
 
-Fixes: 39d439047f1d ("net: wwan: t7xx: Add control DMA interface")
+In firmware_upload_register(), if alloc_lookup_fw_priv() fails after
+fw_create_instance() succeeds, the code reaches free_fw_sysfs and frees
+fw_sysfs directly instead of releasing the device reference with
+put_device(). This may leave the reference count of the embedded struct
+device unbalanced, resulting in a refcount leak.
+
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review. Fix this by using put_device(fw_dev) in the
+failure path and letting fw_dev_release() handle the final cleanup,
+instead of freeing the instance directly from the error path.
+
+Fixes: 97730bbb242c ("firmware_loader: Add firmware-upload support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/net/wwan/t7xx/t7xx_modem_ops.c     | 14 +++++++-------
- drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c | 12 +++++++++---
- drivers/net/wwan/t7xx/t7xx_port_proxy.h    |  2 +-
- 3 files changed, 17 insertions(+), 11 deletions(-)
+ drivers/base/firmware_loader/sysfs_upload.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_modem_ops.c b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-index 7968e208d..d0559fe16 100644
---- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-+++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-@@ -453,25 +453,25 @@ static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_inf
- {
- 	enum mtk_feature_support_type ft_spt_st, ft_spt_cfg;
- 	struct mtk_runtime_feature *rt_feature;
-+	size_t feat_data_len;
- 	int i, offset;
+diff --git a/drivers/base/firmware_loader/sysfs_upload.c b/drivers/base/firmware_loader/sysfs_upload.c
+index f59a7856934c..6b701185dcb6 100644
+--- a/drivers/base/firmware_loader/sysfs_upload.c
++++ b/drivers/base/firmware_loader/sysfs_upload.c
+@@ -366,7 +366,8 @@ firmware_upload_register(struct module *module, struct device *parent,
+ 	return fw_upload;
  
- 	offset = sizeof(struct feature_query);
- 	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
- 		rt_feature = data + offset;
--		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
--
-+		feat_data_len = le32_to_cpu(rt_feature->data_len);
-+		offset += sizeof(*rt_feature) + feat_data_len;
- 		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
- 		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
- 			continue;
+ free_fw_sysfs:
+-	kfree(fw_sysfs);
++	put_device(fw_dev);
++	goto exit_module_put;
  
- 		ft_spt_st = FIELD_GET(FEATURE_MSK, rt_feature->support_info);
- 		if (ft_spt_st != MTK_FEATURE_MUST_BE_SUPPORTED)
- 			return -EINVAL;
- 
--		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM)
--			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
-+		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM) {
-+			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
-+						   feat_data_len);
-+		}
- 	}
- 
- 	return 0;
- }
- 
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-index ae632ef96..d984a688d 100644
---- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-+++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-@@ -124,7 +124,7 @@ static int fsm_ee_message_handler(struct t7xx_port *port, struct t7xx_fsm_ctl *c
-  * * 0		- Success.
-  * * -EFAULT	- Message check failure.
-  */
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len)
- {
- 	struct device *dev = &md->t7xx_dev->pdev->dev;
- 	unsigned int version, port_count, i;
-@@ -141,6 +141,13 @@ int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
- 	}
- 
- 	port_count = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
-+
-+	if (msg_len < struct_size(port_msg, data, port_count)) {
-+		dev_err(dev, "Port enum msg too short: need %zu, have %zu\n",
-+			struct_size(port_msg, data, port_count), msg_len);
-+		return -EINVAL;
-+	}
-+
- 	for (i = 0; i < port_count; i++) {
- 		u32 port_info = le32_to_cpu(port_msg->data[i]);
- 		unsigned int ch_id;
-@@ -154,7 +161,6 @@ int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
- 
- 	return 0;
- }
- 
- static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
- {
- 	const struct t7xx_port_conf *port_conf = port->port_conf;
-@@ -191,7 +197,7 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
- 
- 	case CTL_ID_PORT_ENUM:
- 		skb_pull(skb, sizeof(*ctrl_msg_h));
--		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data);
-+		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
- 		if (!ret)
- 			ret = port_ctl_send_msg_to_md(port, CTL_ID_PORT_ENUM, 0);
- 		else
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_proxy.h b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-index f0918b36e..7c3190bf0 100644
---- a/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-+++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-@@ -103,7 +103,7 @@ void t7xx_port_proxy_reset(struct port_proxy *port_prox);
- void t7xx_port_proxy_uninit(struct port_proxy *port_prox);
- int t7xx_port_proxy_init(struct t7xx_modem *md);
- void t7xx_port_proxy_md_status_notify(struct port_proxy *port_prox, unsigned int state);
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg);
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len);
- int t7xx_port_proxy_chl_enable_disable(struct port_proxy *port_prox, unsigned int ch_id,
- 				       bool en_flag);
- void t7xx_port_proxy_set_cfg(struct t7xx_modem *md, enum port_cfg_id cfg_id);
+ free_fw_upload_priv:
+ 	kfree(fw_upload_priv);
 -- 
-2.53.0
+2.43.0
 
 
