@@ -1,95 +1,105 @@
-Return-Path: <stable+bounces-238011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLcoB4P53mmVNAAAu9opvQ
-	(envelope-from <stable+bounces-238011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:35:47 +0200
+	id sLkKE3/93mlINQAAu9opvQ
+	(envelope-from <stable+bounces-238012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:52:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BF23FFCD5
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:35:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E463FFDAF
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A005301A2CC
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 02:35:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 542CE3180DE1
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 02:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E8B301486;
-	Wed, 15 Apr 2026 02:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED21E32ED29;
+	Wed, 15 Apr 2026 02:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QxQFlZoR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UUNtMEqU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232471A01BE
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 02:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E7132C94B
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 02:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776220539; cv=none; b=Dx2nwCrPwaZHmV3zO7a3SBZI4dqSmVVCP2LtmQ2elZu+my2BZFijNJSGizQYdu29JksoK3hXg3ryRZKsGyE6XITvrkSi0jsOS3Lqi6ZYGRQRfZykREIi1ztACN0msg26uo3Vo9Y2mbqCa4JmNfjBpiyM0ugQEuqKKnCdD7OEQO4=
+	t=1776220794; cv=none; b=AnnFUXEPDOJIDk6Q6/sV34q71yYVqCiPL17AhZjvZBt4EfCkNczsBDhKx6SwJw+pSAc1V61h126D7DDwQU6MqhAiZEaiQ/2P+sgeN9ngCksy8qQPEJBc/W6heXev0nYYegcV1RlWvJNVqyFu+/V2alN4fN0zezG/yjSLNF36cV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776220539; c=relaxed/simple;
-	bh=N7nd/B1pYZ752n6f4YzwrOygZLD87ZZMTZQ8yqMGFMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRBYG8DUh6E91TjBIdAIhpq20luV052N8n8E/MNWwIOdONp8ULFCaZM1/rZ0l5JxEiFcOki0PTAs5BomXV/0SHtbYyaXENJN9Pw3KxAyS+P9Giwd6DUljDbLHW9CDBd7pyyCB2E+Jl9foT49HsUdDbY55WY+gRhoITrCVRAQnPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QxQFlZoR; arc=none smtp.client-ip=209.85.160.177
+	s=arc-20240116; t=1776220794; c=relaxed/simple;
+	bh=318sjCWYvNQGpSzDuO5m9LBM2Spar7kIKnblAHp1PYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eZwWIMYtQEUgCidkvEhEMr9dpSUnpWLwSV3UW7xkNXB3siAHyd4OAiJe7g8A/Q2FRGNfdldgALI/cPuB05uJpXVWj25ffN3YwtmaeJAlPbPtDen6uWrV2w5qgtZPUPrW2fNpB4LFiNisFLcbWPC4bUiVeSjqRgwfgjjMEBok4dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UUNtMEqU; arc=none smtp.client-ip=209.85.210.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50b2ebca625so55341131cf.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 19:35:37 -0700 (PDT)
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7dbb6c072f1so5794238a34.2
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 19:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776220537; x=1776825337; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mxRyy2kZK3WlZTfAxVXCb9nX2k5y4s491rvePkeOc2c=;
-        b=QxQFlZoRzLOGo7XEGFiTuu3ynPzC/dTjnOrTVpiFA3rXz6E+98yyKs2KbcjcKKs0/h
-         9VVZsEQRpI/t1hUX416raV4knVLK4qEPTZ55ME0QWU1iTcJmLS/sG8OtzCn3mdhl1gtw
-         XGf+GVRFcUfa47a81CtpgUUcy5xhBI+Adi8Z7G+s2cQnFbOzVji2JUY54Lw5y93mtoL2
-         iQVkkzY6z0JDEXyoAb3DlFgoSeKJTwZHU7MmFAhnsL9eSSYRzQ5JCcoRALACdx7c01PY
-         60syfQudK0MXpnYoqCJC0XoJ+RyQqkI5mdbARMCINmPx1wjBO7lJHxmHp97byldGUpvD
-         +Wcg==
+        d=gmail.com; s=20251104; t=1776220792; x=1776825592; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/4pZEJvuS7ozDbMvLtLQ4Yf4fNz+jgNzCYp57Or0UAE=;
+        b=UUNtMEqUMmD6Ab7d6mD9od9BdNeXUkUCo40wkdQmEYAQeqbBvZXpf/kq0Qlp6/VGrq
+         yHEkvDm5dIQTfw7jGIMOfsMhJf48PMJgGTImG5DQzecuZFu2hv7aYIkZ0VgkY3UsjQSu
+         w4v3bVe43uL0Q6lwq/zlcf6CcZsVCzkw03GKu2VuYg6n1v2FprM8wpPvcTIsA3FBweBm
+         jNfhjAcgRh1NpSiss+riOlbIvdmaZ5yMY0+p6wEd9+qAmFRtZ/o8UNJv0G6py6OEX2kf
+         sGrT4wnTrP9gAauNRn1sjP4I1ViFULYlXBz275m/yh3xQtr1TmeP2bh8YOcFf+ffjYUK
+         gq0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776220537; x=1776825337;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mxRyy2kZK3WlZTfAxVXCb9nX2k5y4s491rvePkeOc2c=;
-        b=AXnChnO+nToQMwBHePyTVw/u0Radlxng9mWDjAk/HaoQ6LyukFwFzDq2B806GUY7WP
-         ei3Iab9iegrof4VtQebY7qoPMThV/9ZoaQnRZEvvBMO0EaSRGLslJ+HMiGqy+Nzi2eeE
-         k7p2TpxhC583C72o0wwDt7q/TDeFe9eWo1LZZuL5FYDgsaVlfKUUVW9sYqDir8C5+Gr3
-         TaalGLMaumcB+U/BmydOJtBsHmShF4vSGu7+P/VgHTeWmTWJIM4IeWu/C3yexCIrwOfn
-         qRf4ix64xXhFqoGkKSV34iS060ldcDwuIVKxKRsTcoSw5UeppqtsXumYmm0Pw9Rp5LDA
-         T3Lw==
-X-Forwarded-Encrypted: i=1; AFNElJ8aGpRXf8j0u0rqrIWgrt9Tku+nJorasZz1swS9jpl7cwOcP2mNeeI21Pwe3gHS70CsW0xvRI4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHMOlwmzwNI6ZPvFrlbBii3xYqezM32KV6cD3wHD6n8FQXjQw2
-	c5NM+fs+tywJYOUNrelKvh29E8NatBs59tKnRycdmCbpCqRUOxnbYeKv
-X-Gm-Gg: AeBDietqxSVvMAgMvZQ7g3K5EvzztNaYIiWhO+K4umpxTgmAyqf1v9Ka1+DtYD+6z7x
-	mPONN4Dg7l12ZKv03Td4bt4m3SekfAICEaFA4WpwQXCmKDAO9jzeGvNU2RWeEbGoAoHcp/TLE4i
-	VygmQ1q1nXMcmt/Bh3VZwOnWuXHIjkNiikhM6h0bfkBlWloYUcpwMUljn8qjxhwez+SCW4Bnsut
-	IFrKdeqASbTGG/bsiQgOvQnrufryRoO4PC7VfKzSB/i9aDYKnuQNUOt+k6mcWEHmy7Ra74hz5SA
-	Hj09h0uyo/EG5npwCGsD8eDX+jDdkteDNKvpkpCoQIqCpTZx5dbaTj1s8uqVTEiIFKdAhzJedfS
-	w3sL8y/jXRGwVP0gXdVdYMMgTh0kyBviM7iwhfJXWQEzov1AgbMyBvCB3D0J1vBS1FIP4FOL0mw
-	QBgcGnR8j1M+JjaNbn3BZmgcW3m2Tj/DmaM0kqxTBDwIkVxvy4ZVOG3P+XWOZnIzUpWR3xN/+6W
-	3K7W2lsLoMzEbOchLXeWRFpyYwnRgCFO052wAxcxA==
-X-Received: by 2002:ac8:7c4e:0:b0:50d:5b0e:1ff2 with SMTP id d75a77b69052e-50dd6bb6139mr240699491cf.22.1776220537078;
-        Tue, 14 Apr 2026 19:35:37 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e1afdd385sm3024161cf.25.2026.04.14.19.35.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 19:35:36 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
+        d=1e100.net; s=20251104; t=1776220792; x=1776825592;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/4pZEJvuS7ozDbMvLtLQ4Yf4fNz+jgNzCYp57Or0UAE=;
+        b=Uzb0rFvPxdOQeZ0NM+hiAA20fZmW5TY2PPuGJ4h4/YBbueM9TKTbyVNCNkFY7lQ7qP
+         tBd+uGrsJwKUeEcMrHAs10i4dy0NXsUV9R4e2Qq5hryZO0NOC9O3Ha1+vYGwDKm6X6oc
+         vpow7OdLOVcuyJ+Pxu5JUhzp5Z++ZW5BEpQqw+sEypNuOmsGfW31W2yDJSXCb1LJ5rGX
+         FmfHf0PNOghKtQdepFn+5aoGurbS0Lp1FJ1Lct+YsWRobIK+OPkPkVf/GZGR0d1sQ7lu
+         gBKslldh9XCK/vD0c5rlFf6ym9VzyuDfmyAF00KpcRbtRxuP9OQeM9OUKhGxBZg3WduO
+         CMXg==
+X-Forwarded-Encrypted: i=1; AFNElJ8/2m1dDd6wy6dMgBSOA5uTe61X8bj0yXMOkiCPelm2S3frWWhB4fbevHje+lBJUVpYmXEW51w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySG5C2StD+TtY6Ft391mnPsAC3RPsi+yt6zRjpIzwlFzaeiAVp
+	qHPZotjHso2MAfisT5IIvsrwIXuyzk4QYqeAseXCX8j9YsXStUUatVYW
+X-Gm-Gg: AeBDievEjD3gDsyuRGp9BQAwa9P5fqLpQTIFucCBLsse1vPLlSfCQHkUkN2J3BoN+XB
+	LzbgQ9sVp+HL3rODjDb1PSWfErsmU2Xopa3pAlWnPCbdz0Uqq5WmQr9MkGWRxFb5wpE61iTiHoG
+	a1D0Zs+guX4jtliGMcW1agR0B6APX3UaquJVhEXh4cKrcyfvgBALJ+2zpOESRlahB85JK0ODV1B
+	Cjm3iM7g1efe7Th3zldIWuMx9Knb8bYVqQEeysGIuQY7xLQ9ViFXfxq8S3NSot5jihH5ZmlvZUs
+	Vz4UtPY1buWLwGTrAh486G0FFIKGFq4NGl9bamZQkG4T1KQlMYqco/EVn5dOR6mMu8E/zaMu+o4
+	uhA/65oqNcp5of547kHilyvSEX9pSihfGXvP6pQud9ZYJt34L+AxWLlC2QU1Th5SZwIvSPQdg6h
+	vwlahiSBYaNR5E8hFxMU0RZQhccFwvybIBNIo9JQ4ML/+bXGzr8bM+wR8ynPxNsOburUse2w==
+X-Received: by 2002:a05:6830:25c5:b0:7d9:f50f:96cf with SMTP id 46e09a7af769-7dc27c6632amr11719357a34.6.1776220792258;
+        Tue, 14 Apr 2026 19:39:52 -0700 (PDT)
+Received: from localhost (static-23-234-115-121.cust.tzulo.com. [23.234.115.121])
+        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7dc76a333e8sm406838a34.8.2026.04.14.19.39.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Apr 2026 19:39:51 -0700 (PDT)
+From: Sam Edwards <cfsworks@gmail.com>
+X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sam Edwards <CFSworks@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] ksmbd: reject negative ngroups in ksmbd_alloc_user()
-Date: Tue, 14 Apr 2026 22:35:31 -0400
-Message-ID: <20260415023531.2659989-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAKYAXd-pXiJy4S05C_s6sqz6FtnCeCh6Q2c4B7tPuHseA94mkQ@mail.gmail.com>
-References: <20260414191533.1467353-1-michael.bommarito@gmail.com> <20260414191533.1467353-3-michael.bommarito@gmail.com> <CAKYAXd-pXiJy4S05C_s6sqz6FtnCeCh6Q2c4B7tPuHseA94mkQ@mail.gmail.com>
+Subject: [PATCH net v5] net: stmmac: Prevent NULL deref when RX memory exhausted
+Date: Tue, 14 Apr 2026 19:39:47 -0700
+Message-ID: <20260415023947.7627-1-CFSworks@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,56 +107,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238011-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238012-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,chromium.org,talpey.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[gmail.com,foss.st.com,armlinux.org.uk,bootlin.com,renesas.com,nxp.com,tkos.co.il,st.com,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 65BF23FFCD5
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,netdev,kernel];
+	NEURAL_HAM(-0.00)[-0.978];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 03E463FFDAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 11:05:45AM +0900, Namjae Jeon wrote:
-> With the previous patch ("ksmbd: cap response sizes in
-> ipc_validate_msg()"), negative ngroups is now rejected early in IPC
-> validation.
-> However, ksmbd_alloc_user() still needs an explicit negative check ?
+The CPU receives frames from the MAC through conventional DMA: the CPU
+allocates buffers for the MAC, then the MAC fills them and returns
+ownership to the CPU. For each hardware RX queue, the CPU and MAC
+coordinate through a shared ring array of DMA descriptors: one
+descriptor per DMA buffer. Each descriptor includes the buffer's
+physical address and a status flag ("OWN") indicating which side owns
+the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
+the flag and the MAC is only allowed to clear it, and both must move
+through the ring in sequence: thus the ring is used for both
+"submissions" and "completions."
 
-Yup, good point.  I originally wrote the tests and fixes independently
-and missed the overlap, so if you accept the cap in patch 1, then we
-can skip it.
+In the stmmac driver, stmmac_rx() bookmarks its position in the ring
+with the `cur_rx` index. The main receive loop in that function checks
+for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
+network stack (NULLing the pointer), and increments `cur_rx` modulo the
+ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
+position with `dirty_rx`, allocates fresh buffers and rearms the
+descriptors (setting OWN=1). If it fails any allocation, it simply stops
+early (leaving OWN=0) and will retry where it left off when next called.
 
-Two Qs:
+This means descriptors have a three-stage lifecycle (terms my own):
+- `empty` (OWN=1, buffer valid)
+- `full` (OWN=0, buffer valid and populated)
+- `dirty` (OWN=0, buffer NULL)
 
-1. Should I add a comment in case someone refactors the flow to
-emphasize that a check would be needed here if not covered earlier?
+But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
+the past (see 'Fixes:'), there was a bug where the loop could cycle
+`cur_rx` all the way back to the first descriptor it dirtied, resulting
+in a NULL dereference when mistaken for `full`. The aforementioned
+commit resolved that *specific* failure by capping the loop's iteration
+limit at `dma_rx_size - 1`, but this is only a partial fix: if the
+previous stmmac_rx_refill() didn't complete, then there are leftover
+`dirty` descriptors that the loop might encounter without needing to
+cycle fully around. The current code therefore panics (see 'Closes:')
+when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
+catch up to `dirty_rx`.
 
-2. Do you want me to fold this into 1/3 above?
+Fix this by further tightening the clamp from `dma_rx_size - 1` to
+`dma_rx_size - stmmac_rx_dirty() - 1`, subtracting any remnant dirty
+entries and limiting the loop so that `cur_rx` cannot catch back up to
+`dirty_rx`. This carries no risk of arithmetic underflow: since the
+maximum possible return value of stmmac_rx_dirty() is `dma_rx_size - 1`,
+the worst the clamp can do is prevent the loop from running at all.
 
-Thanks,
-Mike
+Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
+Cc: stable@vger.kernel.org
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+---
+
+Hi list,
+
+This is a single patch broken out of [1]. The second patch in that series,
+which proactively refills the RX ring buffer when memory is low, still has some
+unresolved feedback: it should use a timer to avoid nuisance polling while the
+system is suffering OOM.
+
+Further discussion makes me wonder whether that second patch should even be
+threshold-triggered at all, or if it should be a handler for the RBU
+("Receive Buffer Unavailable") interrupt instead.
+
+So, while that patch is back at the drawing board, I am submitting this one
+(which is higher-priority as it resolves a *panic*) separately.
+
+Regards,
+Sam
+
+[1] https://lore.kernel.org/all/20260401041929.12392-1-CFSworks@gmail.com/
+
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 13d3cac056be..fc11f75f7dc0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5609,7 +5609,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 
+ 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
+ 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+-	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
++	limit = min(priv->dma_conf.dma_rx_size - stmmac_rx_dirty(priv, queue) - 1,
++		    (unsigned int)limit);
+ 
+ 	if (netif_msg_rx_status(priv)) {
+ 		void *rx_head;
+-- 
+2.52.0
+
 
