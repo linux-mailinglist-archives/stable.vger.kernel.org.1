@@ -1,201 +1,173 @@
-Return-Path: <stable+bounces-238176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAvWFKLQ32m4ZAAAu9opvQ
-	(envelope-from <stable+bounces-238176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:53:38 +0200
+	id aGzPBtfR32kNZQAAu9opvQ
+	(envelope-from <stable+bounces-238177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:58:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E75C406EDF
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:53:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76030406F0F
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 19:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 07BC53022AB5
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:53:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A359A30982B3
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 17:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8C43ED12C;
-	Wed, 15 Apr 2026 17:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8475A239E9A;
+	Wed, 15 Apr 2026 17:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="keLEtq8c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pLFiMUdq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A405D3264C0
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 17:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776275611; cv=pass; b=WZjtoaBOwiSKRfJAlZ4ZPel+UlRdRXFVXYUKADzTSEjN5CR+61tenv1JuGu00Dyb20B0fdN70+rpHZleXDk44CP1+K/Zkp4ifzwcrC3fp8klye/HYqNRaqrUBff1lXC0oPl20tZ2C+9uhTieGaRWthds/3Ye7Iqesx/L22GBSEc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776275611; c=relaxed/simple;
-	bh=F3dLbPszutyYqEbfKeX1nNL7G18PjJB7QbuhqCEdFpM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OLMwGx6Pdq81zAXC7QA4EBV84Bc8N9CVBYOSQODmfe8mOoCqoSzMQGlxpE4dvIVrXhdrG5YQ9WAQ9ne1dz/zoej7lUZBO4xSup9QiqfaUb5p/jdsOs8NBwXxjLDO4smd/OmJ/cjb3Ki/vGNQdfIQRnpwrmMoHKrjp/PiHqwM1Yc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=keLEtq8c; arc=pass smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376533264C0
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 17:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776275843; cv=none; b=Qqr2lAOiY2whwK0o0NTCffAO0Y2k31RQQUcijvaJXG3wfvwPS6qVaLZ3xurfNRL/dCLf06crumw3KsO7z4o8oFmJ2nZUq0vxK2hoJ4nqBRH9QjQcMpbxO+qwkT2MYuVNLLEUX3sER3KT8RbDa5L2ruB1VYqGHSC9ix7jUf3+qQU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776275843; c=relaxed/simple;
+	bh=zYEZtG3CNWlhxk5TCgfhLdH0TQVOB7keHngYJTHByUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TLV17hMh/3X5j6mVgivPQjD8zXo/LGdNeTESuvRENES1WnmUn33iY0KNtN4QVyYe42N9IU0up1UK3vsUGCLzEggbn+zAs26edGY9eGTpXozsbvuhQUsx0mygfnN0dWvZHOjUMtgd8EspmyYAAkTv4krev2GxP4LrLS6P6crD53c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pLFiMUdq; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so63850405e9.2
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 10:53:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776275607; cv=none;
-        d=google.com; s=arc-20240605;
-        b=A70/P+UuAD4x6bRAPdqjG9N/iEE7tZ8OIJpmjiMlFlqHB0nlDy5sgdt5tuEE9fDpI6
-         /WqL781Aexxn3G5lAw8qysrt5posCr9RH6BZREKxxUUux/mFuH/lJiaM07f0QmPPYdoS
-         dqrJMkHeCk4aHzmagAr3XgQpc97btzvXYAaPJppc6UdxDsdcrDJ7casE26bTVJHKLtGe
-         qWDIttzSARra6WgToSlSQepBP6Hc7e/zp4zu3sMVajS6XlF5dROGtE5QfB+gj+nXH2nq
-         kSCX654q79B5EvErh5xhaGKRU57Pz64WYc8mlNozgIRYNhDrUxJ2lzvDkgnoXmgdSuuV
-         F6XA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vXTyVOg75691/SqrnwQ0Y7XVqOHRVyrJmHlOD7bYftw=;
-        fh=eVaeK2OCRbKnfo0WqlT7BXFR4SpJYhOXGh9zOVtX02k=;
-        b=QHR5O8fboXp9eN/6ZODgmJAMgFUdoPQMd4M1vUa19RVtlNC+XAw6++PgYWpqU+yvto
-         Uhye1mIEX20ueDDtDM5mWZ1+euBQxHzVeP9Tabqxi5neWhJs0Nju5bB2x/2tuxPeaDNr
-         Dt1lB3F8KuOiBu8G4heHo3pzf/AyFSlLcbzxDf4QqtMiBWzutbXajbCV2cGbBGhABsY0
-         DobyDpDTIOwjLAiKcKKirptOFU1YROJ3nvHBqUcnZGiuJNTJ/uYME1dAf5+B9V+h93xk
-         /2dBs4eXz7Ju94ad+drM4ll2RZZ49j7DQQYDrswj8sXZU1brTKeXscF3wI4wzy+Q8+CG
-         KWHA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35d965648a2so6123149a91.0
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 10:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776275607; x=1776880407; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vXTyVOg75691/SqrnwQ0Y7XVqOHRVyrJmHlOD7bYftw=;
-        b=keLEtq8cKNDrI1OenQnTJxsVjrhNmZrzEBbGQg/MiNExeOqyxKL3EAw4hSufEn6mBg
-         2T/1dMYRe0JOmIKTour08V2/lljI51Q3pkGNkw6OLrXVjdEQnZ2+20jldu7bl5+OKJeo
-         c1f0segxZ48fBi4Y7p9bZFHY4IdWqcoS9LT7Ax3r1LsrFIjxik/8rPwbamfwiWEuhLUp
-         wBTOopxE4joUfMbaSww+nNhqf2JL8jXnAY5gJE3HXp0y3oQtOiWGUBIjJo/DoJ38TZ4Q
-         wNF2WRvcVlV0yTpqfc3YLgTDs14iEtIQlMwY+w45O2wjKU0eGneh/b9QXmXT9havLsqf
-         eLFA==
+        d=gmail.com; s=20251104; t=1776275841; x=1776880641; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LVK8DHikQoX7A6e7OIrQHyMcwBuwukNQmr1sdoA8uRw=;
+        b=pLFiMUdqV8fBQUB5pzAs2UxHYVrKEL/zCInz2p3JCZ38E8CrMKoSRqXqSqomSHMQm2
+         wkko3qf3kSHcI69KqW8iC6Yafwhc+Cu3sKrcptiF565+uyl/UUrDqwdgOgp0QmUseFpQ
+         +HHYmQAUlken7ROoqwxZmZznd3gGatHzVKoj3HOLSkzQC2whEkVPsI3ie7XpPPs2a3kC
+         cGf8IuQcXMVRxsePJtMhPOwJOVoC+d+GCk2zvIp9Xw8e0VRnkuyZ5vJ4zf1Iv2xhpYid
+         ZVjAExDTu17ZmLU8oN5S6wDiS0gc0gHMVN28xfpVo0eZctd4Tfwmx8HQt5JfbUC3elXO
+         JTtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776275607; x=1776880407;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vXTyVOg75691/SqrnwQ0Y7XVqOHRVyrJmHlOD7bYftw=;
-        b=k6PzrDwfeaQcwYrTQqwm2/2tjgZB+UDrJcw8mxcGOBDaUVNekngGPF+mCbmsvZ+SiI
-         xKmT3dBB2zk33mYgaLLzPC8fei6qCDYXz3lem7w/XG70EX2jVJ7eC1sTpyrcxJa/HfsX
-         Ut24EgfIgMn8ZJYez2VFv/bZmstGSdUvl5kUjYQHu21GBkYIdGNP15wH+DbUTPC6tUmu
-         gSN62u75vcaakIXKRpDtLZb6UrjxUXR0J0Bnc8JbgYVcKNqy8gvBP4ejQ1DAqXpmXjXE
-         IBmUcfqB9QEr6e0k44Si8AIrLa1SXkWSIRb83sA0bJ3wH2Woi2twQR2kTqYIf/Wc/YqU
-         u1tg==
-X-Forwarded-Encrypted: i=1; AFNElJ8mkIc6FfN4RD/4IwL3+t9wobCX1d6nLDiqIqdsMK1tok8K9vLmOXoMQpC2nwzb/V7nXTrlqcE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziLGwRwtt835OC5IPgXXfiuKs5XNAh9+n+/dksUt5csX9rBmNE
-	9N0Xv660+9RQvnNFzkW2hlynezI0JoozrYvxKzbF3jiJHeI03t+TZjdEBPXVijbQSImVbcay6ut
-	ygjxPBldd8DIA3Ch/NsUzrovCgQu8NsU=
-X-Gm-Gg: AeBDieuBdcUpNeCh494jcy08GJD3yVT+4IA3vfPlMKAhUr7Ka5RLhLeQD8Wd60WU3ab
-	vL9Tx33dy3vyxyxKcS4GI/VDKRce6nVM4L4gEH5ZLx4iFxcPi8rZ5TThWFfltSapFmgDo03ytnJ
-	5PCDRZiZalDHk0oEsbbtw9CLJrNZ4OHoRYl2Dflicbcn6SZVSguM/mqtDgrjjEwIEwgk+CVrbRz
-	ngGcPJJKQzbzMzksOSacvwJiCsy6but+FwXUXR3akcH46EmSE8mj7v+qrlU0XRKJgXYtYoim9UF
-	9POQJoKuvao1Rxcv5gZHDOMuZamw8/bcul46tAey/WU/Av+6lpwd8HmjpbZtmw==
-X-Received: by 2002:a05:600c:5d4:b0:488:d6eb:e63c with SMTP id
- 5b1f17b1804b1-488d6ebe787mr187773555e9.15.1776275606586; Wed, 15 Apr 2026
- 10:53:26 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776275841; x=1776880641;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LVK8DHikQoX7A6e7OIrQHyMcwBuwukNQmr1sdoA8uRw=;
+        b=R6h/GaecDQQxfmAOoqoSASvwAudIdgoM0kC3LFWnMepoTiwv4hSDE59ZP8GZWKvCdj
+         NSJRXJm1cuQrcwxjQcxL/zl+b3Th9k07fhR6G0Jys6OKP+Gf6YdJYg+LNA5VAebA260H
+         fmDJTSZUYgvnXlXOI2AWpDFnw1yCmcWvPY8PHaEf3VthGJ21iIEgrPpj222UV4dEEmUL
+         qrMuBeRNovnLOWnTZ4N+lS3IsnWS+8wu0fEiXTymGmx77aF3zPkImcvNAu/FwLT6Ar2Q
+         nnzmU0Gi2c2RhhG+6GLLvw6A30dUmehpIRHvLI+VgQLs/LLpUVjaLN+hJEaYnvHrpsvB
+         mEwg==
+X-Forwarded-Encrypted: i=1; AFNElJ+4CaBmS0r/ZWW1ooYlaoOwnTnZhz8jBEaubwpe6ugttkgO3NVVraSgO8Oy72t5vZ/WgxXOJ5M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYr7RgCQSZp2XBXypMMtThesf7E5Y/ctHN/189eCH2omn2G7DF
+	1cqn0RhYh4tHZwZqiwSUm4QNg1PvJj1g+e1MfH2+MuzW94r8tiRffMl6
+X-Gm-Gg: AeBDieuD6f2IzSxfUhXD207fRI0vdx6UiQqYf1JeeLTRL2DHSU3BhAyvMF8+a01LYQr
+	H4OB+CY30peVk6xhpMLvlXfQejEnrZpyfGlwtngJcQR9g5nqQrrRqlIwqUns3o4P4iREJWCypSs
+	JGjPkbwOBMBumht+FI9zqx4DuDx3WTOJm94WuxskoWV68A5h4G0A878w52730DvmQqrOZhjehk+
+	1+FUmMkoIcrU3V89epazScgjI8o3kueGMsuEiEf/UhScK6rYPxfGGNBFr5fBqUIs6zaKsZYo9E3
+	3dDbNNxUKOj9gHds+YFhcP4y1HdjKkMq/i0589zFgP76OyZlp2AiBBrl9JBLteq8xQ5+1QlbsKa
+	Lu9Sppgq0knBd1GMy1NregF97TnFB31nMQZZ/oug+uaczZuYI6d8hnl2FGdejAPrSghsTE6JyKk
+	v3oHZSzrA/ZHbQjutH4fWgiwuTmiOKZbWjAQcq3u7g103pLTw=
+X-Received: by 2002:a17:90b:4b46:b0:35f:b3fe:18e9 with SMTP id 98e67ed59e1d1-35fb3fe1caamr14818307a91.16.1776275841534;
+        Wed, 15 Apr 2026 10:57:21 -0700 (PDT)
+Received: from lgs.. ([2409:893d:1171:10e2:48dd:8f21:beaa:cec8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4782cf2aesm29261815ad.83.2026.04.15.10.57.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 10:57:21 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Thierry Escande <thierry.escande@collabora.com>,
+	Gwendal Grignou <gwendal@chromium.org>,
+	Enric Balletbo i Serra <eballetbo@kernel.org>,
+	chrome-platform@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] platform/chrome: cros_ec_lpc: fix reference leak on failed device registration
+Date: Thu, 16 Apr 2026 01:57:07 +0800
+Message-ID: <20260415175707.3640225-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260415023947.7627-1-CFSworks@gmail.com> <ad-LAB08-_rpmMzK@shell.armlinux.org.uk>
- <ad-8q4OrOm-VtGrO@shell.armlinux.org.uk>
-In-Reply-To: <ad-8q4OrOm-VtGrO@shell.armlinux.org.uk>
-From: Sam Edwards <cfsworks@gmail.com>
-Date: Wed, 15 Apr 2026 10:53:15 -0700
-X-Gm-Features: AQROBzDx1d-IgIRVj7cWC6Z49XonSYVLruilzmwd4JOrF6rh0MceXKBVK6meuRA
-Message-ID: <CAH5Ym4gy6g8d88-vGhe1zxoV7jNH_fXHsDSdDWC4x00H7s-3=w@mail.gmail.com>
-Subject: Re: [PATCH net v5] net: stmmac: Prevent NULL deref when RX memory exhausted
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
-	Baruch Siach <baruch@tkos.co.il>, Serge Semin <fancer.lancer@gmail.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238176-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238177-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,foss.st.com,bootlin.com,renesas.com,nxp.com,tkos.co.il,st.com,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,armlinux.org.uk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4E75C406EDF
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 76030406F0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 9:28=E2=80=AFAM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
->
-> On Wed, Apr 15, 2026 at 01:56:32PM +0100, Russell King (Oracle) wrote:
-> > Locally, while debugging my issues, I used this to prevent cur_rx
-> > catching up with dirty_rx:
-> >
-> >                 status =3D stmmac_rx_status(priv, &priv->xstats, p);
-> >                 /* check if managed by the DMA otherwise go ahead */
-> >                 if (unlikely(status & dma_own))
-> >                         break;
-> >
-> >                 next_entry =3D STMMAC_NEXT_ENTRY(rx_q->cur_rx,
-> >                                                priv->dma_conf.dma_rx_si=
-ze);
-> >                 if (unlikely(next_entry =3D=3D rx_q->dirty_rx))
-> >                         break;
-> >
-> >                 rx_q->cur_rx =3D next_entry;
-> >
-> > If we care about the cost of reloading rx_q->dirty_rx on every
-> > iteration, then I'd suggest that the cost we already incur reading and
-> > writing rx_q->cur_rx is something that should be addressed, and
-> > eliminating that would counter the cost of reading rx_q->dirty_rx. I
-> > suspect, however, that the cost is minimal, as cur_tx and dirty_rx are
-> > likely in the same cache line.
+When platform_device_register() fails in cros_ec_lpc_init(), the
+embedded struct device in cros_ec_lpc_device has already been
+initialized by device_initialize(), but the failure path only reports
+the error and unregisters the platform driver without dropping the
+device reference for the current platform device:
 
-No, no, I like your approach better. :) It also removes the need for
-the `limit` clamp at the top of the function, so later code can assume
-limit=3D=3Dbudget.
+  cros_ec_lpc_init()
+    -> platform_device_register(&cros_ec_lpc_device)
+       -> device_initialize(&cros_ec_lpc_device.dev)
+       -> setup_pdev_dma_masks(&cros_ec_lpc_device)
+       -> platform_device_add(&cros_ec_lpc_device)
 
-> > It looks like any fix to stmmac_rx() will also need a corresponding
-> > fix for stmmac_rx_zc().
+This leads to a reference leak when platform_device_register() fails.
+Fix this by calling platform_device_put() before unregistering the
+platform driver.
 
-I agree that stmmac_rx_zc() is likely also broken (in a similar way,
-but not similar enough to permit a "corresponding" fix), but I don't
-agree that there's a dependency relationship here. This patch is
-addressing #221010, which affects the generic/non-ZC codepath; I'm
-afraid the ZC codepath warrants its own investigation.
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
 
-> I have some further information, but a new curveball has just been
-> chucked... and I've no idea what this will mean at this stage. Just
-> take it that I won't be responding for a while.
+Fixes: 5f454bdf63536 ("platform/chrome: cros_ec_lpc: Register the driver if ACPI entry is missing.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/platform/chrome/cros_ec_lpc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I think I follow your meaning. Good luck getting it straightened out!
+diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
+index 78cfff80cdea..cb3ff76d29e9 100644
+--- a/drivers/platform/chrome/cros_ec_lpc.c
++++ b/drivers/platform/chrome/cros_ec_lpc.c
+@@ -892,6 +892,7 @@ static int __init cros_ec_lpc_init(void)
+ 		ret = platform_device_register(&cros_ec_lpc_device);
+ 		if (ret) {
+ 			pr_err(DRV_NAME ": can't register device: %d\n", ret);
++			platform_device_put(&cros_ec_lpc_device);
+ 			platform_driver_unregister(&cros_ec_lpc_driver);
+ 		}
+ 	}
+-- 
+2.43.0
+
 
