@@ -1,152 +1,190 @@
-Return-Path: <stable+bounces-238153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPa4JiC632mOYQAAu9opvQ
-	(envelope-from <stable+bounces-238153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:17:36 +0200
+	id KIWyLP6632mOYQAAu9opvQ
+	(envelope-from <stable+bounces-238154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:21:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09DBF40651D
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:17:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B090240655B
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5D2A3017C00
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:17:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 52D553007AF6
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 16:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A8730FC33;
-	Wed, 15 Apr 2026 16:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0648B34DCD9;
+	Wed, 15 Apr 2026 16:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+kJeeA4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dl+evy2Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ACD40DFA7;
-	Wed, 15 Apr 2026 16:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10E231960A
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 16:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776269845; cv=none; b=UoOY4eRN8kAwvYcWZmBMErUwjoyRMa3R0b1EZA0j7/Lifu/BtTTeZHkirvSt5oVYN7Ur6fN/uBycc9MQGevLGiNfuKTO8IPJCtGS7Q2urgk2wQcVIkMnqSMUiAkyFvC6S97iBgpzk+xW9CB7UlNSVOXcf7YUUUsIp+2q8EXUBHM=
+	t=1776270072; cv=none; b=Z5XfCV+eflaips5Y0btxugka8LWnlFLiSqOef4fHzm6AEa5cmeqMeB+CTNFm8lR5BnBWF09SEbaJp1fLIIceiexk6GYdXNme/vpPeDrTReFRS93Stl+kZvaqZPGuc2i+e9zsbVGW4QYgMiEq64koHm9RD1pC/joBJxBUgUyLWx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776269845; c=relaxed/simple;
-	bh=ObP4Q43FL+RVMu+5SHEP0abI1ltYtBb2y+YqFs2GNog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GOkc2Gl2yyeOIdDtTFOETC+kqkVwGEaE5aaWkRq+wUPJlYhTs0mVICyCytwSE8+iEnrLfBqVAMHaylEVIMTEPW4A4enRblKHNzzaqZyI62XvKM93UoVkwl/tSM55clbE+VB5GJC+GSgzQMByZGVFybsQ0rUh+7CfY+u0tx2BGfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+kJeeA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9425C19424;
-	Wed, 15 Apr 2026 16:17:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776269845;
-	bh=ObP4Q43FL+RVMu+5SHEP0abI1ltYtBb2y+YqFs2GNog=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W+kJeeA4kRw6T6Xd5VUPhpj+GBA6M+PwTxrEsPI6gmd8rrwSgPfC2wqw3hPwG3Pox
-	 fzaxnFfveEjcbMGKJMZVYE8HdniTTwCAhpTIsaNNagQ8VVFqIJadE3BKtBm3KeRZj2
-	 zOB1yCfqRULFsaeBiQRktKEajgJXnASbWFqfLX1KSN2LZNH8frOAq8+JMOrINW1fbM
-	 sfBKq2fhACstl3pAZA+QYGETa2ywRCTBGgGLkFTwa/ZvdVfzlWpyIAFLukm1i2jA3b
-	 iuYSv9QmKvV5AIkF94KpBXTymzCdgJvaQJ9w/6GecXPgvYoopmNl3aRmHrEe6+NEq2
-	 yp4gE3oI6ATuA==
-Date: Wed, 15 Apr 2026 17:17:20 +0100
-From: Simon Horman <horms@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, stable@vger.kernel.org,
+	s=arc-20240116; t=1776270072; c=relaxed/simple;
+	bh=SI2t19iU6EMEQBCp+j5wlbb1GUg+beuT+6A5OpnwZyw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sO8BGOVuldMKc8b8yBuUwy5oSuto6qk95U/f7om4HQanPfd/uTSzwlIJT8Of//g+T7NcKR/DdgWgnN3XNMG21V19K3mVezEWCwLn5CzyJepFQykImUaCCI1JkL/ws2g1T/LCrGPJu6shjlPdGRJ4u8P0UcxJUxlDWFVMZ0hbOa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dl+evy2Z; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82f1dcd5886so2947550b3a.2
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 09:21:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776270071; x=1776874871; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M+8gw/M80WE6Bf1ljzJqEZsdPuf1OmLbEHX1VUQEqPA=;
+        b=dl+evy2Z6eAvWVReyImIj0Z4Oad21laeZWGCXBsAaCbiLHIhtQVCOminoSKbd5WjCe
+         n8JsnVNqr5oPKQGVPu7Yf5kj4lwixznS4LDfrvRnZKuPNUE6x7isYNnhSKG69SGO+1YH
+         N8a+vYm53jOkeGpdW7VEv8EXYh71qZh9DxS1P7ahPB6dLUVu9Eu8aW7W6rn0GnH7MBwF
+         7t1CjFRsZfuw3QuMNteoMxs18eddRqQwXP9Sppw5aZxO/Arqr/CDJcbeoEjG80nJCW4n
+         aLr5tfUPCk6HnHdN+vpxN88g9/I1EgnJugt66sm6vPE48iMFcP91gLHVvsV1F2+ViOxI
+         LJ0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776270071; x=1776874871;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M+8gw/M80WE6Bf1ljzJqEZsdPuf1OmLbEHX1VUQEqPA=;
+        b=i3ClEGG7ev/vtoyu8FOjaLtrd6tZggUnB4dR//ulxuKY9LXFxRRTi1m8LBWoQy4BuB
+         SDW0NRxPJB/OhnbZA9VXVHpkUstEZq64U0OHLJeXpc6Z2UHVWpB4F+Wo/LaBAfv2zPXq
+         VUNZdUMLMOWiVA4HLWR/o1tW6h97eVsyP9yEokkVTHFcJ2dYQiVINRRf08biyxs0B1wW
+         QSbIbRklExHNDhHDJO1G1MBJuGb/gauvyd0V2X7IIvRXoBgZAVwU0bMCWNsdmrHtkSlO
+         yXsH1xzYfuo3xMU2R+6dVWAffiZx9ZupoNpA18tKjKDT0MtEMsVzTTuiMrBv8Rag488c
+         RGgw==
+X-Forwarded-Encrypted: i=1; AFNElJ99BCCE7N72+WuuOKNvRoN2k+5aF1Ex92EGHeHebyJ9iBAPLbHXRrnvFdyvoVEf4SvhHFf6JDg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYg8qwXz+bYxKaKfIOX/Oy8Z3OZUcIFPVcOcJ0RVfCD99WyGaO
+	xQnbxXQH8iLRIidR3j4+7sSSLQLdfySyMI0gwOx66LsIBOvHlsNy5S90urz81cjdKqMDgpoB
+X-Gm-Gg: AeBDieseX4dEE5UMLU6B7hiAWaEQ5FaHxo/Yb8xexddYXVWva5LHTBuZBq4alxAA/Ep
+	PQ1aB6+sJV3EG4oEyBKBZEyByIlEShclNqwqCFggm00pS889MV0kP0clIuNdWpZU7gl049ea32m
+	5VoIxyZzhB0izYDDZ7e8pMNXHbYQmblhGWxGmjBwXXptgZgKt5kvhbSDM98Wr4LYdfVd1YDboay
+	HuzEzwmy/6y/aq4QAcFb+gj2nWA4RwseuKRbtUPYuduUm6bJ4JHrWLOziuuiRndqVbKetbkWWBc
+	9B2Wwmen/Re4HL64w7xjHAte1CjEUpJHDcJRzmeMNddHIL977gx60Jdia9MsxVb//2XF1zAj8IC
+	cO8w5sp8W1l1QdzHzqZqsvcvzkT6jbf3HaSjKyERQzC2AL9vR8ISweVFg9OvFTDBeVjx6weHoIr
+	mTXQJRuElgHVoO+ofDlHBHvAQm4HB0rKVbsTTR/pbyR0ZGT8M=
+X-Received: by 2002:a05:6a00:92aa:b0:82f:4a4d:377e with SMTP id d2e1a72fcca58-82f4a4d8eb6mr10659269b3a.28.1776270071117;
+        Wed, 15 Apr 2026 09:21:11 -0700 (PDT)
+Received: from lgs.. ([2409:893d:1171:10e2:3836:7c38:e5c1:4b6b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f7106abbfsm1373845b3a.4.2026.04.15.09.21.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 09:21:10 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Hans Verkuil <hverkuil@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Dorcas Anono Litunya <anonolitunya@gmail.com>,
+	linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ixgbevf: fix use-after-free in VEPA multicast source
- pruning
-Message-ID: <20260415161720.GN772670@horms.kernel.org>
-References: <20260413182427.298513-1-michael.bommarito@gmail.com>
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: vivid: fix cleanup bugs in vivid_init()
+Date: Thu, 16 Apr 2026 00:20:58 +0800
+Message-ID: <20260415162058.3551246-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260413182427.298513-1-michael.bommarito@gmail.com>
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238153-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[horms.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 09DBF40651D
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238154-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B090240655B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 13, 2026 at 02:24:27PM -0400, Michael Bommarito wrote:
-> ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
-> own address (VEPA multicast workaround) by freeing the skb and
-> continuing to the next descriptor:
-> 
->     dev_kfree_skb_irq(skb);
->     continue;
-> 
-> The skb pointer is declared outside the while loop and persists across
-> iterations.  Because the continue skips the "skb = NULL" reset at the
-> bottom of the loop, the next iteration enters the "else if (skb)" path
-> and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
-> skb_shinfo(skb)->nr_frags — a use-after-free in NAPI softirq context.
-> 
-> The sibling driver iavf already handles this correctly by nulling the
-> pointer before continuing.  Apply the same pattern here.
-> 
-> I do not have ixgbevf hardware; the bug was found by static analysis
-> (scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
-> corroboration with the highest score in the scan).  The UAF was confirmed
-> under KASAN by loading a test module that reproduces the exact code
-> pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
-> 
->   BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
->   Read of size 8 at addr 000000006163ae78 by task insmod/30
->   freed 208-byte region [000000006163adc0, 000000006163ae90)
-> 
-> QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
-> driver does not include the VEPA source pruning path, so a full
-> end-to-end reproduction with emulated hardware was not possible.
-> 
-> Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-6
-> Assisted-by: Codex:gpt-5-4
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+When platform_device_register() fails in vivid_init(), the embedded
+struct device in vivid_pdev has already been initialized by
+device_initialize(), but the failure path jumps to free_output_strings
+without dropping the device reference for the current platform device:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+  vivid_init()
+    -> platform_device_register(&vivid_pdev)
+       -> device_initialize(&vivid_pdev.dev)
+       -> setup_pdev_dma_masks(&vivid_pdev)
+       -> platform_device_add(&vivid_pdev)
 
-Sashiko flags a number of issues in the same function that
-do not seem related to your patch.
+This leads to a reference leak when platform_device_register() fails.
+Fix this by calling platform_device_put() before jumping to the common
+cleanup path.
 
-I'd suggest looking over them if you are interested in
-follow-up work in this area.
+Also, the unreg_driver label incorrectly calls
+platform_driver_register() instead of platform_driver_unregister(),
+which breaks cleanup when workqueue creation fails after successful
+driver registration. Fix that as well.
 
-...
+The reference leak was identified by a static analysis tool I developed
+and confirmed by manual review. The incorrect cleanup call was found
+during code inspection.
+
+Fixes: f46d740fb0258 ("[media] vivid: turn this into a platform_device")
+Fixes: d7c969f37515d ("media: vivid: Add 'Is Connected To' menu controls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/media/test-drivers/vivid/vivid-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/test-drivers/vivid/vivid-core.c b/drivers/media/test-drivers/vivid/vivid-core.c
+index c8bf9b4d406c..62cfb5feb2cf 100644
+--- a/drivers/media/test-drivers/vivid/vivid-core.c
++++ b/drivers/media/test-drivers/vivid/vivid-core.c
+@@ -2289,8 +2289,10 @@ static int __init vivid_init(void)
+ 		}
+ 	}
+ 	ret = platform_device_register(&vivid_pdev);
+-	if (ret)
++	if (ret) {
++		platform_device_put(&vivid_pdev);
+ 		goto free_output_strings;
++	}
+ 	ret = platform_driver_register(&vivid_pdrv);
+ 	if (ret)
+ 		goto unreg_device;
+@@ -2311,7 +2313,7 @@ static int __init vivid_init(void)
+ destroy_hdmi_wq:
+ 	destroy_workqueue(update_hdmi_ctrls_workqueue);
+ unreg_driver:
+-	platform_driver_register(&vivid_pdrv);
++	platform_driver_unregister(&vivid_pdrv);
+ unreg_device:
+ 	platform_device_unregister(&vivid_pdev);
+ free_output_strings:
+-- 
+2.43.0
+
 
