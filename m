@@ -1,89 +1,92 @@
-Return-Path: <stable+bounces-238190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HxGLKXf32kzZwAAu9opvQ
-	(envelope-from <stable+bounces-238190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 20:57:41 +0200
+	id cHZ0LN/f32kzZwAAu9opvQ
+	(envelope-from <stable+bounces-238191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 20:58:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A66F4073A2
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 20:57:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F884073B8
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 20:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4395301547D
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:53:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 673A33070AF4
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 18:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70468246BD5;
-	Wed, 15 Apr 2026 18:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD93134DCE3;
+	Wed, 15 Apr 2026 18:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9os1uoC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DXOn2vK5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211B4382289
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 18:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324FD246BD5
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 18:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776279235; cv=none; b=H3Af+E5bdEeLqH/+nO50xhQA5xmcgFMCOvNJK7xJP1PIC1M1jz3WUNEmdOVt1sqzkBJe+7NJoKQj/4Hd0mt22W3DuzBEvGQKDePz+FdyGbvp1AR7hRT315ib2D/98Udi9D45wRo7qnO9zx5jgtLECVByQjY94OV2fGLvSizQuHo=
+	t=1776279331; cv=none; b=nS60auDwdqwUAIRp+5b0/NDVGA7lPVNCD7qXhbskxdwDmxKifm2fsRd1Oqivcq8Lq+dN/yyi4syHh+KJKGneZRTx/UR0tC2DmO6X84LdkHvT/rjhAOjMmFk/6jiLQZKsieVNvpwpRBWbYBvJDwvqJT9350fJSlldQBFHbfuHZus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776279235; c=relaxed/simple;
-	bh=wXf+CtXMOHb6XNnOuHfGJXshs49io3F3XFjW0t392rQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bHKP/byULg53k9N2jyBGP4fxPawiD9dIbyHctiiFT/PNEFeL96r2ZYje5ikXWkngSMxpWlCMxOCONzX5xqE7TqbLGZhqlNu2N9wGDDk4IXMWwitSDh4r/8NOZ6f5ux6ugZbV9Y1T9c+Ocu89uW6vw68ubbvkr6AdthIsemY/TLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P9os1uoC; arc=none smtp.client-ip=209.85.216.48
+	s=arc-20240116; t=1776279331; c=relaxed/simple;
+	bh=CRgVnOUGI0q7Ct790HwLPHGc1VsZ9A/1dQk17MZfoXI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kPopAHo/7ld7qBpKi1SkbL/hbK3OwpXKMEwNLBGkOrWJT399vjhF3wn9Au486fswXqCcc2Hgqkw8iGPXPci0aR9caqrc39kaO1BrDQa7k74yDEZvafYKY+WyvWroecjpP5Msl8cnIZkGllUNGqIyPZ/Lo9rYW62yroj0qL46Yso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DXOn2vK5; arc=none smtp.client-ip=209.85.221.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-354bc7c2c46so4460610a91.0
-        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 11:53:52 -0700 (PDT)
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-56eec951db1so2383175e0c.3
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 11:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776279232; x=1776884032; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776279329; x=1776884129; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ic39KQsDtjbejfoaSX2BWNXeNHAHmD9Tq1YFCoyddVU=;
-        b=P9os1uoC8LhzUgsGqx/OygwsJXPSu5+qwOUuCMn4qLBdcGfVEBVzG6yTM6CJO2ODMe
-         jGXDJnt+koJmimMxyoJ36qw/2uO0Uwttt5+uTq5HnCiRemCeqtymQfpCdsqpGwHDCOd1
-         gp4C5pNHzaFfwRVhr6bte/YS9oXjLhC91X8m5kPYfdt1vg/tLS5mrCrweW5a4IkpKZne
-         95L92krvHDe9jisjuGQxFRG1ZLOkfDASqySuGfgRS8+Zti5E7uiZj8Pv/hLJ5cTxy21c
-         +s9UKYNkAELvsmNshYLrLhJz33LSOKpzTDLYDxIjG9pyOUzuq1hTM9UlidYyTa9Yy5i4
-         1OPA==
+        bh=HDeo3f8CvooXNOU/9jKD56jXgK68+sHfUc7ysM/Ab5g=;
+        b=DXOn2vK5mhgjLvKlobouyRIP+kyA0M5PGP3v+vYZjn9p9tL3n4ow0XQx8VQlGeC3/Q
+         IelPzAA/tpbcPqjQWGIbK8GXgtnPMbLaomKqKwDqRG19dzg0ezYM5Xh0nDCfx+tIvceZ
+         vLTdhkVK8abUJgutZ+wpiMQUjOAUZ/BcIEnPu7D6b21QJ3NiRbVHe/lGENV1dv0CFz8I
+         34zpDZu1JC0nFTdQAk0CQ5T39r2LQP7mYRFXkwUu/Gst9GAnIi/AOWyIcAyU5MWZ80rM
+         acGiSi7tU5g8sWF1FViTDIUjpxdBGQ9yNnEXYK4RwOontQPN4F7pywi4quWQ52UgHk+d
+         aLMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776279232; x=1776884032;
+        d=1e100.net; s=20251104; t=1776279329; x=1776884129;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ic39KQsDtjbejfoaSX2BWNXeNHAHmD9Tq1YFCoyddVU=;
-        b=EMCvNkDeb0t2AwRE6w4pNS8FYA/yPQk2ybTCf/9YZ6R2WrsfOcWkCh/6gGH1BCwVq/
-         w+5gP2Sk8hDDQ9ZAKGzIZQ77Ie9jmy1mQZkQ+kzo8yRv/NYl8/CN/TaXPUL+7jFnVSxK
-         VN8eUkiLNjwRJly3STQ6D595jBXmwDm3+mdFg1kd/dqukVSZTZ+cl7MhAUFrNVA8cD5K
-         6SE9euSKu1M4sCLMtayEgwLshgrlGDvY9YLUmiLz+h4iYJ6xZT/zthIH4l1t+mDGVAeo
-         9J3dYBcrR/mnf/n8Kn86QuGSS7KNLZcDzmWZgnYk5VtRknknc/Nsm0N/G+8r4G80JKBe
-         sjUQ==
-X-Gm-Message-State: AOJu0YxM/795RA98p1TJ1R8Wr0uzP/NsxhmMrh99FFLPeTFG9JhLdeMt
-	EFKP787X11A7/Qi2e8OyndrE3CYO/8KblvYg02Y/eCcgQnUODi/xYKuM
-X-Gm-Gg: AeBDievmpuyBSoTjrIHFOXGp4LVd8AFD8TsGZbK4AH+nApYD48dSIf00EM3h2iuJPLz
-	pSXpl8VIQBESdfzDJH5xZgdNBvxycGgYxbcpaGlbqlWHZ8W/IVonSzdE8vESGE+PMN1SI+ob3Sx
-	OWhc2/kGPOEzWBq+CPfH/D3QOGzwt0Y0u9HXR3LQeVYoYLjTEWBk+rCwoV2aD1MxXG4JTXhDyOs
-	CWSbIgHSVK+EfZiyqxlkfuHdF4KvT8lqoFaDOOjozdVbt7VzFDuuQjdochFO5tXPh2FHw+rJ1TV
-	OCfVjcVq2eCUbpoPnW8oF9T1Kcthnq4AyQCoXzSmgiyNxXEUmqVb1QpCS8eL6crzyHrbR5BgVQ1
-	zzttB4ptrRZCHqmfLQi5z0Po0eaUwJcmUAFUAmKURnX65hyIzRMJv5Gu7IotGzo0xesGih3Jfft
-	jpnrsZPcfKSssiMTmHAyTIoy930VNrWs19Zps=
-X-Received: by 2002:a17:90b:3b52:b0:35f:c1cc:feee with SMTP id 98e67ed59e1d1-35fc1cd0410mr9788933a91.3.1776279232224;
-        Wed, 15 Apr 2026 11:53:52 -0700 (PDT)
-Received: from lgs.. ([2409:893d:1171:10e2:93ee:194:b07d:a9b2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fd20d0c3bsm2834619a91.9.2026.04.15.11.53.49
+        bh=HDeo3f8CvooXNOU/9jKD56jXgK68+sHfUc7ysM/Ab5g=;
+        b=pczxUuGjvvIdld0g7EHsfiTii0atvGKqMJetMagYrJdVEUWmF6UQL7UqVM/UVOGQSW
+         U5FUvgM+59DMUinLrYVcsF22V/n0NF695itPNUvGemmH1ULDfi+ZyXlVkasAHVOA0JYr
+         GBGxTUkK7xTP6q/SkXfc0Azw395L+cfSywLLfCnTFwmXYNtySie93HGC7ENOHH7k0LON
+         zGsYWNgjQ2HTm34cxSqEc/4RQPqqmtvdC9uwLMWArViDEz/LZcRf9e5Pffr5D6ag6NEM
+         V/jgE6IJy1NNvJ5tbX1jluX0SSQps02RjxKWYTRHu5dSPrbZd8UBqi7YMet9tTQUQQsl
+         UnDw==
+X-Forwarded-Encrypted: i=1; AFNElJ8h7f7wBqMyONL0k6mh8CZB9BkqHO812bjVy6BbAsl3ua7xC00xDaY7mRrZdaQDIQOYqKeeFNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtysT9UAqXPjQBRgSR/rVvVwEP0oGr/M0/qnliGv/sp4lJwIrE
+	jcAgYMufVRQLQprVuxzKjtKRTvt3kxdLrha0CYoTWfUqTcpZrfBeMdYe
+X-Gm-Gg: AeBDieuNvK7WojPGoSMlpPxKrdd39vC3xTHKbYpLXj6zitY1J6/yDJVsS9J/P70b2NQ
+	/upsb5r7WtS9FVwYAA/895JzVM+PLmeuW0aAg2aW/4DTYMIi8yWJz6ItpTnw6mOrigMf3ZlpGUI
+	dA2zQ3VhaS9bTB9hTeAh6/l3BVVvXtZjJflx8mAURNjHRizNeckeORmt3zFDjW8+ycFM9415foh
+	q+mbO4CI7ENC0FrojefA1Huyh/+yO7BA0AYQ4ySJlGivfXb2D5/0DSpv+9ehCCsVxeu+NMy1czV
+	VS6WwRBOpTln66m8Wo7GzhQ9yD61nhnjKq5mLyVlWk9yFUQg6VyIkB3bOw0s6AUIGztFRmeH8AU
+	tuualbIZinxIjH8a6xu3ag1NFfavif02hnLmOO8tBnPdBR3FpBrtHGzPS4HdGg7m6awYtZ91Kwl
+	vV0nWYmIKc/KWiK7TzdCOCkK+vt9MX2PAfqjNt7AKV1YeiPs7AcbQR
+X-Received: by 2002:a05:6122:1796:b0:56f:31e3:9445 with SMTP id 71dfb90a1353d-56f3b9e4996mr10565205e0c.0.1776279329111;
+        Wed, 15 Apr 2026 11:55:29 -0700 (PDT)
+Received: from localhost.localdomain ([102.244.98.233])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56f89feb56esm1647484e0c.15.2026.04.15.11.55.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 11:53:51 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Russell King <rmk@dyn-67.arm.linux.org.uk>,
+        Wed, 15 Apr 2026 11:55:28 -0700 (PDT)
+From: Delene Tchio Romuald <delenetchior1@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: dan.carpenter@linaro.org,
+	error27@gmail.com,
+	luka.gejak@linux.dev,
+	hansg@kernel.org,
+	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] serial: 8250_hub6: fix reference leak on failed device registration
-Date: Thu, 16 Apr 2026 02:53:39 +0800
-Message-ID: <20260415185339.3804023-1-lgs201920130244@gmail.com>
+	stable@vger.kernel.org,
+	Delene Tchio Romuald <delenetchior1@gmail.com>
+Subject: [PATCH v4 0/5] staging: rtl8723bs: fix multiple security vulnerabilities
+Date: Wed, 15 Apr 2026 19:54:56 +0100
+Message-ID: <20260415185501.440492-1-delenetchior1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -98,79 +101,89 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_FROM(0.00)[bounces-238190-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,gmail.com,dyn-67.arm.linux.org.uk,vger.kernel.org];
+	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.dev,kernel.org,lists.linux.dev,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238191-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[delenetchior1@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4A66F4073A2
+X-Rspamd-Queue-Id: 56F884073B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When platform_device_register() fails in hub6_init(), the embedded
-struct device in hub6_device has already been initialized by
-device_initialize(), but the failure path returns the error without
-dropping the device reference for the current platform device:
+This series fixes five remotely-triggerable memory safety issues in
+the rtl8723bs driver. All of them are reachable from the air by an
+attacker within WiFi radio range, without authentication, via
+crafted management or data frames:
 
-  hub6_init()
-    -> platform_device_register(&hub6_device)
-       -> device_initialize(&hub6_device.dev)
-       -> setup_pdev_dma_masks(&hub6_device)
-       -> platform_device_add(&hub6_device)
+  1. Heap buffer overflow in recvframe_defrag() when reassembling
+     fragmented frames whose total payload exceeds the receive
+     buffer capacity.
+  2. Integer underflow in TKIP MIC verification when a frame is
+     shorter than the sum of header, IV, ICV and MIC sizes.
+  3. Out-of-bounds read in portctrl() when a non-EAPOL frame is
+     shorter than the 802.11 header + IV + LLC + ether_type.
+  4. Out-of-bounds reads in three IE walkers (rtw_get_wapi_ie(),
+     rtw_get_sec_ie(), rtw_get_wps_ie()) due to missing validation
+     of the TLV length byte.
+  5. Integer underflow in rtw_wep_decrypt() when a WEP frame is
+     shorter than the header + IV.
 
-This leads to a reference leak when platform_device_register() fails.
-Fix this by calling platform_device_put() before returning the error.
+Each patch was found by code review and is not tested on hardware.
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
+Changes since v3:
+ - Patch 1/5 (recvframe_defrag): check the return values of
+   recvframe_pull() and recvframe_pull_tail(); on failure those
+   helpers revert their pointer updates and return NULL, so the
+   subsequent rx_end - rx_tail bounds check must not run on stale
+   pointers (Dan Carpenter).
+ - Patch 1/5: drop the unnecessary (uint) cast in the bounds
+   check (Dan Carpenter).
+ - All patches: add Fixes: tag pointing at the driver import and
+   add the stable backport tag, per Dan Carpenter's request.
+ - Patches 2-5: carry Reviewed-by: Luka Gejak. Patch 1/5 lost
+   Luka's tag because the code changed.
 
-Fixes: ec9f47cd6a14c ("[PATCH] Serial: Split 8250 port table")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/tty/serial/8250/8250_hub6.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Changes since v2:
+ - Sent as numbered series with cover letter.
+ - Cc list regenerated from scripts/get_maintainer.pl.
 
-diff --git a/drivers/tty/serial/8250/8250_hub6.c b/drivers/tty/serial/8250/8250_hub6.c
-index 273f59b9bca5..005dd6bec3da 100644
---- a/drivers/tty/serial/8250/8250_hub6.c
-+++ b/drivers/tty/serial/8250/8250_hub6.c
-@@ -43,9 +43,14 @@ static struct platform_device hub6_device = {
- 
- static int __init hub6_init(void)
- {
--	return platform_device_register(&hub6_device);
--}
-+	int ret;
-+
-+	ret = platform_device_register(&hub6_device);
-+	if (ret)
-+		platform_device_put(&hub6_device);
- 
-+	return ret;
-+}
- module_init(hub6_init);
- 
- MODULE_AUTHOR("Russell King");
--- 
+Changes since v1:
+ - Rebased on staging-next (v1 was based on v7.0-rc6 and did not
+   apply).
+
+Delene Tchio Romuald (5):
+  staging: rtl8723bs: fix heap buffer overflow in recvframe_defrag()
+  staging: rtl8723bs: fix integer underflow in TKIP MIC verification
+  staging: rtl8723bs: fix out-of-bounds read in portctrl()
+  staging: rtl8723bs: fix out-of-bounds reads in IE parsing functions
+  staging: rtl8723bs: fix negative length in WEP decryption
+
+ .../staging/rtl8723bs/core/rtw_ieee80211.c    | 15 ++++-
+ drivers/staging/rtl8723bs/core/rtw_recv.c     | 55 ++++++++++++++-----
+ drivers/staging/rtl8723bs/core/rtw_security.c |  6 ++
+ 3 files changed, 60 insertions(+), 16 deletions(-)
+
+
+base-commit: bf9c95f3eeefb7fc4b4a6380cc23f1dca744e379
+--
 2.43.0
 
 
