@@ -1,161 +1,215 @@
-Return-Path: <stable+bounces-238092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gG8WNuVm32lSSgAAu9opvQ
-	(envelope-from <stable+bounces-238092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:22:29 +0200
+	id 0Cx/ELRq32niSgAAu9opvQ
+	(envelope-from <stable+bounces-238093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:38:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0FA403379
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:22:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41A740355B
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 12:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68EAD3021A3F
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:22:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD85130209FB
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 10:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BAD342517;
-	Wed, 15 Apr 2026 10:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B11347BD4;
+	Wed, 15 Apr 2026 10:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AJrnX99Y";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U0NcrzVV"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04916337BB5;
-	Wed, 15 Apr 2026 10:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF8034575A
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 10:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776248547; cv=none; b=h02ngr8/ED5CBe2UUy26NkLsOXn4wnHZPelhODCf1+u8x1TICgYe8/y35QI/aZRsQY8rXppXIHTLDgSwxDQpUc2r7Swl7/6kpWfpX/28v0wvv0l11HrjOTJQZsuHygTbyYIaST3Jh6wJEzxOfwYO36BRtkTBoq+uQpwNnjhxVUQ=
+	t=1776249497; cv=none; b=t4qnyTpjRnEBJYEBPvPSMrhGsUDz+Ry0Wt6G17fs7J0gWrHJrdeDg3Boy5HwGaYOsptnV4EEBBUaT1sUvBLP1wH+WMfE1VvZU0MZm6U7DFUch7WZqvj5h0rkIPI6Zggp2vztF1w7WJQCMLwuuS/Qi/8XWQYMLU1EmrZs3DphbtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776248547; c=relaxed/simple;
-	bh=+bsK7pj06MoS1zp0BhM4JtpjlhYpLx975TpfaF/5/mI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j/KU2drhrqRg8S7Zekc/z2X89FosOLtcOfICCkeBOcTFGZ6BnZIj4oiBSaqLcET2zRFq42qpDuavFbX9/mai2IyisEvwnq/v4Yv1w8laaOgTUyahq2+mznvFm+A4te8h/WLlH59YzDaiYgkC7k90SDkJtCqiWDNmUXiFGOZKXFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCxO3-004xWm-2p;
-	Wed, 15 Apr 2026 10:22:22 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wCxO1-00000003Vny-1fBA;
-	Wed, 15 Apr 2026 12:22:21 +0200
-Message-ID: <9c5431bb22e2c1470f608a60f872c441c21550ff.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 153/491] gve: defer interrupt enabling until NAPI
- registration
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Ankit Garg <nktgrg@google.com>, Jordan Rhee	
- <jordanrhee@google.com>, Joshua Washington <joshwash@google.com>, Harshitha
- Ramamurthy <hramamurthy@google.com>, Paolo Abeni <pabeni@redhat.com>
-Date: Wed, 15 Apr 2026 12:22:16 +0200
-In-Reply-To: <20260413155824.759485387@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
-	 <20260413155824.759485387@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-leS3f6qP9AucP8AJCK9m"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1776249497; c=relaxed/simple;
+	bh=MTvLj66Y77ArXLSp+TSw8ghHRCXJwgL40oURLnpQzt4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DPm8XQzOdl4Yst+k0qaAWFXvgCCVoVtZB+NKXGoo/BjluzgvgXxJ/gXLUhEoT3RlCTjmZBWx8HaTqZ6M5ZahfDreVZrQLCFwV9A5gOwmama87jm+SqjkjSUSjAupa8L1nMkhDcGWc4wCACahb1JZNRXrNq6odkri5Sgc/3iNQ88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AJrnX99Y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U0NcrzVV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776249495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hHOnfYuW3tC+yUaHMZSnrjEvT22LJH6fSZwyXCPhnqE=;
+	b=AJrnX99YSbM91yM5IEAYd1hTzUSta3A2/doH1UdZxvvcWgNRzuWtnuLBqnZuWYPNpvpMix
+	nTaLHeNOubZesjyizOtecxt+f6ZecKrstn2W0satE1VkrVcA2bc0HGsoJlR3x4bBMcLUm2
+	kZEl1U+6AuQzLIkGvZ80b4t3lgY15dM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-185-ojSAizcQMuiUQS-oI-B0jw-1; Wed, 15 Apr 2026 06:38:14 -0400
+X-MC-Unique: ojSAizcQMuiUQS-oI-B0jw-1
+X-Mimecast-MFC-AGG-ID: ojSAizcQMuiUQS-oI-B0jw_1776249493
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-488c74405ecso41888155e9.1
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 03:38:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776249493; x=1776854293; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hHOnfYuW3tC+yUaHMZSnrjEvT22LJH6fSZwyXCPhnqE=;
+        b=U0NcrzVVjY6gjX5DffGCbMccj7Whri+rEWRWeYaofTN2IrFM4sp0h81cRl7C91bkwG
+         aggg36rkrlKfEesRAWLDrmBYIaO/FQwjqqZXOkmT4lnqB1PxiGE5MAYZOq2fSnIAVNl0
+         AxVH0qemkkFKqsRQOEBRLrwOame+g5w7Wnne84LzAtkovuIzGyMSJd9TeAF1eKIzRIGi
+         rQPDIwW1s/Nh53AURiwjbWHipsTO/+QDckmt1/V9KgN5bNiw6ycmeWggQx8NcxA8iC0S
+         v+cdw0lJxeJW39MLJRmBIc/y/9KyfoQGWOfGVYVdM6OXIpO5rqjd0lN1FzOxV6tqVpa2
+         hJRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776249493; x=1776854293;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hHOnfYuW3tC+yUaHMZSnrjEvT22LJH6fSZwyXCPhnqE=;
+        b=sQ0fBOj4ajTiiUmtMQ3T5Vy1wU4kDDvOdhzk8/r0s1f/4mXvUfSySoxBg7Jzj3w6Bg
+         chQg0f2zxgchmCP9B1y+SynI8yDUWlD1X76WkWuaw43AfY6NZ10hwokgUjGU872CRICH
+         KMH2NYlNGqilDUhybN6tOQaAjwAJ1TjxRya72VQqTDo6UofHq3LtjY84AMrTgsM2xZai
+         djqjSMVb7TvroDAdu0i/Ihhfezyhyw9VreqpGT5/zbuMEs9bvwWeljT4UZr+9qrqaWdQ
+         37pdfk3wLYa245gcx4VjEMeASPa3vbpG41P0COWp0oaqjAt8hCOItvvbrXBz62m1EZnG
+         mDbw==
+X-Forwarded-Encrypted: i=1; AFNElJ+kqAxXMIacVp0lCd/xo9r3H6tVoFyo9LKl3iCptjZ1irvnG09qbjaLtCJq9biy8vY/ZHOmZR0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8y7s0hNzpHsiIrQe//wMWe8FINupOQnohBr3f/VlubxA335mY
+	z5MEwQR3ZlbW54ZKwum3njKN38n+iFbl7q1fUYUlv6vq38V1kCQZ//vajFAVEzWp9Qu2rdKnZNL
+	vIwe/a+ZMu5nNSwEsIeQSYJx4at5mYsJA10UnUGgfpPMB5To4UOzd29NuqA==
+X-Gm-Gg: AeBDieu+KI8nnznM9qcvxlVw8iVunYxLKCSVc3bAtCWpqTmJ5mereHoMw6O1RYdCoZN
+	dFdgvhHdN7SXcoG0tFvnjVMw9M1RwxkRMPM9CNf72RC3mZ3a+V2DLrpo6ixiTnaSQMABbDJR+Kd
+	jFJwrS1sOM+aIU1mLfUntK8vjrJIdqtxCiPVLnFSG/xrIrOtdt7GWDljpPFaKCZ6hWhOvd9x6c6
+	NuY/rmGpQK4Om0DRulzVLO9Xzr6c/yizO8VAG0k2r6zLkzLRZBg9TT6rl/O+CjckLS8octuFEy4
+	3zSkIMn1eI4kKWF/R7dOTThOYZR1RV08QquRqWxX5E/BsDIU+dtsATezAU6IGD5qadzhq4RKKNk
+	SddkRxTk2VNWoX9EUswVrOFnkWGAS3aXvCvkAYckEvYTHpR9a68nLpjNldWSQM8GQ17aIIhH2s/
+	3LrjbRbg==
+X-Received: by 2002:a05:600c:890e:b0:488:bd79:94d8 with SMTP id 5b1f17b1804b1-488d684331emr195084375e9.18.1776249492710;
+        Wed, 15 Apr 2026 03:38:12 -0700 (PDT)
+X-Received: by 2002:a05:600c:890e:b0:488:bd79:94d8 with SMTP id 5b1f17b1804b1-488d684331emr195083925e9.18.1776249492197;
+        Wed, 15 Apr 2026 03:38:12 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0ec6cc6sm17072045e9.29.2026.04.15.03.38.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 03:38:11 -0700 (PDT)
+Date: Wed, 15 Apr 2026 12:38:04 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
+	longli@microsoft.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, niuxuewei.nxw@antgroup.com, 
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Ben Hillis <Ben.Hillis@microsoft.com>, 
+	Mitchell Levy <levymitchell0@gmail.com>
+Subject: Re: [PATCH net] hv_sock: Report EOF instead of -EIO for FIN
+Message-ID: <ad9pPrji1uYSgNir@sgarzare-redhat>
+References: <20260414234316.711578-1-decui@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260414234316.711578-1-decui@microsoft.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_FROM(0.00)[bounces-238092-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238093-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,davemloft.net,google.com,redhat.com,antgroup.com,vger.kernel.org,lists.linux.dev,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DMARC_NA(0.00)[decadent.org.uk];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[decadent.org.uk:mid]
-X-Rspamd-Queue-Id: 6E0FA403379
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E41A740355B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Tue, Apr 14, 2026 at 04:43:16PM -0700, Dexuan Cui wrote:
+>Commit f0c5827d07cb unluckily causes a regression for the FIN packet,
+>and the final read syscall gets an error rather than 0.
+>
+>Ideally, we would want to fix hvs_channel_readable_payload() so that it
+>could return 0 in the FIN scenario, but it's not good for the hv_sock
+>driver to use the VMBus ringbuffer's cached priv_read_index, which is
+>internal data in the VMBus driver.
+>
+>Fix the regression in hv_sock by returning 0 rather than -EIO.
+>
+>Fixes: f0c5827d07cb ("hv_sock: Return the readable bytes in hvs_stream_has_data()")
+>Cc: stable@vger.kernel.org
+>Reported-by: Ben Hillis <Ben.Hillis@microsoft.com>
+>Reported-by: Mitchell Levy <levymitchell0@gmail.com>
+>Signed-off-by: Dexuan Cui <decui@microsoft.com>
+>---
+> net/vmw_vsock/hyperv_transport.c | 18 ++++++++++++++++--
+> 1 file changed, 16 insertions(+), 2 deletions(-)
+>
+>diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+>index 069386a74557..63d3549125be 100644
+>--- a/net/vmw_vsock/hyperv_transport.c
+>+++ b/net/vmw_vsock/hyperv_transport.c
+>@@ -703,8 +703,22 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
+> 	switch (hvs_channel_readable_payload(hvs->chan)) {
+> 	case 1:
+> 		need_refill = !hvs->recv_desc;
+>-		if (!need_refill)
+>-			return -EIO;
+>+		if (!need_refill) {
 
---=-leS3f6qP9AucP8AJCK9m
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Can we drop `need_refill` entirly and just check `hvs->recv_desc` here?
 
-On Mon, 2026-04-13 at 17:56 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Ankit Garg <nktgrg@google.com>
->=20
-> commit 3d970eda003441f66551a91fda16478ac0711617 upstream.
-[...]
-> --- a/drivers/net/ethernet/google/gve/gve_main.c
-> +++ b/drivers/net/ethernet/google/gve/gve_main.c
-[...]
-> @@ -420,6 +422,7 @@ static void gve_remove_napi(struct gve_p
->  	struct gve_notify_block *block =3D &priv->ntfy_blocks[ntfy_idx];
-> =20
->  	netif_napi_del(&block->napi);
-> +	disable_irq(block->irq);
+Mainly because now the comment we are adding is confusing me about what 
+`need_refill` means.
 
-The disable_irq() belongs before the netif_napi_del().  (The upstream
-version got this right.)
+The rest LGTM.
 
-Ben.
+Thanks,
+Stefano
 
->  }
-> =20
->  static int gve_register_qpls(struct gve_priv *priv)
->=20
->=20
+>+			/* Here hvs->recv_data_len is 0, so hvs->recv_desc must
+>+			 * be NULL unless it points to the 0-byte-payload FIN
+>+			 * packet: see hvs_update_recv_data().
+>+			 *
+>+			 * Here all the payload has been dequeued, but
+>+			 * hvs_channel_readable_payload() still returns 1,
+>+			 * because the VMBus ringbuffer's read_index is not
+>+			 * updated for the FIN packet: hvs_stream_dequeue() ->
+>+			 * hv_pkt_iter_next() updates the cached priv_read_index
+>+			 * but has no opportunity to update the read_index in
+>+			 * hv_pkt_iter_close() as hvs_stream_has_data() returns
+>+			 * 0 for the FIN packet, so it won't get dequeued.
+>+			 */
+>+			return 0;
+>+		}
+>
+> 		hvs->recv_desc = hv_pkt_iter_first(hvs->chan);
+> 		if (!hvs->recv_desc)
+>-- 
+>2.49.0
+>
+>
 
---=20
-Ben Hutchings
-The obvious mathematical breakthrough [to break modern encryption]
-would be development of an easy way to factor large prime numbers.
-                                                           - Bill Gates
-
---=-leS3f6qP9AucP8AJCK9m
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnfZtgACgkQ57/I7JWG
-EQkMmRAAiF0kQgxSyE1UWpzGrBJiooGuzVq2iRZVYsN9yPSeUtitdjvA11Xl3rv4
-zv9TRK9YtsFVwX7yYGtDguBKi6ShkHrqF8Z7G+Yz+24fGtpE8pkcoP57bmJEgA5M
-q0e18WbtRmjNfw8WE73dQ8/yKmRqRtUehoCxt90LPlfXkGQPXJHggLt7YEk4IROj
-1KGdpddMFAsXYMctCz+mZI5MfhTsH2UsXGfvb55mWirDueqjDCQ9gXHEFSryvBkr
-hAn61ZKMQMwE6Qg6f67Cml9dVTMh4TWjd98DNOdtH82c+LkNJEYRod1w+lO+NuA7
-Aocp3f4gAsC+PIcGRdNytlSNmW+l0m7MOjytRZO/FQ7GDW+NDGO2BULdjXTNEn9X
-BqCPdzzc66Kkpiu7oAfjqtIxxTNKwCQ8I0907h9ic19s9dVmduV4jALqPPldeBGg
-QMgOh/67abT+jeOciwYZOzqlA1Bk5OfifwBiYNcl9vfB5EC1/yVYywVna7gSG2dd
-E5fzRYtK9b6xmb6ys0mSx/40PMnOhWfvdO1xZBQXKYrmVb1jbiFU6Rd5Pc7vthbp
-7bxThR4JxaISFZRyjIltgI+2WDQf1aD7el8ZFBDdDzZr3YDHQRxhyYq/k5yWLPWK
-MPmi0LuqUuI85PK2JdZYI45nAviyUUExHNJBeMTfx1NG9BetbNQ=
-=+gU6
------END PGP SIGNATURE-----
-
---=-leS3f6qP9AucP8AJCK9m--
 
