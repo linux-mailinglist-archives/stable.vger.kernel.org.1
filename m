@@ -1,185 +1,211 @@
-Return-Path: <stable+bounces-238047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJEpJAUp32lpPgAAu9opvQ
-	(envelope-from <stable+bounces-238047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:58:29 +0200
+	id wF5VGEEs32nOPgAAu9opvQ
+	(envelope-from <stable+bounces-238048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:12:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DCD400A9A
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 07:58:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B731B400C25
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 08:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A8C123051901
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 05:58:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0AD230AAE98
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 06:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654E13624C5;
-	Wed, 15 Apr 2026 05:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36B635DA68;
+	Wed, 15 Apr 2026 06:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TlW0yCkL"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TKqqlwJ6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="t9JFNFUS";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dfX3skgD";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wxXogbEL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D48346E64
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 05:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166E01C84D7
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 06:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776232696; cv=none; b=oAAPnNKyUX3SEH8UwUXta0c+md3g+uEomituveZZCEormVgpfoy9up+iyw6Gg4KYd/hpjYITwAvbPHWev5MecSsBBDyjZpiMvQKHy37MZPgapZU11yCT3+w/CcRTtuk15rPAIcMWfe1uRC5yCD1MAPHSxsrDqM5DExLBBQ9fxmI=
+	t=1776233368; cv=none; b=n6FoEMkFn5yAjsShbQxTI3zfrnHTo7OAQVNtWuF+FBpJ3Q8yTktgD1bAabEcJu+3UkP+H3kbkN8ezTk0IZ91M5PbFVHSwcQ8PRlgnEXms2PELWYmOfv4h7Pim2xQvmP8bO8+VWnLwVbGVy2lusS1FhWfs73d86mg35n9oqT0toM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776232696; c=relaxed/simple;
-	bh=YJk7HFFywOAvglX29zYP4iiLAIOHUmcE1zceWMyjEtA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jbZWYJxDbZEZY7XhT/B45O81OpcfPUzk/rrA/o6VLxLdMJBRGJntbg3XbVbKn9kYlZd5JgVyxsd3k1bwcouhqg6F8yPlmxEwwnG86JoeDVh4VvOuQkGosRplhrONwGwBTYcWly21hcRw4uigpHJH+W5ualFuQK3+P1EGr0XGj84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TlW0yCkL; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-79a7109f568so75158397b3.1
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 22:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776232693; x=1776837493; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J7Qu+iufcZ9jYk8S+wuxRjUaOgj3R8vJUSvzid2gdM4=;
-        b=TlW0yCkLIUBrvRuZTGswlI+GJHBMFFyVA1SRcXn5BMqV9Ujb5FhwfPEBoGmxCR3hL2
-         CdF3kooUryWPabs6wKdosOsBxrtCE/SHio/Ii8HtuUCZ6f2fE8c0RDM/Yo9zoNIR8nj2
-         6J4YDpN9TZfWhspbIOohqeDLPw4aHcwBv3uS4WZ96GhkdsqtCTQr4OR/PXvZXPpoFkbB
-         e4NgD0w08T7n76l5FEOK53jFB4lYGJp0rLQiYW+UaFk9A1q24Xc9GWDRZwIyy0fcmaIm
-         XEQ0b718Xvn4SYcubqmyq4A6lk703CF/FEtdUNMmHJuIIERo3wYNFpLCyM0QV6528Gvn
-         CDOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776232693; x=1776837493;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J7Qu+iufcZ9jYk8S+wuxRjUaOgj3R8vJUSvzid2gdM4=;
-        b=AOpr9uKT+PZM61/BrrKuCD0TBRHrNStM0f3cZyQq7F2gCbgepUespY4zJvqO838omZ
-         VO0tx0MeCcpFqDsfEzJx6CfIF8d0Ci83wdL+jzOaGDN2MAdQr4LoM9OwbL6jftkohDaz
-         XLkocUjJ72Yy/5unRkipj3NPdlg31Zqpffkh5ddafFLNWCrLR7hXJYDYPcXhtxEdKIFJ
-         yc+r8HTpzVUAqVWmLgB+x8NeMXE5Sv8HIO3MABaEQPfNbHgsJ0zN2PMs8x1ywP7lPLkJ
-         /u1s02y9bGQFVGpEyCnNG47PLUKdN1ISfbrvL6ERU2//Ep9EG+xxM87Q/5YQT9II/BGn
-         g0Dw==
-X-Forwarded-Encrypted: i=1; AFNElJ9IF1IxZI6oUGF2dNuHjUqiD6vHNRUJjSnQpo+egH3E0Czs8H4sGGh6vEv0JTr5eDqI/5WY0A4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO33ruqqcX3oFmKwzUk8KSdgPCDBAb78GkYo0a9stxQKwC3hcV
-	j5TwdLCSDZfusTqUhxaLlRV4WYXIw91NNY1o8a2f3byU0RLy+altZcF3
-X-Gm-Gg: AeBDievpPaKcBNbzVAXddZy63AM6Rm9uAf/+QON+OouEurw+HZQtqlnElKsPdz7Df30
-	fJ0L2qL2AyPRb4Z8I3dp2Cob6Irl1jrRU9gjXuRJjSsZKAzdUyTuTmV1VrYro94IOhOrrAUx//n
-	YLMF2pIQ/HzEwCWm5SfaaqvzIWWtj/5LPm2cHTH8bCTSWdmy+P5aNlL/Tsm22h8jBM4lMPpQLTJ
-	xDzzBCG+e9aagh8n+rorm9XMTsqQLxUEc7SgjlPjsqIXmdslJwWce6Anp2oZFGvDPgONvKRBEy/
-	I5RiwYGdYjugB61RXG0LSWLYw7qvgV004HvRcMJ/LE1vGSEMM+Pj+PHII55l/D0eH9QV2zbA99F
-	LzX+qcQaJcrbjwDTcNUyhRFeriF4CnH4mcmQ6zkSmD1W7gPuEHu5QPCp2Wxi06UjBIo0KTbinYO
-	7X9IGPljajftUVNFvHmBV9mYNno0FQ/EqgyceOGP23PRSMhm4EO3RKqtAIslzljQKZryJAC4l/9
-	P/8BdtH/ZlfnTqpk3F0XUR4WWqkNvnpHxbRax8=
-X-Received: by 2002:a05:690c:85:b0:7a2:f14d:5a1 with SMTP id 00721157ae682-7af7252df6emr209920057b3.49.1776232693315;
-        Tue, 14 Apr 2026 22:58:13 -0700 (PDT)
-Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7b768d387eesm4440177b3.29.2026.04.14.22.58.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 22:58:12 -0700 (PDT)
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-hams@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Subject: [PATCH v3 net] rose: fix OOB reads on short CLEAR REQUEST frames
-Date: Wed, 15 Apr 2026 05:57:56 +0000
-Message-Id: <20260415055756.3825584-1-ashutoshdesai993@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1776233368; c=relaxed/simple;
+	bh=k0PaPfNx2tZ5WP1kFzX8K0m08tFd4ELvXloLky7W9YY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TBxuqwMS8FcUOFG93cFLkeID6zzL+CRhg4ca2Cx02ujXq8ClIT3sRUupVevMgmRjcUEOt72MP6TR45EqWYQCmPfGJyEK1fYh0o7iOFEK4bOdTABAdZD2Vgz3I90dJmCtGEhbGYd9sKdhPA8H2M+7nzBom1l+++u68I7w9+MaTJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TKqqlwJ6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=t9JFNFUS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dfX3skgD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wxXogbEL; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1F5575BDFC;
+	Wed, 15 Apr 2026 06:09:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776233365; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kHMPLy7s1GXBV0H5yYDYDF1b1j44/dHbNL91eI03PuQ=;
+	b=TKqqlwJ6tOdN9NEil0KcCFbqo2K6fROSGbh2lDiFHNDwvWebPYA0FPMSU0Rf3Q96bImBwx
+	a7q8ltZ7C2I1KJtc8e/+J+VEBlsmoz21BNABCTCM0x3ObHNGRIozqvEvQkSYzHK3bK9QxZ
+	tM5xkvIwjUZlOvKUh3hREix5loJkIM4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776233365;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kHMPLy7s1GXBV0H5yYDYDF1b1j44/dHbNL91eI03PuQ=;
+	b=t9JFNFUSKO3DCs1SLe/wa2o9AACQnKYASR0ZqaityB+3wF4QPHrnMnGZ/dNc90HHCH4iK4
+	fHvqIMcxI3Eqj0Bw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dfX3skgD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wxXogbEL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776233364; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kHMPLy7s1GXBV0H5yYDYDF1b1j44/dHbNL91eI03PuQ=;
+	b=dfX3skgDG4awo8/WimpVqdw5RsNdLJ7E81QCIVAcw4KTl3Ow7tdyKoUs6Ox1rQy+sJynwD
+	AXsa0f5US3R+dfxXhQIdCsWmgQCT+vCG5fyoFX05Wz/2VaX3ROZOK43ngQAECfulHjjqhe
+	Iqs1tJ69IQXkZsC3bfYzuk7Rgjn8weE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776233364;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kHMPLy7s1GXBV0H5yYDYDF1b1j44/dHbNL91eI03PuQ=;
+	b=wxXogbEL+Aa8XfhQNmhG2d1leBO/X6WcN0VmtTKXW8bc/n+0+UIaEpc2oQM4gfrKBClN9l
+	jDuR8GFKu2L317Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DB644B86A;
+	Wed, 15 Apr 2026 06:09:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JoVlJJMr32kuMQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 15 Apr 2026 06:09:23 +0000
+Message-ID: <80e2d151-6774-4285-87bb-d68682c8c342@suse.de>
+Date: Wed, 15 Apr 2026 08:09:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] drm/hibmc: Fix list of formats on the primary plane
+To: Yongbang Shi <shiyongbang@huawei.com>, xinliang.liu@linaro.org,
+ tiantao6@hisilicon.com, kong.kongxinwei@hisilicon.com,
+ sumit.semwal@linaro.org, yongqin.liu@linaro.org, jstultz@google.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, Rongrong Zou <zourongrong@gmail.com>,
+ Sean Paul <seanpaul@chromium.org>, Dmitry Baryshkov <lumag@kernel.org>,
+ Baihan Li <libaihan@huawei.com>, stable@vger.kernel.org
+References: <20260413085037.17491-1-tzimmermann@suse.de>
+ <20260413085037.17491-3-tzimmermann@suse.de>
+ <0668b6ec-b844-4fef-804c-91e488b39516@huawei.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <0668b6ec-b844-4fef-804c-91e488b39516@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-238047-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,chromium.org,kernel.org,huawei.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238048-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[huawei.com,linaro.org,hisilicon.com,google.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ashutoshdesai993@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 49DCD400A9A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:dkim,suse.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B731B400C25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-rose_process_rx_frame() calls rose_decode() which reads skb->data[2]
-without any prior length check. For CLEAR REQUEST frames the state
-machines then read skb->data[3] and skb->data[4] as the cause and
-diagnostic bytes.
+Hi
 
-A crafted 3-byte ROSE CLEAR REQUEST frame passes the minimum length
-gate in rose_route_frame() and reaches rose_process_rx_frame(), where
-rose_decode() reads one byte past the header and the state machines
-read two bytes past the valid buffer. A remote peer can exploit this
-to leak kernel memory contents or trigger a kernel panic.
+Am 15.04.26 um 05:19 schrieb Yongbang Shi:
+[...]
+> Also, I looked at the commit history, and this format was already
+> present in the first version of the hibmc driver. This is a historic
+> issue, and it's a bit difficult to determine why it was implemented this
+> way.
 
-Add a pskb_may_pull(skb, 3) check before rose_decode() to cover its
-skb->data[2] access, and a pskb_may_pull(skb, 5) check afterwards for
-the CLEAR REQUEST path to cover the cause and diagnostic reads.
+It's probably left over from the prototype. Back then, DRM was also less 
+well structured and it might have been harder to see what's really needed.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
----
-V2 -> V3: drop kfree_skb() calls to fix double-free; add end-user
-          visible symptom to commit log; use [net] subject prefix
-V1 -> V2: switch skb->len check to pskb_may_pull; add pskb_may_pull(skb, 3)
-          before rose_decode() to cover its skb->data[2] access
+>>
+>> Reviewed-by: Yongbang Shi <shiyongbang@huawei.com>
 
-v2: https://lore.kernel.org/netdev/177614667427.3606651.8700070406932922261@gmail.com/
-v1: https://lore.kernel.org/netdev/20260409013246.2051746-1-ashutoshdesai993@gmail.com/
+Thanks.
 
- net/rose/rose_in.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Best regards
+Thomas
 
-diff --git a/net/rose/rose_in.c b/net/rose/rose_in.c
-index 0276b393f0e5..8e60dc562b4a 100644
---- a/net/rose/rose_in.c
-+++ b/net/rose/rose_in.c
-@@ -269,8 +269,14 @@ int rose_process_rx_frame(struct sock *sk, struct sk_buff *skb)
- 	if (rose->state == ROSE_STATE_0)
- 		return 0;
- 
-+	if (!pskb_may_pull(skb, 3))
-+		return 0;
-+
- 	frametype = rose_decode(skb, &ns, &nr, &q, &d, &m);
- 
-+	if (frametype == ROSE_CLEAR_REQUEST && !pskb_may_pull(skb, 5))
-+		return 0;
-+
- 	switch (rose->state) {
- 	case ROSE_STATE_1:
- 		queued = rose_state1_machine(sk, skb, frametype);
+>
+
 -- 
-2.34.1
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
 
 
