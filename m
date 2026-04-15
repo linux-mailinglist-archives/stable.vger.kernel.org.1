@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-238073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJ+TGfBX32n1RwAAu9opvQ
-	(envelope-from <stable+bounces-238073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:18:40 +0200
+	id 0NhiFwhY32n1RwAAu9opvQ
+	(envelope-from <stable+bounces-238074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:19:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CA3402771
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:18:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B906140278E
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7E2430C43E9
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 09:15:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10C8E310CEE6
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 09:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836793314B9;
-	Wed, 15 Apr 2026 09:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4950332570D;
+	Wed, 15 Apr 2026 09:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="obf7TaQD"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0g600Rwi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B43F1A6811;
-	Wed, 15 Apr 2026 09:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D98157C9F;
+	Wed, 15 Apr 2026 09:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776244553; cv=none; b=eKjMIXSkzqvczF1m7arDOBDFOg6k6PFF+nnGD9sBbY0sXR4p391EqWfDMx8MQkKJt4En1qYVUp6xsgZ22pBna0+izqc92JCzbNEp/czoK71Y/wUnhvS7pTctaZsc9Yr8grCWtGT/Nhhqvh+VrdwTNnU2M1+NIfT2g3pB2o+So9Q=
+	t=1776244571; cv=none; b=DV7/B/iaVm4TumtWZfNCjOt8zMigBIZRwadgbTJ1dIdoh2yC2uNlBI5t1TZhcPrCGeBYGF9e4CdMeUvXENVSmhG2rR2/4eV6rapgyuKdtOqvdjRFB60cDf9aOlIbYQPLoKqw2jnXnw+caOLoT6m0WvwX1+/qIQbdpu1v58e51x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776244553; c=relaxed/simple;
-	bh=BXBra3R2CjRzvAj1nDBR5jHZlsWPGvRQ+inLS1Tc9bs=;
-	h=Date:To:From:Subject:Message-Id; b=Ynv3C6AlY5xYlzcwFpz1GRmVMGSa+8Xb9uPqYJHmmTdKCYXS9kYEXczGeQKL+DPOTwRODdl2j2FfsSH/ctQXWbE7p8VoMlSdAgd9tj/MijtlzsC8pxCzDS6p4+2goh5i6gd3/5DEgkDiebN5xEHEaM5v3x9xLFkUJPLHpFK9CZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=obf7TaQD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FC4C2BCB5;
-	Wed, 15 Apr 2026 09:15:51 +0000 (UTC)
+	s=arc-20240116; t=1776244571; c=relaxed/simple;
+	bh=NIZEZfqr4JlV1LfID7epc+updgDyboE40+jJO2I+HrY=;
+	h=Date:To:From:Subject:Message-Id; b=OZD+w5XTyb935pImgfL4wCuMmaedeLpc07YM6uM+8bS37FlPjiCz0Y8BxgZAia23/+I4/jIXdSfEaxxhm/DwyqGBPAFgnSy3ojjVYaIFs/3f3o+0HOcgziaYT9JDsuJ1vjr33+/Lt/JNvbhFP0LM7zU21fwi6JkFt5/as608Qek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0g600Rwi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D75C19424;
+	Wed, 15 Apr 2026 09:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776244552;
-	bh=BXBra3R2CjRzvAj1nDBR5jHZlsWPGvRQ+inLS1Tc9bs=;
+	s=korg; t=1776244570;
+	bh=NIZEZfqr4JlV1LfID7epc+updgDyboE40+jJO2I+HrY=;
 	h=Date:To:From:Subject:From;
-	b=obf7TaQD+qvkeOA800CJ+EmQkPXyC/BPwUBGNpPNi+1DerHlWp1bnZCOwtusaqII2
-	 GwfUeCIvsBvS+G0GJZwzw2nsK4Oh4KDW9jQOJY2s/VtnPlgbC1LQB1NukNabFVYVNO
-	 koKOtrTb95ogSFh791ntWu8xkxeMrG9kydR8idAA=
-Date: Wed, 15 Apr 2026 02:15:49 -0700
-To: mm-commits@vger.kernel.org,wang.yaxin@zte.com.cn,thomas.orgis@uni-hamburg.de,stable@vger.kernel.org,fan.yu9@zte.com.cn,bsingharora@gmail.com,cyyzero16@gmail.com,akpm@linux-foundation.org
+	b=0g600Rwimxj8u+qPr97FlGepQlre0GNVW2v8nAfIRC58iGrl4EPZL8zS1M7UmgGEE
+	 lsM1zyCmb37eobp5/iMWnHS/VPTcromW3eo5H50diA2i02yKKCBAlTWz+aHNYHNBHz
+	 Z48sqFn19W8aaawhOF4DyOJYSHbr9yvqDRAnK18U=
+Date: Wed, 15 Apr 2026 02:16:07 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,gality369@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] tools-accounting-handle-truncated-taskstats-netlink-messages.patch removed from -mm tree
-Message-Id: <20260415091552.17FC4C2BCB5@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] ocfs2-handle-invalid-dinode-in-ocfs2_group_extend.patch removed from -mm tree
+Message-Id: <20260415091610.31D75C19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,223 +54,119 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238073-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238074-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	DMARC_NA(0.00)[linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,zte.com.cn,uni-hamburg.de,gmail.com,linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,uni-hamburg.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 01CA3402771
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,smtp.kernel.org:mid,alibaba.com:email,linux-foundation.org:dkim,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,evilplan.org:email,live.cn:email]
+X-Rspamd-Queue-Id: B906140278E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: tools/accounting: handle truncated taskstats netlink messages
+     Subject: ocfs2: handle invalid dinode in ocfs2_group_extend
 has been removed from the -mm tree.  Its filename was
-     tools-accounting-handle-truncated-taskstats-netlink-messages.patch
+     ocfs2-handle-invalid-dinode-in-ocfs2_group_extend.patch
 
 This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Yiyang Chen <cyyzero16@gmail.com>
-Subject: tools/accounting: handle truncated taskstats netlink messages
-Date: Mon, 30 Mar 2026 03:00:41 +0800
+From: ZhengYuan Huang <gality369@gmail.com>
+Subject: ocfs2: handle invalid dinode in ocfs2_group_extend
+Date: Wed, 1 Apr 2026 17:23:03 +0800
 
-procacct and getdelays use a fixed receive buffer for taskstats generic
-netlink messages.  A multi-threaded process exit can emit a single
-PID+TGID notification large enough to exceed that buffer on newer kernels.
+[BUG]
+kernel BUG at fs/ocfs2/resize.c:308!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:ocfs2_group_extend+0x10aa/0x1ae0 fs/ocfs2/resize.c:308
+Code: 8b8520ff ffff83f8 860f8580 030000e8 5cc3c1fe
+Call Trace:
+ ...
+ ocfs2_ioctl+0x175/0x6e0 fs/ocfs2/ioctl.c:869
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ ...
 
-Switch to recvmsg() so MSG_TRUNC is detected explicitly, increase the
-message buffer size, and report truncated datagrams clearly instead of
-misparsing them as fatal netlink errors.
+[CAUSE]
+ocfs2_group_extend() assumes that the global bitmap inode block
+returned from ocfs2_inode_lock() has already been validated and
+BUG_ONs when the signature is not a dinode. That assumption is too
+strong for crafted filesystems because the JBD2-managed buffer path
+can bypass structural validation and return an invalid dinode to the
+resize ioctl.
 
-Also print the taskstats version in debug output to make version
-mismatches easier to diagnose while inspecting taskstats traffic.
+[FIX]
+Validate the dinode explicitly in ocfs2_group_extend(). If the global
+bitmap buffer does not contain a valid dinode, report filesystem
+corruption with ocfs2_error() and fail the resize operation instead of
+crashing the kernel.
 
-Link: https://lkml.kernel.org/r/520308bb4cbbaf8dc2c7296b5f60f11e12fb30a5.1774810498.git.cyyzero16@gmail.com
-Signed-off-by: Yiyang Chen <cyyzero16@gmail.com>
-Cc: Balbir Singh <bsingharora@gmail.com>
-Cc: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Cc: Fan Yu <fan.yu9@zte.com.cn>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
+Link: https://lkml.kernel.org/r/20260401092303.3709187-1-gality369@gmail.com
+Fixes: 10995aa2451a ("ocfs2: Morph the haphazard OCFS2_IS_VALID_DINODE() checks.")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/accounting/getdelays.c |   41 +++++++++++++++++++++++++++++----
- tools/accounting/procacct.c  |   40 ++++++++++++++++++++++++++++----
- 2 files changed, 73 insertions(+), 8 deletions(-)
+ fs/ocfs2/resize.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/tools/accounting/getdelays.c~tools-accounting-handle-truncated-taskstats-netlink-messages
-+++ a/tools/accounting/getdelays.c
-@@ -60,7 +60,7 @@ int print_task_context_switch_counts;
- 	}
+--- a/fs/ocfs2/resize.c~ocfs2-handle-invalid-dinode-in-ocfs2_group_extend
++++ a/fs/ocfs2/resize.c
+@@ -303,9 +303,13 @@ int ocfs2_group_extend(struct inode * in
  
- /* Maximum size of response requested or message sent */
--#define MAX_MSG_SIZE	1024
-+#define MAX_MSG_SIZE	2048
- /* Maximum number of cpus expected to be specified in a cpumask */
- #define MAX_CPUS	32
+ 	fe = (struct ocfs2_dinode *)main_bm_bh->b_data;
  
-@@ -115,6 +115,32 @@ error:
- 	return -1;
- }
- 
-+static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
-+{
-+	struct sockaddr_nl nladdr;
-+	struct iovec iov = {
-+		.iov_base = msg,
-+		.iov_len = sizeof(*msg),
-+	};
-+	struct msghdr hdr = {
-+		.msg_name = &nladdr,
-+		.msg_namelen = sizeof(nladdr),
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+	};
-+	int ret;
-+
-+	ret = recvmsg(sd, &hdr, 0);
-+	if (ret < 0)
-+		return -1;
-+	if (hdr.msg_flags & MSG_TRUNC) {
-+		errno = EMSGSIZE;
-+		return -1;
+-	/* main_bm_bh is validated by inode read inside ocfs2_inode_lock(),
+-	 * so any corruption is a code bug. */
+-	BUG_ON(!OCFS2_IS_VALID_DINODE(fe));
++	/* JBD-managed buffers can bypass validation, so treat this as corruption. */
++	if (!OCFS2_IS_VALID_DINODE(fe)) {
++		ret = ocfs2_error(main_bm_inode->i_sb,
++				  "Invalid dinode #%llu\n",
++				  (unsigned long long)OCFS2_I(main_bm_inode)->ip_blkno);
++		goto out_unlock;
 +	}
-+
-+	return ret;
-+}
-+
  
- static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
- 	     __u8 genl_cmd, __u16 nla_type,
-@@ -633,12 +659,16 @@ int main(int argc, char *argv[])
- 	}
- 
- 	do {
--		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
-+		rep_len = recv_taskstats_msg(nl_sd, &msg);
- 		PRINTF("received %d bytes\n", rep_len);
- 
- 		if (rep_len < 0) {
--			fprintf(stderr, "nonfatal reply error: errno %d\n",
--				errno);
-+			if (errno == EMSGSIZE)
-+				fprintf(stderr,
-+					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
-+			else
-+				fprintf(stderr, "nonfatal reply error: errno %d\n",
-+					errno);
- 			continue;
- 		}
- 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
-@@ -680,6 +710,9 @@ int main(int argc, char *argv[])
- 							printf("TGID\t%d\n", rtid);
- 						break;
- 					case TASKSTATS_TYPE_STATS:
-+						PRINTF("version %u\n",
-+						       ((struct taskstats *)
-+							NLA_DATA(na))->version);
- 						if (print_delays)
- 							print_delayacct((struct taskstats *) NLA_DATA(na));
- 						if (print_io_accounting)
---- a/tools/accounting/procacct.c~tools-accounting-handle-truncated-taskstats-netlink-messages
-+++ a/tools/accounting/procacct.c
-@@ -71,7 +71,7 @@ int print_task_context_switch_counts;
- 	}
- 
- /* Maximum size of response requested or message sent */
--#define MAX_MSG_SIZE	1024
-+#define MAX_MSG_SIZE	2048
- /* Maximum number of cpus expected to be specified in a cpumask */
- #define MAX_CPUS	32
- 
-@@ -121,6 +121,32 @@ error:
- 	return -1;
- }
- 
-+static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
-+{
-+	struct sockaddr_nl nladdr;
-+	struct iovec iov = {
-+		.iov_base = msg,
-+		.iov_len = sizeof(*msg),
-+	};
-+	struct msghdr hdr = {
-+		.msg_name = &nladdr,
-+		.msg_namelen = sizeof(nladdr),
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+	};
-+	int ret;
-+
-+	ret = recvmsg(sd, &hdr, 0);
-+	if (ret < 0)
-+		return -1;
-+	if (hdr.msg_flags & MSG_TRUNC) {
-+		errno = EMSGSIZE;
-+		return -1;
-+	}
-+
-+	return ret;
-+}
-+
- 
- static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
- 	     __u8 genl_cmd, __u16 nla_type,
-@@ -239,6 +265,8 @@ void handle_aggr(int mother, struct nlat
- 			PRINTF("TGID\t%d\n", rtid);
- 			break;
- 		case TASKSTATS_TYPE_STATS:
-+			PRINTF("version %u\n",
-+			       ((struct taskstats *)NLA_DATA(na))->version);
- 			if (mother == TASKSTATS_TYPE_AGGR_PID)
- 				print_procacct((struct taskstats *) NLA_DATA(na));
- 			if (fd) {
-@@ -347,12 +375,16 @@ int main(int argc, char *argv[])
- 	}
- 
- 	do {
--		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
-+		rep_len = recv_taskstats_msg(nl_sd, &msg);
- 		PRINTF("received %d bytes\n", rep_len);
- 
- 		if (rep_len < 0) {
--			fprintf(stderr, "nonfatal reply error: errno %d\n",
--				errno);
-+			if (errno == EMSGSIZE)
-+				fprintf(stderr,
-+					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
-+			else
-+				fprintf(stderr, "nonfatal reply error: errno %d\n",
-+					errno);
- 			continue;
- 		}
- 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
+ 	if (le16_to_cpu(fe->id2.i_chain.cl_cpg) !=
+ 		ocfs2_group_bitmap_size(osb->sb, 0,
 _
 
-Patches currently in -mm which might be from cyyzero16@gmail.com are
+Patches currently in -mm which might be from gality369@gmail.com are
 
 
 
