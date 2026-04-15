@@ -1,224 +1,168 @@
-Return-Path: <stable+bounces-238080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDRABiJd32m5SAAAu9opvQ
-	(envelope-from <stable+bounces-238080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:40:50 +0200
+	id cH6MDKte32n+SAAAu9opvQ
+	(envelope-from <stable+bounces-238081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:47:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6751402B85
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:40:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6BB402CF1
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A403030DB552
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 09:39:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD8A5313E3A4
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 09:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A89633F584;
-	Wed, 15 Apr 2026 09:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B756533F8B4;
+	Wed, 15 Apr 2026 09:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/n8SqCD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CIIx9PBU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34F733C19E;
-	Wed, 15 Apr 2026 09:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAA433B6DB
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 09:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776245936; cv=none; b=athlXgh2QKwswqp42PRkAZ2P9WSKDVRv5uuPTcu5GNdswwhQlLpWwGKUnwGco+Yex9jxZiD48cRqdZ1HZXYjvBsGZUyrUmt9vRVopPxIOmuaAEa45bN4J8DnklERtIMlsEZxGWO5x+dz1kTrd8nxQJJjGHjnX2zVUqcoJeKspio=
+	t=1776245993; cv=none; b=IR9zpNaEjmQbCBCOitxJxpJtCQ3djfJ++z69DZ9uHvCmfG+ae2Gc7Il3+Uyw8l6P+S65pi7xNFqval5/+BkhwFDr7P8jpi1jd73iv90NPt4rKrTia8lcPpo0kgrnI/gRpmcFUF8s2tDWXbwmEIBH9LtdSnyS6JsRTwc7svJ6oCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776245936; c=relaxed/simple;
-	bh=moROckWrO/nwdTjPZHImmBX/Q4BzgzHWLEdLtiAu5io=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZFEz9vvpdgjeUP35P/RZQmtkCfbKAJ6F5IGCl+ZzNAvIEj257g4pLyD8MGJsvh4xTX44sHSfkKzbOuzv9DdZRVNloh34FiiGbTPxOx62PscVE0vcz7KjRsK6AGwfbHh9Y3ef931NRWCQDCPUXqYal4dsG6cvkYJyVmvpZwoyCpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/n8SqCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E13C2BCB5;
-	Wed, 15 Apr 2026 09:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776245936;
-	bh=moROckWrO/nwdTjPZHImmBX/Q4BzgzHWLEdLtiAu5io=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=U/n8SqCDUN+stlqML2EjpISTEdzCP69psEjVUeLK764mMFIqOjX2iAEIVODrzJYWT
-	 TrWAupBCG7WdiL/IgjKXkUZy31rSXaW8mN9LgkLstW3THKZ9paVHNOOGLXxqzrhH0o
-	 PtaTVBzSAKoS4I29AFo6nugl3QSnCAhgKNozlQsl0fZmIsm0FOF9jEM3hJxuYtg0XI
-	 8v3FIy9zTB9WIXFTrXrBxeOeJleT1jNe4K9LaYOqKLZ+Owh/pOhBPJx7rb3AhmEKK+
-	 Tfd6rMdy6RVfwizlYDSuxjItmYrXqDbcTDrOZS/DF2oNw637ROVGnwnLoYb90BhFSz
-	 Gg15uOCi2qyJQ==
-From: Benjamin Tissoires <bentiss@kernel.org>
-Date: Wed, 15 Apr 2026 11:38:15 +0200
-Subject: [PATCH 2/4] HID: core: introduce hid_safe_input_report()
+	s=arc-20240116; t=1776245993; c=relaxed/simple;
+	bh=8wEJzSrLXxs/034FOnYHmEz9U9WF+Tj2QdyA72fy5CY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h7ZpSyU5yGGF9YRstZVT0EzT4/mDYRUVBGS+/HwWTddM8UhPA8pZjQEhL6i9BUgBNZhdEdkxLXz15D9qtFlExCACDTPUT01PnjTBRC02h7jXiAMtWPBnDRiX64Mv//OCZJxKc+v8+RUTesibBloreZrKC+rM4i8aSQqzUgErmCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CIIx9PBU; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-671ae79e617so3653923a12.3
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 02:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776245989; x=1776850789; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TMt1KMCrs6g/yh5vW62yefiOqceYfNw77kBLrZ0YXf0=;
+        b=CIIx9PBU8dAtCmF9WYXtcp389ALKdpC38bIcl6rmOjvhJSCGv02L83Bs1Rnsii2Rdq
+         tAwBRuiMKZ/NIfM1l7r4Q7lRzaBQdYizARy6QvAk/ZY/0JgtIkYeiJBKgqgaAaAULG5w
+         +7FwQVBuFLALur3pnU8NPBmHir6ncEZnCh9u6zP7YmND7tQEdnkAANPlX9+btW2HuD8Q
+         3VGlA0jGjRxGSyi3vKQ2cIqg1l4/kF2IAvV3EMTqAQ8r4GS+KQxrqb5l3zLq7DjGtT6V
+         g7bfjF8oq1iRb+pIKFKdd+VOL0xzhK+lK4eokc8enY66LUzU+/bNIaRjf5dEW5hLoXic
+         WFPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776245989; x=1776850789;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TMt1KMCrs6g/yh5vW62yefiOqceYfNw77kBLrZ0YXf0=;
+        b=hg+sfxPwJKiNNFuVf7fa0esLtqxBKxwpmqS26onOV1VgjTsx0QkXUjgRqdbMwH+05X
+         jjYPY7HigpaUSBDDE3GrWqgZivPfgIcMoOfXYsoF3dsxrnyGjagXg04n909dfepxqabh
+         x1sjAm3mqNDtw5YCqRj/cvHwhw4bNVoSAr/oS5MvF/lrp1vRcNPbJdbu5Fv+HFTmHU+F
+         xSNHOUBSQemOsZyK1QidKxjgsvlw1qCSG74wRhuoFN84H8fAbqKTdxvV/zJeH767Pb3t
+         HjKJksHXGk0dMSOSW9jTSwomnEToWQyp6CF+79IQYa8LUGR9PX/Mqql5R3zECdxBm6ok
+         yWQw==
+X-Forwarded-Encrypted: i=1; AFNElJ/JWtMC59dfy9FnJhHGKpwUWG2fA6CCwJZvTTHCHbOr2+JyWnRlwjoTfDfcl7iw8x9SLrLRWPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5EjyDb/WTTgkXlSgIIhY5inora7pfbBioR5lNrnBuNrYt0BUG
+	uyQH3QLF8xXVjjnDd6z2/his0yyK/Xdugz5mWEetvecltJm+J0OLgreJ
+X-Gm-Gg: AeBDieugrPnXdHLifuzkO3jOfoC77XCM7C8XnwSHBKbhNFNC190ZXutNH7cAWJEk8L1
+	axR4zn4COAtQhFbqakc0y1EHI3nu/c0cGLy1R9KTsiEKnsb45n9nIb9qou2pf/VVzbYHlRqxnjE
+	PNyWVGeqYGXbAxFvfYpa68gnsS9yadIqrkBr5hnVeAcTjmVi3KcPW0IJqxS0uJnHjaHY+V+htdG
+	E792IO8W6gkucxX3jLBhHT2W8wdZVkLfkW5TuHJCqjjPEf3tVmN5hIh1rXrqzU9QaatjPu2p+ib
+	SNjSrc9LMP7SJAaMTRV21aBZks9qP4OELws93TOwiYmqCJzvf/MgChk0chwQJ7CnDiv4qqZCV1o
+	jYQ7j/gWDSOzo17PFaV9aQLdHKrY6GtbC7dFi5aNsdLS/6zWl/L2x0w9fSkDCwlbq5LHUVbtiju
+	m06l7JS4z0FVLRFBZ9WSJkRTDUEomrvRajTZvfBVYdFE5RjR04sdsCLTLsF5PR+nCejx88upZui
+	uw1r7fyvFLbIfClaHCIUc3JvIi+EsdtJdvPRMbEe6BJMbTJsKiN4ddch6DqFNcxVLgKdecl9is0
+	Ss5j0Ew7WJu4+ErC
+X-Received: by 2002:a05:6402:1d51:b0:670:3b53:9bc with SMTP id 4fb4d7f45d1cf-67077652932mr8597223a12.4.1776245988696;
+        Wed, 15 Apr 2026 02:39:48 -0700 (PDT)
+Received: from ahossu.residents.sin.openfiber.nl ([88.202.160.248])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67237d8cd5esm252223a12.11.2026.04.15.02.39.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 02:39:48 -0700 (PDT)
+From: Alexandru Hossu <hossu.alexandru@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	error27@gmail.com,
+	stable@vger.kernel.org,
+	luka.gejak@linux.dev,
+	Alexandru Hossu <hossu.alexandru@gmail.com>
+Subject: [PATCH v5 1/2] staging: rtl8723bs: fix heap overflow in OnAuthClient shared key path
+Date: Wed, 15 Apr 2026 11:38:18 +0200
+Message-ID: <20260415093819.1112313-1-hossu.alexandru@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260415-wip-fix-core-v1-2-ed3c4c823175@kernel.org>
-References: <20260415-wip-fix-core-v1-0-ed3c4c823175@kernel.org>
-In-Reply-To: <20260415-wip-fix-core-v1-0-ed3c4c823175@kernel.org>
-To: Jiri Kosina <jikos@kernel.org>, 
- =?utf-8?q?Filipe_La=C3=ADns?= <lains@riseup.net>, 
- Bastien Nocera <hadess@hadess.net>, Ping Cheng <ping.cheng@wacom.com>, 
- Jason Gerecke <jason.gerecke@wacom.com>, Viresh Kumar <vireshk@kernel.org>, 
- Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev, 
- linux-usb@vger.kernel.org, Benjamin Tissoires <bentiss@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776245925; l=4600;
- i=bentiss@kernel.org; s=20230215; h=from:subject:message-id;
- bh=moROckWrO/nwdTjPZHImmBX/Q4BzgzHWLEdLtiAu5io=;
- b=hXNHy+LbJDsyGE3CKDgwY+ACefn6s7+4oTb8tdPI1QmV4P1zzTgr46UfCZBLVUeFrAImh/a4w
- 16WjuuXTu7lBYnvZi8sI/ypOp0Nca887vKvRYPpncr+r7m/XRQeE02R
-X-Developer-Key: i=bentiss@kernel.org; a=ed25519;
- pk=7D1DyAVh6ajCkuUTudt/chMuXWIJHlv2qCsRkIizvFw=
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238080-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-238081-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,linux.dev];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.977];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A6751402B85
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8D6BB402CF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-hid_input_report() is used in too many places to have a commit that
-doesn't cross subsystem borders. Instead of changing the API, introduce
-a new one when things matters in the transport layers:
-- usbhid
-- i2chid
+rtw_get_ie() returns the raw IE length from the received frame, which
+can be up to 255. This length is used directly in memcpy() into
+chg_txt[128] with no bounds check, allowing a heap overflow of up to
+127 bytes when a rogue AP sends an Auth seq=2 frame with a Challenge
+Text IE longer than 128 bytes.
 
-This effectively revert to the old behavior for those two transport
-layers.
+IEEE 802.11 mandates the Challenge Text element carries exactly 128
+bytes of challenge data. Reject any element whose length field does not
+match sizeof(pmlmeinfo->chg_txt) (128).
 
-Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Reviewed-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
 ---
- drivers/hid/hid-core.c             | 21 +++++++++++++++++++++
- drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++++---
- drivers/hid/usbhid/hid-core.c      | 11 ++++++-----
- include/linux/hid.h                |  2 ++
- 4 files changed, 33 insertions(+), 8 deletions(-)
+Changes in v5:
+- Resend as 1/2 in a two-patch series at maintainer request;
+  patch content unchanged from initial submission
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index a806820df7e5..cb0ad99e7a0a 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2191,6 +2191,27 @@ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data
- }
- EXPORT_SYMBOL_GPL(hid_input_report);
- 
-+/**
-+ * hid_safe_input_report - report data from lower layer (usb, bt...)
-+ *
-+ * @hid: hid device
-+ * @type: HID report type (HID_*_REPORT)
-+ * @data: report contents
-+ * @bufsize: allocated size of the data buffer
-+ * @size: useful size of data parameter
-+ * @interrupt: distinguish between interrupt and control transfers
-+ *
-+ * This is data entry for lower layers.
-+ */
-+int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			  size_t bufsize, u32 size, int interrupt)
-+{
-+	return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
-+				  false, /* from_bpf */
-+				  false /* lock_already_taken */);
-+}
-+EXPORT_SYMBOL_GPL(hid_safe_input_report);
-+
- bool hid_match_one_id(const struct hid_device *hdev,
- 		      const struct hid_device_id *id)
- {
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 5a183af3d5c6..e0a302544cef 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -574,9 +574,10 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
- 		if (ihid->hid->group != HID_GROUP_RMI)
- 			pm_wakeup_event(&ihid->client->dev, 0);
- 
--		hid_input_report(ihid->hid, HID_INPUT_REPORT,
--				ihid->inbuf + sizeof(__le16),
--				ret_size - sizeof(__le16), 1);
-+		hid_safe_input_report(ihid->hid, HID_INPUT_REPORT,
-+				      ihid->inbuf + sizeof(__le16),
-+				      ihid->bufsize - sizeof(__le16),
-+				      ret_size - sizeof(__le16), 1);
- 	}
- 
- 	return;
-diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
-index fbbfc0f60829..5af93b9b1fb5 100644
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -283,9 +283,9 @@ static void hid_irq_in(struct urb *urb)
- 			break;
- 		usbhid_mark_busy(usbhid);
- 		if (!test_bit(HID_RESUME_RUNNING, &usbhid->iofl)) {
--			hid_input_report(urb->context, HID_INPUT_REPORT,
--					 urb->transfer_buffer,
--					 urb->actual_length, 1);
-+			hid_safe_input_report(urb->context, HID_INPUT_REPORT,
-+					      urb->transfer_buffer, urb->transfer_buffer_length,
-+					      urb->actual_length, 1);
- 			/*
- 			 * autosuspend refused while keys are pressed
- 			 * because most keyboards don't wake up when
-@@ -482,9 +482,10 @@ static void hid_ctrl(struct urb *urb)
- 	switch (status) {
- 	case 0:			/* success */
- 		if (usbhid->ctrl[usbhid->ctrltail].dir == USB_DIR_IN)
--			hid_input_report(urb->context,
-+			hid_safe_input_report(urb->context,
- 				usbhid->ctrl[usbhid->ctrltail].report->type,
--				urb->transfer_buffer, urb->actual_length, 0);
-+				urb->transfer_buffer, urb->transfer_buffer_length,
-+				urb->actual_length, 0);
- 		break;
- 	case -ESHUTDOWN:	/* unplug */
- 		unplug = 1;
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index ac432a2ef415..bfb9859f391e 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1030,6 +1030,8 @@ struct hid_field *hid_find_field(struct hid_device *hdev, unsigned int report_ty
- int hid_set_field(struct hid_field *, unsigned, __s32);
- int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
- 		     int interrupt);
-+int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			  size_t bufsize, u32 size, int interrupt);
- struct hid_field *hidinput_get_led_field(struct hid_device *hid);
- unsigned int hidinput_count_leds(struct hid_device *hid);
- __s32 hidinput_calc_abs_res(const struct hid_field *field, __u16 code);
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+index 5f00fe282d1b..90f27665667a 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+@@ -891,7 +891,7 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
+ 			p = rtw_get_ie(pframe + WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_, WLAN_EID_CHALLENGE, (int *)&len,
+ 				pkt_len - WLAN_HDR_A3_LEN - _AUTH_IE_OFFSET_);
+ 
+-			if (!p)
++			if (!p || len != sizeof(pmlmeinfo->chg_txt))
+ 				goto authclnt_fail;
+ 
+ 			memcpy(pmlmeinfo->chg_txt, p + 2, len);
 -- 
 2.53.0
 
