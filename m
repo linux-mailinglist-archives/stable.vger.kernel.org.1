@@ -1,187 +1,168 @@
-Return-Path: <stable+bounces-238005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id A2waMg3y3mmIMwAAu9opvQ
-	(envelope-from <stable+bounces-238005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:03:57 +0200
+	id AGC/HGry3mmIMwAAu9opvQ
+	(envelope-from <stable+bounces-238006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:05:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5743F3FFA89
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:03:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59613FFAB5
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 04:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B26D03087BB0
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 02:01:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F7D8303DACD
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 02:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8A5309EF4;
-	Wed, 15 Apr 2026 02:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E0128B7EA;
+	Wed, 15 Apr 2026 02:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iHUuRHyV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LeudH/En"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7882DC77F
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 02:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776218472; cv=none; b=fa6WamKu5pPiCSVym4I/xTuAFrGCVLmEjHBbVcaf3FztzvwpOZ5CJ4WLNmENgHdwWGxpbBsCsxNaLkgpWWO5JhORJuxNccXP0NAWcSrHxkuFnu7lpHynfN3zdh1+Pxjb6Qdks97xXywCH1cr8aTaDpxpP9Ee/Bro1RaC6vd91Bc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776218472; c=relaxed/simple;
-	bh=8YVeNgNiRmAJqMrVc5F669ogu0IKs8pMHti83cSxKJE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41A812D1F1
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 02:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776218717; cv=pass; b=EpFt7U9pXuz8jq1VZCk+UMXy/Io/02UnjN9kODrxWHSvun7VrduzoF6C4X7Kdr46ggrqwdBlPXXN+aym9PPDGQ8M2lNvqYA/Jdx7K6x0QE3JJ1a6/FrARsQNmgGgd0mkzFhfcUPtnwPgCF956p0MxMkuvoi6YC8bw3ASPAa7aLM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776218717; c=relaxed/simple;
+	bh=//BODY+zI/RuPgA6LIbKfU/QsiOSH1O9Jbam+W9iapk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e0y9ZXialexz1alfLXFg1+s+I+9WWPsr2HaEK46QpV/hmdsrXTymoHFC99SNDgtY2rOB39nweYDqB1nc9DrP1bqRjj8/n0mXhdMjt8ZcbP32xfe8k6N9iocORtWljjMchjOmKuCSb6KQjlvubYYzjUXzex9fmbXi7DGTYxrb8ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iHUuRHyV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CAEC19425
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 02:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776218472;
-	bh=8YVeNgNiRmAJqMrVc5F669ogu0IKs8pMHti83cSxKJE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iHUuRHyVek5CKaP2mf8cyKNQ5W/cP9kHJ5I6FyDpk7eSNdQPelQMKmBq+p3xKJM65
-	 4rIBPehTP/wtGVtCRWR1pXLOKV6hAXf4TIpmATKqbHurUfGjPrwKpHWzsN/7BUXZSm
-	 tuFUbuQNVX+yRZ4KjZFl1lCqeUbmYEyfUrGR9uG/ZvbB4SNP/Mgxd9v5VdnV5QZEK1
-	 6jkb9xLFzhQ9iCTlyIClcOfOl+R3iu256kJgB4XBd/V4pmyylaLWgURd9L5JX7T+Rf
-	 QDGGQj+aOpmlKXOZWiz3mW9JfUVACjHt5NdYBZJ6IxDB2lKjyygS3oVES+Anz/EJ1k
-	 VfLEf8JOAeRFw==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-671a901584eso3494389a12.0
-        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 19:01:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9WDbNs08/9qMMMuoUfygJPW970SrHc6sJeQayVW+193gQHVk0cgae99JChjMQLb9cuv7H7buc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk0pftyPvkCym+Oyi0Z8WcRevA5MG7qp6c2C/8+TsX0tcKYekw
-	eBneN0BRl2fqCXIuGbanWGpIbra8MBJK4lkbHVmtmxZg5ssUWBTHm9iYQfG2U64m12TNkUwFRpI
-	uqO7D0BBdhESoJV7PRBfE2f0H7CwelhQ=
-X-Received: by 2002:a17:907:3e8a:b0:b9c:eedb:db4 with SMTP id
- a640c23a62f3a-b9d727a0607mr1017965666b.53.1776218470846; Tue, 14 Apr 2026
- 19:01:10 -0700 (PDT)
+	 To:Cc:Content-Type; b=ZiL6qeUZiBcSp5XmhzJxOVirsSOVUzIr80wSUfl46xBp1i7sTAscOjjfU4IqSYxKA14DiGdvl7DK/xNvnEyZzkB3AQcoIi6PAeKJqTTsQ5XSFwMVA1Fq9RHH2XjEuXaRW0Lx3gbGriHXnNyLgjjbO9XqAuj8oo2mOfkO6x7yhqA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LeudH/En; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-651c5d525f6so2980152d50.3
+        for <stable@vger.kernel.org>; Tue, 14 Apr 2026 19:05:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776218716; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K7bD1wMG6x0F49D6a/TFz1fIphhRkOjckw59ebPLGxHqxRvlcvoyRNlD6weLuefCXR
+         Aefd0b4Ln+YUAdXI1DjckaWp4d9rw9Uq/I1LgbQD4ok9C3HubR6uLRiRUSYoxQsjB6Yz
+         HiSG9FTEZgC0qp2CceVK3RVFtXH0FppBRxwaXbY0vs/zmSe6nsXQKzFhOZEaFRj8iCrz
+         iy2JNhcppht0GtIT05Ojw57yaW3XwytPxxLWBHaTYJ3AIh/iRsGKqKRoM/hJJ8+aXpXt
+         j6oXnsTwDzBL3l+SqRAxaveOeHBTd2n2SlfNrCh0cMZf6ptH/K4cJ3CDJFNMwPC14V9l
+         jzDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=//BODY+zI/RuPgA6LIbKfU/QsiOSH1O9Jbam+W9iapk=;
+        fh=No6G50bEdAPvzzsgpkUsm7dtcMMlgG9Rb7xB4l8Ycgw=;
+        b=DV840O5ZettPkKNt6T5SR01ONIuceStoId3thLYsqpHJt9ju61qjH/D27T3JvPeTcg
+         UDTmUqjOP6yqUHDYE6HG+orcN+SqrKLDpQmdASNvXi8lapNp/fv6DwDOhYsXWOBsnkQe
+         akVrBS6r9VXq8kraWb+eoj3lCwi1QAZl2o2e46MG5X38CLmlonMq52ID0UifTLo9VVf9
+         977ABduGI3HAGy9/tzRaStPASgWrt20z6oQk1CyhJvNA1P+3LSFZzi3GA8X6MJqoQ98u
+         VKbXCs6MNFP9joaLlJagZG0JuJNqTw7tMtraySqOdmU6mngtK2xsbFY5lWY5mV7Hn2ZK
+         kl0g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776218716; x=1776823516; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=//BODY+zI/RuPgA6LIbKfU/QsiOSH1O9Jbam+W9iapk=;
+        b=LeudH/En9+As1V8Hx7RY3pG2I0LHB7yY0Pnw9StHuISLqdgelNQw5CJ6NWxW/6TPEh
+         9rXDcK/v7xkKKfzyj1lR+wSN+MUG8pdQtRIO7cK72k2GGIja+sh5nF7CSRMdcdQ8UKcV
+         T+xl/5Uo6vMT5bJBKDfx6MEtROC71oPCm0nDCqt59zUwoejJmS+3NziNlAxzSp+722rs
+         4rvPhsFygGcnnzTFYRccY99ML71ugvtsMmU+Kxzlt4CDzHlJJjFx1+jQQ274IcR4OC4I
+         PZK/XpAUYseT8AU6pFOixyBF5lazGYPminbGL8ck4UK26zFNql08Io6qMPAYG4pwRUWZ
+         dWHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776218716; x=1776823516;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=//BODY+zI/RuPgA6LIbKfU/QsiOSH1O9Jbam+W9iapk=;
+        b=KKHDawXUWTAgM8laPGanNnIspaC3g+4VwOOqOd+M7YJ0icxKAmhWqLO76ukD+cMjI6
+         dIgA2q4ffXN685YDHSH3+vVoKG2wOiD7hezeXYiErVEMZnJ3a2xQukV6lbjVpYkNzoyb
+         GYKLoX1mHlqEUU8XPn7tkJVbunjjkjRT2QXQIn1G1n+z8gcXPcQtSnerbl+OBfP3HzEu
+         cwdnLzHdfbWO28tMIyatB/uXFucW+300txlAikBUeHQ2txTF5uWzkYau++vdLSENdUcg
+         1Npfg2tb93KTyIIBzEMXSK8tCzLj2qlIqWLF0XCIu3NvXDrW2GipKxhwkfYoOAPLEvAJ
+         gRRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/enuBA/1RjUH5tuZPwXIUm3yaRDHVOg1AfvKh/u0WswnOleKLgF7MKx510tZA1RbpioyMC9Lw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqsFuOI8ix91Wdb/7riqoqOw5MvXnZa1D9TDax2Hni2mHyjZat
+	yswAB994H8AHF+rrrKHku1l09iy68wbKbdhsWB3JkMm1oQlfe5iHc66Ja5ZTSyEDit4IHU2Ntwz
+	JERAejUNWYnQ8fPbEP/xEedus3uhDRYs=
+X-Gm-Gg: AeBDieuwSwLKPtgiBUI77gdG15ZMZk7lVnnORQ6bvuwb1+9KozH48sLs523LLW8wNV0
+	5tb8c3S1UK6rMSonKgPbjysCm3uScREUetT2FS+oK63aNPtpUX6w0vH7LYZvjTP/UxkfdoC54L/
+	vV3uAgmkRM1ZJEBcvypU1wioTHAvdtvHHwdtnzqkx06IoSxCKogBjcbOoH0dEdlVm2BZf8nPS4k
+	9r8w49pk45hkVyYSAtIK+Wd3fiGd4JzpzfxIvAVUUVj4tTKFvbUF1ury9NEjjBlEmRRcE8pBF4n
+	6xIqEjHiNiAdl3YaI3kR
+X-Received: by 2002:a05:690e:1488:b0:651:be70:8661 with SMTP id
+ 956f58d0204a3-651be708b12mr11714648d50.67.1776218715884; Tue, 14 Apr 2026
+ 19:05:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260414191533.1467353-1-michael.bommarito@gmail.com> <20260414191533.1467353-2-michael.bommarito@gmail.com>
-In-Reply-To: <20260414191533.1467353-2-michael.bommarito@gmail.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 15 Apr 2026 11:00:58 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd-zwPuES8PdV+XQjuQUemVKejayqY_0aYS=88uZ=FG9+w@mail.gmail.com>
-X-Gm-Features: AQROBzDiTpeN0_4j4Q3OmL-_lPLc4Vt6-gETxOY7I8KyeY9SyNLI3Hhpqk1YlDs
-Message-ID: <CAKYAXd-zwPuES8PdV+XQjuQUemVKejayqY_0aYS=88uZ=FG9+w@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ksmbd: cap response sizes in ipc_validate_msg()
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: linux-cifs@vger.kernel.org, Steve French <smfrench@gmail.com>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Tom Talpey <tom@talpey.com>, stable@vger.kernel.org
+References: <20260414121024.3142118-1-lgs201920130244@gmail.com> <4b7a0492-6ebb-e0a9-ca48-f2da6002d3e9@amd.com>
+In-Reply-To: <4b7a0492-6ebb-e0a9-ca48-f2da6002d3e9@amd.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Wed, 15 Apr 2026 10:05:03 +0800
+X-Gm-Features: AQROBzCYi4c4CkfhIjGAtD67f3EUwjXInr63HBlRDkKe5deoHv9cic-8YRXWHUg
+Message-ID: <CANUHTR8ZBK8FVgc329=027FfyvbOVSN3+coZx+7B3x834dGY3w@mail.gmail.com>
+Subject: Re: [PATCH] accel/amdxdna: fix IRQ vector leak in aie2_init()
+To: Lizhi Hou <lizhi.hou@amd.com>
+Cc: Min Ma <mamin506@gmail.com>, Oded Gabbay <ogabbay@kernel.org>, 
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>, George Yang <George.Yang@amd.com>, 
+	Narendra Gutta <VenkataNarendraKumar.Gutta@amd.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238005-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-238006-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,oss.qualcomm.com,amd.com,lists.freedesktop.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,chromium.org,talpey.com];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 5743F3FFA89
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C59613FFAB5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 4:15=E2=80=AFAM Michael Bommarito
-<michael.bommarito@gmail.com> wrote:
->
-> ipc_validate_msg() computes the expected message size for each
-> response type by adding (or multiplying) attacker-controlled fields
-> from the daemon response to a fixed struct size in unsigned int
-> arithmetic.  Three cases can overflow:
->
->   KSMBD_EVENT_RPC_REQUEST:
->       msg_sz =3D sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
->   KSMBD_EVENT_SHARE_CONFIG_REQUEST:
->       msg_sz =3D sizeof(struct ksmbd_share_config_response) +
->                resp->payload_sz;
->   KSMBD_EVENT_LOGIN_REQUEST_EXT:
->       msg_sz =3D sizeof(struct ksmbd_login_response_ext) +
->                resp->ngroups * sizeof(gid_t);
->
-> resp->payload_sz is __u32 and resp->ngroups is __s32.  Each addition
-> can wrap in unsigned int; the multiplication by sizeof(gid_t) mixes
-> signed and size_t, so a negative ngroups is converted to SIZE_MAX
-> before the multiply.  A wrapped value of msg_sz that happens to
-> equal entry->msg_sz bypasses the size check on the next line, and
-> downstream consumers (smb2pdu.c:6742 memcpy using rpc_resp->payload_sz,
-> kmemdup in ksmbd_alloc_user using resp_ext->ngroups) then trust the
-> unverified length.
->
-> This is the response-side analogue of aab98e2dbd64 ("ksmbd: fix
-> integer overflows on 32 bit systems"), which hardened the request
-> side by bounding attacker-controlled lengths against the existing
-> KSMBD_IPC_MAX_PAYLOAD / NGROUPS_MAX caps.  Apply the same caps on
-> the response side: reject resp->payload_sz > KSMBD_IPC_MAX_PAYLOAD
-> for RPC_REQUEST and SHARE_CONFIG_REQUEST, and reject resp->ngroups
-> outside the signed [0, NGROUPS_MAX] range for LOGIN_REQUEST_EXT.
-> With those caps the subsequent additions and multiplication are
-> bounded well below UINT_MAX.
->
-> Fixes: 0626e6641f6b ("cifsd: add server handler for central processing an=
-d tranport layers")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-6
-> Assisted-by: Codex:gpt-5-4
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
->  fs/smb/server/transport_ipc.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.=
-c
-> --- a/fs/smb/server/transport_ipc.c
-> +++ b/fs/smb/server/transport_ipc.c
-> @@ -497,6 +497,8 @@ static int ipc_validate_msg(struct ipc_msg_table_entr=
-y *entry)
->         {
->                 struct ksmbd_rpc_command *resp =3D entry->response;
->
-> +               if (resp->payload_sz > KSMBD_IPC_MAX_PAYLOAD)
-> +                       return -EINVAL;
-However, on the userspace side (ksmbd-tools/mountd/rpc.c), the DCE/RPC
-response builder (try_realloc_payload() and ndr_write_bytes())
-dynamically grows the payload by 4096 bytes using g_try_realloc() when
-preparing responses for calls such as NetShareEnumAll, etc..
-This can cause share enumeration failures on servers with many shares.
+Hello,
 
->                 msg_sz =3D sizeof(struct ksmbd_rpc_command) + resp->paylo=
-ad_sz;
->                 break;
->         }
-> @@ -513,7 +515,8 @@ static int ipc_validate_msg(struct ipc_msg_table_entr=
-y *entry)
->                 struct ksmbd_share_config_response *resp =3D entry->respo=
-nse;
+Thanks for reviewing.
+
+On Wed, 15 Apr 2026 at 00:06, Lizhi Hou <lizhi.hou@amd.com> wrote:
 >
->                 if (resp->payload_sz) {
-> -                       if (resp->payload_sz < resp->veto_list_sz)
-> +                       if (resp->payload_sz < resp->veto_list_sz ||
-> +                           resp->payload_sz > KSMBD_IPC_MAX_PAYLOAD)
->                                 return -EINVAL;
-You don't add the check for KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST case.
-We don't need to check resp->session_key_len and resp->spnego_blob_len?
+>
+
+>
+> aie2_init enables device via pcim_enable_device(), which sets managed
+> device. Thus the vectors are automatically cleanup. So NAK.
+>
+>
+> Lizhi
+>
+
+Sorry, I missed that pcim_enable_device() already makes the device
+managed, so the IRQ vectors are cleaned up automatically. Thanks for
+pointing it out.
+
+Best regards,
+Guangshuo
 
