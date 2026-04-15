@@ -1,203 +1,191 @@
-Return-Path: <stable+bounces-238102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBuWDL5132lWTQAAu9opvQ
-	(envelope-from <stable+bounces-238102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:25:50 +0200
+	id cD4TG9d232ljTQAAu9opvQ
+	(envelope-from <stable+bounces-238104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:30:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761DE403BFB
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F2F403CC2
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 13:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 871393045AB1
-	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:20:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 216033051CBD
+	for <lists+stable@lfdr.de>; Wed, 15 Apr 2026 11:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AEA36494B;
-	Wed, 15 Apr 2026 11:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6EF37997E;
+	Wed, 15 Apr 2026 11:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="iACIfECx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdKI6y89"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7579337B00E
-	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 11:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D5F367F3C
+	for <stable@vger.kernel.org>; Wed, 15 Apr 2026 11:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776252054; cv=none; b=uqdhpawWoaApO91EFVvRtzB/ddAwRCs4/RB1uquVq93a4fDRGdrjr2SDEueRcdnhxAl0K01dK+bNf15ouqhqmrWPh4X47IiOLX+LpWy7JsLgNheU3FcUys1aD7+MWz4q0QXAyWE16aokiw0niOYEAEts8yMF5jy3UlpYlWRRqUE=
+	t=1776252321; cv=none; b=l8vR8IQ5d56udeSyNXPNeiIyIb62LQPKuEAf4wl6sBxb/bn4wwF+9T1+R6/u63hGdUDNNfQQ56+Oh5pNfuDyTAfJSNuwBAvWoMZ4CHRNGq9SYv5QkJFGjJ3T71srYS11M0FXIIdh6RPOvz93C+Pcdb3qvPdtRSWmSmVw6kbi9RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776252054; c=relaxed/simple;
-	bh=VYJ9mL1wjZITxA7vMyRCHfik/LPjrJxnNOXZx7fqDoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aJRYG91fmwYDaFMULmPns3qqSUDK7yDdEwVwmBvqJqKBxkkUcHh8qPh2pby83rFVn2mN4BcykMcKh9G71wqJv+TeshjzRlbhf/FK8bYMGh7GnVvDooWrgjhCduKQJ2BMh35AhvXMFubiDN+290diRMZOGHwtZCsGryPdo/f8exA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=iACIfECx; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 7A9E16017D;
-	Wed, 15 Apr 2026 13:20:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1776252050;
-	bh=UnwfL7k8OPnbJ/ufbG+zJTVtDPTxAIbmOOIhQVnyKnU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iACIfECxa/4fEut8Q+7i6HFK428+cLbS05qZopGGc2lrL7lS8AhX+GJg4IjS5vhUE
-	 veV6syVEYGdes0K1ajaHVToWpdlEBuJw5caokY4abQG1EJLG7a52sRFtA9nw7q33Qc
-	 2VaxWLdAbw7g5nFcy5zgvwnrNjKHmKEvg7RwuZg+c6EKODrfjhcy7kTgMcM5ZUjx9g
-	 Z7SXy20kAzt+smtozrVJBqBvsVHYZ819iHNwTbCD/hImAycgaQNEtFe5v3tqt23u68
-	 TFlsOilVioqR1EIxc1sVkZ5rKUqI++clw3Um4bdFfiVJKVjpbK25VyIGNacrtYIFea
-	 G6KhYzHJHvl1Q==
-Date: Wed, 15 Apr 2026 13:20:48 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Vegard Nossum <vegard.nossum@oracle.com>
-Subject: Re: [PATCH 5.15 336/570] netfilter: nf_conntrack_expect: skip
- expectations in other netns via proc
-Message-ID: <ad90kM0wXIrO6aqu@chamomile>
-References: <20260413155830.386096114@linuxfoundation.org>
- <20260413155843.080326747@linuxfoundation.org>
- <18260c94-4eca-434d-8a54-e556bc2057c9@oracle.com>
+	s=arc-20240116; t=1776252321; c=relaxed/simple;
+	bh=VQsTM+mzGxb1tEMnoq0cXierV1ZHH1kctt8ri+qeVbU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=APi6VQpaEn94FRqFEHkXLCMNlJvSR+k3Rt7ZOub/hCVMxwH3BMOTMh68BpcwWKZ9YiKyuG6Db0Ei0rkFnswPp0KqgoKJdLHrv6IjVmeAuwEWxzBbeO6octreysEllgSFwS5HMj86g9onB5/Bl3gt7Opvu/vlxB/l1VZQYhkRkQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdKI6y89; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50da9a7928cso54574361cf.3
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 04:25:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776252319; x=1776857119; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BJ6fVrO3ohxiKYcaHCxp2wzI9fHSCKIoqnFp5q+kMYA=;
+        b=ZdKI6y89qzlqk+Fsg6F2qBDMkDLoq5M2jjacPi4sGcCKblCMHTRdt4+emp0uvuTCae
+         MKWEY5iI3TMS48uBDiAdJH8UkKxMJRW29361TJL6BEKrXY9BvrUcPa7NSBhPxvexgWlb
+         EmMpTIYoHudPdz4YLkxx1oDIQ0Iyq5BDhAMjEr73RaqD/5apnqRJIrDGlfqstFE3149X
+         bapskrxzkZkl9idiA3fg4Oon0lWZ/py6ymFxhZTkwBpZv3/Rls1OcxXpJt443DS7Bg9k
+         nama5G8ouKPOCjCLM8ZrklHycDSw1IPxizxc0wrQoYX5ycTmMKxO4rWF/Ah1kHriNViT
+         2BoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776252319; x=1776857119;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BJ6fVrO3ohxiKYcaHCxp2wzI9fHSCKIoqnFp5q+kMYA=;
+        b=OHVOvW+xD8xXaP5sdTtIi2yIuPTu20HHOfcTfO9AnhkTrWZE+PTlQhRx9ds/1Z2FpR
+         +TYA/5fR6v1iYSoeR+pSfdxLlnILS5KsQbDqPS+6ND48WzTUmNiy3ME0r/fXimx9OnGf
+         /Shuq80vnCkLFsWIQXhOXAsjhqkyJ6sh81ZiArF0fOasKQ/yY1GCeAHrJG7UsnltTqEO
+         nosid8fH257IqShrDo/C8X++LbE/K23q6TogDu5lZ9QGirJiNLAJ5ZC0WFLbpVwM6LHd
+         m0lad/sK1ybA4PrwvvILnUzGXwt7q1h2GBub6pqz8Mo4/7uUa2PcM9/My0VTKcwxgw5C
+         OoMg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ewhYOLFrqcCPU21QnVruJ/Q4W2oVnG69HjwoM51n77cMaUVUbs/Py/8bE6hEYmpkxSLtQscY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKFjdnVgHxSQWZuPzgOSM49Pgg3VHIjkAFbEOvJGShg6cBJius
+	j3wlOOe/0+nXgNPvFxKnEfbd46w2CTYgmiaLgDLAbSzkQQaOeDzu/1QU
+X-Gm-Gg: AeBDieuI0b6Fdm6dYbOg1I3FpkuYkhCkKYgTPrBbxe6P6zjvNH7AHEKqmSRiYdCJb+G
+	DrOXpAy9+WV16HxhD8lA4x7hJpy0WPAsL9S7ohJ39wmwR8YV+Oig33dt6W+m+AsncTFcixbwU1R
+	qVH/Rdr6fn0FpLR7joq9jR+g3W2LAWiIt3618r/Q6709M1uN/oOcnD5bMjMapBs7iprEu9ZoCXB
+	Zg/ZmV4Hx2y3sOSKAP9giqYWjWF0Ye5Fjh3YlkJvRM0M8Bhy7zF5sC6H0IipBMxYQMVYrcmaUkA
+	OrPzeh/xq/Cn6VdUChxZBq+H9rUhDJcu8HNZN6frT0tDEIg7efzmWL1C1KLxeAckBi5x86kDM18
+	PhfVUvcf/AZU+F46OFbjKyVW5BecevTQH1AWgbv+/g725JL/VmCiBFr76dqmNTKC98OnmKf5vYS
+	3pxxJVor/8ARDNFohBbAi7gMhPyCWL/XaaKfd0cXaS1IqUgeBqA0e/wJVq29fxUJkGfGbB4Q1ZA
+	RAg+/5bNeX/yhGx2GOBRkm6aFhMX8gzqGn2V85tB/CV1AL4zIZKoA==
+X-Received: by 2002:ac8:7d11:0:b0:509:35d1:ca37 with SMTP id d75a77b69052e-50dd5aeef70mr330727511cf.16.1776252318729;
+        Wed, 15 Apr 2026 04:25:18 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e1af9dc5fsm10621191cf.16.2026.04.15.04.25.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 04:25:17 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: linux-cifs@vger.kernel.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tom Talpey <tom@talpey.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 0/2] ksmbd: harden ipc_validate_msg() and smb_check_perm_dacl()
+Date: Wed, 15 Apr 2026 07:24:59 -0400
+Message-ID: <20260415112501.116426-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260414191533.1467353-1-michael.bommarito@gmail.com>
+References: <20260414191533.1467353-1-michael.bommarito@gmail.com> <CAKYAXd9EBFBcy9bJ3=sJiYVYHAYjKYqOqD53UCJ8zWKXF0sAeg@mail.gmail.com> <CAKYAXd8B78Gde_7+Ph0cSL998k4qqs_okB0jky0m5h8i25_AGQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <18260c94-4eca-434d-8a54-e556bc2057c9@oracle.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[netfilter.org:s=2025];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[netfilter.org];
-	TAGGED_FROM(0.00)[bounces-238102-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[netfilter.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pablo@netfilter.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238104-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:dkim,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: 761DE403BFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B4F2F403CC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 04:45:49PM +0530, Harshit Mogalapalli wrote:
-> Hi,
-> 
-> On 13/04/26 21:27, Greg Kroah-Hartman wrote:
-> > 5.15-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Pablo Neira Ayuso <pablo@netfilter.org>
-> > 
-> > [ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
-> > 
-> > Skip expectations that do not reside in this netns.
-> > 
-> > Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
-> > conntrack entries via proc").
-> > 
-> 
-> AI assisted review spotted a probable issue: I have gone through the
-> analysis and the summary is:
-> 
-> I think this fix relies on commit: 02a3231b6d82 ("netfilter:
-> nf_conntrack_expect: store netns and zone in expectation")
-> 
-> This references commit explicitly states:
-> "  This patch is required by the follow up fix not to dump expectations that
-> do not belong
->   to this netns." which is this patch.
-> 
-> 
-> Also part of patch series 4 and 5:
-> https://lore.kernel.org/all/20260320125947.305117-5-pablo@netfilter.org/
-> 
-> Given that we haven't taken 02a3231b6d82 ("netfilter: nf_conntrack_expect:
-> store netns and zone in expectation") to 5.15.y should we drop this ?
-> 
-> Why ? Without it, the 5.15 backport still uses master-conntrack-derived
-> context instead of expectation-owned stored netns/zone state
-> 
-> i.e Upstream has:
-> 
-> possible_net_t net;
-> 
-> static inline struct net *nf_ct_exp_net(struct nf_conntrack_expect *exp)
-> {
->       return read_pnet(&exp->net);
-> }
-> 
-> Downstream has:
-> 
-> static inline struct net *nf_ct_exp_net(struct nf_conntrack_expect *exp)
-> {
->       return nf_ct_net(exp->master);
-> }
-> 
-> 
-> I don't know the internals of this fully, but looks like we might not want
-> to take this fix without 02a3231b6d82 ("netfilter: nf_conntrack_expect:
-> store netns and zone in expectation")
+Two ksmbd hardening patches, respun from v1 [PATCH 0/3] per Namjae's
+review.
 
-Yes:
+Patch 1 folds v1 1/3 and 2/3 into a single response-side validation
+change in ipc_validate_msg().
 
-02a3231b6d82 ("netfilter: nf_conntrack_expect: store netns and zone in expectation")
+Patch 2 is v1 3/3 unchanged (minimum ACE size in
+smb_check_perm_dacl()).  Please let me know if there's anything
+on this 2/2 you want to think through or change.
 
-is good to have as a Stable-Dep.
+Changes since v1
+----------------
 
-> Thanks,
-> Harshit
-> 
-> 
-> 
-> 
-> 
-> 
-> > Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
-> > Signed-off-by: Florian Westphal <fw@strlen.de>
-> > Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >   net/netfilter/nf_conntrack_expect.c | 4 ++++
-> >   1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-> > index 6d056ebba57c6..10d4dfbdde226 100644
-> > --- a/net/netfilter/nf_conntrack_expect.c
-> > +++ b/net/netfilter/nf_conntrack_expect.c
-> > @@ -627,11 +627,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
-> >   {
-> >   	struct nf_conntrack_expect *expect;
-> >   	struct nf_conntrack_helper *helper;
-> > +	struct net *net = seq_file_net(s);
-> >   	struct hlist_node *n = v;
-> >   	char *delim = "";
-> >   	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
-> > +	if (!net_eq(nf_ct_exp_net(expect), net))
-> > +		return 0;
-> > +
-> >   	if (expect->timeout.function)
-> >   		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
-> >   			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
-> 
+v1 -> v2:
+
+  - 1/3 + 2/3 folded into a single patch (1/2) per Namjae.
+  - Dropped the hard KSMBD_IPC_MAX_PAYLOAD (4096) cap on
+    RPC_REQUEST and SHARE_CONFIG_REQUEST response paths.  A 4096
+    cap would regress NetShareEnumAll and other NDR enumerations
+    on servers with many shares -- userspace ksmbd-tools grows
+    the response buffer in 4096-byte chunks via g_try_realloc().
+    Use check_add_overflow() instead so functional payload size
+    is unconstrained but msg_sz cannot wrap unsigned int.
+    [Namjae]
+  - LOGIN_REQUEST_EXT keeps the [0, NGROUPS_MAX] bound (POSIX
+    semantic limit, not an IPC transport cap).  Moved the
+    pr_err() into ipc_validate_msg() so the error is reported
+    at the IPC boundary. [Namjae]
+  - Removed the now-redundant ngroups check and pr_err() from
+    ksmbd_alloc_user() in mgmt/user_config.c.  Both call sites
+    (ksmbd_login_user and the SPNEGO path in auth.c) reach
+    ksmbd_alloc_user() through ksmbd_ipc_login_request_ext(),
+    which now rejects negative ngroups at the IPC gate. [Namjae]
+  - SPNEGO_AUTHEN_REQUEST left untouched: session_key_len and
+    spnego_blob_len are both __u16 so their sum cannot wrap the
+    unsigned int msg_sz. [Namjae ack]
+  - 2/2 (smb_check_perm_dacl minimum ACE size) unchanged from
+    v1 3/3 -- no review yet.
+
+Threading
+---------
+
+Sent --in-reply-to v1 [PATCH 0/3] cover
+(Message-ID 20260414191533.1467353-1-michael.bommarito@gmail.com)
+so v2 lives under the v1 thread.
+
+Michael Bommarito (2):
+  ksmbd: validate response sizes in ipc_validate_msg()
+  ksmbd: require minimum ACE size in smb_check_perm_dacl()
+
+ fs/smb/server/mgmt/user_config.c |  6 ------
+ fs/smb/server/smbacl.c           | 17 +++++++++++++----
+ fs/smb/server/transport_ipc.c    | 16 +++++++++++++---
+ 3 files changed, 26 insertions(+), 13 deletions(-)
+
+--
+2.53.0
+
 
