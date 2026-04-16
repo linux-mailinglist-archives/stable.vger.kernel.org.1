@@ -1,146 +1,140 @@
-Return-Path: <stable+bounces-238257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IW3pE4x/4GkKiQAAu9opvQ
-	(envelope-from <stable+bounces-238257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:19:56 +0200
+	id oLiNCoyA4GmdiQAAu9opvQ
+	(envelope-from <stable+bounces-238258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:24:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F1740A987
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CACD940AA4C
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 833A03079F32
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 333D93138C39
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EB335F5E4;
-	Thu, 16 Apr 2026 06:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E2337998B;
+	Thu, 16 Apr 2026 06:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JGlQOhpC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DYCNXtQa"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE2E21A95D;
-	Thu, 16 Apr 2026 06:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE25C3E47B;
+	Thu, 16 Apr 2026 06:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776320308; cv=none; b=n2ie6NXpYX4m/iOSMPOW6t9wZYNdKy/c2a0mBY19teZvQwG1KbIiUpEjuXiEK1i1VJNiXoULiknsDdQiVYkIni/PK8aJs6mIRe+LU7VeOmXFkyHCyJyhXxyqyXDmVf9C1rnzgdkeyUyubifc9mIeM0txeFhTE0rtMSnA9VHAfKM=
+	t=1776320530; cv=none; b=KMFmJ/wbr6VHa11DBik+8ZHT6fBAFhSpfF0kiznGknsHZQi8PsbAgrR8aOC3vPcilKzHN3ilnlikeCmzuRuO+n0h2fIfcI54ElY4FI1MBv6ODZkgmPkFbspPqb/EpX1LI9ZBeCDebnz+auhVeDe8H/YyGz69gTYRxjoEWNSzRjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776320308; c=relaxed/simple;
-	bh=eCsKDa/p7lPGZvq1JXc4GFSpPGg9liwsR+o57QW8Tus=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LFUcl0A3wzWPRQfn1OXldHuqLExYDvXklADNRxadOdL6q1ZGEqtxdN7GJS7wIKJqAZ903guOyykjvydn5LkyOPg7MvsoVzXYqfQw5d6m1BWBDmijUc6jNJct77fpdzc5ue4/QpPrRj1/cfXX26U7zuHqjPwS/12Ekc5q0SJ/LfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.2.229] (p5b13a2d1.dip0.t-ipconnect.de [91.19.162.209])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 9C5CD4C2C37F01;
-	Thu, 16 Apr 2026 08:17:28 +0200 (CEST)
-Message-ID: <803b6b1c-6aef-43e0-89e2-3d0f1308e892@molgen.mpg.de>
-Date: Thu, 16 Apr 2026 08:17:26 +0200
+	s=arc-20240116; t=1776320530; c=relaxed/simple;
+	bh=L03K7wgv0HG3lp+inFLDMx7vtTcPsOMgCaTopreSxt8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WzCjWbzm9dWXwtkLF2+AOMC5Smuzws0iysUIR71lc8Ctu+xf++AjKBT6WsGU5eY3u/z9cV8JEFKh93oMHkFwdqwZfZaKJSH8Omz1EB8I3FCH+k8JA7lq2pQJ5uqPJFXUu0bdoMGeQDlmjCWQfPX0FbmGMLmJbVQ6mBc4b6hY4Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JGlQOhpC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DYCNXtQa; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 16 Apr 2026 08:21:59 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1776320520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L03K7wgv0HG3lp+inFLDMx7vtTcPsOMgCaTopreSxt8=;
+	b=JGlQOhpCttHrTVGoh/Gin7OP8xVbnJaZ1oa0t6/Ob6aAUCHkGmfPDsDcqUy7GdW8tiX164
+	ChpFaKfFqd3iPIKHvPNZqcv7bOYnzTmubn6QvPkhVnNigsNnvIN3RvUnYAu9AK6B6IlocY
+	I829e9tkcSA8oSDuMBeBfSXU9gxeY5uHMMLU6wQ7WvgSoNbcoTdnYjD9M6xioW/gM3c3+P
+	XHRhKPGozlxtCiTz3T4wdBzaRVDGdqQ3SfhN19kq8kGmG7AUBIEe2Tk0haryeIba/TDEWo
+	lBOkgjanZWmBJzxFdnN1+YXSB1s9/sqRhLYvFy3T6QVqLbIbUEOY+cg3xIrCqg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1776320520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L03K7wgv0HG3lp+inFLDMx7vtTcPsOMgCaTopreSxt8=;
+	b=DYCNXtQaJi3GaDQgG8vnwfptTcyYwoS89pEjawunYcmF2OUGGXhIAQU196GqugZlqe8Pgl
+	VXHAebvshabDOqBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Marek Vasut <marex@nabladev.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Yicong Hui <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [net,PATCH v3 1/2] net: ks8851: Reinstate disabling of BHs
+ around IRQ handler
+Message-ID: <20260416062159.fPxqc52X@linutronix.de>
+References: <20260414103327.113500-1-marex@nabladev.com>
+ <20260414125753.Im6GAIHn@linutronix.de>
+ <2fcfb84f-69f6-493e-94d6-95d85d8000f6@nabladev.com>
+ <20260414145218.lsNpdAJI@linutronix.de>
+ <7734527a-d08b-49fa-b258-c37c5ae2da55@nabladev.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] md/raid10: fix divide-by-zero in setup_geo() with zero
- far_copies
-To: Junrui Luo <moonafterrain@outlook.com>
-Cc: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
- Li Nan <linan122@huawei.com>, NeilBrown <neil@brown.name>,
- Jonathan Brassow <jbrassow@redhat.com>, linux-raid@vger.kernel.org,
- linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
- stable@vger.kernel.org
-References: <SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7734527a-d08b-49fa-b258-c37c5ae2da55@nabladev.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238257-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[mpg.de];
-	FREEMAIL_TO(0.00)[outlook.com];
+	TAGGED_FROM(0.00)[bounces-238258-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.b.d.0.0.1.0.0.e.a.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,fnnas.com,huawei.com,brown.name,redhat.com,vger.kernel.org,gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.b.d.0.0.1.0.0.e.a.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,tipi-net.de,redhat.com,raritan.com,gmail.com];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,molgen.mpg.de:mid]
-X-Rspamd-Queue-Id: F0F1740A987
+	MISSING_XM_UA(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:dkim,linutronix.de:mid]
+X-Rspamd-Queue-Id: CACD940AA4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Dear Junrui,
+On 2026-04-16 01:14:35 [+0200], Marek Vasut wrote:
+> > spin_unlock_bh(&ks->statelock)? After that unlock, the softirq must be
+> > processed and __netdev_alloc_skb() _could_ observe pending softirqs but
+> > not from ks8851.
+> Because __netdev_alloc_skb() also enables/disables BH , see the "else"
 
+Yes. But there is no softirq raised in that part. That softirq is raised
+by netif_wake_queue() within a bh disabled section. Therefore upon the
+unlock the softirq must be invoked.
+After that, rhe allocation later on may invoke softirqs which were
+raised but I don't see how ks8851 can be part of it.
+Before commit 0913ec336a6c0 ("net: ks8851: Fix deadlock with the SPI
+chip variant") there was no _bh around it meaning the softirq was raised
+but not invoked immediately. This happened on the bh unlock during
+memory allocation. Therefore I am saying this backtrace is from an older
+kernel.
 
-Thank you for the patch.
+If there is a flaw in my the theory please explain _how_ you managed
+that get that backtrace. I am sure it must have from an older kernel and
+_now_ this lockup also happens on !RT kernels (except for the SPI
+platform).
 
-Am 16.04.26 um 05:39 schrieb Junrui Luo:
-> setup_geo() extracts near_copies (nc) and far_copies (fc) from the
-> user-provided layout parameter without checking for zero. When fc=0
-> with the "improved" far set layout selected, 'geo->far_set_size =
-> disks / fc' triggers a divide-by-zero.
-> 
-> Validate nc and fc immediately after extraction, returning -1 if
-> either is zero.
-
-Why also `nc` and not just `fc`?
-
-It’d be great, if you documented the command how to create such a layout.
-
-> Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far' and 'offset' algorithms (part 1)")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-> ---
->   drivers/md/raid10.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-> index 0653b5d8545a..811ea3d23b80 100644
-> --- a/drivers/md/raid10.c
-> +++ b/drivers/md/raid10.c
-> @@ -3791,6 +3791,8 @@ static int setup_geo(struct geom *geo, struct mddev *mddev, enum geo_type new)
->   	nc = layout & 255;
->   	fc = (layout >> 8) & 255;
->   	fo = layout & (1<<16);
-> +	if (!nc || !fc)
-> +		return -1;
-
-I’d also print a warning, so the user knows, what was wrong:
-
-     pr_warn(md/raid10:%s: near and far copies need to be greater than 
-0, mdname(mddev));
-
->   	geo->raid_disks = disks;
->   	geo->near_copies = nc;
->   	geo->far_copies = fc;
-
-
-Kind regards,
-
-Paul
+Sebastian
 
