@@ -1,202 +1,357 @@
-Return-Path: <stable+bounces-238309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIPBEu3i4GlhnAAAu9opvQ
-	(envelope-from <stable+bounces-238309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:23:57 +0200
+	id 0EOsNTvk4GlhnAAAu9opvQ
+	(envelope-from <stable+bounces-238310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:29:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD07740EC18
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:23:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F1F40ED4F
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B8445302EDB0
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 13:21:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 780B330FAA27
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 13:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638443806AB;
-	Thu, 16 Apr 2026 13:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2545B1B4156;
+	Thu, 16 Apr 2026 13:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GuPD0ZuY";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="E2M8C4bm"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="WocJTjmp"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C0C34B43F
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D2770809
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776345700; cv=none; b=PblGGX89EmV1yuGax9laFr+K29pYFEJJtZ1kLHq0p6u7HJc+c8gXBc00h+h/FPMoNrkbgC5OdZknhwY2SqaO1xUOicKH8JVcNuCEQHMTlphg8EJuDvgmSB1UjKoYlpRVBxA1yy8wbWp6lIPjIrEalWQOgJHzgapCVnwgJe5PUcU=
+	t=1776345779; cv=none; b=VRcLPjRWA6BhRDJJ9iSsu6WmvgQHnnXWmUkief8baVhRrgQSCSe1N3MR9u7JUG06DkzVv6tLGblzHhjmjXdQECFCNHhNvKR8Ipav0nnOPeAY90hP8Z7CsfxwHAlO1NbsbgCjo53r3dHWf6iyjtTox2N5BEf4wHUbM2bbOMklQvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776345700; c=relaxed/simple;
-	bh=6hLaVwNU5sfu64nZwy8wbMblTFiOkzb+gUEkEnXMe40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WYGAJjREaJegDIAsxq4DJFDIx/5Sw5iBNfJKQ+RxdFl7LUIgKL1V0OJHa/4hYLKTyPSymLXwD861eY7tuGC5UNWvC/nW+c4GUI28LVUcNHjaMUsfc50xdJ+iBBOhAHD8lRxbG9N/BGFMuJ7F+fhDyVYb0w4F82pyAs8QURz+N7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GuPD0ZuY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=E2M8C4bm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G8CT662576005
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:21:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=SNN6bJZb5T6JRttooEykeHPt
-	d9OBGWMgLZQx8AqrSk0=; b=GuPD0ZuYypeZH6EDx6nrFTGQXLg22sCXxHRatYwW
-	/qOb6RGLFfZgM0S7Lvp/tH4dy4aAk1nxaH9IGaruoY1tJdeyUsCSVoZGKDiBrXTa
-	r1MzoqopM841xwU2boGQZ6Tvo1UIIJjEpMMnNpm0wUzLgDsyyn2LAMLiNcyaja4g
-	VM1i81mkOtMEwg1OHGk43pjsyfla1CRMC8qIwMJPox9uH9dBpybhuqhC0jqVD6Tl
-	wb3oLazyxV1r4955hZzcuu6wDOlLDKGD+dA7A+fXHZNZap8SkBW9uVWVy1MpEihg
-	ej7aTT0I4tai3/9d3PF62kGbr1EC5GEwypZ1aCIBS6PUQw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4djv27h3c0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:21:37 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2b24cd2e2b3so78220365ad.0
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 06:21:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776345697; x=1776950497; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SNN6bJZb5T6JRttooEykeHPtd9OBGWMgLZQx8AqrSk0=;
-        b=E2M8C4bmygYRvEi0RuG83sCVS8ZJ5Qe5tUYIOMLoE9Oca3NkLtz8iQAMNpC4wOa+4+
-         +K9nj0dGB/0jVKgEOdi4Qnng2Tj7bnS4qRA05e5AtKx+4K4lq1ff+a8VJi6bBrc6TPyT
-         z8rb3M55pSoVhRDgqEdMoE/9YPanWILfiyMEfrm9KJXlNRzYxXqxEIUcGBNvudIvOs46
-         pw00Yo5M+OMMKjtku22G501HNf1PLlcwuTmE/yTsl9MUkkJCygv1Q7Uvn3qtUac9eeL+
-         p19eXIYpnUp0Knli0JbcPzfNZFtfOpzy8TxXEBoYQvCwFgsDYEVuCfhjXpUgGH/xiy3/
-         wmkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776345697; x=1776950497;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SNN6bJZb5T6JRttooEykeHPtd9OBGWMgLZQx8AqrSk0=;
-        b=q/ji3f/+cOIcNSfB8pXLE6Vp/23Ln94zJMo0/hJsB/9jUuiaD3GXq5+d7w4E5kEmn9
-         I+X+/SUh/87kKpuEczxbr+NqxcOx4f87aFDTquV1xTw0x+NgStbO70xxMgrqPbC+SPoU
-         P4irPsjKXJEAug8ccxp/K8WmQtBp6qvn9qhI9fRIuUkMeaIkXeCwqmmYmP2hHvp9Ze+3
-         5y+k1gdyHANVl71/h9AkERmA1GFa66QpjbayWp5jyieNL0Rw+XKr8uLPzp9LXXhmRaHf
-         yERdxbPleer7UZkO2NXhQEf+7ilASJKS2T/QpMF9FQbhP/BPByaPOFwKQJN/yQRytT3b
-         2BFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+iWrbkRP5rc9QqrwaYhwstN4QWW8ObfRHfwYACyVs3+61kDFOJJsrqyMXFdVtseJ/NKd8cCUs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdC+G4bTTHiPugVj5umgIsBu+GRg8A71WcvqgcTJOjUoujoPQX
-	l8sTpcUdXjutYQ+32iLejWjBvqmdRPM0uE77NsR37S2vJTkL35Kx6fpbcB5pL5ZGJhBWLZnTczw
-	Ht2hKKl1oBuqbvGSVVRMQIcQXES8l7MD5JZo6RU92UAi17wKgs6DuCZwTPr0=
-X-Gm-Gg: AeBDievxKtT4cUiY3qZtYPOMJJeQGc0l/m5RnMVfyF57hCf0fjCBxGTntOnyUfnyrXd
-	abkrain97IYLKHykX0qeWbJdZoVfAuUoBgUhMu8m5oeXOr+df6tgEfQNoR8CIHDBGS3EaK4adRO
-	SL1sdV2F843/k+NzKtzg/aj4QIdfSYt9BKyaSaeIYyz2VBh0vXmzV7OYujPZsk9fxEmXvj02hI7
-	4y1gvPQvfga7BCEtW9U7vFXRv+W7PBQoSz2ClJV9qrE71EBbQYFvmOHgHPHJ3Iz9ezPuq36wpMQ
-	aPRXvSd7zX8Cq2fJD8+QF8g1doAXLKjqHMZN57x+DeR5fChm++nQs9r6BlVkevte3r8IBt3MKZu
-	sAAIm1nuVBV7zTR/F1RxqlB0NYzVAtXiLF3exoF3amv5ETNcaoT8VOnSi7pmo
-X-Received: by 2002:a17:903:2cd:b0:2b2:420a:b48a with SMTP id d9443c01a7336-2b2d5a5b40emr273960445ad.32.1776345696796;
-        Thu, 16 Apr 2026 06:21:36 -0700 (PDT)
-X-Received: by 2002:a17:903:2cd:b0:2b2:420a:b48a with SMTP id d9443c01a7336-2b2d5a5b40emr273960005ad.32.1776345696240;
-        Thu, 16 Apr 2026 06:21:36 -0700 (PDT)
-Received: from hu-wasimn-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4782b2d0asm88663755ad.72.2026.04.16.06.21.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 06:21:35 -0700 (PDT)
-Date: Thu, 16 Apr 2026 18:51:30 +0530
-From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
-        Gurbir Arora <gurbaror@codeaurora.org>,
-        Siddharth Gupta <sidgup@codeaurora.org>
-Cc: kernel@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Subject: Re: [PATCH v2] remoteproc: qcom: Fix leak when custom dump_segments
- addition fails
-Message-ID: <aeDiWu3EIZjb/ZUz@hu-wasimn-hyd.qualcomm.com>
-References: <20260318-rproc-memleak-v2-1-ade70ab858f2@oss.qualcomm.com>
+	s=arc-20240116; t=1776345779; c=relaxed/simple;
+	bh=JBNbwzRPqWG2QlS27hon4GDi3BP5J2C7MIVnXt40ecs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=h/m1TX6hrGjFcqy0aASK6h8tHsPnlKixCDyoEgGqcOk43ziYRrBt2XQn6pCnYw1CoJq7NJX0UvdAwPnGSE1Ql3lXKWXnSlAWzmFLwHYivnJQFtGe/xU1i1dvM5WxU2tbPMfLMkpkhIfEgjSKBM157aVDyROgNGD1YFxAQiEiBao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=WocJTjmp; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Pwlh0abOnFff5n5KRi3X7bo6L3aBYfKagCs00mSYgO8=;
+	b=WocJTjmp2A1CJyQk5au/RTseLJr20e11Sv+iLpf7xPiN0KbfYhitSohvGXsqrF5iMZLsfHPqK
+	9IX1D2b4v8WGQcS/BhGOS8AMTIHinRe65EHiJ8QRz/Awu9gP5vnO0J2u3Sb4gDsetXI//rnEo8p
+	f6ycpMC9+KNO5VNjueQcYwI=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4fxJSM73FQz1K9D8;
+	Thu, 16 Apr 2026 21:16:35 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id C541940539;
+	Thu, 16 Apr 2026 21:22:52 +0800 (CST)
+Received: from kwepemq100007.china.huawei.com (7.202.195.175) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 16 Apr 2026 21:22:52 +0800
+Received: from [10.159.167.44] (10.159.167.44) by
+ kwepemq100007.china.huawei.com (7.202.195.175) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 16 Apr 2026 21:22:51 +0800
+Message-ID: <fffc172f-6bfe-4947-8f3b-52a1534b1d3b@huawei.com>
+Date: Thu, 16 Apr 2026 21:22:51 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318-rproc-memleak-v2-1-ade70ab858f2@oss.qualcomm.com>
-X-Authority-Analysis: v=2.4 cv=PJQ/P/qC c=1 sm=1 tr=0 ts=69e0e261 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=Y2km3Jh7R0eAzGVYxbQA:9 a=CjuIK1q_8ugA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-GUID: LMs3z4G5R8ISnV3GpBWMOc_UCUd6oh5Z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDEyOCBTYWx0ZWRfX4ykS/JRxlffI
- yDUaGZy//yV8zNtAXOSBe1epbAxpiqcTp32UhXAqUCnEo/YdtyVpU6VKThNYw109m3P7dPxYe/e
- 5RYeGRuQfMA76iuPbIhzzvwkUrmgT0ziaAJDjphNIhil2iaAg/gbTj3QLlm/v8zr1FxUy7FpGPz
- 8+0LOWAjzRYilQS5BGg5qmGDT1gfgqsJ6Um86bdt9HKB0AjBqGOuD3ObN7Qs6oIH/ViuK6tnWQ2
- 4H/kCjGSO7Pifn7C8wMiGIH4iGAamGb3s1q1c2ys6+U5lwpVKbvrVj7x+yUU6aeZv13MP+YRj30
- tlSCkGFcYs1z6qZuFqJSC5aDTOk/Zg3/62kiVLSrI5zlaX+mmPNWWG7HPikgXvsKci7xP3WTGGX
- 16WDVFo1fUlhHJ9IlNcSAoZOfaipQr6mfCUy2DjlxS5UI6DBcOl310uL1EPWBcTlKn6UpHr0lVd
- a0QgpA2f5YA6qxq1xZg==
-X-Proofpoint-ORIG-GUID: LMs3z4G5R8ISnV3GpBWMOc_UCUd6oh5Z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_03,2026-04-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 phishscore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604160128
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] drm/hibmc: Use drm_atomic_helper_check_plane_state()
+To: Thomas Zimmermann <tzimmermann@suse.de>, <tiantao6@hisilicon.com>,
+	<kong.kongxinwei@hisilicon.com>, <sumit.semwal@linaro.org>,
+	<yongqin.liu@linaro.org>, <jstultz@google.com>,
+	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<airlied@gmail.com>, <simona@ffwll.ch>
+CC: <dri-devel@lists.freedesktop.org>, Rongrong Zou <zourongrong@gmail.com>,
+	Sean Paul <seanpaul@chromium.org>, Dmitry Baryshkov <lumag@kernel.org>,
+	<stable@vger.kernel.org>, "Liangjian(Jim,Kunpeng Solution Development Dept)"
+	<liangjian010@huawei.com>, Chenjianmin <chenjianmin@huawei.com>, "fengsheng
+ (A)" <fengsheng5@huawei.com>, "helin (T)" <helin52@h-partners.com>
+References: <20260413085037.17491-1-tzimmermann@suse.de>
+ <20260413085037.17491-2-tzimmermann@suse.de>
+ <7fd5022a-9a5d-4976-9d4a-1e0fa2022eae@huawei.com>
+ <1805a7d4-a4a0-48ee-ac6e-33e5d9d5fdc9@suse.de>
+From: Yongbang Shi <shiyongbang@huawei.com>
+In-Reply-To: <1805a7d4-a4a0-48ee-ac6e-33e5d9d5fdc9@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq100007.china.huawei.com (7.202.195.175)
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,hu-wasimn-hyd.qualcomm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email];
+	TAGGED_FROM(0.00)[bounces-238310-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[suse.de,hisilicon.com,linaro.org,google.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238309-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,chromium.org,kernel.org,vger.kernel.org,huawei.com,h-partners.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,huawei.com:email,huawei.com:dkim,huawei.com:mid,bootlin.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wasim.nazir@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shiyongbang@huawei.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: DD07740EC18
+X-Rspamd-Queue-Id: 38F1F40ED4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 05:19:16PM +0530, Wasim Nazir wrote:
-> Free allocated minidump_region 'name' in qcom_add_minidump_segments()
-> when failing before adding the region to 'dump_segments'. Otherwise,
-> the 'name' is not tracked and is never freed by qcom_minidump_cleanup().
+
+> Hi
 > 
-> Return error when adding to 'dump_segments' fails.
+> Am 16.04.26 um 08:53 schrieb Yongbang Shi:
+>>> Call drm_atomic_helper_check_plane_state() from the primary plane's
+>>> atomic-check helper and replace the custom implementation.
+>>>
+>>> All plane's implementations of atomic_check should call the shared
+>>> _check_plane_state() helper first. It adjusts the plane state for
+>>> correct positioning, rotation and scaling of the plane. If the plane
+>>> is not visible, it clears the corresponding flag in the plane state.
+>>>
+>>> On errors or if the plane is not visible, the atomic-check helper can
+>>> return early. Implement all this in hibmc and drop the custom code
+>>> that does some of it.
+>>>
+>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>> Fixes: da52605eea8f ("drm/hisilicon/hibmc: Add support for display
+>>> engine")
+>>> Cc: Rongrong Zou <zourongrong@gmail.com>
+>>> Cc: Sean Paul <seanpaul@chromium.org>
+>>> Cc: Xinliang Liu <xinliang.liu@linaro.org>
+>>> Cc: Dmitry Baryshkov <lumag@kernel.org>
+>>> Cc: Baihan Li <libaihan@huawei.com>
+>>> Cc: Yongbang Shi <shiyongbang@huawei.com>
+>>> Cc: <stable@vger.kernel.org> # v4.10+
+>>> ---
+>>>   .../gpu/drm/hisilicon/hibmc/hibmc_drm_de.c    | 46 ++++++-------------
+>>>   1 file changed, 14 insertions(+), 32 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c b/
+>>> drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+>>> index 89bed78f1466..8fa2a95bcdd1 100644
+>>> --- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+>>> +++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+>>> @@ -55,46 +55,28 @@ static const struct hibmc_dislay_pll_config
+>>> hibmc_pll_table[] = {
+>>>   static int hibmc_plane_atomic_check(struct drm_plane *plane,
+>>>                       struct drm_atomic_state *state)
+>>>   {
+>>> -    struct drm_plane_state *new_plane_state =
+>>> drm_atomic_get_new_plane_state(state,
+>>> -                                         plane);
+>>> -    struct drm_framebuffer *fb = new_plane_state->fb;
+>>> -    struct drm_crtc *crtc = new_plane_state->crtc;
+>>> -    struct drm_crtc_state *crtc_state;
+>>> -    u32 src_w = new_plane_state->src_w >> 16;
+>>> -    u32 src_h = new_plane_state->src_h >> 16;
+>>> -
+>>> -    if (!crtc || !fb)
+>>> -        return 0;
+>>> +    struct drm_plane_state *new_plane_state =
+>>> +        drm_atomic_get_new_plane_state(state, plane);
+>>> +    struct drm_crtc_state *new_crtc_state = NULL;
+>>> +    int ret;
+>>>   -    crtc_state = drm_atomic_get_crtc_state(state, crtc);
+>>> -    if (IS_ERR(crtc_state))
+>>> -        return PTR_ERR(crtc_state);
+>>> +    if (new_plane_state->crtc)
+>>> +        new_crtc_state = drm_atomic_get_new_crtc_state(state,
+>>> new_plane_state->crtc);
+>>>   -    if (src_w != new_plane_state->crtc_w || src_h !=
+>>> new_plane_state->crtc_h) {
+>>> -        drm_dbg_atomic(plane->dev, "scale not support\n");
+>>> -        return -EINVAL;
+>>> -    }
+>>> -
+>>> -    if (new_plane_state->crtc_x < 0 || new_plane_state->crtc_y < 0) {
+>>> -        drm_dbg_atomic(plane->dev, "crtc_x/y of drm_plane state is
+>>> invalid\n");
+>>> -        return -EINVAL;
+>>> -    }
+>>> -
+>>> -    if (!crtc_state->enable)
+>>> +    ret = drm_atomic_helper_check_plane_state(new_plane_state,
+>>> new_crtc_state,
+>>> +                          DRM_PLANE_NO_SCALING,
+>>> +                          DRM_PLANE_NO_SCALING,
+>>> +                          false, true);
+>> The last parameter, "can_update_disabled", if set to true, causes the
+>> condition "if (!crtc_state->enable && !can_update_disabled)" in the
+>> function `drm_atomic_helper_check_plane_state` to always evaluate to
+>> false, meaning `crtc_state->enable` will not be checked. This differs
+>> from the behavior prior to the modification.
+>>
+>> before:
+>>     - crtc_state->enable(true)  --> continue check
+>>     - crtc_state->enable(false) --> return 0(atomic check success)
+>>
+>> after:
+>>     - crtc_state->enable(true)   --> _helper_check_plane_ ->  continue
+>> check
+>>     - crtc_state->enable(false)  --> _helper_check_plane_ ->  continue
+>> check
 > 
-> Cc: stable@vger.kernel.org # v5.11
-> Fixes: 8ed8485c4f05 ("remoteproc: qcom: Add capability to collect minidumps")
-> Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Add fixes tag in commit.
-> - Add stable mailing list in cc.
-> - Link to v1: https://lore.kernel.org/r/20260316-rproc-memleak-v1-1-96b1518a1a61@oss.qualcomm.com
-> ---
->  drivers/remoteproc/qcom_common.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+> Isn't this what the hardware supports? The plane's hardware registers
+> can be updated even if the plane's CRTC is off?
 > 
 
-Gentle reminder!
+Sure, The plane's hardware registers could be update after disable
+plane's crtc.
 
--- 
-Regards,
-Wasim
+> In the old case, atomic check returned success. If we set
+> can_update_disable to false, it would return an error in such as case. 
+> Settings it ti true keeps the success for disabled CRTCs. The semantics
+> of the returned value don't change. It's just that the helper fills a
+> few more fields in drm_plane_state.
+> 
+
+Yes, can_update_disable couldn't be false.
+
+I just wanted to confirm this change. There is a slight difference
+between the original code and the modified version. In the original
+code, at location [1], it returns "check success" directly without
+checking the subsequent "new_plane_state->fb->pitches[0]" at [2],
+whereas the modified version continues to perform the full check.
+
+However, I believe the modified version is the better implementation,
+the plane check should be complete even if the CRTC is not enabled.
+
+[1]
+https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c#L84
+[2]
+https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c#L94
+
+
+> 
+> 
+>>
+>>
+>>> +    if (ret)
+>>> +        return ret;
+>>> +    else if (!new_plane_state->visible)
+>>>           return 0;
+>>>   -    if (new_plane_state->crtc_x + new_plane_state->crtc_w >
+>>> -        crtc_state->adjusted_mode.hdisplay ||
+>>> -        new_plane_state->crtc_y + new_plane_state->crtc_h >
+>>> -        crtc_state->adjusted_mode.vdisplay) {
+>>> -        drm_dbg_atomic(plane->dev, "visible portion of plane is
+>>> invalid\n");
+>>> -        return -EINVAL;
+>>> -    }
+>>> -
+>> The purpose of this check is to ensure that the right and bottom
+>> boundaries of the plane do not extend beyond the crtc. In
+>> `drm_atomic_helper_check_plane_state`, `drm_mode_get_hv_timing` is
+>> called to retrieve the crtc boundaries, and `drm_rect_clip_scaled` is
+>> used to clip the plane, any portions extending beyond the right and
+>> bottom boundaries are discarded.
+>>
+>> I'd like to confirm that my understanding is correct? previously, the
+>> check failed if the plane exceeded the boundaries, but now, after
+>> `drm_atomic_helper_check_plane_state` is called, the plane is clipped to
+>> fit within the boundaries.
+> 
+> Yes. This sets plane_state->dst, which is clipped to the size of the
+> display mode. But it also tests that the primary plane covers the whole
+> display.
+> 
+>>
+>> in function drm_rect_clip_scaled:
+>>
+>> diff = dst->x2 - clip->x2;
+>> if (diff > 0) {
+>>     ...
+>>     dst->x2 -= diff;
+>> }
+>> diff = dst->y2 - clip->y2;
+>> if (diff > 0) {
+>>     ...
+>>     dst->y2 -= diff;
+>> }
+> 
+> I agree, the logic in drm_atomic_helper_check_plane_state() is hard to
+> understand. It sets the clip rectangle to the size of the display mode
+> (or zero if the CRTC is off) at [1].  Then is clips the source and
+> destination coordinates against the clipping rectangle at [2].
+> 
+> Because we set can_position to false, it tests if the destination and
+> clipping rectangles are equal at [3]. This is similar to the that is
+> being replaced, but with plane state correctly adjusted. If both
+> rectangles are equal, it returns success. If the destination is too
+> small, it fails with an errno code and a warning.
+> 
+> If the plane is not visible, the helper already returned at [4].
+> 
+> [1] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+> drm_atomic_helper.c#L943
+> [2] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+> drm_atomic_helper.c#L945
+> [3] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+> drm_atomic_helper.c#L959
+> [4] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+> drm_atomic_helper.c#L949
+> 
+> It is now possible to have a primary plane that is larger than the
+> display mode. This is a feature of the DRM API.
+> 
+
+Thank you so much for the explanation. It's much clearer to understand
+drm_atomic_helper_check_plane_state.
+
+By the way, we ran some basic tests on this set of patches using the
+latest BMC chip, and everything worked fine.
+
+
+Thanks.
+
+Best regards
+Yongbang.
+
+
+> Best regards
+> Thomas
+> 
+> 
+>>
+>>
+>> Thanks.
+>>
+>> Best regards
+>> Yongbang.
+>>
+>>
+>>>       if (new_plane_state->fb->pitches[0] % 128 != 0) {
+>>>           drm_dbg_atomic(plane->dev, "wrong stride with 128-byte
+>>> aligned\n");
+>>>           return -EINVAL;
+>>>       }
+>>> +
+>>>       return 0;
+>>>   }
+>>>   
+> 
+
+Reviewed-by: Yongbang Shi <shiyongbang@huawei.com>
+
+
 
