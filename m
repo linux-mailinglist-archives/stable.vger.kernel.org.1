@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-238330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFtEE1AH4WmaogAAu9opvQ
-	(envelope-from <stable+bounces-238330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 17:59:12 +0200
+	id 6LS6JVEJ4WnoogAAu9opvQ
+	(envelope-from <stable+bounces-238331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:07:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCF54114E0
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 17:59:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F68411582
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1963E301BAE7
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:59:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5EB093026B2E
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 16:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9DC2F9D82;
-	Thu, 16 Apr 2026 15:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEADE3845A3;
+	Thu, 16 Apr 2026 16:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="CWf+UVR4"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ziEuOEVG"
 X-Original-To: stable@vger.kernel.org
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EC63002BD;
-	Thu, 16 Apr 2026 15:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDB3277818;
+	Thu, 16 Apr 2026 16:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776355137; cv=none; b=lBcyw1RbE/dqKvuA8SkkI3Kgd/eCOz40Qj/LjE+NLVVmy37UzLQOlEVcTOZPtKzRwQrYH8OtmtWLVN1PhijCSb6XeX7+8j/xMzmqVArgJqBlW39x830ui4Bqa5LNbVNzPxGx3yK6t+xgaQZrpkyXx8+AVZvQNtVvabOVzhWkSZQ=
+	t=1776355662; cv=none; b=Ciae8fDlq5D4eLAna/1NmgeXxx3KDrgXbNdj8vr9aQX59WvKUgR9ubPRCTNKxB6fZzRhlT6+TH11aWVFT030D++7ZQhkvkPsDRLWr9Kifkpt2bT+NcHMRzORUnleu/vIs6aTQTSjQC+sREyZAIRrtNEuzifmsJ5oe95lqYmfDZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776355137; c=relaxed/simple;
-	bh=VoFu6zdcNIlWYXin68CivHXkudYOc1cZgUUunz/fBOw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lI8d+NNK3PaiZVZZ2O+aoM0Mi7vOXfcZ1JWagGWgega5P3d+8CJNNq2Qh40UFGVj4C0UxPsR0LBk+g0nSDUftWZCPGtsaBz3X9t1x0KnS9hdcCQ0SaQerIWR0O3/wYbnsXThAICwM93z7gSnKLx9b9q/Fo3L2Z3+z5cVLqEbapI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=CWf+UVR4; arc=none smtp.client-ip=68.232.153.233
+	s=arc-20240116; t=1776355662; c=relaxed/simple;
+	bh=qao/Q8ZaEWTm/ysOoWCK36ISeRwnGqtgwEfsoRZC9RA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pliXxQUKiagWYAU2VjuNO+TET48cygnykHnDH1r4Zt450WMehD/qDicLMpm1/hc+ZqST0JGmUCEUOsrXlWqoDCW9zhDs4xiTH5fyU8ZPfxga691ZaFvSJLLgiOIE3/deLM5fXhWVLS7FG1bxqnKylKQIPm2KD/ZhSK3HdwtNRZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ziEuOEVG; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1776355136; x=1807891136;
+  t=1776355661; x=1807891661;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=VoFu6zdcNIlWYXin68CivHXkudYOc1cZgUUunz/fBOw=;
-  b=CWf+UVR4cdS9CJRsWQy87CUG8UbG3YpuqdfQmEaMydX9n4PvntzsXXbg
-   fOv9g/bTIncsz24UfTbiYY1d4s8z2Vh2mTfwZvUjo2YCZ3IUfipm6Mi2I
-   Nwy3ZGNgAwXLkQmhN/H5nCqUeCxi+rND7CI+gjDEJUWQPnW83qVyB/n5F
-   8CvRuR4BZtMFNDJHkDJQRx9rVHlZrqqZ+TGaIVQMoeVU/qeB0Vd0s18s2
-   CmzGxZv3Xw0mtuvcJ0k8+bYnRLyABpnYELeHAwugaRvOxqCrnt+p1uDsJ
-   1A0LJhalVkGzkDnprpIZSTwzaykL1nzf7hJ7gag0RYyM251O5/36eIMSz
-   w==;
-X-CSE-ConnectionGUID: ctb6DzhaSxmBsytyUH3wNg==
-X-CSE-MsgGUID: P0kO7RE1S/S9Mv1i67UF7g==
+  bh=qao/Q8ZaEWTm/ysOoWCK36ISeRwnGqtgwEfsoRZC9RA=;
+  b=ziEuOEVGqjUAEO8ii4kmQMdMkIWckyAa6jyKtLckzi3D4LpcyfKPLSD7
+   H5P9KHcZbS9KzvoH0tAyNfWOkWnbfwe4SpTQXmvpKqUqRRQ4J8ckVIlP9
+   K/cEkhtBb3Qp3y4/VYlHoRLq+a4PG40ztNjqbl5hp0gphEzyhQjKwI9Bf
+   9h85hGobnWF5LZ+ZN/2jSBjtbk4jC+KiOfXxm0N7R1DumZSrpMESlBVd0
+   I5NgNwHzVv8SZWE5u70WLrzWdZEWJgAzErm3KANlILw0LLGUQ+EiT1Vn9
+   QmGqCV4bjdm/9GFVv2jYmT3EL49R6KpQafSQrS7b4pEDCHfuGpbuqV8b/
+   Q==;
+X-CSE-ConnectionGUID: DxYSXy9UTvellq4VxFal2A==
+X-CSE-MsgGUID: f86AsaOuQOGT/aWHLL3Xvw==
 X-IronPort-AV: E=Sophos;i="6.23,181,1770620400"; 
-   d="scan'208";a="56218451"
+   d="scan'208";a="64196903"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Apr 2026 08:58:50 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 09:07:40 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 16 Apr 2026 08:58:37 -0700
+ 15.2.2562.35; Thu, 16 Apr 2026 09:07:20 -0700
 Received: from c34249-workdesk.microsemi.net (10.10.85.11) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 16 Apr 2026 08:58:37 -0700
+ 15.1.2507.58 via Frontend Transport; Thu, 16 Apr 2026 09:07:19 -0700
 From: Sagar Biradar <sagar.biradar@microchip.com>
 To: "Martin K . Petersen" <martin.petersen@oracle.com>, James Bottomley
 	<James.Bottomley@HansenPartnership.com>, Jack Wang
@@ -70,9 +70,9 @@ CC: linux-scsi <linux-scsi@vger.kernel.org>, <stable@vger.kernel.org>, "Brian
 	Abhinav Kuchibhotla <abhinav.kuchibhotla@microchip.com>, Uday kumar Bagam
 	<udaykumar.bagam@microchip.com>, Advait Churi <advait.churi@microchip.com>,
 	Sagar Biradar <sagar.biradar@microchip.com>
-Subject: [PATCH] scsi: pm8001: reject firmware update in fatal error state
-Date: Thu, 16 Apr 2026 15:37:57 +0000
-Message-ID: <20260416153757.414896-1-sagar.biradar@microchip.com>
+Subject: [PATCH] scsi: pm8001: reject non-fatal dump when controller is crashed
+Date: Thu, 16 Apr 2026 15:46:50 +0000
+Message-ID: <20260416154650.415624-1-sagar.biradar@microchip.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -88,7 +88,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
 	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -96,9 +96,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238330-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238331-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[microchip.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sagar.biradar@microchip.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -107,46 +107,48 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4FCF54114E0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,microchip.com:dkim,microchip.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 30F68411582
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Kumar Meiyappan <kumar.meiyappan@microchip.com>
 
-pm8001_store_update_fw() allows a firmware update request even
-when the controller has already entered a fatal error state.
+pm80xx_get_non_fatal_dump() can be called even after the controller
+has entered a fatal error state. In that case the forensic memory
+contents are not safe to access for a non-fatal dump request,
+and attempting to do so can trigger a call trace.
 
-Firmware update is not valid once the controller is in that state,
-and attempting it can lead to a call trace. Reject the request
-early by checking controller_fatal_error, set the firmware
-status to FAIL_PARAMETERS, and return -EINVAL.
+Check controller_fatal_error before reading the non-fatal dump buffer
+and return -EINVAL when the controller is already in a crashed state.
+
+This prevents non-fatal dump collection from running in an invalid
+controller state.
 
 Signed-off-by: Kumar Meiyappan <kumar.meiyappan@microchip.com>
 Signed-off-by: Sagar Biradar <sagar.biradar@microchip.com>
 ---
- drivers/scsi/pm8001/pm8001_ctl.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/pm8001/pm80xx_hwi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/scsi/pm8001/pm8001_ctl.c b/drivers/scsi/pm8001/pm8001_ctl.c
-index cbfda8c04e95..bb38b2d63acb 100644
---- a/drivers/scsi/pm8001/pm8001_ctl.c
-+++ b/drivers/scsi/pm8001/pm8001_ctl.c
-@@ -826,6 +826,14 @@ static ssize_t pm8001_store_update_fw(struct device *cdev,
- 		goto out;
- 	}
+diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
+index 954f307352e6..2c0fa7ab33d2 100644
+--- a/drivers/scsi/pm8001/pm80xx_hwi.c
++++ b/drivers/scsi/pm8001/pm80xx_hwi.c
+@@ -401,6 +401,13 @@ ssize_t pm80xx_get_non_fatal_dump(struct device *cdev,
+ 	char *buf_copy = buf;
  
+ 	temp = (u32 *)pm8001_ha->memoryMap.region[FORENSIC_MEM].virt_ptr;
++
 +	if (pm8001_ha->controller_fatal_error) {
 +		pm8001_dbg(pm8001_ha, FAIL,
-+			   "controller in fatal error state, firmware update rejected\n");
-+		pm8001_ha->fw_status = FAIL_PARAMETERS;
-+		ret = -EINVAL;
-+		goto out;
++			   "non-fatal dump not available in fatal error state\n");
++		return -EINVAL;
 +	}
 +
- 	for (i = 0; flash_command_table[i].code != FLASH_CMD_NONE; i++) {
- 		if (!memcmp(flash_command_table[i].command,
- 				 cmd_ptr, strlen(cmd_ptr))) {
+ 	if (++pm8001_ha->non_fatal_count == 1) {
+ 		if (pm8001_ha->chip_id == chip_8001) {
+ 			snprintf(pm8001_ha->forensic_info.data_buf.direct_data,
 -- 
 2.43.0
 
