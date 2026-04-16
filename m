@@ -1,160 +1,146 @@
-Return-Path: <stable+bounces-238282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGcSEmyr4Gm8kgAAu9opvQ
-	(envelope-from <stable+bounces-238282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:27:08 +0200
+	id cN0rHWCs4GkCkwAAu9opvQ
+	(envelope-from <stable+bounces-238283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:31:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99B640C588
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DA640C64E
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A492231789A1
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:21:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BEEC30480AD
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923303921D7;
-	Thu, 16 Apr 2026 09:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6F0396B8C;
+	Thu, 16 Apr 2026 09:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRRXTGCY"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="J4DulUyI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2957B38911B
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1DA3921D7;
+	Thu, 16 Apr 2026 09:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776331302; cv=none; b=qY+/SBDs6jftI9y//18YUjPUZ4fhznRBZQKkZpE0Bp+70L3y/knVMd+AwIM5Mn8MsFZspgY2jQ4ekA0CTPWc02uOmaex98buTGvSapMZHUZUUKDGkCxjuD2cggGz6VFnQFz9aY6FFnq+nAhjIbkOVYuSoTm5o95a1CUaaJCUiLo=
+	t=1776331569; cv=none; b=ltMSP1sTwE1BBb6Ut3nnacc6ueUBmYFOtiH/KrQN+i/g5cIe8Jemy4UDbIn5U/ybQTrWjrIkMpGgwzP+gJvvfxItfiIBUq2HFY+bLIF8hPGQKYmkNCbA2VWcufeB4aKoJssejDozP3bCunkp//pzsmakS0F6Jh3nlenDXjZfUv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776331302; c=relaxed/simple;
-	bh=e57nDf5tJn8pmI6DL/EqYWuRO62Bk6bXtzpM6Y09P7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bzI0yCZg7p0Rz8sU3s/1VbBX+ufFbi2iohQJOWuB+oFweVLDO4/PCSxF5liuHUqwll2ZfC6bD/mVJ0wsqFjxhg1adyvtM1mAYoToYBPHSOe3Z1EyOUYbsvN4mI6bUQpTBYyiw9X4byYEO3OlGSeXDtEcoetfBuZhQgRwdjgwjxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRRXTGCY; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so72807105e9.2
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 02:21:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776331299; x=1776936099; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lJ4uoEfFYWjSIYr4YjUAeTcpQFLjt1x9S0J2zuFA2jc=;
-        b=nRRXTGCYpfFZ+ZvzXtRXgsrWHh3rj9RLqWr2VHxfRBp3i4MpsB9gW+YgY+i19AivpO
-         jyW3N97NdNyl5HMED7SrNf4taVqZCiqO9Msm9RQx/GgATGKZXlLEyUwigDul0Ulpq5Tv
-         BDK6qdMYE80iImRH+BP4mSlDiI2fQ8N6vuMa2OY3VDb1T5fojSNEPuSiUxEyKiiFkCZj
-         3bJAzAW+XXhC8cnwFQet78pse9KGlbAGlsxj76wqkSVAF1/wuW6fQezr5mp0W/sYTpzs
-         zMHpoMkvtYUjWaCr7DZxocROnPKBJGjcRIgeGEjwLQilvoF/xiKGGpFibZuvf/754Eeo
-         w07A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776331299; x=1776936099;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lJ4uoEfFYWjSIYr4YjUAeTcpQFLjt1x9S0J2zuFA2jc=;
-        b=bQJrRgQpjLzGRKMjQDoxWmR2Vg+5GLrFPB1lUfASrY02jsqkIJmKYLaqSepR4wwh0L
-         UFuehQ/keDEzy6mhfdQTcsh2RPrsdQ67C0NGVncG5fkUin+h6vQ2HONJjujAxWred4hp
-         POPy1AjyzTMLoVwqoyjZFp19AA0sSmseEYJI5nsvvSIkW6wpi9RkV6IE5dPlVGdK0l8t
-         YQgziOe3pD3vH6qva+fGSR0Ro/3ytNEhetKmiYGaEUHcJUQ/ya+7Ih+pR4r/JEOSkxIG
-         3asUWG4DInMXhUzugJKbQvB2szfjRkV4zq5CQvks8C4++xhG9K49pkmBSM9hL25eTNCc
-         5rsw==
-X-Forwarded-Encrypted: i=1; AFNElJ9oRn2Aydb9VLsJyWjGEc3gK+IlBAp4ACIHEtQGJF9Od8kO2xW6OgQCILXeC0pPlyZBdD9aaGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8SzC9Cul2YtjitBEV+XJs3lrqzBlltyU33oGZHVAQp2OVEj8h
-	2onzp6pTiXDjIuuctF2arKbE/F4YnfdIS8K9J9qW2prRcgLT6U0Y6afc
-X-Gm-Gg: AeBDiev4yjoDneH0tjFfv+YPvlIewstMeqjUo1upeFo0RJ9aEbyXdk8W8s7z0XJU2CW
-	oSMV+g35lfVAf5yPPJZktFBVJZwINkkCYZA4hxGQF8lw9YfNVFFNQNrlEnnf8eVcTGg9fPfAs2N
-	FVViV3QXatQRkekWL12jk5uYpE3GV6vdy0NzlOzsMbNQQXuyDl8sLejogryUSTzr2RZr3oBmxvV
-	FiXWdBWnElmmb6I3zb9TTD0qjEQ7fpSEJee2WCsHGWV9b4j3o9O6hwvpSxQ5KEGOhbRwYW/v/UT
-	K3LinMZo6KBUswlSZ+sjjaFsQy0MoqKM5Idns++5iAp7fDV1/45ncO3xOc2jBmJGGNABhEsfgH7
-	oWBkeFQkUNGaQ9sU7CCXtTgo5RsjoxMVnN97H8t9CC+B6jMXv0Ybf5N9ajNeCvRt69ypNOsrlis
-	MVq25X1R/reIyIr2qRBw/RMY3KZ+171qIvsCuQSztouxmLzst2Et0EfhxuF6NxK24F
-X-Received: by 2002:a05:600c:8b6d:b0:485:9a50:3384 with SMTP id 5b1f17b1804b1-488d688209dmr322411545e9.25.1776331299391;
-        Thu, 16 Apr 2026 02:21:39 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead33d65asm12155424f8f.4.2026.04.16.02.21.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 02:21:39 -0700 (PDT)
-Date: Thu, 16 Apr 2026 10:21:37 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Cc: netdev@vger.kernel.org, linux-hams@vger.kernel.org, jreuter@yaina.de,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 net] ax25: fix OOB read after address header strip in
- ax25_rcv()
-Message-ID: <20260416102137.4e7264c4@pumpkin>
-In-Reply-To: <69e07601.c80a0220.2f9024.1e0b@mx.google.com>
-References: <20260415063654.3831353-1-ashutoshdesai993@gmail.com>
-	<20260415085921.757b48a0@pumpkin>
-	<69e07601.c80a0220.2f9024.1e0b@mx.google.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1776331569; c=relaxed/simple;
+	bh=Toi/ExDBfyTrjWM2U7MV0tQpQPeL2fa13Z+umrNeJ9Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qmzwokinz8/4BZd+UBkKqTnuIzXgU2CS/lV4dZofouS8SgGn+CGGfqv3dZzX2crkGx1RoiAH9lz7tZpQem8EDlso5qTbZokv+WDKyGmYpzYavFhkq5l8Y8nCtXz6HWLwv2eHwpGQjLB/ahWQrJG/QH6VoBP+nOYGt8GDqnCfMYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=J4DulUyI; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7BC9E1134E5;
+	Thu, 16 Apr 2026 11:26:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1776331564;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=oIlLjStCPp+YGdDq1HhDSCSzp/k/RTMW/4RqUFAa/AQ=;
+	b=J4DulUyIR6XJw1wn+SxuBkcPb/tn8epuU3yvkhDlh8N93t4h6S7ghIytknFyRiuxlPSC+s
+	+x2YUJKQL5J8yeFBEyVlYuMYRZYKmttYi8DrjZ7VhBSxBcnRfAdd+zaSmqT9ThuIF80VFm
+	dUMXBtq9uj023AGRnOB/iM2peMjJpxuPFO7jBRAxiJWrDvisBNJCyKtr+mOYsJeKpXbQhG
+	S8I9yIlbMznbHRVUkdo1nAkVWcB/PdrpeDRlTWfcL+UcDuWXDRDQ7o6w8t8ovL+p+BpPMD
+	oaUVABAbsCeuITZtO5q1CIBYqDKw5gl/u26/XiJ6qQ8Cs0JER3ZzNM2PlwTasA==
+Message-ID: <afe7ed2c-4434-4394-9d87-a4bdf5a15ec1@nabladev.com>
+Date: Thu, 16 Apr 2026 11:26:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net,PATCH v3 1/2] net: ks8851: Reinstate disabling of BHs around
+ IRQ handler
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>,
+ Paolo Abeni <pabeni@redhat.com>, Ronald Wahl <ronald.wahl@raritan.com>,
+ Yicong Hui <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
+References: <20260414103327.113500-1-marex@nabladev.com>
+ <20260414125753.Im6GAIHn@linutronix.de>
+ <2fcfb84f-69f6-493e-94d6-95d85d8000f6@nabladev.com>
+ <20260414145218.lsNpdAJI@linutronix.de>
+ <7734527a-d08b-49fa-b258-c37c5ae2da55@nabladev.com>
+ <20260416062159.fPxqc52X@linutronix.de>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260416062159.fPxqc52X@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238282-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238283-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,tipi-net.de,redhat.com,raritan.com,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nabladev.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D99B640C588
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:dkim,nabladev.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C3DA640C64E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 15 Apr 2026 22:39:13 -0700 (PDT)
-Ashutosh Desai <ashutoshdesai993@gmail.com> wrote:
-
-> On Wed, 15 Apr 2026 08:59:21 +0100, David Laight wrote:
-> > Is it just worth linearising the skb on entry to all this code?  
+On 4/16/26 8:21 AM, Sebastian Andrzej Siewior wrote:
+> On 2026-04-16 01:14:35 [+0200], Marek Vasut wrote:
+>>> spin_unlock_bh(&ks->statelock)? After that unlock, the softirq must be
+>>> processed and __netdev_alloc_skb() _could_ observe pending softirqs but
+>>> not from ks8851.
+>> Because __netdev_alloc_skb() also enables/disables BH , see the "else"
 > 
-> Thanks for the feedback, David.
-> 
-> skb_linearize() on entry is a nice idea for simplifying sanity checks
-> overall, but it wouldn't fix this particular bug on its own - the issue
-> is skb->len dropping to zero after skb_pull(), not non-linear data. We'd
-> still need a length check regardless. pskb_may_pull(skb, 2) handles both
-> in one call.
+> Yes. But there is no softirq raised in that part. That softirq is raised
+> by netif_wake_queue() within a bh disabled section. Therefore upon the
+> unlock the softirq must be invoked.
+> After that, rhe allocation later on may invoke softirqs which were
+> raised but I don't see how ks8851 can be part of it.
+> Before commit 0913ec336a6c0 ("net: ks8851: Fix deadlock with the SPI
+> chip variant") there was no _bh around it meaning the softirq was raised
+> but not invoked immediately. This happened on the bh unlock during
+> memory allocation. Therefore I am saying this backtrace is from an older
+> kernel.
 
-The skb->len >= 2 check will be a lot cheaper/smaller.
+I actually did update the backtrace in V3 with the one from next 
+20260413 that contained b44596ffe1b4 ("ARM: Allow to enable RT") from 
+stable-rt/v6.12-rt-rebase branch [1] .
 
-> That said, linearizing on entry to ax25_rcv() as a cleanup to simplify
-> future checks sounds worthwhile - happy to send that as a separate
-> net-next patch.
+I think I misunderstood the usage of "softirq is raised" vs. "softirq is 
+invoked" above . Is it possible that there was an already raised softirq 
+before the threaded IRQ handler was invoked, and __netdev_alloc_skb() is 
+what invoked that softirq ?
 
-I think you proposed just checking skb->len in an earlier version
-and it was pointed out that the skb may not be linear.
-So perhaps linearize as part of this fix and leave the simplifcation
-of any other checks to later.
-
-	David
+> If there is a flaw in my the theory please explain _how_ you managed
+> that get that backtrace. I am sure it must have from an older kernel and
+> _now_ this lockup also happens on !RT kernels (except for the SPI
+> platform).
+I used [1] , with PREEMPT_RT enabled , on stm32mp157c SoC . I ran iperf3 
+-s on the stm32 side, iperf3 -c 192.168.1.2 -t 0 --bidir on the hostpc 
+side. The backtrace happened shortly after.
 
