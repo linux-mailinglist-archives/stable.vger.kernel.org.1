@@ -1,225 +1,207 @@
-Return-Path: <stable+bounces-238295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDeZG1i14Gn5kwAAu9opvQ
-	(envelope-from <stable+bounces-238295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:09:28 +0200
+	id sAuqEoK14Gn5kwAAu9opvQ
+	(envelope-from <stable+bounces-238296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:10:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B0F40CBD5
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:09:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277FE40CC02
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6BBCE300D4C1
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:09:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1166300E4A6
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CC939D6C9;
-	Thu, 16 Apr 2026 10:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAFF39DBDB;
+	Thu, 16 Apr 2026 10:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="CoiBPKIC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RhT/qutT";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="c359IVp7"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB8B39D6F2
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 10:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3D439D6C9
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 10:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776334160; cv=none; b=XUeOJsPz6maJqOBeTPUNFraiXEUhqt/j28pR4L3fwNwt0DYXjsx6KEFgEiL1cyLY7f9G8DbENjIve2DPrK/xZAt92kIVW+Cpo1EcbiJYgCm5I8eyFysgMbHu+xXSelf23cDmP98XXA0r1TwJmM30vjb0hL8WerfKTK1gwmT5rqE=
+	t=1776334195; cv=none; b=BhmpaJj+IQNs1BdZao2uUFfMXSsFuKxSUFI769M96rM1aO9Rt+btpy98pKM8OYMjsYdXuPi+tejdVxrNivgcjoGd+x0B7lCPxIdk258bmaLi1ZCKPauc1uaQxeCgGvaBgjs2qOWDRtPgLh02/aXP97WSCHzfUMYiAcwttmXBOi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776334160; c=relaxed/simple;
-	bh=OngsxZ1vCJg/+T4pPuDJWlgmT2km1gmr8fAAorvHZSU=;
-	h=From:To:Subject:Date:Message-Id; b=D7zr7zWtwcWYX+GwiCgU49oHmN1d8+v+qDxBK9d0AydRUIVF6yCyhjnHL8HGCeAN7tciAlZ6OS5p0AiaImUdTqyf2Wmyasz/I9vM/6931rIu4VrtjkyfRaSPJXtjkHRW/nflgWA+IaK9m5QYhsnD7eDaMT/qHHvoRWc7OqLuOlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=CoiBPKIC; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1776334195; c=relaxed/simple;
+	bh=z6kd+nKQicYvDY3CUkmgWTERBKk+ndyaPYBRpyWXIEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gCMt8aDlVgPKMkbYsEStlij2K0zhNQq6qmVtfwCtuAdUrcKXbPjyUHYsdpQCzY1rNgmjcNV0ZsioJxc5a/a2xzz00d2lTYCh83Dgt5c/bcZk2TyKMQ4SpusOOn/weiBkGAMW6UPw4WplQBLCatltT7FeunCBP+vEMIbG47MnwYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RhT/qutT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=c359IVp7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776334192;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1cV7q2j+uSEe+DAeD9qB2jVzt4SquMZBCuxmlDEB6Vg=;
+	b=RhT/qutTJCW98eByRO2ENkCYdIQL7z6o3gjuJf/pS5zx6KZ6aa5g85FamtD9+94tgWZvbb
+	ROH4Sz50wcVZ+ZT+o2l5RbXAsOwmyC7mAf8d83u98dYVENVXRgVqg0Hh0nF1UyZdSs50lh
+	R6v15X9uRnZ3td78BHVxOJrahswBpws=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-108-wtzSaENdOMmNOUUgh13coA-1; Thu, 16 Apr 2026 06:09:51 -0400
+X-MC-Unique: wtzSaENdOMmNOUUgh13coA-1
+X-Mimecast-MFC-AGG-ID: wtzSaENdOMmNOUUgh13coA_1776334190
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488d1b5bca0so43853165e9.2
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 03:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=CoiBPKICWqsly/tHchUVwLfDeKwjY97VexPAVtZJ5lDINuiQiNZ2BoYbSJlqofOzaQihN/f2OabNl
-	 dHHEKLV5VNSNCbYp9hqAN3ll5n4XWjeC2Hqr2E/cucqS9byoRziNOewr1ac4MVWrKErhbuWs0PExU5
-	 TGNOfoCnultQo/RU=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[183.241.248.246])
-	by rmsmtp-lg-appmail-15-12004 (RichMail) with SMTP id 2ee469e0b540c25-227e4;
-	Thu, 16 Apr 2026 18:09:05 +0800 (CST)
-X-RM-TRANSID:2ee469e0b540c25-227e4
-From: Rajani Kantha <681739313@139.com>
-To: shinichiro.kawasaki@wdc.com,
-	rostedt@goodmis.org,
-	kch@nvidia.com,
-	axboe@kernel.dk,
-	stable@vger.kernel.org
-Subject: [PATCH 6.6.y] blktrace: fix __this_cpu_read/write in preemptible context
-Date: Thu, 16 Apr 2026 18:08:59 +0800
-Message-Id: <20260416100859.2492-1-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
+        d=redhat.com; s=google; t=1776334190; x=1776938990; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1cV7q2j+uSEe+DAeD9qB2jVzt4SquMZBCuxmlDEB6Vg=;
+        b=c359IVp7gA11Oc3qzyHXzpH0x5bGs0Ht9uRRvmb0cgeXb1kqbpOd+oPzanNhmTpO1d
+         vdXBrCuAwrSg6Oca8GjQRpgx3rOE/T2F5ycH5E6jyTGKKQjgl72mJAKS1ntS9RDoAePy
+         k2hRL+zjH//o/KKyZD6zCYbPpv655LtvEkB+oXa1AccvFk1UDeymiLjOM1ve81vaOdNF
+         AKELMCSh/VGDzkI2a/qdg9onZpYOWlB/mVW7+1JHJwmw4usLt5x/YT9hgGbd4a2gKO2W
+         OjWfMtdu4oDWX0bt/y3IS0eKalJ32o48pb4NBEj06GsyroI4cVtspk7SQWVH98tojLHu
+         bPXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776334190; x=1776938990;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1cV7q2j+uSEe+DAeD9qB2jVzt4SquMZBCuxmlDEB6Vg=;
+        b=mPW5l6+x69gD39i95FvkFKdSDItmVWr7FQIJlRwGqzm+SR4EwhEaH/HAKkRboTbptE
+         04OtOgg6gD4BBeabM+dk5T3IEPy1ybUhWZvP9BIHNyTIzUckW62t9M3Hn01aYADILlB7
+         Dl9YJb55q9oxzusDu3tZm8g5XD+5IGXK8uDFHZwtKk/mVCz+di29cKK7jDHdguLt67/j
+         xLe37U1V1Xld54K7YQ0LMz2PdlApj6OqM/ZkJCl4ZIXHWkfRebmTAxdLmk7IN818Fs5Y
+         4XQdypOWDJYpUXmEWZ289ucrTQ1BThQJqe/uykW3Bi6AXyDnSVS2dXC0lC2LoKty385d
+         vSjA==
+X-Forwarded-Encrypted: i=1; AFNElJ+A9JqTDW9ZSCf6qU2kO09kS4sPrz2iJHjzlhvSBViqMSIPSCqVmaZbqD3RGI4hM+cRvmsE57M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIXemawK+9Vb19Uc7SrHTKH0CN9NIgsO6FL+gbVPoCTk9D/ncQ
+	doRG9Kbirr3fCc5bZMFbcles5+ni3aWnooi9PCG1Au7FmAdlnB8G0jdxIqeb80a1mIOo5bZHzDe
+	K4VxSaHTjbkL4Of3xfWo/Jq/WYmpxbhAibleZ9y8AvHKyyAn3SsWFIYSY6w==
+X-Gm-Gg: AeBDiesryfIEtjN+BKveiCou8GA8x1yPKmSNgm0zK841kXuDfOImO7CDvPmbeZtQ6L/
+	0uFQ32OFZD7f3khD7UK6lyEzdMoLd+CqrPC1OEsuaGeoADxzTClL4Y2pZY4yEHN7Ot6Gz69FSuK
+	bjW4ob2FQUZYf15OthvaEf4oM3CCGOlL6dxILTFBV32C8OWYThhBmBcY/1zX7ylLcNwlok2F7nf
+	UmFrg1HbQSNx3XO74ApwxzNnmsajUDpUAi7i0HT48Ord0tVQU7mB1CqAFnsCWbTy6bxrU/4oo7E
+	ejd1nhEf+6h8sm+Gki9UKgdrshykGyzXOjLkfxHZSJ4hL1hN60aimuF1GHpit7mGI5xgsu6CSDq
+	j66lyVVC2Gk6Xb5txdx3DlBM3pX/hVYbe+xyrOYvSU2XRBdw9sxNpwFCxHIk5Nb4YjLU=
+X-Received: by 2002:a05:600c:3b24:b0:488:aa33:dcbd with SMTP id 5b1f17b1804b1-488d687a645mr349028085e9.26.1776334190382;
+        Thu, 16 Apr 2026 03:09:50 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b24:b0:488:aa33:dcbd with SMTP id 5b1f17b1804b1-488d687a645mr349027665e9.26.1776334189852;
+        Thu, 16 Apr 2026 03:09:49 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f5813665sm43475935e9.2.2026.04.16.03.09.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 03:09:49 -0700 (PDT)
+Message-ID: <d49d5804-96b8-4e84-b693-b51a7e1cca15@redhat.com>
+Date: Thu, 16 Apr 2026 12:09:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: dsa: sja1105: fix division by zero in
+ sja1105_tas_set_runtime_params()
+To: Alexander.Chesnokov@kaspersky.com, olteanv@gmail.com
+Cc: lvc-project@linuxtesting.org, Oleg.Kazakov@kaspersky.com,
+ Pavel.Zhigulin@kaspersky.com, stable@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260413085140.33138-1-Alexander.Chesnokov@kaspersky.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260413085140.33138-1-Alexander.Chesnokov@kaspersky.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238296-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238295-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[139.com];
-	DMARC_NA(0.00)[139.com];
+	FREEMAIL_TO(0.00)[kaspersky.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxtesting.org,kaspersky.com,vger.kernel.org,lunn.ch,gmail.com,davemloft.net,google.com,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	NEURAL_SPAM(0.00)[0.057];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel.dk:email,qemu.org:url,goodmis.org:email,wdc.com:email]
-X-Rspamd-Queue-Id: 63B0F40CBD5
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 277FE40CC02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+On 4/13/26 10:51 AM, Alexander.Chesnokov@kaspersky.com wrote:
+> From: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
+> 
+> If taprio offload is configured such that none of the ports' base_time
+> is less than S64_MAX (the initial value of earliest_base_time), then
+> its_cycle_time remains zero and is passed to future_base_time() as
+> cycle_time, causing division by zero in div_s64().
+> 
+> Add a check for its_cycle_time being zero before calling
+> future_base_time() and return -EINVAL.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 86db36a347b4 ("net: dsa: sja1105: Implement state machine for TAS with PTP clock source")
+> Cc: stable@vger.kernel.org
+> 
 
-[ Upstream commit da46b5dfef48658d03347cda21532bcdbb521e67 ]
+No empty lines in the tag area.
 
-tracing_record_cmdline() internally uses __this_cpu_read() and
-__this_cpu_write() on the per-CPU variable trace_cmdline_save, and
-trace_save_cmdline() explicitly asserts preemption is disabled via
-lockdep_assert_preemption_disabled(). These operations are only safe
-when preemption is off, as they were designed to be called from the
-scheduler context (probe_wakeup_sched_switch() / probe_wakeup()).
+> Signed-off-by: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
+> ---
+>  drivers/net/dsa/sja1105/sja1105_tas.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/dsa/sja1105/sja1105_tas.c b/drivers/net/dsa/sja1105/sja1105_tas.c
+> index e6153848a950..ce4b544a2b9c 100644
+> --- a/drivers/net/dsa/sja1105/sja1105_tas.c
+> +++ b/drivers/net/dsa/sja1105/sja1105_tas.c
+> @@ -62,6 +62,9 @@ static int sja1105_tas_set_runtime_params(struct sja1105_private *priv)
+>  	if (!tas_data->enabled)
+>  		return 0;
+>  
+> +	if (!its_cycle_time)
+> +		return -EINVAL;
 
-__blk_add_trace() was calling tracing_record_cmdline(current) early in
-the blk_tracer path, before ring buffer reservation, from process
-context where preemption is fully enabled. This triggers the following
-using blktests/blktrace/002:
+Sashiko says:
 
-blktrace/002 (blktrace ftrace corruption with sysfs trace)   [failed]
-    runtime  0.367s  ...  0.437s
-    something found in dmesg:
-    [   81.211018] run blktests blktrace/002 at 2026-02-25 22:24:33
-    [   81.239580] null_blk: disk nullb1 created
-    [   81.357294] BUG: using __this_cpu_read() in preemptible [00000000] code: dd/2516
-    [   81.362842] caller is tracing_record_cmdline+0x10/0x40
-    [   81.362872] CPU: 16 UID: 0 PID: 2516 Comm: dd Tainted: G                 N  7.0.0-rc1lblk+ #84 PREEMPT(full)
-    [   81.362877] Tainted: [N]=TEST
-    [   81.362878] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-    [   81.362881] Call Trace:
-    [   81.362884]  <TASK>
-    [   81.362886]  dump_stack_lvl+0x8d/0xb0
-    ...
-    (See '/mnt/sda/blktests/results/nodev/blktrace/002.dmesg' for the entire message)
+Is this division by zero reachable without this check?
+When all ports have base_time == S64_MAX, earliest_base_time and
+latest_base_time are both S64_MAX. When future_base_time(S64_MAX, 0,
+S64_MAX) is called, it returns early because base_time >= now (S64_MAX
+>= S64_MAX), avoiding the division.
+Could this new error path cause an actual division by zero later?
+When returning -EINVAL here, tas_data->enabled is already set to true,
+but tas_data->max_cycle_time is left uninitialized (0).
+If sja1105_tas_state_machine() runs later, it will pass this
+max_cycle_time as the cycle_time argument to future_base_time(). Since 0
+>= now + 1s is false, it proceeds to call div_s64() with a zero divisor.
 
-[   81.211018] run blktests blktrace/002 at 2026-02-25 22:24:33
-[   81.239580] null_blk: disk nullb1 created
-[   81.357294] BUG: using __this_cpu_read() in preemptible [00000000] code: dd/2516
-[   81.362842] caller is tracing_record_cmdline+0x10/0x40
-[   81.362872] CPU: 16 UID: 0 PID: 2516 Comm: dd Tainted: G                 N  7.0.0-rc1lblk+ #84 PREEMPT(full)
-[   81.362877] Tainted: [N]=TEST
-[   81.362878] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[   81.362881] Call Trace:
-[   81.362884]  <TASK>
-[   81.362886]  dump_stack_lvl+0x8d/0xb0
-[   81.362895]  check_preemption_disabled+0xce/0xe0
-[   81.362902]  tracing_record_cmdline+0x10/0x40
-[   81.362923]  __blk_add_trace+0x307/0x5d0
-[   81.362934]  ? lock_acquire+0xe0/0x300
-[   81.362940]  ? iov_iter_extract_pages+0x101/0xa30
-[   81.362959]  blk_add_trace_bio+0x106/0x1e0
-[   81.362968]  submit_bio_noacct_nocheck+0x24b/0x3a0
-[   81.362979]  ? lockdep_init_map_type+0x58/0x260
-[   81.362988]  submit_bio_wait+0x56/0x90
-[   81.363009]  __blkdev_direct_IO_simple+0x16c/0x250
-[   81.363026]  ? __pfx_submit_bio_wait_endio+0x10/0x10
-[   81.363038]  ? rcu_read_lock_any_held+0x73/0xa0
-[   81.363051]  blkdev_read_iter+0xc1/0x140
-[   81.363059]  vfs_read+0x20b/0x330
-[   81.363083]  ksys_read+0x67/0xe0
-[   81.363090]  do_syscall_64+0xbf/0xf00
-[   81.363102]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   81.363106] RIP: 0033:0x7f281906029d
-[   81.363111] Code: 31 c0 e9 c6 fe ff ff 50 48 8d 3d 66 63 0a 00 e8 59 ff 01 00 66 0f 1f 84 00 00 00 00 00 80 3d 41 33 0e 00 00 74 17 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 5b c3 66 2e 0f 1f 84 00 00 00 00 00 48 83 ec
-[   81.363113] RSP: 002b:00007ffca127dd48 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-[   81.363120] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f281906029d
-[   81.363122] RDX: 0000000000001000 RSI: 0000559f8bfae000 RDI: 0000000000000000
-[   81.363123] RBP: 0000000000001000 R08: 0000002863a10a81 R09: 00007f281915f000
-[   81.363124] R10: 00007f2818f77b60 R11: 0000000000000246 R12: 0000559f8bfae000
-[   81.363126] R13: 0000000000000000 R14: 0000000000000000 R15: 000000000000000a
-[   81.363142]  </TASK>
-
-The same BUG fires from blk_add_trace_plug(), blk_add_trace_unplug(),
-and blk_add_trace_rq() paths as well.
-
-The purpose of tracing_record_cmdline() is to cache the task->comm for
-a given PID so that the trace can later resolve it. It is only
-meaningful when a trace event is actually being recorded. Ring buffer
-reservation via ring_buffer_lock_reserve() disables preemption, and
-preemption remains disabled until the event is committed :-
-
-__blk_add_trace()
-       	__trace_buffer_lock_reserve()
-       		__trace_buffer_lock_reserve()
-       			ring_buffer_lock_reserve()
-       				preempt_disable_notrace();  <---
-
-With this fix blktests for blktrace pass:
-
-  blktests (master) # ./check blktrace
-  blktrace/001 (blktrace zone management command tracing)      [passed]
-      runtime  3.650s  ...  3.647s
-  blktrace/002 (blktrace ftrace corruption with sysfs trace)   [passed]
-      runtime  0.411s  ...  0.384s
-
-Fixes: 7ffbd48d5cab ("tracing: Cache comms only after an event occurred")
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Rajani Kantha <681739313@139.com>
----
- kernel/trace/blktrace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/trace/blktrace.c b/kernel/trace/blktrace.c
-index d5d94510afd3..ce797d8dd451 100644
---- a/kernel/trace/blktrace.c
-+++ b/kernel/trace/blktrace.c
-@@ -251,8 +251,6 @@ static void __blk_add_trace(struct blk_trace *bt, sector_t sector, int bytes,
- 	cpu = raw_smp_processor_id();
- 
- 	if (blk_tracer) {
--		tracing_record_cmdline(current);
--
- 		buffer = blk_tr->array_buffer.buffer;
- 		trace_ctx = tracing_gen_ctx_flags(0);
- 		event = trace_buffer_lock_reserve(buffer, TRACE_BLK,
-@@ -260,6 +258,8 @@ static void __blk_add_trace(struct blk_trace *bt, sector_t sector, int bytes,
- 						  trace_ctx);
- 		if (!event)
- 			return;
-+
-+		tracing_record_cmdline(current);
- 		t = ring_buffer_event_data(event);
- 		goto record_it;
- 	}
--- 
-2.17.1
-
+/P
 
 
