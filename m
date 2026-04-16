@@ -1,163 +1,198 @@
-Return-Path: <stable+bounces-238255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238256-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMl4GBR84GnlhgAAu9opvQ
-	(envelope-from <stable+bounces-238255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:05:08 +0200
+	id KMSkNy9+4GkWiAAAu9opvQ
+	(envelope-from <stable+bounces-238256-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:14:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AC740A8DF
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:05:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC4040A94E
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9ED8F302B744
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:03:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1455B30364E3
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02443218BA;
-	Thu, 16 Apr 2026 06:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD91379EF6;
+	Thu, 16 Apr 2026 06:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="E8xBb1Nt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4Kjqurt"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038681BD9C9;
-	Thu, 16 Apr 2026 06:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01D92FF672;
+	Thu, 16 Apr 2026 06:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776319397; cv=none; b=rJLSNEF/8p9VfhyvlMOHtgqmXG84lJ8AbIQAsqEWU5PSnxdeLANKuXZR0ZTU95/1zaOZB90HSAEsCt6g5xvnYf06/0RLzb6sd/bEaFAuEePbZdgOGg+dc5LfFU5CesMdIQL9AvERtvp8nsmEOQpgyJ67OErPSpwMGMOg91/AQQQ=
+	t=1776320043; cv=none; b=e6S/xgNvs/px6QNyPABoShXo9AvHV1w6j99ZUZYF7mkIGyqaec0RxxuqtMT+sI7gpT2yvRERINcUDGlCxnLJZgnG493oKcMZRndLd90KVb9L1191YmbC2BQr51Hmb6xkuAskP5lR0zeAFQlDUL+/jaqKLjPBvLCljrWWjt6zJyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776319397; c=relaxed/simple;
-	bh=jzW/IRXsD0pARdFJ7w3GkHpIKhal7AiE+1QIw2RRcTE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y+PDHiRCgvNCBy/Q5hv4PoRs1VwmEZY6RUZgDJFjAPuFmXO0Mpq5TRRABAjEm/hOlFpOGSA4vCUwO8Haj6i7cc7ofFVcpjVkgtKrz1H4FWDyMs9SmywdKlVPlOQkZdVScXDKlhTfW+Dsgv77lmzImw/Ek8fyF8ZrOvv1rUOeABE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=E8xBb1Nt; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776319390; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=ZomflwDXNwqG6gSK6tClB89Uhm5LpUQnhTnVd8IiJTo=;
-	b=E8xBb1NttxcwuBBLXU510O/o0tnoS64v1WLaneTJE3cXe1jrCVB3+CXk9UxWDbIAhAgz012yVY2Ky/xGUcRXH/zAmdti0cjhR805NwjZ5NAP8PcrYZJwrzNymYnhtb1XoWxKSTylDsdFwMQJbI3JxnwdJpiL4EQCNR0YfnqRWzI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R931e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0X17IOFV_1776319385;
-Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X17IOFV_1776319385 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Apr 2026 14:03:10 +0800
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: linux-erofs@lists.ozlabs.org
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] erofs: fix the out-of-bounds nameoff handling for trailing dirents
-Date: Thu, 16 Apr 2026 14:03:05 +0800
-Message-ID: <20260416060305.3129334-1-hsiangkao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1776320043; c=relaxed/simple;
+	bh=O0qZsKmrGfbZpaWF12Ph+8auZdfeqxCWG+kcnD4cptg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rcmp7HN9YZA4UT9X89sCkhH0mCHw/uo0A/gw6oeI2gVGsPbwXr6lgyyR1V0fnKfVnNPm8wr2dPso8Ya2wRlAgZD1tJz/smS0SAe3YWOKYTDGuOcs353Q1YQb9CF2EK+ppQ+8v2CorLlHuZGmBK0yhWaAy0Y370Tm0LCQiNd8kdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4Kjqurt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DF2C2BCAF;
+	Thu, 16 Apr 2026 06:14:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776320043;
+	bh=O0qZsKmrGfbZpaWF12Ph+8auZdfeqxCWG+kcnD4cptg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=O4KjqurtHN+CmLcZgKvgbzwlRAzP/eup4XdcQlk+wi3kl+XMwYu72ptnYedXfnP/t
+	 xoBrDj1A+qEv0Zzpoeq2L6QBjTV6CSolRyVVa+UhOLDxN0LIkCx5PTERMB7cxj4GTL
+	 5ulSMnq5i15A4E5urGlSqy4vJzvJ1bTZ2CmIdijjzAEN9BOXrVQHyu8/d/imMquNZ1
+	 ORvYtfsUbGtQila4kVoKRySN5ZCzAU874dhhhqUpt76LlJ+ikmzoc8QxTkuCvrLS76
+	 k0gNtfnMXbZs2Lp+YowcM0EgP+1VJ851Pj3FMD0pzqw4zAV9tUjDv3a7sqSHDtr/xY
+	 z/965mQod5n+A==
+Message-ID: <463cec4f-a038-4bd0-90df-76e0ef48381c@kernel.org>
+Date: Thu, 16 Apr 2026 08:13:59 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] serial: 8250_accent: fix reference leak on failed device
+ registration
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Russell King <rmk@dyn-67.arm.linux.org.uk>, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260415183436.3763871-1-lgs201920130244@gmail.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
+ rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
+ rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
+ i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
+ wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
+ ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
+ cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
+ 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
+ w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
+ YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
+ IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
+ BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
+ eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
+ 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
+ XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
+ l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
+ UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
+ gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
+ oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
+ o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
+ Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
+ wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
+ t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
+ YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
+ DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
+ f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
+ 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
+ 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
+ /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
+ 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
+ 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
+ 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
+ wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
+ 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
+ jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
+ wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
+ wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
+ W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
+ f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
+ DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
+ S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
+In-Reply-To: <20260415183436.3763871-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.b.d.0.0.1.0.0.e.a.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
-	TAGGED_FROM(0.00)[bounces-238255-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.alibaba.com,gmail.com,outlook.com];
-	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org,dyn-67.arm.linux.org.uk,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	ASN_FAIL(0.00)[114.105.105.172.asn.rspamd.com:server fail];
+	TAGGED_FROM(0.00)[bounces-238256-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.alibaba.com:dkim,linux.alibaba.com:mid,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email]
-X-Rspamd-Queue-Id: A6AC740A8DF
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9BC4040A94E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Currently we already have boundary-checks for nameoffs, but the trailing
-dirents are special since the namelens are calculated with strnlen()
-with unchecked nameoffs.
+Hi,
 
-If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
-maxsize - nameoff can underflow, causing strnlen() to read past the
-directory block.
+On 15. 04. 26, 20:34, Guangshuo Li wrote:
+> When platform_device_register() fails in accent_init(), the embedded
+> struct device in accent_device has already been initialized by
+> device_initialize(), but the failure path returns the error without
+> dropping the device reference for the current platform device:
+> 
+>    accent_init()
+>      -> platform_device_register(&accent_device)
+>         -> device_initialize(&accent_device.dev)
+>         -> setup_pdev_dma_masks(&accent_device)
+>         -> platform_device_add(&accent_device)
+> 
+> This leads to a reference leak when platform_device_register() fails.
 
-Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
-Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
----
- fs/erofs/dir.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+What reference exactly?
 
-diff --git a/fs/erofs/dir.c b/fs/erofs/dir.c
-index e5132575b9d3..ecfac9b49322 100644
---- a/fs/erofs/dir.c
-+++ b/fs/erofs/dir.c
-@@ -19,20 +19,18 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
- 		const char *de_name = (char *)dentry_blk + nameoff;
- 		unsigned int de_namelen;
- 
--		/* the last dirent in the block? */
--		if (de + 1 >= end)
--			de_namelen = strnlen(de_name, maxsize - nameoff);
--		else
-+		/* non-trailing dirent in the directory block? */
-+		if (de + 1 < end)
- 			de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
-+		else if (maxsize <= nameoff)
-+			goto err_bogus;
-+		else
-+			de_namelen = strnlen(de_name, maxsize - nameoff);
- 
--		/* a corrupted entry is found */
--		if (nameoff + de_namelen > maxsize ||
--		    de_namelen > EROFS_NAME_LEN) {
--			erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
--				  EROFS_I(dir)->nid);
--			DBG_BUGON(1);
--			return -EFSCORRUPTED;
--		}
-+		/* a corrupted entry is found (including negative namelen) */
-+		if (!clamp_t(unsigned int, de_namelen, 1, EROFS_NAME_LEN) ||
-+		    nameoff + de_namelen > maxsize)
-+			goto err_bogus;
- 
- 		if (!dir_emit(ctx, de_name, de_namelen,
- 			      erofs_nid_to_ino64(EROFS_SB(dir->i_sb),
-@@ -42,6 +40,10 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
- 		ctx->pos += sizeof(struct erofs_dirent);
- 	}
- 	return 0;
-+err_bogus:
-+	erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
-+	DBG_BUGON(1);
-+	return -EFSCORRUPTED;
- }
- 
- static int erofs_readdir(struct file *f, struct dir_context *ctx)
+> Fix this by calling platform_device_put() before returning the error.
+> 
+> The issue was identified by a static analysis tool I developed and
+> confirmed by manual review.
+
+How did you verify you did the right change?
+
+> Fixes: ec9f47cd6a14c ("[PATCH] Serial: Split 8250 port table")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+>   drivers/tty/serial/8250/8250_accent.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_accent.c b/drivers/tty/serial/8250/8250_accent.c
+> index 1691f1a57f89..e9cf40268c0e 100644
+> --- a/drivers/tty/serial/8250/8250_accent.c
+> +++ b/drivers/tty/serial/8250/8250_accent.c
+> @@ -25,7 +25,13 @@ static struct platform_device accent_device = {
+>   
+>   static int __init accent_init(void)
+>   {
+> -	return platform_device_register(&accent_device);
+> +	int ret;
+> +
+> +	ret = platform_device_register(&accent_device);
+> +	if (ret)
+> +		platform_device_put(&accent_device);
+
+In particular, what does put_device() do on a static device, even 
+initialized, ie. with no device::release? Try it...
+
+IMO, all the patches are bogus.
+
+thanks,
 -- 
-2.43.5
-
+js
+suse labs
 
