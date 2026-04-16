@@ -1,96 +1,87 @@
-Return-Path: <stable+bounces-238354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJJZBM8z4Wm4qQAAu9opvQ
-	(envelope-from <stable+bounces-238354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:09:03 +0200
+	id MN0dG9w04WkEqgAAu9opvQ
+	(envelope-from <stable+bounces-238355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:13:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7D0413FC0
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:09:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DBB8414016
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CDEAE301E652
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:08:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1860305EE42
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C5634CFCB;
-	Thu, 16 Apr 2026 19:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017E634B1A7;
+	Thu, 16 Apr 2026 19:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JjU7JcBh"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="avrXiipw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6443E1E1DF0
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 19:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7637032D452;
+	Thu, 16 Apr 2026 19:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776366537; cv=none; b=AvRTIGb0Hz56X/0GlKv2XBwqO6PjJoOaXB9HeGju4s9zUhZs3JLinb1fTBlSTa9/RPc6tde86wmOQV06tTEsQmxm9/Arjqk/yuNX/0D2ApYXwvJXCDNkX23mduSZMmxeZ+6bS7AdxtHhPzNKDF7+Hot2AvQ5TKJBaoilOTpZUIQ=
+	t=1776366714; cv=none; b=bGWjKdXDrwT6uRKWQZkjL1AeTL74l7KkgFgE/Pc9zvyqr5MCf7Y2nnB0QG2ADBum4ZdK/QZ9pa/TUHVhhKsyDsSVeIxZpYmAr0C+dyrVWxBTXPKnz7YvhAUUSGnGOtEk2R2rfFmmzotjlrL0v6rs8lbTSCzrHFp0EopNj14Zk7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776366537; c=relaxed/simple;
-	bh=YWU4FbfDf7vMVTLH3P6trXk4SPp9pGvljjdWS7yKFlM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ut1yU9KKo9MagOHTOw+BQJVc8tEGTc0xUpQQuPxEPA3ytmZxQem5mNgIcfKntWZKearjLSNAxTBbvox6aYbYt40E4h9bh6N0QWnS3WMGjCIkpGHKQfnNsK2hDmAIWHUkC2SVpKu3DMfMMPpNUPuz/prYlCPV9Dw9mfyF1mLep1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JjU7JcBh; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c76b6abdb73so5825091a12.1
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 12:08:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776366535; x=1776971335; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tTMuhwzBxIhaiyIAasTcZNIFxBe8TdNJyeKGh3etW/M=;
-        b=JjU7JcBhihQv4pgc2ENDt1rqNnbmj1aMClJb+xG6gui7HstVPkG1rPdbptYztfXbFt
-         M4gGpygi3RF7siit//a9qxNp4nwZ4lJoU8+9EcXauhtp+wDopA3cxu719sm/Otc0HLYy
-         UdHv2dR0s9UpDqnncKFEqB9ILR3Dv0c+B+y3fbGUcUaCLy9jouh9sjDI9q4pF15byINp
-         0vwSqjAbUzweYTa7A7Y2mX9bLLEIeay8xjuXjKw2i6jKx8HRID6qy6AtQfsM67en+Tou
-         FuV0lvNnBKSocQsRvOH8gStWJmyO4cyXR60KJya+PEKFaySDGVo6kRWELBa7Xs7V8lB8
-         BKJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776366535; x=1776971335;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tTMuhwzBxIhaiyIAasTcZNIFxBe8TdNJyeKGh3etW/M=;
-        b=B74yWOKnHNMVM0gO7oyfewbUOFufkMwMFRC2fL5hT/p26kxMdKppjLYl2Pxxz33ZHH
-         5oVMtOs9ksJN35HYTBkA9QFo45sA99PSfX6JGbyknSrWAOpst4q2ftrYstQeV4QWfQQz
-         DefgsD0Y889WiQ7sbp4WYyTgdBKS79touZg3xa5CHWOiNB26ZQ/1EeHf1miKaL9u04WZ
-         LCifPDS4NOSlLNnqyefWwWizNhY8FAsdi6SzOgDKJyJOg1ubC8cIeO6i6gjasO/gH+6I
-         IPkCwxESmm/+WKJ7FOhwjKX1hLFt3stMtEnwl71wJ/5qpqWHsr2T4dBlvrbdK7piAQCC
-         ddvw==
-X-Forwarded-Encrypted: i=1; AFNElJ+X4U5iJ5FqIg40r5urzoKTR6tuoWuCGV727fmpnRuDZp9tflVDaiHZPBUvbuYPI3jRRrYgfrQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynJYq7lQewvMwB3Q7/s9T7ENM/sKvHcpEG6CLxvrBl194TMIOr
-	C2CqRzMsNTMfy0bfT1vCX6uTGwESpeakQMEJVCB82pg9oz+Eb9D383DE
-X-Gm-Gg: AeBDietUhr+iMY16RiituTjPUBqgLrn7Y94n1Td2cHuHNJFdBq0iQuAt3cna/jcgB3v
-	skTQIucUSvXu3MbYgQArz1WUlIdzeXj9oZHwK2H3QyDoKhukBnIbmj9a+jXVQ8PhyoQ423QBQwp
-	bmpssviyMW8Ob6UUWn1w7BdX/dM842fM7+fwwvrHb3VIAaU68T1PK7LaePAyHT+j4vHCu7Lvw1l
-	AqzRIkIJUsrsds//RGqYYxRZZBJDa3rP2YG7/Al5Fjc5E02ETDe2I2vAaPFBOXqMU+1LhjmUXlD
-	DiYGCIBRavpJpSfJCs9hLPijMVVRSoBzja1L/PIRwQ8HlsreY124f43AM4P0wO/H3kDwVCff8IS
-	dVJ9gpX9vxXXSSSouusMCmcbJy/39Npd6MBD3HKFOUk1nt3H14H5McIsFVWiE/ZzrbppNduwCEA
-	qHhW1gvLfMlw3aNOpEy0UqNeiI5RSmFomG607+LPr1m/QLzVQS80orQu8VgJXuKZtqImT5xKpaF
-	Wo3ZfrT91FRxMKD8c/uSlcbwvpuMqeW9cvP8WmiMeex
-X-Received: by 2002:a05:6a20:a12c:b0:398:8e5c:4a94 with SMTP id adf61e73a8af0-3a089303797mr213259637.54.1776366534579;
-        Thu, 16 Apr 2026 12:08:54 -0700 (PDT)
-Received: from visitorckw-work01.c.googlers.com.com (32.237.80.34.bc.googleusercontent.com. [34.80.237.32])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7957ece99asm4815137a12.4.2026.04.16.12.08.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 12:08:54 -0700 (PDT)
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: djakov@kernel.org
-Cc: gregkh@linuxfoundation.org,
-	marscheng@google.com,
-	wllee@google.com,
-	aarontian@google.com,
-	jserv@ccns.ncku.edu.tw,
-	eleanor15x@gmail.com,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] interconnect: Fix use after free in icc_get() and of_icc_get_by_index()
-Date: Thu, 16 Apr 2026 19:08:40 +0000
-Message-ID: <20260416190840.1753468-1-visitorckw@gmail.com>
-X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
+	s=arc-20240116; t=1776366714; c=relaxed/simple;
+	bh=B6xSAx8JSc/Bajp82iyFtpg6koqkgXux7LiVaC3vkKg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ge3STqyqX4MBMu7WU7u5HIXFqw/js2gy5aU0yoIb13Ms9dPnMXK01cMgd5O4GT6zrLLotu5/vlWqG2p0ryN34UUKDUwZXJfh069e106Hz2t8Z10UzhfuG9wpLqAmVFV/aKCdYa7pOx4ZveVutkTIotG4WYOQpFcXgh6gd/oXwMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=avrXiipw; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G89wLk1860612;
+	Thu, 16 Apr 2026 19:11:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=z9f2WoTgIfJ4Lt/PFrfw/gZW2lqfBvsWodpCT/WHv
+	kY=; b=avrXiipwGhKKmW39TcCPg30LkOG54f34muqRGm9PQKGD3U4qYiolw8S74
+	/k738qXbVJfx+lTJK2Q1yYZsIvx7F1ZLikPKddSDPwNdayFAwAUM4cNoAsYX5DtD
+	oNSUiH8jcfvUhUtuKGtA5Hb5+wVxXn1/hXaEXXpPjzNNLBAKUQcVc0akBIGLh4Rn
+	thZslDrb/jILDxPwh9KneWVRBKJiARvQMG7rSrpcnPKWYlTU1FC97enDc/aCjYJU
+	EI/OAh0fkOG0+VIhUz62GYPchdG4vrkoJFj4+Qw8aK5fVDAR7gJESRXvUNo650ix
+	uVlLj8tZl3LMYpgZfFZqL7rKFQ1Dg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89pp78q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 19:11:35 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63GF6lAJ015164;
+	Thu, 16 Apr 2026 19:11:35 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0msvfam-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 19:11:35 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63GJBW3W7078640
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Apr 2026 19:11:32 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 32CF35805C;
+	Thu, 16 Apr 2026 19:11:32 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A5E5C58058;
+	Thu, 16 Apr 2026 19:11:30 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.12.189])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Apr 2026 19:11:30 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, horms@kernel.org, bjking1@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        stable@vger.kernel.org, Mingming Cao <mmc@linux.ibm.com>,
+        Shaik Abdulla <shaik.abdulla1@ibm.com>,
+        Naveed Ahmed <naveedaus@in.ibm.com>
+Subject: [PATCH net] ibmveth: Disable GSO for packets with small MSS
+Date: Thu, 16 Apr 2026 12:11:26 -0700
+Message-Id: <20260416191126.95336-1-mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,116 +89,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: ioZ6CX6QVo8vsH9VSgrCPNanekD26vNx
+X-Proofpoint-ORIG-GUID: k_DCrsCbumqLIMI8Bp7BTxOvzEMclNFT
+X-Authority-Analysis: v=2.4 cv=WbE8rUhX c=1 sm=1 tr=0 ts=69e13468 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=13N5Qnvyu_7Mey2fMVwA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDE3OSBTYWx0ZWRfX/0y1W4SeUqxY
+ 51RRBnHeeKIcG81i5wocxedY6jBrgo9Eq2WgPnFZEHJKc+gf9KbJyxQ8Z6Pg3xXKcA/5WxcGoBu
+ BldGT2AeBY79mo2pccex8AyuIh7dFSmu4p1fJXb1VxWucqq/LHLI2hUIU8ASvH4KlW07SgqrYFQ
+ SNTkSepegJSMDSRvVqVj6fYLA21lKiqwX/lbuQfFSlMdYKzRYChCodN9okvq6YAMCgXyaL+rQZu
+ Z/rnurdgpRTKR9k1Pb4hx7xjMU4tO/jTepCJOMs8A2cqxRux43CPKWpVkPBt2ipD/RMatO0OhY/
+ vm/a2g0Z9/8tHOLznicT4Y7LnrlNMZ7IdwpjPy2oIo4PLgqjcVw5pf4BxGM6jGrjD+y/3++F3wC
+ TUtjY+9p/15t2NutPp2Bn/F2Lozu3h1vz7JbaQv82nEcqzgXEVOjRk8qXTy47YIk57F6Jyr4CSb
+ EdIS3DFDK2qRRnc3RGQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_03,2026-04-16_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 clxscore=1011
+ phishscore=0 impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160179
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,google.com,ccns.ncku.edu.tw,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238354-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238355-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[visitorckw@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mmc@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EE7D0413FC0
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 0DBB8414016
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In of_icc_get_by_index() and icc_get(), if the dynamic allocation for
-path->name fails via kasprintf(), the error handling path directly
-calls kfree(path) to free the path object and returns an error.
+Some physical adapters on Power systems do not support segmentation
+offload when the MSS is less than 224 bytes. Attempting to send such
+packets causes the adapter to freeze, stopping all traffic until
+manually reset.
 
-However, prior to this point, path_find() calls path_init(), which
-already links the path's requests into the req_list of the respective
-interconnect nodes via hlist_add_head(). Directly invoking kfree(path)
-leaves dangling pointers in the hlist. A subsequent call to icc_get()
-or icc_set_bw() will traverse or modify these corrupted lists, triggering
-a slab use afterfree.
+Implement ndo_features_check to disable GSO for packets with small MSS
+values. The network stack will perform software segmentation instead.
 
-KASAN report showing the vulnerability when reproducing via debugfs:
+The 224-byte minimum matches ibmvnic
+commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
+on GSO packets")
+which uses the same physical adapters in SEA configurations.
 
-  BUG: KASAN: slab-use-after-free in path_find+0x6f8/0xcfc
-  Write of size 8 at addr fff000000d43f748 by task sh/1
-  ...
-  Call trace:
-   kasan_report+0xac/0xfc
-   path_find+0x6f8/0xcfc
-   icc_get+0x148/0x380
-   icc_get_set+0xf8/0x2d0
-  ...
-  Freed by task 1:
-   kfree+0x1a0/0x4a4
-   icc_get+0x2cc/0x380
-   icc_get_set+0xf8/0x2d0
+Validated using iptables to force small MSS values. Without the fix,
+the adapter freezes. With the fix, packets are segmented in software
+and transmission succeeds.
 
-Fix this by replacing kfree(path) with the proper teardown function,
-icc_put(path), which safely removes the requests from the req_list using
-hlist_del() and drops the provider usage references before freeing the
-memory.
-
-Additionally, in icc_get(), ensure that the icc_lock mutex is released
-prior to calling icc_put(path) to avoid a deadlock, as icc_put()
-internally acquires the same lock.
-
-Fixes: 3791163602f7 ("interconnect: Handle memory allocation errors")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: Brian King <bjking1@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
 ---
-I discovered this bug while reviewing Krzysztof's patch [1]. 
-To verify my hypothesis, I injected an artificial kasprintf() failure
-into  the source code and wrote a minimal dummy icc provider module.
-This allowed  me to successfully trigger the use after free via the
-debugfs client and catch it with KASAN, confirming the issue.
+ drivers/net/ethernet/ibm/ibmveth.c | 20 ++++++++++++++++++++
+ drivers/net/ethernet/ibm/ibmveth.h |  1 +
+ 2 files changed, 21 insertions(+)
 
-[1]: https://lore.kernel.org/lkml/20260416130912.375013-2-krzysztof.kozlowski@oss.qualcomm.com/
-
- drivers/interconnect/core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
-index 8569b78a1851..e14280ced381 100644
---- a/drivers/interconnect/core.c
-+++ b/drivers/interconnect/core.c
-@@ -528,7 +528,7 @@ struct icc_path *of_icc_get_by_index(struct device *dev, int idx)
- 	path->name = kasprintf(GFP_KERNEL, "%s-%s",
- 			       src_data->node->name, dst_data->node->name);
- 	if (!path->name) {
--		kfree(path);
-+		icc_put(path);
- 		path = ERR_PTR(-ENOMEM);
- 	}
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 58cc3147afe2..7935c9384ef4 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1756,6 +1756,25 @@ static int ibmveth_set_mac_addr(struct net_device *dev, void *p)
+ 	return 0;
+ }
  
-@@ -626,8 +626,9 @@ struct icc_path *icc_get(struct device *dev, const char *src, const char *dst)
++static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
++						struct net_device *dev,
++						netdev_features_t features)
++{
++	/* Some physical adapters do not support segmentation offload with
++	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
++	 */
++	if (skb_is_gso(skb)) {
++		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
++			netdev_warn_once(dev,
++					 "MSS %u too small for LSO, disabling GSO\n",
++					 skb_shinfo(skb)->gso_size);
++			features &= ~NETIF_F_GSO_MASK;
++		}
++	}
++
++	return features;
++}
++
+ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_open		= ibmveth_open,
+ 	.ndo_stop		= ibmveth_close,
+@@ -1767,6 +1786,7 @@ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_set_features	= ibmveth_set_features,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
++	.ndo_features_check	= ibmveth_features_check,
+ #ifdef CONFIG_NET_POLL_CONTROLLER
+ 	.ndo_poll_controller	= ibmveth_poll_controller,
+ #endif
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index 068f99df133e..d87713668ed3 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -37,6 +37,7 @@
+ #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
+ #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
  
- 	path->name = kasprintf(GFP_KERNEL, "%s-%s", src_node->name, dst_node->name);
- 	if (!path->name) {
--		kfree(path);
--		path = ERR_PTR(-ENOMEM);
-+		mutex_unlock(&icc_lock);
-+		icc_put(path);
-+		return ERR_PTR(-ENOMEM);
- 	}
- out:
- 	mutex_unlock(&icc_lock);
++#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
+ /* hcall macros */
+ #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
+   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
 -- 
-2.54.0.rc1.555.g9c883467ad-goog
+2.39.3 (Apple Git-146)
 
 
