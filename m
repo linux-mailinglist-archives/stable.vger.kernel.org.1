@@ -1,195 +1,176 @@
-Return-Path: <stable+bounces-238350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIn6JG0s4WnbqAAAu9opvQ
-	(envelope-from <stable+bounces-238350-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:37:33 +0200
+	id yORvLvAt4WmQqAAAu9opvQ
+	(envelope-from <stable+bounces-238351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:44:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90303413CD7
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:37:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 567B9413D6F
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AAD0830106A3
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:36:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 686EF3016497
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DFA324B33;
-	Thu, 16 Apr 2026 18:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5030342C80;
+	Thu, 16 Apr 2026 18:43:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B95D1DC198;
-	Thu, 16 Apr 2026 18:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3022233F5A0;
+	Thu, 16 Apr 2026 18:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776364564; cv=none; b=oKGXJwRjjCGLdM+WUkqk+c8mseim7fgwqGj+QrPecOg2nYe7QuW7b9d3SzvL1gH7/QdAWfiHC7/x+1gtTho0UBYlf4OKH/ll0c6XtGTnmmUDPdPCY19mTPLfguG+51im6M460xMu/6/DB0B/vF861/HSvV/u5Vjat3M6a7S95XE=
+	t=1776365037; cv=none; b=NUWcoNPrakJnWYzDMMfET6/O0xbeowqUj37kpFRokrDI1lAY1euexW5p5xvqnD+HYbZEsrOsHgIPYN0CS6mj/Rsyynicz0e9f6IP1vCD6NywFQ4Q60zZu74/n83FbcJUW/M1/U2B2Jz/vm6AuYr1eqnPXh5weIitRfI8kGrDtII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776364564; c=relaxed/simple;
-	bh=jYDrpKmgdrQiS3s46ncnw+0OXCF7//qblpw07yVDEsM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pHMWAgN5QF9jpqSxHoYnR1Xq6HGwMjrFz5audc3QRlgBmdq8D/cltbHXbtCTjbYSuX+4JHar4X9fq1uLUsRsUsK3kJkVYbSb/y/1XuvKe8KA1zAlVlikSj9N2sF7fvFR6cGwR6AC5MT6zHxvXWJFm2uZVnNaYz7bbpo8ELKPQCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1009)
-	id CF89020B7128; Thu, 16 Apr 2026 11:35:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CF89020B7128
-From: Dexuan Cui <decui@microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mhklinux@outlook.com,
-	matthew.ruffell@canonical.com,
-	johansen@templeofstupid.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH] Drivers: hv: vmbus: Improve the logc of reserving fb_mmio on Gen2 VMs
-Date: Thu, 16 Apr 2026 11:35:29 -0700
-Message-ID: <20260416183529.838321-1-decui@microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1776365037; c=relaxed/simple;
+	bh=e1liLybHqSu1gNwaO4To4rUv9vWmN8tQlunb6Ws8OmU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=t00pCd/JDXpXCAjZRPbRvIHGmCPrtNasBM0rpb+Me9/2QfkVLBNgWvYMaub5XL99hscxGndWQRoncnq7RbI5HZSX+aEM88+4qh4/JeE/1B+ctR0F1NhL0BoFv4HaT5TBIvbwtdTWa5Ci5n0gYrQclzbsa5Gk/0qc1dQtbMYeAXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wDRgw-005EZS-0S;
+	Thu, 16 Apr 2026 18:43:53 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wDRgu-000000043iN-25Ee;
+	Thu, 16 Apr 2026 20:43:52 +0200
+Message-ID: <6def01a404f3b10ac374c011000637c86598453b.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 311/491] dmaengine: xilinx: xilinx_dma: Fix
+ unmasked residue subtraction
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Marek Vasut <marex@nabladev.com>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Vinod Koul <vkoul@kernel.org>, Sasha Levin
+	 <sashal@kernel.org>
+Date: Thu, 16 Apr 2026 20:43:47 +0200
+In-Reply-To: <8c909ddd-c8ff-43a1-987f-1a348917d75a@nabladev.com>
+References: <20260413155819.042779211@linuxfoundation.org>
+	 <20260413155830.683657586@linuxfoundation.org>
+	 <e4bf9ba9ceba4f2e23483b4aa0ebcff8251c0b73.camel@decadent.org.uk>
+	 <8c909ddd-c8ff-43a1-987f-1a348917d75a@nabladev.com>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-5LxiYOwZjQcEA/tx7cmC"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.04 / 15.00];
-	DMARC_POLICY_REJECT(2.00)[microsoft.com : SPF not aligned (relaxed), No valid DKIM,reject];
-	MID_CONTAINS_FROM(1.00)[];
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-238351-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[microsoft.com,kernel.org,vger.kernel.org,outlook.com,canonical.com,templeofstupid.com];
-	TAGGED_FROM(0.00)[bounces-238350-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FROM_NEQ_ENVFROM(0.00)[decui@microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[decadent.org.uk];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.980];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 90303413CD7
+	NEURAL_HAM(-0.00)[-0.999];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 567B9413D6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If vmbus_reserve_fb() in the kdump kernel fails to properly reserve the
-framebuffer MMIO range due to a Gen2 VM's screen.lfb_base being zero [1],
-there is an MMIO conflict between the drivers hyperv_drm and pci-hyperv.
-This is especially an issue if pci-hyperv is built-in and hyperv_drm is
-built as a module. Consequently, the kdump kernel fails to detect PCI
-devices via pci-hyperv, and may fail to mount the root file system,
-which may reside in a NVMe disk.
 
-On Gen2 VMs, if the screen.lfb_base is 0 in the kdump kernel, fall
-back to the low MMIO base, which should be equal to the framebuffer
-MMIO base (Tested on x64 Windows Server 2016, and on x64 and ARM64 Windows
-Server 2025 and on Azure) [2]. In the first kernel, screen.lfb_base
-is not 0; if the user specifies a high resolution, it's not enough to
-only reserve 8MB: in this case, reserve half of the space below 4GB, but
-cap the reservation to 128MB, which is the required framebuffer size of
-the highest resolution 7680*4320 supported by Hyper-V.
+--=-5LxiYOwZjQcEA/tx7cmC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add the cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) check, because a CoCo
-VM (i.e. Confidential VM) on Hyper-V doesn't have any framebuffer
-device, so there is no need to reserve any MMIO for it.
+On Thu, 2026-04-16 at 20:20 +0200, Marek Vasut wrote:
+> On 4/16/26 7:58 PM, Ben Hutchings wrote:
+> > On Mon, 2026-04-13 at 17:59 +0200, Greg Kroah-Hartman wrote:
+> > > 5.10-stable review patch.  If anyone has any objections, please let m=
+e know.
+> > >=20
+> > > ------------------
+> > >=20
+> > > From: Marek Vasut <marex@nabladev.com>
+> > >=20
+> > > [ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
+> > >=20
+> > > The segment .control and .status fields both contain top bits which a=
+re
+> > > not part of the buffer size, the buffer size is located only in the b=
+ottom
+> > > max_buffer_len bits. To avoid interference from those top bits, mask =
+out
+> > > the size using max_buffer_len first, and only then subtract the value=
+s.
+> >=20
+> > This change is harmless, but the problem it claims to fix does not
+> > exist.
+>=20
+> The current code subtracts two independently read values which both=20
+> contain status/control MSbits and the actual value LSbits. Depending on=
+=20
+> the MSbits being identical in both separately read values is unsafe, so=
+=20
+> the change in this patch masks out the MSbits first and then does the=20
+> subtraction on the actual value LSbits only, which is safe.
+>=20
+> Why do you think the original unsafe behavior can not trigger a failure?
 
-While at it, fix the comparison "end > VTPM_BASE_ADDRESS" by changing
-the > to >=. Here the 'end' is an inclusive end (typically, it's
-0xFFFF_FFFF).
+The old code masked out the MSbits after subtraction.  So, there was no
+dependency on their being equal before substraction.  Since borrows
+propagate to the left, not the right, the MSbits could not "interfere"
+with the LSbits.
 
-[1] https://lore.kernel.org/all/SA1PR21MB692176C1BC53BFC9EAE5CF8EBF51A@SA1PR21MB6921.namprd21.prod.outlook.com/
-[2] https://lore.kernel.org/all/SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com/
+If you still aren't convinced, please try to find some example values
+for which the result would actually change.
 
-Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
-CC: stable@vger.kernel.org
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
----
- drivers/hv/vmbus_drv.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+Ben.
 
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index f0d0803d1e16..a0b34f9e426a 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -37,6 +37,7 @@
- #include <linux/dma-map-ops.h>
- #include <linux/pci.h>
- #include <linux/export.h>
-+#include <linux/cc_platform.h>
- #include <clocksource/hyperv_timer.h>
- #include <asm/mshyperv.h>
- #include "hyperv_vmbus.h"
-@@ -2327,8 +2328,8 @@ static acpi_status vmbus_walk_resources(struct acpi_resource *res, void *ctx)
- 		return AE_NO_MEMORY;
- 
- 	/* If this range overlaps the virtual TPM, truncate it. */
--	if (end > VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
--		end = VTPM_BASE_ADDRESS;
-+	if (end >= VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
-+		end = VTPM_BASE_ADDRESS - 1;
- 
- 	new_res->name = "hyperv mmio";
- 	new_res->flags = IORESOURCE_MEM;
-@@ -2395,13 +2396,36 @@ static void vmbus_mmio_remove(void)
- static void __maybe_unused vmbus_reserve_fb(void)
- {
- 	resource_size_t start = 0, size;
-+	resource_size_t low_mmio_base;
- 	struct pci_dev *pdev;
- 
-+	/* Hyper-V CoCo guests do not have a framebuffer device. */
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		return;
-+
- 	if (efi_enabled(EFI_BOOT)) {
- 		/* Gen2 VM: get FB base from EFI framebuffer */
- 		if (IS_ENABLED(CONFIG_SYSFB)) {
- 			start = sysfb_primary_display.screen.lfb_base;
- 			size = max_t(__u32, sysfb_primary_display.screen.lfb_size, 0x800000);
-+
-+			low_mmio_base = hyperv_mmio->start;
-+			if (!low_mmio_base || low_mmio_base >= SZ_4G ||
-+			    (start && start < low_mmio_base)) {
-+				pr_warn("Unexpected low mmio base 0x%pa\n", &low_mmio_base);
-+			} else {
-+				/*
-+				 * If the kdump kernel's lfb_base is 0,
-+				 * fall back to the low mmio base.
-+				 */
-+				if (!start)
-+					start = low_mmio_base;
-+				/*
-+				 * Reserve half of the space below 4GB for high
-+				 * resolutions, but cap the reservation to 128MB.
-+				 */
-+				size = min((SZ_4G - start) / 2, SZ_128M);
-+			}
- 		}
- 	} else {
- 		/* Gen1 VM: get FB base from PCI */
-@@ -2433,6 +2457,8 @@ static void __maybe_unused vmbus_reserve_fb(void)
- 	 */
- 	for (; !fb_mmio && (size >= 0x100000); size >>= 1)
- 		fb_mmio = __request_region(hyperv_mmio, start, size, fb_mmio_name, 0);
-+
-+	pr_info("hv_mmio=%pR,%pR fb=%pR\n", hyperv_mmio, hyperv_mmio->sibling, fb_mmio);
- }
- 
- /**
--- 
-2.34.1
+--=20
+Ben Hutchings
+It is easier to change the specification to fit the program
+than vice versa.
 
+--=-5LxiYOwZjQcEA/tx7cmC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnhLeMACgkQ57/I7JWG
+EQnjvBAAwS0GP7zvEutxbz+85T15fpWSzZmt8QYwfJvpePLbaICxvTjpCVmVP04Z
+LyrLC+YfnQMJZfZm3xe4H8zFYtEsNa6+30v5dN1MINqxJmFUqbSlEm5gIMN925wk
+F/caUB7rNnU0t4YbsmzyH6+X3fc3OH9hk66QZOPWnFFNmSWbu3YAVDN/OMQlLLZf
+Y+ir7cZn/dIWGpMOsJujNf3/yiDrY3ob4qFP4IWXVsTJS2o1sGH7v/VK0Y1uYwzW
+tjwaX2V7I456GXtgQfo73VmmTx8iQXHK6ky5y4RdKuhfUrbBlX4yQTGyQmAgl0E0
+DfSxeBST9NhahRmrcPH2+mxM8ZXzFCf+DhXuX14EB1rW1oKWB++5pQ4q7a6o0tx6
+wofv9WtOgmENrCBBvzuBc9JynY1BPgiBttK1zvsbb/d5Tfz9+L+93OCjQISA5fP+
+z2SvB6HFFqvZqcYR7nAjWGJ1RxbhGA0mLz6TNPW8EDR/Pj7tI7hrBUKKgOpNk+4I
+BfhuK2SCqH1f1EWXSSOFhF0jRwC5bSZdMIYiubgkv9xzf5REgJrdmV3oU53yuGLe
+xNHkbAeYMSiWYqBmdJTGr7Rg4aXYvj3tGatd5zHrWHVyqNYhl9q+ItTmWv9/buRP
+IF/CggwFVWGJ3V0eW9rxWhA9BGXxrq+zBMtKRCwuaJKXaNhyWE4=
+=l9SL
+-----END PGP SIGNATURE-----
+
+--=-5LxiYOwZjQcEA/tx7cmC--
 
