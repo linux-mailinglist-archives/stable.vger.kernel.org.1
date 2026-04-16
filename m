@@ -1,92 +1,92 @@
-Return-Path: <stable+bounces-238334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMidNfYR4WnoogAAu9opvQ
-	(envelope-from <stable+bounces-238334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:44:38 +0200
+	id +IDCAGwS4WnoogAAu9opvQ
+	(envelope-from <stable+bounces-238335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:46:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF10411E67
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:44:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69411411F2B
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95AFF3016B36
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 16:44:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5636F3063C50
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 16:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825152E06E4;
-	Thu, 16 Apr 2026 16:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B5F317163;
+	Thu, 16 Apr 2026 16:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dgSrISub"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxPv6n5w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B043B303A37
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 16:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D18026159E
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 16:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776357873; cv=none; b=ItMf3K4k3Plp31DCSzArSJFbtTp6eOKmt/1btkNrFEzS5WgS0P0+i79h3B1ViwVLwW0LohNf4qwh3XvQnicJdiDchXSyJvNNNaljB3I9LCkaarJnA17t1u+X9k7pyCAREOhQBF7Pqh4W0PdGCxv7/jKyZifkPDAIscovSGkCiYo=
+	t=1776357991; cv=none; b=FQvE7pb37pCEbnQ6aYhzGlyxyauJjTZwXPJUfau5/wfSvLyrXdlYGvLseUnkw0raqSo8Ihe86SJSyfF3s4QZ3NvktnFJfoUsaQTeodBqiRb0t0kK/DEQdOArU3u5jzksS/Hcc4gmHh3oiCFwmUuPHU5nRTi+f0bSTP6YaJCck1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776357873; c=relaxed/simple;
-	bh=YUU3+xjeLdsqtZTdFxdFBIaeAlTtFbDXLvp82LEvJPA=;
+	s=arc-20240116; t=1776357991; c=relaxed/simple;
+	bh=rem8kgb3AqU5fIvtvZXdN3Z05fPs8+9yW+ACN+9nAGw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d/1yXYWZ7KsRZPHn2PnOvx40EPN6Xl3NALonbdD71Q3WzHAEwiMq2i5foatz3KWaqCeeW5ufmQME7heHRWgm9PKa9/o7dQJDAes0h9QZ5QBz7FVy2+g6bFCBRBmYXjQ0fBkvEl9qLPPcmjmK2/MRmkVrqp41PIdO852DD1zRyAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dgSrISub; arc=none smtp.client-ip=209.85.128.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=n0TnFpUMDspXHjs/xVyoH7z0WimWEbWcKWgvHPOxkI0FKgdzCyaJCgZMp/2jjt1ZwP7V9Zkq6lRvy3v9FI2PfFm1GgHKSMKfxpxlsOVQHuw1bkmyvSNdGUuLPpbSioxnTD6ourDk5Th6Z05MjtHQzUDJdCi7e8Z7KEikMo72W9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxPv6n5w; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b150559bso65172285e9.1
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:44:31 -0700 (PDT)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488af96f6b2so108673535e9.0
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:46:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776357870; x=1776962670; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776357987; x=1776962787; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g9D1OzvPa4FIenlg0nAZ/POcm7VOaJA4WMHxYv2Zv/c=;
-        b=dgSrISubAy5GM2nXHfeBR/ZEBYvjaOpaZtbVCIlM6QpoEnG39/6eOy/FJF1HsKQHJT
-         aIq40L5ZwlqExQsRfyNjiQwZsLnXmwUVm1ut9HVLzALuFCxr9WVt42+D8wW+ArmUrzzM
-         6wBcDb/6m3CZPm5UNlHqrFQqoHpA3jGcdwZxR+pM3YJFHycYj26FZWxUjhn3/p9j0A6p
-         evLX63cDK7DfO9L0lxvq1K1T5LMnfm5Hy/yqxOsEzFKNY8AKM7nL9BV+QXcTCsMMLptr
-         PEnX+nAT1qLLYQl2pMC+CM36mKaPJ3B/1ne3VOP+AA2sQpZfhNstVe0ayW95PnQpT/5U
-         /NwQ==
+        bh=yx+tk5XR/nKhfzFOweyHScYa0wnstAD5I5LHNHccNpo=;
+        b=hxPv6n5wqWuXLcfu4tXLaoESOCF2mcOdesU87WFYkK4oKOL1NCDfAjLibtz5cu/Ai4
+         yGMEkLIlfEVm+HnHPumKzl419F4udciMlHZiC6S/DV4Az1tZaNth3CyVqc5HjfkwX3WB
+         OEwVgE9OxEOkti/IrMc9mrqhXejJsYxTpvap06WkNsBOQi845778bR69UnCOaNK1J5MR
+         kxGKa51tAhohvKBPhWDqi7NRW8FoxI+4/X7O5AB+0nByvj8MZm1lDJLGK2mgtrvWoW4d
+         8z3g9r14Nlx/RG6TuN/WJR5KYXpSm4k6+powEPchkSAGK2AZz/kT0sVGVKv7labPo6+m
+         K7DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776357870; x=1776962670;
+        d=1e100.net; s=20251104; t=1776357987; x=1776962787;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g9D1OzvPa4FIenlg0nAZ/POcm7VOaJA4WMHxYv2Zv/c=;
-        b=mHlBo6X5OnyahYj0JVE1l6/cvFP/OvXb24w2IljT2BC4riCuSWoeYo/hl32tNyuiqY
-         Vg7349laxzgfh7bghsbN4/hlHDtDmmHU5h/cXlULzuiBhTakj3iZc5TbcT4eUPZ8tcGb
-         aqrSmASE9WVZ54Bmq6K6Wn4nCienR6EdHgRRxYYGutK7X785fhzGcEcZ4skxgZTYuMUq
-         Q3eLCLbvZ+ENad/2UyVx0QLW5ouCUX85AS08UQ2eBW/etTUP6tEy0ZyXLDyw1knrgdJ+
-         6JboyMP/So4u3TTFOIZYQhBxFe9FkmN4HfViUnCZ2IUk4Q1RgtO8qndUijw5iKayp4d4
-         ciKg==
-X-Forwarded-Encrypted: i=1; AFNElJ/ZuHKvNGUcuwIXboYwqccHhnWxJPZetyYmDtuG7SfxK0D2X7A5YJu34xMqQpyWIhJf7kYXH/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqVgcevHBzZEZIwCph8UGumbclYD27L3IZG/Bg2zoNHCLRJNVv
-	Zg78zQNSHl8wBReOWrCPP2ODkqKyOnpudPILNwE2D1rTjd9zDQMMU22O
-X-Gm-Gg: AeBDievZL2hUib4pBKpcCy5DWROeP4l9gNEU7UdDDNN6P5QzSZLUDcC8GMOQbcneQJx
-	HfD2mOj4L6J6P4EYDdU+bXPUrLXjl6PQCfLo/0WcsEi5hM1kELoiX34GY6WdizEHQ10WnrNE34v
-	U77sxwNRPxFdLfUDjRXx8gMJG3zFTs4kH8tPwtE4RPKorqt2SkSD9DNOOe+o1lrPs4SJ42rkyik
-	0dIZrv0VszBjujxoKdfcqcbxxDLLCjgGCoW/jLcxU3p4xndDURpiO9/90i/vM/+OmTKf2ykUE5F
-	Mrr3kxNn03zitjt/Tc97RTuRbg7levwGdUa/ovVnHnqrXFMfA0MDqmtiTRF/r6SGaMaFYx7p9he
-	4SgMTqQ6W1C+y3lYwQS/PT20mQWMPgTRNC6Uyg1HqphKC35vVaZpNY54sx3FPMAniHgW1Z6w4jL
-	D6FyyMeoJsSZ6fLMH4Nws=
-X-Received: by 2002:a05:600c:681:b0:488:e192:6fbd with SMTP id 5b1f17b1804b1-488e192710cmr170540595e9.30.1776357870042;
-        Thu, 16 Apr 2026 09:44:30 -0700 (PDT)
+        bh=yx+tk5XR/nKhfzFOweyHScYa0wnstAD5I5LHNHccNpo=;
+        b=lWB9Vh8PHaCFDInGBw8hahIhQnnLTrcgTEEeQjTO50pur/oWY9EhRWqT2OhRiWQ1vm
+         cU/bZl9jxjzO1NmPoqh8EmQlhWXousTeWL9M6mnkRIi1xBHloodB9LEbe9TNL/J6tmpM
+         8z1OawCOQSz6d7DMO+a6EqxJ6Yvr3iOd5CkeBxsQeufxxxe1D5qz1r+eRn6QAdUF7Wng
+         cDa0w3Sok6Zu1niXsmYPxZ4AuWHWhIA2Q/r0wIwQu7deTYGlYj1Nbl7OmLxF8dlvDPnq
+         4yTjRYEtWzQEYEUV92a2ShQoC9Qui4NHhD7aXpyAYw5tLdGPtCSGT5PE1FZ4yM6QARL4
+         shCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ//dnjHEi0ysi1PwsTt0/ZcJzg/9cDwjXvtpjnh3D967RUvZHjHyvPV4Tp59CYGb/EcvC86hMc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKTbzwMpf37Ep1EnJIorzT24bxCVluwvh06/Hkv2oLOubYygsU
+	CJBpYQsbqNScN86+AvrHZEmV6WrDBkDW+8jIizNZq1Il9CL3ba7wfVY7
+X-Gm-Gg: AeBDietBJE8Ptw603AaKWRxH4PTFzalaS/MmjpCLOSN5G/drIacJFuE32yuTfPiA4r+
+	J81NvBraCjuXcPGOXI8rT+YP3w4PurRDeeAk5/oEv9GMFaJbEqNkn8p4SsOgjFYj73xf5QquM1K
+	/xYffnqDQn55jL7tHSl9yEVcjqhP6jzhOibbsUmz8SNs2kJVfSlnRyh8LuI19pBWUmqFp1HMKid
+	fh7KiIZ9HG+M9/Rv87989IvGcC7p6G43QN1sMXLTKx/qVShech56nu7mTo3EA0m8tfUIJVYHh89
+	WSf4ca1/h8zK7ZTM63V5DPz4X9EekZBVzmccn+blscVNlLRLfRJAAQUnuFSsuffyJlPWhnXp7rb
+	zuTTJtUv/hgtoI3kHQH5VhBRANrVArt7hEDalVaBOe+B3EzhFAL98wsRP1+0xlDnrpgVg9kqoOh
+	58QPhiONnXcHp+xVzgrNI=
+X-Received: by 2002:a05:600c:4504:b0:483:8062:b43 with SMTP id 5b1f17b1804b1-488d68684fdmr378438015e9.19.1776357987380;
+        Thu, 16 Apr 2026 09:46:27 -0700 (PDT)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f585cefdsm68242275e9.14.2026.04.16.09.44.28
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f581b9fbsm63217285e9.5.2026.04.16.09.46.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 09:44:29 -0700 (PDT)
-Date: Thu, 16 Apr 2026 19:44:26 +0300
+        Thu, 16 Apr 2026 09:46:26 -0700 (PDT)
+Date: Thu, 16 Apr 2026 19:46:23 +0300
 From: Dan Carpenter <error27@gmail.com>
 To: Delene Tchio Romuald <delenetchior1@gmail.com>
 Cc: gregkh@linuxfoundation.org, dan.carpenter@linaro.org,
 	luka.gejak@linux.dev, hansg@kernel.org,
 	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] staging: rtl8723bs: fix out-of-bounds reads in IE
- parsing functions
-Message-ID: <aeER6sBPtdGneLuY@stanley.mountain>
+Subject: Re: [PATCH v4 5/5] staging: rtl8723bs: fix negative length in WEP
+ decryption
+Message-ID: <aeESXxJwPm95vcWk@stanley.mountain>
 References: <20260415185501.440492-1-delenetchior1@gmail.com>
- <20260415185501.440492-5-delenetchior1@gmail.com>
+ <20260415185501.440492-6-delenetchior1@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,16 +95,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260415185501.440492-5-delenetchior1@gmail.com>
+In-Reply-To: <20260415185501.440492-6-delenetchior1@gmail.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238334-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238335-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -124,28 +124,29 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,get_maintainer.pl:url,stanley.mountain:mid,linux.dev:email]
-X-Rspamd-Queue-Id: BEF10411E67
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,stanley.mountain:mid,get_maintainer.pl:url]
+X-Rspamd-Queue-Id: 69411411F2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 07:55:00PM +0100, Delene Tchio Romuald wrote:
-> rtw_get_wapi_ie(), rtw_get_sec_ie() and rtw_get_wps_ie() walk a
-> buffer of Information Elements using the TLV length field without
-> first verifying that the length byte itself is inside the buffer,
-> and without verifying that the element's declared length fits
-> inside the remaining buffer. Both conditions can be reached with
-> crafted input, causing reads past the end of the buffer.
+On Wed, Apr 15, 2026 at 07:55:01PM +0100, Delene Tchio Romuald wrote:
+> In rtw_wep_decrypt(), the payload length is computed as:
 > 
-> An attacker within WiFi radio range can exploit this by sending
-> crafted beacon or probe-response frames carrying truncated or
-> oversized IEs. No authentication is required.
+>     length = frame->len - prxattrib->hdrlen - prxattrib->iv_len;
 > 
-> Ensure the length byte is inside the buffer (cnt + 1 < in_len)
-> and break out of the loop if the declared element length would
-> read past in_len.
+> All operands are unsigned. If the frame is shorter than the sum of
+> the header length and the IV length, this subtraction wraps around
+> and length becomes a huge unsigned value. That value is then used
+> to drive an arc4_crypt() call that reads and writes past the end
+> of the receive buffer.
 > 
-> Found by reviewing bounds checks in IE walkers.
+> An attacker within WiFi radio range can exploit this by sending a
+> crafted short WEP-encrypted frame. No authentication is required.
+> 
+> Validate that the frame is large enough to contain a WEP payload
+> before computing length.
+> 
+> Found by reviewing length arithmetic in the WEP decrypt path.
 > Not tested on hardware.
 > 
 > Fixes: 554c0a3abf216 ("staging: Add rtl8723bs sdio wifi driver")
@@ -160,57 +161,24 @@ On Wed, Apr 15, 2026 at 07:55:00PM +0100, Delene Tchio Romuald wrote:
 > v2: rebased on staging-next (v1 was based on v7.0-rc6 and did not
 >     apply).
 > 
->  drivers/staging/rtl8723bs/core/rtw_ieee80211.c | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
+>  drivers/staging/rtl8723bs/core/rtw_security.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-> index 72b7f731dd471..e0fed3f42de0c 100644
-> --- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-> +++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-> @@ -582,9 +582,12 @@ int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len)
->  
->  	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
->  
-> -	while (cnt < in_len) {
-> +	while (cnt + 1 < in_len) {
->  		authmode = in_ie[cnt];
->  
-> +		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-> +			break;
-
-It's a pity this function doesn't return negative error codes.
-
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_security.c b/drivers/staging/rtl8723bs/core/rtw_security.c
+> index a00504ff29109..f3bc2240749a4 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_security.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_security.c
+> @@ -113,6 +113,12 @@ void rtw_wep_decrypt(struct adapter  *padapter, u8 *precvframe)
+>  		memcpy(&wepkey[0], iv, 3);
+>  		/* memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0], keylength); */
+>  		memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[keyindex].skey[0], keylength);
 > +
->  		if (authmode == WLAN_EID_BSS_AC_ACCESS_DELAY &&
->  		    (!memcmp(&in_ie[cnt + 6], wapi_oui1, 4) ||
->  		     !memcmp(&in_ie[cnt + 6], wapi_oui2, 4))) {
-                             ^^^^^^^^^^^^^^
-here we are assuming the in_len is at least "cnt + 6 + 4" so we need
-something like:
+> +		/* Ensure the frame is long enough for WEP decryption */
+> +		if (((union recv_frame *)precvframe)->u.hdr.len <=
+> +		    prxattrib->hdrlen + prxattrib->iv_len)
+> +			return;
 
-		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-			break;
-
-		if (authmode == WLAN_EID_BSS_AC_ACCESS_DELAY) {
-			if (cnt + 10 > in_len)
-				break;
-			if (!memcmp(&in_ie[cnt + 6], wapi_oui1, 4) || ...
-
-> @@ -615,9 +618,12 @@ void rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie
->  
->  	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
->  
-> -	while (cnt < in_len) {
-> +	while (cnt + 1 < in_len) {
->  		authmode = in_ie[cnt];
->  
-> +		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-> +			break;
-> +
->  		if ((authmode == WLAN_EID_VENDOR_SPECIFIC) &&
->  		    (!memcmp(&in_ie[cnt + 2], &wpa_oui[0], 4))) {
-
-Same in the other places as well.
+LGTM.  Thanks!
 
 regards,
 dan carpenter
