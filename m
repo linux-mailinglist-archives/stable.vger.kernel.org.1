@@ -1,206 +1,181 @@
-Return-Path: <stable+bounces-238278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJJPE/Kl4GkEkgAAu9opvQ
-	(envelope-from <stable+bounces-238278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:03:46 +0200
+	id CA9PDb+n4GlZkgAAu9opvQ
+	(envelope-from <stable+bounces-238279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:11:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A1E40BF65
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:03:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB4240C067
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8957A3020843
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:03:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0AAAB3009828
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C88634DCC7;
-	Thu, 16 Apr 2026 09:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A459339098D;
+	Thu, 16 Apr 2026 09:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHNGJ4MA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fX/fSD8n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D7E31E832
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776330189; cv=pass; b=GIzL/r96M31bj7dVXK6lTC1kDDo/P/1uEExTN1WGx9nI2Gk3/fVV6hDX7u8h5K81SrHasrug3c4vwfL4HRM08QBbcO1vDoajCNSkrONLT0z1lUFi98L57KbwYPeKJTiW512ZaPkDOQnH6iCJ0dPeghlvm09yQpeBmd79zC8FTnM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776330189; c=relaxed/simple;
-	bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=G4Zo3UeSICyh+KYdfWPdwueNquyaTBPRGyIE4YWcBZZ+5RoFB93EugPvTN6CD8U8xjpzS2lTVqACZyXiXG/tIboVYqrKfmy0gdfrbsdz8HQhlzblZOIer3XmVLQxpCxY2otp0fo7Qk/TmvpH5iMyd8tuHxk3JGy0DSnLQH+O2Ts=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHNGJ4MA; arc=pass smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2d832f2f44cso5384937eec.0
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 02:03:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776330187; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UFFZU7cSeXm2/fmLQBztI3wLnLSUmtkfT5PySb44RE5YkcjxUTR4omB9qy8STzTVCB
-         /ZikQWhZBJV29t41vDEfAEVvd20PJltUd2nvEiwrr8Xt/SUCHcvIq0RGH4a5o3ZBUg56
-         HXhq2XKjK0f8tjo/stUukd52PPiX1ixxhDdqHbPVuU5i0TmHZo5FdDpfLplZePM54dWL
-         C7yMZsMiljbOxCe/vQhkCbBy0zFn2XXgzkxyeRvdgWl+pAAGGAw6lzFdES5sJq+PDbUe
-         OCzvoEOVaFX8AJQOlfJrAPAGqOAchSLjZ4U5i3eEgDpI4Cwtz9ES46qkSP26CKoZhFEN
-         h8ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-        fh=pEvcMzxk490MIWkCVLc+pCHCny4PgRe8gl+6oq0rH9c=;
-        b=O4u14XnAyLIZLhoSZukxxVQ/abEbd3c/5uig0Gn/wN2U8aLNi1hwk4n55uNc+WV/0a
-         jsg8TW44pMIS0SMhoyponBbuX1YyocMt4okKnslR61NcyWidtOzV4gPDyvQ+8in7kSx+
-         r582gPb57j0zRcOc5QNFSCbsYr8Cmkf3O6o8+SOTj+oKQbPw5t/8hNxpTiY/s0VVyeVS
-         GPqor8oQvhC+iXAzSZN7y/0Z9NekvcFCdlhhjiWdNW3WLMEOpYcJf7QlgocFjwGVal8/
-         RRqkzXsNpl6VHuEbnLJZoHisEUyHOnNXNqrqOfG81fDHu6NyhKAzwHveRtqwd31E8lmI
-         cwnA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776330187; x=1776934987; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-        b=bHNGJ4MAobeVkvI8QKZfhRPNM8Md+smviMi6qf83oZnnsl91sLyuQCdvWhuynv7RI7
-         abVgG+9opD3zaei/pvjzkOmkyPOXYygy3bvWfeSnWvlgHkrgwtccxUoUM6TTImTeCf6r
-         zIh7GH5x5T6wJNzzre7sZxuEp3sga/t+seV5EG0KQWwOU4qhA3SQ15pJZHVaj84AExdn
-         lbuLFVIVg3lzuh3y/7kTv0Sypv9vbUG1RdQt9jsDRzai/l3OPONe6A4kdoWrbdoZAWng
-         p5vYTgD/76dy0Whf4wNZOZWHWCV4rWq2ZLpG8zvjQRLEeg79QPEocIjUwOusWOVUuoRp
-         uriQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776330187; x=1776934987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-        b=a1kfuf+i/rhqrDeyAfu9kbsSDqHYT0l8DGqYaj7iw6JdlhHbPEF7y8OS53QBMZ7+jL
-         EFGwTB65SA31Nbu/7BLsAnwTHChJSubhkSlOtVOBQkrtxRLi0gPNcL03DgCIgeoOFdZa
-         vq0OscKaAOHnD0jKKoxAwTbgZAnGL+DOCpyzwiXq7vlNhAAGY/XZdeyBTEPZrI7PnJrV
-         y/dYdpiwMvHwvFMnkQR0W+/CNrwyg/+m7yGb8Jb2qw8C/M7+cXVJM2vGcgzWPF+PWlEA
-         gP/xFeJUthNhPsCS9XQUHEJeNc/lQB/AJPT9OFv6gf2g0/+Ht6zGhQebHq1dPH2pwAea
-         1QrA==
-X-Forwarded-Encrypted: i=1; AFNElJ/2ZSa9a7SO3CDN2hqouX3le09ZjStGiReihr/4Zl6pwNRRprbSBThC+pAM57D05QDMMiWdTcg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfclpRsCHJtB01bADC3TJQgIqKDqzAhTGJYNUqt8AsscWcDhsA
-	tekP2qyDXR7Ryu9lLEx6DxpFrE7A0XGxE/VMtwwQoLphNoeAysin4zHnkNXgw8Ey9ASat13GZ0f
-	0MCOSvFAlZRsZu59DGmwVxlV9naEuw6w=
-X-Gm-Gg: AeBDiet4FGHY/7fjlfLNiwWjX+J9HS01Igwt75sFQFuYOlTydjfaTMe4ad8G6iQOFLk
-	w83/i2MoqRcFPRD4lRNXvOVO9EeAxbIVYbSbXXQoE/chbt+5bgO0FUd3XEIHe7tOqFA7iBPzngs
-	pf56X8QIEsFeEkVN6lHeOGBoFgBfgT2EkTvmJll6395QeeNoJMrP37mxgFvY4op+X3bEG8gPlR5
-	DNVw4QktP/UkWMik5q6Gu90EK6O/d4p+8PfrkFmeZ9w2ph6XNpDJPwPgcwngw6zw193vBuNC//p
-	voh9P7870VJIK6Ypc7M=
-X-Received: by 2002:a05:7300:6d05:b0:2da:44ac:6d17 with SMTP id
- 5a478bee46e88-2da44ac73d7mr8430546eec.17.1776330186461; Thu, 16 Apr 2026
- 02:03:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9C438BF87
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776330676; cv=none; b=LJvcRZ74MrENOW/1fO0ywG61TLhDZ5jWqzz4mzHI9clb4Qptt+x4vOsOx2rMIsr3a4cLFRYIQRxoMNjzrbd26BX1tj67Urw2X4gjnjb7KADaiBNDwOispKC6kVsQo44LjhT81ZhWGYeXLGVR3Ct53rQgJj/AmLAOE8oDDHemQk0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776330676; c=relaxed/simple;
+	bh=RtibpALEXn08ivA4S1NSxloelocNX2yk0NnMCkkgPPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UTRSwUQzvyE/EFEKKAjcrvJfW12Iz89acEW75w+O1gwzUYRtAkt3Ds0TZCN8KPoOkfwfcazRdwcvHBKELx2kOp2GdssPez0EZhhRz2Dmh5AIaB8u3davPYRFQeDxsmK+MHdx2dVxbqfhSEqgTaM5Ct4RpvyAs/t8amatUOfavS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fX/fSD8n; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776330676; x=1807866676;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RtibpALEXn08ivA4S1NSxloelocNX2yk0NnMCkkgPPQ=;
+  b=fX/fSD8nCEagGV/rCrc2XwOniR4dwwwX/3NOn55Sg58KMj6H9Bp6HbzJ
+   3KYBtj/KpR8U4ZM9JKgxtm5vcupSBZMH3aZ4WSEbQ6VtoGqgSEerZ9rr3
+   WcZPbSQLAAWee643zB1IYQx8dGoBt8qvAMe63dj/XNusRvLbOMe/aIDnk
+   gDkgNPM8yOWYbaNdGWSU6HwLyVv/16RG6h7PmgVGIhp7IQy8bPTndAf82
+   0gWZQ+y1cdaHb1r2oi+JJGmFGtLPOPIYSgg0ly3BOhmjJFJhzq+dWUJvu
+   pa0nKpiV8gYRg3IXlZRAyeFd+uSOwuWxhW+qToAe2mbuNJ6eh9RNiAyF0
+   g==;
+X-CSE-ConnectionGUID: 5ka6vYHORxyp4NKCnaDzCw==
+X-CSE-MsgGUID: uZrWGq6DTi+I2Gt5N65fiA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="77506678"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
+   d="scan'208";a="77506678"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 02:11:15 -0700
+X-CSE-ConnectionGUID: aHTwOwBuSfeTE2pCFfuS8g==
+X-CSE-MsgGUID: svS2aVecQVe1sQ8B22gkjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
+   d="scan'208";a="253923678"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO [10.245.244.235]) ([10.245.244.235])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 02:11:12 -0700
+Message-ID: <221abf47-70dd-4c47-b48f-09697d3db172@intel.com>
+Date: Thu, 16 Apr 2026 10:11:10 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Sheroz Juraev <goodmartiandev@gmail.com>
-Date: Thu, 16 Apr 2026 14:02:53 +0500
-X-Gm-Features: AQROBzCSZziCMqVSc-4LKPugtGbhRz9-Yhx2NybwpvyU40Cu7MOJ0VRdGoQO-n4
-Message-ID: <CADPJysyMn_07rb+9b3SgR3xTn+uicSoRp5FMB=oeKNbABtZ5gg@mail.gmail.com>
-Subject: RE: [PATCH wireless v2] wifi: iwlwifi: mld: stop TX during firmware restart
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	FAKE_REPLY(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 2/2] drm/xe: Reject coh_none PAT index for
+ CPU_ADDR_MIRROR
+To: Jia Yao <jia.yao@intel.com>, intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org, Shuicheng Lin <shuicheng.lin@intel.com>,
+ Mathew Alwin <alwin.mathew@intel.com>,
+ Michal Mrozek <michal.mrozek@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>
+References: <20260416051957.651337-1-jia.yao@intel.com>
+ <20260416051957.651337-3-jia.yao@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260416051957.651337-3-jia.yao@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[unwrap.rs:query timed out];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.5.7.0.0.1.0.0.e.5.1.c.3.0.0.6.2.asn6.rspamd.com:server fail];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-238279-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN_FAIL(0.00)[114.105.105.172.asn.rspamd.com:query timed out];
-	TAGGED_FROM(0.00)[bounces-238278-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[goodmartiandev@gmail.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_THREE(0.00)[4];
-	RSPAMD_EMAILBL_FAIL(0.00)[20260405054145.1064152-3-cole.unwrap.rs:query timed out];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D3A1E40BF65
+	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
+X-Rspamd-Queue-Id: 9EB4240C067
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Miri,
+On 16/04/2026 06:19, Jia Yao wrote:
+> Add validation in xe_vm_bind_ioctl() to reject PAT indices
+> with XE_COH_NONE coherency mode when used with
+> DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR.
+> 
+> CPU address mirror mappings use system memory that is CPU
+> cached, which makes them incompatible with COH_NONE PAT
+> indices. Allowing COH_NONE with CPU cached buffers is a
+> security risk, as the GPU may bypass CPU caches and read
+> stale sensitive data from DRAM.
+> 
+> Although CPU_ADDR_MIRROR does not create an immediate
+> mapping, the backing system memory is still CPU cached.
+> Apply the same PAT coherency restrictions as
+> DRM_XE_VM_BIND_OP_MAP_USERPTR.
+> 
+> v2:
+> - Correct fix tag
+> 
+> v6:
+> - No change
+> 
+> v7:
+> - Correct fix tag
+> 
+> v8:
+> - Rebase
+> 
+> v9:
+> - Limit the restrictions to iGPU
+> 
+> Fixes: b43e864af0d4 ("drm/xe/uapi: Add DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR")
+> Cc: stable@vger.kernel.org # v6.18
+> Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+> Cc: Mathew Alwin <alwin.mathew@intel.com>
+> Cc: Michal Mrozek <michal.mrozek@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Jia Yao <jia.yao@intel.com>
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> ---
+>   drivers/gpu/drm/xe/xe_vm.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+> index 2408b547ca3d..f2e733c7ddab 100644
+> --- a/drivers/gpu/drm/xe/xe_vm.c
+> +++ b/drivers/gpu/drm/xe/xe_vm.c
+> @@ -3656,8 +3656,8 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
+>   				 op == DRM_XE_VM_BIND_OP_UNMAP_ALL) ||
+>   		    XE_IOCTL_DBG(xe, obj &&
+>   				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
+> -		    XE_IOCTL_DBG(xe, coh_mode == XE_COH_NONE &&
+> -				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
+> +		    XE_IOCTL_DBG(xe, !IS_DGFX(xe) && coh_mode == XE_COH_NONE &&
+> +				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR || is_cpu_addr_mirror)) ||
 
-Thanks for the quick review. Let me address your points inline:
+Not sure if we want to change the existing behaviour for userptr. At the 
+very least would need some IGT updates. I think maybe just limit to 
+cpu_addr?
 
-> Why is there a leak if we freeing the SKBs after we failed?
+>   		    XE_IOCTL_DBG(xe, xe_device_is_l2_flush_optimized(xe) &&
+>   				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR ||
+>   				  is_cpu_addr_mirror) &&
 
-You're right, "leak" is not the precise term =E2=80=94 the skbs are freed
-after iwl_trans_tx() returns -EIO. The issue is allocation churn:
-mac80211 keeps scheduling TX via wake_tx_queue, so
-iwl_mld_tx_from_txq() keeps dequeuing new frames, passing them to
-the dead firmware, getting -EIO, and freeing them =E2=80=94 in a tight loop
-for the entire duration of the firmware restart. The /proc/allocinfo
-numbers I cited (10.8 GiB / 16.5M allocations) reflect cumulative
-allocations during that window, not a persistent leak.
-
-The practical impact is CPU waste (softirq spinning on
-alloc-send-fail-free) and slab fragmentation from millions of rapid
-kmalloc/kfree cycles, which can cause memory pressure on systems
-with limited RAM. Adding the in_hw_restart guard eliminates this
-churn entirely =E2=80=94 same as the existing guard in the RX path.
-
-> This was fixed by
-> https://patchwork.kernel.org/project/linux-wireless/patch/
-> 20260405054145.1064152-3-cole@unwrap.rs/
-
-Thank you for pointing this out. Cole's patch fixes the TSO
-segmentation explosion when AMSDU is disabled (max_tid_amsdu_len =3D=3D 1
-causing num_subframes =3D=3D 0 =E2=86=92 32000 tiny segments). That's a
-different code path from what I observed =E2=80=94 my issue was the TX
-dequeue loop running against dead firmware during restart, which
-happens regardless of TSO/AMSDU state.
-
-That said, the TSO segmentation explosion he fixed may explain
-why the system freeze was so severe with TSO enabled =E2=80=94 both bugs
-could have been compounding. The in_hw_restart guard in my patch
-would prevent both scenarios by stopping TX entirely before we
-ever reach the TSO segmentation code.
-
-> Not sure I understand if you have a new FW or not?
-
-The ucode version string is the same: 101.6e695a70.0
-(bz-b0-fm-c0-c101.ucode). But the linux-firmware package snapshot
-changed =E2=80=94 I was on an older nixpkgs snapshot when on kernel 6.19.5
-(early March), and now I'm on linux-firmware-20260309. Since the
-version string embedded in the ucode file is the same, the firmware
-binary itself likely did not change. The NMI_INTERRUPT_UNKNOWN
-crashes stopping may just be coincidental (different uptime,
-different traffic patterns, or some other system-level change).
-
-I don't have the old linux-firmware snapshot to do a binary diff,
-so I can't say with certainty whether the firmware binary changed.
-If you have a way to check internally whether there were firmware
-fixes for Bz-series between, say, February and March 2026 releases,
-that would clarify things.
-
-Either way, the code path in iwl_mld_tx_from_txq() remains
-unguarded =E2=80=94 any firmware crash under TX load will hit the same
-alloc churn. The RX path and TXQ allocation worker both check
-in_hw_restart; the TX dequeue path should too.
-
-Thanks,
-Sheroz
 
