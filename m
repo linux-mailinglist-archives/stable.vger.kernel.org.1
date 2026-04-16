@@ -1,308 +1,228 @@
-Return-Path: <stable+bounces-238272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oACTHNGe4GlukQAAu9opvQ
-	(envelope-from <stable+bounces-238272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:33:21 +0200
+	id mODkBrig4GlukQAAu9opvQ
+	(envelope-from <stable+bounces-238273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:41:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E3340B989
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BA340BB69
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9660F31D8DFB
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:26:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AE8F30C0729
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA6838F656;
-	Thu, 16 Apr 2026 08:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B326B392812;
+	Thu, 16 Apr 2026 08:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GdVHwBct"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcGbp7+T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DC7311C32
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 08:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776327977; cv=none; b=YPjLQ6vv4btqcEichFLG6LbWmW/Sf3DtvimwYYtcbdpLJ8Ui8oOC8+f0D/pIt9gB+qcN52vwIdCzwK5haHfSsY6jA2/epBFtO57LILZHjlt7j/yS5FU2fzODGHQwC+WxRHRjoVGj929/wqoGw93EdhOZSd/VC+s3631BZm/sYoA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776327977; c=relaxed/simple;
-	bh=gNmYBs4eB7PB1qP8zWRuEaTB4c6RzyRP997wV1O0+lo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qpv9cVW2hrgGUh+wfvYa6MqcemSoOJ9nUQ1KZYjocpgZAzIz9nisfU/OdO0ZU48AgUfnNgg+aYnNfUcOwxtHlZsZ/xmN4Zt1zoLKLwE8XSeG2uZgOGeTESGxce8Y93Jk80CFFLkReRI7ylyJG4yxoheFyTETDiz3mGkG9GFGdAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GdVHwBct; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488af96f6b2so101623085e9.0
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 01:26:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B206157487
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 08:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776328652; cv=pass; b=Xz+NjQv0yCdDoaf6jOmgJzz/8DFjDXeAVFaJ7znoGkSl7kbnP1aabaGBiOmw1SaAdt7YKdnBa5aC5tgu41MW4ZCsF8Eb8G/VpzFgCD53+5ia/Z9vykfGTp6g/9y+7h1+F1ulgzUfHbqxMWQ6KJsRQQtZd8UOEFXwwMtrjRLtwSc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776328652; c=relaxed/simple;
+	bh=odwrunGrUaB0OlhzyNWFIRUSSKD3Z7u6GtC4cX0FT0s=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=tWf7V8BH3X6g3eF225e22wiJTYSKULPnZKM6f0ysNW5ggAoJybnpXg44/m4p9AN0gKNrd76Lm47g/ZnZ89jVW4fBmefpFLOGZ2wzZxIY4ALBlOiabjc/MAPTuQdtbgMuy2xKgLMU6QlKQtzL6lscp9yXaAFT229XHYgYJd3EWPI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EcGbp7+T; arc=pass smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2b4520f6b32so8652399eec.0
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 01:37:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776328650; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AnRnVCH5DNql5xGykmgAsMRGjdNXkoAwiAI2gNua8faYadnVDaGv9ilaib9PRNZlVA
+         o6Uo1uncExfmF8Aop48ykB1d/KNUZm6qeUeg5wpzzfwM7hQeS231MFPU562UZWalvTt0
+         hnqICSMiUio/yHvHxnuJ6p8AXu8ssNaBptUb5A0X3i2v/4Gb4lnw9yeK78JM0DdwN6Nl
+         S83H3RWyQbj/t2mqmpCL6tof58xlY3Y8RoPaURjGTM+/ao8YHWUJ+GcR3GAB/owBw02B
+         A+sS+z6sgdUCYhmtHgGZ4w0nqN31j+nRX6BOpkukjwZn4DAnfNPR7PSnNgmLYsQzl5vF
+         547g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=niJrpeUEqFaIUms760ilKReu25zGDrsGDl3wAsfo6f8=;
+        fh=8jalxgpoK0t1uFESqewYMJfjHeWk0jzool2wLDDGhOI=;
+        b=igHpjRJzATlScE08YcJbMj2RadBTAyWoMiwk0ydbiP8q3vKbRWryh/MlNSX+QUncIY
+         /EBq9mrhKrU8IbJp8GzKfziMfo5I4Gt7XORmOWTUamcLN2oMVQ9awv3hUVwxWdBjdPbk
+         McekTcHtq7tLhCH/ejhfPBG/ANogbDxm2+dSLQMaYB6CpHN1clEUfOrNJ9Q/iLY9LkEy
+         ++1GvJSUlSLca7zRi8+ZGR1bXLw0bmhTO9xc/budmSLgLPlZfY+K5CeURMiaBuZA0CZo
+         /VcZs1ffOfylBADGo+fL5dKooKMoDCxt3ZTLlHxRbzsQ+49/Fe4k9Ge8lIgwv14Y6hjY
+         pRLQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776327974; x=1776932774; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bD3DfLGn9PzqskvSxd4dMWxs0A7LqhF/1Zj5J3RfkGo=;
-        b=GdVHwBctWvnL1LEN3wZt7FgnEloAXGxnrFXq92/0UUZ+iBJgpzT9/ipvubVoL0a5c1
-         T5vTYAgvHjX6xtGoMqGMqBKQHwNZG42dJ9s7US12VZVjBeWVjGK49PN6nDVQ2wB0yIgM
-         d+/W/9Rlx2xQzsL7dkKRPRXPBBZgx+Lw3Wakt0bsYIGX2eQZ96GFwrv3FCM/gnRVt4/L
-         FiDB/wdTVIcW5tXQkgc+JD/oJYoBHH2t8ZT7CZlhu3bUhwXsKeTW9oexuprDsGydkWac
-         dbbitduhBz2sc+8tP9BRVe5W7/Qx6hHXxdshzH+0QhgGhs241+hV7D+8soxOwUCPqxoQ
-         C/Ow==
+        d=gmail.com; s=20251104; t=1776328650; x=1776933450; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=niJrpeUEqFaIUms760ilKReu25zGDrsGDl3wAsfo6f8=;
+        b=EcGbp7+TbIGF39ilVpcJE5sYX9HgIEcXT56Ri6/OldLmfR3iBiY1T/d3pbxFK4ioBX
+         23Ox8QYS/T02SDToDYfQXyZ+EZys0RgXiKfahA5cYPesQNRtCyEyXpjTUVpUEwM0UBjT
+         dfkkF5D4v1/vIHXWbHXSTi7h4m2rd9uehSgzhyDtaOup+PAE1XZDo/sMiTGBMeWjk62x
+         FzZ6/IFMgqUNR4iytDvrwZiCt0sNKbto0papl1bfhaShvH0GzQzNv30DPR24Ky/LBUN0
+         enN4HTXk+WIBFgsAmN+EfN/tG9pZUL0PxQ38rZO/7J0c8UM8aZyR0iRn3JqudkCpZX5q
+         iNIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776327974; x=1776932774;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1776328650; x=1776933450;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bD3DfLGn9PzqskvSxd4dMWxs0A7LqhF/1Zj5J3RfkGo=;
-        b=XrXB/lHPtrWhwsDRgF+VwpynDNO+rCyGGPfaLKCwOhHihk+Cy/NecKfVoTxlbVgOoE
-         BdKxdOD45ulVzZUGwCwqSE+LEHgH9D8b9keW816xlSqHwsBFb5P18Vk/PDuaO9awY10g
-         b+9Y61B3SYeazndcIJW4DiQWq9UyJYgosdHk0JlE8fjavJk02qssz1rLjUxe0y9cWhMD
-         r4/Z1Ntd/qJwYfUykZ8q2bsdMkUD82oTQv3oUr17NiAnVJcBwjXc0qL39ftO8m/jeiJp
-         4r9hmv7N/EDNXTAX4iY4qYP8NtDNBTZzxmkjO9/KEQKMD7PPm5ejxaRGIVc72xJCrI1g
-         pMlQ==
-X-Gm-Message-State: AOJu0YzBpUASqxOV0SuTiCcD2W99Mvq9guRx7RVW8rU2EfppbfJvGoox
-	bVg9dBnBVeWbVFKUE5NjIFD90chSDQHG4FcwtqJV+VWfp0BwmrBmoYoZ7M1AnwMBluno//1lpe1
-	4qjrZJeU=
-X-Gm-Gg: AeBDieuz02yi91TJMuMrxtKRrqwxAABPWHnRm0D5sy/Culzrw3bMGhBOSv0hvf6BjNC
-	R6MwgGu2J+0fyWmH6H3+5LlhWABniDEnCZ8lpnY49+PDTa8yKU9JMgZ9k7z9a+hzHs3lk4YDqK3
-	UYO2ivaWgJD2coJDhcNnH4nSIdgdcGI/L8FF614tJEZm9SUVnufB8qjTylZC4xV5UkbzhGBym4L
-	9Z9lDnT3KBZraZI/jVwiZY4BRSIWN/eUsmH5vPGO88EloojEzSLBmyVljjrOXXcXfCWXUkv8ped
-	10LDZX5DxJS+4DpwzijcWcEm91nV8MLKY3Q/im1U75wFbwsKkir9IA1L3nYEILhmMgdlqVxpBbm
-	07V1zByWNFJ3oF//FePWVGfWRT0XszLt1v06WIVHbcN5rW/uzu9Hom39YHwFwiswBSWVo7YA86p
-	Zt+5TFvzM64kIkCI9DB61UKmr220r3/OOq8/7sqP5Nn+Yh/hDhRTDOCkIsgQ==
-X-Received: by 2002:a05:600c:c10f:b0:487:cd8:4c9 with SMTP id 5b1f17b1804b1-488d689ca8dmr236908545e9.27.1776327973664;
-        Thu, 16 Apr 2026 01:26:13 -0700 (PDT)
-Received: from localhost (27-51-42-31.adsl.fetnet.net. [27.51.42.31])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36132cb874fsm1633453a91.8.2026.04.16.01.26.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 01:26:12 -0700 (PDT)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Cc: Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.18 6.19] selftests/bpf: Test refinement of single-value tnum
-Date: Thu, 16 Apr 2026 16:26:05 +0800
-Message-ID: <20260416082606.151196-1-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.53.0
+        bh=niJrpeUEqFaIUms760ilKReu25zGDrsGDl3wAsfo6f8=;
+        b=iq4h0iwEebw61EM3izNSzyb29l/icTx4zi2ryB/CTuX0uqbon7LFLpA/+hnfKUYIwd
+         r/YLBtji2choDEfRJer05JZ8XCkNzser2DAhxwnh/WU9DZKMEZugXbfQCyofAHlcvsII
+         HX6mBoxlXfCmpxhH8/B9p4TTz4U8SCPCmiMPmjXNjsuwDJ5JzgXa+eZACkEIYn684Jc2
+         +fUD7gx2+dWDW7Q18/Fh0mARUlCBa0/97+SAOAUvdu1xglGr0ji5aeoCudOgMkJfIasy
+         m9kirpBKPEYeZID6Te6mCNtZ4ro3mzt5mys/IToC2hzCdqyj1FvFQQXWMcucY1qKodNR
+         cIFA==
+X-Forwarded-Encrypted: i=1; AFNElJ8/yp84+qTPVUSzz0H4QCDZB2rPrNVLJN3QFwx1jEzrdtp5dxv/F+0Bqri1MFndvxwdf6PBTCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1hVJ0e78Nm0uXUVGAYnbXAC6jdl8IdPm7bO3ZuNJ0JuxcYLun
+	ebgeiy2iRjt0LSP0RbjbWj6Te3DZtJFcpDuXD7YEoePy39x2OZLpm8FQcISOmYdWscPtN3BQJiG
+	Mu+mMEJIGsmwhEAl2nGrWmd565ss/87U=
+X-Gm-Gg: AeBDiet7FO5WRyUkVHJdgyyDGRdEBuNha8T6J4t2G9ZH7ElI0Fl2Bc//donvGbHFwov
+	egoiJp0iRZEjMSS7QmTniKFq+og8l03QHM0aTwH+KFzaNpEte4Bd8bLBXZIb0juX1n5fDxYphRe
+	tC/Xc76Ir9nAkXktjrnOTeAZKucy8v2yYIBTaAiWD2rRppHQe33pqu/XrSE9JulH3GAmqzGkvwG
+	M7s1/L2Wh8XgN0nRmlQ+sIkWU/BbY723+NE6TEr17UTqJSOy5QVzKmYwtm4aYwgkIW2hL6dRi7X
+	maqfxqk9U3YvrAUD2e/LRT27Uu0zVw==
+X-Received: by 2002:a05:7300:ed0f:b0:2ba:a2fb:403f with SMTP id
+ 5a478bee46e88-2d58955d055mr12288054eec.21.1776328650277; Thu, 16 Apr 2026
+ 01:37:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+From: Sheroz Juraev <goodmartiandev@gmail.com>
+Date: Thu, 16 Apr 2026 13:37:18 +0500
+X-Gm-Features: AQROBzDoQb0IILDg6KGa5fE_DWshl8rJPN8rQSR6tc82k-mIlH91jQJ-yk5uLgk
+Message-ID: <CADPJysx0mCpzh7b=kJC_OsZGvME9inx7EYo0imYwniCFO02FLg@mail.gmail.com>
+Subject: RE: [PATCH wireless v2] wifi: iwlwifi: mld: stop TX during firmware restart
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	FAKE_REPLY(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238272-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN_FAIL(0.00)[10.253.234.172.asn.rspamd.com:server fail];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,suse.com];
-	DKIM_TRACE(0.00)[suse.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN_FAIL(0.00)[10.253.234.172.asn.rspamd.com:server fail];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-238273-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[goodmartiandev@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.986];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,suse.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 13E3340B989
+	RCPT_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 00BA340BB69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+Hi Miri,
 
-Commit e6ad477d1bf8829973cddd9accbafa9d1a6cd15a upstream.
+Thanks for looking into this. Unfortunately I don't have the raw dmesg
+logs from the original crash events =E2=80=94 I didn't save them at the tim=
+e
+and the journal has since rotated past those boots. I do have the
+system configuration details and the memory profiling data that led
+to the patch. Here's everything I can provide:
 
-This patch introduces selftests to cover the new bounds refinement
-logic introduced in the previous patch. Without the previous patch,
-the first two tests fail because of the invariant violation they
-trigger. The last test fails because the R10 access is not detected as
-dead code. In addition, all three tests fail because of R0 having a
-non-constant value in the verifier logs.
+=3D=3D Hardware / Firmware =3D=3D
 
-In addition, the last two cases are covering the negative cases: when we
-shouldn't refine the bounds because the u64 and tnum overlap in at least
-two values.
+  Machine:    ASUS Zenbook 14 UX3405CA
+  CPU:        Intel Core Ultra 9 285H (Arrow Lake), 16 cores
+  WiFi:       Intel(R) Wi-Fi 7 BE201 320MHz
+  PCI:        0000:00:14.3 [8086:7740] / subsystem [8086:00e4]
+  Interface:  wlo1 (renamed from wlan0)
+  Firmware:   101.6e695a70.0 bz-b0-fm-c0-c101.ucode, op_mode iwlmld
+  Kernel:     6.19.5 (when crashes were occurring)
+  OS:         NixOS (rolling release)
+  modprobe:   options iwlwifi power_save=3D0
+              options iwlmvm power_scheme=3D1
 
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/90d880c8cf587b9f7dc715d8961cd1b8111d01a8.1772225741.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[shung-hsi.yu: test for backported upstream commit efc11a667878 ("bpf: Improve
-bounds when tnum has a single possible value")]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
----
-I intend to backport the whole "Fix invariant violation for single-value
-tnums"[1] series to stable 6.12. Stable policy requires that those
-commits to be backported to new stable branches first, and  this commit
-was the only one that wasn't in 6.18 and 6.19 yet.
+=3D=3D Observed behavior (kernel 6.19.5) =3D=3D
 
-1: https://lore.kernel.org/r/cover.1772225741.git.paul.chaignon@gmail.com
----
- .../selftests/bpf/progs/verifier_bounds.c     | 137 ++++++++++++++++++
- 1 file changed, 137 insertions(+)
+Under sustained Tailscale (WireGuard) UDP traffic + active SSH
+sessions over WiFi, the firmware crashed with NMI_INTERRUPT_UNKNOWN
+approximately every 10=E2=80=9315 minutes. Each crash triggered
+ieee80211_restart_hw().
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_bounds.c b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-index 0a72e0228ea9..e772ae430915 100644
---- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-@@ -1709,4 +1709,141 @@ __naked void jeq_disagreeing_tnums(void *ctx)
- 	: __clobber_all);
- }
- 
-+/* This test covers the bounds deduction when the u64 range and the tnum
-+ * overlap only at umax. After instruction 3, the ranges look as follows:
-+ *
-+ * 0    umin=0xe01     umax=0xf00                              U64_MAX
-+ * |    [xxxxxxxxxxxxxx]                                       |
-+ * |----------------------------|------------------------------|
-+ * |   x               x                                       | tnum values
-+ *
-+ * The verifier can therefore deduce that the R0=0xf0=240.
-+ */
-+SEC("socket")
-+__description("bounds refinement with single-value tnum on umax")
-+__msg("3: (15) if r0 == 0xe0 {{.*}} R0=240")
-+__success __log_level(2)
-+__flag(BPF_F_TEST_REG_INVARIANTS)
-+__naked void bounds_refinement_tnum_umax(void *ctx)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	r0 |= 0xe0;			\
-+	r0 &= 0xf0;			\
-+	if r0 == 0xe0 goto +2;		\
-+	if r0 == 0xf0 goto +1;		\
-+	r10 = 0;			\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
-+/* This test covers the bounds deduction when the u64 range and the tnum
-+ * overlap only at umin. After instruction 3, the ranges look as follows:
-+ *
-+ * 0    umin=0xe00     umax=0xeff                              U64_MAX
-+ * |    [xxxxxxxxxxxxxx]                                       |
-+ * |----------------------------|------------------------------|
-+ * |    x               x                                      | tnum values
-+ *
-+ * The verifier can therefore deduce that the R0=0xe0=224.
-+ */
-+SEC("socket")
-+__description("bounds refinement with single-value tnum on umin")
-+__msg("3: (15) if r0 == 0xf0 {{.*}} R0=224")
-+__success __log_level(2)
-+__flag(BPF_F_TEST_REG_INVARIANTS)
-+__naked void bounds_refinement_tnum_umin(void *ctx)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	r0 |= 0xe0;			\
-+	r0 &= 0xf0;			\
-+	if r0 == 0xf0 goto +2;		\
-+	if r0 == 0xe0 goto +1;		\
-+	r10 = 0;			\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
-+/* This test covers the bounds deduction when the only possible tnum value is
-+ * in the middle of the u64 range. After instruction 3, the ranges look as
-+ * follows:
-+ *
-+ * 0    umin=0x7cf   umax=0x7df                                U64_MAX
-+ * |    [xxxxxxxxxxxx]                                         |
-+ * |----------------------------|------------------------------|
-+ * |     x            x            x            x            x | tnum values
-+ *       |            +--- 0x7e0
-+ *       +--- 0x7d0
-+ *
-+ * Since the lower four bits are zero, the tnum and the u64 range only overlap
-+ * in R0=0x7d0=2000. Instruction 5 is therefore dead code.
-+ */
-+SEC("socket")
-+__description("bounds refinement with single-value tnum in middle of range")
-+__msg("3: (a5) if r0 < 0x7cf {{.*}} R0=2000")
-+__success __log_level(2)
-+__naked void bounds_refinement_tnum_middle(void *ctx)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	if r0 & 0x0f goto +4;		\
-+	if r0 > 0x7df goto +3;		\
-+	if r0 < 0x7cf goto +2;		\
-+	if r0 == 0x7d0 goto +1;		\
-+	r10 = 0;			\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
-+/* This test cover the negative case for the tnum/u64 overlap. Since
-+ * they contain the same two values (i.e., {0, 1}), we can't deduce
-+ * anything more.
-+ */
-+SEC("socket")
-+__description("bounds refinement: several overlaps between tnum and u64")
-+__msg("2: (25) if r0 > 0x1 {{.*}} R0=scalar(smin=smin32=0,smax=umax=smax32=umax32=1,var_off=(0x0; 0x1))")
-+__failure __log_level(2)
-+__naked void bounds_refinement_several_overlaps(void *ctx)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	if r0 < 0 goto +3;		\
-+	if r0 > 1 goto +2;		\
-+	if r0 == 1 goto +1;		\
-+	r10 = 0;			\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
-+/* This test cover the negative case for the tnum/u64 overlap. Since
-+ * they overlap in the two values contained by the u64 range (i.e.,
-+ * {0xf, 0x10}), we can't deduce anything more.
-+ */
-+SEC("socket")
-+__description("bounds refinement: multiple overlaps between tnum and u64")
-+__msg("2: (25) if r0 > 0x10 {{.*}} R0=scalar(smin=umin=smin32=umin32=15,smax=umax=smax32=umax32=16,var_off=(0x0; 0x1f))")
-+__failure __log_level(2)
-+__naked void bounds_refinement_multiple_overlaps(void *ctx)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	if r0 < 0xf goto +3;		\
-+	if r0 > 0x10 goto +2;		\
-+	if r0 == 0x10 goto +1;		\
-+	r10 = 0;			\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
- char _license[] SEC("license") = "GPL";
--- 
-2.53.0
+Two symptoms were observed after each firmware restart:
 
+1) Massive skb memory leak. Memory profiling (/proc/allocinfo)
+   showed the following after a single firmware crash cycle:
+
+     10.8 GiB  16546157  net/core/skbuff.c:586  func:kmalloc_reserve
+      3.94 GiB  16546144  net/core/skbuff.c:679  func:__alloc_skb
+
+   ~7 GB of skb buffers leaked per crash. The TX path kept
+   dequeuing frames from mac80211 and pushing them to the dead
+   firmware (iwl_trans_tx() returning -EIO), allocating and
+   immediately freeing skbs in a tight loop.
+
+2) System freeze when TSO was enabled. With TSO/GSO active on
+   wlo1, the crash path through iwl_mld_tx_from_txq =E2=86=92
+   iwl_mld_tx_skb =E2=86=92 iwl_tx_tso_segment =E2=86=92 skb_segment =E2=86=
+=92
+   skb_release_head_state caused an RCU stall =E2=86=92 complete system
+   freeze. Disabling TSO/GSO via ethtool prevented the deadlock
+   but not the skb leak.
+
+=3D=3D Workarounds applied =3D=3D
+
+  - ethtool -K wlo1 tso off gso off  (prevents system freeze)
+  - systemd watchdog service monitoring journalctl for
+    "iwlwifi.*restart completed", then rmmod/modprobe cycle
+    to reclaim leaked skb memory
+  - net.core.wmem_max / rmem_max capped at 2MB (limits per-crash
+    memory consumption)
+
+=3D=3D Current status (kernel 6.19.11, linux-firmware 20260309) =3D=3D
+
+On the current firmware (linux-firmware-20260309, same ucode
+version string 101.6e695a70.0), the NMI_INTERRUPT_UNKNOWN crashes
+have stopped entirely. I ran heavy SSH + Tailscale traffic for
+10+ minutes with TSO re-enabled and no firmware crash occurred.
+
+I checked the kernel changelogs: there are zero iwlwifi changes
+between 6.19.6 and 6.19.11, so the stability improvement is most
+likely from the firmware package update (the linux-firmware
+snapshot changed between my 6.19.5 system and the current one).
+
+=3D=3D Why the patch is still needed =3D=3D
+
+Even if the specific NMI_INTERRUPT_UNKNOWN trigger has been fixed
+in newer firmware, the code path is still unguarded:
+iwl_mld_tx_from_txq() does not check mld->fw_status.in_hw_restart
+before dequeuing. Any future firmware crash under load would hit
+the same skb churn / memory leak. The RX path and TXQ allocation
+worker already have this guard =E2=80=94 the TX dequeue path is the only
+one missing it.
+
+Let me know if there's anything else I can provide, or if you'd
+like me to try reproducing on an older firmware version.
+
+Thanks,
+Sheroz
 
